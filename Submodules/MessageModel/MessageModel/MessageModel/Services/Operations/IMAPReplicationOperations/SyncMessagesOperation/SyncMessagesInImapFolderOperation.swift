@@ -41,11 +41,12 @@ class SyncMessagesInImapFolderOperation: ImapSyncOperation {
                         message: "firstUID should be <= lastUID?")
             return
         }
-        if !checkImapConnection() {
+        if !checkImapConnection() { 
             waitForBackgroundTasksAndFinish()
             return
         }
-        process()
+//        process() //BUFF: DEBUG WITHOUT SYNC OP
+        markAsFinished()
     }
 }
 

@@ -46,8 +46,21 @@ extension ImapIdleOperation {
     private enum Command {
         // The OP did not communicate to the server yet
         case none
+        // Someone called cancel on the OP
+        case cancel
         // We asked the server to IDLE, but have no answer yet
         case stopIdle
+
+        var debugString: String {
+            switch self {
+            case .none:
+                return ".none"
+            case .cancel:
+                return ".cancel"
+            case .stopIdle:
+                return ".stopIdle"
+            }
+        }
     }
 }
 
@@ -79,6 +92,13 @@ class ImapIdleOperation: ImapSyncOperation {
             Log.shared.info("new command:%@", lastCommand == .none ? "none" : "stopIdle")
         }
     }
+
+    private let serializeQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.qualityOfService  = QualityOfService.background
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
 
     override init(parentName: String = #function,
                   context: NSManagedObjectContext? = nil,
@@ -129,17 +149,39 @@ class ImapIdleOperation: ImapSyncOperation {
     }
 
     func stopIdling() {
-        lastCommand = .stopIdle
-        next()
+//        serializeQueue.addOperation { [weak self] in
+//            guard let me = self else {
+//                Log.shared.error("Lost myself") //BUFF: HERE
+//                return
+//            }
+        let me = self
+            me.lastCommand = .stopIdle
+            me.next()
+//        }
+    }
 
-        //        if imapConnection.isIdling {
-        //            sendDone()
-        //        } else {
-        //            cancel()
-        //        }
+    override func cancel() { //BUFF: HERE   
+//        serializeQueue.addOperation { [weak self] in
+//            guard let me = self else {
+//                Log.shared.errorAndCrash("Lost myself")
+//                return
+//            }
+         let me = self
+            me.lastCommand = .cancel
+            me.next()
+//        }
+    }
+
+    private func requestDone() {
+        state = .requestedDone
+        imapConnection.exitIdle()
+        next()
     }
 
     private func next() {
+        Log.shared.info("next() called with state %@, lastCommand %@",
+                        state.debugString,
+                        lastCommand.debugString)
         switch lastCommand {
 
         case .none:
@@ -167,9 +209,7 @@ class ImapIdleOperation: ImapSyncOperation {
                 // request after the server has answered.
                 break
             case .idling:
-                state = .requestedDone
-                sendDone()
-                next()
+                requestDone()
             case .requestedDone:
                 break // Do nothing
             case .idleFinished:
@@ -177,8 +217,25 @@ class ImapIdleOperation: ImapSyncOperation {
             case .error:
                 cancel()
             }
+        case .cancel:
+            switch state {
+            case .none:
+                super.cancel()
+            case .requestedIdle:
+                // We have asked the server to idle and the client asked us to cancel.
+                // We do nothing, wait for server response and handle the clients
+                // request after the server has answered.
+                break
+            case .idling:
+                requestDone()
+            case .requestedDone:
+                break // Do nothing
+            case .idleFinished:
+                waitForBackgroundTasksAndFinish()
+            case .error:
+                super.cancel()
+            }
         }
-
     }
 
     override func main() {
@@ -227,25 +284,16 @@ extension ImapIdleOperation {
         syncDelegate = ImapIdleDelegate(errorHandler: self)
         imapConnection.delegate = syncDelegate
 
-        requestIdle(context: privateMOC)
+        requestIdle()
     }
 
-    private func requestIdle(context: NSManagedObjectContext) {
+    private func requestIdle() {
         state = .requestedIdle
         next()
-//        imapConnection.sendIdle()
-    }
-
-    private func sendDone() {
-        Log.shared.info("Stopping IDLE mode")
-        imapConnection.exitIdle()
     }
 
     fileprivate func handleChangeOnServer() {
         stopIdling()
-//        if imapConnection.isIdling {
-//            sendDone()
-//        }
     }
 
     fileprivate func handleIdleEntered() {
@@ -314,12 +362,6 @@ class ImapIdleDelegate: DefaultImapConnectionDelegate {
         Log.shared.info("IDLE mode finished")
         imapIdleOp()?.handleIdleFinished()
     }
-
-//    /// We did stop ideling by sending DONE, so the server returns the actual changes.
-//    /// We are currently ignoring those reports and signal to our client that ideling finished.
-//    override func messageChanged(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
-//        imapIdleOp()?.handleChangeOnServer()
-//    } //BUFF: clean
 
     // MARK: - Helper 
 

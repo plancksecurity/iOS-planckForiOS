@@ -19,9 +19,18 @@ extension ImapReplicationService {
 
 /// Replicates the state of an IMAP server (for one account).
 class ImapReplicationService: OperationBasedService {
-    private var pollingMode: PollingMode
+    private var pollingMode: PollingMode {
+        didSet {
+            if isFastPolling {
+                idleOperation?.stopIdling()
+            }
+        }
+    }
+    private var isFastPolling: Bool {
+        return pollingMode == .fastPolling
+    }
     /// Amount of time to "sleep" between polling cycles
-    private var sleepTimeInSeconds = MiscUtil.isUnitTest() ? 1.0 : 3.0
+    private var sleepTimeInSeconds = MiscUtil.isUnitTest() ? 1.0 : 10.0
     private var cdAccount: CdAccount? = nil
     private var imapConnectionCache = ImapConnectionCache()
     private var idleOperation: ImapIdleOperation?
@@ -83,13 +92,13 @@ class ImapReplicationService: OperationBasedService {
                                                  imapConnection: imapConnection)
             createes.append(opImapLogin)
 
-            if me.pollingMode != .fastPolling {
+            if !isFastPolling {
                 // Fetch current list of interesting mailboxes
                 let opSyncFolders = SyncFoldersFromServerOperation(errorContainer: me.errorPropagator,
                                                                    imapConnection: imapConnection)
                 createes.append(opSyncFolders)
             }
-            if me.pollingMode != .fastPolling {
+            if !isFastPolling {
                 let opRequiredFolders = CreateRequiredFoldersOperation(errorContainer: me.errorPropagator,
                                                                        imapConnection: imapConnection)
                 createes.append(opRequiredFolders)
@@ -100,7 +109,7 @@ class ImapReplicationService: OperationBasedService {
                                                 imapConnection: imapConnection)
             createes.append(appendOp)
 
-            if me.pollingMode != .fastPolling {
+            if !isFastPolling {
                 let moveToFolderOp = ImapMoveOperation(errorContainer: me.errorPropagator,
                                                        imapConnection: imapConnection)
                 createes.append(moveToFolderOp)
@@ -115,7 +124,7 @@ class ImapReplicationService: OperationBasedService {
                                                          folderInfos: folderInfos)
             createes.append(fetchMessagesOp)
 
-            if me.pollingMode != .fastPolling {
+            if !isFastPolling {
                 // Send EXPUNGEs, if necessary
                 let expungeOP = ImapExpungeOperation(errorContainer: me.errorPropagator,
                                                      imapConnection: imapConnection)
@@ -132,18 +141,20 @@ class ImapReplicationService: OperationBasedService {
                                                                    folderInfos: folderInfos)
                 createes.append(syncFlagsToServer)
             }
-            var willIdle = false
-            if me.pollingMode != .fastPolling && imapConnection.supportsIdle {
+//            var willIdle = false
+//            if !isFastPolling {
                 let idleOP = ImapIdleOperation(errorContainer: me.errorPropagator,
                                                imapConnection: imapConnection)
                 createes.append(idleOP)
                 me.idleOperation = idleOP
-                willIdle = true
-            }
-            if !willIdle {
+//                willIdle = true
+//            }
+//            if !willIdle {
                 // The server does not support idle mode. So we must poll frequently.
-                createes.append(me.pollingPausingOp(errorContainer: me.errorPropagator))
-            }
+                createes.append(me.pollingPausingOp(errorContainer: me.errorPropagator,
+
+                                                    imapConnection: imapConnection))
+//            }
             createes.append(me.errorHandlerOp())
         }
         return createes
@@ -154,37 +165,67 @@ class ImapReplicationService: OperationBasedService {
 
 extension ImapReplicationService {
 
-    private func pollingPausingOp(errorContainer: ErrorContainerProtocol) -> Operation {
+    private func pollingPausingOp(errorContainer: ErrorContainerProtocol, imapConnection: ImapConnection) -> Operation {
         let pauseOp = SelfReferencingOperation { [weak self] operation in
             guard let me = self else {
                 // It's a valid case. The service might have been nil-ed intentionally.
                 Log.shared.info("Lost myself")
                 return
             }
-            guard
-                !errorContainer.hasErrors,
-                let operation = operation,
-                !operation.isCancelled else {
-                    // We are gone, we got canceled, or an error occured ...
-                    // ... Do nothing
-                    return
-            }
-            if me.pollingMode == .fastPolling {
-                Log.shared.info("%@ - fastPolling", "\(type(of: me))")
-                // We need a little break here. Certain servers deny to answer when polling without break.
-                let fastPollingPauseTime = 1.0
-                sleep(UInt32(fastPollingPauseTime))
-            } else {
-                Log.shared.info("%@ - now sleeping for %f seconds",
-                                "\(type(of: me))", me.sleepTimeInSeconds)
-                let startDate = Date()
-                while Date().timeIntervalSince(startDate) < me.sleepTimeInSeconds {
-                    if operation.isCancelled {
-                        break
-                    }
-                    sleep(1)
+            me.privateMoc.performAndWait {
+                //BUFF: test if never poll for IDLE supporting servers works
+//                guard
+//                    let cdAccount = me.cdAccount,
+//                    let imapConnectInfo = cdAccount.imapConnectInfo else {
+//                        Log.shared.errorAndCrash("%@ - No connect info.", "\(type(of: self))")
+//                        return
+//                }
+//                let imapConnection = me.imapConnectionCache.imapConnection(for: imapConnectInfo)
+//                guard !imapConnection.supportsIdle else {
+//                    // We never want to wait for polling if the IMAP server supports IDLE ???
+//                    return
+//                }
+                //
+
+                guard
+                    !errorContainer.hasErrors,
+                    let operation = operation,
+                    !operation.isCancelled else {
+                        // We are gone, we got canceled, or an error occured ...
+                        // ... Do nothing
+                        return
                 }
-                Log.shared.info("%@ - woke up", "\(type(of: me))")
+                if me.isFastPolling {
+                    Log.shared.info("%@ - fastPolling", "\(type(of: me))")
+                    // We need a little break here. Certain servers deny to answer when polling without break.
+                    let fastPollingPauseTime = 1.0
+                    sleep(UInt32(fastPollingPauseTime))
+                } else {
+//                    guard
+//                        let cdAccount = me.cdAccount,
+//                        let imapConnectInfo = cdAccount.imapConnectInfo else {
+//                            Log.shared.errorAndCrash("%@ - No connect info.", "\(type(of: self))")
+//                            return
+//                    }
+//                    let imapConnection = me.imapConnectionCache.imapConnection(for: imapConnectInfo)
+                    guard !imapConnection.supportsIdle else {
+                        // We never want to wait for polling if:
+                        // * the IMAP server supports IDLE
+                        // AND
+                        // * we are not in fast polling mode
+                        return
+                    }
+                    Log.shared.info("%@ - now sleeping for %f seconds",
+                                    "\(type(of: me))", me.sleepTimeInSeconds)
+                    let startDate = Date()
+                    while Date().timeIntervalSince(startDate) < me.sleepTimeInSeconds {
+                        if operation.isCancelled {
+                            break
+                        }
+                        sleep(1)
+                    }
+                    Log.shared.info("%@ - woke up", "\(type(of: me))")
+                }
             }
         }
         return pauseOp
