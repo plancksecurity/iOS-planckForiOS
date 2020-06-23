@@ -45,8 +45,7 @@ class SyncMessagesInImapFolderOperation: ImapSyncOperation {
             waitForBackgroundTasksAndFinish()
             return
         }
-//        process() //BUFF: DEBUG WITHOUT SYNC OP
-        markAsFinished()
+        process()
     }
 }
 
@@ -81,11 +80,6 @@ extension SyncMessagesInImapFolderOperation {
 
         resetUidCache()
 
-        guard let id = folderID else {
-            Log.shared.errorAndCrash("No ID")
-            waitForBackgroundTasksAndFinish()
-            return
-        }
         if !imapConnection.openMailBox(name: folderToOpen, updateExistsCount: true) {
             syncMessages()
         }
