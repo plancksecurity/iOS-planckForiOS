@@ -90,7 +90,8 @@ extension SettingsTableViewController {
     /// - Parameters:
     ///   - dequeuedCell: the cell to configure
     ///   - row: the row with the information to configure the cell
-    private func prepareSwitchTableViewCell(_ dequeuedCell: UITableViewCell?, for row: SettingsViewModel.SwitchRow) -> SettingSwitchTableViewCell {
+    private func prepareSwitchTableViewCell(_ dequeuedCell: UITableViewCell?,
+                                            for row: SettingsViewModel.SwitchRow) -> SettingSwitchTableViewCell {
         guard let cell = dequeuedCell as? SettingSwitchTableViewCell else {
             Log.shared.errorAndCrash("Invalid state.")
             return SettingSwitchTableViewCell()
@@ -99,7 +100,7 @@ extension SettingsTableViewController {
         cell.switchDescription.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
         cell.delegate = self
         cell.selectionStyle = .none
-        cell.switchItem.setOn(row.isOn, animated: true)
+        cell.switchItem.setOn(row.isOn, animated: false)
         return cell
     }
 
