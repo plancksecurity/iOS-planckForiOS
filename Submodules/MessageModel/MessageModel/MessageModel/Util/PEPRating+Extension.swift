@@ -11,7 +11,7 @@ import Foundation
 import pEpIOSToolbox
 import PEPObjCAdapterFramework
 
-extension PEPRating {
+extension PEPRating { //!!!: must be extracted to Interface (as is public)
     public func pEpColor() -> PEPColor {
         return PEPUtils.pEpColor(pEpRating: self)
     }
