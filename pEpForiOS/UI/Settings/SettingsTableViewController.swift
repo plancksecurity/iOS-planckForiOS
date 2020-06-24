@@ -115,9 +115,14 @@ extension SettingsTableViewController {
         switch row.identifier {
         case .account:
             return prepareSwipeTableViewCell(dequeuedCell, for: row)
-        case .resetAccounts, .resetTrust:
+        case .resetAccounts,
+             .resetTrust:
             return prepareActionCell(dequeuedCell, for: row)
-        case .defaultAccount, .pgpKeyImport, .credits, .trustedServer, .extraKeys:
+        case .defaultAccount,
+             .pgpKeyImport,
+             .credits,
+             .trustedServer,
+             .extraKeys:
             guard let row = row as? SettingsViewModel.NavigationRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
@@ -126,7 +131,11 @@ extension SettingsTableViewController {
             dequeuedCell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
             dequeuedCell.detailTextLabel?.text = row.subtitle
             return dequeuedCell
-        case .passiveMode, .protectMessageSubject, .pEpSync, .unsecureReplyWarningEnabled:
+        case .passiveMode,
+             .protectMessageSubject,
+             .pEpSync,
+             .usePEPFolder,
+             .unsecureReplyWarningEnabled:
             guard let row = row as? SettingsViewModel.SwitchRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
@@ -237,12 +246,18 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let identifier = segueIdentifier(for: indexPath)
-        switch identifier {
-        case .passiveMode, .pEpSync, .protectMessageSubject, .unsecureReplyWarningEnabled:
-            return
+        let row = viewModel.section(for: indexPath.section).rows[indexPath.row]
+        switch row.identifier {
+        case .account,
+             .extraKeys,
+             .resetTrust,
+             .pgpKeyImport,
+             .trustedServer,
+             .credits,
+             .defaultAccount:
+            performSegue(withIdentifier: sequeIdentifier(forRowWithIdentifier: row.identifier).rawValue,
+                         sender: indexPath)
         case .resetAccounts:
-            
             guard let row = viewModel.section(for: indexPath).rows[indexPath.row] as? SettingsViewModel.ActionRow, let action = row.action,
                 let alert = getResetAllIdentityAlertController(action: action) else {
                     return
@@ -250,8 +265,13 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
 
             present(alert, animated: true)
             tableView.deselectRow(at: indexPath, animated: true)
-        default:
-            performSegue(withIdentifier: identifier.rawValue, sender: indexPath)
+        case .passiveMode,
+             .pEpSync,
+             .usePEPFolder,
+             .protectMessageSubject,
+             .unsecureReplyWarningEnabled:
+            // Nothing to do.
+            return
         }
     }
 }
@@ -302,22 +322,13 @@ extension SettingsTableViewController {
         case segueExtraKeys
         case seguePgpKeyImport
         case noAccounts
-        case ResetTrustSplitView
         case ResetTrust
-        case noSegue
-        case passiveMode
-        case protectMessageSubject
-        case pEpSync
-        case resetAccounts
-        case unsecureReplyWarningEnabled
+        /// Use for cells that do not segue, like switch cells
+        case none
     }
 
-    /// Provides the segue identifier for the cell in the passed index path
-    /// - Parameter indexPath: The index Path of the cell to get the segue identifier.
-    /// - Returns: The segue identifier. If there is no segue to perform, it returns `noSegue`
-    func segueIdentifier(for indexPath : IndexPath) -> SegueIdentifier {
-        let row: SettingsRowProtocol = viewModel.section(for: indexPath.section).rows[indexPath.row]
-        switch row.identifier {
+    private func sequeIdentifier(forRowWithIdentifier identifier: SettingsViewModel.Row) -> SegueIdentifier {
+        switch identifier {
         case .account:
             return .segueEditAccount
         case .defaultAccount:
@@ -332,23 +343,22 @@ extension SettingsTableViewController {
             return .ResetTrust
         case .extraKeys:
             return .segueExtraKeys
-        case .passiveMode:
-            return .passiveMode
-        case .protectMessageSubject:
-            return .protectMessageSubject
-        case .pEpSync:
-            return .pEpSync
-        case .resetAccounts:
-            return .resetAccounts
-        case .unsecureReplyWarningEnabled:
-            return .unsecureReplyWarningEnabled
+        case .passiveMode, .usePEPFolder, .pEpSync, .unsecureReplyWarningEnabled, .protectMessageSubject, .resetAccounts:
+            return .none
         }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let segueIdentifier = segue.identifier else { return }
+        guard
+            let id = segue.identifier,
+            let segueIdentifyer = SegueIdentifier(rawValue: id)
+            else {
+                Log.shared.errorAndCrash("No SegueIdentifier")
+                return
 
-        switch SegueIdentifier(rawValue: segueIdentifier) {
+        }
+
+        switch segueIdentifyer {
         case .segueEditAccount:
             guard
                 let destination = segue.destination as? AccountSettingsTableViewController,
@@ -370,8 +380,6 @@ extension SettingsTableViewController {
              .segueExtraKeys:
             guard let destination = segue.destination as? BaseViewController else { return }
             destination.appConfig = self.appConfig
-        case .none:
-            break
         case .seguePgpKeyImport:
             guard let destination = segue.destination as? PGPKeyImportSettingViewController else {
                 Log.shared.errorAndCrash("No DVC")
@@ -379,13 +387,7 @@ extension SettingsTableViewController {
             }
             destination.appConfig = appConfig
             destination.viewModel = viewModel.pgpKeyImportSettingViewModel()
-        case .ResetTrustSplitView,
-             .noSegue,
-             .passiveMode,
-             .protectMessageSubject,
-             .pEpSync,
-             .resetAccounts,
-             .unsecureReplyWarningEnabled:
+        case .none:
             // It's all rows that never segue anywhere (e.g. SwitchRow).
             break
         }

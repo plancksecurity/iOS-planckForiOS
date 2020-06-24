@@ -71,12 +71,21 @@ final class SettingsViewModel {
     public func cellIdentifier(for indexPath: IndexPath) -> String {
         let row = section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
-        case .account, .defaultAccount, .pgpKeyImport, .credits, .extraKeys, .trustedServer,
+        case .account,
+             .defaultAccount,
+             .pgpKeyImport,
+             .credits,
+             .extraKeys,
+             .trustedServer,
              .resetTrust:
             return "SettingsCell"
         case .resetAccounts:
             return "SettingsActionCell"
-        case .passiveMode, .protectMessageSubject, .pEpSync, .unsecureReplyWarningEnabled:
+        case .passiveMode,
+             .protectMessageSubject,
+             .pEpSync,
+             .usePEPFolder,
+             .unsecureReplyWarningEnabled:
             return "switchOptionCell"
         }
     }
@@ -224,12 +233,19 @@ extension SettingsViewModel {
                                             AppSettings.shared.passiveMode = value
             })
         case .pEpSync:
-            rows.append(generateSwitchRow(type: .pEpSync, isDangerous: false, isOn: keySyncStatus) { [weak self] (value) in
+            rows.append(generateSwitchRow(type: .pEpSync,
+                                          isDangerous: false,
+                                          isOn: keySyncStatus) { [weak self] (value) in
                 guard let me = self else {
                     Log.shared.lostMySelf()
                     return
                 }
-                me.PEPSyncUpdate(to: value)
+                me.setPEPSyncEnabled(to: value)
+            })
+            rows.append(generateSwitchRow(type: .usePEPFolder,
+                                          isDangerous: false,
+                                          isOn: AppSettings.shared.usePEPFolderEnabled) { (value) in
+                AppSettings.shared.usePEPFolderEnabled = value
             })
         case .contacts:
             rows.append(generateNavigationRow(type: .resetTrust, isDangerous: true))
@@ -360,6 +376,9 @@ extension SettingsViewModel {
         case .pEpSync:
             return NSLocalizedString("p≡p Sync",
                                      comment: "Settings: enable/disable p≡p Sync feature")
+        case .usePEPFolder:
+            return NSLocalizedString("Use p≡p Folder For Sync Messages",
+                                     comment: "Settings: title for enable/disable usePEPFolder feature")
         case .unsecureReplyWarningEnabled:
             return NSLocalizedString("Unsecure reply warning",
                                      comment: "setting row title: Unsecure reply warning")
@@ -373,8 +392,17 @@ extension SettingsViewModel {
         switch type {
         case .defaultAccount:
             return AppSettings.shared.defaultAccount
-        case .account, .credits, .extraKeys, .passiveMode, .pEpSync,
-             .protectMessageSubject, .resetAccounts, .resetTrust, .pgpKeyImport, .trustedServer,
+        case .account,
+             .credits,
+             .extraKeys,
+             .passiveMode,
+             .pEpSync,
+             .usePEPFolder,
+             .protectMessageSubject,
+             .resetAccounts,
+             .resetTrust,
+             .pgpKeyImport,
+             .trustedServer,
              .unsecureReplyWarningEnabled:
             return nil
         }
@@ -382,7 +410,7 @@ extension SettingsViewModel {
 
     /// This method sets the pEp Sync status according to the parameter value
     /// - Parameter value: The new value of the pEp Sync status
-    private func PEPSyncUpdate(to value: Bool) {
+    private func setPEPSyncEnabled(to value: Bool) {
         let grouped = KeySyncUtil.isInDeviceGroup
         if value {
             KeySyncUtil.enableKeySync()
@@ -471,6 +499,7 @@ extension SettingsViewModel {
         case protectMessageSubject
         case unsecureReplyWarningEnabled
         case pEpSync
+        case usePEPFolder
         case resetTrust
         case extraKeys
     }
