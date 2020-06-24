@@ -103,10 +103,10 @@ class AccountTypeSelectorViewModel {
     }
 
     public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
-        return ClientCertificateManagementViewModel(verifiableAccount: VerifiableAccount.verifiableAccount(for: chosenAccountType))
+        return ClientCertificateManagementViewModel(verifiableAccount: VerifiableAccount.verifiableAccount(for: chosenAccountType, alsoCreatePEPFolder: AppSettings.shared.usePEPFolderEnabled))
     }
 
     public func loginViewModel() -> LoginViewModel {
-        return LoginViewModel(verifiableAccount: VerifiableAccount.verifiableAccount(for: chosenAccountType))
+        return LoginViewModel(verifiableAccount: VerifiableAccount.verifiableAccount(for: chosenAccountType, alsoCreatePEPFolder: AppSettings.shared.usePEPFolderEnabled))
     }
 }

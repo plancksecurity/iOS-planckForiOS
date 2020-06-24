@@ -18,6 +18,7 @@ public class PrepareAccountForSavingService {
 
     public func prepareAccount(cdAccount: CdAccount,
                                pEpSyncEnable: Bool,
+                               alsoCreatePEPFolder: Bool,
                                context: NSManagedObjectContext,
                                completion: @escaping (Success)->()) {
         // Generate Key
@@ -39,8 +40,10 @@ public class PrepareAccountForSavingService {
         // Assure folders exist
         fetchService.fetchFolders(inCdAccount: cdAccount,
                                   context: context,
+                                  alsoCreatePEPFolder: alsoCreatePEPFolder,
                                   saveContextWhenDone: false) { success in
                                     completion(success)
+
         }
     }
 }

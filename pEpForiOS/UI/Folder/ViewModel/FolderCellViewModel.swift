@@ -14,7 +14,7 @@ public class FolderCellViewModel {
     let level : Int
 
     public var title : String {
-        return self.name
+        return name
     }
 
     public var image : UIImage? {

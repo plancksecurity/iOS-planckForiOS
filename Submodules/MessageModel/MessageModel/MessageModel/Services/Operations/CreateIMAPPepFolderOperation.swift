@@ -45,6 +45,9 @@ class CreateIMAPPepFolderOperation: ImapSyncOperation {
                 Log.shared.lostMySelf()
                 return
             }
+            me.syncDelegate = CreateIMAPPepFolderOperationSyncDelegate(errorHandler: me)
+            me.imapConnection.delegate = me.syncDelegate
+
             me.privateMOC.performAndWait {
                 guard
                     let cdAccount = me.imapConnection.cdAccount(moc: me.privateMOC) else {
@@ -52,10 +55,14 @@ class CreateIMAPPepFolderOperation: ImapSyncOperation {
                             BackgroundError.CoreDataError.couldNotFindAccount(info: me.comp))
                         return
                 }
-                guard CdFolder.by(folderType: .pEpSync, account: cdAccount) == nil else {
-                    // pEp folder exists already. Nothing to do.
-                    me.waitForBackgroundTasksAndFinish()
-                    return
+                guard
+                    CdFolder.by(folderType: .pEpSync,
+                                account: cdAccount,
+                                context: me.privateMOC) == nil
+                    else {
+                        // pEp folder exists already. Nothing to do.
+                        me.waitForBackgroundTasksAndFinish()
+                        return
                 }
                 me.createPEPFolder(for: cdAccount)
             }
@@ -79,7 +86,7 @@ class CreateIMAPPepFolderOperation: ImapSyncOperation {
     private func createPepFolderName(for cdAccount: CdAccount) -> String? {
         guard
             let seperator = CdFolder.folderSeparatorAsString(cdAccount: cdAccount),
-            let inbox = CdFolder.by(folderType: .inbox, account: cdAccount),
+            let inbox = CdFolder.by(folderType: .inbox, account: cdAccount, context: privateMOC),
             let inboxName = inbox.name
             else {
                 handleError(BackgroundError.ImapError.invalidAccount)
@@ -94,7 +101,7 @@ class CreateIMAPPepFolderOperation: ImapSyncOperation {
     private func createLocalPEPFolder() {
         guard
             let cdAccount = imapConnection.cdAccount(moc: privateMOC),
-            let inbox = CdFolder.by(folderType: .inbox, account: cdAccount),
+            let inbox = CdFolder.by(folderType: .inbox, account: cdAccount, context: privateMOC),
             let seperator = CdFolder.folderSeparatorAsString(cdAccount: cdAccount),
             let name = createPepFolderName(for: cdAccount),
             let localPEPFolder = CdFolder.updateOrCreate(folderName: name,
@@ -123,6 +130,7 @@ extension CreateIMAPPepFolderOperation {
             me.privateMOC.performAndWait {
                 me.createLocalPEPFolder()
                 me.savecontext()
+                me.waitForBackgroundTasksAndFinish()
             }
         }
     }
