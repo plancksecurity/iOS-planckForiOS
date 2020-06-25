@@ -60,10 +60,8 @@ final class LoginViewModel {
         self.verifiableAccount =
             verifiableAccount ??
             VerifiableAccount.verifiableAccount(for: .other,
-                                                alsoCreatePEPFolder: AppSettings.shared.usePEPFolderEnabled)
+                                                usePEPFolderProvider: AppSettings.shared)
     }
-
-
 
     func isThereAnAccount() -> Bool {
         return !Account.all().isEmpty

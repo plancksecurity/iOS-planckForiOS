@@ -26,7 +26,6 @@ extension VerifiableAccount {
 }
 
 public class VerifiableAccount: VerifiableAccountProtocol {
-    private let alsoCreatePEPFolder: Bool
     private var imapVerifier = VerifiableAccountIMAP()
     private var smtpVerifier = VerifiableAccountSMTP()
     private let prepareAccountForSavingService = PrepareAccountForSavingService()
@@ -34,6 +33,9 @@ public class VerifiableAccount: VerifiableAccountProtocol {
     private var smtpResult: Result<Void, Error>? = nil
     /// Used for synchronizing the 2 asynchronous results (IMAP and SMTP verification).
     private let syncQueue = DispatchQueue(label: "VerifiableAccountSynchronization")
+    /// Someone who tells us whether or not to create a pEp folder for storing sync messages for
+    /// synced accounts.
+    private let usePEPFolderProvider: UsePEPFolderProviderProtocol?
 
     // MARK: - VerifiableAccountProtocol (delegate)
 
@@ -81,7 +83,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
          manuallyTrustedImapServer: Bool = false,
          keySyncEnable: Bool = true,
          alsoCreatePEPFolder: Bool = false,
-         containsCompleteServerInfo: Bool = false) {
+         containsCompleteServerInfo: Bool = false,
+         usePEPFolderProvider: UsePEPFolderProviderProtocol? = nil) {
         self.verifiableAccountDelegate = verifiableAccountDelegate
         self.address = address
         self.userName = userName
@@ -99,8 +102,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         self.isAutomaticallyTrustedImapServer = automaticallyTrustedImapServer
         self.isManuallyTrustedImapServer = manuallyTrustedImapServer
         self.keySyncEnable = keySyncEnable
-        self.alsoCreatePEPFolder = alsoCreatePEPFolder
         self.containsCompleteServerInfo = containsCompleteServerInfo
+        self.usePEPFolderProvider = usePEPFolderProvider
     }
 
     // MARK: - VerifiableAccountProtocol (behaviour)
@@ -129,7 +132,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                 Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
-
+            let alsoCreatePEPFolder = me.keySyncEnable && (me.usePEPFolderProvider?.usePepFolder ?? false)
             me.prepareAccountForSavingService.prepareAccount(cdAccount: cdAccount,
                                                       pEpSyncEnable: me.keySyncEnable,
                                                       alsoCreatePEPFolder: alsoCreatePEPFolder,
@@ -476,7 +479,7 @@ extension VerifiableAccount {
     /// to find out if server data is still missing or not.
     /// - Parameter type: The account type
     public static func verifiableAccount(for type: AccountType,
-                                         alsoCreatePEPFolder: Bool = false) -> VerifiableAccountProtocol {
+                                         usePEPFolderProvider: UsePEPFolderProviderProtocol? = nil) -> VerifiableAccountProtocol {
         var account =  VerifiableAccount(verifiableAccountDelegate: nil,
                                          address: nil,
                                          userName: nil,
@@ -494,8 +497,8 @@ extension VerifiableAccount {
                                          automaticallyTrustedImapServer: false,
                                          manuallyTrustedImapServer: false,
                                          keySyncEnable: true,
-                                         alsoCreatePEPFolder: alsoCreatePEPFolder,
-                                         containsCompleteServerInfo: false)
+                                         containsCompleteServerInfo: false,
+                                         usePEPFolderProvider: usePEPFolderProvider)
         switch type {
         case .gmail:
             account = VerifiableAccount(verifiableAccountDelegate: nil,
@@ -515,8 +518,8 @@ extension VerifiableAccount {
                                         automaticallyTrustedImapServer: false,
                                         manuallyTrustedImapServer: false,
                                         keySyncEnable: true,
-                                        alsoCreatePEPFolder: alsoCreatePEPFolder,
-                                        containsCompleteServerInfo: true)
+                                        containsCompleteServerInfo: true,
+                                        usePEPFolderProvider: usePEPFolderProvider)
         case .o365:
             account =  VerifiableAccount(verifiableAccountDelegate: nil,
                                          address: nil,
@@ -535,8 +538,8 @@ extension VerifiableAccount {
                                          automaticallyTrustedImapServer: false,
                                          manuallyTrustedImapServer: false,
                                          keySyncEnable: true,
-                                         alsoCreatePEPFolder: alsoCreatePEPFolder,
-                                         containsCompleteServerInfo: true)
+                                         containsCompleteServerInfo: true,
+                                         usePEPFolderProvider: usePEPFolderProvider)
         case .icloud:
             account =  VerifiableAccount(verifiableAccountDelegate: nil,
                                          address: nil,
@@ -555,8 +558,8 @@ extension VerifiableAccount {
                                          automaticallyTrustedImapServer: false,
                                          manuallyTrustedImapServer: false,
                                          keySyncEnable: true,
-                                         alsoCreatePEPFolder: alsoCreatePEPFolder,
-                                         containsCompleteServerInfo: true)
+                                         containsCompleteServerInfo: true,
+                                         usePEPFolderProvider: usePEPFolderProvider)
         case .outlook:
             account =  VerifiableAccount(verifiableAccountDelegate: nil,
                                          address: nil,
@@ -575,8 +578,8 @@ extension VerifiableAccount {
                                          automaticallyTrustedImapServer: false,
                                          manuallyTrustedImapServer: false,
                                          keySyncEnable: true,
-                                         alsoCreatePEPFolder: alsoCreatePEPFolder,
-                                         containsCompleteServerInfo: true)
+                                         containsCompleteServerInfo: true,
+                                         usePEPFolderProvider: usePEPFolderProvider)
         case .other, .clientCertificate:
             break
         }
