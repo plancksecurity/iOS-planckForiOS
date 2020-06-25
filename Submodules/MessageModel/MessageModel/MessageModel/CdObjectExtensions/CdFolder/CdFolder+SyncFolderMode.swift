@@ -11,7 +11,7 @@ import CoreData
 
 /// Support for sync folder mode: https://dev.pep.foundation/Engine/SyncFolderMode
 extension CdFolder {
-    static let pEpSyncFolderName = "pEpAutoMessages"
+    static let pEpSyncFolderName = "pEp"
 
     /// Predicate for fetching the pEp sync folder ("sync folder mode").
     /// - Parameter cdAccount: The account to take the folder separator from,

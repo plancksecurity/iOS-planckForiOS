@@ -227,27 +227,7 @@ extension VerifiableAccountTest {
             startExpectation = _startExpectation
         }
 
-        func start_old() throws {
-            startExpectation.fulfill()
-        }
-
-        func processAllUserActionsAndStop_old() {
-            XCTFail()
-        }
-
-        func cancel_old() {
-            XCTFail()
-        }
-
         func checkForNewMails_old(completionHandler: @escaping (Int?) -> ()) {
-            XCTFail()
-        }
-
-        func enableKeySync() {
-            XCTFail()
-        }
-
-        func disableKeySync() {
             XCTFail()
         }
 

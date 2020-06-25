@@ -61,11 +61,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setupServices() {
-        let keySyncHandshakeService = KeySyncHandshakeService()
         messageModelService = MessageModelService(errorPropagator: errorPropagator,
                                                   cnContactsAccessPermissionProvider: AppSettings.shared,
                                                   keySyncServiceHandshakeHandler: KeySyncHandshakeService(),
-                                                  keySyncStateProvider: AppSettings.shared)
+                                                  keySyncStateProvider: AppSettings.shared,
+                                                  usePEPFolderProvider: AppSettings.shared)
 
         appConfig = AppConfig(errorPropagator: errorPropagator,
                               oauth2AuthorizationFactory: oauth2Provider)

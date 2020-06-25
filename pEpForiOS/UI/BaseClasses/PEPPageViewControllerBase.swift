@@ -34,7 +34,7 @@ class PEPPageViewControllerBase: UIPageViewController {
             if !me.isScrollEnable {
                 me.disableScrolling()
             }
-            if let firstView = me.views.first { //!!!: //BUFF: is views.first == nil a valid case?
+            if let firstView = me.views.first { //!!!: is views.first == nil a valid case?
                 me.setViewControllers([firstView],
                                       direction: .forward,
                                       animated: true,
