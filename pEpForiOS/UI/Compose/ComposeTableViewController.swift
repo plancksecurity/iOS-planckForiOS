@@ -282,6 +282,7 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
         presentContactPicker()
     }
 
+    /// Restore focus to the previous focused cell after closing the picker action
     private func didHideContactPicker() {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash(message: "No VM!")
@@ -404,6 +405,12 @@ extension ComposeTableViewController: CNContactPickerDelegate {
         present(contactPickerVC, animated: true)
     }
 
+    // This gets called when the user cancels his request to pick a contact
+    func contactPickerDidCancel(_ picker: CNContactPickerViewController) {
+        // It's needed to set up an additional, extra work.
+        didHideContactPicker()
+    }
+
     func contactPicker(_ picker: CNContactPickerViewController, didSelect contactProperty: CNContactProperty) {
         if let emailAddress = contactProperty.value as? String
         {
@@ -411,7 +418,7 @@ extension ComposeTableViewController: CNContactPickerDelegate {
                 Log.shared.errorAndCrash("No VM")
                 return
             }
-            vm.handleContactSelected(emails: [String(emailAddress)])
+            vm.handleContactSelected(address: String(emailAddress))
             didHideContactPicker()
         }
     }
@@ -423,7 +430,7 @@ extension ComposeTableViewController: CNContactPickerDelegate {
                 Log.shared.errorAndCrash("No VM")
                 return
             }
-            vm.handleContactSelected(emails: [String(emailAddress.value)])
+            vm.handleContactSelected(address: String(emailAddress.value))
             didHideContactPicker()
         }
     }

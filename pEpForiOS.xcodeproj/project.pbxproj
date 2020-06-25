@@ -219,7 +219,6 @@
 		3AC2B847241021C300E08EB3 /* ClientCertificatePasswordViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B846241021C300E08EB3 /* ClientCertificatePasswordViewModelTest.swift */; };
 		3AD0E0A123E4659F006FFED3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AD0E0A023E4659F006FFED3 /* Assets.xcassets */; };
 		3AD2CBC923FD92650003A536 /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD2CBC823FD92640003A536 /* AccountSettingsViewModel.swift */; };
-		3AE10B9B24974CC70050BFB0 /* ContactsSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE10B9A24974CC70050BFB0 /* ContactsSelectionViewModel.swift */; };
 		43038EA2246D897F008FC36E /* KeyImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43038EA1246D897F008FC36E /* KeyImportViewController.swift */; };
 		43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43040A521E9776220083DED8 /* AttachmentSummaryView.swift */; };
 		4307D5DA23575853004569C4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4307D5D823575853004569C4 /* InfoPlist.strings */; };
@@ -722,7 +721,6 @@
 		3AC2B846241021C300E08EB3 /* ClientCertificatePasswordViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificatePasswordViewModelTest.swift; sourceTree = "<group>"; };
 		3AD0E0A023E4659F006FFED3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3AD2CBC823FD92640003A536 /* AccountSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModel.swift; sourceTree = "<group>"; };
-		3AE10B9A24974CC70050BFB0 /* ContactsSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsSelectionViewModel.swift; sourceTree = "<group>"; };
 		43038EA1246D897F008FC36E /* KeyImportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportViewController.swift; sourceTree = "<group>"; };
 		43040A521E9776220083DED8 /* AttachmentSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentSummaryView.swift; sourceTree = "<group>"; };
 		4307D5D923575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -2221,7 +2219,6 @@
 				492EF92B20C69547004EAE14 /* Thread */,
 				150DF6D12052A99800A9DCF7 /* SecureWebViewController */,
 				43AA82511E9B925000ABD5A8 /* Util */,
-				3AE10B9A24974CC70050BFB0 /* ContactsSelectionViewModel.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -2857,7 +2854,6 @@
 				371D641D231D17390036AE62 /* StartUpTutorial.swift in Sources */,
 				37033E9B231AD8FE008DD6F0 /* KeySyncErrorView.swift in Sources */,
 				00A12CAE20D3D9AC00B82BE3 /* FullMessageCell.swift in Sources */,
-				3AE10B9B24974CC70050BFB0 /* ContactsSelectionViewModel.swift in Sources */,
 				006BE6BC20F4B63C00DDE8C9 /* EmailDetailType.swift in Sources */,
 				00EB89AB20E3A27C00CDFA0D /* ThreadViewcontroller+SizeClasses.swift in Sources */,
 				43257C841F50629700DDC7F0 /* HtmlToAttributedTextSaxParser.swift in Sources */,

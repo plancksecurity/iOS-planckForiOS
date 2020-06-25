@@ -26,8 +26,7 @@ class SuggestViewModel {
     struct Row {
         public let name: String
         public let email: String
-        public var pEpRating = PEPRating.undefined
-        let addressBookID: String?
+        public let addressBookID: String?
 
         fileprivate init(name: String, email: String, addressBookID: String? = nil) {
             self.name = name
@@ -144,6 +143,21 @@ class SuggestViewModel {
         }
         workQueue.addOperation(op)
     }
+
+    public func pEpRatingFor(address: String) -> PEPRating {
+
+        guard let from = from else {
+            return .undefined
+        }
+        let to = Identity(address: address)
+        let pEpsession = PEPSession()
+        let rating = pEpsession.outgoingMessageRating(from: from,
+                                                      to: [to],
+                                                      cc: [],
+                                                      bcc: [])
+
+        return rating
+    }
 }
 
 // MARK: - Private
@@ -199,23 +213,6 @@ extension SuggestViewModel {
             }
         }
         return mergedRows
-    }
-
-    func calculatePepRating(toEmailAddress: String) -> PEPRating {
-
-        guard let from = from else {
-            return .undefined
-        }
-        let session = Session.main
-        let safeFrom = from.safeForSession(session)
-        let safeTo = Identity.makeSafe(Identity(address: toEmailAddress), forSession: session)
-        let pEpsession = PEPSession()
-        let rating = pEpsession.outgoingMessageRating(from: safeFrom,
-                                                      to: [safeTo],
-                                                      cc: [],
-                                                      bcc: [])
-
-        return rating
     }
 
     private func informDelegatesModelChanged(callingOperation: SelfReferencingOperation?) {

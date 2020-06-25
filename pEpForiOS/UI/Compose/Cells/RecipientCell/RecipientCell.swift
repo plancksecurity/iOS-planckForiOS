@@ -8,10 +8,6 @@
 
 import UIKit
 
-protocol RecipientCellDelegate: class {
-    func focusChanged()
-}
-
 final class RecipientCell: TextViewContainingTableViewCell {
     static let reuseId = "RecipientCell"
 
@@ -32,7 +28,7 @@ final class RecipientCell: TextViewContainingTableViewCell {
 
     public func setup(with viewModel: RecipientCellViewModel) {
         self.viewModel = viewModel
-        self.viewModel?.recipientCellDelegate = self
+        self.viewModel?.recipientCellViewModelDelegate = self
         recipientTextView?.viewModel = self.viewModel?.recipientTextViewModel()
         title.text = viewModel.type.localizedTitle()
         recipientTextView?.setInitialText()
@@ -55,7 +51,7 @@ final class RecipientCell: TextViewContainingTableViewCell {
 
 }
 
-extension RecipientCell: RecipientCellDelegate {
+extension RecipientCell: RecipientCellViewModelDelegate {
     func focusChanged() {
         if addButton.isEnabled != textView.isFirstResponder {
             let hasFocus = textView.isFirstResponder

@@ -208,10 +208,10 @@ extension ComposeViewModel.ComposeViewModelState {
         return bccRecipients.count > 0
     }
 
-    func calculatePepRating(from: Identity,
-                            to: [Identity],
-                            cc: [Identity],
-                            bcc: [Identity]) -> PEPRating {
+    private func calculatePepRating(from: Identity,
+                                    to: [Identity],
+                                    cc: [Identity],
+                                    bcc: [Identity]) -> PEPRating {
 
         guard !isForceUnprotectedDueToBccSet else {
             return .unencrypted
@@ -224,14 +224,14 @@ extension ComposeViewModel.ComposeViewModelState {
         let safeBcc = Identity.makeSafe(bcc, forSession: session)
         let pEpsession = PEPSession()
         let rating = pEpsession.outgoingMessageRating(from: safeFrom,
-                                                  to: safeTo,
-                                                  cc: safeCc,
-                                                  bcc: safeBcc)
+                                                      to: safeTo,
+                                                      cc: safeCc,
+                                                      bcc: safeBcc)
 
         return rating
     }
 
-    func updatePepRating() {
+    private func updatePepRating() {
         guard !isForceUnprotectedDueToBccSet else {
             rating = .unencrypted
             return

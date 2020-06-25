@@ -71,7 +71,7 @@ extension SuggestTableViewController {
         }
         let row = viewModel[indexPath.row]
 
-        let pEpRating = viewModel.calculatePepRating(toEmailAddress: row.email)
+        let pEpRating = viewModel.pEpRatingFor(address: row.email)
         let pEpRatingIcon = pEpRating.pEpColor().statusIconInContactPicture()
         cell.updateCell(name: row.name,
                         email: row.email,

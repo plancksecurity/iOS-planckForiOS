@@ -21,6 +21,10 @@ protocol RecipientCellViewModelResultDelegate: class {
     func addContactTapped()
 }
 
+protocol RecipientCellViewModelDelegate: class {
+    func focusChanged()
+}
+
 class RecipientCellViewModel: CellViewModel {
     public let title: String
     public var content = NSMutableAttributedString(string: "")
@@ -33,7 +37,7 @@ class RecipientCellViewModel: CellViewModel {
     }
 
     weak public var resultDelegate: RecipientCellViewModelResultDelegate?
-    weak var recipientCellDelegate: RecipientCellDelegate?
+    weak var recipientCellViewModelDelegate: RecipientCellViewModelDelegate?
 
     init(resultDelegate: RecipientCellViewModelResultDelegate?,
          type: FieldType,
@@ -68,19 +72,19 @@ extension RecipientCellViewModel: RecipientTextViewModelResultDelegate {
 
     func recipientTextViewModel(_ vm: RecipientTextViewModel, didChangeRecipients newRecipients: [Identity]) {
         focused = true
-        recipientCellDelegate?.focusChanged()
+        recipientCellViewModelDelegate?.focusChanged()
         resultDelegate?.recipientCellViewModel(self, didChangeRecipients: newRecipients)
     }
 
     func recipientTextViewModel(_ vm: RecipientTextViewModel, didBeginEditing text: String) {
         focused = true
-        recipientCellDelegate?.focusChanged()
+        recipientCellViewModelDelegate?.focusChanged()
         resultDelegate?.recipientCellViewModel(self, didBeginEditing: text)
     }
 
     func recipientTextViewModelDidEndEditing(_ vm: RecipientTextViewModel) {
         focused = false
-        recipientCellDelegate?.focusChanged()
+        recipientCellViewModelDelegate?.focusChanged()
         resultDelegate?.recipientCellViewModelDidEndEditing(self)
     }
 
