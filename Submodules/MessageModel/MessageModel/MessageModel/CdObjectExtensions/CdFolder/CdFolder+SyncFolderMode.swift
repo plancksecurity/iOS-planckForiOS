@@ -11,7 +11,7 @@ import CoreData
 
 /// Support for sync folder mode: https://dev.pep.foundation/Engine/SyncFolderMode
 extension CdFolder {
-    static let pEpSyncFolderName = "pEpAutoMessages"
+    static let pEpSyncFolderName = "pEp"
 
     /// Tries to fetch the pEp sync folder for the given account.
     static func pEpSyncFolder(in moc: NSManagedObjectContext, cdAccount: CdAccount) -> CdFolder? {

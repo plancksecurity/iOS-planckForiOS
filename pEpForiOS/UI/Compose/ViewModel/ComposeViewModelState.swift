@@ -129,7 +129,7 @@ extension ComposeViewModel {
             if let from = from {
                 newValue.from = Identity.makeSafe(from, forSession: session)
             }
-            newValue.inlinedAttachments = Attachment.clone(attachmnets: inlinedAttachments, //BUFF: Looks very wrong to me. Why clone? should make save?!
+            newValue.inlinedAttachments = Attachment.clone(attachmnets: inlinedAttachments, //!!!: Looks very wrong to me. Why clone? should make save?!
                                                            for: session)
             newValue.nonInlinedAttachments = Attachment.clone(attachmnets: nonInlinedAttachments, //BUFF: Looks very wrong to me. Why clone? should make save?!
                                                               for: session)
