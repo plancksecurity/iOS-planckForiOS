@@ -42,7 +42,11 @@ public class Folder: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
     lazy var fetchOlderService = FetchOlderImapMessagesService()
     lazy var fetchMessagesService = FetchMessagesService()
     
-    public var parent: Folder?
+    public var parent: Folder? {
+        get {
+            return cdObject.parent?.folder()
+        }
+    }
     public var name: String {
         get {
             guard let result = cdObject.name else {
