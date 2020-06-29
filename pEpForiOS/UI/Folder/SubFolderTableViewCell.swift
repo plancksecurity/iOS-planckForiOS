@@ -43,7 +43,8 @@ class SubFolderTableViewCell2: UITableViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        chevronButton.contentEdgeInsets = UIEdgeInsets(top: 14, left: 20, bottom: 14, right: 0)
+        //Increase tappable area
+        chevronButton.contentEdgeInsets = UIEdgeInsets(top: 20, left: 40, bottom: 20, right: 0)
         guard indentationWidth != 0 else { return }
         iconLeadingConstraint.constant = (CGFloat(indentationLevel) * indentationWidth) + padding
         contentView.layoutIfNeeded()

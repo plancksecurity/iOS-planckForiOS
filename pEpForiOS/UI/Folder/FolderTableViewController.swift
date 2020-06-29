@@ -434,15 +434,6 @@ extension FolderTableViewController {
             }
         }
 
-        /// - Returns: The indexPaths of the sub folders of the folder passed by paramter.
-        func subFolderIndexPaths() -> [IndexPath] {
-            let section = indexPath.section
-
-            extractChildIndexPath(section)
-
-            return subfolderIPs
-        }
-
         /// If the subfolders are hidden, show them.
         /// That means to insert the new rows and rotate the chevron icon down.
         /// Otherwise perform the opposite action,
@@ -451,12 +442,39 @@ extension FolderTableViewController {
             hiddenFolders.remove(indexPath)
             let folderCellViewModel = vm[indexPath.section][indexPath.item]
             folderCellViewModel.isExpand = true
-            tableView.insertRows(at: subFolderIndexPaths(), with: .fade)
+            tableView.insertRows(at: childrenOfFolder(fromRowAt: indexPath), with: .fade)
         } else {
             hiddenFolders.insert(indexPath)
             let folderCellViewModel = vm[indexPath.section][indexPath.item]
             folderCellViewModel.isExpand = false
-            tableView.deleteRows(at: subFolderIndexPaths(), with: .top)
+            tableView.deleteRows(at: childrenOfFolder(fromRowAt: indexPath), with: .top)
         }
+    }
+
+
+    /// - Returns: The indexPaths of the sub folders of the folder passed by paramter.
+    private func childrenOfFolder(fromRowAt indexPath: IndexPath) -> [IndexPath] {
+        guard let vm = folderVM else {
+            Log.shared.errorAndCrash("No view model.")
+            return [IndexPath]()
+        }
+
+        var subfolderIPs = [IndexPath]()
+
+        //Folder cell view model
+        let folderCellViewModel = vm[indexPath.section][indexPath.item]
+
+        //Iterate over the folder cell view models to grab the children nodes.
+        var nextIndexPath = IndexPath(item: indexPath.item + 1, section: indexPath.section)
+        while isSubfolder(indexPath: nextIndexPath) {
+            let childFolderCellViewModel = vm[nextIndexPath.section][nextIndexPath.item]
+
+            //Append only its childs.
+            if folderCellViewModel.isParentOf(fcvm: childFolderCellViewModel) {
+                subfolderIPs.append(nextIndexPath)
+            }
+            nextIndexPath = IndexPath(item: nextIndexPath.item + 1, section: indexPath.section)
+        }
+        return subfolderIPs
     }
 }
