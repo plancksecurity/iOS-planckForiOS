@@ -28,7 +28,7 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
     let rightStackView = UIStackView()
     let arrowImageView = UIImageView()
     let arrowLabel = UILabel()
-    lazy var transparentButton: SectionButton = {
+    lazy var sectionButton: SectionButton = {
         return SectionButton()
     }()
 
@@ -65,11 +65,11 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         labelStackView.spacing = 5.0
         labelStackView.translatesAutoresizingMaskIntoConstraints = false
 
-        transparentButton.translatesAutoresizingMaskIntoConstraints = false
+        sectionButton.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(profileImage)
         contentView.addSubview(rightStackView)
         contentView.addSubview(labelStackView)
-        contentView.addSubview(transparentButton)
+        contentView.addSubview(sectionButton)
 
         contentView.backgroundColor = UIColor.white
 
@@ -121,17 +121,17 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         ))
 
         contentView.addConstraints(NSLayoutConstraint.constraints(
-            withVisualFormat: "V:|-0-[button]-0-|",
+            withVisualFormat: "V:|-16-[button]-0-|",
             options: NSLayoutConstraint.FormatOptions(rawValue: 0),
             metrics: nil,
-            views: ["button" : transparentButton ]
+            views: ["button" : sectionButton ]
         ))
 
         contentView.addConstraints(NSLayoutConstraint.constraints(
             withVisualFormat: "H:|-0-[button]-16-|",
             options: NSLayoutConstraint.FormatOptions(rawValue: 0),
             metrics: nil,
-            views: ["button" : transparentButton ]
+            views: ["button" : sectionButton ]
         ))
 
     }

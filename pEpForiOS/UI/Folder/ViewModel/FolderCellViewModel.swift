@@ -10,6 +10,7 @@ import Foundation
 import MessageModel
 
 public class FolderCellViewModel {
+    //TODO: make it private
     let folder: DisplayableFolderProtocol
     let level : Int
 
@@ -39,9 +40,44 @@ public class FolderCellViewModel {
         return folder.isSelectable
     }
 
+    public var isExpand = true
+
     public init(folder: DisplayableFolderProtocol, level: Int) {
         self.folder = folder
         self.level = level
     }
+
+    public func hasSubfolders() -> Bool {
+        guard let folder = folder as? Folder else {
+            return false
+        }
+        return folder.subFolders().count > 0
+    }
+
+    public func isParentOf(fcvm: FolderCellViewModel) -> Bool {
+        if let childFolder = fcvm.folder as? Folder, let parentFolder = folder as? Folder {
+            if childFolder.parent == parentFolder {
+                return true
+            }
+
+            var parent = childFolder.parent
+            while parent != nil {
+                if parent?.parent == parentFolder {
+                    return true
+                } else {
+                    parent = parent?.parent
+                }
+            }
+        }
+        return false
+    }
+
+    public func shouldHideSeparator() -> Bool {
+        if let f = folder as? Folder {
+            return f.folderType == .outbox
+        }
+        return folder is UnifiedInbox
+    }
+    
 }
 

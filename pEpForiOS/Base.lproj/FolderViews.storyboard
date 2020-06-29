@@ -11,13 +11,13 @@
         <scene sceneID="sp8-r5-QDF">
             <objects>
                 <tableViewController storyboardIdentifier="Folders" id="6ra-tc-Aiv" customClass="FolderTableViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="OAM-Xh-1fA">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="OAM-Xh-1fA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="y1Q-G4-Yvh">
-                            <rect key="frame" x="0.0" y="100" width="375" height="80"/>
+                            <rect key="frame" x="0.0" y="188" width="375" height="80"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" preservesSuperviewLayoutMargins="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NEj-lZ-p6O">
@@ -42,31 +42,141 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="10" reuseIdentifier="Default" textLabel="fd7-QK-o3s" imageView="OWD-bt-DCn" style="IBUITableViewCellStyleDefault" id="Gav-RT-MrD" customClass="FolderTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="10" reuseIdentifier="FolderTableViewCell" id="Gav-RT-MrD" customClass="FolderTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Gav-RT-MrD" id="GDF-rs-ueo">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fd7-QK-o3s">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForiOS-icon-movetofolder" translatesAutoresizingMaskIntoConstraints="NO" id="6B8-BP-Q0W" userLabel="Icon">
+                                            <rect key="frame" x="16" y="10" width="29" height="24"/>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oRR-wg-bjr" userLabel="Title">
+                                            <rect key="frame" x="61" y="11.5" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5GC-kF-kov" userLabel="Chevron">
+                                            <rect key="frame" x="348" y="11" width="13" height="22"/>
+                                            <color key="tintColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <state key="normal" image="chevron-icon-right-gray"/>
+                                            <connections>
+                                                <action selector="chevronButtonTapped:" destination="Gav-RT-MrD" eventType="touchUpInside" id="Zol-wQ-VUU"/>
+                                            </connections>
+                                        </button>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LLk-w6-87y" userLabel="separator">
+                                            <rect key="frame" x="16" y="42" width="343" height="1"/>
+                                            <color key="backgroundColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="1" id="bJd-gL-jwV"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="6B8-BP-Q0W" firstAttribute="centerY" secondItem="GDF-rs-ueo" secondAttribute="centerY" id="4ln-wS-cM7"/>
+                                        <constraint firstItem="LLk-w6-87y" firstAttribute="leading" secondItem="6B8-BP-Q0W" secondAttribute="leading" id="9b3-67-dGY"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="5GC-kF-kov" secondAttribute="trailing" constant="-2" id="CCZ-79-bgB"/>
+                                        <constraint firstItem="oRR-wg-bjr" firstAttribute="leading" secondItem="6B8-BP-Q0W" secondAttribute="trailing" constant="16" id="LdF-Nx-PGE"/>
+                                        <constraint firstItem="6B8-BP-Q0W" firstAttribute="leading" secondItem="GDF-rs-ueo" secondAttribute="leading" constant="16" id="Pfz-p9-yKY"/>
+                                        <constraint firstItem="5GC-kF-kov" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="oRR-wg-bjr" secondAttribute="trailing" constant="8" id="XCX-r8-CfL"/>
+                                        <constraint firstItem="oRR-wg-bjr" firstAttribute="centerY" secondItem="GDF-rs-ueo" secondAttribute="centerY" id="gsZ-UX-cDf"/>
+                                        <constraint firstItem="5GC-kF-kov" firstAttribute="centerY" secondItem="6B8-BP-Q0W" secondAttribute="centerY" id="n1h-Jt-w7k"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="LLk-w6-87y" secondAttribute="trailing" constant="16" id="P27-eK-xlm"/>
+                                    <constraint firstAttribute="bottom" secondItem="LLk-w6-87y" secondAttribute="bottom" constant="1" id="P4w-mT-MRY"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="chevronButton" destination="5GC-kF-kov" id="MQ9-un-rjN"/>
+                                    <outlet property="iconImageView" destination="6B8-BP-Q0W" id="sFD-6g-6RO"/>
+                                    <outlet property="titleLabel" destination="oRR-wg-bjr" id="q9x-Ur-Lwh"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="10" reuseIdentifier="SubFolderTableViewCell" textLabel="rXi-Yc-UYP" imageView="L4p-hK-jFx" style="IBUITableViewCellStyleDefault" id="Dgs-aa-iPy" userLabel="SubFolderTableViewCell" customClass="SubFolderTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Dgs-aa-iPy" translatesAutoresizingMaskIntoConstraints="NO" id="mee-P8-hXd">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rXi-Yc-UYP">
                                             <rect key="frame" x="70" y="0.0" width="289" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="pEpForiOS-icon-movetofolder" id="OWD-bt-DCn" userLabel="icon">
+                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="pEpForiOS-icon-movetofolder" translatesAutoresizingMaskIntoConstraints="NO" id="L4p-hK-jFx" userLabel="icon">
                                             <rect key="frame" x="16" y="10" width="29" height="24"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </imageView>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5GC-kF-kov">
-                                            <rect key="frame" x="300" y="7" width="46" height="30"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uJ2-H7-fla" userLabel="separator">
+                                            <rect key="frame" x="16" y="42" width="343" height="1"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <state key="normal" title="Button"/>
-                                        </button>
+                                            <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </view>
                                     </subviews>
                                 </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubFolderTableViewCell2" id="qGb-BL-Uzf" userLabel="SubFolderTableViewCell2" customClass="SubFolderTableViewCell2" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="116" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qGb-BL-Uzf" translatesAutoresizingMaskIntoConstraints="NO" id="aEO-6H-0GF">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s3w-9y-WE2">
+                                            <rect key="frame" x="70" y="11.5" width="33.5" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="pEpForiOS-icon-movetofolder" translatesAutoresizingMaskIntoConstraints="NO" id="nzC-3a-eQ0" userLabel="icon">
+                                            <rect key="frame" x="16" y="10" width="29" height="24"/>
+                                        </imageView>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8hS-wf-RIZ" userLabel="separator">
+                                            <rect key="frame" x="70" y="42" width="305" height="1"/>
+                                            <color key="backgroundColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="1" id="Ae1-PL-AF7"/>
+                                            </constraints>
+                                        </view>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5mO-NN-q2z" userLabel="chevron" customClass="SectionButton" customModule="pEpForiOS" customModuleProvider="target">
+                                            <rect key="frame" x="346" y="11" width="13" height="22"/>
+                                            <state key="normal" image="chevron-icon-right-gray"/>
+                                            <connections>
+                                                <action selector="chevronButtonPressed:" destination="qGb-BL-Uzf" eventType="touchUpInside" id="Rfx-GR-7dK"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="8hS-wf-RIZ" secondAttribute="trailing" id="GQT-Qq-WJb"/>
+                                        <constraint firstAttribute="trailing" secondItem="5mO-NN-q2z" secondAttribute="trailing" constant="16" id="La4-H9-CFi"/>
+                                        <constraint firstItem="s3w-9y-WE2" firstAttribute="leading" secondItem="nzC-3a-eQ0" secondAttribute="trailing" constant="25" id="SEH-Cf-5Ni"/>
+                                        <constraint firstItem="8hS-wf-RIZ" firstAttribute="leading" secondItem="s3w-9y-WE2" secondAttribute="leading" id="b6O-fG-gO8"/>
+                                        <constraint firstItem="nzC-3a-eQ0" firstAttribute="leading" secondItem="aEO-6H-0GF" secondAttribute="leading" constant="16" id="hMr-tw-6zZ"/>
+                                        <constraint firstItem="5mO-NN-q2z" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="s3w-9y-WE2" secondAttribute="trailing" constant="8" id="sah-oE-AhP"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <constraints>
+                                    <constraint firstItem="s3w-9y-WE2" firstAttribute="centerY" secondItem="qGb-BL-Uzf" secondAttribute="centerY" id="1Iv-bj-E4u"/>
+                                    <constraint firstAttribute="bottom" secondItem="8hS-wf-RIZ" secondAttribute="bottom" constant="1" id="219-tH-2Ri"/>
+                                    <constraint firstItem="aEO-6H-0GF" firstAttribute="leading" secondItem="qGb-BL-Uzf" secondAttribute="leading" id="26z-7w-59J"/>
+                                    <constraint firstItem="5mO-NN-q2z" firstAttribute="centerY" secondItem="qGb-BL-Uzf" secondAttribute="centerY" id="R1q-hY-6Xn"/>
+                                    <constraint firstItem="nzC-3a-eQ0" firstAttribute="centerY" secondItem="qGb-BL-Uzf" secondAttribute="centerY" id="Un4-rU-7wf"/>
+                                    <constraint firstAttribute="bottom" secondItem="aEO-6H-0GF" secondAttribute="bottom" id="fi0-v8-POy"/>
+                                    <constraint firstItem="aEO-6H-0GF" firstAttribute="top" secondItem="qGb-BL-Uzf" secondAttribute="top" id="p6j-UI-Qay"/>
+                                    <constraint firstAttribute="trailing" secondItem="aEO-6H-0GF" secondAttribute="trailing" id="uRo-4R-ciH"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="chevronButton" destination="5mO-NN-q2z" id="iDe-Lt-14c"/>
+                                    <outlet property="iconImageView" destination="nzC-3a-eQ0" id="Cb0-Bv-BRI"/>
+                                    <outlet property="iconLeadingConstraint" destination="hMr-tw-6zZ" id="VZI-rs-5qD"/>
+                                    <outlet property="separatorImageView" destination="8hS-wf-RIZ" id="Fjm-KZ-k2b"/>
+                                    <outlet property="titleLabel" destination="s3w-9y-WE2" id="gZ1-Y1-fmm"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -84,7 +194,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o2c-UY-yR4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9916" y="-1164"/>
+            <point key="canvasLocation" x="9916" y="-1164.4677661169417"/>
         </scene>
         <!--AccountCreation-->
         <scene sceneID="rdR-gU-SsC">
@@ -156,6 +266,7 @@
     </scenes>
     <resources>
         <image name="button-add" width="22" height="22"/>
+        <image name="chevron-icon-right-gray" width="13" height="13"/>
         <image name="pEpForiOS-icon-movetofolder" width="29" height="24"/>
     </resources>
 </document>

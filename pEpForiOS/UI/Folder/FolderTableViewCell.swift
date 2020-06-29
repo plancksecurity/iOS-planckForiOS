@@ -8,21 +8,34 @@
 
 import UIKit
 
+protocol FolderTableViewCellDelegate: class {
+    func didTapChevronButton(cell:  UITableViewCell)
+}
+
 class FolderTableViewCell: UITableViewCell {
 
-    private var padding: CGFloat {
-        if Device.isIphone5 {
-            return 16.0
-        }
-        return 20.0
+    private var isShown = true
+    @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var chevronButton: UIButton!
+
+    weak var delegate: FolderTableViewCellDelegate?
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        chevronButton.imageView?.transform = CGAffineTransform.rotate90Degress()
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        guard var frame = imageView?.frame, indentationWidth != 0 else {
-            return
+    /// Rotates the button and notify the view controller
+    /// - Parameter sender: The button pressed
+    @IBAction func chevronButtonTapped(_ sender: UIButton) {
+        if isShown {
+            sender.imageView?.transform = .identity
+            isShown = false
+        } else {
+            sender.imageView?.transform = CGAffineTransform.rotate90Degress()
+            isShown = true
         }
-        frame.origin.x = CGFloat(indentationLevel) * indentationWidth + padding
-        imageView?.frame = frame
+        delegate?.didTapChevronButton(cell: self)
     }
 }
