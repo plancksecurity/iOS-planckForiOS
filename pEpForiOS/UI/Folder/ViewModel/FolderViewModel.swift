@@ -77,14 +77,4 @@ public class FolderViewModel {
     var count: Int {
         return self.items.count
     }
-
-//    func isSubfolder() -> Bool {
-//        if let folder = self[indexPath.section][indexPath.item].folder as? Folder {
-//            if folder.folderType == .normal && folder.folderType != .outbox {
-//                return true
-//            }
-//        }
-//
-//        return false
-//    }
 }

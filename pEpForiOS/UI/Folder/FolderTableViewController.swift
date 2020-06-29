@@ -127,9 +127,38 @@ class FolderTableViewController: BaseTableViewController {
             return 0
         }
 
-        let rows = folderVM?[section].count ?? 0
-        let hiddenFolderOfCurrentSection = hiddenFolders.filter({$0.section == section})
-        return rows - hiddenFolderOfCurrentSection.count
+        guard let vm = folderVM else {
+            Log.shared.errorAndCrash("No VM")
+            return 0
+        }
+
+        let numberOfRowsInSection = folderVM?[section].count ?? 0
+
+        let hiddenFoldersInSection = hiddenFolders.filter({$0.section == section })
+        var subfolderIPs = [IndexPath]()
+
+        //Search sub-folders of this root folder.
+        hiddenFoldersInSection.forEach { (rootIndexPath) in
+
+
+            //Folder cell view model
+            let folderCellViewModel = vm[rootIndexPath.section][rootIndexPath.item]
+
+            //Iterate over the folder cell view models to grab the children nodes.
+            var nextIndexPath = IndexPath(item: rootIndexPath.item + 1, section: section)
+            while isSubfolder(indexPath: nextIndexPath) {
+                let childFolderCellViewModel = vm[nextIndexPath.section][nextIndexPath.item]
+
+                //Append only its childs.
+                if folderCellViewModel.isParentOf(fcvm: childFolderCellViewModel) {
+                    subfolderIPs.append(nextIndexPath)
+                }
+                nextIndexPath = IndexPath(item: nextIndexPath.item + 1, section: section)
+            }
+        }
+
+        let numberOfHiddenRowsInSection = subfolderIPs.count
+        return numberOfRowsInSection - numberOfHiddenRowsInSection
     }
 
     override func tableView(_ tableView: UITableView,
@@ -142,7 +171,9 @@ class FolderTableViewController: BaseTableViewController {
             header = CollapsibleTableViewHeader(reuseIdentifier: "header")
         }
         header?.sectionButton.section = section
-        header?.sectionButton.addTarget(self, action: #selector(hideShowSection(sender:)), for: .touchUpInside)
+        header?.sectionButton.addTarget(self,
+                                        action: #selector(hideShowSection(sender:)),
+                                        for: .touchUpInside)
         let arrow = UIImage(named:"chevron-icon-right-gray")
         header?.sectionButton.setImage(arrow, for: .normal)
         header?.sectionButton.contentHorizontalAlignment = .trailing
@@ -350,9 +381,11 @@ extension FolderTableViewController: FolderTableViewCellDelegate {
 // MARK: - Collapse
 
 extension FolderTableViewController {
+
     /// Shows/Hides the selected account.
     /// - Parameter sender: The button that trigger the action.
-    @objc private func hideShowSection(sender: SectionButton) {
+    @objc
+    private func hideShowSection(sender: SectionButton) {
         let section = sender.section
         func indexPathsForSection() -> [IndexPath] {
             var indexPaths = [IndexPath]()
@@ -377,17 +410,14 @@ extension FolderTableViewController {
     /// Shows/Hides the subfolder of the selected one.
     /// - Parameter indexPath: The indexPath of the selected folder.
     private func hideShowSubFolders(ofRowAt indexPath:  IndexPath) {
+        var subfolderIPs = [IndexPath]()
 
         guard let vm = folderVM else {
             Log.shared.errorAndCrash("No view model.")
             return
         }
 
-        /// - Returns: The indexPaths of the sub folders of the folder passed by paramter.
-        func subFolderIndexPaths() -> [IndexPath] {
-            let section = indexPath.section
-            var subfolderIPs = [IndexPath]()
-
+        func extractChildIndexPath(_ section: Int) {
             //Folder cell view model
             let folderCellViewModel = vm[indexPath.section][indexPath.item]
 
@@ -402,6 +432,14 @@ extension FolderTableViewController {
                 }
                 nextIndexPath = IndexPath(item: nextIndexPath.item + 1, section: section)
             }
+        }
+
+        /// - Returns: The indexPaths of the sub folders of the folder passed by paramter.
+        func subFolderIndexPaths() -> [IndexPath] {
+            let section = indexPath.section
+
+            extractChildIndexPath(section)
+
             return subfolderIPs
         }
 
