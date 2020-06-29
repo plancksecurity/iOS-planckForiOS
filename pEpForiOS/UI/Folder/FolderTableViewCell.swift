@@ -12,30 +12,53 @@ protocol FolderTableViewCellDelegate: class {
     func didTapChevronButton(cell:  UITableViewCell)
 }
 
+import UIKit
+
 class FolderTableViewCell: UITableViewCell {
 
-    private var isShown = true
-    @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet weak var chevronButton: SectionButton!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var chevronButton: UIButton!
-
+    @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet weak var separatorImageView: UIView!
+    @IBOutlet weak var iconLeadingConstraint: NSLayoutConstraint!
     weak var delegate: FolderTableViewCellDelegate?
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        chevronButton.imageView?.transform = CGAffineTransform.rotate90Degress()
+    var isExpand: Bool = true {
+        didSet {
+            if isExpand && hasSubfolders {
+                chevronButton.imageView?.transform = CGAffineTransform.rotate90Degress()
+            } else {
+                chevronButton.imageView?.transform = .identity
+            }
+        }
     }
 
-    /// Rotates the button and notify the view controller
-    /// - Parameter sender: The button pressed
-    @IBAction func chevronButtonTapped(_ sender: UIButton) {
-        if isShown {
-            sender.imageView?.transform = .identity
-            isShown = false
-        } else {
-            sender.imageView?.transform = CGAffineTransform.rotate90Degress()
-            isShown = true
+    var level : Int = 1
+    private var padding: CGFloat {
+        if Device.isIphone5 {
+            return 16.0
         }
+        return 25.0
+    }
+
+    var hasSubfolders : Bool = false {
+        didSet {
+            chevronButton.isUserInteractionEnabled = hasSubfolders
+        }
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        //Increase tappable area
+        chevronButton.contentEdgeInsets = UIEdgeInsets(top: 20, left: 40, bottom: 20, right: 0)
+        guard indentationWidth != 0 else { return }
+        iconLeadingConstraint.constant = (CGFloat(indentationLevel) * indentationWidth) + padding
+        contentView.layoutIfNeeded()
+    }
+
+    @IBAction func chevronButtonPressed(_ sender: SectionButton) {
+        guard hasSubfolders else { return }
+        isExpand = !isExpand
         delegate?.didTapChevronButton(cell: self)
     }
 }

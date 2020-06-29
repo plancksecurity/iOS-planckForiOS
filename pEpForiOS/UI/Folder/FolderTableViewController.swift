@@ -132,29 +132,15 @@ class FolderTableViewController: BaseTableViewController {
             return 0
         }
 
-        let numberOfRowsInSection = folderVM?[section].count ?? 0
+        let numberOfRowsInSection = vm[section].count
 
         let hiddenFoldersInSection = hiddenFolders.filter({$0.section == section })
         var subfolderIPs = [IndexPath]()
 
         //Search sub-folders of this root folder.
         hiddenFoldersInSection.forEach { (rootIndexPath) in
-
-
-            //Folder cell view model
-            let folderCellViewModel = vm[rootIndexPath.section][rootIndexPath.item]
-
-            //Iterate over the folder cell view models to grab the children nodes.
-            var nextIndexPath = IndexPath(item: rootIndexPath.item + 1, section: section)
-            while isSubfolder(indexPath: nextIndexPath) {
-                let childFolderCellViewModel = vm[nextIndexPath.section][nextIndexPath.item]
-
-                //Append only its childs.
-                if folderCellViewModel.isParentOf(fcvm: childFolderCellViewModel) {
-                    subfolderIPs.append(nextIndexPath)
-                }
-                nextIndexPath = IndexPath(item: nextIndexPath.item + 1, section: section)
-            }
+            let children = childrenOfFolder(fromRowAt: rootIndexPath)
+            subfolderIPs.append(contentsOf: children)
         }
 
         let numberOfHiddenRowsInSection = subfolderIPs.count
@@ -228,7 +214,7 @@ class FolderTableViewController: BaseTableViewController {
         }
         let fcvm = vm[indexPath.section][indexPath.item]
 
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SubFolderTableViewCell2", for: indexPath) as? SubFolderTableViewCell2 else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "FolderTableViewCell", for: indexPath) as? FolderTableViewCell else {
             Log.shared.errorAndCrash("No subfolder cell found")
             return UITableViewCell()
         }
@@ -396,42 +382,45 @@ extension FolderTableViewController {
             }
             return indexPaths
         }
+        let indexPath = IndexPath(row: 0, section: section)
+
+
         if hiddenSections.contains(section) {
             sender.imageView?.transform = CGAffineTransform.rotate90Degress()
             hiddenSections.remove(section)
-            tableView.insertRows(at: indexPathsForSection(), with: .fade)
+            tableView.insertRows(at: childrenOfFolder(fromRowAt: indexPath), with: .fade)
         } else {
+            let ipsForSection = indexPathsForSection()
+            let hiddenFoldersInSection = hiddenFolders.filter({$0.section == section })
+
+
+            var hiddenIndexPaths = [IndexPath]()
+
+            //Search sub-folders of this root folder.
+            hiddenFoldersInSection.forEach { (rootIndexPath) in
+                let children = childrenOfFolder(fromRowAt: rootIndexPath)
+                hiddenIndexPaths.append(contentsOf: children)
+            }
+
+            var toDelete = [IndexPath]()
+            ipsForSection.forEach { (ipToDelete) in
+                if !hiddenIndexPaths.contains(ipToDelete) {
+                    toDelete.append(ipToDelete)
+                }
+            }
+
             sender.imageView?.transform = .identity
             hiddenSections.insert(section)
-            tableView.deleteRows(at: indexPathsForSection(), with: .top)
+            tableView.deleteRows(at: toDelete, with: .fade)
         }
     }
 
     /// Shows/Hides the subfolder of the selected one.
     /// - Parameter indexPath: The indexPath of the selected folder.
     private func hideShowSubFolders(ofRowAt indexPath:  IndexPath) {
-        var subfolderIPs = [IndexPath]()
-
         guard let vm = folderVM else {
             Log.shared.errorAndCrash("No view model.")
             return
-        }
-
-        func extractChildIndexPath(_ section: Int) {
-            //Folder cell view model
-            let folderCellViewModel = vm[indexPath.section][indexPath.item]
-
-            //Iterate over the folder cell view models to grab the children nodes.
-            var nextIndexPath = IndexPath(item: indexPath.item + 1, section: section)
-            while isSubfolder(indexPath: nextIndexPath) {
-                let childFolderCellViewModel = vm[nextIndexPath.section][nextIndexPath.item]
-
-                //Append only its childs.
-                if folderCellViewModel.isParentOf(fcvm: childFolderCellViewModel) {
-                    subfolderIPs.append(nextIndexPath)
-                }
-                nextIndexPath = IndexPath(item: nextIndexPath.item + 1, section: section)
-            }
         }
 
         /// If the subfolders are hidden, show them.
@@ -451,7 +440,6 @@ extension FolderTableViewController {
         }
     }
 
-
     /// - Returns: The indexPaths of the sub folders of the folder passed by paramter.
     private func childrenOfFolder(fromRowAt indexPath: IndexPath) -> [IndexPath] {
         guard let vm = folderVM else {
@@ -460,15 +448,12 @@ extension FolderTableViewController {
         }
 
         var subfolderIPs = [IndexPath]()
-
         //Folder cell view model
         let folderCellViewModel = vm[indexPath.section][indexPath.item]
-
         //Iterate over the folder cell view models to grab the children nodes.
         var nextIndexPath = IndexPath(item: indexPath.item + 1, section: indexPath.section)
         while isSubfolder(indexPath: nextIndexPath) {
             let childFolderCellViewModel = vm[nextIndexPath.section][nextIndexPath.item]
-
             //Append only its childs.
             if folderCellViewModel.isParentOf(fcvm: childFolderCellViewModel) {
                 subfolderIPs.append(nextIndexPath)
