@@ -43,7 +43,8 @@ public final class MessageModelService {
     public init(errorPropagator: ErrorPropagator? = nil,
                 cnContactsAccessPermissionProvider: CNContactsAccessPermissionProviderProtocol,
                 keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol? = nil,
-                keySyncStateProvider: KeySyncStateProvider) {
+                keySyncStateProvider: KeySyncStateProvider,
+                usePEPFolderProvider: UsePEPFolderProviderProtocol) {
         // Mega ugly, MUST go away. Fix with Stack update.
         // Touch Stack once to assure it set's up the mainContext on the main queue
         let _ = Stack.shared
@@ -51,7 +52,8 @@ public final class MessageModelService {
         setupServices(errorPropagator: errorPropagator,
                       cnContactsAccessPermissionProvider: cnContactsAccessPermissionProvider,
                       keySyncServiceHandshakeHandler: keySyncServiceHandshakeHandler,
-                      keySyncStateProvider: keySyncStateProvider)
+                      keySyncStateProvider: keySyncStateProvider,
+                      usePEPFolderProvider: usePEPFolderProvider)
     }
 }
 
@@ -73,7 +75,8 @@ extension MessageModelService {
     private func setupServices(errorPropagator: ErrorPropagator?,
                                cnContactsAccessPermissionProvider: CNContactsAccessPermissionProviderProtocol,
                                keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol? = nil,
-                               keySyncStateProvider: KeySyncStateProvider) {
+                               keySyncStateProvider: KeySyncStateProvider,
+                               usePEPFolderProvider: UsePEPFolderProviderProtocol) {
         //###
         // Servcies that run while the app is running (Send, decrypt, replicate, ...)
         let decryptService = DecryptService(backgroundTaskManager: backgroundTaskManager,
@@ -85,10 +88,13 @@ extension MessageModelService {
         let keySyncService = KeySyncService(keySyncServiceHandshakeHandler: keySyncServiceHandshakeHandler,
                                             keySyncStateProvider: keySyncStateProvider,
                                             fastPollingDelegate: replicationService)
+        let createPEPFolderService = CreatePepIMAPFolderService(backgroundTaskManager: backgroundTaskManager,
+                                                                usePEPFolderProviderProtocol: usePEPFolderProvider)
         runtimeServices = [decryptService,
                            encryptAndSendService,
                            replicationService,
-                           keySyncService]
+                           keySyncService,
+                           createPEPFolderService]
         //###
         // Services that cleanup once when the app finishes
         let updateIdentitiesAddressBookIdService =

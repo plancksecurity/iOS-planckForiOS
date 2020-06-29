@@ -136,29 +136,6 @@ public class Folder: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         return cdDisplayableSubfolders.map { return $0.folder() }
     }
 
-    public func contains(message: Message, deletedMessagesAreContained: Bool = false,
-                         markedForMoveToFolderAreContained: Bool = false) -> Bool {
-        let cdFolder = cdObject
-        var ps = [NSPredicate]()
-        ps.append(CdFolder.PredicateFactory.containedMessages(cdFolder: cdFolder))
-        if deletedMessagesAreContained {
-            ps.append(NSPredicate(format: "uuid = %@", message.uuid))
-            let account = message.parent.account.cdAccount()
-            ps.append(NSPredicate(format: "parent.account = %@", account))
-            ps.append(NSPredicate(format: RelationshipKeyPath.cdFolder_parent_account
-                + " = %@", account))
-        }
-        if !markedForMoveToFolderAreContained {
-            ps.append(CdMessage.PredicateFactory.notMarkedForMoveToFolder())
-        }
-        let p = NSCompoundPredicate(andPredicateWithSubpredicates: ps)
-        let d = defaultSortDescriptors()
-        if let _ = CdMessage.first(predicate: p, orderedBy: d, in: session.moc) {
-            return true
-        }
-        return false
-    }
-
     public static func by(account: Account, folderType: FolderType) -> Folder? {
         let cdAccount = account.cdObject
         guard var cdFolders = cdAccount.folders?.array as? [CdFolder] else {

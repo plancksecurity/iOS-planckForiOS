@@ -60,7 +60,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         messageModelService = MessageModelService(errorPropagator: errorPropagator,
                                                   cnContactsAccessPermissionProvider: AppSettings.shared,
                                                   keySyncServiceHandshakeHandler: KeySyncHandshakeService(),
-                                                  keySyncStateProvider: AppSettings.shared)
+                                                  keySyncStateProvider: AppSettings.shared,
+                                                  usePEPFolderProvider: AppSettings.shared)
     }
 
     private func askUserForNotificationPermissions() {
@@ -71,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - HELPER
 
     private func cleanup(andCall completionHandler:(UIBackgroundFetchResult) -> Void,
-                                result:UIBackgroundFetchResult) {
+                         result:UIBackgroundFetchResult) {
         PEPSession.cleanup()
         completionHandler(result)
     }
@@ -101,7 +102,7 @@ extension AppDelegate {
 
         if let openedToOpenFile = launchOptions?[UIApplication.LaunchOptionsKey.url] as? URL {
             // We have been opened by the OS to handle a certain file.
-             result = handleUrlTheOSHasBroughtUsToForgroundFor(openedToOpenFile)
+            result = handleUrlTheOSHasBroughtUsToForgroundFor(openedToOpenFile)
         }
 
         return result
@@ -192,7 +193,7 @@ extension AppDelegate {
     func application(_ app: UIApplication,
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-         return handleUrlTheOSHasBroughtUsToForgroundFor(url)
+        return handleUrlTheOSHasBroughtUsToForgroundFor(url)
     }
 
     func application(_ application: UIApplication, continue userActivity: NSUserActivity,
