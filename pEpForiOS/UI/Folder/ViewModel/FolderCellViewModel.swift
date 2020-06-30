@@ -10,7 +10,7 @@ import Foundation
 import MessageModel
 
 public class FolderCellViewModel {
-    //TODO: make it private
+
     let folder: DisplayableFolderProtocol
     let level : Int
 
@@ -41,6 +41,7 @@ public class FolderCellViewModel {
     }
 
     public var isExpand = true
+    public var isHidden = false
 
     public init(folder: DisplayableFolderProtocol, level: Int) {
         self.folder = folder
@@ -78,6 +79,16 @@ public class FolderCellViewModel {
         }
         return folder is UnifiedInbox
     }
-    
+
+    public func isSubfolder() -> Bool {
+        if let folder = folder as? Folder {
+            return folder.folderType == .normal && folder.folderType != .outbox
+        }
+        return false
+    }
+
+    public func children() -> [FolderCellViewModel] {
+        return [FolderCellViewModel]()
+    }
 }
 

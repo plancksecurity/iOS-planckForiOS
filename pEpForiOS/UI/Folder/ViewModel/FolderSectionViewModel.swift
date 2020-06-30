@@ -89,6 +89,8 @@ public class FolderSectionViewModel {
 
     subscript(index: Int) -> FolderCellViewModel {
         get {
+//            let elements = self.items.filter { !$0.isHidden }
+//            return elements[index]
             return self.items[index]
         }
     }
@@ -96,4 +98,16 @@ public class FolderSectionViewModel {
     var count : Int {
         return self.items.count
     }
+
+    var numberOfRows : Int {
+        get {
+            return items.filter { !$0.isHidden } .count
+        }
+    }
+
+    func children(of item: FolderCellViewModel) -> [FolderCellViewModel] {
+        return items.filter { item.isParentOf(fcvm: $0) }
+    }
 }
+
+

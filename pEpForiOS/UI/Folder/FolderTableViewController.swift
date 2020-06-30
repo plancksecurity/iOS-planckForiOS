@@ -16,8 +16,6 @@ class FolderTableViewController: BaseTableViewController {
     private let subFolderIndentationWidth: CGFloat = 25.0
     /// The hidden sections are the collapsed accounts.
     private var hiddenSections = Set<Int>()
-    /// The hidden folders are the collapsed mail folders.
-    private var hiddenFolders = Set<IndexPath>()
 
     var folderVM: FolderViewModel?
     var showNext: Bool = true
@@ -52,7 +50,7 @@ class FolderTableViewController: BaseTableViewController {
     // MARK: - Setup
 
     private func setup() {
-        self.navigationController?.setToolbarHidden(false, animated: false)
+        navigationController?.setToolbarHidden(false, animated: false)
         folderVM =  FolderViewModel()
         tableView.reloadData()
     }
@@ -118,7 +116,10 @@ class FolderTableViewController: BaseTableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return folderVM?.count ?? 0
+        guard let vm = folderVM else {
+            return 0
+        }
+        return vm.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -126,100 +127,28 @@ class FolderTableViewController: BaseTableViewController {
         if hiddenSections.contains(section) {
             return 0
         }
-
         guard let vm = folderVM else {
             Log.shared.errorAndCrash("No VM")
             return 0
         }
-
-        let numberOfRowsInSection = vm[section].count
-
-        let hiddenFoldersInSection = hiddenFolders.filter({$0.section == section })
-        var subfolderIPs = [IndexPath]()
-
-        //Search sub-folders of this root folder.
-        hiddenFoldersInSection.forEach { (rootIndexPath) in
-            let children = childrenOfFolder(fromRowAt: rootIndexPath)
-            subfolderIPs.append(contentsOf: children)
-        }
-
-        let numberOfHiddenRowsInSection = subfolderIPs.count
-        return numberOfRowsInSection - numberOfHiddenRowsInSection
+        return vm[section].numberOfRows
     }
 
-    override func tableView(_ tableView: UITableView,
-                            viewForHeaderInSection section: Int) -> UIView? {
-        let header: CollapsibleTableViewHeader?
-        if let head = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header")
-            as? CollapsibleTableViewHeader {
-            header = head
-        } else {
-            header = CollapsibleTableViewHeader(reuseIdentifier: "header")
-        }
-        header?.sectionButton.section = section
-        header?.sectionButton.addTarget(self,
-                                        action: #selector(hideShowSection(sender:)),
-                                        for: .touchUpInside)
-        let arrow = UIImage(named:"chevron-icon-right-gray")
-        header?.sectionButton.setImage(arrow, for: .normal)
-        header?.sectionButton.contentHorizontalAlignment = .trailing
-        header?.sectionButton.contentVerticalAlignment = .top
-        header?.sectionButton.imageView?.transform = CGAffineTransform.rotate90Degress()
-
-        guard let vm = folderVM, let safeHeader = header else {
-            Log.shared.errorAndCrash("No header or no model.")
-            return header
-        }
-
-        if vm[section].hidden {
-            return nil
-        }
-
-        safeHeader.configure(viewModel: vm[section], section: section)
-        return header
-    }
-
-    override func tableView(_ tableView: UITableView,
-                            heightForFooterInSection section: Int) -> CGFloat {
-        return 26.0
-    }
-
-    override func tableView(_ tableView: UITableView,
-                            heightForHeaderInSection section: Int) -> CGFloat {
-        guard let vm = folderVM else {
-            Log.shared.errorAndCrash("No model.")
-            return 0.0
-        }
-        if vm[section].hidden {
-            return 0.0
-        } else {
-            return tableView.sectionHeaderHeight
-        }
-    }
-
-    private func hasSubfolders(indexPath: IndexPath) -> Bool {
-        guard let vm = folderVM else {
-            Log.shared.errorAndCrash("No model")
-            return false
-        }
-        let fcvm = vm[indexPath.section][indexPath.item]
-        return fcvm.hasSubfolders()
-    }
-
-    override func tableView(_ tableView: UITableView,
-                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let vm = folderVM else {
             Log.shared.errorAndCrash("No model")
             return UITableViewCell()
         }
         let fcvm = vm[indexPath.section][indexPath.item]
 
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "FolderTableViewCell", for: indexPath) as? FolderTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "FolderTableViewCell", for: indexPath)
+            as? FolderTableViewCell else {
             Log.shared.errorAndCrash("No subfolder cell found")
             return UITableViewCell()
         }
-        cell.indentationWidth = subFolderIndentationWidth
         let subLevel = isSubfolder(indexPath: indexPath) ?  1 : 0
+
+        cell.indentationWidth = subFolderIndentationWidth
         cell.indentationLevel = fcvm.level + subLevel
         cell.titleLabel.text = fcvm.title
         cell.iconImageView.image = fcvm.image
@@ -334,18 +263,22 @@ extension FolderTableViewController: SegueHandlerType {
 // MARK: - Subfolder Indentation
 
 extension FolderTableViewController {
+    private func hasSubfolders(indexPath: IndexPath) -> Bool {
+        guard let vm = folderVM else {
+            Log.shared.errorAndCrash("No model")
+            return false
+        }
+        let fcvm = vm[indexPath.section][indexPath.item]
+        return fcvm.hasSubfolders()
+    }
+
     private func isSubfolder(indexPath: IndexPath) -> Bool {
         guard let vm = folderVM else {
             Log.shared.errorAndCrash("No model")
             return false
         }
 
-        if let folder = vm[indexPath.section][indexPath.item].folder as? Folder {
-            if folder.folderType == .normal && folder.folderType != .outbox {
-                return true
-            }
-        }
-        return false
+        return vm[indexPath.section][indexPath.item].isSubfolder()
     }
 }
 
@@ -382,36 +315,18 @@ extension FolderTableViewController {
             }
             return indexPaths
         }
-        let indexPath = IndexPath(row: 0, section: section)
-
 
         if hiddenSections.contains(section) {
             sender.imageView?.transform = CGAffineTransform.rotate90Degress()
             hiddenSections.remove(section)
-            tableView.insertRows(at: childrenOfFolder(fromRowAt: indexPath), with: .fade)
+            insertRows(at: indexPathsForSection())
         } else {
-            let ipsForSection = indexPathsForSection()
-            let hiddenFoldersInSection = hiddenFolders.filter({$0.section == section })
-
-
-            var hiddenIndexPaths = [IndexPath]()
-
-            //Search sub-folders of this root folder.
-            hiddenFoldersInSection.forEach { (rootIndexPath) in
-                let children = childrenOfFolder(fromRowAt: rootIndexPath)
-                hiddenIndexPaths.append(contentsOf: children)
-            }
-
-            var toDelete = [IndexPath]()
-            ipsForSection.forEach { (ipToDelete) in
-                if !hiddenIndexPaths.contains(ipToDelete) {
-                    toDelete.append(ipToDelete)
-                }
-            }
-
             sender.imageView?.transform = .identity
             hiddenSections.insert(section)
-            tableView.deleteRows(at: toDelete, with: .fade)
+            guard let indexPathsOfCurrentSection = tableView.indexPathsForVisibleRows?.filter({$0.section == section}) else {
+                return
+            }
+            deleteRows(at: indexPathsOfCurrentSection)
         }
     }
 
@@ -422,21 +337,13 @@ extension FolderTableViewController {
             Log.shared.errorAndCrash("No view model.")
             return
         }
-
-        /// If the subfolders are hidden, show them.
-        /// That means to insert the new rows and rotate the chevron icon down.
-        /// Otherwise perform the opposite action,
-        /// remove the subfolder's cells and rotate the chevron icon to the right.
-        if hiddenFolders.contains(indexPath) {
-            hiddenFolders.remove(indexPath)
-            let folderCellViewModel = vm[indexPath.section][indexPath.item]
-            folderCellViewModel.isExpand = true
-            tableView.insertRows(at: childrenOfFolder(fromRowAt: indexPath), with: .fade)
+        let folderCellViewModel = vm[indexPath.section][indexPath.item]
+        folderCellViewModel.isExpand.toggle()
+        let indexPaths = childrenOfFolder(fromRowAt: indexPath)
+        if folderCellViewModel.isExpand {
+            insertRows(at: indexPaths)
         } else {
-            hiddenFolders.insert(indexPath)
-            let folderCellViewModel = vm[indexPath.section][indexPath.item]
-            folderCellViewModel.isExpand = false
-            tableView.deleteRows(at: childrenOfFolder(fromRowAt: indexPath), with: .top)
+            deleteRows(at: indexPaths)
         }
     }
 
@@ -449,7 +356,13 @@ extension FolderTableViewController {
 
         var subfolderIPs = [IndexPath]()
         //Folder cell view model
+
+//        let sectionVM = vm[indexPath.section]
+//        let item = sectionVM[indexPath.item]
+//        let children = sectionVM.children(of: item)
+
         let folderCellViewModel = vm[indexPath.section][indexPath.item]
+
         //Iterate over the folder cell view models to grab the children nodes.
         var nextIndexPath = IndexPath(item: indexPath.item + 1, section: indexPath.section)
         while isSubfolder(indexPath: nextIndexPath) {
@@ -461,5 +374,95 @@ extension FolderTableViewController {
             nextIndexPath = IndexPath(item: nextIndexPath.item + 1, section: indexPath.section)
         }
         return subfolderIPs
+    }
+}
+
+// MARK: - Header and Footer
+
+extension FolderTableViewController {
+
+    override func tableView(_ tableView: UITableView,
+                            viewForHeaderInSection section: Int) -> UIView? {
+        let header: CollapsibleTableViewHeader?
+        if let head = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header")
+            as? CollapsibleTableViewHeader {
+            header = head
+        } else {
+            header = CollapsibleTableViewHeader(reuseIdentifier: "header")
+        }
+        header?.sectionButton.section = section
+        header?.sectionButton.addTarget(self,
+                                        action: #selector(hideShowSection(sender:)),
+                                        for: .touchUpInside)
+        let arrow = UIImage(named:"chevron-icon-right-gray")
+        header?.sectionButton.setImage(arrow, for: .normal)
+        header?.sectionButton.contentHorizontalAlignment = .trailing
+        header?.sectionButton.contentVerticalAlignment = .top
+        header?.sectionButton.imageView?.transform = CGAffineTransform.rotate90Degress()
+
+        guard let vm = folderVM, let safeHeader = header else {
+            Log.shared.errorAndCrash("No header or no model.")
+            return header
+        }
+
+        if vm[section].hidden {
+            return nil
+        }
+
+        safeHeader.configure(viewModel: vm[section], section: section)
+        return header
+    }
+
+    override func tableView(_ tableView: UITableView,
+                            heightForFooterInSection section: Int) -> CGFloat {
+        return 26.0
+    }
+
+    override func tableView(_ tableView: UITableView,
+                            heightForHeaderInSection section: Int) -> CGFloat {
+        guard let vm = folderVM else {
+            Log.shared.errorAndCrash("No model.")
+            return 0.0
+        }
+        if vm[section].hidden {
+            return 0.0
+        } else {
+            return tableView.sectionHeaderHeight
+        }
+    }
+}
+
+// MARK: - Insert/Delete Rows
+
+extension FolderTableViewController {
+
+    private func deleteRows(at indexPaths: [IndexPath]) {
+        guard let vm = folderVM else {
+            Log.shared.errorAndCrash("No view model.")
+            return
+        }
+
+        indexPaths.forEach { (indexPath) in
+            vm[indexPath.section][indexPath.item].isHidden = true
+        }
+
+        tableView.beginUpdates()
+        tableView.deleteRows(at: indexPaths, with: .top)
+        tableView.endUpdates()
+    }
+
+    private func insertRows(at indexPaths: [IndexPath]) {
+        guard let vm = folderVM else {
+            Log.shared.errorAndCrash("No view model.")
+            return
+        }
+
+        indexPaths.forEach { (indexPath) in
+            vm[indexPath.section][indexPath.item].isHidden = false
+        }
+
+        tableView.beginUpdates()
+        tableView.insertRows(at: indexPaths, with: .fade)
+        tableView.endUpdates()
     }
 }
