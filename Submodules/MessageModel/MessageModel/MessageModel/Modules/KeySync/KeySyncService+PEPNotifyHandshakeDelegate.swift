@@ -16,7 +16,7 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
 
     func notifyHandshake(_ object: UnsafeMutableRawPointer?,
                          me: PEPIdentity,
-                         partner: PEPIdentity,
+                         partner: PEPIdentity?,
                          signal: PEPSyncHandshakeSignal) -> PEPStatus {
         switch signal {
         // notificaton of actual group status
@@ -27,16 +27,30 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
 
         // request show handshake dialog
         case .initAddOurDevice, .initAddOtherDevice:
+            guard let thePartner = partner else {
+                Log.shared.errorAndCrash(message: "Expected partner identity")
+                return .illegalValue
+            }
             fastPollingDelegate?.enableFastPolling()
-            showHandshakeAndHandleResult(inBetween: me, and: partner, isNewGroup: false)
+            showHandshakeAndHandleResult(inBetween: me, and: thePartner, isNewGroup: false)
 
         case .initFormGroup:
+            guard let thePartner = partner else {
+                Log.shared.errorAndCrash(message: "Expected partner identity")
+                return .illegalValue
+            }
             fastPollingDelegate?.enableFastPolling()
-            showHandshakeAndHandleResult(inBetween: me, and: partner, isNewGroup: true)
+            showHandshakeAndHandleResult(inBetween: me, and: thePartner, isNewGroup: true)
 
         case .timeout:
+            guard let thePartner = partner else {
+                Log.shared.errorAndCrash(message: "Expected partner identity")
+                return .illegalValue
+            }
             fastPollingDelegate?.disableFastPolling()
-            showHandShakeErrorAndHandleResult(error: KeySyncError.timeOut, me: me, partner: partner)
+            showHandShakeErrorAndHandleResult(error: KeySyncError.timeOut,
+                                              me: me,
+                                              partner: thePartner)
 
         case .acceptedDeviceAdded, .acceptedGroupCreated, .acceptedDeviceAccepted:
             fastPollingDelegate?.disableFastPolling()
