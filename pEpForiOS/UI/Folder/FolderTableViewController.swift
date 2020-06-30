@@ -19,7 +19,6 @@ class FolderTableViewController: BaseTableViewController {
 
     var folderVM: FolderViewModel?
     var showNext: Bool = true
-    var subfoldersHidden = false
 
     @IBOutlet private weak var addAccountButton: UIButton!
 
@@ -263,6 +262,8 @@ extension FolderTableViewController: SegueHandlerType {
 // MARK: - Subfolder Indentation
 
 extension FolderTableViewController {
+
+    //TODO: we shoudn't use indexPath to detect subfolders.
     private func hasSubfolders(indexPath: IndexPath) -> Bool {
         guard let vm = folderVM else {
             Log.shared.errorAndCrash("No model")
@@ -337,9 +338,12 @@ extension FolderTableViewController {
             Log.shared.errorAndCrash("No view model.")
             return
         }
+        //Wrong
         let folderCellViewModel = vm[indexPath.section][indexPath.item]
         folderCellViewModel.isExpand.toggle()
+
         let indexPaths = childrenOfFolder(fromRowAt: indexPath)
+
         if folderCellViewModel.isExpand {
             insertRows(at: indexPaths)
         } else {
@@ -368,7 +372,7 @@ extension FolderTableViewController {
         while isSubfolder(indexPath: nextIndexPath) {
             let childFolderCellViewModel = vm[nextIndexPath.section][nextIndexPath.item]
             //Append only its childs.
-            if folderCellViewModel.isParentOf(fcvm: childFolderCellViewModel) {
+            if folderCellViewModel.isParentOf(fcvm: childFolderCellViewModel) && !childFolderCellViewModel.isHidden {
                 subfolderIPs.append(nextIndexPath)
             }
             nextIndexPath = IndexPath(item: nextIndexPath.item + 1, section: indexPath.section)
