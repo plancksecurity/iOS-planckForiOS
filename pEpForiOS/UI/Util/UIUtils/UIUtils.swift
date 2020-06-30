@@ -18,15 +18,28 @@ struct UIUtils {
     /// - Parameters:
     ///   - error: error to preset to user
     static public func show(error: Error) {
-        Log.shared.error("May or may not display error to user: (interpolate) %@", "\(error)")
+        Log.shared.info("May or may not display error to user: (interpolate) %@", "\(error)")
 
-        guard let displayError = DisplayUserError(withError: error) else {
-            // Do nothing. The error type is not suitable to bother the user with.
-            return
-        }
-        DispatchQueue.main.async {
-            showAlertWithOnlyPositiveButton(title: displayError.title,
-                                            message: displayError.errorDescription)
+        if let pEpError = error as? BackgroundError.PepError {
+            switch pEpError {
+            case .passphraseRequired:
+                DispatchQueue.main.async {
+                    showPassphraseRequiredAlert()
+                }
+            case .wrongPassphrase:
+                DispatchQueue.main.async {
+                    showPassphraseWrongAlert()
+                }
+            }
+        } else {
+            guard let displayError = DisplayUserError(withError: error) else {
+                // Do nothing. The error type is not suitable to bother the user with.
+                return
+            }
+            DispatchQueue.main.async {
+                showAlertWithOnlyPositiveButton(title: displayError.title,
+                                                message: displayError.errorDescription)
+            }
         }
     }
 }
