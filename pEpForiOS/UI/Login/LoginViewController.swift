@@ -57,6 +57,8 @@ final class LoginViewController: BaseViewController {
         if accountType == .icloud {
             showiCloudAlert()
         }
+
+        UIUtils.showPassphraseRequiredAlert()
     }
 
     override func viewDidLayoutSubviews() {

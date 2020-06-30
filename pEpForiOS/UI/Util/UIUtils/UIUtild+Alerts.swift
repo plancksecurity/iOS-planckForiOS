@@ -72,28 +72,13 @@ extension UIUtils {
         presenterVc.present(alertView, animated: true, completion: nil)
     }
 
-    /// Show an alert to require a Passphrase
-    static func showPassphraseRequiredAlert() {
-        let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
-        let message = NSLocalizedString("Please enter the passphrase to continue", comment: "Passphrase message")
-        let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
-        showAlertWithTextfield(title: title, message: message, placeholder: placeholder)
-    }
-
-    /// Show an alert to inform the passphrase entered is wrong and to require a new one.
-    static func showPassphraseWrongAlert() {
-        let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
-        let message = NSLocalizedString("The passphrase you entered is wrong. Please enter it again to continue", comment: "Passphrase message")
-        let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
-        showAlertWithTextfield(title: title, message: message, placeholder: placeholder)
-    }
-
     /// Generic method to show an alert and require information throught a textfield
     /// - Parameters:
     ///   - title: The title of the alert
     ///   - message: The message of the alert
     ///   - placeholder: The placeholder of the textfield
-    static func showAlertWithTextfield(title: String, message: String, placeholder: String) {
+
+    static func showAlertWithTextfield(title: String, message: String, placeholder: String, callback: @escaping(_ input: String) -> ()) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
         alertController.addTextField { (textField) in
@@ -111,24 +96,11 @@ extension UIUtils {
             }
             let textField = textfields[0]
             guard let passphrase = textField.text else { return }
-            do {
-                try PassphraseUtil().newPassphrase(passphrase)
-            } catch let error as PassphraseUtil.PassphraseError {
-                if error == PassphraseUtil.PassphraseError.tooLong {
-                    Log.shared.error("Passphrase too long")
-                    let title = NSLocalizedString("Passphrase too long", comment: "Passphrase too long - title")
-                    let message = NSLocalizedString("Please enter one shorter", comment: "Please enter one shorter - message")
-                    showAlertWithTextfield(title: title, message: message, placeholder: placeholder)
-                }
-            } catch {
-                Log.shared.error("Something went wrong")
-            }
+            callback(passphrase)
         })
         alertController.addAction(action)
-
         let cancelAction: UIAlertAction = UIAlertAction(title: cancelTitle, style: .cancel)
         alertController.addAction(cancelAction)
-
         guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
             Log.shared.errorAndCrash("No VC")
             return
@@ -136,5 +108,40 @@ extension UIUtils {
         DispatchQueue.main.async {
             presenterVc.present(alertController, animated: true, completion: nil)
         }
+    }
+}
+
+// MARK: - Passphrase
+
+extension UIUtils {
+
+    static let passphraseCallback: (String) -> Void = { input in
+        do {
+            try PassphraseUtil().newPassphrase(input)
+        } catch PassphraseUtil.PassphraseError.tooLong {
+            Log.shared.info("Passphrase too long")
+            let title = NSLocalizedString("Passphrase too long", comment: "Passphrase too long - title")
+            let message = NSLocalizedString("Please enter one shorter", comment: "Please enter one shorter - message")
+            let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
+            showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: UIUtils.passphraseCallback)
+        } catch {
+            Log.shared.error("Something went wrong - It should not happen")
+        }
+    }
+
+    /// Show an alert to require a Passphrase
+    static func showPassphraseRequiredAlert() {
+        let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
+        let message = NSLocalizedString("Please enter the passphrase to continue", comment: "Passphrase message")
+        let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
+        showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: passphraseCallback)
+    }
+
+    /// Show an alert to inform the passphrase entered is wrong and to require a new one.
+    static func showPassphraseWrongAlert() {
+        let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
+        let message = NSLocalizedString("The passphrase you entered is wrong. Please enter it again to continue", comment: "Passphrase message")
+        let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
+        showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: passphraseCallback)
     }
 }
