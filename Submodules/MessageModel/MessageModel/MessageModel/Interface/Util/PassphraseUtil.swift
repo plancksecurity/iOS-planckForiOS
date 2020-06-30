@@ -26,6 +26,7 @@ public protocol PassphraseUtilProtocol {
 
 extension PassphraseUtil {
     public enum PassphraseError: Error {
+        /// The length of the passphrase exceeds the maximum length allowed.
         case tooLong
     }
 }
@@ -37,18 +38,22 @@ public class PassphraseUtil {
 
 // MARK: - PassphraseUtilProtocol
 
-//extension PassphraseUtil: PassphraseUtilProtocol {
-//
-//    public func newPassphrase(_ passphrase: String) throws {
-//        let pEpSession = PEPSession()
-//        do {
-//            try pEpSession.configurePassphrase(passphrase)
-//        } catch error as NSError {
-//            if Error {
-//                <#code#>
-//            }
-//        }
-//    }
-//
-//
-//}
+extension PassphraseUtil: PassphraseUtilProtocol {
+
+    public func newPassphrase(_ passphrase: String) throws {
+        let pEpSession = PEPSession()
+        do {
+            try pEpSession.configurePassphrase(passphrase)
+        } catch let error as NSError {
+            if error.domain == PEPObjCAdapterErrorDomain {
+                switch error.code {
+                case PEPAdapterError.passphraseTooLong.rawValue:
+                    throw PassphraseError.tooLong
+                default:
+                    Log.shared.errorAndCrash("This should never happen :-/. Error: %@", error)
+                    break
+                }
+            }
+        }
+    }
+}
