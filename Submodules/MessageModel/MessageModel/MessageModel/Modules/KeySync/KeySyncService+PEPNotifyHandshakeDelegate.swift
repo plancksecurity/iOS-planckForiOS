@@ -43,6 +43,10 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
             handshakeHandler?.showSuccessfullyGrouped()
             tryRedecryptYetUndecryptableMessages()
 
+        case .passphraseRequired:
+            // TODO
+            break
+
         // Other
         case .undefined:
             handshakeHandler?.cancelHandshake()
