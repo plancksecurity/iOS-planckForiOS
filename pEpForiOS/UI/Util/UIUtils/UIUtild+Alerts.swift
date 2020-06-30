@@ -73,7 +73,6 @@ extension UIUtils {
     }
 
     /// Show an alert to require a Passphrase
-    /// - Parameter callback: The callback with the user's input
     static func showPassphraseRequiredAlert() {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
         let message = NSLocalizedString("Please enter the passphrase to continue", comment: "Passphrase message")
@@ -82,7 +81,6 @@ extension UIUtils {
     }
 
     /// Show an alert to inform the passphrase entered is wrong and to require a new one.
-    /// - Parameter callback: The callback with the user's input
     static func showPassphraseWrongAlert() {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
         let message = NSLocalizedString("The passphrase you entered is wrong. Please enter it again to continue", comment: "Passphrase message")
@@ -115,9 +113,14 @@ extension UIUtils {
             guard let passphrase = textField.text else { return }
             do {
                 try PassphraseUtil().newPassphrase(passphrase)
-            }
-            catch {
-                //TODO: handle this error.
+            } catch let error as PassphraseUtil.PassphraseError {
+                if error == PassphraseUtil.PassphraseError.tooLong {
+                    Log.shared.error("Passphrase too long")
+                    let title = NSLocalizedString("Passphrase too long", comment: "Passphrase too long - title")
+                    let message = NSLocalizedString("Please enter one shorter", comment: "Please enter one shorter - message")
+                    showAlertWithTextfield(title: title, message: message, placeholder: placeholder)
+                }
+            } catch {
                 Log.shared.error("Something went wrong")
             }
         })
