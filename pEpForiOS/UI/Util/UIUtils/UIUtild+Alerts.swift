@@ -7,9 +7,9 @@
 //
 
 // MARK: - UIUtild+Alerts
+import MessageModel
 
 extension UIUtils {
-
 
     /// Shows an alert with "OK" button only.
     /// - Parameters:
@@ -74,20 +74,20 @@ extension UIUtils {
 
     /// Show an alert to require a Passphrase
     /// - Parameter callback: The callback with the user's input
-    static func showPassphraseRequiredAlert(callback: @escaping(( _ passphrase: String) -> ())) {
+    static func showPassphraseRequiredAlert() {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
         let message = NSLocalizedString("Please enter the passphrase to continue", comment: "Passphrase message")
         let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
-        showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: callback)
+        showAlertWithTextfield(title: title, message: message, placeholder: placeholder)
     }
 
     /// Show an alert to inform the passphrase entered is wrong and to require a new one.
     /// - Parameter callback: The callback with the user's input
-    static func showPassphraseWrongAlert(callback: @escaping(( _ passphrase: String) -> ())) {
+    static func showPassphraseWrongAlert() {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
         let message = NSLocalizedString("The passphrase you entered is wrong. Please enter it again to continue", comment: "Passphrase message")
         let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
-        showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: callback)
+        showAlertWithTextfield(title: title, message: message, placeholder: placeholder)
     }
 
     /// Generic method to show an alert and require information throught a textfield
@@ -95,8 +95,7 @@ extension UIUtils {
     ///   - title: The title of the alert
     ///   - message: The message of the alert
     ///   - placeholder: The placeholder of the textfield
-    ///   - callback: The callback with the user's input.
-    static func showAlertWithTextfield(title: String, message: String, placeholder: String, callback: @escaping(( _ input: String) -> ())) {
+    static func showAlertWithTextfield(title: String, message: String, placeholder: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
         alertController.addTextField { (textField) in
@@ -113,11 +112,14 @@ extension UIUtils {
                 return
             }
             let textField = textfields[0]
-            guard let passphrase = textField.text else {
-                return
+            guard let passphrase = textField.text else { return }
+            do {
+                try PassphraseUtil().newPassphrase(passphrase)
             }
-
-            callback(passphrase)
+            catch {
+                //TODO: handle this error.
+                Log.shared.error("Something went wrong")
+            }
         })
         alertController.addAction(action)
 
