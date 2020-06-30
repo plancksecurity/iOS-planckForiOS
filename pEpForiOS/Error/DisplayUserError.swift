@@ -287,7 +287,7 @@ struct DisplayUserError: LocalizedError {
 
     static private func type(forError error: BackgroundError.PepError) -> ErrorType {
         switch error {
-        case .encryptionError:
+        case .passphraseRequired, .wrongPassphrase:
             return .internalError
         }
     }

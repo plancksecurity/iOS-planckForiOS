@@ -73,10 +73,27 @@ extension DecryptMessageOperation {
                                     ratingBeforeEngine: ratingBeforeMessage,
                                     rating: rating,
                                     keys: (fprsOfExtraKeys as? [String]) ?? [])
-        } catch {
-            Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
-            addError(BackgroundError.GeneralError.illegalState(info:
-                "##\nError: \(error)\ndecrypting message: \(cdMessageToDecrypt)\n##"))
+        } catch let error as NSError {
+            if error.domain == PEPObjCAdapterEngineStatusErrorDomain {
+                switch error.code {
+                case Int(PEPStatus.passphraseRequired.rawValue):
+                    addError(BackgroundError.PepError.passphraseRequired(info:"Passphrase required decrypting message: \(cdMessageToDecrypt)"))
+                case Int(PEPStatus.wrongPassphrase.rawValue):
+                    addError(BackgroundError.PepError.wrongPassphrase(info:"Passphrase wrong decrypting message: \(cdMessageToDecrypt)"))
+                default:
+                    Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
+                    addError(BackgroundError.GeneralError.illegalState(info:
+                        "##\nError: \(error)\ndecrypting message: \(cdMessageToDecrypt)\n##"))
+                }
+            } else if error.domain == PEPObjCAdapterErrorDomain {
+                Log.shared.errorAndCrash("Unexpected ")
+                addError(BackgroundError.GeneralError.illegalState(info:
+                    "We do not exept this erro domain to show up here: \(error)"))
+            } else {
+                Log.shared.errorAndCrash("Unhandled error domain: %@", "\(error.domain)")
+                addError(BackgroundError.GeneralError.illegalState(info:
+                    "Unhandled error domain: \(error.domain)"))
+            }
         }
 
         cdMessageToDecrypt.needsDecrypt = false
@@ -187,9 +204,9 @@ extension DecryptMessageOperation {
 extension DecryptMessageOperation {
 
     private func handleReUpload(cdMessage: CdMessage,
-                                          inOutMessage: PEPMessage,
-                                          rating: PEPRating,
-                                          decryptFlags: PEPDecryptFlags?) {
+                                inOutMessage: PEPMessage,
+                                rating: PEPRating,
+                                decryptFlags: PEPDecryptFlags?) {
 
         if cdMessage.wasAlreadyUnencrypted || // If the message was not encrypted, there is no reason to re-upload it.
             cdMessage.isAutoConsumable { // Message is an auto-consume message -> no re-upload!
