@@ -24,5 +24,7 @@ class KeySyncServiceHandshakeHandlerMoc: KeySyncServiceHandshakeHandlerProtocol 
 
     func cancelHandshake() {}
 
+    func showPassphraseRequired() {}
+
     func showSuccessfullyGrouped() {}
 }

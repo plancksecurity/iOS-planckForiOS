@@ -58,7 +58,7 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
             tryRedecryptYetUndecryptableMessages()
 
         case .passphraseRequired:
-            // TODO
+            handshakeHandler?.showPassphraseRequired()
             break
 
         // Other
