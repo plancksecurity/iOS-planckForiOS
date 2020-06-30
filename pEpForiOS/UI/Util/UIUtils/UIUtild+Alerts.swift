@@ -70,4 +70,63 @@ extension UIUtils {
         }
         presenterVc.present(alertView, animated: true, completion: nil)
     }
+
+    /// Show an alert to require a Passphrase
+    /// - Parameter callback: The callback with the user's input
+    static func showPassphraseRequiredAlert(callback: @escaping(( _ passphrase: String) -> ())) {
+        let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
+        let message = NSLocalizedString("Please enter the passphrase to continue", comment: "Passphrase message")
+        let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
+        showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: callback)
+    }
+
+    /// Show an alert to inform the passphrase entered is wrong and to require a new one.
+    /// - Parameter callback: The callback with the user's input
+    static func showPassphraseWrongAlert(callback: @escaping(( _ passphrase: String) -> ())) {
+        let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
+        let message = NSLocalizedString("The passphrase you entered is wrong. Please enter it again to continue", comment: "Passphrase message")
+        let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
+        showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: callback)
+    }
+
+    /// Generic method to show an alert and require information throught a textfield
+    /// - Parameters:
+    ///   - title: The title of the alert
+    ///   - message: The message of the alert
+    ///   - placeholder: The placeholder of the textfield
+    ///   - callback: The callback with the user's input.
+    static func showAlertWithTextfield(title: String, message: String, placeholder: String, callback: @escaping(( _ input: String) -> ())) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addTextField { (textField) in
+            textField.placeholder = placeholder
+            textField.isSecureTextEntry = true
+        }
+        let okTitle = NSLocalizedString("OK", comment: "OK button title")
+        let cancelTitle = NSLocalizedString("Cancel", comment: "OK button title")
+
+        let action = UIAlertAction(title: okTitle,
+                                   style: .default, handler: { [weak alertController] (_) in
+            guard let alert = alertController, let textfields = alert.textFields else {
+                Log.shared.errorAndCrash("Alert or textfields missing - This shoudn't happen")
+                return
+            }
+            let textField = textfields[0]
+            guard let passphrase = textField.text else {
+                return
+            }
+            callback(passphrase)
+        })
+        alertController.addAction(action)
+
+        let cancelAction: UIAlertAction = UIAlertAction(title: cancelTitle, style: .cancel)
+        alertController.addAction(cancelAction)
+
+        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("No VC")
+            return
+        }
+        DispatchQueue.main.async {
+            presenterVc.present(alertController, animated: true, completion: nil)
+        }
+    }
 }
