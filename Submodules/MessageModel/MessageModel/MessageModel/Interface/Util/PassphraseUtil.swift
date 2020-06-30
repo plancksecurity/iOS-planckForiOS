@@ -62,10 +62,29 @@ extension PassphraseUtil: PassphraseUtilProtocol {
     }
 
     public func passphraseForNewKeys(_ passphrase: String) throws {
-           fatalError("unimplemented stub")
-       }
+        let pEpSession = PEPSession()
+        do {
+            try pEpSession.configurePassphrase(forNewKeys: passphrase, enable: true)
+        } catch let error as NSError {
+            if error.domain == PEPObjCAdapterErrorDomain {
+                switch error.code {
+                case PEPAdapterError.passphraseTooLong.rawValue:
+                    throw PassphraseError.tooLong
+                default:
+                    Log.shared.errorAndCrash("This should never happen :-/. Error: %@", error)
+                    break
+                }
+            }
+        }
+    }
 
-       public func stopUsingPassphraseForNewKeys() {
-           fatalError("unimplemented stub")
-       }
+    public func stopUsingPassphraseForNewKeys() {
+        let pEpSession = PEPSession()
+        do {
+            try pEpSession.configurePassphrase(forNewKeys: nil, enable: false)
+        } catch let error as NSError {
+            Log.shared.errorAndCrash("Uups. We did not expect anthing thrown here but got error: %@",
+                                     error)
+        }
+    }
 }
