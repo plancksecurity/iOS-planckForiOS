@@ -10,6 +10,7 @@
 
 extension UIUtils {
 
+
     /// Shows an alert with "OK" button only.
     /// - Parameters:
     ///   - title: alert title
@@ -97,6 +98,7 @@ extension UIUtils {
     ///   - callback: The callback with the user's input.
     static func showAlertWithTextfield(title: String, message: String, placeholder: String, callback: @escaping(( _ input: String) -> ())) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+
         alertController.addTextField { (textField) in
             textField.placeholder = placeholder
             textField.isSecureTextEntry = true
@@ -114,6 +116,7 @@ extension UIUtils {
             guard let passphrase = textField.text else {
                 return
             }
+
             callback(passphrase)
         })
         alertController.addAction(action)
