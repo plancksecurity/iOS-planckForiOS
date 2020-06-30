@@ -15,13 +15,17 @@ public protocol PassphraseUtilProtocol {
     /// - throws:PassphraseError.tooLong in case the length of the passphrase exceeds the maximum
     func newPassphrase(_ passphrase: String) throws
 
-    //BUFF: rm?
-//    /// After setting a passphrase here newly generated keys (creating a new account or resetting
-//    /// accounts) will be setup with this passphrase.
-//    ///
-//    /// - Parameter passphrase: passphrase to use for generating new keys. The max length is 250 code points
-//    /// - throws:PassphraseError.tooLong in case the length of the passphrase exceeds the maximum
-//    func passphraseForNewKeys(_ passphrase: String) throws
+    /// After setting a passphrase here newly generated keys (creating a new account or resetting
+    /// accounts) will be setup with this passphrase.
+    ///
+    /// - Parameter passphrase: passphrase to use for generating new keys. The max length is 250
+    ///                         code points
+    /// - throws:PassphraseError.tooLong in case the length of the passphrase exceeds the maximum
+    func passphraseForNewKeys(_ passphrase: String) throws
+
+    /// If a passphrase for new keys is currently configured, it will be removed. Else calling this
+    /// has no effect.
+    func stopUsingPassphraseForNewKeys()
 }
 
 extension PassphraseUtil {
@@ -56,4 +60,12 @@ extension PassphraseUtil: PassphraseUtilProtocol {
             }
         }
     }
+
+    public func passphraseForNewKeys(_ passphrase: String) throws {
+           fatalError("unimplemented stub")
+       }
+
+       public func stopUsingPassphraseForNewKeys() {
+           fatalError("unimplemented stub")
+       }
 }
