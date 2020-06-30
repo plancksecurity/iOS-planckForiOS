@@ -141,20 +141,17 @@ class ImapReplicationService: OperationBasedService {
                                                                    folderInfos: folderInfos)
                 createes.append(syncFlagsToServer)
             }
-//            var willIdle = false
-//            if !isFastPolling {
-                let idleOP = ImapIdleOperation(errorContainer: me.errorPropagator,
-                                               imapConnection: imapConnection)
-                createes.append(idleOP)
-                me.idleOperation = idleOP
-//                willIdle = true
-//            }
-//            if !willIdle {
-                // The server does not support idle mode. So we must poll frequently.
-                createes.append(me.pollingPausingOp(errorContainer: me.errorPropagator,
 
-                                                    imapConnection: imapConnection))
-//            }
+            // Polling break OPs
+
+            let idleOP = ImapIdleOperation(errorContainer: me.errorPropagator,
+                                           imapConnection: imapConnection)
+            createes.append(idleOP)
+            me.idleOperation = idleOP
+
+            createes.append(me.pollingPausingOp(errorContainer: me.errorPropagator,
+
+                                                imapConnection: imapConnection))
             createes.append(me.errorHandlerOp())
         }
         return createes
@@ -173,20 +170,6 @@ extension ImapReplicationService {
                 return
             }
             me.privateMoc.performAndWait {
-                //BUFF: test if never poll for IDLE supporting servers works
-//                guard
-//                    let cdAccount = me.cdAccount,
-//                    let imapConnectInfo = cdAccount.imapConnectInfo else {
-//                        Log.shared.errorAndCrash("%@ - No connect info.", "\(type(of: self))")
-//                        return
-//                }
-//                let imapConnection = me.imapConnectionCache.imapConnection(for: imapConnectInfo)
-//                guard !imapConnection.supportsIdle else {
-//                    // We never want to wait for polling if the IMAP server supports IDLE ???
-//                    return
-//                }
-                //
-
                 guard
                     !errorContainer.hasErrors,
                     let operation = operation,
@@ -201,13 +184,6 @@ extension ImapReplicationService {
                     let fastPollingPauseTime = 1.0
                     sleep(UInt32(fastPollingPauseTime))
                 } else {
-//                    guard
-//                        let cdAccount = me.cdAccount,
-//                        let imapConnectInfo = cdAccount.imapConnectInfo else {
-//                            Log.shared.errorAndCrash("%@ - No connect info.", "\(type(of: self))")
-//                            return
-//                    }
-//                    let imapConnection = me.imapConnectionCache.imapConnection(for: imapConnectInfo)
                     guard !imapConnection.supportsIdle else {
                         // We never want to wait for polling if:
                         // * the IMAP server supports IDLE

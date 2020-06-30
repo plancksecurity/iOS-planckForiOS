@@ -82,6 +82,8 @@ class ImapIdleOperation: ImapSyncOperation {
     /// We need that to pull for "interesting folder" changes
     private var frcForFolders: NSFetchedResultsController<CdFolder>?
 
+    private var maxIdleTimeTimer: Timer?
+
     private var state: IdleState = .none {
         didSet {
             Log.shared.info("IdleState has been set to %@", state.debugString)
@@ -148,93 +150,32 @@ class ImapIdleOperation: ImapSyncOperation {
         }
     }
 
+    deinit {
+        maxIdleTimeTimer?.invalidate()
+        maxIdleTimeTimer = nil
+    }
+
     func stopIdling() {
-//        serializeQueue.addOperation { [weak self] in
-//            guard let me = self else {
-//                Log.shared.error("Lost myself") //BUFF: HERE
-//                return
-//            }
-        let me = self
+        serializeQueue.addOperation { [weak self] in
+            guard let me = self else {
+                Log.shared.error("Lost myself") //BUFF: HERE
+                return
+            }
+            //            let me = self //BUFF:
             me.lastCommand = .stopIdle
             me.next()
-//        }
+        }
     }
 
     override func cancel() { //BUFF: HERE   
-//        serializeQueue.addOperation { [weak self] in
-//            guard let me = self else {
-//                Log.shared.errorAndCrash("Lost myself")
-//                return
-//            }
-         let me = self
+        serializeQueue.addOperation { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            //            let me = self //BUFF:
             me.lastCommand = .cancel
             me.next()
-//        }
-    }
-
-    private func requestDone() {
-        state = .requestedDone
-        imapConnection.exitIdle()
-        next()
-    }
-
-    private func next() {
-        Log.shared.info("next() called with state %@, lastCommand %@",
-                        state.debugString,
-                        lastCommand.debugString)
-        switch lastCommand {
-
-        case .none:
-            switch state {
-            case .none:
-            break // Nothing to do.
-            case .requestedIdle:
-                imapConnection.sendIdle()
-            case .idling:
-                break // Do nothing
-            case .requestedDone:
-                break // Do nothing
-            case .idleFinished:
-                waitForBackgroundTasksAndFinish()
-            case .error:
-                cancel()
-            }
-        case .stopIdle:
-            switch state {
-            case .none:
-                cancel() //BUFF: OK?
-            case .requestedIdle:
-                // We have asked the server to idle and the client asked us to stop.
-                // We do nothing, wait for server response and handle the clients
-                // request after the server has answered.
-                break
-            case .idling:
-                requestDone()
-            case .requestedDone:
-                break // Do nothing
-            case .idleFinished:
-                waitForBackgroundTasksAndFinish()
-            case .error:
-                cancel()
-            }
-        case .cancel:
-            switch state {
-            case .none:
-                super.cancel()
-            case .requestedIdle:
-                // We have asked the server to idle and the client asked us to cancel.
-                // We do nothing, wait for server response and handle the clients
-                // request after the server has answered.
-                break
-            case .idling:
-                requestDone()
-            case .requestedDone:
-                break // Do nothing
-            case .idleFinished:
-                waitForBackgroundTasksAndFinish()
-            case .error:
-                super.cancel()
-            }
         }
     }
 
@@ -287,16 +228,108 @@ extension ImapIdleOperation {
         requestIdle()
     }
 
+    private func requestDone() {
+        state = .requestedDone
+        imapConnection.exitIdle()
+        next()
+    }
+
+    private func next() {
+        Log.shared.info("next() called with state %@, lastCommand %@",
+                        state.debugString,
+                        lastCommand.debugString)
+        switch lastCommand {
+
+        case .none:
+            switch state {
+            case .none:
+            break // Nothing to do.
+            case .requestedIdle:
+                imapConnection.sendIdle()
+            case .idling:
+            break // Do nothing
+            case .requestedDone:
+            break // Do nothing
+            case .idleFinished:
+                waitForBackgroundTasksAndFinish()
+            case .error:
+                cancel()
+            }
+        case .stopIdle:
+            switch state {
+            case .none:
+                cancel() //BUFF: OK?
+            case .requestedIdle:
+                // We have asked the server to idle and the client asked us to stop.
+                // We do nothing, wait for server response and handle the clients
+                // request after the server has answered.
+                break
+            case .idling:
+                requestDone()
+            case .requestedDone:
+            break // Do nothing
+            case .idleFinished:
+                waitForBackgroundTasksAndFinish()
+            case .error:
+                cancel()
+            }
+        case .cancel:
+            switch state {
+            case .none:
+                super.cancel()
+            case .requestedIdle:
+                // We have asked the server to idle and the client asked us to cancel.
+                // We do nothing, wait for server response and handle the clients
+                // request after the server has answered.
+                break
+            case .idling:
+                requestDone()
+            case .requestedDone:
+            break // Do nothing
+            case .idleFinished:
+                waitForBackgroundTasksAndFinish()
+            case .error:
+                super.cancel()
+            }
+        }
+    }
+
     private func requestIdle() {
         state = .requestedIdle
         next()
     }
+
+    private func resetTimer() {
+        if let timer = maxIdleTimeTimer {
+            timer.invalidate()
+        }
+        // Maximum time we should stay in IDLE mode.
+        // The RFC suggests a timeout < 30 minutes.
+        // It turns out GMX closes the connection without further notice after ~1 minute though ...
+        let maxIdleTime = 0.99 * 60.0
+        maxIdleTimeTimer = Timer.scheduledTimer(withTimeInterval: maxIdleTime, repeats: false) { [weak self]  timer in
+            guard let me = self else {
+                // That is a valid case. We might be gone.
+                return
+            }
+            Log.shared.info("%@: maxIdleTimeTimer fired", type(of: me).description())
+            me.maxIdleTimeTimer?.invalidate()
+            me.maxIdleTimeTimer = nil
+            me.stopIdling()
+        }
+    }
+}
+
+// MARK: - Handlers for callbacks from backend
+
+extension ImapIdleOperation {
 
     fileprivate func handleChangeOnServer() {
         stopIdling()
     }
 
     fileprivate func handleIdleEntered() {
+        resetTimer()
         state = .idling
         next()
     }

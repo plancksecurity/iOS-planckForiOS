@@ -60,7 +60,7 @@ extension SyncMessagesInImapFolderOperation {
                 return
             }
 
-            guard let cdAccount = me.imapConnection.cdAccount(moc: privateMOC) else {
+            guard let cdAccount = me.imapConnection.cdAccount(moc: me.privateMOC) else {
                 me.handleError(
                     BackgroundError.CoreDataError.couldNotFindAccount(info: nil))
                 return
@@ -74,14 +74,15 @@ extension SyncMessagesInImapFolderOperation {
                     return
             }
             me.folderID = cdFolder.objectID
-        }
-        syncDelegate = SyncMessagesInImapFolderOperationDelegate(errorHandler: self)
-        imapConnection.delegate = syncDelegate
+            //        }
+            me.syncDelegate = SyncMessagesInImapFolderOperationDelegate(errorHandler: me)
+            me.imapConnection.delegate = me.syncDelegate
 
-        resetUidCache()
+            me.resetUidCache()
 
-        if !imapConnection.openMailBox(name: folderToOpen, updateExistsCount: true) {
-            syncMessages()
+            if !me.imapConnection.openMailBox(name: me.folderToOpen, updateExistsCount: true) {
+                me.syncMessages()
+            }
         }
     }
 
@@ -120,11 +121,15 @@ extension SyncMessagesInImapFolderOperation {
             predicate: NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2, p3, p4]),
             in: context)
             as? [CdMessage] ?? []
+        var didChangeHappen = false
         for msg in messages {
             if !existingUIDs.contains(NSNumber(value: msg.uid)) {
                 msg.delete(context: context)
-                context.saveAndLogErrors()
+                didChangeHappen = true
             }
+        }
+        if didChangeHappen {
+             context.saveAndLogErrors()
         }
     }
 }
@@ -148,6 +153,7 @@ extension SyncMessagesInImapFolderOperation {
             }
         }
     }
+
 
     fileprivate func handleFolderOpenCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         syncMessages()
