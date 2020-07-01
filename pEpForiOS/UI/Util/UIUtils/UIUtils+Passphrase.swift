@@ -29,15 +29,17 @@ extension UIUtils {
 
     /// This callback attempts to register the new passphrase for new keys.
     /// If it fails because of its lenghts or due other reasons, it prompts to enter a new one.
-    private static let newPassphraseEnteredForNewKeysCallback: (String) -> Void = { input in
-        do {
-            try PassphraseUtil().newPassphraseForNewKeys(input)
-        } catch PassphraseUtil.PassphraseError.tooLong {
-            Log.shared.info("Passphrase too long")
-            showPassphraseForNewKeysTooLong()
-        } catch {
-            Log.shared.error("Something went wrong - It should not happen")
-            showPassphraseWrongAlert()
+    private static func newPassphraseEnterForNewKeysCallback(with cancelCallback: (()->Void)?) -> (String)->Void {
+        return { input in
+            do {
+                try PassphraseUtil().newPassphraseForNewKeys(input)
+            } catch PassphraseUtil.PassphraseError.tooLong {
+                Log.shared.info("Passphrase too long")
+                showPassphraseForNewKeysTooLong(cancelCallback: cancelCallback)
+            } catch {
+                Log.shared.error("Something went wrong - It should not happen")
+                showPassphraseWrongAlert()
+            }
         }
     }
 
@@ -98,7 +100,7 @@ extension UIUtils {
 
     /// Shows an alert to inform the passphrase entered is too long and to require a new one.
     public static func showPassphraseForNewKeysTooLong(cancelCallback: (() -> Void)? = nil) {
-        UIUtils.presentTooLongAlertView(with: newPassphraseEnteredForNewKeysCallback, cancelCallback: cancelCallback)
+        UIUtils.presentTooLongAlertView(with: newPassphraseEnterForNewKeysCallback(with: cancelCallback), cancelCallback: cancelCallback)
     }
 
     /// Shows an alert to inform the passphrase entered is too long and to require a new one.
