@@ -26,6 +26,10 @@ public protocol PassphraseUtilProtocol {
     /// If a passphrase for new keys is currently configured, it will be removed. Else calling this
     /// has no effect.
     func stopUsingPassphraseForNewKeys()
+
+
+    /// Whether or not the user has setup a passphrase to use for generating new keys.
+    var isPassphraseForNewKeysEnabled: Bool { get }
 }
 
 extension PassphraseUtil {
@@ -62,9 +66,9 @@ extension PassphraseUtil: PassphraseUtilProtocol {
     }
 
     public func passphraseForNewKeys(_ passphrase: String) throws {
-        let pEpSession = PEPSession()
         do {
-            try pEpSession.configurePassphrase(forNewKeys: passphrase, enable: true)
+            try PEPObjCAdapter.configurePassphrase(forNewKeys: passphrase)
+            //BUFF: add PP to key chain
         } catch let error as NSError {
             if error.domain == PEPObjCAdapterErrorDomain {
                 switch error.code {
@@ -79,12 +83,17 @@ extension PassphraseUtil: PassphraseUtilProtocol {
     }
 
     public func stopUsingPassphraseForNewKeys() {
-        let pEpSession = PEPSession()
         do {
-            try pEpSession.configurePassphrase(forNewKeys: nil, enable: false)
+            try PEPObjCAdapter.configurePassphrase(forNewKeys: nil)
+            //BUFF: rm PP from KeyChain
         } catch let error as NSError {
             Log.shared.errorAndCrash("Uups. We did not expect anthing thrown here but got error: %@",
                                      error)
         }
+    }
+
+    public var isPassphraseForNewKeysEnabled: Bool {
+        fatalError("unimplemented stub")
+        // true if keychain has PP, false otherwize
     }
 }
