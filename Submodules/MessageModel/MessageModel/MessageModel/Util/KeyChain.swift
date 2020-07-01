@@ -16,7 +16,7 @@ class KeyChain {
     static private let defaultServerType = "Server"
 }
 
-// MARK: - Passphrase
+// MARK: - Passphrase For New Keys
 
 extension KeyChain {
     private static let keyPassphrase = "security.pep.KeyChain.keyPassphrase"
