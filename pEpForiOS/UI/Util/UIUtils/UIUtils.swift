@@ -33,16 +33,29 @@ struct UIUtils {
 extension UIUtils {
 
     static private var isCurrentlyShowingPassphraseInputAlert: Bool {
-        guard let topVC = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.errorAndCrash("No VC shown?")
-            return false
-        }
-        if let shownIdentifiableAlertController = topVC as? IdentifiableAlertController {
-            if shownIdentifiableAlertController.identifier == .passphraseAlert {
-                return true
+        var result = false
+
+        let block: ()->Void = {
+            guard let topVC = UIApplication.currentlyVisibleViewController() else {
+                Log.shared.errorAndCrash("No VC shown?")
+                return
+            }
+            if let shownIdentifiableAlertController = topVC as? IdentifiableAlertController {
+                if shownIdentifiableAlertController.identifier == .passphraseAlert {
+                    result = true
+                    return
+                }
             }
         }
-        return false
+
+        if Thread.current != Thread.main {
+            DispatchQueue.main.sync {
+                block()
+            }
+        } else {
+            block()
+        }
+        return result
     }
 
     static private func show(pEpError: BackgroundError.PepError) {
