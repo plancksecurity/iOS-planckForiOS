@@ -85,7 +85,7 @@ extension PassphraseUtil: PassphraseUtilProtocol {
     public func stopUsingPassphraseForNewKeys() {
         do {
             try PEPObjCAdapter.configurePassphrase(forNewKeys: nil)
-            //BUFF: rm PP from KeyChain
+            KeyChain.sto
         } catch let error as NSError {
             Log.shared.errorAndCrash("Uups. We did not expect anthing thrown here but got error: %@",
                                      error)

@@ -21,12 +21,16 @@ class KeyChain {
 extension KeyChain {
     private static let keyPassphrase = "security.pep.KeyChain.keyPassphrase"
 
-    static func storePassphrase(_ passphrase: String) {
+    static func storePassphraseForNewKeys(_ passphrase: String) {
         add(key: keyPassphrase, password: passphrase)
     }
 
-    static var passphrase: String? {
+    static var passphraseForNewKeys: String? {
         return password(key: keyPassphrase)
+    }
+
+    static func deletePassphraseForNewKeys() {
+        delete(key: keyPassphrase)
     }
 }
 
