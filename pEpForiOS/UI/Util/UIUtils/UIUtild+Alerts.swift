@@ -115,18 +115,16 @@ extension UIUtils {
 extension UIUtils {
 
     /// This callback attempts to register the new passphrase.
-    /// If fails because of its lenghts, it prompts to enter a new one.
+    /// If it fails because of its lenghts or due other reasons, it prompts to enter a new one.
     private static let passphraseCallback: (String) -> Void = { input in
         do {
             try PassphraseUtil().newPassphrase(input)
         } catch PassphraseUtil.PassphraseError.tooLong {
             Log.shared.info("Passphrase too long")
-            let title = NSLocalizedString("Passphrase too long", comment: "Passphrase too long - title")
-            let message = NSLocalizedString("Please enter one shorter", comment: "Please enter one shorter - message")
-            let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
-            showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: UIUtils.passphraseCallback)
+            showPassphraseTooLong()
         } catch {
             Log.shared.error("Something went wrong - It should not happen")
+            showPassphraseWrongAlert()
         }
     }
 
@@ -144,5 +142,13 @@ extension UIUtils {
         let message = NSLocalizedString("The passphrase you entered is wrong. Please enter it again to continue", comment: "Passphrase message")
         let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
         showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: passphraseCallback)
+    }
+
+    /// Shows an alert to inform the passphrase entered is too long and to require a new one.
+    static func showPassphraseTooLong() {
+        let title = NSLocalizedString("Passphrase too long", comment: "Passphrase too long - title")
+        let message = NSLocalizedString("Please enter one shorter", comment: "Please enter one shorter - message")
+        let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
+        showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: UIUtils.passphraseCallback)
     }
 }
