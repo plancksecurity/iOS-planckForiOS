@@ -26,13 +26,13 @@ extension UIUtils {
     }
 
     /// Shows an alert to require a Passphrase
-    public static func showUserPassphraseForNewKeysAlert() {
+    public static func showUserPassphraseForNewKeysAlert(cancelCallback: (() -> Void)? = nil) {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
         let message = NSLocalizedString("We recommend to use device encryption instead of using passphrases, because they're securing all data not only keys. In case you wan to use a passphrase anyway, please enter a passphrase here and enable it.", comment: "Passphrase message")
         let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
-        showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: passphraseCallback)
+        showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: passphraseCallback, cancelCallback: cancelCallback)
     }
-
+    
     /// Shows an alert to require a Passphrase
     public static func showPassphraseRequiredAlert() {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")

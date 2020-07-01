@@ -78,7 +78,8 @@ extension UIUtils {
     ///   - placeholder: The placeholder of the textfield
     ///   - callback: A callback that takes the user input as parameter.
     static func showAlertWithTextfield(title: String, message: String, placeholder: String,
-                                       callback: @escaping(_ input: String) -> ()) {
+                                       callback: @escaping(_ input: String) -> (),
+                                       cancelCallback: (() -> Void)? = nil) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
         alertController.addTextField { (textField) in
@@ -98,7 +99,12 @@ extension UIUtils {
             callback(passphrase)
         })
         alertController.addAction(action)
-        let cancelAction: UIAlertAction = UIAlertAction(title: cancelTitle, style: .cancel)
+        let cancelAction: UIAlertAction = UIAlertAction(title: cancelTitle, style: .cancel) { (action) in
+            if (cancelCallback != nil) {
+                cancelCallback?()
+            }
+        }
+
         alertController.addAction(cancelAction)
         guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
             Log.shared.errorAndCrash("No VC")

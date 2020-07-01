@@ -186,6 +186,14 @@ extension PGPKeyImportSettingViewController: PGPKeyImportSettingViewModelDelegat
 // MARK : PGPKeyImportSettingSwitchTableViewCellDelegate
 
 extension PGPKeyImportSettingViewController : PGPKeyImportSettingSwitchTableViewCellDelegate  {
+    func passphraseSwitchChanged(sender: PGPKeyImportSettingSwitchTableViewCell, didChangeSwitchValue newValue: Bool, cancelCallback: (() -> Void)?) {
+        if newValue {
+            UIUtils.showUserPassphraseForNewKeysAlert(cancelCallback: cancelCallback)
+        } else {
+            PassphraseUtil().stopUsingPassphraseForNewKeys()
+        }
+    }
+
     func passphraseSwitchChanged(sender: PGPKeyImportSettingSwitchTableViewCell, didChangeSwitchValue newValue: Bool) {
         if newValue {
             UIUtils.showUserPassphraseForNewKeysAlert()
