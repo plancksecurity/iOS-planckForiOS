@@ -119,6 +119,7 @@ extension UIUtils {
     private static let passphraseCallback: (String) -> Void = { input in
         do {
             try PassphraseUtil().newPassphrase(input)
+            try PassphraseUtil().newPassphrase(input)
         } catch PassphraseUtil.PassphraseError.tooLong {
             Log.shared.info("Passphrase too long")
             showPassphraseTooLong()
@@ -129,7 +130,7 @@ extension UIUtils {
     }
 
     /// Shows an alert to require a Passphrase
-    static func showPassphraseRequiredAlert() {
+    public static func showPassphraseRequiredAlert() {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
         let message = NSLocalizedString("Please enter the passphrase to continue", comment: "Passphrase message")
         let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
@@ -137,7 +138,7 @@ extension UIUtils {
     }
 
     /// Shows an alert to inform the passphrase entered is wrong and to require a new one.
-    static func showPassphraseWrongAlert() {
+    public static func showPassphraseWrongAlert() {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
         let message = NSLocalizedString("The passphrase you entered is wrong. Please enter it again to continue", comment: "Passphrase message")
         let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
@@ -145,7 +146,7 @@ extension UIUtils {
     }
 
     /// Shows an alert to inform the passphrase entered is too long and to require a new one.
-    static func showPassphraseTooLong() {
+    public static func showPassphraseTooLong() {
         let title = NSLocalizedString("Passphrase too long", comment: "Passphrase too long - title")
         let message = NSLocalizedString("Please enter one shorter", comment: "Please enter one shorter - message")
         let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
