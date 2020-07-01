@@ -112,6 +112,7 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
                 return UITableViewCell()
             }
             cell.titleLabel?.text = row.title
+            cell.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
             if let fontColor = row.titleFontColor {
                 cell.titleLabel?.textColor = fontColor
             }
@@ -123,9 +124,11 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("PGPKeyImportSettingTableViewCell not found")
                 return UITableViewCell()
             }
+            cell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
             cell.textLabel?.text = row.title
             if let fontColor = row.titleFontColor {
                 cell.textLabel?.textColor = fontColor
+
             }
             if row.type == .setOwnKey {
                 cell.accessoryType = .disclosureIndicator
