@@ -407,10 +407,11 @@ extension ComposeTableViewController: CNContactPickerDelegate {
 
     // This gets called when the user cancels his request to pick a contact
     func contactPickerDidCancel(_ picker: CNContactPickerViewController) {
-        // It's needed to set up an additional, extra work.
+        // It's needed to set up an additional, extra work. For example update the focus in a tableview cell/row.
         didHideContactPicker()
     }
 
+    // If contact has more than one e-mail we show contact details and user can select only one e-mail
     func contactPicker(_ picker: CNContactPickerViewController, didSelect contactProperty: CNContactProperty) {
         if let emailAddress = contactProperty.value as? String
         {
@@ -418,7 +419,9 @@ extension ComposeTableViewController: CNContactPickerDelegate {
                 Log.shared.errorAndCrash("No VM")
                 return
             }
-            vm.handleContactSelected(address: String(emailAddress))
+            vm.handleContactSelected(address: emailAddress,
+                                     addressBookID: contactProperty.contact.identifier,
+                                     userName: contactProperty.contact.givenName)
             didHideContactPicker()
         }
     }
@@ -430,7 +433,9 @@ extension ComposeTableViewController: CNContactPickerDelegate {
                 Log.shared.errorAndCrash("No VM")
                 return
             }
-            vm.handleContactSelected(address: String(emailAddress.value))
+            vm.handleContactSelected(address: String(emailAddress.value),
+                                     addressBookID: contact.identifier,
+                                     userName: contact.givenName)
             didHideContactPicker()
         }
     }

@@ -771,7 +771,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         delegate?.showContactsPicker()
     }
 
-    func handleContactSelected(address: String) {
+    func handleContactSelected(address: String, addressBookID: String, userName: String) {
         guard
             let idxPath = lastRowWithSuggestions,
             let recipientVM = sections[idxPath.section].rows[idxPath.row] as? RecipientCellViewModel
@@ -779,7 +779,11 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
                 Log.shared.errorAndCrash("No row VM")
                 return
         }
-        recipientVM.add(recipient: Identity(address: address))
+        let contactIdentity = Identity(address: address, userID: nil,
+                                       addressBookID: addressBookID,
+                                       userName: userName,
+                                       session: Session.main)
+        recipientVM.add(recipient: contactIdentity)
     }
 }
 
