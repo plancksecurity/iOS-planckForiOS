@@ -9,7 +9,7 @@
 import Foundation
 
 class PGPKeyImportSettingViewController: BaseViewController {
-    static private let switchCellID = "PGPKeyImportSettingSwitchTableViewCell"
+    static private let switchCellID = "PGPKeyImportSettingsSwitchTableViewCell"
     static private let cellID = "PGPKeyImportSettingTableViewCell"
     public var viewModel: PGPKeyImportSettingViewModel? {
         didSet {
@@ -104,28 +104,38 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
         }
 
         let row = vm.sections[indexPath.section].rows[indexPath.row]
-        var identifier: String
         switch row.type {
         case .passphrase:
-            identifier = PGPKeyImportSettingViewController.cellID
-        default:
-            identifier = PGPKeyImportSettingViewController.cellID
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: PGPKeyImportSettingViewController.switchCellID) as? PGPKeyImportSettingSwitchTableViewCell else {
+                Log.shared.errorAndCrash("PGPKeyImportSettingSwitchTableViewCell not found")
+                return UITableViewCell()
+            }
+            cell.titleLabel?.text = row.title
+            if let fontColor = row.titleFontColor {
+                cell.titleLabel?.textColor = fontColor
+            }
+            cell.delegate = self
+            cell.passphraseSwitch.isOn = true
+            return cell
+        case .pgpKeyImport, .setOwnKey:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: PGPKeyImportSettingViewController.cellID) else {
+                Log.shared.errorAndCrash("PGPKeyImportSettingTableViewCell not found")
+                return UITableViewCell()
+            }
+            cell.textLabel?.text = row.title
+            if let fontColor = row.titleFontColor {
+                cell.textLabel?.textColor = fontColor
+            }
+            if row.type == .setOwnKey {
+                cell.accessoryType = .disclosureIndicator
+            }
+            return cell
         }
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier) else {
-            return UITableViewCell()
-        }
-
-        cell.textLabel?.text = row.title
-        if let fontColor = row.titleFontColor {
-            cell.textLabel?.textColor = fontColor
-        }
-        if row.type == .setOwnKey {
-            cell.accessoryType = .disclosureIndicator
-        }
-
-        return cell
     }
+
 }
+
+
 
 // MARK: - Segue
 
@@ -173,6 +183,14 @@ extension PGPKeyImportSettingViewController: PGPKeyImportSettingViewModelDelegat
     }
 
     func showPassphraseAlert() {
+        UIUtils.showUserPassphraseForNewKeysAlert()
+    }
+}
+
+// MARK : PGPKeyImportSettingSwitchTableViewCellDelegate
+
+extension PGPKeyImportSettingViewController : PGPKeyImportSettingSwitchTableViewCellDelegate  {
+    func passphraseSwitchChanged(sender: PGPKeyImportSettingSwitchTableViewCell, didChangeSwitchValue newValue: Bool) {
         UIUtils.showUserPassphraseForNewKeysAlert()
     }
 }

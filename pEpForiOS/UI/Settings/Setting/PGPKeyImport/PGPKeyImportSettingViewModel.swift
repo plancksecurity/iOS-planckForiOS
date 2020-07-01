@@ -56,7 +56,7 @@ class PGPKeyImportSettingViewModel {
             case 0:
                 delegate?.showSetPgpKeyImportScene()
             case 1:
-                delegate?.showPassphraseAlert()
+                break
             default:
                 Log.shared.error("Selected row not supported")
             }
