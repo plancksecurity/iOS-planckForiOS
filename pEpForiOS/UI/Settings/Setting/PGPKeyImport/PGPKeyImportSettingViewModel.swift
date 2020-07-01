@@ -9,7 +9,6 @@
 import Foundation
 
 protocol PGPKeyImportSettingViewModelDelegate: class {
-    func showPassphraseAlert()
     func showSetPgpKeyImportScene()
     func showSetOwnKeyScene()
 }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MessageModel
 
 class PGPKeyImportSettingViewController: BaseViewController {
     static private let switchCellID = "PGPKeyImportSettingsSwitchTableViewCell"
@@ -115,7 +116,7 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
                 cell.titleLabel?.textColor = fontColor
             }
             cell.delegate = self
-            cell.passphraseSwitch.isOn = true
+            cell.passphraseSwitch.isOn = PassphraseUtil().isPassphraseForNewKeysEnabled
             return cell
         case .pgpKeyImport, .setOwnKey:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: PGPKeyImportSettingViewController.cellID) else {
@@ -132,7 +133,6 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
             return cell
         }
     }
-
 }
 
 
@@ -181,16 +181,16 @@ extension PGPKeyImportSettingViewController: PGPKeyImportSettingViewModelDelegat
         performSegue(withIdentifier: SegueIdentifier.segueSetOwnKey.rawValue,
                      sender: nil)
     }
-
-    func showPassphraseAlert() {
-        UIUtils.showUserPassphraseForNewKeysAlert()
-    }
 }
 
 // MARK : PGPKeyImportSettingSwitchTableViewCellDelegate
 
 extension PGPKeyImportSettingViewController : PGPKeyImportSettingSwitchTableViewCellDelegate  {
     func passphraseSwitchChanged(sender: PGPKeyImportSettingSwitchTableViewCell, didChangeSwitchValue newValue: Bool) {
-        UIUtils.showUserPassphraseForNewKeysAlert()
+        if newValue {
+            UIUtils.showUserPassphraseForNewKeysAlert()
+        } else {
+            PassphraseUtil().stopUsingPassphraseForNewKeys()
+        }
     }
 }
