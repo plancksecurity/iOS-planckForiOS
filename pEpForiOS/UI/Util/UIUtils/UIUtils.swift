@@ -13,8 +13,6 @@ import pEpIOSToolbox
 
 struct UIUtils {
 
-    
-
     /// Converts the error to a user frienldy DisplayUserError and presents it to the user
     ///
     /// - Parameters:
@@ -23,40 +21,9 @@ struct UIUtils {
         Log.shared.info("May or may not display error to user: (interpolate) %@", "\(error)")
 
         if let pEpError = error as? BackgroundError.PepError {
-            guard !isCurrentlyShowingPassphraseInputAlert else {
-                // A passphrase alert is already shown. Do not show a second one on top of it.
-                // Do nothing instead.
-                return
-            }
-            switch pEpError {
-            case .passphraseRequired:
-                DispatchQueue.main.async {
-                    guard !isCurrentlyShowingPassphraseInputAlert else {
-                        // A passphrase alert is already shown. Do not show a second one on top of it.
-                        // Do nothing instead.
-                        return
-                    }
-                    showPassphraseRequiredAlert()
-                }
-            case .wrongPassphrase:
-                DispatchQueue.main.async {
-                    guard !isCurrentlyShowingPassphraseInputAlert else {
-                        // A passphrase alert is already shown. Do not show a second one on top of it.
-                        // Do nothing instead.
-                        return
-                    }
-                    showPassphraseWrongAlert()
-                }
-            }
+            show(pEpError: pEpError)
         } else {
-            guard let displayError = DisplayUserError(withError: error) else {
-                // Do nothing. The error type is not suitable to bother the user with.
-                return
-            }
-            DispatchQueue.main.async {
-                showAlertWithOnlyPositiveButton(title: displayError.title,
-                                                message: displayError.errorDescription)
-            }
+           show(unspecifiedError: error)
         }
     }
 }
@@ -76,5 +43,44 @@ extension UIUtils {
             }
         }
         return false
+    }
+
+    static private func show(pEpError: BackgroundError.PepError) {
+        guard !isCurrentlyShowingPassphraseInputAlert else {
+            // A passphrase alert is already shown. Do not show a second one on top of it.
+            // Do nothing instead.
+            return
+        }
+        switch pEpError {
+        case .passphraseRequired:
+            DispatchQueue.main.async {
+                guard !isCurrentlyShowingPassphraseInputAlert else {
+                    // A passphrase alert is already shown. Do not show a second one on top of it.
+                    // Do nothing instead.
+                    return
+                }
+                showPassphraseRequiredAlert()
+            }
+        case .wrongPassphrase:
+            DispatchQueue.main.async {
+                guard !isCurrentlyShowingPassphraseInputAlert else {
+                    // A passphrase alert is already shown. Do not show a second one on top of it.
+                    // Do nothing instead.
+                    return
+                }
+                showPassphraseWrongAlert()
+            }
+        }
+    }
+
+    static private func show(unspecifiedError error: Error) {
+        guard let displayError = DisplayUserError(withError: error) else {
+            // Do nothing. The error type is not suitable to bother the user with.
+            return
+        }
+        DispatchQueue.main.async {
+            showAlertWithOnlyPositiveButton(title: displayError.title,
+                                            message: displayError.errorDescription)
+        }
     }
 }
