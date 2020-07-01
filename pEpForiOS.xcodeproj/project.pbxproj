@@ -401,6 +401,7 @@
 		49DCCD2621E8ABD300ABE487 /* nojavascript.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 49DCCD1F21E75BE300ABE487 /* nojavascript.pdf */; };
 		49DCCD2721E8ABD600ABE487 /* javascript.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 49079D9821E3867900D15A0D /* javascript.pdf */; };
 		49DCCD2821E8ABDF00ABE487 /* ScreenshotTestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495F689921E6600500A10C63 /* ScreenshotTestUtil.swift */; };
+		5B0B339D24AC85E800CABD0B /* UIUtils+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */; };
 		5B1C0E1823FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */; };
 		5B2F7E63240D25CF004DDFA2 /* TutorialStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */; };
 		5B394E1323ED5673006A1FC0 /* TrustManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */; };
@@ -1032,6 +1033,7 @@
 		49C34AF520E4F649009D11CC /* CellDetailTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellDetailTransition.swift; sourceTree = "<group>"; };
 		49D3BECB20F8F7330043E05D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		49DCCD1F21E75BE300ABE487 /* nojavascript.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = nojavascript.pdf; sourceTree = "<group>"; };
+		5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+Passphrase.swift"; sourceTree = "<group>"; };
 		5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCellProtocols.swift; sourceTree = "<group>"; };
 		5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepViewController.swift; sourceTree = "<group>"; };
 		5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCell.swift; sourceTree = "<group>"; };
@@ -1259,6 +1261,7 @@
 			children = (
 				150B8EB21FCEB93D00374438 /* UIUtils.swift */,
 				1521B790241BDCD9000EAE57 /* UIUtild+Alerts.swift */,
+				5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */,
 				1521B792241BDD33000EAE57 /* UIUtils+ActionSheets.swift */,
 				1521B796241BE026000EAE57 /* UIUtils+ActivityIndecator.swift */,
 				1521B798241BE086000EAE57 /* UIUtil+Contacts.swift */,
@@ -3074,6 +3077,7 @@
 				220DCE361E0AB5CC002FE716 /* MessageSenderCell.swift in Sources */,
 				15874BCD2127493E00A3A4A6 /* AccountSettingsError.swift in Sources */,
 				15147EF7237EBE2A003989FE /* AppSettings+KeySyncDeviceGroupStateChangeNotification.swift in Sources */,
+				5B0B339D24AC85E800CABD0B /* UIUtils+Passphrase.swift in Sources */,
 				B778BB0F23DF040400CFC001 /* SettingsViewModel.swift in Sources */,
 				15D4399A216E697700EB3933 /* AccountPickerView.swift in Sources */,
 				B756E57523ED99FA0007D535 /* AccountTypeSelectorCollectionViewCell.swift in Sources */,
