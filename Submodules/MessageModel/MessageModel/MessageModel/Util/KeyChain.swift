@@ -10,16 +10,30 @@ import Foundation
 
 import pEpIOSToolbox
 
-//!!!: must be internal! (move test, make internal)
-/**
- Wraps saving account passwords into the keychain.
- */
+ /// Abstracts KeyChain ralted issues
 class KeyChain {
     public typealias Success = Bool
     static private let defaultServerType = "Server"
+}
 
-    // MARK: - API
+// MARK: - Passphrase
 
+extension KeyChain {
+    private static let keyPassphrase = "security.pep.KeyChain.keyPassphrase"
+
+    static func storePassphrase(_ passphrase: String) {
+        add(key: keyPassphrase, password: passphrase)
+    }
+
+    static var passphrase: String? {
+        return password(key: keyPassphrase)
+    }
+}
+
+// MARK: - Account Passwords
+
+///Wraps saving account passwords into the keychain.
+extension KeyChain {
     /// Get a password for a given key from the system keychain.
     ///
     /// - Parameter key: key to get the password for
@@ -92,11 +106,12 @@ class KeyChain {
     }
 }
 
-// MARK: - INTERNAL
+// MARK: - Private
 
 extension KeyChain {
 
-    @discardableResult static private func add(key: String, serverType: String,
+    @discardableResult static private func add(key: String,
+                                               serverType: String = defaultServerType,
                                                password: String?) -> Success {
         guard let pass = password else {
             // No password, so nothing need to be done. Give a warning though.
