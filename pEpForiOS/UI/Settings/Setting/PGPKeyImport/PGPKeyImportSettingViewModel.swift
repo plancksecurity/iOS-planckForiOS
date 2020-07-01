@@ -9,6 +9,7 @@
 import Foundation
 
 protocol PGPKeyImportSettingViewModelDelegate: class {
+    func showPassphraseAlert()
     func showSetPgpKeyImportScene()
     func showSetOwnKeyScene()
 }
@@ -17,6 +18,7 @@ extension PGPKeyImportSettingViewModel {
     public enum RowType {
         case pgpKeyImport
         case setOwnKey
+        case passphrase
     }
 
     public struct Row {
@@ -50,7 +52,14 @@ class PGPKeyImportSettingViewModel {
     public func handleDidSelect(rowAt indexpath: IndexPath) {
         switch indexpath.section {
         case 0: // Import PGP Key from Documents directory
-            delegate?.showSetPgpKeyImportScene()
+            switch indexpath.row {
+            case 0:
+                delegate?.showSetPgpKeyImportScene()
+            case 1:
+                delegate?.showPassphraseAlert()
+            default:
+                Log.shared.error("Selected row not supported")
+            }
         case 1: // SetOwnKey
             delegate?.showSetOwnKeyScene()
         default:
@@ -83,7 +92,14 @@ extension PGPKeyImportSettingViewModel {
         let pgpKeyImportRow = Row(type: .pgpKeyImport,
                                   title: pgpKeyImportRowTitle,
                                   titleFontColor: .pEpGreen)
-        let pgpkeyImportSection = Section(rows: [pgpKeyImportRow],
+
+        // Passphrase
+        let usePassphraseForNewKeys = NSLocalizedString("Use a Passphrase for new keys",
+                                                     comment: "PGPKeyImportSetting - Use a Passphrase for new keys")
+        let passphraseForNewKey = Row(type: .passphrase,
+                                      title: usePassphraseForNewKeys,
+                                      titleFontColor: .black)
+        let pgpkeyImportSection = Section(rows: [pgpKeyImportRow, passphraseForNewKey],
                                           title: pgpKeyImportSectionHeaderTitle)
         // setOwnKeySection
         let setOwnKeySectionHeaderTitle = NSLocalizedString("ADVANCED",

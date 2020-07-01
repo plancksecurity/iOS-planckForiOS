@@ -44,6 +44,7 @@ final class LoginViewController: BaseViewController {
         }
     }
 
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setup()
@@ -57,6 +58,7 @@ final class LoginViewController: BaseViewController {
         if accountType == .icloud {
             showiCloudAlert()
         }
+
     }
 
     override func viewDidLayoutSubviews() {
@@ -615,4 +617,3 @@ extension LoginViewController {
                                    positiveButtonAction: openiCloudInfoInBrowser)
     }
 }
-

@@ -16,7 +16,6 @@ extension UIUtils {
     private static let passphraseCallback: (String) -> Void = { input in
         do {
             try PassphraseUtil().newPassphrase(input)
-            try PassphraseUtil().newPassphrase(input)
         } catch PassphraseUtil.PassphraseError.tooLong {
             Log.shared.info("Passphrase too long")
             showPassphraseTooLong()
@@ -24,6 +23,14 @@ extension UIUtils {
             Log.shared.error("Something went wrong - It should not happen")
             showPassphraseWrongAlert()
         }
+    }
+
+    /// Shows an alert to require a Passphrase
+    public static func showUserPassphraseForNewKeysAlert() {
+        let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
+        let message = NSLocalizedString("We recommend to use device encryption instead of using passphrases, because they're securing all data not only keys. In case you wan to use a passphrase anyway, please enter a passphrase here and enable it.", comment: "Passphrase message")
+        let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
+        showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: passphraseCallback)
     }
 
     /// Shows an alert to require a Passphrase

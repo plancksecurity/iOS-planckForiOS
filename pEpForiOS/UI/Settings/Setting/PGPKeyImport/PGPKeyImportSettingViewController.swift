@@ -9,6 +9,7 @@
 import Foundation
 
 class PGPKeyImportSettingViewController: BaseViewController {
+    static private let switchCellID = "PGPKeyImportSettingSwitchTableViewCell"
     static private let cellID = "PGPKeyImportSettingTableViewCell"
     public var viewModel: PGPKeyImportSettingViewModel? {
         didSet {
@@ -61,7 +62,7 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         // Suppresses seperator lines for empty cells
-        return UIView(frame: CGRect.zero)
+        return UIView(frame: .zero)
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -101,12 +102,19 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
             Log.shared.errorAndCrash("No VM")
             return UITableViewCell()
         }
-        guard
-            let cell = tableView.dequeueReusableCell(withIdentifier: PGPKeyImportSettingViewController.cellID)
-            else {
-                return UITableViewCell()
-        }
+
         let row = vm.sections[indexPath.section].rows[indexPath.row]
+        var identifier: String
+        switch row.type {
+        case .passphrase:
+            identifier = PGPKeyImportSettingViewController.cellID
+        default:
+            identifier = PGPKeyImportSettingViewController.cellID
+        }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier) else {
+            return UITableViewCell()
+        }
+
         cell.textLabel?.text = row.title
         if let fontColor = row.titleFontColor {
             cell.textLabel?.textColor = fontColor
@@ -162,5 +170,9 @@ extension PGPKeyImportSettingViewController: PGPKeyImportSettingViewModelDelegat
     func showSetOwnKeyScene() {
         performSegue(withIdentifier: SegueIdentifier.segueSetOwnKey.rawValue,
                      sender: nil)
+    }
+
+    func showPassphraseAlert() {
+        UIUtils.showUserPassphraseForNewKeysAlert()
     }
 }
