@@ -78,8 +78,10 @@ extension DecryptMessageOperation {
                 switch error.code {
                 case Int(PEPStatus.passphraseRequired.rawValue):
                     addError(BackgroundError.PepError.passphraseRequired(info:"Passphrase required decrypting message: \(cdMessageToDecrypt)"))
+                    return // return to keep msg marked for needsDecrypt
                 case Int(PEPStatus.wrongPassphrase.rawValue):
                     addError(BackgroundError.PepError.wrongPassphrase(info:"Passphrase wrong decrypting message: \(cdMessageToDecrypt)"))
+                    return // return to keep msg marked for needsDecrypt
                 default:
                     Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
                     addError(BackgroundError.GeneralError.illegalState(info:

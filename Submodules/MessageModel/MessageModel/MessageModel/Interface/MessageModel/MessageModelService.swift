@@ -40,13 +40,17 @@ public final class MessageModelService {
     private var cleanupServices = [ServiceProtocol]()
 
     // MARK: - Life Cycle
+
+    /// Must be called from the main queue
     public init(errorPropagator: ErrorPropagator? = nil,
                 cnContactsAccessPermissionProvider: CNContactsAccessPermissionProviderProtocol,
                 keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol? = nil,
                 keySyncStateProvider: KeySyncStateProvider) {
         // Mega ugly, MUST go away. Fix with Stack update.
-        // Touch Stack once to assure it set's up the mainContext on the main queue
+        // Touch Stack once to assure it sets up the mainContext on the main queue
         let _ = Stack.shared
+
+        PassphraseUtil().configureAdapterWithPassphraseForNewKeys()
 
         setupServices(errorPropagator: errorPropagator,
                       cnContactsAccessPermissionProvider: cnContactsAccessPermissionProvider,

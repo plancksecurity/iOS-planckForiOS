@@ -21,7 +21,7 @@ public protocol PassphraseUtilProtocol {
     /// - Parameter passphrase: passphrase to use for generating new keys. The max length is 250
     ///                         code points
     /// - throws:PassphraseError.tooLong in case the length of the passphrase exceeds the maximum
-    func passphraseForNewKeys(_ passphrase: String) throws
+    func newPassphraseForNewKeys(_ passphrase: String) throws
 
     /// If a passphrase for new keys is currently configured, it will be removed. Else calling this
     /// has no effect.
@@ -42,6 +42,22 @@ extension PassphraseUtil {
 public class PassphraseUtil {
     /// Make initializable for clients of MM.
     public init() {}
+
+    /// Configures the adapter to use the stored passphrase for new keys if any.
+    /// If ther is no passphrase for new keys stored, it's a NOP.
+    /// - note: Must be called on every application startup.
+    func configureAdapterWithPassphraseForNewKeys() {
+        guard let passphrase = KeyChain.passphraseForNewKeys else {
+            // No passphrase is setup (stored) for new keys.
+            // Nothing to do.
+            return
+        }
+        do {
+            try PEPObjCAdapter.configurePassphrase(forNewKeys: passphrase)
+        } catch {
+             Log.shared.errorAndCrash("Looks like we have stored an invalid passphrase. Validity MUST be checked _before_ storing it, so we have a bug here.")
+        }
+    }
 }
 
 // MARK: - PassphraseUtilProtocol
@@ -65,7 +81,7 @@ extension PassphraseUtil: PassphraseUtilProtocol {
         }
     }
 
-    public func passphraseForNewKeys(_ passphrase: String) throws {
+    public func newPassphraseForNewKeys(_ passphrase: String) throws {
         do {
             try PEPObjCAdapter.configurePassphrase(forNewKeys: passphrase)
             KeyChain.storePassphraseForNewKeys(passphrase)
