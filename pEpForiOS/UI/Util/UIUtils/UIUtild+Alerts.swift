@@ -77,10 +77,9 @@ extension UIUtils {
     ///   - title: The title of the alert
     ///   - message: The message of the alert
     ///   - placeholder: The placeholder of the textfield
-
+    ///   - callback: A callback that takes the user input as parameter.
     static func showAlertWithTextfield(title: String, message: String, placeholder: String, callback: @escaping(_ input: String) -> ()) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-
         alertController.addTextField { (textField) in
             textField.placeholder = placeholder
             textField.isSecureTextEntry = true
@@ -115,7 +114,9 @@ extension UIUtils {
 
 extension UIUtils {
 
-    static let passphraseCallback: (String) -> Void = { input in
+    /// This callback attempts to register the new passphrase.
+    /// If fails because of its lenghts, it prompts to enter a new one.
+    private static let passphraseCallback: (String) -> Void = { input in
         do {
             try PassphraseUtil().newPassphrase(input)
         } catch PassphraseUtil.PassphraseError.tooLong {
@@ -129,7 +130,7 @@ extension UIUtils {
         }
     }
 
-    /// Show an alert to require a Passphrase
+    /// Shows an alert to require a Passphrase
     static func showPassphraseRequiredAlert() {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
         let message = NSLocalizedString("Please enter the passphrase to continue", comment: "Passphrase message")
@@ -137,7 +138,7 @@ extension UIUtils {
         showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: passphraseCallback)
     }
 
-    /// Show an alert to inform the passphrase entered is wrong and to require a new one.
+    /// Shows an alert to inform the passphrase entered is wrong and to require a new one.
     static func showPassphraseWrongAlert() {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
         let message = NSLocalizedString("The passphrase you entered is wrong. Please enter it again to continue", comment: "Passphrase message")
