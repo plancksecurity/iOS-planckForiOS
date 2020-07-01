@@ -14,7 +14,7 @@ import pEpIOSToolbox
 /**
  Wraps saving account passwords into the keychain.
  */
-public class KeyChain {
+class KeyChain {
     public typealias Success = Bool
     static private let defaultServerType = "Server"
 
@@ -25,7 +25,7 @@ public class KeyChain {
     /// - Parameter key: key to get the password for
     /// - Returns:  if the key exists in keychain: password for the given key
     ///             nil otherwize
-    static public func password(key: String) -> String? {
+    static func password(key: String) -> String? {
         let query = [
             kSecClass as String: kSecClassGenericPassword as String,
             kSecMatchCaseInsensitive as String: kCFBooleanTrue,
@@ -65,7 +65,7 @@ public class KeyChain {
     ///   - password: password to create/update. Set to nil to delete a password for a given key
     ///   - key: key to create/update/delete the password for
     /// - Returns: true if no error(s) occured, false otherwize
-    @discardableResult static public func updateCreateOrDelete(password: String?,
+    @discardableResult static func updateCreateOrDelete(password: String?,
                                                                forKey key: String) -> Success {
         var success = false
 
