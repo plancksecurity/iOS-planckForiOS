@@ -31,7 +31,7 @@ extension UIUtils {
     /// If it fails because of its lenghts or due other reasons, it prompts to enter a new one.
     private static let newPassphraseEnteredForNewKeysCallback: (String) -> Void = { input in
         do {
-            try PassphraseUtil().passphraseForNewKeys(input)
+            try PassphraseUtil().newPassphraseForNewKeys(input)
         } catch PassphraseUtil.PassphraseError.tooLong {
             Log.shared.info("Passphrase too long")
             showPassphraseForNewKeysTooLong()
@@ -59,12 +59,8 @@ extension UIUtils {
                 Log.shared.errorAndCrash("Something went wrong - It should not happen")
             }
         }
-
-//        showAlertWithTextfield(title: title, message: message, placeholder: placeholder,
-
         showAlertWithTextfield(identifier: .passphraseAlert,
                                title: title,
-//        showAlertWithTextfield(title: title,
                                message: message,
                                placeholder: placeholder,
                                callback: task,
@@ -94,7 +90,6 @@ extension UIUtils {
                                placeholder: placeholder,
                                callback: newPassphraseEnteredCallback)
     }
-
 }
 
 // MARK : - Too long alerts
@@ -115,13 +110,11 @@ extension UIUtils {
         let title = NSLocalizedString("Passphrase too long", comment: "Passphrase too long - title")
         let message = NSLocalizedString("Please enter one shorter", comment: "Please enter one shorter - message")
         let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
-//        showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: newPassphraseEnteredCallback)
         showAlertWithTextfield(identifier: .passphraseAlert,
                                title: title,
                                message: message,
                                placeholder: placeholder,
-                               callback: newPassphraseEnteredCallback)
-        showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: callback, cancelCallback: cancelCallback)
+                               callback: callback,
+                               cancelCallback: cancelCallback)
     }
-
 }

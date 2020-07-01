@@ -37,6 +37,10 @@ class PGPKeyImportSettingViewController: BaseViewController {
         showNavigationBar()
         tableView.reloadData()
     }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+    }
 }
 
 // MARK: - UITableViewDelegate

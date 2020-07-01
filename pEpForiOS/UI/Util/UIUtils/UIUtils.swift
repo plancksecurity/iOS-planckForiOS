@@ -13,6 +13,8 @@ import pEpIOSToolbox
 
 struct UIUtils {
 
+    
+
     /// Converts the error to a user frienldy DisplayUserError and presents it to the user
     ///
     /// - Parameters:

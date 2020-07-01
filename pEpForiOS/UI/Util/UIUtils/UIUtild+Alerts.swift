@@ -77,6 +77,7 @@ extension UIUtils {
     ///   - message: The message of the alert
     ///   - placeholder: The placeholder of the textfield
     ///   - callback: A callback that takes the user input as parameter.
+    ///   - cancelCallback: A callback that's executed when the user taps the cancel button.
     static func showAlertWithTextfield(identifier: IdentifiableAlertController.Identifier = .other,
                                        title: String, message: String, placeholder: String,
                                        callback: @escaping(_ input: String) -> (),
