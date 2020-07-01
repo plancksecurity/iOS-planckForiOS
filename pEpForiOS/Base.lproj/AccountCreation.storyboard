@@ -3,7 +3,7 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -201,7 +201,7 @@
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="140" id="5uB-dW-SXj"/>
                                                     <constraint firstItem="zg6-3H-SnV" firstAttribute="centerX" secondItem="gsz-7C-yke" secondAttribute="centerX" id="88a-wW-ARz"/>
                                                     <constraint firstItem="i7a-Xk-Hbw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="bP7-By-IPD" secondAttribute="trailing" priority="250" constant="5" id="A1z-ZF-Oud"/>
-                                                    <constraint firstItem="zg6-3H-SnV" firstAttribute="top" relation="greaterThanOrEqual" secondItem="i7a-Xk-Hbw" secondAttribute="bottom" constant="20" id="IJA-Pg-g7o"/>
+                                                    <constraint firstItem="zg6-3H-SnV" firstAttribute="top" relation="greaterThanOrEqual" secondItem="i7a-Xk-Hbw" secondAttribute="bottom" constant="46" id="IJA-Pg-g7o"/>
                                                     <constraint firstAttribute="trailing" secondItem="JT1-ND-6bH" secondAttribute="trailing" id="JEJ-Cy-LII"/>
                                                     <constraint firstItem="bP7-By-IPD" firstAttribute="leading" secondItem="gsz-7C-yke" secondAttribute="leading" id="Lrs-na-E4z"/>
                                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="zg6-3H-SnV" secondAttribute="trailing" constant="5" id="NGP-z6-pbh"/>
@@ -307,6 +307,7 @@
                                             <constraint firstItem="wIi-CI-cLC" firstAttribute="centerY" secondItem="8nk-hU-BvN" secondAttribute="centerY" id="4BJ-HZ-jYr"/>
                                             <constraint firstItem="gsz-7C-yke" firstAttribute="top" secondItem="8nk-hU-BvN" secondAttribute="bottom" constant="35" id="7aS-8l-hE8"/>
                                             <constraint firstItem="e3d-56-GP8" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Sub-2j-OvV" secondAttribute="trailing" id="Bgp-wh-XIN"/>
+                                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="gsz-7C-yke" secondAttribute="bottom" constant="46.5" id="Dih-Rc-Jec"/>
                                             <constraint firstItem="Sub-2j-OvV" firstAttribute="leading" secondItem="d4O-yC-tc7" secondAttribute="leading" priority="250" constant="270" id="Dnc-7O-vNH"/>
                                             <constraint firstItem="gsz-7C-yke" firstAttribute="leading" secondItem="8nk-hU-BvN" secondAttribute="leading" id="EfY-cM-oX6"/>
                                             <constraint firstItem="8nk-hU-BvN" firstAttribute="trailing" secondItem="gsz-7C-yke" secondAttribute="trailing" id="GmD-Wm-JOd"/>
@@ -376,7 +377,6 @@
                             <constraint firstItem="RXQ-HQ-bsM" firstAttribute="trailing" secondItem="jAI-Xy-z2r" secondAttribute="trailing" id="0FV-lz-bdb"/>
                             <constraint firstItem="gsz-7C-yke" firstAttribute="trailing" secondItem="jAI-Xy-z2r" secondAttribute="trailing" id="1wc-Lm-dOd"/>
                             <constraint firstItem="d4O-yC-tc7" firstAttribute="height" secondItem="jAI-Xy-z2r" secondAttribute="height" id="2a2-Dg-Lr2"/>
-                            <constraint firstItem="jAI-Xy-z2r" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="gsz-7C-yke" secondAttribute="bottom" constant="25" id="6Er-vY-8xf"/>
                             <constraint firstItem="RXQ-HQ-bsM" firstAttribute="leading" secondItem="jAI-Xy-z2r" secondAttribute="leading" id="73o-sU-wxg"/>
                             <constraint firstItem="RXQ-HQ-bsM" firstAttribute="bottom" secondItem="jAI-Xy-z2r" secondAttribute="bottom" id="H9T-wo-ehg"/>
                             <constraint firstAttribute="top" secondItem="qYA-qu-vFE" secondAttribute="top" id="ROq-f2-ftF"/>
@@ -389,18 +389,12 @@
                         <viewLayoutGuide key="safeArea" id="jAI-Xy-z2r"/>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="6Er-vY-8xf"/>
                                 <exclude reference="1wc-Lm-dOd"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact">
                             <mask key="constraints">
                                 <include reference="1wc-Lm-dOd"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular">
-                            <mask key="constraints">
-                                <include reference="6Er-vY-8xf"/>
                             </mask>
                         </variation>
                     </view>

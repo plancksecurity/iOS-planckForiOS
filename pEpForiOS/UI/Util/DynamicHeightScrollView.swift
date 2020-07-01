@@ -41,23 +41,23 @@ final class DynamicHeightScrollView: UIScrollView {
     ///   - animated: enable/disable animating scrolling to center first responder
     func scrollAndMakeVisible(_ sender: UIView,
                               animated: Bool = true) {
-        let scrollViewHeight = frame.maxY
-        let senderFrames = sender.convert(sender.bounds, to: self)
-        var newContentOffSet = senderFrames.midY - scrollViewHeight / 2
-        let contetOffSetDistanceToSafeArea =
-            contentSize.height - newContentOffSet - scrollViewHeight
-
-        //Add padding if can not scroll enough
-        if newContentOffSet < 0 {
-            contentInset.top = abs(newContentOffSet)
-        } else if contetOffSetDistanceToSafeArea < 0 {
-            contentInset.bottom = abs(contetOffSetDistanceToSafeArea)
-            newContentOffSet = contentSize.height
-                - scrollViewHeight
-                + abs(contetOffSetDistanceToSafeArea)
-        }
-
-        setContentOffset(CGPoint(x: 0, y: newContentOffSet), animated: animated)
+//        let scrollViewHeight = frame.maxY
+//        let senderFrames = sender.convert(sender.bounds, to: self)
+//        var newContentOffSet = senderFrames.midY - scrollViewHeight / 2
+//        let contetOffSetDistanceToSafeArea =
+//            contentSize.height - newContentOffSet - scrollViewHeight
+//
+//        //Add padding if can not scroll enough
+//        if newContentOffSet < 0 {
+//            contentInset.top = abs(newContentOffSet)
+//        } else if contetOffSetDistanceToSafeArea < 0 {
+//            contentInset.bottom = abs(contetOffSetDistanceToSafeArea)
+//            newContentOffSet = contentSize.height
+//                - scrollViewHeight
+//                + abs(contetOffSetDistanceToSafeArea)
+//        }
+//
+//        setContentOffset(CGPoint(x: 0, y: newContentOffSet), animated: animated)
     }
 }
 
@@ -76,8 +76,8 @@ extension DynamicHeightScrollView {
     }
 
     @objc private func updateScrollViewToHideyboard(notification: NSNotification) {
-        contentInset.bottom = 0
-        contentInset.top = 0
+//        contentInset.bottom = 0
+//        contentInset.top = 0
         adjustScrollViewHeight(notification: notification)
     }
 
@@ -115,7 +115,7 @@ extension DynamicHeightScrollView {
             bottomSafeArea = window.safeAreaInsets.bottom
         }
 
-        bottomConstraint.constant = -keyBoardHeight(notification: notification) + bottomSafeArea
+        bottomConstraint.constant = -keyBoardHeight(notification: notification)// + bottomSafeArea
 
         guard let animationDuration = keyBoardAnimationDuration(notification: notification) else {
             Log.shared.errorAndCrash("Fail to get keyboard animation duration")
