@@ -15,15 +15,17 @@ extension UIUtils {
 
     /// This callback attempts to register the new passphrase.
     /// If it fails because of its lenghts or due other reasons, it prompts to enter a new one.
-    private static let newPassphraseEnteredCallback: (String) -> Void = { input in
-        do {
-            try PassphraseUtil().newPassphrase(input)
-        } catch PassphraseUtil.PassphraseError.tooLong {
-            Log.shared.info("Passphrase too long")
-            showPassphraseTooLong()
-        } catch {
-            Log.shared.error("Something went wrong - It should not happen")
-            showPassphraseWrongAlert()
+    private static func newPassphraseEnteredCallback(with cancelCallback: (()->Void)?) -> (String)->Void {
+        return { input in
+            do {
+                try PassphraseUtil().newPassphrase(input)
+            } catch PassphraseUtil.PassphraseError.tooLong {
+                Log.shared.info("Passphrase too long")
+                showPassphraseForNewKeysTooLong(cancelCallback: cancelCallback)
+            } catch {
+                Log.shared.error("Something went wrong - It should not happen")
+                showPassphraseWrongAlert()
+            }
         }
     }
 
@@ -78,7 +80,7 @@ extension UIUtils {
                                title: title,
                                message: message,
                                placeholder: placeholder,
-                               callback: newPassphraseEnteredCallback)
+                               callback: newPassphraseEnteredCallback(with: nil))
     }
 
     /// Shows an alert to inform the passphrase entered is wrong and to require a new one.
@@ -90,7 +92,7 @@ extension UIUtils {
                                title: title,
                                message: message,
                                placeholder: placeholder,
-                               callback: newPassphraseEnteredCallback)
+                               callback: newPassphraseEnteredCallback(with: nil))
     }
 }
 
@@ -105,9 +107,18 @@ extension UIUtils {
 
     /// Shows an alert to inform the passphrase entered is too long and to require a new one.
     public static func showPassphraseTooLong(cancelCallback: (() -> Void)? = nil) {
-        UIUtils.presentTooLongAlertView(with: newPassphraseEnteredCallback, cancelCallback: cancelCallback)
+        UIUtils.presentTooLongAlertView(with: newPassphraseEnteredCallback(with: cancelCallback), cancelCallback: cancelCallback)
     }
+}
 
+// MARK : - Private
+
+extension UIUtils {
+
+    /// Presents an Alert View to inform the passphrase is too long.
+    /// - Parameters:
+    ///   - callback: The callback to be executed when the new one is submited
+    ///   - cancelCallback: The callback to be executed when the user cancels the action
     private static func presentTooLongAlertView(with callback: @escaping(_ input: String) -> (), cancelCallback: (() -> Void)? = nil) {
         let title = NSLocalizedString("Passphrase too long", comment: "Passphrase too long - title")
         let message = NSLocalizedString("Please enter one shorter", comment: "Please enter one shorter - message")
