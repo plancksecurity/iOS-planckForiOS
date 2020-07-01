@@ -193,12 +193,4 @@ extension PGPKeyImportSettingViewController : PGPKeyImportSettingSwitchTableView
             PassphraseUtil().stopUsingPassphraseForNewKeys()
         }
     }
-
-    func passphraseSwitchChanged(sender: PGPKeyImportSettingSwitchTableViewCell, didChangeSwitchValue newValue: Bool) {
-        if newValue {
-            UIUtils.showUserPassphraseForNewKeysAlert()
-        } else {
-            PassphraseUtil().stopUsingPassphraseForNewKeys()
-        }
-    }
 }
