@@ -21,13 +21,28 @@ struct UIUtils {
         Log.shared.info("May or may not display error to user: (interpolate) %@", "\(error)")
 
         if let pEpError = error as? BackgroundError.PepError {
+            guard !isCurrentlyShowingPassphraseInputAlert else {
+                // A passphrase alert is already shown. Do not show a second one on top of it.
+                // Do nothing instead.
+                return
+            }
             switch pEpError {
             case .passphraseRequired:
                 DispatchQueue.main.async {
+                    guard !isCurrentlyShowingPassphraseInputAlert else {
+                        // A passphrase alert is already shown. Do not show a second one on top of it.
+                        // Do nothing instead.
+                        return
+                    }
                     showPassphraseRequiredAlert()
                 }
             case .wrongPassphrase:
                 DispatchQueue.main.async {
+                    guard !isCurrentlyShowingPassphraseInputAlert else {
+                        // A passphrase alert is already shown. Do not show a second one on top of it.
+                        // Do nothing instead.
+                        return
+                    }
                     showPassphraseWrongAlert()
                 }
             }
@@ -41,5 +56,23 @@ struct UIUtils {
                                                 message: displayError.errorDescription)
             }
         }
+    }
+}
+
+// MARK: - Private
+
+extension UIUtils {
+
+    static private var isCurrentlyShowingPassphraseInputAlert: Bool {
+        guard let topVC = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("No VC shown?")
+            return false
+        }
+        if let shownIdentifiableAlertController = topVC as? IdentifiableAlertController {
+            if shownIdentifiableAlertController.identifier == .passphraseAlert {
+                return true
+            }
+        }
+        return false
     }
 }

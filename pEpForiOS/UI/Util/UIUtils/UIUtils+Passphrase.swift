@@ -33,7 +33,7 @@ extension UIUtils {
 
         let task: (String) -> Void = { input in
             do {
-                try PassphraseUtil().passphraseForNewKeys(input)
+                try PassphraseUtil().newPassphraseForNewKeys(input)
             } catch PassphraseUtil.PassphraseError.tooLong {
                 Log.shared.info("Passphrase too long")
                 showPassphraseTooLong()
@@ -43,7 +43,10 @@ extension UIUtils {
             }
         }
 
-        showAlertWithTextfield(title: title, message: message, placeholder: placeholder,
+        showAlertWithTextfield(identifier: .passphraseAlert,
+                               title: title,
+                               message: message,
+                               placeholder: placeholder,
                                callback: task,
                                cancelCallback: cancelCallback)
     }
@@ -53,7 +56,11 @@ extension UIUtils {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
         let message = NSLocalizedString("Please enter the passphrase to continue", comment: "Passphrase message")
         let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
-        showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: newPassphraseEnteredCallback)
+        showAlertWithTextfield(identifier: .passphraseAlert,
+                               title: title,
+                               message: message,
+                               placeholder: placeholder,
+                               callback: newPassphraseEnteredCallback)
     }
 
     /// Shows an alert to inform the passphrase entered is wrong and to require a new one.
@@ -61,7 +68,11 @@ extension UIUtils {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
         let message = NSLocalizedString("The passphrase you entered is wrong. Please enter it again to continue", comment: "Passphrase message")
         let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
-        showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: newPassphraseEnteredCallback)
+        showAlertWithTextfield(identifier: .passphraseAlert,
+                               title: title,
+                               message: message,
+                               placeholder: placeholder,
+                               callback: newPassphraseEnteredCallback)
     }
 
     /// Shows an alert to inform the passphrase entered is too long and to require a new one.
@@ -69,6 +80,10 @@ extension UIUtils {
         let title = NSLocalizedString("Passphrase too long", comment: "Passphrase too long - title")
         let message = NSLocalizedString("Please enter one shorter", comment: "Please enter one shorter - message")
         let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
-        showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: newPassphraseEnteredCallback)
+        showAlertWithTextfield(identifier: .passphraseAlert,
+                               title: title,
+                               message: message,
+                               placeholder: placeholder,
+                               callback: newPassphraseEnteredCallback)
     }
 }

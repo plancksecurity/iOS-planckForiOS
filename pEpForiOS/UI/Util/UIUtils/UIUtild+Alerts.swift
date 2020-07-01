@@ -77,11 +77,14 @@ extension UIUtils {
     ///   - message: The message of the alert
     ///   - placeholder: The placeholder of the textfield
     ///   - callback: A callback that takes the user input as parameter.
-    static func showAlertWithTextfield(title: String, message: String, placeholder: String,
+    static func showAlertWithTextfield(identifier: IdentifiableAlertController.Identifier = .other,
+                                       title: String, message: String, placeholder: String,
                                        callback: @escaping(_ input: String) -> (),
                                        cancelCallback: (() -> Void)? = nil) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-
+        let alertController = IdentifiableAlertController(identifier: identifier,
+                                                          title: title,
+                                                          message: message,
+                                                          preferredStyle: .alert)
         alertController.addTextField { (textField) in
             textField.placeholder = placeholder
             textField.isSecureTextEntry = true
