@@ -68,7 +68,7 @@ extension PassphraseUtil: PassphraseUtilProtocol {
     public func passphraseForNewKeys(_ passphrase: String) throws {
         do {
             try PEPObjCAdapter.configurePassphrase(forNewKeys: passphrase)
-            //BUFF: add PP to key chain
+            KeyChain.storePassphraseForNewKeys(passphrase)
         } catch let error as NSError {
             if error.domain == PEPObjCAdapterErrorDomain {
                 switch error.code {
@@ -85,7 +85,7 @@ extension PassphraseUtil: PassphraseUtilProtocol {
     public func stopUsingPassphraseForNewKeys() {
         do {
             try PEPObjCAdapter.configurePassphrase(forNewKeys: nil)
-            KeyChain.sto
+            KeyChain.deletePassphraseForNewKeys()
         } catch let error as NSError {
             Log.shared.errorAndCrash("Uups. We did not expect anthing thrown here but got error: %@",
                                      error)
@@ -93,7 +93,6 @@ extension PassphraseUtil: PassphraseUtilProtocol {
     }
 
     public var isPassphraseForNewKeysEnabled: Bool {
-        fatalError("unimplemented stub")
-        // true if keychain has PP, false otherwize
+        return KeyChain.passphraseForNewKeys == nil ? false : true
     }
 }
