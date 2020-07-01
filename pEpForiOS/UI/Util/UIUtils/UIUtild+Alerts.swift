@@ -149,6 +149,6 @@ extension UIUtils {
         let title = NSLocalizedString("Passphrase too long", comment: "Passphrase too long - title")
         let message = NSLocalizedString("Please enter one shorter", comment: "Please enter one shorter - message")
         let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
-        showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: UIUtils.passphraseCallback)
+        showAlertWithTextfield(title: title, message: message, placeholder: placeholder, callback: passphraseCallback)
     }
 }
