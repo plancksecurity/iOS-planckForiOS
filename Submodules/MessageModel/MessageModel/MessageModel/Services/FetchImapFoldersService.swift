@@ -68,6 +68,7 @@ public class FetchImapFoldersService {
 
     func fetchFolders(inCdAccount cdAccount: CdAccount,
                       context: NSManagedObjectContext? = nil,
+                      alsoCreatePEPFolder: Bool = false,
                       saveContextWhenDone: Bool = true,
                       completion: @escaping CompletionBlock) {
         queue.addOperation {
@@ -116,6 +117,15 @@ public class FetchImapFoldersService {
                                                saveContextWhenDone: saveContextWhenDone)
             blockingQueue.addOperation(createRequiredFoldersOP)
             blockingQueue.waitUntilAllOperationsAreFinished()
+
+            if alsoCreatePEPFolder {
+                let createPEPFolderOP = CreateIMAPPepFolderOperation(context: context,
+                                                                     errorContainer: errorContainer,
+                                                                     imapConnection: imapConnection,
+                                                                     saveContextWhenDone: saveContextWhenDone)
+                blockingQueue.addOperation(createPEPFolderOP)
+                blockingQueue.waitUntilAllOperationsAreFinished()
+            }
 
             completion(!errorContainer.hasErrors)
         }

@@ -12,7 +12,7 @@ extension CdHeaderField {
 
     //???: looks fishy like a workaround. Tripple check and fix the actual issue instead of working around if so.
     static func deleteOrphans(context: NSManagedObjectContext) {
-        let p = NSPredicate(format: "%K = nil", CdHeaderField.RelationshipName.message)
+        let p = CdHeaderField.PredicateFactory.itemsWithoutAnyRelationshipMessage()
         if let orphans = CdHeaderField.all(predicate: p, in: context) as? [CdHeaderField] {
             for o in orphans {
                 context.delete(o)
