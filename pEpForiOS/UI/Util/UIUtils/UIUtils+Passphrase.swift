@@ -50,8 +50,10 @@ extension UIUtils {
     /// Shows an alert to require a Passphrase for the new keys.
     public static func showUserPassphraseForNewKeysAlert(cancelCallback: (() -> Void)? = nil) {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
-        let message = NSLocalizedString("We recommend to use device encryption instead of using passphrases, because they're securing all data not only keys. In case you wan to use a passphrase anyway, please enter a passphrase here and enable it.", comment: "Passphrase message")
-        let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
+        let message = NSLocalizedString("We recommend to use device encryption instead of using passphrases, because they're securing all data not only keys. In case you wan to use a passphrase anyway, please enter a passphrase here and enable it.",
+                                        comment: "Passphrase message")
+        let placeholder = NSLocalizedString("Passphrase",
+                                            comment: "Passphrase placeholder")
 
         let task: (String) -> Void = { input in
             do {
@@ -74,7 +76,8 @@ extension UIUtils {
     /// Shows an alert to require a Passphrase
     public static func showPassphraseRequiredAlert() {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
-        let message = NSLocalizedString("Please enter the passphrase to continue", comment: "Passphrase message")
+        let message = NSLocalizedString("Please enter the passphrase to continue",
+                                        comment: "Passphrase message")
         let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
         showAlertWithTextfield(identifier: .passphraseAlert,
                                title: title,
@@ -86,7 +89,8 @@ extension UIUtils {
     /// Shows an alert to inform the passphrase entered is wrong and to require a new one.
     public static func showPassphraseWrongAlert() {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
-        let message = NSLocalizedString("The passphrase you entered is wrong. Please enter it again to continue", comment: "Passphrase message")
+        let message = NSLocalizedString("The passphrase you entered is wrong. Please enter it again to continue",
+                                        comment: "Passphrase message")
         let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
         showAlertWithTextfield(identifier: .passphraseAlert,
                                title: title,
@@ -102,12 +106,12 @@ extension UIUtils {
 
     /// Shows an alert to inform the passphrase entered is too long and to require a new one.
     public static func showPassphraseForNewKeysTooLong(cancelCallback: (() -> Void)? = nil) {
-        UIUtils.presentTooLongAlertView(with: newPassphraseEnterForNewKeysCallback(with: cancelCallback), cancelCallback: cancelCallback)
+        UIUtils.presentTooLongAlertView(withInputHandler: newPassphraseEnterForNewKeysCallback(with: cancelCallback), cancelBlock: cancelCallback)
     }
 
     /// Shows an alert to inform the passphrase entered is too long and to require a new one.
     public static func showPassphraseTooLong(cancelCallback: (() -> Void)? = nil) {
-        UIUtils.presentTooLongAlertView(with: newPassphraseEnteredCallback(with: cancelCallback), cancelCallback: cancelCallback)
+        UIUtils.presentTooLongAlertView(withInputHandler: newPassphraseEnteredCallback(with: cancelCallback), cancelBlock: cancelCallback)
     }
 }
 
@@ -117,9 +121,10 @@ extension UIUtils {
 
     /// Presents an Alert View to inform the passphrase is too long.
     /// - Parameters:
-    ///   - callback: The callback to be executed when the new one is submited
-    ///   - cancelCallback: The callback to be executed when the user cancels the action
-    private static func presentTooLongAlertView(with callback: @escaping(_ input: String) -> (), cancelCallback: (() -> Void)? = nil) {
+    ///   - handleInputBlock: called when the user typed in a new password, passing the PW as `input` param.
+    ///   - cancelBlock: The callback to be executed when the user cancels the action
+    private static func presentTooLongAlertView(withInputHandler handleInputBlock: @escaping(_ input: String) -> (),
+                                                cancelBlock: (() -> Void)? = nil) {
         let title = NSLocalizedString("Passphrase too long", comment: "Passphrase too long - title")
         let message = NSLocalizedString("Please enter one shorter", comment: "Please enter one shorter - message")
         let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
@@ -127,7 +132,7 @@ extension UIUtils {
                                title: title,
                                message: message,
                                placeholder: placeholder,
-                               callback: callback,
-                               cancelCallback: cancelCallback)
+                               callback: handleInputBlock,
+                               cancelCallback: cancelBlock)
     }
 }
