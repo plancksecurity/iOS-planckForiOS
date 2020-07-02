@@ -319,22 +319,33 @@ extension FolderTableViewController {
             return indexPaths
         }
 
+        func allIndexPathsForSection() -> [IndexPath] {
+            var indexPaths = [IndexPath]()
+            let numberOfRows = vm[section].count
+            for row in 0 ..< numberOfRows {
+                let ip = IndexPath(row: row, section: section)
+                indexPaths.append(ip)
+            }
+            return indexPaths
+        }
+
+
         if hiddenSections.contains(section) {
             sender.imageView?.transform = CGAffineTransform.rotate90Degress()
             hiddenSections.remove(section)
+            let ips = allIndexPathsForSection()
+
             for i in 0..<vm[section].count {
                 vm[section][i].isHidden = false
             }
-            tableView.reloadData()
+            insertRows(at: ips)
         } else {
             sender.imageView?.transform = .identity
             hiddenSections.insert(section)
             let ips = indexPathsForSection()
-
             for i in 0..<vm[section].count {
                 vm[section][i].isHidden = true
             }
-
             deleteRows(at: ips)
         }
     }
