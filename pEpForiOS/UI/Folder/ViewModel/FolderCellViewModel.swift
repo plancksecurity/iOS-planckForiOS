@@ -98,10 +98,6 @@ public class FolderCellViewModel {
         }
         return false
     }
-
-    public func children() -> [FolderCellViewModel] {
-        return [FolderCellViewModel]()
-    }
 }
 
 

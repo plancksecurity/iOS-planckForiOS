@@ -311,7 +311,7 @@ extension FolderTableViewController {
         let section = sender.section
         func indexPathsForSection() -> [IndexPath] {
             var indexPaths = [IndexPath]()
-            let numberOfRows = folderVM?[section].count ?? 0
+            let numberOfRows = vm[section].numberOfRows
             for row in 0 ..< numberOfRows {
                 let ip = IndexPath(row: row, section: section)
                 indexPaths.append(ip)
@@ -325,15 +325,14 @@ extension FolderTableViewController {
             for i in 0..<vm[section].count {
                 vm[section][i].isHidden = false
             }
-
-            insertRows(at: indexPathsForSection())
+            tableView.reloadData()
         } else {
             sender.imageView?.transform = .identity
             hiddenSections.insert(section)
             for i in 0..<vm[section].count {
                 vm[section][i].isHidden = true
             }
-            deleteRows(at: indexPathsForSection())
+            tableView.reloadData()
         }
     }
 
@@ -348,10 +347,46 @@ extension FolderTableViewController {
         let folderCellViewModel = vm[indexPath.section].visibleFCVM(index: indexPath.item)
         folderCellViewModel.isExpand.toggle()
 
-        let children = childrenOfFolder(fromRowAt: indexPath)
+
+
+        var childrenIPs: [IndexPath]
+        if folderCellViewModel.isExpand {
+            guard let vm = folderVM else {
+                Log.shared.errorAndCrash("No view model.")
+                return
+            }
+
+            var childrenIndexPaths = [IndexPath]()
+            let sectionVM = vm[indexPath.section]
+            let children = sectionVM.children(of: folderCellViewModel).filter({$0.isHidden})
+
+            for i in 0 ..< children.count {
+                let childIndexPath = IndexPath(item: indexPath.item + i + 1, section: indexPath.section)
+                childrenIndexPaths.append(childIndexPath)
+            }
+            childrenIPs = childrenIndexPaths
+
+        } else {
+
+            guard let vm = folderVM else {
+                Log.shared.errorAndCrash("No view model.")
+                return
+            }
+
+            var childrenIndexPaths = [IndexPath]()
+            let sectionVM = vm[indexPath.section]
+            let children = sectionVM.children(of: folderCellViewModel).filter({!$0.isHidden})
+
+            for i in 0 ..< children.count {
+                let childIndexPath = IndexPath(item: indexPath.item + i + 1, section: indexPath.section)
+                childrenIndexPaths.append(childIndexPath)
+            }
+            childrenIPs = childrenIndexPaths
+        }
+
+        let children = vm[indexPath.section].children(of: folderCellViewModel)
         children.forEach { $0.isHidden = !folderCellViewModel.isExpand }
 
-        let childrenIPs = indexPathOfchildrenOfFolder(fromRowAt: indexPath)
 
         // Insert or delete rows
         if folderCellViewModel.isExpand {
