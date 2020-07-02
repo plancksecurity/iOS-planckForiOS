@@ -108,7 +108,8 @@ class EmailViewController: BaseTableViewController {
             contentCell.contentView.addSubview(htmlViewerViewController.view)
             htmlViewerViewController.view.fullSizeInSuperView()
             let displayHtml = appendInlinedPlainText(fromAttachmentsIn: m, to: htmlBody)
-            htmlViewerViewController.display(html: displayHtml, showExternalContent: true)
+            let external = displayHtml.containsExternalContent()
+            htmlViewerViewController.display(html: displayHtml, showExternalContent: external)
         } else {
             // We do not have HTML content.
             // Remove the HTML view if we just stepped from an HTML mail to one without
