@@ -16,6 +16,9 @@ import UIKit
 
 class FolderTableViewCell: UITableViewCell {
 
+    /// Every indentation level will move the cell this distance to the right.
+    private let subFolderIndentationWidth: CGFloat = 25.0
+
     @IBOutlet weak var chevronButton: SectionButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var iconImageView: UIImageView!
@@ -51,8 +54,7 @@ class FolderTableViewCell: UITableViewCell {
         super.layoutSubviews()
         //Increase tappable area
         chevronButton.contentEdgeInsets = UIEdgeInsets(top: 20, left: 40, bottom: 20, right: 0)
-        guard indentationWidth != 0 else { return }
-        iconLeadingConstraint.constant = (CGFloat(indentationLevel) * indentationWidth) + padding
+        iconLeadingConstraint.constant = (CGFloat(indentationLevel) * subFolderIndentationWidth) + padding
         contentView.layoutIfNeeded()
     }
 
@@ -60,5 +62,17 @@ class FolderTableViewCell: UITableViewCell {
         guard hasSubfolders else { return }
         isExpand = !isExpand
         delegate?.didTapChevronButton(cell: self)
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        indentationLevel = 0
+        titleLabel.text = ""
+        iconImageView.image = nil
+        hasSubfolders = false
+        isExpand = true
+        titleLabel?.textColor = .black
+        separatorImageView.isHidden = true
+        iconLeadingConstraint.constant = 16
     }
 }

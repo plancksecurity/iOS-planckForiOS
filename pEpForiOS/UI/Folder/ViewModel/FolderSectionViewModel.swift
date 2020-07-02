@@ -15,6 +15,7 @@ public class FolderSectionViewModel {
     private var account: Account?
     public var hidden = false
     private var items = [FolderCellViewModel]()
+
     private var help = [FolderCellViewModel]()
     let identityImageTool = IdentityImageTool()
 
@@ -89,10 +90,12 @@ public class FolderSectionViewModel {
 
     subscript(index: Int) -> FolderCellViewModel {
         get {
-//            let elements = self.items.filter { !$0.isHidden }
-//            return elements[index]
             return self.items[index]
         }
+    }
+
+    func visibleFCVM(index: Int) -> FolderCellViewModel {
+        return visibleItems[index]
     }
 
     var count : Int {
@@ -101,12 +104,30 @@ public class FolderSectionViewModel {
 
     var numberOfRows : Int {
         get {
-            return items.filter { !$0.isHidden } .count
+            return visibleItems.count
+        }
+    }
+
+    private var visibleItems : [FolderCellViewModel] {
+        get {
+            return items.filter { !$0.isHidden }
         }
     }
 
     func children(of item: FolderCellViewModel) -> [FolderCellViewModel] {
         return items.filter { item.isParentOf(fcvm: $0) }
+    }
+
+    func hiddenChildren(of item: FolderCellViewModel) -> [FolderCellViewModel] {
+        return items.filter { item.isParentOf(fcvm: $0) && $0.isHidden }
+    }
+
+    func visibleChildren(of item: FolderCellViewModel) -> [FolderCellViewModel] {
+        return items.filter { item.isParentOf(fcvm: $0) && !$0.isHidden }
+    }
+
+    func index(of item : FolderCellViewModel) -> Int? {
+        return items.firstIndex(of: item)
     }
 }
 

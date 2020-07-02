@@ -14,6 +14,11 @@ public class FolderCellViewModel {
     let folder: DisplayableFolderProtocol
     let level : Int
 
+
+    private var requiredFolders: [String] {
+        return ["Drafts", "Sent", "Spam", "Trash", "Outbox"]
+    }
+
     public var title : String {
         return self.name
     }
@@ -56,7 +61,14 @@ public class FolderCellViewModel {
     }
 
     public func isParentOf(fcvm: FolderCellViewModel) -> Bool {
+
         if let childFolder = fcvm.folder as? Folder, let parentFolder = folder as? Folder {
+            if requiredFolders.contains(childFolder.title) {
+                return false
+            }
+            if childFolder.title == "A" {
+                return false
+            }
             if childFolder.parent == parentFolder {
                 return true
             }
@@ -92,3 +104,10 @@ public class FolderCellViewModel {
     }
 }
 
+
+extension FolderCellViewModel : Equatable {
+    public static func == (lhs: FolderCellViewModel, rhs: FolderCellViewModel) -> Bool {
+        //TODO: check this. 
+        return lhs.title == rhs.title && lhs.folder.title == rhs.folder.title
+    }
+}
