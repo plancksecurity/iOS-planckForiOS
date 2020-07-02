@@ -8,7 +8,7 @@
 
 import Foundation
 
-class PGPKeyImportSettingViewController: BaseViewController {
+class PGPKeyImportSettingViewController: UIViewController {
     static private let cellID = "PGPKeyImportSettingTableViewCell"
     public var viewModel: PGPKeyImportSettingViewModel? {
         didSet {

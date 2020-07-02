@@ -303,8 +303,6 @@
 		43A469FA21513B10002E1036 /* PEPSwipeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A469F921513B10002E1036 /* PEPSwipeTableViewCell.swift */; };
 		43AA825B1E9BC5FF00ABD5A8 /* AttachmentViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AA825A1E9BC5FF00ABD5A8 /* AttachmentViewContainer.swift */; };
 		43AA825D1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AA825C1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift */; };
-		43AAC22A1F7A5AEE00F435F4 /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AAC2281F7A5AED00F435F4 /* BaseTableViewController.swift */; };
-		43AAC22B1F7A5AEE00F435F4 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AAC2291F7A5AEE00F435F4 /* BaseViewController.swift */; };
 		43B0443920067CC7007BCE3F /* UIAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0443820067CC7007BCE3F /* UIAccount.swift */; };
 		43B0443B20067D25007BCE3F /* UITestDataProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0443A20067D25007BCE3F /* UITestDataProtocol.swift */; };
 		43B0444C20077323007BCE3F /* OAuth2Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0444B20077323007BCE3F /* OAuth2Configuration.swift */; };
@@ -384,6 +382,7 @@
 		B72C7BAA2395182F0013B12E /* AccountTypeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72C7BA92395182F0013B12E /* AccountTypeSelectorViewController.swift */; };
 		B72C7BAC2395198D0013B12E /* AccountTypeSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72C7BAB2395198D0013B12E /* AccountTypeSelectorViewModel.swift */; };
 		B73123CA23D07739009EDC62 /* SettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73123C923D07739009EDC62 /* SettingsViewModelTest.swift */; };
+		B74F37C7249234BD0083501B /* UITableViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F37C6249234BD0083501B /* UITableViewController+Extension.swift */; };
 		B74F81021EB0E20000519FCC /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F81011EB0E20000519FCC /* LoginViewModel.swift */; };
 		B756E57523ED99FA0007D535 /* AccountTypeSelectorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B756E57423ED99FA0007D535 /* AccountTypeSelectorCollectionViewCell.swift */; };
 		B75FF00B1EFD420F00C57289 /* EmailListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */; };
@@ -877,8 +876,6 @@
 		43A469F921513B10002E1036 /* PEPSwipeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPSwipeTableViewCell.swift; sourceTree = "<group>"; };
 		43AA825A1E9BC5FF00ABD5A8 /* AttachmentViewContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentViewContainer.swift; sourceTree = "<group>"; };
 		43AA825C1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsViewDelegate.swift; sourceTree = "<group>"; };
-		43AAC2281F7A5AED00F435F4 /* BaseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
-		43AAC2291F7A5AEE00F435F4 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		43B0443820067CC7007BCE3F /* UIAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAccount.swift; sourceTree = "<group>"; };
 		43B0443A20067D25007BCE3F /* UITestDataProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestDataProtocol.swift; sourceTree = "<group>"; };
 		43B0444B20077323007BCE3F /* OAuth2Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Configuration.swift; sourceTree = "<group>"; };
@@ -958,6 +955,7 @@
 		B72C7BA92395182F0013B12E /* AccountTypeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeSelectorViewController.swift; sourceTree = "<group>"; };
 		B72C7BAB2395198D0013B12E /* AccountTypeSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeSelectorViewModel.swift; sourceTree = "<group>"; };
 		B73123C923D07739009EDC62 /* SettingsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTest.swift; sourceTree = "<group>"; };
+		B74F37C6249234BD0083501B /* UITableViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewController+Extension.swift"; sourceTree = "<group>"; };
 		B74F81011EB0E20000519FCC /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B756E57423ED99FA0007D535 /* AccountTypeSelectorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeSelectorCollectionViewCell.swift; sourceTree = "<group>"; };
 		B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewModel.swift; sourceTree = "<group>"; };
@@ -1104,8 +1102,6 @@
 			isa = PBXGroup;
 			children = (
 				15146C90237F07EF00D69495 /* PEPPageViewControllerBase.swift */,
-				43AAC2281F7A5AED00F435F4 /* BaseTableViewController.swift */,
-				43AAC2291F7A5AEE00F435F4 /* BaseViewController.swift */,
 			);
 			path = BaseClasses;
 			sourceTree = "<group>";
@@ -2500,6 +2496,14 @@
 			name = ViewModel;
 			sourceTree = "<group>";
 		};
+		B74F37C5249234A70083501B /* UITableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B74F37C6249234BD0083501B /* UITableViewController+Extension.swift */,
+			);
+			path = UITableViewController;
+			sourceTree = "<group>";
+		};
 		B76CF8B420D273A4002429A8 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -2538,6 +2542,7 @@
 		B7DB7FC22215C484003968DA /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B74F37C5249234A70083501B /* UITableViewController */,
 				B7DB7FDB221ADDBD003968DA /* UIImageView+Extension.swift */,
 				B7DB7FD9221ADDAF003968DA /* UIBarButtonItem+Extension.swift */,
 				B7DB7FD4221AD3BB003968DA /* UIButton+Extension.swift */,
@@ -2862,11 +2867,11 @@
 				43257C841F50629700DDC7F0 /* HtmlToAttributedTextSaxParser.swift in Sources */,
 				4351C2D61F4441190053381F /* man.c in Sources */,
 				150B8EB31FCEB93D00374438 /* UIUtils.swift in Sources */,
-				43AAC22A1F7A5AEE00F435F4 /* BaseTableViewController.swift in Sources */,
 				152295542302F72900204FD3 /* ExtraKeysSettingViewController.swift in Sources */,
 				220DCE351E0AB5CC002FE716 /* MessageContentCell.swift in Sources */,
 				158A56522403F05B003C0D7E /* ClientCertificateManagementViewModel.swift in Sources */,
 				1526597A21623652006A78DF /* SuggestViewModel.swift in Sources */,
+				B74F37C7249234BD0083501B /* UITableViewController+Extension.swift in Sources */,
 				4351C2D31F4441190053381F /* inlines.c in Sources */,
 				5B41C6082418F15100C268CE /* TutorialStep3ViewController.swift in Sources */,
 				220DCE361E0AB5CC002FE716 /* MessageSenderCell.swift in Sources */,
@@ -2942,7 +2947,6 @@
 				15175CEC205929FB00A8D9D0 /* CidHandler.swift in Sources */,
 				3A2119DF2412515D0030C3E4 /* DynamicHeightScrollView.swift in Sources */,
 				152A39CB21905C3E00D9F8E4 /* DocumentAttachmentPickerViewModel.swift in Sources */,
-				43AAC22B1F7A5AEE00F435F4 /* BaseViewController.swift in Sources */,
 				43B7154D1CECAADA0027861A /* ViewWidthsAligner.swift in Sources */,
 				43C322091EA90192005073FB /* PEP+UI.swift in Sources */,
 				1521B78F241BDC27000EAE57 /* UIUtils+KeySyncWizard.swift in Sources */,

@@ -9,7 +9,7 @@
 import UIKit
 import MessageModel
 
-final class EditableAccountSettingsViewController: BaseViewController {
+final class EditableAccountSettingsViewController: UIViewController {
 
     @IBOutlet private weak var saveButton: UIBarButtonItem!
 

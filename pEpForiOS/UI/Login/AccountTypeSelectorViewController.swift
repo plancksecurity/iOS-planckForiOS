@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class AccountTypeSelectorViewController: BaseViewController {
+final class AccountTypeSelectorViewController: UIViewController {
 
     var viewModel = AccountTypeSelectorViewModel()
     var delegate: AccountTypeSelectorViewModelDelegate?
