@@ -329,10 +329,13 @@ extension FolderTableViewController {
         } else {
             sender.imageView?.transform = .identity
             hiddenSections.insert(section)
+            let ips = indexPathsForSection()
+
             for i in 0..<vm[section].count {
                 vm[section][i].isHidden = true
             }
-            tableView.reloadData()
+
+            deleteRows(at: ips)
         }
     }
 
