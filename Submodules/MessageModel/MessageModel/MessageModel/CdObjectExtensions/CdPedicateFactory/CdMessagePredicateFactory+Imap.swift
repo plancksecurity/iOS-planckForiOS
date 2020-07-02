@@ -68,4 +68,22 @@ extension CdMessage.PredicateFactory {
 
         return NSCompoundPredicate(andPredicateWithSubpredicates: [needAppend, inFolder])
     }
+
+    static func imapDeletedLocally(cdAccount: CdAccount) -> NSPredicate {
+        return NSPredicate(
+            format: "%K = %d AND %K = %@",
+            RelationshipKeyPath.cdMessage_imap_localFlags_flagDeleted,
+            true,
+            RelationshipKeyPath.cdMessage_parent_account,
+            cdAccount)
+    }
+
+    static func imapDeletedOnServer(cdAccount: CdAccount) -> NSPredicate {
+        return NSPredicate(
+            format: "%K = %d AND %K = %@",
+            RelationshipKeyPath.cdMessage_imap_serverFlags_flagDeleted,
+            true,
+            RelationshipKeyPath.cdMessage_parent_account,
+            cdAccount)
+    }
 }
