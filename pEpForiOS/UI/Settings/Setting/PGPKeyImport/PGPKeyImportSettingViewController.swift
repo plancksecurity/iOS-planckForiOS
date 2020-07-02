@@ -111,7 +111,7 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
                 cell.titleLabel?.textColor = fontColor
             }
             cell.delegate = self
-            cell.passphraseSwitch.isOn = PassphraseUtil().isPassphraseForNewKeysEnabled
+            cell.passphraseSwitch.isOn = vm.isPassphraseForNewKeysEnabled()
             return cell
         case .pgpKeyImport, .setOwnKey:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: PGPKeyImportSettingViewController.cellID) else {
@@ -182,10 +182,15 @@ extension PGPKeyImportSettingViewController: PGPKeyImportSettingViewModelDelegat
 
 extension PGPKeyImportSettingViewController : PGPKeyImportSettingSwitchTableViewCellDelegate  {
     func passphraseSwitchChanged(sender: PGPKeyImportSettingSwitchTableViewCell, didChangeSwitchValue newValue: Bool, cancelCallback: (() -> Void)?) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+
         if newValue {
             UIUtils.showUserPassphraseForNewKeysAlert(cancelCallback: cancelCallback)
         } else {
-            PassphraseUtil().stopUsingPassphraseForNewKeys()
+            vm.stopUsingPassphraseForNewKeys()
         }
     }
 }

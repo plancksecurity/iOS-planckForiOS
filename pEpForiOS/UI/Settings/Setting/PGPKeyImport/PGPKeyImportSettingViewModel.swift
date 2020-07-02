@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MessageModel
 
 protocol PGPKeyImportSettingViewModelDelegate: class {
     func showSetPgpKeyImportScene()
@@ -54,8 +55,6 @@ class PGPKeyImportSettingViewModel {
             switch indexpath.row {
             case 0:
                 delegate?.showSetPgpKeyImportScene()
-            case 1:
-                break
             default:
                 Log.shared.error("Selected row not supported")
             }
@@ -110,5 +109,13 @@ extension PGPKeyImportSettingViewModel {
                                        title: NSMutableAttributedString(string: setOwnKeySectionHeaderTitle,
                                                                         attributes: nil))
         sections = [pgpkeyImportSection, setOwnKeySection]
+    }
+
+    func isPassphraseForNewKeysEnabled() -> Bool {
+        return PassphraseUtil().isPassphraseForNewKeysEnabled
+    }
+
+    func stopUsingPassphraseForNewKeys() {
+        PassphraseUtil().stopUsingPassphraseForNewKeys()
     }
 }
