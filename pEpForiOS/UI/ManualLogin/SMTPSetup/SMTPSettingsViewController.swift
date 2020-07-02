@@ -12,7 +12,7 @@ import pEpIOSToolbox
 import MessageModel
 import PantomimeFramework
 
-final class SMTPSettingsViewController: BaseViewController, TextfieldResponder {
+final class SMTPSettingsViewController: UIViewController, TextfieldResponder {
     @IBOutlet weak var manualAccountSetupContainerView: ManualAccountSetupContainerView!
 
     /// - Note: This VC doesn't have a view model yet, so this is used for the model.

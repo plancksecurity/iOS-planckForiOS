@@ -10,7 +10,7 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-class FolderTableViewController: BaseTableViewController {
+class FolderTableViewController: UITableViewController {
     var folderVM: FolderViewModel?
     var showNext: Bool = true
 
@@ -28,6 +28,8 @@ class FolderTableViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.title = title
+        UITableViewController.setupCommonSettings(tableView: tableView)
         setup()
 
         if showNext {

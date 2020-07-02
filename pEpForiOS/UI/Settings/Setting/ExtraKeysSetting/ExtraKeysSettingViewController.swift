@@ -6,7 +6,7 @@
 //  Copyright © 2019 p≡p Security S.A. All rights reserved.
 //
 
-class ExtraKeysSettingViewController: BaseViewController {
+class ExtraKeysSettingViewController: UIViewController {
     static private let uiTableViewCellID = "ExtraKeysSettingCell"
 
     @IBOutlet private weak var addExtraKeyButton: UIButton!

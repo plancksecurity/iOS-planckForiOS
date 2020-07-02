@@ -11,7 +11,7 @@ import QuickLook
 import pEpIOSToolbox
 
 // Represents the a list of mails showing one mail with all details in full screen.
-class EmailDetailViewController: BaseViewController {
+class EmailDetailViewController: UIViewController {
     static private let cellXibName = "EmailDetailCollectionViewCell"
     static private let cellId = "EmailDetailViewCell"
     /// Collects all QueryResultsDelegate reported changes to call them in one CollectionView
