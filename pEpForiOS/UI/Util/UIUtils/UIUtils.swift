@@ -32,6 +32,8 @@ struct UIUtils {
 
 extension UIUtils {
 
+    /// Whether or not a passphrase related alert is currently shown.
+    /// - note: It is save to call that from any queue.
     static private var isCurrentlyShowingPassphraseInputAlert: Bool {
         var result = false
 
