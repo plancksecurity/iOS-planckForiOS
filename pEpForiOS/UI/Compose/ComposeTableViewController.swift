@@ -13,7 +13,7 @@ import Photos
 import pEpIOSToolbox
 import PEPObjCAdapterFramework
 
-class ComposeTableViewController: BaseTableViewController {
+class ComposeTableViewController: UITableViewController {
     @IBOutlet var sendButton: UIBarButtonItem!
 
     private var suggestionsChildViewController: SuggestTableViewController?
@@ -51,6 +51,8 @@ class ComposeTableViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.title = title
+        UITableViewController.setupCommonSettings(tableView: tableView)
         setupRecipientSuggestionsTableViewController()
         viewModel?.handleDidReAppear()
     }
