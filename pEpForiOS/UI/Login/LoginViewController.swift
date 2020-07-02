@@ -552,7 +552,7 @@ extension LoginViewController {
 
     private func setManualSetupButtonHidden(_ hidden: Bool) {
         manualConfigButton.isHidden = hidden
-//        pEpSyncViewCenterHConstraint.isActive = hidden
+        pEpSyncViewCenterHConstraint.isActive = hidden
         UIView.animate(withDuration: 0.25,
                        delay: 0,
                        options: .curveEaseInOut,
