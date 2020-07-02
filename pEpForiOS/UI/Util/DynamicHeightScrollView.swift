@@ -41,23 +41,23 @@ final class DynamicHeightScrollView: UIScrollView {
     ///   - animated: enable/disable animating scrolling to center first responder
     func scrollAndMakeVisible(_ sender: UIView,
                               animated: Bool = true) {
-//        let scrollViewHeight = frame.maxY
-//        let senderFrames = sender.convert(sender.bounds, to: self)
-//        var newContentOffSet = senderFrames.midY - scrollViewHeight / 2
-//        let contetOffSetDistanceToSafeArea =
-//            contentSize.height - newContentOffSet - scrollViewHeight
-//
-//        //Add padding if can not scroll enough
-//        if newContentOffSet < 0 {
-//            contentInset.top = abs(newContentOffSet)
-//        } else if contetOffSetDistanceToSafeArea < 0 {
-//            contentInset.bottom = abs(contetOffSetDistanceToSafeArea)
-//            newContentOffSet = contentSize.height
-//                - scrollViewHeight
-//                + abs(contetOffSetDistanceToSafeArea)
-//        }
-//
-//        setContentOffset(CGPoint(x: 0, y: newContentOffSet), animated: animated)
+        let scrollViewHeight = frame.maxY
+        let senderFrames = sender.convert(sender.bounds, to: self)
+        var newContentOffSet = senderFrames.midY - scrollViewHeight / 2
+        let contetOffSetDistanceToSafeArea =
+            contentSize.height - newContentOffSet - scrollViewHeight
+
+        //Add padding if can not scroll enough
+        if newContentOffSet < 0 {
+            contentInset.top = abs(newContentOffSet)
+        } else if contetOffSetDistanceToSafeArea < 0 {
+            contentInset.bottom = abs(contetOffSetDistanceToSafeArea)
+            newContentOffSet = contentSize.height
+                - scrollViewHeight
+                + abs(contetOffSetDistanceToSafeArea)
+        }
+
+        setContentOffset(CGPoint(x: 0, y: newContentOffSet), animated: animated)
     }
 }
 
@@ -109,11 +109,11 @@ extension DynamicHeightScrollView {
             Log.shared.errorAndCrash("DynamicHeightScrollView delegate is nil")
             return
         }
-        var bottomSafeArea: CGFloat = 0
-        if #available(iOS 11.0, *),
-            let window = window {
-            bottomSafeArea = window.safeAreaInsets.bottom
-        }
+//        var bottomSafeArea: CGFloat = 0
+//        if #available(iOS 11.0, *),
+//            let window = window {
+//            bottomSafeArea = window.safeAreaInsets.bottom
+//        }
 
         bottomConstraint.constant = -keyBoardHeight(notification: notification)// + bottomSafeArea
 
