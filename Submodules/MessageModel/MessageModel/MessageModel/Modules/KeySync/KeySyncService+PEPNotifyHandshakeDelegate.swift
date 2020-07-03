@@ -43,14 +43,8 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
             showHandshakeAndHandleResult(inBetween: me, and: thePartner, isNewGroup: true)
 
         case .timeout:
-            guard let thePartner = partner else {
-                Log.shared.errorAndCrash(message: "Expected partner identity")
-                return .illegalValue
-            }
             fastPollingDelegate?.disableFastPolling()
-            showHandShakeErrorAndHandleResult(error: KeySyncError.timeOut,
-                                              me: me,
-                                              partner: thePartner)
+            showHandShakeErrorAndHandleResult(error: KeySyncError.timeOut)
 
         case .acceptedDeviceAdded, .acceptedGroupCreated, .acceptedDeviceAccepted:
             fastPollingDelegate?.disableFastPolling()
@@ -123,9 +117,7 @@ extension KeySyncService {
         }
     }
 
-    private func showHandShakeErrorAndHandleResult(error: Error,
-                                                   me: PEPIdentity,
-                                                   partner: PEPIdentity) {
+    private func showHandShakeErrorAndHandleResult(error: Error) {
         handshakeHandler?.showError(error: error) {
             [weak self] keySyncErrorResponse in
             switch keySyncErrorResponse {
