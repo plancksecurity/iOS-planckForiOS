@@ -16,7 +16,7 @@ extension UIUtils {
     /// Shows an alert to input a passphrase for the new keys.
     public static func showPassphraseInputForNewKeys(cancelCallback: (() -> Void)? = nil) {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
-        let message = NSLocalizedString("We recommend to use device encryption instead of using passphrases, because they're securing all data not only keys. In case you wan to use a passphrase anyway, please enter a passphrase here and enable it.",
+        let message = NSLocalizedString("We recommend to use device encryption instead of using passphrases, because they're securing all data, not only keys. In case you want to use a passphrase anyway, please enter a passphrase here and enable it.",
                                         comment: "Passphrase message")
         let placeholder = NSLocalizedString("Passphrase",
                                             comment: "Passphrase placeholder")
