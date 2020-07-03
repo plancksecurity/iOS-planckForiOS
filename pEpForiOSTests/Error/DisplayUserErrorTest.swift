@@ -55,7 +55,8 @@ class DisplayUserErrorTest: XCTestCase {
          .couldNotFindMessage(info: "couldNotFindMessage")]
 
     let backgroundPepErrors: [BackgroundError.PepError] =
-        [.encryptionError(info: "encryptionError")]
+        [.passphraseRequired(info: "passphraseRequired"),
+         .wrongPassphrase(info: "passphraseRequired")]
 
     func testSmtpSentErrors() {
         for error in smtpSentErrors {
