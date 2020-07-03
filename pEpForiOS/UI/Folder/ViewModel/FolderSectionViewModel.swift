@@ -52,7 +52,7 @@ public class FolderSectionViewModel {
         }
     }
 
-    func getImage(callback: @escaping (UIImage?)-> Void) {
+    public func getImage(callback: @escaping (UIImage?)-> Void) {
         guard let ac = account else {
             Log.shared.errorAndCrash("No account selected")
             return
@@ -94,7 +94,10 @@ public class FolderSectionViewModel {
         }
     }
 
-    func visibleFCVM(index: Int) -> FolderCellViewModel {
+    /// Returns the FolderCellViewModel from the visible collection.
+    /// - Parameter index: The index of the row.
+    /// - Returns: The FolderCellViewModel
+    func visibleFolderCellViewModel(index: Int) -> FolderCellViewModel {
         return visibleItems[index]
     }
 
@@ -102,6 +105,7 @@ public class FolderSectionViewModel {
         return self.items.count
     }
 
+    /// Number of visible rows.
     var numberOfRows : Int {
         get {
             return visibleItems.count
@@ -114,21 +118,24 @@ public class FolderSectionViewModel {
         }
     }
 
-    func children(of item: FolderCellViewModel) -> [FolderCellViewModel] {
+    /// Returns the children folder cell view models of a given folder cell view model.
+    /// - Parameter item: The FCVM to find its children.
+    /// - Returns: The FCMV's children
+    public func children(of item: FolderCellViewModel) -> [FolderCellViewModel] {
         return items.filter { item.isParentOf(fcvm: $0) }
     }
 
-    func hiddenChildren(of item: FolderCellViewModel) -> [FolderCellViewModel] {
-        return items.filter { item.isParentOf(fcvm: $0) && $0.isHidden }
-    }
-
-    func visibleChildren(of item: FolderCellViewModel) -> [FolderCellViewModel] {
+    /// Returns the visible children folder cell view models of a given folder cell view model.
+    /// - Parameter item: The FCVM to find its children.
+    /// - Returns: The visible FCMV's children
+    public func visibleChildren(of item: FolderCellViewModel) -> [FolderCellViewModel] {
         return items.filter { item.isParentOf(fcvm: $0) && !$0.isHidden }
     }
 
-    func index(of item : FolderCellViewModel) -> Int? {
+    /// Retrives the index o a folder cell view model.
+    /// - Parameter item: The vm to get its index.
+    /// - Returns: The index exists, nil if not.
+    public func index(of item : FolderCellViewModel) -> Int? {
         return items.firstIndex(of: item)
     }
 }
-
-
