@@ -119,11 +119,14 @@ public struct BackgroundError {
      Errors dealing with the pEp engine.
      */
     public enum PepError: Error {
-        case encryptionError(info: String?)
+        case passphraseRequired(info: String?)
+        case wrongPassphrase(info: String?)
 
         public func info() -> String? {
             switch self {
-            case .encryptionError(let info):
+            case .passphraseRequired(info: let info):
+                return info
+            case .wrongPassphrase(info: let info):
                 return info
             }
         }

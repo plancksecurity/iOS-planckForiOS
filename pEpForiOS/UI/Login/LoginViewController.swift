@@ -63,6 +63,7 @@ final class LoginViewController: UIViewController {
         if accountType == .icloud {
             showiCloudAlert()
         }
+
     }
 
     override func viewDidLayoutSubviews() {
@@ -620,7 +621,6 @@ extension LoginViewController {
                                    positiveButtonAction: openiCloudInfoInBrowser)
     }
 }
-
 // MARK: - Accessibility
 
 extension LoginViewController {

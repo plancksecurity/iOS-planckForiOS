@@ -16,7 +16,7 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
 
     func notifyHandshake(_ object: UnsafeMutableRawPointer?,
                          me: PEPIdentity,
-                         partner: PEPIdentity,
+                         partner: PEPIdentity?,
                          signal: PEPSyncHandshakeSignal) -> PEPStatus {
         switch signal {
         // notificaton of actual group status
@@ -27,21 +27,43 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
 
         // request show handshake dialog
         case .initAddOurDevice, .initAddOtherDevice:
+            guard let thePartner = partner else {
+                Log.shared.errorAndCrash(message: "Expected partner identity")
+                return .illegalValue
+            }
             fastPollingDelegate?.enableFastPolling()
-            showHandshakeAndHandleResult(inBetween: me, and: partner, isNewGroup: false)
+            showHandshakeAndHandleResult(inBetween: me, and: thePartner, isNewGroup: false)
 
         case .initFormGroup:
+            guard let thePartner = partner else {
+                Log.shared.errorAndCrash(message: "Expected partner identity")
+                return .illegalValue
+            }
             fastPollingDelegate?.enableFastPolling()
-            showHandshakeAndHandleResult(inBetween: me, and: partner, isNewGroup: true)
+            showHandshakeAndHandleResult(inBetween: me, and: thePartner, isNewGroup: true)
 
         case .timeout:
             fastPollingDelegate?.disableFastPolling()
-            showHandShakeErrorAndHandleResult(error: KeySyncError.timeOut, me: me, partner: partner)
+            showHandShakeErrorAndHandleResult(error: KeySyncError.timeOut)
 
         case .acceptedDeviceAdded, .acceptedGroupCreated, .acceptedDeviceAccepted:
             fastPollingDelegate?.disableFastPolling()
             handshakeHandler?.showSuccessfullyGrouped()
             tryRedecryptYetUndecryptableMessages()
+
+        case .passphraseRequired:
+            // We have to restart sync to workaround that no beacon is sent after this signal have been received.
+            fastPollingDelegate?.disableFastPolling()
+            stop()
+            handshakeHandler?.showPassphraseRequired() { [weak self] success in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                if success {
+                    me.start() // start() takes care to start only if sync is enabled
+                }
+            }
 
         // Other
         case .undefined:
@@ -95,9 +117,7 @@ extension KeySyncService {
         }
     }
 
-    private func showHandShakeErrorAndHandleResult(error: Error,
-                                                   me: PEPIdentity,
-                                                   partner: PEPIdentity) {
+    private func showHandShakeErrorAndHandleResult(error: Error) {
         handshakeHandler?.showError(error: error) {
             [weak self] keySyncErrorResponse in
             switch keySyncErrorResponse {
