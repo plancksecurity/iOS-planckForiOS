@@ -103,6 +103,7 @@ extension AppDelegate {
             // and pretty much don't do anything.
             return false
         }
+        Log.shared.logDebugInfo()
 
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
         Appearance.setup    ()
