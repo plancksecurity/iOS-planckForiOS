@@ -92,7 +92,7 @@ extension PGPKeyImportSettingViewModel {
                                   titleFontColor: .pEpGreen)
 
         // Passphrase
-        let usePassphraseForNewKeys = NSLocalizedString("Use a Passphrase for new keys",
+        let usePassphraseForNewKeys = NSLocalizedString("Use a passphrase for new keys",
                                                      comment: "PGPKeyImportSetting - Use a Passphrase for new keys")
         let passphraseForNewKey = Row(type: .passphrase,
                                       title: usePassphraseForNewKeys,
