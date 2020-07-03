@@ -24,7 +24,7 @@ class KeySyncServiceHandshakeHandlerMoc: KeySyncServiceHandshakeHandlerProtocol 
 
     func cancelHandshake() {}
 
-    func showPassphraseRequired() {}
+    func showPassphraseRequired(completion: ((Success)->Void)? = nil) {}
 
     func showSuccessfullyGrouped() {}
 }

@@ -104,9 +104,9 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
         }
     }
 
-    func showPassphraseRequired() {
+    func showPassphraseRequired(completion: ((Success)->Void)? = nil) {
         DispatchQueue.main.async {
-            UIUtils.showPassphraseRequiredAlert()
+            UIUtils.showPassphraseRequiredAlert(completion: completion)
         }
     }
 

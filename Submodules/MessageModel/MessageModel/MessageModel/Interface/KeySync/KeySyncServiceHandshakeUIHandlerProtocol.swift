@@ -26,7 +26,11 @@ public protocol KeySyncServiceHandshakeHandlerProtocol: class {
 
     func showSuccessfullyGrouped()
 
-    func showPassphraseRequired()
+    /// Ask the user for the required passphrase and return whether or not the user successfully
+    /// entered a passhprase in the completion block
+    /// - Parameter completion: called after asking the user for passphrase. `success` is true if
+    ///                         the user successfully entered a passhprase and false otherwize.
+    func showPassphraseRequired(completion: ((Success)->Void)?)
 
     func showError(error: Error?, completion: ((KeySyncErrorResponse) -> ())?)
 }
