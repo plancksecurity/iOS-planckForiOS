@@ -304,7 +304,7 @@ extension ImapIdleOperation {
             timer.invalidate()
         }
         // Maximum time we should stay in IDLE mode.
-        // The RFC suggests a timeout < 30 minutes.
+        // The RFC suggests a timeout <= 29 minutes.
         // It turns out GMX closes the connection without further notice after ~1 minute though ...
         let maxIdleTime = 0.99 * 60.0
         maxIdleTimeTimer = Timer.scheduledTimer(withTimeInterval: maxIdleTime, repeats: false) { [weak self]  timer in
