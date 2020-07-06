@@ -91,7 +91,6 @@ public class FolderCellViewModel {
 
     public func isSubfolder() -> Bool {
         if let folder = folder as? Folder {
-//            return folder.folderType == .normal && folder.folderType != .outbox
             return folder.folderType == .normal && folder.folderType != .outbox && folder.parent != nil
         }
         return false
