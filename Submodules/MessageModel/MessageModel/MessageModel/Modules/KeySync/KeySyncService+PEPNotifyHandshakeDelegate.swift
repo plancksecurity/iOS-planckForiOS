@@ -53,16 +53,17 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
 
         case .passphraseRequired:
             // We have to restart sync to workaround that no beacon is sent after this signal have been received.
-            fastPollingDelegate?.disableFastPolling()
-            stop()
+//            fastPollingDelegate?.disableFastPolling()
+//            stop()
             handshakeHandler?.showPassphraseRequired() { [weak self] success in
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost myself")
-                    return
-                }
-                if success {
-                    me.start() // start() takes care to start only if sync is enabled
-                }
+                //BUFF: rm ugly completion after proven obsolete
+//                guard let me = self else {
+//                    Log.shared.errorAndCrash("Lost myself")
+//                    return
+//                }
+//                if success {
+//                    me.start() // start() takes care to start only if sync is enabled
+//                }
             }
 
         // Other
