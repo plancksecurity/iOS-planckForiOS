@@ -104,7 +104,9 @@ extension UIUtils {
         })
         alertController.addAction(action)
         let cancelAction: UIAlertAction = UIAlertAction(title: cancelTitle, style: .cancel) { (action) in
-            cancelCallback?()
+            if (cancelCallback != nil) {
+                cancelCallback?()
+            }
         }
 
         alertController.addAction(cancelAction)
