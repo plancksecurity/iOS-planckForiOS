@@ -10,13 +10,17 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-class FolderTableViewController: BaseTableViewController {
+final class FolderTableViewController: BaseTableViewController {
 
     /// The hidden sections are the collapsed accounts.
     private var hiddenSections = Set<Int>()
 
     var folderVM: FolderViewModel?
     var showNext: Bool = true
+
+    var maxIndentationLevel: Int {
+        return Device.isIphone5 ? 3 : 4
+    }
 
     @IBOutlet private weak var addAccountButton: UIButton!
 
@@ -88,16 +92,6 @@ class FolderTableViewController: BaseTableViewController {
         }
     }
 
-    // MARK: - Action
-
-    @objc private func showCompose() {
-        UIUtils.presentComposeView(forRecipientInUrl: nil, appConfig: appConfig)
-    }
-    
-    @objc private func showSettingsViewController() {
-        UIUtils.presentSettings(appConfig: appConfig)
-    }
-
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -137,7 +131,8 @@ class FolderTableViewController: BaseTableViewController {
         /// Config cell
         // Indentation
         let subLevel = isSubfolder(indexPath: indexPath) ?  1 : 0
-        cell.indentationLevel = fcvm.level + subLevel
+        let indentationLevel = fcvm.level + subLevel
+        cell.indentationLevel = min(indentationLevel, maxIndentationLevel)
         cell.hasSubfolders = hasSubfolders(indexPath: indexPath)
         cell.isExpand = fcvm.isExpand
 
@@ -192,23 +187,6 @@ class FolderTableViewController: BaseTableViewController {
         showNext = false
         self.navigationController?.pushViewController(vc, animated: animated)
     }
-
-    // MARK: - Segue
-
-    @IBAction func addAccountTapped(_ sender: Any) {
-        performSegue(withIdentifier: .newAccount, sender: self)
-    }
-
-    /**
-     Unwind segue for the case of adding an account that requires manual setup
-     */
-    @IBAction func segueUnwindAfterAccountCreation(segue: UIStoryboardSegue) {
-        showNext = true
-    }
-
-    @IBAction func segueUnwindLastAccountDeleted(segue: UIStoryboardSegue) {
-        showNext = true
-    }
 }
 
 // MARK: - LoginTableViewControllerDelegate
@@ -254,6 +232,31 @@ extension FolderTableViewController: SegueHandlerType {
             dvc.hidesBottomBarWhenPushed = true
         }
     }
+
+    // MARK: Action
+
+    @IBAction private func addAccountTapped(_ sender: Any) {
+        performSegue(withIdentifier: .newAccount, sender: self)
+    }
+
+    /**
+     Unwind segue for the case of adding an account that requires manual setup
+     */
+    @IBAction private func segueUnwindAfterAccountCreation(segue: UIStoryboardSegue) {
+        showNext = true
+    }
+
+    @IBAction private func segueUnwindLastAccountDeleted(segue: UIStoryboardSegue) {
+        showNext = true
+    }
+
+    @objc private func showCompose() {
+        UIUtils.presentComposeView(forRecipientInUrl: nil, appConfig: appConfig)
+    }
+
+    @objc private func showSettingsViewController() {
+        UIUtils.presentSettings(appConfig: appConfig)
+    }
 }
 
 // MARK: - Subfolder Indentation
@@ -291,14 +294,14 @@ extension FolderTableViewController: FolderTableViewCellDelegate {
 
     /// Callback executed when the chevron arrow is tapped.
     /// - Parameter cell: The cell which trigger the action.
-    func didTapChevronButton(cell:  UITableViewCell) {
+    public func didTapChevronButton(cell:  UITableViewCell) {
         guard let currentIp = tableView.indexPath(for: cell) else { return }
         guard hasSubfolders(indexPath: currentIp) else { return }
         hideShowSubFolders(ofRowAt:  currentIp)
     }
 }
 
-// MARK: - Collapse
+// MARK: - Collapse / Expand
 
 extension FolderTableViewController {
 
@@ -347,18 +350,19 @@ extension FolderTableViewController {
         if hiddenSections.contains(section) {
             sender.imageView?.transform = CGAffineTransform.rotate90Degress()
             hiddenSections.remove(section)
+            //Do not change the order of this methods as the next line change the hidden status
             let ips = allIndexPathsForSection()
             setAllRowsHidden(to: false)
-            insertRows(at: ips)
+            tableView.insertRows(at: ips)
         } else {
             sender.imageView?.transform = .identity
             hiddenSections.insert(section)
+            //Do not change the order of this methods as the next line change the hidden status
             let ips = indexPathsForSection()
             setAllRowsHidden(to: true)
-            deleteRows(at: ips)
+            tableView.deleteRows(at: ips)
         }
     }
-
 
     /// Shows/Hides the subfolder of the selected one.
     /// - Parameter indexPath: The indexPath of the selected folder.
@@ -391,9 +395,9 @@ extension FolderTableViewController {
 
         // Insert or delete rows
         if folderCellViewModel.isExpand {
-            insertRows(at: childrenIPs)
+            tableView.insertRows(at: childrenIPs)
         } else {
-            deleteRows(at: childrenIPs)
+            tableView.deleteRows(at: childrenIPs)
         }
     }
 }
@@ -452,26 +456,5 @@ extension FolderTableViewController {
         } else {
             return tableView.sectionHeaderHeight
         }
-    }
-}
-
-// MARK: - Insert/Delete Rows
-
-extension FolderTableViewController {
-
-    /// Delete the rows passed by parameter
-    /// - Parameter indexPaths: The indexPaths of the rows to delete.
-    private func deleteRows(at indexPaths: [IndexPath]) {
-        tableView.beginUpdates()
-        tableView.deleteRows(at: indexPaths, with: .top)
-        tableView.endUpdates()
-    }
-
-    /// Insert the rows passed by parameter
-    /// - Parameter indexPaths: The indexPaths to insert.
-    private func insertRows(at indexPaths: [IndexPath]) {
-        tableView.beginUpdates()
-        tableView.insertRows(at: indexPaths, with: .fade)
-        tableView.endUpdates()
     }
 }

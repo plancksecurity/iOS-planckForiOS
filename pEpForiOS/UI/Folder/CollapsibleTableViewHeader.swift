@@ -27,7 +27,6 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
     let userAddress = UILabel()
     let rightStackView = UIStackView()
     let arrowImageView = UIImageView()
-    let arrowLabel = UILabel()
     lazy var sectionButton: SectionButton = {
         return SectionButton()
     }()
@@ -35,27 +34,26 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
 
-        profileImage.widthAnchor.constraint(equalToConstant: 48.0).isActive = true
-        profileImage.heightAnchor.constraint(equalToConstant: 48.0).isActive = true
+        //Profile image
+        profileImage.widthAnchor.constraint(equalToConstant: 48.0).usingPriority(.almostRequired).isActive = true
+        profileImage.heightAnchor.constraint(equalToConstant: 48.0).usingPriority(.almostRequired).isActive = true
         profileImage.translatesAutoresizingMaskIntoConstraints = false
-        //arrowImageView.heightAnchor.constraint(equalToConstant: 10).isActive = true
-        rightStackView.widthAnchor.constraint(equalToConstant: 10).isActive = true
-        //arrowImageView.translatesAutoresizingMaskIntoConstraints = false
-        //rightStackView.addArrangedSubview(arrowImageView)
-        arrowLabel.translatesAutoresizingMaskIntoConstraints = false
-        rightStackView.addArrangedSubview(arrowLabel)
+
+        //Right Stack View
+        rightStackView.widthAnchor.constraint(equalToConstant: 10).usingPriority(.almostRequired).isActive = true
         rightStackView.axis = .vertical
         rightStackView.alignment = .fill
         rightStackView.distribution = .fill
         rightStackView.translatesAutoresizingMaskIntoConstraints = false
+
+        //Account type
         accountType.translatesAutoresizingMaskIntoConstraints = false
-        accountType.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body)
+        accountType.font = UIFont.pepFont(style: .body, weight: .regular)
+
+
+        //Label stack view
         labelStackView.addArrangedSubview(accountType)
-        accountName.translatesAutoresizingMaskIntoConstraints = false
-        accountName.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body)
         labelStackView.addArrangedSubview(accountName)
-        userAddress.translatesAutoresizingMaskIntoConstraints = false
-        userAddress.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body)
         labelStackView.addArrangedSubview(userAddress)
         labelStackView.layoutMargins = UIEdgeInsets(top: 0.0, left: 5.0, bottom: 0.0, right: 5.0)
         labelStackView.isLayoutMarginsRelativeArrangement = true
@@ -65,6 +63,14 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         labelStackView.spacing = 5.0
         labelStackView.translatesAutoresizingMaskIntoConstraints = false
 
+        //Account name
+        accountName.translatesAutoresizingMaskIntoConstraints = false
+        accountName.font = UIFont.pepFont(style: .body, weight: .regular)
+
+        //User address
+        userAddress.translatesAutoresizingMaskIntoConstraints = false
+        userAddress.font = UIFont.pepFont(style: .body, weight: .regular)
+
         sectionButton.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(profileImage)
         contentView.addSubview(rightStackView)
@@ -72,7 +78,6 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         contentView.addSubview(sectionButton)
 
         contentView.backgroundColor = UIColor.white
-
 
         autolayout()
     }
@@ -139,5 +144,31 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
     override func layoutSubviews() {
         super.layoutSubviews()
         profileImage.applyContactImageCornerRadius()
+    }
+}
+
+extension NSLayoutConstraint {
+
+    /// Returns the constraint sender with the passed priority.
+    ///
+    /// - Parameter priority: The priority to be set.
+    /// - Returns: The sended constraint adjusted with the new priority.
+    func usingPriority(_ priority: UILayoutPriority) -> NSLayoutConstraint {
+        self.priority = priority
+        return self
+    }
+
+}
+
+extension UILayoutPriority {
+
+    /// Creates a priority which is almost required, but not 100%.
+    static var almostRequired: UILayoutPriority {
+        return UILayoutPriority(rawValue: 999)
+    }
+
+    /// Creates a priority which is not required at all.
+    static var notRequired: UILayoutPriority {
+        return UILayoutPriority(rawValue: 0)
     }
 }

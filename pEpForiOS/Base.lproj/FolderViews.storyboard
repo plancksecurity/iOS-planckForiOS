@@ -48,13 +48,13 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qGb-BL-Uzf" translatesAutoresizingMaskIntoConstraints="NO" id="aEO-6H-0GF">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s3w-9y-WE2">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalCompressionResistancePriority="749" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s3w-9y-WE2">
                                             <rect key="frame" x="70" y="11.5" width="33.5" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="pEpForiOS-icon-movetofolder" translatesAutoresizingMaskIntoConstraints="NO" id="nzC-3a-eQ0" userLabel="icon">
+                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" image="pEpForiOS-icon-movetofolder" translatesAutoresizingMaskIntoConstraints="NO" id="nzC-3a-eQ0" userLabel="icon">
                                             <rect key="frame" x="16" y="10" width="29" height="24"/>
                                         </imageView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8hS-wf-RIZ" userLabel="separator">
@@ -64,7 +64,7 @@
                                                 <constraint firstAttribute="height" constant="1" id="Ae1-PL-AF7"/>
                                             </constraints>
                                         </view>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5mO-NN-q2z" userLabel="chevron" customClass="SectionButton" customModule="pEpForiOS" customModuleProvider="target">
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5mO-NN-q2z" userLabel="chevron" customClass="SectionButton" customModule="pEpForiOS" customModuleProvider="target">
                                             <rect key="frame" x="346" y="11" width="13" height="22"/>
                                             <state key="normal" image="chevron-icon-right-gray"/>
                                             <connections>
@@ -78,7 +78,7 @@
                                         <constraint firstItem="s3w-9y-WE2" firstAttribute="leading" secondItem="nzC-3a-eQ0" secondAttribute="trailing" constant="25" id="SEH-Cf-5Ni"/>
                                         <constraint firstItem="8hS-wf-RIZ" firstAttribute="leading" secondItem="s3w-9y-WE2" secondAttribute="leading" id="b6O-fG-gO8"/>
                                         <constraint firstItem="nzC-3a-eQ0" firstAttribute="leading" secondItem="aEO-6H-0GF" secondAttribute="leading" constant="16" id="hMr-tw-6zZ"/>
-                                        <constraint firstItem="5mO-NN-q2z" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="s3w-9y-WE2" secondAttribute="trailing" constant="8" id="sah-oE-AhP"/>
+                                        <constraint firstItem="5mO-NN-q2z" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="s3w-9y-WE2" secondAttribute="trailing" priority="750" constant="8" id="sah-oE-AhP"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <constraints>

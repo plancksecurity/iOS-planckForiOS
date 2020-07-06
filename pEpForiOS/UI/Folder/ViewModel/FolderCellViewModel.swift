@@ -66,9 +66,6 @@ public class FolderCellViewModel {
             if requiredFolders.contains(childFolder.title) {
                 return false
             }
-            if childFolder.title == "A" {
-                return false
-            }
             if childFolder.parent == parentFolder {
                 return true
             }
@@ -94,16 +91,15 @@ public class FolderCellViewModel {
 
     public func isSubfolder() -> Bool {
         if let folder = folder as? Folder {
-            return folder.folderType == .normal && folder.folderType != .outbox
+//            return folder.folderType == .normal && folder.folderType != .outbox
+            return folder.folderType == .normal && folder.folderType != .outbox && folder.parent != nil
         }
         return false
     }
 }
 
-
 extension FolderCellViewModel : Equatable {
     public static func == (lhs: FolderCellViewModel, rhs: FolderCellViewModel) -> Bool {
-        //TODO: check this. 
         return lhs.title == rhs.title && lhs.folder.title == rhs.folder.title
     }
 }
