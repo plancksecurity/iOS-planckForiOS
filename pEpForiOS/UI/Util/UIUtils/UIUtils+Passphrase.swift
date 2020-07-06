@@ -11,42 +11,6 @@ import MessageModel
 
 extension UIUtils {
 
-    // MARK : - Callbacks
-
-    /// This callback attempts to register the new passphrase.
-    /// If it fails because of its lenghts or due other reasons, it prompts to enter a new one.
-    private static func newPassphraseEnteredCallback(with cancelCallback: (()->Void)?) -> (String)->Void {
-        return { input in
-            do {
-                try PassphraseUtil().newPassphrase(input)
-            } catch PassphraseUtil.PassphraseError.tooLong {
-                Log.shared.info("Passphrase too long")
-                showPassphraseForNewKeysTooLong(cancelCallback: cancelCallback)
-            } catch {
-                Log.shared.error("Something went wrong - It should not happen")
-                showPassphraseWrongAlert()
-            }
-        }
-    }
-
-    /// This callback attempts to register the new passphrase for new keys.
-    /// If it fails because of its lenghts or due other reasons, it prompts to enter a new one.
-    private static func newPassphraseEnterForNewKeysCallback(with cancelCallback: (()->Void)?) -> (String)->Void {
-        return { input in
-            do {
-                try PassphraseUtil().newPassphraseForNewKeys(input)
-            } catch PassphraseUtil.PassphraseError.tooLong {
-                Log.shared.info("Passphrase too long")
-                showPassphraseForNewKeysTooLong(cancelCallback: cancelCallback)
-            } catch {
-                Log.shared.error("Something went wrong - It should not happen")
-                showPassphraseWrongAlert()
-            }
-        }
-    }
-
-    // MARK : - Alerts
-
     /// Shows an alert to require a Passphrase for the new keys.
     public static func showUserPassphraseForNewKeysAlert(cancelCallback: (() -> Void)? = nil) {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
@@ -87,7 +51,7 @@ extension UIUtils {
     }
 
     /// Shows an alert to inform the passphrase entered is wrong and to require a new one.
-    public static func showPassphraseWrongAlert() {
+    static func showPassphraseWrongAlert() {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
         let message = NSLocalizedString("The passphrase you entered is wrong. Please enter it again to continue",
                                         comment: "Passphrase message")
@@ -115,9 +79,43 @@ extension UIUtils {
     }
 }
 
-// MARK : - Private
+// MARK: - Private
 
 extension UIUtils {
+
+    // MARK: Callbacks
+
+    /// This callback attempts to register the new passphrase.
+    /// If it fails because of its lenghts or due other reasons, it prompts to enter a new one.
+    private static func newPassphraseEnteredCallback(with cancelCallback: (()->Void)?) -> (String)->Void {
+        return { input in
+            do {
+                try PassphraseUtil().newPassphrase(input)
+            } catch PassphraseUtil.PassphraseError.tooLong {
+                Log.shared.info("Passphrase too long")
+                showPassphraseForNewKeysTooLong(cancelCallback: cancelCallback)
+            } catch {
+                Log.shared.error("Something went wrong - It should not happen")
+                showPassphraseWrongAlert()
+            }
+        }
+    }
+
+    /// This callback attempts to register the new passphrase for new keys.
+    /// If it fails because of its lenghts or due other reasons, it prompts to enter a new one.
+    private static func newPassphraseEnterForNewKeysCallback(with cancelCallback: (()->Void)?) -> (String)->Void {
+        return { input in
+            do {
+                try PassphraseUtil().newPassphraseForNewKeys(input)
+            } catch PassphraseUtil.PassphraseError.tooLong {
+                Log.shared.info("Passphrase too long")
+                showPassphraseForNewKeysTooLong(cancelCallback: cancelCallback)
+            } catch {
+                Log.shared.error("Something went wrong - It should not happen")
+                showPassphraseWrongAlert()
+            }
+        }
+    }
 
     /// Presents an Alert View to inform the passphrase is too long.
     /// - Parameters:
