@@ -13,7 +13,7 @@ import Photos
 import pEpIOSToolbox
 import PEPObjCAdapterFramework
 
-class ComposeTableViewController: BaseTableViewController {
+class ComposeTableViewController: UITableViewController {
     @IBOutlet var sendButton: UIBarButtonItem!
 
     private var suggestionsChildViewController: SuggestTableViewController?
@@ -51,6 +51,8 @@ class ComposeTableViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.title = title
+        UITableViewController.setupCommonSettings(tableView: tableView)
         setupRecipientSuggestionsTableViewController()
         viewModel?.handleDidReAppear()
     }
@@ -80,7 +82,6 @@ class ComposeTableViewController: BaseTableViewController {
                 return
         }
         suggestionsChildViewController = suggestVc
-        suggestionsChildViewController?.appConfig = appConfig
         suggestionsChildViewController?.viewModel = vm.suggestViewModel()
         addChild(suggestVc)
         suggestView.isHidden = true
@@ -321,8 +322,6 @@ extension ComposeTableViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("No vm")
                 return
             }
-
-            destination.appConfig = appConfig
             guard let trustManagementViewModel = vm.trustManagementViewModel() else {
                 Log.shared.error("Message not found")
                 return

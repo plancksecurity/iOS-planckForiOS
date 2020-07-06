@@ -10,7 +10,7 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-final class FolderTableViewController: BaseTableViewController {
+final class FolderTableViewController: UITableViewController {
 
     /// The hidden sections are the collapsed accounts.
     private var hiddenSections = Set<Int>()
@@ -177,7 +177,6 @@ final class FolderTableViewController: BaseTableViewController {
                 Log.shared.errorAndCrash("Problem!")
                 return
         }
-        vc.appConfig = appConfig
         let emailListVM = EmailListViewModel(delegate: vc,
                                              folderToShow: folder)
         vc.viewModel = emailListVM
@@ -219,8 +218,6 @@ extension FolderTableViewController: SegueHandlerType {
                     return
             }
             nav.modalPresentationStyle = .fullScreen
-            vc.appConfig = self.appConfig
-            
             vc.hidesBottomBarWhenPushed = true
 
         case .settingsSegue:
@@ -228,7 +225,6 @@ extension FolderTableViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("Error casting DVC")
                 return
             }
-            dvc.appConfig = self.appConfig
             dvc.hidesBottomBarWhenPushed = true
         }
     }
@@ -251,11 +247,11 @@ extension FolderTableViewController: SegueHandlerType {
     }
 
     @objc private func showCompose() {
-        UIUtils.presentComposeView(forRecipientInUrl: nil, appConfig: appConfig)
+        UIUtils.presentComposeView(forRecipientInUrl: nil)
     }
 
     @objc private func showSettingsViewController() {
-        UIUtils.presentSettings(appConfig: appConfig)
+        UIUtils.presentSettings()
     }
 }
 

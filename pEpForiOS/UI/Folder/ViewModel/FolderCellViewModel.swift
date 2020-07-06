@@ -20,7 +20,7 @@ public class FolderCellViewModel {
     }
 
     public var title : String {
-        return self.name
+        return name
     }
 
     public var image : UIImage? {

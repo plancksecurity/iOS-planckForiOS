@@ -16,6 +16,14 @@ public class Logger {
         osLogger = OSLog(subsystem: subsystem, category: category)
     }
 
+    /// Logs some info helpful when debugging when in DEBUG configuration. Does nothing otherwize.
+    public func logDebugInfo() {
+        #if DEBUG
+        let documentsDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        print("documentsDir: \(documentsDir)")
+        #endif
+    }
+
     /// Use for warnings, anything that might cause trouble.
     /// - Note: Gets persisted, so a later sysinfo on the device will recover it.
     public func warn(function: String = #function,

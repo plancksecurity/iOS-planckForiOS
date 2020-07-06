@@ -10,12 +10,11 @@
 
 extension UIUtils {
 
-    static public func presentSettings(appConfig: AppConfig) {
+    static public func presentSettings() {
         guard let vc = UIStoryboard.init(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: SettingsTableViewController.storyboardId) as? SettingsTableViewController else {
             Log.shared.errorAndCrash("No controller")
             return
         }
-        vc.appConfig = appConfig
         guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
             Log.shared.errorAndCrash("No VC")
             return

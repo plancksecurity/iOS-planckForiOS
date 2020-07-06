@@ -121,7 +121,8 @@ class CoreDataPantomimeAdapter: CWIMAPFolder {
     override func allMessages() -> [Any] {
         var result = [Any]()
         privateMOC.performAndWait {
-            result = CdMessage.all(predicate: cdFolder.allMessagesIncludingDeletedPredicate(),
+            let p = CdMessage.PredicateFactory.allMessagesIncludingDeleted(parentFolder: cdFolder)
+            result = CdMessage.all(predicate: p,
                                    in: privateMOC) ?? []
         }
         return result
@@ -201,10 +202,8 @@ class CoreDataPantomimeAdapter: CWIMAPFolder {
         return uid
     }
 
-    private func cdMessage(withUID theUID: UInt) -> CdMessage? {
-        let pUid = NSPredicate(format: "%K = %d", CdMessage.AttributeName.uid, theUID)
-        let pFolder = NSPredicate(format: "%K = %@", CdMessage.RelationshipName.parent, cdFolder)
-        let p = NSCompoundPredicate(andPredicateWithSubpredicates: [pUid, pFolder])
+    private func cdMessage(withUID uid: UInt) -> CdMessage? {
+        let p = CdMessage.PredicateFactory.parentFolder(cdFolder, uid: uid)
 
         return CdMessage.first(predicate: p, in: privateMOC)
     }

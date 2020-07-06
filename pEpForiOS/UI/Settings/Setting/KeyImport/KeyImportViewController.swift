@@ -8,7 +8,7 @@
 
 import Foundation
 
-class KeyImportViewController: BaseViewController {
+class KeyImportViewController: UIViewController {
     static private let cellID = "KeyImportTableViewCell"
 
     public let viewModel = KeyImportViewModel()

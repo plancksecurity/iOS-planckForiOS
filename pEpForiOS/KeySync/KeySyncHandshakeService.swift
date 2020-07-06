@@ -10,7 +10,7 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 class KeySyncHandshakeService {
-    private var pEpSyncWizard: KeySyncWizardViewController?
+    private weak var pEpSyncWizard: KeySyncWizardViewController?
 
     init() {
         registerForKeySyncDeviceGroupStateChangeNotification()
@@ -101,6 +101,12 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
         let completedViewIndex = pEpSyncWizard.views.count - 1
         DispatchQueue.main.async { [weak self] in
             self?.pEpSyncWizard?.goTo(index: completedViewIndex)
+        }
+    }
+
+    func showPassphraseRequired(completion: ((Success)->Void)? = nil) {
+        DispatchQueue.main.async {
+            UIUtils.showPassphraseRequiredAlert(completion: completion)
         }
     }
 

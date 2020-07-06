@@ -28,8 +28,6 @@ extension UITableView {
     }
 }
 
-
-
 // MARK: - Insert/Delete Rows
 
 extension UITableView {

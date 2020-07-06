@@ -20,8 +20,7 @@ extension UIUtils {
     ///   - appConfig: AppConfig to forward to potentionally created viewControllers
     static public func presentActionSheetWithContactOptions(forContactWithEmailAddress address: String,
                                                             at rect: CGRect,
-                                                            at view: UIView,
-                                                            appConfig: AppConfig) {
+                                                            at view: UIView) {
         let contact = Identity(address: address)
         let alertSheet = UIAlertController.init(title: nil,
                                                 message: nil,
@@ -35,14 +34,14 @@ extension UIUtils {
                                              comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title New Mail Message")
         alertSheet.addAction(UIAlertAction(title: newMailtitle, style: .default) { (action) in
-            presentComposeView(forRecipientWithAddress: address, appConfig: appConfig)
+            presentComposeView(forRecipientWithAddress: address)
         })
         //
         let addTitle = NSLocalizedString("Add to Contacts",
                                          comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts")
         alertSheet.addAction(UIAlertAction(title: addTitle, style: .default) { (action) in
-            presentAddToContactsView(for: contact, appConfig: appConfig)
+            presentAddToContactsView(for: contact)
         })
         //
         let copyTitle = NSLocalizedString("Copy Email",
