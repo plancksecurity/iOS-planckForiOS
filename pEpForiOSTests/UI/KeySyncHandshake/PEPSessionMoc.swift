@@ -161,4 +161,10 @@ class PEPSessionMoc: NSObject, PEPSessionProtocol  {
 
     func keyResetAllOwnKeysError() throws {
     }
+
+    func configurePassphrase(_ passphrase: String) throws {
+    }
+
+    func configurePassphrase(forNewKeys passphrase: String?, enable: Bool) throws {
+    }
 }

@@ -10,7 +10,7 @@ import UIKit
 import SwipeCellKit
 import pEpIOSToolbox
 
-final class SettingsTableViewController: BaseTableViewController {
+final class SettingsTableViewController: UITableViewController {
 
     static let storyboardId = "SettingsTableViewController"
     private weak var activityIndicatorView: UIActivityIndicatorView?
@@ -28,6 +28,8 @@ final class SettingsTableViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.title = title
+        UITableViewController.setupCommonSettings(tableView: tableView)
         navigationController?.setToolbarHidden(true, animated: false)
         showEmptyDetailViewIfApplicable(message: NSLocalizedString("Please choose a setting",
                                                                    comment: "No setting has been selected yet in the settings VC"))

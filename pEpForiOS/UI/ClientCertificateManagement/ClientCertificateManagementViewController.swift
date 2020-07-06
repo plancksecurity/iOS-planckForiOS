@@ -15,7 +15,7 @@ private struct Localized {
 }
 
 /// View that lists all imported client certificates and let's the user choose one.
-final class ClientCertificateManagementViewController: BaseViewController {
+final class ClientCertificateManagementViewController: UIViewController {
 
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var addCertButton: UIButton!

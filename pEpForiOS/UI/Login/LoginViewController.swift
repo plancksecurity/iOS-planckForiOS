@@ -15,7 +15,7 @@ protocol LoginViewControllerDelegate: class  {
     func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController)
 }
 
-final class LoginViewController: BaseViewController {
+final class LoginViewController: UIViewController {
 
     weak var delegate: LoginViewControllerDelegate?
 
@@ -63,6 +63,7 @@ final class LoginViewController: BaseViewController {
         if accountType == .icloud {
             showiCloudAlert()
         }
+
     }
 
     override func viewDidLayoutSubviews() {
@@ -620,7 +621,6 @@ extension LoginViewController {
                                    positiveButtonAction: openiCloudInfoInBrowser)
     }
 }
-
 // MARK: - Accessibility
 
 extension LoginViewController {
