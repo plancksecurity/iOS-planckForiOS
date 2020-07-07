@@ -10,7 +10,7 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-class FolderTableViewController: BaseTableViewController {
+class FolderTableViewController: UITableViewController {
     var folderVM: FolderViewModel?
     var showNext: Bool = true
 
@@ -28,6 +28,8 @@ class FolderTableViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.title = title
+        UITableViewController.setupCommonSettings(tableView: tableView)
         setup()
 
         if showNext {
@@ -86,11 +88,11 @@ class FolderTableViewController: BaseTableViewController {
     // MARK: - Action
 
     @objc private func showCompose() {
-        UIUtils.presentComposeView(forRecipientInUrl: nil, appConfig: appConfig)
+        UIUtils.presentComposeView(forRecipientInUrl: nil)
     }
     
     @objc private func showSettingsViewController() {
-        UIUtils.presentSettings(appConfig: appConfig)
+        UIUtils.presentSettings()
     }
 
     // MARK: - Cell Setup
@@ -209,7 +211,6 @@ class FolderTableViewController: BaseTableViewController {
                 Log.shared.errorAndCrash("Problem!")
                 return
         }
-        vc.appConfig = appConfig
         let emailListVM = EmailListViewModel(delegate: vc,
                                              folderToShow: folder)
         vc.viewModel = emailListVM
@@ -268,7 +269,6 @@ extension FolderTableViewController: SegueHandlerType {
                     return
             }
             nav.modalPresentationStyle = .fullScreen
-            vc.appConfig = self.appConfig
             
             vc.hidesBottomBarWhenPushed = true
 
@@ -277,7 +277,6 @@ extension FolderTableViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("Error casting DVC")
                 return
             }
-            dvc.appConfig = self.appConfig
             dvc.hidesBottomBarWhenPushed = true
         }
     }

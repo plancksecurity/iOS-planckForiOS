@@ -15,7 +15,7 @@ extension CdAttachment {
 
      - Note: The (inverse) relationship message is not copied.
      */
-    public func clone(context: NSManagedObjectContext) -> CdAttachment {
+    func clone(context: NSManagedObjectContext) -> CdAttachment {
         let att = CdAttachment(context: context)
 
         att.assetUrl = assetUrl

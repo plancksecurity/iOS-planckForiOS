@@ -34,7 +34,7 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
     // MARK: - Operation
 
     override public func main() {
-        if !checkImapSync() {
+        if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
         }
@@ -98,8 +98,8 @@ extension FetchNumberOfNewMailsOperation {
     /// - Parameter uids: uids to validate
     /// - Returns:  empty array if uids contains only one, locally existing UID,
     ///             the unmodified uids otherwize
-    private func validateResult(uids: [Int]?) ->[Int]? {
-        var result: [Int]? = nil
+    private func validateResult(uids: [UInt]?) ->[UInt]? {
+        var result: [UInt]? = nil
         privateMOC.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -117,9 +117,8 @@ extension FetchNumberOfNewMailsOperation {
                 // There are zero mails on server.
                 return
             }
-            let messageForUidPredicate = NSPredicate(format: "%K = %@ AND %K = %d",
-                                                     CdMessage.RelationshipName.parent, cdFolderToOpen,
-                                                     CdMessage.AttributeName.uid, theOneAndOnlyUid)
+            let messageForUidPredicate = CdMessage.PredicateFactory.parentFolder(cdFolderToOpen,
+                                                                                 uid: theOneAndOnlyUid)
             if let _ = CdMessage.all(predicate: messageForUidPredicate, in: me.privateMOC) {
                 // A message with the given UID exists, thus the server response means
                 // that "there are no new messages". In other words, the server returns the last
@@ -147,7 +146,7 @@ extension FetchNumberOfNewMailsOperation {
 
 extension FetchNumberOfNewMailsOperation {
 
-    fileprivate func handleResult(uids: [Int]?) {
+    fileprivate func handleResult(uids: [UInt]?) {
         let uids = validateResult(uids: uids)
         numNewMailsFetchedBlock?(uids?.count)
         waitForBackgroundTasksAndFinish()
@@ -166,7 +165,7 @@ class FetchNumberOfNewMailsSyncDelegate: DefaultImapConnectionDelegate {
             Log.shared.errorAndCrash("No OP")
             return
         }
-        op.handleResult(uids: notification?.userInfo?["Uids"] as? [Int])
+        op.handleResult(uids: notification?.userInfo?["Uids"] as? [UInt])
     }
 
     public override func folderOpenCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {

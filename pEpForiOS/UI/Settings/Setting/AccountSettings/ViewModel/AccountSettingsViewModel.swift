@@ -150,6 +150,21 @@ extension AccountSettingsViewModel {
 
 extension AccountSettingsViewModel {
 
+    public func handleOauth2Reauth() {
+
+        guard let accountType = account.accountType else {
+            Log.shared.errorAndCrash(message: "Handling OAuth2 reauth requires an account with a known account type for determining the OAuth2 configuration")
+            return
+        }
+
+//        oauthViewModel.authorize(
+//            authorizer: appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer(),
+//            emailAddress: account.user.address,
+//            accountType: accountType,
+//            viewController: self)
+
+    }
+
     /// Handle the Reset Identity action
     /// This resets all the keys of the current account and informs if it fails.
     public func handleResetIdentity() {

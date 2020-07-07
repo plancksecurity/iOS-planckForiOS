@@ -11,7 +11,7 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
-final class AccountSettingsViewController: BaseViewController {
+final class AccountSettingsViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
 
     // MARK: - Variables
@@ -53,7 +53,6 @@ final class AccountSettingsViewController: BaseViewController {
                 Log.shared.errorAndCrash("No VM")
                 return
             }
-            editableAccountSettingsViewController.appConfig = appConfig
             editableAccountSettingsViewController.viewModel = EditableAccountSettingsViewModel(account: account, editableAccountSettingsDelegate: self)
         default:
             break
@@ -244,19 +243,21 @@ extension AccountSettingsViewController {
             return
         }
 
-        guard let accountType = vm.account.accountType else {
-            Log.shared.errorAndCrash(message: "Handling OAuth2 reauth requires an account with a known account type for determining the OAuth2 configuration")
-            return
-        }
+//        guard let accountType = vm.account.accountType else {
+//            Log.shared.errorAndCrash(message: "Handling OAuth2 reauth requires an account with a known account type for determining the OAuth2 configuration")
+//            return
+//        }
+
+        vm.handleOauth2Reauth()
 
         // don't accept errors form other places
-        shouldHandleErrors = false
-
-        oauthViewModel.authorize(
-            authorizer: appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer(),
-            emailAddress: vm.account.user.address,
-            accountType: accountType,
-            viewController: self)
+//        shouldHandleErrors = false
+//
+//        oauthViewModel.authorize(
+//            authorizer: appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer(),
+//            emailAddress: vm.account.user.address,
+//            accountType: accountType,
+//            viewController: self)
     }
 
     /// Shows an alert to warn the user about resetting the identities
@@ -332,7 +333,7 @@ extension AccountSettingsViewController: OAuthAuthorizerDelegate {
             return
         }
         cell.activityIndicator.stopAnimating()
-        shouldHandleErrors = true
+//        shouldHandleErrors = true
 
         if let error = oauth2Error {
             showAlert(error: error)

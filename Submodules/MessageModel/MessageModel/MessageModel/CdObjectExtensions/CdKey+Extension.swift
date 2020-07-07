@@ -9,7 +9,7 @@
 import CoreData
 
 extension CdKey {
-    public static func create(stringKey: String, context: NSManagedObjectContext) -> CdKey {
+    static func create(stringKey: String, context: NSManagedObjectContext) -> CdKey {
         let key = CdKey(context: context)
         key.fingerprint = stringKey
         return key

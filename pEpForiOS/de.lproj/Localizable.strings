@@ -919,7 +919,7 @@
 "Undo" = "Rückgängig machen";
 
 /* Undo trust change verification alert title */
-"Undo (actionName)" = "Undo (actionName)";
+"Undo (actionName)" = "Rückgängig machen (actionName)";
 
 /* read button in slide-left menu */
 "Unflag" = "Markierung entfernen";

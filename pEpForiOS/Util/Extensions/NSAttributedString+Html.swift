@@ -67,7 +67,8 @@ extension NSAttributedString {
             .replaceMarkdownImageSyntaxToHtmlSyntax()
             .replacingOccurrences(of: "›", with: "<blockquote type=\"cite\">")
             .replacingOccurrences(of: "‹", with: "</blockquote>")
-            .replacingOccurrencesOfPepSignatureWithHtmlVersion() //!!!: ADAM: I added this 
+            .fixedFontSizeRemover()
+            .replacingOccurrencesOfPepSignatureWithHtmlVersion() //!!!: ADAM: I added this
 
         return (plainText: plainText, html: html)
     }

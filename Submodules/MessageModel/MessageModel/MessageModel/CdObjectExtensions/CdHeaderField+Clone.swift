@@ -15,7 +15,7 @@ extension CdHeaderField {
 
      - Note: The (inverse) relationship message is not copied.
      */
-    public func clone(context: NSManagedObjectContext) -> CdHeaderField {
+    func clone(context: NSManagedObjectContext) -> CdHeaderField {
         let hf = CdHeaderField(context: context)
 
         hf.name = name
