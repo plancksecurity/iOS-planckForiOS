@@ -19,7 +19,7 @@ final class FolderTableViewController: UITableViewController {
     var showNext: Bool = true
 
     var maxIndentationLevel: Int {
-        return Device.isIphone5 ? 3 : 4
+        return UIUtils.Device.isIphone5 ? 3 : 4
     }
 
     @IBOutlet private weak var addAccountButton: UIButton!

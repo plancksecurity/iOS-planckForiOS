@@ -38,7 +38,7 @@ class FolderTableViewCell: UITableViewCell {
 
     var level : Int = 1
     private var padding: CGFloat {
-        if Device.isIphone5 {
+        if UIUtils.Device.isIphone5 {
             return 16.0
         }
         return 25.0
