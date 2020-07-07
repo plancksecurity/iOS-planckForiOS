@@ -15,9 +15,6 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
 
     var mockedAccountSettingsViewController = MockedAccountSettingsViewController()
     var viewModel : AccountSettingsViewModel!
-    var delegate : MockedAccountSettingsViewModelDelegate?
-//    var actual: State?
-//    var expected: State?
 
     //Number of sections corresponding to AccountSettingsViewModel's Section Types
     var dummySections : [AccountSettingsViewModel.Section] = [AccountSettingsViewModel.Section]()
@@ -51,19 +48,22 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
         XCTAssertEqual(viewModel.pEpSync, boolValue)
     }
 
-    //??
     func testUpdateToken() {
-
+        //TODO: test this when the method is properly implemented.
     }
 
     //??
     func testHandleOauth2Reauth() {
-        viewModel.handleOauth2Reauth(onViewController: mockedAccountSettingsViewController)
+
     }
 
-    //?
     func testHandleResetIdentity() {
-
+        let showLoadingViewExpectation = expectation(description: "showLoadingViewExpectation")
+        let delegate = MockedAccountSettingsViewModelDelegate(testCase: self,
+                                                              showLoadingViewExpectation: showLoadingViewExpectation)
+        viewModel = AccountSettingsViewModel(account: account, delegate: delegate)
+        viewModel.handleResetIdentity()
+        waitForExpectations(timeout: TestUtil.waitTime)
     }
 }
 
@@ -76,53 +76,45 @@ extension MockedAccountSettingsViewController: OAuthAuthorizerDelegate {
     }
 }
 
-struct State: Equatable {
-    var isPEPSyncSectionShown: Bool = false
-    var didCallShowErrorAlert: Bool = false
-    var didCallShowLoadingView: Bool = false
-    var didCallHideLoadingView: Bool = false
-    var didCallUndoPEPSyncToggle: Bool = false
-}
-
 class MockedAccountSettingsViewModelDelegate : AccountSettingsViewModelDelegate {
 
-    var showErrorAlertExpectation: XCTestExpectation?
+//    var showErrorAlertExpectation: XCTestExpectation?
     var showLoadingViewExpectation: XCTestExpectation?
-    var hideLoadingViewExpectation: XCTestExpectation?
-    var undoPEPSyncToggleExpectation: XCTestExpectation?
+//    var hideLoadingViewExpectation: XCTestExpectation?
+//    var undoPEPSyncToggleExpectation: XCTestExpectation?
 
-    init(testCase: XCTestCase, expected: State) {
+    init(testCase: XCTestCase,
+//         showErrorAlertExpectation: XCTestExpectation? = nil,
+         showLoadingViewExpectation: XCTestExpectation? = nil
+//         hideLoadingViewExpectation: XCTestExpectation? = nil,
+//         undoPEPSyncToggleExpectation: XCTestExpectation? = nil
+    ) {
 
-        if expected.didCallShowErrorAlert {
-            showErrorAlertExpectation = testCase.expectation(description: "showErrorAlert")
-        }
-        if expected.didCallShowLoadingView {
-            showLoadingViewExpectation = testCase.expectation(description: "showLoadingView")
-        }
-        if expected.didCallHideLoadingView {
-            hideLoadingViewExpectation = testCase.expectation(description: "hideLoadingView")
-        }
-        if expected.didCallUndoPEPSyncToggle {
-            undoPEPSyncToggleExpectation = testCase.expectation(description: "undoPEPSyncToggle")
-        }
+//        self.showErrorAlertExpectation = showErrorAlertExpectation
+        self.showLoadingViewExpectation = showLoadingViewExpectation
+//        self.hideLoadingViewExpectation = hideLoadingViewExpectation
+//        self.undoPEPSyncToggleExpectation = undoPEPSyncToggleExpectation
     }
 
-    //Changes loading view visibility
     func setLoadingView(visible: Bool) {
         if visible {
-            showLoadingViewExpectation?.fulfill()
+            if showLoadingViewExpectation != nil {
+                showLoadingViewExpectation?.fulfill()
+                showLoadingViewExpectation = nil
+            }
         } else {
-            hideLoadingViewExpectation?.fulfill()
+//            if hideLoadingViewExpectation != nil {
+//                hideLoadingViewExpectation?.fulfill()
+//                hideLoadingViewExpectation = nil
+//            }
         }
     }
-    /// Shows an alert
+
     func showAlert(error: Error) {
-        showErrorAlertExpectation?.fulfill()
+//        showErrorAlertExpectation?.fulfill()
     }
 
-    /// Undo the last Pep Sync Change
     func undoPEPSyncToggle() {
-        undoPEPSyncToggleExpectation?.fulfill()
+//        undoPEPSyncToggleExpectation?.fulfill()
     }
-
 }
