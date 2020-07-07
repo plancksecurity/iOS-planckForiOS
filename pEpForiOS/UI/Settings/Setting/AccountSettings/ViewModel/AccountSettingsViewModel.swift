@@ -48,6 +48,7 @@ final class AccountSettingsViewModel {
     weak var delegate: AccountSettingsViewModelDelegate?
     /// Items to be displayed in a Account Settings View Controller
     private(set) var sections: [Section] = [Section]()
+    private let oauthViewModel = OAuthAuthorizer()
 
     /// Constructor
     /// - Parameters:
@@ -83,7 +84,7 @@ extension AccountSettingsViewModel {
     }
 
     /// Identifies the section in the table view.
-     public enum SectionType : String {
+     public enum SectionType : String, CaseIterable {
         case account
         case imap
         case smtp
@@ -150,19 +151,19 @@ extension AccountSettingsViewModel {
 
 extension AccountSettingsViewModel {
 
-    public func handleOauth2Reauth() {
-
+    public func handleOauth2Reauth<T: UIViewController>(onViewController vc: T) where T: OAuthAuthorizerDelegate {
         guard let accountType = account.accountType else {
             Log.shared.errorAndCrash(message: "Handling OAuth2 reauth requires an account with a known account type for determining the OAuth2 configuration")
             return
         }
+        let oauth = OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer()
 
-//        oauthViewModel.authorize(
-//            authorizer: appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer(),
-//            emailAddress: account.user.address,
-//            accountType: accountType,
-//            viewController: self)
-
+        oauthViewModel.delegate = vc
+        oauthViewModel.authorize(
+            authorizer: oauth,
+            emailAddress: account.user.address,
+            accountType: accountType,
+            viewController: vc)
     }
 
     /// Handle the Reset Identity action
@@ -237,9 +238,9 @@ extension AccountSettingsViewModel {
     /// This method generates the sections of the account settings view.
     /// Must be called once, at the initialization.
     private func generateSections() {
-        sections.append(generateSection(type: .account))
-        sections.append(generateSection(type: .imap))
-        sections.append(generateSection(type: .smtp))
+        SectionType.allCases.forEach { (type) in
+            sections.append(generateSection(type: type))
+        }
     }
 
     /// Generates and retrieves a section
@@ -310,10 +311,7 @@ extension AccountSettingsViewModel {
             rows.append(nameRow)
 
             // email
-            let emailRow = DisplayRow(type: .email,
-                                      title: rowTitle(for: .email),
-                                      text: account.user.address,
-                                      cellIdentifier: CellsIdentifiers.displayCell)
+            let emailRow = getDisplayRow(type: .email, value: account.user.address)
             rows.append(emailRow)
 
             // OAuth
@@ -327,10 +325,7 @@ extension AccountSettingsViewModel {
             } else {
                 // password
                 let fakePassword = "JustAPassword"
-                let passwordRow = DisplayRow(type: .password,
-                                             title: rowTitle(for: .password),
-                                             text: fakePassword,
-                                             cellIdentifier: CellsIdentifiers.displayCell)
+                let passwordRow = getDisplayRow(type : .password, value: fakePassword)
                 rows.append(passwordRow)
             }
 
@@ -383,27 +378,23 @@ extension AccountSettingsViewModel {
     ///   - server: The server from which to take the values
     ///   - rows: The rows to populate the fields.
     private func setupServerFields(_ server: Server, _ rows: inout [AccountSettingsRowProtocol]) {
-        let serverRow = DisplayRow(type: .server,
-                                   title: rowTitle(for: .server),
-                                   text: server.address,
-                                   cellIdentifier: CellsIdentifiers.displayCell)
+        let serverRow = getDisplayRow(type : .server, value: server.address)
         rows.append(serverRow)
 
-        let resetRow = DisplayRow(type: .port,
-                                  title: rowTitle(for: .port),
-                                  text: String(server.port),
-                                  cellIdentifier: CellsIdentifiers.displayCell)
+        let resetRow = getDisplayRow(type : .port, value: String(server.port))
         rows.append(resetRow)
 
-        let transportSecurityRow = DisplayRow(type: .tranportSecurity,
-                                              title: rowTitle(for: .tranportSecurity),
-                                              text: server.transport.asString(),
-                                              cellIdentifier: CellsIdentifiers.displayCell)
+        let transportSecurityRow = getDisplayRow(type : .tranportSecurity, value: server.transport.asString())
         rows.append(transportSecurityRow)
 
-        let usernameRow = DisplayRow(type: .username,
-                                     title: rowTitle(for: .username),
-                                     text: server.credentials.loginName, cellIdentifier: CellsIdentifiers.displayCell)
+        let usernameRow = getDisplayRow(type : .username, value: server.credentials.loginName)
         rows.append(usernameRow)
+    }
+
+    private func getDisplayRow(type : RowType, value : String) -> DisplayRow {
+        return DisplayRow(type: type,
+                          title: rowTitle(for: type),
+                          text: value,
+                          cellIdentifier: CellsIdentifiers.displayCell)
     }
 }

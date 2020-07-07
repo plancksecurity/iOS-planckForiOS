@@ -64,10 +64,11 @@ final class AccountSettingsViewController: UIViewController {
 
 extension AccountSettingsViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let sections = viewModel?.sections else {
-            Log.shared.errorAndCrash("Without sections there is no table view.")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM.")
             return
         }
+        let sections = vm.sections
 
         let row = sections[indexPath.section].rows[indexPath.row]
         if row.type == .reset {
@@ -79,9 +80,8 @@ extension AccountSettingsViewController : UITableViewDelegate {
                 return
             }
             cell.activityIndicator.startAnimating()
-            handleOauth2Reauth()
+            vm.handleOauth2Reauth(onViewController: self)
         }
-
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
@@ -115,7 +115,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
         switch row.type {
         case .password:
             guard let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
-                as? AccountSettingsKeyValueTableViewCell else {
+                as? AccountSettingsTableViewCell else {
                     return UITableViewCell()
             }
             guard let row = row as? AccountSettingsViewModel.DisplayRow else {
@@ -128,7 +128,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
         case .name, .email,
              .server, .port, .tranportSecurity, .username:
             guard let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
-                as? AccountSettingsKeyValueTableViewCell else {
+                as? AccountSettingsTableViewCell else {
                     Log.shared.errorAndCrash(message: "Cell can't be dequeued")
                     return UITableViewCell()
             }
@@ -237,29 +237,6 @@ extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
 
 extension AccountSettingsViewController {
 
-    private func handleOauth2Reauth() {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash(message: "A view model is required")
-            return
-        }
-
-//        guard let accountType = vm.account.accountType else {
-//            Log.shared.errorAndCrash(message: "Handling OAuth2 reauth requires an account with a known account type for determining the OAuth2 configuration")
-//            return
-//        }
-
-        vm.handleOauth2Reauth()
-
-        // don't accept errors form other places
-//        shouldHandleErrors = false
-//
-//        oauthViewModel.authorize(
-//            authorizer: appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer(),
-//            emailAddress: vm.account.user.address,
-//            accountType: accountType,
-//            viewController: self)
-    }
-
     /// Shows an alert to warn the user about resetting the identities
     private func handleResetIdentity() {
         let title = NSLocalizedString("Reset", comment: "Account settings confirm to reset identity title alert")
@@ -333,7 +310,6 @@ extension AccountSettingsViewController: OAuthAuthorizerDelegate {
             return
         }
         cell.activityIndicator.stopAnimating()
-//        shouldHandleErrors = true
 
         if let error = oauth2Error {
             showAlert(error: error)

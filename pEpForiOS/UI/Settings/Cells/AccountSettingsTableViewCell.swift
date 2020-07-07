@@ -9,7 +9,7 @@
 import UIKit
 
 /// Cell that displays a title and a value.
-final class AccountSettingsKeyValueTableViewCell: UITableViewCell {
+final class AccountSettingsTableViewCell: UITableViewCell {
 
     static let identifier = "KeyValueTableViewCell"
     @IBOutlet weak var keyLabel: UILabel!

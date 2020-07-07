@@ -338,7 +338,7 @@ extension SettingsTableViewController {
         case segueExtraKeys
         case seguePgpKeyImport
         case noAccounts
-        case ResetTrust
+        case resetTrust
         case tutorial
         /// Use for cells that do not segue, like switch cells
         case none
@@ -357,7 +357,7 @@ extension SettingsTableViewController {
         case .pgpKeyImport:
             return .seguePgpKeyImport
         case .resetTrust:
-            return .ResetTrust
+            return .resetTrust
         case .extraKeys:
             return .segueExtraKeys
         case .tutorial:
@@ -391,11 +391,13 @@ extension SettingsTableViewController {
              .noAccounts,
              .segueAddNewAccount,
              .sequeShowCredits,
-             .ResetTrust,
+             .resetTrust,
              .segueExtraKeys,
              .segueShowSettingTrustedServers,
              .tutorial:
             // Nothing to prepare for those seques
+            // We do not use ´default´ in switch because it is less error prone.
+            // So if the destination vc doesn't need anything we just let it in this case.
             break
         case .seguePgpKeyImport:
             guard let destination = segue.destination as? PGPKeyImportSettingViewController else {

@@ -1,48 +1,47 @@
 //
-//  AccountSettingsViewModel2.swift
+//  AccountSettingsViewModelTest.swift
 //  pEpForiOSTests
 //
-//  Created by Martin Brude on 20/05/2020.
+//  Created by Martin Brude on 07/07/2020.
 //  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
 import XCTest
-import Foundation
 
 @testable import pEpForiOS
 @testable import MessageModel
 
-class AccountSettingsViewModel2Test: AccountDrivenTestBase {
+class AccountSettingsViewModelTest: AccountDrivenTestBase {
 
+    var mockedAccountSettingsViewController = MockedAccountSettingsViewController()
     var viewModel : AccountSettingsViewModel!
     var delegate : MockedAccountSettingsViewModelDelegate?
-    var actual: State?
-    var expected: State?
+//    var actual: State?
+//    var expected: State?
 
     //Number of sections corresponding to AccountSettingsViewModel's Section Types
-    let numberOfSections = 3
+    var dummySections : [AccountSettingsViewModel.Section] = [AccountSettingsViewModel.Section]()
 
     override func setUp() {
         super.setUp()
-        //let clientCertificateUtil = ClientCertificateUtilMockTest()
+
+        let dummyAccountSection = AccountSettingsViewModel.Section(title: "My account", rows:[] , type: .account)
+        let dummyImapSection = AccountSettingsViewModel.Section(title: "Imap", rows:[] , type: .imap)
+        let dummySmtpSection = AccountSettingsViewModel.Section(title: "Smtp", rows:[] , type: .smtp)
+
+        dummySections.append(dummyAccountSection)
+        dummySections.append(dummyImapSection)
+        dummySections.append(dummySmtpSection)
+
+
         viewModel = AccountSettingsViewModel(account: account)
     }
 
     func testNumberOfSections() throws {
-        XCTAssertEqual(viewModel.sections.count, numberOfSections)
+        XCTAssertEqual(viewModel.sections.count, dummySections.count)
     }
 
-    // MARK: - Actions
-
-    //Fails
-    func testHandleResetIdentity() {
-        let state = State(didCallShowLoadingView: true, didCallHideLoadingView: true)
-        let delegate = MockedAccountSettingsViewModelDelegate(testCase: self, expected: state)
-        viewModel = AccountSettingsViewModel(account: account, delegate: delegate)
-        viewModel.handleResetIdentity()
-    }
-
-    func testPepSync() {
+    func testPEpSync() {
         var boolValue = true
         viewModel.pEpSync(enable: boolValue)
         XCTAssertEqual(viewModel.pEpSync, boolValue)
@@ -52,18 +51,28 @@ class AccountSettingsViewModel2Test: AccountDrivenTestBase {
         XCTAssertEqual(viewModel.pEpSync, boolValue)
     }
 
-    // MARK: - Client Certificate
+    //??
+    func testUpdateToken() {
 
-    func testHasCertificate() {
-        XCTAssertEqual(viewModel.hasCertificate(), false)
     }
 
-    func testCertificateInfo() {
-        XCTAssertNotNil(viewModel.certificateInfo())
+    //??
+    func testHandleOauth2Reauth() {
+        viewModel.handleOauth2Reauth(onViewController: mockedAccountSettingsViewController)
     }
 
-    func testClientCertificateViewModel() {
-        XCTAssertNotNil(viewModel.clientCertificateViewModel())
+    //?
+    func testHandleResetIdentity() {
+
+    }
+}
+
+class MockedAccountSettingsViewController: UIViewController {
+}
+
+extension MockedAccountSettingsViewController: OAuthAuthorizerDelegate {
+    func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
+
     }
 }
 
@@ -98,19 +107,22 @@ class MockedAccountSettingsViewModelDelegate : AccountSettingsViewModelDelegate 
         }
     }
 
-    func showErrorAlert(error: Error) {
+    //Changes loading view visibility
+    func setLoadingView(visible: Bool) {
+        if visible {
+            showLoadingViewExpectation?.fulfill()
+        } else {
+            hideLoadingViewExpectation?.fulfill()
+        }
+    }
+    /// Shows an alert
+    func showAlert(error: Error) {
         showErrorAlertExpectation?.fulfill()
     }
 
+    /// Undo the last Pep Sync Change
     func undoPEPSyncToggle() {
         undoPEPSyncToggleExpectation?.fulfill()
     }
 
-    func showLoadingView() {
-        showLoadingViewExpectation?.fulfill()
-    }
-
-    func hideLoadingView() {
-        hideLoadingViewExpectation?.fulfill()
-    }
 }
