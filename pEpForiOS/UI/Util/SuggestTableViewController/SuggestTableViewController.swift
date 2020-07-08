@@ -10,13 +10,17 @@ import Foundation
 import pEpIOSToolbox
 
 /// Suggests a list of Identities that fit to a given sarch string
-class SuggestTableViewController: BaseTableViewController {
+class SuggestTableViewController: UITableViewController {
     static let storyboardId = "SuggestTableViewController"
 
     var viewModel: SuggestViewModel? {
         didSet {
             viewModel?.delegate = self
         }
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.title = title
+        UITableViewController.setupCommonSettings(tableView: tableView)
     }
 
     override func viewDidLoad() {

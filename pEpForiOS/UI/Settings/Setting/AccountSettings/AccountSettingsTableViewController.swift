@@ -10,7 +10,7 @@ import UIKit
 import MessageModel
 import pEpIOSToolbox
 
-final class AccountSettingsTableViewController: BaseTableViewController {
+final class AccountSettingsTableViewController: UITableViewController {
 
 // MARK: - IBOutlets
 
@@ -97,8 +97,10 @@ final class AccountSettingsTableViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        UITableViewController.setupCommonSettings(tableView: tableView)
         showNavigationBar()
         title = NSLocalizedString("Account", comment: "Account view title")
+        navigationController?.title = title
         navigationController?.navigationController?.setToolbarHidden(true, animated: false)
         //Work around async old stack context merge behaviour
         DispatchQueue.main.async { [weak self] in

@@ -21,7 +21,7 @@ extension ImapReplicationService {
 class ImapReplicationService: OperationBasedService {
     private var pollingMode: PollingMode
     /// Amount of time to "sleep" between polling cycles
-    private var sleepTimeInSeconds = MiscUtil.isUnitTest() ? 1.0 : 10.0
+    private var sleepTimeInSeconds = MiscUtil.isUnitTest() ? 1.0 : 3.0
     private var cdAccount: CdAccount? = nil
     private var imapConnectionCache = ImapConnectionCache()
     private var idleOperation: ImapIdleOperation?
@@ -207,14 +207,12 @@ extension ImapReplicationService {
         if pollingMode != .fastPolling {
             let earlierTimestamp = Date(
                 timeIntervalSinceNow: -ImapReplicationService.timeIntervalForInterestingFolders)
-            let pInteresting =
-                NSPredicate(format: "%K = %@ AND %K > %@ AND %K IN %@",
-                            CdFolder.RelationshipName.account, cdAccount,
-                            CdFolder.AttributeName.lastLookedAt, earlierTimestamp as CVarArg,
-                            CdFolder.AttributeName.folderTypeRawValue, FolderType.typesSyncedWithImapServerRawValues)
+            let pInteresting = CdFolder.PredicateFactory
+                .folders(for: cdAccount,
+                                       lastLookedAfter: earlierTimestamp)
             let folderPredicate = NSCompoundPredicate(
                 orPredicateWithSubpredicates: [pInteresting,
-                                               CdFolder.pEpSyncFolderPredicate(cdAccount: cdAccount)])
+                                               CdFolder.PredicateFactory.pEpSyncFolder(cdAccount: cdAccount)])
             let folders = CdFolder.all(predicate: folderPredicate,
                                        in: privateMoc) as? [CdFolder] ?? []
 

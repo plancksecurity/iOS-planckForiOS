@@ -20,8 +20,11 @@ import CoreData
 class ImapIdleOperation: ImapSyncOperation {
     /// MOC to use with FRC
     private let frcMoc: NSManagedObjectContext = Stack.shared.changePropagatorContext
-    /// Monitiors all messages of the 
-    private var frc: NSFetchedResultsController<CdMessage>?
+    /// Monitiors all messages of the account
+    private var frcForMessages: NSFetchedResultsController<CdMessage>?
+    /// Monitiors all folders of the account.
+    /// We need that to pull for "interesting folder" changes
+    private var frcForFolders: NSFetchedResultsController<CdFolder>?
 
     override init(parentName: String = #function,
                   context: NSManagedObjectContext? = nil,
@@ -37,6 +40,7 @@ class ImapIdleOperation: ImapSyncOperation {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
+            // frcForMessages
             let fetchRequest = NSFetchRequest<CdMessage>()
             fetchRequest.sortDescriptors = []
             fetchRequest.entity = CdMessage.entity()
@@ -45,12 +49,28 @@ class ImapIdleOperation: ImapSyncOperation {
             } else {
                 Log.shared.errorAndCrash("No CdAccount")
             }
-
-            me.frc = NSFetchedResultsController(fetchRequest: fetchRequest,
+            me.frcForMessages = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                 managedObjectContext: me.frcMoc,
                                                 sectionNameKeyPath: nil,
                                                 cacheName: nil)
-            me.frc?.delegate = self
+            me.frcForMessages?.delegate = self
+
+            // frcForFolders
+            let fetchRequestFolders = NSFetchRequest<CdFolder>()
+            fetchRequestFolders.sortDescriptors =
+                [NSSortDescriptor(key: CdFolder.AttributeName.lastLookedAt, ascending: false)]
+            fetchRequestFolders.entity = CdFolder.entity()
+            if let cdAccount = imapConnection.cdAccount(moc: frcMoc) {
+                fetchRequestFolders.predicate =
+                    CdFolder.PredicateFactory.inAccount(cdAccount: cdAccount)
+            } else {
+                Log.shared.errorAndCrash("No CdAccount")
+            }
+            me.frcForFolders = NSFetchedResultsController(fetchRequest: fetchRequestFolders,
+                                                managedObjectContext: me.frcMoc,
+                                                sectionNameKeyPath: nil,
+                                                cacheName: nil)
+            me.frcForFolders?.delegate = self
         }
     }
 
@@ -71,10 +91,13 @@ class ImapIdleOperation: ImapSyncOperation {
             markAsFinished()
             return
         }
-        guard let frc = frc else {
-            Log.shared.errorAndCrash("FRC must exist @ this point.")
-            markAsFinished()
-            return
+        guard
+            let frcMessages = frcForMessages,
+            let frcFolders = frcForFolders
+            else {
+                Log.shared.errorAndCrash("FRC must exist @ this point.")
+                markAsFinished()
+                return
         }
         frcMoc.perform { [weak self] in
             guard let me = self else {
@@ -82,7 +105,8 @@ class ImapIdleOperation: ImapSyncOperation {
                 return
             }
             do {
-                try frc.performFetch()
+                try frcMessages.performFetch()
+                try frcFolders.performFetch()
             } catch {
                 Log.shared.errorAndCrash("Error fetching: %@", error.localizedDescription)
             }
@@ -197,7 +221,25 @@ extension ImapIdleOperation: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         // We are using a trivial implementation until we need somthing more sofisticated.
         // Any change on any CdMessage will stop idle mode.
-        handleLocalChangeHappened()
+        if controller == frcForMessages {
+            handleLocalChangeHappened()
+        }
+    }
+
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any,
+                    at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType,
+                    newIndexPath: IndexPath?) {
+        guard controller == frcForFolders else {
+            // Messages are handled in controllerDidChangeContent.
+            return
+        }
+        if type == .move {
+            // We are sorting folders by lastLookat date, thus the order changes if a different
+            // folder is entered by the user (folders last lookat has been updated).
+            handleLocalChangeHappened()
+        }
     }
 
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {

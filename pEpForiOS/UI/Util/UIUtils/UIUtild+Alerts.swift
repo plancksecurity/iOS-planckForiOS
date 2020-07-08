@@ -70,4 +70,52 @@ extension UIUtils {
         }
         presenterVc.present(alertView, animated: true, completion: nil)
     }
+
+    /// Generic method to show an alert and require information throught a textfield
+    /// - Parameters:
+    ///   - title: The title of the alert
+    ///   - message: The message of the alert
+    ///   - placeholder: The placeholder of the textfield
+    ///   - callback: A callback that takes the user input as parameter.
+    ///   - cancelCallback: A callback that's executed when the user taps the cancel button.
+    static func showAlertWithTextfield(identifier: IdentifiableAlertController.Identifier = .other,
+                                       title: String, message: String, placeholder: String,
+                                       callback: @escaping(_ input: String) -> (),
+                                       cancelCallback: (() -> Void)? = nil) {
+        let alertController = IdentifiableAlertController(identifier: identifier,
+                                                          title: title,
+                                                          message: message,
+                                                          preferredStyle: .alert)
+        alertController.addTextField { (textField) in
+            textField.placeholder = placeholder
+            textField.isSecureTextEntry = true
+        }
+        let okTitle = NSLocalizedString("OK", comment: "OK button title")
+        let cancelTitle = NSLocalizedString("Cancel", comment: "OK button title")
+        let action = UIAlertAction(title: okTitle,
+                                   style: .default, handler: { [weak alertController] (_) in
+            guard let alert = alertController, let textfields = alert.textFields else {
+                Log.shared.errorAndCrash("Alert or textfields missing - This shoudn't happen")
+                return
+            }
+            let textField = textfields[0]
+            guard let passphrase = textField.text else { return }
+            callback(passphrase)
+        })
+        alertController.addAction(action)
+        let cancelAction: UIAlertAction = UIAlertAction(title: cancelTitle, style: .cancel) { (action) in
+            if (cancelCallback != nil) {
+                cancelCallback?()
+            }
+        }
+
+        alertController.addAction(cancelAction)
+        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("No VC")
+            return
+        }
+        DispatchQueue.main.async {
+            presenterVc.present(alertController, animated: true, completion: nil)
+        }
+    }
 }
