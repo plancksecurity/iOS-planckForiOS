@@ -413,31 +413,35 @@ extension ComposeTableViewController: CNContactPickerDelegate {
 
     // If contact has more than one e-mail we show contact details and user can select only one e-mail
     func contactPicker(_ picker: CNContactPickerViewController, didSelect contactProperty: CNContactProperty) {
-        if let emailAddress = contactProperty.value as? String
-        {
-            guard let vm = viewModel else {
-                Log.shared.errorAndCrash("No VM")
-                return
-            }
-            vm.handleContactSelected(address: emailAddress,
-                                     addressBookID: contactProperty.contact.identifier,
-                                     userName: contactProperty.contact.givenName)
-            didHideContactPicker()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
         }
+        guard let emailAddress = contactProperty.value as? String else {
+            Log.shared.errorAndCrash(message: "emailAddress MUST be valid!")
+            return
+        }
+        vm.handleContactSelected(address: emailAddress,
+                                 addressBookID: contactProperty.contact.identifier,
+                                 userName: contactProperty.contact.givenName)
+        didHideContactPicker()
     }
 
     // If contact has only one e-mail we choose that one
     func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
-        if let emailAddress = contact.emailAddresses.first {
-            guard let vm = viewModel else {
-                Log.shared.errorAndCrash("No VM")
-                return
-            }
-            vm.handleContactSelected(address: String(emailAddress.value),
-                                     addressBookID: contact.identifier,
-                                     userName: contact.givenName)
-            didHideContactPicker()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
         }
+        guard let emailAddress = contact.emailAddresses.first else {
+            Log.shared.errorAndCrash(message: "emailAddress MUST be valid!")
+            return
+        }
+        vm.handleContactSelected(address: String(emailAddress.value),
+                                 addressBookID: contact.identifier,
+                                 userName: contact.givenName)
+
+        didHideContactPicker()
     }
 }
 
