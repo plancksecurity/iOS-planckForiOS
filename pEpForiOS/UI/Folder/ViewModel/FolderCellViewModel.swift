@@ -14,7 +14,6 @@ public class FolderCellViewModel {
     let folder: DisplayableFolderProtocol
     let level : Int
 
-
     private var requiredFolders: [String] {
         return ["Drafts", "Sent", "Spam", "Trash", "Outbox"]
     }
@@ -55,13 +54,13 @@ public class FolderCellViewModel {
 
     public func hasSubfolders() -> Bool {
         guard let folder = folder as? Folder else {
-            return false
+            // UnifiedInbox implements DisplayableFolderProtocol but is not a Folder
+            return true
         }
         return folder.subFolders().count > 0
     }
 
     public func isParentOf(fcvm: FolderCellViewModel) -> Bool {
-
         if let childFolder = fcvm.folder as? Folder, let parentFolder = folder as? Folder {
             if requiredFolders.contains(childFolder.title) {
                 return false
@@ -83,10 +82,11 @@ public class FolderCellViewModel {
     }
 
     public func shouldHideSeparator() -> Bool {
-        if let f = folder as? Folder {
-            return f.folderType == .outbox
+        guard let folder = folder as? Folder else {
+            //If is not a folder but a UnifiedIbox is valid
+            return self.folder is UnifiedInbox
         }
-        return folder is UnifiedInbox
+        return folder.folderType == .outbox
     }
 
     public func isSubfolder() -> Bool {

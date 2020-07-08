@@ -12,15 +12,8 @@ import MessageModel
 
 final class FolderTableViewController: UITableViewController {
 
-    /// The hidden sections are the collapsed accounts.
-    private var hiddenSections = Set<Int>()
-
     var folderVM: FolderViewModel?
     var showNext: Bool = true
-
-    var maxIndentationLevel: Int {
-        return UIUtils.Device.isIphone5 ? 3 : 4
-    }
 
     @IBOutlet private weak var addAccountButton: UIButton!
 
@@ -38,7 +31,6 @@ final class FolderTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setup()
-
         if showNext {
             show(folder: UnifiedInbox())
         }
@@ -52,7 +44,7 @@ final class FolderTableViewController: UITableViewController {
 
     private func setup() {
         navigationController?.setToolbarHidden(false, animated: false)
-        folderVM =  FolderViewModel()
+        folderVM = FolderViewModel()
         tableView.reloadData()
     }
 
@@ -96,18 +88,20 @@ final class FolderTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         guard let vm = folderVM else {
+            //As folderVM is initialized on the setup method (first time in viewWillAppear), it might be nil the first time.
             return 0
         }
         return vm.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        /// Hidden sections are hidden!
-        if hiddenSections.contains(section) {
-            return 0
-        }
         guard let vm = folderVM else {
             Log.shared.errorAndCrash("No VM")
+            return 0
+        }
+
+        /// Hidden sections are hidden!
+        if vm.hiddenSections.contains(section) {
             return 0
         }
         // number of rows means number of visible rows.
@@ -116,7 +110,7 @@ final class FolderTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let vm = folderVM else {
-            Log.shared.errorAndCrash("No model")
+            Log.shared.errorAndCrash("No VM")
             return UITableViewCell()
         }
 
@@ -132,7 +126,7 @@ final class FolderTableViewController: UITableViewController {
         // Indentation
         let subLevel = isSubfolder(indexPath: indexPath) ?  1 : 0
         let indentationLevel = fcvm.level + subLevel
-        cell.indentationLevel = min(indentationLevel, maxIndentationLevel)
+        cell.indentationLevel = min(indentationLevel, vm.maxIndentationLevel)
         cell.hasSubfolders = hasSubfolders(indexPath: indexPath)
         cell.isExpand = fcvm.isExpand
 
@@ -155,7 +149,7 @@ final class FolderTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let folderViewModel = folderVM else {
-            Log.shared.errorAndCrash("No model")
+            Log.shared.errorAndCrash("No VM")
             return
         }
         let cellViewModel = folderViewModel[indexPath.section][indexPath.row]
@@ -177,14 +171,12 @@ final class FolderTableViewController: UITableViewController {
                 Log.shared.errorAndCrash("Problem!")
                 return
         }
-        let emailListVM = EmailListViewModel(delegate: vc,
-                                             folderToShow: folder)
-        vc.viewModel = emailListVM
+        vc.viewModel = EmailListViewModel(delegate: vc, folderToShow: folder)
         vc.hidesBottomBarWhenPushed = false
 
-        let animated =  showNext ? false : true
+        let animated = !showNext
         showNext = false
-        self.navigationController?.pushViewController(vc, animated: animated)
+        navigationController?.pushViewController(vc, animated: animated)
     }
 }
 
@@ -343,16 +335,16 @@ extension FolderTableViewController {
         }
 
         // Toogle section visibility.
-        if hiddenSections.contains(section) {
+        if vm.hiddenSections.contains(section) {
             sender.imageView?.transform = CGAffineTransform.rotate90Degress()
-            hiddenSections.remove(section)
+            vm.hiddenSections.remove(section)
             //Do not change the order of this methods as the next line change the hidden status
             let ips = allIndexPathsForSection()
             setAllRowsHidden(to: false)
             tableView.insertRows(at: ips)
         } else {
             sender.imageView?.transform = .identity
-            hiddenSections.insert(section)
+            vm.hiddenSections.insert(section)
             //Do not change the order of this methods as the next line change the hidden status
             let ips = indexPathsForSection()
             setAllRowsHidden(to: true)
@@ -424,7 +416,7 @@ extension FolderTableViewController {
         header?.sectionButton.imageView?.transform = CGAffineTransform.rotate90Degress()
 
         guard let vm = folderVM, let safeHeader = header else {
-            Log.shared.errorAndCrash("No header or no model.")
+            Log.shared.errorAndCrash("No header or no VM.")
             return header
         }
 
@@ -444,7 +436,7 @@ extension FolderTableViewController {
     override func tableView(_ tableView: UITableView,
                             heightForHeaderInSection section: Int) -> CGFloat {
         guard let vm = folderVM else {
-            Log.shared.errorAndCrash("No model.")
+            Log.shared.errorAndCrash("No VM.")
             return 0.0
         }
         if vm[section].hidden {

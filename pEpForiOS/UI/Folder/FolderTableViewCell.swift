@@ -26,6 +26,11 @@ class FolderTableViewCell: UITableViewCell {
     @IBOutlet weak var iconLeadingConstraint: NSLayoutConstraint!
     weak var delegate: FolderTableViewCellDelegate?
 
+    var shouldRotateChevron: Bool = true {
+        didSet {
+            chevronButton.imageView?.transform = shouldRotateChevron ? CGAffineTransform.rotate90Degress() : .identity
+        }
+    }
     var isExpand: Bool = true {
         didSet {
             if isExpand && hasSubfolders {
@@ -37,7 +42,7 @@ class FolderTableViewCell: UITableViewCell {
     }
 
     var level : Int = 1
-    private var padding: CGFloat {
+    var padding: CGFloat {
         if UIUtils.Device.isIphone5 {
             return 16.0
         }
@@ -51,11 +56,10 @@ class FolderTableViewCell: UITableViewCell {
     }
 
     override func layoutSubviews() {
-        super.layoutSubviews()
         //Increase tappable area
         chevronButton.contentEdgeInsets = UIEdgeInsets(top: 20, left: 40, bottom: 20, right: 0)
         iconLeadingConstraint.constant = (CGFloat(indentationLevel) * subFolderIndentationWidth) + padding
-        contentView.layoutIfNeeded()
+        super.layoutSubviews()
     }
 
     @IBAction func chevronButtonPressed(_ sender: SectionButton) {

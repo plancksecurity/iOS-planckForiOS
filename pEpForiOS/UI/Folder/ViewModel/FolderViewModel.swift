@@ -15,6 +15,13 @@ public class FolderViewModel {
     lazy var folderSyncService = FetchImapFoldersService()
     var items: [FolderSectionViewModel]
 
+    /// The hidden sections are the collapsed accounts.
+    var hiddenSections = Set<Int>()
+
+    var maxIndentationLevel: Int {
+        return UIUtils.Device.isIphone5 ? 3 : 4
+    }
+
     /// Instantiates a folder hierarchy model with:
     /// One section per account
     /// One row per folder
