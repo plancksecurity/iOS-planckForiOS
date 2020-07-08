@@ -390,6 +390,11 @@ extension AccountSettingsViewModel {
         rows.append(usernameRow)
     }
 
+    /// Generate and return the display row.
+    /// - Parameters:
+    ///   - type: The type of row.
+    ///   - value: The value of the row.
+    /// - Returns: The configured row.
     private func getDisplayRow(type : RowType, value : String) -> DisplayRow {
         return DisplayRow(type: type,
                           title: rowTitle(for: type),
