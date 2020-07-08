@@ -13,7 +13,10 @@ public class FolderCellViewModel {
 
     let folder: DisplayableFolderProtocol
     let level : Int
-
+    var indentationLevel: Int {
+        let subLevel = isSubfolder() ? 1 : 0
+        return level + subLevel
+    }
     private var requiredFolderTypes : [FolderType] {
         return [.drafts, .sent, .spam, .trash, .outbox]
     }
@@ -111,6 +114,13 @@ public class FolderCellViewModel {
 
 extension FolderCellViewModel : Equatable {
     public static func == (lhs: FolderCellViewModel, rhs: FolderCellViewModel) -> Bool {
-        return lhs.title == rhs.title && lhs.folder.title == rhs.folder.title
+        guard let lhsFolder = lhs.folder as? Folder, let rhsFolder = rhs.folder as? Folder else {
+            guard let left = lhs.folder as? UnifiedInbox, let right = rhs.folder as? UnifiedInbox else {
+                Log.shared.info("One is Unified Inbox the other is not")
+                return false
+            }
+            return left.hashValue == right.hashValue
+        }
+        return lhsFolder.account.hashValue == rhsFolder.account.hashValue
     }
 }

@@ -8,7 +8,7 @@
 import pEpIOSToolbox
 import MessageModel
 
-public class UnifiedInbox: VirtualFolderProtocol {
+public class UnifiedInbox: NSObject, VirtualFolderProtocol {
 
     private lazy var fetchMessagesService = FetchMessagesService()
     private lazy var fetchOlderMessagesService = FetchOlderImapMessagesService()

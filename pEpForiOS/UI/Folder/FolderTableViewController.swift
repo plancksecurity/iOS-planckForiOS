@@ -122,7 +122,7 @@ final class FolderTableViewController: UITableViewController {
             return UITableViewCell()
         }
 
-        cell.indentationLevel = min(fcvm.level, vm.maxIndentationLevel)
+        cell.indentationLevel = min(fcvm.indentationLevel, vm.maxIndentationLevel)
         cell.shouldRotateChevron = fcvm.shouldRotateChevron
         cell.chevronButton.isUserInteractionEnabled = fcvm.isChevronEnabled
         cell.padding = fcvm.padding
