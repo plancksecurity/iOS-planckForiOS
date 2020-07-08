@@ -164,9 +164,9 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
         let index = viewModel.index(of: parentFCVM)
         let sonIndex = viewModel.index(of: sonFCVM)
 
-        //0 is "All"
-        XCTAssert(index == 1)
-        XCTAssert(sonIndex == 2)
+        XCTAssert(index != NSNotFound)
+        XCTAssert(sonIndex != NSNotFound)
+        XCTAssert(sonIndex! > index!)
     }
 
     func testvisibleFolderCellViewModel() {

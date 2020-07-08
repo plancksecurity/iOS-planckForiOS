@@ -40,6 +40,10 @@ public class FolderCellViewModel {
         return level
     }
 
+    var padding: CGFloat {
+        return DeviceUtils.isIphone5 ? 16.0 : 25.0
+    }
+
     public var isSelectable: Bool {
         return folder.isSelectable
     }
@@ -52,6 +56,14 @@ public class FolderCellViewModel {
         self.level = level
     }
 
+    public var shouldRotateChevron : Bool {
+        return isExpand && hasSubfolders() && isChevronEnabled
+    }
+
+    public var isChevronEnabled: Bool {
+        return hasSubfolders() && !(folder is UnifiedInbox)
+    }
+    
     public func hasSubfolders() -> Bool {
         guard let folder = folder as? Folder else {
             // UnifiedInbox implements DisplayableFolderProtocol but is not a Folder

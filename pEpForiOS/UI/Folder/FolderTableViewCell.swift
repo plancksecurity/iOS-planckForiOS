@@ -7,12 +7,11 @@
 //
 
 import UIKit
+import pEpIOSToolbox
 
 protocol FolderTableViewCellDelegate: class {
     func didTapChevronButton(cell:  UITableViewCell)
 }
-
-import UIKit
 
 class FolderTableViewCell: UITableViewCell {
 
@@ -31,29 +30,9 @@ class FolderTableViewCell: UITableViewCell {
             chevronButton.imageView?.transform = shouldRotateChevron ? CGAffineTransform.rotate90Degress() : .identity
         }
     }
-    var isExpand: Bool = true {
-        didSet {
-            if isExpand && hasSubfolders {
-                chevronButton.imageView?.transform = CGAffineTransform.rotate90Degress()
-            } else {
-                chevronButton.imageView?.transform = .identity
-            }
-        }
-    }
 
     var level : Int = 1
-    var padding: CGFloat {
-        if UIUtils.Device.isIphone5 {
-            return 16.0
-        }
-        return 25.0
-    }
-
-    var hasSubfolders : Bool = false {
-        didSet {
-            chevronButton.isUserInteractionEnabled = hasSubfolders
-        }
-    }
+    var padding: CGFloat = 0
 
     override func layoutSubviews() {
         //Increase tappable area
@@ -63,8 +42,7 @@ class FolderTableViewCell: UITableViewCell {
     }
 
     @IBAction func chevronButtonPressed(_ sender: SectionButton) {
-        guard hasSubfolders else { return }
-        isExpand = !isExpand
+        shouldRotateChevron = !shouldRotateChevron
         delegate?.didTapChevronButton(cell: self)
     }
 
@@ -73,8 +51,7 @@ class FolderTableViewCell: UITableViewCell {
         indentationLevel = 0
         titleLabel.text = ""
         iconImageView.image = nil
-        hasSubfolders = false
-        isExpand = true
+        chevronButton.isUserInteractionEnabled = false
         titleLabel?.textColor = .black
         separatorImageView.isHidden = true
         iconLeadingConstraint.constant = 16

@@ -7,10 +7,11 @@
 //
 
 import Foundation
+import UIKit
 
 extension CGAffineTransform {
     /// - Returns: An affine transformation matrix to rotate 90 degress.
-    static func rotate90Degress() -> CGAffineTransform {
+    public static func rotate90Degress() -> CGAffineTransform {
         return CGAffineTransform(rotationAngle: CGFloat(Double.pi/2))
     }
 }

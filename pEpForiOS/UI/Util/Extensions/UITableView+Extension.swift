@@ -47,4 +47,11 @@ extension UITableView {
         insertRows(at: indexPaths, with: .fade)
         endUpdates()
     }
+
+    public func insertRows(at indexPathsToInsert: [IndexPath], andDeleteRowsAt indexPathsToDelete: [IndexPath]) {
+        beginUpdates()
+        insertRows(at: indexPathsToInsert, with: .fade)
+        deleteRows(at: indexPathsToDelete, with: .top)
+        endUpdates()
+    }
 }

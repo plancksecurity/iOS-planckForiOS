@@ -122,25 +122,16 @@ final class FolderTableViewController: UITableViewController {
             return UITableViewCell()
         }
 
-        /// Config cell
-        // Indentation
-        let subLevel = isSubfolder(indexPath: indexPath) ?  1 : 0
-        let indentationLevel = fcvm.level + subLevel
-        cell.indentationLevel = min(indentationLevel, vm.maxIndentationLevel)
-        cell.hasSubfolders = hasSubfolders(indexPath: indexPath)
-        cell.isExpand = fcvm.isExpand
-
-        // Title and icon
+        cell.indentationLevel = min(fcvm.level, vm.maxIndentationLevel)
+        cell.shouldRotateChevron = fcvm.shouldRotateChevron
+        cell.chevronButton.isUserInteractionEnabled = fcvm.isChevronEnabled
+        cell.padding = fcvm.padding
         cell.titleLabel.text = fcvm.title
         cell.titleLabel.font = UIFont.pepFont(style: .body, weight: .regular)
         cell.titleLabel.adjustsFontForContentSizeCategory = true
         cell.titleLabel?.textColor = fcvm.isSelectable ? .black : .pEpGray
         cell.iconImageView.image = fcvm.image
-
-        //Separator line.
-        // The native implementation is not compatible with our custom indentation.
         cell.separatorImageView.isHidden = fcvm.shouldHideSeparator()
-
         cell.delegate = self
         return cell
     }

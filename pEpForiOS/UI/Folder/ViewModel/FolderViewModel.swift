@@ -19,7 +19,7 @@ public class FolderViewModel {
     var hiddenSections = Set<Int>()
 
     var maxIndentationLevel: Int {
-        return UIUtils.Device.isIphone5 ? 3 : 4
+        return DeviceUtils.isIphone5 ? 3 : 4
     }
 
     /// Instantiates a folder hierarchy model with:
