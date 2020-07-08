@@ -98,17 +98,19 @@ public class FolderCellViewModel {
 
     public func shouldHideSeparator() -> Bool {
         guard let folder = folder as? Folder else {
-            //If is not a folder but a UnifiedIbox is valid
+            //If is not a folder but a UnifiedInbox is valid
             return self.folder is UnifiedInbox
         }
         return folder.folderType == .outbox
     }
 
     public func isSubfolder() -> Bool {
-        if let folder = folder as? Folder {
-            return folder.folderType == .normal && folder.folderType != .outbox && folder.parent != nil
+        guard let folder = folder as? Folder else {
+            //If is not a folder, it's a UnifiedInbox
+            return false
         }
-        return false
+        return folder.folderType == .normal && folder.folderType != .outbox && folder.parent != nil
+
     }
 }
 
