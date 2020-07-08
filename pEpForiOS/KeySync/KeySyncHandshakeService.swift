@@ -106,7 +106,13 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
 
     func showPassphraseRequired() {
         DispatchQueue.main.async {
-            UIUtils.showPassphraseRequiredAlert()
+            UIUtils.showPassphraseRequiredAlert { passphrase in
+                guard let input = passphrase else {
+                    // Valid case. the user canclled the passphrase input alert.
+                    return
+                }
+                try? PassphraseUtil().newPassphrase(input)
+            }
         }
     }
 

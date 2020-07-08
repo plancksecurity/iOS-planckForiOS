@@ -61,31 +61,34 @@ extension UIUtils {
     }
 
     static private func show(pEpError: BackgroundError.PepError) {
-        guard !isCurrentlyShowingPassphraseInputAlert else {
-            // A passphrase alert is already shown. Do not show a second one on top of it.
-            // Do nothing instead.
-            return
-        }
-        switch pEpError {
-        case .passphraseRequired:
-            DispatchQueue.main.async {
-                guard !isCurrentlyShowingPassphraseInputAlert else {
-                    // A passphrase alert is already shown. Do not show a second one on top of it.
-                    // Do nothing instead.
-                    return
-                }
-                showPassphraseRequiredAlert()
-            }
-        case .wrongPassphrase:
-            DispatchQueue.main.async {
-                guard !isCurrentlyShowingPassphraseInputAlert else {
-                    // A passphrase alert is already shown. Do not show a second one on top of it.
-                    // Do nothing instead.
-                    return
-                }
-                showPassphraseWrongAlert()
-            }
-        }
+        //BUFF: should not be called any more. The Adapter & PassphraseProviderDelegate will handle that so in theory no background OP will ever get that error.
+        //RM if proven obsolete
+        
+//        guard !isCurrentlyShowingPassphraseInputAlert else {
+//            // A passphrase alert is already shown. Do not show a second one on top of it.
+//            // Do nothing instead.
+//            return
+//        }
+//        switch pEpError {
+//        case .passphraseRequired:
+//            DispatchQueue.main.async {
+//                guard !isCurrentlyShowingPassphraseInputAlert else {
+//                    // A passphrase alert is already shown. Do not show a second one on top of it.
+//                    // Do nothing instead.
+//                    return
+//                }
+//                showPassphraseRequiredAlert()
+//            }
+//        case .wrongPassphrase:
+//            DispatchQueue.main.async {
+//                guard !isCurrentlyShowingPassphraseInputAlert else {
+//                    // A passphrase alert is already shown. Do not show a second one on top of it.
+//                    // Do nothing instead.
+//                    return
+//                }
+//                showWrongPassphraseAlert()
+//            }
+//        }
     }
 
     static private func show(unspecifiedError error: Error) {
