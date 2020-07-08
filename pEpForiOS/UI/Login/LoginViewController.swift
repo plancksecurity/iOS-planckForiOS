@@ -194,12 +194,7 @@ extension LoginViewController: UITextFieldDelegate {
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         guard UIDevice.current.userInterfaceIdiom != .pad else { return }
-        //If is iOS13+ then this will be trigger in keyboard will appear
-        if !ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 13,
-                                                                          minorVersion: 0,
-                                                                          patchVersion: 0)) {
-            scrollView.scrollAndMakeVisible(textField)
-        }
+        scrollView.scrollAndMakeVisible(textField)
     }
 
     func textField(_ textField: UITextField,
