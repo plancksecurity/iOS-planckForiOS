@@ -48,22 +48,45 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
         XCTAssertEqual(viewModel.pEpSync, boolValue)
     }
 
-    func testUpdateToken() {
-        //TODO: test this when the method is properly implemented.
-    }
-
-    //??
-    func testHandleOauth2Reauth() {
-
-    }
-
     func testHandleResetIdentity() {
         let showLoadingViewExpectation = expectation(description: "showLoadingViewExpectation")
+        let hideLoadingViewExpectation = expectation(description: "hideLoadingViewExpectation")
+
         let delegate = MockedAccountSettingsViewModelDelegate(testCase: self,
-                                                              showLoadingViewExpectation: showLoadingViewExpectation)
+                                                              showLoadingViewExpectation: showLoadingViewExpectation,
+                                                              hideLoadingViewExpectation: hideLoadingViewExpectation)
         viewModel = AccountSettingsViewModel(account: account, delegate: delegate)
         viewModel.handleResetIdentity()
         waitForExpectations(timeout: TestUtil.waitTime)
+    }
+
+    func testShowAlert() {
+        let showErrorAlertExpectation = expectation(description: "showErrorAlertExpectation")
+        let delegate = MockedAccountSettingsViewModelDelegate(testCase: self,
+                                                              showErrorAlertExpectation: showErrorAlertExpectation)
+        delegate.showAlert(error: NSError())
+        waitForExpectations(timeout: TestUtil.waitTime)
+    }
+
+    func testUndoPEPSyncToggle() {
+        let undoPEPSyncToggleExpectation = expectation(description: "undoPEPSyncToggle")
+        let delegate = MockedAccountSettingsViewModelDelegate(testCase: self,
+                                                              undoPEPSyncToggleExpectation: undoPEPSyncToggleExpectation)
+
+        viewModel = AccountSettingsViewModel(account: account, delegate: delegate)
+
+        viewModel.pEpSync(enable: true)
+        delegate.undoPEPSyncToggle()
+        waitForExpectations(timeout: TestUtil.waitTime)
+    }
+
+    func testHandleOauth2Reauth() {
+        let td = TestData()
+        let account = td.createWorkingGmailAccount()
+        let mockedAccountSettingsViewController = MockedAccountSettingsViewController()
+        viewModel = AccountSettingsViewModel(account: account)
+        viewModel.handleOauth2Reauth(onViewController: mockedAccountSettingsViewController)
+        XCTAssertTrue(true, "handleOauth2Reauth did not crash")
     }
 }
 
@@ -72,28 +95,25 @@ class MockedAccountSettingsViewController: UIViewController {
 
 extension MockedAccountSettingsViewController: OAuthAuthorizerDelegate {
     func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
-
     }
 }
 
 class MockedAccountSettingsViewModelDelegate : AccountSettingsViewModelDelegate {
 
-//    var showErrorAlertExpectation: XCTestExpectation?
+    var showErrorAlertExpectation: XCTestExpectation?
     var showLoadingViewExpectation: XCTestExpectation?
-//    var hideLoadingViewExpectation: XCTestExpectation?
-//    var undoPEPSyncToggleExpectation: XCTestExpectation?
+    var hideLoadingViewExpectation: XCTestExpectation?
+    var undoPEPSyncToggleExpectation: XCTestExpectation?
 
     init(testCase: XCTestCase,
-//         showErrorAlertExpectation: XCTestExpectation? = nil,
-         showLoadingViewExpectation: XCTestExpectation? = nil
-//         hideLoadingViewExpectation: XCTestExpectation? = nil,
-//         undoPEPSyncToggleExpectation: XCTestExpectation? = nil
-    ) {
-
-//        self.showErrorAlertExpectation = showErrorAlertExpectation
+         showErrorAlertExpectation: XCTestExpectation? = nil,
+         showLoadingViewExpectation: XCTestExpectation? = nil,
+         hideLoadingViewExpectation: XCTestExpectation? = nil,
+         undoPEPSyncToggleExpectation: XCTestExpectation? = nil) {
+        self.showErrorAlertExpectation = showErrorAlertExpectation
         self.showLoadingViewExpectation = showLoadingViewExpectation
-//        self.hideLoadingViewExpectation = hideLoadingViewExpectation
-//        self.undoPEPSyncToggleExpectation = undoPEPSyncToggleExpectation
+        self.hideLoadingViewExpectation = hideLoadingViewExpectation
+        self.undoPEPSyncToggleExpectation = undoPEPSyncToggleExpectation
     }
 
     func setLoadingView(visible: Bool) {
@@ -103,18 +123,24 @@ class MockedAccountSettingsViewModelDelegate : AccountSettingsViewModelDelegate 
                 showLoadingViewExpectation = nil
             }
         } else {
-//            if hideLoadingViewExpectation != nil {
-//                hideLoadingViewExpectation?.fulfill()
-//                hideLoadingViewExpectation = nil
-//            }
+            if hideLoadingViewExpectation != nil {
+                hideLoadingViewExpectation?.fulfill()
+                hideLoadingViewExpectation = nil
+            }
         }
     }
 
     func showAlert(error: Error) {
-//        showErrorAlertExpectation?.fulfill()
+        if showErrorAlertExpectation != nil {
+            showErrorAlertExpectation?.fulfill()
+            showErrorAlertExpectation = nil
+        }
     }
 
     func undoPEPSyncToggle() {
-//        undoPEPSyncToggleExpectation?.fulfill()
+        if undoPEPSyncToggleExpectation != nil {
+            undoPEPSyncToggleExpectation?.fulfill()
+            undoPEPSyncToggleExpectation = nil
+        }
     }
 }

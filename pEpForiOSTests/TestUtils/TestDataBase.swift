@@ -237,6 +237,47 @@ class TestDataBase {
         return createWorkingAccountSettings(number: number).account()
     }
 
+    /// Create and returns a gmail account
+    /// - Returns: the created gmail account
+    func createWorkingGmailAccount() -> Account {
+        let moc = Stack.shared.mainContext!
+        let accountType : VerifiableAccount.AccountType = .gmail
+        let verifier = VerifiableAccount.verifiableAccount(for: .gmail)
+
+        let cdIdentity = CdIdentity(context: moc)
+        cdIdentity.userName = "userName_\(accountType)"
+        cdIdentity.address = "address_\(accountType)"
+
+        let cdAccount = CdAccount(context: moc)
+        cdAccount.identity = cdIdentity
+
+        let cdImapServer = CdServer(context: moc)
+        cdImapServer.address = verifier.serverIMAP
+        cdImapServer.port = Int16(verifier.portIMAP)
+        cdImapServer.serverType = .imap
+        cdImapServer.transport = .tls
+
+        let cdSmtpServer = CdServer(context: moc)
+        cdSmtpServer.address = verifier.serverSMTP
+        cdSmtpServer.port = Int16(verifier.portSMTP)
+        cdSmtpServer.serverType = .smtp
+        cdSmtpServer.transport = .tls
+
+        let cdCreds = CdServerCredentials(context: moc)
+        cdCreds.key = "key_\(accountType)"
+        cdCreds.loginName = "loginName_\(accountType)"
+
+        cdImapServer.credentials = cdCreds
+        cdSmtpServer.credentials = cdCreds
+
+        cdAccount.addToServers(cdImapServer)
+        cdAccount.addToServers(cdSmtpServer)
+
+        moc.saveAndLogErrors()
+
+        return cdAccount.account()
+    }
+
     /**
      - Returns: An `AccountSettings` object with an SMTP server that should yield a quick timeout.
      */

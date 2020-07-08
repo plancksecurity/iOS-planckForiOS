@@ -157,7 +157,6 @@ extension AccountSettingsViewModel {
             return
         }
         let oauth = OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer()
-
         oauthViewModel.delegate = vc
         oauthViewModel.authorize(
             authorizer: oauth,
