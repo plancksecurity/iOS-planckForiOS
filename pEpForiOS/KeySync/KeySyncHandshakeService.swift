@@ -103,19 +103,7 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
             self?.pEpSyncWizard?.goTo(index: completedViewIndex)
         }
     }
-
-    func showPassphraseRequired() { //BUF: needless? Check after adapterDelegate&PPHAndler is in.
-        DispatchQueue.main.async {
-            UIUtils.showPassphraseRequiredAlert { passphrase in
-                guard let input = passphrase else {
-                    // Valid case. the user canclled the passphrase input alert.
-                    return
-                }
-                try? PassphraseUtil().newPassphrase(input) //BUFF: one try only, no error handling.
-            }
-        }
-    }
-
+    
     // We must dismiss pEpSyncWizard before presenting pEpSyncWizard error view.
     func showError(error: Error?,
                    completion: ((KeySyncErrorResponse) -> ())? = nil) {

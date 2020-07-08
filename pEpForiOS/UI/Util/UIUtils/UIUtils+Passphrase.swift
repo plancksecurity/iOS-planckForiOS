@@ -6,8 +6,8 @@
 //  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
 import MessageModel
+
 // MARK: - Passphrase Dialogs for using a key with  Passphrase (PASSPHRASE_REQUIRED)
 
 extension UIUtils {

@@ -22,6 +22,7 @@ public protocol MessageModelServiceProtocol: ServiceProtocol {
 }
 
 public final class MessageModelService {
+    private let pEpPassphraseProvider: PEPPassphraseProvider //BUFF: maybe we do not need to hold it. Lets see the adapters implementation.
     private var newMailsService: FetchNumberOfNewMailsService?
 
     // Service
@@ -46,18 +47,22 @@ public final class MessageModelService {
                 cnContactsAccessPermissionProvider: CNContactsAccessPermissionProviderProtocol,
                 keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol? = nil,
                 keySyncStateProvider: KeySyncStateProvider,
-                usePEPFolderProvider: UsePEPFolderProviderProtocol) {
+                usePEPFolderProvider: UsePEPFolderProviderProtocol,
+                passphraseProvider: PassphraseProviderProtocol) {
         // Mega ugly, MUST go away. Fix with Stack update.
         // Touch Stack once to assure it sets up the mainContext on the main queue
         let _ = Stack.shared
 
         PassphraseUtil().configureAdapterWithPassphraseForNewKeys()
+        self.pEpPassphraseProvider = PEPPassphraseProvider(delegate: passphraseProvider)
+        //BUFF: configure adapter with passphraseProvider
 
         setupServices(errorPropagator: errorPropagator,
                       cnContactsAccessPermissionProvider: cnContactsAccessPermissionProvider,
                       keySyncServiceHandshakeHandler: keySyncServiceHandshakeHandler,
                       keySyncStateProvider: keySyncStateProvider,
-                      usePEPFolderProvider: usePEPFolderProvider)
+                      usePEPFolderProvider: usePEPFolderProvider,
+                      passphraseProvider: passphraseProvider)
     }
 }
 
@@ -80,7 +85,8 @@ extension MessageModelService {
                                cnContactsAccessPermissionProvider: CNContactsAccessPermissionProviderProtocol,
                                keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol? = nil,
                                keySyncStateProvider: KeySyncStateProvider,
-                               usePEPFolderProvider: UsePEPFolderProviderProtocol) {
+                               usePEPFolderProvider: UsePEPFolderProviderProtocol,
+                               passphraseProvider: PassphraseProviderProtocol) {
         //###
         // Servcies that run while the app is running (Send, decrypt, replicate, ...)
         let decryptService = DecryptService(backgroundTaskManager: backgroundTaskManager,
@@ -91,7 +97,8 @@ extension MessageModelService {
                                                        errorPropagator: errorPropagator)
         let keySyncService = KeySyncService(keySyncServiceHandshakeHandler: keySyncServiceHandshakeHandler,
                                             keySyncStateProvider: keySyncStateProvider,
-                                            fastPollingDelegate: replicationService)
+                                            fastPollingDelegate: replicationService,
+                                            passphraseProvider: passphraseProvider)
         let createPEPFolderService = CreatePepIMAPFolderService(backgroundTaskManager: backgroundTaskManager,
                                                                 usePEPFolderProviderProtocol: usePEPFolderProvider)
         runtimeServices = [decryptService,

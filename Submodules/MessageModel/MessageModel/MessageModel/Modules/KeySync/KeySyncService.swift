@@ -26,16 +26,19 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
     private var moc: NSManagedObjectContext
     weak private var keySyncStateProvider: KeySyncStateProvider?
     private(set) var handshakeHandler: KeySyncServiceHandshakeHandlerProtocol?
+    let passphraseProvider: PassphraseProviderProtocol
     weak private(set) var fastPollingDelegate: PollingDelegate?
 
     // MARK: - KeySyncServiceProtocol
 
     required init(keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol? = nil,
                   keySyncStateProvider: KeySyncStateProvider,
-                  fastPollingDelegate: PollingDelegate? = nil) {
+                  fastPollingDelegate: PollingDelegate? = nil,
+                  passphraseProvider: PassphraseProviderProtocol) {
         self.handshakeHandler = keySyncServiceHandshakeHandler
         self.keySyncStateProvider = keySyncStateProvider
         self.fastPollingDelegate = fastPollingDelegate
+        self.passphraseProvider = passphraseProvider
         pEpSync = PEPSync(sendMessageDelegate: nil,
                                notifyHandshakeDelegate: nil)
         let moc: NSManagedObjectContext = Stack.shared.changePropagatorContext
