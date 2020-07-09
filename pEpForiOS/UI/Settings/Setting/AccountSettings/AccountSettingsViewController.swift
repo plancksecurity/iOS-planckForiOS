@@ -148,8 +148,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
             }
-
-            dequeuedCell.configure(with: row, isGrayedOut : vm.isPEPSyncGrayedOut())
+            dequeuedCell.configure(with: row, isGrayedOut : !vm.isPEPSyncGrayedOut())
             dequeuedCell.delegate = self
             return dequeuedCell
         case .reset:
