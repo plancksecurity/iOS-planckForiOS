@@ -182,11 +182,6 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Syt-Kn-S3E"/>
-                        <barButtonItem image="compose" id="uUt-t6-VUj" userLabel="Show Compose Button">
-                            <connections>
-                                <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueCompose" id="2Ml-4S-RYf"/>
-                            </connections>
-                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Inbox" id="aP4-ia-HTP">
                         <barButtonItem key="rightBarButtonItem" title="Edit" id="4U1-dM-wKT">
@@ -207,6 +202,7 @@
                         <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" id="cRe-YG-393"/>
                         <segue destination="nc4-kR-K9D" kind="show" identifier="segueShowFilter" id="t4t-3T-ovM"/>
                         <segue destination="fRo-D2-Fjz" kind="showDetail" identifier="segueShowEmail" id="bq8-0O-guL"/>
+                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueCompose" id="MdS-jf-fxc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m6c-dF-C80" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -945,13 +941,12 @@
     <inferredMetricsTieBreakers>
         <segue reference="cRe-YG-393"/>
         <segue reference="JbP-D9-Vpg"/>
-        <segue reference="yAp-Cu-TCw"/>
+        <segue reference="MdS-jf-fxc"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="attachment-list-icon" width="14" height="15"/>
         <image name="chevron-icon-left" width="10" height="18"/>
         <image name="chevron-icon-right" width="10" height="18"/>
-        <image name="compose" width="28" height="28"/>
         <image name="empty-avatar" width="150" height="150"/>
         <image name="pEp-status-yellow_white-border" width="21" height="21"/>
         <image name="pEpForiOS-icon-delete" width="16" height="24"/>

@@ -45,7 +45,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
     private let refreshController = UIRefreshControl()
 
-    var textFilterButton: UIBarButtonItem = UIBarButtonItem(title: "",
+    private let textFilterButton: UIBarButtonItem = UIBarButtonItem(title: "",
                                                             style: .plain,
                                                             target: nil,
                                                             action: nil)
@@ -75,6 +75,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         }
         setup()
         setUpTextFilter()
+        setUpComposeActions()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -453,6 +454,41 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
             textFilterButton.title = String(format: NSLocalizedString("Filter by: %@",
                                                                       comment: "'Filter by' in formatted string, followed by the localized filter name"),
                                             txt)
+        }
+    }
+
+// MARK: - Compose Button
+
+    private func setUpComposeActions() {
+        // Gesture recognizers
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(composeButtonHasBeenPressed))
+        let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(composeButtonLongClicked))
+        longGesture.allowableMovement = 1
+        longGesture.minimumPressDuration = 0.8
+        longGesture.numberOfTapsRequired = 0
+        // Custom view
+        let viewContainerForComposeButton = UIView(frame: CGRect(x: 0, y: 0, width: 22, height: 30))
+        let composeImage = #imageLiteral(resourceName: "compose")
+        let composeImageButton = UIImageView(image: composeImage)
+        composeImageButton.tintColor = .white
+        composeImageButton.sizeThatFits(viewContainerForComposeButton.frame.size)
+        viewContainerForComposeButton.addSubview(composeImageButton)
+
+        viewContainerForComposeButton.addGestureRecognizer(tapGesture)
+        viewContainerForComposeButton.addGestureRecognizer(longGesture)
+        let compose = UIBarButtonItem(customView: viewContainerForComposeButton)
+        compose.tintColor = .white
+
+        toolbarItems?.insert(compose, at: 2)
+    }
+
+    @objc func composeButtonHasBeenPressed() {
+        performSegue(withIdentifier: SegueIdentifier.segueCompose, sender: self)
+    }
+
+    @objc func composeButtonLongClicked(sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
+            // TODO: - ak IOS-1935 Add implementation for long click on compose button
         }
     }
 
