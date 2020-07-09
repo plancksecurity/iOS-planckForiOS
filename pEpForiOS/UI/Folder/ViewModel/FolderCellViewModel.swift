@@ -70,7 +70,11 @@ public class FolderCellViewModel {
     public func hasSubfolders() -> Bool {
         guard let folder = folder as? Folder else {
             // UnifiedInbox implements DisplayableFolderProtocol but is not a Folder
-            return true
+            guard self.folder is UnifiedInbox else {
+                Log.shared.errorAndCrash("Not a folder or UnifiedInbox.")
+                return false
+            }
+            return false
         }
         return folder.subFolders().count > 0
     }
