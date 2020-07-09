@@ -110,6 +110,43 @@ class TestDataBase {
             return acc
         }
 
+        func gmailAccount() -> Account {
+            let accountType : VerifiableAccount.AccountType = .gmail
+            let verifier = VerifiableAccount.verifiableAccount(for: .gmail)
+
+            let id = Identity(address: idAddress,
+                              userID: CdIdentity.pEpOwnUserID,
+                              userName: idUserName,
+                              session: Session.main)
+
+            let credSmtp = ServerCredentials(loginName: id.address,
+                                             key: nil,
+                                             clientCertificate: nil)
+            credSmtp.password = password
+            let smtp = Server.create(serverType: .smtp,
+                                     port: verifier.portSMTP,
+                                     address: verifier.serverSMTP!,
+                                     transport: .tls,
+                                     credentials:credSmtp)
+
+            let credImap = ServerCredentials(loginName: id.address,
+                                             key: nil,
+                                             clientCertificate: nil)
+            credImap.password = password
+            let imap = Server.create(serverType: .imap,
+                                     port: verifier.portIMAP,
+                                     address: verifier.serverIMAP!,
+                                     transport: .tls,
+                                     credentials:credImap)
+
+            let acc = Account(user: id, servers: [smtp, imap])
+//            acc.accountType = accountType
+            acc.session.commit()
+
+            return acc
+        }
+
+
         func pEpIdentity() -> PEPIdentity {
             let ident = PEPIdentity(address: idAddress)
             ident.userName = accountName
@@ -235,47 +272,6 @@ class TestDataBase {
      */
     func createWorkingAccount(number: Int = 0) -> Account {
         return createWorkingAccountSettings(number: number).account()
-    }
-
-    /// Create and returns a gmail account
-    /// - Returns: the created gmail account
-    func createWorkingGmailAccount() -> Account {
-        let moc = Stack.shared.mainContext!
-        let accountType : VerifiableAccount.AccountType = .gmail
-        let verifier = VerifiableAccount.verifiableAccount(for: .gmail)
-
-        let cdIdentity = CdIdentity(context: moc)
-        cdIdentity.userName = "userName_\(accountType)"
-        cdIdentity.address = "address_\(accountType)"
-
-        let cdAccount = CdAccount(context: moc)
-        cdAccount.identity = cdIdentity
-
-        let cdImapServer = CdServer(context: moc)
-        cdImapServer.address = verifier.serverIMAP
-        cdImapServer.port = Int16(verifier.portIMAP)
-        cdImapServer.serverType = .imap
-        cdImapServer.transport = .tls
-
-        let cdSmtpServer = CdServer(context: moc)
-        cdSmtpServer.address = verifier.serverSMTP
-        cdSmtpServer.port = Int16(verifier.portSMTP)
-        cdSmtpServer.serverType = .smtp
-        cdSmtpServer.transport = .tls
-
-        let cdCreds = CdServerCredentials(context: moc)
-        cdCreds.key = "key_\(accountType)"
-        cdCreds.loginName = "loginName_\(accountType)"
-
-        cdImapServer.credentials = cdCreds
-        cdSmtpServer.credentials = cdCreds
-
-        cdAccount.addToServers(cdImapServer)
-        cdAccount.addToServers(cdSmtpServer)
-
-        moc.saveAndLogErrors()
-
-        return cdAccount.account()
     }
 
     /**

@@ -43,9 +43,9 @@ final class AccountSettingsViewModel {
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
     private(set) var pEpSync: Bool
-    let isOAuth2: Bool
+    private let isOAuth2: Bool
     private(set) var account: Account
-    weak var delegate: AccountSettingsViewModelDelegate?
+    public weak var delegate: AccountSettingsViewModelDelegate?
     /// Items to be displayed in a Account Settings View Controller
     private(set) var sections: [Section] = [Section]()
     private let oauthViewModel = OAuthAuthorizer()
@@ -152,16 +152,12 @@ extension AccountSettingsViewModel {
 extension AccountSettingsViewModel {
 
     public func handleOauth2Reauth<T: UIViewController>(onViewController vc: T) where T: OAuthAuthorizerDelegate {
-        guard let accountType = account.accountType else {
-            Log.shared.errorAndCrash(message: "Handling OAuth2 reauth requires an account with a known account type for determining the OAuth2 configuration")
-            return
-        }
         let oauth = OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer()
         oauthViewModel.delegate = vc
         oauthViewModel.authorize(
             authorizer: oauth,
             emailAddress: account.user.address,
-            accountType: accountType,
+            accountType: account.accountType,
             viewController: vc)
     }
 
@@ -198,6 +194,12 @@ extension AccountSettingsViewModel {
             delegate?.undoPEPSyncToggle()
             delegate?.showAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
         }
+    }
+
+    /// Indicates if pep synd has to be grayed out.
+    /// - Returns: True if it is.
+    public func isPEPSyncGrayedOut() -> Bool {
+        return KeySyncUtil.isInDeviceGroup
     }
 }
 

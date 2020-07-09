@@ -148,7 +148,8 @@ extension AccountSettingsViewController : UITableViewDataSource {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
             }
-            dequeuedCell.configure(with: row)
+
+            dequeuedCell.configure(with: row, isGrayedOut : vm.isPEPSyncGrayedOut())
             dequeuedCell.delegate = self
             return dequeuedCell
         case .reset:
@@ -276,7 +277,11 @@ extension AccountSettingsViewController {
         pepAlertViewController.modalPresentationStyle = .overFullScreen
         pepAlertViewController.modalTransitionStyle = .crossDissolve
         DispatchQueue.main.async { [weak self] in
-            self?.present(pepAlertViewController, animated: true)
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.present(pepAlertViewController, animated: true)
         }
     }
 }

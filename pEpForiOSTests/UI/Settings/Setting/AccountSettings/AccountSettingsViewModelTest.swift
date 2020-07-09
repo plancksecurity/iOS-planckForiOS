@@ -82,7 +82,7 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
 
     func testHandleOauth2Reauth() {
         let td = TestData()
-        let account = td.createWorkingGmailAccount()
+        let account = td.createVerifiableAccountSettings().account()
         let mockedAccountSettingsViewController = MockedAccountSettingsViewController()
         viewModel = AccountSettingsViewModel(account: account)
         viewModel.handleOauth2Reauth(onViewController: mockedAccountSettingsViewController)
