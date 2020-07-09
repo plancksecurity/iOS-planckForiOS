@@ -54,11 +54,6 @@ extension UIUtils {
                                                  message: String,
                                                  placeholder: String,
                                                  completion: ((String?)->Void)?) {
-        guard !isCurrentlyShowingPassphraseInputAlert else {
-            // A passphrase alert is already shown. Do not display onother one on top of it.
-            // Do nothing instead ...
-            return
-        }
         let callback:(String)->Void = { input in
             completion?(input)
         }
@@ -66,6 +61,11 @@ extension UIUtils {
             completion?(nil)
         }
         DispatchQueue.main.async {
+            guard !isCurrentlyShowingPassphraseInputAlert else {
+                // A passphrase alert is already shown. Do not display onother one on top of it.
+                // Do nothing instead ...
+                return
+            }
             showAlertWithTextfield(identifier: .passphraseAlert,
                                    title: title,
                                    message: message,
@@ -76,29 +76,43 @@ extension UIUtils {
     }
 
     /// Whether or not a passphrase related alert is currently shown.
-    /// - note: It is save to call that from any queue.
+    /// - note: Must be called on the main queue!
     static private var isCurrentlyShowingPassphraseInputAlert: Bool {
+
+        //BUFF: cleanup
+//        var result = false
+//
+//        let block: ()->Void = {
+//            guard let topVC = UIApplication.currentlyVisibleViewController() else {
+//                Log.shared.errorAndCrash("No VC shown?")
+//                return
+//            }
+//            if let shownIdentifiableAlertController = topVC as? IdentifiableAlertController {
+//                if shownIdentifiableAlertController.identifier == .passphraseAlert {
+//                    result = true
+//                    return
+//                }
+//            }
+//        }
+//
+//        if Thread.current != Thread.main {
+//            DispatchQueue.main.sync {
+//                block()
+//            }
+//        } else {
+//            block()
+//        }
+//        return result
+
         var result = false
-
-        let block: ()->Void = {
-            guard let topVC = UIApplication.currentlyVisibleViewController() else {
-                Log.shared.errorAndCrash("No VC shown?")
-                return
-            }
-            if let shownIdentifiableAlertController = topVC as? IdentifiableAlertController {
-                if shownIdentifiableAlertController.identifier == .passphraseAlert {
-                    result = true
-                    return
-                }
-            }
+        guard let topVC = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("No VC shown?")
+            return result
         }
-
-        if Thread.current != Thread.main {
-            DispatchQueue.main.sync {
-                block()
+        if let shownIdentifiableAlertController = topVC as? IdentifiableAlertController {
+            if shownIdentifiableAlertController.identifier == .passphraseAlert {
+                result = true
             }
-        } else {
-            block()
         }
         return result
     }
