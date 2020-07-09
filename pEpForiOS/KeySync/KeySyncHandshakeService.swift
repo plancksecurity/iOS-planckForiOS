@@ -104,6 +104,12 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
         }
     }
 
+    func showPassphraseRequired() {
+        DispatchQueue.main.async {
+            UIUtils.showPassphraseRequiredAlert()
+        }
+    }
+
     // We must dismiss pEpSyncWizard before presenting pEpSyncWizard error view.
     func showError(error: Error?,
                    completion: ((KeySyncErrorResponse) -> ())? = nil) {

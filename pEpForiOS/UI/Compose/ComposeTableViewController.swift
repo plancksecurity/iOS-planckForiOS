@@ -12,6 +12,7 @@ import SwipeCellKit
 import Photos
 import pEpIOSToolbox
 import PEPObjCAdapterFramework
+import ContactsUI
 
 class ComposeTableViewController: UITableViewController {
     @IBOutlet var sendButton: UIBarButtonItem!
@@ -68,6 +69,7 @@ class ComposeTableViewController: UITableViewController {
 
     private func setupModel() {
         viewModel = ComposeViewModel()
+        viewModel?.suggestViewModel()
     }
 
     private final func setupRecipientSuggestionsTableViewController() {
@@ -278,6 +280,27 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
         presentDocumentAttachmentPicker()
     }
 
+    func showContactsPicker() {
+        presentContactPicker()
+    }
+
+    /// Restore focus to the previous focused cell after closing the picker action
+    private func didHideContactPicker() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(message: "No VM!")
+            return
+        }
+        let idxPath = vm.beforeContactsPickerFocus()
+        guard let cellToFocus = tableView.cellForRow(at: idxPath)
+            as? TextViewContainingTableViewCell else {
+                Log.shared.errorAndCrash("Error casting")
+                return
+        }
+        DispatchQueue.main.async {
+            cellToFocus.setFocus()
+        }
+    }
+
     func documentAttachmentPickerDone() {
         self.setPreviousFocusAfterPicker()
     }
@@ -369,6 +392,58 @@ extension ComposeTableViewController {
 extension ComposeTableViewController {
     private func presentDocumentAttachmentPicker() {
         present(documentAttachmentPicker, animated: true, completion: nil)
+    }
+}
+
+// MARK: - CNContactPicker
+
+extension ComposeTableViewController: CNContactPickerDelegate {
+    private func presentContactPicker() {
+        let contactPickerVC = CNContactPickerViewController()
+        contactPickerVC.predicateForEnablingContact = NSPredicate(format: "emailAddresses.@count > 0")
+        contactPickerVC.predicateForSelectionOfContact = NSPredicate(format: "emailAddresses.@count == 1")
+        contactPickerVC.predicateForSelectionOfProperty = NSPredicate(format: "key == 'emailAddresses'")
+        contactPickerVC.delegate = self
+        present(contactPickerVC, animated: true)
+    }
+
+    // This gets called when the user cancels his request to pick a contact
+    func contactPickerDidCancel(_ picker: CNContactPickerViewController) {
+        // It's needed to set up an additional, extra work. For example update the focus in a tableview cell/row.
+        didHideContactPicker()
+    }
+
+    // If contact has more than one e-mail we show contact details and user can select only one e-mail
+    func contactPicker(_ picker: CNContactPickerViewController, didSelect contactProperty: CNContactProperty) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        guard let emailAddress = contactProperty.value as? String else {
+            Log.shared.errorAndCrash(message: "emailAddress MUST be valid!")
+            return
+        }
+        vm.handleContactSelected(address: emailAddress,
+                                 addressBookID: contactProperty.contact.identifier,
+                                 userName: contactProperty.contact.givenName)
+        didHideContactPicker()
+    }
+
+    // If contact has only one e-mail we choose that one
+    func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        guard let emailAddress = contact.emailAddresses.first else {
+            Log.shared.errorAndCrash(message: "emailAddress MUST be valid!")
+            return
+        }
+        vm.handleContactSelected(address: String(emailAddress.value),
+                                 addressBookID: contact.identifier,
+                                 userName: contact.givenName)
+
+        didHideContactPicker()
     }
 }
 
@@ -576,7 +651,7 @@ extension ComposeTableViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        let idxPath = vm.beforePickerFocus()
+        let idxPath = vm.beforeDocumentAttachmentPickerFocus()
         guard let cellToFocus = tableView.cellForRow(at: idxPath)
             as? TextViewContainingTableViewCell else {
                 Log.shared.errorAndCrash("Error casting")

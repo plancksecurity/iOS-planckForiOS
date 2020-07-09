@@ -17,12 +17,19 @@ protocol RecipientCellViewModelResultDelegate: class {
     func recipientCellViewModelDidEndEditing(_ vm: RecipientCellViewModel)
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel, textChanged newText: String)
+
+    func addContactTapped()
+}
+
+protocol RecipientCellViewModelDelegate: class {
+    func focusChanged()
 }
 
 class RecipientCellViewModel: CellViewModel {
     public let title: String
     public var content = NSMutableAttributedString(string: "")
     public let type: FieldType
+    private(set) var focused = false
     private var initialRecipients = [Identity]()
     private var textViewModel: RecipientTextViewModel?
     public var isDirty: Bool {
@@ -30,6 +37,7 @@ class RecipientCellViewModel: CellViewModel {
     }
 
     weak public var resultDelegate: RecipientCellViewModelResultDelegate?
+    weak var recipientCellViewModelDelegate: RecipientCellViewModelDelegate?
 
     init(resultDelegate: RecipientCellViewModelResultDelegate?,
          type: FieldType,
@@ -42,6 +50,10 @@ class RecipientCellViewModel: CellViewModel {
 
     public func add(recipient: Identity) {
         textViewModel?.add(recipient: recipient)
+    }
+
+    func addContactAction() {
+        resultDelegate?.addContactTapped()
     }
 
     func recipientTextViewModel() -> RecipientTextViewModel {
@@ -59,14 +71,20 @@ class RecipientCellViewModel: CellViewModel {
 extension RecipientCellViewModel: RecipientTextViewModelResultDelegate {
 
     func recipientTextViewModel(_ vm: RecipientTextViewModel, didChangeRecipients newRecipients: [Identity]) {
+        focused = true
+        recipientCellViewModelDelegate?.focusChanged()
         resultDelegate?.recipientCellViewModel(self, didChangeRecipients: newRecipients)
     }
 
     func recipientTextViewModel(_ vm: RecipientTextViewModel, didBeginEditing text: String) {
+        focused = true
+        recipientCellViewModelDelegate?.focusChanged()
         resultDelegate?.recipientCellViewModel(self, didBeginEditing: text)
     }
 
     func recipientTextViewModelDidEndEditing(_ vm: RecipientTextViewModel) {
+        focused = false
+        recipientCellViewModelDelegate?.focusChanged()
         resultDelegate?.recipientCellViewModelDidEndEditing(self)
     }
 
