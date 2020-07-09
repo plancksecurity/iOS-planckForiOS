@@ -78,32 +78,6 @@ extension UIUtils {
     /// Whether or not a passphrase related alert is currently shown.
     /// - note: Must be called on the main queue!
     static private var isCurrentlyShowingPassphraseInputAlert: Bool {
-
-        //BUFF: cleanup
-//        var result = false
-//
-//        let block: ()->Void = {
-//            guard let topVC = UIApplication.currentlyVisibleViewController() else {
-//                Log.shared.errorAndCrash("No VC shown?")
-//                return
-//            }
-//            if let shownIdentifiableAlertController = topVC as? IdentifiableAlertController {
-//                if shownIdentifiableAlertController.identifier == .passphraseAlert {
-//                    result = true
-//                    return
-//                }
-//            }
-//        }
-//
-//        if Thread.current != Thread.main {
-//            DispatchQueue.main.sync {
-//                block()
-//            }
-//        } else {
-//            block()
-//        }
-//        return result
-
         var result = false
         guard let topVC = UIApplication.currentlyVisibleViewController() else {
             Log.shared.errorAndCrash("No VC shown?")
