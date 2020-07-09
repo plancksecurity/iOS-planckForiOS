@@ -66,7 +66,9 @@ public class FolderCellViewModel {
     public var isChevronEnabled: Bool {
         return hasSubfolders() && !(folder is UnifiedInbox)
     }
-    
+
+    /// Indicates if the current folder cell view model has subfolders.
+    /// - Returns: True if it has.
     public func hasSubfolders() -> Bool {
         guard let folder = folder as? Folder else {
             // UnifiedInbox implements DisplayableFolderProtocol but is not a Folder
@@ -79,6 +81,9 @@ public class FolderCellViewModel {
         return folder.subFolders().count > 0
     }
 
+    /// Indicates if the FolderCellViewModel passed by parameter is its children
+    /// - Parameter fcvm: The possible children of the current FolderCellViewModel
+    /// - Returns: True if its child or decendent. 
     public func isParentOf(fcvm: FolderCellViewModel) -> Bool {
         if let childFolder = fcvm.folder as? Folder, let parentFolder = folder as? Folder {
             if childFolder.account.accountType != VerifiableAccount.AccountType.gmail {
@@ -103,6 +108,8 @@ public class FolderCellViewModel {
         return false
     }
 
+    /// Retrives if the separator should be hidden.
+    /// - Returns: True to hide the separator.
     public func shouldHideSeparator() -> Bool {
         guard let folder = folder as? Folder else {
             //If is not a folder but a UnifiedInbox is valid
@@ -111,6 +118,8 @@ public class FolderCellViewModel {
         return folder.folderType == .outbox
     }
 
+    /// Retrives if the current folder cell view model is a subfolder.
+    /// - Returns: True if it is.
     public func isSubfolder() -> Bool {
         guard let folder = folder as? Folder else {
             //If is not a folder, it's a UnifiedInbox
