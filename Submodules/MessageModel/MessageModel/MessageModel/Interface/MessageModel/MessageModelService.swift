@@ -22,7 +22,6 @@ public protocol MessageModelServiceProtocol: ServiceProtocol {
 }
 
 public final class MessageModelService {
-    private let pEpPassphraseProvider: PEPPassphraseProvider //BUFF: maybe we do not need to hold it. Lets see the adapters implementation.
     private var newMailsService: FetchNumberOfNewMailsService?
 
     // Service
@@ -53,9 +52,7 @@ public final class MessageModelService {
         // Touch Stack once to assure it sets up the mainContext on the main queue
         let _ = Stack.shared
 
-        PassphraseUtil().configureAdapterWithPassphraseForNewKeys()
-        self.pEpPassphraseProvider = PEPPassphraseProvider(delegate: passphraseProvider)
-        //BUFF: configure adapter with passphraseProvider
+        configureAdapter(withClientsPassphraseProvider: passphraseProvider)
 
         setupServices(errorPropagator: errorPropagator,
                       cnContactsAccessPermissionProvider: cnContactsAccessPermissionProvider,
@@ -113,6 +110,11 @@ extension MessageModelService {
         let deleteOutdatedAutoconsumableMessagesService = DeleteOutdatedAutoconsumableMessagesService()
         cleanupServices = [updateIdentitiesAddressBookIdService,
                            deleteOutdatedAutoconsumableMessagesService]
+    }
+
+    private func configureAdapter(withClientsPassphraseProvider passphraseProvider: PassphraseProviderProtocol) {
+        PassphraseUtil().configureAdapterWithPassphraseForNewKeys()
+        PEPObjCAdapter.setPassphraseProvider(PEPPassphraseProvider(delegate: passphraseProvider))
     }
 }
 

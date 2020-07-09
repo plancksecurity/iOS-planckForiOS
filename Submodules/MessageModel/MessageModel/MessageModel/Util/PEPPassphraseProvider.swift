@@ -8,15 +8,9 @@
 
 import PEPObjCAdapterFramework
 
-//BUFF: DUMMY. Delete and use the real adapter protocol after existance
-protocol PEPPassphraseProviderProtocol {
-    func passphraseRequired(completion:  @escaping (String?)->Void)
-    func wrongPassphrase(completion:  @escaping (String?)->Void)
-    func passphraseTooLong(completion:  @escaping (String?)->Void)
-}
-
-//BUFF: ToDo: pass provider instance to Adapter
-class PEPPassphraseProvider {
+/// Pass to adapter PEPObjCAdapter.setPassphraseProvider(PEPPassphraseProviderProtocol).
+/// - see: PEPObjCAdapter.PEPPassphraseProviderProtocol docs for details.
+class PEPPassphraseProvider: NSObject {
     weak private var delegate:PassphraseProviderProtocol?
 
     init(delegate:PassphraseProviderProtocol) {
@@ -28,7 +22,7 @@ class PEPPassphraseProvider {
 
 extension PEPPassphraseProvider: PEPPassphraseProviderProtocol {
 
-    func passphraseRequired(completion: @escaping (String?) -> Void) {
+    func passphraseRequired(_ completion: @escaping PEPPassphraseProviderCallback) {
         guard let delegate = delegate else {
             Log.shared.errorAndCrash("No delegate")
             completion(nil)
@@ -37,7 +31,7 @@ extension PEPPassphraseProvider: PEPPassphraseProviderProtocol {
         delegate.showEnterPassphrase(completion: completion)
     }
 
-    func wrongPassphrase(completion:  @escaping (String?) -> Void) {
+    func wrongPassphrase(_ completion: @escaping PEPPassphraseProviderCallback) {
         guard let delegate = delegate else {
             Log.shared.errorAndCrash("No delegate")
             completion(nil)
@@ -46,7 +40,7 @@ extension PEPPassphraseProvider: PEPPassphraseProviderProtocol {
         delegate.showWrongPassphrase(completion: completion)
     }
 
-    func passphraseTooLong(completion: @escaping  (String?) -> Void) {
+    func passphraseTooLong(_ completion: @escaping PEPPassphraseProviderCallback) {
         guard let delegate = delegate else {
             Log.shared.errorAndCrash("No delegate")
             completion(nil)
