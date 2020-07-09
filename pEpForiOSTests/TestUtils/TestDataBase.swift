@@ -110,43 +110,6 @@ class TestDataBase {
             return acc
         }
 
-        func gmailAccount() -> Account {
-            let accountType : VerifiableAccount.AccountType = .gmail
-            let verifier = VerifiableAccount.verifiableAccount(for: .gmail)
-
-            let id = Identity(address: idAddress,
-                              userID: CdIdentity.pEpOwnUserID,
-                              userName: idUserName,
-                              session: Session.main)
-
-            let credSmtp = ServerCredentials(loginName: id.address,
-                                             key: nil,
-                                             clientCertificate: nil)
-            credSmtp.password = password
-            let smtp = Server.create(serverType: .smtp,
-                                     port: verifier.portSMTP,
-                                     address: verifier.serverSMTP!,
-                                     transport: .tls,
-                                     credentials:credSmtp)
-
-            let credImap = ServerCredentials(loginName: id.address,
-                                             key: nil,
-                                             clientCertificate: nil)
-            credImap.password = password
-            let imap = Server.create(serverType: .imap,
-                                     port: verifier.portIMAP,
-                                     address: verifier.serverIMAP!,
-                                     transport: .tls,
-                                     credentials:credImap)
-
-            let acc = Account(user: id, servers: [smtp, imap])
-//            acc.accountType = accountType
-            acc.session.commit()
-
-            return acc
-        }
-
-
         func pEpIdentity() -> PEPIdentity {
             let ident = PEPIdentity(address: idAddress)
             ident.userName = accountName
