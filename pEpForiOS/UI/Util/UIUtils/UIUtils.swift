@@ -32,35 +32,37 @@ class UIUtils {
 
 extension UIUtils {
 
-    /// Whether or not a passphrase related alert is currently shown.
-    /// - note: It is save to call that from any queue.
-    static private var isCurrentlyShowingPassphraseInputAlert: Bool {
-        var result = false
-
-        let block: ()->Void = {
-            guard let topVC = UIApplication.currentlyVisibleViewController() else {
-                Log.shared.errorAndCrash("No VC shown?")
-                return
-            }
-            if let shownIdentifiableAlertController = topVC as? IdentifiableAlertController {
-                if shownIdentifiableAlertController.identifier == .passphraseAlert {
-                    result = true
-                    return
-                }
-            }
-        }
-
-        if Thread.current != Thread.main {
-            DispatchQueue.main.sync {
-                block()
-            }
-        } else {
-            block()
-        }
-        return result
-    }
+    //BUFF: moved to PP extention
+//    /// Whether or not a passphrase related alert is currently shown.
+//    /// - note: It is save to call that from any queue.
+//    static private var isCurrentlyShowingPassphraseInputAlert: Bool {
+//        var result = false
+//
+//        let block: ()->Void = {
+//            guard let topVC = UIApplication.currentlyVisibleViewController() else {
+//                Log.shared.errorAndCrash("No VC shown?")
+//                return
+//            }
+//            if let shownIdentifiableAlertController = topVC as? IdentifiableAlertController {
+//                if shownIdentifiableAlertController.identifier == .passphraseAlert {
+//                    result = true
+//                    return
+//                }
+//            }
+//        }
+//
+//        if Thread.current != Thread.main {
+//            DispatchQueue.main.sync {
+//                block()
+//            }
+//        } else {
+//            block()
+//        }
+//        return result
+//    }
 
     static private func show(pEpError: BackgroundError.PepError) {
+        fatalError()
         //BUFF: should not be called any more. The Adapter & PassphraseProviderDelegate will handle that so in theory no background OP will ever get that error.
         //RM if proven obsolete
         

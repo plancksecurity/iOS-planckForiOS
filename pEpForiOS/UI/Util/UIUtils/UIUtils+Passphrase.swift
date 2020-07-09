@@ -54,6 +54,11 @@ extension UIUtils {
                                                  message: String,
                                                  placeholder: String,
                                                  completion: ((String?)->Void)?) {
+        guard !isCurrentlyShowingPassphraseInputAlert else {
+            // A passphrase alert is already shown. Do not display onother one on top of it.
+            // Do nothing instead ...
+            return
+        }
         let callback:(String)->Void = { input in
             completion?(input)
         }
@@ -68,6 +73,34 @@ extension UIUtils {
                                    callback: callback,
                                    cancelCallback: cancelCallback)
         }
+    }
+
+    /// Whether or not a passphrase related alert is currently shown.
+    /// - note: It is save to call that from any queue.
+    static private var isCurrentlyShowingPassphraseInputAlert: Bool {
+        var result = false
+
+        let block: ()->Void = {
+            guard let topVC = UIApplication.currentlyVisibleViewController() else {
+                Log.shared.errorAndCrash("No VC shown?")
+                return
+            }
+            if let shownIdentifiableAlertController = topVC as? IdentifiableAlertController {
+                if shownIdentifiableAlertController.identifier == .passphraseAlert {
+                    result = true
+                    return
+                }
+            }
+        }
+
+        if Thread.current != Thread.main {
+            DispatchQueue.main.sync {
+                block()
+            }
+        } else {
+            block()
+        }
+        return result
     }
 }
 
