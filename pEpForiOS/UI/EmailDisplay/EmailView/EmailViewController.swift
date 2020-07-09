@@ -1,9 +1,9 @@
 //
 //  EmailViewController.swift
-//  pEpForiOS
+//  pEp
 //
-//  Created by Dirk Zimmermann on 31/05/16.
-//  Copyright © 2016 p≡p Security S.A. All rights reserved.
+//  Created by Xavier Algarra on 02/07/2020.
+//  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
 import Foundation
@@ -18,39 +18,40 @@ protocol EmailViewControllerDelegate: class {
     func showPdfPreview(forPdfAt url: URL)
 }
 
-class EmailViewController: UITableViewController {
+class EmailViewController: UIViewController {
     private var tableData: ComposeDataSource?
     lazy private var documentInteractionController = UIDocumentInteractionController()
     private var clientCertificateImportViewController: ClientCertificateImportViewController?
-
+    
     static public let storyboard = "Main"
     static let storyboardId = "EmailViewController"
     weak var delegate: EmailViewControllerDelegate?
     var message: Message?
+    
     lazy var clickHandler: UrlClickHandler = {
         return UrlClickHandler()
     }()
-
-    // MARK: - LIFE CYCLE
-
+    
+    @IBOutlet weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadDatasource("MessageData")
         tableView.estimatedRowHeight = 72.0
         tableView.rowHeight = UITableView.automaticDimension
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.title = title
         UITableViewController.setupCommonSettings(tableView: tableView)
         configureTableRows()
     }
-
+    
     private func configureTableRows() {
         tableData?.filterRows(message: message)
     }
-
+    
     private final func loadDatasource(_ file: String) {
         if let path = Bundle.main.path(forResource: file, ofType: "plist") {
             if let dict = NSDictionary(contentsOfFile: path) as? [String: Any] {
@@ -58,15 +59,15 @@ class EmailViewController: UITableViewController {
             }
         }
     }
-
+    
     // MARK: - EMAIL BODY
-
+    
     /**
      Indicate that the htmlViewerViewController already exists, to avoid
      instantiation just to check if it has been instantiated.
      */
     var htmlViewerViewControllerExists = false
-
+    
     lazy private var htmlViewerViewController: SecureWebViewController = {
         let storyboard = UIStoryboard(name: "Reusable", bundle: nil)
         guard let vc =
@@ -82,7 +83,7 @@ class EmailViewController: UITableViewController {
         htmlViewerViewControllerExists = true
         return vc
     }()
-
+    
     /**
      Yields the HTML message body if:
      * we can show it in a secure way
@@ -96,10 +97,10 @@ class EmailViewController: UITableViewController {
             !htmlBody.isEmpty else {
                 return nil
         }
-
+        
         return htmlBody
     }
-
+    
     private func setup(contentCell: MessageContentCell, rowData: ComposeFieldModel) {
         guard let m = message else {
             Log.shared.errorAndCrash("No msg.")
@@ -122,7 +123,7 @@ class EmailViewController: UITableViewController {
             contentCell.updateCell(model: rowData, message: m, clickHandler: clickHandler)
         }
     }
-
+    
     private func appendInlinedPlainText(fromAttachmentsIn message: Message, to text: String) -> String {
         var result = text
         let inlinedText = message.inlinedTextAttachments()
@@ -136,7 +137,7 @@ class EmailViewController: UITableViewController {
         }
         return result
     }
-
+    
     private func append(appendText: String, to body: String) -> String {
         var result = body
         let replacee = result.contains(find: "</body>") ? "</body>" : "</html>"
@@ -149,22 +150,44 @@ class EmailViewController: UITableViewController {
     }
 }
 
-// MARK: - UITableViewDataSource
+// MARK: - MessageContentCellDelegate
+
+extension EmailViewController: MessageContentCellDelegate {
+    func didUpdate(cell: MessageCell, height: CGFloat) {
+        tableView.updateSize()
+    }
+}
 
 extension EmailViewController {
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableData?.numberOfRows() ?? 0
+    
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
+        if UI_USER_INTERFACE_IDIOM() == .pad {
+            documentInteractionController.dismissMenu(animated: false)
+        }
+        
+        splitViewController?.preferredDisplayMode = .allVisible
+        
+        coordinator.animate(alongsideTransition: nil)
     }
+}
+    
+// MARK: - UITableViewDataSource
 
-    override func tableView(
+extension EmailViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            return tableData?.numberOfRows() ?? 0
+    }
+    
+    func tableView(
         _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard
-            let row = tableData?.getRow(at: indexPath.row),
-            let cell = tableView.dequeueReusableCell(withIdentifier: row.identifier,
-                                                     for: indexPath) as? MessageCell,
-            let m = message
-            else {
-                return UITableViewCell()
+            guard
+                let row = tableData?.getRow(at: indexPath.row),
+                let cell = tableView.dequeueReusableCell(withIdentifier: row.identifier,
+                                                         for: indexPath) as? MessageCell,
+                let m = message
+                else {
+                    return UITableViewCell()
         }
         if let contentCell = cell as? MessageContentCell {
             setup(contentCell: contentCell, rowData: row)
@@ -174,8 +197,8 @@ extension EmailViewController {
         cell.delegate = self
         return cell
     }
-
-    override func tableView(_ tableView: UITableView,
+    
+    func tableView(_ tableView: UITableView,
                             heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let row = tableData?.getRow(at: indexPath.row) else {
             Log.shared.errorAndCrash("Missing data")
@@ -189,32 +212,10 @@ extension EmailViewController {
     }
 }
 
-// MARK: - MessageContentCellDelegate
-
-extension EmailViewController: MessageContentCellDelegate {
-    func didUpdate(cell: MessageCell, height: CGFloat) {
-        tableView.updateSize()
-    }
-}
-
-extension EmailViewController {
-
-    override func viewWillTransition(to size: CGSize,
-                                     with coordinator: UIViewControllerTransitionCoordinator) {
-        if UI_USER_INTERFACE_IDIOM() == .pad {
-            documentInteractionController.dismissMenu(animated: false)
-        }
-
-        splitViewController?.preferredDisplayMode = .allVisible
-
-        coordinator.animate(alongsideTransition: nil)
-    }
-}
-
 // MARK: - MessageAttachmentDelegate
 
 extension EmailViewController: MessageAttachmentDelegate {
-
+    
     func didTap(cell: MessageCell, attachment: Attachment, location: CGPoint, inView: UIView?) {
         let busyState = inView?.displayAsBusy()
         attachment.saveToTmpDirectory { [weak self] url in
@@ -241,7 +242,7 @@ extension EmailViewController: MessageAttachmentDelegate {
             }
         }
     }
-
+    
     private func showToUser(documentAt url: URL,
                             givenMimeType: String?,
                             representedBy cell: MessageCell,
@@ -249,7 +250,7 @@ extension EmailViewController: MessageAttachmentDelegate {
                             in view: UIView?) {
         let mimeType = MimeTypeUtils.findBestMimeType(forFileAt: url,
                                                       withGivenMimeType: givenMimeType)
-
+        
         if url.pathExtension == "pEp12" || url.pathExtension == "pfx" {
             setupClientCertificateImportViewController(forClientCertificateAt: url)
             guard let vc = clientCertificateImportViewController else {
@@ -270,12 +271,12 @@ extension EmailViewController: MessageAttachmentDelegate {
                                                              animated: true)
         }
     }
-
+    
     private func setupClientCertificateImportViewController(forClientCertificateAt url: URL) {
         guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil)
             .instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController else {
                 Log.shared.errorAndCrash("No VC")
-            return
+                return
         }
         vc.viewModel = ClientCertificateImportViewModel(certificateUrl: url, delegate: vc)
         vc.modalPresentationStyle = .fullScreen
@@ -294,14 +295,14 @@ extension EmailViewController: SecureWebViewControllerDelegate {
 // MARK: - UIPopoverPresentationControllerDelegate
 
 extension EmailViewController: UIPopoverPresentationControllerDelegate {
-
+    
     func popoverPresentationController(_ popoverPresentationController: UIPopoverPresentationController, willRepositionPopoverTo rect:
         UnsafeMutablePointer<CGRect>, in view: AutoreleasingUnsafeMutablePointer<UIView>) {
-
+        
         guard let titleView = navigationItem.titleView else {
             return
         }
-
+        
         rect.initialize(to: CGRect(x:titleView.bounds.midY,
                                    y: titleView.bounds.midX,
                                    width:0,
