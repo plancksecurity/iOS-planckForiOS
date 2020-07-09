@@ -60,12 +60,14 @@ extension UIUtils {
         let cancelCallback:()->Void = {
             completion?(nil)
         }
-        showAlertWithTextfield(identifier: .passphraseAlert,
-                               title: title,
-                               message: message,
-                               placeholder: placeholder,
-                               callback: callback,
-                               cancelCallback: cancelCallback)
+        DispatchQueue.main.async {
+            showAlertWithTextfield(identifier: .passphraseAlert,
+                                   title: title,
+                                   message: message,
+                                   placeholder: placeholder,
+                                   callback: callback,
+                                   cancelCallback: cancelCallback)
+        }
     }
 }
 
