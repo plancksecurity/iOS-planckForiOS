@@ -77,9 +77,12 @@ public class FolderCellViewModel {
 
     public func isParentOf(fcvm: FolderCellViewModel) -> Bool {
         if let childFolder = fcvm.folder as? Folder, let parentFolder = folder as? Folder {
-            if requiredFolderTypes.contains(childFolder.folderType) {
-                return false
+            if childFolder.account.accountType != VerifiableAccount.AccountType.gmail {
+                if requiredFolderTypes.contains(childFolder.folderType) {
+                    return false
+                }
             }
+
             if childFolder.parent == parentFolder {
                 return true
             }
