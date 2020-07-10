@@ -16,12 +16,27 @@ extension UIUtils {
     static public func showPassphraseRequiredAlert(completion: ((String?)->Void)? = nil) {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
         let message = NSLocalizedString("Please enter the passphrase to continue",
-                                        comment: "Passphrase message")
+        comment: "Passphrase message")
         let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
 
         showPassphraseInputAlert(title: title,
                                  message: message,
                                  placeholder: placeholder,
+                                 completion: completion)
+    }
+
+    /// Shows an alert to require a Passphrase
+    static public func showPassphraseRequiredForPEPSyncAlert(completion: ((String?)->Void)? = nil) {
+        let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
+        let message = NSLocalizedString("Enter passphrase for p≡p Sync:",
+                                        comment: "Enter passphrase alert - message - shown while pEp sync is running")
+        let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
+        let cancelButtonText = NSLocalizedString("Shutdown p≡p Sync",
+                                                 comment: "Enter passphrase alert - Negative button text - shown while pEp sync is running")
+        showPassphraseInputAlert(title: title,
+                                 message: message,
+                                 placeholder: placeholder,
+                                 negativeButtonText: cancelButtonText,
                                  completion: completion)
     }
 
@@ -53,6 +68,8 @@ extension UIUtils {
     static private func showPassphraseInputAlert(title: String,
                                                  message: String,
                                                  placeholder: String,
+                                                 positiveButtonText: String? = nil,
+                                                 negativeButtonText: String? = nil,
                                                  completion: ((String?)->Void)?) {
         let callback:(String)->Void = { input in
             completion?(input)
@@ -70,6 +87,8 @@ extension UIUtils {
                                    title: title,
                                    message: message,
                                    placeholder: placeholder,
+                                   positiveButtonText: positiveButtonText,
+                                   negativeButtonText: negativeButtonText,
                                    callback: callback,
                                    cancelCallback: cancelCallback)
         }

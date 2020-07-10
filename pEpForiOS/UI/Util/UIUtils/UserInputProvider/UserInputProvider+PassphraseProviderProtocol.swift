@@ -12,8 +12,13 @@ import MessageModel
 
 extension UserInputProvider: PassphraseProviderProtocol {
 
-    func showEnterPassphrase(completion: @escaping (String?)->Void) {
-        UIUtils.showPassphraseRequiredAlert(completion: completion)
+    func showEnterPassphrase(triggeredWhilePEPSync: Bool = false,
+                             completion: @escaping (String?)->Void) {
+        if triggeredWhilePEPSync {
+            UIUtils.showPassphraseRequiredForPEPSyncAlert(completion: completion)
+        } else {
+            UIUtils.showPassphraseRequiredAlert(completion: completion)
+        }
     }
 
     func showWrongPassphrase(completion: @escaping (String?)->Void) {

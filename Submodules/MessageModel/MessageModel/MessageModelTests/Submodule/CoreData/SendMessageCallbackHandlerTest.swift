@@ -74,7 +74,8 @@ class TestStateProvider: KeySyncStateProvider {
 }
 
 class PassphraseProviderMock: PassphraseProviderProtocol {
-    func showEnterPassphrase(completion: @escaping (String?) -> Void) {}
+    func showEnterPassphrase(triggeredWhilePEPSync:Bool = false,
+                             completion: @escaping (String?) -> Void) {}
 
     func showWrongPassphrase(completion: @escaping (String?) -> Void) {}
 

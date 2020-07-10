@@ -28,7 +28,8 @@ extension PEPPassphraseProvider: PEPPassphraseProviderProtocol {
             completion(nil)
             return
         }
-        delegate.showEnterPassphrase(completion: completion)
+        delegate.showEnterPassphrase(triggeredWhilePEPSync: false,
+                                     completion: completion)
     }
 
     func wrongPassphrase(_ completion: @escaping PEPPassphraseProviderCallback) {

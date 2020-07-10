@@ -52,7 +52,7 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
             tryRedecryptYetUndecryptableMessages()
 
         case .passphraseRequired:
-            passphraseProvider.showEnterPassphrase { [weak self] passphrase in
+            passphraseProvider.showEnterPassphrase(triggeredWhilePEPSync: true) { [weak self] passphrase in
                 guard let me = self else {
                     Log.shared.errorAndCrash("Lost myself")
                     return
