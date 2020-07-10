@@ -86,6 +86,7 @@ extension UIUtils {
                                        placeholder: String,
                                        positiveButtonText: String? = nil,
                                        negativeButtonText: String? = nil,
+                                       negativeButtonStyle: UIAlertAction.Style = .cancel,
                                        callback: @escaping(_ input: String) -> (),
                                        cancelCallback: (() -> Void)? = nil) {
         let alertController = IdentifiableAlertController(identifier: identifier,
@@ -106,13 +107,12 @@ extension UIUtils {
             }
             let textField = textfields[0]
             guard let passphrase = textField.text else { return }
-            callback(passphrase)
+                                    callback(passphrase)
         })
         alertController.addAction(action)
-        let cancelAction: UIAlertAction = UIAlertAction(title: cancelTitle, style: .cancel) { (action) in
-            if (cancelCallback != nil) {
+        let cancelAction: UIAlertAction =
+            UIAlertAction(title: cancelTitle, style: negativeButtonStyle) { (action) in
                 cancelCallback?()
-            }
         }
 
         alertController.addAction(cancelAction)

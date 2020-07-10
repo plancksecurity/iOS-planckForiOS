@@ -37,6 +37,7 @@ extension UIUtils {
                                  message: message,
                                  placeholder: placeholder,
                                  negativeButtonText: cancelButtonText,
+                                 negativeButtonStyle: .destructive,
                                  completion: completion)
     }
 
@@ -70,6 +71,7 @@ extension UIUtils {
                                                  placeholder: String,
                                                  positiveButtonText: String? = nil,
                                                  negativeButtonText: String? = nil,
+                                                 negativeButtonStyle: UIAlertAction.Style = .cancel,
                                                  completion: ((String?)->Void)?) {
         let callback:(String)->Void = { input in
             completion?(input)
@@ -89,6 +91,7 @@ extension UIUtils {
                                    placeholder: placeholder,
                                    positiveButtonText: positiveButtonText,
                                    negativeButtonText: negativeButtonText,
+                                   negativeButtonStyle: negativeButtonStyle,
                                    callback: callback,
                                    cancelCallback: cancelCallback)
         }
