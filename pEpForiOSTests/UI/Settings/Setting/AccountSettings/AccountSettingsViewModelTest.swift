@@ -30,7 +30,6 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
         dummySections.append(dummyImapSection)
         dummySections.append(dummySmtpSection)
 
-
         viewModel = AccountSettingsViewModel(account: account)
     }
 
