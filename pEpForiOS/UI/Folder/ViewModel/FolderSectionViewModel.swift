@@ -138,4 +138,11 @@ public class FolderSectionViewModel {
     public func index(of item : FolderCellViewModel) -> Int? {
         return items.firstIndex(of: item)
     }
+
+    /// Retrives the index of a folder cell view model within the visible items.
+    /// - Parameter item: The vm to get its index.
+    /// - Returns: The index exists, nil if not.
+    public func visibleIndex(of item : FolderCellViewModel) -> Int? {
+        return visibleItems.firstIndex(of: item)
+    }
 }

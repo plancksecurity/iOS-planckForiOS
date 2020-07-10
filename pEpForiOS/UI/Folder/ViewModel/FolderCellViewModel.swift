@@ -137,8 +137,8 @@ extension FolderCellViewModel : Equatable {
                 Log.shared.info("One is Unified Inbox the other is not")
                 return false
             }
-            return left.hashValue == right.hashValue
+            return left == right
         }
-        return lhsFolder.account.hashValue == rhsFolder.account.hashValue
+        return lhsFolder == rhsFolder
     }
 }

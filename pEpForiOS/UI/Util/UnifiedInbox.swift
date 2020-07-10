@@ -8,7 +8,7 @@
 import pEpIOSToolbox
 import MessageModel
 
-public class UnifiedInbox: NSObject, VirtualFolderProtocol {
+public class UnifiedInbox: VirtualFolderProtocol {
 
     private lazy var fetchMessagesService = FetchMessagesService()
     private lazy var fetchOlderMessagesService = FetchOlderImapMessagesService()
@@ -81,5 +81,17 @@ public class UnifiedInbox: NSObject, VirtualFolderProtocol {
 
     public var name: String {
         return UnifiedInbox.defaultUnifiedInboxName
+    }
+}
+
+extension UnifiedInbox: Equatable {
+    public static func == (lhs: UnifiedInbox, rhs: UnifiedInbox) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+}
+
+extension UnifiedInbox: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(messagesPredicate.description)
     }
 }
