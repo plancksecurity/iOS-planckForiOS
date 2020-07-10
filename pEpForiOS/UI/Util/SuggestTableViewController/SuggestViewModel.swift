@@ -9,6 +9,7 @@
 import MessageModel
 import pEpIOSToolbox
 import Contacts
+import PEPObjCAdapterFramework
 
 protocol SuggestViewModelResultDelegate: class {
     /// Will be called whenever the user selects an Identity.
@@ -25,7 +26,7 @@ class SuggestViewModel {
     struct Row {
         public let name: String
         public let email: String
-        let addressBookID: String?
+        public let addressBookID: String?
 
         fileprivate init(name: String, email: String, addressBookID: String? = nil) {
             self.name = name
@@ -48,6 +49,7 @@ class SuggestViewModel {
     weak public var delegate: SuggestViewModelDelegate?
 
     private var rows = [Row]()
+    private let from: Identity?
     private let minNumberSearchStringChars: UInt
     private let showEmptyList = false
     private var workQueue: OperationQueue = {
@@ -67,8 +69,10 @@ class SuggestViewModel {
     // MARK: - Life Cycle
 
     public init(minNumberSearchStringChars: UInt = 3,
+                from: Identity? = nil,
                 resultDelegate: SuggestViewModelResultDelegate? = nil,
                 showEmptyList: Bool = false) {
+        self.from = from
         self.minNumberSearchStringChars = minNumberSearchStringChars
         self.resultDelegate = resultDelegate
     }
@@ -93,6 +97,7 @@ class SuggestViewModel {
         let selectedRow = rows[index]
         let selectedIdentity = Identity(address: selectedRow.email)
         // Potetially update data from Apple Contacts
+
         if selectedIdentity.update(userName: selectedRow.name,
                                    addressBookID: selectedRow.addressBookID) {
             // Save identity if it has been updated
@@ -138,6 +143,21 @@ class SuggestViewModel {
         }
         workQueue.addOperation(op)
     }
+
+    public func pEpRatingFor(address: String) -> PEPRating {
+
+        guard let from = from else {
+            return .undefined
+        }
+        let to = Identity(address: address)
+        let pEpsession = PEPSession()
+        let rating = pEpsession.outgoingMessageRating(from: from,
+                                                      to: [to],
+                                                      cc: [],
+                                                      bcc: [])
+
+        return rating
+    }
 }
 
 // MARK: - Private
@@ -152,6 +172,7 @@ extension SuggestViewModel {
         newRows.sort { (row1, row2) -> Bool in
             row1.name < row2.name
         }
+
         rows = newRows
         informDelegatesModelChanged(callingOperation: callingOperation)
     }
@@ -161,6 +182,10 @@ extension SuggestViewModel {
         let identities = Identity.makeSafe(identities, forSession: session)
         var mergedRows = [Row]()
         session.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
             let emailsOfIdentities = identities.map { $0.address }
             mergedRows = Row.rows(fromIdentities: identities)
             for contact in contacts {
@@ -172,7 +197,7 @@ extension SuggestViewModel {
                         // contact.
                         let identitity = identities[idx]
                         identitity.update(userName: name, addressBookID: contact.identifier)
-                        self?.needsSave = true
+                        me.needsSave = true
                         contactRowsToAdd.removeAll()
                         break
                     } else {
@@ -213,3 +238,4 @@ extension SuggestViewModel {
         resultDelegate?.suggestViewModel(self, didToggleVisibilityTo: showResults)
     }
 }
+

@@ -44,6 +44,8 @@ protocol ComposeViewModelDelegate: class {
 
     func showDocumentAttachmentPicker()
 
+    func showContactsPicker()
+
     func documentAttachmentPickerDone()
 
     func showTwoButtonAlert(withTitle title: String,
@@ -141,8 +143,12 @@ class ComposeViewModel {
         }
     }
 
-    public func beforePickerFocus() -> IndexPath {
+    public func beforeDocumentAttachmentPickerFocus() -> IndexPath {
         return indexPathBodyVm
+    }
+
+    public func beforeContactsPickerFocus() -> IndexPath {
+        return lastRowWithSuggestions ?? indexPathBodyVm
     }
 
     public func handleUserSelectedRow(at indexPath: IndexPath) {
@@ -526,7 +532,7 @@ extension ComposeViewModel {
 
 extension ComposeViewModel {
     func suggestViewModel() -> SuggestViewModel {
-        let createe = SuggestViewModel(resultDelegate: self)
+        let createe = SuggestViewModel(from: state.from, resultDelegate: self)
         suggestionsVM = createe
         return createe
     }
@@ -757,6 +763,27 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         delegate?.contentChanged(inRowAt: idxPath)
         delegate?.showSuggestions(forRowAt: idxPath)
         suggestionsVM?.updateSuggestion(searchString: newText.cleanAttachments)
+    }
+
+// MARK: - Add Contact
+
+    func addContactTapped() {
+        delegate?.showContactsPicker()
+    }
+
+    func handleContactSelected(address: String, addressBookID: String, userName: String) {
+        guard
+            let idxPath = lastRowWithSuggestions,
+            let recipientVM = sections[idxPath.section].rows[idxPath.row] as? RecipientCellViewModel
+            else {
+                Log.shared.errorAndCrash("No row VM")
+                return
+        }
+        let contactIdentity = Identity(address: address, userID: nil,
+                                       addressBookID: addressBookID,
+                                       userName: userName,
+                                       session: Session.main)
+        recipientVM.add(recipient: contactIdentity)
     }
 }
 
