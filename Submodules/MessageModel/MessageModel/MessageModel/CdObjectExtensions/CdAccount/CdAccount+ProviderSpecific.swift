@@ -12,7 +12,7 @@ extension CdAccount {
     /// The account type that was used when creating this account, if able to
     /// determine from the IMAP and SMTP server.
     ///
-    /// Is `other` for account types without fixed servers.
+    /// Could be `clientCertificate` or `other` for account types without fixed servers.
     /// - Note: Based on servers, it's impossible to distinguish .outlook and .o365,
     /// the caller must be able to handle that, i.e. receiving .o365 for an outlook.com account.
     var accountType: VerifiableAccount.AccountType {
