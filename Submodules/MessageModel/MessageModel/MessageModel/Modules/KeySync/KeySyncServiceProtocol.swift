@@ -21,5 +21,6 @@ protocol KeySyncServiceProtocol: ServiceProtocol {
     init(keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol?,
          keySyncStateProvider: KeySyncStateProvider,
          fastPollingDelegate: PollingDelegate?,
-         passphraseProvider: PassphraseProviderProtocol)
+         passphraseProvider: PassphraseProviderProtocol,
+         usePEPFolderProvider: UsePEPFolderProviderProtocol)
 }

@@ -95,7 +95,8 @@ extension MessageModelService {
         let keySyncService = KeySyncService(keySyncServiceHandshakeHandler: keySyncServiceHandshakeHandler,
                                             keySyncStateProvider: keySyncStateProvider,
                                             fastPollingDelegate: replicationService,
-                                            passphraseProvider: passphraseProvider)
+                                            passphraseProvider: passphraseProvider,
+                                            usePEPFolderProvider: usePEPFolderProvider)
         let createPEPFolderService = CreatePepIMAPFolderService(backgroundTaskManager: backgroundTaskManager,
                                                                 usePEPFolderProviderProtocol: usePEPFolderProvider)
         runtimeServices = [decryptService,
