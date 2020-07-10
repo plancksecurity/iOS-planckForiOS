@@ -26,8 +26,6 @@ public protocol KeySyncServiceHandshakeHandlerProtocol: class {
 
     func showSuccessfullyGrouped()
 
-    func showPassphraseRequired()
-
     func showError(error: Error?, completion: ((KeySyncErrorResponse) -> ())?)
 }
 

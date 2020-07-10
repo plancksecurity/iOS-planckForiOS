@@ -122,9 +122,13 @@ extension AppendMailsToFolderOperation {
                     if error.domain == PEPObjCAdapterEngineStatusErrorDomain {
                         switch error.code {
                         case Int(PEPStatus.passphraseRequired.rawValue):
-                            me.handleError(BackgroundError.PepError.passphraseRequired(info:"Passphrase required encrypting message: \(cdMessage)"))
+                            //BUFF: keep unhandled and see how it works with the adapters new delegate approach
+                            break
+//                            me.handleError(BackgroundError.PepError.passphraseRequired(info:"Passphrase required encrypting message: \(cdMessage)"))
                         case Int(PEPStatus.wrongPassphrase.rawValue):
-                            me.handleError(BackgroundError.PepError.wrongPassphrase(info:"Passphrase wrong encrypting message: \(cdMessage)"))
+                            //BUFF: keep unhandled and see how it works with the adapters new delegate approach
+                            break
+//                            me.handleError(BackgroundError.PepError.wrongPassphrase(info:"Passphrase wrong encrypting message: \(cdMessage)"))
                         default:
                             Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
                             me.handleError(BackgroundError.GeneralError.illegalState(info:

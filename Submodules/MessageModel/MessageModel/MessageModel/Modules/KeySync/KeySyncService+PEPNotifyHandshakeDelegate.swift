@@ -52,8 +52,17 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
             tryRedecryptYetUndecryptableMessages()
 
         case .passphraseRequired:
-            handshakeHandler?.showPassphraseRequired()
-            break
+            passphraseProvider.showEnterPassphrase(triggeredWhilePEPSync: true) { [weak self] passphrase in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                guard let pp = passphrase else {
+                    me.stop()
+                    return
+                }
+                try? PassphraseUtil().newPassphrase(pp)
+            }
 
         // Other
         case .undefined:
