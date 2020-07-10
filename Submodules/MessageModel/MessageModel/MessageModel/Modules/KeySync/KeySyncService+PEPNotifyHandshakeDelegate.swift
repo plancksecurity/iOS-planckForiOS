@@ -61,8 +61,6 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
                     me.stop()
                     return
                 }
-                //BUFF: show alert differently: "OK" and "Disable Sync". NOT "Cancel"
-                /// see spec: https://dev.pep.security/Common%20App%20Documentation/PassphraseSupport#notifyhandshake-incoming
                 try? PassphraseUtil().newPassphrase(pp)
             }
 

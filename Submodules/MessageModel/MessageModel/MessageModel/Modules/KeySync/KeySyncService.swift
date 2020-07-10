@@ -74,7 +74,7 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
     /// * in case Sync is enabled while startup the application must call start_sync(), otherwise it must not (default: enabled)
     ///
     /// - seeAlso: https://dev.pep.foundation/Engine/Sync%20from%20an%20application%20developer's%20perspective#application-startup
-    func start() { //BUFF: make this service an operationBased service. We now call myself, that might become expensive (even it should not, because keys do not have to be generated).
+    func start() {
         guard let stateProvider = keySyncStateProvider else {
             Log.shared.errorAndCrash("No keySyncStateProvider")
             return
