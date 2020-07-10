@@ -108,7 +108,7 @@ public class FolderCellViewModel {
         return false
     }
 
-    /// Retrives if the separator should be hidden.
+    /// Indicates if the separator should be hidden.
     /// - Returns: True to hide the separator.
     public func shouldHideSeparator() -> Bool {
         guard let folder = folder as? Folder else {
@@ -118,7 +118,7 @@ public class FolderCellViewModel {
         return folder.folderType == .outbox
     }
 
-    /// Retrives if the current folder cell view model is a subfolder.
+    /// Indicates if the current folder cell view model is a subfolder.
     /// - Returns: True if it is.
     public func isSubfolder() -> Bool {
         guard let folder = folder as? Folder else {
