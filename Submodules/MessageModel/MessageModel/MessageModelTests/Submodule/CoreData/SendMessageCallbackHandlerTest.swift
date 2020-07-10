@@ -19,7 +19,8 @@ class SendMessageCallbackHandlerTest: PersistentStoreDrivenTestBase {
 
     func testError() {
         let handler: PEPSendMessageDelegate = KeySyncService(keySyncStateProvider: TestStateProvider(),
-                                                             passphraseProvider: PassphraseProviderMock())
+                                                             passphraseProvider: PassphraseProviderMock(),
+                                                             usePEPFolderProvider: UsePEPFolderProviderMock())
         let msg = PEPMessageUtil.syncMessage(ownAddress: ownAddress,
                                              attachmentData: attachmentData)
         let result = handler.send(msg)
@@ -44,7 +45,8 @@ class SendMessageCallbackHandlerTest: PersistentStoreDrivenTestBase {
         moc.saveAndLogErrors()
 
         let handler: PEPSendMessageDelegate = KeySyncService(keySyncStateProvider: TestStateProvider(),
-                                                             passphraseProvider: PassphraseProviderMock())
+                                                             passphraseProvider: PassphraseProviderMock(),
+                                                             usePEPFolderProvider: UsePEPFolderProviderMock())
         let msg = PEPMessageUtil.syncMessage(ownAddress: ownAddress,
                                              attachmentData: attachmentData)
         let result = handler.send(msg)
@@ -80,4 +82,8 @@ class PassphraseProviderMock: PassphraseProviderProtocol {
     func showWrongPassphrase(completion: @escaping (String?) -> Void) {}
 
     func showPassphraseTooLong(completion: @escaping (String?) -> Void) {}
+}
+
+class UsePEPFolderProviderMock: UsePEPFolderProviderProtocol {
+    var usePepFolder: Bool = false
 }
