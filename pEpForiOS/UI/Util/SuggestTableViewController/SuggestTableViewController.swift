@@ -20,7 +20,7 @@ class SuggestTableViewController: UITableViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.title = title
-        UITableViewController.setupCommonSettings(tableView: tableView)
+        tableView.hideSeperatorForEmptyCells()
     }
 
     override func viewDidLoad() {

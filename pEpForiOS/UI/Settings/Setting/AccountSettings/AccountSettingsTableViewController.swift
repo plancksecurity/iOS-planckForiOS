@@ -97,7 +97,7 @@ final class AccountSettingsTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        UITableViewController.setupCommonSettings(tableView: tableView)
+        tableView.hideSeperatorForEmptyCells()
         showNavigationBar()
         title = NSLocalizedString("Account", comment: "Account view title")
         navigationController?.title = title

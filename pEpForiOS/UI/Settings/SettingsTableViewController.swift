@@ -29,7 +29,7 @@ final class SettingsTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.title = title
-        UITableViewController.setupCommonSettings(tableView: tableView)
+        tableView.hideSeperatorForEmptyCells()
         navigationController?.setToolbarHidden(true, animated: false)
         showEmptyDetailViewIfApplicable(message: NSLocalizedString("Please choose a setting",
                                                                    comment: "No setting has been selected yet in the settings VC"))

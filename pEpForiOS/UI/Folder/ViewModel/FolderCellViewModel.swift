@@ -131,14 +131,17 @@ public class FolderCellViewModel {
 }
 
 extension FolderCellViewModel : Equatable {
+
     public static func == (lhs: FolderCellViewModel, rhs: FolderCellViewModel) -> Bool {
-        guard let lhsFolder = lhs.folder as? Folder, let rhsFolder = rhs.folder as? Folder else {
-            guard let left = lhs.folder as? UnifiedInbox, let right = rhs.folder as? UnifiedInbox else {
-                Log.shared.info("One is Unified Inbox the other is not")
-                return false
-            }
+        /// Both are Folders
+        if let lhsFolder = lhs.folder as? Folder, let rhsFolder = rhs.folder as? Folder {
+            return lhsFolder == rhsFolder
+        }
+        /// Both are UnifiedInbox
+        if let left = lhs.folder as? UnifiedInbox, let right = rhs.folder as? UnifiedInbox {
             return left == right
         }
-        return lhsFolder == rhsFolder
+        //One is Unified Inbox the other is not
+        return false
     }
 }

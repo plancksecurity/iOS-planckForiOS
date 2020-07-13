@@ -17,7 +17,7 @@ class MoveToFolderTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.title = title
-        UITableViewController.setupCommonSettings(tableView: tableView)
+        tableView.hideSeperatorForEmptyCells()
     }
 
     // MARK: - Table view data source

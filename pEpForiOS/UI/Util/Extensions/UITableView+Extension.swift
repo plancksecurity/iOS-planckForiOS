@@ -48,3 +48,16 @@ extension UITableView {
         endUpdates()
     }
 }
+
+
+extension UITableView {
+
+    /// Sets footer's view frame as .zero to hide empty cells sepaator.
+    public func hideSeperatorForEmptyCells() {
+        // Add empty footer to not show empty cells (visible as dangling seperators)
+        if tableFooterView == nil {
+            tableFooterView = UIView(frame: .zero)
+        }
+    }
+
+}
