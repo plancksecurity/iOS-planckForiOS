@@ -83,3 +83,15 @@ public class UnifiedInbox: VirtualFolderProtocol {
         return UnifiedInbox.defaultUnifiedInboxName
     }
 }
+
+extension UnifiedInbox: Equatable {
+    public static func == (lhs: UnifiedInbox, rhs: UnifiedInbox) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+}
+
+extension UnifiedInbox: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(messagesPredicate.description)
+    }
+}
