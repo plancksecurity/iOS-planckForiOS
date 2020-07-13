@@ -184,6 +184,22 @@ public extension NSManagedObject {
         return objects.count > 0 ? objects : nil
     }
 
+    /// Count elements based on predicate
+    /// - Parameters:
+    ///   - predicate: The predicate to filter the elements to count
+    ///   - context: The context to trigger the query.
+    /// - Returns: The amount of elements that match the predicate
+    class func count(predicate: NSPredicate,
+                   in context: NSManagedObjectContext) -> Int {
+        let request = createFetchRequest(predicate: predicate)
+        guard let count = try? context.count(for: request) else {
+            Log.shared.errorAndCrash("Can't count elements")
+            return 0
+        }
+
+        return count
+    }
+
     /**
      Finds all records for given predicate. Generic version
 

@@ -141,6 +141,16 @@ extension CdMessage {
             return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         }
 
+        /// Gives the predicate to get the messages that are in the folder type passed.
+        /// - Parameter folderType: The folder type to get the predicate.
+        /// - Returns: The configured predicate
+        static func isIn(folderType: FolderType) -> NSPredicate {
+            return NSPredicate(format: "%K = %d",
+                               RelationshipKeyPath.cdMessage_parent_typeRawValue,
+                               folderType.rawValue)
+        }
+
+
         static func isInInbox() -> NSPredicate {
             return NSPredicate(format: "%K = %d",
                                RelationshipKeyPath.cdMessage_parent_typeRawValue,
@@ -280,5 +290,18 @@ extension CdMessage {
                                  CdMessage.uidNeedsAppend)
             return NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2])
         }
+
+        /// The predicate to count the unread mails of a folder.
+        /// - Parameter parentFolder: The parent folder
+        /// - Returns: The unread mails predicate
+        static func countUnreadMessages(parentFolder: CdFolder) -> NSPredicate {
+            let p1 = CdMessage.PredicateFactory
+                .allMessagesIncludingDeleted(parentFolder: parentFolder,
+                                             fakeMessagesIncluded: true)
+            let p2 = CdMessage.PredicateFactory.notImapFlagDeleted()
+            let p3 = CdMessage.PredicateFactory.notMarkedForMoveToFolder()
+            return NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2, p3])
+        }
+
     }
 }

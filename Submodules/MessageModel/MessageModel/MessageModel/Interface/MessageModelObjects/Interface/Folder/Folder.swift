@@ -145,6 +145,14 @@ public class Folder: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
 
         return cdFolders.first?.folder()
     }
+
+    public var countUnread: Int {
+        let unreadPredicate = CdMessage.PredicateFactory.unread(value: true)
+        let containedMessagesPredicate = CdFolder.PredicateFactory.containedMessages(cdFolder: cdObject)
+        let predicates = [containedMessagesPredicate, unreadPredicate]
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates:predicates)
+        return CdMessage.count(predicate: compoundPredicate, in: session.moc)
+    }
 }
 
 // MARK: - Helper

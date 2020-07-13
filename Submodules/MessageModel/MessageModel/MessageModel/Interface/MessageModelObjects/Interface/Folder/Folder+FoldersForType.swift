@@ -15,4 +15,12 @@ extension Folder {
         let cdFolders: [CdFolder] = CdFolder.all(predicate: predicate, in: session.moc) ?? []
         return cdFolders.map { $0.folder() }
     }
+
+    public static func countUnread(folderType: FolderType, session: Session = Session.main) -> Int {
+        let unreadPredicate = CdMessage.PredicateFactory.unread(value: true)
+        let folderPredicate = CdMessage.PredicateFactory.isIn(folderType: folderType)
+        let predicates = [unreadPredicate, folderPredicate]
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        return CdMessage.count(predicate: compoundPredicate, in: session.moc)
+    }
 }

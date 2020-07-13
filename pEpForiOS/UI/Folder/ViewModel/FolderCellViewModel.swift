@@ -14,7 +14,9 @@ public class FolderCellViewModel {
     let level : Int
 
     public var title : String {
-        return name
+        let unreadElements = String(unread)
+        return "\(name) - \(unreadElements)"
+//        return name
     }
 
     public var image : UIImage? {
@@ -39,9 +41,19 @@ public class FolderCellViewModel {
         return folder.isSelectable
     }
 
+    public var unread : Int {
+        if let f = folder as? VirtualFolderProtocol {
+            return f.countUnread
+        } else if let f = folder as? Folder {
+            return f.countUnread
+        } else {
+            Log.shared.errorAndCrash("Can't recognize Folder")
+            return 0
+        }
+    }
+
     public init(folder: DisplayableFolderProtocol, level: Int) {
         self.folder = folder
         self.level = level
     }
 }
-
