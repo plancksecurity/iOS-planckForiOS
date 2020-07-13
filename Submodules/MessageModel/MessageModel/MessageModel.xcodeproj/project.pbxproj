@@ -145,6 +145,8 @@
 		15EA8E011FA8A45E00D4084A /* CdIdentity+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EA8E001FA8A45E00D4084A /* CdIdentity+PredicateFactory.swift */; };
 		15ECD7061F5430C1002889B8 /* Message+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15ECD7051F5430C1002889B8 /* Message+TestUtils.swift */; };
 		15F0F7B42136F68A002BE853 /* CdFolder+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F0F7B32136F68A002BE853 /* CdFolder+PredicateFactory.swift */; };
+		15F136EF24B6199C00A7F810 /* PassphraseProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F136EE24B6199C00A7F810 /* PassphraseProviderProtocol.swift */; };
+		15F136F124B619D600A7F810 /* PEPPassphraseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F136F024B619D600A7F810 /* PEPPassphraseProvider.swift */; };
 		15F274F8233CAEB10069C1E0 /* EncryptAndSendService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F274F7233CAEB10069C1E0 /* EncryptAndSendService.swift */; };
 		15F274FA233CAFAF0069C1E0 /* EncryptAndSMTPSendService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F274F9233CAFAF0069C1E0 /* EncryptAndSMTPSendService.swift */; };
 		15F274FD233CB0410069C1E0 /* SendServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F274FC233CB0410069C1E0 /* SendServiceProtocol.swift */; };
@@ -640,6 +642,8 @@
 		15ECD7051F5430C1002889B8 /* Message+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+TestUtils.swift"; sourceTree = "<group>"; };
 		15F0F7B22135AB0A002BE853 /* 0.0.35.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 0.0.35.xcdatamodel; sourceTree = "<group>"; };
 		15F0F7B32136F68A002BE853 /* CdFolder+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+PredicateFactory.swift"; sourceTree = "<group>"; };
+		15F136EE24B6199C00A7F810 /* PassphraseProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseProviderProtocol.swift; sourceTree = "<group>"; };
+		15F136F024B619D600A7F810 /* PEPPassphraseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPPassphraseProvider.swift; sourceTree = "<group>"; };
 		15F274F7233CAEB10069C1E0 /* EncryptAndSendService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptAndSendService.swift; sourceTree = "<group>"; };
 		15F274F9233CAFAF0069C1E0 /* EncryptAndSMTPSendService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptAndSMTPSendService.swift; sourceTree = "<group>"; };
 		15F274FC233CB0410069C1E0 /* SendServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendServiceProtocol.swift; sourceTree = "<group>"; };
@@ -990,6 +994,7 @@
 				4396230B23FD419B007E9364 /* Certificates */,
 				4384D3EB243F29ED006CCBA2 /* QualifyLocalServer */,
 				43A676A0246D3A46004639FE /* KeyImport */,
+				15F136ED24B6190300A7F810 /* Passphrase */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -1671,6 +1676,14 @@
 			path = Log;
 			sourceTree = "<group>";
 		};
+		15F136ED24B6190300A7F810 /* Passphrase */ = {
+			isa = PBXGroup;
+			children = (
+				15F136EE24B6199C00A7F810 /* PassphraseProviderProtocol.swift */,
+			);
+			path = Passphrase;
+			sourceTree = "<group>";
+		};
 		15F274F6233CAE8F0069C1E0 /* EncryptAndSendService */ = {
 			isa = PBXGroup;
 			children = (
@@ -2113,6 +2126,7 @@
 				43753CED222D3A3E002EE98B /* CdAttachment+Extension.swift */,
 				430CDA4E2293FE6100AAC37F /* CdMessage+PEPMessage.swift */,
 				430CDA842296BC7A00AAC37F /* CdMessage+KeySync.swift */,
+				15F136F024B619D600A7F810 /* PEPPassphraseProvider.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -2792,6 +2806,7 @@
 				37E61A602271B513000DF876 /* Account+Fetching.swift in Sources */,
 				3705098E22DF2FB100CB73D6 /* String+PEPSignature.swift in Sources */,
 				15E39FC822551E2D0016A1C4 /* Folder+SessionAware.swift in Sources */,
+				15F136EF24B6199C00A7F810 /* PassphraseProviderProtocol.swift in Sources */,
 				439B16AA22802B6B00201DE5 /* VerifiableAccount.swift in Sources */,
 				43EA4870221E9518006E8F83 /* OAuth2AccessToken.swift in Sources */,
 				158A569A24059026003C0D7E /* ClientCertificcate+SessionAware.swift in Sources */,
@@ -2800,6 +2815,7 @@
 				434DC0E01DAE78BE007C98B8 /* Attachment.swift in Sources */,
 				43C123C7223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift in Sources */,
 				43B22710242362D9007EB91E /* CdAccount+ProviderSpecific.swift in Sources */,
+				15F136F124B619D600A7F810 /* PEPPassphraseProvider.swift in Sources */,
 				15A3B4E6235877F800DB9135 /* ImapConnectionCache.swift in Sources */,
 				155FE570228B51E0003D3E68 /* CdIdentity+Extensions.swift in Sources */,
 				43E3A255224E473B004CAC84 /* CdMessage+Fake.swift in Sources */,

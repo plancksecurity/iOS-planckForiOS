@@ -26,16 +26,22 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
     private var moc: NSManagedObjectContext
     weak private var keySyncStateProvider: KeySyncStateProvider?
     private(set) var handshakeHandler: KeySyncServiceHandshakeHandlerProtocol?
+    let passphraseProvider: PassphraseProviderProtocol
+    let usePEPFolderProvider: UsePEPFolderProviderProtocol
     weak private(set) var fastPollingDelegate: PollingDelegate?
 
     // MARK: - KeySyncServiceProtocol
 
     required init(keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol? = nil,
                   keySyncStateProvider: KeySyncStateProvider,
-                  fastPollingDelegate: PollingDelegate? = nil) {
+                  fastPollingDelegate: PollingDelegate? = nil,
+                  passphraseProvider: PassphraseProviderProtocol,
+                  usePEPFolderProvider: UsePEPFolderProviderProtocol) {
         self.handshakeHandler = keySyncServiceHandshakeHandler
         self.keySyncStateProvider = keySyncStateProvider
         self.fastPollingDelegate = fastPollingDelegate
+        self.passphraseProvider = passphraseProvider
+        self.usePEPFolderProvider = usePEPFolderProvider
         pEpSync = PEPSync(sendMessageDelegate: nil,
                                notifyHandshakeDelegate: nil)
         let moc: NSManagedObjectContext = Stack.shared.changePropagatorContext
@@ -71,7 +77,7 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
     /// * in case Sync is enabled while startup the application must call start_sync(), otherwise it must not (default: enabled)
     ///
     /// - seeAlso: https://dev.pep.foundation/Engine/Sync%20from%20an%20application%20developer's%20perspective#application-startup
-    func start() { //BUFF: make this service an operationBased service. We now call myself, that might become expensive (even it should not, because keys do not have to be generated).
+    func start() {
         guard let stateProvider = keySyncStateProvider else {
             Log.shared.errorAndCrash("No keySyncStateProvider")
             return

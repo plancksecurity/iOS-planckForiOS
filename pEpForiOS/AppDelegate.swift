@@ -27,6 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return createe
     }()
 
+    private let userInputProvider = UserInputProvider()
+
     /// This is used to handle OAuth2 requests.
     private let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
@@ -63,7 +65,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                   cnContactsAccessPermissionProvider: AppSettings.shared,
                                                   keySyncServiceHandshakeHandler: KeySyncHandshakeService(),
                                                   keySyncStateProvider: AppSettings.shared,
-                                                  usePEPFolderProvider: AppSettings.shared)
+                                                  usePEPFolderProvider: AppSettings.shared,
+                                                  passphraseProvider: userInputProvider)
     }
 
     private func askUserForNotificationPermissions() {
