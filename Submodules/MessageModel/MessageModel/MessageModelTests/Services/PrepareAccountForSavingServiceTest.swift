@@ -87,7 +87,7 @@ class PrepareAccountForSavingServiceTest: PersistentStoreDrivenTestBase {
         }
     }
 
-    func testKeysAreCorrectlyGenerated() {
+    func testKeysAreCorrectlyGenerated() {//!!!: IOS-2325_!
         //another option: outgoin message to myself and check the outgoing color.
         let expAccountPrepared = expectation(description: "expAccountPrepared")
         let accountPreparationService = PrepareAccountForSavingService()
@@ -115,7 +115,7 @@ class PrepareAccountForSavingServiceTest: PersistentStoreDrivenTestBase {
                 XCTFail()
                 return
             }
-            let rating = PEPUtils.pEpRating(cdIdentity: cdIndentity)
+            let rating = PEPUtils.pEpRating(cdIdentity: cdIndentity)//!!!: IOS-2325_!
             XCTAssertEqual(rating, PEPRating.trustedAndAnonymized)
         }
     }

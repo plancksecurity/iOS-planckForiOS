@@ -17,7 +17,7 @@ class SetOwnKeyViewModel {
 
     public var rawErrorString: String?
 
-    public func setOwnKey() {
+    public func setOwnKey() {//!!!: IOS-2325_!
         guard
             let theEmail = email,
             let theFingerprint = fingerprint,
@@ -38,7 +38,7 @@ class SetOwnKeyViewModel {
         }
 
         do {
-            try identity.setOwnKey(fingerprint: theFingerprint)
+            try identity.setOwnKey(fingerprint: theFingerprint)//!!!: IOS-2325_!
             rawErrorString = nil
         } catch {
             rawErrorString = error.localizedDescription

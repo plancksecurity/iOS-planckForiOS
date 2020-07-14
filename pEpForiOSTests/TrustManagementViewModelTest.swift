@@ -91,10 +91,10 @@ class TrustManagementViewModelTest: CoreDataDrivenTestBase {
     }
     
     //Test Change Language Pressed
-    func testHandleChangeLanguagePressed() {
+    func testHandleChangeLanguagePressed() {//!!!: IOS-2325_!
         let languagesExpectation = expectation(description: "languages")
         setupViewModel(util: TrustManagementUtilMock(languagesExpectation: languagesExpectation))
-        let languages = trustManagementViewModel?.languages
+        let languages = trustManagementViewModel?.languages//!!!: IOS-2325_!
         XCTAssertEqual(TrustManagementUtilMock.languages, languages)
         waitForExpectations(timeout: TestUtil.waitTime)
     }
@@ -189,7 +189,7 @@ extension TrustManagementViewModelTest {
                                                                               isMyself: true,
                                                                               context: moc)
         let selfIdentity = Identity(cdObject: cdIdentity, context: moc)
-        selfIdentity.fingerprint = "fingerprints"
+        selfIdentity.fingerprint = "fingerprints"//!!!: IOS-2325_!
         selfIdentity.save()
         moc.saveAndLogErrors()
         

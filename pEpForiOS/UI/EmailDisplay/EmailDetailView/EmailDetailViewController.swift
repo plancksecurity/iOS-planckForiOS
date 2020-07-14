@@ -317,7 +317,7 @@ extension EmailDetailViewController {
         setupToolbar()
     }
 
-    private func showPepRating() {
+    private func showPepRating() {//!!!: IOS-2325_!
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
@@ -326,7 +326,7 @@ extension EmailDetailViewController {
             // List is empty. That is ok. The user might have deleted the last shown message.
             return
         }
-        guard let ratingView = showNavigationBarSecurityBadge(pEpRating: vm.pEpRating(forItemAt: indexPath)) else {
+        guard let ratingView = showNavigationBarSecurityBadge(pEpRating: vm.pEpRating(forItemAt: indexPath)) else {//!!!: IOS-2325_!
             // Nothing to show for current message
             return
         }

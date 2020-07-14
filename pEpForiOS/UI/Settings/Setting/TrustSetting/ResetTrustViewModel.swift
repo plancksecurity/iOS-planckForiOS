@@ -148,14 +148,14 @@ class ResetTrustViewModel {
         }
     }
 
-    func resetTrust(foridentityAt indexPath: IndexPath) {
+    func resetTrust(foridentityAt indexPath: IndexPath) {//!!!: IOS-2325_!
         let identity = identityQueryResult[indexPath.section].objects[indexPath.row]
-        identity.resetTrust()
+        identity.resetTrust()//!!!: IOS-2325_!
     }
 
-    func resetTrustAll(foridentityAt indexPath: IndexPath) {
+    func resetTrustAll(foridentityAt indexPath: IndexPath) { //!!!: IOS-2325_!
         let identity = identityQueryResult[indexPath.section].objects[indexPath.row]
-        Identity.resetTrustAllIdentities(for: identity)
+        Identity.resetTrustAllIdentities(for: identity) //!!!: IOS-2325_!
     }
 
     func multipleIdentitiesExist(forIdentityAt indexPath: IndexPath) -> Bool {

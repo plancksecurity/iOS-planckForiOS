@@ -46,27 +46,27 @@ extension TrustManagementViewModel {
             return name ?? address
         }
         /// The description for the row
-        public var description: String {
+        public var description: String { //!!!: IOS-2325_!
             if forceRed {
                 return PEPColor.red.privacyStatusDescription
             }
-            return color.privacyStatusDescription
+            return color.privacyStatusDescription//!!!: IOS-2325_!
         }
         /// The privacy status name
-        public var privacyStatusName: String {
+        public var privacyStatusName: String { //!!!: IOS-2325_!
             if (forceRed) {
                 return String.trustIdentityTranslation(pEpRating: .underAttack).title
             }
-            let rating = handshakeCombination.partnerIdentity.pEpRating()
+            let rating = handshakeCombination.partnerIdentity.pEpRating() //!!!: IOS-2325_!
             let translations = String.trustIdentityTranslation(pEpRating: rating)
             return translations.title
         }
         /// The privacy status image
-        public var privacyStatusImage: UIImage? {
+        public var privacyStatusImage: UIImage? {//!!!: IOS-2325_!
             if forceRed {
                 return PEPColor.red.statusIconForMessage(enabled: true, withText: false)
             }
-            return color.statusIconForMessage(enabled: true, withText: false)
+            return color.statusIconForMessage(enabled: true, withText: false)//!!!: IOS-2325_!
         }
         /// The current language
         fileprivate var language: String {
@@ -79,11 +79,11 @@ extension TrustManagementViewModel {
         /// The privacy status in between the current user and the partner
         var privacyStatus: String?
         /// Status indicator
-        var color : PEPColor {
+        var color : PEPColor {//!!!: IOS-2325_!
             if forceRed {
                 return PEPColor.red
             }
-            return handshakeCombination.partnerIdentity.pEpColor()
+            return handshakeCombination.partnerIdentity.pEpColor()//!!!: IOS-2325_!
         }
 
         public typealias TrustWords = String
@@ -102,12 +102,12 @@ extension TrustManagementViewModel {
 
         private func setupTrustwords(combination: TrustManagementUtil.HandshakeCombination,
                                      language: LanguageCode) {
-            let longTw =  try? trustManagementUtil.getTrustwords(for: combination.ownIdentity,
+            let longTw =  try? trustManagementUtil.getTrustwords(for: combination.ownIdentity,//!!!: IOS-2325_!
                                                                  and: combination.partnerIdentity,
                                                                  language: language,
                                                                  long: true)
             trustwordsLong = prepareTrustwordStringForDisplay(trustwords: longTw)
-            var shortTw =  try? trustManagementUtil.getTrustwords(for: combination.ownIdentity,
+            var shortTw =  try? trustManagementUtil.getTrustwords(for: combination.ownIdentity,//!!!: IOS-2325_!
                                                                   and: combination.partnerIdentity,
                                                                   language: language,
                                                                   long: false)
@@ -171,30 +171,30 @@ final class TrustManagementViewModel {
     
     /// Reject the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to reject the handshake
-    public func handleRejectHandshakePressed(at indexPath: IndexPath) {
+    public func handleRejectHandshakePressed(at indexPath: IndexPath) {//!!!: IOS-2325_!
         let actionName = NSLocalizedString("Trust Rejection", comment: "Action name to be suggested at the moment of revert")
         actionPerformed.append(actionName)
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
-        rows[indexPath.row].fingerprint = trustManagementUtil.getFingerprint(for: identity)
+        rows[indexPath.row].fingerprint = trustManagementUtil.getFingerprint(for: identity)//!!!: IOS-2325_!
         rows[indexPath.row].forceRed = true
-        trustManagementUtil.denyTrust(for: identity)
-        reevaluateMessage()
+        trustManagementUtil.denyTrust(for: identity)//!!!: IOS-2325_!
+        reevaluateMessage()//!!!: IOS-2325_!
         delegate?.dataChanged(forRowAt: indexPath)
     }
     
     /// Confirm the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to confirm the handshake
-    public func handleConfirmHandshakePressed(at indexPath: IndexPath) {
+    public func handleConfirmHandshakePressed(at indexPath: IndexPath) { //!!!: IOS-2325_!
         let actionName = NSLocalizedString("Trust Confirmation", comment: "Action name to be suggested at the moment of revert")
         actionPerformed.append(actionName)
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
         let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
-        trustManagementUtil.confirmTrust(for: identity)
-        reevaluateMessage()
+        trustManagementUtil.confirmTrust(for: identity)//!!!: IOS-2325_!
+        reevaluateMessage()//!!!: IOS-2325_!
         delegate?.dataChanged(forRowAt: indexPath)
     }
     
@@ -202,28 +202,28 @@ final class TrustManagementViewModel {
     /// That means that the trust will be reseted.
     /// So it is not important what action in concrete was performed.
     /// - Parameter indexPath: The index path of the row from where the last action has been performed.
-    @objc public func handleUndo(forRowAt indexPath: IndexPath) {
+    @objc public func handleUndo(forRowAt indexPath: IndexPath) {//!!!: IOS-2325_!
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
-        trustManagementUtil.undoMisstrustOrTrust(for: row.handshakeCombination.partnerIdentity,
+        trustManagementUtil.undoMisstrustOrTrust(for: row.handshakeCombination.partnerIdentity,//!!!: IOS-2325_!
                                                  fingerprint: row.fingerprint)
-        reevaluateMessage()
+        reevaluateMessage()//!!!: IOS-2325_!
         delegate?.dataChanged(forRowAt: indexPath)
     }
     
     /// Handles the redey action
     /// - Parameter indexPath: The indexPath of the item to get the user to undo last action.
-    public func handleResetPressed(forRowAt indexPath: IndexPath) {
+    public func handleResetPressed(forRowAt indexPath: IndexPath) {//!!!: IOS-2325_!
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
         trustManagementUtil.resetTrust(for: row.handshakeCombination.partnerIdentity)
-        reevaluateMessage()
+        reevaluateMessage()//!!!: IOS-2325_!
         delegate?.dataChanged(forRowAt: indexPath)
     }
 
     /// - returns: the available languages.
-    public var languages: [String] {
-        return trustManagementUtil.languagesList() ?? []
+    public var languages: [String] {//!!!: IOS-2325_!
+        return trustManagementUtil.languagesList() ?? []//!!!: IOS-2325_!
     }
     
     /// Updates the selected language for that row.
@@ -274,13 +274,13 @@ final class TrustManagementViewModel {
 
     /// This must be called after every trust state change. The curently processed message might
     /// change color.
-    private func reevaluateMessage() {
+    private func reevaluateMessage() {//!!!: IOS-2325_!
         message.session.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.error("Lost myself - The message will not be reevaluated")
                 return
             }
-            RatingReEvaluator.reevaluate(message: me.message)
+            RatingReEvaluator.reevaluate(message: me.message)//!!!: IOS-2325_!
         }
     }
 

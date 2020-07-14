@@ -54,7 +54,7 @@ extension KeyImportUtil {
 }
 
 extension KeyImportUtil: KeyImportUtilProtocol {
-    public func importKey(url: URL) throws -> KeyData {
+    public func importKey(url: URL) throws -> KeyData {//!!!: IOS-2325_!
         guard let dataString = try? String(contentsOf: url) else {
             throw ImportError.cannotLoadKey
         }
@@ -64,7 +64,7 @@ extension KeyImportUtil: KeyImportUtilProtocol {
         var identities = [PEPIdentity]()
 
         do {
-            identities = try session.importKey(dataString)
+            identities = try session.importKey(dataString)//!!!: IOS-2325_!
         } catch {
             throw ImportError.malformedKey
         }
@@ -82,7 +82,7 @@ extension KeyImportUtil: KeyImportUtilProtocol {
                        userName: firstIdentity.userName)
     }
 
-    public func setOwnKey(address: String, fingerprint: String) throws {
+    public func setOwnKey(address: String, fingerprint: String) throws {//!!!: IOS-2325_!
         var thrown: Error?
 
         let session = Session()
@@ -94,7 +94,7 @@ extension KeyImportUtil: KeyImportUtilProtocol {
             }
 
             do {
-                try account.user.setOwnKey(fingerprint: fingerprint)
+                try account.user.setOwnKey(fingerprint: fingerprint)//!!!: IOS-2325_!
             } catch {
                 Log.shared.log(error: error)
                 thrown = SetOwnKeyError.cannotSetOwnKey

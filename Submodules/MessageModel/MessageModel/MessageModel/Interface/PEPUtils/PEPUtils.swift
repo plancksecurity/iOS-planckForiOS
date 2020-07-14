@@ -121,26 +121,26 @@ public class PEPUtils {
         return CWInternetAddress(personal: pEpIdentity.userName, address: pEpIdentity.address)  //!!!: should be extension on PEPIdentity
     }
 
-    public static func pEpRating(cdIdentity: CdIdentity) -> PEPRating {
+    public static func pEpRating(cdIdentity: CdIdentity) -> PEPRating {//!!!: IOS-2325_!
         let pEpSession = PEPSession()
         let pepC = cdIdentity.pEpIdentity()
         do {
-            return try pEpSession.rating(for: pepC).pEpRating
+            return try pEpSession.rating(for: pepC).pEpRating//!!!: IOS-2325_!
         } catch let error as NSError {
             assertionFailure("\(error)")
             return .undefined
         }
     }
 
-    public static func pEpColor(cdIdentity: CdIdentity) -> PEPColor {
-        return pEpColor(pEpRating: pEpRating(cdIdentity: cdIdentity))
+    public static func pEpColor(cdIdentity: CdIdentity) -> PEPColor {//!!!: IOS-2325_!
+        return pEpColor(pEpRating: pEpRating(cdIdentity: cdIdentity))//!!!: IOS-2325_!
     }
 
-    public static func pEpColor(pEpRating: PEPRating?) -> PEPColor {
+    public static func pEpColor(pEpRating: PEPRating?) -> PEPColor {//!!!: IOS-2325_!
         if let rating = pEpRating {
-            return PEPSession().color(from: rating)
+            return PEPSession().color(from: rating)//!!!: IOS-2325_!
         } else {
-            return PEPColor.noColor
+            return PEPColor.noColor//!!!: IOS-2325_!
         }
     }
 }

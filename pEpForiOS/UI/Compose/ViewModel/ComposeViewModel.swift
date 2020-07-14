@@ -116,7 +116,7 @@ class ComposeViewModel {
     }
 
     public func handleDidReAppear() {
-        state.validate()
+        state.validate()//!!!: IOS-2325_!
     }
 
     public func viewModel(for indexPath: IndexPath) -> CellViewModel {
@@ -252,7 +252,7 @@ extension ComposeViewModel {
     typealias Accepted = Bool
     /// When forwarding/answering a previously decrypted message and the pEpRating is considered as
     /// less secure as the original message's pEp rating, warn the user.
-    private func showAlertFordwardingLessSecureIfRequired(forState state: ComposeViewModelState,
+    private func showAlertFordwardingLessSecureIfRequired(forState state: ComposeViewModelState,//!!!: IOS-2325_!
                                                           completion: @escaping (Accepted)->()) {
         guard AppSettings.shared.unsecureReplyWarningEnabled else {
             // Setting is disabled ...
@@ -274,7 +274,7 @@ extension ComposeViewModel {
             completion(true)
             return
         }
-        let originalRating = originalMessage.pEpRating()
+        let originalRating = originalMessage.pEpRating()//!!!: IOS-2325_!
         let pEpRating = state.rating
         let title: String
         let message: String
@@ -742,7 +742,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
     }
 
     func recipientCellViewModelDidEndEditing(_ vm: RecipientCellViewModel) {
-        state.validate()
+        state.validate()//!!!: IOS-2325_!
         delegate?.focusSwitched()
         delegate?.hideSuggestions()
     }

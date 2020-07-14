@@ -18,7 +18,7 @@ open class MessageContentCell: MessageCell {
         updateCell(model: model, message: message, clickHandler: nil)
     }
 
-    func updateCell(model: ComposeFieldModel, message: Message, clickHandler: UITextViewDelegate?) {
+    func updateCell(model: ComposeFieldModel, message: Message, clickHandler: UITextViewDelegate?) {//!!!: IOS-2325_!
         super.updateCell(model: model, message: message)
 
         let finalText = NSMutableAttributedString()
@@ -37,7 +37,7 @@ open class MessageContentCell: MessageCell {
             finalText.normal(text)
         } else if let text = message.longMessageFormatted?.attributedStringHtmlToMarkdown() {
             finalText.normal(text)
-        } else if message.pEpRating().isUnDecryptable() {
+        } else if message.pEpRating().isUnDecryptable() {//!!!: IOS-2325_!
             finalText.normal(NSLocalizedString(
                 "This message could not be decrypted.",
                 comment: "content that is shown for undecryptable messages"))

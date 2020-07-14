@@ -29,8 +29,8 @@ class KeySyncUtil {
 
 extension KeySyncUtil: KeySyncUtilProtocol {
 
-    static func leaveDeviceGroup() throws {
-        try PEPSession().leaveDeviceGroup()
+    static func leaveDeviceGroup() throws {//!!!: IOS-2325_!
+        try PEPSession().leaveDeviceGroup()//!!!: IOS-2325_!
         // We do that here to update the UI imediatelly (fake responsivenes)
         AppSettings.shared.lastKnownDeviceGroupState = .sole
     }
@@ -47,10 +47,10 @@ extension KeySyncUtil: KeySyncUtilProtocol {
         AppSettings.shared.keySyncEnabled = true
     }
 
-    static func disableKeySync() {
+    static func disableKeySync() {//!!!: IOS-2325_!
         if isInDeviceGroup {
             do {
-                try leaveDeviceGroup()
+                try leaveDeviceGroup()//!!!: IOS-2325_!
             } catch {
                 Log.shared.errorAndCrash(error: error)
             }

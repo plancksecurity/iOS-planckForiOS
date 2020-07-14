@@ -24,7 +24,7 @@ class DecryptMessageOperation: BaseOperation {
         super.init(parentName: parentName, errorContainer: errorContainer)
     }
 
-    override func main() {
+    override func main() {//!!!: IOS-2325_!
         if isCancelled {
             return
         }
@@ -33,7 +33,7 @@ class DecryptMessageOperation: BaseOperation {
                 Log.shared.lostMySelf()
                 return
             }
-            me.decryptMessage()
+            me.decryptMessage()//!!!: IOS-2325_!
         }
     }
 }
@@ -60,7 +60,7 @@ extension DecryptMessageOperation {
         var fprsOfExtraKeys = CdExtraKey.fprsOfAllExtraKeys(in: moc) as NSArray?
         var rating = PEPRating.undefined
         do {
-            let pEpDecryptedMessage = try PEPSession().decryptMessage(inOutMessage,
+            let pEpDecryptedMessage = try PEPSession().decryptMessage(inOutMessage,//!!!: IOS-2325_!
                                                                       flags: &inOutFlags,
                                                                       rating: &rating,
                                                                       extraKeys: &fprsOfExtraKeys,
@@ -264,9 +264,9 @@ extension DecryptMessageOperation {
 
     /// If the given message is a draft message:    sets its outgoing rating as the original rating
     /// Otherwize:                                  sets the given rating as the original rating
-    private func setOriginalRatingHeader(rating: PEPRating, toMessage cdMessage: CdMessage) {
+    private func setOriginalRatingHeader(rating: PEPRating, toMessage cdMessage: CdMessage) {//!!!: IOS-2325_!
         if cdMessage.parentOrCrash.folderType == .drafts {
-            let outgoingRating = cdMessage.outgoingMessageRating()
+            let outgoingRating = cdMessage.outgoingMessageRating()//!!!: IOS-2325_!
             setOriginalRatingHeaderVerbatim(rating: outgoingRating, toCdMessage: cdMessage)
         } else {
             setOriginalRatingHeaderVerbatim(rating: rating, toCdMessage: cdMessage)

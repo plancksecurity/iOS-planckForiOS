@@ -14,9 +14,9 @@ extension CdIdentity {
     /**
      Uses the adapter's update to determine the fingerprint of the given identity.
      */
-    func fingerPrint() throws -> String? {
+    func fingerPrint() throws -> String? {//!!!: IOS-2325_!
             let pEpID = pEpIdentity()
-            try PEPSession().update(pEpID)
+            try PEPSession().update(pEpID)//!!!: IOS-2325_!
             return pEpID.fingerPrint
     }
 
@@ -26,11 +26,11 @@ extension CdIdentity {
      Currently, you can't reset/undo a mistrust, so it's not included.
      See ENGINE-409, ENGINE-355.
      */
-    func canInvokeHandshakeAction() -> Bool {
+    func canInvokeHandshakeAction() -> Bool {//!!!: IOS-2325_!
         if isMySelf {
             return false
         }
-        let color = pEpColor()
+        let color = pEpColor()//!!!: IOS-2325_!
         return color == .yellow || color == .green
     }
 
@@ -88,30 +88,30 @@ extension CdIdentity {
         return contacts
     }
 
-    func pEpRating(pEpSession: PEPSession = PEPSession()) -> PEPRating {
-        return PEPUtils.pEpRating(cdIdentity: self)
+    func pEpRating(pEpSession: PEPSession = PEPSession()) -> PEPRating {//!!!: IOS-2325_!
+        return PEPUtils.pEpRating(cdIdentity: self)//!!!: IOS-2325_!
     }
 
-    func pEpColor(pEpSession: PEPSession = PEPSession()) -> PEPColor {
-        return PEPUtils.pEpColor(cdIdentity: self)
+    func pEpColor(pEpSession: PEPSession = PEPSession()) -> PEPColor {//!!!: IOS-2325_!
+        return PEPUtils.pEpColor(cdIdentity: self)//!!!: IOS-2325_!
     }
 
-    /// Will use update_identity() for other identities, and myself() for own ones.
-    ///
-    /// - Parameter session: pEpsession to work on
-    /// - Returns: A `PEPIdentity` that has been updated and thus should contain the fingerprint.
-    @discardableResult
-    func updatedIdentity(pEpSession: PEPSession = PEPSession()) -> PEPIdentity {
-        let md = pEpIdentity()
-        do {
-            if md.isOwn {
-                try pEpSession.mySelf(md)
-            } else {
-                try pEpSession.update(md)
-            }
-        } catch {
-            Log.shared.errorAndCrash("%@", error.localizedDescription)
-        }
-        return md
-    }
+//    /// Will use update_identity() for other identities, and myself() for own ones. //BUFF: UNUSED
+//    ///
+//    /// - Parameter session: pEpsession to work on
+//    /// - Returns: A `PEPIdentity` that has been updated and thus should contain the fingerprint.
+//    @discardableResult
+//    func updatedIdentity(pEpSession: PEPSession = PEPSession()) -> PEPIdentity {//!!!: IOS-2325_! //UNUSED?
+//        let md = pEpIdentity()
+//        do {
+//            if md.isOwn {
+//                try pEpSession.mySelf(md)//!!!: IOS-2325_!
+//            } else {
+//                try pEpSession.update(md)//!!!: IOS-2325_!
+//            }
+//        } catch {
+//            Log.shared.errorAndCrash("%@", error.localizedDescription)
+//        }
+//        return md
+//    }
 }

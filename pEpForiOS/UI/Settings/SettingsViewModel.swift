@@ -240,7 +240,7 @@ extension SettingsViewModel {
                     Log.shared.lostMySelf()
                     return
                 }
-                me.setPEPSyncEnabled(to: value)
+                me.setPEPSyncEnabled(to: value)//!!!: IOS-2325_!
             })
             rows.append(generateSwitchRow(type: .usePEPFolder,
                                           isDangerous: false,
@@ -410,19 +410,19 @@ extension SettingsViewModel {
 
     /// This method sets the pEp Sync status according to the parameter value
     /// - Parameter value: The new value of the pEp Sync status
-    private func setPEPSyncEnabled(to value: Bool) {
+    private func setPEPSyncEnabled(to value: Bool) {//!!!: IOS-2325_!
         let grouped = KeySyncUtil.isInDeviceGroup
         if value {
             KeySyncUtil.enableKeySync()
         } else {
             if grouped {
                 do {
-                    try KeySyncUtil.leaveDeviceGroup()
+                    try KeySyncUtil.leaveDeviceGroup()//!!!: IOS-2325_!
                 } catch {
                     Log.shared.errorAndCrash(error: error)
                 }
             }
-            KeySyncUtil.disableKeySync()
+            KeySyncUtil.disableKeySync()//!!!: IOS-2325_!
         }
     }
 
@@ -452,9 +452,9 @@ extension SettingsViewModel {
     }
 
     /// Handle method to respond to the reset all identities button.
-    private func handleResetAllIdentities() {
+    private func handleResetAllIdentities() {//!!!: IOS-2325_!
         delegate?.showLoadingView()
-        Account.resetAllOwnKeys() { [weak self] result in
+        Account.resetAllOwnKeys() { [weak self] result in//!!!: IOS-2325_!
             switch result {
             case .success():
                 Log.shared.info("Success", [])

@@ -32,7 +32,7 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
 
     // MARK: - KeySyncServiceProtocol
 
-    required init(keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol? = nil,
+    required init(keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol? = nil,//!!!: IOS-2325_!
                   keySyncStateProvider: KeySyncStateProvider,
                   fastPollingDelegate: PollingDelegate? = nil,
                   passphraseProvider: PassphraseProviderProtocol,
@@ -62,9 +62,9 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                 return
             }
             if enabled {
-                me.start()
+                me.start()//!!!: IOS-2325_!
             } else {
-                me.stop()
+                me.stop()//!!!: IOS-2325_!
             }
         }
         pEpSync.sendMessageDelegate = self
@@ -77,7 +77,7 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
     /// * in case Sync is enabled while startup the application must call start_sync(), otherwise it must not (default: enabled)
     ///
     /// - seeAlso: https://dev.pep.foundation/Engine/Sync%20from%20an%20application%20developer's%20perspective#application-startup
-    func start() {
+    func start() {//!!!: IOS-2325_! ???? THINK! Sync handled independently, correct? Guess not, because calling mayself()
         guard let stateProvider = keySyncStateProvider else {
             Log.shared.errorAndCrash("No keySyncStateProvider")
             return
@@ -95,7 +95,7 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                 if let pEpUser = cdAccount.identity?.pEpIdentity() {
                     // I intentionally do not use guard here to stat sync any way.
                     do {
-                        try PEPSession().mySelf(pEpUser)
+                        try PEPSession().mySelf(pEpUser)//!!!: IOS-2325_!
                     } catch {
                         Log.shared.errorAndCrash(error: error)
                     }
@@ -136,7 +136,7 @@ extension KeySyncService: QueryResultsControllerDelegate {
         // Nothing to do
     }
 
-    func queryResultsControllerDidChangeObjectAt(indexPath: IndexPath?,
+    func queryResultsControllerDidChangeObjectAt(indexPath: IndexPath?,//!!!: IOS-2325_!
                                                  forChangeType changeType: NSFetchedResultsChangeType,
                                                  newIndexPath: IndexPath?) {
         switch changeType {
@@ -145,7 +145,7 @@ extension KeySyncService: QueryResultsControllerDelegate {
             // We may want to globally disable KeySync if the deleted account was the only existing one?
             break
         case .insert:
-            start()
+            start()//!!!: IOS-2325_!
         case .move:
             // Nothing to do
             break

@@ -43,7 +43,7 @@ class EncryptAndSMTPSendMessageOperation: ConcurrentBaseOperation {
 
 extension EncryptAndSMTPSendMessageOperation {
 
-    private func sendMessage() {
+    private func sendMessage() {//!!!: IOS-2325_!
         privateMOC.perform { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -68,7 +68,7 @@ extension EncryptAndSMTPSendMessageOperation {
                 do {
                     let exrtaKeys = CdExtraKey.fprsOfAllExtraKeys(in: me.privateMOC)
                     let encryptedMessageToSend =
-                        try PEPUtils.encrypt(pEpMessage: pEpMsg,
+                        try PEPUtils.encrypt(pEpMessage: pEpMsg,//!!!: IOS-2325_!
                                              encryptionFormat: cdMessage.pEpProtected ? .PEP : .none,
                                              extraKeys: exrtaKeys)
                     me.setOriginalRatingHeader(unencryptedCdMessage: cdMessage)
@@ -113,7 +113,7 @@ extension EncryptAndSMTPSendMessageOperation {
         smtpConnection.sendMessage()
     }
 
-    private func moveLastMessageToSentFolder() {
+    private func moveLastMessageToSentFolder() {//!!!: IOS-2325_!
         privateMOC.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -144,7 +144,7 @@ extension EncryptAndSMTPSendMessageOperation {
                 return
             }
 
-            let rating = cdMessage.outgoingMessageRating().rawValue
+            let rating = cdMessage.outgoingMessageRating().rawValue//!!!: IOS-2325_!
 
             cdMessage.parent = sentFolder
             cdMessage.imap?.localFlags?.flagSeen = true
@@ -159,8 +159,8 @@ extension EncryptAndSMTPSendMessageOperation {
         }
     }
 
-    private func setOriginalRatingHeader(unencryptedCdMessage: CdMessage) {
-        let originalRating = unencryptedCdMessage.outgoingMessageRating()
+    private func setOriginalRatingHeader(unencryptedCdMessage: CdMessage) {//!!!: IOS-2325_!
+        let originalRating = unencryptedCdMessage.outgoingMessageRating()//!!!: IOS-2325_!
         unencryptedCdMessage.setOriginalRatingHeader(rating: originalRating)
         privateMOC.saveAndLogErrors()
     }

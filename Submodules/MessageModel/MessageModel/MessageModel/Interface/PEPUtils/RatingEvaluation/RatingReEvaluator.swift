@@ -24,13 +24,13 @@ public class RatingReEvaluator {
 
 extension RatingReEvaluator: RatingReEvaluatorProtocol {
 
-    static public func reevaluate(message: Message) {
+    static public func reevaluate(message: Message) {//!!!: IOS-2325_!
 
         let pepMessage = message.cdObject.pEpMessage()
         do {
             let keys = message.cdObject.keysFromDecryption?.array as? [String] //!!!: Needs to be extented when implementing "Extra Keys" feature to take X-KeyList header into account
             var newRating = PEPRating.undefined
-            try PEPSession().reEvaluateMessage(pepMessage,
+            try PEPSession().reEvaluateMessage(pepMessage,//!!!: IOS-2325_!
                                                xKeyList: keys,
                                                rating: &newRating,
                                                status: nil)

@@ -63,26 +63,26 @@ extension ComposeViewModel {
         var toRecipients = [Identity]() {
             didSet {
                 edited = true
-                validate()
+                validate()//!!!: IOS-2325_!
             }
         }
         var ccRecipients = [Identity]() {
             didSet {
                 edited = true
-                validate()
+                validate()//!!!: IOS-2325_!
             }
         }
         var bccRecipients = [Identity]() {
             didSet {
                 edited = true
-                validate()
+                validate()//!!!: IOS-2325_!
             }
         }
 
         var from: Identity? {
             didSet {
                 edited = true
-                validate()
+                validate()//!!!: IOS-2325_!
             }
         }
 
@@ -151,8 +151,8 @@ extension ComposeViewModel {
             bccWrapped = false
         }
 
-        public func validate() {
-            calculatePepRating()
+        public func validate() {//!!!: IOS-2325_!
+            calculatePepRating()//!!!: IOS-2325_!
             validateForSending()
         }
 
@@ -224,7 +224,7 @@ extension ComposeViewModel.ComposeViewModelState {
         let safeCc = Identity.makeSafe(ccRecipients, forSession: session)
         let safeBcc = Identity.makeSafe(bccRecipients, forSession: session)
         let pEpsession = PEPSession()
-        rating = pEpsession.outgoingMessageRating(from: safeFrom,
+        rating = pEpsession.outgoingMessageRating(from: safeFrom,//!!!: IOS-2325_!
                                                   to: safeTo,
                                                   cc: safeCc,
                                                   bcc: safeBcc)

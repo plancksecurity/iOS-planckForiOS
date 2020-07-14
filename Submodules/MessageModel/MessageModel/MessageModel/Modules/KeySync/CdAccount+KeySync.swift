@@ -11,23 +11,23 @@ import PEPObjCAdapterFramework
 
 extension CdAccount {
 
-    func isKeySyncEnabled() throws -> Bool {
+    func isKeySyncEnabled() throws -> Bool {//!!!: IOS-2325_!
         guard let user = identity else {
             Log.shared.errorAndCrash("No identity")
             return false
         }
-        return try PEPSession().queryKeySyncEnabled(for: user.pEpIdentity()).boolValue
+        return try PEPSession().queryKeySyncEnabled(for: user.pEpIdentity()).boolValue//!!!: IOS-2325_!
     }
 
-    func setKeySyncEnabled(enable: Bool) throws {
+    func setKeySyncEnabled(enable: Bool) throws {//!!!: IOS-2325_!
         guard let user = identity  else {
             Log.shared.errorAndCrash("Invalid account")
             return
         }
         if enable {
-            try PEPSession().enableSync(for: user.pEpIdentity())
+            try PEPSession().enableSync(for: user.pEpIdentity())//!!!: IOS-2325_!
         } else {
-            try PEPSession().disableSync(for: user.pEpIdentity())
+            try PEPSession().disableSync(for: user.pEpIdentity())//!!!: IOS-2325_!
         }
     }
 }

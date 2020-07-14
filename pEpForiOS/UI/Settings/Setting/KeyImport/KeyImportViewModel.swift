@@ -99,13 +99,13 @@ class KeyImportViewModel {
 
     /// The user has tapped a row, which starts loading (importing) the underlying key
     /// asynchronously and informs the delegate about success.
-    public func handleDidSelect(rowAt indexPath: IndexPath) {
+    public func handleDidSelect(rowAt indexPath: IndexPath) {//!!!: IOS-2325_!
         guard let row = rows[safe: indexPath.row] else {
             // developer error
             Log.shared.errorAndCrash("indexPath out of bounds: %d", indexPath.row)
             return
         }
-        importKey(url: row.fileUrl)
+        importKey(url: row.fileUrl)//!!!: IOS-2325_!
     }
 
     /// Sets the given key as own and informs the delegate about success or error.
@@ -141,14 +141,14 @@ class KeyImportViewModel {
 }
 
 extension KeyImportViewModel {
-    private func importKey(url: URL) {
+    private func importKey(url: URL) {//!!!: IOS-2325_!
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
             guard let me = self else {
                 return // The handling VC can go out of scope
             }
 
             do {
-                let keyData = try me.keyImporter.importKey(url: url)
+                let keyData = try me.keyImporter.importKey(url: url)//!!!: IOS-2325_!
                 DispatchQueue.main.async {
                     me.checkDelegate()?.showConfirmSetOwnKey(key: KeyDetails(address: keyData.address,
                                                                              fingerprint: keyData.fingerprint,

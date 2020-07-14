@@ -14,7 +14,7 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
         postKeySyncDisabledByEngineNotification()
     }
 
-    func notifyHandshake(_ object: UnsafeMutableRawPointer?,
+    func notifyHandshake(_ object: UnsafeMutableRawPointer?,//!!!: IOS-2325_!
                          me: PEPIdentity,
                          partner: PEPIdentity?,
                          signal: PEPSyncHandshakeSignal) -> PEPStatus {
@@ -32,7 +32,7 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
                 return .illegalValue
             }
             fastPollingDelegate?.enableFastPolling()
-            showHandshakeAndHandleResult(inBetween: me, and: thePartner, isNewGroup: false)
+            showHandshakeAndHandleResult(inBetween: me, and: thePartner, isNewGroup: false)//!!!: IOS-2325_!
 
         case .initFormGroup:
             guard let thePartner = partner else {
@@ -100,7 +100,7 @@ extension KeySyncService {
                                         userInfo: nil)
     }
 
-    private func showHandshakeAndHandleResult(inBetween me: PEPIdentity,
+    private func showHandshakeAndHandleResult(inBetween me: PEPIdentity,//!!!: IOS-2325_!
                                               and partner: PEPIdentity,
                                               isNewGroup: Bool) {
         handshakeHandler?.showHandshake(me: me, partner: partner, isNewGroup: isNewGroup) {
@@ -109,14 +109,14 @@ extension KeySyncService {
                 self?.fastPollingDelegate?.disableFastPolling()
             }
             do {
-                try PEPSession().deliver(result, identitiesSharing: [me, partner])
+                try PEPSession().deliver(result, identitiesSharing: [me, partner])//!!!: IOS-2325_!
             } catch {
                 Log.shared.errorAndCrash("Error delivering handshake result: %@", error.localizedDescription)
             }
         }
     }
 
-    private func showHandShakeErrorAndHandleResult(error: Error) {
+    private func showHandShakeErrorAndHandleResult(error: Error) {//!!!: IOS-2325_!
         handshakeHandler?.showError(error: error) {
             [weak self] keySyncErrorResponse in
             switch keySyncErrorResponse {
@@ -130,8 +130,8 @@ extension KeySyncService {
                     return
                 }
                 // The user wants to try to KeySync again. We stop and start again to send a new beacon imediatelly.
-                me.stop()
-                me.start()
+                me.stop()//!!!: IOS-2325_!
+                me.start()//!!!: IOS-2325_!
             }
         }
     }
