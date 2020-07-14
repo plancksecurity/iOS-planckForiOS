@@ -106,7 +106,7 @@
                                     <outlet property="iconLeadingConstraint" destination="hMr-tw-6zZ" id="VZI-rs-5qD"/>
                                     <outlet property="separatorImageView" destination="8hS-wf-RIZ" id="Fjm-KZ-k2b"/>
                                     <outlet property="titleLabel" destination="s3w-9y-WE2" id="gZ1-Y1-fmm"/>
-                                    <outlet property="unreadMails" destination="n8J-L1-57d" id="nN1-FU-Gvx"/>
+                                    <outlet property="unreadMailsLabel" destination="n8J-L1-57d" id="nN1-FU-Gvx"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

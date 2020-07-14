@@ -18,7 +18,7 @@ class FolderTableViewCell: UITableViewCell {
     /// Every indentation level will move the cell this distance to the right.
     private let subFolderIndentationWidth: CGFloat = 25.0
 
-    @IBOutlet weak var unreadMails: UILabel!
+    @IBOutlet weak var unreadMailsLabel: UILabel!
     @IBOutlet weak var chevronButton: SectionButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var iconImageView: UIImageView!
@@ -51,7 +51,7 @@ class FolderTableViewCell: UITableViewCell {
         super.prepareForReuse()
         indentationLevel = 0
         titleLabel.text = ""
-        unreadMails.text = ""
+        unreadMailsLabel.text = ""
         iconImageView.image = nil
         chevronButton.isUserInteractionEnabled = false
         titleLabel?.textColor = .black
