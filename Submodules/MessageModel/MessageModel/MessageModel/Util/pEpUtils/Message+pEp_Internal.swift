@@ -16,8 +16,8 @@ extension Message {
         addToOptionalFields(key: Headers.originalRating.rawValue, value: rating)
     }
 
-    func outgoingMessageRating() -> PEPRating {
-        return cdObject.outgoingMessageRating()
+    func outgoingMessageRating() -> PEPRating {//!!!: IOS-2325_!
+        return cdObject.outgoingMessageRating()//!!!: IOS-2325_!
     }
 }
 
@@ -50,10 +50,10 @@ extension Message {
 extension Message {
 
     //!!!: MUST be changed while refactoring HandshakeView. MUST NOT use Message MM intarnally.
-    static func pEpRating(message: Message, session: Session) -> PEPRating {
+    static func pEpRating(message: Message, session: Session) -> PEPRating {//!!!: IOS-2325_!
         var result: PEPRating?
         session.performAndWait {
-            result = pEpRating(message: message)
+            result = pEpRating(message: message)//!!!: IOS-2325_!
         }
         guard let safeResut = result else {
             Log.shared.errorAndCrash("Fail to get pEpRating in private session")
@@ -63,13 +63,13 @@ extension Message {
     }
 
     //!!!: MUST be changed while refactoring HandshakeView. MUST NOT use Message MM intarnally.
-    static func pEpRating(message: Message) -> PEPRating {
+    static func pEpRating(message: Message) -> PEPRating {//!!!: IOS-2325_!
         let originalRating = message.getOriginalRatingHeaderRating()
         switch message.parent.folderType {
         case .sent, .trash, .drafts:
             return originalRating ?? bestFallbackPepRatingWeCanGet(forCdMessage: message.cdObject)
         case .outbox:
-            return message.outgoingMessageRating()
+            return message.outgoingMessageRating()//!!!: IOS-2325_!
         case .all, .archive, .inbox, .normal, .spam, .flagged:
             if message.cdObject.isOnTrustedServer {
                 return originalRating ?? bestFallbackPepRatingWeCanGet(forCdMessage: message.cdObject)

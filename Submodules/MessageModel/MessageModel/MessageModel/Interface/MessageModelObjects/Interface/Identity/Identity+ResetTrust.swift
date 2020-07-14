@@ -14,21 +14,21 @@ extension Identity {
     /// It reset trust for all identities with the same UserID as the identity in the parameter
     ///
     /// - Parameter identityToResetTrust: base identity to reset trust and find other identities with the same userID
-    public static func resetTrustAllIdentities(for identityToResetTrust: Identity) {
+    public static func resetTrustAllIdentities(for identityToResetTrust: Identity) { //!!!: IOS-2325_!
         let identities = identityToResetTrust.allIdentitiesWithTheSameUserID()
         for identity in identities {
-            identity.resetTrust()
+            identity.resetTrust() //!!!: IOS-2325_!
         }
     }
 
     /// Reset trust for the identity
-    public func resetTrust() {
+    public func resetTrust() {//!!!: IOS-2325_!
         let sesion = PEPSession()
         let pEpIdent = pEpIdentity()
         do {
-            try sesion.update(pEpIdent)
+            try sesion.update(pEpIdent)//!!!: IOS-2325_!
             if let _ = pEpIdent.fingerPrint {
-                try sesion.keyReset(pEpIdent, fingerprint: pEpIdent.fingerPrint)
+                try sesion.keyReset(pEpIdent, fingerprint: pEpIdent.fingerPrint)//!!!: IOS-2325_!
             }
         } catch {
             Log.shared.info("User has choosen to rest trust for an identity we have no key for. Valid case, just for the record. The identity is: %@", self.debugDescription)

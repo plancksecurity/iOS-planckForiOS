@@ -13,7 +13,7 @@ public protocol KeyImportUtilProtocol {
     /// - Note: The caller is responsible to execute this asynchronously, if needed.
     /// - Parameter url: The URL to interpret as ASCII-armored key data
     /// - Throws: KeyImportUtil.ImportError
-    func importKey(url: URL) throws -> KeyImportUtil.KeyData
+    func importKey(url: URL) throws -> KeyImportUtil.KeyData//!!!: IOS-2325_!
 
     /// Sets the given key as own key.
     /// - Parameter address: The address to set this key as own key to

@@ -251,7 +251,7 @@ extension KeySyncWizardViewController {
         let completionLeaveAction = PEPUIAlertAction(title: completionLeaveTitle,
                                                       style: .pEpGreyText,
                                                       handler: { [weak self] alert in
-                                                        self?.leaveDeviceGroup()
+                                                        self?.leaveDeviceGroup()//!!!: IOS-2325_!
                                                         self?.dismiss()
         })
 
@@ -267,9 +267,9 @@ extension KeySyncWizardViewController {
         return pepAlertViewController
     }
 
-    private func leaveDeviceGroup() {
+    private func leaveDeviceGroup() {//!!!: IOS-2325_!
         do {
-            try KeySyncUtil.leaveDeviceGroup()
+            try KeySyncUtil.leaveDeviceGroup()//!!!: IOS-2325_!
         } catch {
             Log.shared.errorAndCrash("%@", error.localizedDescription)
         }

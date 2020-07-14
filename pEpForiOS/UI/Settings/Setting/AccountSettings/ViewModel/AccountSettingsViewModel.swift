@@ -94,9 +94,9 @@ final class AccountSettingsViewModel {
         return "\(name), \(separator) \(date)"
     }
 
-    public func handleResetIdentity() {
+    public func handleResetIdentity() { //!!!: IOS-2325_!
         delegate?.showLoadingView()
-        account.resetKeys() { [weak self] result in
+        account.resetKeys() { [weak self] result in //!!!: IOS-2325_!
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
@@ -113,9 +113,9 @@ final class AccountSettingsViewModel {
         }
     }
 
-    public func pEpSync(enable: Bool) {
+    public func pEpSync(enable: Bool) {//!!!: IOS-2325_!
         do {
-            try account.setKeySyncEnabled(enable: enable)
+            try account.setKeySyncEnabled(enable: enable)//!!!: IOS-2325_!
         } catch {
             delegate?.undoPEPSyncToggle()
             delegate?.showErrorAlert(error: AccountSettingsError.failToModifyAccountPEPSync)

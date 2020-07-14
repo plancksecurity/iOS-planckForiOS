@@ -166,7 +166,7 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
                         Log.shared.errorAndCrash(message: "lost myself")
                         return
                     }
-                    me.model.resetTrustAll(foridentityAt: indexPath)
+                    me.model.resetTrustAll(foridentityAt: indexPath)//!!!: IOS-2325_!
                     me.tableView.deselectRow(at: indexPath, animated: true)
             }
             alertView.addAction(resetTrustAllIdentityAction)

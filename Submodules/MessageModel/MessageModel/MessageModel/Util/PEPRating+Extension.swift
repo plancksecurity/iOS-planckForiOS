@@ -33,12 +33,12 @@ extension PEPRating {
 }
 
 extension PEPRating {
-    static func fromString(str: String) -> PEPRating {
-        return PEPSession().rating(from:str)
+    static func fromString(str: String) -> PEPRating {//???: IOS-2325_!
+        return PEPSession().rating(from:str)//???: IOS-2325_!
     }
 
-    func asString() -> String {
-        return PEPSession().string(from: self)
+    func asString() -> String {//???: IOS-2325_!
+        return PEPSession().string(from: self)//???: IOS-2325_!
     }
 }
 

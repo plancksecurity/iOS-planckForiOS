@@ -20,7 +20,7 @@ class CreatePepIMAPFolderService: OperationBasedService {
         super.init(useSerialQueue: true, runOnce: true, backgroundTaskManager: backgroundTaskManager)
     }
 
-    override func operations() -> [Operation] {
+    override func operations() -> [Operation] {//!!!: IOS-2325_!
         guard usePEPFolderProvider.usePepFolder else {
             // we are not supposed to (create and) use pEp folder for sync messages.
             // Nothing to do.
@@ -37,7 +37,7 @@ class CreatePepIMAPFolderService: OperationBasedService {
 
             for cdAccount in cdAccounts {
                 do {
-                    guard try cdAccount.isKeySyncEnabled() else {
+                    guard try cdAccount.isKeySyncEnabled() else {//!!!: IOS-2325_!
                         // We are not supposed to use pEp Sync with this account, thus we must not
                         // create a pEp folder.
                         // Nothing to do

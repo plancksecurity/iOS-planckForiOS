@@ -229,7 +229,7 @@ class MessageViewModel: CustomDebugStringConvertible {
         return message.securityBadgeForContactPicture
     }
 
-    func getBodyMessage() -> NSMutableAttributedString {
+    func getBodyMessage() -> NSMutableAttributedString {//!!!: IOS-2325_!
         let finalText = NSMutableAttributedString()
         if message.underAttack {
             let status = String.pEpRatingTranslation(pEpRating: .underAttack)
@@ -245,7 +245,7 @@ class MessageViewModel: CustomDebugStringConvertible {
             finalText.normal(text)
         } else if let text = message.longMessageFormatted?.attributedStringHtmlToMarkdown() {
             finalText.normal(text)
-        } else if message.pEpRating().isUnDecryptable() {
+        } else if message.pEpRating().isUnDecryptable() {//!!!: IOS-2325_!
             finalText.normal(NSLocalizedString(
                 "This message could not be decrypted.",
                 comment: "content that is shown for undecryptable messages"))

@@ -36,7 +36,7 @@ class EncryptionTests: XCTestCase {
         msg.to = [recipient]
         msg.shortMessage = "subject: whatever"
         msg.longMessage = "text: whatever"
-        let theEncryptedMessage = try! PEPUtils.encrypt(pEpMessage: msg)
+        let theEncryptedMessage = try! PEPUtils.encrypt(pEpMessage: msg)//!!!: IOS-2325_!
 
         let attachments = theEncryptedMessage.attachments ?? []
 

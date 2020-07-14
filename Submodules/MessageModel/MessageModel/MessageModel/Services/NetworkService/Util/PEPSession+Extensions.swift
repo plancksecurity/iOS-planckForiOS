@@ -14,7 +14,7 @@ extension PEPSession {
 
     /// Calculates the outgoing message rating for a hypothetical mail.
     /// - Returns: The message rating, or .Undefined in case of any error.
-    public func outgoingMessageRating(from: PEPIdentity, to: [PEPIdentity],
+    public func outgoingMessageRating(from: PEPIdentity, to: [PEPIdentity],//!!!: IOS-2325_!
                                       cc: [PEPIdentity], bcc: [PEPIdentity]) -> PEPRating {
         let msg = PEPMessage()
         msg.direction = .outgoing
@@ -25,19 +25,19 @@ extension PEPSession {
         msg.shortMessage = "short"
         msg.longMessage = "long"
         do {
-            return try outgoingRating(for: msg).pEpRating
+            return try outgoingRating(for: msg).pEpRating//!!!: IOS-2325_!
         } catch let error as NSError {
             assertionFailure("\(error)")
             return .undefined
         }
     }
 
-    public func outgoingMessageRating(from: Identity, to: [Identity],
+    public func outgoingMessageRating(from: Identity, to: [Identity],//!!!: IOS-2325_!
                                       cc: [Identity], bcc: [Identity]) -> PEPRating {
         let mapper: (Identity) -> PEPIdentity = { ident in
             return ident.pEpIdentity()
         }
-        return outgoingMessageRating(from: from.pEpIdentity(),
+        return outgoingMessageRating(from: from.pEpIdentity(),//!!!: IOS-2325_!
                                      to: to.map(mapper),
                                      cc: cc.map(mapper),
                                      bcc: bcc.map(mapper))
@@ -49,7 +49,7 @@ extension PEPSession {
             return cdIdent.pEpIdentity()
         }
 
-        return outgoingMessageRating(
+        return outgoingMessageRating(//!!!: IOS-2325_!
             from: from.pEpIdentity(), to: to.map(mapper), cc: cc.map(mapper), bcc: bcc.map(mapper))
     }
 }

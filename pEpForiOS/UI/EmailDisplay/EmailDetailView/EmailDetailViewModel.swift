@@ -164,12 +164,12 @@ class EmailDetailViewModel: EmailDisplayViewModel {
 
     /// - Parameter indexPath: indexPath of the cell to show the pEp rating for.
     /// - returns: pEp rating for cell at given indexPath
-    public func pEpRating(forItemAt indexPath: IndexPath) -> PEPRating {
+    public func pEpRating(forItemAt indexPath: IndexPath) -> PEPRating {//!!!: IOS-2325_!
         guard let message = message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash("No msg")
             return .undefined
         }
-        return message.pEpRating()
+        return message.pEpRating()//!!!: IOS-2325_!
     }
 
     /// - Parameter indexPath: indexPath of the cell to compute result for.
@@ -270,10 +270,10 @@ extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
         delegate?.emailListViewModel(viewModel: self, didInsertDataAt: [indexPath])
     }
 
-    func didUpdateRow(indexPath: IndexPath) {
+    func didUpdateRow(indexPath: IndexPath) {//!!!: IOS-2325_!
         if pathsForMessagesMarkedForRedecrypt.contains(indexPath) {
             if let message = message(representedByRowAt: indexPath),
-                !message.pEpRating().isUnDecryptable() {
+                !message.pEpRating().isUnDecryptable() {//!!!: IOS-2325_!
                 guard let delegate = delegate as? EmailDetailViewModelDelegate else {
                     Log.shared.errorAndCrash("Inbvalid state")
                     return

@@ -178,7 +178,7 @@ extension CdMessage {
         return cdMessages
     }
 
-    func outgoingMessageRating() -> PEPRating {
+    func outgoingMessageRating() -> PEPRating {//!!!: IOS-2325_!
         guard let sender = from else {
             Log.shared.errorAndCrash(
                 "No sender for outgoing message?")
@@ -192,7 +192,7 @@ extension CdMessage {
         let theCcs = cc?.array as? [CdIdentity] ?? []
         let theBccs = bcc?.array as? [CdIdentity] ?? []
 
-        return PEPSession().outgoingMessageRating(
+        return PEPSession().outgoingMessageRating(//!!!: IOS-2325_!
             from: sender, to: theTos, cc: theCcs, bcc: theBccs)
     }
 

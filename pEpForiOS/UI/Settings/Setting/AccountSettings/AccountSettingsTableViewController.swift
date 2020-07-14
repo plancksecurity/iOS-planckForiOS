@@ -89,7 +89,7 @@ final class AccountSettingsTableViewController: BaseTableViewController {
 // MARK: - IBActions
 
     @IBAction func switchPEPSyncToggle(_ sender: UISwitch) {
-        viewModel?.pEpSync(enable: sender.isOn)
+        viewModel?.pEpSync(enable: sender.isOn)//!!!: IOS-2325_!
     }
 }
 

@@ -17,14 +17,14 @@ extension Identity {
     /// - Parameter fingerprint: The fingerprint of an already imported key
     /// that should be set as the new own key for this identity.
     /// - Throws: Status code errors from the engine's `set_own_key`.
-    public func setOwnKey(fingerprint: String) throws {
+    public func setOwnKey(fingerprint: String) throws {//!!!: IOS-2325_!
         let pEpId = pEpIdentity()
 
         // The fingerprint is not needed by the engine's set_own_key.
         pEpId.fingerPrint = nil
 
         let pEpSession = PEPSession()
-        try pEpSession.setOwnKey(pEpId, fingerprint: fingerprint.despaced())
+        try pEpSession.setOwnKey(pEpId, fingerprint: fingerprint.despaced())//!!!: IOS-2325_!
 
         // We got a new key. Try to derypt yet undecryptable messages.
         let cdAccount = CdAccount.searchAccount(withAddress: address, context: session.moc)

@@ -56,7 +56,7 @@ class AppendMailsToFolderOperation: ImapSyncOperation {
 
 extension AppendMailsToFolderOperation {
 
-    private func handleNextMessage() {
+    private func handleNextMessage() {//!!!: IOS-2325_!
         backgroundQueue.addOperation { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -113,7 +113,7 @@ extension AppendMailsToFolderOperation {
                 do {
                     let forceUnprotected = !cdMessage.pEpProtected
                     let extraKeysFPRs = CdExtraKey.fprsOfAllExtraKeys(in: me.privateMOC)
-                    let encryptedMessage = try PEPUtils.encrypt(pEpMessage: pEpMessage,
+                    let encryptedMessage = try PEPUtils.encrypt(pEpMessage: pEpMessage,//!!!: IOS-2325_!
                                                                 encryptionFormat: forceUnprotected ? .none : .PEP,
                                                                 forSelf: forceUnprotected ? nil : pEpidentity,
                                                                 extraKeys: extraKeysFPRs)

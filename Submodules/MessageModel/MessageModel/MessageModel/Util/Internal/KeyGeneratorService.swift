@@ -20,7 +20,7 @@ struct KeyGeneratorService {
     ///   - pEpSyncEnabled: whether or not to enable pEp Sync for this account
     static func generateKey(cdIdentity: CdIdentity,
                             context: NSManagedObjectContext,
-                            pEpSyncEnabled: Bool) throws {
+                            pEpSyncEnabled: Bool) throws {//!!!: IOS-2325_!
         var pEpId : PEPIdentity?
         context.performAndWait {
             pEpId = cdIdentity.pEpIdentity()
@@ -31,12 +31,13 @@ struct KeyGeneratorService {
         }
 
         let session = PEPSession()
-        try session.mySelf(pEpIdentity)
+        try session.mySelf(pEpIdentity)//!!!: IOS-2325_!
 
         if pEpSyncEnabled {
-            try session.enableSync(for: pEpIdentity)
+            try session.enableSync(for: pEpIdentity)//!!!: IOS-2325_!
         } else {
-            try session.disableSync(for: pEpIdentity)
+            try session.disableSync(for: pEpIdentity)//!!!: IOS-2325_!/15
+
         }
     }
 }

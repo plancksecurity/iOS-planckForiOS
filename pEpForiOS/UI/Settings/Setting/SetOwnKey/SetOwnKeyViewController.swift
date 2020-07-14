@@ -41,11 +41,11 @@ class SetOwnKeyViewController: UIViewController {
 
     // MARK: - Actions
 
-    @IBAction func setOwnKeyButtonTapped(_ sender: Any) {
+    @IBAction func setOwnKeyButtonTapped(_ sender: Any) { //!!!: IOS-2325_!
         viewModel.fingerprint = fingerprintTextField.text
         viewModel.email = emailTextField.text
-        viewModel.setOwnKey()
-        errorTextField.text = viewModel.rawErrorString
+        viewModel.setOwnKey() //!!!: IOS-2325_!
+        errorTextField.text = viewModel.rawErrorString//!!!: IOS-2325_!
     }
 
     // MARK: - Private

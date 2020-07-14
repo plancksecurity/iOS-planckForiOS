@@ -103,7 +103,7 @@ extension TrustManagementViewController : UITableViewDataSource  {
         }
         
         /// Cell for reset
-        if row.color == .noColor,
+        if row.color == .noColor, //!!!: IOS-2325_!
             let cell = tableView.dequeueReusableCell(withIdentifier: resetCellIdentifier, for: indexPath)
                 as? TrustManagementResetTableViewCell {
             cell.delegate = self
@@ -181,7 +181,7 @@ extension TrustManagementViewController {
     
     /// Shows an action sheet with languages when the user taps the language button from a cell
     /// - Parameter cell: The cell of the language button tapped.
-    private func showLanguagesList(for cell: TrustManagementTableViewCell) {
+    private func showLanguagesList(for cell: TrustManagementTableViewCell) {//!!!: IOS-2325_!
         guard let indexPath = tableView.indexPath(for: cell) else {
             Log.shared.error("IndexPath not found")
             return
@@ -194,7 +194,7 @@ extension TrustManagementViewController {
             return
         }
         //For every language a row in the action sheet.
-        for language in vm.languages {
+        for language in vm.languages {//!!!: IOS-2325_!
             guard let languageName = NSLocale.current.localizedString(forLanguageCode: language)
                 else {
                     Log.shared.debug("Language name not found")
@@ -336,13 +336,13 @@ extension TrustManagementViewController {
     ///   - row: The row to get information to configure the cell.
     ///   - cell: The cell to be configured.
     ///   - indexPath: The indexPath of the row, to get the trustwords.
-    private func setupCell(_ cell: TrustManagementTableViewCell,
+    private func setupCell(_ cell: TrustManagementTableViewCell,//!!!: IOS-2325_!
                            withDataFrom row: TrustManagementViewModel.Row,
                            cellIdentifier: String) { //MARTIN: bad & wrong. 1) uses PEPColor. MSUT use only UI.., String or VM. this causes 2) login in VC instead of VM 3) Logic completely untested as not in VM (untestable)
         ///Yellow means secure but not trusted.
         ///That means that's the only case must display the trustwords
         if cellIdentifier == onlyMasterCellIdentifier {
-            if row.color == .yellow {
+            if row.color == .yellow {//!!!: IOS-2325_!
                 cell.trustwordsLabel.text = row.trustwords
                 cell.trustwordsStackView.isHidden = false
                 cell.trustwordsButtonsContainer.isHidden = false
@@ -351,7 +351,7 @@ extension TrustManagementViewController {
                 cell.trustwordsButtonsContainer.isHidden = true
             }
         } else if cellIdentifier == masterAndDetailCellIdentifier {
-            if row.color == .yellow {
+            if row.color == .yellow {//!!!: IOS-2325_!
                 cell.trustwordsLabel.text = row.trustwords
                 cell.trustwordsLabel.isHidden = false
                 cell.confirmButton.isHidden = false

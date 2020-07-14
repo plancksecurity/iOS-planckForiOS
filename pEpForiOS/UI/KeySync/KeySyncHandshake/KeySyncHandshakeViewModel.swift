@@ -59,7 +59,7 @@ final class KeySyncHandshakeViewModel {
     func didSelect(languageRow: Int) {
         languageCode = languages[languageRow].code
         delegate?.closePicker()
-        delegate?.change(handshakeWordsTo: trustWords())
+        delegate?.change(handshakeWordsTo: trustWords())//!!!: IOS-2325_!
     }
 
     func handle(action: Action) {
@@ -80,10 +80,10 @@ final class KeySyncHandshakeViewModel {
         self.meFPR = meFPR
         self.partnerFPR = partnerFPR
         self.isNewGroup = isNewGroup
-        delegate?.change(handshakeWordsTo: trustWords())
+        delegate?.change(handshakeWordsTo: trustWords())//!!!: IOS-2325_!
     }
 
-    func didLongPressWords() {
+    func didLongPressWords() { //!!!: IOS-2325_!
         fullTrustWords = !fullTrustWords
         delegate?.change(handshakeWordsTo: trustWords())
     }
@@ -98,14 +98,14 @@ final class KeySyncHandshakeViewModel {
 // MARK: - Private
 
 extension KeySyncHandshakeViewModel {
-    private func trustWords() -> String {
+    private func trustWords() -> String {//!!!: IOS-2325_!
         guard let meFPR = meFPR, let partnerFPR = partnerFPR else {
             Log.shared.errorAndCrash("Nil meFingerPrints or Nil partnerFingerPrints")
             return String()
         }
         do {
             return try pEpSession.getTrustwordsFpr1(meFPR, fpr2: partnerFPR, language: languageCode,
-                                                      full: fullTrustWords)
+                                                      full: fullTrustWords) //!!!: IOS-2325_!
         } catch {
             Log.shared.errorAndCrash("%@", error.localizedDescription)
             return ""

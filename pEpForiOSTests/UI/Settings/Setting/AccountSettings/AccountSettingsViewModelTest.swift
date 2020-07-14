@@ -81,7 +81,7 @@ final class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
         expected = State()
 
         // WHEN
-        viewModel?.pEpSync(enable: true)
+        viewModel?.pEpSync(enable: true)//!!!: IOS-2325_!
 
         // THEN
         assertExpectations()
@@ -92,7 +92,7 @@ final class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
         expected = State()
 
         // WHEN
-        viewModel?.pEpSync(enable: false)
+        viewModel?.pEpSync(enable: false)//!!!: IOS-2325_!
 
         // THEN
         assertExpectations()
