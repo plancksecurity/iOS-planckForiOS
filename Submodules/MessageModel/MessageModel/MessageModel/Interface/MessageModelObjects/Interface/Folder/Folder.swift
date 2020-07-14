@@ -150,6 +150,7 @@ public class Folder: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         return cdFolders.first?.folder()
     }
 
+    /// Number of unread mails
     public var countUnread: Int {
         let unreadPredicate = CdMessage.PredicateFactory.unread(value: true)
         let containedMessagesPredicate = CdFolder.PredicateFactory.containedMessages(cdFolder: cdObject)

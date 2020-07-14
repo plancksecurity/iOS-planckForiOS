@@ -150,7 +150,6 @@ extension CdMessage {
                                folderType.rawValue)
         }
 
-
         static func isInInbox() -> NSPredicate {
             return NSPredicate(format: "%K = %d",
                                RelationshipKeyPath.cdMessage_parent_typeRawValue,
