@@ -18,10 +18,9 @@ extension Folder {
 
     /// Count unread emails on a folder type.
     /// - Parameters:
-    ///   - folderType: The folder type to look for its unread emails
     ///   - session: The current session, if not specified will be `main`
     /// - Returns: The number of unread mails for a certain folder type.
-    public static func countAllUnread(folderType: FolderType, session: Session = Session.main) -> Int {
+    public static func countAllUnread(session: Session = Session.main) -> Int {
         var predicates = [NSPredicate]()
         predicates.append(CdMessage.PredicateFactory.existingMessages())
         predicates.append(CdMessage.PredicateFactory.processed())

@@ -84,12 +84,7 @@ public class UnifiedInbox: VirtualFolderProtocol {
     }
 
     public var countUnread : Int {
-        guard let folderType = agregatedFolderType else {
-            Log.shared.errorAndCrash(message: "missing folder type for unified inbox?")
-            return 0
-        }
-
-        return Folder.countAllUnread(folderType: folderType)
+        return Folder.countAllUnread()
     }
 }
 
