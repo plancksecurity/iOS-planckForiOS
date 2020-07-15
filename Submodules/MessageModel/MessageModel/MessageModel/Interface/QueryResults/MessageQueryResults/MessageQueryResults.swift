@@ -117,7 +117,7 @@ extension MessageQueryResults: QueryResultsControllerDelegate {
 
 
     func queryResultsControllerWillChangeResults() {
-        rowDelegate?.willChangeRes(ults()
+        rowDelegate?.willChangeResults()
     }
 
     func queryResultsControllerDidChangeObjectAt(indexPath: IndexPath?,
