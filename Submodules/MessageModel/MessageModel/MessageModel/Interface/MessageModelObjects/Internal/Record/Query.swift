@@ -184,7 +184,7 @@ public extension NSManagedObject {
         return objects.count > 0 ? objects : nil
     }
 
-    /// Count elements based on predicate
+    /// Count elements based on a predicate
     /// - Parameters:
     ///   - predicate: The predicate to filter the elements to count
     ///   - context: The context to trigger the query.
@@ -196,7 +196,6 @@ public extension NSManagedObject {
             Log.shared.errorAndCrash("Can't count elements")
             return 0
         }
-
         return count
     }
 
