@@ -150,7 +150,7 @@ public class Folder: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         return cdFolders.first?.folder()
     }
 
-    /// Number of unread mails of the current folder
+    /// Number of unread mails in this folder
     public var countUnread: Int {
         guard let parent = cdFolder() else {
             Log.shared.errorAndCrash("Folder not found.")
@@ -162,7 +162,6 @@ public class Folder: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         predicates.append(CdMessage.PredicateFactory.processed())
         predicates.append(CdMessage.PredicateFactory.isNotAutoConsumable())
         predicates.append(CdMessage.PredicateFactory.unread(value: true))
-        predicates.append(CdMessage.PredicateFactory.isIn(folderType: folderType))
         let compound = NSCompoundPredicate(type: .and, subpredicates: predicates)
         return CdMessage.count(predicate: compound, in: session.moc)
     }

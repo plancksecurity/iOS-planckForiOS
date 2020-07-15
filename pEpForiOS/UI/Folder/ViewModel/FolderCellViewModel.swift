@@ -51,7 +51,7 @@ public class FolderCellViewModel {
         return folder.isSelectable
     }
 
-    public var unreadMails : Int {
+    public var numUnreadMails : Int {
         if let f = folder as? VirtualFolderProtocol {
             return f.countUnread
         } else if let f = folder as? Folder {
