@@ -65,7 +65,7 @@ class FolderTest: PersistentStoreDrivenTestBase {
         m.imap?.localFlags?.flagSeen = false
         moc.saveAndLogErrors()
 
-        let result = Folder.countUnread(folderType: .inbox)
+        let result = Folder.countAllUnread(folderType: .inbox)
         XCTAssertEqual(result, 1)
      }
 }

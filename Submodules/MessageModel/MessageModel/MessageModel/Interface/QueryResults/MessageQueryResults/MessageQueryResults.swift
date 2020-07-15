@@ -97,6 +97,7 @@ public class MessageQueryResults: MessageQueryResultsProtocol {
     /// - Throws: If getting count is not successful, upon return contains an error object that
     /// describes the problem.
     public func count() throws -> Int {
+        //TODO: this is wrong. 
         let results = try queryResultController.getResults()
         return results.count
     }

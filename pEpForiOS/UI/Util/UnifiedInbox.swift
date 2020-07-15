@@ -89,7 +89,7 @@ public class UnifiedInbox: VirtualFolderProtocol {
             return 0
         }
 
-        return Folder.countUnread(folderType: folderType)
+        return Folder.countAllUnread(folderType: folderType)
     }
 }
 
