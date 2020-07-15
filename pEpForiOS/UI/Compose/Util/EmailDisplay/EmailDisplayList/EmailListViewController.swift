@@ -482,14 +482,21 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         toolbarItems?.insert(compose, at: 2)
     }
 
-    @objc func composeButtonHasBeenPressed() {
+    @objc
+    public func composeButtonHasBeenPressed() {
         performSegue(withIdentifier: SegueIdentifier.segueCompose, sender: self)
     }
 
-    @objc func composeButtonLongClicked(sender: UILongPressGestureRecognizer) {
+    @objc
+    public func composeButtonLongClicked(sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
             // TODO: - ak IOS-1935 Add implementation for long click on compose button
+            showDraftsQuickView()
         }
+    }
+
+    private func showDraftsQuickView() {
+        UIUtils.presentDraftsQuickView()
     }
 
     // MARK: -
