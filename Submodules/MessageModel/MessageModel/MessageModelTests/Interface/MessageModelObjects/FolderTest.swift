@@ -52,19 +52,28 @@ class FolderTest: PersistentStoreDrivenTestBase {
     func testAllCountUnreads() {
         let localInbox = TestUtil.createFolder(name: "inbox", folderType: .inbox, moc: moc)
         localInbox.account = cdAccount
-
         let m = TestUtil.createCdMessage(withText: "a", sentDate: nil, cdFolder: localInbox, moc: moc)
         m.imap = CdImapFields(context: moc)
-
         let localFlags = CdImapFlags(context: moc)
         m.imap?.localFlags = localFlags
-
         let serverFlags = CdImapFlags(context: moc)
         m.imap?.serverFlags = serverFlags
-
         m.imap?.localFlags?.flagSeen = false
-        moc.saveAndLogErrors()
+        m.uid = 1
+        m.pEpRating = 3
 
+        //Create another mail, this has been "seen" to be sure the filter works. 
+        let m2 = TestUtil.createCdMessage(withText: "a", sentDate: nil, cdFolder: localInbox, moc: moc)
+        m2.imap = CdImapFields(context: moc)
+        m2.imap?.localFlags = CdImapFlags(context: moc)
+        m2.imap?.serverFlags = CdImapFlags(context: moc)
+
+        m2.imap?.localFlags?.flagSeen = true
+
+        m2.uid = 2
+        m2.pEpRating = 3
+
+        moc.saveAndLogErrors()
         let result = Folder.countAllUnread(folderType: .inbox)
         XCTAssertEqual(result, 1)
      }
