@@ -164,7 +164,4 @@ class PEPSessionMoc: NSObject, PEPSessionProtocol  {
 
     func configurePassphrase(_ passphrase: String) throws {
     }
-
-    func configurePassphrase(forNewKeys passphrase: String?, enable: Bool) throws {
-    }
 }
