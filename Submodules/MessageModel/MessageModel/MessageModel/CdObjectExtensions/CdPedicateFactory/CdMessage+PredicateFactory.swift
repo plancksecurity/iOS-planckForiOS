@@ -289,18 +289,5 @@ extension CdMessage {
                                  CdMessage.uidNeedsAppend)
             return NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2])
         }
-
-        /// The predicate to count the unread mails of a folder.
-        /// - Parameter parentFolder: The parent folder
-        /// - Returns: The unread mails predicate
-        static func countUnreadMessages(parentFolder: CdFolder) -> NSPredicate {
-            let p1 = CdMessage.PredicateFactory
-                .allMessagesIncludingDeleted(parentFolder: parentFolder,
-                                             fakeMessagesIncluded: true)
-            let p2 = CdMessage.PredicateFactory.notImapFlagDeleted()
-            let p3 = CdMessage.PredicateFactory.notMarkedForMoveToFolder()
-            return NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2, p3])
-        }
-
     }
 }
