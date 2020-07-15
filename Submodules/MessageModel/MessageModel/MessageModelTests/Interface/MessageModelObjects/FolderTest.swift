@@ -37,18 +37,39 @@ class FolderTest: PersistentStoreDrivenTestBase {
 
     }
 
+    //Test for regular folder
     func testCountUnreads() {
-        let inbox = TestUtil.createFolder(name: "inbox", folderType: .inbox, moc: moc)
-        inbox.account = cdAccount
-        let inboxFolder = inbox.folder()
-        let message = TestUtil.createCdMessage(cdFolder: inboxFolder.cdFolder()! , moc: moc)
-        XCTAssert(inboxFolder.countUnread == 0)
-        message.imap = CdImapFields(context: moc)
-        message.imap?.localFlags = CdImapFlags(context: moc)
-        message.imap?.localFlags?.flagSeen = false
-        XCTAssert(inboxFolder.countUnread == 1)
+        let localInbox = TestUtil.createFolder(name: "inbox", folderType: .inbox, moc: moc)
+        localInbox.account = cdAccount
+        let m = TestUtil.createCdMessage(withText: "a", sentDate: nil, cdFolder: localInbox, moc: moc)
+        m.imap = CdImapFields(context: moc)
+        let localFlags = CdImapFlags(context: moc)
+        m.imap?.localFlags = localFlags
+        let serverFlags = CdImapFlags(context: moc)
+        m.imap?.serverFlags = serverFlags
+        m.imap?.localFlags?.flagSeen = false
+        m.uid = 1
+        m.pEpRating = 3
+
+        //Create another mail, this has been "seen" to be sure the filter works.
+        let m2 = TestUtil.createCdMessage(withText: "a", sentDate: nil, cdFolder: localInbox, moc: moc)
+        m2.imap = CdImapFields(context: moc)
+        m2.imap?.localFlags = CdImapFlags(context: moc)
+        m2.imap?.serverFlags = CdImapFlags(context: moc)
+
+        m2.imap?.localFlags?.flagSeen = true
+
+        m2.uid = 2
+        m2.pEpRating = 3
+
+        moc.saveAndLogErrors()
+
+        let result = localInbox.folder().countUnread
+        XCTAssertEqual(result, 1)
+
     }
 
+    //Test for UnifiedInbox
     func testAllCountUnreads() {
         let localInbox = TestUtil.createFolder(name: "inbox", folderType: .inbox, moc: moc)
         localInbox.account = cdAccount
@@ -62,7 +83,7 @@ class FolderTest: PersistentStoreDrivenTestBase {
         m.uid = 1
         m.pEpRating = 3
 
-        //Create another mail, this has been "seen" to be sure the filter works. 
+        //Create another mail, this has been "seen" to be sure the filter works.
         let m2 = TestUtil.createCdMessage(withText: "a", sentDate: nil, cdFolder: localInbox, moc: moc)
         m2.imap = CdImapFields(context: moc)
         m2.imap?.localFlags = CdImapFlags(context: moc)
