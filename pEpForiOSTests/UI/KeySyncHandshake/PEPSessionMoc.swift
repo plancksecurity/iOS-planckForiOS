@@ -90,9 +90,6 @@ class PEPSessionMoc: NSObject, PEPSessionProtocol  {
         return []
     }
 
-    func logTitle(_ title: String, entity: String, description: String?, comment: String?) throws {
-    }
-
     func getLog() throws -> String {
         return String()
     }
