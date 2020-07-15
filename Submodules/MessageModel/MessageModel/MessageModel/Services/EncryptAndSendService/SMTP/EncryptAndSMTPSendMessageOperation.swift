@@ -73,9 +73,31 @@ extension EncryptAndSMTPSendMessageOperation {
                                              extraKeys: exrtaKeys)
                     me.setOriginalRatingHeader(unencryptedCdMessage: cdMessage)
                     me.send(pEpMessage: encryptedMessageToSend)
-                } catch {
-                    Log.shared.errorAndCrash(error: error)
-                    me.handleError(error)
+                } catch let error as NSError {
+                    if error.domain == PEPObjCAdapterEngineStatusErrorDomain {
+                        switch error.code {
+                        case Int(PEPStatus.passphraseRequired.rawValue):
+                            //BUFF: keep unhandled and see how it works with the adapters new delegate approach
+                            break
+//                            me.handleError(BackgroundError.PepError.passphraseRequired(info:"Passphrase required encrypting message: \(cdMessage)"))
+                        case Int(PEPStatus.wrongPassphrase.rawValue):
+                            //BUFF: keep unhandled and see how it works with the adapters new delegate approach
+                            break
+//                            me.handleError(BackgroundError.PepError.wrongPassphrase(info:"Passphrase wrong encrypting message: \(cdMessage)"))
+                        default:
+                            Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
+                            me.handleError(BackgroundError.GeneralError.illegalState(info:
+                                "##\nError: \(error)\nencrypting message: \(cdMessage)\n##"))
+                        }
+                    } else if error.domain == PEPObjCAdapterErrorDomain {
+                        Log.shared.errorAndCrash("Unexpected ")
+                        me.handleError(BackgroundError.GeneralError.illegalState(info:
+                            "We do not exept this error domain to show up here: \(error)"))
+                    } else {
+                        Log.shared.errorAndCrash("Unhandled error domain: %@", "\(error.domain)")
+                        me.handleError(BackgroundError.GeneralError.illegalState(info:
+                            "Unhandled error domain: \(error.domain)"))
+                    }
                 }
             }
         }

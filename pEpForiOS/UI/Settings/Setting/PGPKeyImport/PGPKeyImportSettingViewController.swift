@@ -7,8 +7,10 @@
 //
 
 import Foundation
+import MessageModel
 
 class PGPKeyImportSettingViewController: UIViewController {
+    static private let switchCellID = "PGPKeyImportSettingsSwitchTableViewCell"
     static private let cellID = "PGPKeyImportSettingTableViewCell"
     public var viewModel: PGPKeyImportSettingViewModel? {
         didSet {
@@ -28,12 +30,6 @@ class PGPKeyImportSettingViewController: UIViewController {
         tableView.estimatedSectionHeaderHeight = 100
         tableView.register(PEPHeaderView.self,
                            forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        showNavigationBar()
-        tableView.reloadData()
     }
 }
 
@@ -61,7 +57,7 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         // Suppresses seperator lines for empty cells
-        return UIView(frame: CGRect.zero)
+        return UIView(frame: .zero)
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -101,21 +97,38 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
             Log.shared.errorAndCrash("No VM")
             return UITableViewCell()
         }
-        guard
-            let cell = tableView.dequeueReusableCell(withIdentifier: PGPKeyImportSettingViewController.cellID)
-            else {
-                return UITableViewCell()
-        }
-        let row = vm.sections[indexPath.section].rows[indexPath.row]
-        cell.textLabel?.text = row.title
-        if let fontColor = row.titleFontColor {
-            cell.textLabel?.textColor = fontColor
-        }
-        if row.type == .setOwnKey {
-            cell.accessoryType = .disclosureIndicator
-        }
 
-        return cell
+        let row = vm.sections[indexPath.section].rows[indexPath.row]
+        switch row.type {
+        case .passphrase:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: PGPKeyImportSettingViewController.switchCellID) as? PGPKeyImportSettingSwitchTableViewCell else {
+                Log.shared.errorAndCrash("PGPKeyImportSettingSwitchTableViewCell not found")
+                return UITableViewCell()
+            }
+            cell.titleLabel?.text = row.title
+            cell.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+            if let fontColor = row.titleFontColor {
+                cell.titleLabel?.textColor = fontColor
+            }
+            cell.delegate = self
+            cell.passphraseSwitch.isOn = vm.isPassphraseForNewKeysEnabled()
+            return cell
+        case .pgpKeyImport, .setOwnKey:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: PGPKeyImportSettingViewController.cellID) else {
+                Log.shared.errorAndCrash("PGPKeyImportSettingTableViewCell not found")
+                return UITableViewCell()
+            }
+            cell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+            cell.textLabel?.text = row.title
+            if let fontColor = row.titleFontColor {
+                cell.textLabel?.textColor = fontColor
+
+            }
+            if row.type == .setOwnKey {
+                cell.accessoryType = .disclosureIndicator
+            }
+            return cell
+        }
     }
 }
 
@@ -161,5 +174,22 @@ extension PGPKeyImportSettingViewController: PGPKeyImportSettingViewModelDelegat
     func showSetOwnKeyScene() {
         performSegue(withIdentifier: SegueIdentifier.segueSetOwnKey.rawValue,
                      sender: nil)
+    }
+}
+
+// MARK : PGPKeyImportSettingSwitchTableViewCellDelegate
+
+extension PGPKeyImportSettingViewController : PGPKeyImportSettingSwitchTableViewCellDelegate  {
+    func passphraseSwitchChanged(sender: PGPKeyImportSettingSwitchTableViewCell, didChangeSwitchValue newValue: Bool, cancelCallback: (() -> Void)?) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+
+        if newValue {
+            UIUtils.showUserPassphraseForNewKeysAlert(cancelCallback: cancelCallback)
+        } else {
+            vm.stopUsingPassphraseForNewKeys()
+        }
     }
 }

@@ -29,7 +29,7 @@ final class SettingsTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.title = title
-        UITableViewController.setupCommonSettings(tableView: tableView)
+        tableView.hideSeperatorForEmptyCells()
         navigationController?.setToolbarHidden(true, animated: false)
         showEmptyDetailViewIfApplicable(message: NSLocalizedString("Please choose a setting",
                                                                    comment: "No setting has been selected yet in the settings VC"))
@@ -338,7 +338,7 @@ extension SettingsTableViewController {
         case segueExtraKeys
         case seguePgpKeyImport
         case noAccounts
-        case ResetTrust
+        case resetTrust
         case tutorial
         /// Use for cells that do not segue, like switch cells
         case none
@@ -357,7 +357,7 @@ extension SettingsTableViewController {
         case .pgpKeyImport:
             return .seguePgpKeyImport
         case .resetTrust:
-            return .ResetTrust
+            return .resetTrust
         case .extraKeys:
             return .segueExtraKeys
         case .tutorial:
@@ -379,23 +379,25 @@ extension SettingsTableViewController {
 
         switch segueIdentifyer {
         case .segueEditAccount:
-            guard
-                let destination = segue.destination as? AccountSettingsTableViewController,
-                let indexPath = sender as? IndexPath
-                else {
-                    Log.shared.errorAndCrash("Requirements not met.")
+            guard let destination = segue.destination as? AccountSettingsViewController,
+                let indexPath = sender as? IndexPath,
+                let account = viewModel.account(at: indexPath) else {
+                    Log.shared.error("SegueIdentifier: segueEditAccount - Early quit! Requirements not met.")
                     return
             }
-            destination.viewModel = viewModel.accountSettingsViewModel(forAccountAt: indexPath)
+            destination.viewModel = AccountSettingsViewModel(account: account)
+
         case .segueShowSettingDefaultAccount,
              .noAccounts,
              .segueAddNewAccount,
              .sequeShowCredits,
-             .ResetTrust,
+             .resetTrust,
              .segueExtraKeys,
              .segueShowSettingTrustedServers,
              .tutorial:
             // Nothing to prepare for those seques
+            // We do not use ´default´ in switch because it is less error prone.
+            // So if the destination vc doesn't need anything we just let it in this case.
             break
         case .seguePgpKeyImport:
             guard let destination = segue.destination as? PGPKeyImportSettingViewController else {

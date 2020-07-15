@@ -22,7 +22,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var errorSubscriber = ErrorSubscriber()
     
     /// Error Handler bubble errors up to the UI
-    private var errorPropagator = ErrorPropagator()
+    private lazy var errorPropagator: ErrorPropagator = {
+        let createe = ErrorPropagator(subscriber: errorSubscriber)
+        return createe
+    }()
+
+    private let userInputProvider = UserInputProvider()
 
     /// This is used to handle OAuth2 requests.
     private let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
@@ -56,12 +61,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setupServices() {
-        errorPropagator.subscriber = errorSubscriber
         messageModelService = MessageModelService(errorPropagator: errorPropagator,
                                                   cnContactsAccessPermissionProvider: AppSettings.shared,
                                                   keySyncServiceHandshakeHandler: KeySyncHandshakeService(),
                                                   keySyncStateProvider: AppSettings.shared,
-                                                  usePEPFolderProvider: AppSettings.shared)
+                                                  usePEPFolderProvider: AppSettings.shared,
+                                                  passphraseProvider: userInputProvider)
     }
 
     private func askUserForNotificationPermissions() {
@@ -93,6 +98,7 @@ extension AppDelegate {
             // and pretty much don't do anything.
             return false
         }
+        Log.shared.logDebugInfo()
 
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
         Appearance.setup()

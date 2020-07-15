@@ -11,14 +11,14 @@ import MessageModel
 import ContactsUI
 import pEpIOSToolbox
 
-struct UIUtils {
+class UIUtils {
 
     /// Converts the error to a user frienldy DisplayUserError and presents it to the user
     ///
     /// - Parameters:
     ///   - error: error to preset to user
     static public func show(error: Error) {
-        Log.shared.error("May or may not display error to user: (interpolate) %@", "\(error)")
+        Log.shared.info("May or may not display error to user: (interpolate) %@", "\(error)")
 
         guard let displayError = DisplayUserError(withError: error) else {
             // Do nothing. The error type is not suitable to bother the user with.

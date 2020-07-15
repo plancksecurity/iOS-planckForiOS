@@ -48,12 +48,6 @@ final class SettingsViewModel {
         }
     }
 
-    /// Constructor for SettingsViewModel
-    public init(delegate: SettingsViewModelDelegate) {
-        self.delegate = delegate
-        setup()
-    }
-
     /// Access method to get the sections
     /// - Parameter indexPath: IndexPath of the requested section
     public func section(for indexPath: IndexPath) -> Section {
@@ -91,6 +85,12 @@ final class SettingsViewModel {
         }
     }
 
+    /// Constructor for SettingsViewModel
+    public init(delegate: SettingsViewModelDelegate) {
+        self.delegate = delegate
+        setup()
+    }
+    
     /// Wrapper method to know if there is no accounts associated.
     /// Returns: True if there are no accounts.
     public func noAccounts() -> Bool {
@@ -114,6 +114,16 @@ final class SettingsViewModel {
         }
     }
 
+    /// Returns the account setted at the the row of the provided indexPath
+    /// - Parameter indexPath: The index path to get the account
+    public func account(at indexPath : IndexPath) -> Account? {
+        let accounts = Account.all()
+        if accounts.count > indexPath.row {
+            return accounts[indexPath.row]
+        }
+        return nil
+    }
+
     /// Deletes the row at the passed index Path
     /// - Parameter indexPath: The index Path to
     public func deleteRowAt(_ indexPath: IndexPath) {
@@ -124,12 +134,8 @@ final class SettingsViewModel {
     public func handleExtraKeysEditabilityGestureTriggered() {
         let newValue = !AppSettings.shared.extraKeysEditable
         AppSettings.shared.extraKeysEditable = newValue
-        
-        delegate?.showExtraKeyEditabilityStateChangeAlert(newValue: newValue ? "ON" : "OFF")
-    }
 
-    public func accountSettingsViewModel(forAccountAt indexPath: IndexPath) -> AccountSettingsViewModel {
-        return AccountSettingsViewModel(account: account(at: indexPath))
+        delegate?.showExtraKeyEditabilityStateChangeAlert(newValue: newValue ? "ON" : "OFF")
     }
 
     public func pgpKeyImportSettingViewModel() -> PGPKeyImportSettingViewModel {
@@ -149,20 +155,30 @@ extension SettingsViewModel {
 
     /// This method generates all the sections for the settings view.
     private func generateSections() {
-        let sections: [SectionType] = [.accounts, .globalSettings, .pEpSync,
-                                        .companyFeatures, .tutorial, .contacts]
-        sections.forEach { (type) in
-            generateSection(type: type)
-        }
-    }
-
-    /// This method generates the section passed by parameter
-    /// - Parameter type: The type of section to generate.
-    private func generateSection(type : SectionType) {
-        items.append(Section(title: sectionTitle(type: type),
-                             footer: sectionFooter(type: type),
-                             rows: generateRows(type: type),
-                             type: type))
+        items.append(Section(title: sectionTitle(type: .accounts),
+                             footer: sectionFooter(type: .accounts),
+                             rows: generateRows(type: .accounts),
+                             type: .accounts))
+        
+        items.append(Section(title: sectionTitle(type: .globalSettings),
+                             footer: sectionFooter(type: .globalSettings),
+                             rows: generateRows(type: .globalSettings),
+                             type: .globalSettings))
+        
+        items.append(Section(title: sectionTitle(type: .pEpSync),
+                             footer: sectionFooter(type: .pEpSync),
+                             rows: generateRows(type: .pEpSync),
+                             type: .pEpSync))
+        
+        items.append(Section(title: sectionTitle(type: .contacts),
+                             footer: sectionFooter(type: .contacts),
+                             rows: generateRows(type: .contacts),
+                             type: .contacts))
+        
+        items.append(Section(title: sectionTitle(type: .companyFeatures),
+                             footer: sectionFooter(type: .companyFeatures),
+                             rows: generateRows(type: .companyFeatures),
+                             type: .companyFeatures))
     }
 
     /// This method generates all the rows for the section type passed
@@ -242,8 +258,6 @@ extension SettingsViewModel {
             rows.append(generateNavigationRow(type: .resetTrust, isDangerous: true))
         case .companyFeatures:
             rows.append(generateNavigationRow(type: .extraKeys, isDangerous: false))
-        case .tutorial:
-            rows.append(generateNavigationRow(type: .tutorial, isDangerous: false))
         }
         return rows
     }
@@ -310,8 +324,6 @@ extension SettingsViewModel {
         case .companyFeatures:
             return NSLocalizedString("Enterprise Features",
                                      comment: "Tableview section header: Enterprise Features")
-        case .tutorial:
-            return NSLocalizedString("Tutorial", comment: "Tableview section header: Tutorial")
         }
     }
 
@@ -320,7 +332,7 @@ extension SettingsViewModel {
     /// - Returns: The title of the footer. If the section is an account, a pepSync or the company features, it will be nil because there is no footer.
     private func sectionFooter(type: SectionType) -> String? {
         switch type {
-        case .pEpSync, .companyFeatures, .tutorial:
+        case .pEpSync, .companyFeatures:
             return nil
         case .accounts:
             return NSLocalizedString("Performs a reset of the privacy settings of your account(s)",
@@ -329,11 +341,12 @@ extension SettingsViewModel {
             return NSLocalizedString("Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p.",
                                      comment: "passive mode description")
         case .contacts:
-            return NSLocalizedString("Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages.", comment: "TableView Contacts section footer")
+            return NSLocalizedString("Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages.",
+                                     comment: "TableView Contacts section footer")
         }
     }
 
-    /// Thie method provides the title for each cell, regarding its type.
+    /// This method provides the title for each cell, regarding its type.
     /// - Parameter type: The row type to get the proper title
     /// - Returns: The title of the row. If it's an account row, it will be nil and the name of the account should be used.
     private func rowTitle(type : RowIdentifier) -> String? {
@@ -381,7 +394,7 @@ extension SettingsViewModel {
         }
     }
 
-    /// Thie method provides the subtitle if needed.
+    /// This method provides the subtitle if needed.
     /// - Parameter type: The row type to get the proper title
     /// - Returns: The subtitle of the row.
     private func rowSubtitle(type : RowIdentifier) -> String? {
@@ -462,13 +475,6 @@ extension SettingsViewModel {
             }
         }
     }
-
-    /// Returns the account setted at the the row of the provided indexPath
-    /// - Parameter indexPath: The index path to get the account
-    private func account(at indexPath : IndexPath) -> Account {
-        let accounts = Account.all()
-        return accounts[indexPath.row]
-    }
 }
 
 // MARK: - Public enums & structs
@@ -478,7 +484,6 @@ extension SettingsViewModel {
     public enum SectionType {
         case accounts
         case globalSettings
-        case tutorial
         case pEpSync
         case contacts
         case companyFeatures
