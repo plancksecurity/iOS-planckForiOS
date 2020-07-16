@@ -248,6 +248,19 @@ public class AdapterWrapper {
         }
     }
 
+    public static func languageList(errorHandler: @escaping (_ error: Error) -> Void,
+                                    completion: @escaping ([PEPLanguage]) -> Void) {
+        queue.async {
+            let session = PEPSession()
+            do {
+                let languages = try session.languageList()
+                completion(languages)
+            } catch {
+                errorHandler(error)
+            }
+        }
+    }
+
     private static let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
                                              attributes: .concurrent,
