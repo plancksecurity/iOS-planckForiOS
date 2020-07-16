@@ -308,6 +308,11 @@ public class AdapterWrapper {
         }
     }
 
+    public static func configurePassiveModeEnabled(_ enabled: Bool) {
+        let session = PEPSession()
+        session.configurePassiveModeEnabled(enabled)
+    }
+
     private static let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
                                              autoreleaseFrequency: .inherit,
