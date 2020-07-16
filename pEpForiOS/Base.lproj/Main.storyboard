@@ -672,8 +672,8 @@
                                                     <action selector="showExternalContent:" destination="HVL-Ow-yrU" eventType="touchUpInside" id="Tpe-Dt-uWY"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By showing external content, your privacy may be invaded. This may affect the privacy status of the message." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j6J-vb-VLn">
-                                                <rect key="frame" x="6" y="55" width="363" height="30"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="just some placeholder text for storyboard" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j6J-vb-VLn">
+                                                <rect key="frame" x="70.5" y="55" width="234" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                                 <nil key="highlightedColor"/>
@@ -714,6 +714,7 @@
                     </view>
                     <connections>
                         <outlet property="showExternalContentButton" destination="3uL-KY-gV7" id="aEI-oy-mys"/>
+                        <outlet property="showExternalContentLabel" destination="j6J-vb-VLn" id="WXx-sZ-lfT"/>
                         <outlet property="showExternalContentView" destination="rz6-9D-FWg" id="RWQ-lz-2dQ"/>
                         <outlet property="stackView" destination="Yrf-Bs-3eT" id="iLE-oZ-Vlq"/>
                         <outlet property="tableView" destination="TF2-dt-8de" id="wF7-wH-a6N"/>
