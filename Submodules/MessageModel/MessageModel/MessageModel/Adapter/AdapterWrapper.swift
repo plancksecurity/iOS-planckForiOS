@@ -446,6 +446,11 @@ public class AdapterWrapper {
         }
     }
 
+    public static func configurePassphrase(_ passphrase: String) throws {
+        let session = PEPSession()
+        try session.configurePassphrase(passphrase)
+    }
+
     private static let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
                                              autoreleaseFrequency: .inherit,
