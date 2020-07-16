@@ -33,12 +33,32 @@ class EmailViewController: UIViewController {
     }()
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet var showExternalContentView: UIView!
+    @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var showExternalContentButton: UIButton!
+    
+    var showExternalContent = false
+    var showViewExternalContent = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
         loadDatasource("MessageData")
         tableView.estimatedRowHeight = 72.0
         tableView.rowHeight = UITableView.automaticDimension
+        showExternalContentButton.convertToGreenRoundedCornersButton(placeholder: NSLocalizedString("Show External Content", comment: "external content button"))
+    }
+    
+    @IBAction func showExternalContent(_ sender: Any) {
+        showViewExternalContent = false
+        showExternalContent = true
+        tableView.reloadData()
+    }
+    
+    fileprivate func removeExternalContentView() {
+        //the external content view is in position 1
+        let viewToRemove = stackView.arrangedSubviews[1]
+        stackView.removeArrangedSubview(viewToRemove)
+        viewToRemove.removeFromSuperview()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,6 +66,7 @@ class EmailViewController: UIViewController {
         navigationController?.title = title
         tableView.hideSeperatorForEmptyCells()
         configureTableRows()
+        removeExternalContentView()
     }
     
     private func configureTableRows() {
@@ -111,8 +132,12 @@ class EmailViewController: UIViewController {
             contentCell.contentView.addSubview(htmlViewerViewController.view)
             htmlViewerViewController.view.fullSizeInSuperView()
             let displayHtml = appendInlinedPlainText(fromAttachmentsIn: m, to: htmlBody)
-            let external = displayHtml.containsExternalContent()
-            htmlViewerViewController.display(html: displayHtml, showExternalContent: external)
+            if displayHtml.containsExternalContent() && showViewExternalContent {
+                stackView.addArrangedSubview(showExternalContentView)
+            } else if !showViewExternalContent {
+                removeExternalContentView()
+            }
+            htmlViewerViewController.display(html: displayHtml, showExternalContent: showExternalContent)
         } else {
             // We do not have HTML content.
             // Remove the HTML view if we just stepped from an HTML mail to one without
