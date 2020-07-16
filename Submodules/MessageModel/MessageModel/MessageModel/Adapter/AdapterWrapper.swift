@@ -21,24 +21,6 @@ import PEPObjCAdapterFramework
 /// The adapter will be called on a background queue and invoke the
 /// completion block on the main queue with the result.
 public class AdapterWrapper {
-    // TODO: Don't publish CdIdentity
-    public static func pEpColor(cdIdentity: CdIdentity,
-                                completion: @escaping (_ error: Error?, _ color: PEPColor?) -> Void) {
-        let pepC = cdIdentity.pEpIdentity()
-        queue.async {
-            let session = PEPSession()
-            do {
-                let rating = try session.rating(for: pepC).pEpRating
-                let color = session.color(from: rating)
-                DispatchQueue.main.async {
-                    completion(nil, color)
-                }
-            } catch let error as NSError {
-                completion(error, nil)
-            }
-        }
-    }
-
     public static func pEpColor(pEpRating: PEPRating?) -> PEPColor {
         if let rating = pEpRating {
             return PEPSession().color(from: rating)
