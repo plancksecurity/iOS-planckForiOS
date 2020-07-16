@@ -28,6 +28,14 @@ public class AdapterWrapper {
         }
     }
 
+    public static func pEpColor(pEpRating: PEPRating?) -> PEPColor {
+        if let rating = pEpRating {
+            return PEPSession().color(from: rating)
+        } else {
+            return PEPColor.noColor
+        }
+    }
+
     private static let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
                                              attributes: .concurrent,
