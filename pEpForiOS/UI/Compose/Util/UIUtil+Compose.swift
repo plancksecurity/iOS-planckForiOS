@@ -68,7 +68,7 @@ extension UIUtils {
         presenterVc.present(composeNavigationController, animated: true)
     }
 
-    static func composeNavigationController() -> UIViewController? {
+    static func composeNavigationController() -> UINavigationController? {
         let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
         guard
             let composeNavigationController = storyboard.instantiateViewController(withIdentifier:

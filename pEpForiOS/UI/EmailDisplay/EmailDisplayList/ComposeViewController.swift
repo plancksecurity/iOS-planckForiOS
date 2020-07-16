@@ -9,27 +9,25 @@
 import UIKit
 import UIKit.UIGestureRecognizerSubclass
 
-// MARK: - State
+/// This class provides the behaviour for adding access to
+/// the compose view through a subview in the bottom.
+class ComposeViewController: UIViewController {
 
-private enum State {
-    case closed
-    case open
-}
 
-extension State {
-    var opposite: State {
-        switch self {
-        case .open: return .closed
-        case .closed: return .open
+    // MARK: - State
+
+    private enum State {
+        case closed
+        case open
+
+        var opposite: State {
+            switch self {
+            case .open: return .closed
+            case .closed: return .open
+            }
         }
     }
-}
 
-// MARK: - View Controller
-
-
-class ComposeViewController: UIViewController {
-    
     // MARK: - Constants
     
     private let popupOffset: CGFloat = 440
@@ -53,30 +51,18 @@ class ComposeViewController: UIViewController {
         return view
     }()
 
-
     private lazy var gestureHandler: UIView = {
         let view = UIView()
         return view
     }()
 
-
-    private lazy var closedTitleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Title of draft mail"
-        label.font = UIFont.pepFont(style: .body, weight: .medium)
-        label.textColor = UIColor.pEpGreen
-        label.textAlignment = .center
-        return label
-    }()
-    
     private lazy var openTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Mail in progress"
+        label.text = "Subject of the draft"
         label.font = UIFont.pepFont(style: .headline, weight: .heavy)
         label.textColor = UIColor.pEpGreen
         label.textAlignment = .center
-        label.alpha = 0
-        label.transform = CGAffineTransform(scaleX: 0.65, y: 0.65).concatenating(CGAffineTransform(translationX: 0, y: -15))
+        label.alpha = 1
         return label
     }()
     
@@ -121,47 +107,43 @@ class ComposeViewController: UIViewController {
         popupView.addSubview(gestureHandler)
         gestureHandler.leadingAnchor.constraint(equalTo: popupView.leadingAnchor).isActive = true
         gestureHandler.trailingAnchor.constraint(equalTo: popupView.trailingAnchor).isActive = true
-        gestureHandler.topAnchor.constraint(equalTo: popupView.topAnchor, constant: 0).isActive = true
+        gestureHandler.topAnchor.constraint(equalTo: popupView.topAnchor).isActive = true
         gestureHandler.heightAnchor.constraint(equalToConstant: 150).isActive = true
-//        gestureHandler.backgroundColor = UIColor.blue.withAlphaComponent(0.2)
 
-        closedTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        popupView.addSubview(closedTitleLabel)
-        closedTitleLabel.leadingAnchor.constraint(equalTo: popupView.leadingAnchor).isActive = true
-        closedTitleLabel.trailingAnchor.constraint(equalTo: popupView.trailingAnchor).isActive = true
-        closedTitleLabel.topAnchor.constraint(equalTo: popupView.topAnchor, constant: 30).isActive = true
-        
         openTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         popupView.addSubview(openTitleLabel)
         openTitleLabel.leadingAnchor.constraint(equalTo: popupView.leadingAnchor).isActive = true
         openTitleLabel.trailingAnchor.constraint(equalTo: popupView.trailingAnchor).isActive = true
-        openTitleLabel.topAnchor.constraint(equalTo: popupView.topAnchor, constant: 30).isActive = true
+        openTitleLabel.topAnchor.constraint(equalTo: popupView.topAnchor, constant: 36).isActive = true
         
         contentView.translatesAutoresizingMaskIntoConstraints = false
         popupView.addSubview(contentView)
         contentView.leadingAnchor.constraint(equalTo: popupView.leadingAnchor).isActive = true
         contentView.trailingAnchor.constraint(equalTo: popupView.trailingAnchor).isActive = true
-        contentView.topAnchor.constraint(equalTo: popupView.topAnchor, constant: 50).isActive = true
-        contentView.heightAnchor.constraint(equalToConstant: 500).isActive = true
-        contentView.backgroundColor = UIColor.red
+        contentView.topAnchor.constraint(equalTo: popupView.topAnchor, constant: 30).isActive = true
+        contentView.heightAnchor.constraint(equalToConstant: 428).isActive = true
+        popupView.bringSubviewToFront(openTitleLabel)
+        popupView.bringSubviewToFront(gestureHandler)
 
         setupChildViewController()
     }
 
-
     func setupChildViewController() {
-        let child = UIUtils.composeNavigationController()!
-
+        guard let child = UIUtils.composeNavigationController() else {
+            Log.shared.errorAndCrash("No VC")
+            return
+        }
         // First, add the view of the child to the view of the parent
         child.removeFromParent()
         contentView.addSubview(child.view)
         child.view.fullSizeInSuperView()
+        child.view.layoutIfNeeded()
 
         // Then, add the child to the parent
         addChild(child)
 
         // Finally, notify the child that it was moved to a parent
-        child.didMove(toParent: parent)
+        child.didMove(toParent: self)
     }
     
     // MARK: - Animation
@@ -194,15 +176,10 @@ class ComposeViewController: UIViewController {
                 self.bottomConstraint.constant = 0
                 self.popupView.layer.cornerRadius = 20
                 self.overlayView.alpha = 0.5
-//                self.closedTitleLabel.transform = CGAffineTransform(scaleX: 1.6, y: 1.6).concatenating(CGAffineTransform(translationX: 0, y: 15))
-                self.openTitleLabel.transform = .identity
-                self.contentView.layoutSubviews()
             case .closed:
                 self.bottomConstraint.constant = self.popupOffset
                 self.popupView.layer.cornerRadius = 0
                 self.overlayView.alpha = 0
-                self.closedTitleLabel.transform = .identity
-//                self.openTitleLabel.transform = CGAffineTransform(scaleX: 0.65, y: 0.65).concatenating(CGAffineTransform(translationX: 0, y: -15))
             }
             self.view.layoutIfNeeded()
         })
@@ -232,46 +209,17 @@ class ComposeViewController: UIViewController {
             
             // remove all running animators
             self.runningAnimators.removeAll()
-            
         }
-        
-        // an animator for the title that is transitioning into view
-        let inTitleAnimator = UIViewPropertyAnimator(duration: duration, curve: .easeIn, animations: {
-            switch state {
-            case .open:
-                self.openTitleLabel.alpha = 1
-            case .closed:
-                self.closedTitleLabel.alpha = 1
-            }
-        })
-        inTitleAnimator.scrubsLinearly = false
-        
-        // an animator for the title that is transitioning out of view
-        let outTitleAnimator = UIViewPropertyAnimator(duration: duration, curve: .easeOut, animations: {
-            switch state {
-            case .open:
-                self.closedTitleLabel.alpha = 0
-            case .closed:
-                self.openTitleLabel.alpha = 0
-            }
-        })
-        outTitleAnimator.scrubsLinearly = false
-        
-        // start all animators
         transitionAnimator.startAnimation()
-        inTitleAnimator.startAnimation()
-        outTitleAnimator.startAnimation()
-        
+
         // keep track of all running animators
         runningAnimators.append(transitionAnimator)
-        runningAnimators.append(inTitleAnimator)
-        runningAnimators.append(outTitleAnimator)
     }
     
     @objc private func popupViewPanned(recognizer: UIPanGestureRecognizer) {
         switch recognizer.state {
         case .began:
-            
+
             // start the animations
             animateTransitionIfNeeded(to: currentState.opposite, duration: 1)
             
@@ -339,3 +287,4 @@ class InstantPanGestureRecognizer: UIPanGestureRecognizer {
     }
     
 }
+
