@@ -419,6 +419,20 @@ public class AdapterWrapper {
         }
     }
 
+    public static func queryKeySyncEnabled(_ identity: PEPIdentity,
+                                           errorHandler: @escaping (_ error: Error) -> Void,
+                                           completion: @escaping (Bool) -> Void) {
+        queue.async {
+            let session = PEPSession()
+            do {
+                let theBool = try session.queryKeySyncEnabled(for: identity).boolValue
+                completion(theBool)
+            } catch {
+                errorHandler(error)
+            }
+        }
+    }
+
     private static let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
                                              autoreleaseFrequency: .inherit,
