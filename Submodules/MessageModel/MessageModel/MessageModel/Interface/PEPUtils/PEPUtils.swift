@@ -132,6 +132,7 @@ public class PEPUtils {
         }
     }
 
+    // TODO: This is not part of the interface, move to internal
     public static func pEpColor(cdIdentity: CdIdentity) -> PEPColor {//!!!: IOS-2325_!
         return pEpColor(pEpRating: pEpRating(cdIdentity: cdIdentity))//!!!: IOS-2325_!
     }
