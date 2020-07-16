@@ -107,6 +107,26 @@ public class AdapterWrapper {
         }
     }
 
+    public static func trustwords(forFingerprint fingerprint: String,
+                                  languageID: String,
+                                  shortened: Bool,
+                                  errorHandler: @escaping (_ error: Error) -> Void,
+                                  completion: @escaping (_ trustwords: [String]) -> Void) {
+        queue.async {
+            let session = PEPSession()
+            do {
+                let anies = try session.trustwords(forFingerprint: fingerprint,
+                                                   languageID: languageID,
+                                                   shortened: shortened)
+                if let trustwords = anies as? [String] {
+                    completion(trustwords)
+                }
+            } catch {
+                errorHandler(error)
+            }
+        }
+    }
+
     private static let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
                                              attributes: .concurrent,
