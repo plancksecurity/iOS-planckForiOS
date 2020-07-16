@@ -46,6 +46,25 @@ public class AdapterWrapper {
         }
     }
 
+    public static func reEvaluateMessage(_ message: PEPMessage,
+                                         xKeyList: [String]?,
+                                         completion: @escaping (_ error: Error?, _ status: PEPStatus?, _ rating: PEPRating?) -> Void) {
+        queue.async {
+            let session = PEPSession()
+            do {
+                var status: PEPStatus = .unknownError
+                var rating: PEPRating = .undefined
+                try session.reEvaluateMessage(message,
+                                              xKeyList: xKeyList,
+                                              rating: &rating,
+                                              status: &status)
+                completion(nil, status, rating)
+            } catch {
+                completion(error, nil, nil)
+            }
+        }
+    }
+
     private static let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
                                              attributes: .concurrent,
