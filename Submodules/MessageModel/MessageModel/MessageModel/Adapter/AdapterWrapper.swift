@@ -291,7 +291,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func configurePassiveModeEnabled(_ enabled: Bool) {
+    public static func configurePassiveModeEnabled(_ enabled: Bool) {  //BUFF: done
         let session = PEPSession()
         session.configurePassiveModeEnabled(enabled)
     }
@@ -431,6 +431,10 @@ public class AdapterWrapper {
     public static func configurePassphrase(_ passphrase: String) throws {
         let session = PEPSession()
         try session.configurePassphrase(passphrase)
+    }
+
+    public static func configureUnencryptedSubjectEnabled(_ enabled: Bool) { //BUFF: done
+        PEPObjCAdapter.setUnEncryptedSubjectEnabled(enabled)
     }
 
     private static let queue = DispatchQueue(label: "AdapterWrapper",

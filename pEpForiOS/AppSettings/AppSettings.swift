@@ -76,8 +76,8 @@ extension AppSettings {
     }
 
     private func setupObjcAdapter() {
-        PEPObjCAdapter.setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled)
-        PEPObjCAdapter.setPassiveModeEnabled(passiveMode)
+        AdapterWrapper.configureUnencryptedSubjectEnabled(unencryptedSubjectEnabled)
+        AdapterWrapper.configurePassiveModeEnabled(passiveMode)
     }
 
     private func registerDefaults() {
@@ -157,7 +157,7 @@ extension AppSettings: AppSettingsProtocol {
         set {
             AppSettings.userDefaults.set(newValue,
                                          forKey: AppSettings.keyUnencryptedSubjectEnabled)
-            PEPObjCAdapter.setUnEncryptedSubjectEnabled(newValue)
+            AdapterWrapper.configureUnencryptedSubjectEnabled(newValue)
         }
     }
 
@@ -176,7 +176,7 @@ extension AppSettings: AppSettingsProtocol {
         }
         set {
             AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPassiveMode)
-            PEPObjCAdapter.setPassiveModeEnabled(newValue)
+            AdapterWrapper.configurePassiveModeEnabled(newValue)
         }
     }
 
