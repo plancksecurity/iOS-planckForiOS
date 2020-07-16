@@ -71,7 +71,7 @@ public class AdapterWrapper {
         queue.async {
             let session = PEPSession()
             do {
-                let rating = try session.outgoingRatingPreview(for: theMessage).pEpRating
+                let rating = try session.outgoingRating(for: theMessage).pEpRating
                 completion(rating)
             } catch {
                 errorHandler(error)
