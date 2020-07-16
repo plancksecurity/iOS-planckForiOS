@@ -261,6 +261,15 @@ public class AdapterWrapper {
         }
     }
 
+    public static func rating(from string: String,
+                              completion: @escaping (PEPRating) -> Void) {
+        queue.async {
+            let session = PEPSession()
+            let rating = session.rating(from: string)
+            completion(rating)
+        }
+    }
+
     private static let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
                                              attributes: .concurrent,
