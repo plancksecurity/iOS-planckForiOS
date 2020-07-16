@@ -18,8 +18,9 @@ public class AdapterWrapper {
             let session = PEPSession()
             do {
                 let rating = try session.rating(for: pepC).pEpRating
+                let color = session.color(from: rating)
                 DispatchQueue.main.async {
-                    completion(nil, rating.pEpColor())
+                    completion(nil, color)
                 }
             } catch let error as NSError {
                 completion(error, nil)
