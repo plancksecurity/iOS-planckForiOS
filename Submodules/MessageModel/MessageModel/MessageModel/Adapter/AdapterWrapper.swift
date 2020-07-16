@@ -279,6 +279,20 @@ public class AdapterWrapper {
         }
     }
 
+    public static func isPEPUser(_ identity: PEPIdentity,
+                                 errorHandler: @escaping (_ error: Error) -> Void,
+                                 completion: @escaping (Bool) -> Void) {
+        queue.async {
+            let session = PEPSession()
+            do {
+                let theBool = try session.isPEPUser(identity).boolValue
+                completion(theBool)
+            } catch {
+                errorHandler(error)
+            }
+        }
+    }
+
     private static let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
                                              autoreleaseFrequency: .inherit,
