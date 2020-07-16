@@ -202,6 +202,7 @@
 		433C51D51E6828AE00272E19 /* MessageID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433C51D41E6828AE00272E19 /* MessageID.swift */; };
 		433E743A225B76E000B84CD9 /* CdServer+NonOptionalConvenienceAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433E7439225B76E000B84CD9 /* CdServer+NonOptionalConvenienceAccessors.swift */; };
 		433E743F225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433E743E225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift */; };
+		434707C524C06FDA00E05485 /* AdapterWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434707C424C06FDA00E05485 /* AdapterWrapper.swift */; };
 		43495984239E509300CF1E12 /* CdFolder+SyncFolderMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43495983239E509300CF1E12 /* CdFolder+SyncFolderMode.swift */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
@@ -669,6 +670,7 @@
 		433C51D41E6828AE00272E19 /* MessageID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageID.swift; sourceTree = "<group>"; };
 		433E7439225B76E000B84CD9 /* CdServer+NonOptionalConvenienceAccessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdServer+NonOptionalConvenienceAccessors.swift"; sourceTree = "<group>"; };
 		433E743E225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift"; sourceTree = "<group>"; };
+		434707C424C06FDA00E05485 /* AdapterWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdapterWrapper.swift; sourceTree = "<group>"; };
 		43495983239E509300CF1E12 /* CdFolder+SyncFolderMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+SyncFolderMode.swift"; sourceTree = "<group>"; };
 		434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdMessageTest.swift; sourceTree = "<group>"; };
 		434DC0D41DAE72D4007C98B8 /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
@@ -1788,6 +1790,14 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		434707C324C06FC900E05485 /* Adapter */ = {
+			isa = PBXGroup;
+			children = (
+				434707C424C06FDA00E05485 /* AdapterWrapper.swift */,
+			);
+			path = Adapter;
+			sourceTree = "<group>";
+		};
 		4351723B229FD74000D92026 /* Decryption */ = {
 			isa = PBXGroup;
 			children = (
@@ -1968,6 +1978,7 @@
 		43CB60841DA4EB4E0015281E /* MessageModel */ = {
 			isa = PBXGroup;
 			children = (
+				434707C324C06FC900E05485 /* Adapter */,
 				15175E4C221D59DD00C91DB8 /* Interface */,
 				15175EB9221D74C200C91DB8 /* Modules */,
 				155FE575228B5368003D3E68 /* CdObjectExtensions */,
@@ -2668,6 +2679,7 @@
 				43E74C6C1E38B38C00A2F7A6 /* ImapFlagsUtility.swift in Sources */,
 				43AD46D022705AE300047D75 /* ConnectionTransport+Transport.swift in Sources */,
 				434DC0E21DAE7A49007C98B8 /* Identity.swift in Sources */,
+				434707C524C06FDA00E05485 /* AdapterWrapper.swift in Sources */,
 				154660E223392004008D2137 /* DecryptMessageOperation.swift in Sources */,
 				43EA4863221E9518006E8F83 /* CdAccount+Extension.swift in Sources */,
 				43EA4854221E9518006E8F83 /* ConnectInfo.swift in Sources */,
