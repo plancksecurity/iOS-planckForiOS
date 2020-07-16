@@ -357,6 +357,11 @@ public class AdapterWrapper {
         }
     }
 
+    public static func color(from rating: PEPRating) -> PEPColor {
+        let session = PEPSession()
+        return session.color(from: rating)
+    }
+
     private static let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
                                              autoreleaseFrequency: .inherit,
