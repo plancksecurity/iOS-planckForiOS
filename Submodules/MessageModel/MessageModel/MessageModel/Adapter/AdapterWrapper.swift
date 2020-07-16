@@ -115,12 +115,10 @@ public class AdapterWrapper {
         queue.async {
             let session = PEPSession()
             do {
-                let anies = try session.trustwords(forFingerprint: fingerprint,
-                                                   languageID: languageID,
-                                                   shortened: shortened)
-                if let trustwords = anies as? [String] {
-                    completion(trustwords)
-                }
+                let trustwords = try session.trustwords(forFingerprint: fingerprint,
+                                                        languageID: languageID,
+                                                        shortened: shortened)
+                completion(trustwords)
             } catch {
                 errorHandler(error)
             }
