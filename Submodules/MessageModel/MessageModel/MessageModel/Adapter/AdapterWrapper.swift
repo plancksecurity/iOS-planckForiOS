@@ -272,7 +272,6 @@ public class AdapterWrapper {
 
     private static let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
-                                             attributes: .concurrent,
                                              autoreleaseFrequency: .inherit,
                                              target: nil)
 }
