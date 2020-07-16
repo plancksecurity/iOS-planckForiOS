@@ -195,6 +195,19 @@ public class AdapterWrapper {
         }
     }
 
+    public static func getLog(errorHandler: @escaping (_ error: Error) -> Void,
+                              completion: @escaping (String) -> Void) {
+        queue.async {
+            let session = PEPSession()
+            do {
+                let logString = try session.getLog()
+                completion(logString)
+            } catch {
+                errorHandler(error)
+            }
+        }
+    }
+
     private static let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
                                              attributes: .concurrent,
