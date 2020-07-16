@@ -21,6 +21,7 @@ import PEPObjCAdapterFramework
 /// The adapter will be called on a background queue and invoke the
 /// completion block on the main queue with the result.
 public class AdapterWrapper {
+    // TODO: Don't publish CdIdentity
     public static func pEpColor(cdIdentity: CdIdentity,
                                 completion: @escaping (_ error: Error?, _ color: PEPColor?) -> Void) {
         let pepC = cdIdentity.pEpIdentity()
