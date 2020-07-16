@@ -64,7 +64,7 @@ class PEPSessionMoc: NSObject, PEPSessionProtocol  {
         return 0
     }
 
-    func trustwords(forFingerprint fingerprint: String, languageID: String, shortened: Bool) throws -> [Any] {
+    func trustwords(forFingerprint fingerprint: String, languageID: String, shortened: Bool) throws -> [String] {
         return []
     }
 
