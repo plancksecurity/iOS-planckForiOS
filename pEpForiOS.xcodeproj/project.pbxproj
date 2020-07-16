@@ -1219,7 +1219,6 @@
 			isa = PBXGroup;
 			children = (
 				152A399B21905C3D00D9F8E4 /* Message+ComposeUtils.swift */,
-				B70D32B0205BCFBD0094A92A /* EmailDisplay */,
 				152A399C21905C3D00D9F8E4 /* DocumentAttachmentPickerViewController */,
 				152A399F21905C3D00D9F8E4 /* MediaAttachmentPickerProvider */,
 				152A39A221905C3D00D9F8E4 /* ComposeHelpers.swift */,
@@ -2232,6 +2231,7 @@
 			children = (
 				B706C0EF1EA8C378006B2F6C /* StoryboardFiles */,
 				158A564E2403F00A003C0D7E /* ClientCertificateManagement */,
+				B70D32B0205BCFBD0094A92A /* EmailDisplay */,
 				15146C8F237F030A00D69495 /* BaseClasses */,
 				37816540230EC66F00B967E3 /* PEPAlert */,
 				15033C7223473CD20060A1A2 /* KeySync */,
