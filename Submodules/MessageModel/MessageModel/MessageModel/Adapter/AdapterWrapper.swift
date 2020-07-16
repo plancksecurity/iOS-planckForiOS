@@ -433,6 +433,19 @@ public class AdapterWrapper {
         }
     }
 
+    public static func keyResetAllOwnKeysError(errorHandler: @escaping (_ error: Error) -> Void,
+                                               completion: @escaping () -> Void) {
+        queue.async {
+            let session = PEPSession()
+            do {
+                try session.keyResetAllOwnKeysError()
+                completion()
+            } catch {
+                errorHandler(error)
+            }
+        }
+    }
+
     private static let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
                                              autoreleaseFrequency: .inherit,
