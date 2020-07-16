@@ -350,19 +350,20 @@
 		5B1C0E1823FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */; };
 		5B2F7E63240D25CF004DDFA2 /* TutorialStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */; };
 		5B394E1323ED5673006A1FC0 /* TrustManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */; };
-		5B3B019524B49DD700FBB4B5 /* AccountSettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3B019424B49DD700FBB4B5 /* AccountSettingsViewModelTest.swift */; };
 		5B3B019124B46CFC00FBB4B5 /* UILayout+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3B019024B46CFC00FBB4B5 /* UILayout+Extension.swift */; };
 		5B3B019324B46DA600FBB4B5 /* DeviceUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3B019224B46DA600FBB4B5 /* DeviceUtils.swift */; };
+		5B3B019524B49DD700FBB4B5 /* AccountSettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3B019424B49DD700FBB4B5 /* AccountSettingsViewModelTest.swift */; };
 		5B3C13BF23D8AF2E00FC0A53 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */; };
 		5B41C6082418F15100C268CE /* TutorialStep3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41C6072418F15100C268CE /* TutorialStep3ViewController.swift */; };
+		5B64B8C824C0528C00864F61 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B64B8C724C0528C00864F61 /* ComposeViewController.swift */; };
 		5B70B1F724507B8A0010AED7 /* pEpFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */; };
 		5B71016E243619CF00BAE405 /* TrustedServerSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B71016D243619CF00BAE405 /* TrustedServerSettingsViewController.swift */; };
+		5B74C00D249B7EA300802704 /* FolderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B74C00C249B7EA300802704 /* FolderTableViewCell.swift */; };
 		5BBE80CB24B733C0008DE0E5 /* AccountSettingsDangerousTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80C624B733BF008DE0E5 /* AccountSettingsDangerousTableViewCell.swift */; };
 		5BBE80CC24B733C0008DE0E5 /* AccountSettingsOAuthTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80C724B733BF008DE0E5 /* AccountSettingsOAuthTableViewCell.swift */; };
 		5BBE80CD24B733C0008DE0E5 /* AccountSettingsSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80C824B733BF008DE0E5 /* AccountSettingsSwitchTableViewCell.swift */; };
 		5BBE80CE24B733C0008DE0E5 /* SettingSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80C924B733C0008DE0E5 /* SettingSwitchTableViewCell.swift */; };
 		5BBE80CF24B733C0008DE0E5 /* AccountSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80CA24B733C0008DE0E5 /* AccountSettingsTableViewCell.swift */; };
-		5B74C00D249B7EA300802704 /* FolderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B74C00C249B7EA300802704 /* FolderTableViewCell.swift */; };
 		5BC14ABF23E2EE78005F0AF3 /* TrustManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14ABE23E2EE78005F0AF3 /* TrustManagementViewModel.swift */; };
 		5BC14AC923E47A55005F0AF3 /* TrustManagementViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14AC823E47A55005F0AF3 /* TrustManagementViewModelTest.swift */; };
 		5BC14AF023EB19B5005F0AF3 /* TrustManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14AEF23EB19B5005F0AF3 /* TrustManagementViewController.swift */; };
@@ -938,19 +939,20 @@
 		5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCellProtocols.swift; sourceTree = "<group>"; };
 		5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepViewController.swift; sourceTree = "<group>"; };
 		5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCell.swift; sourceTree = "<group>"; };
-		5B3B019424B49DD700FBB4B5 /* AccountSettingsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModelTest.swift; sourceTree = "<group>"; };
 		5B3B019024B46CFC00FBB4B5 /* UILayout+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILayout+Extension.swift"; sourceTree = "<group>"; };
 		5B3B019224B46DA600FBB4B5 /* DeviceUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceUtils.swift; sourceTree = "<group>"; };
+		5B3B019424B49DD700FBB4B5 /* AccountSettingsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModelTest.swift; sourceTree = "<group>"; };
 		5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		5B41C6072418F15100C268CE /* TutorialStep3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep3ViewController.swift; sourceTree = "<group>"; };
+		5B64B8C724C0528C00864F61 /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpFooterView.swift; sourceTree = "<group>"; };
 		5B71016D243619CF00BAE405 /* TrustedServerSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustedServerSettingsViewController.swift; sourceTree = "<group>"; };
+		5B74C00C249B7EA300802704 /* FolderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FolderTableViewCell.swift; path = Folder/FolderTableViewCell.swift; sourceTree = "<group>"; };
 		5BBE80C624B733BF008DE0E5 /* AccountSettingsDangerousTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSettingsDangerousTableViewCell.swift; path = pEpForiOS/UI/Settings/Setting/AccountSettings/Cells/AccountSettingsDangerousTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		5BBE80C724B733BF008DE0E5 /* AccountSettingsOAuthTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSettingsOAuthTableViewCell.swift; path = pEpForiOS/UI/Settings/Setting/AccountSettings/Cells/AccountSettingsOAuthTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		5BBE80C824B733BF008DE0E5 /* AccountSettingsSwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSettingsSwitchTableViewCell.swift; path = pEpForiOS/UI/Settings/Setting/AccountSettings/Cells/AccountSettingsSwitchTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		5BBE80C924B733C0008DE0E5 /* SettingSwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSwitchTableViewCell.swift; path = pEpForiOS/UI/Settings/Setting/AccountSettings/Cells/SettingSwitchTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		5BBE80CA24B733C0008DE0E5 /* AccountSettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSettingsTableViewCell.swift; path = pEpForiOS/UI/Settings/Setting/AccountSettings/Cells/AccountSettingsTableViewCell.swift; sourceTree = SOURCE_ROOT; };
-		5B74C00C249B7EA300802704 /* FolderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FolderTableViewCell.swift; path = Folder/FolderTableViewCell.swift; sourceTree = "<group>"; };
 		5BC14ABE23E2EE78005F0AF3 /* TrustManagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementViewModel.swift; sourceTree = "<group>"; };
 		5BC14AC823E47A55005F0AF3 /* TrustManagementViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementViewModelTest.swift; sourceTree = "<group>"; };
 		5BC14AEF23EB19B5005F0AF3 /* TrustManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementViewController.swift; sourceTree = "<group>"; };
@@ -1681,7 +1683,6 @@
 			path = UserInputProvider;
 			sourceTree = "<group>";
 		};
-		
 		15FE1F741FE122B200CC2D97 /* Credits */ = {
 			isa = PBXGroup;
 			children = (
@@ -2272,6 +2273,7 @@
 				B74D08BF1F013F15003D092C /* ViewModel */,
 				220DCE281E0AB4DE002FE716 /* Cells */,
 				43ED53641CC77F95006AB156 /* EmailListViewController.swift */,
+				5B64B8C924C0529100864F61 /* EmailListViewController+Compose */,
 			);
 			path = EmailDisplayList;
 			sourceTree = "<group>";
@@ -2390,6 +2392,14 @@
 			children = (
 			);
 			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		5B64B8C924C0529100864F61 /* EmailListViewController+Compose */ = {
+			isa = PBXGroup;
+			children = (
+				5B64B8C724C0528C00864F61 /* ComposeViewController.swift */,
+			);
+			name = "EmailListViewController+Compose";
 			sourceTree = "<group>";
 		};
 		5B87D79223F2C57F009DACAA /* SF */ = {
@@ -3033,6 +3043,7 @@
 				1571BC1D24ACCB7300CEEB54 /* IdentifiableAlertController.swift in Sources */,
 				1541D7ED1FC81D4200D52A5D /* URL+Extensions.swift in Sources */,
 				152A39D421905C3E00D9F8E4 /* SubjectCell.swift in Sources */,
+				5B64B8C824C0528C00864F61 /* ComposeViewController.swift in Sources */,
 				B7DB7FD2221AD332003968DA /* SegueHandlerType.swift in Sources */,
 				15326E2D24A4BD1C00EA8C9B /* AppSettings+UsePEPFolderProvider.swift in Sources */,
 				0033C08320D7F41600224E61 /* ThreadedEmailViewModelDelegate.swift in Sources */,
@@ -3043,9 +3054,7 @@
 				B7DFEA52225368670080A2BA /* VirtualFolder.swift in Sources */,
 				1521B799241BE086000EAE57 /* UIUtil+Contacts.swift in Sources */,
 				5B2F7E63240D25CF004DDFA2 /* TutorialStepViewController.swift in Sources */,
-				B722EC7A1E5C879000A2B9D5 /* FolderUiProtocols.swift in Sources */,
 				5BBE80CF24B733C0008DE0E5 /* AccountSettingsTableViewCell.swift in Sources */,
-				B722EC7A1E5C879000A2B9D5 /* FolderUiProtocols.swift in Sources */,
 				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,
 				37F615CF238BE584001AAE48 /* ManualAccountSetupView.swift in Sources */,
 				5B3B019124B46CFC00FBB4B5 /* UILayout+Extension.swift in Sources */,

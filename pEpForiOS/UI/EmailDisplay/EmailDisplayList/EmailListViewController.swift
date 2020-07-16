@@ -11,7 +11,7 @@ import UIKit
 import SwipeCellKit
 import pEpIOSToolbox
 
-final class EmailListViewController: UIViewController, SwipeTableViewCellDelegate {
+final class EmailListViewController: ComposeViewController, SwipeTableViewCellDelegate {
     /// Stuff that must be done once only in viewWillAppear
     private var doOnce: (()-> Void)?
     /// With this tag we recognize our own created flexible space buttons, for easy removal later.
@@ -95,6 +95,11 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
             doOnce?()
         }
         updateFilterText()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        presentComposeViewM()
     }
 
 

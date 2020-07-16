@@ -29,7 +29,7 @@ class ComposeTableViewController: UITableViewController {
         return DocumentAttachmentPickerViewController(
             viewModel: viewModel?.documentAttachmentPickerViewModel())
     }()
-    private var isInitialFocusSet = false
+    private var isInitialFocusSet = true
     private var scrollUtil = TextViewInTableViewScrollUtil()
 
     var viewModel: ComposeViewModel? {
@@ -614,7 +614,7 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
             // The last cell is not yet displayed (as we are in "willDisplay ..."), thus async.
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+//                    Log.shared.errorAndCrash("Lost MySelf")
                     return
                 }
                 me.setInitialFocus()

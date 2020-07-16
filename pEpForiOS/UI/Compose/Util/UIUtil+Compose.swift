@@ -67,4 +67,27 @@ extension UIUtils {
         }
         presenterVc.present(composeNavigationController, animated: true)
     }
+
+    static func composeViewTest() -> UIViewController? {
+        let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
+        guard
+            let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
+                Constants.composeSceneStoryboardId) as? UINavigationController,
+            let composeVc = composeNavigationController.rootViewController
+                as? ComposeTableViewController
+            else {
+                Log.shared.errorAndCrash("Missing required data")
+                return nil
+        }
+
+        let composeVM = ComposeViewModel(composeMode: .normal,
+                                         prefilledTo: nil,
+                                         originalMessage: nil)
+        composeVc.viewModel = composeVM
+
+        return composeNavigationController
+    }
+
+
+
 }
