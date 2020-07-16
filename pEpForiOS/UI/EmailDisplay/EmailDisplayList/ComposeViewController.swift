@@ -100,7 +100,7 @@ class ComposeViewController: UIViewController {
     
     private var bottomConstraint = NSLayoutConstraint()
     
-    private func layout(extraHeight: CGFloat = 100.0) {
+    private func layout() {
         overlayView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(overlayView)
         overlayView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
@@ -115,21 +115,21 @@ class ComposeViewController: UIViewController {
         popupView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         bottomConstraint = popupView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: popupOffset)
         bottomConstraint.isActive = true
-        popupView.heightAnchor.constraint(equalToConstant: 500 + extraHeight).isActive = true
+        popupView.heightAnchor.constraint(equalToConstant: 600).isActive = true
 
         gestureHandler.translatesAutoresizingMaskIntoConstraints = false
         popupView.addSubview(gestureHandler)
         gestureHandler.leadingAnchor.constraint(equalTo: popupView.leadingAnchor).isActive = true
         gestureHandler.trailingAnchor.constraint(equalTo: popupView.trailingAnchor).isActive = true
         gestureHandler.topAnchor.constraint(equalTo: popupView.topAnchor, constant: 0).isActive = true
-        gestureHandler.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        gestureHandler.backgroundColor = UIColor.blue.withAlphaComponent(0.2)
+        gestureHandler.heightAnchor.constraint(equalToConstant: 150).isActive = true
+//        gestureHandler.backgroundColor = UIColor.blue.withAlphaComponent(0.2)
 
         closedTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         popupView.addSubview(closedTitleLabel)
         closedTitleLabel.leadingAnchor.constraint(equalTo: popupView.leadingAnchor).isActive = true
         closedTitleLabel.trailingAnchor.constraint(equalTo: popupView.trailingAnchor).isActive = true
-        closedTitleLabel.topAnchor.constraint(equalTo: popupView.topAnchor, constant: 20).isActive = true
+        closedTitleLabel.topAnchor.constraint(equalTo: popupView.topAnchor, constant: 30).isActive = true
         
         openTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         popupView.addSubview(openTitleLabel)
@@ -141,22 +141,24 @@ class ComposeViewController: UIViewController {
         popupView.addSubview(contentView)
         contentView.leadingAnchor.constraint(equalTo: popupView.leadingAnchor).isActive = true
         contentView.trailingAnchor.constraint(equalTo: popupView.trailingAnchor).isActive = true
-        contentView.topAnchor.constraint(equalTo: gestureHandler.bottomAnchor, constant: 30).isActive = true
-        contentView.heightAnchor.constraint(equalToConstant: 428).isActive = true
+        contentView.topAnchor.constraint(equalTo: popupView.topAnchor, constant: 50).isActive = true
+        contentView.heightAnchor.constraint(equalToConstant: 500).isActive = true
+        contentView.backgroundColor = UIColor.red
 
         setupChildViewController()
     }
 
 
     func setupChildViewController() {
-        let parent = self
-        let child = UIUtils.composeViewTest()!
+        let child = UIUtils.composeNavigationController()!
 
         // First, add the view of the child to the view of the parent
         child.removeFromParent()
-        parent.contentView.addSubview(child.view)
+        contentView.addSubview(child.view)
+        child.view.fullSizeInSuperView()
+
         // Then, add the child to the parent
-        parent.addChild(child)
+        addChild(child)
 
         // Finally, notify the child that it was moved to a parent
         child.didMove(toParent: parent)
@@ -192,14 +194,15 @@ class ComposeViewController: UIViewController {
                 self.bottomConstraint.constant = 0
                 self.popupView.layer.cornerRadius = 20
                 self.overlayView.alpha = 0.5
-                self.closedTitleLabel.transform = CGAffineTransform(scaleX: 1.6, y: 1.6).concatenating(CGAffineTransform(translationX: 0, y: 15))
+//                self.closedTitleLabel.transform = CGAffineTransform(scaleX: 1.6, y: 1.6).concatenating(CGAffineTransform(translationX: 0, y: 15))
                 self.openTitleLabel.transform = .identity
+                self.contentView.layoutSubviews()
             case .closed:
                 self.bottomConstraint.constant = self.popupOffset
                 self.popupView.layer.cornerRadius = 0
                 self.overlayView.alpha = 0
                 self.closedTitleLabel.transform = .identity
-                self.openTitleLabel.transform = CGAffineTransform(scaleX: 0.65, y: 0.65).concatenating(CGAffineTransform(translationX: 0, y: -15))
+//                self.openTitleLabel.transform = CGAffineTransform(scaleX: 0.65, y: 0.65).concatenating(CGAffineTransform(translationX: 0, y: -15))
             }
             self.view.layoutIfNeeded()
         })
@@ -263,7 +266,6 @@ class ComposeViewController: UIViewController {
         runningAnimators.append(transitionAnimator)
         runningAnimators.append(inTitleAnimator)
         runningAnimators.append(outTitleAnimator)
-        
     }
     
     @objc private func popupViewPanned(recognizer: UIPanGestureRecognizer) {
@@ -323,7 +325,6 @@ class ComposeViewController: UIViewController {
             ()
         }
     }
-    
 }
 
 // MARK: - InstantPanGestureRecognizer

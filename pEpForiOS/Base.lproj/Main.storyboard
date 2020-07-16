@@ -688,33 +688,6 @@
             </objects>
             <point key="canvasLocation" x="6321" y="-909"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="u4M-zR-mQT">
-            <objects>
-                <viewController storyboardIdentifier="fakeVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fSF-bM-xk7" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="92o-ZG-pcc">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tpl-Ui-o5E">
-                                <rect key="frame" x="166.5" y="156.5" width="42" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="tpl-Ui-o5E" firstAttribute="centerY" secondItem="ysB-Hq-4Hh" secondAttribute="centerY" multiplier="0.5" id="UtE-rX-v09"/>
-                            <constraint firstItem="tpl-Ui-o5E" firstAttribute="centerX" secondItem="ysB-Hq-4Hh" secondAttribute="centerX" id="alb-wJ-hxm"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="ysB-Hq-4Hh"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="udj-xK-RXE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4438" y="1298"/>
-        </scene>
         <!--ComposeTableViewController-->
         <scene sceneID="6gr-JE-uNa">
             <objects>

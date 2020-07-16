@@ -102,7 +102,6 @@ final class EmailListViewController: ComposeViewController, SwipeTableViewCellDe
         presentComposeViewM()
     }
 
-
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
