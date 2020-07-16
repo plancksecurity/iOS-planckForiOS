@@ -181,6 +181,20 @@ public class AdapterWrapper {
         }
     }
 
+    public static func importKey(_ keydata: String,
+                                 errorHandler: @escaping (_ error: Error) -> Void,
+                                 completion: @escaping ([PEPIdentity]) -> Void) {
+        queue.async {
+            let session = PEPSession()
+            do {
+                let identities = try session.importKey(keydata)
+                completion(identities)
+            } catch {
+                errorHandler(error)
+            }
+        }
+    }
+
     private static let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
                                              attributes: .concurrent,
