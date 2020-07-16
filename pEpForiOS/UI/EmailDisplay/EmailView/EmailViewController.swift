@@ -37,7 +37,6 @@ class EmailViewController: UIViewController {
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var showExternalContentButton: UIButton!
     @IBOutlet weak var showExternalContentLabel: UILabel!
-    
     var showExternalContent = false
     var showViewExternalContent = true
     

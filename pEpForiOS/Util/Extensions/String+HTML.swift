@@ -44,7 +44,6 @@ extension String {
 (<img.*? src=(3D)?"https?.*?>)
 """
         let result = find(pattern: pattern)
-        
         return result.count > 0
     }
 

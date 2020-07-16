@@ -41,7 +41,6 @@ extension UIButton {
         backgroundColor = UIColor.pEpGreen
         tintColor = UIColor.white
         roundCorners(corners: .allCorners, radius: 5)
-        //setTitle(placeholder, for: .normal)
     }
 
     /**
