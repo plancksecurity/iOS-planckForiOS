@@ -391,6 +391,20 @@ public class AdapterWrapper {
         }
     }
 
+    public static func enableSync(_ identity: PEPIdentity,
+                                  errorHandler: @escaping (_ error: Error) -> Void,
+                                  completion: @escaping () -> Void) {
+        queue.async {
+            let session = PEPSession()
+            do {
+                try session.enableSync(for: identity)
+                completion()
+            } catch {
+                errorHandler(error)
+            }
+        }
+    }
+
     private static let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
                                              autoreleaseFrequency: .inherit,
