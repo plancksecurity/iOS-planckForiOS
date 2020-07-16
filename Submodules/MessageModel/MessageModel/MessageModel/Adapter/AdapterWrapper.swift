@@ -270,6 +270,15 @@ public class AdapterWrapper {
         }
     }
 
+    public static func string(from rating: PEPRating,
+                              completion: @escaping (String) -> Void) {
+        queue.async {
+            let session = PEPSession()
+            let theString = session.string(from: rating)
+            completion(theString)
+        }
+    }
+
     private static let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
                                              autoreleaseFrequency: .inherit,
