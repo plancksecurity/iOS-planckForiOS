@@ -228,6 +228,26 @@ public class AdapterWrapper {
         }
     }
 
+    public static func getTrustwordsFpr1(_ fpr1: String,
+                                         fpr2: String,
+                                         language: String?,
+                                         full: Bool,
+                                         errorHandler: @escaping (_ error: Error) -> Void,
+                                         completion: @escaping (String) -> Void) {
+        queue.async {
+            let session = PEPSession()
+            do {
+                let trustwordsString = try session.getTrustwordsFpr1(fpr1,
+                                                                     fpr2: fpr2,
+                                                                     language: language,
+                                                                     full: full)
+                completion(trustwordsString)
+            } catch {
+                errorHandler(error)
+            }
+        }
+    }
+
     private static let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
                                              attributes: .concurrent,
