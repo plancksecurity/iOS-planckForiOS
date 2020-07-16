@@ -76,6 +76,9 @@
 /* Class = "UILabel"; text = "Title"; ObjectID = "Pgw-uY-8FO"; */
 "Pgw-uY-8FO.text" = "Titel";
 
+/* Class = "UILabel"; text = "Use a passphrase for new keys"; ObjectID = "Ppr-kD-hKR"; */
+"Ppr-kD-hKR.text" = "Gebruik een wachtwoordzin voor nieuwe sleutels.";
+
 /* Class = "UILabel"; text = "Name"; ObjectID = "QcW-va-Qh4"; */
 "QcW-va-Qh4.text" = "Naam:";
 
