@@ -93,6 +93,20 @@ public class AdapterWrapper {
         }
     }
 
+    public static func rating(for identity: PEPIdentity,
+                              errorHandler: @escaping (_ error: Error) -> Void,
+                              completion: @escaping (_ rating: PEPRating) -> Void) {
+        queue.async {
+            let session = PEPSession()
+            do {
+                let rating = try session.rating(for: identity).pEpRating
+                completion(rating)
+            } catch {
+                errorHandler(error)
+            }
+        }
+    }
+
     private static let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
                                              attributes: .concurrent,
