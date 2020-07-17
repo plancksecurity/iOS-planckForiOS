@@ -54,6 +54,23 @@ public class AdapterWrapper {
         }
     }
 
+    public static func outgoingMessageRating(from: Identity,
+                                             to: [Identity],
+                                             cc: [Identity],
+                                             bcc: [Identity],
+                                             errorHandler: @escaping (_ error: Error) -> Void,
+                                             completion: @escaping (_ rating: PEPRating) -> Void) {
+        let msg = PEPMessage()
+        msg.direction = .outgoing
+        msg.from = from.pEpIdentity()
+        msg.to = to.map() { $0.pEpIdentity() }
+        msg.cc = cc.map() { $0.pEpIdentity() }
+        msg.bcc = bcc.map() { $0.pEpIdentity() }
+        msg.shortMessage = "short"
+        msg.longMessage = "long"
+        outgoingRating(for: msg, errorHandler: errorHandler, completion: completion)
+    }
+
     public static func outgoingRatingPreview(for theMessage: PEPMessage,
                                              errorHandler: @escaping (_ error: Error) -> Void,
                                              completion: @escaping (_ rating: PEPRating) -> Void) {
