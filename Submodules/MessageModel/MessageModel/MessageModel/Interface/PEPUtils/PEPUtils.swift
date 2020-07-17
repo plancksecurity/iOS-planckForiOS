@@ -137,11 +137,11 @@ public class PEPUtils {
         return pEpColor(pEpRating: pEpRating(cdIdentity: cdIdentity))//!!!: IOS-2325_!
     }
 
-    public static func pEpColor(pEpRating: PEPRating?) -> PEPColor {//!!!: IOS-2325_!
+    public static func pEpColor(pEpRating: PEPRating?) -> PEPColor {
         if let rating = pEpRating {
-            return PEPSession().color(from: rating)//!!!: IOS-2325_!
+            return AdapterWrapper.color(from: rating)
         } else {
-            return PEPColor.noColor//!!!: IOS-2325_!
+            return PEPColor.noColor
         }
     }
 }
