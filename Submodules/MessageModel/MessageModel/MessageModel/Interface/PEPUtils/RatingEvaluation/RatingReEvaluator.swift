@@ -35,8 +35,8 @@ extension RatingReEvaluator: RatingReEvaluatorProtocol {
                     Log.shared.errorAndCrash(message: "No error, but nil rating")
                     return
                 }
-                message.cdObject.pEpRating = Int16(theRating.rawValue)
                 message.session.moc.performAndWait {
+                    message.cdObject.pEpRating = Int16(theRating.rawValue)
                     message.session.moc.saveAndLogErrors()
                 }
             }
