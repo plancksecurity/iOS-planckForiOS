@@ -21,7 +21,7 @@ import PEPObjCAdapterFramework
 /// The adapter will be called on a background queue and invoke the
 /// completion block on the main queue with the result.
 public class AdapterWrapper {
-    public static func reEvaluateMessage(_ message: PEPMessage,
+    static public func reEvaluateMessage(_ message: PEPMessage,
                                          xKeyList: [String]?,
                                          completion: @escaping (_ error: Error?, _ status: PEPStatus?, _ rating: PEPRating?) -> Void) {
         queue.async {
@@ -40,7 +40,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func outgoingMessageRating(from: Identity,
+    static public func outgoingMessageRating(from: Identity,
                                              to: [Identity],
                                              cc: [Identity],
                                              bcc: [Identity],
@@ -57,7 +57,7 @@ public class AdapterWrapper {
         outgoingRating(for: msg, errorHandler: errorHandler, completion: completion)
     }
 
-    public static func outgoingRatingPreview(for theMessage: PEPMessage,
+    static public func outgoingRatingPreview(for theMessage: PEPMessage,
                                              errorHandler: @escaping (_ error: Error) -> Void,
                                              completion: @escaping (_ rating: PEPRating) -> Void) {
         queue.async {
@@ -71,7 +71,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func rating(for identity: PEPIdentity,
+    static public func rating(for identity: PEPIdentity,
                               errorHandler: @escaping (_ error: Error) -> Void,
                               completion: @escaping (_ rating: PEPRating) -> Void) {
         queue.async {
@@ -85,7 +85,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func trustwords(forFingerprint fingerprint: String,
+    static public func trustwords(forFingerprint fingerprint: String,
                                   languageID: String,
                                   shortened: Bool,
                                   errorHandler: @escaping (_ error: Error) -> Void,
@@ -103,7 +103,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func update(_ identity: PEPIdentity,
+    static public func update(_ identity: PEPIdentity,
                               errorHandler: @escaping (_ error: Error) -> Void,
                               completion: @escaping () -> Void) {
         queue.async {
@@ -117,7 +117,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func trustPersonalKey(_ identity: PEPIdentity,
+    static public func trustPersonalKey(_ identity: PEPIdentity,
                                         errorHandler: @escaping (_ error: Error) -> Void,
                                         completion: @escaping () -> Void) {
         queue.async {
@@ -131,7 +131,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func keyMistrusted(_ identity: PEPIdentity,
+    static public func keyMistrusted(_ identity: PEPIdentity,
                                      errorHandler: @escaping (_ error: Error) -> Void,
                                      completion: @escaping () -> Void) {
         queue.async {
@@ -145,7 +145,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func keyResetTrust(_ identity: PEPIdentity,
+    static public func keyResetTrust(_ identity: PEPIdentity,
                                      errorHandler: @escaping (_ error: Error) -> Void,
                                      completion: @escaping () -> Void) {
         queue.async {
@@ -159,7 +159,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func importKey(_ keydata: String,
+    static public func importKey(_ keydata: String,
                                  errorHandler: @escaping (_ error: Error) -> Void,
                                  completion: @escaping ([PEPIdentity]) -> Void) {
         queue.async {
@@ -173,7 +173,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func getLog(errorHandler: @escaping (_ error: Error) -> Void,
+    static public func getLog(errorHandler: @escaping (_ error: Error) -> Void,
                               completion: @escaping (String) -> Void) {
         queue.async {
             let session = PEPSession()
@@ -186,7 +186,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func getTrustwordsIdentity1(_ identity1: PEPIdentity,
+    static public func getTrustwordsIdentity1(_ identity1: PEPIdentity,
                                               identity2: PEPIdentity,
                                               language: String?,
                                               full: Bool,
@@ -206,7 +206,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func getTrustwordsFpr1(_ fpr1: String,
+    static public func getTrustwordsFpr1(_ fpr1: String,
                                          fpr2: String,
                                          language: String?,
                                          full: Bool,
@@ -226,7 +226,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func languageList(errorHandler: @escaping (_ error: Error) -> Void,
+    static public func languageList(errorHandler: @escaping (_ error: Error) -> Void,
                                     completion: @escaping ([PEPLanguage]) -> Void) {
         queue.async {
             let session = PEPSession()
@@ -239,7 +239,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func rating(from string: String,
+    static public func rating(from string: String,
                               completion: @escaping (PEPRating) -> Void) {
         queue.async {
             let session = PEPSession()
@@ -248,7 +248,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func string(from rating: PEPRating,
+    static public func string(from rating: PEPRating,
                               completion: @escaping (String) -> Void) {
         queue.async {
             let session = PEPSession()
@@ -257,7 +257,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func isPEPUser(_ identity: PEPIdentity,
+    static public func isPEPUser(_ identity: PEPIdentity,
                                  errorHandler: @escaping (_ error: Error) -> Void,
                                  completion: @escaping (Bool) -> Void) {
         queue.async {
@@ -271,7 +271,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func setOwnKey(_ identity: PEPIdentity,
+    static public func setOwnKey(_ identity: PEPIdentity,
                                  fingerprint: String,
                                  errorHandler: @escaping (_ error: Error) -> Void,
                                  completion: @escaping () -> Void) {
@@ -286,12 +286,12 @@ public class AdapterWrapper {
         }
     }
 
-    public static func configurePassiveModeEnabled(_ enabled: Bool) {  //BUFF: done
+    static public func configurePassiveModeEnabled(_ enabled: Bool) {  //BUFF: done
         let session = PEPSession()
         session.configurePassiveModeEnabled(enabled)
     }
 
-    public static func setFlags(_ flags: PEPIdentityFlags,
+    static public func setFlags(_ flags: PEPIdentityFlags,
                                 for identity: PEPIdentity,
                                 errorHandler: @escaping (_ error: Error) -> Void,
                                 completion: @escaping () -> Void) {
@@ -306,7 +306,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func deliver(_ result: PEPSyncHandshakeResult,
+    static public func deliver(_ result: PEPSyncHandshakeResult,
                                identitiesSharing: [PEPIdentity]?,
                                errorHandler: @escaping (_ error: Error) -> Void,
                                completion: @escaping () -> Void) {
@@ -321,7 +321,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func trustOwnKeyIdentity(_ identity: PEPIdentity,
+    static public func trustOwnKeyIdentity(_ identity: PEPIdentity,
                                            errorHandler: @escaping (_ error: Error) -> Void,
                                            completion: @escaping () -> Void) {
         queue.async {
@@ -335,12 +335,12 @@ public class AdapterWrapper {
         }
     }
 
-    public static func color(from rating: PEPRating) -> PEPColor {
+    static public func color(from rating: PEPRating) -> PEPColor {
         let session = PEPSession()
         return session.color(from: rating)
     }
 
-    public static func keyReset(_ identity: PEPIdentity,
+    static public func keyReset(_ identity: PEPIdentity,
                                 fingerprint: String?,
                                 errorHandler: @escaping (_ error: Error) -> Void,
                                 completion: @escaping () -> Void) {
@@ -355,7 +355,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func leaveDeviceGroup(errorHandler: @escaping (_ error: Error) -> Void,
+    static public func leaveDeviceGroup(errorHandler: @escaping (_ error: Error) -> Void,
                                         completion: @escaping () -> Void) {
         queue.async {
             let session = PEPSession()
@@ -368,7 +368,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func enableSync(_ identity: PEPIdentity,
+    static public func enableSync(_ identity: PEPIdentity,
                                   errorHandler: @escaping (_ error: Error) -> Void,
                                   completion: @escaping () -> Void) {
         queue.async {
@@ -382,7 +382,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func disableSync(_ identity: PEPIdentity,
+    static public func disableSync(_ identity: PEPIdentity,
                                    errorHandler: @escaping (_ error: Error) -> Void,
                                    completion: @escaping () -> Void) {
         queue.async {
@@ -396,7 +396,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func queryKeySyncEnabled(_ identity: PEPIdentity,
+    static public func queryKeySyncEnabled(_ identity: PEPIdentity,
                                            errorHandler: @escaping (_ error: Error) -> Void,
                                            completion: @escaping (Bool) -> Void) {
         queue.async {
@@ -410,7 +410,7 @@ public class AdapterWrapper {
         }
     }
 
-    public static func keyResetAllOwnKeysError(errorHandler: @escaping (_ error: Error) -> Void,
+    static public func keyResetAllOwnKeysError(errorHandler: @escaping (_ error: Error) -> Void,
                                                completion: @escaping () -> Void) {
         queue.async {
             let session = PEPSession()
@@ -423,18 +423,18 @@ public class AdapterWrapper {
         }
     }
 
-    public static func configurePassphrase(_ passphrase: String) throws {
+    static public func configurePassphrase(_ passphrase: String) throws {
         let session = PEPSession()
         try session.configurePassphrase(passphrase)
     }
 
-    public static func configureUnencryptedSubjectEnabled(_ enabled: Bool) { //BUFF: done
+    static public func configureUnencryptedSubjectEnabled(_ enabled: Bool) { //BUFF: done
         PEPObjCAdapter.setUnEncryptedSubjectEnabled(enabled)
     }
 
     // MARK: - Private
 
-    private static let queue = DispatchQueue(label: "AdapterWrapper",
+    static private let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
                                              autoreleaseFrequency: .inherit,
                                              target: nil)
