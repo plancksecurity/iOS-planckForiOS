@@ -14,8 +14,8 @@ extension Message {
     /// Retrieves a status icon matching the status of the given message.
     ///
     /// - Returns: pEp security badge image
-    var securityBadgeForContactPicture: UIImage? {//!!!: IOS-2325_!
-        let color = PEPUtils.pEpColor(pEpRating: self.pEpRating())//!!!: IOS-2325_!
+    var securityBadgeForContactPicture: UIImage? {
+        let color = AdapterWrapper.pEpColor(pEpRating: self.pEpRating())
         var image: UIImage? = nil
         if color != PEPColor.noColor {
             image = color.statusIconInContactPicture()
