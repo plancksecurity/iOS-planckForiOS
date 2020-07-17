@@ -40,20 +40,6 @@ public class AdapterWrapper {
         }
     }
 
-    public static func outgoingRating(for theMessage: PEPMessage,
-                                      errorHandler: @escaping (_ error: Error) -> Void,
-                                      completion: @escaping (_ rating: PEPRating) -> Void) {
-        queue.async {
-            let session = PEPSession()
-            do {
-                let rating = try session.outgoingRating(for: theMessage).pEpRating
-                completion(rating)
-            } catch {
-                errorHandler(error)
-            }
-        }
-    }
-
     public static func outgoingMessageRating(from: Identity,
                                              to: [Identity],
                                              cc: [Identity],
@@ -446,8 +432,28 @@ public class AdapterWrapper {
         PEPObjCAdapter.setUnEncryptedSubjectEnabled(enabled)
     }
 
+    // MARK: - Private
+
     private static let queue = DispatchQueue(label: "AdapterWrapper",
                                              qos: .userInitiated,
                                              autoreleaseFrequency: .inherit,
                                              target: nil)
+}
+
+// MARK: - Private
+
+extension AdapterWrapper {
+    static private func outgoingRating(for theMessage: PEPMessage,
+                                       errorHandler: @escaping (_ error: Error) -> Void,
+                                       completion: @escaping (_ rating: PEPRating) -> Void) {
+        queue.async {
+            let session = PEPSession()
+            do {
+                let rating = try session.outgoingRating(for: theMessage).pEpRating
+                completion(rating)
+            } catch {
+                errorHandler(error)
+            }
+        }
+    }
 }
