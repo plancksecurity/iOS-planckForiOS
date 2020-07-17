@@ -108,7 +108,7 @@ class ComposeViewController: UIViewController {
         gestureHandler.leadingAnchor.constraint(equalTo: popupView.leadingAnchor).isActive = true
         gestureHandler.trailingAnchor.constraint(equalTo: popupView.trailingAnchor).isActive = true
         gestureHandler.topAnchor.constraint(equalTo: popupView.topAnchor).isActive = true
-        gestureHandler.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        gestureHandler.heightAnchor.constraint(equalToConstant: 100).isActive = true
 
         openTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         popupView.addSubview(openTitleLabel)
@@ -186,7 +186,6 @@ class ComposeViewController: UIViewController {
         
         // the transition completion block
         transitionAnimator.addCompletion { position in
-            
             // update the state
             switch position {
             case .start:
@@ -217,6 +216,10 @@ class ComposeViewController: UIViewController {
     }
     
     @objc private func popupViewPanned(recognizer: UIPanGestureRecognizer) {
+        guard runningAnimators.count > 0 else {
+            Log.shared.errorAndCrash("First animator not found")
+            return
+        }
         switch recognizer.state {
         case .began:
 
@@ -245,7 +248,6 @@ class ComposeViewController: UIViewController {
             }
             
         case .ended:
-            
             // variable setup
             let yVelocity = recognizer.velocity(in: popupView).y
             let shouldClose = yVelocity > 0
@@ -255,7 +257,6 @@ class ComposeViewController: UIViewController {
                 runningAnimators.forEach { $0.continueAnimation(withTimingParameters: nil, durationFactor: 0) }
                 break
             }
-            
             // reverse the animations based on their current state and pan motion
             switch currentState {
             case .open:
@@ -265,7 +266,6 @@ class ComposeViewController: UIViewController {
                 if shouldClose && !runningAnimators[0].isReversed { runningAnimators.forEach { $0.isReversed = !$0.isReversed } }
                 if !shouldClose && runningAnimators[0].isReversed { runningAnimators.forEach { $0.isReversed = !$0.isReversed } }
             }
-            
             // continue all animations
             runningAnimators.forEach { $0.continueAnimation(withTimingParameters: nil, durationFactor: 0) }
             
@@ -285,6 +285,4 @@ class InstantPanGestureRecognizer: UIPanGestureRecognizer {
         super.touchesBegan(touches, with: event)
         self.state = .began
     }
-    
 }
-
