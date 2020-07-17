@@ -29,21 +29,6 @@ public class AdapterWrapper {
         }
     }
 
-    public static func pEpColor(identity: Identity) -> PEPColor {
-        return pEpRating(identity: identity).pEpColor()
-    }
-
-    public static func pEpRating(identity: Identity) -> PEPRating {
-        let pEpSession = PEPSession()
-        let pEpIdentity = identity.pEpIdentity()
-        do {
-            return try pEpSession.rating(for: pEpIdentity).pEpRating
-        } catch let error as NSError {
-            assertionFailure("\(error)")
-            return .undefined
-        }
-    }
-
     public static func reEvaluateMessage(_ message: PEPMessage,
                                          xKeyList: [String]?,
                                          completion: @escaping (_ error: Error?, _ status: PEPStatus?, _ rating: PEPRating?) -> Void) {
