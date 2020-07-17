@@ -15,7 +15,7 @@ extension Message {
     ///
     /// - Returns: pEp security badge image
     var securityBadgeForContactPicture: UIImage? {
-        let color = AdapterWrapper.pEpColor(pEpRating: self.pEpRating())
+        let color = AdapterWrapper.color(from: self.pEpRating())
         var image: UIImage? = nil
         if color != PEPColor.noColor {
             image = color.statusIconInContactPicture()

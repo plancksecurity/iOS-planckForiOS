@@ -21,14 +21,6 @@ import PEPObjCAdapterFramework
 /// The adapter will be called on a background queue and invoke the
 /// completion block on the main queue with the result.
 public class AdapterWrapper {
-    public static func pEpColor(pEpRating: PEPRating?) -> PEPColor {
-        if let rating = pEpRating {
-            return PEPSession().color(from: rating)
-        } else {
-            return PEPColor.noColor
-        }
-    }
-
     public static func reEvaluateMessage(_ message: PEPMessage,
                                          xKeyList: [String]?,
                                          completion: @escaping (_ error: Error?, _ status: PEPStatus?, _ rating: PEPRating?) -> Void) {

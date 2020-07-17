@@ -13,7 +13,7 @@ import PEPObjCAdapterFramework
 
 extension PEPRating {
     public func pEpColor() -> PEPColor {
-        return AdapterWrapper.pEpColor(pEpRating: self)
+        return AdapterWrapper.color(from: self)
     }
 }
 
