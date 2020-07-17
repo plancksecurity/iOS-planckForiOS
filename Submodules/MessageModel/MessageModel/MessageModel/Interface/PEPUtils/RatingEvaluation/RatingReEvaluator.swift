@@ -23,24 +23,23 @@ public class RatingReEvaluator {
 }
 
 extension RatingReEvaluator: RatingReEvaluatorProtocol {
-
-    static public func reevaluate(message: Message) {//!!!: IOS-2325_!
-
+    static public func reevaluate(message: Message) {
         let pepMessage = message.cdObject.pEpMessage()
-        do {
-            let keys = message.cdObject.keysFromDecryption?.array as? [String] //!!!: Needs to be extented when implementing "Extra Keys" feature to take X-KeyList header into account
-            var newRating = PEPRating.undefined
-            try PEPSession().reEvaluateMessage(pepMessage,//!!!: IOS-2325_!
-                                               xKeyList: keys,
-                                               rating: &newRating,
-                                               status: nil)
-            message.cdObject.pEpRating = Int16(newRating.rawValue)
-            message.session.moc.performAndWait {
-                message.session.moc.saveAndLogErrors()
-            }
+        let keys = message.cdObject.keysFromDecryption?.array as? [String] //!!!: Needs to be extented when implementing "Extra Keys" feature to take X-KeyList header into account
 
-        } catch let error as NSError {
-            Log.shared.log(error: error)
+        AdapterWrapper.reEvaluateMessage(pepMessage, xKeyList: keys) { (error, status, rating) in
+            if let theError = error {
+                Log.shared.log(error: theError)
+            } else {
+                guard let theRating = rating else {
+                    Log.shared.errorAndCrash(message: "No error, but nil rating")
+                    return
+                }
+                message.cdObject.pEpRating = Int16(theRating.rawValue)
+                message.session.moc.performAndWait {
+                    message.session.moc.saveAndLogErrors()
+                }
+            }
         }
     }
 }
