@@ -56,7 +56,7 @@ class AppendMailsToFolderOperation: ImapSyncOperation {
 
 extension AppendMailsToFolderOperation {
 
-    private func handleNextMessage() {//!!!: IOS-2325_!
+    private func handleNextMessage() {
         backgroundQueue.addOperation { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -110,38 +110,40 @@ extension AppendMailsToFolderOperation {
                     return
                 }
 
-                do {
-                    let forceUnprotected = !cdMessage.pEpProtected
-                    let extraKeysFPRs = CdExtraKey.fprsOfAllExtraKeys(in: me.privateMOC)
-                    let encryptedMessage = try PEPUtils.encrypt(pEpMessage: pEpMessage,//!!!: IOS-2325_!
-                                                                encryptionFormat: forceUnprotected ? .none : .PEP,
-                                                                forSelf: forceUnprotected ? nil : pEpidentity,
-                                                                extraKeys: extraKeysFPRs)
-                    me.appendMessage(pEpMessage: encryptedMessage)
-                } catch let error as NSError {
-                    if error.domain == PEPObjCAdapterEngineStatusErrorDomain {
-                        switch error.code {
-                        case Int(PEPStatus.passphraseRequired.rawValue):
-                            //BUFF: keep unhandled and see how it works with the adapters new delegate approach
-                            break
-//                            me.handleError(BackgroundError.PepError.passphraseRequired(info:"Passphrase required encrypting message: \(cdMessage)"))
-                        case Int(PEPStatus.wrongPassphrase.rawValue):
-                            //BUFF: keep unhandled and see how it works with the adapters new delegate approach
-                            break
-//                            me.handleError(BackgroundError.PepError.wrongPassphrase(info:"Passphrase wrong encrypting message: \(cdMessage)"))
-                        default:
-                            Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
-                            me.handleError(BackgroundError.GeneralError.illegalState(info:
-                                "##\nError: \(error)\nencrypting message: \(cdMessage)\n##"))
+                let forceUnprotected = !cdMessage.pEpProtected
+                let extraKeysFPRs = CdExtraKey.fprsOfAllExtraKeys(in: me.privateMOC)
+                PEPUtils.encrypt(pEpMessage: pEpMessage,
+                                 encryptionFormat: forceUnprotected ? .none : .PEP,
+                                 forSelf: forceUnprotected ? nil : pEpidentity,
+                                 extraKeys: extraKeysFPRs,
+                                 errorCallback: { (error) in
+                                    let error = error as NSError
+                                    if error.domain == PEPObjCAdapterEngineStatusErrorDomain {
+                                        switch error.code {
+                                        case Int(PEPStatus.passphraseRequired.rawValue),
+                                             Int(PEPStatus.wrongPassphrase.rawValue):
+                                            // The adapter is responsible to ask for passphrase. We are not.
+                                            me.handleNextMessage()
+                                            return
+                                        default:
+                                            Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
+                                            me.handleError(BackgroundError.GeneralError.illegalState(info:
+                                                "##\nError: \(error)\nencrypting message: \(cdMessage)\n##"))
+                                        }
+                                    } else if error.domain == PEPObjCAdapterErrorDomain {
+                                        Log.shared.errorAndCrash("Unexpected ")
+                                        me.handleError(BackgroundError.GeneralError.illegalState(info:
+                                            "We do not exept this error domain to show up here: \(error)"))
+                                    } else {
+                                        Log.shared.errorAndCrash("Unhandled error domain: %@", "\(error.domain)")
+                                        me.handleError(BackgroundError.GeneralError.illegalState(info:
+                                            "Unhandled error domain: \(error.domain)"))
+                                    }
+                }) { (_, encryptedMessage) in
+                    me.backgroundQueue.addOperation {
+                        me.privateMOC.perform {
+                            me.appendMessage(pEpMessage: encryptedMessage)
                         }
-                    } else if error.domain == PEPObjCAdapterErrorDomain {
-                        Log.shared.errorAndCrash("Unexpected ")
-                        me.handleError(BackgroundError.GeneralError.illegalState(info:
-                            "We do not exept this error domain to show up here: \(error)"))
-                    } else {
-                        Log.shared.errorAndCrash("Unhandled error domain: %@", "\(error.domain)")
-                        me.handleError(BackgroundError.GeneralError.illegalState(info:
-                            "Unhandled error domain: \(error.domain)"))
                     }
                 }
             }
