@@ -64,16 +64,22 @@ class HandshakeTests: CoreDataDrivenTestBase {
         }
         XCTAssertTrue(foundXpEpVersion)
 
-        var keys: NSArray?
         var rating = PEPRating.undefined
-        let theMessage = try! session.decryptMessage(pEpMessage,
-                                                     flags: nil,
-                                                     rating: &rating,
-                                                     extraKeys: &keys,
-                                                     status: nil)
-        XCTAssertEqual(rating, .unencrypted)
+        var testee: PEPMessage?
 
-        guard let pEpFrom = theMessage.from else {
+        let exp = expectation(description: "exp")
+        PEPAsyncSession().decryptMessage(pEpMessage, flags: .none, extraKeys: nil, errorCallback: { (error) in
+            XCTFail(error.localizedDescription)
+            exp.fulfill()
+        }) { (_, pEpDecrypted, _, pEpRating, _) in
+            testee = pEpDecrypted
+            rating = pEpRating
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: TestUtil.waitTime)
+
+        XCTAssertEqual(rating, .unencrypted)
+        guard let pEpFrom = testee?.from else {
             XCTFail("expected from in message")
             return
         }

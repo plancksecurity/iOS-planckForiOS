@@ -90,34 +90,6 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
         }
     }
 
-    func testDecryptMessageHeapBufferOverflow() {
-        let cdAccount = SecretTestData().createWorkingCdAccount(context: moc)
-
-        let folder = CdFolder(context: moc)
-        folder.account = cdAccount
-        folder.name = ImapConnection.defaultInboxName
-        moc.saveAndLogErrors()
-
-        guard
-            let cdMessage = TestUtil.cdMessage(testClass:  type(of: self),
-                                               fileName: "MessageHeapBufferOverflow.txt",
-                                               cdOwnAccount: cdAccount)
-            else {
-                XCTFail()
-                return
-        }
-
-        let pEpMessage = cdMessage.pEpMessage(outgoing: false)
-        let session = PEPSession()
-        var keys: NSArray?
-        let pepDecryptedMessage = try! session.decryptMessage(pEpMessage,
-                                                              flags: nil,
-                                                              rating: nil,
-                                                              extraKeys: &keys,
-                                                              status: nil)
-        XCTAssertNotNil(pepDecryptedMessage.longMessage)
-    }
-
     // IOS-211
     func testAttachmentsDoNotGetDuplilcated() {
         let cdAccount = SecretTestData().createWorkingCdAccount(context: moc)
@@ -142,14 +114,24 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
 
     // MARK: - Helper
 
-    func tryDecryptMessage(
-        message: PEPMessage, myID: String, references: [String],
+    func tryDecryptMessage(message: PEPMessage,
+                           myID: String,
+                           references: [String],
         session: PEPSession = PEPSession()) {
-        var keys: NSArray?
-        let pepDecryptedMessage = try! session.decryptMessage(
-            message, flags: nil, rating: nil, extraKeys: &keys, status: nil)
-        XCTAssertEqual(pepDecryptedMessage.messageID, myID)
+        var testee: PEPMessage? = nil
+
+        let exp = expectation(description: "exp")
+        PEPAsyncSession().decryptMessage(message, flags: .none, extraKeys: nil, errorCallback: { (error) in
+            XCTFail(error.localizedDescription)
+            exp.fulfill()
+        }) { (_, pEpDecrypted, _, _, _) in
+            testee = pEpDecrypted
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: TestUtil.waitTime)
+
+        XCTAssertEqual(testee?.messageID, myID)
         // check that original references are restored (ENGINE-290)
-        XCTAssertEqual(pepDecryptedMessage.references ?? [], references)
+        XCTAssertEqual(testee?.references ?? [], references)
     }
 }
