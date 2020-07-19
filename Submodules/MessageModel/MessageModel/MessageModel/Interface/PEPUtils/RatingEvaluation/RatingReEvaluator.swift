@@ -11,9 +11,10 @@ import PEPObjCAdapterFramework
 
 protocol RatingReEvaluatorProtocol {
     /// Reevaluates the pEp rating of the given message and saves it.
-    ///
-    /// - Parameter message: message to re-evaluate rating for
-    static func reevaluate(message: Message)
+    /// - Parameters:
+    ///   - message: message to re-evaluate rating for
+    ///   - completion: called when done reevaluating. I quaranteed to be called on the main queue.
+    static func reevaluate(message: Message, completion:  @escaping ()->Void)
 }
 
 public class RatingReEvaluator {
@@ -24,23 +25,20 @@ public class RatingReEvaluator {
 
 extension RatingReEvaluator: RatingReEvaluatorProtocol {
 
-    static public func reevaluate(message: Message) {//!!!: IOS-2325_!
-
+    static public func reevaluate(message: Message, completion:  @escaping ()->Void) {
         let pepMessage = message.cdObject.pEpMessage()
-        do {
-            let keys = message.cdObject.keysFromDecryption?.array as? [String] //!!!: Needs to be extented when implementing "Extra Keys" feature to take X-KeyList header into account
-            var newRating = PEPRating.undefined
-            try PEPSession().reEvaluateMessage(pepMessage,//!!!: IOS-2325_!
-                                               xKeyList: keys,
-                                               rating: &newRating,
-                                               status: nil)
-            message.cdObject.pEpRating = Int16(newRating.rawValue)
-            message.session.moc.performAndWait {
-                message.session.moc.saveAndLogErrors()
+        let keys = message.cdObject.keysFromDecryption?.array as? [String] //!!!: Needs to be extented for "Extra Keys" feature to take X-KeyList header into account
+        PEPAsyncSession().reEvaluateMessage(pepMessage, xKeyList: keys, rating: .undefined, errorCallback: { (error) in
+            Log.shared.errorAndCrash("%@", error.localizedDescription)
+            completion()
+        }) { (newRating) in
+            DispatchQueue.main.async {
+                message.cdObject.pEpRating = Int16(newRating.rawValue)
+                message.session.moc.performAndWait {
+                    message.session.moc.saveAndLogErrors()
+                }
+                completion()
             }
-
-        } catch let error as NSError {
-            Log.shared.log(error: error)
         }
     }
 }

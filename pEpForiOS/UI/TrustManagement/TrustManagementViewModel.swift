@@ -180,8 +180,7 @@ final class TrustManagementViewModel {
         rows[indexPath.row].fingerprint = trustManagementUtil.getFingerprint(for: identity)//!!!: IOS-2325_!
         rows[indexPath.row].forceRed = true
         trustManagementUtil.denyTrust(for: identity)//!!!: IOS-2325_!
-        reevaluateMessage()//!!!: IOS-2325_!
-        delegate?.dataChanged(forRowAt: indexPath)
+        reevaluateMessage(forRowAt: indexPath)
     }
     
     /// Confirm the handshake
@@ -194,8 +193,7 @@ final class TrustManagementViewModel {
         rows[indexPath.row].forceRed = false
         let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
         trustManagementUtil.confirmTrust(for: identity)//!!!: IOS-2325_!
-        reevaluateMessage()//!!!: IOS-2325_!
-        delegate?.dataChanged(forRowAt: indexPath)
+        reevaluateMessage(forRowAt: indexPath)
     }
     
     /// Handles the undo action.
@@ -207,8 +205,7 @@ final class TrustManagementViewModel {
         rows[indexPath.row].forceRed = false
         trustManagementUtil.undoMisstrustOrTrust(for: row.handshakeCombination.partnerIdentity,//!!!: IOS-2325_!
                                                  fingerprint: row.fingerprint)
-        reevaluateMessage()//!!!: IOS-2325_!
-        delegate?.dataChanged(forRowAt: indexPath)
+        reevaluateMessage(forRowAt: indexPath)
     }
     
     /// Handles the redey action
@@ -217,8 +214,7 @@ final class TrustManagementViewModel {
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
         trustManagementUtil.resetTrust(for: row.handshakeCombination.partnerIdentity)
-        reevaluateMessage()//!!!: IOS-2325_!
-        delegate?.dataChanged(forRowAt: indexPath)
+        reevaluateMessage(forRowAt: indexPath)
     }
 
     /// - returns: the available languages.
@@ -272,15 +268,18 @@ final class TrustManagementViewModel {
 
     ///MARK: - Private
 
+    /// Re-computes the messages rating, saves the message and informs the delegate about a possible data change.
     /// This must be called after every trust state change. The curently processed message might
     /// change color.
-    private func reevaluateMessage() {//!!!: IOS-2325_!
+    private func reevaluateMessage(forRowAt indexPath: IndexPath) {
         message.session.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.error("Lost myself - The message will not be reevaluated")
                 return
             }
-            RatingReEvaluator.reevaluate(message: me.message)//!!!: IOS-2325_!
+            RatingReEvaluator.reevaluate(message: me.message) {
+                me.delegate?.dataChanged(forRowAt: indexPath)
+            }
         }
     }
 
