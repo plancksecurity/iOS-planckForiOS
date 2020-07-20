@@ -18,16 +18,16 @@ extension Folder {
 
     /// Count unread emails on a folder type.
     /// - Parameters:
-    ///   - folderType: The folder type to filter
+    ///   - foldersOfType: The folder type to filter
     ///   - session: The current session, if not specified will be `main`
     /// - Returns: The number of unread mails for a certain folder type.
-    public static func countAllUnread(folderType: FolderType, session: Session = Session.main) -> Int {
+    public static func countUnreadIn(foldersOfType: FolderType, session: Session = Session.main) -> Int {
         var predicates = [NSPredicate]()
-        predicates.append(Message.PredicateFactory.existingMessages())
-        predicates.append(Message.PredicateFactory.processed())
-        predicates.append(Message.PredicateFactory.unread(value: true))
-        predicates.append(Message.PredicateFactory.isNotAutoConsumable())
-        predicates.append(CdMessage.PredicateFactory.isIn(folderType: folderType))
+        predicates.append(CdMessage.PredicateFactory.existingMessages())
+        predicates.append(CdMessage.PredicateFactory.processed())
+        predicates.append(CdMessage.PredicateFactory.unread(value: true))
+        predicates.append(CdMessage.PredicateFactory.isNotAutoConsumable())
+        predicates.append(CdMessage.PredicateFactory.isIn(folderOfType: foldersOfType))
         let comp = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         return CdMessage.count(predicate: comp, in: session.moc)
     }

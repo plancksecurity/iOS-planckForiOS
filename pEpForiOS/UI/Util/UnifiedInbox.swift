@@ -88,7 +88,7 @@ public class UnifiedInbox: VirtualFolderProtocol {
             Log.shared.errorAndCrash("Folder Type not found")
             return 0
         }
-        return Folder.countAllUnread(folderType: folderType)
+        return Folder.countUnreadIn(foldersOfType: folderType)
     }
 }
 
