@@ -51,6 +51,17 @@ public class FolderCellViewModel {
         return folder.isSelectable
     }
 
+    public var numUnreadMails : Int {
+        if let f = folder as? VirtualFolderProtocol {
+            return f.countUnread
+        } else if let f = folder as? Folder {
+            return f.countUnread
+        } else {
+            Log.shared.errorAndCrash("Can't recognize Folder")
+            return 0
+        }
+    }
+
     public var isExpand = true
     public var isHidden = false
 
@@ -129,7 +140,6 @@ public class FolderCellViewModel {
 
     }
 }
-
 extension FolderCellViewModel : Equatable {
 
     public static func == (lhs: FolderCellViewModel, rhs: FolderCellViewModel) -> Bool {

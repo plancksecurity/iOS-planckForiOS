@@ -23,6 +23,10 @@ extension Message {
         static public func processed() -> NSPredicate {
             return CdMessage.PredicateFactory.processed()
         }
+
+        static public func unread(value : Bool) -> NSPredicate {
+            return CdMessage.PredicateFactory.unread(value: value)
+        }
     }
 }
 

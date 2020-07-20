@@ -141,6 +141,15 @@ extension CdMessage {
             return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         }
 
+        /// Returns a Predicate to filter based on the folder type passed by parameter.
+        /// - Parameter folderType: The folder type to filter
+        /// - Returns: The predicate to query.
+        static func isIn(folderOfType: FolderType) -> NSPredicate {
+            return NSPredicate(format: "%K = %d",
+                               RelationshipKeyPath.cdMessage_parent_typeRawValue,
+                               folderOfType.rawValue)
+        }
+
         static func isInInbox() -> NSPredicate {
             return NSPredicate(format: "%K = %d",
                                RelationshipKeyPath.cdMessage_parent_typeRawValue,

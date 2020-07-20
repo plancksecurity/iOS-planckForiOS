@@ -149,6 +149,22 @@ public class Folder: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
 
         return cdFolders.first?.folder()
     }
+
+    /// Number of unread mails in this folder
+    public var countUnread: Int {
+        guard let parent = cdFolder() else {
+            Log.shared.errorAndCrash("Folder not found.")
+            return 0
+        }
+        var predicates = [NSPredicate]()
+        predicates.append(CdMessage.PredicateFactory.allMessages(parentFolder: parent))
+        predicates.append(CdMessage.PredicateFactory.existingMessages())
+        predicates.append(CdMessage.PredicateFactory.processed())
+        predicates.append(CdMessage.PredicateFactory.isNotAutoConsumable())
+        predicates.append(CdMessage.PredicateFactory.unread(value: true))
+        let compound = NSCompoundPredicate(type: .and, subpredicates: predicates)
+        return CdMessage.count(predicate: compound, in: session.moc)
+    }
 }
 
 // MARK: - Helper
