@@ -130,6 +130,9 @@ final class FolderTableViewController: UITableViewController {
         cell.titleLabel.font = UIFont.pepFont(style: .body, weight: .regular)
         cell.titleLabel.adjustsFontForContentSizeCategory = true
         cell.titleLabel?.textColor = fcvm.isSelectable ? .black : .pEpGray
+        cell.unreadMailsLabel.font = UIFont.pepFont(style: .body, weight: .regular)
+        let numUnreadMails = fcvm.numUnreadMails
+        cell.unreadMailsLabel.text = numUnreadMails > 0 ? String(numUnreadMails) : ""
         cell.iconImageView.image = fcvm.image
         cell.separatorImageView.isHidden = fcvm.shouldHideSeparator()
         cell.delegate = self

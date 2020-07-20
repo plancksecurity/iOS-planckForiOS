@@ -82,6 +82,14 @@ public class UnifiedInbox: VirtualFolderProtocol {
     public var name: String {
         return UnifiedInbox.defaultUnifiedInboxName
     }
+
+    public var countUnread : Int {
+        guard let folderType = agregatedFolderType else {
+            Log.shared.errorAndCrash("Folder Type not found")
+            return 0
+        }
+        return Folder.countUnreadIn(foldersOfType: folderType)
+    }
 }
 
 extension UnifiedInbox: Equatable {
