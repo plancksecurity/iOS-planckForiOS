@@ -162,7 +162,7 @@ class EmailListViewModel: EmailDisplayViewModel {
             return nil
         }
         let seen = messageQueryResults[index].imapFlags.seen
-        return seen ? .read : .unread
+        return seen ? .unread : .read
     }
     
     /// - returns: action to trigger if user clicks "more" button

@@ -518,7 +518,6 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
             return nil
         }
 
-        
         // Delete or Archive
         let destructiveAction = model.getDestructiveAction(forMessageAt: indexPath.row)
         let archiveAction =
