@@ -191,7 +191,7 @@ public extension NSManagedObject {
     ///   If not passed, main context will be used.
     /// - Returns: The amount of elements that match the predicate
     class func count(predicate: NSPredicate,
-                     in context: NSManagedObjectContext?) -> Int {
+                     in context: NSManagedObjectContext? = nil) -> Int {
         let moc: NSManagedObjectContext = context ?? Stack.shared.mainContext
         let request = createFetchRequest(predicate: predicate)
         guard let count = try? moc.count(for: request) else {
