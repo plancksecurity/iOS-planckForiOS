@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -308,10 +308,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cFd-dO-xyH" customClass="KeyInputView" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="30" y="143" width="260" height="282.5"/>
+                                <rect key="frame" x="30" y="145" width="260" height="278.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="USV-ch-gmd">
-                                        <rect key="frame" x="0.0" y="10" width="260" height="272.5"/>
+                                        <rect key="frame" x="0.0" y="10" width="260" height="268.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Ag-A8-lJe">
                                                 <rect key="frame" x="12" y="0.0" width="236" height="5"/>
@@ -355,20 +355,20 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="66h-xV-F9x">
-                                                <rect key="frame" x="0.0" y="222.5" width="260" height="50"/>
+                                                <rect key="frame" x="0.0" y="222.5" width="260" height="46"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="8Bk-30-sb6">
-                                                        <rect key="frame" x="0.0" y="5" width="260" height="45"/>
+                                                        <rect key="frame" x="0.0" y="1" width="260" height="45"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" priority="250" constant="45" id="kTS-T3-vT9"/>
+                                                            <constraint firstAttribute="height" constant="45" id="kTS-T3-vT9"/>
                                                         </constraints>
                                                     </stackView>
                                                 </subviews>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstItem="8Bk-30-sb6" firstAttribute="leading" secondItem="66h-xV-F9x" secondAttribute="leading" id="Bf8-eJ-H4f"/>
                                                     <constraint firstAttribute="trailing" secondItem="8Bk-30-sb6" secondAttribute="trailing" id="apH-78-mXi"/>
-                                                    <constraint firstAttribute="height" priority="250" constant="46" id="jFx-Xe-ukD"/>
+                                                    <constraint firstAttribute="height" constant="46" id="jFx-Xe-ukD"/>
                                                     <constraint firstAttribute="bottom" secondItem="8Bk-30-sb6" secondAttribute="bottom" id="ukF-1z-fzk"/>
                                                 </constraints>
                                             </view>
@@ -415,7 +415,6 @@
                         <outlet property="alertTitle" destination="kNd-Jx-X9l" id="eVk-uI-1Ci"/>
                         <outlet property="alertTitleTopViewHeightConstraint" destination="4EI-3w-tJx" id="DUD-0J-pcX"/>
                         <outlet property="buttonsStackView" destination="8Bk-30-sb6" id="dhe-o3-OCn"/>
-                        <outlet property="buttonsView" destination="66h-xV-F9x" id="EGD-4m-7KG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W8j-ep-qHS" userLabel="First Responder" sceneMemberID="firstResponder"/>
