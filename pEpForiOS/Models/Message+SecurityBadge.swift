@@ -12,14 +12,14 @@ import PEPObjCAdapterFramework
 extension Message {
 
     /// Retrieves a status icon matching the status of the given message.
-    ///
-    /// - Returns: pEp security badge image
-    var securityBadgeForContactPicture: UIImage? {//!!!: IOS-2325_!
-        let color = PEPUtils.pEpColor(pEpRating: self.pEpRating())//!!!: IOS-2325_!
-        var image: UIImage? = nil
-        if color != PEPColor.noColor {
-            image = color.statusIconInContactPicture()
+    func securityBadgeForContactPicture(completion: @escaping (UIImage?)->Void) {
+        pEpRating { (rating) in
+            let color = PEPUtils.pEpColor(pEpRating: rating)
+            var image: UIImage? = nil
+            if color != PEPColor.noColor {
+                image = color.statusIconInContactPicture()
+            }
+            completion(image)
         }
-        return image
     }
 }

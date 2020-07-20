@@ -274,32 +274,50 @@ extension ComposeViewModel {
             completion(true)
             return
         }
-        let originalRating = originalMessage.pEpRating()//!!!: IOS-2325_!
-        let pEpRating = state.rating
-        let title: String
-        let message: String
-        if composeMode == .forward {
-            title = NSLocalizedString("Confirm Forward",
-                                      comment: "Confirm less secure forwarding message alert title")
-            message = NSLocalizedString("You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
-                                        comment: "Confirm less secure forwarding message alert body")
-        } else {
-            title = NSLocalizedString("Confirm Answer",
-                                      comment: "Confirm less secure answering message alert title")
-            message = NSLocalizedString("You are about to answer a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
-                                        comment: "Confirm less secure answer message alert body")
+        var originalRating: PEPRating? = nil
+        let group = DispatchGroup()
+        group.enter()
+        originalMessage.pEpRating { (rating) in
+            originalRating = rating
+            group.leave()
         }
+        group.notify(queue: DispatchQueue.main) {[weak self] in
+            guard let me = self else {
+                // Valid case. The we might have been dismissed already.
+                // Do nothing ...
+                return
+            }
+            guard let originalRating = originalRating else {
+                Log.shared.errorAndCrash("No rating")
+                completion(false)
+                return
+            }
+            let pEpRating = state.rating
+            let title: String
+            let message: String
+            if composeMode == .forward {
+                title = NSLocalizedString("Confirm Forward",
+                                          comment: "Confirm less secure forwarding message alert title")
+                message = NSLocalizedString("You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
+                                            comment: "Confirm less secure forwarding message alert body")
+            } else {
+                title = NSLocalizedString("Confirm Answer",
+                                          comment: "Confirm less secure answering message alert title")
+                message = NSLocalizedString("You are about to answer a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
+                                            comment: "Confirm less secure answer message alert body")
+            }
 
-        if pEpRating.hasLessSecurePepColor(than: originalRating) {
-            // Forwarded mesasge is less secure than original message. Warn the user.
-            delegate?.showTwoButtonAlert(withTitle: title,
-                                         message: message,
-                                         cancelButtonText: "NO",
-                                         positiveButtonText: "YES",
-                                         cancelButtonAction: { completion(false) },
-                                         positiveButtonAction: { completion(true) })
-        } else {
-            completion(true)
+            if pEpRating.hasLessSecurePepColor(than: originalRating) {
+                // Forwarded mesasge is less secure than original message. Warn the user.
+                me.delegate?.showTwoButtonAlert(withTitle: title,
+                                             message: message,
+                                             cancelButtonText: "NO",
+                                             positiveButtonText: "YES",
+                                             cancelButtonAction: { completion(false) },
+                                             positiveButtonAction: { completion(true) })
+            } else {
+                completion(true)
+            }
         }
     }
 }

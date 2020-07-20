@@ -164,12 +164,17 @@ class EmailDetailViewModel: EmailDisplayViewModel {
 
     /// - Parameter indexPath: indexPath of the cell to show the pEp rating for.
     /// - returns: pEp rating for cell at given indexPath
-    public func pEpRating(forItemAt indexPath: IndexPath) -> PEPRating {//!!!: IOS-2325_!
+    public func pEpRating(forItemAt indexPath: IndexPath, completion: @escaping (PEPRating)->Void){
         guard let message = message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash("No msg")
-            return .undefined
+            completion(.undefined)
+            return
         }
-        return message.pEpRating()//!!!: IOS-2325_!
+        return message.pEpRating { (rating) in
+            DispatchQueue.main.async {
+                completion(rating)
+            }
+        }
     }
 
     /// - Parameter indexPath: indexPath of the cell to compute result for.
@@ -264,26 +269,45 @@ extension EmailDetailViewModel {
 // MARK: - QueryResultsIndexPathRowDelegate
 
 extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
+    // Makes shure not to call `allUpdatesReceived` before asnyc updates have been processed.
+    static let waitForUpdatesFinishedGroup = DispatchGroup()
 
     func didInsertRow(indexPath: IndexPath) {
         handleIndexPathIsBeforeCurrentlyShownMessage(insertedIndexPath: indexPath)
         delegate?.emailListViewModel(viewModel: self, didInsertDataAt: [indexPath])
     }
 
-    func didUpdateRow(indexPath: IndexPath) {//!!!: IOS-2325_!
-        if pathsForMessagesMarkedForRedecrypt.contains(indexPath) {
-            if let message = message(representedByRowAt: indexPath),
-                !message.pEpRating().isUnDecryptable() {//!!!: IOS-2325_!
-                guard let delegate = delegate as? EmailDetailViewModelDelegate else {
-                    Log.shared.errorAndCrash("Inbvalid state")
-                    return
-                }
-                // Previously undecryptable message has successfully been decrypted.
-                delegate.isNotUndecryptableAnyMore(indexPath: indexPath)
+    func didUpdateRow(indexPath: IndexPath) {
+        EmailDetailViewModel.waitForUpdatesFinishedGroup.enter()
+        var messageRating: PEPRating? = nil
+        let group = DispatchGroup()
+        if let message = message(representedByRowAt: indexPath) {
+            group.enter()
+            message.pEpRating { (rating) in
+                messageRating = rating
+                group.leave()
             }
-            pathsForMessagesMarkedForRedecrypt = pathsForMessagesMarkedForRedecrypt.filter { $0 != indexPath }
         }
-        delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: [indexPath])
+        group.notify(queue: DispatchQueue.main) { [weak self] in
+            defer { EmailDetailViewModel.waitForUpdatesFinishedGroup.leave() }
+            guard let me = self else {
+                // Valid case. The user might have dismissed the view meanwhile.
+                // Do nothing ...
+                return
+            }
+            if me.pathsForMessagesMarkedForRedecrypt.contains(indexPath) {
+                if let rating = messageRating, !rating.isUnDecryptable() {
+                    guard let delegate = me.delegate as? EmailDetailViewModelDelegate else {
+                        Log.shared.errorAndCrash("Inbvalid state")
+                        return
+                    }
+                    // Previously undecryptable message has successfully been decrypted.
+                    delegate.isNotUndecryptableAnyMore(indexPath: indexPath)
+                }
+                me.pathsForMessagesMarkedForRedecrypt = me.pathsForMessagesMarkedForRedecrypt.filter { $0 != indexPath }
+            }
+            me.delegate?.emailListViewModel(viewModel: me, didUpdateDataAt: [indexPath])
+        }
     }
 
     func didDeleteRow(indexPath: IndexPath) {
@@ -301,7 +325,14 @@ extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
     }
 
     func didChangeResults() {
-        delegate?.allUpdatesReceived(viewModel: self)
+        EmailDetailViewModel.waitForUpdatesFinishedGroup.notify(queue: DispatchQueue.main) { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                // Do nothing ...
+                return
+            }
+            me.delegate?.allUpdatesReceived(viewModel: me)
+        }
     }
 
     private func handleIndexPathIsBeforeCurrentlyShownMessage(insertedIndexPath: IndexPath) {

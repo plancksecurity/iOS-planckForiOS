@@ -113,7 +113,7 @@ extension EncryptAndSMTPSendMessageOperation {
         smtpConnection.sendMessage()
     }
 
-    private func moveLastMessageToSentFolder() {//!!!: IOS-2325_!
+    private func moveLastMessageToSentFolder() {
         privateMOC.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -143,12 +143,11 @@ extension EncryptAndSMTPSendMessageOperation {
                 me.privateMOC.saveAndLogErrors()
                 return
             }
-
-            let rating = cdMessage.outgoingMessageRating().rawValue//!!!: IOS-2325_!
+            let rating = blockingGetOutgoingMessageRating(for: cdMessage)
 
             cdMessage.parent = sentFolder
             cdMessage.imap?.localFlags?.flagSeen = true
-            cdMessage.pEpRating = Int16(rating)
+            cdMessage.pEpRating = Int16(rating.rawValue)
 
             cdMessage.createFakeMessage(context: me.privateMOC)
 
@@ -159,10 +158,27 @@ extension EncryptAndSMTPSendMessageOperation {
         }
     }
 
-    private func setOriginalRatingHeader(unencryptedCdMessage: CdMessage) {//!!!: IOS-2325_!
-        let originalRating = unencryptedCdMessage.outgoingMessageRating()//!!!: IOS-2325_!
+    private func setOriginalRatingHeader(unencryptedCdMessage: CdMessage) {
+        let originalRating = blockingGetOutgoingMessageRating(for: unencryptedCdMessage)
         unencryptedCdMessage.setOriginalRatingHeader(rating: originalRating)
         privateMOC.saveAndLogErrors()
+    }
+
+    /// THIS BLOCKS. Handle with care.
+    private func blockingGetOutgoingMessageRating(for cdMessage: CdMessage) -> PEPRating {
+        let group = DispatchGroup()
+        group.enter()
+        var outgoingRating: PEPRating? = nil
+        cdMessage.outgoingMessageRating { (rating) in
+            outgoingRating = rating
+            group.leave()
+        }
+        group.wait()
+        guard let rating: PEPRating = outgoingRating else {
+            Log.shared.errorAndCrash("No Rating")
+            return .undefined
+        }
+        return rating
     }
 }
 

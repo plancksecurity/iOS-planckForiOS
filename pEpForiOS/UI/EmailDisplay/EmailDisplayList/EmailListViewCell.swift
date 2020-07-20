@@ -118,7 +118,14 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
                 }
             }
         }
-        setPepRatingImage(image: viewModel.getSecurityBadge())
+        viewModel.getSecurityBadge { [weak self] (badgeImage) in
+            guard let me = self else {
+                // Valid case. The view might have already been dismissed.
+                // Do nothing ...
+                return
+            }
+            me.setPepRatingImage(image: badgeImage)
+        }
     }
 
     public func clear() {

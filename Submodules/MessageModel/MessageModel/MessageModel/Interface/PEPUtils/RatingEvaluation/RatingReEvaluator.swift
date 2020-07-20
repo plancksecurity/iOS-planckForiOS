@@ -27,8 +27,12 @@ extension RatingReEvaluator: RatingReEvaluatorProtocol {
 
     static public func reevaluate(message: Message, completion:  @escaping ()->Void) {
         let pepMessage = message.cdObject.pEpMessage()
-        let keys = message.cdObject.keysFromDecryption?.array as? [String] //!!!: Needs to be extented for "Extra Keys" feature to take X-KeyList header into account
-        PEPAsyncSession().reEvaluateMessage(pepMessage, xKeyList: keys, rating: .undefined, errorCallback: { (error) in
+        let keys = message.cdObject.keysFromDecryption?.array as? [String]
+        var originaRating = PEPRating.undefined
+        if let originalRatingString = message.optionalFields[Headers.originalRating.rawValue] {
+            originaRating = PEPRating.fromString(str: originalRatingString)
+        }
+        PEPAsyncSession().reEvaluateMessage(pepMessage, xKeyList: keys, rating: originaRating, errorCallback: { (error) in
             Log.shared.errorAndCrash("%@", error.localizedDescription)
             completion()
         }) { (newRating) in

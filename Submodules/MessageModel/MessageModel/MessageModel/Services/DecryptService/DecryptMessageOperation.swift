@@ -271,10 +271,21 @@ extension DecryptMessageOperation {
 
     /// If the given message is a draft message:    sets its outgoing rating as the original rating
     /// Otherwize:                                  sets the given rating as the original rating
-    private func setOriginalRatingHeader(rating: PEPRating, toMessage cdMessage: CdMessage) {//!!!: IOS-2325_!
+    private func setOriginalRatingHeader(rating: PEPRating, toMessage cdMessage: CdMessage) {
         if cdMessage.parentOrCrash.folderType == .drafts {
-            let outgoingRating = cdMessage.outgoingMessageRating()//!!!: IOS-2325_!
-            setOriginalRatingHeaderVerbatim(rating: outgoingRating, toCdMessage: cdMessage)
+            let group = DispatchGroup()
+            group.enter()
+            var outgoingRating: PEPRating? = nil
+            cdMessage.outgoingMessageRating { (rating) in
+                outgoingRating = rating
+                group.leave()
+            }
+            group.wait()
+            guard let rating = outgoingRating else {
+                Log.shared.errorAndCrash("No Rating")
+                return
+            }
+            setOriginalRatingHeaderVerbatim(rating: rating, toCdMessage: cdMessage)
         } else {
             setOriginalRatingHeaderVerbatim(rating: rating, toCdMessage: cdMessage)
         }

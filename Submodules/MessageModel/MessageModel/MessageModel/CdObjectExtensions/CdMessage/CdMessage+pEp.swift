@@ -178,22 +178,17 @@ extension CdMessage {
         return cdMessages
     }
 
-    func outgoingMessageRating() -> PEPRating {//!!!: IOS-2325_!
-        guard let sender = from else {
-            Log.shared.errorAndCrash(
-                "No sender for outgoing message?")
-            return .undefined
-        }
+    func outgoingMessageRating(completion: @escaping (PEPRating)->Void) {
         if !pEpProtected {
-            return .unencrypted
+            completion(.unencrypted)
+            return
         }
-
-        let theTos = to?.array as? [CdIdentity] ?? []
-        let theCcs = cc?.array as? [CdIdentity] ?? []
-        let theBccs = bcc?.array as? [CdIdentity] ?? []
-
-        return PEPSession().outgoingMessageRating(//!!!: IOS-2325_!
-            from: sender, to: theTos, cc: theCcs, bcc: theBccs)
+        
+        PEPAsyncSession().outgoingRating(for: pEpMessage(), errorCallback: { (_) in
+            completion(.undefined)
+        }) { (rating) in
+            completion(rating)
+        }
     }
 
     func setOriginalRatingHeader(rating: PEPRating) {

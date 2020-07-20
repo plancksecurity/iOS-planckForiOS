@@ -23,18 +23,20 @@ extension Message {
     }
 
     /// - returns: the pepRating
-    public func pEpRating() -> PEPRating {//!!!: IOS-2325_!
+    public func pEpRating(completion: @escaping (PEPRating)->Void) {
         //see: https://dev.pep.security/Common%20App%20Documentation/algorithms/MessageColors
         if session.moc == Session.main.moc {
-            return  Message.pEpRating(message: self)//!!!: IOS-2325_!
+            return  Message.pEpRating(message: self, completion: completion)
         } else {
-            return  Message.pEpRating(message: self, session: session)//!!!: IOS-2325_!
+            return  Message.pEpRating(message: self, session: session, completion: completion)
         }
     }
 
     /// - returns: the pepColor
-    public func pEpColor() -> PEPColor {//!!!: IOS-2325_!
-        return pEpRating().pEpColor()//!!!: IOS-2325_!
+    public func pEpColor(completion: @escaping (PEPColor)->Void) {
+        pEpRating { (rating) in
+            completion(rating.pEpColor())
+        }
     }
 
     /// - returns: All the attachments that must be shown to the user
