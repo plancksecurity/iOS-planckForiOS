@@ -7,7 +7,6 @@
 //
 
 import XCTest
-
 import pEpIOSToolbox
 
 struct TestObject: Equatable {

@@ -42,7 +42,11 @@ public class Folder: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
     lazy var fetchOlderService = FetchOlderImapMessagesService()
     lazy var fetchMessagesService = FetchMessagesService()
     
-    public var parent: Folder?
+    public var parent: Folder? {
+        get {
+            return cdObject.parent?.folder()
+        }
+    }
     public var name: String {
         get {
             guard let result = cdObject.name else {
@@ -129,34 +133,11 @@ public class Folder: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
     public var folderType: FolderType {
         return cdObject.folderType
     }
-    
+
     public func subFolders () -> [Folder]{
         let cdSubFolders = cdObject.subFolders?.array as? [CdFolder] ?? []
         let cdDisplayableSubfolders = cdSubFolders.filter { !$0.folderType.neverShowToUser }
         return cdDisplayableSubfolders.map { return $0.folder() }
-    }
-
-    public func contains(message: Message, deletedMessagesAreContained: Bool = false,
-                         markedForMoveToFolderAreContained: Bool = false) -> Bool {
-        let cdFolder = cdObject
-        var ps = [NSPredicate]()
-        ps.append(CdFolder.PredicateFactory.containedMessages(cdFolder: cdFolder))
-        if deletedMessagesAreContained {
-            ps.append(NSPredicate(format: "uuid = %@", message.uuid))
-            let account = message.parent.account.cdAccount()
-            ps.append(NSPredicate(format: "parent.account = %@", account))
-            ps.append(NSPredicate(format: RelationshipKeyPath.cdFolder_parent_account
-                + " = %@", account))
-        }
-        if !markedForMoveToFolderAreContained {
-            ps.append(CdMessage.PredicateFactory.notMarkedForMoveToFolder())
-        }
-        let p = NSCompoundPredicate(andPredicateWithSubpredicates: ps)
-        let d = defaultSortDescriptors()
-        if let _ = CdMessage.first(predicate: p, orderedBy: d, in: session.moc) {
-            return true
-        }
-        return false
     }
 
     public static func by(account: Account, folderType: FolderType) -> Folder? {

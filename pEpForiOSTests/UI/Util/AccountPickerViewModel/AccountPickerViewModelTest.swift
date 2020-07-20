@@ -11,7 +11,7 @@ import XCTest
 @testable import pEpForiOS
 import MessageModel
 
-class AccountPickerViewModelTest: CoreDataDrivenTestBase {
+class AccountPickerViewModelTest: AccountDrivenTestBase {
 
     // MARK: - numAccounts
 
@@ -88,9 +88,8 @@ class AccountPickerViewModelTest: CoreDataDrivenTestBase {
 
     func testHandleUserSelected_oneAccount_correct() {
         let firstRowIdx = 0
-        let pickedAccount = account
         assertUserSelection(selectIdx: firstRowIdx,
-                            accountToCompare: pickedAccount,
+                            accountToCompare: account,
                             mustEqualSelected: true)
     }
 
@@ -156,8 +155,8 @@ class AccountPickerViewModelTest: CoreDataDrivenTestBase {
     }
 
     @discardableResult private func createAndSaveSecondAccount () -> Account {
-        let secondAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
-        secondAccount.save()
+        let secondAccount = TestData().createWorkingAccount(number: 1)
+        secondAccount.session.commit()
         return secondAccount
     }
 

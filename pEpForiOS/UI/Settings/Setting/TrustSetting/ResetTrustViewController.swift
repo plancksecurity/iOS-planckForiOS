@@ -48,52 +48,14 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
             searchController.isActive = false
             navigationItem.searchController = searchController
             navigationItem.hidesSearchBarWhenScrolling = true
-        } else {
-            addSearchBar10()
-
-            if tableView.tableHeaderView == nil {
-                tableView.tableHeaderView = searchController.searchBar
-            }
-
-            /// some notifications to control when the app enter and recover from background
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(didBecomeActiveInstallSearchBar10),
-                name: UIApplication.didBecomeActiveNotification,
-                object: nil)
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(didBecomeInactiveUninstallSearchbar10),
-                name: UIApplication.didEnterBackgroundNotification,
-                object: nil)
         }
     }
 
-    /// Configure the search controller, shared between iOS versions 11 and earlier.
+    /// Configure the search controller
     private func configureSearchBar() {
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         searchController.delegate = self
-    }
-
-    /// Add the search bar when running on iOS 10 or earlier.
-    private func addSearchBar10() {
-        tableView.tableHeaderView = searchController.searchBar
-        tableView.setContentOffset(CGPoint(x: 0.0,
-                                           y: searchController.searchBar.frame.size.height),
-                                   animated: false)
-    }
-
-    /// Showing the search controller in versions iOS 10 and earlier.
-    @objc func didBecomeActiveInstallSearchBar10() {
-        if tableView.tableHeaderView == nil {
-            tableView.tableHeaderView = searchController.searchBar
-        }
-    }
-
-    /// Hide/remove the search controller in versions iOS 10 and earlier.
-    @objc func didBecomeInactiveUninstallSearchbar10() {
-        tableView.tableHeaderView = nil
     }
 
     func updateSearchResults(for searchController: UISearchController) {
@@ -141,6 +103,14 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         showAlert(indexPath: indexPath)
+    }
+    
+    //usesAccessibilityFont
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if usesAccessibilityFont {
+            return 50.0
+        }
+        return UITableView.automaticDimension
     }
 
     private func showAlert(indexPath: IndexPath) {

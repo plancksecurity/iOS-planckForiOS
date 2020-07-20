@@ -17,6 +17,9 @@
 /* Reply to single contact, without date. Placeholder: Name. */
 "%1$@ wrote:" = "%1$@ schrieb:";
 
+/* Number of filters instead of filter name */
+"%d filters" = "% d Filter";
+
 /* error message for .missingPassword */
 "A non-empty password is required" = "Passwort ist erforderlich";
 
@@ -51,6 +54,9 @@
 
 /* UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts */
 "Add to Contacts" = "Zu Kontakten hinzufügen";
+
+/* setOwnKeyRowTitle row title */
+"ADVANCED" = "ERWEITERT";
 
 /* Name of unified inbox (showing messages of all accoounts */
 "All" = "Alle";
@@ -87,6 +93,9 @@
 
 /* title attachments filter cell */
 "Attachments" = "Anhänge";
+
+/* Title of the view for choosing installed keys to import */
+"Available Keys" = "Verfügbare Schlüssel";
 
 /* Cancel button title for manual account IMAP setup
    Cancel button title for manual account SMTP setup */
@@ -236,14 +245,20 @@
 /* No comment provided by engineer. */
 "Error casting" = "Fehler beim Casting";
 
+/* Generic error message on trying to import a key */
+"Error occurred. No key imported." = "Es ist ein Fehler aufgetreten und der Schlüssel konnte nicht importiert werden.";
+
 /* spearator string bewtween name and date */
-"Exp. date:" = "Ablaufdatum";
+"Exp. date:" = "Ablaufdatum:";
 
 /* Settings: Cell (button) title to view Extra Keys setting */
 "Extra Keys" = "Extra Schlüssel";
 
 /* Extra Keys Editable */
 "Extra Keys Editable" = "Extra Schlüssel bearbeitbar";
+
+/* 'Filter by' in formatted string, followed by the localized filter name */
+"Filter by: %@" = "Filtern nach: %@";
 
 /* Filter Title */
 "Filters" = "Filter";
@@ -278,6 +293,9 @@
 
 /* possible privacy status action */
 "Handshake" = "Handshake";
+
+/* PGPKeyImportSettingViewModel - part of pgpKeyImportTitle that should link to support page (... click _here_ for info ...) */
+"here" = "hier";
 
 /* Alert title for iCloud instructions */
 "iCloud" = "iCloud";
@@ -444,7 +462,8 @@
 /* keySyncWizard intro view Next button title */
 "Next" = "Weiter";
 
-/* Alert button while client certificate is importing: Try again? No */
+/* Alert button while client certificate is importing: Try again? No
+   Title for no button (cancel) when trying to import a key */
 "No" = "Nein";
 
 /* Error when no account found for set_own_key UI */
@@ -461,6 +480,9 @@
 
 /* Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions. */
 "No Permissions" = "Keine Berechtigung";
+
+/* empty mail filter (no filter at all) */
+"none" = "keiner";
 
 /* privacyStatusDescription no_color
    privacyStatusTitle no_color */
@@ -503,7 +525,7 @@
 "OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER" = "GÄRTNER   KNURREN   WAHLHEIMAT   QUIRL   HEIZEN";
 
 /* Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions. */
-"p≡p has no permissions to access \nthe Photo Gallery. You can grand permissions in Settings App." = "p≡p hat keine Berechtigung für den Zugriff auf die Fotogalerie. In App Einstellungen können Sie eine Berechtigung erteilen.";
+"p≡p has no permissions to access \nthe Photo Gallery. You can grand permissions in Settings App." = "p≡p hat keine Berechtigung für den Zugriff auf die Fotogalerie. \nIn App Einstellungen können Sie eine Berechtigung erteilen.";
 
 /* Tableview section header */
 "p≡p sync" = "p≡p Synchronisierung";
@@ -517,6 +539,13 @@
 
 /* Passive mode title */
 "Passive mode" = "Passivmodus";
+
+/* Passphrase placeholder
+   Passphrase title */
+"Passphrase" = "Passphrase";
+
+/* Passphrase too long - title */
+"Passphrase too long" = "Die Passphrase ist zu lang";
 
 /* password */
 "Password" = "Passwort";
@@ -566,6 +595,12 @@
 /* Tableview section header */
 "PGP Compatibility" = "Kompatibilität zu PGP";
 
+/* PGPKeyImportSetting pgpKeyImportRowTitle
+   PGPKeyImportSettingViewController Navigationbar title
+   Settings: Cell (button) title for importing and using private PGP keys
+   Title for alert when trying to import a key */
+"PGP Key Import" = "PGP-Schlüsselimport";
+
 /* Privacy status suggestion */
 "Please add the necessary information." = "Bitte fügen Sie die notwendigen Informationen hinzu.";
 
@@ -583,6 +618,12 @@
 
 /* Fail to log in, email does not match account type */
 "Please enter a valid Gmail address." = "Bitte geben Sie eine gültige Gmail-Adresse ein.";
+
+/* Please enter one shorter - message */
+"Please enter one shorter" = "Bitte geben Sie eine kürzere ein";
+
+/* Passphrase message */
+"Please enter the passphrase to continue" = "Bitte geben Sie die Passphrase ein, um fortzufahren";
 
 /* Description for client certificate password screen */
 "Please enter the password of the certificate to import it:" = "Bitte geben Sie das Passwort des Zertifikats ein, um es zu importieren:";
@@ -605,6 +646,9 @@
 
 /* action sheet title 1 */
 "Privacy Status" = "Datenschutzstatus";
+
+/* Success message when importing the key */
+"Private key successfully imported." = "Der private Schlüssel wurde erfolgreich importiert.";
 
 /* title for subject protection */
 "Protect Message Subject" = "Betreff der Nachricht schützen";
@@ -772,6 +816,9 @@
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "Die Nachricht konnte nicht versandt werden. Bitte versuchen Sie es später noch einmal.";
 
+/* Passphrase message */
+"The passphrase you entered is wrong. Please enter it again to continue" = "Die eingegebene Passphrase ist falsch. Bitte geben Sie die Passphrase erneut ein, um fortzufahren";
+
 /* error message for .minimumLengthUsername */
 "The username must contain more than 1 characters" = "Der Benutzername muss mehr als 1 Zeichen enthalten";
 
@@ -847,6 +894,9 @@
 /* settings, enable thread view or not */
 "Thread Messages" = "Nachrichten als Konversation anzeigen";
 
+/* PGPKeyImportSetting row title */
+"To import an existing PGP private key, you first need to transfer it from your computer.\n\nClick here for more information. Once the private key has been transferred to the device, you can import it here." = "Um einen vorhandenen privaten PGP-Schlüssel zu importieren, müssen Sie ihn zuerst von Ihrem Computer übertragen.\n\nKlicken Sie hier für weitere Informationen. Nachdem der private Schlüssel auf das Gerät übertragen wurde, können Sie ihn hier importieren.";
+
 /* Compose field title */
 "To:" = "An:";
 
@@ -885,7 +935,7 @@
 "Undo" = "Rückgängig machen";
 
 /* Undo trust change verification alert title */
-"Undo (actionName)" = "Undo (actionName)";
+"Undo (actionName)" = "Rückgängig machen (actionName)";
 
 /* read button in slide-left menu */
 "Unflag" = "Markierung entfernen";
@@ -919,6 +969,12 @@
 /* setting row title: Unsecure reply warning */
 "Unsecure reply warning" = "Warnhinweis bei unsicherer Weiterleitung";
 
+/* PGPKeyImportSetting - Use a Passphrase for new keys */
+"Use a passphrase for new keys" = "Verwende Passphrase für neue Schlüssel";
+
+/* Settings: title for enable/disable usePEPFolder feature */
+"Use p≡p Folder For Sync Messages" = "Den p≡p Ordner für Sync Nachrichten verwenden";
+
 /* User Name placeholder for manual account IMAP setup
    User Name placeholder for manual account setup
    User Name placeholder for manual account SMTP setup */
@@ -944,6 +1000,9 @@
 
 /* Client certificate import: wrong password alert message */
 "We could not import the certificate. We do not have permissions to open this file.\n\nTry again?" = "Wir konnten das Zertifikat nicht importieren. Wir haben keine Berechtigung zum Öffnen dieser Datei.\n\nNochmals versuchen?";
+
+/* Passphrase message */
+"We recommend to use device encryption instead of using passphrases, because they're securing all data, not only keys. In case you want to use a passphrase anyway, please enter a passphrase here and enable it." = "Wir empfehlen, die Geräteverschlüsselung anstelle von Passphrasen zu verwenden, da alle Daten und nicht nur die Schlüssel geschützt werden. Wenn Sie trotzdem eine Passphrase verwenden möchten, geben Sie hier eine Passphrase ein.";
 
 /* KeySyncWizard complete message - two devices */
 "We successfully created a device group. All your privacy is now synchronized." = "Ihre Gerätegruppe wurde erfolgreich gebildet. Ihre gesamten Datenschutz-Einstellungen sind jetzt synchronisiert.";
@@ -975,7 +1034,8 @@
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Falsche Trustwords";
 
-/* Alert button while client certificate is importing: Try again? Yes */
+/* Alert button while client certificate is importing: Try again? Yes
+   Title for yes button when trying to import a key */
 "Yes" = "Ja";
 
 /* Confirm less secure answer message alert body */
@@ -983,6 +1043,9 @@
 
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Sie sind dabei, eine sichere Nachricht als unsicher weiterzuleiten. Wenn Sie fortfahren, können vertrauliche Informationen verloren gehen, die Sie und Ihre Kommunikationspartner gefährden. Sind Sie sicher, dass Sie fortfahren wollen?";
+
+/* Message when asking user for confirmation about importing a key */
+"You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?" = "Sie importieren den folgenden Schlüssel:\n\nName: %1$@\nFingerabdruck: %2$@\n\nMöchten Sie diesen Schlüssel wirklich importieren und verwenden?";
 
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Sie können dieses Tutorial jederzeit mit der Schaltfläche Überspringen schließen.";

@@ -16,7 +16,7 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
 
     func notifyHandshake(_ object: UnsafeMutableRawPointer?,
                          me: PEPIdentity,
-                         partner: PEPIdentity,
+                         partner: PEPIdentity?,
                          signal: PEPSyncHandshakeSignal) -> PEPStatus {
         switch signal {
         // notificaton of actual group status
@@ -27,21 +27,42 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
 
         // request show handshake dialog
         case .initAddOurDevice, .initAddOtherDevice:
+            guard let thePartner = partner else {
+                Log.shared.errorAndCrash(message: "Expected partner identity")
+                return .illegalValue
+            }
             fastPollingDelegate?.enableFastPolling()
-            showHandshakeAndHandleResult(inBetween: me, and: partner, isNewGroup: false)
+            showHandshakeAndHandleResult(inBetween: me, and: thePartner, isNewGroup: false)
 
         case .initFormGroup:
+            guard let thePartner = partner else {
+                Log.shared.errorAndCrash(message: "Expected partner identity")
+                return .illegalValue
+            }
             fastPollingDelegate?.enableFastPolling()
-            showHandshakeAndHandleResult(inBetween: me, and: partner, isNewGroup: true)
+            showHandshakeAndHandleResult(inBetween: me, and: thePartner, isNewGroup: true)
 
         case .timeout:
             fastPollingDelegate?.disableFastPolling()
-            showHandShakeErrorAndHandleResult(error: KeySyncError.timeOut, me: me, partner: partner)
+            showHandShakeErrorAndHandleResult(error: KeySyncError.timeOut)
 
         case .acceptedDeviceAdded, .acceptedGroupCreated, .acceptedDeviceAccepted:
             fastPollingDelegate?.disableFastPolling()
             handshakeHandler?.showSuccessfullyGrouped()
             tryRedecryptYetUndecryptableMessages()
+
+        case .passphraseRequired:
+            passphraseProvider.showEnterPassphrase(triggeredWhilePEPSync: true) { [weak self] passphrase in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                guard let pp = passphrase else {
+                    me.stop()
+                    return
+                }
+                try? PassphraseUtil().newPassphrase(pp)
+            }
 
         // Other
         case .undefined:
@@ -95,9 +116,7 @@ extension KeySyncService {
         }
     }
 
-    private func showHandShakeErrorAndHandleResult(error: Error,
-                                                   me: PEPIdentity,
-                                                   partner: PEPIdentity) {
+    private func showHandShakeErrorAndHandleResult(error: Error) {
         handshakeHandler?.showError(error: error) {
             [weak self] keySyncErrorResponse in
             switch keySyncErrorResponse {
@@ -120,10 +139,12 @@ extension KeySyncService {
     /// Marks all yet undecryptable messages to retry decryption.
     /// Use after we got new keys.
     private func tryRedecryptYetUndecryptableMessages() {
-        let moc = Stack.shared.newPrivateConcurrentContext
-        moc.performAndWait {
-            CdMessage.markAllUndecryptableMessagesForRetryDecrypt(context: moc)
-            moc.saveAndLogErrors()
+        DispatchQueue.global(qos: .userInitiated).async {
+            let moc = Stack.shared.newPrivateConcurrentContext
+            moc.performAndWait {
+                CdMessage.markAllUndecryptableMessagesForRetryDecrypt(context: moc)
+                moc.saveAndLogErrors()
+            }
         }
     }
 }

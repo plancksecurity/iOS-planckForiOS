@@ -149,32 +149,6 @@ extension Identity {
             return nil
         }
         return MessageModelObjectUtils.getIdentity(fromCdIdentity: id)
-        return nil
-    }
-
-    /// Finds an Identity whichs:
-    /// * addess contains the given snippet
-    /// OR
-    /// * userName contains the given snippet
-    ///
-    /// - note: The client (YOU) are responsible for usage on correct session.
-    ///
-    /// - Parameters:
-    ///   - snippet: snippet to search Identity for
-    ///   - session: session to work on. Defaults to .main
-    /// - Returns: Found Identity if any, nil otherwize
-    public static func by(snippet: String, session: Session? = Session.main) -> [Identity] {
-        let moc = session?.moc ?? Session.main.moc
-        let p = NSPredicate(format: "address != nil and address != \"\" and " + //!!!: //IOS-1363: That should not be required. Maybe it works around some CD issue?
-            "(address contains[cd] %@ or userName contains[cd] %@)",
-                            snippet, snippet)
-        let sort = NSSortDescriptor(key: "userName", ascending: true)
-        guard
-            let ids = CdIdentity.all(predicate: p, orderedBy: [sort], in: moc) as? [CdIdentity]
-            else {
-                return []
-        }
-        return ids.map { MessageModelObjectUtils.getIdentity(fromCdIdentity: $0) }
     }
 }
 

@@ -123,11 +123,11 @@ public class PEPUtils {
 
     public static func pEpRating(cdIdentity: CdIdentity) -> PEPRating {
         let pEpSession = PEPSession()
-        let pepC = cdIdentity.pEpIdentity()
+        let pEpIdentity = cdIdentity.pEpIdentity()
         do {
-            return try pEpSession.rating(for: pepC).pEpRating
-        } catch let error as NSError {
-            assertionFailure("\(error)")
+            return try pEpSession.rating(for: pEpIdentity).pEpRating
+        } catch {
+            Log.shared.info("%@ for pEpIdentity: %@", error.localizedDescription, pEpIdentity)
             return .undefined
         }
     }

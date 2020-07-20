@@ -21,16 +21,14 @@ extension UIUtils {
     /// - Parameters:
     ///   - url: url to parse recipients from
     ///   - appConfig: AppConfig to forward
-    static func presentComposeView(forRecipientInUrl url: URL?,
-                                   appConfig: AppConfig) {
+    static func presentComposeView(forRecipientInUrl url: URL?) {
         let address = url?.firstRecipientAddress()
         if url != nil && address == nil {
             // A URL has been passed, but it is no valid mailto URL.
             return
         }
 
-        presentComposeView(forRecipientWithAddress: address,
-                           appConfig: appConfig)
+        presentComposeView(forRecipientWithAddress: address)
     }
 
     /// Modally presents a "Compose New Mail" view.
@@ -41,8 +39,7 @@ extension UIUtils {
     ///   - address: address to prefill "To:" field with
     ///   - viewController: presenting view controller
     ///   - appConfig: AppConfig to forward
-    static func presentComposeView(forRecipientWithAddress address: String?,
-                                   appConfig: AppConfig) {
+    static func presentComposeView(forRecipientWithAddress address: String?) {
         let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
         guard
             let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
@@ -56,14 +53,13 @@ extension UIUtils {
         var prefilledTo: Identity? = nil
         if let address = address {
             let to = Identity(address: address)
-            to.save()
+            to.session.commit()
             prefilledTo = to
         }
         let composeVM = ComposeViewModel(composeMode: .normal,
                                          prefilledTo: prefilledTo,
                                          originalMessage: nil)
         composeVc.viewModel = composeVM
-        composeVc.appConfig = appConfig
 
         guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
             Log.shared.errorAndCrash("No VC")

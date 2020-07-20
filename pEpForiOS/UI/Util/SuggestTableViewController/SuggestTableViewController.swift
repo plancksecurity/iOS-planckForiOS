@@ -10,13 +10,22 @@ import Foundation
 import pEpIOSToolbox
 
 /// Suggests a list of Identities that fit to a given sarch string
-class SuggestTableViewController: BaseTableViewController {
+class SuggestTableViewController: UITableViewController {
     static let storyboardId = "SuggestTableViewController"
 
     var viewModel: SuggestViewModel? {
         didSet {
             viewModel?.delegate = self
         }
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.title = title
+        tableView.hideSeperatorForEmptyCells()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        UIHelper.variableCellHeightsTableView(self.tableView)
     }
 }
 
@@ -59,14 +68,19 @@ extension SuggestTableViewController {
         guard
             let viewModel = viewModel,
             let cell = tableView.dequeueReusableCell(withIdentifier: ContactCell.reuseId,
-                                                       for: indexPath)
-            as? ContactCell else {
-                Log.shared.errorAndCrash("Illegal state")
-                return UITableViewCell()
+                                                     for: indexPath)
+                as? ContactCell else {
+                    Log.shared.errorAndCrash("Illegal state")
+                    return UITableViewCell()
         }
         let row = viewModel[indexPath.row]
-        cell.nameLabel.text = row.name
-        cell.emailLabel.text = row.email
+
+        let pEpRating = viewModel.pEpRatingFor(address: row.email)
+        let pEpRatingIcon = pEpRating.pEpColor().statusIconInContactPicture()
+        cell.updateCell(name: row.name,
+                        email: row.email,
+                        pEpStatusIcon: pEpRatingIcon)
+
         return cell
     }
 }

@@ -15,25 +15,26 @@ protocol LoginViewControllerDelegate: class  {
     func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController)
 }
 
-final class LoginViewController: BaseViewController {
+final class LoginViewController: UIViewController {
 
     weak var delegate: LoginViewControllerDelegate?
 
-    @IBOutlet weak var user: AnimatedPlaceholderTextfield!
-    @IBOutlet weak var password: AnimatedPlaceholderTextfield!
-    @IBOutlet weak var emailAddress: AnimatedPlaceholderTextfield!
-    @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var dismissButton: UIButton!
-    @IBOutlet weak var dismissButtonLeft: UIButton!
-    @IBOutlet weak var loginButtonIPadLandscape: UIButton!
-    @IBOutlet weak var manualConfigButton: UIButton!
-    @IBOutlet weak var mainContainerView: UIView!
-    @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var scrollView: DynamicHeightScrollView!
-    @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
-    @IBOutlet weak var loginButtonConstraint: NSLayoutConstraint!
-    @IBOutlet weak var pEpSyncSwitch: UISwitch!
+    @IBOutlet private weak var pepSyncLabel: UILabel!
+    @IBOutlet private weak var user: AnimatedPlaceholderTextfield!
+    @IBOutlet private weak var password: AnimatedPlaceholderTextfield!
+    @IBOutlet private weak var emailAddress: AnimatedPlaceholderTextfield!
+    @IBOutlet private weak var loginButton: UIButton!
+    @IBOutlet private weak var dismissButton: UIButton!
+    @IBOutlet private weak var dismissButtonLeft: UIButton!
+    @IBOutlet private weak var loginButtonIPadLandscape: UIButton!
+    @IBOutlet private weak var manualConfigButton: UIButton!
+    @IBOutlet private weak var mainContainerView: UIView!
+    @IBOutlet private weak var stackView: UIStackView!
+    @IBOutlet private weak var scrollView: DynamicHeightScrollView!
+    @IBOutlet private weak var scrollViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var loginButtonConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var pEpSyncSwitch: UISwitch!
 
     var viewModel: LoginViewModel?
     var offerManualSetup = false
@@ -42,6 +43,11 @@ final class LoginViewController: BaseViewController {
         didSet {
             updateView()
         }
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setFonts()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -57,6 +63,7 @@ final class LoginViewController: BaseViewController {
         if accountType == .icloud {
             showiCloudAlert()
         }
+
     }
 
     override func viewDidLayoutSubviews() {
@@ -112,7 +119,7 @@ final class LoginViewController: BaseViewController {
         // isOAuth2Possible is use to hide password field only if isOauthAccount is false and the
         // user type a possible ouath in the email textfield.
         if vm.verifiableAccount.accountType.isOauth {
-            let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
+            let oauth = OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer()
             vm.loginWithOAuth2(viewController: self,
                                emailAddress: email,
                                userName: userName,
@@ -244,7 +251,6 @@ extension LoginViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("fail to cast to UserInfoViewController")
                     return
             }
-            vc.appConfig = appConfig
             // Give the next model all that we know.
             vc.verifiableAccount = vm.verifiableAccount
         default:
@@ -413,7 +419,7 @@ extension LoginViewController {
         var title: String?
         var message: String?
 
-        if let oauthError = error as? OAuth2AuthViewModelError,
+        if let oauthError = error as? OAuthAuthorizerError,
             oauthError == .noConfiguration {
             title = NSLocalizedString("Invalid Address",
                                       comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")
@@ -615,4 +621,28 @@ extension LoginViewController {
                                    positiveButtonAction: openiCloudInfoInBrowser)
     }
 }
+// MARK: - Accessibility
 
+extension LoginViewController {
+
+    private func setFonts() {
+        emailAddress.font = UIFont.pepFont(style: .callout, weight: .regular)
+        emailAddress.adjustsFontForContentSizeCategory = true
+        password.font = UIFont.pepFont(style: .callout, weight: .regular)
+        password.adjustsFontForContentSizeCategory = true
+        user.font = UIFont.pepFont(style: .callout, weight: .regular)
+        user.adjustsFontForContentSizeCategory = true
+        loginButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        loginButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        dismissButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        dismissButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        manualConfigButton.titleLabel?.font = UIFont.pepFont(style: .callout, weight: .regular)
+        manualConfigButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        dismissButtonLeft.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        dismissButtonLeft.titleLabel?.adjustsFontForContentSizeCategory = true
+        loginButtonIPadLandscape.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        loginButtonIPadLandscape.titleLabel?.adjustsFontForContentSizeCategory = true
+        pepSyncLabel.font = UIFont.pepFont(style: .callout, weight: .regular)
+        pepSyncLabel.adjustsFontForContentSizeCategory = true
+    }
+}

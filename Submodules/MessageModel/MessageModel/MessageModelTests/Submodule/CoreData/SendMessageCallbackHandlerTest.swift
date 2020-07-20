@@ -18,7 +18,9 @@ class SendMessageCallbackHandlerTest: PersistentStoreDrivenTestBase {
     let attachmentData = Data(repeating: 5, count: 100)
 
     func testError() {
-        let handler: PEPSendMessageDelegate = KeySyncService(keySyncStateProvider: TestStateProvider())
+        let handler: PEPSendMessageDelegate = KeySyncService(keySyncStateProvider: TestStateProvider(),
+                                                             passphraseProvider: PassphraseProviderMock(),
+                                                             usePEPFolderProvider: UsePEPFolderProviderMock())
         let msg = PEPMessageUtil.syncMessage(ownAddress: ownAddress,
                                              attachmentData: attachmentData)
         let result = handler.send(msg)
@@ -42,7 +44,9 @@ class SendMessageCallbackHandlerTest: PersistentStoreDrivenTestBase {
 
         moc.saveAndLogErrors()
 
-        let handler: PEPSendMessageDelegate = KeySyncService(keySyncStateProvider: TestStateProvider())
+        let handler: PEPSendMessageDelegate = KeySyncService(keySyncStateProvider: TestStateProvider(),
+                                                             passphraseProvider: PassphraseProviderMock(),
+                                                             usePEPFolderProvider: UsePEPFolderProviderMock())
         let msg = PEPMessageUtil.syncMessage(ownAddress: ownAddress,
                                              attachmentData: attachmentData)
         let result = handler.send(msg)
@@ -69,4 +73,17 @@ class TestStateProvider: KeySyncStateProvider {
     var isKeySyncEnabled: Bool {
         return true
     }
+}
+
+class PassphraseProviderMock: PassphraseProviderProtocol {
+    func showEnterPassphrase(triggeredWhilePEPSync:Bool = false,
+                             completion: @escaping (String?) -> Void) {}
+
+    func showWrongPassphrase(completion: @escaping (String?) -> Void) {}
+
+    func showPassphraseTooLong(completion: @escaping (String?) -> Void) {}
+}
+
+class UsePEPFolderProviderMock: UsePEPFolderProviderProtocol {
+    var usePepFolder: Bool = false
 }

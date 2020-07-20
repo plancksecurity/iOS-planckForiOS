@@ -33,6 +33,7 @@ extension ComposeViewModel {
             }
         }
         public private(set) var edited = false
+
         public private(set) var rating = PEPRating.undefined {
             didSet {
                 if rating != oldValue {
@@ -129,7 +130,7 @@ extension ComposeViewModel {
             if let from = from {
                 newValue.from = Identity.makeSafe(from, forSession: session)
             }
-            newValue.inlinedAttachments = Attachment.clone(attachmnets: inlinedAttachments, //BUFF: Looks very wrong to me. Why clone? should make save?!
+            newValue.inlinedAttachments = Attachment.clone(attachmnets: inlinedAttachments, //!!!: Looks very wrong to me. Why clone? should make save?!
                                                            for: session)
             newValue.nonInlinedAttachments = Attachment.clone(attachmnets: nonInlinedAttachments, //BUFF: Looks very wrong to me. Why clone? should make save?!
                                                               for: session)
@@ -152,7 +153,7 @@ extension ComposeViewModel {
         }
 
         public func validate() {
-            calculatePepRating()
+            updatePepRating()
             validateForSending()
         }
 
@@ -207,7 +208,30 @@ extension ComposeViewModel.ComposeViewModelState {
         return bccRecipients.count > 0
     }
 
-    private func calculatePepRating() {
+    private func calculatePepRating(from: Identity,
+                                    to: [Identity],
+                                    cc: [Identity],
+                                    bcc: [Identity]) -> PEPRating {
+
+        guard !isForceUnprotectedDueToBccSet else {
+            return .unencrypted
+        }
+
+        let session = Session.main
+        let safeFrom = from.safeForSession(session)
+        let safeTo = Identity.makeSafe(to, forSession: session)
+        let safeCc = Identity.makeSafe(cc, forSession: session)
+        let safeBcc = Identity.makeSafe(bcc, forSession: session)
+        let pEpsession = PEPSession()
+        let rating = pEpsession.outgoingMessageRating(from: safeFrom,
+                                                      to: safeTo,
+                                                      cc: safeCc,
+                                                      bcc: safeBcc)
+
+        return rating
+    }
+
+    private func updatePepRating() {
         guard !isForceUnprotectedDueToBccSet else {
             rating = .unencrypted
             return
@@ -218,17 +242,13 @@ extension ComposeViewModel.ComposeViewModelState {
             return
         }
 
-        let session = Session.main
-        let safeFrom = from.safeForSession(session)
-        let safeTo = Identity.makeSafe(toRecipients, forSession: session)
-        let safeCc = Identity.makeSafe(ccRecipients, forSession: session)
-        let safeBcc = Identity.makeSafe(bccRecipients, forSession: session)
-        let pEpsession = PEPSession()
-        rating = pEpsession.outgoingMessageRating(from: safeFrom,
-                                                  to: safeTo,
-                                                  cc: safeCc,
-                                                  bcc: safeBcc)
+        rating = calculatePepRating(from: from,
+                                    to: toRecipients,
+                                    cc: ccRecipients,
+                                    bcc: bccRecipients)
     }
+
+
 }
 
 // MARK: - Handshake

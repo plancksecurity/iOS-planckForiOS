@@ -11,7 +11,7 @@ import UIKit
 import SwipeCellKit
 import pEpIOSToolbox
 
-final class EmailListViewController: BaseViewController, SwipeTableViewCellDelegate {
+final class EmailListViewController: UIViewController, SwipeTableViewCellDelegate {
     /// Stuff that must be done once only in viewWillAppear
     private var doOnce: (()-> Void)?
     /// With this tag we recognize our own created flexible space buttons, for easy removal later.
@@ -308,7 +308,7 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
     }
 
     @objc private func showSettingsViewController() {
-        UIUtils.presentSettings(appConfig: appConfig)
+        UIUtils.presentSettings()
     }
 
     @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
@@ -448,9 +448,11 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
                 txt += "..."
             }
             if txt.isEmpty {
-                txt = "none"
+                txt = NSLocalizedString("none", comment: "empty mail filter (no filter at all)")
             }
-            textFilterButton.title = "Filter by: " + txt
+            textFilterButton.title = String(format: NSLocalizedString("Filter by: %@",
+                                                                      comment: "'Filter by' in formatted string, followed by the localized filter name"),
+                                            txt)
         }
     }
 
@@ -488,6 +490,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                 return cell
             }
             theCell.configure(for: viewModel)
+            configure(cell: theCell, for: traitCollection)
         } else {
             Log.shared.errorAndCrash("dequeued wrong cell")
         }
@@ -1134,7 +1137,6 @@ extension EmailListViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }
-            vc.appConfig = appConfig
             vc.viewModel = viewModel?.emailDetialViewModel()
             vc.firstItemToShow = indexPath
         case .segueShowFilter:
@@ -1146,7 +1148,6 @@ extension EmailListViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("No VM")
                 return
             }
-            destiny.appConfig = appConfig
             destiny.filterDelegate = vm
             destiny.filterEnabled = vm.currentFilter
             destiny.hidesBottomBarWhenPushed = true
@@ -1157,7 +1158,6 @@ extension EmailListViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("Segue issue")
                     return
             }
-            vc.appConfig = appConfig
             vc.loginDelegate = self
             vc.hidesBottomBarWhenPushed = true
             break
@@ -1166,7 +1166,6 @@ extension EmailListViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("Segue issue")
                 return
             }
-            vC.appConfig = appConfig
             break
         case .segueShowMoveToFolder:
             var selectedRows: [IndexPath] = []
@@ -1186,7 +1185,6 @@ extension EmailListViewController: SegueHandlerType {
 
             destination.viewModel
                 = viewModel?.getMoveToFolderViewModel(forSelectedMessages: selectedRows)
-            destination.appConfig = appConfig
             break
         default:
             Log.shared.errorAndCrash("Unhandled segue")
@@ -1208,8 +1206,7 @@ extension EmailListViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("composeViewController setup issue")
                 return
         }
-        composeVc.appConfig = appConfig
-
+        
         if segueId != .segueCompose {
             // This is not a simple compose (but reply, forward or such),
             // thus we have to pass the original message.
@@ -1250,5 +1247,25 @@ extension EmailListViewController: LoginViewControllerDelegate {
     func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController) {
         // Setup model after initial account setup
         setup()
+    }
+}
+
+// MARK: - Accessibility
+
+extension EmailListViewController {
+
+    private func configure(cell: EmailListViewCell, for traitCollection: UITraitCollection) {
+        let contentSize = traitCollection.preferredContentSizeCategory
+        let axis : NSLayoutConstraint.Axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
+        let spacing : CGFloat = contentSize.isAccessibilityCategory ? 10.0 : 5.0
+        cell.firstLineStackView.axis = axis
+        cell.firstLineStackView.spacing = spacing
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+      super.traitCollectionDidChange(previousTraitCollection)
+      if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+        tableView.reloadData()
+      }
     }
 }

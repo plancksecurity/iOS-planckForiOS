@@ -5,7 +5,7 @@
 "4fP-ku-UtU.title" = "Extra Sleutels";
 
 /* Class = "UILabel"; text = "Reset"; ObjectID = "4L6-wx-Ghl"; */
-"4L6-wx-Ghl.text" = "Deze identiteit opnieuw instellen";
+"4L6-wx-Ghl.text" = "opnieuw instellen";
 
 /* Class = "UILabel"; text = "Detail"; ObjectID = "4Ql-jN-Oal"; */
 "4Ql-jN-Oal.text" = "Detail";
@@ -43,6 +43,9 @@
 /* Class = "UILabel"; text = "Password"; ObjectID = "En6-h6-xZD"; */
 "En6-h6-xZD.text" = "Wachtwoord:";
 
+/* Class = "UILabel"; text = "Title"; ObjectID = "GAd-Jm-sFz"; */
+"GAd-Jm-sFz.text" = "Titel";
+
 /* Class = "UILabel"; text = "Transport Security"; ObjectID = "hAL-c1-ngD"; */
 "hAL-c1-ngD.text" = "Transport Beveiliging:";
 
@@ -69,6 +72,12 @@
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "Pdx-rN-QPm"; */
 "Pdx-rN-QPm.text" = "Titel";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "Pgw-uY-8FO"; */
+"Pgw-uY-8FO.text" = "Titel";
+
+/* Class = "UILabel"; text = "Use a passphrase for new keys"; ObjectID = "Ppr-kD-hKR"; */
+"Ppr-kD-hKR.text" = "Gebruik een wachtwoordzin voor nieuwe sleutels.";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "QcW-va-Qh4"; */
 "QcW-va-Qh4.text" = "Naam:";

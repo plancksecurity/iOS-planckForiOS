@@ -9,7 +9,6 @@
 import Foundation
 
 import MessageModel
-import PEPObjCAdapterFramework
 
 class SetOwnKeyViewModel {
     public var userName: String?
@@ -31,26 +30,25 @@ class SetOwnKeyViewModel {
                 return
         }
 
-        guard let theIdent = ownIdentityBy(email: theEmail) else {
+        guard let identity = ownIdentityBy(email: theEmail) else {
             rawErrorString = NSLocalizedString(
                 "No account found with the given email.",
                 comment: "Error when no account found for set_own_key UI")
             return
         }
 
-        let someIdent = theIdent.pEpIdentity()
-        someIdent.fingerPrint = nil // just in case
-
         do {
-            let session = PEPSession()
-            try session.setOwnKey(someIdent, fingerprint: theFingerprint.despaced())
+            try identity.setOwnKey(fingerprint: theFingerprint)
             rawErrorString = nil
-            // We got a new key. Try to derypt yet undecryptable messages.
-            Message.tryRedecryptYetUndecryptableMessages()
         } catch {
             rawErrorString = error.localizedDescription
         }
     }
+}
+
+// MARK: - Private
+
+extension SetOwnKeyViewModel {
 
     private func ownIdentityBy(email: String) -> Identity? {
         return Account.by(address: email)?.user

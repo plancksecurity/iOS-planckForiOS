@@ -23,6 +23,7 @@ import MessageModel
 /// required.
 struct DisplayUserError: LocalizedError {
     enum ErrorType {
+
         /// We could not login for some reason
         case authenticationFailed
 
@@ -130,7 +131,7 @@ struct DisplayUserError: LocalizedError {
             case .clientCertificateNotAccepted:
                 break
             }
-        } else if let oauthInternalError = error as? OAuth2AuthViewModelError {
+        } else if let oauthInternalError = error as? OAuthAuthorizerError {
             type = DisplayUserError.type(forError: oauthInternalError)
         } else if let oauthError = error as? OAuth2AuthorizationError {
             type = DisplayUserError.type(forError: oauthError)
@@ -151,13 +152,11 @@ struct DisplayUserError: LocalizedError {
         else if let err = error as? LoginViewController.LoginError {
             type = .loginValidationError
             foreignDescription = err.localizedDescription
-        }
+        } else {
             // Unknown
-        else {
             foreignDescription = error.localizedDescription
             type = .unknownError
         }
-
         if !type.shouldBeShownToUser {
             return nil
         }
@@ -287,14 +286,14 @@ struct DisplayUserError: LocalizedError {
 
     static private func type(forError error: BackgroundError.PepError) -> ErrorType {
         switch error {
-        case .encryptionError:
+        case .passphraseRequired, .wrongPassphrase:
             return .internalError
         }
     }
 
     // MARK: OAuth2InternalError
 
-    static private func type(forError error: OAuth2AuthViewModelError) -> ErrorType {
+    static private func type(forError error: OAuthAuthorizerError) -> ErrorType {
         // All OAuth2InternalErrors are internal errors.
         switch error {
         default:
@@ -307,7 +306,7 @@ struct DisplayUserError: LocalizedError {
     static private func type(forError error: OAuth2AuthorizationError) -> ErrorType {
         switch error {
         case .inconsistentAuthorizationResult:
-            return .authenticationFailed
+            return .internalError
         }
     }
 

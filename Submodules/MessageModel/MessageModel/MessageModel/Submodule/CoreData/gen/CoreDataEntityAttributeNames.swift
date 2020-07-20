@@ -241,6 +241,7 @@ extension CdServer {
         static public let address = "address"
         static public let authMethod = "authMethod"
         static public let automaticallyTrusted = "automaticallyTrusted"
+        static public let dateLastAuthenticationErrorShown = "dateLastAuthenticationErrorShown"
         static public let imapFolderSeparator = "imapFolderSeparator"
         static public let manuallyTrusted = "manuallyTrusted"
         static public let port = "port"
