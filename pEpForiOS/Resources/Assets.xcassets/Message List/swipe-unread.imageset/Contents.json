@@ -1,15 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "pEpForiOS-icon-unread.pdf",
+      "filename" : "unread.pdf",
       "idiom" : "universal"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
-  },
-  "properties" : {
-    "preserves-vector-representation" : true
   }
 }
