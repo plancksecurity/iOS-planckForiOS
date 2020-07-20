@@ -52,7 +52,7 @@ enum SwipeActionDescriptor {
         case .reply: name = "reply"
         case .more: name = "more"
         case .flag: name = "flag"
-        case .unflag: name = "unflag"
+        case .unflag: name = "flag"
         case .trash: name = "trash"
         case .archive: name = "archive"
         }
