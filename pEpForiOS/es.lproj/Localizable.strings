@@ -27,7 +27,7 @@
 "A non-empty username is required" = "Se necesita usuario";
 
 /* KeySyncWizard introduction message - two devices */
-"A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "Se ha encontrado un segundo dispositivo con el que puedes sincronizar toda tu tu privacidad. Quieres empezar a sincronizar?";
+"A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "Se ha encontrado un segundo dispositivo con el que puedes sincronizar toda tu tu privacidad. ¿Quieres empezar a sincronizar?";
 
 /* error message for .invalidEmail
    error message for .missingEmail */
@@ -71,7 +71,7 @@
 "And in the top bar when you open or write an email:" = "Y en la barra superior cuando abres o escribes un correo electrónico:";
 
 /* KeySyncWizard introduction message - more than two devices */
-"Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Se ha encontrado otro dispositivo con el que puedes sincronizar toda tu tu privacidad. Quieres empezar a sincronizar?";
+"Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Se ha encontrado otro dispositivo con el que puedes sincronizar toda tu tu privacidad. ¿Quieres empezar a sincronizar?";
 
 /* Archive button in slide-left menu */
 "Archive" = "Archivo";
@@ -540,6 +540,13 @@
 /* Passive mode title */
 "Passive mode" = "Modo pasivo";
 
+/* Passphrase placeholder
+   Passphrase title */
+"Passphrase" = "Frase de contraseña";
+
+/* Passphrase too long - title */
+"Passphrase too long" = "Frase de contraseña demasiado larga";
+
 /* password */
 "Password" = "Contraseña";
 
@@ -611,6 +618,12 @@
 
 /* Fail to log in, email does not match account type */
 "Please enter a valid Gmail address." = "Por favor, ingrese una dirección de Gmail válida.";
+
+/* Please enter one shorter - message */
+"Please enter one shorter" = "Por favor ingrese una más corta";
+
+/* Passphrase message */
+"Please enter the passphrase to continue" = "Por favor ingrese la Frase de contraseña para continuar";
 
 /* Description for client certificate password screen */
 "Please enter the password of the certificate to import it:" = "Por favor ingrese la contraseña del certificado para importarlo:";
@@ -803,6 +816,9 @@
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "El mensaje no se ha podido enviar. Por favor, inténtelo de nuevo más tarde.";
 
+/* Passphrase message */
+"The passphrase you entered is wrong. Please enter it again to continue" = "La frase de contraseña que que ha introducido es incorrecta. Por favor inténtelo de nuevo para continuar";
+
 /* error message for .minimumLengthUsername */
 "The username must contain more than 1 characters" = "El nombre de usuario debe contener más de 1 carácter";
 
@@ -953,6 +969,12 @@
 /* setting row title: Unsecure reply warning */
 "Unsecure reply warning" = "Advertencia de respuesta insegura";
 
+/* PGPKeyImportSetting - Use a Passphrase for new keys */
+"Use a passphrase for new keys" = "Usar una frase de contraseña para claves nuevas";
+
+/* Settings: title for enable/disable usePEPFolder feature */
+"Use p≡p Folder For Sync Messages" = "Utilice la carpeta p≡p para mensajes de sincronización";
+
 /* User Name placeholder for manual account IMAP setup
    User Name placeholder for manual account setup
    User Name placeholder for manual account SMTP setup */
@@ -978,6 +1000,9 @@
 
 /* Client certificate import: wrong password alert message */
 "We could not import the certificate. We do not have permissions to open this file.\n\nTry again?" = "No pudimos importar el certificado. No tenemos permisos para abrir este archivo.\n\n¿Intentar de nuevo?";
+
+/* Passphrase message */
+"We recommend to use device encryption instead of using passphrases, because they're securing all data, not only keys. In case you want to use a passphrase anyway, please enter a passphrase here and enable it." = "Recomendamos usar el cifrado del dispositivo en lugar de usar frases de contraseña, porque protegen todos los datos, no solo las claves. En caso de que quiera usar una frase de contraseña de todos modos, ingrese una frase de contraseña aquí y actívela.";
 
 /* KeySyncWizard complete message - two devices */
 "We successfully created a device group. All your privacy is now synchronized." = "Se ha creado con éxito un grupo de dispositivos. Ahora toda tu privacidad está sincronizada.";

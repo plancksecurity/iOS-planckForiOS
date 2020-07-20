@@ -21,7 +21,7 @@ extension ImapReplicationService {
 class ImapReplicationService: OperationBasedService {
     private var pollingMode: PollingMode
     /// Amount of time to "sleep" between polling cycles
-    private var sleepTimeInSeconds = MiscUtil.isUnitTest() ? 1.0 : 3.0
+    private var sleepTimeInSeconds = MiscUtil.isUnitTest() ? 1.0 : 10.0
     private var cdAccount: CdAccount? = nil
     private var imapConnectionCache = ImapConnectionCache()
     private var idleOperation: ImapIdleOperation?
@@ -132,18 +132,19 @@ class ImapReplicationService: OperationBasedService {
                                                                    folderInfos: folderInfos)
                 createes.append(syncFlagsToServer)
             }
-            var willIdle = false
-            if me.pollingMode != .fastPolling && imapConnection.supportsIdle {
-                let idleOP = ImapIdleOperation(errorContainer: me.errorPropagator,
-                                               imapConnection: imapConnection)
-                createes.append(idleOP)
-                me.idleOperation = idleOP
-                willIdle = true
-            }
-            if !willIdle {
-                // The server does not support idle mode. So we must poll frequently.
-                createes.append(me.pollingPausingOp(errorContainer: me.errorPropagator))
-            }
+            // Commented out as IDLE is broken. See IOS-1632
+            //            var willIdle = false
+            //            if me.pollingMode != .fastPolling && imapConnection.supportsIdle {
+            //                let idleOP = ImapIdleOperation(errorContainer: me.errorPropagator,
+            //                                               imapConnection: imapConnection)
+            //                createes.append(idleOP)
+            //                me.idleOperation = idleOP
+            //                willIdle = true
+            //            }
+            //            if !willIdle {
+            // The server does not support idle mode. So we must poll frequently.
+            createes.append(me.pollingPausingOp(errorContainer: me.errorPropagator))
+            //            }
             createes.append(me.errorHandlerOp())
         }
         return createes
