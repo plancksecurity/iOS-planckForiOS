@@ -47,11 +47,13 @@ public protocol TrustManagementUtilProtocol: class {
     
     /// - Parameter message: The message to generate the handshake combinations.
     /// - returns: The possible handshake combinations.
-    func handshakeCombinations(message: Message) -> [TrustManagementUtil.HandshakeCombination]
+    func handshakeCombinations(message: Message,
+                               completion: @escaping ([TrustManagementUtil.HandshakeCombination])->Void)
 
     /// - Parameter identities: The identities to generate the handshake combinations
     /// - returns: The possible handshake combinations.
-    func handshakeCombinations(identities: [Identity]) -> [TrustManagementUtil.HandshakeCombination]
+    func handshakeCombinations(identities: [Identity],
+                               completion: @escaping ([TrustManagementUtil.HandshakeCombination])->Void)
 }
 
 /// This class acts as an intermediary to access different functions of the engine adapter.
@@ -169,31 +171,47 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }
     }
 
-    public func handshakeCombinations(identities: [Identity]) -> [HandshakeCombination] {//!!!: IOS-2325_!
+    public func handshakeCombinations(identities: [Identity],
+                                      completion: @escaping ([HandshakeCombination])->Void) {
         let ownIdentities = identities.filter { $0.isMySelf }
         let ownIdentitiesWithKeys = ownIdentities.filter { $0.fingerprint != nil }//!!!: IOS-2325_!
         let partnerIdenties = identities.filter { !$0.isMySelf }
-        let handshakableIdentities = partnerIdenties.filter { $0.cdObject.canInvokeHandshakeAction() }
-        var combinations = [HandshakeCombination]()
-        for ownId in ownIdentitiesWithKeys {
-            for partnerId in handshakableIdentities {
-                let combination = HandshakeCombination(ownIdentity: ownId, partnerIdentity: partnerId)
-                combinations.append(combination)
+
+        var handshakableIdentities = [Identity]()
+        let group = DispatchGroup()
+        for partnerIdentity in partnerIdenties {
+            group.enter()
+            partnerIdentity.cdObject.canInvokeHandshakeAction { (canInvoke) in
+                if canInvoke {
+                    handshakableIdentities.append(partnerIdentity)
+                }
+                group.leave()
             }
         }
-        let uniqueCombinations = Set(combinations)
-        return Array(uniqueCombinations)
+        group.notify(queue: DispatchQueue.main) {
+            var combinations = [HandshakeCombination]()
+            for ownId in ownIdentitiesWithKeys {
+                for partnerId in handshakableIdentities {
+                    let combination = HandshakeCombination(ownIdentity: ownId, partnerIdentity: partnerId)
+                    combinations.append(combination)
+                }
+            }
+            let uniqueCombinations = Set(combinations)
+            completion(Array(uniqueCombinations))
+        }
     }
 
-    public func handshakeCombinations(message: Message) -> [HandshakeCombination] {
+    public func handshakeCombinations(message: Message,
+                                      completion: @escaping ([HandshakeCombination])->Void) {
         let me = message.parent.account.user
         guard let from = message.from else {
             Log.shared.errorAndCrash("Mail from no one?")
-            return []
+            completion([])
+            return
         }
         let to = Set(message.to.allObjects.filter { !$0.isMySelf }) // I am in with `me` already
         let identities = [me, from] + Array(to)
-        return handshakeCombinations(identities: identities)
+        handshakeCombinations(identities: identities, completion: completion)
     }
 }
 

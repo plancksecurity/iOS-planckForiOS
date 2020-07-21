@@ -115,8 +115,8 @@ class PrepareAccountForSavingServiceTest: PersistentStoreDrivenTestBase {
                 XCTFail()
                 return
             }
-            let rating = PEPUtils.pEpRating(cdIdentity: cdIndentity)//!!!: IOS-2325_!
-            XCTAssertEqual(rating, PEPRating.trustedAndAnonymized)
+            let pEpRating = rating(for: cdIndentity.pEpIdentity())
+            XCTAssertEqual(pEpRating, PEPRating.trustedAndAnonymized)
         }
     }
 }

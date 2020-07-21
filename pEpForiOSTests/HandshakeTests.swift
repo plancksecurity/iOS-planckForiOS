@@ -125,15 +125,38 @@ class HandshakeTests: CoreDataDrivenTestBase {
         XCTAssertTrue((try? session.isPEPUser(fromIdent).boolValue) ?? false)
 
         do {
-            var numRating =  try! session.rating(for: fromIdent)
-            XCTAssertEqual(numRating.pEpRating, .reliable)
+            var pEpRating = rating(forPepIdentity: fromIdent)
+            XCTAssertEqual(pEpRating, .reliable)
             XCTAssertNoThrow(try session.keyResetTrust(fromIdent))
             let isPepUser = try session.isPEPUser(fromIdent).boolValue
             XCTAssertTrue(isPepUser)
-            numRating = try session.rating(for: fromIdent)
-            XCTAssertEqual(numRating.pEpRating, .reliable)
+            pEpRating = rating(forPepIdentity: fromIdent)
+            XCTAssertEqual(pEpRating, .reliable)
         } catch {
             XCTFail()
         }
+    }
+}
+
+// MARK: - HELPER
+
+extension HandshakeTests {
+    private func rating(forPepIdentity identity: PEPIdentity) -> PEPRating {
+        var pEpRating: PEPRating? = nil
+        let exp = expectation(description: "exp")
+        PEPAsyncSession().rating(for: fromIdent, errorCallback: { (_) in
+            XCTFail()
+            exp.fulfill()
+        }) { (rating) in
+            pEpRating = rating
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: TestUtil.waitTime)
+
+        guard let rating = pEpRating else {
+            XCTFail()
+            return .undefined
+        }
+        return rating
     }
 }

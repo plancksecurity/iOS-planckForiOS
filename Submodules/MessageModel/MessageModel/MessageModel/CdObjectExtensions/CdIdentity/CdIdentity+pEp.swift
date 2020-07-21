@@ -26,12 +26,14 @@ extension CdIdentity {
      Currently, you can't reset/undo a mistrust, so it's not included.
      See ENGINE-409, ENGINE-355.
      */
-    func canInvokeHandshakeAction() -> Bool {//!!!: IOS-2325_!
+    func canInvokeHandshakeAction(completion: @escaping (Bool)->Void) {
         if isMySelf {
-            return false
+            completion(false)
+            return
         }
-        let color = pEpColor()//!!!: IOS-2325_!
-        return color == .yellow || color == .green
+        pEpColor { (color) in
+            completion(color == .yellow || color == .green)
+        }
     }
 
     /**
@@ -88,30 +90,12 @@ extension CdIdentity {
         return contacts
     }
 
-    func pEpRating(pEpSession: PEPSession = PEPSession()) -> PEPRating {//!!!: IOS-2325_!
-        return PEPUtils.pEpRating(cdIdentity: self)//!!!: IOS-2325_!
+    func pEpRating(completion: @escaping (PEPRating)->Void) {
+        PEPUtils.pEpRating(cdIdentity: self, completion: completion)
     }
 
-    func pEpColor(pEpSession: PEPSession = PEPSession()) -> PEPColor {//!!!: IOS-2325_!
-        return PEPUtils.pEpColor(cdIdentity: self)//!!!: IOS-2325_!
+    func pEpColor(context: NSManagedObjectContext = Stack.shared.mainContext,
+                  completion: @escaping (PEPColor)->Void) {
+        PEPUtils.pEpColor(cdIdentity: self, context: context, completion: completion)
     }
-
-//    /// Will use update_identity() for other identities, and myself() for own ones. //BUFF: UNUSED
-//    ///
-//    /// - Parameter session: pEpsession to work on
-//    /// - Returns: A `PEPIdentity` that has been updated and thus should contain the fingerprint.
-//    @discardableResult
-//    func updatedIdentity(pEpSession: PEPSession = PEPSession()) -> PEPIdentity {//!!!: IOS-2325_! //UNUSED?
-//        let md = pEpIdentity()
-//        do {
-//            if md.isOwn {
-//                try pEpSession.mySelf(md)//!!!: IOS-2325_!
-//            } else {
-//                try pEpSession.update(md)//!!!: IOS-2325_!
-//            }
-//        } catch {
-//            Log.shared.errorAndCrash("%@", error.localizedDescription)
-//        }
-//        return md
-//    }
 }

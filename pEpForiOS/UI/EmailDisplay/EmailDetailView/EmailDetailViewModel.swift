@@ -179,16 +179,16 @@ class EmailDetailViewModel: EmailDisplayViewModel {
 
     /// - Parameter indexPath: indexPath of the cell to compute result for.
     /// - returns:  Whether or not to show privacy icon for cell at given indexPath
-    public func shouldShowPrivacyStatus(forItemAt indexPath: IndexPath) -> Bool {
+    public func shouldShowPrivacyStatus(forItemAt indexPath: IndexPath,
+                                        completion: @escaping (Bool)->Void){
         guard let message = message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash("No msg")
-            return false
+            completion(false)
+            return
         }
-        let handshakeCombos = TrustManagementUtil().handshakeCombinations(message: message)
-        guard !handshakeCombos.isEmpty else {
-            return false
+        TrustManagementUtil().handshakeCombinations(message: message) { (handshakeCombos) in
+            completion(handshakeCombos.isEmpty ? false : true)
         }
-        return true
     }
 
     /// Destination VM Factory - Move To Folder VM

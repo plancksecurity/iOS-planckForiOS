@@ -212,22 +212,21 @@ extension TrustManagementViewModelTest {
     }
 }
 
-
 ///MARK: - Mock Util Classes
 
 class TrustManagementUtilMock: TrustManagementUtilProtocol {
-    func handshakeCombinations(message: Message) -> [TrustManagementUtil.HandshakeCombination] {
-        message.allIdentities.filter { $0.isMySelf }.first
+    
+    func handshakeCombinations(message: Message, completion: @escaping ([TrustManagementUtil.HandshakeCombination]) -> Void) {
         if  let own = (message.allIdentities.filter { $0.isMySelf }.first),
             let other = (message.allIdentities.filter { !$0.isMySelf }.first) {
-            return [TrustManagementUtil.HandshakeCombination(ownIdentity:own, partnerIdentity: other)]
+            completion([TrustManagementUtil.HandshakeCombination(ownIdentity:own, partnerIdentity: other)])
         }
-        
-        return [TrustManagementUtil.HandshakeCombination]()
+
+        completion([TrustManagementUtil.HandshakeCombination]())
     }
-    
-    func handshakeCombinations(identities: [Identity]) -> [TrustManagementUtil.HandshakeCombination] {
-        return [TrustManagementUtil.HandshakeCombination]()
+
+    func handshakeCombinations(identities: [Identity], completion: @escaping ([TrustManagementUtil.HandshakeCombination]) -> Void) {
+        // Do nothing
     }
 
     var getTrustwordsExpectation: XCTestExpectation?

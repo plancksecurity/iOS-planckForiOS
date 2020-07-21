@@ -235,19 +235,21 @@ extension ComposeViewModel.ComposeViewModelState {
 
 extension ComposeViewModel.ComposeViewModelState {
 
-    public func canHandshake() -> Bool {
-        return !handshakeActionCombinations().isEmpty
+    public func canHandshake(completion: @escaping (Bool)->Void) {
+        handshakeActionCombinations { (handshakeActionCombinations) in
+            completion(!handshakeActionCombinations.isEmpty)
+        }
     }
 
-    private func handshakeActionCombinations() -> [TrustManagementUtil.HandshakeCombination] {
+    private func handshakeActionCombinations(completion: @escaping ([TrustManagementUtil.HandshakeCombination])->Void) {
         if let from = from {
             var allIdenties = toRecipients
             allIdenties.append(from)
             allIdenties.append(contentsOf: ccRecipients)
             allIdenties.append(contentsOf: bccRecipients)
-            return TrustManagementUtil().handshakeCombinations(identities: allIdenties)
+            TrustManagementUtil().handshakeCombinations(identities: allIdenties, completion: completion)
         } else {
-            return []
+            completion([])
         }
     }
 }

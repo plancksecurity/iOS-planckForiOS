@@ -364,9 +364,8 @@ class SimpleOperationsTest: PersistentStoreDrivenTestBase {
         let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
         try! session.mySelf(myself)
         XCTAssertNotNil(myself.fingerPrint)
-
-        let numRating = try! session.rating(for: myself)
-        XCTAssertGreaterThanOrEqual(numRating.pEpRating.rawValue, PEPRating.reliable.rawValue)
+        let testee = rating(for: myself)
+        XCTAssertGreaterThanOrEqual(testee.rawValue, PEPRating.reliable.rawValue)
     }
 
     func testOutgoingMailColorPerformanceWithMySelf() {

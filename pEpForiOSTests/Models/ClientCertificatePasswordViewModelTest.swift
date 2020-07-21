@@ -55,7 +55,7 @@
 //    }
 //}
 //
-//// MARK: - Mock Data
+/// MARK: - Mock Data
 //
 //private struct Constant {
 //    static let password = "1234"

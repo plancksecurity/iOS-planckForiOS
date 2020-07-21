@@ -337,10 +337,12 @@ extension EmailDetailViewController {
                 // Nothing to show for current message
                 return
             }
-            if vm.shouldShowPrivacyStatus(forItemAt: indexPath) {
-                let tapGestureRecognizer = UITapGestureRecognizer(target: me,
-                                                                  action: #selector(me.showTrustManagementView(gestureRecognizer:)))
-                ratingView.addGestureRecognizer(tapGestureRecognizer)
+            vm.shouldShowPrivacyStatus(forItemAt: indexPath) { (shouldShowPrivacyStatus) in
+                if shouldShowPrivacyStatus {
+                    let tapGestureRecognizer = UITapGestureRecognizer(target: me,
+                                                                      action: #selector(me.showTrustManagementView(gestureRecognizer:)))
+                    ratingView.addGestureRecognizer(tapGestureRecognizer)
+                }
             }
         }
     }

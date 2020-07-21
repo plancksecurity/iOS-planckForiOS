@@ -45,29 +45,47 @@ extension TrustManagementViewModel {
             let address = handshakeCombination.partnerIdentity.address
             return name ?? address
         }
+
         /// The description for the row
-        public var description: String { //!!!: IOS-2325_!
+        public func description(completion: @escaping (String)->Void) {
             if forceRed {
-                return PEPColor.red.privacyStatusDescription
+                completion(PEPColor.red.privacyStatusDescription)
+            } else {
+                color { (color) in
+                    DispatchQueue.main.async {
+                        completion(color.privacyStatusDescription)
+                    }
+                }
             }
-            return color.privacyStatusDescription//!!!: IOS-2325_!
         }
+
         /// The privacy status name
-        public var privacyStatusName: String { //!!!: IOS-2325_!
-            if (forceRed) {
-                return String.trustIdentityTranslation(pEpRating: .underAttack).title
+        public func privacyStatusName(completion: @escaping (String)->Void){
+            guard !forceRed else {
+                completion(String.trustIdentityTranslation(pEpRating: .underAttack).title)
+                return
             }
-            let rating = handshakeCombination.partnerIdentity.pEpRating() //!!!: IOS-2325_!
-            let translations = String.trustIdentityTranslation(pEpRating: rating)
-            return translations.title
+            handshakeCombination.partnerIdentity.pEpRating { (rating) in
+                let translations = String.trustIdentityTranslation(pEpRating: rating)
+                DispatchQueue.main.async {
+                    completion(translations.title)
+                }
+            }
         }
+
         /// The privacy status image
-        public var privacyStatusImage: UIImage? {//!!!: IOS-2325_!
+        public func privacyStatusImage(completion: @escaping (UIImage?)->Void) {
             if forceRed {
-                return PEPColor.red.statusIconForMessage(enabled: true, withText: false)
+                completion(PEPColor.red.statusIconForMessage(enabled: true, withText: false))
+            }else {
+                color { (color) in
+                    DispatchQueue.main.async {
+                        completion(color.statusIconForMessage(enabled: true, withText: false))
+                    }
+                }
             }
-            return color.statusIconForMessage(enabled: true, withText: false)//!!!: IOS-2325_!
         }
+
         /// The current language
         fileprivate var language: String {
             didSet {
@@ -79,11 +97,41 @@ extension TrustManagementViewModel {
         /// The privacy status in between the current user and the partner
         var privacyStatus: String?
         /// Status indicator
-        var color : PEPColor {//!!!: IOS-2325_!
+        func color(completion: @escaping (PEPColor)->Void){
             if forceRed {
-                return PEPColor.red
+                completion(PEPColor.red)
+            } else {
+                handshakeCombination.partnerIdentity.pEpColor { (color) in
+                    DispatchQueue.main.async {
+                        completion(color)
+                    }
+                }
             }
-            return handshakeCombination.partnerIdentity.pEpColor()//!!!: IOS-2325_!
+        }
+
+        /// Mega ugly.
+        /// Do not use with the expection of the following use case:
+        /// In cellForRowAtIndexpath, there is no way without blocking. See implementi0on.
+        func blockingColor() -> PEPColor {
+            var result = PEPColor.noColor
+            if forceRed {
+                result = PEPColor.red
+            } else {
+                let partner = handshakeCombination.partnerIdentity
+                let group = DispatchGroup()
+                group.enter()
+                let queue = DispatchQueue(label: "blockColorQueue", qos: .userInteractive)
+                queue.async {
+                    let privateSession = Session()
+                    let savePartner = partner.safeForSession(privateSession)
+                    savePartner.pEpColor(session: privateSession) { (color) in
+                        result = color
+                        group.leave()
+                    }
+                }
+                group.wait()
+            }
+            return result
         }
 
         public typealias TrustWords = String
@@ -285,16 +333,23 @@ final class TrustManagementViewModel {
 
     /// Method that generates the rows to be used by the VC
     private func setupRows() {
-        let combinations = trustManagementUtil.handshakeCombinations(message: message)
-
-        for combination in combinations{
-            let backupLanguage = "en"
-            let language =
-            combination.partnerIdentity.language ?? Locale.current.languageCode ?? backupLanguage
-            let row = Row(language: language,
-                          handshakeCombination: combination,
-                          trustManagementUtil: trustManagementUtil)
-            rows.append(row)
+        trustManagementUtil.handshakeCombinations(message: message) { [weak self] (combinations) in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            for combination in combinations{
+                let backupLanguage = "en"
+                let language =
+                combination.partnerIdentity.language ?? Locale.current.languageCode ?? backupLanguage
+                let row = Row(language: language,
+                              handshakeCombination: combination,
+                              trustManagementUtil: me.trustManagementUtil)
+                me.rows.append(row)
+            }
+            DispatchQueue.main.async {
+                me.delegate?.reload()
+            }
         }
     }
 
@@ -309,7 +364,7 @@ final class TrustManagementViewModel {
     }
 }
 
-/// MARK: - Image 
+// MARK: - Image 
 
 extension TrustManagementViewModel {
     
@@ -325,7 +380,9 @@ extension TrustManagementViewModel {
         let contactImageTool = IdentityImageTool()
         let key = IdentityImageTool.IdentityKey(identity: partnerIdentity)
         if let cachedContactImage = contactImageTool.cachedIdentityImage(for: key) {
-            complete(cachedContactImage)
+            DispatchQueue.main.async {
+                complete(cachedContactImage)
+            }
             return
         }
         
@@ -336,7 +393,9 @@ extension TrustManagementViewModel {
             session.performAndWait {
                 if let contactImage = contactImageTool.identityImage(for:
                     IdentityImageTool.IdentityKey(identity: safePartnerIdentity)) {
-                    complete(contactImage)
+                    DispatchQueue.main.async {
+                        complete(contactImage)
+                    }
                 }
             }
         }

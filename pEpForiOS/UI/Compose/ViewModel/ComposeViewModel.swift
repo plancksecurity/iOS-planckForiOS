@@ -707,8 +707,14 @@ extension ComposeViewModel {
 
 extension ComposeViewModel {
 
-    func canDoHandshake() -> Bool {
-        return state.canHandshake()
+    func canDoHandshake(completion: @escaping (Bool)->Void) {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.state.canHandshake(completion: completion)
+        }
     }
 
     func trustManagementViewModel() -> TrustManagementViewModel? {
