@@ -17,9 +17,18 @@ public protocol TrustManagementUtilProtocol: class {
     ///   - partnerIdentity: partner identity to do handshake.
     ///   - language: language code in ISO 639-1
     ///   - long: if false will return only 5 words, if true will return all posible trustwords for both identities.
-    /// - returns: The trustwords generated according to the parameters. If fails, nil.
+    ///    - completion returns the result if available, returns nil otherwize
     /// For example absense of fingerprints, or a failure in the session. If so will be nil.
-    func getTrustwords(for SelfIdentity: Identity, and partnerIdentity: Identity, language: String, long: Bool) throws -> String?//!!!: IOS-2325_!
+    func getTrustwords(for SelfIdentity: Identity, and partnerIdentity: Identity,
+                       language: String,
+                       long: Bool,
+                       completion: @escaping (String?)->Void)
+
+    func getTrustwords(forFpr1 fpr1: String,
+                       fpr2: String,
+                       language: String,
+                       full: Bool,
+                       completion: @escaping (String?)->Void)
     
     /// Method to confirm trust for an indentity.
     /// - Parameter partnerIdentity: Identity in which the action will be taken.
@@ -64,19 +73,17 @@ public class TrustManagementUtil {
 
     /// Expose the init outside MM.
     public init() {}
-    
-    private func determineTrustwords(identitySelf: PEPIdentity,//!!!: IOS-2325_!
-                             identityPartner: PEPIdentity,
-                             language: String,
-                             full: Bool) -> String? {
-        do {
-            return try PEPSession().getTrustwordsIdentity1(identitySelf,//!!!: IOS-2325_!
-                                                           identity2: identityPartner,
-                                                           language: language,
-                                                           full: full)
-        } catch let err as NSError {
-            Log.shared.error("%@", "\(err)")
-            return nil
+
+    private func determineTrustwords(identitySelf: PEPIdentity,
+                                     identityPartner: PEPIdentity,
+                                     language: String,
+                                     full: Bool,
+                                     completion: @escaping (String?)->Void) {
+        PEPAsyncSession().getTrustwordsIdentity1(identitySelf, identity2: identityPartner, language: language, full: full, errorCallback: { (error) in
+            Log.shared.error("%@", "\(error)")
+            completion(nil)
+        }) { (trustwords) in
+            completion(trustwords)
         }
     }
 }
@@ -94,10 +101,24 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }
     }
 
+    public func getTrustwords(forFpr1 fpr1: String,//BUFF: wip
+                              fpr2: String,
+                              language: String,
+                              full: Bool,
+                              completion: @escaping (String?)->Void) {
+        PEPAsyncSession().getTrustwordsFpr1(fpr1, fpr2: fpr2, language: language, full: full, errorCallback: { (error) in
+            Log.shared.error("%@", error.localizedDescription)
+            completion(nil)
+        }) { (trustwords) in
+            completion(trustwords)
+        }
+    }
+
     public func getTrustwords(for SelfIdentity: Identity,//!!!: IOS-2325_!
                               and partnerIdentity: Identity,
                               language: String,
-                              long: Bool) -> String? {
+                              long: Bool,
+                              completion: @escaping (String?)->Void) {
         let selfPEPIdentity = SelfIdentity.pEpIdentity()
         let partnerPEPIdentity = partnerIdentity.pEpIdentity()
         var isPartnerpEpUser = false
@@ -107,6 +128,7 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
             isPartnerpEpUser = try PEPSession().isPEPUser(partnerPEPIdentity).boolValue//!!!: IOS-2325_!
         } catch {
             Log.shared.error("unable to get the fingerprints")
+            completion(nil)
         }
 
         if !isPartnerpEpUser, let fprSelf = selfPEPIdentity.fingerPrint,
@@ -114,12 +136,13 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
             // partner is a PGP user
             let fprPrettySelf = fprSelf.prettyFingerPrint()
             let fprPrettyPartner = fprPartner.prettyFingerPrint()
-            return "\(partnerIdentity.userNameOrAddress):\n\(fprPrettyPartner)\n\n" + "\(SelfIdentity.userNameOrAddress):\n\(fprPrettySelf)"
+            completion("\(partnerIdentity.userNameOrAddress):\n\(fprPrettyPartner)\n\n" + "\(SelfIdentity.userNameOrAddress):\n\(fprPrettySelf)")
         } else {
-                return determineTrustwords(identitySelf: selfPEPIdentity,//!!!: IOS-2325_!
-                                           identityPartner: partnerPEPIdentity,
-                                           language: language,
-                                           full: long)
+            determineTrustwords(identitySelf: selfPEPIdentity,
+                                identityPartner: partnerPEPIdentity,
+                                language: language,
+                                full: long,
+                                completion: completion)
         }
     }
             

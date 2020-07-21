@@ -7,7 +7,8 @@
 //
 
 import Foundation
-import PEPObjCAdapterFramework
+import PEPObjCAdapterFramework  //!!!: IOS-2325_! (RM)
+import MessageModel
 
 protocol KeySyncHandshakeViewModelDelegate: class {
     func showPicker(withLanguages languages: [String], selectedLanguageIndex: Int?)
@@ -33,18 +34,18 @@ final class KeySyncHandshakeViewModel {
 
     weak var delegate: KeySyncHandshakeViewModelDelegate?
     var fullTrustWords = false //Internal since testing
-    private var languageCode = Locale.current.languageCode
+    private var languageCode = Locale.current.languageCode ?? "en"
     private var meFPR: String?
     private var partnerFPR: String?
     private var isNewGroup = true
     private let pEpSession: PEPSessionProtocol
     private var _languages = [PEPLanguage]()
-    private var languages: [PEPLanguage] {
+    private var languages: [PEPLanguage] {  //!!!: IOS-2325_! ?
         guard _languages.isEmpty else {
             return _languages
         }
         do {
-            _languages = try pEpSession.languageList()
+            _languages = try pEpSession.languageList()  //!!!: IOS-2325_! ?
             return _languages
         } catch {
             Log.shared.errorAndCrash("%@", error.localizedDescription)
@@ -59,7 +60,7 @@ final class KeySyncHandshakeViewModel {
     func didSelect(languageRow: Int) {
         languageCode = languages[languageRow].code
         delegate?.closePicker()
-        delegate?.change(handshakeWordsTo: trustWords())//!!!: IOS-2325_!
+        updateTrustwords()
     }
 
     func handle(action: Action) {
@@ -80,12 +81,12 @@ final class KeySyncHandshakeViewModel {
         self.meFPR = meFPR
         self.partnerFPR = partnerFPR
         self.isNewGroup = isNewGroup
-        delegate?.change(handshakeWordsTo: trustWords())//!!!: IOS-2325_!
+        updateTrustwords()
     }
 
     func didLongPressWords() { //!!!: IOS-2325_!
         fullTrustWords = !fullTrustWords
-        delegate?.change(handshakeWordsTo: trustWords())
+        updateTrustwords()
     }
 
     func getMessage() -> String {
@@ -98,17 +99,27 @@ final class KeySyncHandshakeViewModel {
 // MARK: - Private
 
 extension KeySyncHandshakeViewModel {
-    private func trustWords() -> String {//!!!: IOS-2325_!
+
+    private func updateTrustwords() {
+        trustWords { [weak self] (trustWords) in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.delegate?.change(handshakeWordsTo: trustWords)
+        }
+    }
+
+    private func trustWords(completion: @escaping (String)->Void) {
         guard let meFPR = meFPR, let partnerFPR = partnerFPR else {
             Log.shared.errorAndCrash("Nil meFingerPrints or Nil partnerFingerPrints")
-            return String()
+            completion("")
+            return
         }
-        do {
-            return try pEpSession.getTrustwordsFpr1(meFPR, fpr2: partnerFPR, language: languageCode,
-                                                      full: fullTrustWords) //!!!: IOS-2325_!
-        } catch {
-            Log.shared.errorAndCrash("%@", error.localizedDescription)
-            return ""
+        TrustManagementUtil().getTrustwords(forFpr1: meFPR, fpr2: partnerFPR, language: languageCode, full: fullTrustWords) { (trustwords) in
+            DispatchQueue.main.async {
+                completion(trustwords ?? "")
+            }
         }
     }
 

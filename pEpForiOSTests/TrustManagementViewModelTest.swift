@@ -258,16 +258,26 @@ class TrustManagementUtilMock: TrustManagementUtilProtocol {
         languagesExpectation?.fulfill()
         return TrustManagementUtilMock.languages
     }
-    
-    func getTrustwords(for forSelf: Identity, and: Identity, language: String, long: Bool) -> String? {
-        self.identity = and
 
+    func getTrustwords(for SelfIdentity: Identity,
+                       and partnerIdentity: Identity,
+                       language: String,
+                       long: Bool,
+                       completion: @escaping (String?) -> Void) {
+        self.identity = partnerIdentity
         if getTrustwordsExpectation != nil {
             getTrustwordsExpectation?.fulfill()
             getTrustwordsExpectation = nil
         }
+        completion(TrustManagementUtilMock.someTrustWords)
+    }
 
-        return TrustManagementUtilMock.someTrustWords
+    func getTrustwords(forFpr1 fpr1: String,
+                       fpr2: String,
+                       language: String,
+                       full: Bool,
+                       completion: @escaping (String?) -> Void) {
+        // Dummy for conforming the protocol
     }
     
     func confirmTrust(for identity: Identity) {

@@ -33,10 +33,12 @@ extension TrustManagementViewModel {
         public init(language: LanguageCode,
                     handshakeCombination: TrustManagementUtil.HandshakeCombination,
                     trustManagementUtil: TrustManagementUtilProtocol? = nil) {
-            self.language = language
+            _language = language
             self.handshakeCombination = handshakeCombination
             self.trustManagementUtil = trustManagementUtil ?? TrustManagementUtil()
-            setupTrustwords(combination: handshakeCombination, language: language)
+            setupTrustwords(combination: handshakeCombination, language: language) {
+
+            }
         }
 
         /// Indicates the handshake partner's name
@@ -87,10 +89,15 @@ extension TrustManagementViewModel {
         }
 
         /// The current language
-        fileprivate var language: String {
-            didSet {
-                setupTrustwords(combination: handshakeCombination, language: language)
+        private var _language: String
+        fileprivate func setLanguage(newLang: String, completion: @escaping ()->Void) {
+            _language = newLang
+            setupTrustwords(combination: handshakeCombination, language: _language) {
+                completion()
             }
+        }
+        fileprivate var language: String {
+            return _language
         }
         /// Indicates if the long (or the short) version of the trustwords should be shown
         var showLongTrustwordVersion: Bool = false
@@ -149,21 +156,45 @@ extension TrustManagementViewModel {
         fileprivate var fingerprint: String?
 
         private func setupTrustwords(combination: TrustManagementUtil.HandshakeCombination,
-                                     language: LanguageCode) {
-            let longTw =  try? trustManagementUtil.getTrustwords(for: combination.ownIdentity,//!!!: IOS-2325_!
-                                                                 and: combination.partnerIdentity,
-                                                                 language: language,
-                                                                 long: true)
-            trustwordsLong = prepareTrustwordStringForDisplay(trustwords: longTw)
-            var shortTw =  try? trustManagementUtil.getTrustwords(for: combination.ownIdentity,//!!!: IOS-2325_!
-                                                                  and: combination.partnerIdentity,
-                                                                  language: language,
-                                                                  long: false)
-            if let tmp = shortTw {
-                // Short TWs must have three dots for signaling as truncated
-                shortTw = "\(tmp)…"
+                                     language: LanguageCode,
+                                     completion: @escaping ()->Void) {
+            let group = DispatchGroup()
+            var longTw: String? = nil
+            var shortTw: String? = nil
+            group.enter()
+            trustManagementUtil.getTrustwords(for: combination.ownIdentity,
+                                              and: combination.partnerIdentity,
+                                              language: language,
+                                              long: true)
+            { (trustwords) in
+                longTw = trustwords
+                group.leave()
             }
-            trustwordsShort = prepareTrustwordStringForDisplay(trustwords: shortTw)
+            group.enter()
+            trustManagementUtil.getTrustwords(for: combination.ownIdentity,
+                                              and: combination.partnerIdentity,
+                                              language: language,
+                                              long: false)
+            { (trustwords) in
+                shortTw = trustwords
+                group.leave()
+            }
+            group.notify(queue: DispatchQueue.main) { [weak self] in
+                guard let me = self else {
+                    // Valid case. We might have been dismissed already.
+                    // Do nothing.
+                    return
+                }
+
+                me.trustwordsLong = me.prepareTrustwordStringForDisplay(trustwords: longTw)
+
+                if let tmp = shortTw {
+                    // Short TWs must have three dots for signaling as truncated
+                    shortTw = "\(tmp)…"
+                }
+                me.trustwordsShort = me.prepareTrustwordStringForDisplay(trustwords: shortTw)
+                completion()
+            }
         }
 
         private func prepareTrustwordStringForDisplay(trustwords: TrustWords?) -> TrustWords? {
@@ -275,8 +306,14 @@ final class TrustManagementViewModel {
     ///   - indexPath: The index path of the row
     ///   - language: The chosen language
     public func handleDidSelect(language: String, forRowAt indexPath: IndexPath) {
-        rows[indexPath.row].language = language
-        delegate?.dataChanged(forRowAt: indexPath)
+        rows[indexPath.row].setLanguage(newLang: language) { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                // Do nothing.
+                return
+            }
+            me.delegate?.dataChanged(forRowAt: indexPath)
+        }
     }
     
     /// Toogle pEp protection status
@@ -326,7 +363,9 @@ final class TrustManagementViewModel {
                 return
             }
             RatingReEvaluator.reevaluate(message: me.message) {
-                me.delegate?.dataChanged(forRowAt: indexPath)
+                DispatchQueue.main.async {
+                    me.delegate?.dataChanged(forRowAt: indexPath)
+                }
             }
         }
     }
@@ -335,7 +374,8 @@ final class TrustManagementViewModel {
     private func setupRows() {
         trustManagementUtil.handshakeCombinations(message: message) { [weak self] (combinations) in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
+                // Do nothing.
                 return
             }
             for combination in combinations{
