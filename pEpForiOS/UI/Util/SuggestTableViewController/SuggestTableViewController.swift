@@ -33,8 +33,14 @@ class SuggestTableViewController: UITableViewController {
 
 extension SuggestTableViewController: SuggestViewModelDelegate {
     func suggestViewModelDidResetModel(showResults: Bool) {
-        view.isHidden = !showResults
-        tableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.error("Lost myself")
+                return
+            }
+            me.view.isHidden = !showResults
+            me.tableView.reloadData()
+        }
     }
 }
 

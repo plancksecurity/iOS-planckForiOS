@@ -204,7 +204,13 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
     }
 
     func suggestions(haveScrollFocus: Bool) {
-        tableView.isScrollEnabled = !haveScrollFocus
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.error("Lost myself")
+                return
+            }
+            me.tableView.isScrollEnabled = !haveScrollFocus
+        }
     }
 
     func validatedStateChanged(to isValidated: Bool) {
