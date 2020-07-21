@@ -144,7 +144,6 @@ class SuggestViewModel {
                     me.informDelegatesModelChanged()
                 }
             }
-
         }
     }
 
