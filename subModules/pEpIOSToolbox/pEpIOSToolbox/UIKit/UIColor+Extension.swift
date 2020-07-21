@@ -9,7 +9,6 @@
 import UIKit
 
 extension UIColor {
-
     public static let pEpGreenHex = "#03AA4B"
     public static let pEpDarkGreenHex = "#1AAA50"
     public static let pEpRedHex = "#FF3B30"
