@@ -122,31 +122,39 @@ class SuggestViewModel {
             return
         }
         let identities = Identity.recipientsSuggestions(for: searchString)
-        let safeIdentities = Identity.makeSafe(identities, forSession: session)
-        let firstOp = updateWithIdentitiesOnly(identities: safeIdentities)
+        let firstOp = updateWithIdentitiesOnly(identities: identities)
         workQueue.addOperation(firstOp)
         let secondOp = updateWithIdentitiesAndContactsOperation(searchString: searchString, identities: identities)
         workQueue.addOperation(secondOp)
     }
 
+    /// Returns the Operation to update rows based only on identities.
+    /// - Parameter identities: The identities to update the rows
+    /// - Returns: The operation to add to the queue.
     private func updateWithIdentitiesOnly(identities: [Identity]) -> SelfReferencingOperation {
+        let safeIdentities = Identity.makeSafe(identities, forSession: session)
         return SelfReferencingOperation() { [weak self] (operation) in
             guard let me = self else {
                 // self == nil is a valid case here. The view might have been dismissed.
                 return
             }
             me.session.performAndWait {
-                if identities.count > 0 {
+                if safeIdentities.count > 0 {
                     // We found matching Identities in the DB.
                     // Show them to the user imediatelly and update the list later when Contacts are
                     // fetched too.
-                    me.updateRows(with: identities, contacts: [], callingOperation: operation)
+                    me.updateRows(with: safeIdentities, contacts: [], callingOperation: operation)
                     me.informDelegatesModelChanged()
                 }
             }
         }
     }
 
+    /// Returns the Operation to update rows with the identities and the contacts from the AddressBook.
+    /// - Parameters:
+    ///   - searchString: The text to filter
+    ///   - identities: The identities
+    /// - Returns: The operation to add to the queue.
     private func updateWithIdentitiesAndContactsOperation(searchString: String, identities: [Identity]) -> SelfReferencingOperation {
         return SelfReferencingOperation() { [weak self] (operation) in
             guard let me = self else {
