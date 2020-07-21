@@ -123,13 +123,10 @@ class SuggestViewModel {
         }
         let identities = Identity.recipientsSuggestions(for: searchString)
         let safeIdentities = Identity.makeSafe(identities, forSession: session)
-
         let firstOp = updateWithIdentitiesOnly(identities: safeIdentities)
         workQueue.addOperation(firstOp)
-
         let secondOp = updateWithIdentitiesAndContactsOperation(searchString: searchString, identities: identities)
         workQueue.addOperation(secondOp)
-
     }
 
     private func updateWithIdentitiesOnly(identities: [Identity]) -> SelfReferencingOperation {
