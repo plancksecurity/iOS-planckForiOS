@@ -116,32 +116,46 @@ class SuggestViewModel {
 
     public func updateSuggestion(searchString: String) {
         workQueue.cancelAllOperations()
-
         guard searchString.count >= minNumberSearchStringChars else {
             rows.removeAll()
             informDelegatesModelChanged()
             return
         }
         let identities = Identity.recipientsSuggestions(for: searchString)
-        if identities.count > 0 {
-            // We found matching Identities in the DB.
-            // Show them to the user imediatelly and update the list later when Contacts are
-            // fetched too.
-            rows = Row.rows(fromIdentities: identities)
-            informDelegatesModelChanged()
-        }
-
-        let op = SelfReferencingOperation() { [weak self] (operation) in
+        let safeIdentities = Identity.makeSafe(identities, forSession: session)
+        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
             guard let me = self else {
-                // self == nil is a valid case here. The view might have been dismissed.
+                // That is a valid case.
+                // The view might be gone before this block started to run.
                 return
             }
-            let contacts = AddressBook.searchContacts(searchterm: searchString)
-            me.updateRows(with: identities, contacts: contacts, callingOperation: operation)
-            AppSettings.shared.userHasBeenAskedForContactAccessPermissions = true
-
+            me.session.performAndWait {
+                if safeIdentities.count > 0 {
+                    // We found matching Identities in the DB.
+                    // Show them to the user imediatelly and update the list later when Contacts are
+                    // fetched too.
+                    let updateWithIdentitiesOnly = SelfReferencingOperation() { [weak self] (operation) in
+                        guard let me = self else {
+                            // self == nil is a valid case here. The view might have been dismissed.
+                            return
+                        }
+                        me.updateRows(with: safeIdentities, contacts: [], callingOperation: operation)
+                        me.informDelegatesModelChanged()
+                    }
+                    me.workQueue.addOperation(updateWithIdentitiesOnly)
+                }
+            }
+            let updateWithIdentitiesAndContacts = SelfReferencingOperation() { [weak self] (operation) in
+                guard let me = self else {
+                    // self == nil is a valid case here. The view might have been dismissed.
+                    return
+                }
+                let contacts = AddressBook.searchContacts(searchterm: searchString)
+                me.updateRows(with: identities, contacts: contacts, callingOperation: operation)
+                AppSettings.shared.userHasBeenAskedForContactAccessPermissions = true
+            }
+            me.workQueue.addOperation(updateWithIdentitiesAndContacts)
         }
-        workQueue.addOperation(op)
     }
 
     public func pEpRatingFor(address: String) -> PEPRating {
