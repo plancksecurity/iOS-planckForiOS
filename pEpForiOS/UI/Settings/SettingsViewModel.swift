@@ -452,9 +452,9 @@ extension SettingsViewModel {
     }
 
     /// Handle method to respond to the reset all identities button.
-    private func handleResetAllIdentities() {//!!!: IOS-2325_!
+    private func handleResetAllIdentities() {
         delegate?.showLoadingView()
-        Account.resetAllOwnKeys() { [weak self] result in//!!!: IOS-2325_!
+        Account.resetAllOwnKeys() { [weak self] result in
             switch result {
             case .success():
                 Log.shared.info("Success", [])
