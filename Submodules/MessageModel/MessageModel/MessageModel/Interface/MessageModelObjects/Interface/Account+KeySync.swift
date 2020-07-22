@@ -43,15 +43,11 @@ extension Account {
         }
     }
 
-    public static func resetAllOwnKeys(completion: ((Result<Void, Error>) -> ())? = nil) {//!!!: IOS-2325_!
-        DispatchQueue.global(qos: .utility).async {
-            let session = PEPSession()
-            do {
-                try session.keyResetAllOwnKeysError()//!!!: IOS-2325_!
-                completion?(.success(()))
-            } catch {
-                completion?(.failure(error))
-            }
+    public static func resetAllOwnKeys(completion: ((Result<Void, Error>) -> ())? = nil) {
+        PEPAsyncSession().keyResetAllOwnKeys({ (error: Error) in
+            completion?(.failure(error))
+        }) {
+            completion?(.success(()))
         }
     }
 }
