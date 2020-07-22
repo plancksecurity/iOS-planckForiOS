@@ -132,21 +132,17 @@ class SuggestViewModel {
     /// - Parameter identities: The identities to update the rows
     /// - Returns: The operation to add to the queue.
     private func updateWithIdentitiesOnly(identities: [Identity]) -> SelfReferencingOperation {
-        let safeIdentities = Identity.makeSafe(identities, forSession: session)
         return SelfReferencingOperation() { [weak self] (operation) in
             guard let me = self else {
                 // self == nil is a valid case here. The view might have been dismissed.
                 return
             }
-            me.session.performAndWait {
-                if safeIdentities.count > 0 {
+                if identities.count > 0 {
                     // We found matching Identities in the DB.
                     // Show them to the user imediatelly and update the list later when Contacts are
                     // fetched too.
-                    me.updateRows(with: safeIdentities, contacts: [], callingOperation: operation)
-                    me.informDelegatesModelChanged()
+                    me.updateRows(with: identities, contacts: [], callingOperation: operation)
                 }
-            }
         }
     }
 
@@ -161,9 +157,9 @@ class SuggestViewModel {
                 // self == nil is a valid case here. The view might have been dismissed.
                 return
             }
-            let contacts = AddressBook.searchContacts(searchterm: searchString)
-            me.updateRows(with: identities, contacts: contacts, callingOperation: operation)
-            AppSettings.shared.userHasBeenAskedForContactAccessPermissions = true
+                let contacts = AddressBook.searchContacts(searchterm: searchString)
+                me.updateRows(with: identities, contacts: contacts, callingOperation: operation)
+                AppSettings.shared.userHasBeenAskedForContactAccessPermissions = true
         }
     }
 
@@ -195,9 +191,12 @@ extension SuggestViewModel {
         newRows.sort { (row1, row2) -> Bool in
             row1.name < row2.name
         }
-
         rows = newRows
-        informDelegatesModelChanged(callingOperation: callingOperation)
+        // To avoid race conditions, we only trigger changes in UI
+        // if there aren't more operations in the queue.
+        if workQueue.operationCount == 1 {
+            informDelegatesModelChanged(callingOperation: callingOperation)
+        }
     }
 
     private func mergeAndIgnoreContactsWeAlreadyHaveAnIdentityFor(identities: [Identity],
@@ -239,24 +238,17 @@ extension SuggestViewModel {
     }
 
     private func informDelegatesModelChanged(callingOperation: SelfReferencingOperation?) {
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+        if let operationWeRunOn = callingOperation {
+            guard !operationWeRunOn.isCancelled else {
+                // do not bother the UI with outdated data
                 return
             }
-            if let operationWeRunOn = callingOperation {
-                guard !operationWeRunOn.isCancelled else {
-                    // do not bother the UI with outdated data
-                    return
-                }
-            }
-            me.informDelegatesModelChanged()
         }
+        informDelegatesModelChanged()
     }
 
     private func informDelegatesModelChanged() {
         let showResults = rows.count > 0 || showEmptyList
-
         delegate?.suggestViewModelDidResetModel(showResults: showResults)
         resultDelegate?.suggestViewModel(self, didToggleVisibilityTo: showResults)
     }
