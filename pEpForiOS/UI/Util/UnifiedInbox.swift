@@ -8,14 +8,52 @@
 import pEpIOSToolbox
 import MessageModel
 
-public class UnifiedInbox: VirtualFolderProtocol {
+
+public class UnifiedInbox : UnifiedFolderBase {
+    public override var agregatedFolderType: FolderType? {
+        return FolderType.inbox
+    }
+    public override var name: String {
+        return UnifiedInbox.defaultUnifiedInboxName
+    }
+}
+
+public class UnifiedDraft : UnifiedFolderBase {
+    public override var agregatedFolderType: FolderType? {
+        return FolderType.drafts
+    }
+    public override var name: String {
+        return NSLocalizedString("Drafts", comment: "Unified Drafts Folder title")
+    }
+}
+
+public class UnifiedSent : UnifiedFolderBase {
+    public override var agregatedFolderType: FolderType? {
+        return FolderType.sent
+    }
+    public override var name: String {
+        return NSLocalizedString("Sents", comment: "Unified Drafts Folder title")
+    }
+}
+
+public class UnifiedTrash : UnifiedFolderBase {
+    public override var agregatedFolderType: FolderType? {
+        return FolderType.trash
+    }
+    public override var name: String {
+        return NSLocalizedString("Trashes", comment: "Unified Drafts Folder title")
+    }
+}
+
+public class UnifiedFolderBase: VirtualFolderProtocol {
 
     private lazy var fetchMessagesService = FetchMessagesService()
     private lazy var fetchOlderMessagesService = FetchOlderImapMessagesService()
     static public let defaultUnifiedInboxName = "Unified Inbox"
 
     public var agregatedFolderType: FolderType? {
-        return FolderType.inbox
+        Log.shared.errorAndCrash("You MUST override this")
+        return .none
     }
 
     public func fetchOlder(completion: (()->())? = nil) {
@@ -58,14 +96,22 @@ public class UnifiedInbox: VirtualFolderProtocol {
 
     public var title: String {
         get {
-            return Folder.localizedName(realName: name)
+            guard let type = agregatedFolderType else {
+                Log.shared.errorAndCrash("Folder Type not found")
+                return ""
+            }
+            return Folder.localizedName(realName: name, type: type)
         }
     }
 
     public var messagesPredicate: NSPredicate {
         get {
             var predicates = [NSPredicate]()
-            predicates.append(Message.PredicateFactory.isInInbox())
+            guard let folderType = agregatedFolderType else {
+                Log.shared.errorAndCrash("Folder Type not found")
+                return NSPredicate()
+            }
+            predicates.append(Message.PredicateFactory.isIn(folderOfType: folderType))
             predicates.append(Message.PredicateFactory.existingMessages())
             predicates.append(Message.PredicateFactory.processed())
             predicates.append(Message.PredicateFactory.isNotAutoConsumable())
@@ -80,7 +126,8 @@ public class UnifiedInbox: VirtualFolderProtocol {
     }
 
     public var name: String {
-        return UnifiedInbox.defaultUnifiedInboxName
+        Log.shared.errorAndCrash("You MUST override this")
+        return ""
     }
 
     public var countUnread : Int {
