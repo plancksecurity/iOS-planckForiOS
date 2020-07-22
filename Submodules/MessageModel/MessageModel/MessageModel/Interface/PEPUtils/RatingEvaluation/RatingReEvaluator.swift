@@ -36,11 +36,13 @@ extension RatingReEvaluator: RatingReEvaluatorProtocol {
             Log.shared.errorAndCrash("%@", error.localizedDescription)
             completion()
         }) { (newRating) in
-            message.cdObject.pEpRating = Int16(newRating.rawValue)
-            message.session.moc.performAndWait {
-                message.session.moc.saveAndLogErrors()
+            DispatchQueue.main.async {
+                message.cdObject.pEpRating = Int16(newRating.rawValue)
+                message.session.moc.performAndWait {
+                    message.session.moc.saveAndLogErrors()
+                }
+                completion()
             }
-            completion()
         }
     }
 }
