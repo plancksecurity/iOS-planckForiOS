@@ -131,19 +131,22 @@ class EmailListViewModel: EmailDisplayViewModel {
         AppSettings.shared.shouldShowTutorialWizard = false
     }
 
-    /// - returns: action to trigger if user clicks destructive button
-    public func getDestructiveAction(forMessageAt index: Int) -> SwipeActionDescriptor {
+    /// Returns the descriptor for the destructive action, it could be archive or trash
+    /// - Parameter index: The index of the row
+    /// - Returns: The descriptor to trigger the action if user taps a destructive button
+    public func getDestructiveDescriptor(forMessageAt index: Int) -> SwipeActionDescriptor {
         let parentFolder = getParentFolder(forMessageAt: index)
         let defaultDestructiveAction: SwipeActionDescriptor
             = parentFolder.defaultDestructiveActionIsArchive
                 ? .archive
                 : .trash
-
         return folderIsOutbox(parentFolder) ? .trash : defaultDestructiveAction
     }
 
-    /// - returns: action to trigger if user clicks "flag" button
-    public func getFlagAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
+    /// Returns the descriptor with the Flag status (May be flag or unflag)
+    /// - Parameter index: The index of the row
+    /// - Returns: The descriptor to trigger the action if user taps "flag" button
+    public func getFlagDescriptor(forMessageAt index: Int) -> SwipeActionDescriptor? {
         let parentFolder = getParentFolder(forMessageAt: index)
         if folderIsDraftsOrOutbox(parentFolder) {
             return nil
@@ -154,9 +157,9 @@ class EmailListViewModel: EmailDisplayViewModel {
     }
 
     /// Returns the descriptor with the Read status (May be read or unread)
-    /// - Parameter index: The row index.
-    /// - Returns: action to trigger if user taps "read" button
-    public func getReadAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
+    /// - Parameter index: The index of the row
+    /// - Returns: The descriptor to trigger the action if user taps "read" button
+    public func getReadDescriptor(forMessageAt index: Int) -> SwipeActionDescriptor? {
         let parentFolder = getParentFolder(forMessageAt: index)
         if folderIsDraftsOrOutbox(parentFolder) {
             return nil
@@ -165,8 +168,10 @@ class EmailListViewModel: EmailDisplayViewModel {
         return seen ? .unread : .read
     }
     
-    /// - returns: action to trigger if user clicks "more" button
-    public func getMoreAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
+    /// Returns the descriptor for the option More
+    /// - Parameter index: The index of the row
+    /// - Returns: The descriptor to trigger the action if user taps "More" button
+    public func getMoreDescriptor(forMessageAt index: Int) -> SwipeActionDescriptor? {
         let parentFolder = getParentFolder(forMessageAt: index)
         if folderIsDraftsOrOutbox(parentFolder) {
             return nil

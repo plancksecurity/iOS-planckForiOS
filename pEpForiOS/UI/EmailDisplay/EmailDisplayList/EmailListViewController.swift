@@ -506,23 +506,18 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    editActionsForRowAt indexPath: IndexPath,
                    for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        if viewModel == nil {
-            return nil
-        }
-
-        // Create swipe actions, taking the currently displayed folder into account
-        var rightSwipeActions = [SwipeAction]()
-
-        guard let model = viewModel else {
+        guard let viewModel = viewModel else {
             Log.shared.errorAndCrash("Should have VM")
             return nil
         }
 
+        // Create swipe actions, taking the currently displayed folder into account
+        var leftSwipeActions = [SwipeAction]()
+
         // Delete or Archive
-        let destructiveAction = model.getDestructiveAction(forMessageAt: indexPath.row)
-        let archiveAction =
-            SwipeAction(style: .destructive,
-                        title: destructiveAction.title(forDisplayMode: .titleAndImage)) {
+        let destructiveDescriptor = viewModel.getDestructiveDescriptor(forMessageAt: indexPath.row)
+        let archiveAction = SwipeAction(style: .destructive,
+                        title: destructiveDescriptor.title(forDisplayMode: .titleAndImage)) {
                             [weak self] action, indexPath in
                             guard let me = self else {
                                 Log.shared.errorAndCrash("Lost MySelf")
@@ -530,14 +525,12 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                             }
                             me.swipeDelete = action
                             me.deleteAction(forCellAt: indexPath)
-
         }
-        configure(action: archiveAction, with: destructiveAction)
-        rightSwipeActions.append(archiveAction)
+        configure(action: archiveAction, with: destructiveDescriptor)
+        leftSwipeActions.append(archiveAction)
 
         // Flag
-        let flagActionDescription = model.getFlagAction(forMessageAt: indexPath.row)
-        if let flagActionDescription = flagActionDescription {
+        if let flagDescriptor = viewModel.getFlagDescriptor(forMessageAt: indexPath.row) {
             let flagAction = SwipeAction(style: .default, title: "Flag") {
                 [weak self] action, indexPath in
                 guard let me = self else {
@@ -546,17 +539,13 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                 }
                 me.flagAction(forCellAt: indexPath)
             }
-
             flagAction.hidesWhenSelected = true
-
-            configure(action: flagAction, with: flagActionDescription)
-            rightSwipeActions.append(flagAction)
+            configure(action: flagAction, with: flagDescriptor)
+            leftSwipeActions.append(flagAction)
         }
 
         // More (reply++)
-        let moreActionDescription = model.getMoreAction(forMessageAt: indexPath.row)
-
-        if let moreActionDescription = moreActionDescription {
+        if let moreDescriptor = viewModel.getMoreDescriptor(forMessageAt: indexPath.row) {
             // Do not add "more" actions (reply...) to drafts or outbox.
             let moreAction = SwipeAction(style: .default, title: "More") {
                 [weak self] action, indexPath in
@@ -567,13 +556,13 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                 me.moreAction(forCellAt: indexPath)
             }
             moreAction.hidesWhenSelected = true
-            configure(action: moreAction, with: moreActionDescription)
-            rightSwipeActions.append(moreAction)
+            configure(action: moreAction, with: moreDescriptor)
+            leftSwipeActions.append(moreAction)
         }
 
-        var leftSwipeActions = [SwipeAction]()
+        var rightSwipeActions = [SwipeAction]()
         // Read
-        if let readActionDescription = model.getReadAction(forMessageAt: indexPath.row) {
+        if let readActionDescription = viewModel.getReadDescriptor(forMessageAt: indexPath.row) {
             let readAction = SwipeAction(style: .default, title: "Read") {
                 [weak self] action, indexPath in
                 guard let me = self else {
@@ -584,10 +573,12 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
             }
             readAction.hidesWhenSelected = true
             configure(action: readAction, with: readActionDescription)
-            leftSwipeActions.append(readAction)
+            rightSwipeActions.append(readAction)
         }
 
-        return orientation == .right ? rightSwipeActions : leftSwipeActions
+        // "orientation == .right" means actions that are shown in the right side.
+        // The swipe is to the left. And Viceversa.
+        return orientation == .right ? leftSwipeActions : rightSwipeActions
     }
 
     func tableView(_ tableView: UITableView,
