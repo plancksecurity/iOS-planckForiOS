@@ -186,16 +186,26 @@ extension SuggestViewModel {
     private func updateRows(with identities: [Identity],
                             contacts: [CNContact],
                             callingOperation: SelfReferencingOperation?) {
-        var newRows = mergeAndIgnoreContactsWeAlreadyHaveAnIdentityFor(identities: identities,
-                                                                       contacts: contacts)
-        newRows.sort { (row1, row2) -> Bool in
-            row1.name < row2.name
-        }
-        rows = newRows
-        // To avoid race conditions, we only trigger changes in UI
-        // if there aren't more operations in the queue.
-        if workQueue.operationCount == 1 {
-            informDelegatesModelChanged(callingOperation: callingOperation)
+
+        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+            guard let me = self else {
+                // That is a valid case. Compose view is gone before this block started to run.
+                return
+            }
+
+            me.session.performAndWait {
+                var newRows = me.mergeAndIgnoreContactsWeAlreadyHaveAnIdentityFor(identities: identities,
+                                                                               contacts: contacts)
+                newRows.sort { (row1, row2) -> Bool in
+                    row1.name < row2.name
+                }
+                me.rows = newRows
+                // To avoid race conditions, we only trigger changes in UI
+                // if there aren't more operations in the queue.
+                if me.workQueue.operationCount == 1 {
+                    me.informDelegatesModelChanged(callingOperation: callingOperation)
+                }
+            }
         }
     }
 
