@@ -34,7 +34,6 @@ class EmailViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet var showExternalContentView: UIView!
-    @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var showExternalContentButton: UIButton!
     @IBOutlet weak var showExternalContentLabel: UILabel!
     var showExternalContent = false
@@ -59,10 +58,7 @@ class EmailViewController: UIViewController {
     }
     
     fileprivate func removeExternalContentView() {
-        //the external content view is in position 1
-        let viewToRemove = stackView.arrangedSubviews[1]
-        stackView.removeArrangedSubview(viewToRemove)
-        viewToRemove.removeFromSuperview()
+        showExternalContentView.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -137,7 +133,7 @@ class EmailViewController: UIViewController {
             htmlViewerViewController.view.fullSizeInSuperView()
             let displayHtml = appendInlinedPlainText(fromAttachmentsIn: m, to: htmlBody)
             if displayHtml.containsExternalContent() && showViewExternalContent {
-                stackView.addArrangedSubview(showExternalContentView)
+                showExternalContentView.isHidden = false
             } else if !showViewExternalContent {
                 removeExternalContentView()
             }

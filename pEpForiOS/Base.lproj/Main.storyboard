@@ -716,7 +716,6 @@
                         <outlet property="showExternalContentButton" destination="3uL-KY-gV7" id="aEI-oy-mys"/>
                         <outlet property="showExternalContentLabel" destination="j6J-vb-VLn" id="WXx-sZ-lfT"/>
                         <outlet property="showExternalContentView" destination="rz6-9D-FWg" id="RWQ-lz-2dQ"/>
-                        <outlet property="stackView" destination="Yrf-Bs-3eT" id="iLE-oZ-Vlq"/>
                         <outlet property="tableView" destination="TF2-dt-8de" id="wF7-wH-a6N"/>
                         <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" id="e2D-Sv-Lmt"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" id="wZp-rH-OFv"/>
