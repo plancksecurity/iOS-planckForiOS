@@ -459,6 +459,16 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
 // MARK: - Compose Button
 
+    @objc public func composeButtonHasBeenPressed() {
+        performSegue(withIdentifier: SegueIdentifier.segueCompose, sender: self)
+    }
+
+    @objc public func composeButtonLongClicked(sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
+            showDraftsQuickView()
+        }
+    }
+
     private func setUpComposeActions() {
         // Gesture recognizers
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(composeButtonHasBeenPressed))
@@ -482,21 +492,8 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         toolbarItems?.insert(compose, at: 2)
     }
 
-    @objc
-    public func composeButtonHasBeenPressed() {
-        performSegue(withIdentifier: SegueIdentifier.segueCompose, sender: self)
-    }
-
-    @objc
-    public func composeButtonLongClicked(sender: UILongPressGestureRecognizer) {
-        if sender.state == .began {
-            // TODO: - ak IOS-1935 Add implementation for long click on compose button
-            showDraftsQuickView()
-        }
-    }
-
     private func showDraftsQuickView() {
-        UIUtils.presentDraftsQuickView()
+        performSegue(withIdentifier: "sequeQuickDrafts", sender: self)
     }
 
     // MARK: -
@@ -1125,6 +1122,7 @@ extension EmailListViewController: SegueHandlerType {
         case segueFolderViews
         case segueShowMoveToFolder
         case segueShowThreadedEmail
+        case sequeQuickDrafts
         case noSegue
     }
     
@@ -1192,6 +1190,8 @@ extension EmailListViewController: SegueHandlerType {
 
             destination.viewModel
                 = viewModel?.getMoveToFolderViewModel(forSelectedMessages: selectedRows)
+            break
+        case .sequeQuickDrafts:
             break
         default:
             Log.shared.errorAndCrash("Unhandled segue")

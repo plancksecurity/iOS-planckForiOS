@@ -1,29 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Cs6-2n-23b">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yTf-GC-8YW">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Drafts-->
-        <scene sceneID="MdM-Jl-iDd">
-            <objects>
-                <navigationController title="Drafts" id="Cs6-2n-23b" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="LBa-A3-Nrc">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="yTf-GC-8YW" kind="relationship" relationship="rootViewController" id="cI7-rB-k4I"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SXy-kp-1NV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1248" y="97"/>
-        </scene>
         <!--QuickViewDrafts-->
         <scene sceneID="ixC-4X-Mgo">
             <objects>
@@ -175,12 +159,31 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ssz-sx-eSc">
+                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="XIs-Ra-eAI"/>
+                                </constraints>
+                                <items>
+                                    <navigationItem title="Drafts" id="3Xt-ed-29F">
+                                        <barButtonItem key="rightBarButtonItem" title="Cancel" id="QwN-Zp-dhP" userLabel="Cancel">
+                                            <color key="tintColor" red="0.0064750583839999999" green="0.7039813399" blue="0.30714368819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <connections>
+                                                <action selector="dismissView" destination="yTf-GC-8YW" id="pvx-ie-mvc"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="wdJ-lZ-TNk" firstAttribute="trailing" secondItem="Kv3-V0-qcR" secondAttribute="trailing" id="AqH-fN-TRC"/>
+                            <constraint firstItem="Kv3-V0-qcR" firstAttribute="top" secondItem="ssz-sx-eSc" secondAttribute="bottom" id="Lzw-OH-x32"/>
                             <constraint firstItem="wdJ-lZ-TNk" firstAttribute="bottom" secondItem="Kv3-V0-qcR" secondAttribute="bottom" id="NQL-iA-DFQ"/>
-                            <constraint firstItem="Kv3-V0-qcR" firstAttribute="top" secondItem="wdJ-lZ-TNk" secondAttribute="top" id="a1R-KR-WsF"/>
+                            <constraint firstItem="ssz-sx-eSc" firstAttribute="top" secondItem="wdJ-lZ-TNk" secondAttribute="top" id="ibc-QS-0yw"/>
+                            <constraint firstAttribute="trailing" secondItem="ssz-sx-eSc" secondAttribute="trailing" id="nko-df-Dp4"/>
+                            <constraint firstItem="ssz-sx-eSc" firstAttribute="leading" secondItem="wdJ-lZ-TNk" secondAttribute="leading" id="uve-y5-Vfh"/>
                             <constraint firstItem="Kv3-V0-qcR" firstAttribute="leading" secondItem="wdJ-lZ-TNk" secondAttribute="leading" id="vsj-hz-Mji"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="wdJ-lZ-TNk"/>
@@ -194,7 +197,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X1m-7O-C5l" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-455" y="96"/>
+            <point key="canvasLocation" x="-455.07246376811599" y="95.758928571428569"/>
         </scene>
     </scenes>
     <resources>
