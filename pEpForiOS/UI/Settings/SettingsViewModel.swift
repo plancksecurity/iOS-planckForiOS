@@ -416,11 +416,7 @@ extension SettingsViewModel {
             KeySyncUtil.enableKeySync()
         } else {
             if grouped {
-                do {
-                    try KeySyncUtil.leaveDeviceGroup()//!!!: IOS-2325_!
-                } catch {
-                    Log.shared.errorAndCrash(error: error)
-                }
+                KeySyncUtil.leaveDeviceGroup()
             }
             KeySyncUtil.disableKeySync()//!!!: IOS-2325_!
         }
