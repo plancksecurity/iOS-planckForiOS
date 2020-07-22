@@ -18,6 +18,15 @@ class UIUtils {
     /// - Parameters:
     ///   - error: error to preset to user
     static public func show(error: Error) {
+        // Do not show alerts when app is in background.
+        if UIApplication.shared.applicationState != .active {
+            #if DEBUG
+            // show alert in background when in debug.
+            #else
+            return
+            #endif
+        }
+
         Log.shared.info("May or may not display error to user: (interpolate) %@", "\(error)")
 
         guard let displayError = DisplayUserError(withError: error) else {

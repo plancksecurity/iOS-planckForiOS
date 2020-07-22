@@ -19,14 +19,6 @@ extension UIUtils {
                                                 message: String?,
                                                 inNavigationStackOf viewController: UIViewController? = nil,
                                                 completion: (()->Void)? = nil) {
-        // Do not show alerts when app is in background.
-        if UIApplication.shared.applicationState != .active {
-            #if DEBUG
-            // show alert in background when in debug.
-            #else
-            return
-            #endif
-        }
         let alertView = UIAlertController.pEpAlertController(title: title,
                                                              message: message,
                                                              preferredStyle: .alert)
