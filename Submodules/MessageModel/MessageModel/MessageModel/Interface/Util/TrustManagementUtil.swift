@@ -119,30 +119,50 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
                               language: String,
                               long: Bool,
                               completion: @escaping (String?)->Void) {
-        let selfPEPIdentity = SelfIdentity.pEpIdentity()
+        var selfPEPIdentity = SelfIdentity.pEpIdentity()
         let partnerPEPIdentity = partnerIdentity.pEpIdentity()
         var isPartnerpEpUser = false
-        do{
-            try PEPSession().mySelf(selfPEPIdentity)//!!!: IOS-2325_!
-            try PEPSession().update(partnerPEPIdentity)//!!!: IOS-2325_!
-            isPartnerpEpUser = try PEPSession().isPEPUser(partnerPEPIdentity).boolValue//!!!: IOS-2325_!
-        } catch {
-            Log.shared.error("unable to get the fingerprints")
-            completion(nil)
+        let group = DispatchGroup()
+        group.enter()
+        var success = true
+        PEPAsyncSession().mySelf(selfPEPIdentity, errorCallback: { (error) in
+            Log.shared.errorAndCrash(error: error)
+            success = false
+            group.leave()
+        }) { (updatedIdentity) in
+            selfPEPIdentity = updatedIdentity
+            group.leave()
         }
+        group.notify(queue: DispatchQueue.main) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard success else {
+                completion(nil)
+                return
+            }
+            do{
+                try PEPSession().update(partnerPEPIdentity)//!!!: IOS-2325_! (move up, out of notify)
+                isPartnerpEpUser = try PEPSession().isPEPUser(partnerPEPIdentity).boolValue//!!!: IOS-2325_! (move up, out of notify)
+            } catch {
+                Log.shared.error("unable to get the fingerprints")
+                completion(nil)
+            }
 
-        if !isPartnerpEpUser, let fprSelf = selfPEPIdentity.fingerPrint,
-            let fprPartner = partnerPEPIdentity.fingerPrint  {
-            // partner is a PGP user
-            let fprPrettySelf = fprSelf.prettyFingerPrint()
-            let fprPrettyPartner = fprPartner.prettyFingerPrint()
-            completion("\(partnerIdentity.userNameOrAddress):\n\(fprPrettyPartner)\n\n" + "\(SelfIdentity.userNameOrAddress):\n\(fprPrettySelf)")
-        } else {
-            determineTrustwords(identitySelf: selfPEPIdentity,
-                                identityPartner: partnerPEPIdentity,
-                                language: language,
-                                full: long,
-                                completion: completion)
+            if !isPartnerpEpUser, let fprSelf = selfPEPIdentity.fingerPrint,
+                let fprPartner = partnerPEPIdentity.fingerPrint  {
+                // partner is a PGP user
+                let fprPrettySelf = fprSelf.prettyFingerPrint()
+                let fprPrettyPartner = fprPartner.prettyFingerPrint()
+                completion("\(partnerIdentity.userNameOrAddress):\n\(fprPrettyPartner)\n\n" + "\(SelfIdentity.userNameOrAddress):\n\(fprPrettySelf)")
+            } else {
+                me.determineTrustwords(identitySelf: selfPEPIdentity,
+                                    identityPartner: partnerPEPIdentity,
+                                    language: language,
+                                    full: long,
+                                    completion: completion)
+            }
         }
     }
             

@@ -24,6 +24,11 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
     /// account if required).
     private let qrc: QueryResultsController<CdAccount>
     private var moc: NSManagedObjectContext
+    private let eventQueue: OperationQueue = {
+        let createe = OperationQueue()
+        createe.maxConcurrentOperationCount = 1
+        return createe
+    }()
     weak private var keySyncStateProvider: KeySyncStateProvider?
     private(set) var handshakeHandler: KeySyncServiceHandshakeHandlerProtocol?
     let passphraseProvider: PassphraseProviderProtocol
@@ -32,7 +37,7 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
 
     // MARK: - KeySyncServiceProtocol
 
-    required init(keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol? = nil,//!!!: IOS-2325_!
+    required init(keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol? = nil,
                   keySyncStateProvider: KeySyncStateProvider,
                   fastPollingDelegate: PollingDelegate? = nil,
                   passphraseProvider: PassphraseProviderProtocol,
@@ -43,7 +48,7 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
         self.passphraseProvider = passphraseProvider
         self.usePEPFolderProvider = usePEPFolderProvider
         pEpSync = PEPSync(sendMessageDelegate: nil,
-                               notifyHandshakeDelegate: nil)
+                          notifyHandshakeDelegate: nil)
         let moc: NSManagedObjectContext = Stack.shared.changePropagatorContext
         self.moc = moc
         self.qrc = QueryResultsController<CdAccount>(predicate: nil,
@@ -62,9 +67,9 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                 return
             }
             if enabled {
-                me.start()//!!!: IOS-2325_!
+                me.start()
             } else {
-                me.stop()//!!!: IOS-2325_!
+                me.stop()
             }
         }
         pEpSync.sendMessageDelegate = self
@@ -77,47 +82,69 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
     /// * in case Sync is enabled while startup the application must call start_sync(), otherwise it must not (default: enabled)
     ///
     /// - seeAlso: https://dev.pep.foundation/Engine/Sync%20from%20an%20application%20developer's%20perspective#application-startup
-    func start() {//!!!: IOS-2325_! ???? THINK! Sync handled independently, correct? Guess not, because calling mayself()
-        guard let stateProvider = keySyncStateProvider else {
-            Log.shared.errorAndCrash("No keySyncStateProvider")
-            return
-        }
-        moc.performAndWait {
-            guard
-                let cdAccounts = try? qrc.getResults(),
-                cdAccounts.count > 0  else {
-                    // Do not start KeySync if no accounts are setup.
-                    // spex: "have at least one account configured"
-                    return
-            }
-            // spex: call myself() for all accounts
-            for cdAccount in cdAccounts {
-                if let pEpUser = cdAccount.identity?.pEpIdentity() {
-                    // I intentionally do not use guard here to stat sync any way.
-                    do {
-                        try PEPSession().mySelf(pEpUser)//!!!: IOS-2325_!
-                    } catch {
-                        Log.shared.errorAndCrash(error: error)
-                    }
-                }
-            }
-
-            // spex:    in case Sync is enabled while startup the application must call start_sync(),
-            //          otherwise it must not (default: enabled)
-            guard stateProvider.isKeySyncEnabled else {
-                // Do not start KeySync if the user disabled it.
+    func start() {
+        eventQueue.addOperation { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            pEpSync.startup()
+            guard let stateProvider = me.keySyncStateProvider else {
+                Log.shared.errorAndCrash("No keySyncStateProvider")
+                return
+            }
+            me.moc.performAndWait {
+                guard
+                    let cdAccounts = try? me.qrc.getResults(),
+                    cdAccounts.count > 0  else {
+                        // Do not start KeySync if no accounts are setup.
+                        // spex: "have at least one account configured"
+                        return
+                }
+                let group = DispatchGroup()
+                // spex: call myself() for all accounts
+                for cdAccount in cdAccounts {
+                    if let pEpUser = cdAccount.identity?.pEpIdentity() {
+                        group.enter()
+                        PEPAsyncSession().mySelf(pEpUser, errorCallback: { (error) in
+                            Log.shared.errorAndCrash(error: error)
+                            group.leave()
+                        }) { (_) in
+                            group.leave()
+                        }
+                    }
+                }
+                group.notify(queue: DispatchQueue.main) {
+                    // spex:    in case Sync is enabled while startup the application must call start_sync(),
+                    //          otherwise it must not (default: enabled)
+                    guard stateProvider.isKeySyncEnabled else {
+                        // Do not start KeySync if the user disabled it.
+                        return
+                    }
+                    me.pEpSync.startup()
+                }
+            }
         }
     }
 
     func finish() {
-        pEpSync.shutdown()
+        eventQueue.addOperation  { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.pEpSync.shutdown()
+        }
     }
 
     func stop() {
-        pEpSync.shutdown()
+        eventQueue.cancelAllOperations()
+        eventQueue.addOperation { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.pEpSync.shutdown()
+        }
     }
 }
 
@@ -137,8 +164,8 @@ extension KeySyncService: QueryResultsControllerDelegate {
     }
 
     func queryResultsControllerDidChangeObjectAt(indexPath: IndexPath?,//!!!: IOS-2325_!
-                                                 forChangeType changeType: NSFetchedResultsChangeType,
-                                                 newIndexPath: IndexPath?) {
+        forChangeType changeType: NSFetchedResultsChangeType,
+        newIndexPath: IndexPath?) {
         switch changeType {
         case .delete:
             // Nothing to do.

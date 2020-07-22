@@ -12,32 +12,54 @@ import CoreData
 
 struct KeyGeneratorService {
 
-    /// Generate key for a cdIdentity
+    /// Generate key for a new, own cdIdentity.
     ///
     /// - Parameters:
     ///   - cdIdentity:     identity (of account) to generate key for
     ///   - context:        context cdIdentity is safe to use on
     ///   - pEpSyncEnabled: whether or not to enable pEp Sync for this account
+    ///   - completion: called when done. `success`is false in case an error occured.
     static func generateKey(cdIdentity: CdIdentity,
                             context: NSManagedObjectContext,
-                            pEpSyncEnabled: Bool) throws {//!!!: IOS-2325_!
-        var pEpId : PEPIdentity?
-        context.performAndWait {
-            pEpId = cdIdentity.pEpIdentity()
-        }
-        guard let pEpIdentity = pEpId else {
-            Log.shared.errorAndCrash(message: "No pEpId")
-            return
-        }
-
-        let session = PEPSession()
-        try session.mySelf(pEpIdentity)//!!!: IOS-2325_!
-
-        if pEpSyncEnabled {
-            try session.enableSync(for: pEpIdentity)//!!!: IOS-2325_!
-        } else {
-            try session.disableSync(for: pEpIdentity)//!!!: IOS-2325_!/15
-
+                            pEpSyncEnabled: Bool,
+                            completion: @escaping (Success)->()) {
+        let queue = DispatchQueue(label: "\(#file)-\(#function)", qos: .userInitiated)
+        queue.async {
+            var pEpId : PEPIdentity?
+            context.performAndWait {
+                pEpId = cdIdentity.pEpIdentity()
+            }
+            guard var pEpIdentity = pEpId else {
+                Log.shared.errorAndCrash(message: "No pEpId")
+                completion(false)
+                return
+            }
+            var success = true
+            let group = DispatchGroup()
+            group.enter()
+            PEPAsyncSession().mySelf(pEpIdentity, errorCallback: { (_) in
+                success = false
+                group.leave()
+            }) { (updatedIdentity) in
+                pEpIdentity = updatedIdentity
+                group.leave()
+            }
+            group.wait()
+            if !success {
+                completion(success)
+                return
+            }
+            do {
+                let session = PEPSession()
+                if pEpSyncEnabled {
+                    try session.enableSync(for: pEpIdentity)//!!!: IOS-2325_!
+                } else {
+                    try session.disableSync(for: pEpIdentity)//!!!: IOS-2325_!/15
+                }
+            } catch {
+                success = false
+            }
+            completion(success)
         }
     }
 }

@@ -31,4 +31,24 @@ extension XCTestCase {
         }
         return rating
     }
+
+    func mySelf(for pEpIdentity: PEPIdentity) -> PEPIdentity {
+        let exp = expectation(description: "exp")
+        var updatedPEPIdentity: PEPIdentity? = nil
+
+
+        PEPAsyncSession().mySelf(pEpIdentity, errorCallback: { (_) in
+            XCTFail()
+            exp.fulfill()
+        }) { (identity) in
+            updatedPEPIdentity = identity
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: TestUtil.waitTime)
+        guard let identity = updatedPEPIdentity else {
+            XCTFail()
+            return pEpIdentity
+        }
+        return identity
+    }
 }

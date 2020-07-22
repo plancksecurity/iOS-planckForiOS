@@ -361,8 +361,8 @@ class SimpleOperationsTest: PersistentStoreDrivenTestBase {
      It's important to always provide the correct kPepUserID for a local account ID.
      */
     func testSimpleOutgoingMailColor() {
-        let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
-        try! session.mySelf(myself)
+        var (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
+        myself = mySelf(for: myself)
         XCTAssertNotNil(myself.fingerPrint)
         let testee = rating(for: myself)
         XCTAssertGreaterThanOrEqual(testee.rawValue, PEPRating.reliable.rawValue)
@@ -370,8 +370,8 @@ class SimpleOperationsTest: PersistentStoreDrivenTestBase {
 
     func testOutgoingMailColorPerformanceWithMySelf() {
         let moc: NSManagedObjectContext = Stack.shared.mainContext
-        let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
-        try! session.mySelf(myself)
+        var (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
+        myself = mySelf(for: myself)
         XCTAssertNotNil(myself.fingerPrint)
 
         guard let id = CdIdentity.from(pEpContact: myself, context: moc) else {

@@ -20,7 +20,7 @@ class EncryptionTests: XCTestCase {
     func testPassiveModeHelper(enablePassiveMode: Bool) {
         PEPObjCAdapter.setPassiveModeEnabled(enablePassiveMode)
 
-        let me = PEPIdentity(address: "own@example.com",
+        var me = PEPIdentity(address: "own@example.com",
                              userID: "my_user_id",
                              userName: "My Username",
                              isOwn: true)
@@ -28,8 +28,7 @@ class EncryptionTests: XCTestCase {
                                     userID: "partner_user_id",
                                     userName: "Another Username",
                                     isOwn: false)
-        let session = PEPSession()
-        try! session.mySelf(me)
+        me = mySelf(for: me)
         let msg = PEPMessage()
         msg.direction = .outgoing
         msg.from = me
