@@ -69,6 +69,8 @@ class CreditsViewController: BaseViewController {
         <p>&nbsp;</p>
         <p>p&equiv;p for iOS<br/> \(appVersion)</p>
         <p>&nbsp;</p>
+        <p><a href="https://pep.security/docs">Documentation</a></p>
+        <p><a href="mailto:support@pep.security">Support</a></p>
         <p>Thanks to:
         \(thanxRows())
         </p>
