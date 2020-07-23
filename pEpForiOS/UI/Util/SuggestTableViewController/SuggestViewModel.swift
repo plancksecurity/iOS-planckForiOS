@@ -259,8 +259,15 @@ extension SuggestViewModel {
 
     private func informDelegatesModelChanged() {
         let showResults = rows.count > 0 || showEmptyList
-        delegate?.suggestViewModelDidResetModel(showResults: showResults)
-        resultDelegate?.suggestViewModel(self, didToggleVisibilityTo: showResults)
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.delegate?.suggestViewModelDidResetModel(showResults: showResults)
+            me.resultDelegate?.suggestViewModel(me, didToggleVisibilityTo: showResults)
+        }
+
     }
 }
 
