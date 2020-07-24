@@ -10,7 +10,7 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 protocol KeySyncUtilProtocol: class {
-    static func leaveDeviceGroup() throws
+    static func leaveDeviceGroup()
     static var isInDeviceGroup: Bool { get }
     static var isKeySyncEnabled: Bool { get }
     static func enableKeySync()
@@ -51,13 +51,9 @@ extension KeySyncUtil: KeySyncUtilProtocol {
         AppSettings.shared.keySyncEnabled = true
     }
 
-    static func disableKeySync() {//!!!: IOS-2325_!
+    static func disableKeySync() {
         if isInDeviceGroup {
-            do {
-                try leaveDeviceGroup()//!!!: IOS-2325_!
-            } catch {
-                Log.shared.errorAndCrash(error: error)
-            }
+            leaveDeviceGroup()
         }
         AppSettings.shared.keySyncEnabled = false
     }
