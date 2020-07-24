@@ -27,7 +27,14 @@ struct InfoPlist {
         }
         return version
     }
-    
+
+    static public func contactSupoprtMail() -> String? {
+        guard let mail = mainBundleInfoDictValue(forKey: "Support Mail") as? String else {
+            return nil
+        }
+        return mail
+    }
+
     static private func mainBundleInfoDictValue(forKey key: String) -> Any? {
         guard let infoDict = infoDictMainBundle else {
             Log.shared.errorAndCrash("No info dict")

@@ -80,9 +80,10 @@ class FolderTableViewController: BaseTableViewController {
     // MARK: - Action
 
     @objc private func showCompose() {
-        UIUtils.presentComposeView(forRecipientInUrl: nil, appConfig: appConfig)
+//        UIUtils.presentComposeView(forRecipientInUrl: nil, appConfig: appConfig)
+        UIUtils.presentComposeViewToSupport(appConfig: appConfig)
     }
-    
+
     @objc private func showSettingsViewController() {
         UIUtils.presentSettings(appConfig: appConfig)
     }

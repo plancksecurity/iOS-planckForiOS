@@ -6,6 +6,8 @@
 	<string>en_US</string>
 	<key>CFBundleDisplayName</key>
 	<string>p≡p</string>
+	<key>Support Mail</key>
+	<string>support@pep.security</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -40,6 +42,16 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string></string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>pep.security://</string>
+			</array>
+		</dict>
+		<dict>
 			<key>CFBundleURLName</key>
 			<string>gmail</string>
 			<key>CFBundleURLSchemes</key>
@@ -62,8 +74,6 @@
 	<true/>
 	<key>ITSEncryptionExportComplianceCode</key>
 	<string>d3ade549-86f9-45fb-b3b6-08d22a01c265</string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>

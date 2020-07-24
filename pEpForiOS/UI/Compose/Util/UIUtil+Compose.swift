@@ -53,18 +53,63 @@ extension UIUtils {
                 Log.shared.errorAndCrash("Missing required data")
                 return
         }
+        composeVc.viewModel = composeViewModel(forRecipientWithAddress: address)
+        composeVc.appConfig = appConfig
+        present(composeNavigationController: composeNavigationController)
+    }
+
+    static func presentComposeViewToSupport(appConfig: AppConfig) {
+        let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
+        guard
+            let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
+                Constants.composeSceneStoryboardId) as? UINavigationController,
+            let composeVc = composeNavigationController.rootViewController
+                as? ComposeTableViewController
+            else {
+                Log.shared.errorAndCrash("Missing required data")
+                return
+        }
+        composeVc.viewModel = composeViewModelForSupport()
+        composeVc.appConfig = appConfig
+        present(composeNavigationController: composeNavigationController)
+    }
+
+    // MARK: - Private - ComposeViewMode
+
+    private static func composeViewModelForSupport() -> ComposeViewModel {
+        guard let mail = InfoPlist.contactSupoprtMail(),
+            let url = URL(string:"mailto:\(mail)"),
+            let address = url.firstRecipientAddress() else {
+            Log.shared.errorAndCrash("Mail not found")
+            return ComposeViewModel()
+        }
+
+        var prefilledTo: Identity? = nil
+        let to = Identity(address: address)
+        to.save()
+        prefilledTo = to
+        var initData = ComposeViewModel.InitData(withPrefilledToRecipient: prefilledTo,
+                                                 composeMode: .normal)
+
+        initData.bodyPlaintext = "Device: \(UIDevice().type.rawValue)" + "\n" + "OS: \(UIDevice.current.systemVersion)"
+        let state = ComposeViewModel.ComposeViewModelState(initData: initData)
+        state.subject = "Help"
+        return ComposeViewModel(state: state)
+    }
+
+    private static func composeViewModel(forRecipientWithAddress address: String?) -> ComposeViewModel {
         var prefilledTo: Identity? = nil
         if let address = address {
             let to = Identity(address: address)
             to.save()
             prefilledTo = to
         }
-        let composeVM = ComposeViewModel(composeMode: .normal,
-                                         prefilledTo: prefilledTo,
-                                         originalMessage: nil)
-        composeVc.viewModel = composeVM
-        composeVc.appConfig = appConfig
+        return ComposeViewModel(composeMode: .normal, prefilledTo: prefilledTo, originalMessage: nil)
+    }
 
+    // MARK: - Private - Present
+
+    private static func present(composeNavigationController: UINavigationController) {
         guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
             Log.shared.errorAndCrash("No VC")
             return
@@ -72,3 +117,5 @@ extension UIUtils {
         presenterVc.present(composeNavigationController, animated: true)
     }
 }
+
+
