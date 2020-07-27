@@ -24,6 +24,10 @@ extension Identity {
 
     /// Reset trust for the identity
     public func resetTrust(completion: () -> ()) {//!!!: IOS-2325_!
+        func logError() {
+            Log.shared.info("User has choosen to rest trust for an identity we have no key for. Valid case, just for the record. The identity is: %@", self.debugDescription)
+        }
+
         let sesion = PEPSession()
         let pEpIdent = pEpIdentity()
         do {
@@ -32,7 +36,7 @@ extension Identity {
                 try sesion.keyReset(pEpIdent, fingerprint: pEpIdent.fingerPrint)//!!!: IOS-2325_!
             }
         } catch {
-            Log.shared.info("User has choosen to rest trust for an identity we have no key for. Valid case, just for the record. The identity is: %@", self.debugDescription)
+            logError()
         }
     }
 
