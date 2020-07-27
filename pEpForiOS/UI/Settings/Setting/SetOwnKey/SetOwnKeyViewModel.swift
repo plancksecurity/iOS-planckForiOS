@@ -15,6 +15,10 @@ class SetOwnKeyViewModel {
     public var email: String?
     public var fingerprint: String?
 
+    /// Tries to set the own key based on member variables and
+    /// invokes `callback`.
+    /// - Parameter callback: After an attempt of invoking `setOwnKey`, will get called
+    /// with an error message in case of error, or nil, if the `setOwnKey` succeeded.
     public func setOwnKey(callback: @escaping (String?) -> ()) {
         guard
             let theEmail = email,
