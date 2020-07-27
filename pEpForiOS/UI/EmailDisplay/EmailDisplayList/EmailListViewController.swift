@@ -337,31 +337,24 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
                 navigationItem.leftBarButtonItems = [selectAllBarButton]
                 return
             }
-
             item = tableView.numberOfRows(inSection: 0) > numberOfSelectedRows ? selectAllBarButton : deselectAllBarButton
             navigationItem.leftBarButtonItems = [item]
         } else {
             navigationItem.leftBarButtonItems = nil
         }
         navigationItem.hidesBackButton = isTableViewEditing
-
     }
 
     @objc private func selectAllCells() {
-        let totalRows = tableView.numberOfRows(inSection: 0)
-        for row in 0..<totalRows {
-            let indexPath = IndexPath(item: row, section: 0)
-            tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        for row in 0..<tableView.numberOfRows(inSection: 0) {
+            tableView.selectRow(at: IndexPath(item: row, section: 0), animated: false, scrollPosition: .none)
         }
         navigationItem.leftBarButtonItems = [deselectAllBarButton]
-
     }
 
     @objc private func deselectAllCells() {
-        let totalRows = tableView.numberOfRows(inSection: 0)
-        for row in 0..<totalRows {
-            let indexPath = IndexPath(item: row, section: 0)
-            tableView.deselectRow(at: indexPath, animated: true)
+        for row in 0..<tableView.numberOfRows(inSection: 0) {
+            tableView.deselectRow(at: IndexPath(item: row, section: 0), animated: true)
         }
         navigationItem.leftBarButtonItems = [selectAllBarButton]
     }
