@@ -44,7 +44,25 @@ class KeyImportUtilTest: XCTestCase {
         }
 
         let expImport = expectation(description: "expImort")
+        var someKeyData: KeyImportUtil.KeyData? = nil
         KeyImportUtil().importKey(url: url,
+                                  errorCallback: { error in
+                                    XCTFail()
+                                    expImport.fulfill()
+        }) { keyData in
+            someKeyData = keyData
+            expImport.fulfill()
+        }
+        wait(for: [expImport], timeout: TestUtil.waitTime)
+
+        guard let theKeyData = someKeyData else {
+            XCTFail()
+            return
+        }
+
+        let expSetOwnKey = expectation(description: "expSetOwnKey")
+        KeyImportUtil().setOwnKey(address: theKeyData.address,
+                                  fingerprint: theKeyData.fingerprint,
                                   errorCallback: { error in
                                     if let theError = error as? KeyImportUtil.SetOwnKeyError {
                                         switch theError {
@@ -54,12 +72,11 @@ class KeyImportUtilTest: XCTestCase {
                                             XCTFail()
                                         }
                                     }
-                                    expImport.fulfill()
-        }) { keyData in
-            XCTFail()
-            expImport.fulfill()
+                                    expSetOwnKey.fulfill()
+        }) {
+            expSetOwnKey.fulfill()
         }
-        wait(for: [expImport], timeout: TestUtil.waitTime)
+        wait(for: [expSetOwnKey], timeout: TestUtil.waitTime)
     }
 
     func testSuccessfulImport() throws {
