@@ -1303,7 +1303,6 @@ extension EmailListViewController {
             return
         }
         vm.handleEditModeSelectionChange(selectedIndexPaths: selectedIndexPaths)
-
         navigationItem.leftBarButtonItems = [deselectAllBarButton]
     }
 
@@ -1311,7 +1310,11 @@ extension EmailListViewController {
         for row in 0..<tableView.numberOfRows(inSection: 0) {
             tableView.deselectRow(at: IndexPath(item: row, section: 0), animated: true)
         }
-        viewModel?.handleEditModeSelectionChange(selectedIndexPaths: [])
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleEditModeSelectionChange(selectedIndexPaths: [])
         navigationItem.leftBarButtonItems = [selectAllBarButton]
     }
 }
