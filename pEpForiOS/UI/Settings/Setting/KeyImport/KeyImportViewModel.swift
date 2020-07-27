@@ -115,18 +115,19 @@ class KeyImportViewModel {
                 return // The handling VC can go out of scope
             }
 
-            do {
-                try me.keyImporter.setOwnKey(address: key.address, fingerprint: key.fingerprint)
+            me.keyImporter.setOwnKey(address: key.address,
+                                     fingerprint: key.fingerprint,
+                                     errorCallback: { error in
+                                        guard let _ = error as? KeyImportUtil.SetOwnKeyError else {
+                                            Log.shared.errorAndCrash(message: "Unexpected error have to handle it: \(error)")
+                                            return
+                                        }
+                                        DispatchQueue.main.async {
+                                            me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
+                                        }
+            }) {
                 DispatchQueue.main.async {
                     me.checkDelegate()?.showSetOwnKeySuccess()
-                }
-            } catch {
-                guard let _ = error as? KeyImportUtil.SetOwnKeyError else {
-                    Log.shared.errorAndCrash(message: "Unexpected error have to handle it: \(error)")
-                    return
-                }
-                DispatchQueue.main.async {
-                    me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
                 }
             }
         }
