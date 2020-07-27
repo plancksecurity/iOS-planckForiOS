@@ -23,10 +23,6 @@ public class UnifiedFolderBase: VirtualFolderProtocol {
 
     public var title: String {
         get {
-            guard let type = agregatedFolderType else {
-                Log.shared.errorAndCrash("Folder Type not found")
-                return ""
-            }
             return Folder.localizedName(realName: name)
         }
     }
