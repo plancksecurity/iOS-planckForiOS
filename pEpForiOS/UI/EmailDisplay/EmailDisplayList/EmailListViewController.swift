@@ -317,47 +317,6 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         updateBackButton(isTableViewEditing: tableView.isEditing)
     }
 
-    var selectAllBarButton : UIBarButtonItem {
-        let selectAllTitle = NSLocalizedString("_Select all", comment: "Select all emails")
-        let selectAllCellsSelector = #selector(selectAllCells)
-        return UIBarButtonItem(title: selectAllTitle, style: .plain, target: self, action: selectAllCellsSelector)
-    }
-    var deselectAllBarButton : UIBarButtonItem {
-        let deselectAllTitle = NSLocalizedString("_Deselect all", comment: "Deselect all emails")
-        let deselectAllCellsSelector = #selector(deselectAllCells)
-        return UIBarButtonItem(title: deselectAllTitle, style: .plain, target: self, action: deselectAllCellsSelector)
-    }
-
-
-    private func updateBackButton(isTableViewEditing: Bool) {
-        if isTableViewEditing {
-            let item : UIBarButtonItem
-            guard let numberOfSelectedRows = tableView.indexPathForSelectedRow?.count else {
-                //Valid case, no rows are selected
-                navigationItem.leftBarButtonItems = [selectAllBarButton]
-                return
-            }
-            item = tableView.numberOfRows(inSection: 0) > numberOfSelectedRows ? selectAllBarButton : deselectAllBarButton
-            navigationItem.leftBarButtonItems = [item]
-        } else {
-            navigationItem.leftBarButtonItems = nil
-        }
-        navigationItem.hidesBackButton = isTableViewEditing
-    }
-
-    @objc private func selectAllCells() {
-        for row in 0..<tableView.numberOfRows(inSection: 0) {
-            tableView.selectRow(at: IndexPath(item: row, section: 0), animated: false, scrollPosition: .none)
-        }
-        navigationItem.leftBarButtonItems = [deselectAllBarButton]
-    }
-
-    @objc private func deselectAllCells() {
-        for row in 0..<tableView.numberOfRows(inSection: 0) {
-            tableView.deselectRow(at: IndexPath(item: row, section: 0), animated: true)
-        }
-        navigationItem.leftBarButtonItems = [selectAllBarButton]
-    }
 
     @IBAction func showFilterOptions(_ sender: UIBarButtonItem!) {
         performSegue(withIdentifier: .segueShowFilter, sender: self)
@@ -1303,5 +1262,51 @@ extension EmailListViewController {
       if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
         tableView.reloadData()
       }
+    }
+}
+
+// MARK: - [De]Select all cells
+
+extension EmailListViewController {
+
+    private var selectAllBarButton : UIBarButtonItem {
+        let selectAllTitle = NSLocalizedString("Select all", comment: "Select all emails")
+        let selectAllCellsSelector = #selector(selectAllCells)
+        return UIBarButtonItem(title: selectAllTitle, style: .plain, target: self, action: selectAllCellsSelector)
+    }
+    private var deselectAllBarButton : UIBarButtonItem {
+        let deselectAllTitle = NSLocalizedString("Deselect all", comment: "Deselect all emails")
+        let deselectAllCellsSelector = #selector(deselectAllCells)
+        return UIBarButtonItem(title: deselectAllTitle, style: .plain, target: self, action: deselectAllCellsSelector)
+    }
+
+    private func updateBackButton(isTableViewEditing: Bool) {
+        if isTableViewEditing {
+            let item : UIBarButtonItem
+            guard let numberOfSelectedRows = tableView.indexPathForSelectedRow?.count else {
+                //Valid case, no rows are selected
+                navigationItem.leftBarButtonItems = [selectAllBarButton]
+                return
+            }
+            item = tableView.numberOfRows(inSection: 0) > numberOfSelectedRows ? selectAllBarButton : deselectAllBarButton
+            navigationItem.leftBarButtonItems = [item]
+        } else {
+            navigationItem.leftBarButtonItems = nil
+        }
+        navigationItem.hidesBackButton = isTableViewEditing
+    }
+
+    @objc private func selectAllCells() {
+        for row in 0..<tableView.numberOfRows(inSection: 0) {
+            tableView.selectRow(at: IndexPath(item: row, section: 0), animated: false, scrollPosition: .none)
+        }
+        navigationItem.leftBarButtonItems = [deselectAllBarButton]
+    }
+
+    @objc private func deselectAllCells() {
+        for row in 0..<tableView.numberOfRows(inSection: 0) {
+            tableView.deselectRow(at: IndexPath(item: row, section: 0), animated: true)
+        }
+        navigationItem.leftBarButtonItems = [selectAllBarButton]
     }
 }
