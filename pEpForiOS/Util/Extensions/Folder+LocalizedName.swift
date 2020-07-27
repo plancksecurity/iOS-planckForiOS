@@ -11,7 +11,7 @@ import MessageModel
 
 extension Folder {
 
-    public static func localizedName(realName: String, type: FolderType? = nil) -> String {
+    public static func localizedName(realName: String) -> String {
         let validInboxNameVariations = [ "INBOX", "Inbox", "inbox"]
 
         switch realName {

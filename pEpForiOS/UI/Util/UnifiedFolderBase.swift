@@ -27,7 +27,7 @@ public class UnifiedFolderBase: VirtualFolderProtocol {
                 Log.shared.errorAndCrash("Folder Type not found")
                 return ""
             }
-            return Folder.localizedName(realName: name, type: type)
+            return Folder.localizedName(realName: name)
         }
     }
 
