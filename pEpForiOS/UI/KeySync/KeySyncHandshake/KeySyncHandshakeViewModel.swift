@@ -42,7 +42,7 @@ final class KeySyncHandshakeViewModel {
 
     private var _languages = [PEPLanguage]()
 
-    private var languages: [PEPLanguage] {  //!!!: IOS-2325_! ?
+    private var oldLanguages: [PEPLanguage] {  //!!!: IOS-2325_! ?
         guard _languages.isEmpty else {
             return _languages
         }
@@ -59,7 +59,7 @@ final class KeySyncHandshakeViewModel {
         self.pEpSession = pEpSession
     }
 
-    func getLanguages(completion: @escaping ([PEPLanguage]) -> ()) {
+    func languages(completion: @escaping ([PEPLanguage]) -> ()) {
         if !_languages.isEmpty {
             completion(_languages)
         } else {
@@ -74,7 +74,7 @@ final class KeySyncHandshakeViewModel {
     }
 
     func didSelect(languageRow: Int) {
-        languageCode = languages[languageRow].code
+        languageCode = oldLanguages[languageRow].code
         delegate?.closePicker()
         updateTrustwords()
     }
@@ -140,12 +140,12 @@ extension KeySyncHandshakeViewModel {
     }
 
     private func handleChangeLanguageButton() {
-        guard !languages.isEmpty else {
+        guard !oldLanguages.isEmpty else {
             Log.shared.errorAndCrash("Wont show picker, no languages to show")
             return
         }
-        let languagesNames = languages.map { $0.name }
-        let selectedlanguageIndex = languages.map { $0.code }.firstIndex(of: languageCode)
+        let languagesNames = oldLanguages.map { $0.name }
+        let selectedlanguageIndex = oldLanguages.map { $0.code }.firstIndex(of: languageCode)
 
         delegate?.showPicker(withLanguages: languagesNames,
                              selectedLanguageIndex: selectedlanguageIndex)
