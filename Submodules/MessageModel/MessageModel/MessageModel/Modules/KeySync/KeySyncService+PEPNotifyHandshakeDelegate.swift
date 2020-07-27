@@ -100,7 +100,7 @@ extension KeySyncService {
                                         userInfo: nil)
     }
 
-    private func showHandshakeAndHandleResult(inBetween me: PEPIdentity,//!!!: IOS-2325_!
+    private func showHandshakeAndHandleResult(inBetween me: PEPIdentity,
                                               and partner: PEPIdentity,
                                               isNewGroup: Bool) {
         handshakeHandler?.showHandshake(me: me, partner: partner, isNewGroup: isNewGroup) {
@@ -108,10 +108,13 @@ extension KeySyncService {
             if result == .cancel || result == .rejected {
                 self?.fastPollingDelegate?.disableFastPolling()
             }
-            do {
-                try PEPSession().deliver(result, identitiesSharing: [me, partner])//!!!: IOS-2325_!
-            } catch {
-                Log.shared.errorAndCrash("Error delivering handshake result: %@", error.localizedDescription)
+            PEPAsyncSession().deliver(result,
+                                      identitiesSharing: [me, partner],
+                                      errorCallback: { (error: Error) in
+                                        Log.shared.errorAndCrash("Error delivering handshake result: %@",
+                                                                 error.localizedDescription)
+            }) {
+                // Caller doesn't care about the result
             }
         }
     }
