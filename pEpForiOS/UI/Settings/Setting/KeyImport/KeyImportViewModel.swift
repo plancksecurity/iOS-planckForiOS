@@ -99,13 +99,13 @@ class KeyImportViewModel {
 
     /// The user has tapped a row, which starts loading (importing) the underlying key
     /// asynchronously and informs the delegate about success.
-    public func handleDidSelect(rowAt indexPath: IndexPath) {//!!!: IOS-2325_!
+    public func handleDidSelect(rowAt indexPath: IndexPath) {
         guard let row = rows[safe: indexPath.row] else {
             // developer error
             Log.shared.errorAndCrash("indexPath out of bounds: %d", indexPath.row)
             return
         }
-        importKey(url: row.fileUrl)//!!!: IOS-2325_!
+        importKey(url: row.fileUrl)
     }
 
     /// Sets the given key as own and informs the delegate about success or error.
