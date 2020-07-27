@@ -178,8 +178,9 @@ class KeyImporterMock: KeyImportUtilProtocol {
             return completion(theData)
         } else if let theImportError = importKeyErrorToThrow {
             errorCallback(theImportError)
+        } else {
+            errorCallback(KeyImportUtil.ImportError.cannotLoadKey)
         }
-        errorCallback(KeyImportUtil.ImportError.cannotLoadKey)
     }
 
     func setOwnKey(address: String,
