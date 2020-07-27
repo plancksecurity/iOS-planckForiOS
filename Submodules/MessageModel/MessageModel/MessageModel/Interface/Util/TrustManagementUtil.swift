@@ -131,6 +131,15 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
             group.leave()
         }) { (updatedIdentity) in
             selfPEPIdentity = updatedIdentity
+
+            do {
+                try PEPSession().update(updatedIdentity)//!!!: IOS-2325_!
+                isPartnerpEpUser = try PEPSession().isPEPUser(partnerPEPIdentity).boolValue//!!!: IOS-2325_!
+            } catch {
+                Log.shared.error("unable to get the fingerprints")
+                completion(nil)
+            }
+
             group.leave()
         }
         group.notify(queue: DispatchQueue.main) { [weak self] in
@@ -141,13 +150,6 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
             guard success else {
                 completion(nil)
                 return
-            }
-            do{
-                try PEPSession().update(partnerPEPIdentity)//!!!: IOS-2325_! (move up, out of notify)
-                isPartnerpEpUser = try PEPSession().isPEPUser(partnerPEPIdentity).boolValue//!!!: IOS-2325_! (move up, out of notify)
-            } catch {
-                Log.shared.error("unable to get the fingerprints")
-                completion(nil)
             }
 
             if !isPartnerpEpUser, let fprSelf = selfPEPIdentity.fingerPrint,
