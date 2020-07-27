@@ -141,35 +141,35 @@ class KeyImportViewModel {
 }
 
 extension KeyImportViewModel {
-    private func importKey(url: URL) {//!!!: IOS-2325_!
-        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-            guard let me = self else {
-                return // The handling VC can go out of scope
-            }
+    private func importKey(url: URL) {
+        keyImporter.importKey(url: url,
+                              errorCallback: { [weak self] error in
+                                // weak self because it's UI and the VC/VM can go out of scope
+                                guard let me = self else {
+                                    return
+                                }
 
-            do {
-                let keyData = try me.keyImporter.importKey(url: url)//!!!: IOS-2325_!
-                DispatchQueue.main.async {
-                    me.checkDelegate()?.showConfirmSetOwnKey(key: KeyDetails(address: keyData.address,
-                                                                             fingerprint: keyData.fingerprint,
-                                                                             userName: keyData.userName))
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    if let theError = error as? KeyImportUtil.ImportError {
-                        switch theError {
-                        case .cannotLoadKey:
-                            me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
-                        case .malformedKey:
-                            me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
-                        }
-                    } else {
-                        Log.shared.errorAndCrash(message: "Unhandled error. Check all possible cases.")
-                        me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
-                    }
-                }
-            }
-        }
+                                if let theError = error as? KeyImportUtil.ImportError {
+                                    switch theError {
+                                    case .cannotLoadKey:
+                                        me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
+                                    case .malformedKey:
+                                        me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
+                                    }
+                                } else {
+                                    Log.shared.errorAndCrash(message: "Unhandled error. Check all possible cases.")
+                                    me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
+                                }
+            },
+                              completion: { [weak self] keyData in
+                                // weak self because it's UI and the VC/VM can go out of scope
+                                guard let me = self else {
+                                    return
+                                }
+                                me.checkDelegate()?.showConfirmSetOwnKey(key: KeyDetails(address: keyData.address,
+                                                                                         fingerprint: keyData.fingerprint,
+                                                                                         userName: keyData.userName))
+        })
     }
 
     private func checkDelegate() -> KeyImportViewModelDelegate? {

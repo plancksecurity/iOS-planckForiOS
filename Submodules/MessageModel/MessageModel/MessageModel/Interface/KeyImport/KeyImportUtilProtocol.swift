@@ -9,11 +9,14 @@
 import Foundation
 
 public protocol KeyImportUtilProtocol {
-    /// Imports a key from a local file URL.
-    /// - Note: The caller is responsible to execute this asynchronously, if needed.
+    /// Asynchronously imports a key from a local file URL and calls back.
     /// - Parameter url: The URL to interpret as ASCII-armored key data
+    /// - Parameter errorCallback: The error handler (called async)
+    /// - Parameter completion: The completions block called on success
     /// - Throws: KeyImportUtil.ImportError
-    func importKey(url: URL) throws -> KeyImportUtil.KeyData//!!!: IOS-2325_!
+    func importKey(url: URL,
+                   errorCallback: (Error) -> (),
+                   completion: (KeyImportUtil.KeyData) -> ())
 
     /// Sets the given key as own key.
     /// - Parameter address: The address to set this key as own key to

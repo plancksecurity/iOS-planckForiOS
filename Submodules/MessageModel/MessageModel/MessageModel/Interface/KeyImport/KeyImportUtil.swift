@@ -54,9 +54,12 @@ extension KeyImportUtil {
 }
 
 extension KeyImportUtil: KeyImportUtilProtocol {
-    public func importKey(url: URL) throws -> KeyData {//!!!: IOS-2325_!
+    public func importKey(url: URL,
+                          errorCallback: (Error) -> (),
+                          completion: (KeyData) -> ()) {
         guard let dataString = try? String(contentsOf: url) else {
-            throw ImportError.cannotLoadKey
+            errorCallback(ImportError.cannotLoadKey)
+            return
         }
 
         let session = PEPSession()
@@ -66,20 +69,22 @@ extension KeyImportUtil: KeyImportUtilProtocol {
         do {
             identities = try session.importKey(dataString)//!!!: IOS-2325_!
         } catch {
-            throw ImportError.malformedKey
+            errorCallback(ImportError.malformedKey)
         }
 
         guard let firstIdentity = identities.first else {
-            throw ImportError.malformedKey
+            errorCallback(ImportError.malformedKey)
+            return
         }
 
         guard let fingerprint = firstIdentity.fingerPrint else {
-            throw ImportError.malformedKey
+            errorCallback(ImportError.malformedKey)
+            return
         }
 
-        return KeyData(address: firstIdentity.address,
-                       fingerprint: fingerprint,
-                       userName: firstIdentity.userName)
+        completion(KeyData(address: firstIdentity.address,
+                           fingerprint: fingerprint,
+                           userName: firstIdentity.userName))
     }
 
     public func setOwnKey(address: String, fingerprint: String) throws {//!!!: IOS-2325_!
