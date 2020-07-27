@@ -99,6 +99,14 @@ class KeyImportUtilTest: XCTestCase {
 
         let _ = Account(user: ident, servers: [])
 
-        try keyImport.setOwnKey(address: theKeyData.address, fingerprint: theKeyData.fingerprint)
+        let expSetOwnKey = expectation(description: "expSetOwnKey")
+        keyImport.setOwnKey(address: theKeyData.address,
+                            fingerprint: theKeyData.fingerprint,
+                            errorCallback: { (Error) in
+                                XCTFail()
+        }) {
+            // ignore, simply let test succeed
+        }
+        wait(for: [expSetOwnKey], timeout: TestUtil.waitTime)
     }
 }
