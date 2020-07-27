@@ -32,7 +32,7 @@ public class UnifiedSent : UnifiedFolderBase {
         return FolderType.sent
     }
     public override var name: String {
-        return NSLocalizedString("Sents", comment: "Unified Drafts Folder title")
+        return NSLocalizedString("Sents", comment: "Unified Sent Folder title")
     }
 }
 
@@ -41,7 +41,7 @@ public class UnifiedTrash : UnifiedFolderBase {
         return FolderType.trash
     }
     public override var name: String {
-        return NSLocalizedString("Trashes", comment: "Unified Drafts Folder title")
+        return NSLocalizedString("Trashes", comment: "Unified Trash Folder title")
     }
 }
 
@@ -139,13 +139,13 @@ public class UnifiedFolderBase: VirtualFolderProtocol {
     }
 }
 
-extension UnifiedInbox: Equatable {
-    public static func == (lhs: UnifiedInbox, rhs: UnifiedInbox) -> Bool {
+extension UnifiedFolderBase: Equatable {
+    public static func == (lhs: UnifiedFolderBase, rhs: UnifiedFolderBase) -> Bool {
         return lhs.hashValue == rhs.hashValue
     }
 }
 
-extension UnifiedInbox: Hashable {
+extension UnifiedFolderBase: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(messagesPredicate.description)
     }
