@@ -115,11 +115,12 @@ class KeyImportUtilTest: XCTestCase {
                              session: nil)
 
         let _ = Account(user: ident, servers: [])
+        Session.main.commit()
 
         let expSetOwnKey = expectation(description: "expSetOwnKey")
         keyImport.setOwnKey(address: theKeyData.address,
                             fingerprint: theKeyData.fingerprint,
-                            errorCallback: { (Error) in
+                            errorCallback: { error in
                                 XCTFail()
                                 expSetOwnKey.fulfill()
         }) {
