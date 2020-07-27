@@ -292,8 +292,8 @@ final class TrustManagementViewModel {
     public func handleResetPressed(forRowAt indexPath: IndexPath) {//!!!: IOS-2325_!
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
-        trustManagementUtil.resetTrust(for: row.handshakeCombination.partnerIdentity)
-        reevaluateMessage(forRowAt: indexPath)
+        trustManagementUtil.resetTrust(for: row.handshakeCombination.partnerIdentity,
+                                       completion: { reevaluateMessage(forRowAt: indexPath) })
     }
 
     /// - returns: the available languages.
