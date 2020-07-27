@@ -39,7 +39,9 @@ final class KeySyncHandshakeViewModel {
     private var partnerFPR: String?
     private var isNewGroup = true
     private let pEpSession: PEPSessionProtocol
+
     private var _languages = [PEPLanguage]()
+
     private var languages: [PEPLanguage] {  //!!!: IOS-2325_! ?
         guard _languages.isEmpty else {
             return _languages
@@ -55,6 +57,20 @@ final class KeySyncHandshakeViewModel {
 
     init(pEpSession: PEPSessionProtocol = PEPSession()) {
         self.pEpSession = pEpSession
+    }
+
+    func getLanguages(completion: @escaping ([PEPLanguage]) -> ()) {
+        if !_languages.isEmpty {
+            completion(_languages)
+        } else {
+            PEPAsyncSession().languageList({ (error) in
+                Log.shared.errorAndCrash("%@", error.localizedDescription)
+                completion([])
+            }) { (theLangs) in
+                self._languages = theLangs // TODO: potential memory leak
+                completion(theLangs)
+            }
+        }
     }
 
     func didSelect(languageRow: Int) {
