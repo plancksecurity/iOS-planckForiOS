@@ -104,8 +104,9 @@ class KeyImportUtilTest: XCTestCase {
                             fingerprint: theKeyData.fingerprint,
                             errorCallback: { (Error) in
                                 XCTFail()
+                                expSetOwnKey.fulfill()
         }) {
-            // ignore, simply let test succeed
+            expSetOwnKey.fulfill()
         }
         wait(for: [expSetOwnKey], timeout: TestUtil.waitTime)
     }
