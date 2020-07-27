@@ -44,8 +44,8 @@ public protocol TrustManagementUtilProtocol: class {
     
     /// Method that reset all information about the partner identity
     /// - Parameter partnerIdentity: Identity in which the action will be taken.
-    func resetTrust(for partnerIdentity: Identity?)//!!!: IOS-2325_!
-    
+    func resetTrust(for partnerIdentity: Identity?, completion: () -> ())
+
     /// - returns: List of available languages codes in ISO 639-1 for the self identity
     func languagesList() -> [String]?//!!!: IOS-2325_!
     
