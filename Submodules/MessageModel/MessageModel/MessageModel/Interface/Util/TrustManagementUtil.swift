@@ -138,15 +138,16 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
                 PEPAsyncSession().isPEPUser(partnerPEPIdentity,
                                             errorCallback: { error in
                                                 completion(nil)
+                                                group.leave()
                 }) { pEpUserOrNot in
                     isPartnerpEpUser = pEpUserOrNot
+                    group.leave()
                 }
             } catch {
                 Log.shared.error("unable to get the fingerprints")
                 completion(nil)
+                group.leave()
             }
-
-            group.leave()
         }
         group.notify(queue: DispatchQueue.main) { [weak self] in
             guard let me = self else {
