@@ -74,9 +74,13 @@ final class KeySyncHandshakeViewModel {
     }
 
     func didSelect(languageRow: Int) {
-        languageCode = oldLanguages[languageRow].code
-        delegate?.closePicker()
-        updateTrustwords()
+        languages { (langs) in
+            DispatchQueue.main.async {
+                self.languageCode = self.oldLanguages[languageRow].code
+                self.delegate?.closePicker()
+                self.updateTrustwords()
+            }
+        }
     }
 
     func handle(action: Action) {
