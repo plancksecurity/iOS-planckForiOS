@@ -15,6 +15,7 @@ public class FolderSectionViewModel {
     private var account: Account?
     public var hidden = false
     private var items = [FolderCellViewModel]()
+    private let unifiedFolders = [UnifiedInbox(), UnifiedDraft(), UnifiedSent(), UnifiedTrash()]
 
     private var help = [FolderCellViewModel]()
     let identityImageTool = IdentityImageTool()
@@ -22,11 +23,9 @@ public class FolderSectionViewModel {
     public init(account acc: Account?, Unified: Bool) {
         if Unified {
             hidden = true
-            items.append(FolderCellViewModel(folder: UnifiedInbox(), level: 0))
-            items.append(FolderCellViewModel(folder: UnifiedDraft(), level: 0))
-            items.append(FolderCellViewModel(folder: UnifiedSent(), level: 0))
-            items.append(FolderCellViewModel(folder: UnifiedTrash(), level: 0))
-
+            unifiedFolders.forEach { (unifiedFolder) in
+                items.append(FolderCellViewModel(folder: unifiedFolder, level: 0))
+            }
         }
         if let ac = acc {
             self.account = ac
