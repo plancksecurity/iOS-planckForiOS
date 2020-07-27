@@ -199,8 +199,8 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }
     }
 
-    public func resetTrust(for partnerIdentity: Identity?) {//!!!: IOS-2325_!
-        partnerIdentity?.resetTrust()//!!!: IOS-2325_!
+    public func resetTrust(for partnerIdentity: Identity?, completion: () -> ()) {
+        partnerIdentity?.resetTrust(completion: completion)
     }
 
     public func getFingerprint(for identity: Identity) -> String? {//!!!: IOS-2325_!
