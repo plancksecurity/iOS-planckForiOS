@@ -48,7 +48,7 @@
 			<string></string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>pep.security://</string>
+				<string>pep.security</string>
 			</array>
 		</dict>
 		<dict>

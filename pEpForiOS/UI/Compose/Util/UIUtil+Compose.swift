@@ -74,7 +74,7 @@ extension UIUtils {
         present(composeNavigationController: composeNavigationController)
     }
 
-    // MARK: - Private - ComposeViewMode
+    // MARK: - Private - ComposeViewModel
 
     private static func composeViewModelForSupport() -> ComposeViewModel {
         guard let mail = InfoPlist.contactSupoprtMail(),
@@ -83,15 +83,13 @@ extension UIUtils {
             Log.shared.errorAndCrash("Mail not found")
             return ComposeViewModel()
         }
-
         var prefilledTo: Identity? = nil
         let to = Identity(address: address)
         to.save()
         prefilledTo = to
-        var initData = ComposeViewModel.InitData(withPrefilledToRecipient: prefilledTo,
-                                                 composeMode: .normal)
-
-        initData.bodyPlaintext = "Device: \(UIDevice().type.rawValue)" + "\n" + "OS: \(UIDevice.current.systemVersion)"
+        var initData = ComposeViewModel.InitData(withPrefilledToRecipient: prefilledTo, composeMode: .normal)
+        let deviceField = NSLocalizedString("Device", comment: "Device field, reporting issue")
+        initData.bodyPlaintext = "\n\n\(deviceField): \(UIDevice().type.rawValue)" + "\n" + "OS: \(UIDevice.current.systemVersion)"
         let state = ComposeViewModel.ComposeViewModelState(initData: initData)
         state.subject = "Help"
         return ComposeViewModel(state: state)
@@ -117,5 +115,3 @@ extension UIUtils {
         presenterVc.present(composeNavigationController, animated: true)
     }
 }
-
-

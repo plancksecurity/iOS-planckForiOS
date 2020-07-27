@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+/// Apple models, not all support pep.
 public enum Model : String {
     case simulator     = "simulator",
 
@@ -62,14 +63,20 @@ public enum Model : String {
     iPhone11           = "iPhone 11",
     iPhone11Pro        = "iPhone 11 Pro",
     iPhone11ProMax     = "iPhone 11 Pro Max",
+    iPhoneSE2          = "iPhone SE 2",
 
     AppleTV            = "Apple TV",
     AppleTV_4K         = "Apple TV 4K",
     unrecognized       = "?unrecognized?"
 }
 
+// MARK: - Model
+
+// UIDevice lacks a feature to determe which device is used and there is no other built-in way to get the correct device name.
+// The disadvange is to add manually each new device Apple releases.
 public extension UIDevice {
 
+    /// returns the device model: e.g: "iPhone 11 Pro Max".
     var type: Model {
         var systemInfo = utsname()
         uname(&systemInfo)
@@ -177,15 +184,24 @@ public extension UIDevice {
             "iPhone12,1" : .iPhone11,
             "iPhone12,3" : .iPhone11Pro,
             "iPhone12,5" : .iPhone11ProMax,
+            "iPhone12,8" : .iPhoneSE2,
 
             "AppleTV5,3" : .AppleTV,
             "AppleTV6,2" : .AppleTV_4K
         ]
 
-        if let model = modelMap[String.init(validatingUTF8: modelCode!)!] {
+        guard let modelC = modelCode, let modelName = String.init(validatingUTF8: modelC) else {
+            Log.shared.errorAndCrash("Model not found")
+            return Model.unrecognized
+        }
+        if let model = modelMap[modelName] {
             if model == .simulator {
                 if let simModelCode = ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] {
-                    if let simModel = modelMap[String.init(validatingUTF8: simModelCode)!] {
+                    guard let simModelName = String.init(validatingUTF8: simModelCode) else {
+                        Log.shared.errorAndCrash("Simulator not found")
+                        return Model.unrecognized
+                    }
+                    if let simModel = modelMap[simModelName] {
                         return simModel
                     }
                 }
