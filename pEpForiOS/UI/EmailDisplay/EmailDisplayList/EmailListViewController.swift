@@ -1268,12 +1268,12 @@ extension EmailListViewController {
 extension EmailListViewController {
 
     private var selectAllBarButton : UIBarButtonItem {
-        let selectAllTitle = NSLocalizedString("Select all", comment: "Select all emails")
+        let selectAllTitle = NSLocalizedString("Select All", comment: "Select all emails")
         let selectAllCellsSelector = #selector(selectAllCells)
         return UIBarButtonItem(title: selectAllTitle, style: .plain, target: self, action: selectAllCellsSelector)
     }
     private var deselectAllBarButton : UIBarButtonItem {
-        let deselectAllTitle = NSLocalizedString("Deselect all", comment: "Deselect all emails")
+        let deselectAllTitle = NSLocalizedString("Deselect All", comment: "Deselect all emails")
         let deselectAllCellsSelector = #selector(deselectAllCells)
         return UIBarButtonItem(title: deselectAllTitle, style: .plain, target: self, action: deselectAllCellsSelector)
     }
