@@ -300,7 +300,7 @@ class TrustManagementUtilMock: TrustManagementUtilProtocol {
         undoExpectation?.fulfill()
     }
     
-    func resetTrust(for partnerIdentity: Identity?) {
+    func resetTrust(for partnerIdentity: Identity?, completion: () -> ()) {
         resetExpectation?.fulfill()
     }
 }
