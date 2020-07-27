@@ -15,7 +15,7 @@ extension Identity {
     ///
     /// - Parameter identityToResetTrust: base identity to reset trust and find other identities with the same userID
     public static func resetTrustAllIdentities(for identityToResetTrust: Identity,
-                                               completion: () -> ()) {
+                                               completion: @escaping () -> ()) {
         let identities = identityToResetTrust.allIdentitiesWithTheSameUserID()
         for identity in identities {
             identity.resetTrust(completion: completion)
@@ -23,7 +23,7 @@ extension Identity {
     }
 
     /// Reset trust for the identity
-    public func resetTrust(completion: () -> ()) {//!!!: IOS-2325_!
+    public func resetTrust(completion: @escaping () -> ()) {//!!!: IOS-2325_!
         func logError() {
             Log.shared.info("User has choosen to rest trust for an identity we have no key for. Valid case, just for the record. The identity is: %@", self.debugDescription)
         }

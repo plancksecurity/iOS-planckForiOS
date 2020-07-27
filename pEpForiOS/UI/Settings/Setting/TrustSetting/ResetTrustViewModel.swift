@@ -148,12 +148,12 @@ class ResetTrustViewModel {
         }
     }
 
-    func resetTrust(foridentityAt indexPath: IndexPath, completion: () -> ()) {
+    func resetTrust(foridentityAt indexPath: IndexPath, completion: @escaping () -> ()) {
         let identity = identityQueryResult[indexPath.section].objects[indexPath.row]
         identity.resetTrust(completion: completion)
     }
 
-    func resetTrustAll(foridentityAt indexPath: IndexPath, completion: () -> ()) {
+    func resetTrustAll(foridentityAt indexPath: IndexPath, completion: @escaping () -> ()) {
         let identity = identityQueryResult[indexPath.section].objects[indexPath.row]
         Identity.resetTrustAllIdentities(for: identity, completion: completion)
     }
