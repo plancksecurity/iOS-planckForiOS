@@ -63,10 +63,10 @@ final class KeySyncHandshakeViewModel {
         if !_languages.isEmpty {
             completion(_languages)
         } else {
-            PEPAsyncSession().languageList({ (error) in
+            PEPAsyncSession().languageList({ error in
                 Log.shared.errorAndCrash("%@", error.localizedDescription)
                 completion([])
-            }) { (theLangs) in
+            }) { theLangs in
                 self._languages = theLangs // TODO: potential memory leak
                 completion(theLangs)
             }
@@ -74,7 +74,7 @@ final class KeySyncHandshakeViewModel {
     }
 
     func didSelect(languageRow: Int) {
-        languages { (langs) in
+        languages { langs in
             DispatchQueue.main.async {
                 self.languageCode = self.oldLanguages[languageRow].code
                 self.delegate?.closePicker()
