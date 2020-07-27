@@ -1300,6 +1300,12 @@ extension EmailListViewController {
         for row in 0..<tableView.numberOfRows(inSection: 0) {
             tableView.selectRow(at: IndexPath(item: row, section: 0), animated: false, scrollPosition: .none)
         }
+        guard let vm = viewModel, let selectedIndexPaths = tableView?.indexPathsForSelectedRows else {
+            Log.shared.errorAndCrash("VM or selected IndexPaths not found")
+            return
+        }
+        vm.handleEditModeSelectionChange(selectedIndexPaths: selectedIndexPaths)
+
         navigationItem.leftBarButtonItems = [deselectAllBarButton]
     }
 
@@ -1307,6 +1313,7 @@ extension EmailListViewController {
         for row in 0..<tableView.numberOfRows(inSection: 0) {
             tableView.deselectRow(at: IndexPath(item: row, section: 0), animated: true)
         }
+        viewModel?.handleEditModeSelectionChange(selectedIndexPaths: [])
         navigationItem.leftBarButtonItems = [selectAllBarButton]
     }
 }
