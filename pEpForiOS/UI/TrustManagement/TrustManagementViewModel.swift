@@ -356,6 +356,7 @@ final class TrustManagementViewModel {
     /// Re-computes the messages rating, saves the message and informs the delegate about a possible data change.
     /// This must be called after every trust state change. The curently processed message might
     /// change color.
+    /// - Note: Will be called from background queues.
     private func reevaluateMessage(forRowAt indexPath: IndexPath) {
         message.session.performAndWait { [weak self] in
             guard let me = self else {
