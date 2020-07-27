@@ -15,19 +15,26 @@ class KeyImportUtilTest: XCTestCase {
     let keyResourceName = "IOS-1432_keypair.asc"
 
     func testImportNonExistentKey() throws {
-        do {
-            let _ = try KeyImportUtil().importKey(url: URL(fileURLWithPath: "file:///ohno"))//!!!: IOS-2325_!
+        let expImport = expectation(description: "expImort")
+        KeyImportUtil().importKey(url: URL(fileURLWithPath: "file:///ohno"),
+                                  errorCallback: { error in
+                                    if let theError = error as? KeyImportUtil.ImportError {
+                                        switch theError {
+                                        case .cannotLoadKey: // expected
+                                            break
+                                        default:
+                                            XCTFail()
+                                        }
+                                    }
+                                    expImport.fulfill()
+        }) { keyData in
             XCTFail()
-        } catch KeyImportUtil.ImportError.cannotLoadKey {
-            // expected
-        } catch {
-            XCTFail()
+            expImport.fulfill()
         }
+        wait(for: [expImport], timeout: TestUtil.waitTime)
     }
 
     func testSuccessfulImportButNoAccount() throws {
-        let keyImport = KeyImportUtil()
-
         let testBundle = Bundle(for: KeyImportUtilTest.self)
 
         guard let url = testBundle.url(forResource: keyResourceName,
@@ -36,13 +43,23 @@ class KeyImportUtilTest: XCTestCase {
                                         return
         }
 
-        let keyData = try keyImport.importKey(url: url)
-
-        do {
-            try keyImport.setOwnKey(address: keyData.address, fingerprint: keyData.fingerprint)
-        } catch KeyImportUtil.SetOwnKeyError.noMatchingAccount {
-            // expected
+        let expImport = expectation(description: "expImort")
+        KeyImportUtil().importKey(url: url,
+                                  errorCallback: { error in
+                                    if let theError = error as? KeyImportUtil.SetOwnKeyError {
+                                        switch theError {
+                                        case .noMatchingAccount: // expected
+                                            break
+                                        default:
+                                            XCTFail()
+                                        }
+                                    }
+                                    expImport.fulfill()
+        }) { keyData in
+            XCTFail()
+            expImport.fulfill()
         }
+        wait(for: [expImport], timeout: TestUtil.waitTime)
     }
 
     func testSuccessfulImport() throws {
@@ -56,9 +73,25 @@ class KeyImportUtilTest: XCTestCase {
                                         return
         }
 
-        let keyData = try keyImport.importKey(url: url)
+        var someKeyData: KeyImportUtil.KeyData? = nil
 
-        let ident = Identity(address: keyData.address,
+        let expImport = expectation(description: "expImort")
+        keyImport.importKey(url: url,
+                            errorCallback: { error in
+                                XCTFail()
+                                expImport.fulfill()
+        }) { keyData in
+            someKeyData = keyData
+            expImport.fulfill()
+        }
+        wait(for: [expImport], timeout: TestUtil.waitTime)
+
+        guard let theKeyData = someKeyData else {
+            XCTFail()
+            return
+        }
+
+        let ident = Identity(address: theKeyData.address,
                              userID: "some_user_id",
                              addressBookID: nil,
                              userName: "some name",
@@ -66,6 +99,6 @@ class KeyImportUtilTest: XCTestCase {
 
         let _ = Account(user: ident, servers: [])
 
-        try keyImport.setOwnKey(address: keyData.address, fingerprint: keyData.fingerprint)
+        try keyImport.setOwnKey(address: theKeyData.address, fingerprint: theKeyData.fingerprint)
     }
 }
