@@ -33,7 +33,13 @@ extension Identity {
         do {
             try sesion.update(pEpIdent)//!!!: IOS-2325_!
             if let _ = pEpIdent.fingerPrint {
-                try sesion.keyReset(pEpIdent, fingerprint: pEpIdent.fingerPrint)//!!!: IOS-2325_!
+                PEPAsyncSession().keyReset(pEpIdent,
+                                           fingerprint: fingerprint,
+                                           errorCallback: { (_) in
+                                            logError()
+                }) {
+                    completion()
+                }
             }
         } catch {
             logError()
