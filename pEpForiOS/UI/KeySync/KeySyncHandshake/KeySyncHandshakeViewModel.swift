@@ -66,19 +66,27 @@ final class KeySyncHandshakeViewModel {
             PEPAsyncSession().languageList({ error in
                 Log.shared.errorAndCrash("%@", error.localizedDescription)
                 completion([])
-            }) { theLangs in
-                self._languages = theLangs // TODO: potential memory leak
+            }) { [weak self] theLangs in
+                guard let me = self else {
+                    // UI, this can happen
+                    return
+                }
+                me._languages = theLangs
                 completion(theLangs)
             }
         }
     }
 
     func didSelect(languageRow: Int) {
-        languages { langs in
+        languages { [weak self] langs in
             DispatchQueue.main.async {
-                self.languageCode = self.oldLanguages[languageRow].code
-                self.delegate?.closePicker()
-                self.updateTrustwords()
+                guard let me = self else {
+                    // UI, this can happen
+                    return
+                }
+                me.languageCode = me.oldLanguages[languageRow].code
+                me.delegate?.closePicker()
+                me.updateTrustwords()
             }
         }
     }
