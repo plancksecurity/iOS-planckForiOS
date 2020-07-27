@@ -8,42 +8,7 @@
 import pEpIOSToolbox
 import MessageModel
 
-
-public class UnifiedInbox : UnifiedFolderBase {
-    public override var agregatedFolderType: FolderType? {
-        return FolderType.inbox
-    }
-    public override var name: String {
-        return UnifiedInbox.defaultUnifiedInboxName
-    }
-}
-
-public class UnifiedDraft : UnifiedFolderBase {
-    public override var agregatedFolderType: FolderType? {
-        return FolderType.drafts
-    }
-    public override var name: String {
-        return NSLocalizedString("Drafts", comment: "Unified Drafts Folder title")
-    }
-}
-
-public class UnifiedSent : UnifiedFolderBase {
-    public override var agregatedFolderType: FolderType? {
-        return FolderType.sent
-    }
-    public override var name: String {
-        return NSLocalizedString("Sents", comment: "Unified Sent Folder title")
-    }
-}
-
-public class UnifiedTrash : UnifiedFolderBase {
-    public override var agregatedFolderType: FolderType? {
-        return FolderType.trash
-    }
-    public override var name: String {
-        return NSLocalizedString("Trashes", comment: "Unified Trash Folder title")
-    }
-}
+// MARK: - Unified Folder Base
 
 public class UnifiedFolderBase: VirtualFolderProtocol {
 
@@ -55,6 +20,51 @@ public class UnifiedFolderBase: VirtualFolderProtocol {
         Log.shared.errorAndCrash("You MUST override this")
         return .none
     }
+
+    public var title: String {
+        get {
+            guard let type = agregatedFolderType else {
+                Log.shared.errorAndCrash("Folder Type not found")
+                return ""
+            }
+            return Folder.localizedName(realName: name, type: type)
+        }
+    }
+
+    public var name: String {
+        Log.shared.errorAndCrash("You MUST override this")
+        return ""
+    }
+
+    public var defaultFilter: MessageQueryResultsFilter {
+        get {
+            return MessageQueryResultsFilter(mustBeUnread: true, accounts: Account.all())
+        }
+    }
+
+    public var countUnread : Int {
+        guard let folderType = agregatedFolderType else {
+            Log.shared.errorAndCrash("Folder Type not found")
+            return 0
+        }
+        return Folder.countUnreadIn(foldersOfType: folderType)
+    }
+
+    public var messagesPredicate: NSPredicate {
+        get {
+            var predicates = [NSPredicate]()
+            guard let folderType = agregatedFolderType else {
+                Log.shared.errorAndCrash("Folder Type not found")
+                return NSPredicate()
+            }
+            predicates.append(Message.PredicateFactory.isIn(folderOfType: folderType))
+            predicates.append(Message.PredicateFactory.existingMessages())
+            predicates.append(Message.PredicateFactory.processed())
+            predicates.append(Message.PredicateFactory.isNotAutoConsumable())
+            return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        }
+    }
+
 
     public func fetchOlder(completion: (()->())? = nil) {
         guard let folderType = agregatedFolderType else {
@@ -93,50 +103,6 @@ public class UnifiedFolderBase: VirtualFolderProtocol {
             // Already fetching do nothing
         }
     }
-
-    public var title: String {
-        get {
-            guard let type = agregatedFolderType else {
-                Log.shared.errorAndCrash("Folder Type not found")
-                return ""
-            }
-            return Folder.localizedName(realName: name, type: type)
-        }
-    }
-
-    public var messagesPredicate: NSPredicate {
-        get {
-            var predicates = [NSPredicate]()
-            guard let folderType = agregatedFolderType else {
-                Log.shared.errorAndCrash("Folder Type not found")
-                return NSPredicate()
-            }
-            predicates.append(Message.PredicateFactory.isIn(folderOfType: folderType))
-            predicates.append(Message.PredicateFactory.existingMessages())
-            predicates.append(Message.PredicateFactory.processed())
-            predicates.append(Message.PredicateFactory.isNotAutoConsumable())
-            return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-        }
-    }
-
-    public var defaultFilter: MessageQueryResultsFilter {
-        get {
-            return MessageQueryResultsFilter(mustBeUnread: true, accounts: Account.all())
-        }
-    }
-
-    public var name: String {
-        Log.shared.errorAndCrash("You MUST override this")
-        return ""
-    }
-
-    public var countUnread : Int {
-        guard let folderType = agregatedFolderType else {
-            Log.shared.errorAndCrash("Folder Type not found")
-            return 0
-        }
-        return Folder.countUnreadIn(foldersOfType: folderType)
-    }
 }
 
 extension UnifiedFolderBase: Equatable {
@@ -148,5 +114,49 @@ extension UnifiedFolderBase: Equatable {
 extension UnifiedFolderBase: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(messagesPredicate.description)
+    }
+}
+
+// MARK: - Unified Inbox
+
+public class UnifiedInbox : UnifiedFolderBase {
+    public override var agregatedFolderType: FolderType? {
+        return FolderType.inbox
+    }
+    public override var name: String {
+        return UnifiedInbox.defaultUnifiedInboxName
+    }
+}
+
+// MARK: - Unified Draft
+
+public class UnifiedDraft : UnifiedFolderBase {
+    public override var agregatedFolderType: FolderType? {
+        return FolderType.drafts
+    }
+    public override var name: String {
+        return NSLocalizedString("Drafts", comment: "Unified Drafts Folder title")
+    }
+}
+
+// MARK: - Unified Sent
+
+public class UnifiedSent : UnifiedFolderBase {
+    public override var agregatedFolderType: FolderType? {
+        return FolderType.sent
+    }
+    public override var name: String {
+        return NSLocalizedString("Sents", comment: "Unified Sent Folder title")
+    }
+}
+
+// MARK: - Unified Trash
+
+public class UnifiedTrash : UnifiedFolderBase {
+    public override var agregatedFolderType: FolderType? {
+        return FolderType.trash
+    }
+    public override var name: String {
+        return NSLocalizedString("Trashes", comment: "Unified Trash Folder title")
     }
 }
