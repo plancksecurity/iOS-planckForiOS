@@ -293,7 +293,10 @@ final class TrustManagementViewModel {
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
         trustManagementUtil.resetTrust(for: row.handshakeCombination.partnerIdentity,
-                                       completion: { reevaluateMessage(forRowAt: indexPath) })
+                                       completion: { [weak self] in
+                                        // UI, disappearance of the VC/VM can happen
+                                        self?.reevaluateMessage(forRowAt: indexPath)
+        })
     }
 
     /// - returns: the available languages.
