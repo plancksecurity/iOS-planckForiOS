@@ -171,13 +171,15 @@ class KeyImporterMock: KeyImportUtilProtocol {
         self.setOwnKeyErrorToThrow = setOwnKeyErrorToThrow
     }
 
-    func importKey(url: URL) throws -> KeyImportUtil.KeyData {
+    func importKey(url: URL,
+                   errorCallback: (Error) -> (),
+                   completion: (KeyImportUtil.KeyData) -> ()) {
         if let theData = importKeyData {
-            return theData
+            return completion(theData)
         } else if let theImportError = importKeyErrorToThrow {
-            throw theImportError
+            errorCallback(theImportError)
         }
-        throw KeyImportUtil.ImportError.cannotLoadKey
+        errorCallback(KeyImportUtil.ImportError.cannotLoadKey)
     }
 
     func setOwnKey(address: String,
