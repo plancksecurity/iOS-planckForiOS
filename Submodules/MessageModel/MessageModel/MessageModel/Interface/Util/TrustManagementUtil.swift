@@ -133,8 +133,14 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
             selfPEPIdentity = updatedIdentity
 
             do {
-                try PEPSession().update(updatedIdentity)//!!!: IOS-2325_!
-                isPartnerpEpUser = try PEPSession().isPEPUser(partnerPEPIdentity).boolValue//!!!: IOS-2325_!
+                try PEPSession().update(partnerPEPIdentity)//!!!: IOS-2325_!
+
+                PEPAsyncSession().isPEPUser(partnerPEPIdentity,
+                                            errorCallback: { error in
+                                                completion(nil)
+                }) { pEpUserOrNot in
+                    isPartnerpEpUser = pEpUserOrNot
+                }
             } catch {
                 Log.shared.error("unable to get the fingerprints")
                 completion(nil)
