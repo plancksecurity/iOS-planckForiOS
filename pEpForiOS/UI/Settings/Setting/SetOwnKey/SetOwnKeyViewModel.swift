@@ -15,34 +15,29 @@ class SetOwnKeyViewModel {
     public var email: String?
     public var fingerprint: String?
 
-    public var rawErrorString: String?
-
-    public func setOwnKey() {//!!!: IOS-2325_!
+    public func setOwnKey(callback: @escaping (String?) -> ()) {
         guard
             let theEmail = email,
             let theFingerprint = fingerprint,
             !theEmail.isEmpty,
             !theFingerprint.isEmpty
             else {
-                rawErrorString = NSLocalizedString(
+                callback(NSLocalizedString(
                     "Please provide an email and a fingerprint. The email must match an existing account.",
-                    comment: "Validation error for set_own_key UI")
+                    comment: "Validation error for set_own_key UI"))
                 return
         }
 
         guard let identity = ownIdentityBy(email: theEmail) else {
-            rawErrorString = NSLocalizedString(
+            callback(NSLocalizedString(
                 "No account found with the given email.",
-                comment: "Error when no account found for set_own_key UI")
+                comment: "Error when no account found for set_own_key UI"))
             return
         }
 
-        do {
-            try identity.setOwnKey(fingerprint: theFingerprint)//!!!: IOS-2325_!
-            rawErrorString = nil
-        } catch {
-            rawErrorString = error.localizedDescription
-        }
+        identity.setOwnKey(fingerprint: theFingerprint,
+                           errorCallback: { error in callback(error.localizedDescription) },
+                           completion: { callback(nil) })
     }
 }
 
