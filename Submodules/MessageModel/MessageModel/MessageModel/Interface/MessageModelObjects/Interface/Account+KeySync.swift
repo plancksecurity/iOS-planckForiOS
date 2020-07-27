@@ -34,8 +34,13 @@ extension Account {
                 let pEpSession = PEPSession()
                 do {
                     try pEpSession.update(pEpIdentity)//!!!: IOS-2325_!
-                    try pEpSession.keyReset(pEpIdentity, fingerprint: pEpIdentity.fingerPrint)//!!!: IOS-2325_!
-                    completion?(.success(()))
+                    PEPAsyncSession().keyReset(pEpIdentity,
+                                               fingerprint: pEpIdentity.fingerPrint,
+                                               errorCallback: { (error: Error) in
+                                                completion?(.failure(error))
+                    }) {
+                        completion?(.success(()))
+                    }
                 } catch {
                     completion?(.failure(error))
                 }
