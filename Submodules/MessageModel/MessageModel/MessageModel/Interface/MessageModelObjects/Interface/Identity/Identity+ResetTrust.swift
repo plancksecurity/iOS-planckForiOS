@@ -14,15 +14,16 @@ extension Identity {
     /// It reset trust for all identities with the same UserID as the identity in the parameter
     ///
     /// - Parameter identityToResetTrust: base identity to reset trust and find other identities with the same userID
-    public static func resetTrustAllIdentities(for identityToResetTrust: Identity) { //!!!: IOS-2325_!
+    public static func resetTrustAllIdentities(for identityToResetTrust: Identity,
+                                               completion: () -> ()) {
         let identities = identityToResetTrust.allIdentitiesWithTheSameUserID()
         for identity in identities {
-            identity.resetTrust() //!!!: IOS-2325_!
+            identity.resetTrust(completion: completion)
         }
     }
 
     /// Reset trust for the identity
-    public func resetTrust() {//!!!: IOS-2325_!
+    public func resetTrust(completion: () -> ()) {//!!!: IOS-2325_!
         let sesion = PEPSession()
         let pEpIdent = pEpIdentity()
         do {
