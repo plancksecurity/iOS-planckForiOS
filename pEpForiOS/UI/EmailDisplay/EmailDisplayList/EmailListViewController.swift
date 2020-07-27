@@ -314,6 +314,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
         showEditToolbar()
         tableView.setEditing(true, animated: true)
+        updateLeftBarButtonItem(isTableViewEditing: tableView.isEditing)
     }
 
     @IBAction func showFilterOptions(_ sender: UIBarButtonItem!) {
@@ -324,6 +325,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         showStandardToolbar()
         lastSelectedIndexPath = nil
         tableView.setEditing(false, animated: true)
+        updateLeftBarButtonItem(isTableViewEditing: tableView.isEditing)
     }
 
     @IBAction func flagToolbar(_ sender:UIBarButtonItem!) {
@@ -624,6 +626,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                 tableView.deselectRow(at: indexPath, animated: true)
             }
         }
+        updateLeftBarButtonItem(isTableViewEditing: tableView.isEditing)
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -1257,5 +1260,58 @@ extension EmailListViewController {
       if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
         tableView.reloadData()
       }
+    }
+}
+
+// MARK: - [De]Select all cells
+
+extension EmailListViewController {
+
+    private var selectAllBarButton : UIBarButtonItem {
+        let selectAllTitle = NSLocalizedString("Select all", comment: "Select all emails")
+        let selectAllCellsSelector = #selector(selectAllCells)
+        return UIBarButtonItem(title: selectAllTitle, style: .plain, target: self, action: selectAllCellsSelector)
+    }
+    private var deselectAllBarButton : UIBarButtonItem {
+        let deselectAllTitle = NSLocalizedString("Deselect all", comment: "Deselect all emails")
+        let deselectAllCellsSelector = #selector(deselectAllCells)
+        return UIBarButtonItem(title: deselectAllTitle, style: .plain, target: self, action: deselectAllCellsSelector)
+    }
+
+    private func updateLeftBarButtonItem(isTableViewEditing: Bool) {
+        if isTableViewEditing {
+            let item : UIBarButtonItem
+            guard let numberOfSelectedRows = tableView.indexPathForSelectedRow?.count else {
+                //Valid case, no rows are selected
+                navigationItem.leftBarButtonItems = [selectAllBarButton]
+                return
+            }
+            item = tableView.numberOfRows(inSection: 0) > numberOfSelectedRows ? selectAllBarButton : deselectAllBarButton
+            navigationItem.leftBarButtonItems = [item]
+        } else {
+            navigationItem.leftBarButtonItems = nil
+        }
+        navigationItem.hidesBackButton = isTableViewEditing
+    }
+
+    @objc private func selectAllCells() {
+        for row in 0..<tableView.numberOfRows(inSection: 0) {
+            tableView.selectRow(at: IndexPath(item: row, section: 0), animated: false, scrollPosition: .none)
+        }
+        guard let vm = viewModel, let selectedIndexPaths = tableView?.indexPathsForSelectedRows else {
+            Log.shared.errorAndCrash("VM or selected IndexPaths not found")
+            return
+        }
+        vm.handleEditModeSelectionChange(selectedIndexPaths: selectedIndexPaths)
+
+        navigationItem.leftBarButtonItems = [deselectAllBarButton]
+    }
+
+    @objc private func deselectAllCells() {
+        for row in 0..<tableView.numberOfRows(inSection: 0) {
+            tableView.deselectRow(at: IndexPath(item: row, section: 0), animated: true)
+        }
+        viewModel?.handleEditModeSelectionChange(selectedIndexPaths: [])
+        navigationItem.leftBarButtonItems = [selectAllBarButton]
     }
 }
