@@ -314,6 +314,56 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
         showEditToolbar()
         tableView.setEditing(true, animated: true)
+        updateBackButton(isTableViewEditing: tableView.isEditing)
+    }
+
+    var selectAllBarButton : UIBarButtonItem {
+        let selectAllTitle = NSLocalizedString("_Select all", comment: "Select all emails")
+        let selectAllCellsSelector = #selector(selectAllCells)
+        return UIBarButtonItem(title: selectAllTitle, style: .plain, target: self, action: selectAllCellsSelector)
+    }
+    var deselectAllBarButton : UIBarButtonItem {
+        let deselectAllTitle = NSLocalizedString("_Deselect all", comment: "Deselect all emails")
+        let deselectAllCellsSelector = #selector(deselectAllCells)
+        return UIBarButtonItem(title: deselectAllTitle, style: .plain, target: self, action: deselectAllCellsSelector)
+    }
+
+
+    private func updateBackButton(isTableViewEditing: Bool) {
+        if isTableViewEditing {
+            let item : UIBarButtonItem
+            guard let numberOfSelectedRows = tableView.indexPathForSelectedRow?.count else {
+                //Valid case, no rows are selected
+                navigationItem.leftBarButtonItems = [selectAllBarButton]
+                return
+            }
+
+            item = tableView.numberOfRows(inSection: 0) > numberOfSelectedRows ? selectAllBarButton : deselectAllBarButton
+            navigationItem.leftBarButtonItems = [item]
+        } else {
+            navigationItem.leftBarButtonItems = nil
+        }
+        navigationItem.hidesBackButton = isTableViewEditing
+
+    }
+
+    @objc private func selectAllCells() {
+        let totalRows = tableView.numberOfRows(inSection: 0)
+        for row in 0..<totalRows {
+            let indexPath = IndexPath(item: row, section: 0)
+            tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        }
+        navigationItem.leftBarButtonItems = [deselectAllBarButton]
+
+    }
+
+    @objc private func deselectAllCells() {
+        let totalRows = tableView.numberOfRows(inSection: 0)
+        for row in 0..<totalRows {
+            let indexPath = IndexPath(item: row, section: 0)
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+        navigationItem.leftBarButtonItems = [selectAllBarButton]
     }
 
     @IBAction func showFilterOptions(_ sender: UIBarButtonItem!) {
@@ -324,6 +374,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         showStandardToolbar()
         lastSelectedIndexPath = nil
         tableView.setEditing(false, animated: true)
+        updateBackButton(isTableViewEditing: tableView.isEditing)
     }
 
     @IBAction func flagToolbar(_ sender:UIBarButtonItem!) {
@@ -624,6 +675,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                 tableView.deselectRow(at: indexPath, animated: true)
             }
         }
+        updateBackButton(isTableViewEditing: tableView.isEditing)
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -634,6 +686,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                 vm.handleEditModeSelectionChange(selectedIndexPaths: [])
             }
         }
+        updateBackButton(isTableViewEditing: tableView.isEditing)
     }
 
     // Implemented to get informed about the scrolling position.

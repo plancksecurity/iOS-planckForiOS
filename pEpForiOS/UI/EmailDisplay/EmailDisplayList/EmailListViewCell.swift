@@ -213,12 +213,8 @@ extension EmailListViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: false)
         let viewForHighlight = UIView()
-        self.selectedBackgroundView = viewForHighlight
-        if self.isEditing {
-            viewForHighlight.backgroundColor = UIColor.clear
-        } else {
-            viewForHighlight.backgroundColor = originalBackgroundSelectionColor
-        }
+        selectedBackgroundView = viewForHighlight
+        viewForHighlight.backgroundColor = isEditing ? .clear : originalBackgroundSelectionColor
     }
 
     /// - Returns: " " (a space) instead of an empty String, otherwise the original String
