@@ -54,9 +54,11 @@ class FolderTest: PersistentStoreDrivenTestBase {
         let result = drafts.folder().countUnread
         XCTAssertEqual(result, 1)
 
-        //Test for UnifiedInbox
+        //Test for UnifiedInboxmmm
         //Only one unread mail in draft
-        XCTAssertEqual(Folder.countAllUnread(), 4)
+
+        XCTAssertEqual(Folder.countUnreadIn(foldersOfType: .inbox), 0)
+        XCTAssertEqual(Folder.countUnreadIn(foldersOfType: .drafts), 1)
     }
 
     private func createMessage(isUnread : Bool, in folder: CdFolder) {

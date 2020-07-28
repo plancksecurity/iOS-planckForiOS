@@ -214,20 +214,6 @@ extension AccountSettingsViewController : UITableViewDataSource {
 //MARK : - ViewModel Delegate
 
 extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
-    func undoUnifiedToggle() {
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
-            }
-            guard let vm = me.viewModel else {
-                Log.shared.errorAndCrash("VM is nil")
-                return
-            }
-            vm.includeInUnifiedFolders(enable: !vm.includeInUnifiedFolders)
-            me.tableView.reloadData()
-        }
-    }
 
     func setLoadingView(visible: Bool) {
         DispatchQueue.main.async {
@@ -366,6 +352,10 @@ extension AccountSettingsViewController: AccountSettingsSwitchTableViewCellDeleg
         if rowType == .pepSync {
             vm.pEpSync(enable: newValue)
         }
+        if rowType == .includeInUnified {
+            vm.includeInUnifiedFolders(newValue)
+        }
+
     }
 }
 

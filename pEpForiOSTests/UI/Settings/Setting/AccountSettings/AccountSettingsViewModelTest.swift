@@ -47,6 +47,18 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
         XCTAssertEqual(viewModel.pEpSync, boolValue)
     }
 
+
+    func testIsIncludeInUnifiedFolders() {
+        var boolValue = true
+        viewModel.includeInUnifiedFolders(boolValue)
+        XCTAssertEqual(viewModel.includeInUnifiedFolders, boolValue)
+
+        boolValue = false
+        viewModel.includeInUnifiedFolders(boolValue)
+        XCTAssertEqual(viewModel.includeInUnifiedFolders, boolValue)
+    }
+
+
     func testHandleResetIdentity() {
         let showLoadingViewExpectation = expectation(description: "showLoadingViewExpectation")
         let hideLoadingViewExpectation = expectation(description: "hideLoadingViewExpectation")

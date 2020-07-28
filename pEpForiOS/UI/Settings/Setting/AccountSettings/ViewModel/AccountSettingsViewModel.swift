@@ -18,8 +18,6 @@ protocol AccountSettingsViewModelDelegate: class {
     func showAlert(error: Error)
     /// Undo the last Pep Sync Change
     func undoPEPSyncToggle()
-    /// Undo the last Pep Sync Change
-    func undoUnifiedToggle()
 }
 
 /// Protocol that represents the basic data in a row.
@@ -61,7 +59,7 @@ final class AccountSettingsViewModel {
         self.account = account
         self.delegate = delegate
         pEpSync = (try? account.isKeySyncEnabled()) ?? false
-        includeInUnifiedFolders = true //TODO: fixme!
+        includeInUnifiedFolders = account.isIncludeInUnifiedFolders
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         self.generateSections()
     }
@@ -187,17 +185,10 @@ extension AccountSettingsViewModel {
         }
     }
 
-
-    public func includeInUnifiedFolders(enable: Bool) {
-        do {
-//            try account.setKeySyncEnabled(enable: enable)
-            includeInUnifiedFolders = enable
-        } catch {
-//            delegate?.undoPEPSyncToggle()
-//            delegate?.showAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
-        }
+    public func includeInUnifiedFolders(_ isIncludedInUnifiedFolders: Bool) {
+        includeInUnifiedFolders = isIncludedInUnifiedFolders
+        account.isIncludeInUnifiedFolders = isIncludedInUnifiedFolders
     }
-
 
     /// [En][Dis]able the pEpSync status
     /// - Parameter enable: The new value.
@@ -349,25 +340,16 @@ extension AccountSettingsViewModel {
                 rows.append(passwordRow)
             }
 
-            // pepSync
+            // Include in Unified Folders
             let includeInUnifiedFolderRow = SwitchRow(type: .includeInUnified,
                                                       title: rowTitle(for: .includeInUnified),
                                                       isOn: includeInUnifiedFolders,
                                                       action: { [weak self] (enable) in
-                                                        do {
-                                                            guard let me = self else {
-                                                                Log.shared.error("Lost myself")
-                                                                return
-                                                            }
-                                                            try me.account.setKeySyncEnabled(enable: enable)
-                                                        } catch {
-                                                            guard let me = self else {
-                                                                Log.shared.error("Lost myself")
-                                                                return
-                                                            }
-                                                            me.delegate?.undoUnifiedToggle()
-//                                                            me.delegate?.showAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
+                                                        guard let me = self else {
+                                                            Log.shared.error("Lost myself")
+                                                            return
                                                         }
+                                                        me.includeInUnifiedFolders(enable)
                 }, cellIdentifier: CellsIdentifiers.switchCell)
             rows.append(includeInUnifiedFolderRow)
 
