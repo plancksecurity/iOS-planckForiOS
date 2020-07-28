@@ -267,9 +267,9 @@ class TrustManagementUtilMock: TrustManagementUtilProtocol {
         self.undoExpectation = undoExpectation
     }
     
-    func languagesList() -> [String]? {
+    func languagesList(completion: @escaping ([String]) -> ()) {
         languagesExpectation?.fulfill()
-        return TrustManagementUtilMock.languages
+        completion(TrustManagementUtilMock.languages)
     }
 
     func getTrustwords(for SelfIdentity: Identity,
