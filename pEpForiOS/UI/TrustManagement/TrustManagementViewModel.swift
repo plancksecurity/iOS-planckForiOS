@@ -300,7 +300,7 @@ final class TrustManagementViewModel {
     }
 
     /// - returns: the available languages.
-    public func languages(completion: @escaping ([String]?) -> ()) {
+    public func languages(completion: @escaping ([String]) -> ()) {
         return trustManagementUtil.languagesList(completion: completion)
     }
     
