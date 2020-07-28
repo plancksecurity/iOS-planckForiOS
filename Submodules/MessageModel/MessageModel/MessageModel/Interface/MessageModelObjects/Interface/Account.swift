@@ -140,12 +140,12 @@ public class Account: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         return cdAccount.folders?.count ?? 0
     }
 
-    public var isIncludeInUnifiedFolders: Bool {
+    public var isIncludedInUnifiedFolders: Bool {
         get {
-            return cdObject.isIncludeInUnifiedFolders
+            return cdObject.isIncludedInUnifiedFolders
         }
         set {
-            cdObject.isIncludeInUnifiedFolders = newValue
+            cdObject.isIncludedInUnifiedFolders = newValue
         }
     }
 }
