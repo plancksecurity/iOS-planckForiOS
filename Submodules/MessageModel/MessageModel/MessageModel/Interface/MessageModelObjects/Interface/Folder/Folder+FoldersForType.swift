@@ -20,6 +20,7 @@ extension Folder {
     /// - Parameters:
     ///   - foldersOfType: The folder type to filter
     ///   - session: The current session, if not specified will be `main`
+    ///   - isUnified: Indicates if the predicate should count for the unified folder or not.
     /// - Returns: The number of unread mails for a certain folder type.
     public static func countUnreadIn(foldersOfType: FolderType, session: Session = Session.main, isUnified: Bool = false) -> Int {
         var predicates = [NSPredicate]()
