@@ -186,12 +186,19 @@ extension KeySyncHandshakeViewModelTest {
     }
 
     private func pEpSessionMocLanaguages() -> [PEPLanguage] {
-        do {
-            return try PEPSessionMoc().languageList()
-        } catch {
-            XCTFail("No languages from pepSessionMoc")
-            return []
+        var languages = [PEPLanguage]()
+
+        let expHaveLanguages = expectation(description: "expHaveLanguages")
+        PEPAsyncSession().languageList({ error in
+            XCTFail()
+            expHaveLanguages.fulfill()
+        }) { langs in
+            languages = langs
+            expHaveLanguages.fulfill()
         }
+        wait(for: [expHaveLanguages], timeout: TestUtil.waitTime)
+
+        return languages
     }
 }
 
