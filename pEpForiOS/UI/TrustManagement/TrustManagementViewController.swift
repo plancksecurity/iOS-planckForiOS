@@ -164,7 +164,7 @@ extension TrustManagementViewController {
     
     /// Shows an action sheet with languages when the user taps the language button from a cell
     /// - Parameter cell: The cell of the language button tapped.
-    private func showLanguagesList(for cell: TrustManagementTableViewCell) {//!!!: IOS-2325_!
+    private func showLanguagesList(for cell: TrustManagementTableViewCell) {
         guard let indexPath = tableView.indexPath(for: cell) else {
             Log.shared.error("IndexPath not found")
             return
