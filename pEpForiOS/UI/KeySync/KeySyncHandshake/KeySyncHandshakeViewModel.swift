@@ -52,14 +52,18 @@ final class KeySyncHandshakeViewModel {
         } else {
             PEPAsyncSession().languageList({ error in
                 Log.shared.errorAndCrash("%@", error.localizedDescription)
-                completion([])
-            }) { [weak self] theLangs in
-                guard let me = self else {
-                    // UI, this can happen
-                    return
+                DispatchQueue.main.async {
+                    completion([])
                 }
-                me._languages = theLangs
-                completion(theLangs)
+            }) { [weak self] theLangs in
+                DispatchQueue.main.async {
+                    guard let me = self else {
+                        // UI, this can happen
+                        return
+                    }
+                    me._languages = theLangs
+                    completion(theLangs)
+                }
             }
         }
     }
