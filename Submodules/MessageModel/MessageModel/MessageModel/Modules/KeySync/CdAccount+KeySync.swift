@@ -11,6 +11,14 @@ import PEPObjCAdapterFramework
 
 extension CdAccount {
 
+    func isKeySyncEnabled() throws -> Bool {//!!!: IOS-2325_!
+        guard let user = identity else {
+            Log.shared.errorAndCrash("No identity")
+            return false
+        }
+        return try PEPSession().queryKeySyncEnabled(for: user.pEpIdentity()).boolValue//!!!: IOS-2325_!
+    }
+    
     func isKeySyncEnabled(errorCallback: @escaping (Error) -> (),
                           successCallback: @escaping (Bool) -> ()) {
         guard let user = identity else {
