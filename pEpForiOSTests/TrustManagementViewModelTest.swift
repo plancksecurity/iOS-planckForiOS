@@ -91,10 +91,23 @@ class TrustManagementViewModelTest: CoreDataDrivenTestBase {
     }
     
     //Test Change Language Pressed
-    func testHandleChangeLanguagePressed() {//!!!: IOS-2325_!
+    func testHandleChangeLanguagePressed() {
         let languagesExpectation = expectation(description: "languages")
         setupViewModel(util: TrustManagementUtilMock(languagesExpectation: languagesExpectation))
-        let languages = trustManagementViewModel?.languages//!!!: IOS-2325_!
+
+        guard let vm = trustManagementViewModel else {
+            XCTFail()
+            return
+        }
+
+        let expReceivedLangs = expectation(description: "expReceivedLangs")
+        var languages = [String]()
+        vm.languages { langs in
+            expReceivedLangs.fulfill()
+            languages = langs
+        }
+        wait(for: [expReceivedLangs], timeout: TestUtil.waitTime)
+
         XCTAssertEqual(TrustManagementUtilMock.languages, languages)
         waitForExpectations(timeout: TestUtil.waitTime)
     }
