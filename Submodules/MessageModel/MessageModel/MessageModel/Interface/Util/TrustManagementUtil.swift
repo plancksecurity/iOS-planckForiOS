@@ -46,8 +46,9 @@ public protocol TrustManagementUtilProtocol: class {
     /// - Parameter partnerIdentity: Identity in which the action will be taken.
     func resetTrust(for partnerIdentity: Identity?, completion: @escaping () -> ())
 
-    /// - returns: List of available languages codes in ISO 639-1 for the self identity
-    func languagesList(completion: @escaping ([String]?) -> ())
+    /// Calls the completion block with a list of available languages codes
+    /// in ISO 639-1 for the self identity
+    func languagesList(completion: @escaping ([String]) -> ())
     
     /// Method that returns the actual fingerprints for the identity if there are ones, else will return nil
     /// - Parameter Identity: Identity in which the action will be taken.
@@ -91,10 +92,10 @@ public class TrustManagementUtil {
 // MARK: - TrustManagementUtilProtocol
 
 extension TrustManagementUtil : TrustManagementUtilProtocol {
-    public func languagesList(completion: @escaping ([String]?) -> ()) {
+    public func languagesList(completion: @escaping ([String]) -> ()) {
         PEPAsyncSession().languageList({ error in
             Log.shared.error("Missing lenguage list")
-            completion(nil)
+            completion([])
         }) { langs in
             completion(langs.map { $0.code })
         }
