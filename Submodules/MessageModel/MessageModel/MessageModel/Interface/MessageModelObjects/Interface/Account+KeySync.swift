@@ -25,6 +25,14 @@ extension Account {
         try cdObject.setKeySyncEnabled(enable: enable)//!!!: IOS-2325_!
     }
 
+    public func setKeySyncEnabled(enable: Bool,
+                                  errorCallback: @escaping (Error?) -> (),
+                                  successCallback: @escaping () -> ()) {
+        cdObject.setKeySyncEnabled(enable: enable,
+                                   errorCallback: errorCallback,
+                                   successCallback: successCallback)
+    }
+
     /// Reset the key for this account
     ///
     /// Note: this is an expensive task, the key reset will be done in global queue.
