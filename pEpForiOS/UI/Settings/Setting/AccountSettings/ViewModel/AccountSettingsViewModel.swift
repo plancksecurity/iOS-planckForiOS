@@ -67,6 +67,18 @@ final class AccountSettingsViewModel {
 
         pEpSync = (try? account.isKeySyncEnabled()) ?? false //!!!: IOS-2325_!
     }
+
+    func queryPEPSync(completion: @escaping (Bool) -> ()) {
+        account.isKeySyncEnabled(errorCallback: { _ in
+            DispatchQueue.main.async {
+                completion(false)
+            }
+        }) { enabled in
+            DispatchQueue.main.async {
+                completion(enabled)
+            }
+        }
+    }
     
     public func rowShouldBeHidden(indexPath: IndexPath) -> Bool {
         if indexPath.section == 0 && indexPath.row == 3 {
