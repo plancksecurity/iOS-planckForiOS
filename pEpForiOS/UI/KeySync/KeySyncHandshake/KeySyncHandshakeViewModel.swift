@@ -152,15 +152,23 @@ extension KeySyncHandshakeViewModel {
     }
 
     private func handleChangeLanguageButton() {
-        guard !oldLanguages.isEmpty else {
-            Log.shared.errorAndCrash("Wont show picker, no languages to show")
-            return
-        }
-        let languagesNames = oldLanguages.map { $0.name }
-        let selectedlanguageIndex = oldLanguages.map { $0.code }.firstIndex(of: languageCode)
+        languages { [weak self] langs in
+            DispatchQueue.main.async {
+                guard let me = self else {
+                    // UI, this can happen
+                    return
+                }
+                guard !langs.isEmpty else {
+                    Log.shared.errorAndCrash("Wont show picker, no languages to show")
+                    return
+                }
+                let languagesNames = langs.map { $0.name }
+                let selectedlanguageIndex = langs.map { $0.code }.firstIndex(of: me.languageCode)
 
-        delegate?.showPicker(withLanguages: languagesNames,
-                             selectedLanguageIndex: selectedlanguageIndex)
+                me.delegate?.showPicker(withLanguages: languagesNames,
+                                        selectedLanguageIndex: selectedlanguageIndex)
+            }
+        }
     }
 
     private func viewControllerAction(viewModelAction: KeySyncHandshakeViewModel.Action)
