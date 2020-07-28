@@ -55,36 +55,31 @@ extension KeyImportUtil {
 
 extension KeyImportUtil: KeyImportUtilProtocol {
     public func importKey(url: URL,
-                          errorCallback: (Error) -> (),
-                          completion: (KeyData) -> ()) {
+                          errorCallback: @escaping (Error) -> (),
+                          completion: @escaping (KeyData) -> ()) {
         guard let dataString = try? String(contentsOf: url) else {
             errorCallback(ImportError.cannotLoadKey)
             return
         }
 
-        let session = PEPSession()
+        PEPAsyncSession().importKey(dataString,
+                                    errorCallback: { error in
+                                        errorCallback(ImportError.malformedKey)
+        }) { identities in
+            guard let firstIdentity = identities.first else {
+                errorCallback(ImportError.malformedKey)
+                return
+            }
 
-        var identities = [PEPIdentity]()
+            guard let fingerprint = firstIdentity.fingerPrint else {
+                errorCallback(ImportError.malformedKey)
+                return
+            }
 
-        do {
-            identities = try session.importKey(dataString)//!!!: IOS-2325_!
-        } catch {
-            errorCallback(ImportError.malformedKey)
+            completion(KeyData(address: firstIdentity.address,
+                               fingerprint: fingerprint,
+                               userName: firstIdentity.userName))
         }
-
-        guard let firstIdentity = identities.first else {
-            errorCallback(ImportError.malformedKey)
-            return
-        }
-
-        guard let fingerprint = firstIdentity.fingerPrint else {
-            errorCallback(ImportError.malformedKey)
-            return
-        }
-
-        completion(KeyData(address: firstIdentity.address,
-                           fingerprint: fingerprint,
-                           userName: firstIdentity.userName))
     }
 
     public func setOwnKey(address: String,
