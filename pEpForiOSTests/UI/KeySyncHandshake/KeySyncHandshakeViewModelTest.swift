@@ -19,7 +19,7 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        keySyncHandshakeVM = KeySyncHandshakeViewModel(pEpSession: PEPSessionMoc())
+        keySyncHandshakeVM = KeySyncHandshakeViewModel()
         keySyncHandshakeVM?.setFingerPrints(meFPR: "", partnerFPR: "", isNewGroup: true)
         keySyncHandshakeVM?.delegate = self
 

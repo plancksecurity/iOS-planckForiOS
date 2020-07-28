@@ -38,13 +38,8 @@ final class KeySyncHandshakeViewModel {
     private var meFPR: String?
     private var partnerFPR: String?
     private var isNewGroup = true
-    private let pEpSession: PEPSessionProtocol
 
     private var _languages = [PEPLanguage]()
-
-    init(pEpSession: PEPSessionProtocol = PEPSession()) {
-        self.pEpSession = pEpSession
-    }
 
     func languages(completion: @escaping ([PEPLanguage]) -> ()) {
         if !_languages.isEmpty {
