@@ -28,10 +28,9 @@ extension Message {
             return CdMessage.PredicateFactory.unread(value: value)
         }
 
-        static public func parentInUnifiedFolder() -> NSPredicate {
-            return CdMessage.PredicateFactory.parentInUnifiedFolder()
+        static public func inUnifiedFolder() -> NSPredicate {
+            return CdMessage.PredicateFactory.inUnifiedFolder()
         }
-
     }
 }
 

@@ -24,7 +24,7 @@ extension Folder {
     public static func countUnreadIn(foldersOfType: FolderType, session: Session = Session.main, isUnified: Bool = false) -> Int {
         var predicates = [NSPredicate]()
         if isUnified {
-            predicates.append(CdMessage.PredicateFactory.parentInUnifiedFolder())
+            predicates.append(CdMessage.PredicateFactory.inUnifiedFolder())
         }
         predicates.append(CdMessage.PredicateFactory.existingMessages())
         predicates.append(CdMessage.PredicateFactory.processed())

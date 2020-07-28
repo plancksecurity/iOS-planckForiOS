@@ -13,7 +13,7 @@ extension CdMessage {
 
     struct PredicateFactory {
 
-        static func parentInUnifiedFolder() -> NSPredicate {
+        static func inUnifiedFolder() -> NSPredicate {
             return NSPredicate(format: "%K = true", RelationshipKeyPath.cdMessage_parent_account_isUnifiable)
         }
 

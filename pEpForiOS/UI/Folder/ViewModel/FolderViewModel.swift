@@ -27,7 +27,7 @@ public class FolderViewModel {
     /// One row per folder
     /// If no account is given, all accounts found in the store are taken into account.
     /// - Parameter accounts: accounts to to create folder hierarchy view model for.
-    public init(withFoldersIn accounts: [Account]? = nil, includeInUnifiedFolders: Bool = true) {
+    public init(withFoldersIn accounts: [Account]? = nil, isUnified: Bool = true) {
         items = [FolderSectionViewModel]()
         let accountsToUse: [Account]
         if let safeAccounts = accounts {
@@ -35,7 +35,7 @@ public class FolderViewModel {
         } else {
             accountsToUse = Account.all()
         }
-        generateSections(accounts: accountsToUse, includeInUnifiedFolders: includeInUnifiedFolders)
+        generateSections(accounts: accountsToUse, includeInUnifiedFolders: isUnified)
     }
 
     private func generateSections(accounts: [Account], includeInUnifiedFolders: Bool = true) {
