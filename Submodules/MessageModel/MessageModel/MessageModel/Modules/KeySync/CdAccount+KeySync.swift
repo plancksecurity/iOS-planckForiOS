@@ -31,18 +31,6 @@ extension CdAccount {
                                               successCallback: successCallback)
     }
 
-    func setKeySyncEnabled(enable: Bool) throws {//!!!: IOS-2325_!
-        guard let user = identity  else {
-            Log.shared.errorAndCrash("Invalid account")
-            return
-        }
-        if enable {
-            try PEPSession().enableSync(for: user.pEpIdentity())//!!!: IOS-2325_!
-        } else {
-            try PEPSession().disableSync(for: user.pEpIdentity())//!!!: IOS-2325_!
-        }
-    }
-
     func setKeySyncEnabled(enable: Bool,
                            errorCallback: @escaping (Error?) -> (),
                            successCallback: @escaping () -> ()) {

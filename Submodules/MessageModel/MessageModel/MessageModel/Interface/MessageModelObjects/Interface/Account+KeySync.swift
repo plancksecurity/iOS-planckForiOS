@@ -21,10 +21,6 @@ extension Account {
         cdObject.isKeySyncEnabled(errorCallback: errorCallback, successCallback: successCallback)
     }
 
-    public func setKeySyncEnabled(enable: Bool) throws {//!!!: IOS-2325_!
-        try cdObject.setKeySyncEnabled(enable: enable)//!!!: IOS-2325_!
-    }
-
     public func setKeySyncEnabled(enable: Bool,
                                   errorCallback: @escaping (Error?) -> (),
                                   successCallback: @escaping () -> ()) {
