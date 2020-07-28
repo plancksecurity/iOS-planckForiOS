@@ -176,31 +176,41 @@ extension TrustManagementViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        //For every language a row in the action sheet.
-        for language in vm.languages {//!!!: IOS-2325_!
-            guard let languageName = NSLocale.current.localizedString(forLanguageCode: language)
-                else {
-                    Log.shared.debug("Language name not found")
-                    break
-            }
-            let action = UIAlertAction(title: languageName, style: .default) { (action) in
-                vm.handleDidSelect(language: language, forRowAt: indexPath)
-            }
-            alertController.addAction(action)
-        }
-        
-        //For the cancel button another action.
-        let cancel = NSLocalizedString("Cancel",
-                                       comment: "TrustManagementView: trustword language selector cancel button label")
-        let cancelAction = UIAlertAction(title: cancel, style: .cancel) { _ in
-            alertController.dismiss(animated: true, completion: nil)
-        }
-        alertController.addAction(cancelAction)
 
-        //Ipad behavior.
-        alertController.popoverPresentationController?.sourceView = cell.languageButton
-        alertController.popoverPresentationController?.sourceRect = cell.languageButton.bounds
-        present(alertController, animated: true, completion: nil)
+        //For every language a row in the action sheet.
+        vm.languages { [weak self] langs in
+            DispatchQueue.main.async {
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+
+                for language in langs ?? [] {
+                    guard let languageName = NSLocale.current.localizedString(forLanguageCode: language)
+                        else {
+                            Log.shared.debug("Language name not found")
+                            break
+                    }
+                    let action = UIAlertAction(title: languageName, style: .default) { (action) in
+                        vm.handleDidSelect(language: language, forRowAt: indexPath)
+                    }
+                    alertController.addAction(action)
+                }
+
+                //For the cancel button another action.
+                let cancel = NSLocalizedString("Cancel",
+                                               comment: "TrustManagementView: trustword language selector cancel button label")
+                let cancelAction = UIAlertAction(title: cancel, style: .cancel) { _ in
+                    alertController.dismiss(animated: true, completion: nil)
+                }
+                alertController.addAction(cancelAction)
+
+                //Ipad behavior.
+                alertController.popoverPresentationController?.sourceView = cell.languageButton
+                alertController.popoverPresentationController?.sourceRect = cell.languageButton.bounds
+                me.present(alertController, animated: true, completion: nil)
+            }
+        }
     }
 }
 
