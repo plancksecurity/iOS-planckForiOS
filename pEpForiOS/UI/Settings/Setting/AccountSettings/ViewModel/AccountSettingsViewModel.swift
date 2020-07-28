@@ -65,7 +65,7 @@ final class AccountSettingsViewModel {
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         self.account = account
 
-        pEpSync = (try? account.isKeySyncEnabled()) ?? false
+        pEpSync = (try? account.isKeySyncEnabled()) ?? false //!!!: IOS-2325_!
     }
     
     public func rowShouldBeHidden(indexPath: IndexPath) -> Bool {
