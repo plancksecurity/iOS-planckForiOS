@@ -300,8 +300,8 @@ final class TrustManagementViewModel {
     }
 
     /// - returns: the available languages.
-    public var languages: [String] {//!!!: IOS-2325_!
-        return trustManagementUtil.languagesList() ?? []//!!!: IOS-2325_!
+    public func languages(completion: @escaping ([String]?) -> ()) {
+        return trustManagementUtil.languagesList(completion: completion)
     }
     
     /// Updates the selected language for that row.
