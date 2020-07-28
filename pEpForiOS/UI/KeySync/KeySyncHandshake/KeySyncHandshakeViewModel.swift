@@ -42,19 +42,6 @@ final class KeySyncHandshakeViewModel {
 
     private var _languages = [PEPLanguage]()
 
-    private var oldLanguages: [PEPLanguage] {  //!!!: IOS-2325_! ?
-        guard _languages.isEmpty else {
-            return _languages
-        }
-        do {
-            _languages = try pEpSession.languageList()  //!!!: IOS-2325_! ?
-            return _languages
-        } catch {
-            Log.shared.errorAndCrash("%@", error.localizedDescription)
-            return []
-        }
-    }
-
     init(pEpSession: PEPSessionProtocol = PEPSession()) {
         self.pEpSession = pEpSession
     }
@@ -84,7 +71,7 @@ final class KeySyncHandshakeViewModel {
                     // UI, this can happen
                     return
                 }
-                me.languageCode = me.oldLanguages[languageRow].code
+                me.languageCode = langs[languageRow].code
                 me.delegate?.closePicker()
                 me.updateTrustwords()
             }
