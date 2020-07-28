@@ -42,4 +42,20 @@ extension CdAccount {
             try PEPSession().disableSync(for: user.pEpIdentity())//!!!: IOS-2325_!
         }
     }
+
+    func setKeySyncEnabled(enable: Bool,
+                           errorCallback: @escaping (Error?) -> (),
+                           successCallback: @escaping () -> ()) {
+        guard let user = identity  else {
+            Log.shared.errorAndCrash("Invalid account")
+            errorCallback(nil)
+            return
+        }
+        PEPAsyncSession().enableSync(for: user.pEpIdentity(),
+                                     errorCallback: { error in
+                                        errorCallback(error)
+        }) {
+            successCallback()
+        }
+    }
 }
