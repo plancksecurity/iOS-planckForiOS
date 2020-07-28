@@ -23,14 +23,14 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
 
     weak var delegate : AccountSettingsSwitchTableViewCellDelegate?
 
-    public func configure(with row : AccountSettingsViewModel.SwitchRow, isGrayedOut: Bool) {
+    public func configure(with row : AccountSettingsViewModel.SwitchRow, isEnabled: Bool) {
         self.row = row
         titleLabel.text = row.title
-        titleLabel.textColor = isGrayedOut ? .pEpTextDark : .gray
+        titleLabel.textColor = isEnabled ? .pEpTextDark : .gray
 
         switchItem.isOn = row.isOn
-        switchItem.isUserInteractionEnabled = isGrayedOut
-        switchItem.onTintColor = isGrayedOut ? UIColor.pEpGreen : UIColor.pEpGreyBackground
+        switchItem.isUserInteractionEnabled = isEnabled
+        switchItem.onTintColor = isEnabled ? UIColor.pEpGreen : UIColor.pEpGreyBackground
     }
 
     @IBAction func switchChanged(_ sender: UISwitch) {

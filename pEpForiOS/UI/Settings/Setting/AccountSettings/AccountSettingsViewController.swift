@@ -148,7 +148,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
             }
-            dequeuedCell.configure(with: row, isGrayedOut : !vm.isPEPSyncGrayedOut())
+            dequeuedCell.configure(with: row, isEnabled : !vm.isPEPSyncGrayedOut())
             dequeuedCell.delegate = self
             return dequeuedCell
         case .reset:
@@ -174,6 +174,19 @@ extension AccountSettingsViewController : UITableViewDataSource {
                 return UITableViewCell()
             }
             dequeuedCell.configure(with: row)
+            return dequeuedCell
+        case .includeInUnified:
+            guard let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
+                as? AccountSettingsSwitchTableViewCell else {
+                    Log.shared.errorAndCrash(message: "Cell can't be dequeued")
+                    return UITableViewCell()
+            }
+            guard let row = row as? AccountSettingsViewModel.SwitchRow else {
+                Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
+                return UITableViewCell()
+            }
+            dequeuedCell.configure(with: row, isEnabled : true)
+            dequeuedCell.delegate = self
             return dequeuedCell
         }
     }
@@ -201,6 +214,21 @@ extension AccountSettingsViewController : UITableViewDataSource {
 //MARK : - ViewModel Delegate
 
 extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
+    func undoUnifiedToggle() {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            guard let vm = me.viewModel else {
+                Log.shared.errorAndCrash("VM is nil")
+                return
+            }
+            vm.includeInUnifiedFolders(enable: !vm.includeInUnifiedFolders)
+            me.tableView.reloadData()
+        }
+    }
+
     func setLoadingView(visible: Bool) {
         DispatchQueue.main.async {
             if visible {

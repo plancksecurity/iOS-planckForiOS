@@ -18,6 +18,8 @@ protocol AccountSettingsViewModelDelegate: class {
     func showAlert(error: Error)
     /// Undo the last Pep Sync Change
     func undoPEPSyncToggle()
+    /// Undo the last Pep Sync Change
+    func undoUnifiedToggle()
 }
 
 /// Protocol that represents the basic data in a row.
@@ -43,6 +45,7 @@ final class AccountSettingsViewModel {
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
     private(set) var pEpSync: Bool
+    private(set) var includeInUnifiedFolders: Bool
     private let isOAuth2: Bool
     private(set) var account: Account
     public weak var delegate: AccountSettingsViewModelDelegate?
@@ -58,6 +61,7 @@ final class AccountSettingsViewModel {
         self.account = account
         self.delegate = delegate
         pEpSync = (try? account.isKeySyncEnabled()) ?? false
+        includeInUnifiedFolders = true //TODO: fixme!
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         self.generateSections()
     }
@@ -74,6 +78,7 @@ extension AccountSettingsViewModel {
         case name
         case email
         case password
+        case includeInUnified
         case pepSync
         case reset
         case server
@@ -181,6 +186,18 @@ extension AccountSettingsViewModel {
             }
         }
     }
+
+
+    public func includeInUnifiedFolders(enable: Bool) {
+        do {
+//            try account.setKeySyncEnabled(enable: enable)
+            includeInUnifiedFolders = enable
+        } catch {
+//            delegate?.undoPEPSyncToggle()
+//            delegate?.showAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
+        }
+    }
+
 
     /// [En][Dis]able the pEpSync status
     /// - Parameter enable: The new value.
@@ -292,6 +309,8 @@ extension AccountSettingsViewModel {
             return NSLocalizedString("Username", comment: "\(type.rawValue) field")
         case .oauth2Reauth:
             return NSLocalizedString("OAuth2 Reauthorization", comment: "\(type.rawValue) field")
+        case .includeInUnified:
+            return NSLocalizedString("Include in Unified Folders", comment: "\(type.rawValue) field")
         }
     }
 
@@ -329,6 +348,29 @@ extension AccountSettingsViewModel {
                 let passwordRow = getDisplayRow(type : .password, value: fakePassword)
                 rows.append(passwordRow)
             }
+
+            // pepSync
+            let includeInUnifiedFolderRow = SwitchRow(type: .includeInUnified,
+                                                      title: rowTitle(for: .includeInUnified),
+                                                      isOn: includeInUnifiedFolders,
+                                                      action: { [weak self] (enable) in
+                                                        do {
+                                                            guard let me = self else {
+                                                                Log.shared.error("Lost myself")
+                                                                return
+                                                            }
+                                                            try me.account.setKeySyncEnabled(enable: enable)
+                                                        } catch {
+                                                            guard let me = self else {
+                                                                Log.shared.error("Lost myself")
+                                                                return
+                                                            }
+                                                            me.delegate?.undoUnifiedToggle()
+//                                                            me.delegate?.showAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
+                                                        }
+                }, cellIdentifier: CellsIdentifiers.switchCell)
+            rows.append(includeInUnifiedFolderRow)
+
 
             // pepSync
             let switchRow = SwitchRow(type: .pepSync,
