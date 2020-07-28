@@ -103,7 +103,7 @@ final class KeySyncHandshakeViewModel {
         updateTrustwords()
     }
 
-    func didLongPressWords() { //!!!: IOS-2325_!
+    func didLongPressWords() {
         fullTrustWords = !fullTrustWords
         updateTrustwords()
     }
