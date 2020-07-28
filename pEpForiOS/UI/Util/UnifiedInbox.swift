@@ -65,6 +65,7 @@ public class UnifiedInbox: VirtualFolderProtocol {
     public var messagesPredicate: NSPredicate {
         get {
             var predicates = [NSPredicate]()
+            predicates.append(Message.PredicateFactory.parentInUnifiedFolder())
             predicates.append(Message.PredicateFactory.isInInbox())
             predicates.append(Message.PredicateFactory.existingMessages())
             predicates.append(Message.PredicateFactory.processed())
@@ -88,7 +89,7 @@ public class UnifiedInbox: VirtualFolderProtocol {
             Log.shared.errorAndCrash("Folder Type not found")
             return 0
         }
-        return Folder.countUnreadIn(foldersOfType: folderType)
+        return Folder.countUnreadIn(foldersOfType: folderType, isUnified: true)
     }
 }
 
