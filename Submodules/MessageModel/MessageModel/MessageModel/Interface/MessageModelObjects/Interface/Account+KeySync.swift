@@ -12,6 +12,10 @@ import PEPObjCAdapterFramework
 // MARK: - KeySync
 
 extension Account {
+    public func isKeySyncEnabled() throws -> Bool {//!!!: IOS-2325_!
+        return try cdObject.isKeySyncEnabled()//!!!: IOS-2325_!
+    }
+
     public func isKeySyncEnabled(errorCallback: @escaping (Error) -> (),
                                  successCallback: @escaping (Bool) -> ()) {
         cdObject.isKeySyncEnabled(errorCallback: errorCallback, successCallback: successCallback)
