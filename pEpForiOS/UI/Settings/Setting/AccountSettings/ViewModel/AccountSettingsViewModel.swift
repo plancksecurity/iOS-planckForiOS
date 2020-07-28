@@ -125,13 +125,18 @@ final class AccountSettingsViewModel {
         }
     }
 
-    public func pEpSync(enable: Bool) {//!!!: IOS-2325_!
-        do {
-            try account.setKeySyncEnabled(enable: enable)//!!!: IOS-2325_!
-        } catch {
-            delegate?.undoPEPSyncToggle()
-            delegate?.showErrorAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
-        }
+    public func pEpSync(enable: Bool) {
+        account.setKeySyncEnabled(enable: enable,
+                                  errorCallback: { [weak self] error in
+                                    DispatchQueue.main.async {
+                                        guard let me = self else {
+                                            // UI, this can happen
+                                            return
+                                        }
+                                        me.delegate?.undoPEPSyncToggle()
+                                        me.delegate?.showErrorAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
+                                    }
+        }, successCallback: {})
     }
 
     public func updateToken(accessToken: OAuth2AccessTokenProtocol) {
