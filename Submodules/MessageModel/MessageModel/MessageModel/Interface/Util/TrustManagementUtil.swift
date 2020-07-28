@@ -101,6 +101,15 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }
     }
 
+    public func languagesListAsync(completion: @escaping ([String]?) -> ()) {
+        PEPAsyncSession().languageList({ error in
+            Log.shared.error("Missing lenguage list")
+            completion(nil)
+        }) { langs in
+            completion(langs.map { $0.code })
+        }
+    }
+
     public func getTrustwords(forFpr1 fpr1: String,//BUFF: wip
                               fpr2: String,
                               language: String,
