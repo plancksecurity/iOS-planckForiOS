@@ -50,21 +50,20 @@ struct KeyGeneratorService {
                 return
             }
 
-            do {
-                if pEpSyncEnabled {
-                    let session = PEPSession()
-                    try session.enableSync(for: pEpIdentity)//!!!: IOS-2325_!
-                    completion(success)
-                } else {
-                    PEPAsyncSession().disableSync(for: pEpIdentity,
-                                                  errorCallback: { _ in
-                                                    completion(false)
-                    }) {
-                        completion(true)
-                    }
+            if pEpSyncEnabled {
+                PEPAsyncSession().enableSync(for: pEpIdentity,
+                                             errorCallback: { _ in
+                                                completion(false)
+                }) {
+                    completion(true)
                 }
-            } catch {
-                completion(false)
+            } else {
+                PEPAsyncSession().disableSync(for: pEpIdentity,
+                                              errorCallback: { _ in
+                                                completion(false)
+                }) {
+                    completion(true)
+                }
             }
         }
     }
