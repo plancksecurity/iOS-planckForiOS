@@ -59,6 +59,7 @@ class FolderTest: PersistentStoreDrivenTestBase {
 
         XCTAssertEqual(Folder.countUnreadIn(foldersOfType: .inbox), 0)
         XCTAssertEqual(Folder.countUnreadIn(foldersOfType: .drafts), 1)
+        XCTAssertEqual(Folder.countUnreadIn(foldersOfType: .outbox), 3)
     }
 
     private func createMessage(isUnread : Bool, in folder: CdFolder) {

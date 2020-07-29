@@ -49,15 +49,19 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
 
 
     func testIsIncludeInUnifiedFolders() {
-        var boolValue = true
+        //Test state True by default
+        XCTAssertEqual(viewModel.includeInUnifiedFolders, true)
+
+        //Test set to false
+        var boolValue = false
         viewModel.includeInUnifiedFolders(boolValue)
         XCTAssertEqual(viewModel.includeInUnifiedFolders, boolValue)
 
-        boolValue = false
+        //Test set to true
+        boolValue = true
         viewModel.includeInUnifiedFolders(boolValue)
         XCTAssertEqual(viewModel.includeInUnifiedFolders, boolValue)
     }
-
 
     func testHandleResetIdentity() {
         let showLoadingViewExpectation = expectation(description: "showLoadingViewExpectation")
