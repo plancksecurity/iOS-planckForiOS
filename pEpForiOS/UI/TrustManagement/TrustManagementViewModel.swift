@@ -258,7 +258,7 @@ final class TrustManagementViewModel {
         let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
         rows[indexPath.row].fingerprint = trustManagementUtil.getFingerprint(for: identity)//!!!: IOS-2325_!
         rows[indexPath.row].forceRed = true
-        trustManagementUtil.denyTrustAsync(for: identity) { [weak self] _ in
+        trustManagementUtil.denyTrust(for: identity) { [weak self] _ in
             DispatchQueue.main.async {
                 guard let me = self else {
                     // UI, can happen
