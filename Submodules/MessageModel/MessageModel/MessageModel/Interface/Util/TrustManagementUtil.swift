@@ -224,9 +224,13 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
                                      completion: @escaping (Error?) -> ()) {
         let partnerPEPIdentity = partnerIdentity.pEpIdentity()
 
+        func logError() {
+            Log.shared.error("Not posible to perform reset trust action")
+        }
+
         PEPAsyncSession().update(partnerPEPIdentity,
                                  errorCallback: { error in
-                                    Log.shared.error("Not posible to perform reset trust action")
+                                    logError()
                                     completion(error)
         }) { identity in
             if let fps = fingerprint {
@@ -234,6 +238,7 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
             }
             PEPAsyncSession().keyResetTrust(partnerPEPIdentity,
                                             errorCallback: { error in
+                                                logError()
                                                 completion(error)
             }) {
                 completion(nil)
