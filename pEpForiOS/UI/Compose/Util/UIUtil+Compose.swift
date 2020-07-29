@@ -21,7 +21,7 @@ extension UIUtils {
     /// - Parameters:
     ///   - url: url to parse recipients from
     ///   - appConfig: AppConfig to forward
-    static func presentComposeView(forRecipientInUrl url: URL?,
+    static public func presentComposeView(forRecipientInUrl url: URL?,
                                    appConfig: AppConfig) {
         let address = url?.firstRecipientAddress()
         if url != nil && address == nil {
@@ -41,7 +41,7 @@ extension UIUtils {
     ///   - address: address to prefill "To:" field with
     ///   - viewController: presenting view controller
     ///   - appConfig: AppConfig to forward
-    static func presentComposeView(forRecipientWithAddress address: String?,
+    static public func presentComposeView(forRecipientWithAddress address: String?,
                                    appConfig: AppConfig) {
         let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
         guard
@@ -58,7 +58,9 @@ extension UIUtils {
         present(composeNavigationController: composeNavigationController)
     }
 
-    static func presentComposeViewToSupport(appConfig: AppConfig) {
+    /// Modally presents a "Compose New Mail" view to contact support
+    /// - Parameter appConfig: AppConfig to forward
+    static public func presentComposeViewToSupport(appConfig: AppConfig) {
         let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
         guard
             let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
