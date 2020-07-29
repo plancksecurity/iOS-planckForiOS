@@ -282,14 +282,14 @@ final class TrustManagementViewModel {
     @objc public func handleUndo(forRowAt indexPath: IndexPath) {
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
-        trustManagementUtil.undoMisstrustOrTrustAsync(for: row.handshakeCombination.partnerIdentity,
-                                                      fingerprint: row.fingerprint) { [weak self] _ in
-                                                        guard let me = self else {
-                                                            // UI, can happen
-                                                            return
-                                                        }
-                                                        // Note that the message is reevaluated regardless of errors
-                                                        me.reevaluateMessage(forRowAt: indexPath)
+        trustManagementUtil.undoMisstrustOrTrust(for: row.handshakeCombination.partnerIdentity,
+                                                 fingerprint: row.fingerprint) { [weak self] _ in
+                                                    guard let me = self else {
+                                                        // UI, can happen
+                                                        return
+                                                    }
+                                                    // Note that the message is reevaluated regardless of errors
+                                                    me.reevaluateMessage(forRowAt: indexPath)
         }
     }
     

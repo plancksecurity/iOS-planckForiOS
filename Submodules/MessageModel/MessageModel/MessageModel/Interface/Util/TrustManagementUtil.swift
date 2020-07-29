@@ -38,19 +38,15 @@ public protocol TrustManagementUtilProtocol: class {
     /// - Parameter partnerIdentity: Identity in which the action will be taken.
     func denyTrust(for partnerIdentity: Identity)//!!!: IOS-2325_!
     
-    /// Method to reset trust for an identity.
-    /// - Parameter partnerIdentity: Identity in which the action will be taken.
-    func undoMisstrustOrTrust(for partnerIdentity: Identity, fingerprint: String?)//!!!: IOS-2325_!
-
     /// Asynchronously resets trust for a partner identity,
     /// undoing any previous trust or mistrust action.
     /// - Parameters:
     ///   - partnerIdentity: The partner identity
     ///   - fingerprint: The fingerprint of the identity
     ///   - completion: A block that gets called after the action has finished.
-    func undoMisstrustOrTrustAsync(for partnerIdentity: Identity,
-                                   fingerprint: String?,
-                                   completion: @escaping (Error?) -> ())
+    func undoMisstrustOrTrust(for partnerIdentity: Identity,
+                              fingerprint: String?,
+                              completion: @escaping (Error?) -> ())
     
     /// Method that reset all information about the partner identity
     /// - Parameter partnerIdentity: Identity in which the action will be taken.
@@ -205,22 +201,9 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }
     }
 
-    public func undoMisstrustOrTrust(for partnerIdentity: Identity, fingerprint: String?) {//!!!: IOS-2325_!
-        let partnerPEPIdentity = partnerIdentity.pEpIdentity()
-        do {
-            try PEPSession().update(partnerPEPIdentity)//!!!: IOS-2325_!
-            if let fps = fingerprint {
-                partnerPEPIdentity.fingerPrint = fps
-            }
-            try PEPSession().keyResetTrust(partnerPEPIdentity)//!!!: IOS-2325_!
-        } catch {
-            Log.shared.error("Not posible to perform reset trust action")
-        }
-    }
-
-    public func undoMisstrustOrTrustAsync(for partnerIdentity: Identity,
-                                          fingerprint: String?,
-                                          completion: @escaping (Error?) -> ()) {//!!!: IOS-2325_!
+    public func undoMisstrustOrTrust(for partnerIdentity: Identity,
+                                     fingerprint: String?,
+                                     completion: @escaping (Error?) -> ()) {//!!!: IOS-2325_!
         let partnerPEPIdentity = partnerIdentity.pEpIdentity()
         do {
             try PEPSession().update(partnerPEPIdentity)//!!!: IOS-2325_!

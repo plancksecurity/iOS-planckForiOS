@@ -309,13 +309,9 @@ class TrustManagementUtilMock: TrustManagementUtilProtocol {
         return nil
     }
     
-    func undoMisstrustOrTrust(for partnerIdentity: Identity, fingerprint: String?) {
-        undoExpectation?.fulfill()
-    }
-
-    func undoMisstrustOrTrustAsync(for partnerIdentity: Identity,
-                                   fingerprint: String?,
-                                   completion: @escaping (Error?) -> ()) {
+    func undoMisstrustOrTrust(for partnerIdentity: Identity,
+                              fingerprint: String?,
+                              completion: @escaping (Error?) -> ()) {
         undoExpectation?.fulfill()
         completion(nil)
     }
