@@ -34,6 +34,13 @@ public protocol TrustManagementUtilProtocol: class {
     /// - Parameter partnerIdentity: Identity in which the action will be taken.
     func confirmTrust(for partnerIdentity: Identity)//!!!: IOS-2325_!
     
+    /// Confirms trust on a partner identity.
+    /// - Parameters:
+    ///   - partnerIdentity: The partner identity to deny trust on
+    ///   - completion: A block that gets called after the action has finished
+    func confirmTrust(for partnerIdentity: Identity,
+                      completion: @escaping (Error?) -> ())
+
     /// Denies trust on a partner identity.
     /// - Parameters:
     ///   - partnerIdentity: The partner identity to deny trust on
