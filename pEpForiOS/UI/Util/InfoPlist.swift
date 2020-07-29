@@ -13,7 +13,14 @@ struct InfoPlist {
     static private var infoDictMainBundle: [String:Any]? {
         return Bundle.main.infoDictionary
     }
-    
+
+    static public var contactSupoprtMail: String? {
+        guard let mail = mainBundleInfoDictValue(forKey: "Support Mail") as? String else {
+            return nil
+        }
+        return mail
+    }
+
     static public func mainBundleVersion() -> String? {
         guard let version = mainBundleInfoDictValue(forKey: "CFBundleVersion") as? String else {
             return nil
@@ -26,13 +33,6 @@ struct InfoPlist {
             return nil
         }
         return version
-    }
-
-    static public func contactSupoprtMail() -> String? {
-        guard let mail = mainBundleInfoDictValue(forKey: "Support Mail") as? String else {
-            return nil
-        }
-        return mail
     }
 
     static private func mainBundleInfoDictValue(forKey key: String) -> Any? {

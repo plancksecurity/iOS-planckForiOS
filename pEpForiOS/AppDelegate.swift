@@ -237,7 +237,7 @@ extension AppDelegate {
 
     @discardableResult
     private func handleUrlTheOSHasBroughtUsToForgroundFor(_ url: URL) -> Bool {
-        if let contactSupportMail = InfoPlist.contactSupoprtMail() {
+        if let contactSupportMail = InfoPlist.contactSupoprtMail {
             if url.absoluteString.range(of: contactSupportMail) != nil {
                 UIUtils.presentComposeViewToSupport(appConfig: appConfig!)
                 return true
