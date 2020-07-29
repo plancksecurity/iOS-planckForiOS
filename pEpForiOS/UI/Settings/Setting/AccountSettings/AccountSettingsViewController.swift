@@ -354,8 +354,12 @@ extension AccountSettingsViewController: AccountSettingsSwitchTableViewCellDeleg
         }
         if rowType == .includeInUnified {
             vm.includeInUnifiedFolders(newValue)
+            guard let folderTableViewController = navigationController?.child(ofType: FolderTableViewController.self) else {
+                Log.shared.errorAndCrash("FolderTableViewController not found in hierarchy")
+                return
+            }
+            folderTableViewController.folderVM?.refreshFolderList()
         }
-
     }
 }
 
