@@ -37,7 +37,14 @@ public protocol TrustManagementUtilProtocol: class {
     /// Method to deny trust for an indentity.
     /// - Parameter partnerIdentity: Identity in which the action will be taken.
     func denyTrust(for partnerIdentity: Identity)//!!!: IOS-2325_!
-    
+
+    /// Denies trust on a partner identity.
+    /// - Parameters:
+    ///   - partnerIdentity: The partner identity to deny trust on
+    ///   - completion: A block that gets called after the action has finished
+    func denyTrustAsync(for partnerIdentity: Identity,
+                        completion: @escaping (Error?) -> ())
+
     /// Asynchronously resets trust for a partner identity,
     /// undoing any previous trust or mistrust action.
     /// - Parameters:
@@ -198,6 +205,23 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
             try PEPSession().keyMistrusted(partnerPEPIdentity)//!!!: IOS-2325_!
         } catch {
             Log.shared.error("not posible to perform deny trust action")
+        }
+    }
+
+    public func denyTrustAsync(for partnerIdentity: Identity,
+                               completion: @escaping (Error?) -> ()) {//!!!: IOS-2325_!
+        let partnerPEPIdentity = partnerIdentity.pEpIdentity()
+        do {
+            try PEPSession().update(partnerPEPIdentity)//!!!: IOS-2325_!
+            PEPAsyncSession().keyMistrusted(partnerPEPIdentity,
+                                            errorCallback: { error in
+                                                completion(error)
+            }) {
+                completion(nil)
+            }
+        } catch {
+            Log.shared.error("not posible to perform deny trust action")
+            completion(error)
         }
     }
 

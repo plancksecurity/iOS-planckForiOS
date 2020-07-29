@@ -296,11 +296,17 @@ class TrustManagementUtilMock: TrustManagementUtilProtocol {
     func confirmTrust(for identity: Identity) {
         confirmExpectation?.fulfill()
     }
-    
+
     func denyTrust(for identity: Identity) {
         denyExpectation?.fulfill()
     }
     
+    func denyTrustAsync(for partnerIdentity: Identity,
+                        completion: @escaping (Error?) -> ()) {
+        denyExpectation?.fulfill()
+        completion(nil)
+    }
+
     func resetTrust(for partnerIdentity: Identity, fingerprints: String?) {
         resetExpectation?.fulfill()
     }
