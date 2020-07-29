@@ -313,10 +313,6 @@ class TrustManagementUtilMock: TrustManagementUtilProtocol {
         resetExpectation?.fulfill()
     }
     
-    func getFingerprint(for Identity: Identity) -> String? {
-        return nil
-    }
-    
     func getFingerprint(for identity: Identity,
                         completion: @escaping (String?) -> ()) {
         completion(nil)

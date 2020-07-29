@@ -62,11 +62,6 @@ public protocol TrustManagementUtilProtocol: class {
     /// in ISO 639-1 for the self identity
     func languagesList(completion: @escaping ([String]) -> ())
     
-    /// Method that returns the actual fingerprints for the identity if there are ones, else will return nil
-    /// - Parameter Identity: Identity in which the action will be taken.
-    /// - returns: fingerprint of key of given identity if any, nil otherwize.
-    func getFingerprint(for Identity: Identity) -> String?//!!!: IOS-2325_!
-    
     func getFingerprint(for identity: Identity,
                         completion: @escaping (String?) -> ())
 
@@ -247,17 +242,6 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
 
     public func resetTrust(for partnerIdentity: Identity?, completion: @escaping () -> ()) {
         partnerIdentity?.resetTrust(completion: completion)
-    }
-
-    public func getFingerprint(for identity: Identity) -> String? {//!!!: IOS-2325_!
-        let pepIdentity = identity.pEpIdentity()
-        do {
-            try PEPSession().update(pepIdentity)//!!!: IOS-2325_!
-            return pepIdentity.fingerPrint
-        } catch {
-            Log.shared.error("some went wrong getting the fingerprint for one identity")
-            return nil
-        }
     }
 
     public func getFingerprint(for identity: Identity,
