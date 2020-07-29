@@ -186,19 +186,25 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
     }
             
     public func confirmTrust(for partnerIdentity: Identity,
-                             completion: @escaping (Error?) -> ()) {//!!!: IOS-2325_!
+                             completion: @escaping (Error?) -> ()) {
         let partnerPEPIdentity = partnerIdentity.pEpIdentity()
-        do {
-            try PEPSession().update(partnerPEPIdentity)//!!!: IOS-2325_!
-            PEPAsyncSession().trustPersonalKey(partnerPEPIdentity,
+
+        func logError() {
+            Log.shared.error("Not posible to perform confirm trust action")
+        }
+
+        PEPAsyncSession().update(partnerPEPIdentity,
+                                 errorCallback: { error in
+                                    logError()
+                                    completion(error)
+        }) { identity in
+            PEPAsyncSession().trustPersonalKey(identity,
                                                errorCallback: { error in
+                                                logError()
                                                 completion(error)
             }) {
                 completion(nil)
             }
-        } catch {
-            Log.shared.error("Not posible to perform confirm trust action")
-            completion(error)
         }
     }
 
