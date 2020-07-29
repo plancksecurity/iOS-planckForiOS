@@ -203,19 +203,24 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
     }
 
     public func denyTrust(for partnerIdentity: Identity,
-                               completion: @escaping (Error?) -> ()) {//!!!: IOS-2325_!
+                               completion: @escaping (Error?) -> ()) {
         let partnerPEPIdentity = partnerIdentity.pEpIdentity()
-        do {
-            try PEPSession().update(partnerPEPIdentity)//!!!: IOS-2325_!
-            PEPAsyncSession().keyMistrusted(partnerPEPIdentity,
+
+        func logError() {
+            Log.shared.error("not posible to perform deny trust action")
+        }
+
+        PEPAsyncSession().update(partnerPEPIdentity,
+                                 errorCallback: { error in
+                                    logError()
+                                    completion(error)
+        }) { identity in
+            PEPAsyncSession().keyMistrusted(identity,
                                             errorCallback: { error in
                                                 completion(error)
             }) {
                 completion(nil)
             }
-        } catch {
-            Log.shared.error("not posible to perform deny trust action")
-            completion(error)
         }
     }
 
