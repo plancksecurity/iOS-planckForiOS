@@ -309,8 +309,13 @@ final class TrustManagementViewModel {
         rows[indexPath.row].forceRed = false
         trustManagementUtil.resetTrust(for: row.handshakeCombination.partnerIdentity,
                                        completion: { [weak self] in
-                                        // UI, disappearance of the VC/VM can happen
-                                        self?.reevaluateMessage(forRowAt: indexPath)
+                                        DispatchQueue.main.async {
+                                            guard let me = self else {
+                                                // UI, can happen
+                                                return
+                                            }
+                                            me.reevaluateMessage(forRowAt: indexPath)
+                                        }
         })
     }
 
