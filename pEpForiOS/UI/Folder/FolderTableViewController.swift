@@ -68,9 +68,12 @@ class FolderTableViewController: UITableViewController {
             barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
             target: nil,
             action: nil)
+
         let compose = UIBarButtonItem.getComposeButton(
-            action:#selector(showCompose),
+            tapAction: #selector(showCompose),
+            longPressAction: #selector(showDraftsPreview),
             target: self)
+
         toolbarItems = [flexibleSpace, compose, flexibleSpace, item]
     }
 
@@ -89,6 +92,13 @@ class FolderTableViewController: UITableViewController {
 
     @objc private func showCompose() {
         UIUtils.presentComposeView(forRecipientInUrl: nil)
+    }
+
+    @objc private func showDraftsPreview(sender: UILongPressGestureRecognizer) {
+        // TODO: - AK IOS-1935
+        if sender.state == .began {
+            UIUtils.presentDraftsPreview()
+        }
     }
     
     @objc private func showSettingsViewController() {

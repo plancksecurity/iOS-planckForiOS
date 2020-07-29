@@ -470,26 +470,12 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     }
 
     private func setUpComposeActions() {
-        // Gesture recognizers
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(composeButtonHasBeenPressed))
-        let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(composeButtonLongClicked))
-        longGesture.allowableMovement = 1
-        longGesture.minimumPressDuration = 0.8
-        longGesture.numberOfTapsRequired = 0
-        // Custom view
-        let viewContainerForComposeButton = UIView(frame: CGRect(x: 0, y: 0, width: 22, height: 30))
-        let composeImage = #imageLiteral(resourceName: "compose")
-        let composeImageButton = UIImageView(image: composeImage)
-        composeImageButton.tintColor = .white
-        composeImageButton.sizeThatFits(viewContainerForComposeButton.frame.size)
-        viewContainerForComposeButton.addSubview(composeImageButton)
-
-        viewContainerForComposeButton.addGestureRecognizer(tapGesture)
-        viewContainerForComposeButton.addGestureRecognizer(longGesture)
-        let compose = UIBarButtonItem(customView: viewContainerForComposeButton)
-        compose.tintColor = .white
-
-        toolbarItems?.insert(compose, at: 2)
+        let tapGestureSelector = #selector(composeButtonHasBeenPressed)
+        let longGestureSelector = #selector(composeButtonLongClicked)
+        let composeButton = UIBarButtonItem.getComposeButton(tapAction: tapGestureSelector,
+                                                             longPressAction: longGestureSelector,
+                                                             target: self)
+        toolbarItems?.insert(composeButton, at: 2)
     }
 
     private func showDraftsQuickView() {

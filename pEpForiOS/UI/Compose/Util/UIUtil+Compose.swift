@@ -31,6 +31,13 @@ extension UIUtils {
         presentComposeView(forRecipientWithAddress: address)
     }
 
+    // MARK: - WIP: AK
+
+    static func presentDraftsPreview() {
+        // TODO: - AK IOS-1935
+        print("DEV: Not yet implemented!")
+    }
+
     /// Modally presents a "Compose New Mail" view.
     /// If we can parse a recipient from the url (e.g. "mailto:me@me.com") we prefill the "To:"
     /// field of the presented compose view.
