@@ -271,15 +271,23 @@ final class TrustManagementViewModel {
     
     /// Confirm the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to confirm the handshake
-    public func handleConfirmHandshakePressed(at indexPath: IndexPath) { //!!!: IOS-2325_!
+    public func handleConfirmHandshakePressed(at indexPath: IndexPath) {
         let actionName = NSLocalizedString("Trust Confirmation", comment: "Action name to be suggested at the moment of revert")
         actionPerformed.append(actionName)
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
         let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
-        trustManagementUtil.confirmTrust(for: identity)//!!!: IOS-2325_!
-        reevaluateMessage(forRowAt: indexPath)
+        trustManagementUtil.confirmTrust(for: identity) { [weak self] _ in
+            DispatchQueue.main.async {
+                guard let me = self else {
+                    // UI, can happen
+                    return
+                }
+                // Note that the message is reevaluated regardless of errors
+                me.reevaluateMessage(forRowAt: indexPath)
+            }
+        }
     }
     
     /// Handles the undo action.
