@@ -239,9 +239,9 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
                                     completion(error)
         }) { identity in
             if let fps = fingerprint {
-                partnerPEPIdentity.fingerPrint = fps
+                identity.fingerPrint = fps
             }
-            PEPAsyncSession().keyResetTrust(partnerPEPIdentity,
+            PEPAsyncSession().keyResetTrust(identity,
                                             errorCallback: { error in
                                                 logError()
                                                 completion(error)
