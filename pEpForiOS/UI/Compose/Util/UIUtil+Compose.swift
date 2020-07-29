@@ -102,7 +102,7 @@ extension UIUtils {
             to.save()
             prefilledTo = to
         }
-        return ComposeViewModel(composeMode: .normal, prefilledTo: prefilledTo, originalMessage: nil)
+        return ComposeViewModel(composeMode: .normal, prefilledTo: prefilledTo)
     }
 
     // MARK: - Private - Present
