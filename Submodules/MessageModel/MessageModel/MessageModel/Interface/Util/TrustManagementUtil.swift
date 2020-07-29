@@ -194,6 +194,23 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }
     }
     
+    public func confirmTrust(for partnerIdentity: Identity,
+                             completion: @escaping (Error?) -> ()) {//!!!: IOS-2325_!
+        let partnerPEPIdentity = partnerIdentity.pEpIdentity()
+        do {
+            try PEPSession().update(partnerPEPIdentity)//!!!: IOS-2325_!
+            PEPAsyncSession().trustPersonalKey(partnerPEPIdentity,
+                                               errorCallback: { error in
+                                                completion(error)
+            }) {
+                completion(nil)
+            }
+        } catch {
+            Log.shared.error("Not posible to perform confirm trust action")
+            completion(error)
+        }
+    }
+
     public func denyTrust(for partnerIdentity: Identity,
                                completion: @escaping (Error?) -> ()) {//!!!: IOS-2325_!
         let partnerPEPIdentity = partnerIdentity.pEpIdentity()
