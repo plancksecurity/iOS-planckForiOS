@@ -41,6 +41,16 @@ public protocol TrustManagementUtilProtocol: class {
     /// Method to reset trust for an identity.
     /// - Parameter partnerIdentity: Identity in which the action will be taken.
     func undoMisstrustOrTrust(for partnerIdentity: Identity, fingerprint: String?)//!!!: IOS-2325_!
+
+    /// Asynchronously resets trust for a partner identity,
+    /// undoing any previous trust or mistrust action.
+    /// - Parameters:
+    ///   - partnerIdentity: The partner identity
+    ///   - fingerprint: The fingerprint of the identity
+    ///   - completion: A block that gets called after the action has finished.
+    func undoMisstrustOrTrustAsync(for partnerIdentity: Identity,
+                                   fingerprint: String?,
+                                   completion: @escaping (Error?) -> ())
     
     /// Method that reset all information about the partner identity
     /// - Parameter partnerIdentity: Identity in which the action will be taken.
