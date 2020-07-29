@@ -208,6 +208,27 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }
     }
 
+    public func undoMisstrustOrTrustAsync(for partnerIdentity: Identity,
+                                          fingerprint: String?,
+                                          completion: @escaping (Error?) -> ()) {//!!!: IOS-2325_!
+        let partnerPEPIdentity = partnerIdentity.pEpIdentity()
+        do {
+            try PEPSession().update(partnerPEPIdentity)//!!!: IOS-2325_!
+            if let fps = fingerprint {
+                partnerPEPIdentity.fingerPrint = fps
+            }
+            PEPAsyncSession().keyResetTrust(partnerPEPIdentity,
+                                            errorCallback: { error in
+                                                completion(error)
+            }) {
+                completion(nil)
+            }
+        } catch {
+            Log.shared.error("Not posible to perform reset trust action")
+            completion(error)
+        }
+    }
+
     public func resetTrust(for partnerIdentity: Identity?, completion: @escaping () -> ()) {
         partnerIdentity?.resetTrust(completion: completion)
     }
