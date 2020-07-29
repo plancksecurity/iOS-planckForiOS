@@ -22,7 +22,7 @@ struct KeyGeneratorService {
     static func generateKey(cdIdentity: CdIdentity,
                             context: NSManagedObjectContext,
                             pEpSyncEnabled: Bool,
-                            completion: @escaping (Success)->()) {
+                            completion: @escaping (Success) -> ()) {
         let queue = DispatchQueue(label: "\(#file)-\(#function)", qos: .userInitiated)
         queue.async {
             var pEpId : PEPIdentity?
@@ -49,17 +49,23 @@ struct KeyGeneratorService {
                 completion(success)
                 return
             }
+
             do {
-                let session = PEPSession()
                 if pEpSyncEnabled {
+                    let session = PEPSession()
                     try session.enableSync(for: pEpIdentity)//!!!: IOS-2325_!
+                    completion(success)
                 } else {
-                    try session.disableSync(for: pEpIdentity)//!!!: IOS-2325_!/15
+                    PEPAsyncSession().disableSync(for: pEpIdentity,
+                                                  errorCallback: { _ in
+                                                    completion(false)
+                    }) {
+                        completion(true)
+                    }
                 }
             } catch {
-                success = false
+                completion(false)
             }
-            completion(success)
         }
     }
 }
