@@ -257,6 +257,18 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }
     }
 
+    public func getFingerprint(for identity: Identity,
+                               completion: @escaping (String?) -> ()) {
+        let pepIdentity = identity.pEpIdentity()
+        PEPAsyncSession().update(pepIdentity,
+                                 errorCallback: { _ in
+                                    Log.shared.error("some went wrong getting the fingerprint for one identity")
+                                    completion(nil)
+        }) { identity in
+            completion(identity.fingerPrint)
+        }
+    }
+
     public func handshakeCombinations(identities: [Identity],
                                       completion: @escaping ([HandshakeCombination])->Void) {
         let ownIdentities = identities.filter { $0.isMySelf }
