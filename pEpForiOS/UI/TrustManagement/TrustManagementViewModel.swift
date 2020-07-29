@@ -312,7 +312,7 @@ final class TrustManagementViewModel {
     
     /// Handles the redey action
     /// - Parameter indexPath: The indexPath of the item to get the user to undo last action.
-    public func handleResetPressed(forRowAt indexPath: IndexPath) {//!!!: IOS-2325_!
+    public func handleResetPressed(forRowAt indexPath: IndexPath) {
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
         trustManagementUtil.resetTrust(for: row.handshakeCombination.partnerIdentity,
