@@ -259,11 +259,13 @@ final class TrustManagementViewModel {
         rows[indexPath.row].fingerprint = trustManagementUtil.getFingerprint(for: identity)//!!!: IOS-2325_!
         rows[indexPath.row].forceRed = true
         trustManagementUtil.denyTrustAsync(for: identity) { [weak self] _ in
-            guard let me = self else {
-                // UI, can happen
-                return
+            DispatchQueue.main.async {
+                guard let me = self else {
+                    // UI, can happen
+                    return
+                }
+                me.reevaluateMessage(forRowAt: indexPath)
             }
-            me.reevaluateMessage(forRowAt: indexPath)
         }
     }
     
@@ -289,12 +291,14 @@ final class TrustManagementViewModel {
         rows[indexPath.row].forceRed = false
         trustManagementUtil.undoMisstrustOrTrust(for: row.handshakeCombination.partnerIdentity,
                                                  fingerprint: row.fingerprint) { [weak self] _ in
-                                                    guard let me = self else {
-                                                        // UI, can happen
-                                                        return
+                                                    DispatchQueue.main.async {
+                                                        guard let me = self else {
+                                                            // UI, can happen
+                                                            return
+                                                        }
+                                                        // Note that the message is reevaluated regardless of errors
+                                                        me.reevaluateMessage(forRowAt: indexPath)
                                                     }
-                                                    // Note that the message is reevaluated regardless of errors
-                                                    me.reevaluateMessage(forRowAt: indexPath)
         }
     }
     
