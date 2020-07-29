@@ -250,21 +250,29 @@ final class TrustManagementViewModel {
     
     /// Reject the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to reject the handshake
-    public func handleRejectHandshakePressed(at indexPath: IndexPath) {//!!!: IOS-2325_!
+    public func handleRejectHandshakePressed(at indexPath: IndexPath) {
         let actionName = NSLocalizedString("Trust Rejection", comment: "Action name to be suggested at the moment of revert")
         actionPerformed.append(actionName)
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
-        rows[indexPath.row].fingerprint = trustManagementUtil.getFingerprint(for: identity)//!!!: IOS-2325_!
-        rows[indexPath.row].forceRed = true
-        trustManagementUtil.denyTrust(for: identity) { [weak self] _ in
+        trustManagementUtil.getFingerprint(for: identity) { [weak self] theFpr in
             DispatchQueue.main.async {
                 guard let me = self else {
                     // UI, can happen
                     return
                 }
-                me.reevaluateMessage(forRowAt: indexPath)
+                me.rows[indexPath.row].fingerprint = theFpr
+                me.rows[indexPath.row].forceRed = true
+                me.trustManagementUtil.denyTrust(for: identity) { [weak self] _ in
+                    DispatchQueue.main.async {
+                        guard let me = self else {
+                            // UI, can happen
+                            return
+                        }
+                        me.reevaluateMessage(forRowAt: indexPath)
+                    }
+                }
             }
         }
     }
