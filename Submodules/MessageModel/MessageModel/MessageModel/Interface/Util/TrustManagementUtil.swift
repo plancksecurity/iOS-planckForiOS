@@ -30,10 +30,6 @@ public protocol TrustManagementUtilProtocol: class {
                        full: Bool,
                        completion: @escaping (String?)->Void)
     
-    /// Method to confirm trust for an indentity.
-    /// - Parameter partnerIdentity: Identity in which the action will be taken.
-    func confirmTrust(for partnerIdentity: Identity)//!!!: IOS-2325_!
-    
     /// Confirms trust on a partner identity.
     /// - Parameters:
     ///   - partnerIdentity: The partner identity to deny trust on
@@ -191,16 +187,6 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }
     }
             
-    public func confirmTrust(for partnerIdentity: Identity) {//!!!: IOS-2325_!
-        let partnerPEPIdentity = partnerIdentity.pEpIdentity()
-        do {
-            try PEPSession().update(partnerPEPIdentity)//!!!: IOS-2325_!
-            try PEPSession().trustPersonalKey(partnerPEPIdentity)//!!!: IOS-2325_!
-        } catch {
-            Log.shared.error("Not posible to perform confirm trust action")
-        }
-    }
-    
     public func confirmTrust(for partnerIdentity: Identity,
                              completion: @escaping (Error?) -> ()) {//!!!: IOS-2325_!
         let partnerPEPIdentity = partnerIdentity.pEpIdentity()
