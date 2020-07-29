@@ -279,12 +279,18 @@ final class TrustManagementViewModel {
     /// That means that the trust will be reseted.
     /// So it is not important what action in concrete was performed.
     /// - Parameter indexPath: The index path of the row from where the last action has been performed.
-    @objc public func handleUndo(forRowAt indexPath: IndexPath) {//!!!: IOS-2325_!
+    @objc public func handleUndo(forRowAt indexPath: IndexPath) {
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
-        trustManagementUtil.undoMisstrustOrTrust(for: row.handshakeCombination.partnerIdentity,//!!!: IOS-2325_!
-                                                 fingerprint: row.fingerprint)
-        reevaluateMessage(forRowAt: indexPath)
+        trustManagementUtil.undoMisstrustOrTrustAsync(for: row.handshakeCombination.partnerIdentity,
+                                                      fingerprint: row.fingerprint) { [weak self] _ in
+                                                        guard let me = self else {
+                                                            // UI, can happen
+                                                            return
+                                                        }
+                                                        // Note that the message is reevaluated regardless of errors
+                                                        me.reevaluateMessage(forRowAt: indexPath)
+        }
     }
     
     /// Handles the redey action
