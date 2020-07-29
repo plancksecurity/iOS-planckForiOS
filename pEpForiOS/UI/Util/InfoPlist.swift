@@ -14,7 +14,7 @@ struct InfoPlist {
         return Bundle.main.infoDictionary
     }
 
-    static public var contactSupoprtMail: String? {
+    static public var contactSupportMail: String? {
         guard let mail = mainBundleInfoDictValue(forKey: "Support Mail") as? String else {
             return nil
         }
