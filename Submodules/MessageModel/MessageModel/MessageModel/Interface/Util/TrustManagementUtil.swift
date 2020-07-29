@@ -67,6 +67,9 @@ public protocol TrustManagementUtilProtocol: class {
     /// - returns: fingerprint of key of given identity if any, nil otherwize.
     func getFingerprint(for Identity: Identity) -> String?//!!!: IOS-2325_!
     
+    func getFingerprint(for identity: Identity,
+                        completion: @escaping (String?) -> ())
+
     /// - Parameter message: The message to generate the handshake combinations.
     /// - returns: The possible handshake combinations.
     func handshakeCombinations(message: Message,
