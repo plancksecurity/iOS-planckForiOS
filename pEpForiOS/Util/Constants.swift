@@ -14,6 +14,8 @@ struct Constants {
     /// holds the ViewController, which the ViewController has no knowledge of.
     static let composeSceneStoryboardId = "ReplyNavigation"
 
+    static let draftsSceneStoryboard = "DraftsPreview"
+
     /// Name of Storyboard that contains ComposeViewController.
     static let composeSceneStoryboard = "Main"
 

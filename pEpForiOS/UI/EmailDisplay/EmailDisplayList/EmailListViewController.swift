@@ -465,7 +465,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
     @objc public func composeButtonLongClicked(sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
-            showDraftsQuickView()
+            showDraftsPreview()
         }
     }
 
@@ -478,8 +478,9 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         toolbarItems?.insert(composeButton, at: 2)
     }
 
-    private func showDraftsQuickView() {
-        performSegue(withIdentifier: "sequeQuickDrafts", sender: self)
+    private func showDraftsPreview() {
+        UIUtils.presentDraftsPreview()
+//        performSegue(withIdentifier: "sequeQuickDrafts", sender: self)
     }
 
     // MARK: -

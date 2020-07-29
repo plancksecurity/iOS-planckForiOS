@@ -31,11 +31,20 @@ extension UIUtils {
         presentComposeView(forRecipientWithAddress: address)
     }
 
-    // MARK: - WIP: AK
-
+    /// Modally presents a "Drafts Quick Preview" when user long press compose new mail button.
     static func presentDraftsPreview() {
-        // TODO: - AK IOS-1935
-        print("DEV: Not yet implemented!")
+        let storyboard = UIStoryboard(name: Constants.draftsSceneStoryboard, bundle: nil)
+        guard
+            let draftsPreviewVC = storyboard.instantiateInitialViewController()
+                as? QuickViewDraftsViewController else {
+                Log.shared.errorAndCrash(message: "Missing required data!")
+                return
+        }
+        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("No VC")
+            return
+        }
+        presenterVc.present(draftsPreviewVC, animated: true)
     }
 
     /// Modally presents a "Compose New Mail" view.

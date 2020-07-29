@@ -95,7 +95,6 @@ class FolderTableViewController: UITableViewController {
     }
 
     @objc private func showDraftsPreview(sender: UILongPressGestureRecognizer) {
-        // TODO: - AK IOS-1935
         if sender.state == .began {
             UIUtils.presentDraftsPreview()
         }

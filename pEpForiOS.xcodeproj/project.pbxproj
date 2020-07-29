@@ -209,13 +209,14 @@
 		37FFA7FA234B3C27004229BE /* AnimatedPlaceholderTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */; };
 		3A085A6E23FAF4D50013C63E /* PEPHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A085A6D23FAF4D50013C63E /* PEPHeaderView.swift */; };
 		3A0CBAAD23F5909C00AE200C /* WrappedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0CBAAC23F5909C00AE200C /* WrappedCell.swift */; };
+		3A16624324D198B800887F0C /* QuickDraftsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A16624224D198B800887F0C /* QuickDraftsTests.swift */; };
 		3A2119DF2412515D0030C3E4 /* DynamicHeightScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2119DE2412515D0030C3E4 /* DynamicHeightScrollView.swift */; };
 		3A2119E1241251A80030C3E4 /* ClientCertificateManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2119E0241251A70030C3E4 /* ClientCertificateManagementTableViewCell.swift */; };
 		3A2119E424125AC60030C3E4 /* Certificates.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A2119E624125AC60030C3E4 /* Certificates.storyboard */; };
 		3A796BA9242CC26100083BB5 /* HtmlConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BA8242CC26100083BB5 /* HtmlConversions.swift */; };
 		3A796BAB242CC31F00083BB5 /* NSAttributedString+Html.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BAA242CC31F00083BB5 /* NSAttributedString+Html.swift */; };
 		3A796BAD242E5CFC00083BB5 /* String+NSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BAC242E5CFC00083BB5 /* String+NSAttributedString.swift */; };
-		3A7D0B4E24BF3B8D00A3AB16 /* QuickViewDrafts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A7D0B4D24BF3B8D00A3AB16 /* QuickViewDrafts.storyboard */; };
+		3A7D0B4E24BF3B8D00A3AB16 /* DraftsPreview.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A7D0B4D24BF3B8D00A3AB16 /* DraftsPreview.storyboard */; };
 		3A7D0B5024BF440000A3AB16 /* QuickViewDraftsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7D0B4F24BF440000A3AB16 /* QuickViewDraftsViewController.swift */; };
 		3A928C86242259E300FEFA4C /* HtmlTagParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A928C85242259E200FEFA4C /* HtmlTagParser.swift */; };
 		3AC2B843240E5FD900E08EB3 /* ClientCertificateImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B842240E5FD900E08EB3 /* ClientCertificateImportViewController.swift */; };
@@ -709,6 +710,7 @@
 		37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedPlaceholderTextfield.swift; sourceTree = "<group>"; };
 		3A085A6D23FAF4D50013C63E /* PEPHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPHeaderView.swift; sourceTree = "<group>"; };
 		3A0CBAAC23F5909C00AE200C /* WrappedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedCell.swift; sourceTree = "<group>"; };
+		3A16624224D198B800887F0C /* QuickDraftsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickDraftsTests.swift; sourceTree = "<group>"; };
 		3A2119DE2412515D0030C3E4 /* DynamicHeightScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicHeightScrollView.swift; sourceTree = "<group>"; };
 		3A2119E0241251A70030C3E4 /* ClientCertificateManagementTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientCertificateManagementTableViewCell.swift; sourceTree = "<group>"; };
 		3A2119E524125AC60030C3E4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Certificates.storyboard; sourceTree = "<group>"; };
@@ -722,7 +724,7 @@
 		3A796BA8242CC26100083BB5 /* HtmlConversions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlConversions.swift; sourceTree = "<group>"; };
 		3A796BAA242CC31F00083BB5 /* NSAttributedString+Html.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Html.swift"; sourceTree = "<group>"; };
 		3A796BAC242E5CFC00083BB5 /* String+NSAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+NSAttributedString.swift"; sourceTree = "<group>"; };
-		3A7D0B4D24BF3B8D00A3AB16 /* QuickViewDrafts.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = QuickViewDrafts.storyboard; sourceTree = "<group>"; };
+		3A7D0B4D24BF3B8D00A3AB16 /* DraftsPreview.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DraftsPreview.storyboard; sourceTree = "<group>"; };
 		3A7D0B4F24BF440000A3AB16 /* QuickViewDraftsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickViewDraftsViewController.swift; sourceTree = "<group>"; };
 		3A928C85242259E200FEFA4C /* HtmlTagParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlTagParser.swift; sourceTree = "<group>"; };
 		3AC2B842240E5FD900E08EB3 /* ClientCertificateImportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateImportViewController.swift; sourceTree = "<group>"; };
@@ -2292,6 +2294,7 @@
 				491116BC216E0DF4005A42D2 /* MessageViewModelTests.swift */,
 				3AC2B846241021C300E08EB3 /* ClientCertificatePasswordViewModelTest.swift */,
 				B78602B02412B6380027132B /* AccountTypeSelectorTest.swift */,
+				3A16624224D198B800887F0C /* QuickDraftsTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2395,7 +2398,7 @@
 				4398176B2418EDB200C8AB84 /* Tutorial.storyboard */,
 				491B656020CFE0FD00C2ADDA /* Thread.storyboard */,
 				3A2119E624125AC60030C3E4 /* Certificates.storyboard */,
-				3A7D0B4D24BF3B8D00A3AB16 /* QuickViewDrafts.storyboard */,
+				3A7D0B4D24BF3B8D00A3AB16 /* DraftsPreview.storyboard */,
 			);
 			name = StoryboardFiles;
 			path = ..;
@@ -2750,7 +2753,7 @@
 				152A39D221905C3E00D9F8E4 /* AttachmentCell.xib in Resources */,
 				B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */,
 				37156E50234DD3FB00845A28 /* LoadingInterface.xib in Resources */,
-				3A7D0B4E24BF3B8D00A3AB16 /* QuickViewDrafts.storyboard in Resources */,
+				3A7D0B4E24BF3B8D00A3AB16 /* DraftsPreview.storyboard in Resources */,
 				151C67FF2418158B00481F75 /* SFUIText-Semibold.ttf in Resources */,
 				433404CB2379789600E785F1 /* NothingSelected.storyboard in Resources */,
 				43C98AC3219C275E006418B0 /* Localizable.strings in Resources */,
@@ -3213,6 +3216,7 @@
 				B78602B12412B6380027132B /* AccountTypeSelectorTest.swift in Sources */,
 				375643502371BC4600FB354D /* EditableAccountSettingsTableViewModelTest.swift in Sources */,
 				5BC14AC923E47A55005F0AF3 /* TrustManagementViewModelTest.swift in Sources */,
+				3A16624324D198B800887F0C /* QuickDraftsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

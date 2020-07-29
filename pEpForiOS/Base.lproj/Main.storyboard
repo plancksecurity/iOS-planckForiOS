@@ -210,10 +210,10 @@
             </objects>
             <point key="canvasLocation" x="2941.5999999999999" y="-1845.4272863568217"/>
         </scene>
-        <!--QuickViewDrafts-->
+        <!--DraftsPreview-->
         <scene sceneID="B5P-MU-2u4">
             <objects>
-                <viewControllerPlaceholder storyboardName="QuickViewDrafts" id="68l-Ft-bTj" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="DraftsPreview" id="68l-Ft-bTj" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s1o-wz-kGo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3754" y="-1846"/>
