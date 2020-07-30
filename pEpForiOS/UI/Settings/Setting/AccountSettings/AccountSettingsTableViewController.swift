@@ -11,9 +11,6 @@ import MessageModel
 import pEpIOSToolbox
 
 final class AccountSettingsTableViewController: BaseTableViewController {
-
-// MARK: - IBOutlets
-
     //general account fields
     @IBOutlet weak var nameTextfield: UITextField!
     @IBOutlet weak var emailTextfield: UITextField!
@@ -40,7 +37,6 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     @IBOutlet weak var resetIdentityCell: UITableViewCell!
     @IBOutlet weak var switchKeySyncCell: UITableViewCell!
 
-// MARK: - Variables
     let oauthViewModel = OAuthAuthorizer()
     /**
      When dealing with an OAuth2 account, this is the index path of the cell that
@@ -60,9 +56,9 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     private var certificateIndexPath: IndexPath?
 
 
-// MARK: - Life Cycle
+    // MARK: - Life Cycle
 
-     override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.register(PEPHeaderView.self,
@@ -86,7 +82,7 @@ final class AccountSettingsTableViewController: BaseTableViewController {
         }
     }
 
-// MARK: - IBActions
+    // MARK: - IBActions
 
     @IBAction func switchPEPSyncToggle(_ sender: UISwitch) {
         viewModel?.pEpSync(enable: sender.isOn)
@@ -124,9 +120,7 @@ extension AccountSettingsTableViewController {
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         if cell == switchKeySyncCell {
-            setUpKeySyncCell(cell: cell,
-                                   isOn: viewModel?.pEpSync ?? false,
-                                   isGreyedOut: !(viewModel?.isPEPSyncSwitchGreyedOut() ?? false))
+            setUpKeySyncCell(cell: cell)
         }
 
         if (viewModel?.isOAuth2 ?? false) && cell == passwordTableViewCell {
@@ -154,39 +148,6 @@ extension AccountSettingsTableViewController {
         } else {
             return defaultValue
         }
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segue.destination {
-        case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
-            guard let account = viewModel?.account else {
-                Log.shared.errorAndCrash("No VM")
-                return
-            }
-            editableAccountSettingsViewController.appConfig = appConfig
-            editableAccountSettingsViewController.viewModel = EditableAccountSettingsViewModel(account: account)
-        default:
-            break
-        }
-    }
-
-    /// Set up key sync cell
-    /// - Parameters:
-    ///   - cell: UITableViewCell
-    ///   - isOn: keySyncSwitch status
-    ///   - isGreyedOut: keySyncSwitch (if true - user can't interact with this cell)
-    private func setUpKeySyncCell(cell: UITableViewCell,
-                                        isOn: Bool,
-                                        isGreyedOut: Bool) {
-        cell.isUserInteractionEnabled = isGreyedOut
-        keySyncLabel.textColor = isGreyedOut
-            ? .pEpTextDark
-            : .gray
-        keySyncSwitch.isOn = isOn
-        keySyncSwitch.onTintColor = isGreyedOut
-            ? .pEpGreen
-            : .pEpGreyBackground
-        keySyncSwitch.isEnabled = isGreyedOut
     }
 }
 
@@ -277,14 +238,21 @@ extension AccountSettingsTableViewController {
                                                     comment: "Account settings reset identity")
         resetIdentityLabel.textColor = .pEpRed
 
-        guard let viewModel = viewModel else {
+        guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
+            keySyncSwitch.isOn = false
             return
         }
 
-        keySyncSwitch.isOn = viewModel.pEpSync
+        vm.isPEPSyncEnabled { [weak self] (isOn) in
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                return
+            }
+            me.keySyncSwitch.isOn = isOn
+        }
 
-        guard let imapServer = viewModel.account.imapServer else {
+        guard let imapServer = vm.account.imapServer else {
             Log.shared.errorAndCrash("Account without IMAP server")
             return
         }
@@ -293,7 +261,7 @@ extension AccountSettingsTableViewController {
         imapSecurityTextfield.text = imapServer.transport.asString()
         imapUsernameTextField.text = imapServer.credentials.loginName
 
-        guard let smtpServer = viewModel.account.smtpServer else {
+        guard let smtpServer = vm.account.smtpServer else {
             Log.shared.errorAndCrash("Account without SMTP server")
             return
         }
@@ -402,6 +370,51 @@ extension AccountSettingsTableViewController {
 
         DispatchQueue.main.async { [weak self] in
             self?.present(pepAlertViewController, animated: true)
+        }
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.destination {
+        case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
+            guard let account = viewModel?.account else {
+                Log.shared.errorAndCrash("No VM")
+                return
+            }
+            editableAccountSettingsViewController.appConfig = appConfig
+            editableAccountSettingsViewController.viewModel = EditableAccountSettingsViewModel(account: account)
+        default:
+            break
+        }
+    }
+
+    /// Set up key sync cell
+    /// - Parameters:
+    ///   - cell: UITableViewCell
+    ///   - isOn: keySyncSwitch status
+    ///   - isGreyedOut: keySyncSwitch (if true - user can't interact with this cell)
+    private func setUpKeySyncCell(cell: UITableViewCell) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            keySyncSwitch.isOn = false
+            return
+        }
+        let isGreyedOut = vm.isPEPSyncSwitchGreyedOut()
+        cell.isUserInteractionEnabled = isGreyedOut
+        keySyncLabel.textColor = isGreyedOut
+            ? .pEpTextDark
+            : .gray
+
+        keySyncSwitch.onTintColor = isGreyedOut
+            ? .pEpGreen
+            : .pEpGreyBackground
+        keySyncSwitch.isEnabled = isGreyedOut
+
+        vm.isPEPSyncEnabled { [weak self] (isOn) in
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                return
+            }
+            me.keySyncSwitch.isOn = isOn
         }
     }
 }

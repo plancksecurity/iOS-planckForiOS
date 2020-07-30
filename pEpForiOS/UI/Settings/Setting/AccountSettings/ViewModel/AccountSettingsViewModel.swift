@@ -39,7 +39,6 @@ final class AccountSettingsViewModel {
     ///         for the verification be able to succeed.
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
-    private(set) var pEpSync: Bool
 
     private enum AccountSettingsError: Error, LocalizedError {
         case accountNotFound, failToModifyAccountPEPSync
@@ -52,31 +51,31 @@ final class AccountSettingsViewModel {
         }
     }
 
-    subscript(section: Int) -> String {
-        get {
-            assert(sectionIsValid(section: section), "Section out of range")
-            return headers[section]
-        }
-    }
+
 
     init(account: Account) {
         // We are using a copy of the data here.
         // The outside world must not know changed settings until they have been verified.
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         self.account = account
-
-        pEpSync = (try? account.isKeySyncEnabled()) ?? false //!!!: IOS-2325_!
     }
 
-    func queryPEPSync(completion: @escaping (Bool) -> ()) {
-        account.isKeySyncEnabled(errorCallback: { _ in
+    public func isPEPSyncEnabled(completion: @escaping (Bool) -> ()) {
+        account.isKeySyncEnabled(errorCallback: { (_) in
             DispatchQueue.main.async {
                 completion(false)
             }
-        }) { enabled in
+        }) { (isEnabled) in
             DispatchQueue.main.async {
-                completion(enabled)
+                completion(isEnabled)
             }
+        }
+    }
+
+    public subscript(section: Int) -> String {
+        get {
+            assert(sectionIsValid(section: section), "Section out of range")
+            return headers[section]
         }
     }
     
@@ -136,7 +135,7 @@ final class AccountSettingsViewModel {
                                         me.delegate?.undoPEPSyncToggle()
                                         me.delegate?.showErrorAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
                                     }
-        }, successCallback: {})
+            }, successCallback: {})
     }
 
     public func updateToken(accessToken: OAuth2AccessTokenProtocol) {
