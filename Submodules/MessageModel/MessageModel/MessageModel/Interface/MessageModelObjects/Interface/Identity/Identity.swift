@@ -59,11 +59,13 @@ public class Identity: MessageModelObjectProtocol, ManagedObjectWrapperProtocol 
     // MARK: - Transient Fields
 
     private var _fingerprint: String?
-
-    /// - Note: This is a transient field, it's not backed by the engine or core data.
-    public var fingerprint: String? {
+    public var fingerprint: String? {//!!!: IOS-2325_!
         get {
-            return _fingerprint
+            if let fpr = _fingerprint {
+                return fpr
+            } else {
+                return try? cdObject.fingerPrint()//!!!: IOS-2325_!
+            }
         }
         set {
             _fingerprint = newValue
