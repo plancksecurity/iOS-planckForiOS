@@ -58,20 +58,6 @@ public class Identity: MessageModelObjectProtocol, ManagedObjectWrapperProtocol 
 
     // MARK: - Transient Fields
 
-    private var _fingerprint: String?
-    public var fingerprint: String? {//!!!: IOS-2325_!
-        get {
-            if let fpr = _fingerprint {
-                return fpr
-            } else {
-                return try? cdObject.fingerPrint()//!!!: IOS-2325_!
-            }
-        }
-        set {
-            _fingerprint = newValue
-        }
-    }
-
     func asyncFingerprint(completion: @escaping (String?) -> ()) {
         cdObject.asyncFingerprint(completion: completion)
     }
