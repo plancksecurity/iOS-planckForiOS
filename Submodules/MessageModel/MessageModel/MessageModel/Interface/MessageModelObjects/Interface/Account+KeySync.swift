@@ -34,24 +34,23 @@ extension Account {
     /// Note: this is an expensive task, the key reset will be done in global queue.
     ///
     /// - Throws: error if something goes wrong
-    public func resetKeys(completion: ((Result<Void, Error>) -> ())? = nil) {//!!!: IOS-2325_!
+    public func resetKeys(completion: ((Result<Void, Error>) -> ())? = nil) {
         let session = Session()
         let safeUser = Identity.makeSafe(user, forSession: session)
         DispatchQueue.global(qos: .utility).async {
             session.performAndWait {
                 let pEpIdentity = safeUser.pEpIdentity()
-                let pEpSession = PEPSession()
-                do {
-                    try pEpSession.update(pEpIdentity)//!!!: IOS-2325_!
-                    PEPAsyncSession().keyReset(pEpIdentity,
-                                               fingerprint: pEpIdentity.fingerPrint,
+                PEPAsyncSession().update(pEpIdentity,
+                                         errorCallback: { error in
+                                            completion?(.failure(error))
+                }) { updatedIdentity in
+                    PEPAsyncSession().keyReset(updatedIdentity,
+                                               fingerprint: updatedIdentity.fingerPrint,
                                                errorCallback: { (error: Error) in
                                                 completion?(.failure(error))
                     }) {
                         completion?(.success(()))
                     }
-                } catch {
-                    completion?(.failure(error))
                 }
             }
         }
