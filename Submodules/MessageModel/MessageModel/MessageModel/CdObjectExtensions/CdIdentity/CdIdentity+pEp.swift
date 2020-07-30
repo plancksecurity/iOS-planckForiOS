@@ -20,6 +20,16 @@ extension CdIdentity {
             return pEpID.fingerPrint
     }
 
+    func fingerprint(completion: @escaping (String?) -> ()) {
+        let pEpID = pEpIdentity()
+        PEPAsyncSession().update(pEpID,
+                                 errorCallback: { _ in
+                                    completion(nil)
+        }) { updatedIdentity in
+            completion(updatedIdentity.fingerPrint)
+        }
+    }
+
     /**
      Can a meaningful handshake action be invoked on this identity?
      Like trust, mistrust, or reset?
