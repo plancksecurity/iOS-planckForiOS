@@ -52,7 +52,7 @@ class SuggestViewModel {
     private let from: Identity?
     private let minNumberSearchStringChars: UInt
     private let showEmptyList = false
-    private let throttler = Throttler(minimumDelay: 0.015)
+    private let throttler = Throttler()
 
     private var workQueue: OperationQueue = {
         let createe = OperationQueue()

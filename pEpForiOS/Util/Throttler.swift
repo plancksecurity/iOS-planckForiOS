@@ -17,7 +17,7 @@ class Throttler {
     private let queue: DispatchQueue
     private let minimumDelay: TimeInterval
 
-    init(minimumDelay: TimeInterval, queue: DispatchQueue = DispatchQueue.main) {
+    init(minimumDelay: TimeInterval = 0.0, queue: DispatchQueue = DispatchQueue.main) {
         self.minimumDelay = minimumDelay
         self.queue = queue
     }
