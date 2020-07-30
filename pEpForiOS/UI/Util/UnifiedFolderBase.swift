@@ -14,7 +14,6 @@ public class UnifiedFolderBase: VirtualFolderProtocol {
 
     private lazy var fetchMessagesService = FetchMessagesService()
     private lazy var fetchOlderMessagesService = FetchOlderImapMessagesService()
-    static public let defaultUnifiedInboxName = "Unified Inbox"
 
     public var agregatedFolderType: FolderType? {
         Log.shared.errorAndCrash("You MUST override this")
@@ -110,49 +109,5 @@ extension UnifiedFolderBase: Equatable {
 extension UnifiedFolderBase: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(messagesPredicate.description)
-    }
-}
-
-// MARK: - Unified Inbox
-
-public class UnifiedInbox : UnifiedFolderBase {
-    public override var agregatedFolderType: FolderType? {
-        return FolderType.inbox
-    }
-    public override var name: String {
-        return UnifiedInbox.defaultUnifiedInboxName
-    }
-}
-
-// MARK: - Unified Draft
-
-public class UnifiedDraft : UnifiedFolderBase {
-    public override var agregatedFolderType: FolderType? {
-        return FolderType.drafts
-    }
-    public override var name: String {
-        return NSLocalizedString("Drafts", comment: "Unified Drafts Folder title")
-    }
-}
-
-// MARK: - Unified Sent
-
-public class UnifiedSent : UnifiedFolderBase {
-    public override var agregatedFolderType: FolderType? {
-        return FolderType.sent
-    }
-    public override var name: String {
-        return NSLocalizedString("Sents", comment: "Unified Sent Folder title")
-    }
-}
-
-// MARK: - Unified Trash
-
-public class UnifiedTrash : UnifiedFolderBase {
-    public override var agregatedFolderType: FolderType? {
-        return FolderType.trash
-    }
-    public override var name: String {
-        return NSLocalizedString("Trashes", comment: "Unified Trash Folder title")
     }
 }

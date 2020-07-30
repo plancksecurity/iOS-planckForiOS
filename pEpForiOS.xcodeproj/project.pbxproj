@@ -358,6 +358,10 @@
 		5B70B1F724507B8A0010AED7 /* pEpFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */; };
 		5B71016E243619CF00BAE405 /* TrustedServerSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B71016D243619CF00BAE405 /* TrustedServerSettingsViewController.swift */; };
 		5B74C00D249B7EA300802704 /* FolderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B74C00C249B7EA300802704 /* FolderTableViewCell.swift */; };
+		5BB7C73524D2EB3700D5F328 /* UnifiedTrash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C73424D2EB3700D5F328 /* UnifiedTrash.swift */; };
+		5BB7C73724D2EC0800D5F328 /* UnifiedDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C73624D2EC0800D5F328 /* UnifiedDraft.swift */; };
+		5BB7C73924D2EC4400D5F328 /* UnifiedSent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C73824D2EC4400D5F328 /* UnifiedSent.swift */; };
+		5BB7C73B24D2EC6300D5F328 /* UnifiedInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C73A24D2EC6300D5F328 /* UnifiedInbox.swift */; };
 		5BBE80CB24B733C0008DE0E5 /* AccountSettingsDangerousTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80C624B733BF008DE0E5 /* AccountSettingsDangerousTableViewCell.swift */; };
 		5BBE80CC24B733C0008DE0E5 /* AccountSettingsOAuthTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80C724B733BF008DE0E5 /* AccountSettingsOAuthTableViewCell.swift */; };
 		5BBE80CD24B733C0008DE0E5 /* AccountSettingsSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80C824B733BF008DE0E5 /* AccountSettingsSwitchTableViewCell.swift */; };
@@ -946,6 +950,10 @@
 		5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpFooterView.swift; sourceTree = "<group>"; };
 		5B71016D243619CF00BAE405 /* TrustedServerSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustedServerSettingsViewController.swift; sourceTree = "<group>"; };
 		5B74C00C249B7EA300802704 /* FolderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FolderTableViewCell.swift; path = Folder/FolderTableViewCell.swift; sourceTree = "<group>"; };
+		5BB7C73424D2EB3700D5F328 /* UnifiedTrash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedTrash.swift; sourceTree = "<group>"; };
+		5BB7C73624D2EC0800D5F328 /* UnifiedDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedDraft.swift; sourceTree = "<group>"; };
+		5BB7C73824D2EC4400D5F328 /* UnifiedSent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedSent.swift; sourceTree = "<group>"; };
+		5BB7C73A24D2EC6300D5F328 /* UnifiedInbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedInbox.swift; sourceTree = "<group>"; };
 		5BBE80C624B733BF008DE0E5 /* AccountSettingsDangerousTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSettingsDangerousTableViewCell.swift; path = pEpForiOS/UI/Settings/Setting/AccountSettings/Cells/AccountSettingsDangerousTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		5BBE80C724B733BF008DE0E5 /* AccountSettingsOAuthTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSettingsOAuthTableViewCell.swift; path = pEpForiOS/UI/Settings/Setting/AccountSettings/Cells/AccountSettingsOAuthTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		5BBE80C824B733BF008DE0E5 /* AccountSettingsSwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSettingsSwitchTableViewCell.swift; path = pEpForiOS/UI/Settings/Setting/AccountSettings/Cells/AccountSettingsSwitchTableViewCell.swift; sourceTree = SOURCE_ROOT; };
@@ -2164,6 +2172,7 @@
 				152A39932190587100D9F8E4 /* TextViewInTableViewScrollUtil.swift */,
 				B7DFEA51225368670080A2BA /* VirtualFolder.swift */,
 				B7DFEA5322536D5E0080A2BA /* UnifiedFolderBase.swift */,
+				5BB7C73324D2EB2300D5F328 /* Unified Folders */,
 				3705096B22DC8C1800CB73D6 /* KeyInputView.swift */,
 			);
 			path = Util;
@@ -2399,6 +2408,17 @@
 				151C67FC2418158B00481F75 /* SFUIText-Semibold.ttf */,
 			);
 			path = SF;
+			sourceTree = "<group>";
+		};
+		5BB7C73324D2EB2300D5F328 /* Unified Folders */ = {
+			isa = PBXGroup;
+			children = (
+				5BB7C73624D2EC0800D5F328 /* UnifiedDraft.swift */,
+				5BB7C73A24D2EC6300D5F328 /* UnifiedInbox.swift */,
+				5BB7C73824D2EC4400D5F328 /* UnifiedSent.swift */,
+				5BB7C73424D2EB3700D5F328 /* UnifiedTrash.swift */,
+			);
+			path = "Unified Folders";
 			sourceTree = "<group>";
 		};
 		5BE35AA5249219AD00AC605C /* Cells */ = {
@@ -2914,6 +2934,7 @@
 				002375D320DCDC7300663961 /* FullMessageCell+SecureWebViewControllerDelegate.swift in Sources */,
 				4351C2C91F4441190053381F /* buffer.c in Sources */,
 				152A39C621905C3E00D9F8E4 /* ComposeViewModelState.swift in Sources */,
+				5BB7C73B24D2EC6300D5F328 /* UnifiedInbox.swift in Sources */,
 				15F136F424B6294E00A7F810 /* UserInputProvider.swift in Sources */,
 				B7DFEA5422536D5E0080A2BA /* UnifiedFolderBase.swift in Sources */,
 				4334CF302020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift in Sources */,
@@ -3002,6 +3023,7 @@
 				00EB89AF20E3E4A000CDFA0D /* ReplyAlertCreator.swift in Sources */,
 				B7C7E3122334E054009ABFFE /* ResetTrustViewController.swift in Sources */,
 				B78CF8251E76D706008C1739 /* FilterTableViewController.swift in Sources */,
+				5BB7C73524D2EB3700D5F328 /* UnifiedTrash.swift in Sources */,
 				222B35581DF96389007A1F82 /* Capability.swift in Sources */,
 				0033C07F20D7EBD500224E61 /* ThreadedEmailViewModel+UpdateThreadDelegate.swift in Sources */,
 				15175CEC205929FB00A8D9D0 /* CidHandler.swift in Sources */,
@@ -3132,6 +3154,7 @@
 				15B220501FBF5D6E00CA52BA /* InfoPlist.swift in Sources */,
 				15874BD421274BD400A3A4A6 /* TrustedServerSettingCell.swift in Sources */,
 				1521B795241BDFE5000EAE57 /* UIUtil+Compose.swift in Sources */,
+				5BB7C73924D2EC4400D5F328 /* UnifiedSent.swift in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
 				3705096622CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift in Sources */,
 				49C34AF620E4F649009D11CC /* CellDetailTransition.swift in Sources */,
@@ -3148,6 +3171,7 @@
 				152A39CF21905C3E00D9F8E4 /* ComposeUtil.swift in Sources */,
 				152A39C821905C3E00D9F8E4 /* ComposeViewModel+InitData.swift in Sources */,
 				0038494C20D2587F008000EA /* PepPictureComposer.swift in Sources */,
+				5BB7C73724D2EC0800D5F328 /* UnifiedDraft.swift in Sources */,
 				4356FFE721354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift in Sources */,
 				228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */,
 				B75FF00B1EFD420F00C57289 /* EmailListViewModel.swift in Sources */,
