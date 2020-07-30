@@ -14,7 +14,7 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
         postKeySyncDisabledByEngineNotification()
     }
 
-    func notifyHandshake(_ object: UnsafeMutableRawPointer?,//!!!: IOS-2325_!
+    func notifyHandshake(_ object: UnsafeMutableRawPointer?,
                          me: PEPIdentity,
                          partner: PEPIdentity?,
                          signal: PEPSyncHandshakeSignal) -> PEPStatus {
@@ -32,7 +32,7 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
                 return .illegalValue
             }
             fastPollingDelegate?.enableFastPolling()
-            showHandshakeAndHandleResult(inBetween: me, and: thePartner, isNewGroup: false)//!!!: IOS-2325_!
+            showHandshakeAndHandleResult(inBetween: me, and: thePartner, isNewGroup: false)
 
         case .initFormGroup:
             guard let thePartner = partner else {
@@ -119,7 +119,7 @@ extension KeySyncService {
         }
     }
 
-    private func showHandShakeErrorAndHandleResult(error: Error) {//!!!: IOS-2325_!
+    private func showHandShakeErrorAndHandleResult(error: Error) {
         handshakeHandler?.showError(error: error) {
             [weak self] keySyncErrorResponse in
             switch keySyncErrorResponse {
@@ -133,8 +133,8 @@ extension KeySyncService {
                     return
                 }
                 // The user wants to try to KeySync again. We stop and start again to send a new beacon imediatelly.
-                me.stop()//!!!: IOS-2325_!
-                me.start()//!!!: IOS-2325_!
+                me.stop()
+                me.start()
             }
         }
     }

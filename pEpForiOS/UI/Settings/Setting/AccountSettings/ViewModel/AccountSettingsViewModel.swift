@@ -105,9 +105,9 @@ final class AccountSettingsViewModel {
         return "\(name), \(separator) \(date)"
     }
 
-    public func handleResetIdentity() { //!!!: IOS-2325_!
+    public func handleResetIdentity() {
         delegate?.showLoadingView()
-        account.resetKeys() { [weak self] result in //!!!: IOS-2325_!
+        account.resetKeys() { [weak self] result in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return

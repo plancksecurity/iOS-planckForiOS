@@ -163,7 +163,7 @@ extension KeySyncService: QueryResultsControllerDelegate {
         // Nothing to do
     }
 
-    func queryResultsControllerDidChangeObjectAt(indexPath: IndexPath?,//!!!: IOS-2325_!
+    func queryResultsControllerDidChangeObjectAt(indexPath: IndexPath?,
         forChangeType changeType: NSFetchedResultsChangeType,
         newIndexPath: IndexPath?) {
         switch changeType {
@@ -172,7 +172,7 @@ extension KeySyncService: QueryResultsControllerDelegate {
             // We may want to globally disable KeySync if the deleted account was the only existing one?
             break
         case .insert:
-            start()//!!!: IOS-2325_!
+            start()
         case .move:
             // Nothing to do
             break

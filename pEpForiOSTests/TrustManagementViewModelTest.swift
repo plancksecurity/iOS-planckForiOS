@@ -202,7 +202,7 @@ extension TrustManagementViewModelTest {
                                                                               isMyself: true,
                                                                               context: moc)
         let selfIdentity = Identity(cdObject: cdIdentity, context: moc)
-        selfIdentity.fingerprint = "fingerprints"//!!!: IOS-2325_!
+        selfIdentity.fingerprint = "fingerprints"
         selfIdentity.save()
         moc.saveAndLogErrors()
         

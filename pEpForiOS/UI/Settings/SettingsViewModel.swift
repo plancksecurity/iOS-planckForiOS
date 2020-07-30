@@ -410,7 +410,7 @@ extension SettingsViewModel {
 
     /// This method sets the pEp Sync status according to the parameter value
     /// - Parameter value: The new value of the pEp Sync status
-    private func setPEPSyncEnabled(to value: Bool) {//!!!: IOS-2325_!
+    private func setPEPSyncEnabled(to value: Bool) {
         let grouped = KeySyncUtil.isInDeviceGroup
         if value {
             KeySyncUtil.enableKeySync()
@@ -418,7 +418,7 @@ extension SettingsViewModel {
             if grouped {
                 KeySyncUtil.leaveDeviceGroup()
             }
-            KeySyncUtil.disableKeySync()//!!!: IOS-2325_!
+            KeySyncUtil.disableKeySync()
         }
     }
 
