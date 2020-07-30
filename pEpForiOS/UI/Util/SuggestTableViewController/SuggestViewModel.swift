@@ -52,6 +52,8 @@ class SuggestViewModel {
     private let from: Identity?
     private let minNumberSearchStringChars: UInt
     private let showEmptyList = false
+    private let throttler = Throttler(minimumDelay: 0.015)
+
     private var workQueue: OperationQueue = {
         let createe = OperationQueue()
         createe.name = #file + " workQueue"
@@ -121,11 +123,18 @@ class SuggestViewModel {
             informDelegatesModelChanged()
             return
         }
-        let identities = Identity.recipientsSuggestions(for: searchString)
-        let firstOp = updateWithIdentitiesOnly(identities: identities)
-        workQueue.addOperation(firstOp)
-        let secondOp = updateWithIdentitiesAndContactsOperation(searchString: searchString, identities: identities)
-        workQueue.addOperation(secondOp)
+
+        throttler.throttle { [weak self] in
+            guard let me = self else {
+                // self == nil is a valid case here. The view might have been dismissed.
+                return
+            }
+            let identities = Identity.recipientsSuggestions(for: searchString)
+            let firstOp = me.updateWithIdentitiesOnly(identities: identities)
+            me.workQueue.addOperation(firstOp)
+            let secondOp = me.updateWithIdentitiesAndContactsOperation(searchString: searchString, identities: identities)
+            me.workQueue.addOperation(secondOp)
+        }
     }
 
     /// Returns the Operation to update rows based only on identities.
@@ -174,7 +183,6 @@ class SuggestViewModel {
                                                       to: [to],
                                                       cc: [],
                                                       bcc: [])
-
         return rating
     }
 }
@@ -196,15 +204,12 @@ extension SuggestViewModel {
             me.session.performAndWait {
                 var newRows = me.mergeAndIgnoreContactsWeAlreadyHaveAnIdentityFor(identities: identities,
                                                                                contacts: contacts)
+
                 newRows.sort { (row1, row2) -> Bool in
                     row1.name < row2.name
                 }
                 me.rows = newRows
-                // To avoid race conditions, we only trigger changes in UI
-                // if there aren't more operations in the queue.
-                if me.workQueue.operationCount == 1 {
-                    me.informDelegatesModelChanged(callingOperation: callingOperation)
-                }
+                me.informDelegatesModelChanged(callingOperation: callingOperation)
             }
         }
     }
@@ -267,7 +272,5 @@ extension SuggestViewModel {
             me.delegate?.suggestViewModelDidResetModel(showResults: showResults)
             me.resultDelegate?.suggestViewModel(me, didToggleVisibilityTo: showResults)
         }
-
     }
 }
-
