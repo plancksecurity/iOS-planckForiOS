@@ -23,26 +23,26 @@ extension Identity {
     }
 
     /// Reset trust for the identity
-    public func resetTrust(completion: @escaping () -> ()) {//!!!: IOS-2325_!
+    public func resetTrust(completion: @escaping () -> ()) {
         func logError() {
             Log.shared.info("User has choosen to rest trust for an identity we have no key for. Valid case, just for the record. The identity is: %@", self.debugDescription)
         }
 
-        let sesion = PEPSession()
         let pEpIdent = pEpIdentity()
-        do {
-            try sesion.update(pEpIdent)//!!!: IOS-2325_!
-            if let _ = pEpIdent.fingerPrint {
-                PEPAsyncSession().keyReset(pEpIdent,
-                                           fingerprint: fingerprint,
+
+        PEPAsyncSession().update(pEpIdent,
+                                 errorCallback: { _ in
+                                    logError()
+        }) { updatedIdentity in
+            if let updatedFingerprint = updatedIdentity.fingerPrint {
+                PEPAsyncSession().keyReset(updatedIdentity,
+                                           fingerprint: updatedFingerprint,
                                            errorCallback: { (_) in
                                             logError()
                 }) {
                     completion()
                 }
             }
-        } catch {
-            logError()
         }
     }
 
