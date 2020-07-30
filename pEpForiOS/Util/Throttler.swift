@@ -8,8 +8,7 @@
 
 import Foundation
 
-/// Class that aims to regulate the frequency at a certain process runs.
-/// Just instanciate and throttle heavy operations.
+/// Class that aims to regulate the frequency at a certain process runs as well as the queue where it's trigger.
 class Throttler {
 
     private var workItem: DispatchWorkItem = DispatchWorkItem(block: {})
@@ -29,9 +28,13 @@ class Throttler {
         workItem.cancel()
 
         // Re-assign workItem with the new block task, resetting the previousRun time when it executes
-        workItem = DispatchWorkItem() {
-            [weak self] in
-            self?.previousRun = Date()
+        workItem = DispatchWorkItem() { [weak self] in
+            guard let me = self else {
+                // Valid case: the object that references this class could be deallocated.
+                // If so, just do not execute the action.
+                return
+            }
+            me.previousRun = Date()
             block()
         }
 
