@@ -223,11 +223,18 @@ extension ComposeViewModel.ComposeViewModelState {
         let safeTo = Identity.makeSafe(toRecipients, forSession: session)
         let safeCc = Identity.makeSafe(ccRecipients, forSession: session)
         let safeBcc = Identity.makeSafe(bccRecipients, forSession: session)
-        let pEpsession = PEPSession()
-        rating = pEpsession.outgoingMessageRating(from: safeFrom,//!!!: IOS-2325_!
-                                                  to: safeTo,
-                                                  cc: safeCc,
-                                                  bcc: safeBcc)
+
+        PEPAsyncSession().outgoingMessageRating(from: safeFrom, to: safeTo, cc: safeCc, bcc: safeBcc) {
+            [weak self] (outgoingRating) in
+
+            guard let me = self else {
+                // Valiud case. Compose might have been dismissed.
+                return
+            }
+            DispatchQueue.main.async {
+                me.rating = outgoingRating
+            }
+        }
     }
 }
 

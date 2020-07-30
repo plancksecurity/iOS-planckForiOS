@@ -116,8 +116,7 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
 
     func tryDecryptMessage(message: PEPMessage,
                            myID: String,
-                           references: [String],
-        session: PEPSession = PEPSession()) {
+                           references: [String]) {
         var testee: PEPMessage? = nil
 
         let exp = expectation(description: "exp")

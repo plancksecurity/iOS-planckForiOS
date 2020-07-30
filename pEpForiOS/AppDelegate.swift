@@ -31,9 +31,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
 
-    /// Set to true whever the app goes into background, so the main PEPSession gets cleaned up.
-    private var shouldDestroySession = false
-
     private func setupInitialViewController() -> Bool {
         guard let appConfig = appConfig else {
             Log.shared.errorAndCrash("No AppConfig")
@@ -54,12 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window.makeKeyAndVisible()
 
         return true
-    }
-
-    private func cleanupPEPSessionIfNeeded() {
-        if shouldDestroySession {
-            PEPSession.cleanup()
-        }
     }
 
     private func setupServices() {
@@ -146,7 +137,6 @@ extension AppDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         Log.shared.info("applicationDidEnterBackground")
         Session.main.commit()
-        shouldDestroySession = true
         messageModelService?.finish()
     }
 
@@ -166,7 +156,6 @@ extension AppDelegate {
             // Do nothing if unit tests are running
             return
         }
-        shouldDestroySession = false
         UserNotificationTool.resetApplicationIconBadgeNumber()
         messageModelService?.start()
     }
@@ -176,8 +165,7 @@ extension AppDelegate {
     /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
         messageModelService?.stop()
-        shouldDestroySession = true
-        cleanupPEPSessionIfNeeded()
+        PEPSession.cleanup()
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
