@@ -193,6 +193,7 @@ extension SuggestViewModel {
                 return
             }
 
+
             me.session.performAndWait {
                 var newRows = me.mergeAndIgnoreContactsWeAlreadyHaveAnIdentityFor(identities: identities,
                                                                                contacts: contacts)
@@ -201,7 +202,9 @@ extension SuggestViewModel {
                     row1.name < row2.name
                 }
                 me.rows = newRows
-                me.informDelegatesModelChanged(callingOperation: callingOperation)
+                if me.workQueue.operations.count == 1 {
+                    me.informDelegatesModelChanged(callingOperation: callingOperation)
+                }
             }
         }
     }
