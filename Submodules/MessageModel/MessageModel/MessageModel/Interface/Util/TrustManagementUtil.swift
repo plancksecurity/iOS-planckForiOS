@@ -124,41 +124,42 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }
     }
 
-    public func getTrustwords(for SelfIdentity: Identity,//!!!: IOS-2325_!
+    public func getTrustwords(for SelfIdentity: Identity,
                               and partnerIdentity: Identity,
                               language: String,
                               long: Bool,
                               completion: @escaping (String?)->Void) {
         var selfPEPIdentity = SelfIdentity.pEpIdentity()
-        let partnerPEPIdentity = partnerIdentity.pEpIdentity()
+        var partnerPEPIdentity = partnerIdentity.pEpIdentity()
         var isPartnerpEpUser = false
         let group = DispatchGroup()
-        group.enter()
         var success = true
+
+        group.enter()
         PEPAsyncSession().mySelf(selfPEPIdentity, errorCallback: { (error) in
             Log.shared.errorAndCrash(error: error)
             success = false
             group.leave()
-        }) { (updatedIdentity) in
-            selfPEPIdentity = updatedIdentity
-
-            do {
-                try PEPSession().update(partnerPEPIdentity)//!!!: IOS-2325_!
-
-                PEPAsyncSession().isPEPUser(partnerPEPIdentity,
-                                            errorCallback: { error in
-                                                completion(nil)
+        }) { (updatedOwnIdentity) in
+            selfPEPIdentity = updatedOwnIdentity
+            PEPAsyncSession().update(partnerPEPIdentity,
+                                     errorCallback: { _ in
+                                        Log.shared.error("unable to get the fingerprints")
+                                        success = false
+                                        group.leave()
+            }) { updatedPartnerIdentity in
+                partnerPEPIdentity = updatedPartnerIdentity
+                PEPAsyncSession().isPEPUser(updatedPartnerIdentity,
+                                            errorCallback: { _ in
+                                                success = false
                                                 group.leave()
                 }) { pEpUserOrNot in
                     isPartnerpEpUser = pEpUserOrNot
                     group.leave()
                 }
-            } catch {
-                Log.shared.error("unable to get the fingerprints")
-                completion(nil)
-                group.leave()
             }
         }
+
         group.notify(queue: DispatchQueue.main) { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
