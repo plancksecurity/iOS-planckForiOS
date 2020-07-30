@@ -58,8 +58,8 @@ public class Identity: MessageModelObjectProtocol, ManagedObjectWrapperProtocol 
 
     // MARK: - Async pEp session support
 
-    func asyncFingerprint(completion: @escaping (String?) -> ()) {
-        cdObject.asyncFingerprint(completion: completion)
+    func fingerprint(completion: @escaping (String?) -> ()) {
+        cdObject.fingerprint(completion: completion)
     }
 
     // MARK: - Forwarded Getter & Setter

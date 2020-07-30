@@ -283,7 +283,7 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         var ownIdentitiesWithKeys = [Identity]()
         for ident in ownIdentities {
             groupFingerprint.enter()
-            ident.asyncFingerprint() { fingerprint in
+            ident.fingerprint() { fingerprint in
                 if fingerprint != nil {
                     ownIdentitiesWithKeys.append(ident)
                 }
