@@ -52,10 +52,9 @@ class SuggestViewModel {
     private let from: Identity?
     private let minNumberSearchStringChars: UInt
     private let showEmptyList = false
-    private let throttler = Throttler()
 
     private var workQueue: OperationQueue = {
-        let createe = OperationQueue()
+        let createe = OperationQueue.main
         createe.name = #file + " workQueue"
         createe.maxConcurrentOperationCount = 1
         createe.qualityOfService = QualityOfService.userInteractive
@@ -123,18 +122,11 @@ class SuggestViewModel {
             informDelegatesModelChanged()
             return
         }
-
-        throttler.throttle { [weak self] in
-            guard let me = self else {
-                // self == nil is a valid case here. The view might have been dismissed.
-                return
-            }
-            let identities = Identity.recipientsSuggestions(for: searchString)
-            let firstOp = me.updateWithIdentitiesOnly(identities: identities)
-            me.workQueue.addOperation(firstOp)
-            let secondOp = me.updateWithIdentitiesAndContactsOperation(searchString: searchString, identities: identities)
-            me.workQueue.addOperation(secondOp)
-        }
+        let identities = Identity.recipientsSuggestions(for: searchString)
+        let firstOp = updateWithIdentitiesOnly(identities: identities)
+        workQueue.addOperation(firstOp)
+        let secondOp = updateWithIdentitiesAndContactsOperation(searchString: searchString, identities: identities)
+        workQueue.addOperation(secondOp)
     }
 
     /// Returns the Operation to update rows based only on identities.
