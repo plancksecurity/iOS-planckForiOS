@@ -72,8 +72,8 @@ public class Identity: MessageModelObjectProtocol, ManagedObjectWrapperProtocol 
         }
     }
 
-    func fingerprint(completion: @escaping (String?) -> ()) {
-        cdObject.fingerprint(completion: completion)
+    func asyncFingerprint(completion: @escaping (String?) -> ()) {
+        cdObject.asyncFingerprint(completion: completion)
     }
 
     // MARK: - Forwarded Getter & Setter

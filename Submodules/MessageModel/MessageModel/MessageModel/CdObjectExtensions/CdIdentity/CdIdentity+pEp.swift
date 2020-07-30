@@ -20,7 +20,7 @@ extension CdIdentity {
             return pEpID.fingerPrint
     }
 
-    func fingerprint(completion: @escaping (String?) -> ()) {
+    func asyncFingerprint(completion: @escaping (String?) -> ()) {
         let pEpID = pEpIdentity()
         PEPAsyncSession().update(pEpID,
                                  errorCallback: { _ in

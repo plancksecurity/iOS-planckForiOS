@@ -275,32 +275,45 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
     }
 
     public func handshakeCombinations(identities: [Identity],
-                                      completion: @escaping ([HandshakeCombination])->Void) {
+                                      completion: @escaping ([HandshakeCombination]) -> Void) {
         let ownIdentities = identities.filter { $0.isMySelf }
-        let ownIdentitiesWithKeys = ownIdentities.filter { $0.fingerprint != nil }//!!!: IOS-2325_!
         let partnerIdenties = identities.filter { !$0.isMySelf }
 
-        var handshakableIdentities = [Identity]()
-        let groupHandshakeAction = DispatchGroup()
-        for partnerIdentity in partnerIdenties {
-            groupHandshakeAction.enter()
-            partnerIdentity.cdObject.canInvokeHandshakeAction { (canInvoke) in
-                if canInvoke {
-                    handshakableIdentities.append(partnerIdentity)
+        let groupFingerprint = DispatchGroup()
+        var ownIdentitiesWithKeys = [Identity]()
+        for ident in ownIdentities {
+            groupFingerprint.enter()
+            ident.asyncFingerprint() { fingerprint in
+                if fingerprint != nil {
+                    ownIdentitiesWithKeys.append(ident)
                 }
-                groupHandshakeAction.leave()
+                groupFingerprint.leave()
             }
         }
-        groupHandshakeAction.notify(queue: DispatchQueue.main) {
-            var combinations = [HandshakeCombination]()
-            for ownId in ownIdentitiesWithKeys {
-                for partnerId in handshakableIdentities {
-                    let combination = HandshakeCombination(ownIdentity: ownId, partnerIdentity: partnerId)
-                    combinations.append(combination)
+
+        groupFingerprint.notify(queue: DispatchQueue.main) {
+            var handshakableIdentities = [Identity]()
+            let groupHandshakeAction = DispatchGroup()
+            for partnerIdentity in partnerIdenties {
+                groupHandshakeAction.enter()
+                partnerIdentity.cdObject.canInvokeHandshakeAction { (canInvoke) in
+                    if canInvoke {
+                        handshakableIdentities.append(partnerIdentity)
+                    }
+                    groupHandshakeAction.leave()
                 }
             }
-            let uniqueCombinations = Set(combinations)
-            completion(Array(uniqueCombinations))
+            groupHandshakeAction.notify(queue: DispatchQueue.main) {
+                var combinations = [HandshakeCombination]()
+                for ownId in ownIdentitiesWithKeys {
+                    for partnerId in handshakableIdentities {
+                        let combination = HandshakeCombination(ownIdentity: ownId, partnerIdentity: partnerId)
+                        combinations.append(combination)
+                    }
+                }
+                let uniqueCombinations = Set(combinations)
+                completion(Array(uniqueCombinations))
+            }
         }
     }
 
