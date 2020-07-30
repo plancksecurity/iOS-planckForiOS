@@ -479,8 +479,8 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     }
 
     private func showDraftsPreview() {
-        UIUtils.presentDraftsPreview()
-//        performSegue(withIdentifier: "sequeQuickDrafts", sender: self)
+//        UIUtils.presentDraftsPreview()
+        performSegue(withIdentifier: "sequeQuickDrafts", sender: self)
     }
 
     // MARK: -
@@ -1179,6 +1179,17 @@ extension EmailListViewController: SegueHandlerType {
                 = viewModel?.getMoveToFolderViewModel(forSelectedMessages: selectedRows)
             break
         case .sequeQuickDrafts:
+            // TODO: - AK -> Be sure that Drafts folder is Drafts folder!
+            guard let destinationVC = segue.destination as? DraftsPreviewViewController else {
+                Log.shared.errorAndCrash("Segue issue")
+                return
+            }
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("No VM")
+                return
+            }
+            destinationVC.folder = vm.folderToShow
+            destinationVC.hidesBottomBarWhenPushed = true
             break
         default:
             Log.shared.errorAndCrash("Unhandled segue")

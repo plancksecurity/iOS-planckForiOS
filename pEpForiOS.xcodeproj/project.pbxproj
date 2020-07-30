@@ -217,7 +217,7 @@
 		3A796BAB242CC31F00083BB5 /* NSAttributedString+Html.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BAA242CC31F00083BB5 /* NSAttributedString+Html.swift */; };
 		3A796BAD242E5CFC00083BB5 /* String+NSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BAC242E5CFC00083BB5 /* String+NSAttributedString.swift */; };
 		3A7D0B4E24BF3B8D00A3AB16 /* DraftsPreview.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A7D0B4D24BF3B8D00A3AB16 /* DraftsPreview.storyboard */; };
-		3A7D0B5024BF440000A3AB16 /* QuickViewDraftsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7D0B4F24BF440000A3AB16 /* QuickViewDraftsViewController.swift */; };
+		3A7D0B5024BF440000A3AB16 /* DraftsPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7D0B4F24BF440000A3AB16 /* DraftsPreviewViewController.swift */; };
 		3A928C86242259E300FEFA4C /* HtmlTagParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A928C85242259E200FEFA4C /* HtmlTagParser.swift */; };
 		3AC2B843240E5FD900E08EB3 /* ClientCertificateImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B842240E5FD900E08EB3 /* ClientCertificateImportViewController.swift */; };
 		3AC2B845240E692600E08EB3 /* ClientCertificateImportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B844240E692600E08EB3 /* ClientCertificateImportViewModel.swift */; };
@@ -725,7 +725,7 @@
 		3A796BAA242CC31F00083BB5 /* NSAttributedString+Html.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Html.swift"; sourceTree = "<group>"; };
 		3A796BAC242E5CFC00083BB5 /* String+NSAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+NSAttributedString.swift"; sourceTree = "<group>"; };
 		3A7D0B4D24BF3B8D00A3AB16 /* DraftsPreview.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DraftsPreview.storyboard; sourceTree = "<group>"; };
-		3A7D0B4F24BF440000A3AB16 /* QuickViewDraftsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickViewDraftsViewController.swift; sourceTree = "<group>"; };
+		3A7D0B4F24BF440000A3AB16 /* DraftsPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftsPreviewViewController.swift; sourceTree = "<group>"; };
 		3A928C85242259E200FEFA4C /* HtmlTagParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlTagParser.swift; sourceTree = "<group>"; };
 		3AC2B842240E5FD900E08EB3 /* ClientCertificateImportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateImportViewController.swift; sourceTree = "<group>"; };
 		3AC2B844240E692600E08EB3 /* ClientCertificateImportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateImportViewModel.swift; sourceTree = "<group>"; };
@@ -1836,7 +1836,7 @@
 		3A7D0B5124BF440800A3AB16 /* QuickViewDrafts */ = {
 			isa = PBXGroup;
 			children = (
-				3A7D0B4F24BF440000A3AB16 /* QuickViewDraftsViewController.swift */,
+				3A7D0B4F24BF440000A3AB16 /* DraftsPreviewViewController.swift */,
 			);
 			path = QuickViewDrafts;
 			sourceTree = "<group>";
@@ -3040,7 +3040,7 @@
 				15874BC72127493E00A3A4A6 /* SettingDefaultAccountTableViewController.swift in Sources */,
 				4388A0E22008F813008CB98D /* (null) in Sources */,
 				152A39D021905C3E00D9F8E4 /* AttachmentCell.swift in Sources */,
-				3A7D0B5024BF440000A3AB16 /* QuickViewDraftsViewController.swift in Sources */,
+				3A7D0B5024BF440000A3AB16 /* DraftsPreviewViewController.swift in Sources */,
 				0033C08120D7F3C600224E61 /* ThreadViewController+ViewModelDelegate.swift in Sources */,
 				4351C2DB1F4441190053381F /* utf8.c in Sources */,
 				371A715A231D45D0008B31F3 /* TutorialViewModel.swift in Sources */,

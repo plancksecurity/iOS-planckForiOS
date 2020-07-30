@@ -203,20 +203,12 @@
                         <segue destination="nc4-kR-K9D" kind="show" identifier="segueShowFilter" id="t4t-3T-ovM"/>
                         <segue destination="fRo-D2-Fjz" kind="showDetail" identifier="segueShowEmail" id="bq8-0O-guL"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueCompose" id="MdS-jf-fxc"/>
-                        <segue destination="68l-Ft-bTj" kind="presentation" identifier="sequeQuickDrafts" modalPresentationStyle="formSheet" modalTransitionStyle="coverVertical" id="Muy-8c-QwS"/>
+                        <segue destination="Eid-UA-AW6" kind="presentation" identifier="sequeQuickDrafts" id="uZT-2b-RQe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m6c-dF-C80" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2941.5999999999999" y="-1845.4272863568217"/>
-        </scene>
-        <!--DraftsPreview-->
-        <scene sceneID="B5P-MU-2u4">
-            <objects>
-                <viewControllerPlaceholder storyboardName="DraftsPreview" id="68l-Ft-bTj" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="s1o-wz-kGo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3754" y="-1846"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pH2-0g-XGV">
@@ -945,6 +937,57 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="te3-X0-7QD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5252" y="833"/>
+        </scene>
+        <!--QuickViewDrafts-->
+        <scene sceneID="NTx-Fw-2z3">
+            <objects>
+                <viewController storyboardIdentifier="DraftsPreview" title="QuickViewDrafts" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Eid-UA-AW6" customClass="DraftsPreviewViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VLN-R9-iJH">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oxh-ah-ENe">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="J76-kj-oUm"/>
+                                </constraints>
+                                <items>
+                                    <navigationItem title="Drafts" id="VAq-vJ-rSc">
+                                        <barButtonItem key="rightBarButtonItem" title="Cancel" id="O3N-K0-aPT" userLabel="Cancel">
+                                            <color key="tintColor" red="0.0064750583839999999" green="0.7039813399" blue="0.30714368819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <connections>
+                                                <action selector="dismissView" destination="Eid-UA-AW6" id="csi-3p-l6l"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kls-RO-Ljd">
+                                <rect key="frame" x="0.0" y="44" width="375" height="603"/>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="oxh-ah-ENe" secondAttribute="trailing" id="JHU-OT-kMZ"/>
+                            <constraint firstItem="A70-fz-ooL" firstAttribute="bottom" secondItem="Kls-RO-Ljd" secondAttribute="bottom" id="NmZ-HG-39H"/>
+                            <constraint firstItem="oxh-ah-ENe" firstAttribute="top" secondItem="A70-fz-ooL" secondAttribute="top" id="OwN-WX-Olf"/>
+                            <constraint firstItem="oxh-ah-ENe" firstAttribute="leading" secondItem="A70-fz-ooL" secondAttribute="leading" id="Vfv-r3-qdJ"/>
+                            <constraint firstItem="Kls-RO-Ljd" firstAttribute="leading" secondItem="A70-fz-ooL" secondAttribute="leading" id="bD0-iJ-YzM"/>
+                            <constraint firstItem="A70-fz-ooL" firstAttribute="trailing" secondItem="Kls-RO-Ljd" secondAttribute="trailing" id="vbG-9W-tvP"/>
+                            <constraint firstItem="Kls-RO-Ljd" firstAttribute="top" secondItem="oxh-ah-ENe" secondAttribute="bottom" id="wDH-Bz-RvN"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="A70-fz-ooL"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Title" id="BBb-7M-wSv">
+                        <barButtonItem key="rightBarButtonItem" title="Cancel" id="HDU-xR-RS6"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="container" destination="Kls-RO-Ljd" id="8Vi-HD-Nxj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fv4-M2-diD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3802" y="-1845"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

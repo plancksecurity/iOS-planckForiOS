@@ -95,9 +95,29 @@ class FolderTableViewController: UITableViewController {
     }
 
     @objc private func showDraftsPreview(sender: UILongPressGestureRecognizer) {
-        if sender.state == .began {
-            UIUtils.presentDraftsPreview()
+        if sender.state != .began {
+            return
+// TODO: - AK
+//            UIUtils.presentDraftsPreview()
         }
+
+        /// WIP: AK
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        guard
+            let vc = sb.instantiateViewController(
+                withIdentifier: "DraftsPreview") as? DraftsPreviewViewController
+            else {
+                Log.shared.errorAndCrash("Problem!")
+                return
+        }
+
+        let folder = folderVM![1][1].folder // WIP: ! - to remove
+        vc.folder = folder
+        vc.hidesBottomBarWhenPushed = false
+        vc.modalPresentationStyle = .currentContext
+        vc.modalTransitionStyle = .coverVertical
+        present(vc, animated: true)
+
     }
     
     @objc private func showSettingsViewController() {

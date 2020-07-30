@@ -11,7 +11,7 @@
         <!--QuickViewDrafts-->
         <scene sceneID="ixC-4X-Mgo">
             <objects>
-                <viewController storyboardIdentifier="DraftsPreview" title="QuickViewDrafts" useStoryboardIdentifierAsRestorationIdentifier="YES" id="yTf-GC-8YW" customClass="QuickViewDraftsViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DraftsPreview" title="QuickViewDrafts" useStoryboardIdentifierAsRestorationIdentifier="YES" id="yTf-GC-8YW" customClass="DraftsPreviewViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kf3-SS-oJB">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

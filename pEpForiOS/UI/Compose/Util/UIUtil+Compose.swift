@@ -36,7 +36,7 @@ extension UIUtils {
         let storyboard = UIStoryboard(name: Constants.draftsSceneStoryboard, bundle: nil)
         guard
             let draftsPreviewVC = storyboard.instantiateInitialViewController()
-                as? QuickViewDraftsViewController else {
+                as? DraftsPreviewViewController else {
                 Log.shared.errorAndCrash(message: "Missing required data!")
                 return
         }
