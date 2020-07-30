@@ -11,15 +11,6 @@ import PEPObjCAdapterFramework
 import CoreData
 
 extension CdIdentity {
-    /**
-     Uses the adapter's update to determine the fingerprint of the given identity.
-     */
-    func fingerPrint() throws -> String? {//!!!: IOS-2325_!
-            let pEpID = pEpIdentity()
-            try PEPSession().update(pEpID)//!!!: IOS-2325_!
-            return pEpID.fingerPrint
-    }
-
     func asyncFingerprint(completion: @escaping (String?) -> ()) {
         let pEpID = pEpIdentity()
         PEPAsyncSession().update(pEpID,
