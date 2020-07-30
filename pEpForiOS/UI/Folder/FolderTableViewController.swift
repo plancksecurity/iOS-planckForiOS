@@ -10,6 +10,7 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
+
 class FolderTableViewController: UITableViewController {
     var folderVM: FolderViewModel?
     var showNext: Bool = true
@@ -71,7 +72,7 @@ class FolderTableViewController: UITableViewController {
 
         let compose = UIBarButtonItem.getComposeButton(
             tapAction: #selector(showCompose),
-            longPressAction: #selector(showDraftsPreview),
+            longPressAction: #selector(draftsPreviewTapped),
             target: self)
 
         toolbarItems = [flexibleSpace, compose, flexibleSpace, item]
@@ -94,30 +95,14 @@ class FolderTableViewController: UITableViewController {
         UIUtils.presentComposeView(forRecipientInUrl: nil)
     }
 
-    @objc private func showDraftsPreview(sender: UILongPressGestureRecognizer) {
+    @objc private func draftsPreviewTapped(sender: UILongPressGestureRecognizer) {
         if sender.state != .began {
             return
 // TODO: - AK
 //            UIUtils.presentDraftsPreview()
         }
 
-        /// WIP: AK
-        let sb = UIStoryboard(name: "Main", bundle: nil)
-        guard
-            let vc = sb.instantiateViewController(
-                withIdentifier: "DraftsPreview") as? DraftsPreviewViewController
-            else {
-                Log.shared.errorAndCrash("Problem!")
-                return
-        }
-
-        let folder = folderVM![1][1].folder // WIP: ! - to remove
-        vc.folder = folder
-        vc.hidesBottomBarWhenPushed = false
-        vc.modalPresentationStyle = .currentContext
-        vc.modalTransitionStyle = .coverVertical
-        present(vc, animated: true)
-
+        showDraftsPreview()
     }
     
     @objc private func showSettingsViewController() {
@@ -222,6 +207,7 @@ class FolderTableViewController: UITableViewController {
             return
         }
         let cellViewModel = folderViewModel[indexPath.section][indexPath.row]
+
         if !cellViewModel.isSelectable {
             // Me must not open unselectable folders. Unselectable folders are typically path
             // components/nodes that can not hold messages.
@@ -243,6 +229,7 @@ class FolderTableViewController: UITableViewController {
         let emailListVM = EmailListViewModel(delegate: vc,
                                              folderToShow: folder)
         vc.viewModel = emailListVM
+        vc.draftsPreviewDelegate = self
         vc.hidesBottomBarWhenPushed = false
 
         let animated =  showNext ? false : true
@@ -265,6 +252,32 @@ class FolderTableViewController: UITableViewController {
 
     @IBAction func segueUnwindLastAccountDeleted(segue:UIStoryboardSegue) {
         showNext = true
+    }
+}
+
+// MARK: - WIP: Defaults Preview
+
+extension FolderTableViewController: DraftsPreviewProtocol {
+
+    func showDraftsPreview() {
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        guard
+            let vc = sb.instantiateViewController(
+                withIdentifier: "DraftsPreview") as? DraftsPreviewViewController
+            else {
+                Log.shared.errorAndCrash("Problem!")
+                return
+        }
+        vc.folderVM = folderVM
+        vc.draftsPreviewProtocol = self
+        vc.hidesBottomBarWhenPushed = false
+        vc.modalPresentationStyle = .currentContext
+        vc.modalTransitionStyle = .coverVertical
+        present(vc, animated: true)
+    }
+
+    func composeAction() {
+        showCompose()
     }
 }
 

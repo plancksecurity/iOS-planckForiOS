@@ -31,6 +31,8 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         }
     }
 
+    weak var draftsPreviewDelegate: DraftsPreviewProtocol?
+
     /// This is used to handle the selection row when it recives an update
     /// and also when swipeCellAction is performed to store from which cell the action is done.
     private var lastSelectedIndexPath: IndexPath?
@@ -465,7 +467,11 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
     @objc public func composeButtonLongClicked(sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
-            showDraftsPreview()
+            guard let draftsDelegate = draftsPreviewDelegate else {
+                Log.shared.errorAndCrash(message: "DraftsPreviewDelegate is nil!")
+                return
+            }
+            draftsDelegate.showDraftsPreview()
         }
     }
 
@@ -476,11 +482,6 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
                                                              longPressAction: longGestureSelector,
                                                              target: self)
         toolbarItems?.insert(composeButton, at: 2)
-    }
-
-    private func showDraftsPreview() {
-//        UIUtils.presentDraftsPreview()
-        performSegue(withIdentifier: "sequeQuickDrafts", sender: self)
     }
 
     // MARK: -
@@ -1109,7 +1110,6 @@ extension EmailListViewController: SegueHandlerType {
         case segueFolderViews
         case segueShowMoveToFolder
         case segueShowThreadedEmail
-        case sequeQuickDrafts
         case noSegue
     }
     
@@ -1177,19 +1177,6 @@ extension EmailListViewController: SegueHandlerType {
 
             destination.viewModel
                 = viewModel?.getMoveToFolderViewModel(forSelectedMessages: selectedRows)
-            break
-        case .sequeQuickDrafts:
-            // TODO: - AK -> Be sure that Drafts folder is Drafts folder!
-            guard let destinationVC = segue.destination as? DraftsPreviewViewController else {
-                Log.shared.errorAndCrash("Segue issue")
-                return
-            }
-            guard let vm = viewModel else {
-                Log.shared.errorAndCrash("No VM")
-                return
-            }
-            destinationVC.folder = vm.folderToShow
-            destinationVC.hidesBottomBarWhenPushed = true
             break
         default:
             Log.shared.errorAndCrash("Unhandled segue")

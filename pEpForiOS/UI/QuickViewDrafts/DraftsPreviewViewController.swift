@@ -15,7 +15,8 @@ final class DraftsPreviewViewController: UIViewController {
 
     @IBOutlet weak var container: UIView!
 
-    public var folder: DisplayableFolderProtocol?
+    public var folderVM: FolderViewModel?
+    public weak var draftsPreviewProtocol: DraftsPreviewProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,13 +37,13 @@ final class DraftsPreviewViewController: UIViewController {
         guard
             let vc = sb.instantiateViewController(
                 withIdentifier: EmailListViewController.storyboardId) as? EmailListViewController,
-            let folder = folder
+            let folderViewModel = folderVM
             else {
                 Log.shared.errorAndCrash("Problem!")
                 return nil
         }
         let emailListVM = EmailListViewModel(delegate: vc,
-                                             folderToShow: folder)
+                                             folderToShow: folderViewModel[1][1].folder)
         vc.viewModel = emailListVM
         vc.hidesBottomBarWhenPushed = false
 
@@ -51,6 +52,15 @@ final class DraftsPreviewViewController: UIViewController {
     }
 
 // MARK: - IBActions
+
+    @IBAction func composeAction() {
+        guard let delegate = draftsPreviewProtocol else {
+            Log.shared.errorAndCrash(message: "draftsPreviewDelegate is nil!")
+            return
+        }
+        delegate.composeAction()
+    }
+
 
     @IBAction func dismissView() {
         dismiss(animated: true)

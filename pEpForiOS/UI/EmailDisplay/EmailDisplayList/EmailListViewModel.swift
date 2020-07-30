@@ -274,7 +274,6 @@ class EmailListViewModel: EmailDisplayViewModel {
     private var unreadMessages = false
     private var flaggedMessages = false
 
-
     /// Handles changes of the selected messages in edit mode.
     /// Updates toolbar buttons (maybe more)  accoring to selection.
     public func handleEditModeSelectionChange(selectedIndexPaths: [IndexPath]) {

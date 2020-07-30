@@ -963,18 +963,42 @@
                                 </items>
                             </navigationBar>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kls-RO-Ljd">
-                                <rect key="frame" x="0.0" y="44" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="44" width="375" height="553"/>
                             </containerView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8ck-sf-wt0">
+                                <rect key="frame" x="0.0" y="597" width="375" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bnb-QR-HsC">
+                                        <rect key="frame" x="173.5" y="11" width="28" height="28"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="compose">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="composeAction" destination="Eid-UA-AW6" eventType="touchUpInside" id="LbQ-of-DFQ"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.1524262428" green="0.70983916520000001" blue="0.39209908249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="SfM-Qr-Zie"/>
+                                    <constraint firstItem="bnb-QR-HsC" firstAttribute="centerY" secondItem="8ck-sf-wt0" secondAttribute="centerY" id="p8s-Zs-Uxt"/>
+                                    <constraint firstItem="bnb-QR-HsC" firstAttribute="centerX" secondItem="8ck-sf-wt0" secondAttribute="centerX" id="sLi-Nr-tNb"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="oxh-ah-ENe" secondAttribute="trailing" id="JHU-OT-kMZ"/>
-                            <constraint firstItem="A70-fz-ooL" firstAttribute="bottom" secondItem="Kls-RO-Ljd" secondAttribute="bottom" id="NmZ-HG-39H"/>
                             <constraint firstItem="oxh-ah-ENe" firstAttribute="top" secondItem="A70-fz-ooL" secondAttribute="top" id="OwN-WX-Olf"/>
+                            <constraint firstItem="8ck-sf-wt0" firstAttribute="bottom" secondItem="A70-fz-ooL" secondAttribute="bottom" id="Pww-W9-iSx"/>
                             <constraint firstItem="oxh-ah-ENe" firstAttribute="leading" secondItem="A70-fz-ooL" secondAttribute="leading" id="Vfv-r3-qdJ"/>
                             <constraint firstItem="Kls-RO-Ljd" firstAttribute="leading" secondItem="A70-fz-ooL" secondAttribute="leading" id="bD0-iJ-YzM"/>
+                            <constraint firstItem="8ck-sf-wt0" firstAttribute="leading" secondItem="A70-fz-ooL" secondAttribute="leading" id="jeF-7P-2Gx"/>
+                            <constraint firstItem="8ck-sf-wt0" firstAttribute="top" secondItem="Kls-RO-Ljd" secondAttribute="bottom" id="nLl-K4-nei"/>
                             <constraint firstItem="A70-fz-ooL" firstAttribute="trailing" secondItem="Kls-RO-Ljd" secondAttribute="trailing" id="vbG-9W-tvP"/>
                             <constraint firstItem="Kls-RO-Ljd" firstAttribute="top" secondItem="oxh-ah-ENe" secondAttribute="bottom" id="wDH-Bz-RvN"/>
+                            <constraint firstItem="A70-fz-ooL" firstAttribute="trailing" secondItem="8ck-sf-wt0" secondAttribute="trailing" id="z8K-SU-Jmi"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="A70-fz-ooL"/>
                     </view>
@@ -987,18 +1011,19 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fv4-M2-diD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3802" y="-1845"/>
+            <point key="canvasLocation" x="3800.8000000000002" y="-1845.4272863568217"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="cRe-YG-393"/>
-        <segue reference="mZj-Mg-VzM"/>
-        <segue reference="MdS-jf-fxc"/>
+        <segue reference="g1q-wK-tff"/>
+        <segue reference="CKh-jT-ski"/>
+        <segue reference="r2P-Ra-zWf"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="attachment-list-icon" width="14" height="15"/>
         <image name="chevron-icon-left" width="10" height="18"/>
         <image name="chevron-icon-right" width="10" height="18"/>
+        <image name="compose" width="28" height="28"/>
         <image name="empty-avatar" width="150" height="150"/>
         <image name="pEp-status-yellow_white-border" width="21" height="21"/>
         <image name="pEpForiOS-icon-delete" width="16" height="24"/>
