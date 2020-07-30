@@ -56,7 +56,7 @@ public class Identity: MessageModelObjectProtocol, ManagedObjectWrapperProtocol 
                   userName: identity.userName)
     }
 
-    // MARK: - Transient Fields
+    // MARK: - Async pEp session support
 
     func asyncFingerprint(completion: @escaping (String?) -> ()) {
         cdObject.asyncFingerprint(completion: completion)
