@@ -281,17 +281,17 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         let partnerIdenties = identities.filter { !$0.isMySelf }
 
         var handshakableIdentities = [Identity]()
-        let group = DispatchGroup()
+        let groupHandshakeAction = DispatchGroup()
         for partnerIdentity in partnerIdenties {
-            group.enter()
+            groupHandshakeAction.enter()
             partnerIdentity.cdObject.canInvokeHandshakeAction { (canInvoke) in
                 if canInvoke {
                     handshakableIdentities.append(partnerIdentity)
                 }
-                group.leave()
+                groupHandshakeAction.leave()
             }
         }
-        group.notify(queue: DispatchQueue.main) {
+        groupHandshakeAction.notify(queue: DispatchQueue.main) {
             var combinations = [HandshakeCombination]()
             for ownId in ownIdentitiesWithKeys {
                 for partnerId in handshakableIdentities {
