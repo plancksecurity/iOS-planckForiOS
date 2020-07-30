@@ -202,7 +202,6 @@ extension TrustManagementViewModelTest {
                                                                               isMyself: true,
                                                                               context: moc)
         let selfIdentity = Identity(cdObject: cdIdentity, context: moc)
-        selfIdentity.fingerprint = "fingerprints"
         selfIdentity.save()
         moc.saveAndLogErrors()
         
