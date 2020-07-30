@@ -32,12 +32,13 @@ extension TrustManagementViewModel {
 
         public init(language: LanguageCode,
                     handshakeCombination: TrustManagementUtil.HandshakeCombination,
-                    trustManagementUtil: TrustManagementUtilProtocol? = nil) {
+                    trustManagementUtil: TrustManagementUtilProtocol? = nil,
+                    completion: @escaping () -> ()) {
             _language = language
             self.handshakeCombination = handshakeCombination
             self.trustManagementUtil = trustManagementUtil ?? TrustManagementUtil()
             setupTrustwords(combination: handshakeCombination, language: language) {
-
+                completion()
             }
         }
 
@@ -418,17 +419,31 @@ final class TrustManagementViewModel {
                 // Do nothing.
                 return
             }
+
+            let rowsLoadedGroup = DispatchGroup()
+
             for combination in combinations{
                 let backupLanguage = "en"
                 let language =
                 combination.partnerIdentity.language ?? Locale.current.languageCode ?? backupLanguage
+
+                rowsLoadedGroup.enter()
+
                 let row = Row(language: language,
                               handshakeCombination: combination,
-                              trustManagementUtil: me.trustManagementUtil)
+                              trustManagementUtil: me.trustManagementUtil) {
+                                rowsLoadedGroup.leave()
+                }
                 me.rows.append(row)
             }
-            DispatchQueue.main.async {
-                me.delegate?.reload()
+
+            rowsLoadedGroup.notify(queue: DispatchQueue.main) { [weak self] in
+                guard let meRowsLoaded = self else {
+                    // Valid case. We might have been dismissed already.
+                    // Do nothing.
+                    return
+                }
+                meRowsLoaded.delegate?.reload()
             }
         }
     }
