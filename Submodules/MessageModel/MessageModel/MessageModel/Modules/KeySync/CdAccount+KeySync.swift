@@ -10,14 +10,6 @@ import CoreData
 import PEPObjCAdapterFramework
 
 extension CdAccount {
-
-    func isKeySyncEnabled() throws -> Bool {//!!!: IOS-2325_!
-        guard let user = identity else {
-            Log.shared.errorAndCrash("No identity")
-            return false
-        }
-        return try PEPSession().queryKeySyncEnabled(for: user.pEpIdentity()).boolValue//!!!: IOS-2325_!
-    }
     
     func isKeySyncEnabled(errorCallback: @escaping (Error) -> (),
                           successCallback: @escaping (Bool) -> ()) {
@@ -39,11 +31,20 @@ extension CdAccount {
             errorCallback(nil)
             return
         }
-        PEPAsyncSession().enableSync(for: user.pEpIdentity(),
-                                     errorCallback: { error in
-                                        errorCallback(error)
-        }) {
-            successCallback()
+        if enable {
+            PEPAsyncSession().enableSync(for: user.pEpIdentity(),
+                                         errorCallback: { error in
+                                            errorCallback(error)
+            }) {
+                successCallback()
+            }
+        } else {
+            PEPAsyncSession().disableSync(for: user.pEpIdentity(),
+                                          errorCallback: { error in
+                                            errorCallback(error)
+            }) {
+                successCallback()
+            }
         }
     }
 }
