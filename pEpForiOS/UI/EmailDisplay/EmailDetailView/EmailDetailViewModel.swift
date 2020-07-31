@@ -38,6 +38,14 @@ class EmailDetailViewModel: EmailDisplayViewModel {
     /// Whether or not a message has been inserted or removed before the currently shown message.
     /// Used to figure out if we need to scroll to the currently viewed message after update.
     private var updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = false
+    /// Use in queryResultsDelegate to serialize calls to VC to guarantee correct order.
+    private let queryResultsDelegateHandlingQueue: OperationQueue = {
+        let createe = OperationQueue()
+        createe.name = "EmailDetailViewModel-queryResultsDelegateHandlingQueue)"
+        createe.qualityOfService = .userInteractive
+        createe.maxConcurrentOperationCount = 1
+        return createe
+    }()
 
     weak var selectionChangeDelegate: EmailDetailViewModelSelectionChangeDelegate?
 
@@ -269,61 +277,132 @@ extension EmailDetailViewModel {
 // MARK: - QueryResultsIndexPathRowDelegate
 
 extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
-    //    // Makes shure not to call `allUpdatesReceived` before asnyc updates have been processed.
-    //    static let waitForUpdatesFinishedGroup = DispatchGroup()
 
     func didInsertRow(indexPath: IndexPath) {
-        handleIndexPathIsBeforeCurrentlyShownMessage(insertedIndexPath: indexPath)
-        delegate?.emailListViewModel(viewModel: self, didInsertDataAt: [indexPath])
-    }
-
-    func didUpdateRow(indexPath: IndexPath) {
-        var messageRating: PEPRating? = nil
-        let group = DispatchGroup()
-        if let message = message(representedByRowAt: indexPath) {
-            group.enter()
-            message.pEpRating { (rating) in
-                messageRating = rating
-                group.leave()
-            }
-        }
-        group.notify(queue: DispatchQueue.main) { [weak self] in
+        queryResultsDelegateHandlingQueue.addOperation { [weak self] in
             guard let me = self else {
-                // Valid case. The user might have dismissed the view meanwhile.
+                // Valid case. We might have been dismissed.
                 // Do nothing ...
                 return
             }
-            if me.pathsForMessagesMarkedForRedecrypt.contains(indexPath) {
-                if let rating = messageRating, !rating.isUnDecryptable() {
-                    guard let delegate = me.delegate as? EmailDetailViewModelDelegate else {
-                        Log.shared.errorAndCrash("Inbvalid state")
-                        return
-                    }
-                    // Previously undecryptable message has successfully been decrypted.
-                    delegate.isNotUndecryptableAnyMore(indexPath: indexPath)
-                }
-                me.pathsForMessagesMarkedForRedecrypt = me.pathsForMessagesMarkedForRedecrypt.filter { $0 != indexPath }
+            let group = DispatchGroup()
+            group.enter()
+            DispatchQueue.main.async {
+                me.handleIndexPathIsBeforeCurrentlyShownMessage(insertedIndexPath: indexPath)
+                me.delegate?.emailListViewModel(viewModel: me, didInsertDataAt: [indexPath])
+                group.leave()
             }
-            me.delegate?.emailListViewModel(viewModel: me, didUpdateDataAt: [indexPath])
+            group.wait()
+        }
+    }
+
+    func didUpdateRow(indexPath: IndexPath) {
+        queryResultsDelegateHandlingQueue.addOperation { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed.
+                // Do nothing ...
+                return
+            }
+            let group = DispatchGroup()
+            group.enter()
+            DispatchQueue.main.async {
+                var messageRating: PEPRating? = nil
+                let innerGroup = DispatchGroup()
+                if let message = me.message(representedByRowAt: indexPath) {
+                    innerGroup.enter()
+                    message.pEpRating { (rating) in
+                        messageRating = rating
+                        innerGroup.leave()
+                    }
+                }
+                innerGroup.notify(queue: DispatchQueue.main) {
+                    defer { group.leave() }
+                    if me.pathsForMessagesMarkedForRedecrypt.contains(indexPath) {
+                        if let rating = messageRating, !rating.isUnDecryptable() {
+                            guard let delegate = me.delegate as? EmailDetailViewModelDelegate else {
+                                Log.shared.errorAndCrash("Inbvalid state")
+                                return
+                            }
+                            // Previously undecryptable message has successfully been decrypted.
+                            delegate.isNotUndecryptableAnyMore(indexPath: indexPath)
+                        }
+                        me.pathsForMessagesMarkedForRedecrypt = me.pathsForMessagesMarkedForRedecrypt.filter { $0 != indexPath }
+                    }
+                    me.delegate?.emailListViewModel(viewModel: me, didUpdateDataAt: [indexPath])
+                }
+            }
+            group.wait()
         }
     }
 
     func didDeleteRow(indexPath: IndexPath) {
-        handleIndexPathIsBeforeCurrentlyShownMessage(insertedIndexPath: indexPath)
-        delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: [indexPath])
+        queryResultsDelegateHandlingQueue.addOperation { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed.
+                // Do nothing ...
+                return
+            }
+            let group = DispatchGroup()
+            group.enter()
+            DispatchQueue.main.async {
+                defer { group.leave() }
+                me.handleIndexPathIsBeforeCurrentlyShownMessage(insertedIndexPath: indexPath)
+                me.delegate?.emailListViewModel(viewModel: me, didRemoveDataAt: [indexPath])
+            }
+            group.wait()
+        }
     }
 
     func didMoveRow(from: IndexPath, to: IndexPath) {
-        delegate?.emailListViewModel(viewModel: self, didMoveData: from, toIndexPath: to)
+        queryResultsDelegateHandlingQueue.addOperation { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed.
+                // Do nothing ...
+                return
+            }
+            let group = DispatchGroup()
+            group.enter()
+            DispatchQueue.main.async {
+                defer { group.leave() }
+                me.delegate?.emailListViewModel(viewModel: me, didMoveData: from, toIndexPath: to)
+            }
+            group.wait()
+        }
     }
 
     func willChangeResults() {
-        updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = false
-        delegate?.willReceiveUpdates(viewModel: self)
+        queryResultsDelegateHandlingQueue.addOperation { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed.
+                // Do nothing ...
+                return
+            }
+            let group = DispatchGroup()
+            group.enter()
+            DispatchQueue.main.async {
+                defer { group.leave() }
+                me.updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = false
+                me.delegate?.willReceiveUpdates(viewModel: me)
+            }
+            group.wait()
+        }
     }
 
     func didChangeResults() {
-        delegate?.allUpdatesReceived(viewModel: self)
+        queryResultsDelegateHandlingQueue.addOperation { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed.
+                // Do nothing ...
+                return
+            }
+            let group = DispatchGroup()
+            group.enter()
+            DispatchQueue.main.async {
+                defer { group.leave() }
+                me.delegate?.allUpdatesReceived(viewModel: me)
+            }
+            group.wait()
+        }
     }
 
     private func handleIndexPathIsBeforeCurrentlyShownMessage(insertedIndexPath: IndexPath) {
