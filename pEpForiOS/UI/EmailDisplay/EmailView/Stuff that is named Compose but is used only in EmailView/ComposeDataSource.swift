@@ -43,7 +43,6 @@ class ComposeDataSource: NSObject {
 
     func numberOfRows() -> Int {
         let visibleRows = getVisibleRows()
-        Log.shared.info("number of rows -> %d", visibleRows.count)
         return visibleRows.count
     }
 
