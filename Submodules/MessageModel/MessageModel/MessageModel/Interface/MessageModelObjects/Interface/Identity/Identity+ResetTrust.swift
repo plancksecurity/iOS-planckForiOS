@@ -30,20 +30,21 @@ extension Identity {
 
         let pEpIdent = pEpIdentity()
 
-        PEPAsyncSession().update(pEpIdent,
-                                 errorCallback: { _ in
-                                    logError()
+        PEPAsyncSession().update(pEpIdent, errorCallback: { _ in
+            logError()
+            completion()
         }) { updatedIdentity in
-            if let updatedFingerprint = updatedIdentity.fingerPrint {
-                PEPAsyncSession().keyReset(updatedIdentity,
-                                           fingerprint: updatedFingerprint,
-                                           errorCallback: { (_) in
-                                            logError()
-                                            completion()
-                }) {
-                    completion()
-                }
-            } else {
+            guard let updatedFingerprint = updatedIdentity.fingerPrint else {
+                // Valid case. After mistrusting the key of a identity FPR is `nil`
+                completion()
+                return
+            }
+            PEPAsyncSession().keyReset(updatedIdentity,
+                                       fingerprint: updatedFingerprint,
+                                       errorCallback: { (_) in
+                                        logError()
+                                        completion()
+            }) {
                 completion()
             }
         }
