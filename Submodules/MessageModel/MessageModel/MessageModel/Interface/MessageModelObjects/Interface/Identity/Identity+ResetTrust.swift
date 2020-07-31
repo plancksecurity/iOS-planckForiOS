@@ -39,9 +39,12 @@ extension Identity {
                                            fingerprint: updatedFingerprint,
                                            errorCallback: { (_) in
                                             logError()
+                                            completion()
                 }) {
                     completion()
                 }
+            } else {
+                completion()
             }
         }
     }
