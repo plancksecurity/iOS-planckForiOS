@@ -66,6 +66,14 @@ open class MessageContentCell: MessageCell {
             me.contentText.attributedText = finalText
             me.contentText.dataDetectorTypes = UIDataDetectorTypes.link
             me.contentText.delegate = clickHandler
+
+            guard let listener = me.delegate as? MessageContentCellDelegate else {
+                // No one is interested. Valid.
+                return
+            }
+            DispatchQueue.main.async {
+                listener.heightChanged()
+            }
         }
     }
 }

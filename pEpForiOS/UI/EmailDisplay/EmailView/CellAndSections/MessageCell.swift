@@ -12,7 +12,7 @@ import MessageModel
 public protocol MessageCellDelegate: class {}
 
 public protocol MessageContentCellDelegate: MessageCellDelegate {
-    func didUpdate(cell: MessageCell, height: CGFloat)
+    func heightChanged()
 }
 
 protocol MessageAttachmentDelegate {
