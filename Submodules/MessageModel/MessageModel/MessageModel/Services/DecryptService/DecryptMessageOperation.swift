@@ -93,7 +93,7 @@ extension DecryptMessageOperation {
             } else if error.domain == PEPObjCAdapterErrorDomain {
                 Log.shared.errorAndCrash("Unexpected ")
                 addError(BackgroundError.GeneralError.illegalState(info:
-                    "We do not exept this erro domain to show up here: \(error)"))
+                    "We do not expect this error domain to show up here: \(error)"))
             } else {
                 Log.shared.errorAndCrash("Unhandled error domain: %@", "\(error.domain)")
                 addError(BackgroundError.GeneralError.illegalState(info:
