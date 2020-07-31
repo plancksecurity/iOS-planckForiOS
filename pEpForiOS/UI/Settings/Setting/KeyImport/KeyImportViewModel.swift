@@ -150,16 +150,18 @@ extension KeyImportViewModel {
                                     return
                                 }
 
-                                if let theError = error as? KeyImportUtil.ImportError {
-                                    switch theError {
-                                    case .cannotLoadKey:
-                                        me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
-                                    case .malformedKey:
+                                DispatchQueue.main.async {
+                                    if let theError = error as? KeyImportUtil.ImportError {
+                                        switch theError {
+                                        case .cannotLoadKey:
+                                            me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
+                                        case .malformedKey:
+                                            me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
+                                        }
+                                    } else {
+                                        Log.shared.errorAndCrash(message: "Unhandled error. Check all possible cases.")
                                         me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
                                     }
-                                } else {
-                                    Log.shared.errorAndCrash(message: "Unhandled error. Check all possible cases.")
-                                    me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
                                 }
             },
                               completion: { [weak self] keyData in
@@ -167,9 +169,11 @@ extension KeyImportViewModel {
                                 guard let me = self else {
                                     return
                                 }
-                                me.checkDelegate()?.showConfirmSetOwnKey(key: KeyDetails(address: keyData.address,
-                                                                                         fingerprint: keyData.fingerprint,
-                                                                                         userName: keyData.userName))
+                                DispatchQueue.main.async {
+                                    me.checkDelegate()?.showConfirmSetOwnKey(key: KeyDetails(address: keyData.address,
+                                                                                             fingerprint: keyData.fingerprint,
+                                                                                             userName: keyData.userName))
+                                }
         })
     }
 
