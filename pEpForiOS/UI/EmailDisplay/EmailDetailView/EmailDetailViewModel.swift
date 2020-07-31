@@ -269,8 +269,8 @@ extension EmailDetailViewModel {
 // MARK: - QueryResultsIndexPathRowDelegate
 
 extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
-    // Makes shure not to call `allUpdatesReceived` before asnyc updates have been processed.
-    static let waitForUpdatesFinishedGroup = DispatchGroup()
+    //    // Makes shure not to call `allUpdatesReceived` before asnyc updates have been processed.
+    //    static let waitForUpdatesFinishedGroup = DispatchGroup()
 
     func didInsertRow(indexPath: IndexPath) {
         handleIndexPathIsBeforeCurrentlyShownMessage(insertedIndexPath: indexPath)
@@ -278,7 +278,6 @@ extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
     }
 
     func didUpdateRow(indexPath: IndexPath) {
-        EmailDetailViewModel.waitForUpdatesFinishedGroup.enter()
         var messageRating: PEPRating? = nil
         let group = DispatchGroup()
         if let message = message(representedByRowAt: indexPath) {
@@ -289,7 +288,6 @@ extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
             }
         }
         group.notify(queue: DispatchQueue.main) { [weak self] in
-            defer { EmailDetailViewModel.waitForUpdatesFinishedGroup.leave() }
             guard let me = self else {
                 // Valid case. The user might have dismissed the view meanwhile.
                 // Do nothing ...
@@ -325,14 +323,7 @@ extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
     }
 
     func didChangeResults() {
-        EmailDetailViewModel.waitForUpdatesFinishedGroup.notify(queue: DispatchQueue.main) { [weak self] in
-            guard let me = self else {
-                // Valid case. We might have been dismissed already.
-                // Do nothing ...
-                return
-            }
-            me.delegate?.allUpdatesReceived(viewModel: me)
-        }
+        delegate?.allUpdatesReceived(viewModel: self)
     }
 
     private func handleIndexPathIsBeforeCurrentlyShownMessage(insertedIndexPath: IndexPath) {
