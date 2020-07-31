@@ -24,7 +24,7 @@ public class RatingReEvaluator {
 }
 
 extension RatingReEvaluator: RatingReEvaluatorProtocol {
-
+    
     static public func reevaluate(message: Message, completion:  @escaping ()->Void) {
         let pepMessage = message.cdObject.pEpMessage()
         let keys = message.cdObject.keysFromDecryption?.array as? [String]
@@ -38,9 +38,7 @@ extension RatingReEvaluator: RatingReEvaluatorProtocol {
         }) { (newRating) in
             DispatchQueue.main.async {
                 message.cdObject.pEpRating = Int16(newRating.rawValue)
-                message.session.moc.performAndWait {
-                    message.session.moc.saveAndLogErrors()
-                }
+                message.session.moc.saveAndLogErrors()
                 completion()
             }
         }
