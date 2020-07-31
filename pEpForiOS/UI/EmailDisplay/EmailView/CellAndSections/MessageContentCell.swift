@@ -11,6 +11,10 @@ import WebKit
 import MessageModel
 import PEPObjCAdapterFramework
 
+public protocol MessageContentCellDelegate: MessageCellDelegate {
+    func heightChanged()
+}
+
 open class MessageContentCell: MessageCell {
     @IBOutlet weak var contentText: UITextView!
 
