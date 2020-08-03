@@ -843,6 +843,13 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
             Log.shared.errorAndCrash("We got called by a non-existing VM?")
             return
         }
-        delegate?.contentChanged(inRowAt: idxPath)
+        // Dispatch as next to not "Attempted to call -cellForRowAtIndexPath: on the table view while it was in the process of updating its visible cells, which is not allowed. ...". See IOS-2347 for details.
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.delegate?.contentChanged(inRowAt: idxPath)
+        }
     }
 }
