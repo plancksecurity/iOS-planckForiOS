@@ -14,17 +14,6 @@ struct InfoPlist {
         return Bundle.main.infoDictionary
     }
 
-    static public var pEpScheme: String? {
-        guard let urlTypes = mainBundleInfoDictValue(forKey: "CFBundleURLTypes") as? NSMutableArray,
-            let first = urlTypes.firstObject as? NSMutableDictionary,
-            let scheme = first.object(forKey: "CFBundleURLSchemes") as? NSMutableArray
-        else {
-            return nil
-        }
-
-        return scheme.firstObject as? String
-    }
-
     static public func mainBundleVersion() -> String? {
         guard let version = mainBundleInfoDictValue(forKey: "CFBundleVersion") as? String else {
             return nil

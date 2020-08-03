@@ -44,10 +44,6 @@
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
 			<string></string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>pep.security</string>
-			</array>
 		</dict>
 		<dict>
 			<key>CFBundleURLName</key>
