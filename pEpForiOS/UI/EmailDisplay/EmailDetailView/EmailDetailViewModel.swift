@@ -27,9 +27,6 @@ protocol EmailDetailViewModelSelectionChangeDelegate: class {
 }
 
 class EmailDetailViewModel: EmailDisplayViewModel {
-    
-    weak var trustManagementViewModelDelegate: TrustManagementViewModelDelegate?
-    
     /// Used to figure out whether or not the currently displayed message has been decrypted while
     /// being shown to the user.
     private var pathsForMessagesMarkedForRedecrypt = [IndexPath]()
