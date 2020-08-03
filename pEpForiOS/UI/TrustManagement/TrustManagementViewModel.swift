@@ -438,12 +438,12 @@ final class TrustManagementViewModel {
             }
 
             rowsLoadedGroup.notify(queue: DispatchQueue.main) { [weak self] in
-                guard let meRowsLoaded = self else {
+                guard let me = self else {
                     // Valid case. We might have been dismissed already.
                     // Do nothing.
                     return
                 }
-                meRowsLoaded.delegate?.reload()
+                me.delegate?.reload()
             }
         }
     }
