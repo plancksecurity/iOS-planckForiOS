@@ -16,7 +16,11 @@ class TrustManagementViewController: BaseViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var optionsButton: UIBarButtonItem!
 
-    var viewModel : TrustManagementViewModel?
+    var viewModel : TrustManagementViewModel? {
+        didSet {
+            viewModel?.delegate = self
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +40,6 @@ class TrustManagementViewController: BaseViewController {
         } else {
             optionsButton.title = NSLocalizedString("Options", comment: "Options")
         }
-        vm.delegate = self
     }
 
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
