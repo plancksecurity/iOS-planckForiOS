@@ -238,7 +238,6 @@ extension AppDelegate {
     @discardableResult
     private func handleUrlTheOSHasBroughtUsToForgroundFor(_ url: URL) -> Bool {
         if let appConfig = appConfig, url.absoluteString.range(of: Constants.supportMail) != nil {
-//            UIUtils.presentComposeViewToSupport(appConfig: appConfig)
             UIUtils.presentComposeView(forRecipientInUrl: url, appConfig: appConfig)
             return true
         }
