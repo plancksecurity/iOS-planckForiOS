@@ -39,7 +39,6 @@
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
 	<array>
-		<dict/>
 		<dict>
 			<key>CFBundleURLName</key>
 			<string>gmail</string>
