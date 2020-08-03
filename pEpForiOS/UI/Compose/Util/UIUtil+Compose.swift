@@ -93,7 +93,7 @@ extension UIUtils {
         let deviceField = NSLocalizedString("Device", comment: "Device field, reporting issue")
         initData.bodyPlaintext = "\n\n\(deviceField): \(UIDevice().type.rawValue)" + "\n" + "OS: \(UIDevice.current.systemVersion)"
         let state = ComposeViewModel.ComposeViewModelState(initData: initData)
-        state.subject = "Help"
+        state.subject = NSLocalizedString("Help", comment: "Contact Support - Mail subject") 
         return ComposeViewModel(state: state)
     }
 
