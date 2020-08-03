@@ -72,6 +72,8 @@
 	<true/>
 	<key>ITSEncryptionExportComplianceCode</key>
 	<string>d3ade549-86f9-45fb-b3b6-08d22a01c265</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
