@@ -232,10 +232,17 @@ extension SuggestViewModel {
     }
 
     private func informDelegatesModelChanged() {
-        let showResults = rows.count > 0 || showEmptyList
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
 
-        delegate?.suggestViewModelDidResetModel(showResults: showResults)
-        resultDelegate?.suggestViewModel(self, didToggleVisibilityTo: showResults)
+            let showResults = me.rows.count > 0 || me.showEmptyList
+
+            me.delegate?.suggestViewModelDidResetModel(showResults: showResults)
+            me.resultDelegate?.suggestViewModel(me, didToggleVisibilityTo: showResults)
+        }
     }
 }
 
