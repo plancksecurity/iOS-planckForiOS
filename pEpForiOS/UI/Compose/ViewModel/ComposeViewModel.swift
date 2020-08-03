@@ -115,6 +115,12 @@ class ComposeViewModel {
         setup()
     }
 
+    init(state : ComposeViewModelState) {
+        self.state = state
+        self.state.delegate = self
+        setup()
+    }
+
     public func handleDidReAppear() {
         state.validate()
     }
