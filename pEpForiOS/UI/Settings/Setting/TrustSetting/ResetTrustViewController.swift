@@ -153,7 +153,8 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
                     Log.shared.errorAndCrash(message: "lost myself")
                     return
                 }
-                me.model.resetTrust(foridentityAt: indexPath)
+                me.model.resetTrust(foridentityAt: indexPath, completion: {})
+                // Note: UI reaction is immediate, even before the reset has been executed
                 me.tableView.deselectRow(at: indexPath, animated: true)
         }
         alertView.addAction(resetTrustThisIdentityAction)
@@ -166,7 +167,8 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
                         Log.shared.errorAndCrash(message: "lost myself")
                         return
                     }
-                    me.model.resetTrustAll(foridentityAt: indexPath)
+                    me.model.resetTrustAll(foridentityAt: indexPath, completion: {})
+                    // Note: UI reaction is immediate, even before the reset has been executed
                     me.tableView.deselectRow(at: indexPath, animated: true)
             }
             alertView.addAction(resetTrustAllIdentityAction)

@@ -425,7 +425,7 @@ extension MessageQueryResultTest {
     }
 }
 
-/// MARK: - Delegate test class
+// MARK: - Delegate test class
 
 class MessageQueryResultsTestDelegate {
     let exp: XCTestExpectation

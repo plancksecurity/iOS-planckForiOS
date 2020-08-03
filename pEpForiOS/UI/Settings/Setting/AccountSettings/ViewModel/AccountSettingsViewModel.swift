@@ -39,7 +39,6 @@ final class AccountSettingsViewModel {
     ///         for the verification be able to succeed.
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
-    private(set) var pEpSync: Bool
 
     private enum AccountSettingsError: Error, LocalizedError {
         case accountNotFound, failToModifyAccountPEPSync
@@ -52,20 +51,32 @@ final class AccountSettingsViewModel {
         }
     }
 
-    subscript(section: Int) -> String {
-        get {
-            assert(sectionIsValid(section: section), "Section out of range")
-            return headers[section]
-        }
-    }
+
 
     init(account: Account) {
         // We are using a copy of the data here.
         // The outside world must not know changed settings until they have been verified.
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         self.account = account
+    }
 
-        pEpSync = (try? account.isKeySyncEnabled()) ?? false
+    public func isPEPSyncEnabled(completion: @escaping (Bool) -> ()) {
+        account.isKeySyncEnabled(errorCallback: { (_) in
+            DispatchQueue.main.async {
+                completion(false)
+            }
+        }) { (isEnabled) in
+            DispatchQueue.main.async {
+                completion(isEnabled)
+            }
+        }
+    }
+
+    public subscript(section: Int) -> String {
+        get {
+            assert(sectionIsValid(section: section), "Section out of range")
+            return headers[section]
+        }
     }
     
     public func rowShouldBeHidden(indexPath: IndexPath) -> Bool {
@@ -114,12 +125,17 @@ final class AccountSettingsViewModel {
     }
 
     public func pEpSync(enable: Bool) {
-        do {
-            try account.setKeySyncEnabled(enable: enable)
-        } catch {
-            delegate?.undoPEPSyncToggle()
-            delegate?.showErrorAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
-        }
+        account.setKeySyncEnabled(enable: enable,
+                                  errorCallback: { [weak self] error in
+                                    DispatchQueue.main.async {
+                                        guard let me = self else {
+                                            // UI, this can happen
+                                            return
+                                        }
+                                        me.delegate?.undoPEPSyncToggle()
+                                        me.delegate?.showErrorAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
+                                    }
+            }, successCallback: {})
     }
 
     public func updateToken(accessToken: OAuth2AccessTokenProtocol) {

@@ -313,6 +313,7 @@ class TestUtil {
         }
     }
 
+    // MUST go to MM (used CDOs). Already adapts PP adapter when moved to MM (XCTest+SyncAdapter.swift)
     /**
      Does the following steps:
 
@@ -323,98 +324,99 @@ class TestUtil {
      After this function, you should have a self with generated key, and a partner ID
      you can do handshakes on.
      */
-    static func cdMessageAndSetUpPepFromMail(emailFilePath: String,
-                                             context: NSManagedObjectContext = Stack.shared.mainContext)
-        -> (mySelf: CdIdentity, partner: CdIdentity, message: CdMessage)? {
-            guard let pantomimeMail = cwImapMessage(fileName: emailFilePath) else {
-                XCTFail()
-                return nil
-            }
+//    static func cdMessageAndSetUpPepFromMail(emailFilePath: String,
+//                                             context: NSManagedObjectContext = Stack.shared.mainContext)
+//        -> (mySelf: CdIdentity, partner: CdIdentity, message: CdMessage)? {
+//            guard let pantomimeMail = cwImapMessage(fileName: emailFilePath) else {
+//                XCTFail()
+//                return nil
+//            }
+//
+//            guard let recipients = pantomimeMail.recipients() as? [CWInternetAddress] else {
+//                XCTFail("Expected array of recipients")
+//                return nil
+//            }
+//            var mySelfIdentityOpt: CdIdentity?
+//            for rec in recipients {
+//                if rec.type() == .toRecipient {
+//                    mySelfIdentityOpt = rec.cdIdentity(userID: CdIdentity.pEpOwnUserID, context: context)
+//                }
+//            }
+//            guard let safeOptId = mySelfIdentityOpt else {
+//                XCTFail("Could not derive own identity from message")
+//                return nil
+//            }
+//
+//            context.saveAndLogErrors()
+//
+//            let cdMySelfIdentity = safeOptId
+//            XCTAssertNotNil(cdMySelfIdentity)
+//
+//            let cdMyAccount = CdAccount(context: context)
+//            cdMyAccount.identity = cdMySelfIdentity
+//
+//            let cdInbox = CdFolder(context: context)
+//            cdInbox.name = ImapConnection.defaultInboxName
+//            cdInbox.account = cdMyAccount
+//
+//            guard let pantFrom = pantomimeMail.from() else {
+//                XCTFail("Expected the mail to have a sender")
+//                return nil
+//            }
+//            let partnerID = pantFrom.cdIdentity(userID: "THE PARTNER ID", context: context)
+//
+//            context.saveAndLogErrors()
+//
+//            let session = PEPSession()
+//            var mySelfIdentity = cdMySelfIdentity.pEpIdentity()
+//            mySelfIdentity = mySelf(for: mySelfIdentity)
+//            try! session.mySelf(mySelfIdentity)
+//            XCTAssertNotNil(mySelfIdentity.fingerPrint)
+//            XCTAssertTrue(try! mySelfIdentity.isPEPUser(session).boolValue)
+//
+//            guard let cdMessage = CdMessage.insertOrUpdate(pantomimeMessage: pantomimeMail,
+//                                                           account: cdMyAccount,
+//                                                           messageUpdate: CWMessageUpdate(),
+//                                                           context: context) else {
+//                                                            XCTFail()
+//                                                            return nil
+//            }
+//            XCTAssertEqual(cdMessage.pEpRating, Int16(PEPRating.undefined.rawValue))
+//
+//            guard let cdM = CdMessage.first(in: context) else {
+//                XCTFail("Expected the one message in the DB that we imported")
+//                return nil
+//            }
+//            XCTAssertEqual(cdM.messageID, pantomimeMail.messageID())
+//
+//            let errorContainer = TestErrorContainer()
+//            let decOp = DecryptMessageOperation(cdMessageToDecryptObjectId: cdM.objectID,
+//                                                errorContainer: errorContainer)
+//
+//            let bgQueue = OperationQueue()
+//            bgQueue.addOperation(decOp)
+//            bgQueue.waitUntilAllOperationsAreFinished()
+//            XCTAssertFalse(errorContainer.hasErrors)
+//
+//            return (mySelf: cdMySelfIdentity, partner: partnerID, message: cdMessage)
+//    }
 
-            guard let recipients = pantomimeMail.recipients() as? [CWInternetAddress] else {
-                XCTFail("Expected array of recipients")
-                return nil
-            }
-            var mySelfIdentityOpt: CdIdentity?
-            for rec in recipients {
-                if rec.type() == .toRecipient {
-                    mySelfIdentityOpt = rec.cdIdentity(userID: CdIdentity.pEpOwnUserID, context: context)
-                }
-            }
-            guard let safeOptId = mySelfIdentityOpt else {
-                XCTFail("Could not derive own identity from message")
-                return nil
-            }
-
-            context.saveAndLogErrors()
-
-            let cdMySelfIdentity = safeOptId
-            XCTAssertNotNil(cdMySelfIdentity)
-
-            let cdMyAccount = CdAccount(context: context)
-            cdMyAccount.identity = cdMySelfIdentity
-
-            let cdInbox = CdFolder(context: context)
-            cdInbox.name = ImapConnection.defaultInboxName
-            cdInbox.account = cdMyAccount
-
-            guard let pantFrom = pantomimeMail.from() else {
-                XCTFail("Expected the mail to have a sender")
-                return nil
-            }
-            let partnerID = pantFrom.cdIdentity(userID: "THE PARTNER ID", context: context)
-
-            context.saveAndLogErrors()
-
-            let session = PEPSession()
-            let mySelfIdentity = cdMySelfIdentity.pEpIdentity()
-            try! session.mySelf(mySelfIdentity)
-            XCTAssertNotNil(mySelfIdentity.fingerPrint)
-            XCTAssertTrue(try! mySelfIdentity.isPEPUser(session).boolValue)
-
-            guard let cdMessage = CdMessage.insertOrUpdate(pantomimeMessage: pantomimeMail,
-                                                           account: cdMyAccount,
-                                                           messageUpdate: CWMessageUpdate(),
-                                                           context: context) else {
-                                                            XCTFail()
-                                                            return nil
-            }
-            XCTAssertEqual(cdMessage.pEpRating, Int16(PEPRating.undefined.rawValue))
-
-            guard let cdM = CdMessage.first(in: context) else {
-                XCTFail("Expected the one message in the DB that we imported")
-                return nil
-            }
-            XCTAssertEqual(cdM.messageID, pantomimeMail.messageID())
-
-            let errorContainer = TestErrorContainer()
-            let decOp = DecryptMessageOperation(cdMessageToDecryptObjectId: cdM.objectID,
-                                                errorContainer: errorContainer)
-
-            let bgQueue = OperationQueue()
-            bgQueue.addOperation(decOp)
-            bgQueue.waitUntilAllOperationsAreFinished()
-            XCTAssertFalse(errorContainer.hasErrors)
-
-            return (mySelf: cdMySelfIdentity, partner: partnerID, message: cdMessage)
-    }
-
-    /**
-     Uses 'cdMessageAndSetUpPepFromMail', but returns the message as 'Message'.
-     */
-    static func setUpPepFromMail(emailFilePath: String)
-        -> (mySelf: Identity, partner: Identity, message: Message)? {
-            guard
-                let (mySelfID, partnerID, cdMessage) =
-                cdMessageAndSetUpPepFromMail(emailFilePath: emailFilePath)
-                else {
-                    return nil
-            }
-            let mySelf = MessageModelObjectUtils.getIdentity(fromCdIdentity: mySelfID)
-            let partner = MessageModelObjectUtils.getIdentity(fromCdIdentity: partnerID)
-            let msg = MessageModelObjectUtils.getMessage(fromCdMessage: cdMessage)
-            return (mySelf: mySelf, partner: partner, message: msg)
-    }
+//    /**
+//     Uses 'cdMessageAndSetUpPepFromMail', but returns the message as 'Message'.
+//     */
+//    static func setUpPepFromMail(emailFilePath: String)
+//        -> (mySelf: Identity, partner: Identity, message: Message)? {
+//            guard
+//                let (mySelfID, partnerID, cdMessage) =
+//                cdMessageAndSetUpPepFromMail(emailFilePath: emailFilePath)
+//                else {
+//                    return nil
+//            }
+//            let mySelf = MessageModelObjectUtils.getIdentity(fromCdIdentity: mySelfID)
+//            let partner = MessageModelObjectUtils.getIdentity(fromCdIdentity: partnerID)
+//            let msg = MessageModelObjectUtils.getMessage(fromCdMessage: cdMessage)
+//            return (mySelf: mySelf, partner: partner, message: msg)
+//    }
 
     //!!!: only used by MessagePantomimeTests & CdMessage_PantomimeTest. Move to MM with those tests
     /**

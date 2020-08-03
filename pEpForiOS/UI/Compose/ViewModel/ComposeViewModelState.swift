@@ -63,26 +63,26 @@ extension ComposeViewModel {
         var toRecipients = [Identity]() {
             didSet {
                 edited = true
-                validate()
+                validate()//!!!: IOS-2325_!
             }
         }
         var ccRecipients = [Identity]() {
             didSet {
                 edited = true
-                validate()
+                validate()//!!!: IOS-2325_!
             }
         }
         var bccRecipients = [Identity]() {
             didSet {
                 edited = true
-                validate()
+                validate()//!!!: IOS-2325_!
             }
         }
 
         var from: Identity? {
             didSet {
                 edited = true
-                validate()
+                validate()//!!!: IOS-2325_!
             }
         }
 
@@ -151,8 +151,8 @@ extension ComposeViewModel {
             bccWrapped = false
         }
 
-        public func validate() {
-            calculatePepRating()
+        public func validate() {//!!!: IOS-2325_!
+            calculatePepRating()//!!!: IOS-2325_!
             validateForSending()
         }
 
@@ -223,11 +223,18 @@ extension ComposeViewModel.ComposeViewModelState {
         let safeTo = Identity.makeSafe(toRecipients, forSession: session)
         let safeCc = Identity.makeSafe(ccRecipients, forSession: session)
         let safeBcc = Identity.makeSafe(bccRecipients, forSession: session)
-        let pEpsession = PEPSession()
-        rating = pEpsession.outgoingMessageRating(from: safeFrom,
-                                                  to: safeTo,
-                                                  cc: safeCc,
-                                                  bcc: safeBcc)
+
+        PEPAsyncSession().outgoingMessageRating(from: safeFrom, to: safeTo, cc: safeCc, bcc: safeBcc) {
+            [weak self] (outgoingRating) in
+
+            guard let me = self else {
+                // Valiud case. Compose might have been dismissed.
+                return
+            }
+            DispatchQueue.main.async {
+                me.rating = outgoingRating
+            }
+        }
     }
 }
 
@@ -235,19 +242,21 @@ extension ComposeViewModel.ComposeViewModelState {
 
 extension ComposeViewModel.ComposeViewModelState {
 
-    public func canHandshake() -> Bool {
-        return !handshakeActionCombinations().isEmpty
+    public func canHandshake(completion: @escaping (Bool)->Void) {
+        handshakeActionCombinations { (handshakeActionCombinations) in
+            completion(!handshakeActionCombinations.isEmpty)
+        }
     }
 
-    private func handshakeActionCombinations() -> [TrustManagementUtil.HandshakeCombination] {
+    private func handshakeActionCombinations(completion: @escaping ([TrustManagementUtil.HandshakeCombination])->Void) {
         if let from = from {
             var allIdenties = toRecipients
             allIdenties.append(from)
             allIdenties.append(contentsOf: ccRecipients)
             allIdenties.append(contentsOf: bccRecipients)
-            return TrustManagementUtil().handshakeCombinations(identities: allIdenties)
+            TrustManagementUtil().handshakeCombinations(identities: allIdenties, completion: completion)
         } else {
-            return []
+            completion([])
         }
     }
 }

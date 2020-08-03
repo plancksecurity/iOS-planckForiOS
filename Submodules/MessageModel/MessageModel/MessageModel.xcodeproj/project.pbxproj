@@ -118,6 +118,7 @@
 		159AB567235396E1008AB1F3 /* DeleteOutdatedAutoconsumableMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159AB566235396E1008AB1F3 /* DeleteOutdatedAutoconsumableMessagesService.swift */; };
 		159AB56B23539CBA008AB1F3 /* CNContactsAccessPermissionProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159AB56A23539CBA008AB1F3 /* CNContactsAccessPermissionProviderProtocol.swift */; };
 		159B728223F55B9E00F4B0E9 /* PEPRating+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159B728123F55B9E00F4B0E9 /* PEPRating+Utils.swift */; };
+		159BCEB024C6DD2E000E4ED1 /* XCTest+SyncAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159BCEAF24C6DD2E000E4ED1 /* XCTest+SyncAdapter.swift */; };
 		15A3B4D92358498000DB9135 /* CdMessage+Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A3B4D82358497F00DB9135 /* CdMessage+Factory.swift */; };
 		15A3B4DB235862B700DB9135 /* CdAccount+SendServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A3B4DA235862B700DB9135 /* CdAccount+SendServiceProvider.swift */; };
 		15A3B4DD2358710A00DB9135 /* CdAccount+ReplicationServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A3B4DC2358710A00DB9135 /* CdAccount+ReplicationServiceProvider.swift */; };
@@ -584,6 +585,7 @@
 		159AB566235396E1008AB1F3 /* DeleteOutdatedAutoconsumableMessagesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteOutdatedAutoconsumableMessagesService.swift; sourceTree = "<group>"; };
 		159AB56A23539CBA008AB1F3 /* CNContactsAccessPermissionProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CNContactsAccessPermissionProviderProtocol.swift; sourceTree = "<group>"; };
 		159B728123F55B9E00F4B0E9 /* PEPRating+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPRating+Utils.swift"; sourceTree = "<group>"; };
+		159BCEAF24C6DD2E000E4ED1 /* XCTest+SyncAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTest+SyncAdapter.swift"; sourceTree = "<group>"; };
 		15A3B4D82358497F00DB9135 /* CdMessage+Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+Factory.swift"; sourceTree = "<group>"; };
 		15A3B4DA235862B700DB9135 /* CdAccount+SendServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAccount+SendServiceProvider.swift"; sourceTree = "<group>"; };
 		15A3B4DC2358710A00DB9135 /* CdAccount+ReplicationServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAccount+ReplicationServiceProvider.swift"; sourceTree = "<group>"; };
@@ -2150,6 +2152,7 @@
 				153E4E4E1F5039C00021CBD8 /* PersistentStoreDrivenTestBase.swift */,
 				15ECD7051F5430C1002889B8 /* Message+TestUtils.swift */,
 				43607DE023FE870C00FA66B8 /* ClientCertificates+TestUtils.swift */,
+				159BCEAF24C6DD2E000E4ED1 /* XCTest+SyncAdapter.swift */,
 			);
 			path = TestUtils;
 			sourceTree = "<group>";
@@ -2941,6 +2944,7 @@
 				B7FD55D92338D01F00C9FC55 /* IdentityQueryResultsTest.swift in Sources */,
 				152E3C9F231BE34100C1420B /* BackgroundTaskManagerTest.swift in Sources */,
 				B7E02ABF2227F49600741157 /* MessageQueryResultsSearchTest.swift in Sources */,
+				159BCEB024C6DD2E000E4ED1 /* XCTest+SyncAdapter.swift in Sources */,
 				4358A06622A5011F00C49E43 /* MockNotifyHandshakeDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
