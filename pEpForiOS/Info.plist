@@ -6,8 +6,6 @@
 	<string>en_US</string>
 	<key>CFBundleDisplayName</key>
 	<string>p≡p</string>
-	<key>Support Mail</key>
-	<string>support@pep.security</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>

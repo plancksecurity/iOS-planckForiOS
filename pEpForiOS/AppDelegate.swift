@@ -237,11 +237,9 @@ extension AppDelegate {
 
     @discardableResult
     private func handleUrlTheOSHasBroughtUsToForgroundFor(_ url: URL) -> Bool {
-        if let contactSupportMail = InfoPlist.contactSupportMail {
-            if url.absoluteString.range(of: contactSupportMail) != nil {
-                UIUtils.presentComposeViewToSupport(appConfig: appConfig!)
-                return true
-            }
+        if let appConfig = appConfig, url.absoluteString.range(of: Constants.supportMail) != nil {
+            UIUtils.presentComposeViewToSupport(appConfig: appConfig)
+            return true
         }
         switch url.pathExtension {
         case ClientCertificateImportViewController.pEpClientCertificateExtension:

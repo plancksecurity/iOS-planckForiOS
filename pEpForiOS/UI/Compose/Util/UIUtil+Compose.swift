@@ -79,8 +79,8 @@ extension UIUtils {
     // MARK: - Private - ComposeViewModel
 
     private static func composeViewModelForSupport() -> ComposeViewModel {
-        guard let mail = InfoPlist.contactSupportMail,
-            let url = URL(string:"mailto:\(mail)"),
+        let mail = Constants.supportMail
+        guard let url = URL(string:"mailto:\(mail)"),
             let address = url.firstRecipientAddress() else {
             Log.shared.errorAndCrash("Mail not found")
             return ComposeViewModel()
