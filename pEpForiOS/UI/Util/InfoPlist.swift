@@ -14,11 +14,15 @@ struct InfoPlist {
         return Bundle.main.infoDictionary
     }
 
-    static public var contactSupportMail: String? {
-        guard let mail = mainBundleInfoDictValue(forKey: "Support Mail") as? String else {
+    static public var pEpScheme: String? {
+        guard let urlTypes = mainBundleInfoDictValue(forKey: "CFBundleURLTypes") as? NSMutableArray,
+            let first = urlTypes.firstObject as? NSMutableDictionary,
+            let scheme = first.object(forKey: "CFBundleURLSchemes") as? NSMutableArray
+        else {
             return nil
         }
-        return mail
+
+        return scheme.firstObject as? String
     }
 
     static public func mainBundleVersion() -> String? {

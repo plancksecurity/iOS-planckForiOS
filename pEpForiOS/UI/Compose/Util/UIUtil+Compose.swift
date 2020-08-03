@@ -53,25 +53,11 @@ extension UIUtils {
                 Log.shared.errorAndCrash("Missing required data")
                 return
         }
-        composeVc.viewModel = composeViewModel(forRecipientWithAddress: address)
-        composeVc.appConfig = appConfig
-        present(composeNavigationController: composeNavigationController)
-    }
-
-    /// Modally presents a "Compose New Mail" view to contact support
-    /// - Parameter appConfig: AppConfig to forward
-    static public func presentComposeViewToSupport(appConfig: AppConfig) {
-        let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
-        guard
-            let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
-                Constants.composeSceneStoryboardId) as? UINavigationController,
-            let composeVc = composeNavigationController.rootViewController
-                as? ComposeTableViewController
-            else {
-                Log.shared.errorAndCrash("Missing required data")
-                return
+        if address == Constants.supportMail {
+            composeVc.viewModel = composeViewModelForSupport()
+        } else {
+            composeVc.viewModel = composeViewModel(forRecipientWithAddress: address)
         }
-        composeVc.viewModel = composeViewModelForSupport()
         composeVc.appConfig = appConfig
         present(composeNavigationController: composeNavigationController)
     }
