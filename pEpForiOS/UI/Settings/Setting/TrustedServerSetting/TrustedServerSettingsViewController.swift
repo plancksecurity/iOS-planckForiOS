@@ -140,19 +140,18 @@ extension TrustedServerSettingsViewController {
 
         let cancelActionTitle = NSLocalizedString("Cancel",
                                                   comment: "Alert cancel button title before trusting an account")
-        let cancelAction = PEPUIAlertAction(title: cancelActionTitle,
-                                            style: .pEpBlue,
-                                            handler: { [weak self] _ in
-                                                guard let me = self else {
-                                                    Log.shared.lostMySelf()
-                                                    return
-                                                }
-                                                guard let trustCell = me.tableView.cellForRow(at: indexPath) as? TrustedServerSettingCell else {
-                                                    Log.shared.errorAndCrash("Fail to get TrustedServerSettingCell")
-                                                    return
-                                                }
-                                                trustCell.onOfSwitch.setOn(false, animated: true)
-                                                pepAlert?.dismiss()
+        let cancelAction = PEPUIAlertAction(title: cancelActionTitle, style: .pEpBlue, handler: {
+            [weak self] _ in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            guard let trustCell = me.tableView.cellForRow(at: indexPath) as? TrustedServerSettingCell else {
+                Log.shared.errorAndCrash("Fail to get TrustedServerSettingCell")
+                return
+            }
+            trustCell.onOfSwitch.setOn(true, animated: true)
+            pepAlert?.dismiss()
         })
 
         let trustActionTitle = NSLocalizedString("Trust",
