@@ -59,7 +59,9 @@ final class AccountSettingsViewModel {
         self.account = account
         self.delegate = delegate
         pEpSync = (try? account.isKeySyncEnabled()) ?? false
-        includeInUnifiedFolders = account.isIncludedInUnifiedFolders
+        //TODO: fixme -mb
+//        includeInUnifiedFolders = account.isIncludedInUnifiedFolders
+        includeInUnifiedFolders = true
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         self.generateSections()
     }
@@ -187,7 +189,8 @@ extension AccountSettingsViewModel {
 
     public func handleSwitchChanged(isIncludedInUnifiedFolders: Bool) {
         includeInUnifiedFolders = isIncludedInUnifiedFolders
-        account.isIncludedInUnifiedFolders = isIncludedInUnifiedFolders
+        //TODO: fixme -mb
+//        account.isIncludedInUnifiedFolders = isIncludedInUnifiedFolders
     }
 
     /// [En][Dis]able the pEpSync status

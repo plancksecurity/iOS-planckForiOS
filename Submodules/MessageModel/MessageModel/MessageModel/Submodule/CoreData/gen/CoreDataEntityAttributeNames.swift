@@ -4,7 +4,6 @@ extension CdAccount {
 
     /// All attribute names as constant String
     public struct AttributeName {
-        static public let isIncludedInUnifiedFolders = "isIncludedInUnifiedFolders"
     }
 
     /// All relationship names as constant String
