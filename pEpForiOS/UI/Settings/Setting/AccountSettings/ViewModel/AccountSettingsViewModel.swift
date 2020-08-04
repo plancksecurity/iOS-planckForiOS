@@ -12,10 +12,12 @@ import pEpIOSToolbox
 
 ///Delegate protocol to communicate to the Account Settings View Controller
 protocol AccountSettingsViewModelDelegate: class {
-    func showErrorAlert(error: Error)
+    //Changes loading view visibility
+    func setLoadingView(visible: Bool)
+    /// Shows an alert
+    func showAlert(error: Error)
+    /// Undo the last Pep Sync Change
     func undoPEPSyncToggle()
-    func showLoadingView()
-    func hideLoadingView()
 }
 
 /// Protocol that represents the basic data in a row.
@@ -172,7 +174,7 @@ extension AccountSettingsViewModel {
     /// Handle the Reset Identity action
     /// This resets all the keys of the current account and informs if it fails.
     public func handleResetIdentity() {
-        delegate?.showLoadingView()
+        delegate?.setLoadingView(visible: true)
         account.resetKeys() { [weak self] result in
             guard let me = self else {
                 Log.shared.lostMySelf()
@@ -180,16 +182,20 @@ extension AccountSettingsViewModel {
             }
             switch result {
             case .success():
-                me.delegate?.hideLoadingView()
+                me.delegate?.setLoadingView(visible: false)
             case .failure(let error):
-                me.delegate?.hideLoadingView()
-                me.delegate?.showErrorAlert(error: error)
+                me.delegate?.setLoadingView(visible: false)
+                me.delegate?.showAlert(error: error)
                 Log.shared.errorAndCrash("Fail to reset identity, with error %@ ",
                                          error.localizedDescription)
             }
         }
     }
 
+    /// [En][Dis]able the pEpSync status
+    /// - Parameter enable: The new value.
+    /// If the action fails, the undo method from delegate will be
+    /// called and an error will be shown.
     public func pEpSync(enable: Bool) {
         account.setKeySyncEnabled(enable: enable,
                                   errorCallback: { [weak self] error in
@@ -199,7 +205,7 @@ extension AccountSettingsViewModel {
                                             return
                                         }
                                         me.delegate?.undoPEPSyncToggle()
-                                        me.delegate?.showErrorAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
+                                        me.delegate?.showAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
                                     }
             }, successCallback: {})
     }
@@ -347,9 +353,11 @@ extension AccountSettingsViewModel {
                                             // Valid case. We might have been dismissed.
                                             return
                                         }
-                                        me.account.setKeySyncEnabled(enable: enable, errorCallback: { (<#Error?#>) in
-                                            me.delegate?.undoPEPSyncToggle()
-                                            me.delegate?.showErrorAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
+                                        me.account.setKeySyncEnabled(enable: enable, errorCallback: { (error) in
+                                            if error != nil {
+                                                me.delegate?.undoPEPSyncToggle()
+                                                me.delegate?.showAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
+                                            }
                                         }) {
                                             // Nothing to do.
                                         }
@@ -406,5 +414,28 @@ extension AccountSettingsViewModel {
                           title: rowTitle(for: type),
                           text: value,
                           cellIdentifier: CellsIdentifiers.displayCell)
+    }
+
+}
+
+// MARK: - Key Sync
+
+extension AccountSettingsViewModel {
+
+    /// Request if key sync is enabled for the current account
+    /// The callbacks will be executed in the main thread.
+    /// - Parameters:
+    ///   - errorCallback: The error callback
+    ///   - successCallback: The success callback
+    public func isKeySyncEnabled(errorCallback: @escaping (Error) -> (), successCallback: @escaping (Bool) -> ()) {
+        account.isKeySyncEnabled(errorCallback: { (error) in
+            DispatchQueue.main.async {
+                errorCallback(error)
+            }
+        }) { (value) in
+            DispatchQueue.main.async {
+                successCallback(value)
+            }
+        }
     }
 }

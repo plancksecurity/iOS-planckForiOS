@@ -176,7 +176,17 @@ extension AccountSettingsViewController : UITableViewDataSource {
             }
             dequeuedCell.configure(with: row, isGrayedOut : !vm.isPEPSyncGrayedOut())
             dequeuedCell.delegate = self
-            //BUFF: MARTIN: Leave this comment to tripple check switch on/off is setup async correctly
+            vm.isKeySyncEnabled(errorCallback: { [weak self] (error) in
+                guard let me = self else {
+                    Log.shared.error("Lost myself")
+                    return
+                }
+                dequeuedCell.switchItem.isOn = false
+                me.showAlert(error: error)
+            }) { (value) in
+                dequeuedCell.switchItem.isOn = value
+            }
+        //BUFF: MARTIN: Leave this comment to tripple check switch on/off is setup async correctly
             return dequeuedCell
         case .reset:
             guard let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
@@ -228,6 +238,11 @@ extension AccountSettingsViewController : UITableViewDataSource {
 //MARK : - ViewModel Delegate
 
 extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
+    func showErrorAlert(error: Error) {
+        Log.shared.error("%@", "\(error)")
+        UIUtils.show(error: error)
+    }
+
     func setLoadingView(visible: Bool) {
         DispatchQueue.main.async {
             if visible {
@@ -254,7 +269,10 @@ extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
                 Log.shared.errorAndCrash("VM is nil")
                 return
             }
-            vm.pEpSync(enable: !vm.pEpSync)
+            vm.isPEPSyncEnabled { (value) in
+                vm.pEpSync(enable: !value)
+            }
+
             me.tableView.reloadData()
         }
     }
