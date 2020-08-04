@@ -178,7 +178,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
             dequeuedCell.delegate = self
             vm.isKeySyncEnabled(errorCallback: { [weak self] (error) in
                 guard let me = self else {
-                    Log.shared.error("Lost myself")
+                    //Valid case: the view might be dismissed.
                     return
                 }
                 dequeuedCell.switchItem.isOn = false
