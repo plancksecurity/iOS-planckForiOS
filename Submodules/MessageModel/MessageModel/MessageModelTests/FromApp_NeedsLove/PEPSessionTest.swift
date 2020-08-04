@@ -33,7 +33,6 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
         message.replaceCc(with: [account.user])
         message.parent = folder
         message.sent = Date()
-        message.save()
         message.session.commit()
         guard let first = CdMessage.first(in: moc) else {
             XCTFail("No messages ...")

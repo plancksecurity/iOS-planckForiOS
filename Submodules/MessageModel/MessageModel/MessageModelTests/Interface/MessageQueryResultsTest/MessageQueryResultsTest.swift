@@ -388,7 +388,7 @@ class MessageQueryResultTest: PersistentStoreDrivenTestBase {
         let messages = createCdMessages(numMessages: 20, cdFolder: cdFolder1, context: moc)
 
         let newFolder = Folder(name: "Spam", parent: nil, account: cdFolder1.account!.account(), folderType: FolderType.spam)
-        newFolder.save()
+        newFolder.session.commit()
 
         let exp = expectation(description: "delegate called for didDelete")
         let delegateTest = MessageQueryResultsTestDelegate(withExp: exp,

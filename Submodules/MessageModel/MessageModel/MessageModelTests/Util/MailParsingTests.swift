@@ -32,76 +32,42 @@ class MailParsingTests: PersistentStoreDrivenTestBase {
     }
 
     // Must be moved to MM.
-//    func testParseUndisplayableHTMLMessage() {
-//        let pEpMySelfIdentity = cdAccount.pEpIdentity()
-//
-//        pEpMySelfIdentity = mySelf(for: pEpMySelfIdentity)
-//        XCTAssertNotNil(pEpMySelfIdentity.fingerPrint)
-//
-//        guard let cdMessage = TestUtil.cdMessage(fileName: "Undisplayable_HTML_Message.txt",
-//                                                 cdOwnAccount: cdAccount)
-//            else {
-//                XCTFail()
-//                return
-//        }
-//
-//        let pEpMessage = cdMessage.pEpMessage(outgoing: true)
-//
-//        let theAttachments = pEpMessage.attachments ?? []
-//        XCTAssertEqual(theAttachments.count, 2)
-//        XCTAssertEqual(theAttachments[0].mimeType, "image/jpeg")
-//        XCTAssertEqual(theAttachments[1].mimeType, "image/png")
-//
-//        XCTAssertEqual(pEpMessage.shortMessage, "Sendung von BlahTex BlahBlah AG - zugestellt")
-//        XCTAssertNil(pEpMessage.longMessage)
-//
-//        guard let htmlMessage = pEpMessage.longMessageFormatted else {
-//            XCTFail()
-//            return
-//        }
-//
-//        XCTAssertTrue(htmlMessage.contains("Guten Tag Herr Müller"))
-//        XCTAssertTrue(htmlMessage.contains(find: "Sendungsnummer"))
-//        XCTAssertTrue(htmlMessage.contains(find: "585862075329118547"))
-//    }
-
-        let session = PEPSession()
-        try! session.mySelf(pEpMySelfIdentity)
-        XCTAssertNotNil(pEpMySelfIdentity.fingerPrint)
-
-        guard let cdMessage = TestUtil.cdMessage(testClass: MailParsingTests.self,
-                                                 fileName: "HandshakeTests_mail_001.txt",
-                                                 cdOwnAccount: cdAccount)
-            else {
-                XCTFail()
-                return
-        }
-
-        let pEpMessage = cdMessage.pEpMessage(outgoing: true)
-
-        let theAttachments = pEpMessage.attachments ?? []
-        XCTAssertEqual(theAttachments.count, 1)
-        XCTAssertEqual(theAttachments[0].mimeType, ContentTypeUtils.ContentType.pgpKeys)
-
-        guard let optFields = pEpMessage.optionalFields else {
-            XCTFail("expected optional_fields to be defined")
-            return
-        }
-        var foundXpEpVersion = false
-        for innerArray in optFields {
-            if innerArray.count == 2 {
-                if innerArray[0] == "X-pEp-Version" {
-                    foundXpEpVersion = true
-                }
-            } else {
-                XCTFail("corrupt optional fields element")
-            }
-        }
-        XCTAssertTrue(foundXpEpVersion)
-    }
+    //    func testParseUndisplayableHTMLMessage() {
+    //        let pEpMySelfIdentity = cdAccount.pEpIdentity()
+    //
+    //        pEpMySelfIdentity = mySelf(for: pEpMySelfIdentity)
+    //        XCTAssertNotNil(pEpMySelfIdentity.fingerPrint)
+    //
+    //        guard let cdMessage = TestUtil.cdMessage(fileName: "Undisplayable_HTML_Message.txt",
+    //                                                 cdOwnAccount: cdAccount)
+    //            else {
+    //                XCTFail()
+    //                return
+    //        }
+    //
+    //        let pEpMessage = cdMessage.pEpMessage(outgoing: true)
+    //
+    //        let theAttachments = pEpMessage.attachments ?? []
+    //        XCTAssertEqual(theAttachments.count, 2)
+    //        XCTAssertEqual(theAttachments[0].mimeType, "image/jpeg")
+    //        XCTAssertEqual(theAttachments[1].mimeType, "image/png")
+    //
+    //        XCTAssertEqual(pEpMessage.shortMessage, "Sendung von BlahTex BlahBlah AG - zugestellt")
+    //        XCTAssertNil(pEpMessage.longMessage)
+    //
+    //        guard let htmlMessage = pEpMessage.longMessageFormatted else {
+    //            XCTFail()
+    //            return
+    //        }
+    //
+    //        XCTAssertTrue(htmlMessage.contains("Guten Tag Herr Müller"))
+    //        XCTAssertTrue(htmlMessage.contains(find: "Sendungsnummer"))
+    //        XCTAssertTrue(htmlMessage.contains(find: "585862075329118547"))
+    //    }
+}
 
 
-    // Must be moved to MM.
+// Must be moved to MM.
 //    /**
 //     IOS-1364
 //     */
@@ -133,4 +99,3 @@ class MailParsingTests: PersistentStoreDrivenTestBase {
 //            }
 //        }
 //    }
-}
