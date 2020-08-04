@@ -12,7 +12,7 @@ import pEpIOSToolbox
 
 ///Delegate protocol to communicate to the Account Settings View Controller
 protocol AccountSettingsViewModelDelegate: class {
-    //Changes loading view visibility
+    /// Changes loading view visibility
     func setLoadingView(visible: Bool)
     /// Shows an alert
     func showAlert(error: Error)
@@ -22,7 +22,7 @@ protocol AccountSettingsViewModelDelegate: class {
 
 /// Protocol that represents the basic data in a row.
 protocol AccountSettingsRowProtocol {
-    // The type of the row
+    /// The type of the row
     var type : AccountSettingsViewModel.RowType { get }
     /// The title of the row.
     var title: String { get }
@@ -94,14 +94,14 @@ extension AccountSettingsViewModel {
     }
 
     /// Identifies the section in the table view.
-     public enum SectionType : String, CaseIterable {
+    public enum SectionType : String, CaseIterable {
         case account
         case imap
         case smtp
     }
 
     /// Struct that represents a section in Account Settings View Controller
-     public struct Section {
+    public struct Section {
         /// Title of the section
         var title: String
         /// list of rows in the section
@@ -128,7 +128,7 @@ extension AccountSettingsViewModel {
     }
 
     /// Struct that is used to display information in Account Settings View Controller
-     public struct DisplayRow: AccountSettingsRowProtocol {
+    public struct DisplayRow: AccountSettingsRowProtocol {
         /// The row type
         var type: AccountSettingsViewModel.RowType
         /// The title of the row
@@ -143,7 +143,7 @@ extension AccountSettingsViewModel {
 
     /// Struct that is used to perform an action.
     /// Represents a ActionRow in in Account Settings View Controller
-     public struct ActionRow: AccountSettingsRowProtocol {
+    public struct ActionRow: AccountSettingsRowProtocol {
         /// The type of the row.
         var type: AccountSettingsViewModel.RowType
         /// Title of the action row
@@ -347,20 +347,13 @@ extension AccountSettingsViewModel {
             // pepSync
             let switchRow = SwitchRow(type: .pepSync,
                                       title: rowTitle(for: .pepSync),
-                                      isOn: true, // Will be set async in VC setupCell //BUFF: HANDLE!
-                                      action: { [weak self] (enable) in
-                                        guard let me = self else {
-                                            // Valid case. We might have been dismissed.
-                                            return
-                                        }
-                                        me.account.setKeySyncEnabled(enable: enable, errorCallback: { (error) in
-                                            if error != nil {
-                                                me.delegate?.undoPEPSyncToggle()
-                                                me.delegate?.showAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
-                                            }
-                                        }) {
-                                            // Nothing to do.
-                                        }
+                                      isOn: true,
+                action: { [weak self] (enable) in
+                    guard let me = self else {
+                        // Valid case. We might have been dismissed.
+                        return
+                    }
+                    me.pEpSync(enable: enable)
                 }, cellIdentifier: CellsIdentifiers.switchCell)
             rows.append(switchRow)
 
