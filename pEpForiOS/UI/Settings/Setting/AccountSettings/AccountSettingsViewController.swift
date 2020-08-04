@@ -178,7 +178,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
             dequeuedCell.delegate = self
             vm.isKeySyncEnabled(errorCallback: { [weak self] (error) in
                 guard let me = self else {
-                    //Valid case: the view might be dismissed.
+                    // Valid case. We might have been dismissed.
                     return
                 }
                 dequeuedCell.switchItem.isOn = false
@@ -186,7 +186,6 @@ extension AccountSettingsViewController : UITableViewDataSource {
             }) { (value) in
                 dequeuedCell.switchItem.isOn = value
             }
-        //BUFF: MARTIN: Leave this comment to tripple check switch on/off is setup async correctly
             return dequeuedCell
         case .reset:
             guard let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
@@ -198,7 +197,6 @@ extension AccountSettingsViewController : UITableViewDataSource {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
             }
-            //Appearance.configureSelectedBackgroundViewForPep(tableViewCell: dequeuedCell)
             dequeuedCell.configure(with: row)
             return dequeuedCell
         case .oauth2Reauth:
@@ -238,10 +236,6 @@ extension AccountSettingsViewController : UITableViewDataSource {
 //MARK : - ViewModel Delegate
 
 extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
-    func showErrorAlert(error: Error) {
-        Log.shared.error("%@", "\(error)")
-        UIUtils.show(error: error)
-    }
 
     func setLoadingView(visible: Bool) {
         DispatchQueue.main.async {
@@ -254,28 +248,18 @@ extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
     }
 
     func showAlert(error: Error) {
-        Log.shared.error("%@", "\(error)")
         UIUtils.show(error: error)
     }
 
-    /// Undo the pEp sync state
-    func undoPEPSyncToggle() {
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
-            }
-            guard let vm = me.viewModel else {
-                Log.shared.errorAndCrash("VM is nil")
-                return
-            }
-            vm.isPEPSyncEnabled { (value) in
-                vm.pEpSync(enable: !value)
-            }
-
-            me.tableView.reloadData()
-        }
-    }
+     func undoPEPSyncToggle() {
+           DispatchQueue.main.async { [weak self] in
+               guard let me = self else {
+                   Log.shared.lostMySelf()
+                   return
+               }
+               me.keySyncSwitch.setOn(!me.keySyncSwitch.isOn, animated: true)
+           }
+       }
 }
 
 //MARK : - Identity
