@@ -54,7 +54,7 @@ class FolderTest: PersistentStoreDrivenTestBase {
         let result = drafts.folder().countUnread
         XCTAssertEqual(result, 1)
 
-        //Test for UnifiedInboxmmm
+        //Test for UnifiedInbox
         //Only one unread mail in draft
 
         XCTAssertEqual(Folder.countUnreadIn(foldersOfType: .inbox), 0)

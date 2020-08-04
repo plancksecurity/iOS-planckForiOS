@@ -47,20 +47,19 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
         XCTAssertEqual(viewModel.pEpSync, boolValue)
     }
 
-
     func testIsIncludeInUnifiedFolders() {
         //Test state True by default
         XCTAssertEqual(viewModel.includeInUnifiedFolders, true)
 
         //Test set to false
-        var boolValue = false
-        viewModel.includeInUnifiedFolders(boolValue)
-        XCTAssertEqual(viewModel.includeInUnifiedFolders, boolValue)
+        var includedInUnifiedFolders = false
+        viewModel.handleSwitchChanged(isIncludedInUnifiedFolders: includedInUnifiedFolders)
+        XCTAssertEqual(viewModel.includeInUnifiedFolders, includedInUnifiedFolders)
 
         //Test set to true
-        boolValue = true
-        viewModel.includeInUnifiedFolders(boolValue)
-        XCTAssertEqual(viewModel.includeInUnifiedFolders, boolValue)
+        includedInUnifiedFolders = true
+        viewModel.handleSwitchChanged(isIncludedInUnifiedFolders: includedInUnifiedFolders)
+        XCTAssertEqual(viewModel.includeInUnifiedFolders, includedInUnifiedFolders)
     }
 
     func testHandleResetIdentity() {

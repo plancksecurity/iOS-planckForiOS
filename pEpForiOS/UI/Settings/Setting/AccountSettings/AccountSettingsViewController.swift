@@ -148,7 +148,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
             }
-            dequeuedCell.configure(with: row, isEnabled : !vm.isPEPSyncGrayedOut())
+            dequeuedCell.configure(with: row, isGrayedOut : !vm.isPEPSyncGrayedOut())
             dequeuedCell.delegate = self
             return dequeuedCell
         case .reset:
@@ -185,7 +185,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
             }
-            dequeuedCell.configure(with: row, isEnabled : true)
+            dequeuedCell.configure(with: row)
             dequeuedCell.delegate = self
             return dequeuedCell
         }
@@ -353,7 +353,7 @@ extension AccountSettingsViewController: AccountSettingsSwitchTableViewCellDeleg
             vm.pEpSync(enable: newValue)
         }
         if rowType == .includeInUnified {
-            vm.includeInUnifiedFolders(newValue)
+            vm.handleSwitchChanged(isIncludedInUnifiedFolders: newValue)
             guard let folderTableViewController = navigationController?.child(ofType: FolderTableViewController.self) else {
                 Log.shared.errorAndCrash("FolderTableViewController not found in hierarchy")
                 return
