@@ -12,10 +12,12 @@ import pEpIOSToolbox
 
 ///Delegate protocol to communicate to the Account Settings View Controller
 protocol AccountSettingsViewModelDelegate: class {
-    func showErrorAlert(error: Error)
+    //Changes loading view visibility
+    func setLoadingView(visible: Bool)
+    /// Shows an alert
+    func showAlert(error: Error)
+    /// Undo the last Pep Sync Change
     func undoPEPSyncToggle()
-    func showLoadingView()
-    func hideLoadingView()
 }
 
 /// Protocol that represents the basic data in a row.
@@ -40,6 +42,7 @@ final class AccountSettingsViewModel {
     ///         for the verification be able to succeed.
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
+    private(set) var pEpSync: Bool
     private let isOAuth2: Bool
     private(set) var account: Account
     public weak var delegate: AccountSettingsViewModelDelegate?
@@ -54,20 +57,9 @@ final class AccountSettingsViewModel {
     init(account: Account, delegate: AccountSettingsViewModelDelegate? = nil) {
         self.account = account
         self.delegate = delegate
+        pEpSync = (try? account.isKeySyncEnabled()) ?? false
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         self.generateSections()
-    }
-
-    public func isPEPSyncEnabled(completion: @escaping (Bool) -> ()) {
-        account.isKeySyncEnabled(errorCallback: { (_) in
-            DispatchQueue.main.async {
-                completion(false)
-            }
-        }) { (isEnabled) in
-            DispatchQueue.main.async {
-                completion(isEnabled)
-            }
-        }
     }
 }
 
@@ -172,7 +164,7 @@ extension AccountSettingsViewModel {
     /// Handle the Reset Identity action
     /// This resets all the keys of the current account and informs if it fails.
     public func handleResetIdentity() {
-        delegate?.showLoadingView()
+        delegate?.setLoadingView(visible: true)
         account.resetKeys() { [weak self] result in
             guard let me = self else {
                 Log.shared.lostMySelf()
@@ -180,28 +172,28 @@ extension AccountSettingsViewModel {
             }
             switch result {
             case .success():
-                me.delegate?.hideLoadingView()
+                me.delegate?.setLoadingView(visible: false)
             case .failure(let error):
-                me.delegate?.hideLoadingView()
-                me.delegate?.showErrorAlert(error: error)
+                me.delegate?.setLoadingView(visible: false)
+                me.delegate?.showAlert(error: error)
                 Log.shared.errorAndCrash("Fail to reset identity, with error %@ ",
                                          error.localizedDescription)
             }
         }
     }
 
+    /// [En][Dis]able the pEpSync status
+    /// - Parameter enable: The new value.
+    /// If the action fails, the undo method from delegate will be
+    /// called and an error will be shown.
     public func pEpSync(enable: Bool) {
-        account.setKeySyncEnabled(enable: enable,
-                                  errorCallback: { [weak self] error in
-                                    DispatchQueue.main.async {
-                                        guard let me = self else {
-                                            // UI, this can happen
-                                            return
-                                        }
-                                        me.delegate?.undoPEPSyncToggle()
-                                        me.delegate?.showErrorAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
-                                    }
-            }, successCallback: {})
+        do {
+            try account.setKeySyncEnabled(enable: enable)
+            pEpSync = enable
+        } catch {
+            delegate?.undoPEPSyncToggle()
+            delegate?.showAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
+        }
     }
 
     /// Indicates if pep synd has to be grayed out.
@@ -341,17 +333,21 @@ extension AccountSettingsViewModel {
             // pepSync
             let switchRow = SwitchRow(type: .pepSync,
                                       title: rowTitle(for: .pepSync),
-                                      isOn: true, // Will be set async in VC setupCell //BUFF: HANDLE!
+                                      isOn: pEpSync,
                                       action: { [weak self] (enable) in
-                                        guard let me = self else {
-                                            // Valid case. We might have been dismissed.
-                                            return
-                                        }
-                                        me.account.setKeySyncEnabled(enable: enable, errorCallback: { (<#Error?#>) in
+                                        do {
+                                            guard let me = self else {
+                                                Log.shared.error("Lost myself")
+                                                return
+                                            }
+                                            try me.account.setKeySyncEnabled(enable: enable)
+                                        } catch {
+                                            guard let me = self else {
+                                                Log.shared.error("Lost myself")
+                                                return
+                                            }
                                             me.delegate?.undoPEPSyncToggle()
-                                            me.delegate?.showErrorAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
-                                        }) {
-                                            // Nothing to do.
+                                            me.delegate?.showAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
                                         }
                 }, cellIdentifier: CellsIdentifiers.switchCell)
             rows.append(switchRow)

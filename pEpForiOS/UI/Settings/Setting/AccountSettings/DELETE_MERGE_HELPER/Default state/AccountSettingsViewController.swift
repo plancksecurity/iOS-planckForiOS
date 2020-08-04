@@ -14,32 +14,6 @@ import pEpIOSToolbox
 final class AccountSettingsViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
 
-    //general account fields
-    @IBOutlet weak var nameTextfield: UITextField!
-    @IBOutlet weak var emailTextfield: UITextField!
-    @IBOutlet weak var passwordTextfield: UITextField!
-    @IBOutlet weak var resetIdentityLabel: UILabel!
-    @IBOutlet weak var keySyncLabel: UILabel!
-    @IBOutlet weak var keySyncSwitch: UISwitch!
-    @IBOutlet weak var certificateLabel: UITextField!
-    //imap fields
-    @IBOutlet weak var imapServerTextfield: UITextField!
-    @IBOutlet weak var imapPortTextfield: UITextField!
-    @IBOutlet weak var imapSecurityTextfield: UITextField!
-    @IBOutlet weak var imapUsernameTextField: UITextField!
-    //smtp account fields
-    @IBOutlet weak var smtpServerTextfield: UITextField!
-    @IBOutlet weak var smtpPortTextfield: UITextField!
-    @IBOutlet weak var smtpSecurityTextfield: UITextField!
-    @IBOutlet weak var smtpUsernameTextField: UITextField!
-
-    @IBOutlet weak var certificateTableViewCell: UITableViewCell!
-    @IBOutlet weak var passwordTableViewCell: UITableViewCell!
-    @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
-    @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var resetIdentityCell: UITableViewCell!
-    @IBOutlet weak var switchKeySyncCell: UITableViewCell!
-
     // MARK: - Variables
     private let oauthViewModel = OAuthAuthorizer()
 
@@ -176,7 +150,6 @@ extension AccountSettingsViewController : UITableViewDataSource {
             }
             dequeuedCell.configure(with: row, isGrayedOut : !vm.isPEPSyncGrayedOut())
             dequeuedCell.delegate = self
-            //BUFF: MARTIN: Leave this comment to tripple check switch on/off is setup async correctly
             return dequeuedCell
         case .reset:
             guard let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
