@@ -140,7 +140,7 @@ extension TrustedServerSettingsViewController {
 
         let cancelActionTitle = NSLocalizedString("Cancel",
                                                   comment: "Alert cancel button title before trusting an account")
-        let cancelAction = PEPUIAlertAction(title: cancelActionTitle, style: .pEpBlue, handler: {
+        let cancelAction = PEPUIAlertAction(title: cancelActionTitle, style: .pEpBlue) {
             [weak self] _ in
             guard let me = self else {
                 Log.shared.lostMySelf()
@@ -152,13 +152,12 @@ extension TrustedServerSettingsViewController {
             }
             trustCell.onOfSwitch.setOn(true, animated: true)
             pepAlert?.dismiss()
-        })
+        }
 
         let trustActionTitle = NSLocalizedString("Trust",
                                                  comment: "Alert trust button title before trusting an account")
         let trustAction = PEPUIAlertAction(title: trustActionTitle,
-                                           style: .pEpRed,
-                                           handler: { [weak self] _ in
+                                           style: .pEpRed) { [weak self] _ in
                                             guard let me = self else {
                                                 Log.shared.lostMySelf()
                                                 pepAlert?.dismiss()
@@ -166,7 +165,7 @@ extension TrustedServerSettingsViewController {
                                             }
                                             me.viewModel.setStoreSecurely(indexPath: indexPath, toValue: false)
                                             pepAlert?.dismiss()
-        })
+        }
         pepAlert?.add(action: cancelAction)
         pepAlert?.add(action: trustAction)
 
