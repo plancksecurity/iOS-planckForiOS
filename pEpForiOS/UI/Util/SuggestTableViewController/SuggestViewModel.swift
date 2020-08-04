@@ -58,7 +58,9 @@ class SuggestViewModel {
             }
             let to = Identity(address: email)
             PEPAsyncSession().outgoingMessageRating(from: from, to: [to], cc: [], bcc: []) { (rating) in
-                completion(rating.pEpColor().statusIconInContactPicture())
+                DispatchQueue.main.async {
+                    completion(rating.pEpColor().statusIconInContactPicture())
+                }
             }
         }
     }

@@ -25,7 +25,7 @@ class PEPWebViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         showNavigationBar()
-//        urlClickHandler = UrlClickHandler()
+        urlClickHandler = UrlClickHandler()
     }
 
     override func loadView() {
