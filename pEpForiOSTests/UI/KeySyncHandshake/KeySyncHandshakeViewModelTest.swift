@@ -19,7 +19,7 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        keySyncHandshakeVM = KeySyncHandshakeViewModel(pEpSession: PEPSessionMoc())
+        keySyncHandshakeVM = KeySyncHandshakeViewModel()
         keySyncHandshakeVM?.setFingerPrints(meFPR: "", partnerFPR: "", isNewGroup: true)
         keySyncHandshakeVM?.delegate = self
 
@@ -186,12 +186,19 @@ extension KeySyncHandshakeViewModelTest {
     }
 
     private func pEpSessionMocLanaguages() -> [PEPLanguage] {
-        do {
-            return try PEPSessionMoc().languageList()
-        } catch {
-            XCTFail("No languages from pepSessionMoc")
-            return []
+        var languages = [PEPLanguage]()
+
+        let expHaveLanguages = expectation(description: "expHaveLanguages")
+        PEPAsyncSession().languageList({ error in
+            XCTFail()
+            expHaveLanguages.fulfill()
+        }) { langs in
+            languages = langs
+            expHaveLanguages.fulfill()
         }
+        wait(for: [expHaveLanguages], timeout: TestUtil.waitTime)
+
+        return languages
     }
 }
 

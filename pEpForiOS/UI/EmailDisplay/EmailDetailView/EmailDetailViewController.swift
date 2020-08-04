@@ -326,15 +326,24 @@ extension EmailDetailViewController {
             // List is empty. That is ok. The user might have deleted the last shown message.
             return
         }
-        guard let ratingView = showNavigationBarSecurityBadge(pEpRating: vm.pEpRating(forItemAt: indexPath)) else {
-            // Nothing to show for current message
-            return
-        }
 
-        if vm.shouldShowPrivacyStatus(forItemAt: indexPath) {
-            let tapGestureRecognizer = UITapGestureRecognizer(target: self,
-                                                              action: #selector(showTrustManagementView(gestureRecognizer:)))
-            ratingView.addGestureRecognizer(tapGestureRecognizer)
+        vm.pEpRating(forItemAt: indexPath) { [weak self] (rating) in
+            guard let me = self else {
+                // Valid case. The user might have dismissed the view meanwhile.
+                // Do nothing.
+                return
+            }
+            guard let ratingView = me.showNavigationBarSecurityBadge(pEpRating: rating) else {
+                // Nothing to show for current message
+                return
+            }
+            vm.shouldShowPrivacyStatus(forItemAt: indexPath) { (shouldShowPrivacyStatus) in
+                if shouldShowPrivacyStatus {
+                    let tapGestureRecognizer = UITapGestureRecognizer(target: me,
+                                                                      action: #selector(me.showTrustManagementView(gestureRecognizer:)))
+                    ratingView.addGestureRecognizer(tapGestureRecognizer)
+                }
+            }
         }
     }
     

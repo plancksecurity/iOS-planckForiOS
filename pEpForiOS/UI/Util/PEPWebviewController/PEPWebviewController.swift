@@ -25,7 +25,7 @@ class PEPWebViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         showNavigationBar()
-//        urlClickHandler = UrlClickHandler()
+        urlClickHandler = UrlClickHandler()
     }
 
     override func loadView() {
@@ -56,8 +56,7 @@ extension PEPWebViewController: WKNavigationDelegate {
             if newURL.scheme == "mailto" {
                 // The user clicked on an email URL.
                 urlClickHandler?.didClickOn(mailToUrlLink: newURL)
-            }
-            if UIApplication.shared.canOpenURL(newURL) {
+            } else if UIApplication.shared.canOpenURL(newURL) {
                 UIApplication.shared.open(newURL, options: [:])
             }
         case .backForward, .formResubmitted, .formSubmitted, .reload:

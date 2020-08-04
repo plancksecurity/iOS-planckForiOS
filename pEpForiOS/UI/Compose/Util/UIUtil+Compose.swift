@@ -66,11 +66,8 @@ extension UIUtils {
             Log.shared.errorAndCrash("Mail not found")
             return ComposeViewModel()
         }
-        var prefilledTo: Identity? = nil
-        let/aw to = Identity(address: address)
-//        to.save()
-        prefilledTo = to
-        var initData = ComposeViewModel.InitData(withPrefilledToRecipient: prefilledTo, composeMode: .normal)
+        let to = Identity(address: address)
+        var initData = ComposeViewModel.InitData(withPrefilledToRecipient: to, composeMode: .normal)
         let deviceField = NSLocalizedString("Device", comment: "Device field, reporting issue")
         initData.bodyPlaintext = "\n\n\(deviceField): \(UIDevice().type.rawValue)" + "\n" + "OS: \(UIDevice.current.systemVersion)"
         let state = ComposeViewModel.ComposeViewModelState(initData: initData)
