@@ -24,24 +24,42 @@ protocol SuggestViewModelDelegate: class {
 
 class SuggestViewModel {
     struct Row {
+        private let from: Identity?
         public let name: String
         public let email: String
         public let addressBookID: String?
 
-        fileprivate init(name: String, email: String, addressBookID: String? = nil) {
-            self.name = name
-            self.email = email
-            self.addressBookID = addressBookID
+        fileprivate init(sender: Identity?,
+                         recipientName: String,
+                         recipientEmail: String,
+                         recipientAddressBookID: String? = nil) {
+            from = sender
+            self.name = recipientName
+            self.email = recipientEmail
+            self.addressBookID = recipientAddressBookID
         }
 
-        fileprivate init(identity: Identity) {
-            name = identity.userName ?? ""
-            email = identity.address
-            addressBookID = identity.addressBookID
+        fileprivate init(sender: Identity?, recipient: Identity) {
+            self.init(sender: sender,
+                      recipientName: recipient.userName ?? "",
+                      recipientEmail: recipient.address,
+                      recipientAddressBookID: recipient.addressBookID)
         }
 
-        static func rows(fromIdentities identities: [Identity]) -> [Row] {
-            return identities.map { Row(identity: $0) }
+        static func rows(forSender sender: Identity, recipients: [Identity]) -> [Row] {
+            return recipients.map { Row(sender: sender, recipient: $0) }
+        }
+
+        public func pEpRatingIcon(completion: @escaping (UIImage?)->Void) {
+            guard let from = from else {
+                Log.shared.errorAndCrash("No From")
+                completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
+                return
+            }
+            let to = Identity(address: email)
+            PEPAsyncSession().outgoingMessageRating(from: from, to: [to], cc: [], bcc: []) { (rating) in
+                completion(rating.pEpColor().statusIconInContactPicture())
+            }
         }
     }
 
@@ -127,7 +145,11 @@ class SuggestViewModel {
             // We found matching Identities in the DB.
             // Show them to the user imediatelly and update the list later when Contacts are
             // fetched too.
-            rows = Row.rows(fromIdentities: identities)
+            guard let from = from else {
+                Log.shared.errorAndCrash("No sender in compose?")
+                return
+            }
+            rows = Row.rows(forSender: from, recipients: identities)
             informDelegatesModelChanged()
         }
 
@@ -142,21 +164,6 @@ class SuggestViewModel {
 
         }
         workQueue.addOperation(op)
-    }
-
-    public func pEpRatingFor(address: String) -> PEPRating {
-
-        guard let from = from else {
-            return .undefined
-        }
-        let to = Identity(address: address)
-        let pEpsession = PEPSession()
-        let rating = pEpsession.outgoingMessageRating(from: from,
-                                                      to: [to],
-                                                      cc: [],
-                                                      bcc: [])
-
-        return rating
     }
 }
 
@@ -183,11 +190,16 @@ extension SuggestViewModel {
         var mergedRows = [Row]()
         session.performAndWait { [weak self] in
             guard let me = self else {
-                Log.shared.lostMySelf()
+                // Valid case. We might have been dismissed.
                 return
             }
             let emailsOfIdentities = identities.map { $0.address }
-            mergedRows = Row.rows(fromIdentities: identities)
+            guard let from = me.from else {
+                Log.shared.errorAndCrash("No sender in compose?")
+                return
+            }
+            mergedRows = Row.rows(forSender: from, recipients: identities)
+
             for contact in contacts {
                 let name = contact.givenName + " " + contact.familyName
                 var contactRowsToAdd = [Row]()
@@ -202,11 +214,11 @@ extension SuggestViewModel {
                         break
                     } else {
                         // No Identity exists for the contact. Show it.
-                        let row = Row(name: name,
-                                      email: email.value as String,
-                                      addressBookID: contact.identifier)
+                        let row = Row(sender: from,
+                                      recipientName: name,
+                                      recipientEmail: email.value as String,
+                                      recipientAddressBookID: contact.identifier)
                         contactRowsToAdd.append(row)
-
                     }
                 }
                 mergedRows.append(contentsOf: contactRowsToAdd)

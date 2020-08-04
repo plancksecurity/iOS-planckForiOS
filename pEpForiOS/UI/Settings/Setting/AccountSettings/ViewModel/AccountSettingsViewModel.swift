@@ -42,7 +42,6 @@ final class AccountSettingsViewModel {
     ///         for the verification be able to succeed.
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
-    private(set) var pEpSync: Bool
     private let isOAuth2: Bool
     private(set) var account: Account
     public weak var delegate: AccountSettingsViewModelDelegate?
@@ -50,17 +49,24 @@ final class AccountSettingsViewModel {
     private(set) var sections: [Section] = [Section]()
     private let oauthViewModel = OAuthAuthorizer()
 
-    /// Constructor
-    /// - Parameters:
-    ///   - account: The account to configure the account settings view model.
-    ///   - delegate: The delegate to communicate to the View Controller.
-    init(account: Account, delegate: AccountSettingsViewModelDelegate? = nil) {
-        self.account = account
-        self.delegate = delegate
-        pEpSync = (try? account.isKeySyncEnabled()) ?? false
+    init(account: Account) {
+        // We are using a copy of the data here.
+        // The outside world must not know changed settings until they have been verified.
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
-        self.generateSections()
+        self.account = account
     }
+
+//    /// Constructor //BUFF: rm
+//    /// - Parameters:
+//    ///   - account: The account to configure the account settings view model.
+//    ///   - delegate: The delegate to communicate to the View Controller.
+//    init(account: Account, delegate: AccountSettingsViewModelDelegate? = nil) {
+//        self.account = account
+//        self.delegate = delegate
+//        pEpSync = (try? account.isKeySyncEnabled()) ?? false
+//        isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
+//        self.generateSections()
+//    }
 }
 
 // MARK: -  enums & structs
@@ -98,6 +104,18 @@ extension AccountSettingsViewModel {
         var rows: [AccountSettingsRowProtocol]
         /// type of the section
         var type: SectionType
+    }
+
+    public func isPEPSyncEnabled(completion: @escaping (Bool) -> ()) {
+        account.isKeySyncEnabled(errorCallback: { (_) in
+            DispatchQueue.main.async {
+                completion(false)
+            }
+        }) { (isEnabled) in
+            DispatchQueue.main.async {
+                completion(isEnabled)
+            }
+        }
     }
 
     /// Struct that is used to show and interact with a switch.
@@ -187,13 +205,17 @@ extension AccountSettingsViewModel {
     /// If the action fails, the undo method from delegate will be
     /// called and an error will be shown.
     public func pEpSync(enable: Bool) {
-        do {
-            try account.setKeySyncEnabled(enable: enable)
-            pEpSync = enable
-        } catch {
-            delegate?.undoPEPSyncToggle()
-            delegate?.showAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
-        }
+        account.setKeySyncEnabled(enable: enable,
+                                  errorCallback: { [weak self] error in
+                                    DispatchQueue.main.async {
+                                        guard let me = self else {
+                                            // UI, this can happen
+                                            return
+                                        }
+                                        me.delegate?.undoPEPSyncToggle()
+                                        me.delegate?.showAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
+                                    }
+            }, successCallback: {})
     }
 
     /// Indicates if pep synd has to be grayed out.

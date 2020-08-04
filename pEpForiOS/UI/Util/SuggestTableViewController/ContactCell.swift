@@ -13,9 +13,9 @@ import MessageModel
 final class ContactCell: UITableViewCell {
     static let reuseId = "ContactCell"
 
-    @IBOutlet private weak var pEpStatusImageView: UIImageView!
-    @IBOutlet private weak var nameLabel: UILabel!
-    @IBOutlet private weak var emailLabel: UILabel!
+    @IBOutlet weak var pEpStatusImageView: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var emailLabel: UILabel!
 
     private let colon = ":"
     
@@ -23,15 +23,5 @@ final class ContactCell: UITableViewCell {
         didSet {
             nameLabel.text = contact?.displayString ?? String()
         }
-    }
-
-    func updateCell(name: String = "",
-                    email: String = "",
-                    pEpStatusIcon: UIImage?) {
-        nameLabel.text = name.isEmpty
-            ? name
-            : name + colon
-        emailLabel.text = email
-        pEpStatusImageView.image = pEpStatusIcon
     }
 }

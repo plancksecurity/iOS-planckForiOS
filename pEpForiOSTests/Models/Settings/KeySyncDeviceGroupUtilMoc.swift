@@ -28,7 +28,7 @@ class KeySyncUtilMoc: KeySyncUtilProtocol {
         return deviceGroupValueForTest
     }
 
-    static func leaveDeviceGroup() throws {
+    static func leaveDeviceGroup() {
         didCallLeaveDeviceGroup = true
     }
 

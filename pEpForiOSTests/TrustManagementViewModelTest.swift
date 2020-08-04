@@ -91,7 +91,20 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
     func testHandleChangeLanguagePressed() {
         let languagesExpectation = expectation(description: "languages")
         setupViewModel(util: TrustManagementUtilMock(languagesExpectation: languagesExpectation))
-        let languages = trustManagementViewModel?.languages
+
+        guard let vm = trustManagementViewModel else {
+            XCTFail()
+            return
+        }
+
+        let expReceivedLangs = expectation(description: "expReceivedLangs")
+        var languages = [String]()
+        vm.languages { langs in
+            expReceivedLangs.fulfill()
+            languages = langs
+        }
+        wait(for: [expReceivedLangs], timeout: TestUtil.waitTime)
+
         XCTAssertEqual(TrustManagementUtilMock.languages, languages)
         waitForExpectations(timeout: TestUtil.waitTime)
     }
@@ -182,8 +195,10 @@ extension TrustManagementViewModelTest {
         //Avoid collision with others identity numbers.
         let selfNumber = numberOfRowsToGenerate + 1
         
-        let selfIdentity = TestData().createWorkingAccount(number: selfNumber).user
-        selfIdentity.fingerprint = "fingerprints"
+        let cdIdentity: CdIdentity = SecretTestData().createWorkingCdIdentity(number:selfNumber,
+                                                                              isMyself: true,
+                                                                              context: moc)
+        let selfIdentity = Identity(cdObject: cdIdentity, context: moc)
         selfIdentity.session.commit()
         
         if trustManagementViewModel == nil {
@@ -205,22 +220,21 @@ extension TrustManagementViewModelTest {
     }
 }
 
-
 ///MARK: - Mock Util Classes
 
 class TrustManagementUtilMock: TrustManagementUtilProtocol {
-    func handshakeCombinations(message: Message) -> [TrustManagementUtil.HandshakeCombination] {
-        message.allIdentities.filter { $0.isMySelf }.first
+    
+    func handshakeCombinations(message: Message, completion: @escaping ([TrustManagementUtil.HandshakeCombination]) -> Void) {
         if  let own = (message.allIdentities.filter { $0.isMySelf }.first),
             let other = (message.allIdentities.filter { !$0.isMySelf }.first) {
-            return [TrustManagementUtil.HandshakeCombination(ownIdentity:own, partnerIdentity: other)]
+            completion([TrustManagementUtil.HandshakeCombination(ownIdentity:own, partnerIdentity: other)])
         }
-        
-        return [TrustManagementUtil.HandshakeCombination]()
+
+        completion([TrustManagementUtil.HandshakeCombination]())
     }
-    
-    func handshakeCombinations(identities: [Identity]) -> [TrustManagementUtil.HandshakeCombination] {
-        return [TrustManagementUtil.HandshakeCombination]()
+
+    func handshakeCombinations(identities: [Identity], completion: @escaping ([TrustManagementUtil.HandshakeCombination]) -> Void) {
+        // Do nothing
     }
 
     var getTrustwordsExpectation: XCTestExpectation?
@@ -248,43 +262,65 @@ class TrustManagementUtilMock: TrustManagementUtilProtocol {
         self.undoExpectation = undoExpectation
     }
     
-    func languagesList() -> [String]? {
+    func languagesList(completion: @escaping ([String]) -> ()) {
         languagesExpectation?.fulfill()
-        return TrustManagementUtilMock.languages
+        completion(TrustManagementUtilMock.languages)
     }
-    
-    func getTrustwords(for forSelf: Identity, and: Identity, language: String, long: Bool) -> String? {
-        self.identity = and
 
+    func getTrustwords(for SelfIdentity: Identity,
+                       and partnerIdentity: Identity,
+                       language: String,
+                       long: Bool,
+                       completion: @escaping (String?) -> Void) {
+        self.identity = partnerIdentity
         if getTrustwordsExpectation != nil {
             getTrustwordsExpectation?.fulfill()
             getTrustwordsExpectation = nil
         }
+        completion(TrustManagementUtilMock.someTrustWords)
+    }
 
-        return TrustManagementUtilMock.someTrustWords
+    func getTrustwords(forFpr1 fpr1: String,
+                       fpr2: String,
+                       language: String,
+                       full: Bool,
+                       completion: @escaping (String?) -> Void) {
+        // Dummy for conforming the protocol
     }
     
     func confirmTrust(for identity: Identity) {
         confirmExpectation?.fulfill()
     }
-    
-    func denyTrust(for identity: Identity) {
-        denyExpectation?.fulfill()
+
+    func confirmTrust(for partnerIdentity: Identity,
+                      completion: @escaping (Error?) -> ()) {
+        confirmExpectation?.fulfill()
+        completion(nil)
     }
-    
+
+    func denyTrust(for partnerIdentity: Identity,
+                   completion: @escaping (Error?) -> ()) {
+        denyExpectation?.fulfill()
+        completion(nil)
+    }
+
     func resetTrust(for partnerIdentity: Identity, fingerprints: String?) {
         resetExpectation?.fulfill()
     }
     
-    func getFingerprint(for Identity: Identity) -> String? {
-        return nil
+    func getFingerprint(for identity: Identity,
+                        completion: @escaping (String?) -> ()) {
+        completion(nil)
     }
-    
-    func undoMisstrustOrTrust(for partnerIdentity: Identity, fingerprint: String?) {
+
+    func undoMisstrustOrTrust(for partnerIdentity: Identity,
+                              fingerprint: String?,
+                              completion: @escaping (Error?) -> ()) {
         undoExpectation?.fulfill()
+        completion(nil)
     }
-    
-    func resetTrust(for partnerIdentity: Identity?) {
+
+    func resetTrust(for partnerIdentity: Identity?, completion: () -> ()) {
         resetExpectation?.fulfill()
     }
 }
