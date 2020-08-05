@@ -115,18 +115,19 @@ class KeyImportViewModel {
                 return // The handling VC can go out of scope
             }
 
-            do {
-                try me.keyImporter.setOwnKey(address: key.address, fingerprint: key.fingerprint)
+            me.keyImporter.setOwnKey(address: key.address,
+                                     fingerprint: key.fingerprint,
+                                     errorCallback: { error in
+                                        guard let _ = error as? KeyImportUtil.SetOwnKeyError else {
+                                            Log.shared.errorAndCrash(message: "Unexpected error have to handle it: \(error)")
+                                            return
+                                        }
+                                        DispatchQueue.main.async {
+                                            me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
+                                        }
+            }) {
                 DispatchQueue.main.async {
                     me.checkDelegate()?.showSetOwnKeySuccess()
-                }
-            } catch {
-                guard let _ = error as? KeyImportUtil.SetOwnKeyError else {
-                    Log.shared.errorAndCrash(message: "Unexpected error have to handle it: \(error)")
-                    return
-                }
-                DispatchQueue.main.async {
-                    me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
                 }
             }
         }
@@ -142,34 +143,38 @@ class KeyImportViewModel {
 
 extension KeyImportViewModel {
     private func importKey(url: URL) {
-        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-            guard let me = self else {
-                return // The handling VC can go out of scope
-            }
+        keyImporter.importKey(url: url,
+                              errorCallback: { [weak self] error in
+                                // weak self because it's UI and the VC/VM can go out of scope
+                                guard let me = self else {
+                                    return
+                                }
 
-            do {
-                let keyData = try me.keyImporter.importKey(url: url)
-                DispatchQueue.main.async {
-                    me.checkDelegate()?.showConfirmSetOwnKey(key: KeyDetails(address: keyData.address,
-                                                                             fingerprint: keyData.fingerprint,
-                                                                             userName: keyData.userName))
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    if let theError = error as? KeyImportUtil.ImportError {
-                        switch theError {
-                        case .cannotLoadKey:
-                            me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
-                        case .malformedKey:
-                            me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
-                        }
-                    } else {
-                        Log.shared.errorAndCrash(message: "Unhandled error. Check all possible cases.")
-                        me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
-                    }
-                }
-            }
-        }
+                                DispatchQueue.main.async {
+                                    if let theError = error as? KeyImportUtil.ImportError {
+                                        switch theError {
+                                        case .cannotLoadKey:
+                                            me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
+                                        case .malformedKey:
+                                            me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
+                                        }
+                                    } else {
+                                        Log.shared.errorAndCrash(message: "Unhandled error. Check all possible cases.")
+                                        me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
+                                    }
+                                }
+            },
+                              completion: { [weak self] keyData in
+                                // weak self because it's UI and the VC/VM can go out of scope
+                                guard let me = self else {
+                                    return
+                                }
+                                DispatchQueue.main.async {
+                                    me.checkDelegate()?.showConfirmSetOwnKey(key: KeyDetails(address: keyData.address,
+                                                                                             fingerprint: keyData.fingerprint,
+                                                                                             userName: keyData.userName))
+                                }
+        })
     }
 
     private func checkDelegate() -> KeyImportViewModelDelegate? {

@@ -37,16 +37,6 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
         XCTAssertEqual(viewModel.sections.count, dummySections.count)
     }
 
-    func testPEpSync() {
-        var boolValue = true
-        viewModel.pEpSync(enable: boolValue)
-        XCTAssertEqual(viewModel.pEpSync, boolValue)
-
-        boolValue = false
-        viewModel.pEpSync(enable: boolValue)
-        XCTAssertEqual(viewModel.pEpSync, boolValue)
-    }
-
     func testHandleResetIdentity() {
         let showLoadingViewExpectation = expectation(description: "showLoadingViewExpectation")
         let hideLoadingViewExpectation = expectation(description: "hideLoadingViewExpectation")

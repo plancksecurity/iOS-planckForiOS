@@ -12,7 +12,7 @@ import pEpIOSToolbox
 
 ///Delegate protocol to communicate to the Account Settings View Controller
 protocol AccountSettingsViewModelDelegate: class {
-    //Changes loading view visibility
+    /// Changes loading view visibility
     func setLoadingView(visible: Bool)
     /// Shows an alert
     func showAlert(error: Error)
@@ -22,7 +22,7 @@ protocol AccountSettingsViewModelDelegate: class {
 
 /// Protocol that represents the basic data in a row.
 protocol AccountSettingsRowProtocol {
-    // The type of the row
+    /// The type of the row
     var type : AccountSettingsViewModel.RowType { get }
     /// The title of the row.
     var title: String { get }
@@ -42,7 +42,6 @@ final class AccountSettingsViewModel {
     ///         for the verification be able to succeed.
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
-    private(set) var pEpSync: Bool
     private let isOAuth2: Bool
     private(set) var account: Account
     public weak var delegate: AccountSettingsViewModelDelegate?
@@ -57,9 +56,20 @@ final class AccountSettingsViewModel {
     init(account: Account, delegate: AccountSettingsViewModelDelegate? = nil) {
         self.account = account
         self.delegate = delegate
-        pEpSync = (try? account.isKeySyncEnabled()) ?? false
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         self.generateSections()
+    }
+
+    public func isPEPSyncEnabled(completion: @escaping (Bool) -> ()) {
+        account.isKeySyncEnabled(errorCallback: { (_) in
+            DispatchQueue.main.async {
+                completion(false)
+            }
+        }) { (isEnabled) in
+            DispatchQueue.main.async {
+                completion(isEnabled)
+            }
+        }
     }
 }
 
@@ -84,14 +94,14 @@ extension AccountSettingsViewModel {
     }
 
     /// Identifies the section in the table view.
-     public enum SectionType : String, CaseIterable {
+    public enum SectionType : String, CaseIterable {
         case account
         case imap
         case smtp
     }
 
     /// Struct that represents a section in Account Settings View Controller
-     public struct Section {
+    public struct Section {
         /// Title of the section
         var title: String
         /// list of rows in the section
@@ -118,7 +128,7 @@ extension AccountSettingsViewModel {
     }
 
     /// Struct that is used to display information in Account Settings View Controller
-     public struct DisplayRow: AccountSettingsRowProtocol {
+    public struct DisplayRow: AccountSettingsRowProtocol {
         /// The row type
         var type: AccountSettingsViewModel.RowType
         /// The title of the row
@@ -133,7 +143,7 @@ extension AccountSettingsViewModel {
 
     /// Struct that is used to perform an action.
     /// Represents a ActionRow in in Account Settings View Controller
-     public struct ActionRow: AccountSettingsRowProtocol {
+    public struct ActionRow: AccountSettingsRowProtocol {
         /// The type of the row.
         var type: AccountSettingsViewModel.RowType
         /// Title of the action row
@@ -187,13 +197,17 @@ extension AccountSettingsViewModel {
     /// If the action fails, the undo method from delegate will be
     /// called and an error will be shown.
     public func pEpSync(enable: Bool) {
-        do {
-            try account.setKeySyncEnabled(enable: enable)
-            pEpSync = enable
-        } catch {
-            delegate?.undoPEPSyncToggle()
-            delegate?.showAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
-        }
+        account.setKeySyncEnabled(enable: enable,
+                                  errorCallback: { [weak self] error in
+                                    DispatchQueue.main.async {
+                                        guard let me = self else {
+                                            // UI, this can happen
+                                            return
+                                        }
+                                        me.delegate?.undoPEPSyncToggle()
+                                        me.delegate?.showAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
+                                    }
+            }, successCallback: {})
     }
 
     /// Indicates if pep synd has to be grayed out.
@@ -333,22 +347,13 @@ extension AccountSettingsViewModel {
             // pepSync
             let switchRow = SwitchRow(type: .pepSync,
                                       title: rowTitle(for: .pepSync),
-                                      isOn: pEpSync,
-                                      action: { [weak self] (enable) in
-                                        do {
-                                            guard let me = self else {
-                                                Log.shared.error("Lost myself")
-                                                return
-                                            }
-                                            try me.account.setKeySyncEnabled(enable: enable)
-                                        } catch {
-                                            guard let me = self else {
-                                                Log.shared.error("Lost myself")
-                                                return
-                                            }
-                                            me.delegate?.undoPEPSyncToggle()
-                                            me.delegate?.showAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
-                                        }
+                                      isOn: true,
+                action: { [weak self] (enable) in
+                    guard let me = self else {
+                        // Valid case. We might have been dismissed.
+                        return
+                    }
+                    me.pEpSync(enable: enable)
                 }, cellIdentifier: CellsIdentifiers.switchCell)
             rows.append(switchRow)
 
@@ -402,5 +407,28 @@ extension AccountSettingsViewModel {
                           title: rowTitle(for: type),
                           text: value,
                           cellIdentifier: CellsIdentifiers.displayCell)
+    }
+
+}
+
+// MARK: - Key Sync
+
+extension AccountSettingsViewModel {
+
+    /// Request if key sync is enabled for the current account
+    /// The callbacks will be executed in the main thread.
+    /// - Parameters:
+    ///   - errorCallback: The error callback
+    ///   - successCallback: The success callback
+    public func isKeySyncEnabled(errorCallback: @escaping (Error) -> (), successCallback: @escaping (Bool) -> ()) {
+        account.isKeySyncEnabled(errorCallback: { (error) in
+            DispatchQueue.main.async {
+                errorCallback(error)
+            }
+        }) { (value) in
+            DispatchQueue.main.async {
+                successCallback(value)
+            }
+        }
     }
 }

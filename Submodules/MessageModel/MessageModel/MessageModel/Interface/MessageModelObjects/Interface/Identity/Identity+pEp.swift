@@ -19,29 +19,16 @@ extension Identity {
         return id
     }
 
-    public func pEpRating(pEpSession: PEPSession = PEPSession()) -> PEPRating {
-        return cdObject.pEpRating(pEpSession: pEpSession)
+    public func pEpRating(completion: @escaping (PEPRating)->Void) {
+        cdObject.pEpRating(completion: completion)
     }
 
-    public func canResetTrust() -> Bool {
-        let color = cdObject.pEpColor()
-        return color == .green || color == PEPColor.red
-    }
-
-    /// Will use update_identity() for other identities, and myself() for own ones.
-    ///
-    /// - Parameter session: session to work on
-    /// - Returns: A `PEPIdentity` that has been updated and thus should contain the fingerprint.
-    @discardableResult
-    public func updatedIdentity(pEpSession: PEPSession = PEPSession()) -> PEPIdentity {
-        return cdObject.updatedIdentity(pEpSession: pEpSession)
-    }
-
-    public func pEpIdentity() -> PEPIdentity {
+    public func pEpIdentity() -> PEPIdentity { //BUFF: bad
         return  cdObject.pEpIdentity()
     }
 
-    public func pEpColor(pEpSession: PEPSession = PEPSession()) -> PEPColor {
-        return cdObject.pEpColor(pEpSession: pEpSession)
+    public func pEpColor(session: Session = Session.main,
+                         completion: @escaping (PEPColor)->Void) {
+        cdObject.pEpColor(context: session.moc, completion: completion)
     }
 }

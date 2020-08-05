@@ -1284,8 +1284,10 @@ extension EmailListViewController {
         if isTableViewEditing {
             let item : UIBarButtonItem
             guard let numberOfSelectedRows = tableView.indexPathForSelectedRow?.count else {
-                //Valid case, no rows are selected
-                navigationItem.leftBarButtonItems = [selectAllBarButton]
+                //Valid case, there aren't selected rows
+                if tableView.numberOfRows(inSection: 0) > 0 {
+                    navigationItem.leftBarButtonItems = [selectAllBarButton]
+                }
                 return
             }
             item = tableView.numberOfRows(inSection: 0) > numberOfSelectedRows ? selectAllBarButton : deselectAllBarButton
@@ -1301,7 +1303,7 @@ extension EmailListViewController {
             tableView.selectRow(at: IndexPath(item: row, section: 0), animated: false, scrollPosition: .none)
         }
         guard let vm = viewModel, let selectedIndexPaths = tableView?.indexPathsForSelectedRows else {
-            Log.shared.errorAndCrash("VM or selected IndexPaths not found")
+            //Valid case: there are no selected rows because there are no rows to select. Just ignore.
             return
         }
         vm.handleEditModeSelectionChange(selectedIndexPaths: selectedIndexPaths)

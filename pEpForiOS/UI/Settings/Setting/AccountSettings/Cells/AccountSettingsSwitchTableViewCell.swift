@@ -16,7 +16,7 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
 
     static let identifier = "SwitchTableViewCell"
 
-    @IBOutlet private weak var switchItem: UISwitch!
+    @IBOutlet weak var switchItem: UISwitch!
     @IBOutlet private weak var titleLabel: UILabel!
 
     private var row : AccountSettingsViewModel.SwitchRow?
@@ -27,7 +27,6 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
         self.row = row
         titleLabel.text = row.title
         titleLabel.textColor = isGrayedOut ? .pEpTextDark : .gray
-
         switchItem.isOn = row.isOn
         switchItem.isUserInteractionEnabled = isGrayedOut
         switchItem.onTintColor = isGrayedOut ? UIColor.pEpGreen : UIColor.pEpGreyBackground

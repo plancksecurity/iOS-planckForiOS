@@ -11,13 +11,14 @@ import PEPObjCAdapterFramework
 import CoreData
 
 extension CdIdentity {
-    /**
-     Uses the adapter's update to determine the fingerprint of the given identity.
-     */
-    func fingerPrint() throws -> String? {
-            let pEpID = pEpIdentity()
-            try PEPSession().update(pEpID)
-            return pEpID.fingerPrint
+    func fingerprint(completion: @escaping (String?) -> ()) {
+        let pEpID = pEpIdentity()
+        PEPAsyncSession().update(pEpID,
+                                 errorCallback: { _ in
+                                    completion(nil)
+        }) { updatedIdentity in
+            completion(updatedIdentity.fingerPrint)
+        }
     }
 
     /**
@@ -26,12 +27,14 @@ extension CdIdentity {
      Currently, you can't reset/undo a mistrust, so it's not included.
      See ENGINE-409, ENGINE-355.
      */
-    func canInvokeHandshakeAction() -> Bool {
+    func canInvokeHandshakeAction(completion: @escaping (Bool)->Void) {
         if isMySelf {
-            return false
+            completion(false)
+            return
         }
-        let color = pEpColor()
-        return color == .yellow || color == .green
+        pEpColor { (color) in
+            completion(color == .yellow || color == .green)
+        }
     }
 
     /**
@@ -87,30 +90,12 @@ extension CdIdentity {
         return contacts
     }
 
-    func pEpRating(pEpSession: PEPSession = PEPSession()) -> PEPRating {
-        return PEPUtils.pEpRating(cdIdentity: self)
+    func pEpRating(completion: @escaping (PEPRating)->Void) {
+        PEPUtils.pEpRating(cdIdentity: self, completion: completion)
     }
 
-    func pEpColor(pEpSession: PEPSession = PEPSession()) -> PEPColor {
-        return PEPUtils.pEpColor(cdIdentity: self)
-    }
-
-    /// Will use update_identity() for other identities, and myself() for own ones.
-    ///
-    /// - Parameter session: pEpsession to work on
-    /// - Returns: A `PEPIdentity` that has been updated and thus should contain the fingerprint.
-    @discardableResult
-    func updatedIdentity(pEpSession: PEPSession = PEPSession()) -> PEPIdentity {
-        let md = pEpIdentity()
-        do {
-            if md.isOwn {
-                try pEpSession.mySelf(md)
-            } else {
-                try pEpSession.update(md)
-            }
-        } catch {
-            Log.shared.errorAndCrash("%@", error.localizedDescription)
-        }
-        return md
+    func pEpColor(context: NSManagedObjectContext = Stack.shared.mainContext,
+                  completion: @escaping (PEPColor)->Void) {
+        PEPUtils.pEpColor(cdIdentity: self, context: context, completion: completion)
     }
 }
