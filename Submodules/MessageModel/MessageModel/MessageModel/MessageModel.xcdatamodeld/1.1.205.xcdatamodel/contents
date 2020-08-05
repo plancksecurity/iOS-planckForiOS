@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19F101" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="refactor0.1">
     <entity name="CdAccount" representedClassName="CdAccount" syncable="YES" codeGenerationType="category">
-        <attribute name="isIncludedInUnifiedFolders" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="includeFoldersInUnifiedFolders" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <relationship name="folders" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CdFolder" inverseName="account" inverseEntity="CdFolder"/>
         <relationship name="identity" maxCount="1" deletionRule="Nullify" destinationEntity="CdIdentity" inverseName="accounts" inverseEntity="CdIdentity"/>
         <relationship name="servers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CdServer" inverseName="account" inverseEntity="CdServer"/>

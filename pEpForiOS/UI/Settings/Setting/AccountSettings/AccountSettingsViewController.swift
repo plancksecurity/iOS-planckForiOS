@@ -242,7 +242,7 @@ extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
      func undoPEPSyncToggle() {
            DispatchQueue.main.async { [weak self] in
                guard let me = self else {
-                   Log.shared.lostMySelf()
+                   //Valid case: the view might be dismissed. 
                    return
                }
                me.keySyncSwitch.setOn(!me.keySyncSwitch.isOn, animated: true)

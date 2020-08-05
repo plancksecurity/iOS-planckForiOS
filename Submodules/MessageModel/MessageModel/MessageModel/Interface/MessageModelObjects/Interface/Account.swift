@@ -142,10 +142,10 @@ public class Account: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
 
     public var isIncludedInUnifiedFolders: Bool {
         get {
-            return cdObject.isIncludedInUnifiedFolders
+            return cdObject.includeFoldersInUnifiedFolders
         }
         set {
-            cdObject.isIncludedInUnifiedFolders = newValue
+            cdObject.includeFoldersInUnifiedFolders = newValue
         }
     }
 }
