@@ -234,6 +234,9 @@
 /* possible private status action */
 "Enable Protection" = "Povoľte ochranu súkromia";
 
+/* Enter passphrase alert - message - shown while pEp sync is running */
+"Enter passphrase for p≡p Sync:" = "Zadajte prístupové heslo pre synchronizáciu p≡p:";
+
 /* Tableview section header: Enterprise Features */
 "Enterprise Features" = "Enterprise Funkcie";
 
@@ -540,6 +543,13 @@
 /* Passive mode title */
 "Passive mode" = "Pasívny režim";
 
+/* Passphrase placeholder
+   Passphrase title */
+"Passphrase" = "prístupová fráza";
+
+/* Passphrase too long - title */
+"Passphrase too long" = "Heslo je príliš dlhé";
+
 /* password */
 "Password" = "Heslo";
 
@@ -611,6 +621,12 @@
 
 /* Fail to log in, email does not match account type */
 "Please enter a valid Gmail address." = "Zadajte platnú adresu Gmail.";
+
+/* Please enter one shorter - message */
+"Please enter one shorter" = "Zadajte jednu kratšiu";
+
+/* Passphrase message */
+"Please enter the passphrase to continue" = "Pokračujte zadaním prístupovej frázy";
 
 /* Description for client certificate password screen */
 "Please enter the password of the certificate to import it:" = "Ak chcete importovať certifikát, zadajte heslo certifikátu:";
@@ -727,6 +743,9 @@
    Settings view title */
 "Settings" = "Nastavenia";
 
+/* Enter passphrase alert - Negative button text - shown while pEp sync is running */
+"Shutdown p≡p Sync" = "Vypnite synchronizáciu p≡p";
+
 /* Login */
 "Sign In" = "Prihlásiť sa";
 
@@ -802,6 +821,9 @@
 
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "Správu nebolo možné odoslať. Skúste neskôr prosím.";
+
+/* Passphrase message */
+"The passphrase you entered is wrong. Please enter it again to continue" = "Zadaná prístupová fráza je nesprávna. Ak chcete pokračovať, zadajte ho znova";
 
 /* error message for .minimumLengthUsername */
 "The username must contain more than 1 characters" = "Používateľské meno musí obsahovať viac ako 1 znak";
@@ -953,6 +975,12 @@
 /* setting row title: Unsecure reply warning */
 "Unsecure reply warning" = "Varovanie nezabezpečenej odpovede";
 
+/* PGPKeyImportSetting - Use a Passphrase for new keys */
+"Use a passphrase for new keys" = "Použite prístupovú frázu pre nové kľúče";
+
+/* Settings: title for enable/disable usePEPFolder feature */
+"Use p≡p Folder For Sync Messages" = "Use p≡p folder for Sync messages";
+
 /* User Name placeholder for manual account IMAP setup
    User Name placeholder for manual account setup
    User Name placeholder for manual account SMTP setup */
@@ -978,6 +1006,9 @@
 
 /* Client certificate import: wrong password alert message */
 "We could not import the certificate. We do not have permissions to open this file.\n\nTry again?" = "Certifikát sa nepodarilo importovať. Nemáme povolenie na otvorenie tohto súboru.\n\nSkúste to znova?";
+
+/* Passphrase message */
+"We recommend to use device encryption instead of using passphrases, because they're securing all data, not only keys. In case you want to use a passphrase anyway, please enter a passphrase here and enable it." = "Odporúčame používať šifrovanie zariadenia namiesto používania prístupových fráz, pretože zabezpečujú všetky údaje, nielen kľúče. Ak chcete aj tak použiť prístupovú frázu, zadajte sem prístupovú frázu a povoľte ju.";
 
 /* KeySyncWizard complete message - two devices */
 "We successfully created a device group. All your privacy is now synchronized." = "Úspešne sme vytvorili skupinu zariadení. Všetko vaše súkromie je teraz synchronizované.";

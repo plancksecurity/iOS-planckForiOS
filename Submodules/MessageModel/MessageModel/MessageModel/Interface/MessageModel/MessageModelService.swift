@@ -122,8 +122,14 @@ extension MessageModelService {
 extension MessageModelService: ServiceProtocol {
 
     public func start() {
-        // Forward service calls
-        runtimeServices.forEach { $0.start() }
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            // Forward service calls
+            me.runtimeServices.forEach { $0.start() }
+        }
     }
 
     public func finish() {

@@ -20,7 +20,7 @@ class CreatePepIMAPFolderService: OperationBasedService {
         super.init(useSerialQueue: true, runOnce: true, backgroundTaskManager: backgroundTaskManager)
     }
 
-    override func operations() -> [Operation] {
+    override func operations() -> [Operation] {//!!!: IOS-2325_!
         guard usePEPFolderProvider.usePepFolder else {
             // we are not supposed to (create and) use pEp folder for sync messages.
             // Nothing to do.
@@ -36,33 +36,40 @@ class CreatePepIMAPFolderService: OperationBasedService {
             }
 
             for cdAccount in cdAccounts {
-                do {
-                    guard try cdAccount.isKeySyncEnabled() else {
-                        // We are not supposed to use pEp Sync with this account, thus we must not
-                        // create a pEp folder.
-                        // Nothing to do
-                        continue
-                    }
+                var isKeySyncEnabled = false
+                let group = DispatchGroup()
+                group.enter()
 
-                    guard let imapConnectInfo = cdAccount.imapConnectInfo else {
-                        Log.shared.errorAndCrash("Account without connect info")
-                        continue
-                    }
-                    let imapConnection = ImapConnection(connectInfo: imapConnectInfo)
-                    let loginOP = LoginImapOperation(context: moc, imapConnection: imapConnection)
-                    let fetchFoldersOP = SyncFoldersFromServerOperation(context: moc,
-                                                                        imapConnection: imapConnection)
-                    let createPepFolderOP = CreateIMAPPepFolderOperation(context: moc,
-                                                                         imapConnection: imapConnection)
-                    operations.append(loginOP)
-                    operations.append(fetchFoldersOP)
-                    operations.append(createPepFolderOP)
+                cdAccount.isKeySyncEnabled(errorCallback: { _ in
+                    isKeySyncEnabled = false
+                    group.leave()
+                }) { enabled in
+                    isKeySyncEnabled = enabled
+                    group.leave()
+                }
 
-                } catch {
-                    Log.shared.errorAndCrash("Invalid state")
+                group.wait()
+
+                guard isKeySyncEnabled else {
+                    // We are not supposed to use pEp Sync with this account, thus we must not
+                    // create a pEp folder.
+                    // Nothing to do
                     continue
                 }
 
+                guard let imapConnectInfo = cdAccount.imapConnectInfo else {
+                    Log.shared.errorAndCrash("Account without connect info")
+                    continue
+                }
+                let imapConnection = ImapConnection(connectInfo: imapConnectInfo)
+                let loginOP = LoginImapOperation(context: moc, imapConnection: imapConnection)
+                let fetchFoldersOP = SyncFoldersFromServerOperation(context: moc,
+                                                                    imapConnection: imapConnection)
+                let createPepFolderOP = CreateIMAPPepFolderOperation(context: moc,
+                                                                     imapConnection: imapConnection)
+                operations.append(loginOP)
+                operations.append(fetchFoldersOP)
+                operations.append(createPepFolderOP)
             }
         }
         return operations
