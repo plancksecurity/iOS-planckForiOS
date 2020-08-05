@@ -139,15 +139,15 @@ public class Account: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         let cdAccount = cdObject
         return cdAccount.folders?.count ?? 0
     }
-//TODO: fixme -mb
-//    public var isIncludedInUnifiedFolders: Bool {
-//        get {
-//            return cdObject.isIncludedInUnifiedFolders
-//        }
-//        set {
-//            cdObject.isIncludedInUnifiedFolders = newValue
-//        }
-//    }
+
+    public var isIncludedInUnifiedFolders: Bool {
+        get {
+            return cdObject.isIncludedInUnifiedFolders
+        }
+        set {
+            cdObject.isIncludedInUnifiedFolders = newValue
+        }
+    }
 }
 
 extension Account {
