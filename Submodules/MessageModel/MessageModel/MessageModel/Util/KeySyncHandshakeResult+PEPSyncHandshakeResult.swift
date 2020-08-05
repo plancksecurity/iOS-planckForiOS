@@ -19,7 +19,7 @@ extension KeySyncHandshakeResult {
         }
     }
 
-    private func pEpSyncHandshakeResult() -> PEPSyncHandshakeResult {
+    func pEpSyncHandshakeResult() -> PEPSyncHandshakeResult {
         switch self {
         case .accepted: return .accepted
         case .cancel: return .cancel

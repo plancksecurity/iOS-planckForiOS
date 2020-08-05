@@ -20,7 +20,7 @@ public protocol KeySyncServiceHandshakeHandlerProtocol: class {
     func showHandshake(meFingerprint: String?,
                        partnerFingerprint: String?,
                        isNewGroup: Bool,
-                       completion: ((PEPSyncHandshakeResult)->())?)
+                       completion: ((KeySyncHandshakeResult)->())?)
 
     func cancelHandshake()
 

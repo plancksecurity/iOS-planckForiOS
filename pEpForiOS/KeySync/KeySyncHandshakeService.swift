@@ -54,7 +54,7 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
     func showHandshake(meFingerprint: String?,
                        partnerFingerprint: String?,
                        isNewGroup: Bool,
-                       completion: ((PEPSyncHandshakeResult)->())? = nil) {
+                       completion: ((KeySyncHandshakeResult)->())? = nil) {
 
         guard let meFPR = meFingerprint, let partnerFPR = partnerFingerprint else {
             Log.shared.errorAndCrash("Missing FPRs")

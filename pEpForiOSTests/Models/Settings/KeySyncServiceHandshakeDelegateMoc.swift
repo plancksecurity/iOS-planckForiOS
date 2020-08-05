@@ -14,7 +14,7 @@ class KeySyncServiceHandshakeHandlerMoc: KeySyncServiceHandshakeHandlerProtocol 
     func showHandshake(meFingerprint: String?,
                        partnerFingerprint: String?,
                        isNewGroup: Bool,
-                       completion: ((PEPSyncHandshakeResult) -> ())?) {}
+                       completion: ((KeySyncHandshakeResult) -> ())?) {}
 
     func showError(error: Error?, completion: ((KeySyncErrorResponse) -> ())?) {}
 
