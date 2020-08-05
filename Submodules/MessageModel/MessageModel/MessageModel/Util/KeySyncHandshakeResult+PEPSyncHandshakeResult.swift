@@ -11,11 +11,11 @@ import Foundation
 import PEPObjCAdapterFramework
 
 extension KeySyncHandshakeResult {
-    private static func fromPEPSyncHandshakeResult(pEpSyncHandshakeResult: PEPSyncHandshakeResult) ->  KeySyncHandshakeResult {
+    private init(pEpSyncHandshakeResult: PEPSyncHandshakeResult) {
         switch pEpSyncHandshakeResult {
-        case .accepted: return .accepted
-        case .cancel: return .cancel
-        case .rejected: return .rejected
+        case .accepted: self = .accepted
+        case .cancel: self = .cancel
+        case .rejected: self = .rejected
         }
     }
 }
