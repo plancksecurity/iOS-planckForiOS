@@ -43,9 +43,8 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
         titleLabel.text = row.title
         titleLabel.textColor = .pEpTextDark
         switchItem.isOn = row.isOn
-        switchItem.onTintColor = UIColor.pEpGreen
+        switchItem.onTintColor = .pEpGreen
     }
-
 
     @IBAction func switchChanged(_ sender: UISwitch) {
         guard let row = row else {
