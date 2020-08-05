@@ -101,7 +101,7 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
             do {
                 try verifiableAccount?.save { [weak self] _ in
                     guard let me = self else {
-                        Log.shared.lostMySelf()
+                        //Valid case: the view might be dismissed. 
                         return
                     }
                     DispatchQueue.main.async {
