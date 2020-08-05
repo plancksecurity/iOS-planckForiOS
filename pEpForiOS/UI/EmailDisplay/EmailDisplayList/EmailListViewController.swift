@@ -24,6 +24,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var editButton: UIBarButtonItem!
 
     var viewModel: EmailListViewModel? {
         didSet {
@@ -95,6 +96,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
             doOnce?()
         }
         updateFilterText()
+        updateEditButton()
     }
 
 
@@ -182,6 +184,20 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         }
     }
 
+    private func updateEditButton() {
+        guard let vm = viewModel else  {
+            //Valid case: might be dismissed.
+            return
+        }
+        if vm.rowCount == 0 {
+            editButton.isEnabled = false
+            editButton.tintColor = .clear
+        } else {
+            editButton.isEnabled = true
+            editButton.tintColor = .pEpGreen
+        }
+    }
+
     /// Called on pull-to-refresh triggered
     @objc private func refreshView(_ sender: Any) {
         viewModel?.fetchNewMessages() {[weak self] in
@@ -194,6 +210,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
                 // We intentionally do NOT use me.tableView.refreshControl?.endRefreshing() here.
                 // See comments in `setupRefreshControl` for details.
                 me.refreshController.endRefreshing()
+                me.updateEditButton()
             }
         }
     }
@@ -764,6 +781,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
 
     func allUpdatesReceived(viewModel: EmailDisplayViewModel) {
         tableView.endUpdates()
+        updateEditButton()
     }
 
     func setToolbarItemsEnabledState(to newValue: Bool) {
@@ -1079,6 +1097,7 @@ extension EmailListViewController {
 
     func deleteAction(forCellAt indexPath: IndexPath) {
         viewModel?.delete(forIndexPath: indexPath)
+        updateEditButton()
     }
 
     func moreAction(forCellAt indexPath: IndexPath) {
