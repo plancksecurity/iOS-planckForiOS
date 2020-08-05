@@ -8,10 +8,6 @@
 
 import UIKit
 
-protocol AccountSettingsSwitchTableViewCellDelegate: class {
-    func switchValueChanged(of rowType: AccountSettingsViewModel.RowType, to newValue: Bool)
-}
-
 final class AccountSettingsSwitchTableViewCell: UITableViewCell {
 
     static let identifier = "SwitchTableViewCell"
@@ -20,8 +16,6 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
     @IBOutlet private weak var titleLabel: UILabel!
 
     private var row : AccountSettingsViewModel.SwitchRow?
-
-    weak var delegate : AccountSettingsSwitchTableViewCellDelegate?
 
     public func configure(with row : AccountSettingsViewModel.SwitchRow, isGrayedOut: Bool) {
         self.row = row
@@ -39,7 +33,7 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
             sender.setOn(!sender.isOn, animated: true)
             return
         }
-        delegate?.switchValueChanged(of: row.type, to: sender.isOn)
+        row.action(sender.isOn)
     }
 
     override func awakeFromNib() {

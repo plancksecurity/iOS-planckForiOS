@@ -148,7 +148,6 @@ extension AccountSettingsViewController : UITableViewDataSource {
                 return UITableViewCell()
             }
             dequeuedCell.configure(with: row, isGrayedOut : !vm.isPEPSyncGrayedOut())
-            dequeuedCell.delegate = self
             vm.isKeySyncEnabled(errorCallback: { [weak self] (error) in
                 guard let me = self else {
                     // Valid case. We might have been dismissed.
@@ -300,20 +299,6 @@ extension AccountSettingsViewController: OAuthAuthorizerDelegate {
             return
         }
         viewModel?.updateToken(accessToken: token)
-    }
-}
-
-// MARK: - AccountSettingsSwitchTableViewCellDelegate
-
-extension AccountSettingsViewController: AccountSettingsSwitchTableViewCellDelegate {
-    func switchValueChanged(of rowType: AccountSettingsViewModel.RowType, to newValue: Bool) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash(message: "A view model is required")
-            return
-        }
-        if rowType == .pepSync {
-            vm.pEpSync(enable: newValue)
-        }
     }
 }
 
