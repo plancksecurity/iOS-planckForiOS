@@ -11,7 +11,7 @@ import QuickLook
 import pEpIOSToolbox
 
 // Represents the a list of mails showing one mail with all details in full screen.
-class EmailDetailViewController: BaseViewController {
+class EmailDetailViewController: UIViewController {
     static private let cellXibName = "EmailDetailCollectionViewCell"
     static private let cellId = "EmailDetailViewCell"
     /// Collects all QueryResultsDelegate reported changes to call them in one CollectionView
@@ -326,15 +326,24 @@ extension EmailDetailViewController {
             // List is empty. That is ok. The user might have deleted the last shown message.
             return
         }
-        guard let ratingView = showNavigationBarSecurityBadge(pEpRating: vm.pEpRating(forItemAt: indexPath)) else {
-            // Nothing to show for current message
-            return
-        }
 
-        if vm.shouldShowPrivacyStatus(forItemAt: indexPath) {
-            let tapGestureRecognizer = UITapGestureRecognizer(target: self,
-                                                              action: #selector(showTrustManagementView(gestureRecognizer:)))
-            ratingView.addGestureRecognizer(tapGestureRecognizer)
+        vm.pEpRating(forItemAt: indexPath) { [weak self] (rating) in
+            guard let me = self else {
+                // Valid case. The user might have dismissed the view meanwhile.
+                // Do nothing.
+                return
+            }
+            guard let ratingView = me.showNavigationBarSecurityBadge(pEpRating: rating) else {
+                // Nothing to show for current message
+                return
+            }
+            vm.shouldShowPrivacyStatus(forItemAt: indexPath) { (shouldShowPrivacyStatus) in
+                if shouldShowPrivacyStatus {
+                    let tapGestureRecognizer = UITapGestureRecognizer(target: me,
+                                                                      action: #selector(me.showTrustManagementView(gestureRecognizer:)))
+                    ratingView.addGestureRecognizer(tapGestureRecognizer)
+                }
+            }
         }
     }
     
@@ -379,7 +388,7 @@ extension EmailDetailViewController {
     @objc
     private func showSettingsViewController() {
         splitViewController?.preferredDisplayMode = .allVisible
-        UIUtils.presentSettings(appConfig: appConfig)
+        UIUtils.presentSettings()
     }
 
     private func setupEmailViewController(forRowAt indexPath: IndexPath) -> EmailViewController? {
@@ -390,7 +399,6 @@ extension EmailDetailViewController {
                 Log.shared.errorAndCrash("No V[M|C]")
                 return nil
         }
-        createe.appConfig = appConfig
         createe.message = vm.message(representedByRowAt: indexPath) //!!!: EmailVC should have a VM which should be created in our VM. This VC should not be aware of `Message`s!
         createe.delegate = self
         emailSubViewControllers.append(createe)
@@ -543,7 +551,6 @@ extension EmailDetailViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("No DVC?")
                     break
             }
-            destination.appConfig = appConfig
             destination.viewModel = vm.composeViewModel(forMessageRepresentedByItemAt: indexPath,
                                                         composeMode: composeMode(for: theId))
         case .segueShowMoveToFolder:
@@ -552,7 +559,6 @@ extension EmailDetailViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("No DVC?")
                     break
             }
-            destination.appConfig = appConfig
             destination.viewModel = viewModel?.getMoveToFolderViewModel(forMessageRepresentedByItemAt: indexPath)
         case .segueTrustManagement:
             guard let nv = segue.destination as? UINavigationController,
@@ -573,7 +579,6 @@ extension EmailDetailViewController: SegueHandlerType {
                                                                   width: 0,
                                                                   height: 0)
             
-            vc.appConfig = appConfig
             vc.viewModel = trustManagementViewModel
 
             break

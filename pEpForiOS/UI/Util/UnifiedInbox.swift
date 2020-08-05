@@ -52,7 +52,7 @@ public class UnifiedInbox: VirtualFolderProtocol {
                     Log.shared.errorAndCrash("Unexpected error")
                     return
             }
-            // Alredy fetching do nothing
+            // Already fetching do nothing
         }
     }
 
@@ -81,5 +81,25 @@ public class UnifiedInbox: VirtualFolderProtocol {
 
     public var name: String {
         return UnifiedInbox.defaultUnifiedInboxName
+    }
+
+    public var countUnread : Int {
+        guard let folderType = agregatedFolderType else {
+            Log.shared.errorAndCrash("Folder Type not found")
+            return 0
+        }
+        return Folder.countUnreadIn(foldersOfType: folderType)
+    }
+}
+
+extension UnifiedInbox: Equatable {
+    public static func == (lhs: UnifiedInbox, rhs: UnifiedInbox) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+}
+
+extension UnifiedInbox: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(messagesPredicate.description)
     }
 }

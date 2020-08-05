@@ -18,7 +18,7 @@ protocol EmailViewControllerDelegate: class {
     func showPdfPreview(forPdfAt url: URL)
 }
 
-class EmailViewController: BaseTableViewController {
+class EmailViewController: UITableViewController {
     private var tableData: ComposeDataSource?
     lazy private var documentInteractionController = UIDocumentInteractionController()
     private var clientCertificateImportViewController: ClientCertificateImportViewController?
@@ -28,7 +28,7 @@ class EmailViewController: BaseTableViewController {
     weak var delegate: EmailViewControllerDelegate?
     var message: Message?
     lazy var clickHandler: UrlClickHandler = {
-        return UrlClickHandler(appConfig: appConfig)
+        return UrlClickHandler()
     }()
 
     // MARK: - LIFE CYCLE
@@ -42,6 +42,8 @@ class EmailViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.title = title
+        tableView.hideSeperatorForEmptyCells()
         configureTableRows()
     }
 
@@ -189,7 +191,7 @@ extension EmailViewController {
 // MARK: - MessageContentCellDelegate
 
 extension EmailViewController: MessageContentCellDelegate {
-    func didUpdate(cell: MessageCell, height: CGFloat) {
+    func heightChanged() {
         tableView.updateSize()
     }
 }

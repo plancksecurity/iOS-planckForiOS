@@ -36,4 +36,17 @@ class FolderTest: PersistentStoreDrivenTestBase {
                        CdMessage.all(predicate: predicate, in: moc)?.count)
 
     }
+
+    private func createMessage(isUnread : Bool, in folder: CdFolder) {
+        folder.account = cdAccount
+        let m = TestUtil.createCdMessage(withText: "lala", sentDate: nil, cdFolder: folder, moc: moc)
+        m.imap = CdImapFields(context: moc)
+        let localFlags = CdImapFlags(context: moc)
+        m.imap?.localFlags = localFlags
+        let serverFlags = CdImapFlags(context: moc)
+        m.imap?.serverFlags = serverFlags
+        m.imap?.localFlags?.flagSeen = !isUnread
+        m.uid = 1
+        m.pEpRating = 3
+    }
 }

@@ -26,7 +26,7 @@ class ImapExpungeOperation: ImapSyncOperation {
     }
 
     public override func main() {
-        if !checkImapSync() || isCancelled {
+        if !checkImapConnection() || isCancelled {
             waitForBackgroundTasksAndFinish()
             return
         }
@@ -44,19 +44,11 @@ class ImapExpungeOperation: ImapSyncOperation {
                 return
             }
 
-            let pImapDeletedLocally = NSPredicate(
-                format: "%K = %d AND %K = %@",
-                RelationshipKeyPath.cdMessage_imap_localFlags_flagDeleted,
-                true,
-                RelationshipKeyPath.cdMessage_parent_account,
-                cdAccount)
+            let pImapDeletedLocally = CdMessage.PredicateFactory
+                .imapDeletedLocally(cdAccount: cdAccount)
 
-            let pImapDeletedOnServer = NSPredicate(
-                format: "%K = %d AND %K = %@",
-                RelationshipKeyPath.cdMessage_imap_serverFlags_flagDeleted,
-                true,
-                RelationshipKeyPath.cdMessage_parent_account,
-                cdAccount)
+            let pImapDeletedOnServer = CdMessage.PredicateFactory
+                .imapDeletedOnServer(cdAccount: cdAccount)
 
             let pImapDeleted = NSCompoundPredicate(
                 andPredicateWithSubpredicates: [pImapDeletedLocally, pImapDeletedOnServer])

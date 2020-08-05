@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class EditableAccountSettingsTableViewController: BaseTableViewController {
+final class EditableAccountSettingsTableViewController: UITableViewController {
 
     @IBOutlet private var stackViews: [UIStackView]!
 
@@ -41,6 +41,11 @@ final class EditableAccountSettingsTableViewController: BaseTableViewController 
 
     private var firstResponder: UITextField?
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.title = title
+        tableView.hideSeperatorForEmptyCells()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()

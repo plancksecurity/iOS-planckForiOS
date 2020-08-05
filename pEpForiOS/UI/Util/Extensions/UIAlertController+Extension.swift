@@ -19,10 +19,9 @@ extension UIAlertController {
         }
     }
 
-    public static func pEpAlertController(
-        title: String? = nil,
-        message: String? = nil,
-        preferredStyle: UIAlertController.Style = .actionSheet) -> UIAlertController {
+    public static func pEpAlertController(title: String? = nil,
+                                          message: String? = nil,
+                                          preferredStyle: UIAlertController.Style = .actionSheet) -> UIAlertController {
         let alertCtrl = UIAlertController(title: title, message: message,
                                           preferredStyle: preferredStyle)
         alertCtrl.view.tintColor = .pEpGreen

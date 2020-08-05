@@ -58,7 +58,7 @@ class OperationBasedService: Service, OperationBasedServiceProtocol {
     }()
     /// Queue to schedule the Service's work on.
     /// You MUST queue all work on this queue to make the start/finish/stop cycle work!
-    private let backgroundQueue: OperationQueue = {
+    let backgroundQueue: OperationQueue = {
         let createe = OperationQueue()
         createe.name = #file + " - backgroundQueue"
         createe.qualityOfService = QualityOfService.background

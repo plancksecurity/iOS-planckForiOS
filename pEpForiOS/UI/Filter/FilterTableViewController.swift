@@ -9,7 +9,7 @@
 import UIKit
 import MessageModel
 
-class FilterTableViewController: BaseTableViewController {
+class FilterTableViewController: UITableViewController {
 
     public var filterEnabled: MessageQueryResultsFilter?
     //!!!: this should be in the VM, not the VC
@@ -29,6 +29,8 @@ class FilterTableViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.title = title
+        tableView.hideSeperatorForEmptyCells()
         initViewModel()
     }
 

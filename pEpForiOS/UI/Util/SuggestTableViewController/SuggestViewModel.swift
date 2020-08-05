@@ -9,6 +9,7 @@
 import MessageModel
 import pEpIOSToolbox
 import Contacts
+import PEPObjCAdapterFramework
 
 protocol SuggestViewModelResultDelegate: class {
     /// Will be called whenever the user selects an Identity.
@@ -23,24 +24,44 @@ protocol SuggestViewModelDelegate: class {
 
 class SuggestViewModel {
     struct Row {
+        private let from: Identity?
         public let name: String
         public let email: String
-        let addressBookID: String?
+        public let addressBookID: String?
 
-        fileprivate init(name: String, email: String, addressBookID: String? = nil) {
-            self.name = name
-            self.email = email
-            self.addressBookID = addressBookID
+        fileprivate init(sender: Identity?,
+                         recipientName: String,
+                         recipientEmail: String,
+                         recipientAddressBookID: String? = nil) {
+            from = sender
+            self.name = recipientName
+            self.email = recipientEmail
+            self.addressBookID = recipientAddressBookID
         }
 
-        fileprivate init(identity: Identity) {
-            name = identity.userName ?? ""
-            email = identity.address
-            addressBookID = identity.addressBookID
+        fileprivate init(sender: Identity?, recipient: Identity) {
+            self.init(sender: sender,
+                      recipientName: recipient.userName ?? "",
+                      recipientEmail: recipient.address,
+                      recipientAddressBookID: recipient.addressBookID)
         }
 
-        static func rows(fromIdentities identities: [Identity]) -> [Row] {
-            return identities.map { Row(identity: $0) }
+        static func rows(forSender sender: Identity, recipients: [Identity]) -> [Row] {
+            return recipients.map { Row(sender: sender, recipient: $0) }
+        }
+
+        public func pEpRatingIcon(completion: @escaping (UIImage?)->Void) {
+            guard let from = from else {
+                Log.shared.errorAndCrash("No From")
+                completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
+                return
+            }
+            let to = Identity(address: email)
+            PEPAsyncSession().outgoingMessageRating(from: from, to: [to], cc: [], bcc: []) { (rating) in
+                DispatchQueue.main.async {
+                    completion(rating.pEpColor().statusIconInContactPicture())
+                }
+            }
         }
     }
 
@@ -48,6 +69,7 @@ class SuggestViewModel {
     weak public var delegate: SuggestViewModelDelegate?
 
     private var rows = [Row]()
+    private let from: Identity?
     private let minNumberSearchStringChars: UInt
     private let showEmptyList = false
     private var workQueue: OperationQueue = {
@@ -67,8 +89,10 @@ class SuggestViewModel {
     // MARK: - Life Cycle
 
     public init(minNumberSearchStringChars: UInt = 3,
+                from: Identity? = nil,
                 resultDelegate: SuggestViewModelResultDelegate? = nil,
                 showEmptyList: Bool = false) {
+        self.from = from
         self.minNumberSearchStringChars = minNumberSearchStringChars
         self.resultDelegate = resultDelegate
     }
@@ -93,6 +117,7 @@ class SuggestViewModel {
         let selectedRow = rows[index]
         let selectedIdentity = Identity(address: selectedRow.email)
         // Potetially update data from Apple Contacts
+
         if selectedIdentity.update(userName: selectedRow.name,
                                    addressBookID: selectedRow.addressBookID) {
             // Save identity if it has been updated
@@ -122,7 +147,11 @@ class SuggestViewModel {
             // We found matching Identities in the DB.
             // Show them to the user imediatelly and update the list later when Contacts are
             // fetched too.
-            rows = Row.rows(fromIdentities: identities)
+            guard let from = from else {
+                Log.shared.errorAndCrash("No sender in compose?")
+                return
+            }
+            rows = Row.rows(forSender: from, recipients: identities)
             informDelegatesModelChanged()
         }
 
@@ -152,6 +181,7 @@ extension SuggestViewModel {
         newRows.sort { (row1, row2) -> Bool in
             row1.name < row2.name
         }
+
         rows = newRows
         informDelegatesModelChanged(callingOperation: callingOperation)
     }
@@ -161,8 +191,17 @@ extension SuggestViewModel {
         let identities = Identity.makeSafe(identities, forSession: session)
         var mergedRows = [Row]()
         session.performAndWait { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed.
+                return
+            }
             let emailsOfIdentities = identities.map { $0.address }
-            mergedRows = Row.rows(fromIdentities: identities)
+            guard let from = me.from else {
+                Log.shared.errorAndCrash("No sender in compose?")
+                return
+            }
+            mergedRows = Row.rows(forSender: from, recipients: identities)
+
             for contact in contacts {
                 let name = contact.givenName + " " + contact.familyName
                 var contactRowsToAdd = [Row]()
@@ -172,16 +211,16 @@ extension SuggestViewModel {
                         // contact.
                         let identitity = identities[idx]
                         identitity.update(userName: name, addressBookID: contact.identifier)
-                        self?.needsSave = true
+                        me.needsSave = true
                         contactRowsToAdd.removeAll()
                         break
                     } else {
                         // No Identity exists for the contact. Show it.
-                        let row = Row(name: name,
-                                      email: email.value as String,
-                                      addressBookID: contact.identifier)
+                        let row = Row(sender: from,
+                                      recipientName: name,
+                                      recipientEmail: email.value as String,
+                                      recipientAddressBookID: contact.identifier)
                         contactRowsToAdd.append(row)
-
                     }
                 }
                 mergedRows.append(contentsOf: contactRowsToAdd)
@@ -213,3 +252,4 @@ extension SuggestViewModel {
         resultDelegate?.suggestViewModel(self, didToggleVisibilityTo: showResults)
     }
 }
+

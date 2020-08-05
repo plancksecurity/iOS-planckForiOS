@@ -23,7 +23,7 @@ extension UIAlertController {
     }
 }
 
-final class IMAPSettingsViewController: BaseViewController, TextfieldResponder {
+final class IMAPSettingsViewController: UIViewController, TextfieldResponder {
     @IBOutlet weak var manualAccountSetupContainerView: ManualAccountSetupContainerView!
 
     var fields = [UITextField]()
@@ -125,7 +125,6 @@ extension IMAPSettingsViewController: SegueHandlerType {
         switch segueIdentifier(for: segue) {
         case .SMTPSettings:
             if let destination = segue.destination as? SMTPSettingsViewController {
-                destination.appConfig = appConfig
                 destination.verifiableAccount = verifiableAccount
             } else {
                 Log.shared.errorAndCrash(
