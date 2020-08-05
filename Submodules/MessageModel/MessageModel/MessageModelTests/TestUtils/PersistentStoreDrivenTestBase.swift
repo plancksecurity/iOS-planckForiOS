@@ -25,9 +25,6 @@ class PersistentStoreDrivenTestBase: XCTestCase {
     var imapConnectInfo: EmailConnectInfo!
     var smtpConnectInfo: EmailConnectInfo!
     var imapConnection: ImapConnection!
-    var session: PEPSession {
-        return PEPSession()
-    }
 
     override func setUp() {
         super.setUp()

@@ -18,15 +18,33 @@ class UIUtils {
     /// - Parameters:
     ///   - error: error to preset to user
     static public func show(error: Error) {
-        Log.shared.info("May or may not display error to user: (interpolate) %@", "\(error)")
+        let workBlock = {
+            // Do not show alerts when app is in background.
+            if UIApplication.shared.applicationState != .active {
+                #if DEBUG
+                // show alert in background when in debug.
+                #else
+                return
+                #endif
+            }
 
-        guard let displayError = DisplayUserError(withError: error) else {
-            // Do nothing. The error type is not suitable to bother the user with.
-            return
-        }
-        DispatchQueue.main.async {
+            Log.shared.info("May or may not display error to user: (interpolate) %@", "\(error)")
+
+            guard let displayError = DisplayUserError(withError: error) else {
+                // Do nothing. The error type is not suitable to bother the user with.
+                return
+            }
+
             showAlertWithOnlyPositiveButton(title: displayError.title,
                                             message: displayError.errorDescription)
+        }
+
+        if Thread.current == Thread.main {
+            workBlock()
+        } else {
+            DispatchQueue.main.async {
+                workBlock()
+            }
         }
     }
 }

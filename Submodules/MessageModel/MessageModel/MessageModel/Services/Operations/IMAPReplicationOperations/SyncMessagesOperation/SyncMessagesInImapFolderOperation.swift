@@ -128,9 +128,9 @@ extension SyncMessagesInImapFolderOperation {
         for msg in messages {
             if !existingUIDs.contains(NSNumber(value: msg.uid)) {
                 msg.delete(context: context)
-                context.saveAndLogErrors()
             }
         }
+        context.saveAndLogErrors()
     }
 }
 

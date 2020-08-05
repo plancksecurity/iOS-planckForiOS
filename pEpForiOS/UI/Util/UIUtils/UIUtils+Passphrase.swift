@@ -83,6 +83,7 @@ extension UIUtils {
             guard !isCurrentlyShowingPassphraseInputAlert else {
                 // A passphrase alert is already shown. Do not display onother one on top of it.
                 // Do nothing instead ...
+                cancelCallback()
                 return
             }
             showAlertWithTextfield(identifier: .passphraseAlert,
