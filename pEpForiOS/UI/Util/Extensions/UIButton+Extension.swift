@@ -36,13 +36,6 @@ extension UIButton {
         tintColor = UIColor.pEpGreen
         setTitle(placeholder, for: .normal)
     }
-    
-//    public func convertToGreenRoundedCornersButton(placeholder: String) {
-//        backgroundColor = UIColor.pEpGreen
-//        tintColor = UIColor.white
-//        roundCorners(corners: .allCorners, radius: 5)
-//        setTitle(placeholder, for: .normal)
-//    }
 
     /**
      Does the content fit the button bounds?
