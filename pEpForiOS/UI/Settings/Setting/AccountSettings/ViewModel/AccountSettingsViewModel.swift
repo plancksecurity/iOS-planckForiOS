@@ -42,6 +42,7 @@ final class AccountSettingsViewModel {
     ///         for the verification be able to succeed.
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
+    private(set) var includeInUnifiedFolders: Bool
     private let isOAuth2: Bool
     private(set) var account: Account
     public weak var delegate: AccountSettingsViewModelDelegate?
@@ -56,6 +57,7 @@ final class AccountSettingsViewModel {
     init(account: Account, delegate: AccountSettingsViewModelDelegate? = nil) {
         self.account = account
         self.delegate = delegate
+        includeInUnifiedFolders = account.isIncludedInUnifiedFolders
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         self.generateSections()
     }
@@ -87,6 +89,7 @@ extension AccountSettingsViewModel {
         case name
         case email
         case password
+        case includeInUnified
         case pepSync
         case reset
         case server
@@ -193,6 +196,11 @@ extension AccountSettingsViewModel {
                                          error.localizedDescription)
             }
         }
+    }
+
+    public func handleSwitchChanged(isIncludedInUnifiedFolders: Bool) {
+        includeInUnifiedFolders = isIncludedInUnifiedFolders
+        account.isIncludedInUnifiedFolders = isIncludedInUnifiedFolders
     }
 
     /// [En][Dis]able the pEpSync status
@@ -309,6 +317,8 @@ extension AccountSettingsViewModel {
             return NSLocalizedString("Username", comment: "\(type.rawValue) field")
         case .oauth2Reauth:
             return NSLocalizedString("OAuth2 Reauthorization", comment: "\(type.rawValue) field")
+        case .includeInUnified:
+            return NSLocalizedString("Include in Unified Folders", comment: "\(type.rawValue) field")
         }
     }
 
@@ -346,6 +356,19 @@ extension AccountSettingsViewModel {
                 let passwordRow = getDisplayRow(type : .password, value: fakePassword)
                 rows.append(passwordRow)
             }
+
+            // Include in Unified Folders
+            let includeInUnifiedFolderRow = SwitchRow(type: .includeInUnified,
+                                                      title: rowTitle(for: .includeInUnified),
+                                                      isOn: includeInUnifiedFolders,
+                                                      action: { [weak self] (isIncludedInUnifiedFolders) in
+                                                        guard let me = self else {
+                                                            Log.shared.error("Lost myself")
+                                                            return
+                                                        }
+                                                        me.handleSwitchChanged(isIncludedInUnifiedFolders: isIncludedInUnifiedFolders)
+                }, cellIdentifier: CellsIdentifiers.switchCell)
+            rows.append(includeInUnifiedFolderRow)
 
             // pepSync
             let switchRow = SwitchRow(type: .pepSync,
