@@ -69,7 +69,7 @@ extension UIUtils {
         let to = Identity(address: address)
         var initData = ComposeViewModel.InitData(withPrefilledToRecipient: to, composeMode: .normal)
         let deviceField = NSLocalizedString("Device", comment: "Device field, reporting issue")
-        initData.bodyPlaintext = "\n\n\(deviceField): \(UIDevice().type.rawValue)" + "\n" + "OS: \(UIDevice.current.systemVersion)"
+//        initData.bodyPlaintext = "\n\n\(deviceField): \(UIDevice().type.rawValue)" + "\n" + "OS: \(UIDevice.current.systemVersion)"
         let state = ComposeViewModel.ComposeViewModelState(initData: initData)
         state.subject = NSLocalizedString("Help", comment: "Contact Support - Mail subject") 
         return ComposeViewModel(state: state)
