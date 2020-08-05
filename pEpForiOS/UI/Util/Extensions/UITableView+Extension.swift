@@ -49,7 +49,6 @@ extension UITableView {
     }
 }
 
-
 extension UITableView {
 
     /// Sets footer's view frame as .zero to hide empty cells sepaator.
