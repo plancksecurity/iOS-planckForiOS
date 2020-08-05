@@ -34,12 +34,12 @@ public enum KeySyncErrorResponse {
 }
 
 public enum KeySyncHandshakeResult {
-    /// SYNC_HANDSHAKE_CANCEL, -1
+    /// PEPSyncHandshakeResultCancel, SYNC_HANDSHAKE_CANCEL, -1
     case cancel
 
-    /// SYNC_HANDSHAKE_ACCEPTED, 0
+    /// PEPSyncHandshakeResultAccepted, SYNC_HANDSHAKE_ACCEPTED, 0
     case accepted
 
-    /// SYNC_HANDSHAKE_REJECTED, 1
+    /// PEPSyncHandshakeResultRejected, SYNC_HANDSHAKE_REJECTED, 1
     case rejected
 }
