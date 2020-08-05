@@ -44,7 +44,8 @@ class EmailViewController: UIViewController {
         loadDatasource("MessageData")
         tableView.estimatedRowHeight = 72.0
         tableView.rowHeight = UITableView.automaticDimension
-        showExternalContentButton.convertToGreenRoundedCornersButton(placeholder: NSLocalizedString("Show External Content", comment: "external content button"))
+        //showExternalContentButton.convertToGreenRoundedCornersButton(placeholder: NSLocalizedString("Show External Content", comment: "external content button"))
+        
         showExternalContentLabel.text = NSLocalizedString("""
  By showing external content, your privacy may be invaded.
  This may affect the privacy status of the message.
