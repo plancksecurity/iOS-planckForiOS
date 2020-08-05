@@ -28,8 +28,8 @@ extension Message {
             return CdMessage.PredicateFactory.unread(value: value)
         }
 
-        static public func inUnifiedFolder() -> NSPredicate {
-            return CdMessage.PredicateFactory.inUnifiedFolder()
+        static public func isIn(folderOfType: FolderType) -> NSPredicate {
+            return CdMessage.PredicateFactory.isIn(folderOfType: folderOfType)
         }
     }
 }

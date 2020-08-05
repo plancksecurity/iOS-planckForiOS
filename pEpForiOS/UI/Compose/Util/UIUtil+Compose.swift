@@ -7,10 +7,9 @@
 //
 
 import MessageModel
+import pEpIOSToolbox
 
 // MARK: - UIUtil+Compose
-
-import MessageModel
 
 extension UIUtils {
 

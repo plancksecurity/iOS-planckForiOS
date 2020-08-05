@@ -8,15 +8,58 @@
 import pEpIOSToolbox
 import MessageModel
 
-public class UnifiedInbox: VirtualFolderProtocol {
+// MARK: - Unified Folder Base
+
+public class UnifiedFolderBase: VirtualFolderProtocol {
 
     private lazy var fetchMessagesService = FetchMessagesService()
     private lazy var fetchOlderMessagesService = FetchOlderImapMessagesService()
-    static public let defaultUnifiedInboxName = "Unified Inbox"
 
     public var agregatedFolderType: FolderType? {
-        return FolderType.inbox
+        Log.shared.errorAndCrash("You MUST override this")
+        return .none
     }
+
+    public var title: String {
+        get {
+            return Folder.localizedName(realName: name)
+        }
+    }
+
+    public var name: String {
+        Log.shared.errorAndCrash("You MUST override this")
+        return ""
+    }
+
+    public var defaultFilter: MessageQueryResultsFilter {
+        get {
+            return MessageQueryResultsFilter(mustBeUnread: true, accounts: Account.all())
+        }
+    }
+
+    public var countUnread : Int {
+        guard let folderType = agregatedFolderType else {
+            Log.shared.errorAndCrash("Folder Type not found")
+            return 0
+        }
+        return Folder.countUnreadIn(foldersOfType: folderType)
+    }
+
+    public var messagesPredicate: NSPredicate {
+        get {
+            var predicates = [NSPredicate]()
+            guard let folderType = agregatedFolderType else {
+                Log.shared.errorAndCrash("Folder Type not found")
+                return NSPredicate()
+            }
+            predicates.append(Message.PredicateFactory.isIn(folderOfType: folderType))
+            predicates.append(Message.PredicateFactory.existingMessages())
+            predicates.append(Message.PredicateFactory.processed())
+            predicates.append(Message.PredicateFactory.isNotAutoConsumable())
+            return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        }
+    }
+
 
     public func fetchOlder(completion: (()->())? = nil) {
         guard let folderType = agregatedFolderType else {
@@ -55,51 +98,15 @@ public class UnifiedInbox: VirtualFolderProtocol {
             // Already fetching do nothing
         }
     }
-
-    public var title: String {
-        get {
-            return Folder.localizedName(realName: name)
-        }
-    }
-
-    public var messagesPredicate: NSPredicate {
-        get {
-            var predicates = [NSPredicate]()
-            predicates.append(Message.PredicateFactory.inUnifiedFolder())
-            predicates.append(Message.PredicateFactory.isInInbox())
-            predicates.append(Message.PredicateFactory.existingMessages())
-            predicates.append(Message.PredicateFactory.processed())
-            predicates.append(Message.PredicateFactory.isNotAutoConsumable())
-            return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-        }
-    }
-
-    public var defaultFilter: MessageQueryResultsFilter {
-        get {
-            return MessageQueryResultsFilter(mustBeUnread: true, accounts: Account.all())
-        }
-    }
-
-    public var name: String {
-        return UnifiedInbox.defaultUnifiedInboxName
-    }
-
-    public var countUnread : Int {
-        guard let folderType = agregatedFolderType else {
-            Log.shared.errorAndCrash("Folder Type not found")
-            return 0
-        }
-        return Folder.countUnreadIn(foldersOfType: folderType, isUnified: true)
-    }
 }
 
-extension UnifiedInbox: Equatable {
-    public static func == (lhs: UnifiedInbox, rhs: UnifiedInbox) -> Bool {
+extension UnifiedFolderBase: Equatable {
+    public static func == (lhs: UnifiedFolderBase, rhs: UnifiedFolderBase) -> Bool {
         return lhs.hashValue == rhs.hashValue
     }
 }
 
-extension UnifiedInbox: Hashable {
+extension UnifiedFolderBase: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(messagesPredicate.description)
     }
