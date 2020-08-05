@@ -18,4 +18,12 @@ extension KeySyncHandshakeResult {
         case .rejected: self = .rejected
         }
     }
+
+    private func pEpSyncHandshakeResult() -> PEPSyncHandshakeResult {
+        switch self {
+        case .accepted: return .accepted
+        case .cancel: return .cancel
+        case .rejected: return .rejected
+        }
+    }
 }
