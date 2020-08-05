@@ -104,9 +104,11 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
                         Log.shared.lostMySelf()
                         return
                     }
-                    me.delegate?.hideLoadingView()
-                    me.editableAccountSettingsDelegate?.didChange()
-                    me.delegate?.popViewController()
+                    DispatchQueue.main.async {
+                        me.delegate?.hideLoadingView()
+                        me.editableAccountSettingsDelegate?.didChange()
+                        me.delegate?.popViewController()
+                    }
                 }
             } catch {
                 Log.shared.errorAndCrash(error: error)

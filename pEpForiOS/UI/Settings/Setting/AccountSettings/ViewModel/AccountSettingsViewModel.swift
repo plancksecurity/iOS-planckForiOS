@@ -60,6 +60,9 @@ final class AccountSettingsViewModel {
         self.generateSections()
     }
 
+    /// Indicates throught the callback if the keysync is enabled for the account.
+    /// - Parameter completion: Callback that retrieves if it's enabled.
+    /// - Returns: True if it is enabled.
     public func isPEPSyncEnabled(completion: @escaping (Bool) -> ()) {
         account.isKeySyncEnabled(errorCallback: { (_) in
             DispatchQueue.main.async {
