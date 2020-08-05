@@ -11,8 +11,8 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 class KeySyncServiceHandshakeHandlerMoc: KeySyncServiceHandshakeHandlerProtocol {
-    func showHandshake(me: PEPIdentity,
-                       partner: PEPIdentity,
+    func showHandshake(meFingerprint: String?,
+                       partnerFingerprint: String?,
                        isNewGroup: Bool,
                        completion: ((PEPSyncHandshakeResult) -> ())?) {}
 

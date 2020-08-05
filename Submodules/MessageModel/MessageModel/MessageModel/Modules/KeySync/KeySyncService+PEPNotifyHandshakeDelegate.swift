@@ -103,7 +103,9 @@ extension KeySyncService {
     private func showHandshakeAndHandleResult(inBetween me: PEPIdentity,
                                               and partner: PEPIdentity,
                                               isNewGroup: Bool) {
-        handshakeHandler?.showHandshake(me: me, partner: partner, isNewGroup: isNewGroup) {
+        handshakeHandler?.showHandshake(meFingerprint: me.fingerPrint,
+                                        partnerFingerprint: partner.fingerPrint,
+                                        isNewGroup: isNewGroup) {
             [weak self] result in
             if result == .cancel || result == .rejected {
                 self?.fastPollingDelegate?.disableFastPolling()

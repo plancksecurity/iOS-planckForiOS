@@ -17,8 +17,8 @@ public protocol KeySyncServiceHandshakeHandlerProtocol: class {
     ///   - partner: my partner trust words
     ///   - isNewGroup: is it a new group creation or i am joining an existing group
     ///   - completion: handle the possible results of type PEPSyncHandshakeResult
-    func showHandshake(me: PEPIdentity,
-                       partner: PEPIdentity,
+    func showHandshake(meFingerprint: String?,
+                       partnerFingerprint: String?,
                        isNewGroup: Bool,
                        completion: ((PEPSyncHandshakeResult)->())?)
 
