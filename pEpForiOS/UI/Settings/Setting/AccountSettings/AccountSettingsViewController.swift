@@ -196,13 +196,12 @@ extension AccountSettingsViewController : UITableViewDataSource {
 //MARK : - ViewModel Delegate
 
 extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
-
     func setLoadingView(visible: Bool) {
-        if visible {
-            LoadingInterface.showLoadingInterface()
-        } else {
-            LoadingInterface.removeLoadingInterface()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
         }
+        vm.setLoadingView(visible: visible)
     }
 
     func showAlert(error: Error) {

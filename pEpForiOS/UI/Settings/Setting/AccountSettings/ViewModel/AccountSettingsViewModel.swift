@@ -435,3 +435,15 @@ extension AccountSettingsViewModel {
         }
     }
 }
+
+extension AccountSettingsViewModel {
+    public func setLoadingView(visible: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                //Valid case: the view might be dismissed
+                return
+            }
+            me.delegate?.setLoadingView(visible: visible)
+        }
+    }
+}

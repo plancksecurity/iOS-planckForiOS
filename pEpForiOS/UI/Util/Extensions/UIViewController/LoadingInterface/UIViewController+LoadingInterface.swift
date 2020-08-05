@@ -12,43 +12,37 @@ final class LoadingInterface {
     static weak var loadingInterface: UIView?
 
     static func showLoadingInterface(completion: ((Bool) -> ())? = nil) {
-        DispatchQueue.main.async {
-            if loadingInterface == nil {
-                addLoadingInterfaceToKeyWindow()
-            }
-
-            UIView.animate(withDuration: 0.5,
-                           delay: 0,
-                           options: .beginFromCurrentState,
-                           animations: {
-                            loadingInterface?.alpha = 1
-                },
-                           completion: { didFinishAnimation in
-                                completion?(didFinishAnimation)
-            })
-
+        if loadingInterface == nil {
+            addLoadingInterfaceToKeyWindow()
         }
+        UIView.animate(withDuration: 0.5,
+                       delay: 0,
+                       options: .beginFromCurrentState,
+                       animations: {
+                        loadingInterface?.alpha = 1
+        },
+                       completion: { didFinishAnimation in
+                        completion?(didFinishAnimation)
+        })
     }
 
     static func removeLoadingInterface(completion: ((Bool) -> ())? = nil ) {
-        DispatchQueue.main.async {
-            guard loadingInterface != nil else { return }
+        guard loadingInterface != nil else { return }
 
-            UIView.animate(withDuration: 0.5,
-                           delay: 0,
-                           options: .beginFromCurrentState,
-                           animations: {
-                            loadingInterface?.alpha = 0
-                },
-                           completion: { didFinishAnimation in
-                            guard didFinishAnimation else {
-                                completion?(didFinishAnimation)
-                                return
-                            }
-                            loadingInterface?.removeFromSuperview()
+        UIView.animate(withDuration: 0.5,
+                       delay: 0,
+                       options: .beginFromCurrentState,
+                       animations: {
+                        loadingInterface?.alpha = 0
+        },
+                       completion: { didFinishAnimation in
+                        guard didFinishAnimation else {
                             completion?(didFinishAnimation)
-            })
-        }
+                            return
+                        }
+                        loadingInterface?.removeFromSuperview()
+                        completion?(didFinishAnimation)
+        })
     }
 
     static private func addLoadingInterfaceToKeyWindow() {
