@@ -23,6 +23,10 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
 
     weak var delegate : AccountSettingsSwitchTableViewCellDelegate?
 
+    /// Configure the cell with the row and specify if it has to be grayed out.
+    /// - Parameters:
+    ///   - row: The row to configure the cell
+    ///   - isGrayedOut: indicates if the row has to be grayed out. 
     public func configure(with row : AccountSettingsViewModel.SwitchRow, isGrayedOut: Bool) {
         self.row = row
         titleLabel.text = row.title
@@ -30,6 +34,16 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
         switchItem.isOn = row.isOn
         switchItem.isUserInteractionEnabled = isGrayedOut
         switchItem.onTintColor = isGrayedOut ? UIColor.pEpGreen : UIColor.pEpGreyBackground
+    }
+
+    /// Configure the cell with the row
+    /// - Parameter row: The row to configure the cell
+    public func configure(with row : AccountSettingsViewModel.SwitchRow) {
+        self.row = row
+        titleLabel.text = row.title
+        titleLabel.textColor = .pEpTextDark
+        switchItem.isOn = row.isOn
+        switchItem.onTintColor = .pEpGreen
     }
 
     @IBAction func switchChanged(_ sender: UISwitch) {

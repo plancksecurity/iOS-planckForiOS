@@ -185,6 +185,19 @@ extension AccountSettingsViewController : UITableViewDataSource {
             }
             dequeuedCell.configure(with: row)
             return dequeuedCell
+        case .includeInUnified:
+            guard let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
+                as? AccountSettingsSwitchTableViewCell else {
+                    Log.shared.errorAndCrash(message: "Cell can't be dequeued")
+                    return UITableViewCell()
+            }
+            guard let row = row as? AccountSettingsViewModel.SwitchRow else {
+                Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
+                return UITableViewCell()
+            }
+            dequeuedCell.configure(with: row)
+            dequeuedCell.delegate = self
+            return dequeuedCell
         }
     }
 
@@ -229,7 +242,7 @@ extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
      func undoPEPSyncToggle() {
            DispatchQueue.main.async { [weak self] in
                guard let me = self else {
-                   Log.shared.lostMySelf()
+                   //Valid case: the view might be dismissed. 
                    return
                }
                me.keySyncSwitch.setOn(!me.keySyncSwitch.isOn, animated: true)
@@ -341,6 +354,14 @@ extension AccountSettingsViewController: AccountSettingsSwitchTableViewCellDeleg
         }
         if rowType == .pepSync {
             vm.pEpSync(enable: newValue)
+        }
+        if rowType == .includeInUnified {
+            vm.handleSwitchChanged(isIncludedInUnifiedFolders: newValue)
+            guard let folderTableViewController = navigationController?.child(ofType: FolderTableViewController.self) else {
+                Log.shared.errorAndCrash("FolderTableViewController not found in hierarchy")
+                return
+            }
+            folderTableViewController.folderVM?.refreshFolderList()
         }
     }
 }
