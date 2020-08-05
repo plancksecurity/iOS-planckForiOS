@@ -32,3 +32,14 @@ public protocol KeySyncServiceHandshakeHandlerProtocol: class {
 public enum KeySyncErrorResponse {
     case tryAgain, notNow
 }
+
+public enum KeySyncHandshakeResult {
+    /// SYNC_HANDSHAKE_CANCEL, -1
+    case cancel
+
+    /// SYNC_HANDSHAKE_ACCEPTED, 0
+    case accepted
+
+    /// SYNC_HANDSHAKE_REJECTED, 1
+    case rejected
+}
