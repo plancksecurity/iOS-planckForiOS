@@ -232,7 +232,6 @@ extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
         DispatchQueue.main.async {
             ftvc.folderVM?.refreshFolderList()
         }
-
     }
 }
 
