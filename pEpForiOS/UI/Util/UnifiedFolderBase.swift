@@ -42,7 +42,7 @@ public class UnifiedFolderBase: VirtualFolderProtocol {
             Log.shared.errorAndCrash("Folder Type not found")
             return 0
         }
-        return Folder.countUnreadIn(foldersOfType: folderType)
+        return Folder.countUnreadIn(foldersOfType: folderType, isUnified: true)
     }
 
     public var messagesPredicate: NSPredicate {
