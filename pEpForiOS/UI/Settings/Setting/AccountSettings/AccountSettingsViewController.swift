@@ -223,16 +223,6 @@ extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
     func undoPEPSyncToggle() {
         keySyncSwitch.setOn(!keySyncSwitch.isOn, animated: true)
     }
-
-    func refreshFoldersList() {
-        guard let ftvc = navigationController?.child(ofType: FolderTableViewController.self) else {
-            Log.shared.errorAndCrash("VC not found")
-            return
-        }
-        DispatchQueue.main.async {
-            ftvc.folderVM?.refreshFolderList()
-        }
-    }
 }
 
 //MARK : - Identity

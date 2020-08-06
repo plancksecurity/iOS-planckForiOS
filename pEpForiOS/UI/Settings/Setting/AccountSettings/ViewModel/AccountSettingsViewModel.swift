@@ -18,8 +18,6 @@ protocol AccountSettingsViewModelDelegate: class {
     func showAlert(error: Error)
     /// Undo the last Pep Sync Change
     func undoPEPSyncToggle()
-    /// Refresh the folders list
-    func refreshFoldersList()
 }
 
 /// Protocol that represents the basic data in a row.
@@ -369,7 +367,6 @@ extension AccountSettingsViewModel {
                                                             return
                                                         }
                                                         me.handleSwitchChanged(isIncludedInUnifiedFolders: isIncludedInUnifiedFolders)
-                                                        me.delegate?.refreshFoldersList()
                 }, cellIdentifier: CellsIdentifiers.switchCell)
             rows.append(includeInUnifiedFolderRow)
 
