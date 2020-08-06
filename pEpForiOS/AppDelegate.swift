@@ -27,13 +27,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return createe
     }()
 
+    private let userInputProvider = UserInputProvider()
+
     /// This is used to handle OAuth2 requests.
     private let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
     private var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
-
-    /// Set to true whever the app goes into background, so the main PEPSession gets cleaned up.
-    private var shouldDestroySession = false
 
     private func setupInitialViewController() -> Bool {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
@@ -52,18 +51,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    private func cleanupPEPSessionIfNeeded() {
-        if shouldDestroySession {
-            PEPSession.cleanup()
-        }
-    }
-
     private func setupServices() {
         messageModelService = MessageModelService(errorPropagator: errorPropagator,
                                                   cnContactsAccessPermissionProvider: AppSettings.shared,
                                                   keySyncServiceHandshakeHandler: KeySyncHandshakeService(),
                                                   keySyncStateProvider: AppSettings.shared,
-                                                  usePEPFolderProvider: AppSettings.shared)
+                                                  usePEPFolderProvider: AppSettings.shared,
+                                                  passphraseProvider: userInputProvider)
     }
 
     private func askUserForNotificationPermissions() {
@@ -135,7 +129,6 @@ extension AppDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         Log.shared.info("applicationDidEnterBackground")
         Session.main.commit()
-        shouldDestroySession = true
         messageModelService?.finish()
     }
 
@@ -155,7 +148,6 @@ extension AppDelegate {
             // Do nothing if unit tests are running
             return
         }
-        shouldDestroySession = false
         UserNotificationTool.resetApplicationIconBadgeNumber()
         messageModelService?.start()
     }
@@ -165,8 +157,7 @@ extension AppDelegate {
     /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
         messageModelService?.stop()
-        shouldDestroySession = true
-        cleanupPEPSessionIfNeeded()
+        PEPSession.cleanup()
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler

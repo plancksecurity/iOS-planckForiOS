@@ -12,4 +12,11 @@ extension UINavigationController {
     public var rootViewController : UIViewController? {
         return viewControllers.first
     }
+
+    /// Retrieve the first view controller of the type passed by parameter.
+    /// - Parameter class: The class of the view controller to find.
+    /// - Returns: The found VC, nil if not found.
+    public func child<T:UIViewController>(ofType class: T.Type) -> T? {
+        return viewControllers.filter { $0 is T } .first as? T
+    }
 }

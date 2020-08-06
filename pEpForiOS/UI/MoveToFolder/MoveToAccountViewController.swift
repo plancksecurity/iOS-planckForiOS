@@ -30,7 +30,7 @@ class MoveToAccountViewController: UIViewController {
     }
 
     private func setupTableView() {
-        UITableViewController.setupCommonSettings(tableView: tableview)
+        tableview.hideSeperatorForEmptyCells()
     }
 
     private func setupNavigationBar() {

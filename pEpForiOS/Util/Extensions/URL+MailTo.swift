@@ -21,7 +21,7 @@ extension URL {
     ///
     /// - Returns: the first address of a mailto: URL if parseable, nil otherwize
     func firstRecipientAddress() -> String? {
-        let schemeStriped = self.absoluteString.replacingOccurrences(of: URL.schemeMailto, with: "")
+        let schemeStriped = absoluteString.replacingOccurrences(of: URL.schemeMailto, with: "")
         var result: String?
         if schemeStriped.contains(find: "?") {
             result = schemeStriped.components(separatedBy: "?").first

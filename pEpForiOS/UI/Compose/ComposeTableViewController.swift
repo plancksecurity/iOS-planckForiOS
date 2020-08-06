@@ -53,7 +53,7 @@ class ComposeTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.title = title
-        UITableViewController.setupCommonSettings(tableView: tableView)
+        tableView.hideSeperatorForEmptyCells()
         setupRecipientSuggestionsTableViewController()
         viewModel?.handleDidReAppear()
     }
@@ -118,11 +118,18 @@ extension ComposeTableViewController {
         let pEpRatingView = showNavigationBarSecurityBadge(pEpRating: pEpRating, pEpProtection: pEpProtected)
 
         // Handshake on simple touch if possible
-        if vm.canDoHandshake() {
-            let tapGestureRecognizerHandshake = UITapGestureRecognizer(
-                target: self,
-                action: #selector(actionHandshake))
-            pEpRatingView?.addGestureRecognizer(tapGestureRecognizerHandshake)
+        vm.canDoHandshake { [weak self] (canDoHandshake) in
+            guard let me = self else {
+                // Valid case. We might havebeen dismissed already.
+                // Do nothing ...
+                return
+            }
+            if canDoHandshake {
+                let tapGestureRecognizerHandshake = UITapGestureRecognizer(
+                    target: self,
+                    action: #selector(me.actionHandshake))
+                pEpRatingView?.addGestureRecognizer(tapGestureRecognizerHandshake)
+            }
         }
 
         // Toggle privacy status on long press for trusted and reliable
@@ -183,8 +190,15 @@ extension ComposeTableViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        if (vm.state.canHandshake()) {
-            performSegue(withIdentifier: .segueTrustManagement, sender: self)
+        vm.canDoHandshake { [weak self] (canDoHandshake) in
+            guard let me = self else {
+                // Valid case. We might havebeen dismissed already.
+                // Do nothing ...
+                return
+            }
+            if (canDoHandshake) {
+                me.performSegue(withIdentifier: .segueTrustManagement, sender: self)
+            }
         }
     }
 }

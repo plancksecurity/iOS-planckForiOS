@@ -10,24 +10,41 @@ import CoreData
 import PEPObjCAdapterFramework
 
 extension CdAccount {
-
-    func isKeySyncEnabled() throws -> Bool {
+    
+    func isKeySyncEnabled(errorCallback: @escaping (Error) -> (),
+                          successCallback: @escaping (Bool) -> ()) {
         guard let user = identity else {
             Log.shared.errorAndCrash("No identity")
-            return false
+            successCallback(false)
+            return
         }
-        return try PEPSession().queryKeySyncEnabled(for: user.pEpIdentity()).boolValue
+        PEPAsyncSession().queryKeySyncEnabled(for: user.pEpIdentity(),
+                                              errorCallback: errorCallback,
+                                              successCallback: successCallback)
     }
 
-    func setKeySyncEnabled(enable: Bool) throws {
+    func setKeySyncEnabled(enable: Bool,
+                           errorCallback: @escaping (Error?) -> (),
+                           successCallback: @escaping () -> ()) {
         guard let user = identity  else {
             Log.shared.errorAndCrash("Invalid account")
+            errorCallback(nil)
             return
         }
         if enable {
-            try PEPSession().enableSync(for: user.pEpIdentity())
+            PEPAsyncSession().enableSync(for: user.pEpIdentity(),
+                                         errorCallback: { error in
+                                            errorCallback(error)
+            }) {
+                successCallback()
+            }
         } else {
-            try PEPSession().disableSync(for: user.pEpIdentity())
+            PEPAsyncSession().disableSync(for: user.pEpIdentity(),
+                                          errorCallback: { error in
+                                            errorCallback(error)
+            }) {
+                successCallback()
+            }
         }
     }
 }

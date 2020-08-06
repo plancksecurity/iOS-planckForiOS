@@ -54,56 +54,52 @@ extension KeyImportUtil {
 }
 
 extension KeyImportUtil: KeyImportUtilProtocol {
-    public func importKey(url: URL) throws -> KeyData {
+    public func importKey(url: URL,
+                          errorCallback: @escaping (Error) -> (),
+                          completion: @escaping (KeyData) -> ()) {
         guard let dataString = try? String(contentsOf: url) else {
-            throw ImportError.cannotLoadKey
+            errorCallback(ImportError.cannotLoadKey)
+            return
         }
 
-        let session = PEPSession()
+        PEPAsyncSession().importKey(dataString,
+                                    errorCallback: { error in
+                                        errorCallback(ImportError.malformedKey)
+        }) { identities in
+            guard let firstIdentity = identities.first else {
+                errorCallback(ImportError.malformedKey)
+                return
+            }
 
-        var identities = [PEPIdentity]()
+            guard let fingerprint = firstIdentity.fingerPrint else {
+                errorCallback(ImportError.malformedKey)
+                return
+            }
 
-        do {
-            identities = try session.importKey(dataString)
-        } catch {
-            throw ImportError.malformedKey
+            completion(KeyData(address: firstIdentity.address,
+                               fingerprint: fingerprint,
+                               userName: firstIdentity.userName))
         }
-
-        guard let firstIdentity = identities.first else {
-            throw ImportError.malformedKey
-        }
-
-        guard let fingerprint = firstIdentity.fingerPrint else {
-            throw ImportError.malformedKey
-        }
-
-        return KeyData(address: firstIdentity.address,
-                       fingerprint: fingerprint,
-                       userName: firstIdentity.userName)
     }
 
-    public func setOwnKey(address: String, fingerprint: String) throws {
-        var thrown: Error?
-
+    public func setOwnKey(address: String,
+                          fingerprint: String,
+                          errorCallback: @escaping (Error) -> (),
+                          callback: @escaping () -> ()) {
         let session = Session()
 
         session.performAndWait {
             guard let account = Account.by(address: address, in: session) else {
-                thrown = SetOwnKeyError.noMatchingAccount
+                errorCallback(SetOwnKeyError.noMatchingAccount)
                 return
             }
 
-            do {
-                try account.user.setOwnKey(fingerprint: fingerprint)
-            } catch {
-                Log.shared.log(error: error)
-                thrown = SetOwnKeyError.cannotSetOwnKey
-                return
+            account.user.setOwnKey(fingerprint: fingerprint,
+                                   errorCallback: { error in
+                                    errorCallback(error)
+            }) {
+                callback()
             }
-        }
-
-        if let somethingThrown = thrown {
-            throw somethingThrown
         }
     }
 }
