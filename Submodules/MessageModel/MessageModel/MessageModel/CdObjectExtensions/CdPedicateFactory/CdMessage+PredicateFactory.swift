@@ -13,6 +13,10 @@ extension CdMessage {
 
     struct PredicateFactory {
 
+        static func inUnifiedFolder() -> NSPredicate {
+            return NSPredicate(format: "%K = true", RelationshipKeyPath.cdMessage_parent_account_isUnifiable)
+        }
+
         /// - Returns: Predicate to fetch all messages that need to be IMAP appended (uploaded to server).
         static func notWaitingForImapAppend() -> NSPredicate {
             return NSPredicate(format: "%K != 0", CdMessage.AttributeName.uid)

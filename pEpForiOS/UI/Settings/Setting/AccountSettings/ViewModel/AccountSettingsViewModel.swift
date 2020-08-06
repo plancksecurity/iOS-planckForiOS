@@ -42,12 +42,14 @@ final class AccountSettingsViewModel {
     ///         for the verification be able to succeed.
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
+    private(set) var includeInUnifiedFolders: Bool
     private let isOAuth2: Bool
     private(set) var account: Account
     public weak var delegate: AccountSettingsViewModelDelegate?
     /// Items to be displayed in a Account Settings View Controller
     private(set) var sections: [Section] = [Section]()
     private let oauthViewModel = OAuthAuthorizer()
+    private lazy var folderSyncService = FetchImapFoldersService()
 
     /// Constructor
     /// - Parameters:
@@ -56,10 +58,14 @@ final class AccountSettingsViewModel {
     init(account: Account, delegate: AccountSettingsViewModelDelegate? = nil) {
         self.account = account
         self.delegate = delegate
+        includeInUnifiedFolders = account.isIncludedInUnifiedFolders
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         self.generateSections()
     }
 
+    /// Indicates throught the callback if the keysync is enabled for the account.
+    /// - Parameter completion: Callback that retrieves if it's enabled.
+    /// - Returns: True if it is enabled.
     public func isPEPSyncEnabled(completion: @escaping (Bool) -> ()) {
         account.isKeySyncEnabled(errorCallback: { (_) in
             DispatchQueue.main.async {
@@ -84,6 +90,7 @@ extension AccountSettingsViewModel {
         case name
         case email
         case password
+        case includeInUnified
         case pepSync
         case reset
         case server
@@ -190,6 +197,11 @@ extension AccountSettingsViewModel {
                                          error.localizedDescription)
             }
         }
+    }
+
+    public func handleSwitchChanged(isIncludedInUnifiedFolders: Bool) {
+        includeInUnifiedFolders = isIncludedInUnifiedFolders
+        account.isIncludedInUnifiedFolders = isIncludedInUnifiedFolders
     }
 
     /// [En][Dis]able the pEpSync status
@@ -306,6 +318,8 @@ extension AccountSettingsViewModel {
             return NSLocalizedString("Username", comment: "\(type.rawValue) field")
         case .oauth2Reauth:
             return NSLocalizedString("OAuth2 Reauthorization", comment: "\(type.rawValue) field")
+        case .includeInUnified:
+            return NSLocalizedString("Include in Unified Folders", comment: "\(type.rawValue) field")
         }
     }
 
@@ -343,6 +357,19 @@ extension AccountSettingsViewModel {
                 let passwordRow = getDisplayRow(type : .password, value: fakePassword)
                 rows.append(passwordRow)
             }
+
+            // Include in Unified Folders
+            let includeInUnifiedFolderRow = SwitchRow(type: .includeInUnified,
+                                                      title: rowTitle(for: .includeInUnified),
+                                                      isOn: includeInUnifiedFolders,
+                                                      action: { [weak self] (isIncludedInUnifiedFolders) in
+                                                        guard let me = self else {
+                                                            Log.shared.error("Lost myself")
+                                                            return
+                                                        }
+                                                        me.handleSwitchChanged(isIncludedInUnifiedFolders: isIncludedInUnifiedFolders)
+                }, cellIdentifier: CellsIdentifiers.switchCell)
+            rows.append(includeInUnifiedFolderRow)
 
             // pepSync
             let switchRow = SwitchRow(type: .pepSync,
@@ -429,6 +456,18 @@ extension AccountSettingsViewModel {
             DispatchQueue.main.async {
                 successCallback(value)
             }
+        }
+    }
+}
+
+extension AccountSettingsViewModel {
+    public func setLoadingView(visible: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                //Valid case: the view might be dismissed
+                return
+            }
+            me.delegate?.setLoadingView(visible: visible)
         }
     }
 }
