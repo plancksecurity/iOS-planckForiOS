@@ -49,7 +49,6 @@ final class AccountSettingsViewModel {
     /// Items to be displayed in a Account Settings View Controller
     private(set) var sections: [Section] = [Section]()
     private let oauthViewModel = OAuthAuthorizer()
-    private lazy var folderSyncService = FetchImapFoldersService()
 
     /// Constructor
     /// - Parameters:
@@ -202,7 +201,6 @@ extension AccountSettingsViewModel {
     public func handleSwitchChanged(isIncludedInUnifiedFolders: Bool) {
         includeInUnifiedFolders = isIncludedInUnifiedFolders
         account.isIncludedInUnifiedFolders = isIncludedInUnifiedFolders
-        updateFolders()
     }
 
     /// [En][Dis]able the pEpSync status
@@ -469,18 +467,6 @@ extension AccountSettingsViewModel {
                 return
             }
             me.delegate?.setLoadingView(visible: visible)
-        }
-    }
-}
-
-// MARK: - Update folders
-
-extension AccountSettingsViewModel {
-    private func updateFolders() {
-        do {
-            try folderSyncService.runService(inAccounts: [account]) { Success in }
-        } catch {
-            Log.shared.errorAndCrash("Unexpected error")
         }
     }
 }
