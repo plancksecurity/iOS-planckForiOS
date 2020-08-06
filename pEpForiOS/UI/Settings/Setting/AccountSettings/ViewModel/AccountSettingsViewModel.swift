@@ -478,7 +478,7 @@ extension AccountSettingsViewModel {
 extension AccountSettingsViewModel {
     private func updateFolders() {
         do {
-            try folderSyncService.runService(inAccounts: [self.account]) { Success in }
+            try folderSyncService.runService(inAccounts: [account]) { Success in }
         } catch {
             Log.shared.errorAndCrash("Unexpected error")
         }
