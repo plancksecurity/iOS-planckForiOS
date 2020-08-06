@@ -108,6 +108,15 @@ extension AccountSettingsViewController : UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+         func dequeue<T: UITableViewCell>(with row : AccountSettingsRowProtocol, type : T.Type) -> T {
+            guard let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
+                as? T else {
+                    Log.shared.errorAndCrash(message: "Cell can't be dequeued")
+                    return T()
+            }
+            return dequeuedCell
+        }
+
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("Without VM there is no table view.")
             return UITableViewCell()
@@ -115,10 +124,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
         let row = vm.sections[indexPath.section].rows[indexPath.row]
         switch row.type {
         case .password:
-            guard let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
-                as? AccountSettingsTableViewCell else {
-                    return UITableViewCell()
-            }
+            let dequeuedCell = dequeue(with: row, type: AccountSettingsTableViewCell.self)
             guard let row = row as? AccountSettingsViewModel.DisplayRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
@@ -128,11 +134,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
 
         case .name, .email,
              .server, .port, .tranportSecurity, .username:
-            guard let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
-                as? AccountSettingsTableViewCell else {
-                    Log.shared.errorAndCrash(message: "Cell can't be dequeued")
-                    return UITableViewCell()
-            }
+            let dequeuedCell = dequeue(with: row, type: AccountSettingsTableViewCell.self)
             guard let row = row as? AccountSettingsViewModel.DisplayRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
@@ -140,17 +142,12 @@ extension AccountSettingsViewController : UITableViewDataSource {
             dequeuedCell.configure(with: row, for: traitCollection)
             return dequeuedCell
         case .pepSync:
-            guard let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
-                as? AccountSettingsSwitchTableViewCell else {
-                    Log.shared.errorAndCrash(message: "Cell can't be dequeued")
-                    return UITableViewCell()
-            }
+            let dequeuedCell = dequeue(with: row, type: AccountSettingsSwitchTableViewCell.self)
             guard let row = row as? AccountSettingsViewModel.SwitchRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
             }
             dequeuedCell.configure(with: row, isGrayedOut : !vm.isPEPSyncGrayedOut())
-            dequeuedCell.delegate = self
             vm.isKeySyncEnabled(errorCallback: { [weak self] (error) in
                 guard let me = self else {
                     // Valid case. We might have been dismissed.
@@ -163,11 +160,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
             }
             return dequeuedCell
         case .reset:
-            guard let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
-                as? AccountSettingsDangerousTableViewCell else {
-                    Log.shared.errorAndCrash(message: "Cell can't be dequeued")
-                    return UITableViewCell()
-            }
+            let dequeuedCell = dequeue(with: row, type: AccountSettingsDangerousTableViewCell.self)
             guard let row = row as? AccountSettingsViewModel.ActionRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
@@ -175,15 +168,13 @@ extension AccountSettingsViewController : UITableViewDataSource {
             dequeuedCell.configure(with: row)
             return dequeuedCell
         case .oauth2Reauth:
-            guard let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
-                as? AccountSettingsOAuthTableViewCell else {
-                    return UITableViewCell()
-            }
+            let dequeuedCell = dequeue(with: row, type: AccountSettingsOAuthTableViewCell.self)
             guard let row = row as? AccountSettingsViewModel.DisplayRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
             }
             dequeuedCell.configure(with: row)
+
             return dequeuedCell
         case .includeInUnified:
             guard let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)
@@ -196,7 +187,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
                 return UITableViewCell()
             }
             dequeuedCell.configure(with: row)
-            dequeuedCell.delegate = self
+//            dequeuedCell.delegate = self
             return dequeuedCell
         }
     }
@@ -213,41 +204,26 @@ extension AccountSettingsViewController : UITableViewDataSource {
         headerView.title = sections[section].title.uppercased()
         return headerView
     }
-
-    private enum CellType {
-        case keyValueCell
-        case switchCell
-        case dangerousCell
-    }
 }
 
 //MARK : - ViewModel Delegate
 
 extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
-
     func setLoadingView(visible: Bool) {
-        DispatchQueue.main.async {
-            if visible {
-                LoadingInterface.showLoadingInterface()
-            } else {
-                LoadingInterface.removeLoadingInterface()
-            }
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
         }
+        vm.setLoadingView(visible: visible)
     }
 
     func showAlert(error: Error) {
         UIUtils.show(error: error)
     }
 
-     func undoPEPSyncToggle() {
-           DispatchQueue.main.async { [weak self] in
-               guard let me = self else {
-                   //Valid case: the view might be dismissed. 
-                   return
-               }
-               me.keySyncSwitch.setOn(!me.keySyncSwitch.isOn, animated: true)
-           }
-       }
+    func undoPEPSyncToggle() {
+        keySyncSwitch.setOn(!keySyncSwitch.isOn, animated: true)
+    }
 }
 
 //MARK : - Identity
@@ -292,13 +268,7 @@ extension AccountSettingsViewController {
         pepAlertViewController.add(action: resetAction)
         pepAlertViewController.modalPresentationStyle = .overFullScreen
         pepAlertViewController.modalTransitionStyle = .crossDissolve
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.present(pepAlertViewController, animated: true)
-        }
+        present(pepAlertViewController, animated: true)
     }
 }
 
@@ -344,44 +314,16 @@ extension AccountSettingsViewController: OAuthAuthorizerDelegate {
     }
 }
 
-// MARK: - AccountSettingsSwitchTableViewCellDelegate
-
-extension AccountSettingsViewController: AccountSettingsSwitchTableViewCellDelegate {
-    func switchValueChanged(of rowType: AccountSettingsViewModel.RowType, to newValue: Bool) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash(message: "A view model is required")
-            return
-        }
-        if rowType == .pepSync {
-            vm.pEpSync(enable: newValue)
-        }
-        if rowType == .includeInUnified {
-            vm.handleSwitchChanged(isIncludedInUnifiedFolders: newValue)
-            guard let folderTableViewController = navigationController?.child(ofType: FolderTableViewController.self) else {
-                Log.shared.errorAndCrash("FolderTableViewController not found in hierarchy")
-                return
-            }
-            folderTableViewController.folderVM?.refreshFolderList()
-        }
-    }
-}
-
 // MARK: - EditableAccountSettingsDelegate
 
 extension AccountSettingsViewController: EditableAccountSettingsDelegate {
     func didChange() {
-        func reload() {
-            /// As the data source of this table view provides the rows generated at the vm initialization,
-            /// we re-init the view model in order re-generate those rows.
-            /// With the rows having the data up-to-date we reload the table view.
-            if let account = viewModel?.account {
-                viewModel = AccountSettingsViewModel(account: account)
-                tableView.reloadData()
-            }
-        }
-
-        DispatchQueue.main.async {
-            reload()
+        /// As the data source of this table view provides the rows generated at the vm initialization,
+        /// we re-init the view model in order re-generate those rows.
+        /// With the rows having the data up-to-date we reload the table view.
+        if let account = viewModel?.account {
+            viewModel = AccountSettingsViewModel(account: account)
+            tableView.reloadData()
         }
     }
 }

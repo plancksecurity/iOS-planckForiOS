@@ -62,6 +62,9 @@ final class AccountSettingsViewModel {
         self.generateSections()
     }
 
+    /// Indicates throught the callback if the keysync is enabled for the account.
+    /// - Parameter completion: Callback that retrieves if it's enabled.
+    /// - Returns: True if it is enabled.
     public func isPEPSyncEnabled(completion: @escaping (Bool) -> ()) {
         account.isKeySyncEnabled(errorCallback: { (_) in
             DispatchQueue.main.async {
@@ -367,7 +370,6 @@ extension AccountSettingsViewModel {
                 }, cellIdentifier: CellsIdentifiers.switchCell)
             rows.append(includeInUnifiedFolderRow)
 
-
             // pepSync
             let switchRow = SwitchRow(type: .pepSync,
                                       title: rowTitle(for: .pepSync),
@@ -453,6 +455,18 @@ extension AccountSettingsViewModel {
             DispatchQueue.main.async {
                 successCallback(value)
             }
+        }
+    }
+}
+
+extension AccountSettingsViewModel {
+    public func setLoadingView(visible: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                //Valid case: the view might be dismissed
+                return
+            }
+            me.delegate?.setLoadingView(visible: visible)
         }
     }
 }

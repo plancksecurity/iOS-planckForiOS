@@ -101,12 +101,14 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
             do {
                 try verifiableAccount?.save { [weak self] _ in
                     guard let me = self else {
-                        Log.shared.lostMySelf()
+                        //Valid case: the view might be dismissed. 
                         return
                     }
-                    me.delegate?.hideLoadingView()
-                    me.editableAccountSettingsDelegate?.didChange()
-                    me.delegate?.popViewController()
+                    DispatchQueue.main.async {
+                        me.delegate?.hideLoadingView()
+                        me.editableAccountSettingsDelegate?.didChange()
+                        me.delegate?.popViewController()
+                    }
                 }
             } catch {
                 Log.shared.errorAndCrash(error: error)
