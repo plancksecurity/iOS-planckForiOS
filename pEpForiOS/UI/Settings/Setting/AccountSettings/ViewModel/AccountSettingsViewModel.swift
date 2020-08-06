@@ -202,6 +202,7 @@ extension AccountSettingsViewModel {
     public func handleSwitchChanged(isIncludedInUnifiedFolders: Bool) {
         includeInUnifiedFolders = isIncludedInUnifiedFolders
         account.isIncludedInUnifiedFolders = isIncludedInUnifiedFolders
+        updateFolders()
     }
 
     /// [En][Dis]able the pEpSync status
@@ -468,6 +469,18 @@ extension AccountSettingsViewModel {
                 return
             }
             me.delegate?.setLoadingView(visible: visible)
+        }
+    }
+}
+
+// MARK: - Update folders
+
+extension AccountSettingsViewModel {
+    private func updateFolders() {
+        do {
+            try folderSyncService.runService(inAccounts: [self.account]) { Success in }
+        } catch {
+            Log.shared.errorAndCrash("Unexpected error")
         }
     }
 }
