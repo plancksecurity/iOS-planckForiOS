@@ -49,6 +49,7 @@ final class AccountSettingsViewModel {
     /// Items to be displayed in a Account Settings View Controller
     private(set) var sections: [Section] = [Section]()
     private let oauthViewModel = OAuthAuthorizer()
+    private lazy var folderSyncService = FetchImapFoldersService()
 
     /// Constructor
     /// - Parameters:
@@ -367,6 +368,7 @@ extension AccountSettingsViewModel {
                                                             return
                                                         }
                                                         me.handleSwitchChanged(isIncludedInUnifiedFolders: isIncludedInUnifiedFolders)
+                                                        me.updateFolders()
                 }, cellIdentifier: CellsIdentifiers.switchCell)
             rows.append(includeInUnifiedFolderRow)
 
@@ -403,6 +405,15 @@ extension AccountSettingsViewModel {
             setupServerFields(smtpServer, &rows)
         }
         return rows
+    }
+
+
+    private func updateFolders() {
+        do {
+            try folderSyncService.runService(inAccounts: [self.account]) { Success in }
+        } catch {
+            Log.shared.errorAndCrash("Unexpected error")
+        }
     }
 
     /// Setup the server fields.
