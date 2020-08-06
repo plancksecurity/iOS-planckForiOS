@@ -540,6 +540,13 @@
 /* Passive mode title */
 "Passive mode" = "Passivmodus";
 
+/* Passphrase placeholder
+   Passphrase title */
+"Passphrase" = "Passphrase";
+
+/* Passphrase too long - title */
+"Passphrase too long" = "Die Passphrase ist zu lang";
+
 /* password */
 "Password" = "Passwort";
 
@@ -611,6 +618,12 @@
 
 /* Fail to log in, email does not match account type */
 "Please enter a valid Gmail address." = "Bitte geben Sie eine gültige Gmail-Adresse ein.";
+
+/* Please enter one shorter - message */
+"Please enter one shorter" = "Bitte geben Sie eine kürzere ein";
+
+/* Passphrase message */
+"Please enter the passphrase to continue" = "Bitte geben Sie die Passphrase ein, um fortzufahren";
 
 /* Description for client certificate password screen */
 "Please enter the password of the certificate to import it:" = "Bitte geben Sie das Passwort des Zertifikats ein, um es zu importieren:";
@@ -803,6 +816,9 @@
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "Die Nachricht konnte nicht versandt werden. Bitte versuchen Sie es später noch einmal.";
 
+/* Passphrase message */
+"The passphrase you entered is wrong. Please enter it again to continue" = "Die eingegebene Passphrase ist falsch. Bitte geben Sie die Passphrase erneut ein, um fortzufahren";
+
 /* error message for .minimumLengthUsername */
 "The username must contain more than 1 characters" = "Der Benutzername muss mehr als 1 Zeichen enthalten";
 
@@ -953,6 +969,12 @@
 /* setting row title: Unsecure reply warning */
 "Unsecure reply warning" = "Warnhinweis bei unsicherer Weiterleitung";
 
+/* PGPKeyImportSetting - Use a Passphrase for new keys */
+"Use a passphrase for new keys" = "Verwende Passphrase für neue Schlüssel";
+
+/* Settings: title for enable/disable usePEPFolder feature */
+"Use p≡p Folder For Sync Messages" = "Den p≡p Ordner für Sync Nachrichten verwenden";
+
 /* User Name placeholder for manual account IMAP setup
    User Name placeholder for manual account setup
    User Name placeholder for manual account SMTP setup */
@@ -978,6 +1000,9 @@
 
 /* Client certificate import: wrong password alert message */
 "We could not import the certificate. We do not have permissions to open this file.\n\nTry again?" = "Wir konnten das Zertifikat nicht importieren. Wir haben keine Berechtigung zum Öffnen dieser Datei.\n\nNochmals versuchen?";
+
+/* Passphrase message */
+"We recommend to use device encryption instead of using passphrases, because they're securing all data, not only keys. In case you want to use a passphrase anyway, please enter a passphrase here and enable it." = "Wir empfehlen, die Geräteverschlüsselung anstelle von Passphrasen zu verwenden, da alle Daten und nicht nur die Schlüssel geschützt werden. Wenn Sie trotzdem eine Passphrase verwenden möchten, geben Sie hier eine Passphrase ein.";
 
 /* KeySyncWizard complete message - two devices */
 "We successfully created a device group. All your privacy is now synchronized." = "Ihre Gerätegruppe wurde erfolgreich gebildet. Ihre gesamten Datenschutz-Einstellungen sind jetzt synchronisiert.";

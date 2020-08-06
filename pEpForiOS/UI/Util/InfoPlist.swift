@@ -13,7 +13,7 @@ struct InfoPlist {
     static private var infoDictMainBundle: [String:Any]? {
         return Bundle.main.infoDictionary
     }
-    
+
     static public func mainBundleVersion() -> String? {
         guard let version = mainBundleInfoDictValue(forKey: "CFBundleVersion") as? String else {
             return nil
@@ -27,7 +27,7 @@ struct InfoPlist {
         }
         return version
     }
-    
+
     static private func mainBundleInfoDictValue(forKey key: String) -> Any? {
         guard let infoDict = infoDictMainBundle else {
             Log.shared.errorAndCrash("No info dict")

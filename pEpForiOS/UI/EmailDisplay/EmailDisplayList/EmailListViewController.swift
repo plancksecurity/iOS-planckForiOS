@@ -24,6 +24,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var editButton: UIBarButtonItem!
 
     var viewModel: EmailListViewModel? {
         didSet {
@@ -95,6 +96,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
             doOnce?()
         }
         updateFilterText()
+        updateEditButton()
     }
 
 
@@ -182,6 +184,20 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         }
     }
 
+    private func updateEditButton() {
+        guard let vm = viewModel else  {
+            //Valid case: might be dismissed.
+            return
+        }
+        if vm.rowCount == 0 {
+            editButton.isEnabled = false
+            editButton.tintColor = .clear
+        } else {
+            editButton.isEnabled = true
+            editButton.tintColor = .pEpGreen
+        }
+    }
+
     /// Called on pull-to-refresh triggered
     @objc private func refreshView(_ sender: Any) {
         viewModel?.fetchNewMessages() {[weak self] in
@@ -194,6 +210,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
                 // We intentionally do NOT use me.tableView.refreshControl?.endRefreshing() here.
                 // See comments in `setupRefreshControl` for details.
                 me.refreshController.endRefreshing()
+                me.updateEditButton()
             }
         }
     }
@@ -314,7 +331,9 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
         showEditToolbar()
         tableView.setEditing(true, animated: true)
+        updateBackButton(isTableViewEditing: tableView.isEditing)
     }
+
 
     @IBAction func showFilterOptions(_ sender: UIBarButtonItem!) {
         performSegue(withIdentifier: .segueShowFilter, sender: self)
@@ -324,6 +343,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         showStandardToolbar()
         lastSelectedIndexPath = nil
         tableView.setEditing(false, animated: true)
+        updateBackButton(isTableViewEditing: tableView.isEditing)
     }
 
     @IBAction func flagToolbar(_ sender:UIBarButtonItem!) {
@@ -506,23 +526,18 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    editActionsForRowAt indexPath: IndexPath,
                    for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        if viewModel == nil {
-            return nil
-        }
-
-        // Create swipe actions, taking the currently displayed folder into account
-        var swipeActions = [SwipeAction]()
-
-        guard let model = viewModel else {
+        guard let viewModel = viewModel else {
             Log.shared.errorAndCrash("Should have VM")
             return nil
         }
 
+        // Create swipe actions, taking the currently displayed folder into account
+        var leftSwipeActions = [SwipeAction]()
+
         // Delete or Archive
-        let destructiveAction = model.getDestructiveAction(forMessageAt: indexPath.row)
-        let archiveAction =
-            SwipeAction(style: .destructive,
-                        title: destructiveAction.title(forDisplayMode: .titleAndImage)) {
+        let destructiveDescriptor = viewModel.getDestructiveDescriptor(forMessageAt: indexPath.row)
+        let archiveAction = SwipeAction(style: .destructive,
+                        title: destructiveDescriptor.title(forDisplayMode: .titleAndImage)) {
                             [weak self] action, indexPath in
                             guard let me = self else {
                                 Log.shared.errorAndCrash("Lost MySelf")
@@ -530,14 +545,12 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                             }
                             me.swipeDelete = action
                             me.deleteAction(forCellAt: indexPath)
-
         }
-        configure(action: archiveAction, with: destructiveAction)
-        swipeActions.append(archiveAction)
+        configure(action: archiveAction, with: destructiveDescriptor)
+        leftSwipeActions.append(archiveAction)
 
         // Flag
-        let flagActionDescription = model.getFlagAction(forMessageAt: indexPath.row)
-        if let flagActionDescription = flagActionDescription {
+        if let flagDescriptor = viewModel.getFlagDescriptor(forMessageAt: indexPath.row) {
             let flagAction = SwipeAction(style: .default, title: "Flag") {
                 [weak self] action, indexPath in
                 guard let me = self else {
@@ -546,17 +559,13 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                 }
                 me.flagAction(forCellAt: indexPath)
             }
-
             flagAction.hidesWhenSelected = true
-
-            configure(action: flagAction, with: flagActionDescription)
-            swipeActions.append(flagAction)
+            configure(action: flagAction, with: flagDescriptor)
+            leftSwipeActions.append(flagAction)
         }
 
         // More (reply++)
-        let moreActionDescription = model.getMoreAction(forMessageAt: indexPath.row)
-
-        if let moreActionDescription = moreActionDescription {
+        if let moreDescriptor = viewModel.getMoreDescriptor(forMessageAt: indexPath.row) {
             // Do not add "more" actions (reply...) to drafts or outbox.
             let moreAction = SwipeAction(style: .default, title: "More") {
                 [weak self] action, indexPath in
@@ -567,10 +576,29 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                 me.moreAction(forCellAt: indexPath)
             }
             moreAction.hidesWhenSelected = true
-            configure(action: moreAction, with: moreActionDescription)
-            swipeActions.append(moreAction)
+            configure(action: moreAction, with: moreDescriptor)
+            leftSwipeActions.append(moreAction)
         }
-        return (orientation == .right ?   swipeActions : nil)
+
+        var rightSwipeActions = [SwipeAction]()
+        // Read
+        if let readActionDescription = viewModel.getReadDescriptor(forMessageAt: indexPath.row) {
+            let readAction = SwipeAction(style: .default, title: "Read") {
+                [weak self] action, indexPath in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost MySelf")
+                    return
+                }
+                me.readAction(forCellAt: indexPath)
+            }
+            readAction.hidesWhenSelected = true
+            configure(action: readAction, with: readActionDescription)
+            rightSwipeActions.append(readAction)
+        }
+
+        // "orientation == .right" means actions that are shown in the right side.
+        // The swipe is to the left. And Viceversa.
+        return orientation == .right ? leftSwipeActions : rightSwipeActions
     }
 
     func tableView(_ tableView: UITableView,
@@ -616,6 +644,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                 tableView.deselectRow(at: indexPath, animated: true)
             }
         }
+        updateBackButton(isTableViewEditing: tableView.isEditing)
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -626,6 +655,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                 vm.handleEditModeSelectionChange(selectedIndexPaths: [])
             }
         }
+        updateBackButton(isTableViewEditing: tableView.isEditing)
     }
 
     // Implemented to get informed about the scrolling position.
@@ -751,6 +781,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
 
     func allUpdatesReceived(viewModel: EmailDisplayViewModel) {
         tableView.endUpdates()
+        updateEditButton()
     }
 
     func setToolbarItemsEnabledState(to newValue: Bool) {
@@ -1018,14 +1049,32 @@ extension EmailListViewController {
 
 extension EmailListViewController {
     private func createRowAction(image: UIImage?,
-                                 action: @escaping (UITableViewRowAction, IndexPath) -> Void
-    ) -> UITableViewRowAction {
+                                 action: @escaping (UITableViewRowAction, IndexPath) -> Void)
+        -> UITableViewRowAction {
         let rowAction = UITableViewRowAction(style: .normal, title: nil, handler: action)
         if let theImage = image {
             let iconColor = UIColor(patternImage: theImage)
             rowAction.backgroundColor = iconColor
         }
         return rowAction
+    }
+    
+    func readAction(forCellAt indexPath: IndexPath) {
+        guard let row = viewModel?.viewModel(for: indexPath.row) else {
+            Log.shared.errorAndCrash("No data for indexPath!")
+            return
+        }
+        guard let cell = self.tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
+            Log.shared.errorAndCrash("No cell for indexPath!")
+            return
+        }
+        if row.isSeen {
+            viewModel?.markAsUnread(indexPaths: [indexPath])
+            cell.isSeen = false
+        } else {
+            viewModel?.markAsRead(indexPaths: [indexPath])
+            cell.isSeen = true
+        }
     }
 
     func flagAction(forCellAt indexPath: IndexPath) {
@@ -1048,6 +1097,7 @@ extension EmailListViewController {
 
     func deleteAction(forCellAt indexPath: IndexPath) {
         viewModel?.delete(forIndexPath: indexPath)
+        updateEditButton()
     }
 
     func moreAction(forCellAt indexPath: IndexPath) {
@@ -1231,5 +1281,60 @@ extension EmailListViewController {
       if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
         tableView.reloadData()
       }
+    }
+}
+
+// MARK: - [De]Select all cells
+
+extension EmailListViewController {
+
+    private var selectAllBarButton : UIBarButtonItem {
+        let selectAllTitle = NSLocalizedString("Select all", comment: "Select all emails")
+        let selectAllCellsSelector = #selector(selectAllCells)
+        return UIBarButtonItem(title: selectAllTitle, style: .plain, target: self, action: selectAllCellsSelector)
+    }
+    private var deselectAllBarButton : UIBarButtonItem {
+        let deselectAllTitle = NSLocalizedString("Deselect all", comment: "Deselect all emails")
+        let deselectAllCellsSelector = #selector(deselectAllCells)
+        return UIBarButtonItem(title: deselectAllTitle, style: .plain, target: self, action: deselectAllCellsSelector)
+    }
+
+    private func updateBackButton(isTableViewEditing: Bool) {
+        if isTableViewEditing {
+            let item : UIBarButtonItem
+            guard let numberOfSelectedRows = tableView.indexPathForSelectedRow?.count else {
+                //Valid case, there aren't selected rows
+                if tableView.numberOfRows(inSection: 0) > 0 {
+                    navigationItem.leftBarButtonItems = [selectAllBarButton]
+                }
+                return
+            }
+            item = tableView.numberOfRows(inSection: 0) > numberOfSelectedRows ? selectAllBarButton : deselectAllBarButton
+            navigationItem.leftBarButtonItems = [item]
+        } else {
+            navigationItem.leftBarButtonItems = nil
+        }
+        navigationItem.hidesBackButton = isTableViewEditing
+    }
+
+    @objc private func selectAllCells() {
+        for row in 0..<tableView.numberOfRows(inSection: 0) {
+            tableView.selectRow(at: IndexPath(item: row, section: 0), animated: false, scrollPosition: .none)
+        }
+        guard let vm = viewModel, let selectedIndexPaths = tableView?.indexPathsForSelectedRows else {
+            //Valid case: there are no selected rows because there are no rows to select. Just ignore.
+            return
+        }
+        vm.handleEditModeSelectionChange(selectedIndexPaths: selectedIndexPaths)
+
+        navigationItem.leftBarButtonItems = [deselectAllBarButton]
+    }
+
+    @objc private func deselectAllCells() {
+        for row in 0..<tableView.numberOfRows(inSection: 0) {
+            tableView.deselectRow(at: IndexPath(item: row, section: 0), animated: true)
+        }
+        viewModel?.handleEditModeSelectionChange(selectedIndexPaths: [])
+        navigationItem.leftBarButtonItems = [selectAllBarButton]
     }
 }

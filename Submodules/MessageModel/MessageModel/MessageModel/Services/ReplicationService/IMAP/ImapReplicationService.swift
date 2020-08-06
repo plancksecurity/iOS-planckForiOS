@@ -21,7 +21,7 @@ extension ImapReplicationService {
 class ImapReplicationService: OperationBasedService {
     private var pollingMode: PollingMode
     /// Amount of time to "sleep" between polling cycles
-    private var sleepTimeInSeconds = MiscUtil.isUnitTest() ? 1.0 : 3.0
+    private var sleepTimeInSeconds = MiscUtil.isUnitTest() ? 1.0 : 10.0
     private var cdAccount: CdAccount? = nil
     private var imapConnectionCache = ImapConnectionCache()
     private var idleOperation: ImapIdleOperation?
@@ -42,10 +42,24 @@ class ImapReplicationService: OperationBasedService {
         privateMoc.performAndWait {
             cdAccount = privateMoc.object(with: cdAccountObjectID) as? CdAccount
         }
+        setupFinishBlock()
     }
 
-    // MARK: - Overrides
-
+    /// Cancels all queued operations and add OPs that assure that local changes are synced to server before going inactive.
+    private func setupFinishBlock() {
+        let superFinishBlock = finishBlock
+        let newFinishBlock = {[weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            let finishOPs = me.internalOperations(syncOnlyUserChanges: true)
+            me.backgroundQueue.cancelAllOperations()
+            me.backgroundQueue.addOperations(finishOPs, waitUntilFinished: false)
+            superFinishBlock?()
+        }
+        finishBlock = newFinishBlock
+    }
 
     override func finish() {
         idleOperation?.stopIdling()
@@ -59,7 +73,7 @@ class ImapReplicationService: OperationBasedService {
         super.stop()
     }
 
-    override func operations() -> [Operation] {
+    private func internalOperations(syncOnlyUserChanges: Bool = false) -> [Operation] {
         var createes = [Operation]()
         privateMoc.performAndWait { [weak self] in
             guard let me = self else {
@@ -83,13 +97,13 @@ class ImapReplicationService: OperationBasedService {
                                                  imapConnection: imapConnection)
             createes.append(opImapLogin)
 
-            if me.pollingMode != .fastPolling {
+            if me.pollingMode != .fastPolling && !syncOnlyUserChanges {
                 // Fetch current list of interesting mailboxes
                 let opSyncFolders = SyncFoldersFromServerOperation(errorContainer: me.errorPropagator,
                                                                    imapConnection: imapConnection)
                 createes.append(opSyncFolders)
             }
-            if me.pollingMode != .fastPolling {
+            if me.pollingMode != .fastPolling && !syncOnlyUserChanges  {
                 let opRequiredFolders = CreateRequiredFoldersOperation(errorContainer: me.errorPropagator,
                                                                        imapConnection: imapConnection)
                 createes.append(opRequiredFolders)
@@ -110,43 +124,56 @@ class ImapReplicationService: OperationBasedService {
 
             // Server-to-client synchronization (IMAP)
             // fetch new messages
-            let fetchMessagesOp = FetchMessagesOperation(errorContainer: me.errorPropagator,
-                                                         imapConnection: imapConnection,
-                                                         folderInfos: folderInfos)
-            createes.append(fetchMessagesOp)
+            if !syncOnlyUserChanges {
+                let fetchMessagesOp = FetchMessagesOperation(errorContainer: me.errorPropagator,
+                                                             imapConnection: imapConnection,
+                                                             folderInfos: folderInfos)
+                createes.append(fetchMessagesOp)
+            }
 
-            if me.pollingMode != .fastPolling {
+            if me.pollingMode != .fastPolling && !syncOnlyUserChanges {
                 // Send EXPUNGEs, if necessary
                 let expungeOP = ImapExpungeOperation(errorContainer: me.errorPropagator,
                                                      imapConnection: imapConnection)
                 createes.append(expungeOP)
-
+            }
+            if me.pollingMode != .fastPolling && !syncOnlyUserChanges {
                 // sync existing messages
                 let syncExistingOP = SyncMessagesOperation(errorContainer: me.errorPropagator,
                                                            imapConnection: imapConnection,
                                                            folderInfos: folderInfos)
                 createes.append(syncExistingOP)
-
+            }
+            if me.pollingMode != .fastPolling {
                 let syncFlagsToServer = SyncFlagsToServerOperation(errorContainer: me.errorPropagator,
                                                                    imapConnection: imapConnection,
                                                                    folderInfos: folderInfos)
                 createes.append(syncFlagsToServer)
             }
-            var willIdle = false
-            if me.pollingMode != .fastPolling && imapConnection.supportsIdle {
-                let idleOP = ImapIdleOperation(errorContainer: me.errorPropagator,
-                                               imapConnection: imapConnection)
-                createes.append(idleOP)
-                me.idleOperation = idleOP
-                willIdle = true
-            }
-            if !willIdle {
-                // The server does not support idle mode. So we must poll frequently.
+            // Commented out as IDLE is broken. See IOS-1632
+            //            var willIdle = false
+            //            if me.pollingMode != .fastPolling && imapConnection.supportsIdle {
+            //                let idleOP = ImapIdleOperation(errorContainer: me.errorPropagator,
+            //                                               imapConnection: imapConnection)
+            //                createes.append(idleOP)
+            //                me.idleOperation = idleOP
+            //                willIdle = true
+            //            }
+            //            if !willIdle {
+            // The server does not support idle mode. So we must poll frequently.
+            if !syncOnlyUserChanges {
                 createes.append(me.pollingPausingOp(errorContainer: me.errorPropagator))
+                createes.append(me.errorHandlerOp())
             }
-            createes.append(me.errorHandlerOp())
         }
         return createes
+    }
+    //
+
+    // MARK: - Overrides
+
+    override func operations() -> [Operation] {
+        return internalOperations()
     }
 }
 
@@ -209,7 +236,7 @@ extension ImapReplicationService {
                 timeIntervalSinceNow: -ImapReplicationService.timeIntervalForInterestingFolders)
             let pInteresting = CdFolder.PredicateFactory
                 .folders(for: cdAccount,
-                                       lastLookedAfter: earlierTimestamp)
+                         lastLookedAfter: earlierTimestamp)
             let folderPredicate = NSCompoundPredicate(
                 orPredicateWithSubpredicates: [pInteresting,
                                                CdFolder.PredicateFactory.pEpSyncFolder(cdAccount: cdAccount)])

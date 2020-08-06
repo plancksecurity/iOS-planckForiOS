@@ -23,6 +23,13 @@ extension Message {
         static public func processed() -> NSPredicate {
             return CdMessage.PredicateFactory.processed()
         }
+
+        static public func unread(value : Bool) -> NSPredicate {
+            return CdMessage.PredicateFactory.unread(value: value)
+        }
+
+        static public func isIn(folderOfType: FolderType) -> NSPredicate {
+            return CdMessage.PredicateFactory.isIn(folderOfType: folderOfType)
+        }
     }
 }
-

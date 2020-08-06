@@ -44,6 +44,8 @@ protocol ComposeViewModelDelegate: class {
 
     func showDocumentAttachmentPicker()
 
+    func showContactsPicker()
+
     func documentAttachmentPickerDone()
 
     func showTwoButtonAlert(withTitle title: String,
@@ -115,8 +117,14 @@ class ComposeViewModel {
         setup()
     }
 
+    init(state : ComposeViewModelState) {
+        self.state = state
+        self.state.delegate = self
+        setup()
+    }
+
     public func handleDidReAppear() {
-        state.validate()
+        state.validate()//!!!: IOS-2325_!
     }
 
     public func viewModel(for indexPath: IndexPath) -> CellViewModel {
@@ -141,8 +149,12 @@ class ComposeViewModel {
         }
     }
 
-    public func beforePickerFocus() -> IndexPath {
+    public func beforeDocumentAttachmentPickerFocus() -> IndexPath {
         return indexPathBodyVm
+    }
+
+    public func beforeContactsPickerFocus() -> IndexPath {
+        return lastRowWithSuggestions ?? indexPathBodyVm
     }
 
     public func handleUserSelectedRow(at indexPath: IndexPath) {
@@ -252,7 +264,7 @@ extension ComposeViewModel {
     typealias Accepted = Bool
     /// When forwarding/answering a previously decrypted message and the pEpRating is considered as
     /// less secure as the original message's pEp rating, warn the user.
-    private func showAlertFordwardingLessSecureIfRequired(forState state: ComposeViewModelState,
+    private func showAlertFordwardingLessSecureIfRequired(forState state: ComposeViewModelState,//!!!: IOS-2325_!
                                                           completion: @escaping (Accepted)->()) {
         guard AppSettings.shared.unsecureReplyWarningEnabled else {
             // Setting is disabled ...
@@ -274,32 +286,50 @@ extension ComposeViewModel {
             completion(true)
             return
         }
-        let originalRating = originalMessage.pEpRating()
-        let pEpRating = state.rating
-        let title: String
-        let message: String
-        if composeMode == .forward {
-            title = NSLocalizedString("Confirm Forward",
-                                      comment: "Confirm less secure forwarding message alert title")
-            message = NSLocalizedString("You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
-                                        comment: "Confirm less secure forwarding message alert body")
-        } else {
-            title = NSLocalizedString("Confirm Answer",
-                                      comment: "Confirm less secure answering message alert title")
-            message = NSLocalizedString("You are about to answer a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
-                                        comment: "Confirm less secure answer message alert body")
+        var originalRating: PEPRating? = nil
+        let group = DispatchGroup()
+        group.enter()
+        originalMessage.pEpRating { (rating) in
+            originalRating = rating
+            group.leave()
         }
+        group.notify(queue: DispatchQueue.main) {[weak self] in
+            guard let me = self else {
+                // Valid case. The we might have been dismissed already.
+                // Do nothing ...
+                return
+            }
+            guard let originalRating = originalRating else {
+                Log.shared.errorAndCrash("No rating")
+                completion(false)
+                return
+            }
+            let pEpRating = state.rating
+            let title: String
+            let message: String
+            if composeMode == .forward {
+                title = NSLocalizedString("Confirm Forward",
+                                          comment: "Confirm less secure forwarding message alert title")
+                message = NSLocalizedString("You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
+                                            comment: "Confirm less secure forwarding message alert body")
+            } else {
+                title = NSLocalizedString("Confirm Answer",
+                                          comment: "Confirm less secure answering message alert title")
+                message = NSLocalizedString("You are about to answer a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
+                                            comment: "Confirm less secure answer message alert body")
+            }
 
-        if pEpRating.hasLessSecurePepColor(than: originalRating) {
-            // Forwarded mesasge is less secure than original message. Warn the user.
-            delegate?.showTwoButtonAlert(withTitle: title,
-                                         message: message,
-                                         cancelButtonText: "NO",
-                                         positiveButtonText: "YES",
-                                         cancelButtonAction: { completion(false) },
-                                         positiveButtonAction: { completion(true) })
-        } else {
-            completion(true)
+            if pEpRating.hasLessSecurePepColor(than: originalRating) {
+                // Forwarded mesasge is less secure than original message. Warn the user.
+                me.delegate?.showTwoButtonAlert(withTitle: title,
+                                             message: message,
+                                             cancelButtonText: "NO",
+                                             positiveButtonText: "YES",
+                                             cancelButtonAction: { completion(false) },
+                                             positiveButtonAction: { completion(true) })
+            } else {
+                completion(true)
+            }
         }
     }
 }
@@ -526,7 +556,7 @@ extension ComposeViewModel {
 
 extension ComposeViewModel {
     func suggestViewModel() -> SuggestViewModel {
-        let createe = SuggestViewModel(resultDelegate: self)
+        let createe = SuggestViewModel(from: state.from, resultDelegate: self)
         suggestionsVM = createe
         return createe
     }
@@ -689,8 +719,14 @@ extension ComposeViewModel {
 
 extension ComposeViewModel {
 
-    func canDoHandshake() -> Bool {
-        return state.canHandshake()
+    func canDoHandshake(completion: @escaping (Bool)->Void) {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.state.canHandshake(completion: completion)
+        }
     }
 
     func trustManagementViewModel() -> TrustManagementViewModel? {
@@ -742,7 +778,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
     }
 
     func recipientCellViewModelDidEndEditing(_ vm: RecipientCellViewModel) {
-        state.validate()
+        state.validate()//!!!: IOS-2325_!
         delegate?.focusSwitched()
         delegate?.hideSuggestions()
     }
@@ -757,6 +793,27 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         delegate?.contentChanged(inRowAt: idxPath)
         delegate?.showSuggestions(forRowAt: idxPath)
         suggestionsVM?.updateSuggestion(searchString: newText.cleanAttachments)
+    }
+
+// MARK: - Add Contact
+
+    func addContactTapped() {
+        delegate?.showContactsPicker()
+    }
+
+    func handleContactSelected(address: String, addressBookID: String, userName: String) {
+        guard
+            let idxPath = lastRowWithSuggestions,
+            let recipientVM = sections[idxPath.section].rows[idxPath.row] as? RecipientCellViewModel
+            else {
+                Log.shared.errorAndCrash("No row VM")
+                return
+        }
+        let contactIdentity = Identity(address: address, userID: nil,
+                                       addressBookID: addressBookID,
+                                       userName: userName,
+                                       session: Session.main)
+        recipientVM.add(recipient: contactIdentity)
     }
 }
 
@@ -819,6 +876,13 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
             Log.shared.errorAndCrash("We got called by a non-existing VM?")
             return
         }
-        delegate?.contentChanged(inRowAt: idxPath)
+        // Dispatch as next to not "Attempted to call -cellForRowAtIndexPath: on the table view while it was in the process of updating its visible cells, which is not allowed. ...". See IOS-2347 for details.
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                return
+            }
+            me.delegate?.contentChanged(inRowAt: idxPath)
+        }
     }
 }

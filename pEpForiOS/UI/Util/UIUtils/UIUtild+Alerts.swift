@@ -19,14 +19,6 @@ extension UIUtils {
                                                 message: String?,
                                                 inNavigationStackOf viewController: UIViewController? = nil,
                                                 completion: (()->Void)? = nil) {
-        // Do not show alerts when app is in background.
-        if UIApplication.shared.applicationState != .active {
-            #if DEBUG
-            // show alert in background when in debug.
-            #else
-            return
-            #endif
-        }
         let alertView = UIAlertController.pEpAlertController(title: title,
                                                              message: message,
                                                              preferredStyle: .alert)
@@ -76,10 +68,17 @@ extension UIUtils {
     ///   - title: The title of the alert
     ///   - message: The message of the alert
     ///   - placeholder: The placeholder of the textfield
+    ///   - positiveButtonText: text for positive button, defaults to "OK"
+    ///   - negativeButtonText: text for negative button, defaults to Cancel""
     ///   - callback: A callback that takes the user input as parameter.
     ///   - cancelCallback: A callback that's executed when the user taps the cancel button.
     static func showAlertWithTextfield(identifier: IdentifiableAlertController.Identifier = .other,
-                                       title: String, message: String, placeholder: String,
+                                       title: String,
+                                       message: String,
+                                       placeholder: String,
+                                       positiveButtonText: String? = nil,
+                                       negativeButtonText: String? = nil,
+                                       negativeButtonStyle: UIAlertAction.Style = .cancel,
                                        callback: @escaping(_ input: String) -> (),
                                        cancelCallback: (() -> Void)? = nil) {
         let alertController = IdentifiableAlertController(identifier: identifier,
@@ -90,8 +89,8 @@ extension UIUtils {
             textField.placeholder = placeholder
             textField.isSecureTextEntry = true
         }
-        let okTitle = NSLocalizedString("OK", comment: "OK button title")
-        let cancelTitle = NSLocalizedString("Cancel", comment: "OK button title")
+        let okTitle = positiveButtonText ?? NSLocalizedString("OK", comment: "OK button title")
+        let cancelTitle = negativeButtonText ?? NSLocalizedString("Cancel", comment: "OK button title")
         let action = UIAlertAction(title: okTitle,
                                    style: .default, handler: { [weak alertController] (_) in
             guard let alert = alertController, let textfields = alert.textFields else {
@@ -100,13 +99,12 @@ extension UIUtils {
             }
             let textField = textfields[0]
             guard let passphrase = textField.text else { return }
-            callback(passphrase)
+                                    callback(passphrase)
         })
         alertController.addAction(action)
-        let cancelAction: UIAlertAction = UIAlertAction(title: cancelTitle, style: .cancel) { (action) in
-            if (cancelCallback != nil) {
+        let cancelAction: UIAlertAction =
+            UIAlertAction(title: cancelTitle, style: negativeButtonStyle) { (action) in
                 cancelCallback?()
-            }
         }
 
         alertController.addAction(cancelAction)

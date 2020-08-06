@@ -45,18 +45,20 @@ class DecryptionTest: PersistentStoreDrivenTestBase {
         }
 
         let pEpMsg = cdMessage.pEpMessage()
-
-        var flags: PEPDecryptFlags = .none
         var rating: PEPRating = .undefined
-        var extraKeys: NSArray?
-        var status: PEPStatus = .OK
-        try! session.decryptMessage(pEpMsg,
-                                    flags: &flags,
-                                    rating: &rating,
-                                    extraKeys: &extraKeys,
-                                    status: &status)
+        var extraKeys: [String]?
 
-        XCTAssertEqual(status, PEPStatus.OK)
+        let exp = expectation(description: "exp")
+        PEPAsyncSession().decryptMessage(pEpMsg, flags: .none, extraKeys: extraKeys, errorCallback: { (error) in
+            XCTFail(error.localizedDescription)
+            exp.fulfill()
+        }) { (_, _, keyList, pEpRating, _) in
+            extraKeys = keyList
+            rating = pEpRating
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: TestUtil.waitTime)
+
         XCTAssertEqual(rating.rawValue, PEPRating.undefined.rawValue)
         XCTAssertNotNil(extraKeys)
     }

@@ -43,7 +43,7 @@ class EmailViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.title = title
-        UITableViewController.setupCommonSettings(tableView: tableView)
+        tableView.hideSeperatorForEmptyCells()
         configureTableRows()
     }
 
@@ -191,7 +191,7 @@ extension EmailViewController {
 // MARK: - MessageContentCellDelegate
 
 extension EmailViewController: MessageContentCellDelegate {
-    func didUpdate(cell: MessageCell, height: CGFloat) {
+    func heightChanged() {
         tableView.updateSize()
     }
 }

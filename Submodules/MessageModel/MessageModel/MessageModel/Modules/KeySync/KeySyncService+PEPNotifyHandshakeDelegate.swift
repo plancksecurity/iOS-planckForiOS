@@ -52,8 +52,17 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
             tryRedecryptYetUndecryptableMessages()
 
         case .passphraseRequired:
-            handshakeHandler?.showPassphraseRequired()
-            break
+            passphraseProvider.showEnterPassphrase(triggeredWhilePEPSync: true) { [weak self] passphrase in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                guard let pp = passphrase else {
+                    me.stop()
+                    return
+                }
+                try? PassphraseUtil().newPassphrase(pp)
+            }
 
         // Other
         case .undefined:
@@ -99,10 +108,13 @@ extension KeySyncService {
             if result == .cancel || result == .rejected {
                 self?.fastPollingDelegate?.disableFastPolling()
             }
-            do {
-                try PEPSession().deliver(result, identitiesSharing: [me, partner])
-            } catch {
-                Log.shared.errorAndCrash("Error delivering handshake result: %@", error.localizedDescription)
+            PEPAsyncSession().deliver(result,
+                                      identitiesSharing: [me, partner],
+                                      errorCallback: { (error: Error) in
+                                        Log.shared.errorAndCrash("Error delivering handshake result: %@",
+                                                                 error.localizedDescription)
+            }) {
+                // Caller doesn't care about the result
             }
         }
     }

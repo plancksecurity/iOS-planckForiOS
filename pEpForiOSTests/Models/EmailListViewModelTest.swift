@@ -467,7 +467,7 @@
 //
 //}
 //
-//// MARK: - HELPER
+/// MARK: - HELPER
 //
 //extension EmailListViewModelTest {
 //

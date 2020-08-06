@@ -50,7 +50,7 @@ Restart your Console!
 ```
 sudo port install pkgconfig
 rustup update
-rustup target add aarch64-apple-ios x86_64-apple-ios armv7-apple-ios i386-apple-ios
+rustup target add aarch64-apple-ios x86_64-apple-ios
 ```
 
 ### Set up Xcode

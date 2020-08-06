@@ -74,79 +74,6 @@ class SimpleOperationsTest: PersistentStoreDrivenTestBase {
         TestUtil.checkForExistanceAndUniqueness(uuids: uuids, context: moc)
     }
 
-    /**
-     Currently doesn't do a real test, since what comes from the server will not overwrite
-     local flags, to avoid getting rid of user-initiated changes.
-     */
-    func testSyncMessagesOperation() {
-        TestUtil.syncAndWait(testCase: self)
-
-        guard let folder = CdFolder.by(folderType: .inbox, account: cdAccount) else {
-            XCTFail()
-            return
-        }
-
-        guard let allMessages = CdMessage.all(in: moc) as? [CdMessage] else {
-            XCTFail()
-            return
-        }
-
-        let flagsSeenBefore = allMessages.map { $0.imap?.serverFlags?.flagSeen }
-        // Change all flags locally
-        for m in allMessages {
-            guard let imap = m.imap else {
-                XCTFail()
-                continue
-            }
-            let localFlags = imap.localFlags ?? CdImapFlags(context: moc)
-            imap.localFlags = localFlags
-            if let serverFlags = imap.serverFlags {
-                localFlags.update(cdImapFlags: serverFlags)
-                localFlags.flagSeen = !localFlags.flagSeen
-            } else {
-                XCTFail()
-            }
-        }
-
-        moc.saveAndLogErrors()
-
-        let changedMessages = SyncFlagsToServerInImapFolderOperation.messagesToBeSynced(folder: folder,
-                                                                            context: moc)
-        XCTAssertEqual(changedMessages.count, allMessages.count)
-
-        let expMailsSynced = expectation(description: "expMailsSynced")
-
-        guard let folderName = folder.name else {
-            XCTFail()
-            return
-        }
-        let op = SyncMessagesInImapFolderOperation(imapConnection: imapConnection,
-                                                   folderName: folderName,
-                                                   firstUID: folder.firstUID(context: moc),
-                                                   lastUID: folder.lastUID(context: moc))
-        op.completionBlock = {
-            op.completionBlock = nil
-            expMailsSynced.fulfill()
-        }
-        
-        op.start()
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors)
-        })
-
-        guard let allMessagesToTest = CdMessage.all(in: moc) as? [CdMessage] else {
-            XCTFail()
-            return
-        }
-        // Since the server flags have not changed, we still know that we have local changes
-        // that should not get overwritten by the server.
-        // Hence, all messages are still the same.
-        for (i, m) in allMessagesToTest.enumerated() {
-            XCTAssertFalse(m.imap?.localFlags?.flagSeen == flagsSeenBefore[i])
-        }
-    }
-
     func testSyncMessagesFailedOperation() {
         testSyncFoldersFromServerOperation()
 
@@ -361,72 +288,11 @@ class SimpleOperationsTest: PersistentStoreDrivenTestBase {
      It's important to always provide the correct kPepUserID for a local account ID.
      */
     func testSimpleOutgoingMailColor() {
-        let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
-        try! session.mySelf(myself)
+        var (myself, _, _, _, _) = TestUtil.setupSomePEPIdentities()
+        myself = mySelf(for: myself)
         XCTAssertNotNil(myself.fingerPrint)
-
-        let numRating = try! session.rating(for: myself)
-        XCTAssertGreaterThanOrEqual(numRating.pEpRating.rawValue, PEPRating.reliable.rawValue)
-    }
-
-    func testOutgoingMailColorPerformanceWithMySelf() {
-        let moc: NSManagedObjectContext = Stack.shared.mainContext
-        let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
-        try! session.mySelf(myself)
-        XCTAssertNotNil(myself.fingerPrint)
-
-        guard let id = CdIdentity.from(pEpContact: myself, context: moc) else {
-            XCTFail()
-            return
-        }
-
-        let account = SecretTestData().createWorkingCdAccount(context: moc)
-        account.identity = id
-        moc.saveAndLogErrors()
-
-        self.measure {
-            for _ in [1...1000] {
-                let _ = self.session.outgoingMessageRating(from: id, to: [id], cc: [id], bcc: [id])
-            }
-        }
-    }
-
-    func testOutgoingMessageColor() {
-        let moc: NSManagedObjectContext = Stack.shared.mainContext
-        let account = SecretTestData().createWorkingCdAccount(context: moc)
-        moc.saveAndLogErrors()
-
-        guard let identity = account.identity else {
-            XCTFail()
-            return
-        }
-
-        self.measure {
-            for _ in [1...1000] {
-                let _ = self.session.outgoingMessageRating(from: identity, to: [identity],
-                                                           cc: [identity], bcc: [identity])
-            }
-        }
-    }
-
-    func testOutgoingMailColorPerformanceWithoutMySelf() {
-        let moc: NSManagedObjectContext = Stack.shared.mainContext
-        let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
-
-        guard let id = CdIdentity.from(pEpContact: myself, context: moc) else {
-            XCTFail()
-            return
-        }
-
-        let account = SecretTestData().createWorkingCdAccount(context: moc)
-        account.identity = id
-        moc.saveAndLogErrors()
-
-        self.measure {
-            for _ in [1...1000] {
-                let _ = self.session.outgoingMessageRating(from: id, to: [id], cc: [id], bcc: [id])
-            }
-        }
+        let testee = rating(for: myself)
+        XCTAssertGreaterThanOrEqual(testee.rawValue, PEPRating.reliable.rawValue)
     }
 
     // MARK: - QualifyServerIsLocalOperation
