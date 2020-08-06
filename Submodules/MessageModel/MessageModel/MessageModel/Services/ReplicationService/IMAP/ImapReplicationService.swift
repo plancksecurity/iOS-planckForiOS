@@ -45,23 +45,6 @@ class ImapReplicationService: OperationBasedService {
         privateMoc.performAndWait {
             cdAccount = privateMoc.object(with: cdAccountObjectID) as? CdAccount
         }
-        setupFinishBlock()
-    }
-
-    /// Cancels all queued operations and add OPs that assure that local changes are synced to server before going inactive.
-    private func setupFinishBlock() {
-        let superFinishBlock = finishBlock
-        let newFinishBlock = {[weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            let finishOPs = me.internalOperations(syncOnlyUserChanges: true)
-            me.backgroundQueue.cancelAllOperations()
-            me.backgroundQueue.addOperations(finishOPs, waitUntilFinished: false)
-            superFinishBlock?()
-        }
-        finishBlock = newFinishBlock
     }
 
     private func internalOperations(syncOnlyUserChanges: Bool = false) -> [Operation] {
