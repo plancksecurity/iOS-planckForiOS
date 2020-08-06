@@ -11,14 +11,6 @@ import Foundation
 import PEPObjCAdapterFramework
 
 extension KeySyncHandshakeResult {
-    private init(pEpSyncHandshakeResult: PEPSyncHandshakeResult) {
-        switch pEpSyncHandshakeResult {
-        case .accepted: self = .accepted
-        case .cancel: self = .cancel
-        case .rejected: self = .rejected
-        }
-    }
-
     func pEpSyncHandshakeResult() -> PEPSyncHandshakeResult {
         switch self {
         case .accepted: return .accepted
