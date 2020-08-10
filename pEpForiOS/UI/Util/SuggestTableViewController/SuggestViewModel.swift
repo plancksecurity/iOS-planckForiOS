@@ -152,9 +152,6 @@ class SuggestViewModel {
                 Log.shared.errorAndCrash("No sender in compose?")
                 return
             }
-//            rows = Row.rows(forSender: from, recipients: safeIdentities)
-//            informDelegatesModelChanged()
-
             let safeFrom = Identity.makeSafe(from, forSession: session)
 
             session.performAndWait { [weak self] in
@@ -162,10 +159,6 @@ class SuggestViewModel {
                     //Valid
                     return
                 }
-                let checkAddressNotNil = safeIdentities.map({$0.address})
-                print("--------")
-                print("-------- OK: \(checkAddressNotNil.count == safeIdentities.count)")
-                print("--------")
                 me.rows = Row.rows(forSender: safeFrom, recipients: safeIdentities)
                 me.informDelegatesModelChanged()
             }
