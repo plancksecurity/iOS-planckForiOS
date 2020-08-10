@@ -142,8 +142,8 @@ class SuggestViewModel {
             informDelegatesModelChanged()
             return
         }
-        let objects = Identity.recipientsSuggestions(for: searchString)
-        let safeIdentities = Identity.makeSafe(objects, forSession: session)
+        let unsafeIdentities = Identity.recipientsSuggestions(for: searchString)
+        let safeIdentities = Identity.makeSafe(unsafeIdentities, forSession: session)
         if safeIdentities.count > 0 {
             // We found matching Identities in the DB.
             // Show them to the user imediatelly and update the list later when Contacts are
@@ -153,7 +153,6 @@ class SuggestViewModel {
                 return
             }
             let safeFrom = Identity.makeSafe(from, forSession: session)
-
             session.performAndWait { [weak self] in
                 guard let me = self else {
                     //Valid
@@ -163,9 +162,7 @@ class SuggestViewModel {
                 me.informDelegatesModelChanged()
             }
         }
-
         let op = SelfReferencingOperation() { [weak self] (operation) in
-
             guard let me = self else {
                 // self == nil is a valid case here. The view might have been dismissed.
                 return
