@@ -142,8 +142,9 @@ class SuggestViewModel {
             informDelegatesModelChanged()
             return
         }
-        let identities = Identity.recipientsSuggestions(for: searchString)
-        if identities.count > 0 {
+        let objects = Identity.recipientsSuggestions(for: searchString)
+        let safeIdentities = Identity.makeSafe(objects, forSession: session)
+        if safeIdentities.count > 0 {
             // We found matching Identities in the DB.
             // Show them to the user imediatelly and update the list later when Contacts are
             // fetched too.
@@ -151,19 +152,39 @@ class SuggestViewModel {
                 Log.shared.errorAndCrash("No sender in compose?")
                 return
             }
-            rows = Row.rows(forSender: from, recipients: identities)
-            informDelegatesModelChanged()
+//            rows = Row.rows(forSender: from, recipients: safeIdentities)
+//            informDelegatesModelChanged()
+
+            let safeFrom = Identity.makeSafe(from, forSession: session)
+
+            session.performAndWait { [weak self] in
+                guard let me = self else {
+                    //Valid
+                    return
+                }
+                let checkAddressNotNil = safeIdentities.map({$0.address})
+                print("--------")
+                print("-------- OK: \(checkAddressNotNil.count == safeIdentities.count)")
+                print("--------")
+                me.rows = Row.rows(forSender: safeFrom, recipients: safeIdentities)
+                me.informDelegatesModelChanged()
+            }
         }
 
         let op = SelfReferencingOperation() { [weak self] (operation) in
+
             guard let me = self else {
                 // self == nil is a valid case here. The view might have been dismissed.
                 return
             }
+            me.session.performAndWait {
+                let contacts = AddressBook.searchContacts(searchterm: searchString)
+                me.updateRows(with: safeIdentities, contacts: contacts, callingOperation: operation)
+                AppSettings.shared.userHasBeenAskedForContactAccessPermissions = true
+            }
             let contacts = AddressBook.searchContacts(searchterm: searchString)
-            me.updateRows(with: identities, contacts: contacts, callingOperation: operation)
+            me.updateRows(with: safeIdentities, contacts: contacts, callingOperation: operation)
             AppSettings.shared.userHasBeenAskedForContactAccessPermissions = true
-
         }
         workQueue.addOperation(op)
     }
@@ -188,19 +209,19 @@ extension SuggestViewModel {
 
     private func mergeAndIgnoreContactsWeAlreadyHaveAnIdentityFor(identities: [Identity],
                                                                   contacts: [CNContact]) -> [Row] {
-        let identities = Identity.makeSafe(identities, forSession: session)
+        let safeIdentities = Identity.makeSafe(identities, forSession: session)
         var mergedRows = [Row]()
         session.performAndWait { [weak self] in
             guard let me = self else {
                 // Valid case. We might have been dismissed.
                 return
             }
-            let emailsOfIdentities = identities.map { $0.address }
+            let emailsOfIdentities = safeIdentities.map { $0.address }
             guard let from = me.from else {
                 Log.shared.errorAndCrash("No sender in compose?")
                 return
             }
-            mergedRows = Row.rows(forSender: from, recipients: identities)
+            mergedRows = Row.rows(forSender: from, recipients: safeIdentities)
 
             for contact in contacts {
                 let name = contact.givenName + " " + contact.familyName
@@ -209,7 +230,7 @@ extension SuggestViewModel {
                     if let idx = emailsOfIdentities.firstIndex(of: email.value as String) {
                         // An Identity fort he contact exists already. Update it and ignore the
                         // contact.
-                        let identitity = identities[idx]
+                        let identitity = safeIdentities[idx]
                         identitity.update(userName: name, addressBookID: contact.identifier)
                         me.needsSave = true
                         contactRowsToAdd.removeAll()

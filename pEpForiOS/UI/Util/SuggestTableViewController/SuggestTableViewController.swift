@@ -89,8 +89,8 @@ extension SuggestTableViewController {
          let row = vm[indexPath.row]
         cell.nameLabel.text = row.name
         cell.emailLabel.text = row.email
-        row.pEpRatingIcon { (icon) in
-            cell.pEpStatusImageView.image = icon
-        }
+//        row.pEpRatingIcon { (icon) in
+//            cell.pEpStatusImageView.image = icon
+//        }
     }
 }
