@@ -24,7 +24,7 @@ protocol SuggestViewModelDelegate: class {
 
 class SuggestViewModel {
     struct Row {
-        public var session: Session
+//        public var session: Session
         private let from: Identity?
         let to: Identity?
         public let name: String
@@ -35,30 +35,28 @@ class SuggestViewModel {
                          to: Identity?,
                          recipientName: String,
                          recipientEmail: String,
-                         recipientAddressBookID: String? = nil,
-                         session: Session) {
+                         recipientAddressBookID: String? = nil) {
             self.from = sender
             self.to = to
             self.name = recipientName
             self.email = recipientEmail
             self.addressBookID = recipientAddressBookID
-            self.session = session
+//            self.session = session
         }
 
-        fileprivate init(sender: Identity?, recipient: Identity, session: Session) {
+        fileprivate init(sender: Identity?, recipient: Identity) {
             self.init(sender: sender,
                       to: recipient,
                       recipientName: recipient.userName ?? "",
                       recipientEmail: recipient.address,
-                      recipientAddressBookID: recipient.addressBookID,
-                      session: session)
+                      recipientAddressBookID: recipient.addressBookID)
         }
 
-        static func rows(forSender sender: Identity, recipients: [Identity], session: Session) -> [Row] {
-            return recipients.map { Row(sender: sender, recipient: $0, session: session) }
+        static func rows(forSender sender: Identity, recipients: [Identity]) -> [Row] {
+            return recipients.map { Row(sender: sender, recipient: $0) }
         }
 
-        public func pEpRatingIcon(completion: @escaping (UIImage?)->Void) {
+        public func pEpRatingIcon(completion: @escaping (UIImage?)->Void, session: Session) {
             guard let from = from else {
                 Log.shared.errorAndCrash("No From")
                 completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
@@ -163,7 +161,7 @@ class SuggestViewModel {
                 Log.shared.errorAndCrash("No sender in compose?")
                 return
             }
-            rows = Row.rows(forSender: from, recipients: identities, session: session)
+            rows = Row.rows(forSender: from, recipients: identities)
             informDelegatesModelChanged()
         }
         let op = SelfReferencingOperation() { [weak self] (operation) in
@@ -212,7 +210,7 @@ extension SuggestViewModel {
                 Log.shared.errorAndCrash("No sender in compose?")
                 return
             }
-            mergedRows = Row.rows(forSender: from, recipients: identities, session: me.session)
+            mergedRows = Row.rows(forSender: from, recipients: identities)
 
             for contact in contacts {
                 let name = contact.givenName + " " + contact.familyName
@@ -232,8 +230,7 @@ extension SuggestViewModel {
                                       to: nil,
                                       recipientName: name,
                                       recipientEmail: email.value as String,
-                                      recipientAddressBookID: contact.identifier,
-                                      session: me.session)
+                                      recipientAddressBookID: contact.identifier)
                         contactRowsToAdd.append(row)
                     }
                 }
@@ -267,9 +264,14 @@ extension SuggestViewModel {
     }
 
 
-    public func pEpRatingIcon(row: Row, completion: @escaping (UIImage?)->Void) {
-        workQueue.addOperation {
-            guard let from = self.from else {
+    public func pEpRatingIcon(for row: Row, completion: @escaping (UIImage?)->Void) {
+        workQueue.addOperation { [weak self] in
+            guard let me = self else {
+                //Valid case: view might be dismissed
+                return
+            }
+
+            guard let from = me.from else {
                 Log.shared.errorAndCrash("No From")
                 completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
                 return
@@ -280,10 +282,10 @@ extension SuggestViewModel {
                 return
             }
 
-            let sessionedFrom = Identity.makeSafe(from, forSession: row.session)
-            let sessionedTo = Identity.makeSafe(to, forSession: row.session)
+            let sessionedFrom = Identity.makeSafe(from, forSession: me.session)
+            let sessionedTo = Identity.makeSafe(to, forSession: me.session)
 
-            row.session.performAndWait {
+            me.session.performAndWait {
                 PEPAsyncSession().outgoingMessageRating(from: sessionedFrom, to: [sessionedTo], cc: [], bcc: []) { (rating) in
                     DispatchQueue.main.async {
                         completion(rating.pEpColor().statusIconInContactPicture())
