@@ -244,7 +244,7 @@ extension SettingsViewModel {
                                           isDangerous: false,
                                           isOn: keySyncStatus) { [weak self] (value) in
                 guard let me = self else {
-                    Log.shared.lostMySelf()
+                    // Valid case. We might have been dismissed already.
                     return
                 }
                 me.setPEPSyncEnabled(to: value)

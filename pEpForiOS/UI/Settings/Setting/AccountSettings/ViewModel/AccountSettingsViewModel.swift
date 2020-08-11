@@ -184,7 +184,7 @@ extension AccountSettingsViewModel {
         delegate?.setLoadingView(visible: true)
         account.resetKeys() { [weak self] result in
             guard let me = self else {
-                Log.shared.lostMySelf()
+                // Valid case. We might have been dismissed already.
                 return
             }
             switch result {
