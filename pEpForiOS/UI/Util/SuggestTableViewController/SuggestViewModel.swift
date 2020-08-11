@@ -189,7 +189,6 @@ extension SuggestViewModel {
 
     private func mergeAndIgnoreContactsWeAlreadyHaveAnIdentityFor(identities: [Identity],
                                                                   contacts: [CNContact]) -> [Row] {
-        ///Identities must belong to this session to be accesed in it!
         let identities = Identity.makeSafe(identities, forSession: session)
         var mergedRows = [Row]()
         session.performAndWait { [weak self] in
