@@ -31,7 +31,7 @@ class SuggestViewModel {
         public let addressBookID: String?
 
         fileprivate init(sender: Identity?,
-                         to: Identity?,
+                         to: Identity? = nil,
                          recipientName: String,
                          recipientEmail: String,
                          recipientAddressBookID: String? = nil) {
@@ -207,7 +207,6 @@ extension SuggestViewModel {
                     } else {
                         // No Identity exists for the contact. Show it.
                         let row = Row(sender: from,
-                                      to: nil,
                                       recipientName: name,
                                       recipientEmail: email.value as String,
                                       recipientAddressBookID: contact.identifier)
