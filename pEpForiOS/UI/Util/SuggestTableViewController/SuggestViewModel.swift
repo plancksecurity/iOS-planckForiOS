@@ -22,18 +22,27 @@ protocol SuggestViewModelDelegate: class {
     func suggestViewModelDidResetModel(showResults: Bool)
 }
 
+/// All operations with Identities (MMOs) in this class happens in a private session, internally defined.
+/// To guarantee the identity exist in the session you can do:
+///     `let sessionedIdentity = Identity.makeSafe(anIdentity, forSession: session)`
+/// To access or modify that identity you can do:
+///     `session.performAndWait { ... }`
 class SuggestViewModel {
     struct Row {
-        private let from: Identity?
+        // These identities should not be used within the main session.
+        fileprivate let from: Identity?
+        fileprivate let to: Identity?
         public let name: String
         public let email: String
-        public let addressBookID: String?
+        fileprivate let addressBookID: String?
 
         fileprivate init(sender: Identity?,
+                         to: Identity? = nil,
                          recipientName: String,
                          recipientEmail: String,
                          recipientAddressBookID: String? = nil) {
-            from = sender
+            self.from = sender
+            self.to = to
             self.name = recipientName
             self.email = recipientEmail
             self.addressBookID = recipientAddressBookID
@@ -41,6 +50,7 @@ class SuggestViewModel {
 
         fileprivate init(sender: Identity?, recipient: Identity) {
             self.init(sender: sender,
+                      to: recipient,
                       recipientName: recipient.userName ?? "",
                       recipientEmail: recipient.address,
                       recipientAddressBookID: recipient.addressBookID)
@@ -48,20 +58,6 @@ class SuggestViewModel {
 
         static func rows(forSender sender: Identity, recipients: [Identity]) -> [Row] {
             return recipients.map { Row(sender: sender, recipient: $0) }
-        }
-
-        public func pEpRatingIcon(completion: @escaping (UIImage?)->Void) {
-            guard let from = from else {
-                Log.shared.errorAndCrash("No From")
-                completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
-                return
-            }
-            let to = Identity(address: email)
-            PEPAsyncSession().outgoingMessageRating(from: from, to: [to], cc: [], bcc: []) { (rating) in
-                DispatchQueue.main.async {
-                    completion(rating.pEpColor().statusIconInContactPicture())
-                }
-            }
         }
     }
 
@@ -117,7 +113,6 @@ class SuggestViewModel {
         let selectedRow = rows[index]
         let selectedIdentity = Identity(address: selectedRow.email)
         // Potetially update data from Apple Contacts
-
         if selectedIdentity.update(userName: selectedRow.name,
                                    addressBookID: selectedRow.addressBookID) {
             // Save identity if it has been updated
@@ -134,6 +129,8 @@ class SuggestViewModel {
         return rows[index]
     }
 
+    /// Update the suggestions based of the user input.
+    /// - Parameter searchString: The text the user searches.
     public func updateSuggestion(searchString: String) {
         workQueue.cancelAllOperations()
 
@@ -142,6 +139,7 @@ class SuggestViewModel {
             informDelegatesModelChanged()
             return
         }
+
         let identities = Identity.recipientsSuggestions(for: searchString)
         if identities.count > 0 {
             // We found matching Identities in the DB.
@@ -154,20 +152,56 @@ class SuggestViewModel {
             rows = Row.rows(forSender: from, recipients: identities)
             informDelegatesModelChanged()
         }
-
         let op = SelfReferencingOperation() { [weak self] (operation) in
             guard let me = self else {
                 // self == nil is a valid case here. The view might have been dismissed.
                 return
             }
-            let contacts = AddressBook.searchContacts(searchterm: searchString)
-            me.updateRows(with: identities, contacts: contacts, callingOperation: operation)
+            me.session.performAndWait {
+                let contacts = AddressBook.searchContacts(searchterm: searchString)
+                me.updateRows(with: identities, contacts: contacts, callingOperation: operation)
+            }
             AppSettings.shared.userHasBeenAskedForContactAccessPermissions = true
-
         }
         workQueue.addOperation(op)
     }
 }
+
+// MARK: pEp Rating Icon
+
+extension SuggestViewModel {
+
+    /// Get the pep rating icon.
+    /// - Parameters:
+    ///   - row: The row that represents the suggestion.
+    ///   - completion: The callback where the pep rating icon is returned.
+    public func pEpRatingIcon(for row: Row, completion: @escaping (UIImage?)->Void) {
+        workQueue.addOperation { [weak self] in
+            guard let me = self else {
+                //Valid case: view might be dismissed
+                return
+            }
+            guard let from = row.from else {
+                Log.shared.errorAndCrash("No From")
+                completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
+                return
+            }
+            guard let to = row.to else {
+                //Valid, might not be a "To" recipient.
+                completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
+                return
+            }
+            let sessionedFrom = Identity.makeSafe(from, forSession: me.session)
+            let sessionedTo = Identity.makeSafe(to, forSession: me.session)
+            me.session.performAndWait {
+                PEPAsyncSession().outgoingMessageRating(from: sessionedFrom, to: [sessionedTo], cc: [], bcc: []) { (rating) in
+                    completion(rating.pEpColor().statusIconInContactPicture())
+                }
+            }
+        }
+    }
+}
+
 
 // MARK: - Private
 
@@ -209,8 +243,8 @@ extension SuggestViewModel {
                     if let idx = emailsOfIdentities.firstIndex(of: email.value as String) {
                         // An Identity fort he contact exists already. Update it and ignore the
                         // contact.
-                        let identitity = identities[idx]
-                        identitity.update(userName: name, addressBookID: contact.identifier)
+                        let identity = identities[idx]
+                        identity.update(userName: name, addressBookID: contact.identifier)
                         me.needsSave = true
                         contactRowsToAdd.removeAll()
                         break
@@ -252,4 +286,3 @@ extension SuggestViewModel {
         resultDelegate?.suggestViewModel(self, didToggleVisibilityTo: showResults)
     }
 }
-
