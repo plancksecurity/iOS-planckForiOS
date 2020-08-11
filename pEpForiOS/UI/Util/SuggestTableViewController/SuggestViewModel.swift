@@ -162,8 +162,8 @@ class SuggestViewModel {
             me.session.performAndWait {
                 let contacts = AddressBook.searchContacts(searchterm: searchString)
                 me.updateRows(with: identities, contacts: contacts, callingOperation: operation)
-                AppSettings.shared.userHasBeenAskedForContactAccessPermissions = true
             }
+            AppSettings.shared.userHasBeenAskedForContactAccessPermissions = true
         }
         workQueue.addOperation(op)
     }
