@@ -170,7 +170,7 @@ extension SettingsTableViewController {
     private func showAlertBeforeDelete(indexPath : IndexPath, action : @escaping SettingsViewModel.ActionBlock) {
         let alertController = getBeforeDeleteAlert(deleteCallback: { [weak self] in
             guard let me = self else {
-                Log.shared.lostMySelf()
+                // Valid case. We might have been dismissed already.
                 return
             }
             action()
@@ -240,7 +240,7 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
             let title = NSLocalizedString("Delete", comment: "Account delete")
             let deleteAction = SwipeAction(style: .destructive, title: title) { [weak self] action, indexPath in
                 guard let me = self else {
-                    Log.shared.lostMySelf()
+                    // Valid case. We might have been dismissed already.
                     return
                 }
 
@@ -300,7 +300,7 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
     func showLoadingView() {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.lostMySelf()
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.activityIndicatorView = UIUtils.showActivityIndicator()
@@ -311,7 +311,7 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
     func hideLoadingView() {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.lostMySelf()
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.activityIndicatorView?.removeFromSuperview()
@@ -479,7 +479,7 @@ extension SettingsTableViewController {
                                                                      comment: "keysync alert leave device group cancel"),
                                             style: .pEpDarkText) { [weak self] _ in
                                                 guard let me = self else {
-                                                    Log.shared.lostMySelf()
+                                                    // Valid case. We might have been dismissed already.
                                                     return
                                                 }
                                                 //Switch status needs to be reversed
