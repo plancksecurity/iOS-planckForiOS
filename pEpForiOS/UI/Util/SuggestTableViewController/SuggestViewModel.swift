@@ -24,30 +24,38 @@ protocol SuggestViewModelDelegate: class {
 
 class SuggestViewModel {
     struct Row {
+        public var session: Session
         private let from: Identity?
+        let to: Identity?
         public let name: String
         public let email: String
         public let addressBookID: String?
 
         fileprivate init(sender: Identity?,
+                         to: Identity?,
                          recipientName: String,
                          recipientEmail: String,
-                         recipientAddressBookID: String? = nil) {
-            from = sender
+                         recipientAddressBookID: String? = nil,
+                         session: Session) {
+            self.from = sender
+            self.to = to
             self.name = recipientName
             self.email = recipientEmail
             self.addressBookID = recipientAddressBookID
+            self.session = session
         }
 
-        fileprivate init(sender: Identity?, recipient: Identity) {
+        fileprivate init(sender: Identity?, recipient: Identity, session: Session) {
             self.init(sender: sender,
+                      to: recipient,
                       recipientName: recipient.userName ?? "",
                       recipientEmail: recipient.address,
-                      recipientAddressBookID: recipient.addressBookID)
+                      recipientAddressBookID: recipient.addressBookID,
+                      session: session)
         }
 
-        static func rows(forSender sender: Identity, recipients: [Identity]) -> [Row] {
-            return recipients.map { Row(sender: sender, recipient: $0) }
+        static func rows(forSender sender: Identity, recipients: [Identity], session: Session) -> [Row] {
+            return recipients.map { Row(sender: sender, recipient: $0, session: session) }
         }
 
         public func pEpRatingIcon(completion: @escaping (UIImage?)->Void) {
@@ -56,10 +64,14 @@ class SuggestViewModel {
                 completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
                 return
             }
+            let fromOk = Identity.makeSafe(from, forSession: session)
             let to = Identity(address: email)
-            PEPAsyncSession().outgoingMessageRating(from: from, to: [to], cc: [], bcc: []) { (rating) in
-                DispatchQueue.main.async {
-                    completion(rating.pEpColor().statusIconInContactPicture())
+            let toOk = Identity.makeSafe(to, forSession: session)
+            session.performAndWait {
+                PEPAsyncSession().outgoingMessageRating(from: fromOk, to: [toOk], cc: [], bcc: []) { (rating) in
+                    DispatchQueue.main.async {
+                        completion(rating.pEpColor().statusIconInContactPicture())
+                    }
                 }
             }
         }
@@ -151,7 +163,7 @@ class SuggestViewModel {
                 Log.shared.errorAndCrash("No sender in compose?")
                 return
             }
-            rows = Row.rows(forSender: from, recipients: identities)
+            rows = Row.rows(forSender: from, recipients: identities, session: session)
             informDelegatesModelChanged()
         }
         let op = SelfReferencingOperation() { [weak self] (operation) in
@@ -200,7 +212,7 @@ extension SuggestViewModel {
                 Log.shared.errorAndCrash("No sender in compose?")
                 return
             }
-            mergedRows = Row.rows(forSender: from, recipients: identities)
+            mergedRows = Row.rows(forSender: from, recipients: identities, session: me.session)
 
             for contact in contacts {
                 let name = contact.givenName + " " + contact.familyName
@@ -209,17 +221,19 @@ extension SuggestViewModel {
                     if let idx = emailsOfIdentities.firstIndex(of: email.value as String) {
                         // An Identity fort he contact exists already. Update it and ignore the
                         // contact.
-                        let identitity = identities[idx]
-                        identitity.update(userName: name, addressBookID: contact.identifier)
+                        let identity = identities[idx]
+                        identity.update(userName: name, addressBookID: contact.identifier)
                         me.needsSave = true
                         contactRowsToAdd.removeAll()
                         break
                     } else {
                         // No Identity exists for the contact. Show it.
                         let row = Row(sender: from,
+                                      to: nil,
                                       recipientName: name,
                                       recipientEmail: email.value as String,
-                                      recipientAddressBookID: contact.identifier)
+                                      recipientAddressBookID: contact.identifier,
+                                      session: me.session)
                         contactRowsToAdd.append(row)
                     }
                 }
@@ -250,6 +264,33 @@ extension SuggestViewModel {
 
         delegate?.suggestViewModelDidResetModel(showResults: showResults)
         resultDelegate?.suggestViewModel(self, didToggleVisibilityTo: showResults)
+    }
+
+
+    public func pEpRatingIcon(row: Row, completion: @escaping (UIImage?)->Void) {
+        workQueue.addOperation {
+            guard let from = self.from else {
+                //Valid, might not be a "TO". For example
+                completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
+                return
+            }
+            guard let to = row.to else {
+                //Valid, might not be a "TO". For example if it comes from contacts.
+                completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
+                return
+            }
+
+            let sessionedFrom = Identity.makeSafe(from, forSession: row.session)
+            let sessionedTo = Identity.makeSafe(to, forSession: row.session)
+
+            row.session.performAndWait {
+                PEPAsyncSession().outgoingMessageRating(from: sessionedFrom, to: [sessionedTo], cc: [], bcc: []) { (rating) in
+                    DispatchQueue.main.async {
+                        completion(rating.pEpColor().statusIconInContactPicture())
+                    }
+                }
+            }
+        }
     }
 }
 
