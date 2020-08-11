@@ -117,7 +117,6 @@ class SuggestViewModel {
         let selectedRow = rows[index]
         let selectedIdentity = Identity(address: selectedRow.email)
         // Potetially update data from Apple Contacts
-        Session.main.commit()
         if selectedIdentity.update(userName: selectedRow.name,
                                    addressBookID: selectedRow.addressBookID) {
             // Save identity if it has been updated
