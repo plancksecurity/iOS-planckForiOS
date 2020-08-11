@@ -447,7 +447,7 @@ extension LoginViewController {
                 comment: "UIAlertAction ok after error"),
             style: .default, handler: { [weak self] action in
                 guard let me = self else {
-                    Log.shared.lostMySelf()
+                    // Valid case. We might have been dismissed already.
                     return
                 }
                 me.setManualSetupButtonHidden(!offerManualSetup)
@@ -555,7 +555,7 @@ extension LoginViewController {
                        options: .curveEaseInOut,
                        animations: { [weak self] in
                         guard let me = self else {
-                            Log.shared.lostMySelf()
+                            // Valid case. We might have been dismissed already.
                             return
                         }
                         me.mainContainerView.layoutIfNeeded()
