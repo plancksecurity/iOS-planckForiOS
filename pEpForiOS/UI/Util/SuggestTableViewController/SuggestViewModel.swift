@@ -84,7 +84,7 @@ class SuggestViewModel {
 
     // MARK: - Life Cycle
 
-    public init(minNumberSearchStringChars: UInt = 3,
+    public init(minNumberSearchStringChars: UInt = 1,
                 from: Identity? = nil,
                 resultDelegate: SuggestViewModelResultDelegate? = nil,
                 showEmptyList: Bool = false) {
