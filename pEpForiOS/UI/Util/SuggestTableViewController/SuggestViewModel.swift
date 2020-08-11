@@ -141,8 +141,8 @@ class SuggestViewModel {
             informDelegatesModelChanged()
             return
         }
-        let unsafeIdentities = Identity.recipientsSuggestions(for: searchString)
-        let safeIdentities = Identity.makeSafe(unsafeIdentities, forSession: session)
+
+        let safeIdentities = Identity.recipientsSuggestions(for: searchString)
         if safeIdentities.count > 0 {
             // We found matching Identities in the DB.
             // Show them to the user imediatelly and update the list later when Contacts are
