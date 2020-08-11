@@ -270,7 +270,7 @@ extension SuggestViewModel {
     public func pEpRatingIcon(row: Row, completion: @escaping (UIImage?)->Void) {
         workQueue.addOperation {
             guard let from = self.from else {
-                //Valid, might not be a "TO". For example
+                Log.shared.errorAndCrash("No From")
                 completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
                 return
             }
