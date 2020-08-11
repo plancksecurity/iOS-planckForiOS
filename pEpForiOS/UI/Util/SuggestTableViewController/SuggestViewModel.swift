@@ -22,13 +22,19 @@ protocol SuggestViewModelDelegate: class {
     func suggestViewModelDidResetModel(showResults: Bool)
 }
 
+/// All operations with Identities (MMOs) in this class happens in a private session, internally defined.
+/// To guarantee the identity exist in the session you can do:
+///     `let sessionedIdentity = Identity.makeSafe(anIdentity, forSession: session)`
+/// To access or modify that identity you can do:
+///     `session.performAndWait { ... }`
 class SuggestViewModel {
     struct Row {
-        private let from: Identity?
-        let to: Identity?
+        // These identities should not be used within the main session.
+        fileprivate let from: Identity?
+        fileprivate let to: Identity?
         public let name: String
         public let email: String
-        public let addressBookID: String?
+        fileprivate let addressBookID: String?
 
         fileprivate init(sender: Identity?,
                          to: Identity? = nil,
@@ -123,6 +129,8 @@ class SuggestViewModel {
         return rows[index]
     }
 
+    /// Update the suggestions based of the user input.
+    /// - Parameter searchString: The text the user searches.
     public func updateSuggestion(searchString: String) {
         workQueue.cancelAllOperations()
 
@@ -158,6 +166,42 @@ class SuggestViewModel {
         workQueue.addOperation(op)
     }
 }
+
+// MARK: pEp Rating Icon
+
+extension SuggestViewModel {
+
+    /// Get the pep rating icon.
+    /// - Parameters:
+    ///   - row: The row that represents the suggestionum.
+    ///   - completion: The callback where the pep rating icon is returned.
+    public func pEpRatingIcon(for row: Row, completion: @escaping (UIImage?)->Void) {
+        workQueue.addOperation { [weak self] in
+            guard let me = self else {
+                //Valid case: view might be dismissed
+                return
+            }
+            guard let from = row.from else {
+                Log.shared.errorAndCrash("No From")
+                completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
+                return
+            }
+            guard let to = row.to else {
+                //Valid, might not be a "To" recipient.
+                completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
+                return
+            }
+            let sessionedFrom = Identity.makeSafe(from, forSession: me.session)
+            let sessionedTo = Identity.makeSafe(to, forSession: me.session)
+            me.session.performAndWait {
+                PEPAsyncSession().outgoingMessageRating(from: sessionedFrom, to: [sessionedTo], cc: [], bcc: []) { (rating) in
+                    completion(rating.pEpColor().statusIconInContactPicture())
+                }
+            }
+        }
+    }
+}
+
 
 // MARK: - Private
 
@@ -241,35 +285,4 @@ extension SuggestViewModel {
         delegate?.suggestViewModelDidResetModel(showResults: showResults)
         resultDelegate?.suggestViewModel(self, didToggleVisibilityTo: showResults)
     }
-
-    /// Get the pep rating icon.
-    /// - Parameters:
-    ///   - row: The row that represents the suggestions.
-    ///   - completion: The callback where the pep rating icon is returned.
-    public func pEpRatingIcon(for row: Row, completion: @escaping (UIImage?)->Void) {
-        workQueue.addOperation { [weak self] in
-            guard let me = self else {
-                //Valid case: view might be dismissed
-                return
-            }
-            guard let from = me.from else {
-                Log.shared.errorAndCrash("No From")
-                completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
-                return
-            }
-            guard let to = row.to else {
-                //Valid, might not be a "To" recipient.
-                completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
-                return
-            }
-            let sessionedFrom = Identity.makeSafe(from, forSession: me.session)
-            let sessionedTo = Identity.makeSafe(to, forSession: me.session)
-            me.session.performAndWait {
-                PEPAsyncSession().outgoingMessageRating(from: sessionedFrom, to: [sessionedTo], cc: [], bcc: []) { (rating) in
-                    completion(rating.pEpColor().statusIconInContactPicture())
-                }
-            }
-        }
-    }
 }
-
