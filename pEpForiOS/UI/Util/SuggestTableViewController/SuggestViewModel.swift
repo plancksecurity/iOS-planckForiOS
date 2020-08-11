@@ -24,7 +24,6 @@ protocol SuggestViewModelDelegate: class {
 
 class SuggestViewModel {
     struct Row {
-//        public var session: Session
         private let from: Identity?
         let to: Identity?
         public let name: String
