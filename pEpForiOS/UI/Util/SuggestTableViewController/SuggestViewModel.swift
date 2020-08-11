@@ -153,7 +153,6 @@ class SuggestViewModel {
             }
             rows = Row.rows(forSender: from, recipients: identities)
             informDelegatesModelChanged()
-
         }
         let op = SelfReferencingOperation() { [weak self] (operation) in
             guard let me = self else {
