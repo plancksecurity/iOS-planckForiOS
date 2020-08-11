@@ -142,8 +142,8 @@ class SuggestViewModel {
             return
         }
 
-        let safeIdentities = Identity.recipientsSuggestions(for: searchString)
-        if safeIdentities.count > 0 {
+        let identitiesToSuggest = Identity.recipientsSuggestions(for: searchString)
+        if identitiesToSuggest.count > 0 {
             // We found matching Identities in the DB.
             // Show them to the user imediatelly and update the list later when Contacts are
             // fetched too.
@@ -151,15 +151,9 @@ class SuggestViewModel {
                 Log.shared.errorAndCrash("No sender in compose?")
                 return
             }
-            let safeFrom = Identity.makeSafe(from, forSession: session)
-            session.performAndWait { [weak self] in
-                guard let me = self else {
-                    //Valid
-                    return
-                }
-                me.rows = Row.rows(forSender: safeFrom, recipients: safeIdentities)
-                me.informDelegatesModelChanged()
-            }
+            rows = Row.rows(forSender: from, recipients: identitiesToSuggest)
+            informDelegatesModelChanged()
+
         }
         let op = SelfReferencingOperation() { [weak self] (operation) in
             guard let me = self else {
@@ -168,7 +162,7 @@ class SuggestViewModel {
             }
             me.session.performAndWait {
                 let contacts = AddressBook.searchContacts(searchterm: searchString)
-                me.updateRows(with: safeIdentities, contacts: contacts, callingOperation: operation)
+                me.updateRows(with: identitiesToSuggest, contacts: contacts, callingOperation: operation)
                 AppSettings.shared.userHasBeenAskedForContactAccessPermissions = true
             }
         }
@@ -195,19 +189,20 @@ extension SuggestViewModel {
 
     private func mergeAndIgnoreContactsWeAlreadyHaveAnIdentityFor(identities: [Identity],
                                                                   contacts: [CNContact]) -> [Row] {
-        let safeIdentities = Identity.makeSafe(identities, forSession: session)
+        ///Identities must belong to this session to be accesed in it!
+        let identities = Identity.makeSafe(identities, forSession: session)
         var mergedRows = [Row]()
         session.performAndWait { [weak self] in
             guard let me = self else {
                 // Valid case. We might have been dismissed.
                 return
             }
-            let emailsOfIdentities = safeIdentities.map { $0.address }
+            let emailsOfIdentities = identities.map { $0.address }
             guard let from = me.from else {
                 Log.shared.errorAndCrash("No sender in compose?")
                 return
             }
-            mergedRows = Row.rows(forSender: from, recipients: safeIdentities)
+            mergedRows = Row.rows(forSender: from, recipients: identities)
 
             for contact in contacts {
                 let name = contact.givenName + " " + contact.familyName
@@ -216,7 +211,7 @@ extension SuggestViewModel {
                     if let idx = emailsOfIdentities.firstIndex(of: email.value as String) {
                         // An Identity fort he contact exists already. Update it and ignore the
                         // contact.
-                        let identitity = safeIdentities[idx]
+                        let identitity = identities[idx]
                         identitity.update(userName: name, addressBookID: contact.identifier)
                         me.needsSave = true
                         contactRowsToAdd.removeAll()
