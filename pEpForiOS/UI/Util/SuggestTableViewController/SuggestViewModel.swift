@@ -22,26 +22,42 @@ protocol SuggestViewModelDelegate: class {
     func suggestViewModelDidResetModel(showResults: Bool)
 }
 
+/// All operations with Identities (MMOs) in this class happens in a private session, internally defined.
+/// To guarantee the identity exist in the session you can do:
+///     `let sessionedIdentity = Identity.makeSafe(anIdentity, forSession: session)`
+/// To access or modify that identity you can do:
+///     `session.performAndWait { ... }`
 class SuggestViewModel {
     struct Row {
+        // These identities should not be used within the main session.
+        fileprivate let from: Identity?
+        fileprivate let to: Identity?
         public let name: String
         public let email: String
-        public let addressBookID: String?
+        fileprivate let addressBookID: String?
 
-        fileprivate init(name: String, email: String, addressBookID: String? = nil) {
-            self.name = name
-            self.email = email
-            self.addressBookID = addressBookID
+        fileprivate init(sender: Identity?,
+                         to: Identity? = nil,
+                         recipientName: String,
+                         recipientEmail: String,
+                         recipientAddressBookID: String? = nil) {
+            self.from = sender
+            self.to = to
+            self.name = recipientName
+            self.email = recipientEmail
+            self.addressBookID = recipientAddressBookID
         }
 
-        fileprivate init(identity: Identity) {
-            name = identity.userName ?? ""
-            email = identity.address
-            addressBookID = identity.addressBookID
+        fileprivate init(sender: Identity?, recipient: Identity) {
+            self.init(sender: sender,
+                      to: recipient,
+                      recipientName: recipient.userName ?? "",
+                      recipientEmail: recipient.address,
+                      recipientAddressBookID: recipient.addressBookID)
         }
 
-        static func rows(fromIdentities identities: [Identity]) -> [Row] {
-            return identities.map { Row(identity: $0) }
+        static func rows(forSender sender: Identity, recipients: [Identity]) -> [Row] {
+            return recipients.map { Row(sender: sender, recipient: $0) }
         }
     }
 
@@ -52,9 +68,8 @@ class SuggestViewModel {
     private let from: Identity?
     private let minNumberSearchStringChars: UInt
     private let showEmptyList = false
-
     private var workQueue: OperationQueue = {
-        let createe = OperationQueue.main
+        let createe = OperationQueue()
         createe.name = #file + " workQueue"
         createe.maxConcurrentOperationCount = 1
         createe.qualityOfService = QualityOfService.userInteractive
@@ -69,7 +84,7 @@ class SuggestViewModel {
 
     // MARK: - Life Cycle
 
-    public init(minNumberSearchStringChars: UInt = 1,
+    public init(minNumberSearchStringChars: UInt = 3,
                 from: Identity? = nil,
                 resultDelegate: SuggestViewModelResultDelegate? = nil,
                 showEmptyList: Bool = false) {
@@ -98,7 +113,6 @@ class SuggestViewModel {
         let selectedRow = rows[index]
         let selectedIdentity = Identity(address: selectedRow.email)
         // Potetially update data from Apple Contacts
-
         if selectedIdentity.update(userName: selectedRow.name,
                                    addressBookID: selectedRow.addressBookID) {
             // Save identity if it has been updated
@@ -115,69 +129,79 @@ class SuggestViewModel {
         return rows[index]
     }
 
+    /// Update the suggestions based of the user input.
+    /// - Parameter searchString: The text the user searches.
     public func updateSuggestion(searchString: String) {
         workQueue.cancelAllOperations()
+
         guard searchString.count >= minNumberSearchStringChars else {
             rows.removeAll()
             informDelegatesModelChanged()
             return
         }
+
         let identities = Identity.recipientsSuggestions(for: searchString)
-        let firstOp = updateWithIdentitiesOnly(identities: identities)
-        workQueue.addOperation(firstOp)
-        let secondOp = updateWithIdentitiesAndContactsOperation(searchString: searchString, identities: identities)
-        workQueue.addOperation(secondOp)
-    }
-
-    /// Returns the Operation to update rows based only on identities.
-    /// - Parameter identities: The identities to update the rows
-    /// - Returns: The operation to add to the queue.
-    private func updateWithIdentitiesOnly(identities: [Identity]) -> SelfReferencingOperation {
-        return SelfReferencingOperation() { [weak self] (operation) in
-            guard let me = self else {
-                // self == nil is a valid case here. The view might have been dismissed.
+        if identities.count > 0 {
+            // We found matching Identities in the DB.
+            // Show them to the user imediatelly and update the list later when Contacts are
+            // fetched too.
+            guard let from = from else {
+                Log.shared.errorAndCrash("No sender in compose?")
                 return
             }
-                if identities.count > 0 {
-                    // We found matching Identities in the DB.
-                    // Show them to the user imediatelly and update the list later when Contacts are
-                    // fetched too.
-                    me.updateRows(with: identities, contacts: [], callingOperation: operation)
-                }
+            rows = Row.rows(forSender: from, recipients: identities)
+            informDelegatesModelChanged()
         }
-    }
-
-    /// Returns the Operation to update rows with the identities and the contacts from the AddressBook.
-    /// - Parameters:
-    ///   - searchString: The text to filter
-    ///   - identities: The identities
-    /// - Returns: The operation to add to the queue.
-    private func updateWithIdentitiesAndContactsOperation(searchString: String, identities: [Identity]) -> SelfReferencingOperation {
-        return SelfReferencingOperation() { [weak self] (operation) in
+        let op = SelfReferencingOperation() { [weak self] (operation) in
             guard let me = self else {
                 // self == nil is a valid case here. The view might have been dismissed.
                 return
             }
+            me.session.performAndWait {
                 let contacts = AddressBook.searchContacts(searchterm: searchString)
                 me.updateRows(with: identities, contacts: contacts, callingOperation: operation)
-                AppSettings.shared.userHasBeenAskedForContactAccessPermissions = true
+            }
+            AppSettings.shared.userHasBeenAskedForContactAccessPermissions = true
         }
-    }
-
-    public func pEpRatingFor(address: String) -> PEPRating {
-
-        guard let from = from else {
-            return .undefined
-        }
-        let to = Identity(address: address)
-        let pEpsession = PEPSession()
-        let rating = pEpsession.outgoingMessageRating(from: from,
-                                                      to: [to],
-                                                      cc: [],
-                                                      bcc: [])
-        return rating
+        workQueue.addOperation(op)
     }
 }
+
+// MARK: pEp Rating Icon
+
+extension SuggestViewModel {
+
+    /// Get the pep rating icon.
+    /// - Parameters:
+    ///   - row: The row that represents the suggestion.
+    ///   - completion: The callback where the pep rating icon is returned.
+    public func pEpRatingIcon(for row: Row, completion: @escaping (UIImage?)->Void) {
+        workQueue.addOperation { [weak self] in
+            guard let me = self else {
+                //Valid case: view might be dismissed
+                return
+            }
+            guard let from = row.from else {
+                Log.shared.errorAndCrash("No From")
+                completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
+                return
+            }
+            guard let to = row.to else {
+                //Valid, might not be a "To" recipient.
+                completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
+                return
+            }
+            let sessionedFrom = Identity.makeSafe(from, forSession: me.session)
+            let sessionedTo = Identity.makeSafe(to, forSession: me.session)
+            me.session.performAndWait {
+                PEPAsyncSession().outgoingMessageRating(from: sessionedFrom, to: [sessionedTo], cc: [], bcc: []) { (rating) in
+                    completion(rating.pEpColor().statusIconInContactPicture())
+                }
+            }
+        }
+    }
+}
+
 
 // MARK: - Private
 
@@ -186,27 +210,14 @@ extension SuggestViewModel {
     private func updateRows(with identities: [Identity],
                             contacts: [CNContact],
                             callingOperation: SelfReferencingOperation?) {
-
-        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-            guard let me = self else {
-                // That is a valid case. Compose view is gone before this block started to run.
-                return
-            }
-
-
-            me.session.performAndWait {
-                var newRows = me.mergeAndIgnoreContactsWeAlreadyHaveAnIdentityFor(identities: identities,
-                                                                               contacts: contacts)
-
-                newRows.sort { (row1, row2) -> Bool in
-                    row1.name < row2.name
-                }
-                me.rows = newRows
-                if me.workQueue.operations.count == 1 {
-                    me.informDelegatesModelChanged(callingOperation: callingOperation)
-                }
-            }
+        var newRows = mergeAndIgnoreContactsWeAlreadyHaveAnIdentityFor(identities: identities,
+                                                                       contacts: contacts)
+        newRows.sort { (row1, row2) -> Bool in
+            row1.name < row2.name
         }
+
+        rows = newRows
+        informDelegatesModelChanged(callingOperation: callingOperation)
     }
 
     private func mergeAndIgnoreContactsWeAlreadyHaveAnIdentityFor(identities: [Identity],
@@ -215,11 +226,16 @@ extension SuggestViewModel {
         var mergedRows = [Row]()
         session.performAndWait { [weak self] in
             guard let me = self else {
-                Log.shared.lostMySelf()
+                // Valid case. We might have been dismissed.
                 return
             }
             let emailsOfIdentities = identities.map { $0.address }
-            mergedRows = Row.rows(fromIdentities: identities)
+            guard let from = me.from else {
+                Log.shared.errorAndCrash("No sender in compose?")
+                return
+            }
+            mergedRows = Row.rows(forSender: from, recipients: identities)
+
             for contact in contacts {
                 let name = contact.givenName + " " + contact.familyName
                 var contactRowsToAdd = [Row]()
@@ -227,18 +243,18 @@ extension SuggestViewModel {
                     if let idx = emailsOfIdentities.firstIndex(of: email.value as String) {
                         // An Identity fort he contact exists already. Update it and ignore the
                         // contact.
-                        let identitity = identities[idx]
-                        identitity.update(userName: name, addressBookID: contact.identifier)
+                        let identity = identities[idx]
+                        identity.update(userName: name, addressBookID: contact.identifier)
                         me.needsSave = true
                         contactRowsToAdd.removeAll()
                         break
                     } else {
                         // No Identity exists for the contact. Show it.
-                        let row = Row(name: name,
-                                      email: email.value as String,
-                                      addressBookID: contact.identifier)
+                        let row = Row(sender: from,
+                                      recipientName: name,
+                                      recipientEmail: email.value as String,
+                                      recipientAddressBookID: contact.identifier)
                         contactRowsToAdd.append(row)
-
                     }
                 }
                 mergedRows.append(contentsOf: contactRowsToAdd)
@@ -248,24 +264,25 @@ extension SuggestViewModel {
     }
 
     private func informDelegatesModelChanged(callingOperation: SelfReferencingOperation?) {
-        if let operationWeRunOn = callingOperation {
-            guard !operationWeRunOn.isCancelled else {
-                // do not bother the UI with outdated data
-                return
-            }
-        }
-        informDelegatesModelChanged()
-    }
-
-    private func informDelegatesModelChanged() {
-        let showResults = rows.count > 0 || showEmptyList
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            me.delegate?.suggestViewModelDidResetModel(showResults: showResults)
-            me.resultDelegate?.suggestViewModel(me, didToggleVisibilityTo: showResults)
+            if let operationWeRunOn = callingOperation {
+                guard !operationWeRunOn.isCancelled else {
+                    // do not bother the UI with outdated data
+                    return
+                }
+            }
+            me.informDelegatesModelChanged()
         }
+    }
+
+    private func informDelegatesModelChanged() {
+        let showResults = rows.count > 0 || showEmptyList
+
+        delegate?.suggestViewModelDidResetModel(showResults: showResults)
+        resultDelegate?.suggestViewModel(self, didToggleVisibilityTo: showResults)
     }
 }

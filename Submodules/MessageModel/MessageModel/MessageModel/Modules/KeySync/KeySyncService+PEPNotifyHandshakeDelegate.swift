@@ -108,10 +108,13 @@ extension KeySyncService {
             if result == .cancel || result == .rejected {
                 self?.fastPollingDelegate?.disableFastPolling()
             }
-            do {
-                try PEPSession().deliver(result, identitiesSharing: [me, partner])
-            } catch {
-                Log.shared.errorAndCrash("Error delivering handshake result: %@", error.localizedDescription)
+            PEPAsyncSession().deliver(result,
+                                      identitiesSharing: [me, partner],
+                                      errorCallback: { (error: Error) in
+                                        Log.shared.errorAndCrash("Error delivering handshake result: %@",
+                                                                 error.localizedDescription)
+            }) {
+                // Caller doesn't care about the result
             }
         }
     }

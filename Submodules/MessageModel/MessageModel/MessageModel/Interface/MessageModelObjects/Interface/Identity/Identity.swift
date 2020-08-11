@@ -56,20 +56,10 @@ public class Identity: MessageModelObjectProtocol, ManagedObjectWrapperProtocol 
                   userName: identity.userName)
     }
 
-    // MARK: - Transient Fields
+    // MARK: - Async pEp session support
 
-    private var _fingerprint: String?
-    public var fingerprint: String? {
-        get {
-            if let fpr = _fingerprint {
-                return fpr
-            } else {
-                return try? cdObject.fingerPrint()
-            }
-        }
-        set {
-            _fingerprint = newValue
-        }
+    func fingerprint(completion: @escaping (String?) -> ()) {
+        cdObject.fingerprint(completion: completion)
     }
 
     // MARK: - Forwarded Getter & Setter

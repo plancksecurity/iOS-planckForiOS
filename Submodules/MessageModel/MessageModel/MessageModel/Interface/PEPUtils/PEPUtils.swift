@@ -9,6 +9,7 @@
 import Foundation
 import PantomimeFramework
 import PEPObjCAdapterFramework
+import CoreData
 
 //!!!: Clean up! 1) Loads of topics mixed here. 2) Loads of public methods that expose CoreData.
 
@@ -121,19 +122,37 @@ public class PEPUtils {
         return CWInternetAddress(personal: pEpIdentity.userName, address: pEpIdentity.address)  //!!!: should be extension on PEPIdentity
     }
 
-    public static func pEpRating(cdIdentity: CdIdentity) -> PEPRating {
-        let pEpSession = PEPSession()
-        let pEpIdentity = cdIdentity.pEpIdentity()
-        do {
-            return try pEpSession.rating(for: pEpIdentity).pEpRating
-        } catch {
-            Log.shared.info("%@ for pEpIdentity: %@", error.localizedDescription, pEpIdentity)
-            return .undefined
+    static func pEpRating(cdIdentity: CdIdentity,
+                          context: NSManagedObjectContext = Stack.shared.mainContext,
+                          completion: @escaping (PEPRating)->Void) {
+        var pepIdentity: PEPIdentity? = nil
+        if context == Stack.shared.mainContext {
+            pepIdentity = cdIdentity.pEpIdentity()
+        } else {
+            context.performAndWait {
+                pepIdentity = cdIdentity.pEpIdentity()
+            }
+        }
+        guard let savePepIdentity = pepIdentity else {
+            Log.shared.errorAndCrash("No savePepIdentity")
+            completion(.undefined)
+            return
+        }
+
+        PEPAsyncSession().rating(for: savePepIdentity, errorCallback: { (error) in
+            Log.shared.errorAndCrash(error: error)
+            completion(.undefined)
+        }) { (rating) in
+            completion(rating)
         }
     }
 
-    public static func pEpColor(cdIdentity: CdIdentity) -> PEPColor {
-        return pEpColor(pEpRating: pEpRating(cdIdentity: cdIdentity))
+    static func pEpColor(cdIdentity: CdIdentity,
+                         context: NSManagedObjectContext = Stack.shared.mainContext,
+                         completion: @escaping (PEPColor)->Void) {
+        pEpRating(cdIdentity: cdIdentity, context: context) { (rating) in
+            completion(pEpColor(pEpRating: rating))
+        }
     }
 
     public static func pEpColor(pEpRating: PEPRating?) -> PEPColor {

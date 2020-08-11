@@ -84,6 +84,28 @@ final class FolderTableViewController: UITableViewController {
         }
     }
 
+    // MARK: - Action
+
+    @objc private func showCompose() {
+        UIUtils.presentComposeView(forRecipientInUrl: nil)
+    }
+    
+    @objc private func showSettingsViewController() {
+        UIUtils.presentSettings()
+    }
+
+    // MARK: - Cell Setup
+
+    private func setNotSelectableStyle(to cell: UITableViewCell) {
+        cell.accessoryType = .none
+        cell.textLabel?.textColor = UIColor.pEpGray
+    }
+
+    private func setSelectableStyle(to cell: UITableViewCell) {
+        cell.accessoryType = .disclosureIndicator
+        cell.textLabel?.textColor = UIColor.black
+    }
+
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -230,14 +252,6 @@ extension FolderTableViewController: SegueHandlerType {
 
     @IBAction private func segueUnwindLastAccountDeleted(segue: UIStoryboardSegue) {
         showNext = true
-    }
-
-    @objc private func showCompose() {
-        UIUtils.presentComposeView(forRecipientInUrl: nil)
-    }
-
-    @objc private func showSettingsViewController() {
-        UIUtils.presentSettings()
     }
 }
 

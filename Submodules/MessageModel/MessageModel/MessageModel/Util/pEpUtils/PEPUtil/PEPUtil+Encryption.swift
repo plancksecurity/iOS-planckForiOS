@@ -11,25 +11,24 @@
 import PEPObjCAdapterFramework
 
 extension  PEPUtils {
-
+    
     static func encrypt(pEpMessage: PEPMessage,
-                        encryptionFormat: PEPEncFormat = .PEP,
-                        forSelf: PEPIdentity? = nil,
-                        extraKeys: [String]? = nil,
-                        session: PEPSession = PEPSession()) throws -> PEPMessage {
+        encryptionFormat: PEPEncFormat = .PEP,
+        forSelf: PEPIdentity? = nil,
+        extraKeys: [String]? = nil,
+        errorCallback: @escaping (_ error:Error) -> Void,
+        successCallback: @escaping (_ srcMsg:PEPMessage, _ destMsg:PEPMessage) -> Void) {
         var status = PEPStatus.unknownError
         if let ident = forSelf {
-            let encryptedMessage = try session.encryptMessage(pEpMessage,
-                                                              forSelf: ident,
-                                                              extraKeys: extraKeys,
-                                                              status: &status)
-            return encryptedMessage
+            PEPAsyncSession().encryptMessage(pEpMessage, forSelf: ident,
+                                             extraKeys: extraKeys,
+                                             errorCallback: errorCallback,
+                                             successCallback: successCallback)
         } else {
-            let encryptedMessage = try session.encryptMessage(pEpMessage,
-                                                        extraKeys: extraKeys,
-                                                        encFormat: encryptionFormat,
-                                                        status: &status)
-            return encryptedMessage
+            PEPAsyncSession().encryptMessage(pEpMessage, extraKeys: extraKeys, encFormat: encryptionFormat,
+                                             errorCallback: errorCallback,
+                                             successCallback: successCallback)
+            
         }
     }
 }
