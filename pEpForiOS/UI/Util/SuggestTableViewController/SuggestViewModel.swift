@@ -40,7 +40,6 @@ class SuggestViewModel {
             self.name = recipientName
             self.email = recipientEmail
             self.addressBookID = recipientAddressBookID
-//            self.session = session
         }
 
         fileprivate init(sender: Identity?, recipient: Identity) {
@@ -53,24 +52,6 @@ class SuggestViewModel {
 
         static func rows(forSender sender: Identity, recipients: [Identity]) -> [Row] {
             return recipients.map { Row(sender: sender, recipient: $0) }
-        }
-
-        public func pEpRatingIcon(completion: @escaping (UIImage?)->Void, session: Session) {
-            guard let from = from else {
-                Log.shared.errorAndCrash("No From")
-                completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
-                return
-            }
-            let fromOk = Identity.makeSafe(from, forSession: session)
-            let to = Identity(address: email)
-            let toOk = Identity.makeSafe(to, forSession: session)
-            session.performAndWait {
-                PEPAsyncSession().outgoingMessageRating(from: fromOk, to: [toOk], cc: [], bcc: []) { (rating) in
-                    DispatchQueue.main.async {
-                        completion(rating.pEpColor().statusIconInContactPicture())
-                    }
-                }
-            }
         }
     }
 
