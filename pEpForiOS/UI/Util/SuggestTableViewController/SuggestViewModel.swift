@@ -142,8 +142,8 @@ class SuggestViewModel {
             return
         }
 
-        let identitiesToSuggest = Identity.recipientsSuggestions(for: searchString)
-        if identitiesToSuggest.count > 0 {
+        let identities = Identity.recipientsSuggestions(for: searchString)
+        if identities.count > 0 {
             // We found matching Identities in the DB.
             // Show them to the user imediatelly and update the list later when Contacts are
             // fetched too.
@@ -151,7 +151,7 @@ class SuggestViewModel {
                 Log.shared.errorAndCrash("No sender in compose?")
                 return
             }
-            rows = Row.rows(forSender: from, recipients: identitiesToSuggest)
+            rows = Row.rows(forSender: from, recipients: identities)
             informDelegatesModelChanged()
 
         }
@@ -162,7 +162,7 @@ class SuggestViewModel {
             }
             me.session.performAndWait {
                 let contacts = AddressBook.searchContacts(searchterm: searchString)
-                me.updateRows(with: identitiesToSuggest, contacts: contacts, callingOperation: operation)
+                me.updateRows(with: identities, contacts: contacts, callingOperation: operation)
                 AppSettings.shared.userHasBeenAskedForContactAccessPermissions = true
             }
         }
