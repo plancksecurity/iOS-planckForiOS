@@ -65,7 +65,7 @@ class DocumentAttachmentPickerViewModel {
         let cfUrl = resourceUrl as CFURL
         attachmentFileIOQueue.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             CFURLStartAccessingSecurityScopedResource(cfUrl)

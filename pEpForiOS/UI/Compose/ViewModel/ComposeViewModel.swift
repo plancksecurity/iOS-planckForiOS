@@ -174,7 +174,7 @@ class ComposeViewModel {
         let safeState = state.makeSafe(forSession: Session.main)
         let sendClosure = { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
@@ -198,7 +198,7 @@ class ComposeViewModel {
 
         showAlertFordwardingLessSecureIfRequired(forState: safeState) { [weak self] (accepted) in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             guard accepted else {
@@ -722,7 +722,7 @@ extension ComposeViewModel {
     func canDoHandshake(completion: @escaping (Bool)->Void) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.state.canHandshake(completion: completion)

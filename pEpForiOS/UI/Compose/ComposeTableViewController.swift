@@ -167,7 +167,7 @@ extension ComposeTableViewController {
         let action = UIAlertAction(title: pEpProtected ? disable : enable ,
                                    style: .default) { [weak self] (action) in
                                     guard let me = self, let vm = me.viewModel else {
-                                        Log.shared.errorAndCrash(message: "lost myself")
+                                        // Valid case. We might have been dismissed already.
                                         return
                                     }
                                     let originalValueOfProtection = vm.state.pEpProtection
@@ -609,7 +609,7 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") {
             [weak self] action, indexPath in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.deleteAction(forCellAt: indexPath)
@@ -628,7 +628,7 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
             // The last cell is not yet displayed (as we are in "willDisplay ..."), thus async.
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                    // Valid case. We might have been dismissed already.
                     return
                 }
                 me.setInitialFocus()
@@ -713,7 +713,7 @@ extension ComposeTableViewController {
         let text = vm.deleteActionTitle
         action = ac.action(text, .destructive) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.dismiss()
@@ -730,7 +730,7 @@ extension ComposeTableViewController {
         let text = vm.saveActionTitle
         action = ac.action(text, .default) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                // Valid case. We might have been dismissed already.
                 return
             }
             vm.handleSaveActionTriggered()
@@ -748,7 +748,7 @@ extension ComposeTableViewController {
         let text = vm.keepInOutboxActionTitle
         action = ac.action(text, .default) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.dismiss()

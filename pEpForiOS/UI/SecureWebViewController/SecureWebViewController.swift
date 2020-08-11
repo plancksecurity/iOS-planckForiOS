@@ -107,7 +107,7 @@ class SecureWebViewController: UIViewController {
     public func display(html: String) {
         setupBlocklist() { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.htmlOptimizer.optimizeForDislaying(html: html) { processedHtml in

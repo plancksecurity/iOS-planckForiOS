@@ -82,7 +82,7 @@ class EmailDetailViewController: UIViewController {
         // position is inbetween two cells after orientation change.
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.scrollToLastViewedCell()

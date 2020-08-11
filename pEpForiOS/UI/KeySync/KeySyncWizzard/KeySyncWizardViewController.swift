@@ -177,7 +177,7 @@ extension KeySyncWizardViewController {
         handShakeViewController.completionHandler { [weak self] action in
 
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
 

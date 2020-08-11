@@ -117,7 +117,7 @@ extension KeySyncHandshakeViewModel {
     private func updateTrustwords() {
         trustWords { [weak self] (trustWords) in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.delegate?.change(handshakeWordsTo: trustWords)
