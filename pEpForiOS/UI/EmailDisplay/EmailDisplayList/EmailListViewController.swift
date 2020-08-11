@@ -59,7 +59,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
         doOnce = { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             guard let vm = me.viewModel else {

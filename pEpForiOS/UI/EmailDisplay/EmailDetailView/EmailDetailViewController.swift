@@ -186,7 +186,7 @@ extension EmailDetailViewController {
         setupCollectionView()
         doOnce = { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.viewModel?.startMonitoring()
@@ -622,7 +622,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
     func isNotUndecryptableAnyMore(indexPath: IndexPath) {
         addUpdateTask { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.collectionView?.reloadItems(at: [indexPath])
@@ -633,7 +633,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
                             didInsertDataAt indexPaths: [IndexPath]) {
         addUpdateTask { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.collectionView?.insertItems(at: indexPaths)
@@ -644,7 +644,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
                             didUpdateDataAt indexPaths: [IndexPath]) {
         addUpdateTask { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.configureView()
@@ -655,7 +655,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
                             didRemoveDataAt indexPaths: [IndexPath]) {
         addUpdateTask { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.collectionView?.deleteItems(at: indexPaths)
@@ -667,7 +667,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
                             toIndexPath: IndexPath) {
         addUpdateTask { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.collectionView?.moveItem(at: atIndexPath, to: toIndexPath)
@@ -686,7 +686,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
         // Perform updates ...
         let performChangesBlock = { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             let updateTasksToRun = Array(me.collectionViewUpdateTasks)

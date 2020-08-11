@@ -132,7 +132,7 @@ extension AccountTypeSelectorViewController: AccountTypeSelectorViewModelDelegat
                                         comment: "No client certificate exists alert message")
         UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.navigationController?.popViewController(animated: true)
