@@ -242,33 +242,31 @@ extension SuggestViewModel {
         resultDelegate?.suggestViewModel(self, didToggleVisibilityTo: showResults)
     }
 
-
+    /// Get the pep rating icon.
+    /// - Parameters:
+    ///   - row: The row that represents the suggestions.
+    ///   - completion: The callback where the pep rating icon is returned.
     public func pEpRatingIcon(for row: Row, completion: @escaping (UIImage?)->Void) {
         workQueue.addOperation { [weak self] in
             guard let me = self else {
                 //Valid case: view might be dismissed
                 return
             }
-
             guard let from = me.from else {
                 Log.shared.errorAndCrash("No From")
                 completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
                 return
             }
             guard let to = row.to else {
-                //Valid, might not be a "TO". For example if it comes from contacts.
+                //Valid, might not be a "To" recipient.
                 completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
                 return
             }
-
             let sessionedFrom = Identity.makeSafe(from, forSession: me.session)
             let sessionedTo = Identity.makeSafe(to, forSession: me.session)
-
             me.session.performAndWait {
                 PEPAsyncSession().outgoingMessageRating(from: sessionedFrom, to: [sessionedTo], cc: [], bcc: []) { (rating) in
-                    DispatchQueue.main.async {
-                        completion(rating.pEpColor().statusIconInContactPicture())
-                    }
+                    completion(rating.pEpColor().statusIconInContactPicture())
                 }
             }
         }
