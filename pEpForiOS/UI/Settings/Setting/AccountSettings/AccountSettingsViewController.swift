@@ -255,7 +255,7 @@ extension AccountSettingsViewController {
                                            handler: { [weak self] _ in
                                             pepAlertViewController.dismiss(animated: true, completion: nil)
                                             guard let me = self else {
-                                                Log.shared.lostMySelf()
+                                                // Valid case. We might have been dismissed already.
                                                 return
                                             }
                                             guard let vm = me.viewModel else {
