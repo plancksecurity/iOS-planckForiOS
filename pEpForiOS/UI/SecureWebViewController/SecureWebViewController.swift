@@ -270,7 +270,7 @@ extension SecureWebViewController: WKNavigationDelegate {
             webView.scrollView.removeObserver(self, forKeyPath: "contentSize")
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
-                    Log.shared.lostMySelf()
+                    // Valid case. We might have been dismissed already.
                     return
                 }
                 me.webView.frame = me.webView.scrollView.frame
