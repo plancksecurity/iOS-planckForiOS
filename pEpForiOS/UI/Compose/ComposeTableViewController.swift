@@ -120,7 +120,7 @@ extension ComposeTableViewController {
         // Handshake on simple touch if possible
         vm.canDoHandshake { [weak self] (canDoHandshake) in
             guard let me = self else {
-                // Valid case. We might havebeen dismissed already.
+                // Valid case. We might have been dismissed already.
                 // Do nothing ...
                 return
             }
@@ -192,7 +192,7 @@ extension ComposeTableViewController {
         }
         vm.canDoHandshake { [weak self] (canDoHandshake) in
             guard let me = self else {
-                // Valid case. We might havebeen dismissed already.
+                // Valid case. We might have been dismissed already.
                 // Do nothing ...
                 return
             }
