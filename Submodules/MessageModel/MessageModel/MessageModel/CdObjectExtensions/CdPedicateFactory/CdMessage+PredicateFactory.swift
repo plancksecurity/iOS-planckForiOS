@@ -13,6 +13,10 @@ extension CdMessage {
 
     struct PredicateFactory {
 
+        static func inUnifiedFolder() -> NSPredicate {
+            return NSPredicate(format: "%K = true", RelationshipKeyPath.cdMessage_parent_account_isUnifiable)
+        }
+
         /// - Returns: Predicate to fetch all messages that need to be IMAP appended (uploaded to server).
         static func notWaitingForImapAppend() -> NSPredicate {
             return NSPredicate(format: "%K != 0", CdMessage.AttributeName.uid)
@@ -139,6 +143,15 @@ extension CdMessage {
             predicates.append(notImapFlagDeleted())
             predicates.append(notMarkedForMoveToFolder())
             return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        }
+
+        /// Returns a Predicate to filter based on the folder type passed by parameter.
+        /// - Parameter folderType: The folder type to filter
+        /// - Returns: The predicate to query.
+        static func isIn(folderOfType: FolderType) -> NSPredicate {
+            return NSPredicate(format: "%K = %d",
+                               RelationshipKeyPath.cdMessage_parent_typeRawValue,
+                               folderOfType.rawValue)
         }
 
         static func isInInbox() -> NSPredicate {

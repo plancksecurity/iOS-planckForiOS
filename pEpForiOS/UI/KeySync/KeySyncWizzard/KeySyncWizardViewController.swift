@@ -268,10 +268,8 @@ extension KeySyncWizardViewController {
     }
 
     private func leaveDeviceGroup() {
-        do {
-            try KeySyncUtil.leaveDeviceGroup()
-        } catch {
-            Log.shared.errorAndCrash("%@", error.localizedDescription)
+        KeySyncUtil.leaveDeviceGroup() {
+            // Nothing to do.
         }
     }
 

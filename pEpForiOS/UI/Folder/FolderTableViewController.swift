@@ -84,6 +84,28 @@ final class FolderTableViewController: UITableViewController {
         }
     }
 
+    // MARK: - Action
+
+    @objc private func showCompose() {
+        UIUtils.presentComposeView(forRecipientInUrl: nil)
+    }
+    
+    @objc private func showSettingsViewController() {
+        UIUtils.presentSettings()
+    }
+
+    // MARK: - Cell Setup
+
+    private func setNotSelectableStyle(to cell: UITableViewCell) {
+        cell.accessoryType = .none
+        cell.textLabel?.textColor = UIColor.pEpGray
+    }
+
+    private func setSelectableStyle(to cell: UITableViewCell) {
+        cell.accessoryType = .disclosureIndicator
+        cell.textLabel?.textColor = UIColor.black
+    }
+
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -130,6 +152,9 @@ final class FolderTableViewController: UITableViewController {
         cell.titleLabel.font = UIFont.pepFont(style: .body, weight: .regular)
         cell.titleLabel.adjustsFontForContentSizeCategory = true
         cell.titleLabel?.textColor = fcvm.isSelectable ? .black : .pEpGray
+        cell.unreadMailsLabel.font = UIFont.pepFont(style: .body, weight: .regular)
+        let numUnreadMails = fcvm.numUnreadMails
+        cell.unreadMailsLabel.text = numUnreadMails > 0 ? String(numUnreadMails) : ""
         cell.iconImageView.image = fcvm.image
         cell.separatorImageView.isHidden = fcvm.shouldHideSeparator()
         cell.delegate = self
@@ -227,14 +252,6 @@ extension FolderTableViewController: SegueHandlerType {
 
     @IBAction private func segueUnwindLastAccountDeleted(segue: UIStoryboardSegue) {
         showNext = true
-    }
-
-    @objc private func showCompose() {
-        UIUtils.presentComposeView(forRecipientInUrl: nil)
-    }
-
-    @objc private func showSettingsViewController() {
-        UIUtils.presentSettings()
     }
 }
 

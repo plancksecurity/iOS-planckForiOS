@@ -425,13 +425,12 @@ extension SettingsViewModel {
             KeySyncUtil.enableKeySync()
         } else {
             if grouped {
-                do {
-                    try KeySyncUtil.leaveDeviceGroup()
-                } catch {
-                    Log.shared.errorAndCrash(error: error)
+                KeySyncUtil.leaveDeviceGroup() {
+                    // Nothing to do.
                 }
+            } else {
+                KeySyncUtil.disableKeySync()
             }
-            KeySyncUtil.disableKeySync()
         }
     }
 

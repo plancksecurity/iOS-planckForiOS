@@ -238,6 +238,28 @@ extension EmailViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+// MARK: - MessageContentCellDelegate
+
+extension EmailViewController: MessageContentCellDelegate {
+    func heightChanged() {
+        tableView.updateSize()
+    }
+}
+
+extension EmailViewController {
+
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
+        if UI_USER_INTERFACE_IDIOM() == .pad {
+            documentInteractionController.dismissMenu(animated: false)
+        }
+
+        splitViewController?.preferredDisplayMode = .allVisible
+
+        coordinator.animate(alongsideTransition: nil)
+    }
+}
+
 // MARK: - MessageAttachmentDelegate
 
 extension EmailViewController: MessageAttachmentDelegate {

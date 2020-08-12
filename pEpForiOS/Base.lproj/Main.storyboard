@@ -197,6 +197,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="editButton" destination="4U1-dM-wKT" id="VcG-h3-ItV"/>
                         <outlet property="enableFilterButton" destination="qvK-qQ-Gk6" id="c4d-QA-utg"/>
                         <outlet property="tableView" destination="1Oj-l2-jRA" id="dbk-cO-CLi"/>
                         <segue destination="Rly-af-89k" kind="presentation" identifier="segueAddNewAccount" id="Sq5-Lx-gH6"/>

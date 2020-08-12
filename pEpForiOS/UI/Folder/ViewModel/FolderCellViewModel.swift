@@ -51,6 +51,17 @@ public class FolderCellViewModel {
         return folder.isSelectable
     }
 
+    public var numUnreadMails : Int {
+        if let f = folder as? VirtualFolderProtocol {
+            return f.countUnread
+        } else if let f = folder as? Folder {
+            return f.countUnread
+        } else {
+            Log.shared.errorAndCrash("Can't recognize Folder")
+            return 0
+        }
+    }
+
     public var isExpand = true
     public var isHidden = false
 
@@ -72,7 +83,7 @@ public class FolderCellViewModel {
     public func hasSubfolders() -> Bool {
         guard let folder = folder as? Folder else {
             // UnifiedInbox implements DisplayableFolderProtocol but is not a Folder
-            guard self.folder is UnifiedInbox else {
+            guard self.folder is UnifiedFolderBase else {
                 Log.shared.errorAndCrash("Not a folder or UnifiedInbox.")
                 return false
             }
@@ -112,8 +123,8 @@ public class FolderCellViewModel {
     /// - Returns: True to hide the separator.
     public func shouldHideSeparator() -> Bool {
         guard let folder = folder as? Folder else {
-            //If is not a folder but a UnifiedInbox is valid
-            return self.folder is UnifiedInbox
+            //If is not a folder but a Unified folder is valid
+            return self.folder is UnifiedTrash
         }
         return folder.folderType == .outbox
     }
@@ -129,7 +140,6 @@ public class FolderCellViewModel {
 
     }
 }
-
 extension FolderCellViewModel : Equatable {
 
     public static func == (lhs: FolderCellViewModel, rhs: FolderCellViewModel) -> Bool {
