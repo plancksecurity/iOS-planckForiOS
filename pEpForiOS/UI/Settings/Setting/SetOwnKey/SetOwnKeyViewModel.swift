@@ -17,7 +17,7 @@ class SetOwnKeyViewModel {
 
     private let keyImporter: KeyImportUtilProtocol
 
-    init(keyImporter: KeyImportUtilProtocol = KeyImportUtil()) {
+    public init(keyImporter: KeyImportUtilProtocol = KeyImportUtil()) {
         self.keyImporter = keyImporter
     }
 
