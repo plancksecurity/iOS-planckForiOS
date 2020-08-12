@@ -10,7 +10,7 @@ import Foundation
 
 /// Derived from the adapter's `PEPRating`, which in turn is derived from
 /// the engine's `PEP_rating`.
-enum MessageRating {
+public enum MessageRating {
     case undefined
     case cannotDecrypt
     case haveNoKey

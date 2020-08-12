@@ -11,8 +11,11 @@ import PEPObjCAdapterFramework
 //!!: re-think & cleanup. Imo PEPIdentity should never be used in App. Actually the Adapter should be used at least as little as possible in the app. At least all the functtionallity should be moved to CdIdentity and then being forwarded.
 
 extension Identity {
-    public func pEpRating(completion: @escaping (PEPRating)->Void) {
-        cdObject.pEpRating(completion: completion)
+    public func pEpRating(completion: @escaping (MessageRating) -> Void) {
+        cdObject.pEpRating() { pEpRating in
+            let rating = MessageRating.from(pEpRating: pEpRating)
+            completion(rating)
+        }
     }
 
     public func pEpIdentity() -> PEPIdentity { //BUFF: bad
