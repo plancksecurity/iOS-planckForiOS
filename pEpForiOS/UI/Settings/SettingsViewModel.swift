@@ -247,7 +247,7 @@ extension SettingsViewModel {
                     Log.shared.lostMySelf()
                     return
                 }
-                me.setPEPSyncEnabled(to: value)//!!!: IOS-2325_!
+                me.setPEPSyncEnabled(to: value)
             })
             rows.append(generateSwitchRow(type: .usePEPFolder,
                                           isDangerous: false,
@@ -425,9 +425,12 @@ extension SettingsViewModel {
             KeySyncUtil.enableKeySync()
         } else {
             if grouped {
-                KeySyncUtil.leaveDeviceGroup()
+                KeySyncUtil.leaveDeviceGroup() {
+                    // Nothing to do.
+                }
+            } else {
+                KeySyncUtil.disableKeySync()
             }
-            KeySyncUtil.disableKeySync()
         }
     }
 
