@@ -202,6 +202,7 @@ extension AccountSettingsViewModel {
     public func handleSwitchChanged(isIncludedInUnifiedFolders: Bool) {
         includeInUnifiedFolders = isIncludedInUnifiedFolders
         account.isIncludedInUnifiedFolders = isIncludedInUnifiedFolders
+        account.session.commit()
     }
 
     /// [En][Dis]able the pEpSync status
