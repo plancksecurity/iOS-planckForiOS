@@ -50,7 +50,6 @@ extension String {
          .haveNoKey: TrustManagementText.noColor,
          .cannotDecrypt: TrustManagementText.noColor,
          .unreliable: TrustManagementText.noColor,
-         .unencryptedForSome: TrustManagementText.noColor,
          .fullyAnonymous: TrustManagementText.green,
          .trustedAndAnonymized: TrustManagementText.green,
          .trusted: TrustManagementText.green,
@@ -144,17 +143,7 @@ extension String {
                 suggestion:
                 NSLocalizedString("This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p.",
                                   comment: "Privacy status suggestion")),
-         .unencryptedForSome:
-            PEPStatusText(
-                rating: .unencryptedForSome,
-                title: NSLocalizedString("Unsecure for Some",
-                                         comment: "Privacy status title"),
-                explanation:
-                NSLocalizedString("This message is unsecure for some communication partners.",
-                                  comment: "Privacy status explanation"),
-                suggestion:
-                NSLocalizedString("Make sure the privacy status for each communication partner listed is at least secure",
-                                  comment: "Privacy status suggestion")),
+
          .unencrypted:
             PEPStatusText(
                 rating: .unencrypted,
