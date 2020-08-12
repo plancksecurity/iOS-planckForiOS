@@ -104,11 +104,14 @@ class SecureWebViewController: UIViewController {
 
     // MARK: - API
 
-    public func display(html: String) {
+    public func display(html: String, showExternalContent: Bool) {
         setupBlocklist() { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
+            }
+            if showExternalContent {
+                me.webView.configuration.userContentController.removeAllContentRuleLists()
             }
             me.htmlOptimizer.optimizeForDislaying(html: html) { processedHtml in
                 me.webView.loadHTMLString(processedHtml, baseURL: nil)
