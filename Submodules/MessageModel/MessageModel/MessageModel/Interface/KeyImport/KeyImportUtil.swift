@@ -30,10 +30,6 @@ extension KeyImportUtil {
     public enum SetOwnKeyError: Error {
         /// No matching account could be found
         case noMatchingAccount
-
-        /// The key could not be set as an own key for other reasons,
-        /// e.g. there was an error in the engine
-        case cannotSetOwnKey
     }
 }
 

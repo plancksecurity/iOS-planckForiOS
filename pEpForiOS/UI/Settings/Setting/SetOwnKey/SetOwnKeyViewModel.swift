@@ -43,7 +43,7 @@ class SetOwnKeyViewModel {
                               errorCallback: { err in
                                 if let setOwnKeyError = err as? KeyImportUtil.SetOwnKeyError {
                                     switch(setOwnKeyError) {
-                                    case .noMatchingAccount, .cannotSetOwnKey:
+                                    case .noMatchingAccount:
                                         callback(NSLocalizedString(
                                             "No account found with the given email.",
                                             comment: "Error when no account found for set_own_key UI"))
