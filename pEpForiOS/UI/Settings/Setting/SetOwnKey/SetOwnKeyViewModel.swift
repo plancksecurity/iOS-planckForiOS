@@ -40,7 +40,7 @@ class SetOwnKeyViewModel {
 
         keyImporter.setOwnKey(address: theEmail,
                               fingerprint: theFingerprint,
-                              errorCallback: { err in
+                              errorCallback: { _ in
                                 callback(NSLocalizedString(
                                     "No account found with the given email.",
                                     comment: "Error when no account found for set_own_key UI"))
