@@ -22,11 +22,6 @@ protocol SuggestViewModelDelegate: class {
     func suggestViewModelDidResetModel(showResults: Bool)
 }
 
-/// All operations with Identities (MMOs) in this class happens in a private session, internally defined.
-/// To guarantee the identity exist in the session you can do:
-///     `let sessionedIdentity = Identity.makeSafe(anIdentity, forSession: session)`
-/// To access or modify that identity you can do:
-///     `session.performAndWait { ... }`
 class SuggestViewModel {
     struct Row {
         // These identities should not be used within the main session.
@@ -77,6 +72,7 @@ class SuggestViewModel {
     }()
 
     /// Private session for background usage
+    /// You MUST use this session for all MMOs in this class.
     let session = Session()
 
     /// true if one or more Identities have been update on our private Session
