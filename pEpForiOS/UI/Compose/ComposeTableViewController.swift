@@ -393,7 +393,7 @@ extension ComposeTableViewController {
             }
             guard let me = self,
             let picker = me.mediaAttachmentPickerProvider?.imagePicker else {
-                Log.shared.lostMySelf()
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.present(picker, animated: true)
