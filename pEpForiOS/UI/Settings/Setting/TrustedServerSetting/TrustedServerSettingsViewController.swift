@@ -143,7 +143,7 @@ extension TrustedServerSettingsViewController {
         let cancelAction = PEPUIAlertAction(title: cancelActionTitle, style: .pEpBlue) {
             [weak self] _ in
             guard let me = self else {
-                // Valid case. We might have been dismissed already.
+                Log.shared.lostMySelf()
                 return
             }
             guard let trustCell = me.tableView.cellForRow(at: indexPath) as? TrustedServerSettingCell else {
@@ -159,7 +159,7 @@ extension TrustedServerSettingsViewController {
         let trustAction = PEPUIAlertAction(title: trustActionTitle,
                                            style: .pEpRed) { [weak self] _ in
                                             guard let me = self else {
-                                                // Valid case. We might have been dismissed already.
+                                                Log.shared.lostMySelf()
                                                 pepAlert?.dismiss()
                                                 return
                                             }

@@ -226,7 +226,7 @@ extension SuggestViewModel {
         var mergedRows = [Row]()
         session.performAndWait { [weak self] in
             guard let me = self else {
-                // Valid case. We might have been dismissed.
+                // Valid case. We might have been dismissed already.
                 return
             }
             let emailsOfIdentities = identities.map { $0.address }

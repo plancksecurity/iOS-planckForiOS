@@ -33,7 +33,7 @@ class AttachmentViewModel: CellViewModel {
         var result: String? = nil
         attachment.session.performAndWait { [weak self] in
             guard let me = self else {
-                // Valid case. We might have been dismissed already.
+                Log.shared.lostMySelf()
                 return
             }
             guard let mimeType = me.attachment.mimeType else {

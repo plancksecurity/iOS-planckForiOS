@@ -142,7 +142,7 @@ extension ClientCertificateImportViewController {
                                                 message: Localized.PermissionsDeniedError.message,
                                                 inNavigationStackOf: self) { [weak self] in
                                                     guard let me = self else {
-                                                        // Valid case. We might have been dismissed already.
+                                                        Log.shared.lostMySelf()
                                                         return
                                                     }
                                                     me.dismiss(animated: true, completion: nil)
@@ -154,7 +154,7 @@ extension ClientCertificateImportViewController {
                                                 message: Localized.CorruptedFileError.message,
                                                 inNavigationStackOf: self) { [weak self] in
                                                     guard let me = self else {
-                                                        // Valid case. We might have been dismissed already.
+                                                        Log.shared.lostMySelf()
                                                         return
                                                     }
                                                     me.dismiss(animated: true, completion: nil)
@@ -168,7 +168,7 @@ extension ClientCertificateImportViewController {
                                        positiveButtonText: Localized.yes,
                                        cancelButtonAction: { [weak self] in
                                         guard let me = self else {
-                                            // Valid case. We might have been dismissed already.
+                                            Log.shared.lostMySelf()
                                             return
                                         }
                                         me.dismiss(animated: true, completion: nil)

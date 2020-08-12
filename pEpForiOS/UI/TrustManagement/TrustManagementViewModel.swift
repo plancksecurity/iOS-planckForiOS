@@ -400,7 +400,7 @@ final class TrustManagementViewModel {
     private func reevaluateMessage(forRowAt indexPath: IndexPath) {
         message.session.performAndWait { [weak self] in
             guard let me = self else {
-                // Valid case. We might have been dismissed already.
+                Log.shared.error("Lost mySelf - The message will not be reevaluated")
                 return
             }
             RatingReEvaluator.reevaluate(message: me.message) {

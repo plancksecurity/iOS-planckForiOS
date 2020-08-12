@@ -265,7 +265,7 @@ extension LoginViewController: AccountVerificationResultDelegate {
     func didVerify(result: AccountVerificationResult) {
         GCD.onMain() { [weak self] in
             guard let me = self else {
-                // Valid case. We might have been dismissed already.
+                Log.shared.lostMySelf()
                 return
             }
             LoadingInterface.removeLoadingInterface()
@@ -447,7 +447,7 @@ extension LoginViewController {
                 comment: "UIAlertAction ok after error"),
             style: .default, handler: { [weak self] action in
                 guard let me = self else {
-                    // Valid case. We might have been dismissed already.
+                    Log.shared.lostMySelf()
                     return
                 }
                 me.setManualSetupButtonHidden(!offerManualSetup)
@@ -555,7 +555,7 @@ extension LoginViewController {
                        options: .curveEaseInOut,
                        animations: { [weak self] in
                         guard let me = self else {
-                            // Valid case. We might have been dismissed already.
+                            Log.shared.lostMySelf()
                             return
                         }
                         me.mainContainerView.layoutIfNeeded()

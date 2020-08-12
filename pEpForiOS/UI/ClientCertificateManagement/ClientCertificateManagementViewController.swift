@@ -191,7 +191,7 @@ extension ClientCertificateManagementViewController: SwipeTableViewCellDelegate 
                         title: swipeActionDescriptor.title(forDisplayMode: .titleAndImage)) {
                             [weak self] action, indexPath in
                             guard let me = self else {
-                                // Valid case. We might have been dismissed already.
+                                Log.shared.lostMySelf() 
                                 return
                             }
                             me.swipeDelete = action

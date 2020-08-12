@@ -69,7 +69,7 @@ class MediaAttachmentPickerProviderViewModel {
         var attachment: Attachment!
         session.performAndWait {[weak self] in
             guard let me = self else {
-                // Valid case. We might have been dismissed already.
+                Log.shared.lostMySelf()
                 return
             }
             attachment = me.createAttachment(forAssetWithUrl: url,
@@ -98,7 +98,7 @@ class MediaAttachmentPickerProviderViewModel {
             }
             group.notify(queue: .main) { [weak self] in
                 guard let me = self else {
-                    // Valid case. We might have been dismissed already.
+                    Log.shared.lostMySelf()
                     return
                 }
                 me.session.performAndWait {
@@ -118,7 +118,7 @@ class MediaAttachmentPickerProviderViewModel {
         }
         createAttachment(forResource: url, session: session) {[weak self] (attachment)  in
             guard let me = self else {
-                // Valid case. We might have been dismissed already.
+                Log.shared.lostMySelf()
                 return
             }
             guard let att = attachment else {

@@ -193,7 +193,7 @@ extension SettingsViewModel {
                                            isDangerous: false)
                 accountRow.action = { [weak self] in
                     guard let me = self else {
-                        // Valid case. We might have been dismissed already.
+                        Log.shared.lostMySelf()
                         return
                     }
                     me.delete(account: acc)
@@ -211,7 +211,7 @@ extension SettingsViewModel {
             }
             rows.append(generateActionRow(type: .resetAccounts, isDangerous: true) { [weak self] in
                 guard let me = self else {
-                    // Valid case. We might have been dismissed already.
+                    Log.shared.lostMySelf()
                     return
                 }
                 
@@ -244,7 +244,7 @@ extension SettingsViewModel {
                                           isDangerous: false,
                                           isOn: keySyncStatus) { [weak self] (value) in
                 guard let me = self else {
-                    // Valid case. We might have been dismissed already.
+                    Log.shared.lostMySelf()
                     return
                 }
                 me.setPEPSyncEnabled(to: value)
