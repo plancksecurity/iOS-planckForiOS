@@ -70,7 +70,7 @@ extension SyncFoldersFromServerOperation {
                 // Get all local folders that represent a remote mailbox
                 guard let cdAccount = me.imapConnection.cdAccount(moc: me.privateMOC) else {
                     Log.shared.errorAndCrash("No account")
-                    me.handleError(BackgroundError.GeneralError.illegalState(info:
+                    me.handle(error: BackgroundError.GeneralError.illegalState(info:
                         "Problem getting CdAccount"))
                     return
                 }

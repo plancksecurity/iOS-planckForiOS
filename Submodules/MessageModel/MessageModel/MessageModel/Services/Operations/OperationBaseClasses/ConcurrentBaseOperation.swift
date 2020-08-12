@@ -36,9 +36,13 @@ open class ConcurrentBaseOperation: BaseOperation {
     // MARK: - LIFE CYCLE
 
     public init(parentName: String = #function,
+                useSerialBackgroundQueue: Bool = true,
                 context: NSManagedObjectContext? = nil,
                 errorContainer: ErrorContainerProtocol = ErrorPropagator()) {
         backgroundQueue.name = "\(parentName) - background queue of ConcurrentBaseOperation"
+        if useSerialBackgroundQueue {
+            backgroundQueue.maxConcurrentOperationCount = 1
+        }
         if let paramContext = context {
             privateMOC = paramContext
         }
@@ -85,7 +89,7 @@ open class ConcurrentBaseOperation: BaseOperation {
             guard let me = self else {
                 return
             }
-            me.backgroundQueue.waitUntilAllOperationsAreFinished()
+            me.backgroundQueue.waitUntilAllOperationsAreFinished() //BUFF: Cancel(?) causes this waitng forever
             completion?()
             me.markAsFinished()
         }
@@ -94,11 +98,10 @@ open class ConcurrentBaseOperation: BaseOperation {
     func handleIlligalStateErrorAndFinish(component: String = #function, hint: String? = nil) {
         let error = hint ?? ""
         Log.shared.errorAndCrash(message: error)
-        handleError(
-            BackgroundError.GeneralError.illegalState(info: component + " - " + (hint ?? "")))
+        handle(error:BackgroundError.GeneralError.illegalState(info: component + " - " + (hint ?? "")))
     }
 
-    public func handleError(_ error: Error, message: String? = nil) {
+    public func handle(error: Error, message: String? = nil) {
         addError(error)
         if let theMessage = message {
             Log.shared.error("%@ %@", "\(error)", theMessage)
@@ -131,7 +134,7 @@ extension ConcurrentBaseOperation {
             }
         }
     }
-    
+
     open override var isReady: Bool {
         return state == .ready && super.isReady
     }
