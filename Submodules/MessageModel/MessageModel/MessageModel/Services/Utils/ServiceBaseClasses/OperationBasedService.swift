@@ -52,6 +52,7 @@ class OperationBasedService: Service, OperationBasedServiceProtocol {
     /// Queue for internal tasks that must not block backgroundQueue
     private let internalQueue: OperationQueue = {
         let createe = OperationQueue()
+        createe.maxConcurrentOperationCount = 1
         createe.name = #file + " - internalQueue"
         createe.qualityOfService = QualityOfService.userInitiated
         return createe
@@ -140,6 +141,69 @@ class OperationBasedService: Service, OperationBasedServiceProtocol {
         fatalError("You MUST override this")
     }
 
+    /// This:
+    /// * creates a new opperation for every input operations that only fulfills the `dispatchGroup`.
+    /// * this new operation depends on the given operration.
+    ///
+    /// - note: It will be quaranteed that calls to `enter()` and `leave()` are balanced after (and
+    ///         ONLY after) all given operations finished.
+    ///
+    /// - note: We need to know when all operations finished. There are other ways to achieve this
+    ///         but this solution does not limit the client at all (like not being allowed to use
+    ///         completionHandler because we would potentionally override them).
+    ///
+    /// - Parameters:
+    ///   - dispatchGroup:  group to manage. It will be quaranteed that calls to `enter()` and
+    ///                     `leave()` are balanced after (and ONLY after) all given operations
+    ///                     finished.
+    ///   - operations: operations the `dispatchGroup` manages state for
+    /// - Returns: operations to run.
+    func addCompletionOperations(handling dispatchGroup: DispatchGroup,
+                                         to operations: [Operation]) -> [Operation] {
+        var allOps = [Operation]()
+        for op in operations {
+            dispatchGroup.enter()
+            let completionOP = BlockOperation() {
+                dispatchGroup.leave()
+            }
+            completionOP.addDependency(op)
+            allOps.append(op)
+            allOps.append(completionOP)
+        }
+        return allOps
+    }
+
+    /// Waits for all operations to finish and ends background task.
+    func doNotRestart() {
+        internalQueue.addOperation { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            Log.shared.info("%@ - started doNotRestart", "\(type(of: me))")
+            me.backgroundQueue.waitUntilAllOperationsAreFinished()
+            me.state = .ready
+            me.endBackgroundTask()
+            Log.shared.info("%@ - ended doNotRestart", "\(type(of: me))")
+        }
+    }
+
+    func registerBackgroundTask() {
+        do {
+            try startBackgroundTask { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                me.finishAsFastAsPossible()
+            }
+        } catch BackgroundTaskManager.ManagingError.backgroundTaskAlreadyRunning {
+            // Intentionally ignore it. We already have a background task running.
+        } catch {
+            Log.shared.errorAndCrash(error: error)
+        }
+    }
+
     func report(error: Error) {
         errorPropagator.addError(error)
         errorPropagator.reset()
@@ -225,73 +289,10 @@ extension OperationBasedService {
         backgroundQueue.addOperations(toDosManagedByGroup, waitUntilFinished: false)
     }
 
-    /// This:
-    /// * creates a new opperation for every input operations that only fulfills the `dispatchGroup`.
-    /// * this new operation depends on the given operration.
-    ///
-    /// - note: It will be quaranteed that calls to `enter()` and `leave()` are balanced after (and
-    ///         ONLY after) all given operations finished.
-    ///
-    /// - note: We need to know when all operations finished. There are other ways to achieve this
-    ///         but this solution does not limit the client at all (like not being allowed to use
-    ///         completionHandler because we would potentionally override them).
-    ///
-    /// - Parameters:
-    ///   - dispatchGroup:  group to manage. It will be quaranteed that calls to `enter()` and
-    ///                     `leave()` are balanced after (and ONLY after) all given operations
-    ///                     finished.
-    ///   - operations: operations the `dispatchGroup` manages state for
-    /// - Returns: operations to run.
-    private func addCompletionOperations(handling dispatchGroup: DispatchGroup,
-                                         to operations: [Operation]) -> [Operation] {
-        var allOps = [Operation]()
-        for op in operations {
-            dispatchGroup.enter()
-            let completionOP = BlockOperation() {
-                dispatchGroup.leave()
-            }
-            completionOP.addDependency(op)
-            allOps.append(op)
-            allOps.append(completionOP)
-        }
-        return allOps
-    }
-
     /// Cancels all operations, waits for them to finish and ends background task.
     private func finishAsFastAsPossible() {
         Log.shared.info("%@ - finishAsFastAsPossible called", "\(type(of: self))")
         backgroundQueue.cancelAllOperations()
         doNotRestart()
-    }
-
-    /// Waits for all operations to finish and ends background task.
-    private func doNotRestart() {
-        internalQueue.addOperation { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            Log.shared.info("%@ - started doNotRestart", "\(type(of: self))")
-            me.backgroundQueue.waitUntilAllOperationsAreFinished()
-            me.state = .ready
-            me.endBackgroundTask()
-            Log.shared.info("%@ - ended doNotRestart", "\(type(of: self))")
-        }
-    }
-
-    private func registerBackgroundTask() {
-        do {
-            try startBackgroundTask { [weak self] in
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost myself")
-                    return
-                }
-                me.finishAsFastAsPossible()
-            }
-        } catch BackgroundTaskManager.ManagingError.backgroundTaskAlreadyRunning {
-            // Intentionally ignore it. We already have a background task running.
-        } catch {
-            Log.shared.errorAndCrash(error: error)
-        }
     }
 }
