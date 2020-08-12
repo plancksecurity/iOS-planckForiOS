@@ -118,7 +118,7 @@ class MediaAttachmentPickerProviderViewModel {
         }
         createAttachment(forResource: url, session: session) {[weak self] (attachment)  in
             guard let me = self else {
-                Log.shared.lostMySelf()
+                // Valid case. We might have been dismissed already.
                 return
             }
             guard let att = attachment else {
