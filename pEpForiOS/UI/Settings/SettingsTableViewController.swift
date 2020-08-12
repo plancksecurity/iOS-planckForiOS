@@ -300,7 +300,7 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
     func showLoadingView() {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                // Valid case. We might have been dismissed already.
+                Log.shared.lostMySelf()
                 return
             }
             me.activityIndicatorView = UIUtils.showActivityIndicator()
@@ -311,7 +311,7 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
     func hideLoadingView() {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                // Valid case. We might have been dismissed already.
+                Log.shared.lostMySelf()
                 return
             }
             me.activityIndicatorView?.removeFromSuperview()
