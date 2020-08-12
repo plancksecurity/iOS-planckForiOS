@@ -135,19 +135,19 @@ class EmailDetailViewController: UIViewController {
         let alert = ReplyAlertCreator(replyAllChecker: replyAllChecker)
             .withReplyOption { [weak self] action in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                    // Valid case. We might have been dismissed already.
                     return
                 }
                 me.performSegue(withIdentifier: .segueReplyFrom , sender: self)
         }.withReplyAllOption() { [weak self] action in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
         }.withFordwardOption { [weak self] action in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.performSegue(withIdentifier: .segueForward , sender: self)
@@ -357,7 +357,7 @@ extension EmailDetailViewController {
             title: NSLocalizedString("Settings", comment: "acction sheet title 2"),
             style: .default) { [weak self] (action) in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(message: "lost myself")
+                    // Valid case. We might have been dismissed already.
                     return
                 }
                 me.showSettingsViewController()
@@ -377,7 +377,7 @@ extension EmailDetailViewController {
         let action = UIAlertAction(title: NSLocalizedString("Privacy Status", comment: "action sheet title 1"),
                                    style: .default) { [weak self] (action) in
                                     guard let me = self else {
-                                        Log.shared.errorAndCrash(message: "lost myself")
+                                        // Valid case. We might have been dismissed already.
                                         return
                                     }
                                     me.showTrustManagementView()

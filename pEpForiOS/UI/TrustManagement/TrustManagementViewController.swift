@@ -184,7 +184,7 @@ extension TrustManagementViewController {
         vm.languages { [weak self] langs in
             DispatchQueue.main.async {
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost myself")
+                    // Valid case. We might have been dismissed already.
                     return
                 }
 
@@ -364,7 +364,7 @@ extension TrustManagementViewController {
         row.color { [weak self] (rowColor) in
             defer { updateSizeGroup.leave() }
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             //Yellow means secure but not trusted.

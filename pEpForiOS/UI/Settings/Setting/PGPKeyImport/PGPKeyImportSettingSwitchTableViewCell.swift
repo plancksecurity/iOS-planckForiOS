@@ -21,7 +21,7 @@ class PGPKeyImportSettingSwitchTableViewCell: UITableViewCell {
         delegate?.passphraseSwitchChanged(sender: self, didChangeSwitchValue: sender.isOn,
                                           cancelCallback: { [weak self] in
                                             guard let me = self else {
-                                                Log.shared.errorAndCrash("Lost myself")
+                                                // Valid case. We might have been dismissed already.
                                                 return
                                             }
                                             me.passphraseSwitch.setOn(false, animated: true)

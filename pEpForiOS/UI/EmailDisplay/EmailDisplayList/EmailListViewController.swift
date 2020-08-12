@@ -540,7 +540,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                         title: destructiveDescriptor.title(forDisplayMode: .titleAndImage)) {
                             [weak self] action, indexPath in
                             guard let me = self else {
-                                Log.shared.errorAndCrash("Lost MySelf")
+                                // Valid case. We might have been dismissed already.
                                 return
                             }
                             me.swipeDelete = action
@@ -554,7 +554,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
             let flagAction = SwipeAction(style: .default, title: "Flag") {
                 [weak self] action, indexPath in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                    // Valid case. We might have been dismissed already.
                     return
                 }
                 me.flagAction(forCellAt: indexPath)
@@ -570,7 +570,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
             let moreAction = SwipeAction(style: .default, title: "More") {
                 [weak self] action, indexPath in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                    // Valid case. We might have been dismissed already.
                     return
                 }
                 me.moreAction(forCellAt: indexPath)
@@ -586,7 +586,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
             let readAction = SwipeAction(style: .default, title: "Read") {
                 [weak self] action, indexPath in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                    // Valid case. We might have been dismissed already.
                     return
                 }
                 me.readAction(forCellAt: indexPath)
@@ -960,7 +960,7 @@ extension EmailListViewController {
         let title = NSLocalizedString("Move to Folder", comment: "EmailList action title")
         return UIAlertAction(title: title, style: .default) { [weak self] action in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.performSegue(withIdentifier: .segueShowMoveToFolder, sender: me)
@@ -979,7 +979,7 @@ extension EmailListViewController {
 
         return UIAlertAction(title: title, style: .default) { [weak self] action in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                // Valid case. We might have been dismissed already.
                 return
             }
             guard let cell = me.tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
@@ -1005,7 +1005,7 @@ extension EmailListViewController {
         return UIAlertAction(title: title, style: .default) {
             [weak self] action in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.performSegue(withIdentifier: .segueReply, sender: me)
@@ -1022,7 +1022,7 @@ extension EmailListViewController {
             return UIAlertAction(title: title, style: .default) {
                 [weak self] action in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                    // Valid case. We might have been dismissed already.
                     return
                 }
                 me.performSegue(withIdentifier: .segueReplyAll, sender: me)
@@ -1037,7 +1037,7 @@ extension EmailListViewController {
         return UIAlertAction(title: title, style: .default) {
             [weak self] action in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.performSegue(withIdentifier: .segueForward, sender: me)

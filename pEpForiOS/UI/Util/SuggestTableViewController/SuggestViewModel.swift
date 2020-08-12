@@ -266,7 +266,7 @@ extension SuggestViewModel {
     private func informDelegatesModelChanged(callingOperation: SelfReferencingOperation?) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             if let operationWeRunOn = callingOperation {

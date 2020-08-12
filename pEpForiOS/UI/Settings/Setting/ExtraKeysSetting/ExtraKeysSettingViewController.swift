@@ -150,7 +150,7 @@ extension ExtraKeysSettingViewController: UITableViewDataSource {
             UITableViewRowAction(style: .destructive, title: title) {
                 [weak self] (action , indexPath) -> Void in
                 guard let me = self, let vm = me.viewModel else {
-                    Log.shared.errorAndCrash("Uups")
+                    // Valid case. We might have been dismissed already.
                     return
                 }
                 vm.handleDeleteActionTriggered(for: indexPath.row)

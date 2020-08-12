@@ -218,7 +218,7 @@ extension EmailViewController: MessageAttachmentDelegate {
         let busyState = inView?.displayAsBusy()
         attachment.saveToTmpDirectory { [weak self] url in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             guard let url = url else {

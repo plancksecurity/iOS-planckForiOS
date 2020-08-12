@@ -364,7 +364,7 @@ extension AccountSettingsViewModel {
                                                       isOn: includeInUnifiedFolders,
                                                       action: { [weak self] (isIncludedInUnifiedFolders) in
                                                         guard let me = self else {
-                                                            Log.shared.error("Lost myself")
+                                                            // Valid case. We might have been dismissed already.
                                                             return
                                                         }
                                                         me.handleSwitchChanged(isIncludedInUnifiedFolders: isIncludedInUnifiedFolders)
