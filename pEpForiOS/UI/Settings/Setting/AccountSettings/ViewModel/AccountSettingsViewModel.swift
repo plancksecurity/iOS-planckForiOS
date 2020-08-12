@@ -90,6 +90,7 @@ extension AccountSettingsViewModel {
         case name
         case email
         case password
+        //case signature
         case includeInUnified
         case pepSync
         case reset

@@ -25,6 +25,7 @@ extension AppSettings {
     static private let keyShouldShowTutorialWizard = "keyShouldShowTutorialWizard"
     static private let keyUserHasBeenAskedForContactAccessPermissions = "keyUserHasBeenAskedForContactAccessPermissions"
     static private let keyUnsecureReplyWarningEnabled = "keyUnsecureReplyWarningEnabled"
+    static private var keyAccountSignature = "keyAccountSignature"
 }
 
 // MARK: - AppSettings
@@ -230,5 +231,16 @@ extension AppSettings: AppSettingsProtocol {
             AppSettings.userDefaults.set(newValue,
                                          forKey: AppSettings.keyUnsecureReplyWarningEnabled)
         }
+    }
+    
+    public func storeSignatureForAddress(address: String, signature: String) {
+        let finalKey = AppSettings.keyDefaultAccountAddress + address
+        AppSettings.userDefaults.set(signature,
+                                     forKey: finalKey)
+    }
+    
+    public func loadSignatureForAddress(address: String) -> String {
+        let finalKey = AppSettings.keyDefaultAccountAddress + address
+        return AppSettings.userDefaults.string(forKey: finalKey) ?? String.pepSignature
     }
 }
