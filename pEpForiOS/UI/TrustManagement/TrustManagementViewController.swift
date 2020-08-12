@@ -395,7 +395,7 @@ extension TrustManagementViewController {
         }
         updateSizeGroup.notify(queue: DispatchQueue.main) { [weak self] in
             guard let me = self else {
-                // Valid case. We might have been dismissed already.
+                Log.shared.lostMySelf()
                 return
             }
             me.tableView.updateSize()

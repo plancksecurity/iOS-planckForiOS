@@ -879,7 +879,7 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
         // Dispatch as next to not "Attempted to call -cellForRowAtIndexPath: on the table view while it was in the process of updating its visible cells, which is not allowed. ...". See IOS-2347 for details.
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.lostMySelf()
+                // Valid case. We might havebeen dismissed already.
                 return
             }
             me.delegate?.contentChanged(inRowAt: idxPath)
