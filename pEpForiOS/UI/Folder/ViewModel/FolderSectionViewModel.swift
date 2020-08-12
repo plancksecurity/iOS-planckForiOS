@@ -147,4 +147,8 @@ public class FolderSectionViewModel {
     public func visibleIndex(of item : FolderCellViewModel) -> Int? {
         return visibleItems.firstIndex(of: item)
     }
+
+    public func firstInbox() -> FolderCellViewModel?  {
+        return items.first(where: {$0.isInbox()})
+    }
 }

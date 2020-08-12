@@ -119,6 +119,13 @@ public class FolderCellViewModel {
         return false
     }
 
+    public func isInbox() -> Bool {
+        if let childFolder = folder as? Folder {
+            return childFolder.folderType == .inbox
+        }
+        return false
+    }
+
     /// Indicates if the separator should be hidden.
     /// - Returns: True to hide the separator.
     public func shouldHideSeparator() -> Bool {
