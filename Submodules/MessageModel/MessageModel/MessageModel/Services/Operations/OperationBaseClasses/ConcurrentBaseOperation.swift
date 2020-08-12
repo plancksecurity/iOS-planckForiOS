@@ -74,7 +74,7 @@ open class ConcurrentBaseOperation: BaseOperation {
     public func markAsFinished() {
         Log.shared.info("markAsFinished: %@", type(of: self).debugDescription())
         if isExecuting {
-            state = .finished
+            state = .finished //BUFF: XX called in cancel case?
         }
     }
 
