@@ -107,7 +107,7 @@ class SecureWebViewController: UIViewController {
     public func display(html: String, showExternalContent: Bool) {
         setupBlocklist() { [weak self] in
             guard let me = self else {
-                // Valid case. We might have been dismissed already.
+                Log.shared.lostMySelf()
                 return
             }
             if showExternalContent {
@@ -273,7 +273,7 @@ extension SecureWebViewController: WKNavigationDelegate {
             webView.scrollView.removeObserver(self, forKeyPath: "contentSize")
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
-                    // Valid case. We might have been dismissed already.
+                    Log.shared.lostMySelf()
                     return
                 }
                 me.webView.frame = me.webView.scrollView.frame
