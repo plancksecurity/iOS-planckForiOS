@@ -15,6 +15,12 @@ class SetOwnKeyViewModel {
     public var email: String?
     public var fingerprint: String?
 
+    private let keyImporter: KeyImportUtilProtocol
+
+    init(keyImporter: KeyImportUtilProtocol = KeyImportUtil()) {
+        self.keyImporter = keyImporter
+    }
+
     /// Tries to set the own key based on member variables and
     /// invokes `callback`.
     /// - Parameter callback: After an attempt of invoking `setOwnKey`, will get called
@@ -32,24 +38,14 @@ class SetOwnKeyViewModel {
                 return
         }
 
-        guard let identity = ownIdentityBy(email: theEmail) else {
-            callback(NSLocalizedString(
-                "No account found with the given email.",
-                comment: "Error when no account found for set_own_key UI"))
-            return
+        keyImporter.setOwnKey(address: theEmail,
+                              fingerprint: theFingerprint,
+                              errorCallback: { err in
+                                callback(NSLocalizedString(
+                                    "No account found with the given email.",
+                                    comment: "Error when no account found for set_own_key UI"))
+        }) {
+            callback(nil)
         }
-
-        identity.setOwnKey(fingerprint: theFingerprint,
-                           errorCallback: { error in callback(error.localizedDescription) },
-                           completion: { callback(nil) })
-    }
-}
-
-// MARK: - Private
-
-extension SetOwnKeyViewModel {
-
-    private func ownIdentityBy(email: String) -> Identity? {
-        return Account.by(address: email)?.user
     }
 }
