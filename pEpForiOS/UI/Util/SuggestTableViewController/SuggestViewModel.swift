@@ -24,7 +24,7 @@ protocol SuggestViewModelDelegate: class {
 
 class SuggestViewModel {
     struct Row {
-        // These identities should not be used within the main session.
+        // These identities MUST be used on `session` only!
         fileprivate let from: Identity?
         fileprivate let to: Identity?
         public let name: String
