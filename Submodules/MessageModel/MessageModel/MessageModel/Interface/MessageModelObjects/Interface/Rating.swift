@@ -23,4 +23,10 @@ public enum Rating {
     case fullyAnonymous
     case mistrust
     case underAttack
+
+    /// This is a much safer way to get the int value than using rawValue, which is not defined
+    /// anyways.
+    public func toInt() -> Int {
+        return Int(pEpRating().rawValue)
+    }
 }
