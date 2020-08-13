@@ -43,8 +43,8 @@ final class FolderTableViewController: UITableViewController {
             // If there is no account, invite the user to add one. 
             if vm.hasMoreThanOneAccountForUnified {
                 show(folder: UnifiedInbox())
-            } else if let defaultDisplayableFolder = folderVM?.defaultDisplayableFolder {
-                show(folder: defaultDisplayableFolder)
+            } else if let folderToDisplayInEmailList = folderVM?.folderToDisplayInEmailList {
+                show(folder: folderToDisplayInEmailList)
             } else {
                 performSegue(withIdentifier:.newAccount, sender: self)
             }
@@ -190,6 +190,8 @@ final class FolderTableViewController: UITableViewController {
         show(folder: cellViewModel.folder)
     }
 
+    /// Show folder in email list
+    /// - Parameter folder: The folder to show. 
     private func show(folder: DisplayableFolderProtocol) {
         let sb = UIStoryboard(name: EmailViewController.storyboard, bundle: nil)
         guard

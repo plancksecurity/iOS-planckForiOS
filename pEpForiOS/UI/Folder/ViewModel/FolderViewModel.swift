@@ -90,7 +90,7 @@ public class FolderViewModel {
         return self.items.count
     }
 
-    var defaultDisplayableFolder: DisplayableFolderProtocol? {
+    var folderToDisplayInEmailList: DisplayableFolderProtocol? {
         guard let folderSectionViewModel = items.first, folderSectionViewModel.count > 0 else {
             // No folders to show
             return nil
