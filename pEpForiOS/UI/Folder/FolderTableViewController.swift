@@ -228,6 +228,7 @@ extension FolderTableViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("Missing VCs")
                     return
             }
+            vc.loginDelegate = self
             nav.modalPresentationStyle = .fullScreen
             vc.hidesBottomBarWhenPushed = true
 
