@@ -11,7 +11,6 @@ import Foundation
 import MessageModel
 
 extension Color {
-
     /// The icon suitable for indicating the pEp rating of a message.
     ///
     /// - Parameter enabled: whether or not pEp protection is enabled
