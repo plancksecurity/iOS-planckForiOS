@@ -18,10 +18,6 @@ extension Identity {
         }
     }
 
-    public func pEpIdentity() -> PEPIdentity { //BUFF: bad
-        return  cdObject.pEpIdentity()
-    }
-
     public func pEpColor(session: Session = Session.main,
                          completion: @escaping (PEPColor)->Void) {
         cdObject.pEpColor(context: session.moc, completion: completion)
