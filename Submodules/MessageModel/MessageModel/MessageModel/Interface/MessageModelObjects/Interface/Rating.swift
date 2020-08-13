@@ -29,4 +29,8 @@ public enum Rating {
     public func toInt() -> Int {
         return Int(pEpRating().rawValue)
     }
+
+    public func pEpColor() -> Color {
+        return Color.from(pEpColor: pEpRating().pEpColor())
+    }
 }
