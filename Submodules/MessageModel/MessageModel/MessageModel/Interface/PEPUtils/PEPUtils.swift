@@ -57,13 +57,6 @@ public class PEPUtils {
         return success
     }
 
-    public static func pEpOptional(identity: Identity?) -> PEPIdentity? {
-        guard let id = identity else {
-            return nil
-        }
-        return id.pEpIdentity()
-    }
-
     //!!!: used only in test. RM!
     /**
      Converts a `Attachment` into a PEPAttachment.
