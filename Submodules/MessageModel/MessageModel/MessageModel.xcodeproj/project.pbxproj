@@ -262,6 +262,7 @@
 		43A9818024E52FF700830603 /* Identity+pEpIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9817F24E52FF700830603 /* Identity+pEpIdentity.swift */; };
 		43A9818624E5382900830603 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9818524E5382900830603 /* Color.swift */; };
 		43A9818824E5393300830603 /* Color+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9818724E5393300830603 /* Color+pEp.swift */; };
+		43A981A424E57C6900830603 /* PEPMessage+PGPMime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A981A324E57C6900830603 /* PEPMessage+PGPMime.swift */; };
 		43AABD4120EF5D2E00FBD5D0 /* CdMessage+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AABD4020EF5D2E00FBD5D0 /* CdMessage+Util.swift */; };
 		43AB6A0F2248D228008E40CC /* CdAccount+NonOptionalConvenienceAccessors.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A0E2248D228008E40CC /* CdAccount+NonOptionalConvenienceAccessors.swift.swift */; };
 		43AB6A112248D2E2008E40CC /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A102248D2E2008E40CC /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift */; };
@@ -736,6 +737,7 @@
 		43A9817F24E52FF700830603 /* Identity+pEpIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Identity+pEpIdentity.swift"; sourceTree = "<group>"; };
 		43A9818524E5382900830603 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		43A9818724E5393300830603 /* Color+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+pEp.swift"; sourceTree = "<group>"; };
+		43A981A324E57C6900830603 /* PEPMessage+PGPMime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPMessage+PGPMime.swift"; sourceTree = "<group>"; };
 		43AABD4020EF5D2E00FBD5D0 /* CdMessage+Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+Util.swift"; sourceTree = "<group>"; };
 		43AB6A0E2248D228008E40CC /* CdAccount+NonOptionalConvenienceAccessors.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAccount+NonOptionalConvenienceAccessors.swift.swift"; sourceTree = "<group>"; };
 		43AB6A102248D2E2008E40CC /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift"; sourceTree = "<group>"; };
@@ -1263,6 +1265,7 @@
 				436C9A4924E3FE0B00007A3D /* Rating+pEp.swift */,
 				43A9817F24E52FF700830603 /* Identity+pEpIdentity.swift */,
 				43A9818724E5393300830603 /* Color+pEp.swift */,
+				43A981A324E57C6900830603 /* PEPMessage+PGPMime.swift */,
 			);
 			path = pEpUtils;
 			sourceTree = "<group>";
@@ -2710,6 +2713,7 @@
 				158A569A24059026003C0D7E /* ClientCertificcate+SessionAware.swift in Sources */,
 				15E39FC622551DBB0016A1C4 /* Account+SessionAware.swift in Sources */,
 				15524C52232E42EA000B5E26 /* UpdateIdentitiesAddressBookIdService.swift in Sources */,
+				43A981A424E57C6900830603 /* PEPMessage+PGPMime.swift in Sources */,
 				434DC0E01DAE78BE007C98B8 /* Attachment.swift in Sources */,
 				43C123C7223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift in Sources */,
 				43B22710242362D9007EB91E /* CdAccount+ProviderSpecific.swift in Sources */,

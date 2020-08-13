@@ -71,7 +71,7 @@ extension CWIMAPMessage {
 
         let attachmentDicts = pEpMessage.attachments ?? []
         if !attachmentDicts.isEmpty {
-            let isEncrypted = PEPUtils.isProbablyPGPMime(pEpMessage: pEpMessage)
+            let isEncrypted = pEpMessage.isProbablyPGPMime()
 
             // Create multipart mail
             let multiPart = CWMIMEMultipart()
