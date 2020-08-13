@@ -8,6 +8,8 @@
 
 import UIKit
 import QuickLook
+
+import MessageModel
 import pEpIOSToolbox
 
 // Represents the a list of mails showing one mail with all details in full screen.
@@ -333,7 +335,8 @@ extension EmailDetailViewController {
                 // Do nothing.
                 return
             }
-            guard let ratingView = me.showNavigationBarSecurityBadge(pEpRating: rating) else {
+            // TODO IOS-2328
+            guard let ratingView = me.showNavigationBarSecurityBadge(pEpRating: Rating.from(pEpRating: rating)) else {
                 // Nothing to show for current message
                 return
             }

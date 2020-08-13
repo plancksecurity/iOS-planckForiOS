@@ -15,7 +15,7 @@ protocol ComposeViewModelStateDelegate: class {
                                didChangeValidationStateTo isValid: Bool)
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
-                               didChangePEPRatingTo newRating: PEPRating)
+                               didChangePEPRatingTo newRating: Rating)
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                didChangeProtection newValue: Bool)
@@ -33,7 +33,7 @@ extension ComposeViewModel {
             }
         }
         public private(set) var edited = false
-        public private(set) var rating = PEPRating.undefined {
+        public private(set) var rating = Rating.undefined {
             didSet {
                 if rating != oldValue {
                     delegate?.composeViewModelState(self, didChangePEPRatingTo: rating)
@@ -214,7 +214,7 @@ extension ComposeViewModel.ComposeViewModelState {
         }
 
         guard let from = from else {
-            rating = PEPRating.undefined
+            rating = .undefined
             return
         }
 
@@ -224,6 +224,7 @@ extension ComposeViewModel.ComposeViewModelState {
         let safeCc = Identity.makeSafe(ccRecipients, forSession: session)
         let safeBcc = Identity.makeSafe(bccRecipients, forSession: session)
 
+        // TODO IOS-2328
         PEPAsyncSession().outgoingMessageRating(from: safeFrom, to: safeTo, cc: safeCc, bcc: safeBcc) {
             [weak self] (outgoingRating) in
 
@@ -232,7 +233,8 @@ extension ComposeViewModel.ComposeViewModelState {
                 return
             }
             DispatchQueue.main.async {
-                me.rating = outgoingRating
+                // TODO IOS-2328
+                me.rating = Rating.from(pEpRating: outgoingRating)
             }
         }
     }

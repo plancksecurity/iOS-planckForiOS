@@ -18,8 +18,8 @@ extension Message {
 
     /// Persists the original rating header to the current message.
     /// - Parameter rating: The PEPRating to be set.
-    public func setOriginalRatingHeader(rating: PEPRating) {
-        setOriginalRatingHeader(rating: rating.asString())
+    public func setOriginalRatingHeader(rating: Rating) {
+        setOriginalRatingHeader(rating: rating.toString())
     }
 
     /// - returns: the pepRating

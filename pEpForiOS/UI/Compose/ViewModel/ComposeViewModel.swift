@@ -30,7 +30,7 @@ protocol ComposeViewModelDelegate: class {
 
     func sectionChanged(section: Int)
 
-    func colorBatchNeedsUpdate(for rating: PEPRating, protectionEnabled: Bool)
+    func colorBatchNeedsUpdate(for rating: Rating, protectionEnabled: Bool)
 
     func hideSuggestions()
 
@@ -280,11 +280,12 @@ extension ComposeViewModel {
             completion(true)
             return
         }
-        var originalRating: PEPRating? = nil
+        var originalRating: Rating? = nil
         let group = DispatchGroup()
         group.enter()
         originalMessage.pEpRating { (rating) in
-            originalRating = rating
+            // TODO IOS-2328
+            originalRating = Rating.from(pEpRating: rating)
             group.leave()
         }
         group.notify(queue: DispatchQueue.main) {[weak self] in
@@ -339,7 +340,7 @@ extension ComposeViewModel: ComposeViewModelStateDelegate {
     }
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
-                               didChangePEPRatingTo newRating: PEPRating) {
+                               didChangePEPRatingTo newRating: Rating) {
         delegate?.colorBatchNeedsUpdate(for: newRating, protectionEnabled: state.pEpProtection)
     }
 

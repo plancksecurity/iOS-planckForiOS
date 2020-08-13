@@ -11,7 +11,8 @@ import Foundation
 import PEPObjCAdapterFramework
 
 extension Rating {
-    static func from(pEpRating: PEPRating) -> Rating {
+    // TODO IOS-2328: Make internal
+    public static func from(pEpRating: PEPRating) -> Rating {
         switch pEpRating {
         case .b0rken:
             return .b0rken
