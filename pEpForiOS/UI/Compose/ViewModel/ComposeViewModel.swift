@@ -284,7 +284,6 @@ extension ComposeViewModel {
         let group = DispatchGroup()
         group.enter()
         originalMessage.pEpRating { (rating) in
-            // TODO IOS-2328
             originalRating = Rating.from(pEpRating: rating)
             group.leave()
         }

@@ -224,7 +224,6 @@ extension ComposeViewModel.ComposeViewModelState {
         let safeCc = Identity.makeSafe(ccRecipients, forSession: session)
         let safeBcc = Identity.makeSafe(bccRecipients, forSession: session)
 
-        // TODO IOS-2328
         PEPAsyncSession().outgoingMessageRating(from: safeFrom, to: safeTo, cc: safeCc, bcc: safeBcc) {
             [weak self] (outgoingRating) in
 
@@ -233,7 +232,6 @@ extension ComposeViewModel.ComposeViewModelState {
                 return
             }
             DispatchQueue.main.async {
-                // TODO IOS-2328
                 me.rating = Rating.from(pEpRating: outgoingRating)
             }
         }

@@ -335,7 +335,6 @@ extension EmailDetailViewController {
                 // Do nothing.
                 return
             }
-            // TODO IOS-2328
             guard let ratingView = me.showNavigationBarSecurityBadge(pEpRating: Rating.from(pEpRating: rating)) else {
                 // Nothing to show for current message
                 return
