@@ -1,5 +1,5 @@
 //
-//  MessageRating.swift
+//  Rating.swift
 //  MessageModel
 //
 //  Created by Dirk Zimmermann on 12.08.20.
@@ -10,7 +10,7 @@ import Foundation
 
 /// Derived from the adapter's `PEPRating`, which in turn is derived from
 /// the engine's `PEP_rating`.
-public enum MessageRating {
+public enum Rating {
     case undefined
     case cannotDecrypt
     case haveNoKey

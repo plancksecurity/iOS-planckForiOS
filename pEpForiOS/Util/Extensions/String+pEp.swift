@@ -43,7 +43,7 @@ extension String {
     /**
      All privacy status strings for the trust management.
      */
-    static let trustIdentityTranslation: [MessageRating: PEPStatusText] =
+    static let trustIdentityTranslation: [Rating: PEPStatusText] =
         [.underAttack: TrustManagementText.red,
          .b0rken: TrustManagementText.red,
          .mistrust: TrustManagementText.red,
@@ -202,7 +202,7 @@ extension String {
     }
     
     
-    public static func trustIdentityTranslation(pEpRating: MessageRating?) -> PEPStatusText {
+    public static func trustIdentityTranslation(pEpRating: Rating?) -> PEPStatusText {
         let defaultRestult = undefinedPEPTrustIdentityRating()
         if let rating = pEpRating {
             return trustIdentityTranslation[rating] ??

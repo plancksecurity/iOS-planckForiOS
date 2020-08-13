@@ -1,5 +1,5 @@
 //
-//  MessageRating+pEp.swift
+//  Rating+pEp.swift
 //  MessageModel
 //
 //  Created by Dirk Zimmermann on 12.08.20.
@@ -10,8 +10,8 @@ import Foundation
 
 import PEPObjCAdapterFramework
 
-extension MessageRating {
-    static func from(pEpRating: PEPRating) -> MessageRating {
+extension Rating {
+    static func from(pEpRating: PEPRating) -> Rating {
         switch pEpRating {
         case .b0rken:
             return .b0rken
