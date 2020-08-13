@@ -72,7 +72,6 @@ class SuggestViewModel {
     }()
 
     /// Private session for background usage
-    /// You MUST use this session for all MMOs in this class.
     let session = Session()
 
     /// true if one or more Identities have been update on our private Session
