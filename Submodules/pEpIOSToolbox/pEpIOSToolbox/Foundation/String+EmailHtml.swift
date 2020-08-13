@@ -75,18 +75,20 @@ extension String {
 
         if let number = Int(size.trimmingCharacters(in: .whitespacesAndNewlines)) {
             switch number {
+            case 0...12:
+                relativeFontSize = firstSegment + "x-small"
             case 0...13:
-                relativeFontSize = firstSegment + "10 pt"
+                relativeFontSize = firstSegment + "small"
             case 14...15:
-                relativeFontSize = firstSegment + "11 pt"
+                relativeFontSize = firstSegment + "smaller"
             case 16...17:
                 relativeFontSize = nil
             case 18...21:
-                relativeFontSize = firstSegment + "14 pt"
+                relativeFontSize = firstSegment + "larger"
             case 22...25:
-                relativeFontSize = firstSegment + "16 pt"
+                relativeFontSize = firstSegment + "large"
             case 26...80:
-                relativeFontSize = firstSegment + "18 pt"
+                relativeFontSize = firstSegment + "x-large"
             default:
                 relativeFontSize = nil
             }
