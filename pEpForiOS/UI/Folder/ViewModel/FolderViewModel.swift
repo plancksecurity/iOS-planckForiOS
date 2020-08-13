@@ -22,6 +22,10 @@ public class FolderViewModel {
         return DeviceUtils.isIphone5 ? 3 : 4
     }
 
+    var hasMoreThanOneAccountForUnified: Bool {
+        return Account.countAllForUnified() > 1
+    }
+
     /// Instantiates a folder hierarchy model with:
     /// One section per account
     /// One row per folder

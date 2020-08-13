@@ -31,8 +31,17 @@ final class FolderTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setup()
+        guard let vm = folderVM else {
+            Log.shared.errorAndCrash("VM not Found")
+            return
+        }
+
+        //If "showNext" is true, will present the correct email list.
         if showNext {
-            if Account.countAllForUnified() > 1 {
+            // If there are more than one account with "unified folders" turn on, let's show Unified Folder by default.
+            // if not, let's show the inbox of the first one.
+            // If there is no account, invite the user to add one. 
+            if vm.hasMoreThanOneAccountForUnified {
                 show(folder: UnifiedInbox())
             } else if let defaultDisplayableFolder = folderVM?.defaultDisplayableFolder {
                 show(folder: defaultDisplayableFolder)
