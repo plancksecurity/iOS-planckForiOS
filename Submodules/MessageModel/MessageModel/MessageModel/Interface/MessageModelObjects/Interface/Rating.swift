@@ -33,4 +33,23 @@ public enum Rating {
     public func pEpColor() -> Color {
         return Color.from(pEpColor: pEpRating().pEpColor())
     }
+
+    /// Compares the pEp colors for this and a given rating.
+    /// - Parameter rating: rating to compare pEp color with
+    /// - returns:  true if the pEp color represents a less secure communication channel than the given one.
+    ///             false otherwize.
+    public func hasLessSecurePepColor(than rating: Rating) -> Bool {
+        if rating.pEpColor() == .green &&
+            self.pEpColor() != .green {
+            return true
+        } else if rating.pEpColor() == .yellow &&
+            (self.pEpColor() != .green && self.pEpColor() != .yellow) {
+            return true
+        }
+        else if rating.pEpColor() == .noColor &&
+            (self.pEpColor() != .green && self.pEpColor() != .yellow && self.pEpColor() != .noColor) {
+            return true
+        }
+        return false
+    }
 }
