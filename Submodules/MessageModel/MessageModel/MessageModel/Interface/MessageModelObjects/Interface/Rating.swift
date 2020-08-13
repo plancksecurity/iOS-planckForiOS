@@ -52,4 +52,33 @@ public enum Rating {
         }
         return false
     }
+
+    /// The `PEPRating`s that indicates a message could not be decrypted.
+    /// Use for later decryption attemp, e.g. after syncing keys with another device.
+    static let undecryptableRatings: [Rating] = [.cannotDecrypt, .haveNoKey]
+
+    /** Does the given pEp rating mean the user is under attack? */
+    public func isUnderAttack() -> Bool {
+        switch self {
+        case .undefined,
+             .cannotDecrypt,
+             .haveNoKey,
+             .unencrypted,
+             .unreliable,
+             .reliable,
+             .trusted,
+             .trustedAndAnonymized,
+             .fullyAnonymous,
+             .mistrust,
+             .b0rken:
+            return false
+        case .underAttack:
+            return true
+        }
+    }
+
+    /// Whether or not the message could not yet be decrypted
+    public func isUnDecryptable() -> Bool {
+        return Rating.undecryptableRatings.contains(self)
+    }
 }
