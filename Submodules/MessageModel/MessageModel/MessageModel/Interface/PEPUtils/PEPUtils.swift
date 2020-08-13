@@ -76,11 +76,6 @@ public class PEPUtils {
         return foundAttachmentPGPEncrypted
     }
 
-    /// For a CdMessage, checks whether it is probably PGP/MIME encrypted.
-    public static func isProbablyPGPMime(cdMessage: CdMessage) -> Bool { //!!!: should be extension on CdMessage
-        return isProbablyPGPMime(pEpMessage: cdMessage.pEpMessage())
-    }
-
     /// Converts a pEp identity dict to a pantomime address.
     public static func pantomime(pEpIdentity: PEPIdentity) -> CWInternetAddress {
         return CWInternetAddress(personal: pEpIdentity.userName, address: pEpIdentity.address)  //!!!: should be extension on PEPIdentity
