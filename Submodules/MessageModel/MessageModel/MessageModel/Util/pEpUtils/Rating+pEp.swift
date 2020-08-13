@@ -68,4 +68,8 @@ extension Rating {
             return .unreliable
         }
     }
+
+    func toString() -> String {
+        return PEPSession().string(from: pEpRating())
+    }
 }
