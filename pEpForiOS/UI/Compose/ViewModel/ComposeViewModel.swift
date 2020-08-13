@@ -284,7 +284,7 @@ extension ComposeViewModel {
         let group = DispatchGroup()
         group.enter()
         originalMessage.pEpRating { (rating) in
-            originalRating = Rating.from(pEpRating: rating)
+            originalRating = rating
             group.leave()
         }
         group.notify(queue: DispatchQueue.main) {[weak self] in

@@ -335,7 +335,7 @@ extension EmailDetailViewController {
                 // Do nothing.
                 return
             }
-            guard let ratingView = me.showNavigationBarSecurityBadge(pEpRating: Rating.from(pEpRating: rating)) else {
+            guard let ratingView = me.showNavigationBarSecurityBadge(pEpRating: rating) else {
                 // Nothing to show for current message
                 return
             }

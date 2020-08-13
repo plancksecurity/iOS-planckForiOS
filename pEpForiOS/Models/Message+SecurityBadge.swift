@@ -14,9 +14,9 @@ extension Message {
     /// Retrieves a status icon matching the status of the given message.
     func securityBadgeForContactPicture(completion: @escaping (UIImage?)->Void) {
         pEpRating { (rating) in
-            let color = PEPUtils.pEpColor(pEpRating: rating)
+            let color = rating.pEpColor()
             var image: UIImage? = nil
-            if color != PEPColor.noColor {
+            if color != .noColor {
                 image = color.statusIconInContactPicture()
             }
             completion(image)
