@@ -57,18 +57,6 @@ public class PEPUtils {
         return success
     }
 
-    /**
-     Converts a typical core data set of CdIdentities into pEp identities.
-     */
-    public static func pEpIdentities(cdIdentitiesSet: NSOrderedSet?) -> [PEPIdentity]? {
-        guard let cdIdentities = cdIdentitiesSet?.array as? [CdIdentity] else {
-            return nil
-        }
-        return cdIdentities.map {
-            return $0.pEpIdentity()
-        }
-    }
-
     /// For a PEPMessage, checks whether it is probably PGP/MIME encrypted.
     public static func isProbablyPGPMime(pEpMessage: PEPMessage) -> Bool { //!!!: should be extension on PEPMessage
         guard let attachments = pEpMessage.attachments else {
