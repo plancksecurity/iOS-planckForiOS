@@ -72,7 +72,6 @@ class SuggestViewModel {
     }()
 
     /// Private session for background usage
-    /// You MUST use this session for all MMOs in this class.
     let session = Session()
 
     /// true if one or more Identities have been update on our private Session
@@ -80,7 +79,7 @@ class SuggestViewModel {
 
     // MARK: - Life Cycle
 
-    public init(minNumberSearchStringChars: UInt = 3,
+    public init(minNumberSearchStringChars: UInt = 1,
                 from: Identity? = nil,
                 resultDelegate: SuggestViewModelResultDelegate? = nil,
                 showEmptyList: Bool = false) {
