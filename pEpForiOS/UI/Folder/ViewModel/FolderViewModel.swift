@@ -39,7 +39,7 @@ public class FolderViewModel {
         } else {
             accountsToUse = Account.all()
         }
-        let includeInUnifiedFolders = isUnified && Account.countAllForUnified() > 1
+        let includeInUnifiedFolders = isUnified && hasMoreThanOneAccountForUnified
         generateSections(accounts: accountsToUse, includeInUnifiedFolders: includeInUnifiedFolders)
     }
 
