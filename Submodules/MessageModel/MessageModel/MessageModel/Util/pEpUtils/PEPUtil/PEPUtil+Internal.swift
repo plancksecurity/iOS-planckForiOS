@@ -111,4 +111,14 @@ extension PEPUtils {
 
         return parts
     }
+
+    static func pEpIdentity(for cdAccount: CdAccount) -> PEPIdentity {
+        if let id = cdAccount.identity {
+            return id.pEpIdentity()
+        } else {
+            Log.shared.errorAndCrash(
+                "account without identity: %@", cdAccount)
+            return PEPIdentity(address: "none")
+        }
+    }
 }

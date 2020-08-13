@@ -57,16 +57,6 @@ public class PEPUtils {
         return success
     }
 
-    public static func pEpIdentity(for cdAccount: CdAccount) -> PEPIdentity {
-        if let id = cdAccount.identity {
-            return id.pEpIdentity()
-        } else {
-            Log.shared.errorAndCrash(
-                "account without identity: %@", cdAccount)
-            return PEPIdentity(address: "none")
-        }
-    }
-
     public static func pEpOptional(identity: Identity?) -> PEPIdentity? {
         guard let id = identity else {
             return nil
