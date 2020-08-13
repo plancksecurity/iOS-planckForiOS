@@ -36,6 +36,8 @@ final class FolderTableViewController: UITableViewController {
                 show(folder: UnifiedInbox())
             } else if let defaultDisplayableFolder = folderVM?.defaultDisplayableFolder {
                 show(folder: defaultDisplayableFolder)
+            } else {
+                performSegue(withIdentifier:.newAccount, sender: self)
             }
         }
         let message = NSLocalizedString("Please choose a folder", comment: "No folder has been selected yet in the folders VC")
@@ -58,9 +60,8 @@ final class FolderTableViewController: UITableViewController {
         tableView.sectionHeaderHeight = UITableView.automaticDimension
         refreshControl = UIRefreshControl()
         refreshControl?.tintColor = UIColor.pEpGreen
-        if #available(iOS 10.0, *) {
-            tableView.refreshControl = refreshControl
-        }
+        tableView.refreshControl = refreshControl
+
         refreshControl?.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
         let item = UIBarButtonItem.getPEPButton(
             action:#selector(showSettingsViewController),
