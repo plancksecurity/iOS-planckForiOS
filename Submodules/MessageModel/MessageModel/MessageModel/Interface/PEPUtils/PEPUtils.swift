@@ -57,14 +57,6 @@ public class PEPUtils {
         return success
     }
 
-    //!!!: used only in test. RM!
-    /**
-     Converts a `Attachment` into a PEPAttachment.
-     */
-    public static func pEpAttachment(attachment: Attachment) -> PEPAttachment {
-        return attachment.cdObject.pEpAttachment
-    }
-
     /**
      Converts a typical core data set of CdIdentities into pEp identities.
      */
