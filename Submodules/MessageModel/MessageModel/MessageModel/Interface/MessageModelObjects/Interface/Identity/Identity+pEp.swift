@@ -13,8 +13,7 @@ import PEPObjCAdapterFramework
 extension Identity {
     public func pEpRating(completion: @escaping (Rating) -> Void) {
         cdObject.pEpRating() { pEpRating in
-            let rating = Rating.from(pEpRating: pEpRating)
-            completion(rating)
+            completion(Rating.from(pEpRating: pEpRating))
         }
     }
 
