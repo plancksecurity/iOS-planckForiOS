@@ -9,7 +9,6 @@
 import CoreData
 
 import PantomimeFramework
-import PEPObjCAdapterFramework
 
 extension VerifiableAccount {
     public enum AccountType: CaseIterable {
