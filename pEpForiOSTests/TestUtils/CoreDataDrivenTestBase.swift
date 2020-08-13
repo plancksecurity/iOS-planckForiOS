@@ -9,11 +9,9 @@
 import XCTest
 
 import CoreData
-
 @testable import pEpForiOS
 @testable import MessageModel //FIXME:
 import PEPObjCAdapterFramework
-import pEpIOSToolboxTests
 
 open class CoreDataDrivenTestBase: XCTestCase {
     var moc : NSManagedObjectContext!
@@ -52,7 +50,7 @@ open class CoreDataDrivenTestBase: XCTestCase {
         imapConnection.close()
         Stack.shared.reset()
         PEPSession.cleanup()
-        XCTAssertTrue(PEPTestUtils.pEpClean())
+        XCTAssertTrue(PEPUtils.pEpClean())
         super.tearDown()
     }
 

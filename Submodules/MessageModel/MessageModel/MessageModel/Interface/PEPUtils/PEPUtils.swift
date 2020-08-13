@@ -15,8 +15,47 @@ import PEPObjCAdapterFramework
 //!!!: Clean up! 1) Loads of topics mixed here. 2) Loads of public methods that expose CoreData.
 
 public class PEPUtils {
+
     /// Content type for MIME multipart/alternative.
     public static let kMimeTypeMultipartAlternative = "multipart/alternative"
+
+    ///Delete pEp working data.
+    //!!!: MUST go to test utils
+    public static func pEpClean() -> Bool {
+        PEPSession.cleanup()
+
+        let homeString = PEPObjCAdapter.perUserDirectoryString()
+        let homeUrl = URL(fileURLWithPath: homeString, isDirectory: true)
+
+        let fileManager = FileManager.default
+
+        if !fileManager.fileExists(atPath: homeString) {
+            // Might happen if engine was never used.
+            return true
+        }
+
+        guard let enumerator = fileManager.enumerator(atPath: homeString) else {
+            // Since we already know the directory exists, not getting back
+            // an enumerator is an error.
+            return false
+        }
+
+        var success = true
+        for path in enumerator {
+            if let pathString = path as? String {
+                let fileUrl = URL(fileURLWithPath: pathString, relativeTo: homeUrl)
+                do {
+                    try fileManager.removeItem(at: fileUrl)
+                } catch {
+                    success = false
+                }
+            } else {
+                success = false
+            }
+        }
+
+        return success
+    }
 
     /**
      Converts a typical core data set of CdIdentities into pEp identities.

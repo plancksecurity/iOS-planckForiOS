@@ -8,8 +8,6 @@
 
 import XCTest
 import CoreData
-
-import pEpIOSToolboxTests
 import PEPObjCAdapterFramework
 
 @testable import MessageModel
@@ -47,7 +45,7 @@ class PersistentStoreDrivenTestBase: XCTestCase {
     override func tearDown() {
         Stack.shared.reset()
         PEPSession.cleanup()
-        XCTAssertTrue(PEPTestUtils.pEpClean())
+        XCTAssertTrue(PEPUtils.pEpClean())
         super.tearDown()
     }
 }
