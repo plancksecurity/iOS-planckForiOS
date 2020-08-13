@@ -22,7 +22,7 @@ public class FolderViewModel {
         return DeviceUtils.isIphone5 ? 3 : 4
     }
 
-    var hasMoreThanOneAccountForUnified: Bool {
+    var shouldShowUnifiedFolders: Bool {
         return Account.countAllForUnified() > 1
     }
 
@@ -39,7 +39,7 @@ public class FolderViewModel {
         } else {
             accountsToUse = Account.all()
         }
-        let includeInUnifiedFolders = isUnified && hasMoreThanOneAccountForUnified
+        let includeInUnifiedFolders = isUnified && shouldShowUnifiedFolders
         generateSections(accounts: accountsToUse, includeInUnifiedFolders: includeInUnifiedFolders)
     }
 
@@ -90,7 +90,7 @@ public class FolderViewModel {
         return self.items.count
     }
 
-    var folderToDisplayInEmailList: DisplayableFolderProtocol? {
+    var folderForEmailListView: DisplayableFolderProtocol? {
         guard let folderSectionViewModel = items.first, folderSectionViewModel.count > 0 else {
             // No folders to show
             return nil

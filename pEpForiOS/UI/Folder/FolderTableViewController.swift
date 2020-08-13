@@ -13,7 +13,8 @@ import MessageModel
 final class FolderTableViewController: UITableViewController {
 
     var folderVM: FolderViewModel?
-    var showNext: Bool = true
+    // Indicates if it's needed to lead the user to a new screen, the email list or the new account, for example.
+    var shouldPresentNextView: Bool = true
 
     @IBOutlet private weak var addAccountButton: UIButton!
 
@@ -31,26 +32,7 @@ final class FolderTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setup()
-        guard let vm = folderVM else {
-            Log.shared.errorAndCrash("VM not Found")
-            return
-        }
-
-        //If "showNext" is true, will present the correct email list.
-        if showNext {
-            // If there are more than one account with "unified folders" turn on, let's show Unified Folder by default.
-            // if not, let's show the inbox of the first one.
-            // If there is no account, invite the user to add one. 
-            if vm.hasMoreThanOneAccountForUnified {
-                show(folder: UnifiedInbox())
-            } else if let folderToDisplayInEmailList = folderVM?.folderToDisplayInEmailList {
-                show(folder: folderToDisplayInEmailList)
-            } else {
-                performSegue(withIdentifier:.newAccount, sender: self)
-            }
-        }
-        let message = NSLocalizedString("Please choose a folder", comment: "No folder has been selected yet in the folders VC")
-        showEmptyDetailViewIfApplicable(message: message)
+        showNextViewIfNeeded()
     }
 
     // MARK: - Setup
@@ -59,6 +41,29 @@ final class FolderTableViewController: UITableViewController {
         navigationController?.setToolbarHidden(false, animated: false)
         folderVM = FolderViewModel()
         tableView.reloadData()
+    }
+
+    private func showNextViewIfNeeded() {
+        guard let vm = folderVM else {
+            Log.shared.errorAndCrash("VM not Found")
+            return
+        }
+
+        //If "shouldPresentNextView" is true, will present the correct email list.
+        if shouldPresentNextView {
+            // If there are more than one account with "unified folders" turn on, let's show Unified Folder by default.
+            // if not, let's show the inbox of the first one.
+            // If there is no account, invite the user to add one.
+            if vm.shouldShowUnifiedFolders {
+                show(folder: UnifiedInbox())
+            } else if let folderForEmailListView = folderVM?.folderForEmailListView {
+                show(folder: folderForEmailListView)
+            } else {
+                performSegue(withIdentifier:.newAccount, sender: self)
+            }
+        }
+        let message = NSLocalizedString("Please choose a folder", comment: "No folder has been selected yet in the folders VC")
+        showEmptyDetailViewIfApplicable(message: message)
     }
 
     private func initialConfig() {
@@ -191,7 +196,7 @@ final class FolderTableViewController: UITableViewController {
     }
 
     /// Show folder in email list
-    /// - Parameter folder: The folder to show. 
+    /// - Parameter folder: The folder to show.
     private func show(folder: DisplayableFolderProtocol) {
         let sb = UIStoryboard(name: EmailViewController.storyboard, bundle: nil)
         guard
@@ -204,8 +209,8 @@ final class FolderTableViewController: UITableViewController {
         vc.viewModel = EmailListViewModel(delegate: vc, folderToShow: folder)
         vc.hidesBottomBarWhenPushed = false
 
-        let animated = !showNext
-        showNext = false
+        let animated = !shouldPresentNextView
+        shouldPresentNextView = false
         navigationController?.pushViewController(vc, animated: animated)
     }
 }
@@ -216,7 +221,7 @@ extension FolderTableViewController: LoginViewControllerDelegate {
     func loginViewControllerDidCreateNewAccount(
         _ loginViewController: LoginViewController) {
         setup()
-        showNext = true
+        shouldPresentNextView = true
     }
 }
 
@@ -262,11 +267,11 @@ extension FolderTableViewController: SegueHandlerType {
      Unwind segue for the case of adding an account that requires manual setup
      */
     @IBAction private func segueUnwindAfterAccountCreation(segue: UIStoryboardSegue) {
-        showNext = true
+        shouldPresentNextView = true
     }
 
     @IBAction private func segueUnwindLastAccountDeleted(segue: UIStoryboardSegue) {
-        showNext = true
+        shouldPresentNextView = true
     }
 }
 
