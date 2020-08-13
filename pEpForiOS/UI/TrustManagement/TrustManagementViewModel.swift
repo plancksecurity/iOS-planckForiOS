@@ -105,9 +105,9 @@ extension TrustManagementViewModel {
         /// The privacy status in between the current user and the partner
         var privacyStatus: String?
         /// Status indicator
-        func color(completion: @escaping (PEPColor)->Void){
+        func color(completion: @escaping (Color) -> Void){
             if forceRed {
-                completion(PEPColor.red)
+                completion(.red)
             } else {
                 handshakeCombination.partnerIdentity.pEpColor { (color) in
                     DispatchQueue.main.async {
@@ -120,10 +120,10 @@ extension TrustManagementViewModel {
         /// Mega ugly.
         /// Do not use with the expection of the following use case:
         /// In cellForRowAtIndexpath, there is no way without blocking. See implementi0on.
-        func blockingColor() -> PEPColor {
-            var result = PEPColor.noColor
+        func blockingColor() -> Color {
+            var result = Color.noColor
             if forceRed {
-                result = PEPColor.red
+                result = .red
             } else {
                 let partner = handshakeCombination.partnerIdentity
                 let group = DispatchGroup()
