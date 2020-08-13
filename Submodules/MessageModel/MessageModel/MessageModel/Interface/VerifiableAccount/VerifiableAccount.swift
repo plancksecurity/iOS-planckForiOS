@@ -6,8 +6,9 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import PantomimeFramework
 import CoreData
+
+import PantomimeFramework
 import PEPObjCAdapterFramework
 
 extension VerifiableAccount {
