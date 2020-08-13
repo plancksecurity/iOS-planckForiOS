@@ -72,7 +72,6 @@ class SuggestViewModel {
     }()
 
     /// Private session for background usage
-    /// You MUST use this session for all MMOs in this class.
     let session = Session()
 
     /// true if one or more Identities have been update on our private Session
@@ -80,7 +79,7 @@ class SuggestViewModel {
 
     // MARK: - Life Cycle
 
-    public init(minNumberSearchStringChars: UInt = 3,
+    public init(minNumberSearchStringChars: UInt = 1,
                 from: Identity? = nil,
                 resultDelegate: SuggestViewModelResultDelegate? = nil,
                 showEmptyList: Bool = false) {
@@ -222,7 +221,7 @@ extension SuggestViewModel {
         var mergedRows = [Row]()
         session.performAndWait { [weak self] in
             guard let me = self else {
-                // Valid case. We might have been dismissed.
+                // Valid case. We might have been dismissed already.
                 return
             }
             let emailsOfIdentities = identities.map { $0.address }
@@ -262,7 +261,7 @@ extension SuggestViewModel {
     private func informDelegatesModelChanged(callingOperation: SelfReferencingOperation?) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             if let operationWeRunOn = callingOperation {

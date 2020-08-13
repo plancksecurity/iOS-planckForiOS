@@ -120,7 +120,7 @@ extension ComposeTableViewController {
         // Handshake on simple touch if possible
         vm.canDoHandshake { [weak self] (canDoHandshake) in
             guard let me = self else {
-                // Valid case. We might havebeen dismissed already.
+                // Valid case. We might have been dismissed already.
                 // Do nothing ...
                 return
             }
@@ -167,7 +167,7 @@ extension ComposeTableViewController {
         let action = UIAlertAction(title: pEpProtected ? disable : enable ,
                                    style: .default) { [weak self] (action) in
                                     guard let me = self, let vm = me.viewModel else {
-                                        Log.shared.errorAndCrash(message: "lost myself")
+                                        Log.shared.lostMySelf()
                                         return
                                     }
                                     let originalValueOfProtection = vm.state.pEpProtection
@@ -192,7 +192,7 @@ extension ComposeTableViewController {
         }
         vm.canDoHandshake { [weak self] (canDoHandshake) in
             guard let me = self else {
-                // Valid case. We might havebeen dismissed already.
+                // Valid case. We might have been dismissed already.
                 // Do nothing ...
                 return
             }
@@ -393,7 +393,7 @@ extension ComposeTableViewController {
             }
             guard let me = self,
             let picker = me.mediaAttachmentPickerProvider?.imagePicker else {
-                Log.shared.errorAndCrash("Lost somthing")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.present(picker, animated: true)
@@ -609,7 +609,7 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") {
             [weak self] action, indexPath in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             me.deleteAction(forCellAt: indexPath)
@@ -628,7 +628,7 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
             // The last cell is not yet displayed (as we are in "willDisplay ..."), thus async.
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                    // Valid case. We might have been dismissed already.
                     return
                 }
                 me.setInitialFocus()
@@ -713,7 +713,7 @@ extension ComposeTableViewController {
         let text = vm.deleteActionTitle
         action = ac.action(text, .destructive) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             me.dismiss()
@@ -730,7 +730,7 @@ extension ComposeTableViewController {
         let text = vm.saveActionTitle
         action = ac.action(text, .default) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             vm.handleSaveActionTriggered()
@@ -748,7 +748,7 @@ extension ComposeTableViewController {
         let text = vm.keepInOutboxActionTitle
         action = ac.action(text, .default) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             me.dismiss()
