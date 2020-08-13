@@ -26,20 +26,13 @@ extension Message {
     public func pEpRating(completion: @escaping (Rating) -> Void) {
         //see: https://dev.pep.security/Common%20App%20Documentation/algorithms/MessageColors
         if session.moc == Session.main.moc {
-            return  Message.pEpRating(message: self) { pEpRating in
+            return Message.pEpRating(message: self) { pEpRating in
                 completion(Rating.from(pEpRating: pEpRating))
             }
         } else {
             return  Message.pEpRating(message: self, session: session) { pEpRating in
                 completion(Rating.from(pEpRating: pEpRating))
             }
-        }
-    }
-
-    /// - returns: the pepColor
-    public func pEpColor(completion: @escaping (PEPColor) -> Void) {
-        pEpRating { (rating) in
-            completion(rating.pEpRating().pEpColor())
         }
     }
 
