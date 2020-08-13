@@ -21,7 +21,7 @@ extension CdAccount {
         }
 
         static func isInUnified() -> NSPredicate {
-            return NSPredicate(format: "%K = YES",  CdAccount.AttributeName.includeFoldersInUnifiedFolders)
+            return NSPredicate(format: "%K = true",  CdAccount.AttributeName.includeFoldersInUnifiedFolders)
         }
     }
 }

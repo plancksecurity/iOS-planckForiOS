@@ -38,10 +38,8 @@ final class FolderTableViewController: UITableViewController {
                 show(folder: defaultDisplayableFolder)
             }
         }
-        showEmptyDetailViewIfApplicable(
-            message: NSLocalizedString(
-                "Please choose a folder",
-                comment: "No folder has been selected yet in the folders VC"))
+        let message = NSLocalizedString("Please choose a folder", comment: "No folder has been selected yet in the folders VC")
+        showEmptyDetailViewIfApplicable(message: message)
     }
 
     // MARK: - Setup
