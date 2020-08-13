@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import CoreData
+
 import PantomimeFramework
 import PEPObjCAdapterFramework
-import CoreData
 
 //!!!: Clean up! 1) Loads of topics mixed here. 2) Loads of public methods that expose CoreData.
 
