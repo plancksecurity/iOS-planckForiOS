@@ -184,7 +184,7 @@ extension AccountSettingsViewModel {
         delegate?.setLoadingView(visible: true)
         account.resetKeys() { [weak self] result in
             guard let me = self else {
-                Log.shared.lostMySelf()
+                // Valid case. We might have been dismissed already.
                 return
             }
             switch result {
@@ -365,7 +365,7 @@ extension AccountSettingsViewModel {
                                                       isOn: includeInUnifiedFolders,
                                                       action: { [weak self] (isIncludedInUnifiedFolders) in
                                                         guard let me = self else {
-                                                            Log.shared.error("Lost myself")
+                                                            Log.shared.lostMySelf()
                                                             return
                                                         }
                                                         me.handleSwitchChanged(isIncludedInUnifiedFolders: isIncludedInUnifiedFolders)

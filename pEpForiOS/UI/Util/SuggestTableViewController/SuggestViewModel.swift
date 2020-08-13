@@ -221,7 +221,7 @@ extension SuggestViewModel {
         var mergedRows = [Row]()
         session.performAndWait { [weak self] in
             guard let me = self else {
-                // Valid case. We might have been dismissed.
+                // Valid case. We might have been dismissed already.
                 return
             }
             let emailsOfIdentities = identities.map { $0.address }
@@ -261,7 +261,7 @@ extension SuggestViewModel {
     private func informDelegatesModelChanged(callingOperation: SelfReferencingOperation?) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             if let operationWeRunOn = callingOperation {
