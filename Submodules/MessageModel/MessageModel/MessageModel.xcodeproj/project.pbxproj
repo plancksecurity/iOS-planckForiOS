@@ -1258,6 +1258,8 @@
 				43C12407223A9DEA00F6A9B2 /* CdAccount+pEp.swift */,
 				158A6E0F23073DB0006A9ECE /* PEPDecryptFlags+ReUpload.swift */,
 				158A6E152307468F006A9ECE /* CdAttachment+PEPAttachment.swift */,
+				436C9A4924E3FE0B00007A3D /* Rating+pEp.swift */,
+				43A9817F24E52FF700830603 /* Identity+pEpIdentity.swift */,
 			);
 			path = pEpUtils;
 			sourceTree = "<group>";
@@ -2038,8 +2040,6 @@
 				430CDA842296BC7A00AAC37F /* CdMessage+KeySync.swift */,
 				15F136F024B619D600A7F810 /* PEPPassphraseProvider.swift */,
 				431995C124DACCD3004B2811 /* KeySyncHandshakeResult+PEPSyncHandshakeResult.swift */,
-				436C9A4924E3FE0B00007A3D /* Rating+pEp.swift */,
-				43A9817F24E52FF700830603 /* Identity+pEpIdentity.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
