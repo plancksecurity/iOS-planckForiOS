@@ -49,15 +49,9 @@ final class FolderTableViewController: UITableViewController {
             return
         }
 
-        //If "shouldPresentNextView" is true, will present the correct email list.
         if shouldPresentNextView {
-            // If there are more than one account with "unified folders" turn on, let's show Unified Folder by default.
-            // if not, let's show the inbox of the first one.
-            // If there is no account, invite the user to add one.
-            if vm.shouldShowUnifiedFolders {
-                show(folder: UnifiedInbox())
-            } else if let folderForEmailListView = folderVM?.folderForEmailListView {
-                show(folder: folderForEmailListView)
+            if vm.shouldShowFolders {
+                showEmailList(folder:vm.folderToShow)
             } else {
                 performSegue(withIdentifier:.newAccount, sender: self)
             }
@@ -192,12 +186,12 @@ final class FolderTableViewController: UITableViewController {
             tableView.deselectRow(at: indexPath, animated: true)
             return
         }
-        show(folder: cellViewModel.folder)
+        showEmailList(folder: cellViewModel.folder)
     }
 
     /// Show folder in email list
     /// - Parameter folder: The folder to show.
-    private func show(folder: DisplayableFolderProtocol) {
+    private func showEmailList(folder: DisplayableFolderProtocol) {
         let sb = UIStoryboard(name: EmailViewController.storyboard, bundle: nil)
         guard
             let vc = sb.instantiateViewController(

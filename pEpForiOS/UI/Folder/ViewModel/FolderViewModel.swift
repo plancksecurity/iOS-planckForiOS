@@ -26,6 +26,22 @@ public class FolderViewModel {
         return Account.countAllForUnified() > 1
     }
 
+    var shouldShowFolders: Bool {
+        return shouldShowUnifiedFolders || folderForEmailListView != nil
+    }
+
+    public var folderToShow: DisplayableFolderProtocol {
+        if shouldShowUnifiedFolders {
+            return UnifiedInbox()
+        }
+        guard let folderToReturn = folderForEmailListView else {
+            Log.shared.errorAndCrash("Folder not found")
+            return self.folderToShow
+        }
+
+        return folderToReturn
+    }
+
     /// Instantiates a folder hierarchy model with:
     /// One section per account
     /// One row per folder
