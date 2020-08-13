@@ -167,6 +167,11 @@ extension Account {
     public static func countAll() -> Int {
         return CdAccount.count()
     }
+
+    public static func countAllForUnified() -> Int {
+        let isInUnifiedPredicate = CdAccount.PredicateFactory.isInUnified()
+        return CdAccount.count(predicate: isInUnifiedPredicate)
+    }
 }
 
 extension Account: Equatable {

@@ -32,7 +32,7 @@ final class FolderTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         setup()
         if showNext {
-            if Account.countAll() > 1 {
+            if Account.countAllForUnified() > 1 {
                 show(folder: UnifiedInbox())
             } else if let defaultDisplayableFolder = folderVM?.defaultDisplayableFolder {
                 show(folder: defaultDisplayableFolder)

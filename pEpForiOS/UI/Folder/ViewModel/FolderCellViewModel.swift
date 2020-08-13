@@ -119,9 +119,12 @@ public class FolderCellViewModel {
         return false
     }
 
-    public func isInbox() -> Bool {
-        if let childFolder = folder as? Folder {
-            return childFolder.folderType == .inbox
+    /// Indicates if the folder of the type passed by parameter.
+    /// - Parameter type: The Folder type
+    /// - Returns: True if it is a folder of that type
+    public func isFolder(of type: FolderType) -> Bool {
+        if let f = folder as? Folder {
+            return f.folderType == type
         }
         return false
     }

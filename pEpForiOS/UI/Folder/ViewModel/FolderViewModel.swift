@@ -35,7 +35,7 @@ public class FolderViewModel {
         } else {
             accountsToUse = Account.all()
         }
-        let includeInUnifiedFolders = isUnified && Account.countAll() > 1
+        let includeInUnifiedFolders = isUnified && Account.countAllForUnified() > 1
         generateSections(accounts: accountsToUse, includeInUnifiedFolders: includeInUnifiedFolders)
     }
 
@@ -91,11 +91,7 @@ public class FolderViewModel {
             // No folders to show
             return nil
         }
-        guard let first = folderSectionViewModel.firstInbox() else {
-            // INBOX its the only mailbox that the IMAP protocol guarantees to exist
-            Log.shared.errorAndCrash("Inbox not found")
-            return nil
-        }
+        let first = folderSectionViewModel.firstInbox()
         return first.folder
     }
 }
