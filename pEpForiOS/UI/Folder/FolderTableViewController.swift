@@ -11,10 +11,10 @@ import pEpIOSToolbox
 import MessageModel
 
 final class FolderTableViewController: UITableViewController {
-
     var folderVM: FolderViewModel?
-    // Indicates if it's needed to lead the user to a new screen, the email list or the new account, for example.
-    var shouldPresentNextView: Bool = true
+    // Indicates if it's needed to lead the user to a new screen,
+    // the email list or the new account, for example.
+    private var shouldPresentNextView: Bool = true
 
     @IBOutlet private weak var addAccountButton: UIButton!
 
@@ -23,16 +23,13 @@ final class FolderTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initialConfig()
-        tableView.cellLayoutMarginsFollowReadableWidth = false
-        addAccountButton.titleLabel?.numberOfLines = 0
-        addAccountButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
-        addAccountButton.titleLabel?.adjustsFontForContentSizeCategory = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setup()
         showNextViewIfNeeded()
+        showEmptyDetailViewIfNeeded()
     }
 
     // MARK: - Setup
@@ -43,19 +40,7 @@ final class FolderTableViewController: UITableViewController {
         tableView.reloadData()
     }
 
-    private func showNextViewIfNeeded() {
-        guard let vm = folderVM else {
-            Log.shared.errorAndCrash("VM not Found")
-            return
-        }
-
-        if shouldPresentNextView {
-            if vm.shouldShowFolders {
-                showEmailList(folder:vm.folderToShow)
-            } else {
-                performSegue(withIdentifier:.newAccount, sender: self)
-            }
-        }
+    private func showEmptyDetailViewIfNeeded() {
         let message = NSLocalizedString("Please choose a folder", comment: "No folder has been selected yet in the folders VC")
         showEmptyDetailViewIfApplicable(message: message)
     }
@@ -69,7 +54,6 @@ final class FolderTableViewController: UITableViewController {
         refreshControl = UIRefreshControl()
         refreshControl?.tintColor = UIColor.pEpGreen
         tableView.refreshControl = refreshControl
-
         refreshControl?.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
         let item = UIBarButtonItem.getPEPButton(
             action:#selector(showSettingsViewController),
@@ -82,7 +66,25 @@ final class FolderTableViewController: UITableViewController {
             action:#selector(showCompose),
             target: self)
         toolbarItems = [flexibleSpace, compose, flexibleSpace, item]
+        tableView.cellLayoutMarginsFollowReadableWidth = false
+        addAccountButton.titleLabel?.numberOfLines = 0
+        addAccountButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        addAccountButton.titleLabel?.adjustsFontForContentSizeCategory = true
     }
+
+    // MARK: - Cell Setup
+
+    private func setNotSelectableStyle(to cell: UITableViewCell) {
+        cell.accessoryType = .none
+        cell.textLabel?.textColor = .pEpGray
+    }
+
+    private func setSelectableStyle(to cell: UITableViewCell) {
+        cell.accessoryType = .disclosureIndicator
+        cell.textLabel?.textColor = .black
+    }
+
+    // MARK: - Action
 
     @objc private func pullToRefresh() {
         folderVM?.refreshFolderList() { [weak self] in
@@ -95,26 +97,12 @@ final class FolderTableViewController: UITableViewController {
         }
     }
 
-    // MARK: - Action
-
     @objc private func showCompose() {
-        UIUtils.presentComposeView(forRecipientInUrl: nil)
+        UIUtils.presentComposeView()
     }
     
     @objc private func showSettingsViewController() {
         UIUtils.presentSettings()
-    }
-
-    // MARK: - Cell Setup
-
-    private func setNotSelectableStyle(to cell: UITableViewCell) {
-        cell.accessoryType = .none
-        cell.textLabel?.textColor = UIColor.pEpGray
-    }
-
-    private func setSelectableStyle(to cell: UITableViewCell) {
-        cell.accessoryType = .disclosureIndicator
-        cell.textLabel?.textColor = UIColor.black
     }
 
     // MARK: - Table view data source
@@ -148,13 +136,11 @@ final class FolderTableViewController: UITableViewController {
         }
 
         let fcvm = vm[indexPath.section].visibleFolderCellViewModel(index: indexPath.item)
-
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "FolderTableViewCell", for: indexPath)
             as? FolderTableViewCell else {
             Log.shared.errorAndCrash("No subfolder cell found")
             return UITableViewCell()
         }
-
         cell.indentationLevel = min(fcvm.indentationLevel, vm.maxIndentationLevel)
         cell.shouldRotateChevron = fcvm.shouldRotateChevron
         cell.chevronButton.isUserInteractionEnabled = fcvm.isChevronEnabled
@@ -188,33 +174,14 @@ final class FolderTableViewController: UITableViewController {
         }
         showEmailList(folder: cellViewModel.folder)
     }
-
-    /// Show folder in email list
-    /// - Parameter folder: The folder to show.
-    private func showEmailList(folder: DisplayableFolderProtocol) {
-        let sb = UIStoryboard(name: EmailViewController.storyboard, bundle: nil)
-        guard
-            let vc = sb.instantiateViewController(
-                withIdentifier: EmailListViewController.storyboardId) as? EmailListViewController
-            else {
-                Log.shared.errorAndCrash("Problem!")
-                return
-        }
-        vc.viewModel = EmailListViewModel(delegate: vc, folderToShow: folder)
-        vc.hidesBottomBarWhenPushed = false
-
-        let animated = !shouldPresentNextView
-        shouldPresentNextView = false
-        navigationController?.pushViewController(vc, animated: animated)
-    }
 }
 
 // MARK: - LoginTableViewControllerDelegate
 
 extension FolderTableViewController: LoginViewControllerDelegate {
-    func loginViewControllerDidCreateNewAccount(
-        _ loginViewController: LoginViewController) {
+    func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController) {
         setup()
+        // The user has just logged in, he should see the email list view.
         shouldPresentNextView = true
     }
 }
@@ -257,15 +224,50 @@ extension FolderTableViewController: SegueHandlerType {
         performSegue(withIdentifier: .newAccount, sender: self)
     }
 
-    /**
-     Unwind segue for the case of adding an account that requires manual setup
-     */
+     /// Unwind segue for the case of adding an account that requires manual setup
     @IBAction private func segueUnwindAfterAccountCreation(segue: UIStoryboardSegue) {
+        // After adding an account with manual setup the user should see the email list view
         shouldPresentNextView = true
     }
 
     @IBAction private func segueUnwindLastAccountDeleted(segue: UIStoryboardSegue) {
+        // The last account was deleted, so the user should be prompt to add a new one.
         shouldPresentNextView = true
+    }
+
+    /// If needed, will show the email list of new account view.
+    private func showNextViewIfNeeded() {
+        guard let vm = folderVM else {
+            Log.shared.errorAndCrash("VM not Found")
+            return
+        }
+        if shouldPresentNextView {
+            if vm.shouldShowFolders {
+                showEmailList(folder:vm.folderToShow)
+            } else {
+                performSegue(withIdentifier:.newAccount, sender: self)
+            }
+        }
+    }
+
+    /// Show folder in email list
+    /// - Parameter folder: The folder to show.
+    private func showEmailList(folder: DisplayableFolderProtocol) {
+        let sb = UIStoryboard(name: EmailViewController.storyboard, bundle: nil)
+        guard
+            let vc = sb.instantiateViewController(
+                withIdentifier: EmailListViewController.storyboardId) as? EmailListViewController
+            else {
+                Log.shared.errorAndCrash("Problem!")
+                return
+        }
+        vc.viewModel = EmailListViewModel(delegate: vc, folderToShow: folder)
+        vc.hidesBottomBarWhenPushed = false
+        let animated = !shouldPresentNextView
+
+        // The user will see the email list now, if he goes back, let him here
+        shouldPresentNextView = false
+        navigationController?.pushViewController(vc, animated: animated)
     }
 }
 

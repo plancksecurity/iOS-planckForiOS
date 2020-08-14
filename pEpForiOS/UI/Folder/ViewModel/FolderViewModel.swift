@@ -12,21 +12,30 @@ import MessageModel
 /// View Model for folder hierarchy.
 public class FolderViewModel {
 
-    lazy var folderSyncService = FetchImapFoldersService()
-    var items: [FolderSectionViewModel]
+    private lazy var folderSyncService = FetchImapFoldersService()
+    public var items: [FolderSectionViewModel]
 
     /// The hidden sections are the collapsed accounts.
-    var hiddenSections = Set<Int>()
+    public var hiddenSections = Set<Int>()
 
-    var maxIndentationLevel: Int {
+    public var maxIndentationLevel: Int {
         return DeviceUtils.isIphone5 ? 3 : 4
     }
 
-    var shouldShowUnifiedFolders: Bool {
+    public var shouldShowUnifiedFolders: Bool {
         return Account.countAllForUnified() > 1
     }
 
-    var shouldShowFolders: Bool {
+    public var folderForEmailListView: DisplayableFolderProtocol? {
+        guard let folderSectionViewModel = items.first, folderSectionViewModel.count > 0 else {
+            // No folders to show
+            return nil
+        }
+        let first = folderSectionViewModel.firstInbox()
+        return first.folder
+    }
+
+    public var shouldShowFolders: Bool {
         return shouldShowUnifiedFolders || folderForEmailListView != nil
     }
 
@@ -38,8 +47,17 @@ public class FolderViewModel {
             Log.shared.errorAndCrash("Folder not found")
             return self.folderToShow
         }
-
         return folderToReturn
+    }
+
+    public subscript(index: Int) -> FolderSectionViewModel {
+        get {
+            return self.items[index]
+        }
+    }
+
+    public var count: Int {
+        return items.count
     }
 
     /// Instantiates a folder hierarchy model with:
@@ -59,20 +77,15 @@ public class FolderViewModel {
         generateSections(accounts: accountsToUse, includeInUnifiedFolders: includeInUnifiedFolders)
     }
 
-    private func generateSections(accounts: [Account], includeInUnifiedFolders: Bool = true) {
-        if includeInUnifiedFolders {
-            items.append(FolderSectionViewModel(account: nil, Unified: true))
-        }
-        for acc in accounts {
-            items.append(FolderSectionViewModel(account: acc, Unified: false))
-        }
-    }
-
+    /// Indicates if there isn't accounts registered.
+    /// - Returns: True if there is no accounts.
     public func noAccountsExist() -> Bool {
         return Account.all().isEmpty
     }
 
-    func refreshFolderList(completion: (()->())? = nil) {
+    /// Refresh the folder list for all accounts.
+    /// - Parameter completion: Callback that is executed when the task ends.
+    public func refreshFolderList(completion: (()->())? = nil) {
         do {
             try folderSyncService.runService(inAccounts: Account.all()) { Success in
                 completion?()
@@ -83,7 +96,6 @@ public class FolderViewModel {
                 completion?()
                 return
             }
-
             switch er {
             case .accountNotFound:
                 Log.shared.errorAndCrash("Account not found")
@@ -96,22 +108,14 @@ public class FolderViewModel {
         }
     }
 
-    subscript(index: Int) -> FolderSectionViewModel {
-        get {
-            return self.items[index]
-        }
-    }
+    // MARK: - Private
 
-    var count: Int {
-        return self.items.count
-    }
-
-    var folderForEmailListView: DisplayableFolderProtocol? {
-        guard let folderSectionViewModel = items.first, folderSectionViewModel.count > 0 else {
-            // No folders to show
-            return nil
+    private func generateSections(accounts: [Account], includeInUnifiedFolders: Bool = true) {
+        if includeInUnifiedFolders {
+            items.append(FolderSectionViewModel(account: nil, Unified: true))
         }
-        let first = folderSectionViewModel.firstInbox()
-        return first.folder
+        for acc in accounts {
+            items.append(FolderSectionViewModel(account: acc, Unified: false))
+        }
     }
 }
