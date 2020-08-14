@@ -46,50 +46,50 @@ class ImapReplicationService: OperationBasedService {
             cdAccount = privateMoc.object(with: cdAccountObjectID) as? CdAccount
         }
 
-        // Custom finisBlock to make sure all local changes (made by the user) are synced with the server.
-        finishBlock = { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            Log.shared.info("%@ - custom finishBlock called with state: %@)",
-                            "\(type(of: self))", "\(me.state)")
-            
-            me.backgroundQueue.cancelAllOperations()
-            me.syncLocalChanges()
-            me.state = .finshing
-            me.doNotRestart()
-        }
+//        // Custom finisBlock to make sure all local changes (made by the user) are synced with the server.
+//        finishBlock = { [weak self] in
+//            guard let me = self else {
+//                Log.shared.errorAndCrash("Lost myself")
+//                return
+//            }
+//            Log.shared.info("%@ - custom finishBlock called with state: %@)",
+//                            "\(type(of: self))", "\(me.state)")
+//
+//            me.backgroundQueue.cancelAllOperations() //BUFF: problem cancelling OPs. Sync delegate is set, OP never finishes. Assume Pantomime never aswers for some reason
+//            me.syncLocalChanges()
+//            me.state = .finshing
+//            me.doNotRestart()
+//        }
     }
 
     //BUFF: move
-    private func syncLocalChanges() {
-        let toDos = internalOperations(syncOnlyUserChanges: true)
-        Log.shared.info("%@ - syncLocalChanges called with state: %@ numOperations: %d",
-                        "\(type(of: self))", "\(state)", toDos.count)
-        guard !toDos.isEmpty else {
-                // Nothing to do. Let everyone know we are ready.
-                // Do not call next(). That would result in an endless loop
-                // (lasstCommand == start, state == .ready, -> nothing todo, next(), ...).
-                // Wait for QRC to trigger or client to call `start()` again instead.
-                doNotRestart()
-                return
-        }
-        let group = DispatchGroup()
-        let toDosManagedByGroup = addCompletionOperations(handling: group, to: toDos)
-        group.notify(queue: DispatchQueue.global(qos: .background)) { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.doNotRestart()
-        }
-        // registerBackgroundTask should already have been started when starting the service (in
-        //startNextProcessingRound). To make sure we call it anyway just to make sure.
-        // It does not hurt. BackgroundTaskManager will ignore it.
-        registerBackgroundTask()
-        backgroundQueue.addOperations(toDosManagedByGroup, waitUntilFinished: false)
-    }
+//    private func syncLocalChanges() {
+//        let toDos = internalOperations(syncOnlyUserChanges: true)
+//        Log.shared.info("%@ - syncLocalChanges called with state: %@ numOperations: %d",
+//                        "\(type(of: self))", "\(state)", toDos.count)
+//        guard !toDos.isEmpty else {
+//                // Nothing to do. Let everyone know we are ready.
+//                // Do not call next(). That would result in an endless loop
+//                // (lasstCommand == start, state == .ready, -> nothing todo, next(), ...).
+//                // Wait for QRC to trigger or client to call `start()` again instead.
+//                doNotRestart()
+//                return
+//        }
+//        let group = DispatchGroup()
+//        let toDosManagedByGroup = addCompletionOperations(handling: group, to: toDos)
+//        group.notify(queue: DispatchQueue.global(qos: .background)) { [weak self] in
+//            guard let me = self else {
+//                Log.shared.errorAndCrash("Lost myself")
+//                return
+//            }
+//            me.doNotRestart()
+//        }
+//        // registerBackgroundTask should already have been started when starting the service (in
+//        //startNextProcessingRound). To make sure we call it anyway just to make sure.
+//        // It does not hurt. BackgroundTaskManager will ignore it.
+//        registerBackgroundTask()
+//        backgroundQueue.addOperations(toDosManagedByGroup, waitUntilFinished: false)
+//    }
     //
 
     private func internalOperations(syncOnlyUserChanges: Bool = false) -> [Operation] {
@@ -108,34 +108,41 @@ class ImapReplicationService: OperationBasedService {
                     createes.append(reportErrorAndWaitOp)
                     return
             }
+//            let imapConnection: ImapConnection //BUFF: creating new connection helps syncing local changes, the cached one seems broken
+//
+//            if syncOnlyUserChanges {
+//                imapConnection = ImapConnection(connectInfo: imapConnectInfo)
+//            } else {
+//                imapConnection = me.imapConnectionCache.imapConnection(for: imapConnectInfo)
+//            }
 
-            let imapSyncData = me.imapConnectionCache.imapConnection(for: imapConnectInfo)
+            let imapConnection = me.imapConnectionCache.imapConnection(for: imapConnectInfo)
 
             // login IMAP
             let opImapLogin = LoginImapOperation(errorContainer: me.errorPropagator,
-                                                 imapConnection: imapSyncData)
+                                                 imapConnection: imapConnection)
             createes.append(opImapLogin)
 
             if me.pollingMode != .fastPolling && !syncOnlyUserChanges {
                 // Fetch current list of interesting mailboxes
                 let opSyncFolders = SyncFoldersFromServerOperation(errorContainer: me.errorPropagator,
-                                                                   imapConnection: imapSyncData)
+                                                                   imapConnection: imapConnection)
                 createes.append(opSyncFolders)
             }
             if me.pollingMode != .fastPolling && !syncOnlyUserChanges  {
                 let opRequiredFolders = CreateRequiredFoldersOperation(errorContainer: me.errorPropagator,
-                                                                       imapConnection: imapSyncData)
+                                                                       imapConnection: imapConnection)
                 createes.append(opRequiredFolders)
             }
 
             // Client-to-server synchronization (IMAP)
             let appendOp = AppendMailsOperation(errorContainer: me.errorPropagator,
-                                                imapConnection: imapSyncData)
+                                                imapConnection: imapConnection)
             createes.append(appendOp)
 
             if me.pollingMode != .fastPolling {
                 let moveToFolderOp = ImapMoveOperation(errorContainer: me.errorPropagator,
-                                                       imapConnection: imapSyncData)
+                                                       imapConnection: imapConnection)
                 createes.append(moveToFolderOp)
             }
 
@@ -145,7 +152,7 @@ class ImapReplicationService: OperationBasedService {
             // fetch new messages
             if !syncOnlyUserChanges {
             let fetchMessagesOp = FetchMessagesOperation(errorContainer: me.errorPropagator,
-                                                         imapConnection: imapSyncData,
+                                                         imapConnection: imapConnection,
                                                          folderInfos: folderInfos)
             createes.append(fetchMessagesOp)
             }
@@ -153,19 +160,19 @@ class ImapReplicationService: OperationBasedService {
             if me.pollingMode != .fastPolling && !syncOnlyUserChanges {
                 // Send EXPUNGEs, if necessary
                 let expungeOP = ImapExpungeOperation(errorContainer: me.errorPropagator,
-                                                     imapConnection: imapSyncData)
+                                                     imapConnection: imapConnection)
                 createes.append(expungeOP)
             }
             if me.pollingMode != .fastPolling && !syncOnlyUserChanges {
                 // sync existing messages
                 let syncExistingOP = SyncMessagesOperation(errorContainer: me.errorPropagator,
-                                                           imapConnection: imapSyncData,
+                                                           imapConnection: imapConnection,
                                                            folderInfos: folderInfos)
                 createes.append(syncExistingOP)
             }
             if me.pollingMode != .fastPolling {
                 let syncFlagsToServer = SyncFlagsToServerOperation(errorContainer: me.errorPropagator,
-                                                                   imapConnection: imapSyncData,
+                                                                   imapConnection: imapConnection,
                                                                    folderInfos: folderInfos)
                 createes.append(syncFlagsToServer)
             }
