@@ -150,6 +150,7 @@ class SyncFlagsToServerInImapFolderOperation: ImapSyncOperation {
                 imapConnection.store(info: info, command: string)
             } else {
                 Log.shared.errorAndCrash("No IMAP store command")
+                waitForBackgroundTasksAndFinish()
             }
         } else if mode == .add && currentMessageNeedSyncRemoveFlagsToServer() {
             updateFlags(to: .remove)
