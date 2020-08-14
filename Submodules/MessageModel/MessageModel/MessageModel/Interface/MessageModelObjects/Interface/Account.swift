@@ -160,6 +160,16 @@ extension Account {
     }
 }
 
+// - MARK: Count
+
+extension Account {
+
+    public static func countAllForUnified() -> Int {
+        let isInUnifiedPredicate = CdAccount.PredicateFactory.isInUnified()
+        return CdAccount.count(predicate: isInUnifiedPredicate)
+    }
+}
+
 extension Account: Equatable {
     public static func ==(lhs: Account, rhs: Account) -> Bool {
         return lhs.user.hashValue == rhs.user.hashValue
