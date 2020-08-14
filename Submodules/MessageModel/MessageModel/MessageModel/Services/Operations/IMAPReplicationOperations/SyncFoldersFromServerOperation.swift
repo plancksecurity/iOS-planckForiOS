@@ -70,7 +70,7 @@ extension SyncFoldersFromServerOperation {
                 // Get all local folders that represent a remote mailbox
                 guard let cdAccount = me.imapConnection.cdAccount(moc: me.privateMOC) else {
                     Log.shared.errorAndCrash("No account")
-                    me.handleError(BackgroundError.GeneralError.illegalState(info:
+                    me.handle(error: BackgroundError.GeneralError.illegalState(info:
                         "Problem getting CdAccount"))
                     return
                 }
@@ -106,11 +106,13 @@ extension SyncFoldersFromServerOperation {
             }
             me.privateMOC.performAndWait {
                 guard let cdAccount = me.imapConnection.cdAccount(moc: me.privateMOC) else {
-                    Log.shared.errorAndCrash("No account")
+                    Log.shared.error("No account. Valid case if the user deleted it.")
+                    me.backgroundQueue.waitUntilAllOperationsAreFinished()
                     return
                 }
                 guard let server = cdAccount.server(type: .imap) else {
-                    Log.shared.errorAndCrash("No IMAP server")
+                    Log.shared.error("No IMAP server. Valid case if the user deleted the account.")
+                    me.backgroundQueue.waitUntilAllOperationsAreFinished()
                     return
                 }
                 server.imapFolderSeparator = imapFolderInfo.separator
