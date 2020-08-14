@@ -112,10 +112,10 @@ public class FolderViewModel {
 
     private func generateSections(accounts: [Account], includeInUnifiedFolders: Bool = true) {
         if includeInUnifiedFolders {
-            items.append(FolderSectionViewModel(account: nil, Unified: true))
+            items.append(FolderSectionViewModel(account: nil, unified: true))
         }
         for acc in accounts {
-            items.append(FolderSectionViewModel(account: acc, Unified: false))
+            items.append(FolderSectionViewModel(account: acc, unified: false))
         }
     }
 }

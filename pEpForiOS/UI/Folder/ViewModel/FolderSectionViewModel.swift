@@ -18,10 +18,10 @@ public class FolderSectionViewModel {
     private let unifiedFolders = [UnifiedInbox(), UnifiedDraft(), UnifiedSent(), UnifiedTrash()]
 
     private var help = [FolderCellViewModel]()
-    let identityImageTool = IdentityImageTool()
+    private let identityImageTool = IdentityImageTool()
 
-    public init(account acc: Account?, Unified: Bool) {
-        if Unified {
+    public init(account acc: Account?, unified: Bool) {
+        if unified {
             hidden = true
             unifiedFolders.forEach { (unifiedFolder) in
                 items.append(FolderCellViewModel(folder: unifiedFolder, level: 0))
@@ -148,7 +148,7 @@ public class FolderSectionViewModel {
         return visibleItems.firstIndex(of: item)
     }
 
-    /// - Returns: Returns the first Folder Cell View Model which folder is an Inbox
+    /// - Returns: the first Folder Cell View Model which folder is an Inbox
     public func firstInbox() -> FolderCellViewModel  {
         guard let fcvm = items.first(where: {$0.isFolder(of: .inbox)}) else {
             Log.shared.errorAndCrash("Inbox not found")
