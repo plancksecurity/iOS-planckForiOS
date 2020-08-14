@@ -127,16 +127,16 @@ extension AppendMailsToFolderOperation {
                                             return
                                         default:
                                             Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
-                                            me.handleError(BackgroundError.GeneralError.illegalState(info:
+                                            me.handle(error: BackgroundError.GeneralError.illegalState(info:
                                                 "##\nError: \(error)\nencrypting message: \(cdMessage)\n##"))
                                         }
                                     } else if error.domain == PEPObjCAdapterErrorDomain {
                                         Log.shared.errorAndCrash("Unexpected ")
-                                        me.handleError(BackgroundError.GeneralError.illegalState(info:
+                                        me.handle(error: BackgroundError.GeneralError.illegalState(info:
                                             "We do not exept this error domain to show up here: \(error)"))
                                     } else {
                                         Log.shared.errorAndCrash("Unhandled error domain: %@", "\(error.domain)")
-                                        me.handleError(BackgroundError.GeneralError.illegalState(info:
+                                        me.handle(error: BackgroundError.GeneralError.illegalState(info:
                                             "Unhandled error domain: \(error.domain)"))
                                     }
                 }) { (_, encryptedMessage) in
@@ -177,7 +177,7 @@ extension AppendMailsToFolderOperation {
             privateMOC.saveAndLogErrors()
         } else {
             Log.shared.errorAndCrash("Message disappeared")
-            handleError(BackgroundError.GeneralError.invalidParameter(info: #function),
+            handle(error: BackgroundError.GeneralError.invalidParameter(info: #function),
                         message: "Cannot find message just stored.")
             return
         }
