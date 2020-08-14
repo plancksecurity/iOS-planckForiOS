@@ -181,7 +181,7 @@ class OperationBasedService: Service, OperationBasedServiceProtocol {
                 return
             }
             Log.shared.info("%@ - started doNotRestart", "\(type(of: me))")
-            me.backgroundQueue.waitUntilAllOperationsAreFinished()
+            me.backgroundQueue.waitUntilAllOperationsAreFinished() //BUFF: ALSO waits for the other place
             me.state = .ready
             me.endBackgroundTask()
             Log.shared.info("%@ - ended doNotRestart", "\(type(of: me))")
