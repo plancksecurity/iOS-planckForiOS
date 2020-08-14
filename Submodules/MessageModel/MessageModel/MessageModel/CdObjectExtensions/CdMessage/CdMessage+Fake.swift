@@ -48,8 +48,11 @@ extension CdMessage {
                                          realMessage: CdMessage,
                                          context: NSManagedObjectContext) -> CdMessage {
         guard let parentFolder = realMessage.parent  else {
-            // Valid case. No message can be found because the it has been deleted from the DB.
-            // Probably the user deleted the belonging Account.
+            if realMessage.isDeleted {
+                Log.shared.error("No no parentFolder. The only known valid case is that the user has deleted the account and thus whiped all messages.")
+            } else {
+                Log.shared.errorAndCrash("No no parentFolder.")
+            }
             return realMessage
         }
         guard let existingFakeMessage = existingFakeMessage(for: uuid,
