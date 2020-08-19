@@ -46,51 +46,27 @@ class ImapReplicationService: OperationBasedService {
             cdAccount = privateMoc.object(with: cdAccountObjectID) as? CdAccount
         }
 
-//        // Custom finisBlock to make sure all local changes (made by the user) are synced with the server.
-//        finishBlock = { [weak self] in
-//            guard let me = self else {
-//                Log.shared.errorAndCrash("Lost myself")
-//                return
-//            }
-//            Log.shared.info("%@ - custom finishBlock called with state: %@)",
-//                            "\(type(of: self))", "\(me.state)")
-//
-//            me.backgroundQueue.cancelAllOperations() //BUFF: problem cancelling OPs. Sync delegate is set, OP never finishes. Assume Pantomime never aswers for some reason
-//            me.syncLocalChanges()
-//            me.state = .finshing
-//            me.doNotRestart()
-//        }
+        // Custom finisBlock to make sure all local changes (made by the user) are synced with the server.
+        finishBlock = { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.state = .finshing
+            me.backgroundQueue.cancelAllOperations() //BUFF: cases the issue
+            me.syncLocalChanges()
+            me.doNotRestart()
+        }
     }
 
     //BUFF: move
-//    private func syncLocalChanges() {
-//        let toDos = internalOperations(syncOnlyUserChanges: true)
-//        Log.shared.info("%@ - syncLocalChanges called with state: %@ numOperations: %d",
-//                        "\(type(of: self))", "\(state)", toDos.count)
-//        guard !toDos.isEmpty else {
-//                // Nothing to do. Let everyone know we are ready.
-//                // Do not call next(). That would result in an endless loop
-//                // (lasstCommand == start, state == .ready, -> nothing todo, next(), ...).
-//                // Wait for QRC to trigger or client to call `start()` again instead.
-//                doNotRestart()
-//                return
-//        }
-//        let group = DispatchGroup()
-//        let toDosManagedByGroup = addCompletionOperations(handling: group, to: toDos)
-//        group.notify(queue: DispatchQueue.global(qos: .background)) { [weak self] in
-//            guard let me = self else {
-//                Log.shared.errorAndCrash("Lost myself")
-//                return
-//            }
-//            me.doNotRestart()
-//        }
-//        // registerBackgroundTask should already have been started when starting the service (in
-//        //startNextProcessingRound). To make sure we call it anyway just to make sure.
-//        // It does not hurt. BackgroundTaskManager will ignore it.
-//        registerBackgroundTask()
-//        backgroundQueue.addOperations(toDosManagedByGroup, waitUntilFinished: false)
-//    }
-    //
+    private func syncLocalChanges() {
+        let toDos = internalOperations(syncOnlyUserChanges: true)
+        Log.shared.info("%@ - syncLocalChanges called with state: %@ numOperations: %d",
+                        "\(type(of: self))", "\(state)", toDos.count)
+        registerBackgroundTask()
+        backgroundQueue.addOperations(toDos, waitUntilFinished: false)
+    }
 
     private func internalOperations(syncOnlyUserChanges: Bool = false) -> [Operation] {
         var createes = [Operation]()
@@ -234,7 +210,7 @@ extension ImapReplicationService {
     }
 
     //BUFF:  Must be moved to use in OPs?
-    //BUFF: when IDLE is in, make all important folders interesting
+    //BUFF: when IDLE is in, make all important folders interesting?
 
     /// Folders (other than inbox) that the user looked at in the last
     /// `timeIntervalForInterestingFolders` are considered sync-worthy.
