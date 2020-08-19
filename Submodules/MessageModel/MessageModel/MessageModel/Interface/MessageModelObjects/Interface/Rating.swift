@@ -88,11 +88,11 @@ extension Rating {
 }
 
 extension Rating {
-    public func outgoingMessageRating(from: Identity,
-                                      to: [Identity],
-                                      cc: [Identity],
-                                      bcc: [Identity],
-                                      completion: @escaping (Rating) -> Void) {
+    static public func outgoingMessageRating(from: Identity,
+                                             to: [Identity],
+                                             cc: [Identity],
+                                             bcc: [Identity],
+                                             completion: @escaping (Rating) -> Void) {
         PEPAsyncSession().outgoingMessageRating(from: from,
                                                 to: to,
                                                 cc: cc,
