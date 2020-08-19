@@ -71,8 +71,8 @@ open class ConcurrentBaseOperation: BaseOperation {
     open override func cancel() {
         Log.shared.info("cancel: %@", type(of: self).debugDescription())
         backgroundQueue.cancelAllOperations()
-        waitForBackgroundTasksAndFinish()
         super.cancel()
+        waitForBackgroundTasksAndFinish()
     }
 
     public func markAsFinished() {
