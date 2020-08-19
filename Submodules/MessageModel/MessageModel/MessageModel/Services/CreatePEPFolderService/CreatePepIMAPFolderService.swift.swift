@@ -20,7 +20,7 @@ class CreatePepIMAPFolderService: OperationBasedService {
         super.init(useSerialQueue: true, runOnce: true, backgroundTaskManager: backgroundTaskManager)
     }
 
-    override func operations() -> [Operation] {//!!!: IOS-2325_!
+    override func operations() -> [Operation] {
         guard usePEPFolderProvider.usePepFolder else {
             // we are not supposed to (create and) use pEp folder for sync messages.
             // Nothing to do.
