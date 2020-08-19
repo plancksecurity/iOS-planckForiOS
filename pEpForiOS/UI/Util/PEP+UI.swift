@@ -75,10 +75,6 @@ extension PEPColor {
 }
 
 extension PEPRating {
-    func uiColor() -> UIColor? {
-        return PEPUtils.pEpColor(pEpRating: self).uiColor()
-    }
-
     var isNoColor: Bool {
         get {
             return pEpColor() == PEPColor.noColor
