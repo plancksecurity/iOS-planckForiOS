@@ -222,7 +222,7 @@ extension String {
             suggestion: suggestion)
     }
 
-    public static func pEpTitle(pEpRating: Rating?) -> String {
+    private static func pEpTitle(pEpRating: Rating?) -> String {
         return pEpRatingTranslation(pEpRating: pEpRating).title
     }
 
