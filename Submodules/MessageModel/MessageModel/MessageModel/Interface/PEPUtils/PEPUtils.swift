@@ -59,7 +59,7 @@ public class PEPUtils {
 
     static func pEpRating(cdIdentity: CdIdentity,
                           context: NSManagedObjectContext = Stack.shared.mainContext,
-                          completion: @escaping (PEPRating)->Void) {
+                          completion: @escaping (Rating) -> Void) {
         var pepIdentity: PEPIdentity? = nil
         if context == Stack.shared.mainContext {
             pepIdentity = cdIdentity.pEpIdentity()
@@ -78,15 +78,15 @@ public class PEPUtils {
             Log.shared.errorAndCrash(error: error)
             completion(.undefined)
         }) { (rating) in
-            completion(rating)
+            completion(Rating.from(pEpRating: rating))
         }
     }
 
     static func pEpColor(cdIdentity: CdIdentity,
                          context: NSManagedObjectContext = Stack.shared.mainContext,
-                         completion: @escaping (PEPColor)->Void) {
+                         completion: @escaping (PEPColor) -> Void) {
         pEpRating(cdIdentity: cdIdentity, context: context) { (rating) in
-            completion(pEpColor(pEpRating: rating))
+            completion(pEpColor(pEpRating: rating.pEpRating()))
         }
     }
 

@@ -91,8 +91,10 @@ extension CdIdentity {
         return contacts
     }
 
-    func pEpRating(completion: @escaping (PEPRating)->Void) {
-        PEPUtils.pEpRating(cdIdentity: self, completion: completion)
+    func pEpRating(completion: @escaping (PEPRating) -> Void) {
+        PEPUtils.pEpRating(cdIdentity: self) { rating in
+            completion(rating.pEpRating())
+        }
     }
 
     func pEpColor(context: NSManagedObjectContext = Stack.shared.mainContext,
