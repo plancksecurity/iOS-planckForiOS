@@ -9,7 +9,6 @@
 import Foundation
 
 import MessageModel
-import PEPObjCAdapterFramework
 
 /// TrustManagementViewModel View Mode Delegate
 protocol TrustManagementViewModelDelegate: class {
@@ -51,9 +50,9 @@ extension TrustManagementViewModel {
         }
 
         /// The description for the row
-        public func description(completion: @escaping (String)->Void) {
+        public func description(completion: @escaping (String) -> Void) {
             if forceRed {
-                completion(PEPColor.red.privacyStatusDescription)
+                completion(Color.red.privacyStatusDescription)
             } else {
                 color { (color) in
                     DispatchQueue.main.async {
@@ -78,9 +77,9 @@ extension TrustManagementViewModel {
         }
 
         /// The privacy status image
-        public func privacyStatusImage(completion: @escaping (UIImage?)->Void) {
+        public func privacyStatusImage(completion: @escaping (UIImage?) -> Void) {
             if forceRed {
-                completion(PEPColor.red.statusIconForMessage(enabled: true, withText: false))
+                completion(Color.red.statusIconForMessage(enabled: true, withText: false))
             }else {
                 color { (color) in
                     DispatchQueue.main.async {
