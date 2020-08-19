@@ -29,7 +29,7 @@ class KeySyncUtil {
 extension KeySyncUtil: KeySyncUtilProtocol {
 
     static func leaveDeviceGroup(completion: @escaping ()->Void) {
-        KeySync.leaveDeviceGroup({ (error: Error) in
+        Adapter.leaveDeviceGroup({ (error: Error) in
             Log.shared.errorAndCrash(error: error)
             completion()
         }) {
