@@ -234,7 +234,7 @@ extension String {
         return pEpRatingTranslation(pEpRating: pEpRating).suggestion
     }
 
-    static let pgpMessageTextRegex = try! NSRegularExpression(
+    private static let pgpMessageTextRegex = try! NSRegularExpression(
         pattern: "^(\\s)*-----BEGIN PGP MESSAGE-----",
         options: [])
 
@@ -242,7 +242,7 @@ extension String {
      Does this string start with "-----BEGIN PGP MESSAGE-----",
      apart from any leading spaces?
      */
-    public func startsWithBeginPgpMessage() -> Bool {
+    private func startsWithBeginPgpMessage() -> Bool {
         if let _ = String.pgpMessageTextRegex.firstMatch(
             in: self, options: [],
             range: wholeRange()) {
