@@ -81,20 +81,4 @@ public class PEPUtils {
             completion(Rating.from(pEpRating: rating))
         }
     }
-
-    static func pEpColor(cdIdentity: CdIdentity,
-                         context: NSManagedObjectContext = Stack.shared.mainContext,
-                         completion: @escaping (Color) -> Void) {
-        pEpRating(cdIdentity: cdIdentity, context: context) { (rating) in
-            completion(rating.pEpColor())
-        }
-    }
-
-    public static func pEpColor(pEpRating: PEPRating?) -> PEPColor {
-        if let rating = pEpRating {
-            return PEPSession().color(from: rating)
-        } else {
-            return PEPColor.noColor
-        }
-    }
 }

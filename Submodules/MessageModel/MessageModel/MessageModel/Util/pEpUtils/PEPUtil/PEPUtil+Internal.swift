@@ -60,6 +60,22 @@ extension PEPUtils {
         }
         return PEPRating(rawValue: Int32(theInt))
     }
+
+    static func pEpColor(cdIdentity: CdIdentity,
+                         context: NSManagedObjectContext = Stack.shared.mainContext,
+                         completion: @escaping (Color) -> Void) {
+        pEpRating(cdIdentity: cdIdentity, context: context) { (rating) in
+            completion(rating.pEpColor())
+        }
+    }
+
+    static func pEpColor(pEpRating: PEPRating?) -> PEPColor {
+        if let rating = pEpRating {
+            return PEPSession().color(from: rating)
+        } else {
+            return PEPColor.noColor
+        }
+    }
 }
 
 // MARK: - Private
