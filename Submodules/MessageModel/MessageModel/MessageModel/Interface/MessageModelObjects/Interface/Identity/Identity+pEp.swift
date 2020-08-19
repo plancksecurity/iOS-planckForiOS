@@ -9,7 +9,7 @@
 extension Identity {
     public func pEpRating(completion: @escaping (Rating) -> Void) {
         cdObject.pEpRating() { pEpRating in
-            completion(Rating.from(pEpRating: pEpRating))
+            completion(Rating(pEpRating: pEpRating))
         }
     }
 

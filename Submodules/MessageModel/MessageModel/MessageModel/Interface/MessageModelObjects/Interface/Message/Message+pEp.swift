@@ -26,11 +26,11 @@ extension Message {
         //see: https://dev.pep.security/Common%20App%20Documentation/algorithms/MessageColors
         if session.moc == Session.main.moc {
             return Message.pEpRating(message: self) { pEpRating in
-                completion(Rating.from(pEpRating: pEpRating))
+                completion(Rating(pEpRating: pEpRating))
             }
         } else {
             return  Message.pEpRating(message: self, session: session) { pEpRating in
-                completion(Rating.from(pEpRating: pEpRating))
+                completion(Rating(pEpRating: pEpRating))
             }
         }
     }

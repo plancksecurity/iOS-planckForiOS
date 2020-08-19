@@ -78,7 +78,7 @@ public class PEPUtils {
             Log.shared.errorAndCrash(error: error)
             completion(.undefined)
         }) { (rating) in
-            completion(Rating.from(pEpRating: rating))
+            completion(Rating(pEpRating: rating))
         }
     }
 }

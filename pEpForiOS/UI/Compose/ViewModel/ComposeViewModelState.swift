@@ -233,7 +233,7 @@ extension ComposeViewModel.ComposeViewModelState {
                 return
             }
             DispatchQueue.main.async {
-                me.rating = Rating.from(pEpRating: outgoingRating)
+                me.rating = Rating(pEpRating: outgoingRating)
             }
         }
     }

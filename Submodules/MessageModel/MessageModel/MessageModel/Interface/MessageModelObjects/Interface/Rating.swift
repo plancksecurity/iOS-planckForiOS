@@ -97,7 +97,7 @@ extension Rating {
                                                 to: to,
                                                 cc: cc,
                                                 bcc: bcc) { pEpRating in
-                                                    completion(Rating.from(pEpRating: pEpRating))
+                                                    completion(Rating(pEpRating: pEpRating))
         }
     }
 }

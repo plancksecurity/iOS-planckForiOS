@@ -12,32 +12,32 @@ import PEPObjCAdapterFramework
 
 extension Rating {
     // TODO: IOS-2328: Make internal
-    public static func from(pEpRating: PEPRating) -> Rating {
+    public init(pEpRating: PEPRating) {
         switch pEpRating {
         case .b0rken:
-            return .b0rken
+            self = .b0rken
         case .cannotDecrypt:
-            return .cannotDecrypt
+            self = .cannotDecrypt
         case .fullyAnonymous:
-            return .fullyAnonymous
+            self = .fullyAnonymous
         case .haveNoKey:
-            return .haveNoKey
+            self = .haveNoKey
         case .mistrust:
-            return .mistrust
+            self = .mistrust
         case .reliable:
-            return .reliable
+            self = .reliable
         case .trusted:
-            return .trusted
+            self = .trusted
         case .trustedAndAnonymized:
-            return .trustedAndAnonymized
+            self = .trustedAndAnonymized
         case .undefined:
-            return .undefined
+            self = .undefined
         case .underAttack:
-            return .underAttack
+            self = .underAttack
         case .unencrypted:
-            return .unencrypted
+            self = .unencrypted
         case .unreliable:
-            return .unreliable
+            self = .unreliable
         }
     }
 
