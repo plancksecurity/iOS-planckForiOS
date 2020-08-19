@@ -12,8 +12,12 @@ import PEPObjCAdapterFramework
 
 public class Adapter {
     /// Wraps `PEPAsyncSession.leaveDeviceGroup`
-    public static func leaveDeviceGroup(_ errorCallback: @escaping (Error) -> Void,
+    static public func leaveDeviceGroup(_ errorCallback: @escaping (Error) -> Void,
                                         successCallback: @escaping () -> Void) {
         PEPAsyncSession().leaveDeviceGroup(errorCallback, successCallback: successCallback)
+    }
+
+    static public func setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled: Bool) {
+        PEPObjCAdapter.setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled)
     }
 }
