@@ -12,7 +12,6 @@ import QuickLook
 
 import pEpIOSToolbox
 import MessageModel
-import PEPObjCAdapterFramework
 
 protocol EmailViewControllerDelegate: class {
     func showPdfPreview(forPdfAt url: URL)
