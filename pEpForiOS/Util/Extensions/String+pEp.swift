@@ -177,7 +177,7 @@ extension String {
                                   comment: "Privacy status suggestion")),
          .undefined: undefinedPEPMessageRating()]
 
-    public static func undefinedPEPMessageRating() -> PEPStatusText {
+    private static func undefinedPEPMessageRating() -> PEPStatusText {
         return PEPStatusText(
             rating: .undefined,
             title: NSLocalizedString("Unknown",
