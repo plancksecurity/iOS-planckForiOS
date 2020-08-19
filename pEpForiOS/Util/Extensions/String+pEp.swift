@@ -209,7 +209,7 @@ extension String {
             return defaultRestult
         }
     }
-    
+
     /// Default Status Text, for undefined identity's pEpRating.
     private static func undefinedPEPTrustIdentityRating() -> PEPStatusText {
         let explanation = NSLocalizedString("Unknown.", comment: "Privacy status explanation")
@@ -220,34 +220,5 @@ extension String {
             title: title,
             explanation: explanation,
             suggestion: suggestion)
-    }
-
-    private static func pEpTitle(pEpRating: Rating?) -> String {
-        return pEpRatingTranslation(pEpRating: pEpRating).title
-    }
-
-    private static func pEpExplanation(pEpRating: Rating?) -> String {
-        return pEpRatingTranslation(pEpRating: pEpRating).explanation
-    }
-
-    private static func pEpSuggestion(pEpRating: Rating?) -> String {
-        return pEpRatingTranslation(pEpRating: pEpRating).suggestion
-    }
-
-    private static let pgpMessageTextRegex = try! NSRegularExpression(
-        pattern: "^(\\s)*-----BEGIN PGP MESSAGE-----",
-        options: [])
-
-    /**
-     Does this string start with "-----BEGIN PGP MESSAGE-----",
-     apart from any leading spaces?
-     */
-    private func startsWithBeginPgpMessage() -> Bool {
-        if let _ = String.pgpMessageTextRegex.firstMatch(
-            in: self, options: [],
-            range: wholeRange()) {
-            return true
-        }
-        return false
     }
 }
