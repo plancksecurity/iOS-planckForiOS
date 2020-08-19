@@ -1267,6 +1267,7 @@
 				43A9818724E5393300830603 /* Color+pEp.swift */,
 				43A981A324E57C6900830603 /* PEPMessage+PGPMime.swift */,
 				43062B8B24ED177E00489258 /* PEPIdentity+Pantomime.swift */,
+				1546612D233B3C00008D2137 /* PEPRating+Decryptable.swift */,
 			);
 			path = pEpUtils;
 			sourceTree = "<group>";
@@ -1656,7 +1657,6 @@
 				1532CE79231840F3005DBC39 /* RatingEvaluation */,
 				3705098822DF279B00CB73D6 /* PEPUtils.swift */,
 				3705098D22DF2FB100CB73D6 /* String+PEPSignature.swift */,
-				1546612D233B3C00008D2137 /* PEPRating+Decryptable.swift */,
 				5B87D79923F3117D009DACAA /* String+Fingerprint.swift */,
 				159B728123F55B9E00F4B0E9 /* PEPRating+Utils.swift */,
 			);

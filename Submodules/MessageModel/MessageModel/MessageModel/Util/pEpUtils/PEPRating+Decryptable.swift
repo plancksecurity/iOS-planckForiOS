@@ -12,8 +12,8 @@ import PEPObjCAdapterFramework
 
 extension PEPRating {
 
-    // Whether or not the message could not yet be decrypted
-    public func isUnDecryptable() -> Bool {
+    /// Whether or not the message could not yet be decrypted
+    func isUnDecryptable() -> Bool {
         return PEPRating.undecryptableRatings.contains(self)
     }
 }
