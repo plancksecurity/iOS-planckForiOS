@@ -11,6 +11,7 @@ import UIKit
 class EditSignatureViewController: UIViewController {
     
     @IBOutlet var tableView: UITableView!
+    var viewModel: EditSignatureViewModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,7 +21,7 @@ class EditSignatureViewController: UIViewController {
 
 extension EditSignatureViewController: UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return viewModel?.numberOfRows ?? 0
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         1
