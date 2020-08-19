@@ -18,9 +18,8 @@ public struct PEPStatusText {
 }
 
 extension String {
-    
     /// Struct that provides the texts to the trust management view according to the colors.
-    struct TrustManagementText {
+    private struct TrustManagementText {
         static let red = PEPStatusText(rating: .mistrust,
                                        title: NSLocalizedString("Mistrusted", comment: "Privacy status title"),
                                        explanation: NSLocalizedString("This contact is mistrusted. If you rejected the Trustwords accidentally, you could reset the p≡p data.", comment: "Privacy status title"),
@@ -42,7 +41,7 @@ extension String {
     /**
      All privacy status strings for the trust management.
      */
-    static let trustIdentityTranslation: [Rating: PEPStatusText] =
+    private static let trustIdentityTranslation: [Rating: PEPStatusText] =
         [.underAttack: TrustManagementText.red,
          .b0rken: TrustManagementText.red,
          .mistrust: TrustManagementText.red,
@@ -59,7 +58,7 @@ extension String {
     /**
      All privacy status strings, i18n ready.
      */
-    static let pEpRatingTranslations: [Rating: PEPStatusText] =
+    private static let pEpRatingTranslations: [Rating: PEPStatusText] =
         [.underAttack:
             PEPStatusText(
                 rating: .underAttack,
