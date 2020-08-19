@@ -6,6 +6,7 @@
 //  Copyright © 2019 p≡p Security S.A. All rights reserved.
 //
 
+import MessageModel
 import PEPObjCAdapterFramework
 
 // MARK: - UIHelper+PEP
@@ -34,18 +35,16 @@ extension UIHelper {
         return sendButtonBackgroundColorFromPepColor(pepColor)
     }
 
-    /**
-     Get the UIColor for an identity (in a text field or label) for an (abstract) pEp color.
-     This might, or might not, be the same,
-     as `sendButtonBackgroundColorFromPepColor:PrivacyColor`.
-     */
-    static func textBackgroundUIColorFromPrivacyColor(_ pepColor: PEPColor) -> UIColor? {
-        switch pepColor {
+    /// Get the UIColor for an identity (in a text field or label) for an (abstract) pEp color.
+    /// This might, or might not, be the same,
+    /// as `sendButtonBackgroundColorFromPepColor:PrivacyColor`.
+    static func textBackgroundUIColorFromPrivacyColor(_ color: Color) -> UIColor? {
+        switch color {
         case .green:
             return UIColor.green
         case .yellow:
             return UIColor.yellow
-        case PEPColor.red:
+        case .red:
             return UIColor.red
         default:
             return nil

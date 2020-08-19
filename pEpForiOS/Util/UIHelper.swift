@@ -7,7 +7,6 @@
 //
 
 import MessageModel
-import PEPObjCAdapterFramework
 
 class UIHelper {
     static func variableCellHeightsTableView(_ tableView: UITableView) {
@@ -55,8 +54,8 @@ class UIHelper {
      If the privacy color is `PrivacyColor.NoColor` the default color is used.
      */
     static func setBackgroundColor(
-        _ privacyColor: PEPColor, forLabel label: UILabel, defaultColor: UIColor?) {
-        if privacyColor != PEPColor.noColor {
+        _ privacyColor: Color, forLabel label: UILabel, defaultColor: UIColor?) {
+        if privacyColor != .noColor {
             let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(privacyColor)
             label.backgroundColor = uiColor
         } else {
