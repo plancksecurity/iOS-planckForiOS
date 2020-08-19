@@ -90,7 +90,7 @@ extension AccountSettingsViewModel {
         case name
         case email
         case password
-        //case signature
+        case signature
         case includeInUnified
         case pepSync
         case reset
@@ -321,6 +321,8 @@ extension AccountSettingsViewModel {
             return NSLocalizedString("OAuth2 Reauthorization", comment: "\(type.rawValue) field")
         case .includeInUnified:
             return NSLocalizedString("Include in Unified Folders", comment: "\(type.rawValue) field")
+        case .signature:
+            return NSLocalizedString("Signature",comment: "\(type.rawValue)")
         }
     }
 
@@ -358,6 +360,9 @@ extension AccountSettingsViewModel {
                 let passwordRow = getDisplayRow(type : .password, value: fakePassword)
                 rows.append(passwordRow)
             }
+            
+            let signatureRow = getDisplayRow(type: .signature, value: "fake signature")
+            rows.append(signatureRow)
 
             // Include in Unified Folders
             let includeInUnifiedFolderRow = SwitchRow(type: .includeInUnified,
@@ -373,7 +378,7 @@ extension AccountSettingsViewModel {
             rows.append(includeInUnifiedFolderRow)
 
             // pepSync
-            let switchRow = SwitchRow(type: .pepSync,
+            let pepSyncRow = SwitchRow(type: .pepSync,
                                       title: rowTitle(for: .pepSync),
                                       isOn: true,
                 action: { [weak self] (enable) in
@@ -383,7 +388,7 @@ extension AccountSettingsViewModel {
                     }
                     me.pEpSync(enable: enable)
                 }, cellIdentifier: CellsIdentifiers.switchCell)
-            rows.append(switchRow)
+            rows.append(pepSyncRow)
 
             // reset
             let resetRow = ActionRow(type: .reset, title: rowTitle(for: .reset), cellIdentifier: CellsIdentifiers.dangerousCell)

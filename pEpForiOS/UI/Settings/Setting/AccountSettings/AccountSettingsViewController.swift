@@ -83,6 +83,9 @@ extension AccountSettingsViewController : UITableViewDelegate {
             cell.activityIndicator.startAnimating()
             vm.handleOauth2Reauth(onViewController: self)
         }
+        if row.type == .signature {
+            performSegue(withIdentifier: "lala", sender: self)
+        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
@@ -132,8 +135,13 @@ extension AccountSettingsViewController : UITableViewDataSource {
             dequeuedCell.configure(with: row, for: traitCollection)
             return dequeuedCell
 
-        case .name, .email,
-             .server, .port, .tranportSecurity, .username:
+        case .name,
+             .email,
+             .server,
+             .port,
+             .tranportSecurity,
+             .username,
+             .signature:
             let dequeuedCell = dequeue(with: row, type: AccountSettingsTableViewCell.self)
             guard let row = row as? AccountSettingsViewModel.DisplayRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
