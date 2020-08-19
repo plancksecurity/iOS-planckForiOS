@@ -36,11 +36,9 @@ extension Color {
         }
     }
 
-    /**
-     Similar to `statusIcon`, but for a message in a local folder and embedded
-     in the contact's profile picture.
-     Typically includes a white border, and doesn't support disabled protection.
-     */
+    /// Similar to `statusIcon`, but for a message in a local folder and embedded
+    /// in the contact's profile picture.
+    /// Typically includes a white border, and doesn't support disabled protection.
     func statusIconInContactPicture() -> UIImage? {
         switch self {
         case .noColor:
