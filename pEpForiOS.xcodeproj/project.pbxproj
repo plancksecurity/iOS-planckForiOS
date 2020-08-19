@@ -357,7 +357,6 @@
 		43B10C801EC2EE7F003E849F /* CppDummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B10C7F1EC2EE7F003E849F /* CppDummy.cpp */; };
 		43B2C31B1D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc in Resources */ = {isa = PBXBuildFile; fileRef = 43B2C3161D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc */; };
 		43B7154D1CECAADA0027861A /* ViewWidthsAligner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */; };
-		43C322091EA90192005073FB /* PEP+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C322081EA90192005073FB /* PEP+UI.swift */; };
 		43C3B1622003896800ED48A4 /* IOS-884_001_Mail_from_P4A.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43C3B1612003896800ED48A4 /* IOS-884_001_Mail_from_P4A.txt */; };
 		43C3B16820038B2500ED48A4 /* IOS-884_001_test010@peptest.ch.pub.key in Resources */ = {isa = PBXBuildFile; fileRef = 43C3B16520038B2500ED48A4 /* IOS-884_001_test010@peptest.ch.pub.key */; };
 		43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C7B9D01CEC4DDF007A612F /* MiscTests.swift */; };
@@ -991,7 +990,6 @@
 		43B10C7F1EC2EE7F003E849F /* CppDummy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CppDummy.cpp; sourceTree = "<group>"; };
 		43B2C3161D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc; sourceTree = "<group>"; };
 		43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewWidthsAligner.swift; sourceTree = "<group>"; };
-		43C322081EA90192005073FB /* PEP+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PEP+UI.swift"; sourceTree = "<group>"; };
 		43C3B1612003896800ED48A4 /* IOS-884_001_Mail_from_P4A.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-884_001_Mail_from_P4A.txt"; sourceTree = "<group>"; };
 		43C3B16520038B2500ED48A4 /* IOS-884_001_test010@peptest.ch.pub.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-884_001_test010@peptest.ch.pub.key"; sourceTree = "<group>"; };
 		43C7B9D01CEC4DDF007A612F /* MiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscTests.swift; sourceTree = "<group>"; };
@@ -2286,7 +2284,6 @@
 				3A2119DE2412515D0030C3E4 /* DynamicHeightScrollView.swift */,
 				37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */,
 				B7DB7FD1221AD332003968DA /* SegueHandlerType.swift */,
-				43C322081EA90192005073FB /* PEP+UI.swift */,
 				43A9818D24E53CF800830603 /* Color+UI.swift */,
 				43062B9324ED4AAE00489258 /* Rating+UI.swift */,
 				4330278D1F7BABFF00D685F8 /* GradientView.swift */,
@@ -3199,7 +3196,6 @@
 				152A39CB21905C3E00D9F8E4 /* DocumentAttachmentPickerViewModel.swift in Sources */,
 				43AAC22B1F7A5AEE00F435F4 /* BaseViewController.swift in Sources */,
 				43B7154D1CECAADA0027861A /* ViewWidthsAligner.swift in Sources */,
-				43C322091EA90192005073FB /* PEP+UI.swift in Sources */,
 				1521B78F241BDC27000EAE57 /* UIUtils+KeySyncWizard.swift in Sources */,
 				002375D620DD185100663961 /* TreadedEmailViewModel+DisplayedMessage.swift in Sources */,
 				431D60DD1E93D580001266D7 /* MessageAttachmentsCell.swift in Sources */,
