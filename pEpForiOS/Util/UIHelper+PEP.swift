@@ -7,32 +7,27 @@
 //
 
 import MessageModel
-import PEPObjCAdapterFramework
 
 // MARK: - UIHelper+PEP
 
 extension UIHelper {
-    /**
-     Get the UIColor for the background image of a send button for an (abstract) pEp color.
-     */
-    static func sendButtonBackgroundColorFromPepColor(_ pepColor: PEPColor) -> UIColor? {
-        switch pepColor {
+    /// Get the UIColor for the background image of a send button for an (abstract) pEp color.
+    static func sendButtonBackgroundColorFromPepColor(_ color: Color) -> UIColor? {
+        switch color {
         case .green:
             return UIColor.green
         case .yellow:
             return UIColor.yellow
-        case PEPColor.red:
+        case .red:
             return UIColor.red
         default:
             return nil
         }
     }
 
-    /**
-     Cell background color in trustwords cell for indicating the rating of a contact.
-     */
-    static func trustWordsCellBackgroundColorFromPepColor(_ pepColor: PEPColor) -> UIColor? {
-        return sendButtonBackgroundColorFromPepColor(pepColor)
+    /// Cell background color in trustwords cell for indicating the rating of a contact.
+    static func trustWordsCellBackgroundColorFromPepColor(_ color: Color) -> UIColor? {
+        return sendButtonBackgroundColorFromPepColor(color)
     }
 
     /// Get the UIColor for an identity (in a text field or label) for an (abstract) pEp color.
