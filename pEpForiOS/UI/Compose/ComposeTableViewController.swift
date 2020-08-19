@@ -11,7 +11,6 @@ import MessageModel
 import SwipeCellKit
 import Photos
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
 
 class ComposeTableViewController: BaseTableViewController {
     @IBOutlet var sendButton: UIBarButtonItem!

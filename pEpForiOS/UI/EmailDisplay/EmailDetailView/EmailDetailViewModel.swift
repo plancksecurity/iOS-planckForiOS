@@ -7,7 +7,6 @@
 //
 
 import MessageModel
-import PEPObjCAdapterFramework
 
 protocol EmailDetailViewModelDelegate: EmailDisplayViewModelDelegate {
 
