@@ -97,7 +97,9 @@ extension CdIdentity {
     }
 
     func pEpColor(context: NSManagedObjectContext = Stack.shared.mainContext,
-                  completion: @escaping (PEPColor)->Void) {
-        PEPUtils.pEpColor(cdIdentity: self, context: context, completion: completion)
+                  completion: @escaping (PEPColor) -> Void) {
+        PEPUtils.pEpColor(cdIdentity: self, context: context) { color in
+            completion(color.pEpColor())
+        }
     }
 }

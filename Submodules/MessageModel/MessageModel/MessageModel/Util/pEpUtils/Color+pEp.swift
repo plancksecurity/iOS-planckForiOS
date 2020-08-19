@@ -23,4 +23,17 @@ extension Color {
             return red
         }
     }
+
+    func pEpColor() -> PEPColor {
+        switch self {
+        case .noColor:
+            return .noColor
+        case .yellow:
+            return .yellow
+        case .green:
+            return .green
+        case .red:
+            return .red
+        }
+    }
 }

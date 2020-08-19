@@ -84,9 +84,9 @@ public class PEPUtils {
 
     static func pEpColor(cdIdentity: CdIdentity,
                          context: NSManagedObjectContext = Stack.shared.mainContext,
-                         completion: @escaping (PEPColor) -> Void) {
+                         completion: @escaping (Color) -> Void) {
         pEpRating(cdIdentity: cdIdentity, context: context) { (rating) in
-            completion(pEpColor(pEpRating: rating.pEpRating()))
+            completion(rating.pEpColor())
         }
     }
 
