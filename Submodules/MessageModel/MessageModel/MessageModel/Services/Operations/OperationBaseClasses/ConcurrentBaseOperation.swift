@@ -89,7 +89,7 @@ open class ConcurrentBaseOperation: BaseOperation {
             guard let me = self else {
                 return
             }
-            me.backgroundQueue.waitUntilAllOperationsAreFinished() //BUFF: Cancel(?) causes this waitng forever
+            me.backgroundQueue.waitUntilAllOperationsAreFinished() //BUFF: causes this waitng forever
             completion?()
             me.markAsFinished()
         }
