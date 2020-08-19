@@ -9,10 +9,9 @@
 import Foundation
 
 import MessageModel
-import PEPObjCAdapterFramework
 
 public struct PEPStatusText {
-    let rating: PEPRating
+    let rating: Rating
     let title: String
     let explanation: String
     let suggestion: String
@@ -60,7 +59,7 @@ extension String {
     /**
      All privacy status strings, i18n ready.
      */
-    static let pEpRatingTranslations: [PEPRating: PEPStatusText] =
+    static let pEpRatingTranslations: [Rating: PEPStatusText] =
         [.underAttack:
             PEPStatusText(
                 rating: .underAttack,
@@ -191,7 +190,7 @@ extension String {
                                           comment: "Privacy status suggestion"))
     }
 
-    public static func pEpRatingTranslation(pEpRating: PEPRating?) -> PEPStatusText {
+    public static func pEpRatingTranslation(pEpRating: Rating?) -> PEPStatusText {
         let defResult = undefinedPEPMessageRating()
         if let rating = pEpRating {
             return pEpRatingTranslations[rating] ??
@@ -224,15 +223,15 @@ extension String {
             suggestion: suggestion)
     }
 
-    public static func pEpTitle(pEpRating: PEPRating?) -> String {
+    public static func pEpTitle(pEpRating: Rating?) -> String {
         return pEpRatingTranslation(pEpRating: pEpRating).title
     }
 
-    public static func pEpExplanation(pEpRating: PEPRating?) -> String {
+    public static func pEpExplanation(pEpRating: Rating?) -> String {
         return pEpRatingTranslation(pEpRating: pEpRating).explanation
     }
 
-    public static func pEpSuggestion(pEpRating: PEPRating?) -> String {
+    public static func pEpSuggestion(pEpRating: Rating?) -> String {
         return pEpRatingTranslation(pEpRating: pEpRating).suggestion
     }
 
