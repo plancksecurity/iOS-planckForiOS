@@ -226,7 +226,7 @@ extension String {
         return pEpRatingTranslation(pEpRating: pEpRating).title
     }
 
-    public static func pEpExplanation(pEpRating: Rating?) -> String {
+    private static func pEpExplanation(pEpRating: Rating?) -> String {
         return pEpRatingTranslation(pEpRating: pEpRating).explanation
     }
 
