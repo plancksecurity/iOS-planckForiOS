@@ -230,7 +230,7 @@ extension String {
         return pEpRatingTranslation(pEpRating: pEpRating).explanation
     }
 
-    public static func pEpSuggestion(pEpRating: Rating?) -> String {
+    private static func pEpSuggestion(pEpRating: Rating?) -> String {
         return pEpRatingTranslation(pEpRating: pEpRating).suggestion
     }
 
