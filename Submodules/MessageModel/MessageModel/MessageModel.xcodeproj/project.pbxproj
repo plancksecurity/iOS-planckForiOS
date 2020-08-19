@@ -117,7 +117,6 @@
 		158BCFF22423800400E41F67 /* SecretTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158BCFF12423800400E41F67 /* SecretTestData.swift */; };
 		159AB567235396E1008AB1F3 /* DeleteOutdatedAutoconsumableMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159AB566235396E1008AB1F3 /* DeleteOutdatedAutoconsumableMessagesService.swift */; };
 		159AB56B23539CBA008AB1F3 /* CNContactsAccessPermissionProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159AB56A23539CBA008AB1F3 /* CNContactsAccessPermissionProviderProtocol.swift */; };
-		159B728223F55B9E00F4B0E9 /* PEPRating+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159B728123F55B9E00F4B0E9 /* PEPRating+Utils.swift */; };
 		159BCEB024C6DD2E000E4ED1 /* XCTest+SyncAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159BCEAF24C6DD2E000E4ED1 /* XCTest+SyncAdapter.swift */; };
 		15A3B4D92358498000DB9135 /* CdMessage+Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A3B4D82358497F00DB9135 /* CdMessage+Factory.swift */; };
 		15A3B4DB235862B700DB9135 /* CdAccount+SendServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A3B4DA235862B700DB9135 /* CdAccount+SendServiceProvider.swift */; };
@@ -590,7 +589,6 @@
 		158BCFF12423800400E41F67 /* SecretTestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SecretTestData.swift; path = ../../../../../../pEp_for_iOS_intern/SecretTestData.swift; sourceTree = "<group>"; };
 		159AB566235396E1008AB1F3 /* DeleteOutdatedAutoconsumableMessagesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteOutdatedAutoconsumableMessagesService.swift; sourceTree = "<group>"; };
 		159AB56A23539CBA008AB1F3 /* CNContactsAccessPermissionProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CNContactsAccessPermissionProviderProtocol.swift; sourceTree = "<group>"; };
-		159B728123F55B9E00F4B0E9 /* PEPRating+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPRating+Utils.swift"; sourceTree = "<group>"; };
 		159BCEAF24C6DD2E000E4ED1 /* XCTest+SyncAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTest+SyncAdapter.swift"; sourceTree = "<group>"; };
 		15A3B4D82358497F00DB9135 /* CdMessage+Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+Factory.swift"; sourceTree = "<group>"; };
 		15A3B4DA235862B700DB9135 /* CdAccount+SendServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAccount+SendServiceProvider.swift"; sourceTree = "<group>"; };
@@ -1658,7 +1656,6 @@
 				3705098822DF279B00CB73D6 /* PEPUtils.swift */,
 				3705098D22DF2FB100CB73D6 /* String+PEPSignature.swift */,
 				5B87D79923F3117D009DACAA /* String+Fingerprint.swift */,
-				159B728123F55B9E00F4B0E9 /* PEPRating+Utils.swift */,
 			);
 			path = PEPUtils;
 			sourceTree = "<group>";
@@ -2820,7 +2817,6 @@
 				B7F6F47C234CDB4A003DF84A /* QueryResultsDelegate.swift in Sources */,
 				B78ACA622304584800F8A396 /* FetchMessagesService.swift in Sources */,
 				43A536EA23E474EA0040715D /* ImapConnectionDelegate.swift in Sources */,
-				159B728223F55B9E00F4B0E9 /* PEPRating+Utils.swift in Sources */,
 				15175EC6221D88B900C91DB8 /* QueryResultsController.swift in Sources */,
 				43E3A244224E2BED004CAC84 /* CdMessage+Clone.swift in Sources */,
 				4396230D23FD41C2007E9364 /* ClientCertificateUtil.swift in Sources */,
