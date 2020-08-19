@@ -8,6 +8,8 @@
 
 import Foundation
 
+import PEPObjCAdapterFramework
+
 /// Derived from the adapter's `PEPRating`, which in turn is derived from
 /// the engine's `PEP_rating`.
 public enum Rating {
@@ -82,5 +84,20 @@ extension Rating {
     /// Whether or not the message could not yet be decrypted
     public func isUnDecryptable() -> Bool {
         return Rating.undecryptableRatings.contains(self)
+    }
+}
+
+extension Rating {
+    public func outgoingMessageRating(from: Identity,
+                                      to: [Identity],
+                                      cc: [Identity],
+                                      bcc: [Identity],
+                                      completion: @escaping (Rating) -> Void) {
+        PEPAsyncSession().outgoingMessageRating(from: from,
+                                                to: to,
+                                                cc: cc,
+                                                bcc: bcc) { pEpRating in
+                                                    completion(Rating.from(pEpRating: pEpRating))
+        }
     }
 }
