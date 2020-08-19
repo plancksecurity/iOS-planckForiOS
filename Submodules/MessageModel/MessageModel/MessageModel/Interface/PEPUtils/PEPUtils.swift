@@ -57,11 +57,6 @@ public class PEPUtils {
         return success
     }
 
-    /// Converts a pEp identity dict to a pantomime address.
-    public static func pantomime(pEpIdentity: PEPIdentity) -> CWInternetAddress {
-        return CWInternetAddress(personal: pEpIdentity.userName, address: pEpIdentity.address)  //!!!: should be extension on PEPIdentity
-    }
-
     static func pEpRating(cdIdentity: CdIdentity,
                           context: NSManagedObjectContext = Stack.shared.mainContext,
                           completion: @escaping (PEPRating)->Void) {
