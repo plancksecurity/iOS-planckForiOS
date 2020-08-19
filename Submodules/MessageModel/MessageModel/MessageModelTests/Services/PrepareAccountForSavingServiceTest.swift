@@ -87,7 +87,7 @@ class PrepareAccountForSavingServiceTest: PersistentStoreDrivenTestBase {
         }
     }
 
-    func testKeysAreCorrectlyGenerated() {//!!!: IOS-2325_!
+    func testKeysAreCorrectlyGenerated() {
         //another option: outgoin message to myself and check the outgoing color.
         let expAccountPrepared = expectation(description: "expAccountPrepared")
         let accountPreparationService = PrepareAccountForSavingService()
