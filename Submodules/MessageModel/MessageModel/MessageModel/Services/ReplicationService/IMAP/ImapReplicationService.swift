@@ -53,20 +53,22 @@ class ImapReplicationService: OperationBasedService {
                 return
             }
             me.state = .finshing
-            me.backgroundQueue.cancelAllOperations() //BUFF: cases the issue
-            me.syncLocalChanges()
-            me.doNotRestart()
+            let toDos = me.internalOperations(syncOnlyUserChanges: true)
+            me.backgroundQueue.addOperations(toDos, waitUntilFinished: false)
+            me.waitThenStop()
         }
     }
 
-    //BUFF: move
-    private func syncLocalChanges() {
-        let toDos = internalOperations(syncOnlyUserChanges: true)
-        Log.shared.info("%@ - syncLocalChanges called with state: %@ numOperations: %d",
-                        "\(type(of: self))", "\(state)", toDos.count)
-        registerBackgroundTask()
-        backgroundQueue.addOperations(toDos, waitUntilFinished: false)
+    // MARK: - Overrides
+
+    override func operations() -> [Operation] {
+        return internalOperations()
     }
+}
+
+// MARK: - Private
+
+extension ImapReplicationService {
 
     private func internalOperations(syncOnlyUserChanges: Bool = false) -> [Operation] {
         var createes = [Operation]()
@@ -84,13 +86,6 @@ class ImapReplicationService: OperationBasedService {
                     createes.append(reportErrorAndWaitOp)
                     return
             }
-//            let imapConnection: ImapConnection //BUFF: creating new connection helps syncing local changes, the cached one seems broken
-//
-//            if syncOnlyUserChanges {
-//                imapConnection = ImapConnection(connectInfo: imapConnectInfo)
-//            } else {
-//                imapConnection = me.imapConnectionCache.imapConnection(for: imapConnectInfo)
-//            }
 
             let imapConnection = me.imapConnectionCache.imapConnection(for: imapConnectInfo)
 
@@ -127,10 +122,10 @@ class ImapReplicationService: OperationBasedService {
             // Server-to-client synchronization (IMAP)
             // fetch new messages
             if !syncOnlyUserChanges {
-            let fetchMessagesOp = FetchMessagesOperation(errorContainer: me.errorPropagator,
-                                                         imapConnection: imapConnection,
-                                                         folderInfos: folderInfos)
-            createes.append(fetchMessagesOp)
+                let fetchMessagesOp = FetchMessagesOperation(errorContainer: me.errorPropagator,
+                                                             imapConnection: imapConnection,
+                                                             folderInfos: folderInfos)
+                createes.append(fetchMessagesOp)
             }
 
             if me.pollingMode != .fastPolling && !syncOnlyUserChanges {
@@ -160,18 +155,6 @@ class ImapReplicationService: OperationBasedService {
         }
         return createes
     }
-    //
-
-    // MARK: - Overrides
-
-    override func operations() -> [Operation] {
-        return internalOperations()
-    }
-}
-
-// MARK: - Private
-
-extension ImapReplicationService {
 
     private func pollingPausingOp(errorContainer: ErrorContainerProtocol) -> Operation {
         let pauseOp = SelfReferencingOperation { [weak self] operation in
