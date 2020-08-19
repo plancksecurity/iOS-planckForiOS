@@ -9,7 +9,6 @@
 import Foundation
 
 import MessageModel
-import PEPObjCAdapterFramework
 
 // MARK: - Keys
 
@@ -76,8 +75,8 @@ extension AppSettings {
     }
 
     private func setupObjcAdapter() {
-        PEPObjCAdapter.setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled)
-        PEPObjCAdapter.setPassiveModeEnabled(passiveMode)
+        Adapter.setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled)
+        Adapter.setPassiveModeEnabled(passiveMode)
     }
 
     private func registerDefaults() {
@@ -157,7 +156,7 @@ extension AppSettings: AppSettingsProtocol {
         set {
             AppSettings.userDefaults.set(newValue,
                                          forKey: AppSettings.keyUnencryptedSubjectEnabled)
-            PEPObjCAdapter.setUnEncryptedSubjectEnabled(newValue)
+            Adapter.setUnEncryptedSubjectEnabled(newValue)
         }
     }
 
@@ -176,7 +175,7 @@ extension AppSettings: AppSettingsProtocol {
         }
         set {
             AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPassiveMode)
-            PEPObjCAdapter.setPassiveModeEnabled(newValue)
+            Adapter.setPassiveModeEnabled(newValue)
         }
     }
 

@@ -17,11 +17,11 @@ public class Adapter {
         PEPAsyncSession().leaveDeviceGroup(errorCallback, successCallback: successCallback)
     }
 
-    static public func setUnEncryptedSubjectEnabled(enabled: Bool) {
+    static public func setUnEncryptedSubjectEnabled(_ enabled: Bool) {
         PEPObjCAdapter.setUnEncryptedSubjectEnabled(enabled)
     }
 
-    static public func setPassiveModeEnabled(enabled: Bool) {
+    static public func setPassiveModeEnabled(_ enabled: Bool) {
         PEPObjCAdapter.setPassiveModeEnabled(enabled)
     }
 }
