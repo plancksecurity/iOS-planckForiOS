@@ -175,6 +175,7 @@
 		37FED9712283354B004C7804 /* jsonMimeType.txt in Resources */ = {isa = PBXBuildFile; fileRef = 37FED9702283354A004C7804 /* jsonMimeType.txt */; };
 		4304FB7F22B76F9800DE20C9 /* DeleteOldSyncMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4304FB7E22B76F9800DE20C9 /* DeleteOldSyncMailsOperation.swift */; };
 		43062B8C24ED177E00489258 /* PEPIdentity+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43062B8B24ED177E00489258 /* PEPIdentity+Pantomime.swift */; };
+		43062B9024ED3DB700489258 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43062B8F24ED3DB700489258 /* Language.swift */; };
 		430A2EF01E82758100878837 /* CdImapFields+TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A2EEF1E82758100878837 /* CdImapFields+TestHelper.swift */; };
 		430A2EF21E829C4600878837 /* AddressBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A2EF11E829C4600878837 /* AddressBook.swift */; };
 		430CCC6B1F73AD9F004BDD17 /* NSDictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CCC6A1F73AD9F004BDD17 /* NSDictionary+Extensions.swift */; };
@@ -648,6 +649,7 @@
 		37FED9702283354A004C7804 /* jsonMimeType.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jsonMimeType.txt; sourceTree = "<group>"; };
 		4304FB7E22B76F9800DE20C9 /* DeleteOldSyncMailsOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteOldSyncMailsOperation.swift; sourceTree = "<group>"; };
 		43062B8B24ED177E00489258 /* PEPIdentity+Pantomime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPIdentity+Pantomime.swift"; sourceTree = "<group>"; };
+		43062B8F24ED3DB700489258 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		430A2EEF1E82758100878837 /* CdImapFields+TestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdImapFields+TestHelper.swift"; sourceTree = "<group>"; };
 		430A2EF11E829C4600878837 /* AddressBook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBook.swift; sourceTree = "<group>"; };
 		430CCC6A1F73AD9F004BDD17 /* NSDictionary+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSDictionary+Extensions.swift"; sourceTree = "<group>"; };
@@ -991,6 +993,7 @@
 				43E9BC611DB5181800AD2352 /* FolderType.swift */,
 				436C9A4724E3FC9700007A3D /* Rating.swift */,
 				43A9818524E5382900830603 /* Color.swift */,
+				43062B8F24ED3DB700489258 /* Language.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -2604,6 +2607,7 @@
 				435C0CC0222939A10025C6B5 /* PEPRating+Extension.swift in Sources */,
 				43EA4859221E9518006E8F83 /* CdFolder+Extension.swift in Sources */,
 				15865A8420318E2D00F7A4B5 /* CdMessage+PredicateFactory.swift in Sources */,
+				43062B9024ED3DB700489258 /* Language.swift in Sources */,
 				151645B4223AA049009532BE /* Attachment+ContentDispositionType.swift in Sources */,
 				436C9A4A24E3FE0B00007A3D /* Rating+pEp.swift in Sources */,
 				155FE56C228B5164003D3E68 /* CdAttachment+Extensions.swift in Sources */,
