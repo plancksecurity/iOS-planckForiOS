@@ -75,8 +75,8 @@ extension AppSettings {
     }
 
     private func setupObjcAdapter() {
-        Adapter.setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled)
-        Adapter.setPassiveModeEnabled(passiveMode)
+        MessageModelConfig.setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled)
+        MessageModelConfig.setPassiveModeEnabled(passiveMode)
     }
 
     private func registerDefaults() {
@@ -156,7 +156,7 @@ extension AppSettings: AppSettingsProtocol {
         set {
             AppSettings.userDefaults.set(newValue,
                                          forKey: AppSettings.keyUnencryptedSubjectEnabled)
-            Adapter.setUnEncryptedSubjectEnabled(newValue)
+            MessageModelConfig.setUnEncryptedSubjectEnabled(newValue)
         }
     }
 
@@ -175,7 +175,7 @@ extension AppSettings: AppSettingsProtocol {
         }
         set {
             AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPassiveMode)
-            Adapter.setPassiveModeEnabled(newValue)
+            MessageModelConfig.setPassiveModeEnabled(newValue)
         }
     }
 
