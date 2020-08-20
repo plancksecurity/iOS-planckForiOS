@@ -10,10 +10,6 @@ import PEPObjCAdapterFramework
 import pEpIOSToolbox
 
 extension CdAccount {
-    func pEpIdentity() -> PEPIdentity {
-        return PEPUtils.pEpIdentity(for: self)
-    }
-
     func server(with type: Server.ServerType) -> CdServer? {
         guard let servs = servers?.allObjects as? [CdServer] else {
             return nil
