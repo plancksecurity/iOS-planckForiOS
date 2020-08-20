@@ -16,4 +16,24 @@ extension PEPIdentity {
     func cwInternetAddress() -> CWInternetAddress {
         return CWInternetAddress(personal: userName, address: address)
     }
+
+    static func add(pEpIdentities: [PEPIdentity],
+                    toPantomimeMessage: CWIMAPMessage,
+                    recipientType: PantomimeRecipientType) {
+        let addresses = pantomimeAddress(
+            pEpIdentities: pEpIdentities, recipientType: recipientType)
+        for a in addresses {
+            toPantomimeMessage.addRecipient(a)
+        }
+    }
+
+    /// Converts a list of pEp identities of a given receiver type to a list of pantomime recipients.
+    private static func pantomimeAddress(pEpIdentities: [PEPIdentity],
+                                         recipientType: PantomimeRecipientType) -> [CWInternetAddress] {
+        return pEpIdentities.map {
+            let pantomimeAddress = $0.cwInternetAddress()
+            pantomimeAddress.setType(recipientType)
+            return pantomimeAddress
+        }
+    }
 }

@@ -14,16 +14,6 @@ import PEPObjCAdapterFramework
 // MARK: - Internal
 
 extension PEPUtils {
-
-    static func add(pEpIdentities: [PEPIdentity], toPantomimeMessage: CWIMAPMessage,
-                    recipientType: PantomimeRecipientType) {
-        let addresses = pantomime(
-            pEpIdentities: pEpIdentities, recipientType: recipientType)
-        for a in addresses {
-            toPantomimeMessage.addRecipient(a)
-        }
-    }
-
     /// Converts a given `CdMessage` into the equivalent `CWIMAPMessage`.
     static func pantomime(cdMessage: CdMessage) -> CWIMAPMessage {
         return pantomime(pEpMessage: cdMessage.pEpMessage())
@@ -81,17 +71,6 @@ extension PEPUtils {
 // MARK: - Private
 
 extension PEPUtils {
-
-    /// Converts a list of pEp identities of a given receiver type to a list of pantomime recipients.
-    private static func pantomime(pEpIdentities: [PEPIdentity],
-                                  recipientType: PantomimeRecipientType) -> [CWInternetAddress] {
-        return pEpIdentities.map {
-            let pantomimeAddress = $0.cwInternetAddress()
-            pantomimeAddress.setType(recipientType)
-            return pantomimeAddress
-        }
-    }
-
     /// Converts the given long message (may be HTML) into a pantomime part.
     ///
     /// The content will be encoded (base64), to avoid exceeding MIME line length limits.

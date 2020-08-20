@@ -23,19 +23,19 @@ extension CWIMAPMessage {
         }
 
         if let recipients = pEpMessage.to {
-            PEPUtils.add(pEpIdentities: recipients,
-                         toPantomimeMessage: self,
-                         recipientType: .toRecipient)
+            PEPIdentity.add(pEpIdentities: recipients,
+                            toPantomimeMessage: self,
+                            recipientType: .toRecipient)
         }
         if let recipients = pEpMessage.cc {
-            PEPUtils.add(pEpIdentities: recipients,
-                         toPantomimeMessage: self,
-                         recipientType: .ccRecipient)
+            PEPIdentity.add(pEpIdentities: recipients,
+                            toPantomimeMessage: self,
+                            recipientType: .ccRecipient)
         }
         if let recipients = pEpMessage.bcc {
-            PEPUtils.add(pEpIdentities: recipients,
-                         toPantomimeMessage: self,
-                         recipientType: .bccRecipient)
+            PEPIdentity.add(pEpIdentities: recipients,
+                            toPantomimeMessage: self,
+                            recipientType: .bccRecipient)
         }
         if let messageID = pEpMessage.messageID {
             self.setMessageID(messageID)
