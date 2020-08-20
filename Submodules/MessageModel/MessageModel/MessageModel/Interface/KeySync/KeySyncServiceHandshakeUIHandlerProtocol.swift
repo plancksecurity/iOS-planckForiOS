@@ -31,6 +31,7 @@ public enum KeySyncErrorResponse {
     case tryAgain, notNow
 }
 
+/// Derived from engine/adapter enums.
 public enum KeySyncHandshakeResult {
     /// PEPSyncHandshakeResultCancel, SYNC_HANDSHAKE_CANCEL
     case cancel
