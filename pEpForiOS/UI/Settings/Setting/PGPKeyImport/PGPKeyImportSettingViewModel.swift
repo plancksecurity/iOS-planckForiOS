@@ -56,12 +56,16 @@ class PGPKeyImportSettingViewModel {
         case 0: // Import PGP Key from Documents directory
             switch indexpath.row {
             case 0:
-                delegate?.showSetPgpKeyImportScene()
+                if !isGrouped() {
+                    delegate?.showSetPgpKeyImportScene()
+                }
             default:
                 Log.shared.error("Selected row not supported")
             }
         case 1: // SetOwnKey
-            delegate?.showSetOwnKeyScene()
+            if !isGrouped() {
+                delegate?.showSetOwnKeyScene()
+            }
         default:
             Log.shared.errorAndCrash("Unhandled case")
         }
