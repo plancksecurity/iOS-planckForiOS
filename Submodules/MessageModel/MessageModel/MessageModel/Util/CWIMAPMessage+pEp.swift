@@ -18,7 +18,7 @@ extension CWIMAPMessage {
         self.init()
 
         if let from = pEpMessage.from {
-            let address = from.internetAddress()
+            let address = from.cwInternetAddress()
             self.setFrom(address)
         }
 

@@ -13,7 +13,7 @@ import PEPObjCAdapterFramework
 
 extension PEPIdentity {
     /// Converts a pEp identity dict to a pantomime address.
-    func internetAddress() -> CWInternetAddress {
+    func cwInternetAddress() -> CWInternetAddress {
         return CWInternetAddress(personal: userName, address: address)
     }
 }

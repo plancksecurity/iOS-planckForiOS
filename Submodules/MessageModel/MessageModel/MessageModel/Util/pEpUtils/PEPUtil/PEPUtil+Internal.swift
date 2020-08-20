@@ -86,9 +86,9 @@ extension PEPUtils {
     private static func pantomime(pEpIdentities: [PEPIdentity],
                                   recipientType: PantomimeRecipientType) -> [CWInternetAddress] {
         return pEpIdentities.map {
-            let pant = $0.internetAddress()
-            pant.setType(recipientType)
-            return pant
+            let pantomimeAddress = $0.cwInternetAddress()
+            pantomimeAddress.setType(recipientType)
+            return pantomimeAddress
         }
     }
 
