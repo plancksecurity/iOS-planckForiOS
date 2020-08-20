@@ -24,12 +24,14 @@ extension PGPKeyImportSettingViewModel {
     public struct Row {
         public let type: RowType
         public let title: String
+        public let isEnabled: Bool
         // If nil, do not set
         public let titleFontColor: UIColor?
 
-        init(type: RowType, title: String, titleFontColor: UIColor? = nil) {
+        init(type: RowType, title: String, isEnabled: Bool, titleFontColor: UIColor? = nil) {
             self.type = type
             self.title = title
+            self.isEnabled = isEnabled
             self.titleFontColor = titleFontColor
         }
     }
@@ -54,15 +56,27 @@ class PGPKeyImportSettingViewModel {
         case 0: // Import PGP Key from Documents directory
             switch indexpath.row {
             case 0:
-                delegate?.showSetPgpKeyImportScene()
+                if !isGrouped() {
+                    delegate?.showSetPgpKeyImportScene()
+                }
             default:
                 Log.shared.error("Selected row not supported")
             }
         case 1: // SetOwnKey
-            delegate?.showSetOwnKeyScene()
+            if !isGrouped() {
+                delegate?.showSetOwnKeyScene()
+            }
         default:
             Log.shared.errorAndCrash("Unhandled case")
         }
+    }
+
+    public func isPassphraseForNewKeysEnabled() -> Bool {
+        return PassphraseUtil().isPassphraseForNewKeysEnabled
+    }
+
+    public func stopUsingPassphraseForNewKeys() {
+        PassphraseUtil().stopUsingPassphraseForNewKeys()
     }
 }
 
@@ -89,6 +103,7 @@ extension PGPKeyImportSettingViewModel {
                                                      comment: "PGPKeyImportSetting pgpKeyImportRowTitle")
         let pgpKeyImportRow = Row(type: .pgpKeyImport,
                                   title: pgpKeyImportRowTitle,
+                                  isEnabled: !isGrouped(),
                                   titleFontColor: .pEpGreen)
 
         // Passphrase
@@ -96,6 +111,7 @@ extension PGPKeyImportSettingViewModel {
                                                      comment: "PGPKeyImportSetting - Use a Passphrase for new keys")
         let passphraseForNewKey = Row(type: .passphrase,
                                       title: usePassphraseForNewKeys,
+                                      isEnabled: true,
                                       titleFontColor: .black)
         let pgpkeyImportSection = Section(rows: [pgpKeyImportRow, passphraseForNewKey],
                                           title: pgpKeyImportSectionHeaderTitle)
@@ -104,18 +120,14 @@ extension PGPKeyImportSettingViewModel {
                                                   comment: "setOwnKeyRowTitle row title")
         let setOwnKeyRowTitle = NSLocalizedString("Set Own Key",
         comment: "PGPKeyImportSetting setOwnKeyRowTitle")
-        let setOwnKeyRow = Row(type: .setOwnKey, title: setOwnKeyRowTitle)
+        let setOwnKeyRow = Row(type: .setOwnKey, title: setOwnKeyRowTitle, isEnabled: !isGrouped())
         let setOwnKeySection = Section(rows: [setOwnKeyRow],
                                        title: NSMutableAttributedString(string: setOwnKeySectionHeaderTitle,
                                                                         attributes: nil))
         sections = [pgpkeyImportSection, setOwnKeySection]
     }
 
-    func isPassphraseForNewKeysEnabled() -> Bool {
-        return PassphraseUtil().isPassphraseForNewKeysEnabled
-    }
-
-    func stopUsingPassphraseForNewKeys() {
-        PassphraseUtil().stopUsingPassphraseForNewKeys()
+    private func isGrouped() -> Bool {
+        return KeySyncUtil.isInDeviceGroup
     }
 }
