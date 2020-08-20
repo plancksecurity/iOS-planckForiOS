@@ -193,46 +193,6 @@ final class FolderTableViewController: UITableViewController {
         }
 		showEmailList(folder: cellViewModel.folder)
     }
-
-//    private func show(folder: DisplayableFolderProtocol) {
-//        let sb = UIStoryboard(name: EmailViewController.storyboard, bundle: nil)
-//        guard
-//            let vc = sb.instantiateViewController(
-//                withIdentifier: EmailListViewController.storyboardId) as? EmailListViewController
-//            else {
-//                Log.shared.errorAndCrash("Problem!")
-//                return
-//        }
-//        vc.viewModel = EmailListViewModel(delegate: vc, folderToShow: folder)
-//        vc.hidesBottomBarWhenPushed = false
-//
-//        let animated = !showNext
-//        showNext = false
-//        navigationController?.pushViewController(vc, animated: animated)
-//        show(folder: cellViewModel.folder)
-//    }
-
-//    private func show(folder: DisplayableFolderProtocol) {
-//        let sb = UIStoryboard(name: EmailViewController.storyboard, bundle: nil)
-//        guard
-//            let vc = sb.instantiateViewController(
-//                withIdentifier: EmailListViewController.storyboardId) as? EmailListViewController
-//            else {
-//                Log.shared.errorAndCrash("Problem!")
-//                return
-//        }
-//        let emailListVM = EmailListViewModel(delegate: vc,
-//                                             folderToShow: folder)
-//
-//        vc.viewModel = emailListVM
-//        vc.draftsPreviewDelegate = self
-//        vc.hidesBottomBarWhenPushed = false
-//
-//        let animated = !shouldPresentNextView
-//        shouldPresentNextView = false
-//        navigationController?.pushViewController(vc, animated: animated)
-//        showEmailList(folder: folder)
-//    }
 }
 
 // MARK: - WIP: Defaults Preview
@@ -347,6 +307,7 @@ extension FolderTableViewController: SegueHandlerType {
                 return
         }
         vc.viewModel = EmailListViewModel(delegate: vc, folderToShow: folder)
+        vc.draftsPreviewDelegate = self
         vc.hidesBottomBarWhenPushed = false
         let animated = !shouldPresentNextView
 

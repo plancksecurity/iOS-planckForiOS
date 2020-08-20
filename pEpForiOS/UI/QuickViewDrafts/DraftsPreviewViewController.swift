@@ -42,8 +42,9 @@ final class DraftsPreviewViewController: UIViewController {
                 Log.shared.errorAndCrash("Problem!")
                 return nil
         }
+        // WIP: ak - folderToShow: index MUST NOT be hardcoded!
         let emailListVM = EmailListViewModel(delegate: vc,
-                                             folderToShow: folderViewModel[1][1].folder)
+                                             folderToShow: folderViewModel[0][1].folder)
         vc.viewModel = emailListVM
         vc.hidesBottomBarWhenPushed = false
 
