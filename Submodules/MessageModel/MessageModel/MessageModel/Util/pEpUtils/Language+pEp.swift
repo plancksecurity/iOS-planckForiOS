@@ -11,9 +11,9 @@ import Foundation
 import PEPObjCAdapterFramework
 
 extension Language {
-    static func from(pEpLanguage: PEPLanguage) -> Language {
-        return Language(code: pEpLanguage.code,
-                        name: pEpLanguage.name,
-                        sentence: pEpLanguage.sentence)
+    init(pEpLanguage: PEPLanguage) {
+        self.code = pEpLanguage.code
+        self.name = pEpLanguage.name
+        self.sentence = pEpLanguage.sentence
     }
 }

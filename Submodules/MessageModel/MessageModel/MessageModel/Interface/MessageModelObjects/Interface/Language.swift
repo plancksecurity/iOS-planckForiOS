@@ -30,7 +30,7 @@ public struct Language {
             }
         }) { theLangs in
             DispatchQueue.main.async {
-                completion(theLangs.map { Language.from(pEpLanguage: $0) })
+                completion(theLangs.map { Language(pEpLanguage: $0) })
             }
         }
     }
