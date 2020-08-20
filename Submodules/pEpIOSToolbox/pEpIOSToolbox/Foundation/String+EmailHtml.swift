@@ -75,9 +75,9 @@ extension String {
 
         if let number = Int(size.trimmingCharacters(in: .whitespacesAndNewlines)) {
             switch number {
-            case 0...12:
+            case 0..<12:
                 relativeFontSize = firstSegment + "x-small"
-            case 0...13:
+            case 12...13:
                 relativeFontSize = firstSegment + "small"
             case 14...15:
                 relativeFontSize = firstSegment + "smaller"

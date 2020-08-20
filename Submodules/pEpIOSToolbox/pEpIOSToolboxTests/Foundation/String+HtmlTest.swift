@@ -31,7 +31,7 @@ extension String_HtmlTest {
 <meta name="Generator" content="Cocoa HTML Writer">
 <style type="text/css">
 p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 6.0px '.AppleSystemUIFont'; color: #000000}
-p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px '.AppleSystemUIFont'; color: #000000}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px '.AppleSystemUIFont'; color: #000000}
 p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px '.AppleSystemUIFont'; color: #000000}
 p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px '.AppleSystemUIFont'; color: #000000}
 p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px '.AppleSystemUIFont'; color: #000000}
@@ -70,7 +70,7 @@ span.s1 {font-family: 'UICTFontTextStyleBody'; font-weight: normal; font-style: 
 <style type="text/css">
 p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: x-small '.AppleSystemUIFont'; color: #000000}
 p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: x-small '.AppleSystemUIFont'; color: #000000}
-p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: x-small '.AppleSystemUIFont'; color: #000000}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: small '.AppleSystemUIFont'; color: #000000}
 p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: small '.AppleSystemUIFont'; color: #000000}
 p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: smaller '.AppleSystemUIFont'; color: #000000}
 p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: smaller '.AppleSystemUIFont'; color: #000000}
