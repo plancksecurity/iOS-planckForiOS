@@ -9,13 +9,12 @@
 import PEPObjCAdapterFramework
 import pEpIOSToolbox
 
-//!!!: MUST be internal
 extension CdAccount {
     func pEpIdentity() -> PEPIdentity {
         return PEPUtils.pEpIdentity(for: self)
     }
 
-    public func server(with type: Server.ServerType) -> CdServer? {
+    func server(with type: Server.ServerType) -> CdServer? {
         guard let servs = servers?.allObjects as? [CdServer] else {
             return nil
         }
