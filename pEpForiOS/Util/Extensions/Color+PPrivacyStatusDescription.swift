@@ -1,5 +1,5 @@
 //
-//  Color+privacyStatusDescription.swift
+//  Color+PrivacyStatusDescription.swift
 //  pEp
 //
 //  Created by Dirk Zimmermann on 13.08.20.
