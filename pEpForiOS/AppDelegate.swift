@@ -10,7 +10,6 @@ import CoreData
 
 import pEpIOSToolbox
 import MessageModel
-import PEPObjCAdapterFramework
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -77,7 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func cleanup(andCall completionHandler:(UIBackgroundFetchResult) -> Void,
                                 result:UIBackgroundFetchResult) {
-        PEPSession.cleanup()
+        Adapter.cleanup()
         completionHandler(result)
     }
 }
@@ -165,7 +164,7 @@ extension AppDelegate {
     /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
         messageModelService?.stop()
-        PEPSession.cleanup()
+        Adapter.cleanup()
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
