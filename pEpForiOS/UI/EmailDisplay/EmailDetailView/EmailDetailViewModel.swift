@@ -168,7 +168,7 @@ class EmailDetailViewModel: EmailDisplayViewModel {
 
     /// - Parameter indexPath: indexPath of the cell to show the pEp rating for.
     /// - returns: pEp rating for cell at given indexPath
-    public func pEpRating(forItemAt indexPath: IndexPath, completion: @escaping (Rating)->Void){
+    public func pEpRating(forItemAt indexPath: IndexPath, completion: @escaping (Rating) -> Void) {
         guard let message = message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash("No msg")
             completion(.undefined)
