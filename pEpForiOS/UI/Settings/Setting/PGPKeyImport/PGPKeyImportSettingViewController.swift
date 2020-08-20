@@ -120,10 +120,16 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
             }
             cell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
             cell.textLabel?.text = row.title
-            if let fontColor = row.titleFontColor {
-                cell.textLabel?.textColor = fontColor
 
+            if row.isEnabled {
+                if let fontColor = row.titleFontColor {
+                    cell.textLabel?.textColor = fontColor
+
+                }
+            } else {
+                cell.textLabel?.textColor = .gray
             }
+
             if row.type == .setOwnKey {
                 cell.accessoryType = .disclosureIndicator
             }
