@@ -76,7 +76,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func cleanup(andCall completionHandler:(UIBackgroundFetchResult) -> Void,
                                 result:UIBackgroundFetchResult) {
-        Adapter.cleanup()
         completionHandler(result)
     }
 }
@@ -164,7 +163,6 @@ extension AppDelegate {
     /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
         messageModelService?.stop()
-        Adapter.cleanup()
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler

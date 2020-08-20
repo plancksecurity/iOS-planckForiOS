@@ -24,8 +24,4 @@ public class Adapter {
     static public func setPassiveModeEnabled(_ enabled: Bool) {
         PEPObjCAdapter.setPassiveModeEnabled(enabled)
     }
-
-    static public func cleanup() {
-        PEPSession.cleanup()
-    }
 }
