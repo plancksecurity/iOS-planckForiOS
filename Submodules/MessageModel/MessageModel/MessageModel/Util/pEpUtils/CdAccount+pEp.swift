@@ -11,7 +11,7 @@ import pEpIOSToolbox
 
 //!!!: MUST be internal
 extension CdAccount {
-    open func pEpIdentity() -> PEPIdentity {
+    func pEpIdentity() -> PEPIdentity {
         return PEPUtils.pEpIdentity(for: self)
     }
 
