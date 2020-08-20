@@ -30,7 +30,7 @@ public enum Rating {
 extension Rating {
     /// The `PEPRating`s that indicates a message could not be decrypted.
     /// Use for later decryption attemp, e.g. after syncing keys with another device.
-    static let undecryptableRatings: [Rating] = [.cannotDecrypt, .haveNoKey]
+    private static let undecryptableRatings: [Rating] = [.cannotDecrypt, .haveNoKey]
 
     /// This is a much safer way to get the int value than using rawValue, which is not defined
     /// anyways.
