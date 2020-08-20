@@ -19,7 +19,7 @@ extension UIUtils {
     ///
     /// - Parameters:
     ///   - url: url to parse recipients from
-    static public func presentComposeView(forRecipientInUrl url: URL?) {
+    static public func presentComposeView(forRecipientInUrl url: URL? = nil) {
         let address = url?.firstRecipientAddress()
         if url != nil && address == nil {
             // A URL has been passed, but it is no valid mailto URL.

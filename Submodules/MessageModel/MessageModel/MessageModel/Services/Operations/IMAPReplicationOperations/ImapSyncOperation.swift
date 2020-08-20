@@ -47,9 +47,15 @@ class ImapSyncOperation: ConcurrentBaseOperation {
             completion?()
         }
     }
+
+    override func handle(error: Error, message: String? = nil) {
+        Log.shared.error("%@", message ?? "")
+        handle(error: error)
+    }
 }
 
 extension ImapSyncOperation: ImapConnectionDelegateErrorHandlerProtocol {
+
     public func handle(error: Error) {
         Log.shared.error("ImapSyncOperation error: %@ delegate: %@",
                          "\(error)", type(of: self).debugDescription())

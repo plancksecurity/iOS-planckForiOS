@@ -174,7 +174,7 @@ class ComposeViewModel {
         let safeState = state.makeSafe(forSession: Session.main)
         let sendClosure = { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
@@ -198,7 +198,7 @@ class ComposeViewModel {
 
         showAlertFordwardingLessSecureIfRequired(forState: safeState) { [weak self] (accepted) in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             guard accepted else {
@@ -649,8 +649,8 @@ extension ComposeViewModel {
         }
         let title: String
         if data.isDrafts {
-            title = NSLocalizedString("Discharge changes", comment:
-                "ComposeTableView: button to decide to discharge changes made on a drafted mail.")
+            title = NSLocalizedString("Delete Changes", comment:
+                "ComposeTableView: button to decide to delete changes made on a drafted mail.")
         } else if data.isOutbox {
             title = NSLocalizedString("Delete", comment:
                 "ComposeTableView: button to decide to delete a message from Outbox after " +
@@ -722,7 +722,7 @@ extension ComposeViewModel {
     func canDoHandshake(completion: @escaping (Bool)->Void) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.state.canHandshake(completion: completion)
@@ -879,7 +879,7 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
         // Dispatch as next to not "Attempted to call -cellForRowAtIndexPath: on the table view while it was in the process of updating its visible cells, which is not allowed. ...". See IOS-2347 for details.
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                // Valid case. We might have been dismissed already.
+                // Valid case. We might havebeen dismissed already.
                 return
             }
             me.delegate?.contentChanged(inRowAt: idxPath)
