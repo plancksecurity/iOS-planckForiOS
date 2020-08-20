@@ -21,7 +21,7 @@ final class DraftsPreviewViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        guard let childVC = createChildViewController() else {
+        guard let childVC = createEmailListViewController() else {
             Log.shared.errorAndCrash(message: "Child viewController is missing!")
             return
         }
@@ -32,13 +32,12 @@ final class DraftsPreviewViewController: UIViewController {
 
     }
 
-    private func createChildViewController() -> EmailListViewController? {
+    private func createEmailListViewController() -> EmailListViewController? {
         let sb = UIStoryboard(name: EmailViewController.storyboard, bundle: nil)
         guard
             let vc = sb.instantiateViewController(
                 withIdentifier: EmailListViewController.storyboardId) as? EmailListViewController,
-            let folderViewModel = folderVM
-            else {
+            let folderViewModel = folderVM else {
                 Log.shared.errorAndCrash("Problem!")
                 return nil
         }
@@ -59,7 +58,6 @@ final class DraftsPreviewViewController: UIViewController {
         vc.hidesBottomBarWhenPushed = false
 
         return vc
-
     }
 
 // MARK: - IBActions
@@ -73,27 +71,8 @@ final class DraftsPreviewViewController: UIViewController {
         dismissView()
     }
 
-
     @IBAction func dismissView() {
         dismiss(animated: true)
-    }
-
-}
-
-extension DraftsPreviewViewController: UITableViewDelegate, UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: EmailListViewCell.storyboardId) else {
-            Log.shared.errorAndCrash(message: "EmailListViewCell not found!")
-            return UITableViewCell()
-        }
-
-        return cell
     }
 
 }
