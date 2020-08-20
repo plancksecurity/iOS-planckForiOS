@@ -42,9 +42,19 @@ final class DraftsPreviewViewController: UIViewController {
                 Log.shared.errorAndCrash("Problem!")
                 return nil
         }
-        // WIP: ak - folderToShow: index MUST NOT be hardcoded!
+
+        guard let draftsIndex = FolderType.displayOrder.firstIndex(where: { $0 == .drafts }) else {
+            Log.shared.errorAndCrash(message: "Drafts index is missing!")
+            return nil
+        }
+
+        guard let firstSection = folderViewModel.items.first else {
+            Log.shared.errorAndCrash(message: "First section was not found!")
+            return nil
+        }
+
         let emailListVM = EmailListViewModel(delegate: vc,
-                                             folderToShow: folderViewModel[0][1].folder)
+                                             folderToShow: firstSection[draftsIndex].folder)
         vc.viewModel = emailListVM
         vc.hidesBottomBarWhenPushed = false
 
@@ -60,6 +70,7 @@ final class DraftsPreviewViewController: UIViewController {
             return
         }
         delegate.composeAction()
+        dismissView()
     }
 
 
