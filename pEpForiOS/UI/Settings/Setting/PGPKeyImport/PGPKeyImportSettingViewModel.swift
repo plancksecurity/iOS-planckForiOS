@@ -118,4 +118,8 @@ extension PGPKeyImportSettingViewModel {
     func stopUsingPassphraseForNewKeys() {
         PassphraseUtil().stopUsingPassphraseForNewKeys()
     }
+
+    private func isGrouped() -> Bool {
+        return KeySyncUtil.isInDeviceGroup
+    }
 }
