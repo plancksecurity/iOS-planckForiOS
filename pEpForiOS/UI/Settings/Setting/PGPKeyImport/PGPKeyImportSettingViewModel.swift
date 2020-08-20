@@ -124,6 +124,6 @@ extension PGPKeyImportSettingViewModel {
     }
 
     private func isGrouped() -> Bool {
-        return KeySyncUtil.isInDeviceGroup
+        return true //KeySyncUtil.isInDeviceGroup
     }
 }
