@@ -100,4 +100,14 @@ extension CdIdentity {
                   completion: @escaping (PEPColor) -> Void) {
         PEPUtils.pEpColor(cdIdentity: self, context: context, completion: completion)
     }
+
+    /// Converts a typical core data set of CdIdentities into pEp identities.
+    static func pEpIdentities(cdIdentitiesSet: NSOrderedSet?) -> [PEPIdentity]? {
+        guard let cdIdentities = cdIdentitiesSet?.array as? [CdIdentity] else {
+            return nil
+        }
+        return cdIdentities.map {
+            return $0.pEpIdentity()
+        }
+    }
 }

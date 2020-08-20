@@ -106,16 +106,6 @@ extension CdMessage {
         }
     }
 
-    /// Converts a typical core data set of CdIdentities into pEp identities.
-    static func pEpIdentities(cdIdentitiesSet: NSOrderedSet?) -> [PEPIdentity]? {
-        guard let cdIdentities = cdIdentitiesSet?.array as? [CdIdentity] else {
-            return nil
-        }
-        return cdIdentities.map {
-            return $0.pEpIdentity()
-        }
-    }
-
     /// Converts a core data message into the format required by pEp.
     /// - Parameter outgoing: Whether or not the message is outgoing
     /// - Returns: A PEPMessage suitable for processing with pEp.
@@ -127,9 +117,9 @@ extension CdMessage {
         pEpMessage.longMessage = longMessage
         pEpMessage.longMessageFormatted = longMessageFormatted
 
-        pEpMessage.to = CdMessage.pEpIdentities(cdIdentitiesSet: to)
-        pEpMessage.cc = CdMessage.pEpIdentities(cdIdentitiesSet: cc)
-        pEpMessage.bcc = CdMessage.pEpIdentities(cdIdentitiesSet: bcc)
+        pEpMessage.to = CdIdentity.pEpIdentities(cdIdentitiesSet: to)
+        pEpMessage.cc = CdIdentity.pEpIdentities(cdIdentitiesSet: cc)
+        pEpMessage.bcc = CdIdentity.pEpIdentities(cdIdentitiesSet: bcc)
 
         pEpMessage.from = from?.pEpIdentity()
         pEpMessage.messageID = uuid
