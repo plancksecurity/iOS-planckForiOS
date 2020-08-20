@@ -13,7 +13,7 @@ import PEPObjCAdapterFramework
 
 extension CdAttachment {
 
-    public var pEpAttachment: PEPAttachment  {
+    var pEpAttachment: PEPAttachment  {
         let attachment = PEPAttachment(data: data ?? Data())
         attachment.filename = fileName
         attachment.mimeType = mimeType
