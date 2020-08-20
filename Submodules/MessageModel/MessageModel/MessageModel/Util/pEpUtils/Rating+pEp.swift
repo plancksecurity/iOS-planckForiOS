@@ -11,8 +11,7 @@ import Foundation
 import PEPObjCAdapterFramework
 
 extension Rating {
-    // TODO: IOS-2328: Make internal
-    public init(pEpRating: PEPRating) {
+    init(pEpRating: PEPRating) {
         switch pEpRating {
         case .b0rken:
             self = .b0rken
