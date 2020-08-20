@@ -1,5 +1,5 @@
 //
-//  Language+pEp.swift
+//  TrustwordsLanguage+pEp.swift
 //  MessageModel
 //
 //  Created by Dirk Zimmermann on 19.08.20.
@@ -10,7 +10,7 @@ import Foundation
 
 import PEPObjCAdapterFramework
 
-extension Language {
+extension TrustwordsLanguage {
     init(pEpLanguage: PEPLanguage) {
         self.code = pEpLanguage.code
         self.name = pEpLanguage.name

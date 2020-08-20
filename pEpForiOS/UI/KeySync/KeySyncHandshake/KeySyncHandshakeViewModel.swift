@@ -39,13 +39,13 @@ final class KeySyncHandshakeViewModel {
     private var partnerFPR: String?
     private var isNewGroup = true
 
-    private var _languages = [Language]()
+    private var _languages = [TrustwordsLanguage]()
 
-    func languages(completion: @escaping ([Language]) -> ()) {
+    func languages(completion: @escaping ([TrustwordsLanguage]) -> ()) {
         if !_languages.isEmpty {
             completion(_languages)
         } else {
-            Language.languages() { [weak self] langs in
+            TrustwordsLanguage.languages() { [weak self] langs in
                 guard let me = self else {
                     // UI, this can happen
                     return

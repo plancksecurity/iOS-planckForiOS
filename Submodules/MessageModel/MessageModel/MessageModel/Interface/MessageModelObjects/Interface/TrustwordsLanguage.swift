@@ -1,5 +1,5 @@
 //
-//  Language.swift
+//  TrustwordsLanguage.swift
 //  MessageModel
 //
 //  Created by Dirk Zimmermann on 19.08.20.
@@ -11,7 +11,7 @@ import Foundation
 import PEPObjCAdapterFramework
 
 /// Wraps `PEPLanguage`, indicating a trustwords language.
-public struct Language {
+public struct TrustwordsLanguage {
     /// ISO 639-1 language code
     public let code: String
 
@@ -22,7 +22,7 @@ public struct Language {
     public let sentence: String
 
     /// Retrieves all known languages, calling the completion block on the main queue.
-    static public func languages(completion: @escaping ([Language]) -> ()) {
+    static public func languages(completion: @escaping ([TrustwordsLanguage]) -> ()) {
         PEPAsyncSession().languageList({ error in
             Log.shared.errorAndCrash("%@", error.localizedDescription)
             DispatchQueue.main.async {
@@ -30,7 +30,7 @@ public struct Language {
             }
         }) { theLangs in
             DispatchQueue.main.async {
-                completion(theLangs.map { Language(pEpLanguage: $0) })
+                completion(theLangs.map { TrustwordsLanguage(pEpLanguage: $0) })
             }
         }
     }
