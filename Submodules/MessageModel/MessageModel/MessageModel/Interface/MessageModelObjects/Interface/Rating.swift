@@ -39,7 +39,7 @@ extension Rating {
     }
 
     public func pEpColor() -> Color {
-        return Color.from(pEpColor: pEpRating().pEpColor())
+        return Color(pEpColor: pEpRating().pEpColor())
     }
 
     /// Compares the pEp colors for this and a given rating.

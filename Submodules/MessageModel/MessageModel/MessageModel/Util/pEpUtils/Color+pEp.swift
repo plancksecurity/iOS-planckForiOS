@@ -11,16 +11,16 @@ import Foundation
 import PEPObjCAdapterFramework
 
 extension Color {
-    static func from(pEpColor: PEPColor) -> Color {
+    init(pEpColor: PEPColor) {
         switch pEpColor {
         case .noColor:
-            return noColor
+            self = .noColor
         case .yellow:
-            return yellow
+            self = .yellow
         case .green:
-            return green
+            self = .green
         case .red:
-            return red
+            self = .red
         }
     }
 

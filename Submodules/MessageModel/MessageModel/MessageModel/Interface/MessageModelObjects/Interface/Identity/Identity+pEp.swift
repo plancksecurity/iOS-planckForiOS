@@ -16,7 +16,7 @@ extension Identity {
     public func pEpColor(session: Session = Session.main,
                          completion: @escaping (Color) -> Void) {
         cdObject.pEpColor(context: session.moc) {pEpColor in
-            completion(Color.from(pEpColor: pEpColor))
+            completion(Color(pEpColor: pEpColor))
         }
     }
 }
