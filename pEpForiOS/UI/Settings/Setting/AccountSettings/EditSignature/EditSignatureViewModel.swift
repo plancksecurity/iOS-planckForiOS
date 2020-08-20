@@ -22,8 +22,7 @@ class EditSignatureViewModel {
     }
     
     public func updateSignature(newSignature: String) {
-        AppSettings.shared.storeSignatureForAddress(address: account.user.address,
-                                                    signature: newSignature)
+        AppSettings.shared.storeSignatureForAddress(address: account.user.address,signature: newSignature)
     }
     
     public func actualSignature() -> String {
