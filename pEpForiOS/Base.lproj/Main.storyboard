@@ -497,9 +497,8 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S7q-hG-sKa">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="567"/>
                                         <subviews>
-                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="TF2-dt-8de">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="TF2-dt-8de">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="567"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <prototypes>
                                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Show email Scene empty cell" id="PNE-6s-C7i">
@@ -657,6 +656,12 @@
                                             </tableView>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <constraints>
+                                            <constraint firstItem="TF2-dt-8de" firstAttribute="leading" secondItem="S7q-hG-sKa" secondAttribute="leading" id="ABG-rf-e5H"/>
+                                            <constraint firstAttribute="trailing" secondItem="TF2-dt-8de" secondAttribute="trailing" id="QfE-PI-9hf"/>
+                                            <constraint firstAttribute="bottom" secondItem="TF2-dt-8de" secondAttribute="bottom" id="dJM-uX-xWJ"/>
+                                            <constraint firstItem="TF2-dt-8de" firstAttribute="top" secondItem="S7q-hG-sKa" secondAttribute="top" id="fnJ-DP-cJ0"/>
+                                        </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rz6-9D-FWg">
                                         <rect key="frame" x="0.0" y="567" width="375" height="100"/>
