@@ -46,7 +46,12 @@ final class AccountSettingsViewController: UIViewController {
         title = NSLocalizedString("Account", comment: "Account view title")
         navigationController?.navigationController?.setToolbarHidden(true, animated: false)
     }
-
+    
+    enum SegueIdentifier: String {
+        
+        case EditSignatureSegue
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.destination {
         case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
@@ -55,6 +60,13 @@ final class AccountSettingsViewController: UIViewController {
                 return
             }
             editableAccountSettingsViewController.viewModel = EditableAccountSettingsViewModel(account: account, editableAccountSettingsDelegate: self)
+        case let signatureEditor as EditSignatureViewController:
+            guard let account = viewModel?.account else {
+                Log.shared.errorAndCrash("No VM")
+                return
+            }
+            let vm = EditSignatureViewModel(account: account)
+            signatureEditor.viewModel = vm
         default:
             break
         }
@@ -84,7 +96,7 @@ extension AccountSettingsViewController : UITableViewDelegate {
             vm.handleOauth2Reauth(onViewController: self)
         }
         if row.type == .signature {
-            performSegue(withIdentifier: "lala", sender: self)
+            performSegue(withIdentifier: "EditSignatureSegue", sender: self)
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
