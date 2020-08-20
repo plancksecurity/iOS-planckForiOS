@@ -130,7 +130,7 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
                 cell.textLabel?.textColor = .gray
             }
 
-            if row.type == .setOwnKey {
+            if row.type == .setOwnKey && row.isEnabled {
                 cell.accessoryType = .disclosureIndicator
             }
             return cell
