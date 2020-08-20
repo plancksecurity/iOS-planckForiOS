@@ -111,7 +111,7 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }
     }
 
-    public func getTrustwords(forFpr1 fpr1: String,//BUFF: wip
+    public func getTrustwords(forFpr1 fpr1: String,
                               fpr2: String,
                               language: String,
                               full: Bool,
