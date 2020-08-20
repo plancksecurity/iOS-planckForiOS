@@ -1,5 +1,5 @@
 /* Class = "UILabel"; text = "If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle."; ObjectID = "5Cq-ai-hYf"; */
-"5Cq-ai-hYf.text" = "Si las Trustwords no son correctas, podría haber un ataque de un-hombre-en-el-medio.";
+"5Cq-ai-hYf.text" = "Si las Trustwords no son correctas, podría ser un ataque de intermediario.";
 
 /* Class = "UILabel"; text = "p≡p uses a Privacy Status icon to indicate how secure your communication is"; ObjectID = "6p7-rU-UIJ"; */
 "6p7-rU-UIJ.text" = "p≡p usa un ícono de Estado de Privacidad para indicar qué tan segura es su comunicación";
