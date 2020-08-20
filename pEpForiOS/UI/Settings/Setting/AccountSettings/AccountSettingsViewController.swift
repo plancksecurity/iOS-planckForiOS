@@ -65,7 +65,7 @@ final class AccountSettingsViewController: UIViewController {
                 Log.shared.errorAndCrash("No VM")
                 return
             }
-            let vm = EditSignatureViewModel(account: account)
+            let vm = EditSignatureViewModel(account: account, delegate: self)
             signatureEditor.viewModel = vm
         default:
             break
