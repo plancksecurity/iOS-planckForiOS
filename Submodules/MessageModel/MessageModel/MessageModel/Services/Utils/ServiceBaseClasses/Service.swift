@@ -244,7 +244,8 @@ extension Service {
                 break
             case .finish:
                 // We are running and the client told us to finish.
-                finishBlock?()
+                // Nothing to do. The `finishBlock`will be called in the next round. (Might have to be changed after IMAPSyncOPs are gracefully cancelable).
+//                finishBlock?()
                 break
             case .stop:
                 // We are running and the client told us to stop.

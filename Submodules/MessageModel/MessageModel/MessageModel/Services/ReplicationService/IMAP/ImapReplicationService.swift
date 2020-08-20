@@ -181,7 +181,7 @@ extension ImapReplicationService {
                                 "\(type(of: me))", me.sleepTimeInSeconds)
                 let startDate = Date()
                 while Date().timeIntervalSince(startDate) < me.sleepTimeInSeconds {
-                    if operation.isCancelled {
+                    if operation.isCancelled || me.lastCommand == .finish { // lastcommand should be private. We need to use it as we can curently not cancel the running OPs in finishBlock, due to IMAPSyncOPs concept makes graceful cancelling impossible. rm ` || me.lastCommand == .finish ` after IMAPSyncOPs are cancelable and make `lastCommand` privagte again.
                         break
                     }
                     sleep(1)
