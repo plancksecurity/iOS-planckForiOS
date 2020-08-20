@@ -361,7 +361,9 @@ extension AccountSettingsViewModel {
                 rows.append(passwordRow)
             }
             
-            let signatureRow = getDisplayRow(type: .signature, value: "fake signature")
+            let signature = AppSettings.shared.loadSignatureForAddress(address: account.user.address)
+            let signatureRow = getDisplayRow(type: .signature, value: signature)
+            
             rows.append(signatureRow)
 
             // Include in Unified Folders

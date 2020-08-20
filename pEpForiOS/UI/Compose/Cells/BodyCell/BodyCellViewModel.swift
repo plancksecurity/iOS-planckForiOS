@@ -31,6 +31,7 @@ class BodyCellViewModel: CellViewModel {
     public weak var delegate: BodyCellViewModelDelegate?
     private var plaintext = ""
     private var attributedText: NSAttributedString?
+    private var account: Identity?
     private var inlinedAttachments = [Attachment]() {
         didSet {
             resultDelegate?.bodyCellViewModel(self, inlinedAttachmentsChanged: inlinedAttachments)
@@ -45,19 +46,22 @@ class BodyCellViewModel: CellViewModel {
     init(resultDelegate: BodyCellViewModelResultDelegate?,
          initialPlaintext: String? = nil,
          initialAttributedText: NSAttributedString? = nil,
-         inlinedAttachments: [Attachment]? = nil) {
+         inlinedAttachments: [Attachment]? = nil,
+         account: Identity?) {
         self.resultDelegate = resultDelegate
         self.plaintext = initialPlaintext ?? ""
         self.attributedText = initialAttributedText
         if let inlAtt = inlinedAttachments {
             self.inlinedAttachments = inlAtt
         }
+        self.account = account
     }
 
     public func inititalText() -> (text: String?, attributedText: NSAttributedString?) {
         if plaintext.isEmpty {
             // commented out until IOS-1124 is done.
-            plaintext.append(.pepSignature)
+            let signature = AppSettings.shared.loadSignatureForAddress(address: account?.address)
+            plaintext.append(signature)
         }
         attributedText?.assureMaxTextAttachmentImageWidth(maxTextattachmentWidth)
         return (plaintext, attributedText)

@@ -239,8 +239,11 @@ extension AppSettings: AppSettingsProtocol {
                                      forKey: finalKey)
     }
     
-    public func loadSignatureForAddress(address: String) -> String {
-        let finalKey = AppSettings.keyDefaultAccountAddress + address
+    public func loadSignatureForAddress(address: String?) -> String {
+        guard let finalAddress = address else {
+            return String.pepSignature
+        }
+        let finalKey = AppSettings.keyDefaultAccountAddress + finalAddress
         return AppSettings.userDefaults.string(forKey: finalKey) ?? String.pepSignature
     }
 }
