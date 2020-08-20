@@ -24,12 +24,14 @@ extension PGPKeyImportSettingViewModel {
     public struct Row {
         public let type: RowType
         public let title: String
+        public let isEnabled: Bool
         // If nil, do not set
         public let titleFontColor: UIColor?
 
-        init(type: RowType, title: String, titleFontColor: UIColor? = nil) {
+        init(type: RowType, title: String, isEnabled: Bool, titleFontColor: UIColor? = nil) {
             self.type = type
             self.title = title
+            self.isEnabled = isEnabled
             self.titleFontColor = titleFontColor
         }
     }
@@ -97,6 +99,7 @@ extension PGPKeyImportSettingViewModel {
                                                      comment: "PGPKeyImportSetting pgpKeyImportRowTitle")
         let pgpKeyImportRow = Row(type: .pgpKeyImport,
                                   title: pgpKeyImportRowTitle,
+                                  isEnabled: !isGrouped(),
                                   titleFontColor: .pEpGreen)
 
         // Passphrase
@@ -104,6 +107,7 @@ extension PGPKeyImportSettingViewModel {
                                                      comment: "PGPKeyImportSetting - Use a Passphrase for new keys")
         let passphraseForNewKey = Row(type: .passphrase,
                                       title: usePassphraseForNewKeys,
+                                      isEnabled: true,
                                       titleFontColor: .black)
         let pgpkeyImportSection = Section(rows: [pgpKeyImportRow, passphraseForNewKey],
                                           title: pgpKeyImportSectionHeaderTitle)
@@ -112,7 +116,7 @@ extension PGPKeyImportSettingViewModel {
                                                   comment: "setOwnKeyRowTitle row title")
         let setOwnKeyRowTitle = NSLocalizedString("Set Own Key",
         comment: "PGPKeyImportSetting setOwnKeyRowTitle")
-        let setOwnKeyRow = Row(type: .setOwnKey, title: setOwnKeyRowTitle)
+        let setOwnKeyRow = Row(type: .setOwnKey, title: setOwnKeyRowTitle, isEnabled: !isGrouped())
         let setOwnKeySection = Section(rows: [setOwnKeyRow],
                                        title: NSMutableAttributedString(string: setOwnKeySectionHeaderTitle,
                                                                         attributes: nil))
