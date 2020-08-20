@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import PEPObjCAdapterFramework  //!!!: IOS-2325_! (RM)
+import PEPObjCAdapterFramework
 import MessageModel
 
 protocol KeySyncHandshakeViewModelDelegate: class {
