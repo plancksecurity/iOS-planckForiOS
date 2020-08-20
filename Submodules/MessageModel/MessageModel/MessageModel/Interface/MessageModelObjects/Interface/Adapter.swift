@@ -10,8 +10,8 @@ import Foundation
 
 import PEPObjCAdapterFramework
 
+/// Wraps adapter functionality so the app doesn't have to deal with it directly.
 public class Adapter {
-    /// Wraps `PEPAsyncSession.leaveDeviceGroup`
     static public func leaveDeviceGroup(_ errorCallback: @escaping (Error) -> Void,
                                         successCallback: @escaping () -> Void) {
         PEPAsyncSession().leaveDeviceGroup(errorCallback, successCallback: successCallback)
