@@ -64,6 +64,14 @@ class PGPKeyImportSettingViewModel {
             Log.shared.errorAndCrash("Unhandled case")
         }
     }
+
+    public func isPassphraseForNewKeysEnabled() -> Bool {
+        return PassphraseUtil().isPassphraseForNewKeysEnabled
+    }
+
+    public func stopUsingPassphraseForNewKeys() {
+        PassphraseUtil().stopUsingPassphraseForNewKeys()
+    }
 }
 
 // MARK: - Private
@@ -109,14 +117,6 @@ extension PGPKeyImportSettingViewModel {
                                        title: NSMutableAttributedString(string: setOwnKeySectionHeaderTitle,
                                                                         attributes: nil))
         sections = [pgpkeyImportSection, setOwnKeySection]
-    }
-
-    func isPassphraseForNewKeysEnabled() -> Bool {
-        return PassphraseUtil().isPassphraseForNewKeysEnabled
-    }
-
-    func stopUsingPassphraseForNewKeys() {
-        PassphraseUtil().stopUsingPassphraseForNewKeys()
     }
 
     private func isGrouped() -> Bool {
