@@ -109,8 +109,7 @@ class OperationBasedService: Service, OperationBasedServiceProtocol {
             me.startNextProcessingRound()
         }
 
-        finishBlock = {
-            [weak self] in
+        finishBlock = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
@@ -118,7 +117,7 @@ class OperationBasedService: Service, OperationBasedServiceProtocol {
             Log.shared.info("%@ - default finishBlock called with state: %@)",
                             "\(type(of: self))", "\(me.state)")
             me.state = .finshing
-            me.doNotRestart()
+            me.waitThenStop()
         }
 
         stopBlock = { [weak self] in
@@ -141,38 +140,6 @@ class OperationBasedService: Service, OperationBasedServiceProtocol {
         fatalError("You MUST override this")
     }
 
-    /// This:
-    /// * creates a new opperation for every input operations that only fulfills the `dispatchGroup`.
-    /// * this new operation depends on the given operration.
-    ///
-    /// - note: It will be quaranteed that calls to `enter()` and `leave()` are balanced after (and
-    ///         ONLY after) all given operations finished.
-    ///
-    /// - note: We need to know when all operations finished. There are other ways to achieve this
-    ///         but this solution does not limit the client at all (like not being allowed to use
-    ///         completionHandler because we would potentionally override them).
-    ///
-    /// - Parameters:
-    ///   - dispatchGroup:  group to manage. It will be quaranteed that calls to `enter()` and
-    ///                     `leave()` are balanced after (and ONLY after) all given operations
-    ///                     finished.
-    ///   - operations: operations the `dispatchGroup` manages state for
-    /// - Returns: operations to run.
-    func addCompletionOperations(handling dispatchGroup: DispatchGroup,
-                                         to operations: [Operation]) -> [Operation] {
-        var allOps = [Operation]()
-        for op in operations {
-            dispatchGroup.enter()
-            let completionOP = BlockOperation() {
-                dispatchGroup.leave()
-            }
-            completionOP.addDependency(op)
-            allOps.append(op)
-            allOps.append(completionOP)
-        }
-        return allOps
-    }
-
     /// Waits for all operations to finish and ends background task.
     func doNotRestart() {
         internalQueue.addOperation { [weak self] in
@@ -181,26 +148,24 @@ class OperationBasedService: Service, OperationBasedServiceProtocol {
                 return
             }
             Log.shared.info("%@ - started doNotRestart", "\(type(of: me))")
-            me.backgroundQueue.waitUntilAllOperationsAreFinished() //BUFF: ALSO waits for the other place
+            me.backgroundQueue.waitUntilAllOperationsAreFinished()
             me.state = .ready
             me.endBackgroundTask()
             Log.shared.info("%@ - ended doNotRestart", "\(type(of: me))")
         }
     }
 
-    func registerBackgroundTask() {
-        do {
-            try startBackgroundTask { [weak self] in
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost myself")
-                    return
-                }
-                me.finishAsFastAsPossible()
+    func waitThenStop() {
+        internalQueue.addOperation { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
             }
-        } catch BackgroundTaskManager.ManagingError.backgroundTaskAlreadyRunning {
-            // Intentionally ignore it. We already have a background task running.
-        } catch {
-            Log.shared.errorAndCrash(error: error)
+            Log.shared.info("%@ - started internalStop", "\(type(of: me))")
+            me.backgroundQueue.waitUntilAllOperationsAreFinished()
+            me.state = .stopped
+            me.next()
+            Log.shared.info("%@ - ended internalStop", "\(type(of: me))")
         }
     }
 
@@ -256,6 +221,54 @@ class OperationBasedService: Service, OperationBasedServiceProtocol {
 
 extension OperationBasedService {
 
+    private func registerBackgroundTask() {
+        do {
+            try startBackgroundTask { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                me.finishAsFastAsPossible()
+            }
+        } catch BackgroundTaskManager.ManagingError.backgroundTaskAlreadyRunning {
+            // Intentionally ignore it. We already have a background task running.
+        } catch {
+            Log.shared.errorAndCrash(error: error)
+        }
+    }
+
+    /// This:
+    /// * creates a new opperation for every input operations that only fulfills the `dispatchGroup`.
+    /// * this new operation depends on the given operration.
+    ///
+    /// - note: It will be quaranteed that calls to `enter()` and `leave()` are balanced after (and
+    ///         ONLY after) all given operations finished.
+    ///
+    /// - note: We need to know when all operations finished. There are other ways to achieve this
+    ///         but this solution does not limit the client at all (like not being allowed to use
+    ///         completionHandler because we would potentionally override them).
+    ///
+    /// - Parameters:
+    ///   - dispatchGroup:  group to manage. It will be quaranteed that calls to `enter()` and
+    ///                     `leave()` are balanced after (and ONLY after) all given operations
+    ///                     finished.
+    ///   - operations: operations the `dispatchGroup` manages state for
+    /// - Returns: operations to run.
+    private func addCompletionOperations(handling dispatchGroup: DispatchGroup,
+                                         to operations: [Operation]) -> [Operation] {
+        var allOps = [Operation]()
+        for op in operations {
+            dispatchGroup.enter()
+            let completionOP = BlockOperation() {
+                dispatchGroup.leave()
+            }
+            completionOP.addDependency(op)
+            allOps.append(op)
+            allOps.append(completionOP)
+        }
+        return allOps
+    }
+
     private func startNextProcessingRound() {
         let toDos = operations()
         Log.shared.info("%@ - startNextProcessingRound called with state: %@ numOperations: %d",
@@ -281,7 +294,7 @@ extension OperationBasedService {
             if !me.runOnce {
                 me.next()
             } else {
-                me.endBackgroundTask()
+                me.doNotRestart()
             }
         }
 
@@ -293,6 +306,6 @@ extension OperationBasedService {
     private func finishAsFastAsPossible() {
         Log.shared.info("%@ - finishAsFastAsPossible called", "\(type(of: self))")
         backgroundQueue.cancelAllOperations()
-        doNotRestart()
+        waitThenStop()
     }
 }
