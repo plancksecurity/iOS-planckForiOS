@@ -78,7 +78,7 @@ open class ConcurrentBaseOperation: BaseOperation {
     public func markAsFinished() {
         Log.shared.info("markAsFinished: %@", type(of: self).debugDescription())
         if isExecuting {
-            state = .finished //BUFF: XX called in cancel case?
+            state = .finished
         }
     }
 
@@ -89,7 +89,7 @@ open class ConcurrentBaseOperation: BaseOperation {
             guard let me = self else {
                 return
             }
-            me.backgroundQueue.waitUntilAllOperationsAreFinished() //BUFF: causes this waitng forever
+            me.backgroundQueue.waitUntilAllOperationsAreFinished()
             completion?()
             me.markAsFinished()
         }
