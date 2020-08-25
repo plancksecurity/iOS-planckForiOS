@@ -23,6 +23,7 @@ class TextViewContainingTableViewCell: UITableViewCell, TextViewContainingTableV
         textView.adjustsFontForContentSizeCategory = true
     }
 
+
     func setFocus() {
         let rangeAtTheEnd = textView.textRange(from: textView.endOfDocument,
                                                to: textView.endOfDocument)
