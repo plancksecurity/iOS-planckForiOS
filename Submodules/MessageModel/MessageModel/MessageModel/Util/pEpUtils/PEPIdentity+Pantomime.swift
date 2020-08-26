@@ -20,7 +20,7 @@ extension PEPIdentity {
     static func add(pEpIdentities: [PEPIdentity],
                     toPantomimeMessage: CWIMAPMessage,
                     recipientType: PantomimeRecipientType) {
-        let addresses = pantomimeAddress(
+        let addresses = cwInternetAddresses(
             pEpIdentities: pEpIdentities, recipientType: recipientType)
         for a in addresses {
             toPantomimeMessage.addRecipient(a)
@@ -28,8 +28,8 @@ extension PEPIdentity {
     }
 
     /// Converts a list of pEp identities of a given receiver type to a list of pantomime recipients.
-    private static func pantomimeAddress(pEpIdentities: [PEPIdentity],
-                                         recipientType: PantomimeRecipientType) -> [CWInternetAddress] {
+    private static func cwInternetAddresses(pEpIdentities: [PEPIdentity],
+                                            recipientType: PantomimeRecipientType) -> [CWInternetAddress] {
         return pEpIdentities.map {
             let pantomimeAddress = $0.cwInternetAddress()
             pantomimeAddress.setType(recipientType)
