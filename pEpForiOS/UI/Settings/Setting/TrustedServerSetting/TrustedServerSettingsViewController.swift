@@ -35,6 +35,11 @@ class TrustedServerSettingsViewController: UIViewController {
 
         viewModel.delegate = self
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        showNavigationBar()
+    }
 }
 
 // MARK: -  UITableViewDataSource
