@@ -13,14 +13,14 @@ import PEPObjCAdapterFramework
 
 extension PEPIdentity {
     /// Converts a pEp identity dict to a pantomime address.
-    func cwInternetAddress() -> CWInternetAddress {
+    func pantomimeAddress() -> CWInternetAddress {
         return CWInternetAddress(personal: userName, address: address)
     }
 
     static func add(pEpIdentities: [PEPIdentity],
                     toPantomimeMessage: CWIMAPMessage,
                     recipientType: PantomimeRecipientType) {
-        let addresses = cwInternetAddresses(
+        let addresses = pantomimeAddresses(
             pEpIdentities: pEpIdentities, recipientType: recipientType)
         for a in addresses {
             toPantomimeMessage.addRecipient(a)
@@ -28,12 +28,12 @@ extension PEPIdentity {
     }
 
     /// Converts a list of pEp identities of a given receiver type to a list of pantomime recipients.
-    private static func cwInternetAddresses(pEpIdentities: [PEPIdentity],
-                                            recipientType: PantomimeRecipientType) -> [CWInternetAddress] {
+    private static func pantomimeAddresses(pEpIdentities: [PEPIdentity],
+                                           recipientType: PantomimeRecipientType) -> [CWInternetAddress] {
         return pEpIdentities.map {
-            let pantomimeAddress = $0.cwInternetAddress()
-            pantomimeAddress.setType(recipientType)
-            return pantomimeAddress
+            let thePantomimeAddress = $0.pantomimeAddress()
+            thePantomimeAddress.setType(recipientType)
+            return thePantomimeAddress
         }
     }
 }
