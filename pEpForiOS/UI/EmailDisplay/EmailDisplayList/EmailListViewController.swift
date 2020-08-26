@@ -24,7 +24,7 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
 
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
-
+    @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     var viewModel: EmailListViewModel? {
         didSet {
             viewModel?.delegate = self
@@ -54,6 +54,7 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        subscribeForKeyboardNotifications()
         edgesForExtendedLayout = .all
 
         doOnce = { [weak self] in
@@ -99,7 +100,7 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
 
 
     deinit {
-        NotificationCenter.default.removeObserver(self)
+        unsubscribeAll()
     }
 
     // MARK: - Setup
