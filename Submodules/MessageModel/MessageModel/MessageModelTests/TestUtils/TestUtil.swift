@@ -308,8 +308,7 @@ extension TestUtil {
         testCase.wait(for: [expSynced], timeout: waitTime)
     }
 
-    //BUFF:
-    // MARK: - Moved from App target. Needs love, review, some ideally remove
+    // MARK: - Moved from App target. Needs love, review, ideally remove
 
     static func makeFolderInteresting(folderType: FolderType,
                                       cdAccount: CdAccount,
