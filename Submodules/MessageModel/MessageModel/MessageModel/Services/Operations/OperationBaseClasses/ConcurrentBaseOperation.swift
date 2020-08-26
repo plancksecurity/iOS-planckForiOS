@@ -71,14 +71,14 @@ open class ConcurrentBaseOperation: BaseOperation {
     open override func cancel() {
         Log.shared.info("cancel: %@", type(of: self).debugDescription())
         backgroundQueue.cancelAllOperations()
-        waitForBackgroundTasksAndFinish()
         super.cancel()
+        waitForBackgroundTasksAndFinish()
     }
 
     public func markAsFinished() {
         Log.shared.info("markAsFinished: %@", type(of: self).debugDescription())
         if isExecuting {
-            state = .finished //BUFF: XX called in cancel case?
+            state = .finished
         }
     }
 
@@ -89,7 +89,7 @@ open class ConcurrentBaseOperation: BaseOperation {
             guard let me = self else {
                 return
             }
-            me.backgroundQueue.waitUntilAllOperationsAreFinished() //BUFF: Cancel(?) causes this waitng forever
+            me.backgroundQueue.waitUntilAllOperationsAreFinished()
             completion?()
             me.markAsFinished()
         }

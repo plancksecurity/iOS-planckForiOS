@@ -57,6 +57,8 @@ extension KeySyncUtil: KeySyncUtilProtocol {
             leaveDeviceGroup() {
                 AppSettings.shared.keySyncEnabled = false
             }
+        } else {
+            AppSettings.shared.keySyncEnabled = false
         }
     }
 }

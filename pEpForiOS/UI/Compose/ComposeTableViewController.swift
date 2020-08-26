@@ -244,6 +244,7 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
         } else if cell is BodyCell {
             cell.textView.sizeToFit()
             scrollUtil.layoutAfterTextDidChange(tableView: tableView, textView: cell.textView)
+            tableView.updateSize()
         } else {
             // We intentionally do not scroll recipinet fields (causes issues).
             tableView.updateSize()

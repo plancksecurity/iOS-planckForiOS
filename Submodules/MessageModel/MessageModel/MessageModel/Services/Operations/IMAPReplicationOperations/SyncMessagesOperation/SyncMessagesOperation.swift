@@ -10,20 +10,20 @@ import CoreData
 
 ///Syncs existing messages with the servers, e.g., detecting deleted ones.
 /// - note: the operations MUST NOT run concurrently. Thus we are using a serial queue.
-class SyncMessagesOperation: ImapSyncOperation {
+class SyncMessagesOperation: ConcurrentBaseOperation {
+    var imapConnection: ImapConnectionProtocol
     let folderInfos: [FolderInfo]
 
-    init(parentName: String = #function,
-         context: NSManagedObjectContext? = nil,
-         errorContainer: ErrorContainerProtocol = ErrorPropagator(),
-         imapConnection: ImapConnectionProtocol,
-         folderInfos: [FolderInfo]) { //BUFF: refactor to get account and get interesting folders++ here. The data given when init-ing might be outdated when running the OP
+    required init(parentName: String = #function,
+                  context: NSManagedObjectContext? = nil,
+                  errorContainer: ErrorContainerProtocol = ErrorPropagator(),
+                  imapConnection: ImapConnectionProtocol,
+                  folderInfos: [FolderInfo]) { //BUFF: refactor to get account and get interesting folders++ here. The data given when init-ing might be outdated when running the OP
         self.folderInfos = folderInfos
+        self.imapConnection = imapConnection
         super.init(parentName: parentName,
                    context: context,
-                   errorContainer: errorContainer,
-                   imapConnection: imapConnection)
-        backgroundQueue.maxConcurrentOperationCount = 1
+                   errorContainer: errorContainer)
     }
 
     override public func main() {
