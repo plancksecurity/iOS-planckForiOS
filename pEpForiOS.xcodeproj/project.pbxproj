@@ -374,6 +374,7 @@
 		5BC4E5FF240E99C2008C01ED /* CustomTraitCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4E5FE240E99C2008C01ED /* CustomTraitCollectionViewController.swift */; };
 		5BC4E601240FF156008C01ED /* TutorialStep1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4E600240FF155008C01ED /* TutorialStep1ViewController.swift */; };
 		5BC4E60724113659008C01ED /* TutorialStep2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4E60624113659008C01ED /* TutorialStep2ViewController.swift */; };
+		5BD4465E24F6594C00422594 /* EmailListViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4465D24F6594C00422594 /* EmailListViewController+Keyboard.swift */; };
 		5BE35A9A249139DD00AC605C /* AccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */; };
 		5BE35AA424913B4700AC605C /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35AA324913B4700AC605C /* SettingsViewModel.swift */; };
 		5BF449F4240827F500B23E50 /* TutorialStep0ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF449F3240827F500B23E50 /* TutorialStep0ViewController.swift */; };
@@ -968,6 +969,7 @@
 		5BC4E5FE240E99C2008C01ED /* CustomTraitCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTraitCollectionViewController.swift; sourceTree = "<group>"; };
 		5BC4E600240FF155008C01ED /* TutorialStep1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep1ViewController.swift; sourceTree = "<group>"; };
 		5BC4E60624113659008C01ED /* TutorialStep2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep2ViewController.swift; sourceTree = "<group>"; };
+		5BD4465D24F6594C00422594 /* EmailListViewController+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailListViewController+Keyboard.swift"; sourceTree = "<group>"; };
 		5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewController.swift; sourceTree = "<group>"; };
 		5BE35AA324913B4700AC605C /* SettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		5BF449F3240827F500B23E50 /* TutorialStep0ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep0ViewController.swift; sourceTree = "<group>"; };
@@ -2286,6 +2288,7 @@
 				B74D08BF1F013F15003D092C /* ViewModel */,
 				220DCE281E0AB4DE002FE716 /* Cells */,
 				43ED53641CC77F95006AB156 /* EmailListViewController.swift */,
+				5BD4465D24F6594C00422594 /* EmailListViewController+Keyboard.swift */,
 			);
 			path = EmailDisplayList;
 			sourceTree = "<group>";
@@ -3055,6 +3058,7 @@
 				15B220521FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift in Sources */,
 				496355B120ECEA2900AA4387 /* ThreadedEmailViewModel+EmailDisplayDelegate.swift in Sources */,
 				43D070332133DC500013B120 /* AppSettings.swift in Sources */,
+				5BD4465E24F6594C00422594 /* EmailListViewController+Keyboard.swift in Sources */,
 				37816544230EC73900B967E3 /* PEPAlertViewModel.swift in Sources */,
 				43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */,
 				4351C2C81F4441190053381F /* blocks.c in Sources */,

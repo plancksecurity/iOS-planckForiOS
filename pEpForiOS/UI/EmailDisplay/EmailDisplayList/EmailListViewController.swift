@@ -26,6 +26,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var editButton: UIBarButtonItem!
 
+    @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     var viewModel: EmailListViewModel? {
         didSet {
             viewModel?.delegate = self
@@ -55,6 +56,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        subscribeForKeyboardNotifications()
         edgesForExtendedLayout = .all
 
         doOnce = { [weak self] in
@@ -99,9 +101,8 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         updateEditButton()
     }
 
-
     deinit {
-        NotificationCenter.default.removeObserver(self)
+        unsubscribeAll()
     }
 
     // MARK: - Setup
@@ -1176,7 +1177,7 @@ extension EmailListViewController: SegueHandlerType {
             vc.hidesBottomBarWhenPushed = true
             break
         case .segueFolderViews:
-            guard let vC = segue.destination as? FolderTableViewController  else {
+            guard segue.destination is FolderTableViewController  else {
                 Log.shared.errorAndCrash("Segue issue")
                 return
             }
