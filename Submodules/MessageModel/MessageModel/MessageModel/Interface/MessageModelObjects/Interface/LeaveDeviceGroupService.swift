@@ -1,5 +1,5 @@
 //
-//  KeySyncService.swift
+//  LeaveDeviceGroupService.swift
 //  MessageModel
 //
 //  Created by Dirk Zimmermann on 19.08.20.
@@ -10,7 +10,7 @@ import Foundation
 
 import PEPObjCAdapterFramework
 
-public class KeySyncService {
+public class LeaveDeviceGroupService {
     static public func leaveDeviceGroup(_ errorCallback: @escaping (Error) -> Void,
                                         successCallback: @escaping () -> Void) {
         PEPAsyncSession().leaveDeviceGroup(errorCallback, successCallback: successCallback)
