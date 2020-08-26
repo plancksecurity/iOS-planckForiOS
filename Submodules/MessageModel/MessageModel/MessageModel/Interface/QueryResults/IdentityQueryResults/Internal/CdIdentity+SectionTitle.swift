@@ -34,7 +34,6 @@ extension CdIdentity {
             // number of sections does not fit the data.
             //
             // Thus we are manually dealing with those problem charactes.
-            //            65314:"B", //65314 is "Ｂ" (not "B")
             let problemCharacterList: [UnicodeScalarValue:LetterToMapTo] =
                 [223: "S"] // 223 is "ß"
             let sectionNameForNonAlphabeticCharacters = "#"
