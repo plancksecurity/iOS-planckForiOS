@@ -31,6 +31,11 @@ class PGPKeyImportSettingViewController: BaseViewController {
         tableView.register(PEPHeaderView.self,
                            forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        showNavigationBar()
+    }
 }
 
 // MARK: - UITableViewDelegate
