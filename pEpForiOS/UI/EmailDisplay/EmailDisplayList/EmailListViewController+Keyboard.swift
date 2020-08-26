@@ -8,13 +8,12 @@
 
 import Foundation
 import UIKit
-/// Protocol to handle keyboard hide/show events
+
+/// Protocol to handle keyboard hide/show events when having table view that occupes the full height.
 protocol KeyboardHandlingProtocol {
     /// Constraint from Safe Area Bottom to Table View Bottom
-    /// Set it's priority 1000
+    /// Set its priority to 1000
     var tableViewBottomConstraint : NSLayoutConstraint! { get }
-
-    /// Table view
     var tableView: UITableView!  { get set }
 }
 
@@ -30,7 +29,7 @@ extension EmailListViewController : KeyboardHandlingProtocol {
     }
 
     /// Do not call this method directly.
-    ///This will be called every time the keyboard will hide.
+    ///This will be called every time the keyboard will show.
     /// - Parameter notification: The notification that informed the event.
     @objc func keyboardWillShow(notification: NSNotification) {
         guard let keyboardSize =
