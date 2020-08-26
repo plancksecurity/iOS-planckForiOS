@@ -34,16 +34,20 @@ extension CdIdentity {
             // number of sections does not fit the data.
             //
             // Thus we are manually dealing with those problem charactes.
+            //            65314:"B", //65314 is "Ｂ" (not "B")
             let problemCharacterList: [UnicodeScalarValue:LetterToMapTo] =
-                [65314:"B", //65314 is "Ｂ" (not "B")
-                    65313: "A",
-                    223: "S"] // 223 i "ß"
+                [223: "S"] // 223 is "ß"
             let sectionNameForNonAlphabeticCharacters = "#"
             guard let firstChar: String = userName?.prefix(ofLength: 1) else {
                 return sectionNameForNonAlphabeticCharacters
             }
             let unicodeValue = firstChar.unicodeScalars.first?.value ?? 0
-
+            // fix for characters in range of Halfwidth and Fullwidth Form of latin alphabet
+            // see IOS-2395
+            if 65281...65376 ~= unicodeValue {
+                let newUnicodeInCorrectRange = UnicodeScalar(unicodeValue-65248)!
+                return Character(newUnicodeInCorrectRange).uppercased()
+            }
             if problemCharacterList.keys.contains(unicodeValue) {
                 guard let result = problemCharacterList[unicodeValue] else {
                     Log.shared.errorAndCrash("No value for existing key")
