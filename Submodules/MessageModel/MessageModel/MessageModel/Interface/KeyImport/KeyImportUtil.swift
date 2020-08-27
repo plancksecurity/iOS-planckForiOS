@@ -113,7 +113,18 @@ extension KeyImportUtil: KeyImportUtilProtocol {
                                 isOwn: true)
         PEPAsyncSession().setOwnKey(pEpId,
                                     fingerprint: fingerprint,
-                                    errorCallback: errorCallback,
-                                    successCallback: callback)
+                                    errorCallback: errorCallback) {
+                                         let session = Session()
+
+                                        session.performAndWait {
+                                            let _ = Identity(address: address,
+                                                             userID: CdIdentity.pEpOwnUserID,
+                                                             addressBookID: nil,
+                                                             userName: userName,
+                                                             session: session)
+                                            session.commit()
+                                            callback()
+                                        }
+        }
     }
 }
