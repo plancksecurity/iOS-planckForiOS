@@ -44,14 +44,14 @@ public class AccountQueryResults: QueryResults, AccountQueryResultsProtocol {
 
     /// Return an Account by index
     ///
-    /// - Parameter index: index of desire message
+    /// - Parameter index: index of desire account
     public subscript(index: Int) -> MMO {
         get {
             do {
                 return try getAccount(forIndex: index)
             } catch{
-                Log.shared.error("Fail to get message for subscript")
-                fatalError("Fail to get message for subscript")
+                Log.shared.error("Fail to get account for subscript")
+                fatalError("Fail to get account for subscript")
             }
         }
     }
