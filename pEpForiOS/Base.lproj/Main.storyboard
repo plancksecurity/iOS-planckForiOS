@@ -1009,10 +1009,10 @@
             </objects>
             <point key="canvasLocation" x="5252" y="833"/>
         </scene>
-        <!--QuickViewDrafts-->
+        <!--DraftsPreviewViewController-->
         <scene sceneID="NTx-Fw-2z3">
             <objects>
-                <viewController storyboardIdentifier="DraftsPreview" title="QuickViewDrafts" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Eid-UA-AW6" customClass="DraftsPreviewViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DraftsPreview" title="QuickViewDrafts" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Eid-UA-AW6" userLabel="DraftsPreviewViewController" customClass="DraftsPreviewViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VLN-R9-iJH">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1086,6 +1086,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="cRe-YG-393"/>
+        <segue reference="jct-YG-JYz"/>
+        <segue reference="MdS-jf-fxc"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="attachment-list-icon" width="14" height="15"/>

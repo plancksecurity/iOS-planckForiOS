@@ -24,6 +24,7 @@ final class DraftsPreviewViewController: UIViewController {
             Log.shared.errorAndCrash(message: "Child viewController is missing!")
             return
         }
+        childVC.view.backgroundColor = .pEpLightBackground
         addChild(childVC)
         childVC.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         childVC.view.frame = container.bounds

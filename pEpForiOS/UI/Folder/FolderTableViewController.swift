@@ -209,6 +209,19 @@ extension FolderTableViewController: DraftsPreviewProtocol {
         vc.hidesBottomBarWhenPushed = false
         vc.modalPresentationStyle = .pageSheet
         vc.modalTransitionStyle = .coverVertical
+
+        if let toolbar = navigationController?.toolbar {
+            vc.modalPresentationStyle = .popover
+            vc.preferredContentSize = CGSize(width: toolbar.frame.width - 16,
+                                             height: 420)
+            vc.popoverPresentationController?.sourceView = vc.view
+            let frame = CGRect(x: toolbar.frame.origin.x,
+                               y: toolbar.frame.origin.y - 10,
+                               width: toolbar.frame.width,
+                               height: toolbar.frame.height)
+            vc.popoverPresentationController?.sourceRect = frame
+        }
+
         present(vc, animated: true)
     }
 
