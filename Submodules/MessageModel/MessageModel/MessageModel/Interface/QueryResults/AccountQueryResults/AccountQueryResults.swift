@@ -50,17 +50,18 @@ public class AccountQueryResults: QueryResults, AccountQueryResultsProtocol {
             do {
                 return try getAccount(forIndex: index)
             } catch{
-                Log.shared.error("Fail to get account for subscript")
-                fatalError("Fail to get account for subscript")
+                Log.shared.errorAndCrash("Fail to get account for subscript")
             }
+            fatalError("Fail to get account for subscript")
         }
     }
 
-    /// - Returns: the number of Accounts
+    /// - Returns: the number of accounts
     public var count: Int {
         return queryResultController.count
     }
 
+    /// Start monitoryng the accounts
     public func startMonitoring() throws {
         try queryResultController.startMonitoring()
     }
