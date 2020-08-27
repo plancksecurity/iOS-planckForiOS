@@ -9,10 +9,23 @@ import Foundation
 import CoreData
 import pEpIOSToolbox
 
+public protocol QueryResultsProtocol {
+    typealias CDObject = NSManagedObject
+    typealias MMO = MessageModelObjectProtocol
+    var all: [MMO] { get }
+    var count: Int { get }
+    subscript(index: Int) -> MMO { get }
+    func startMonitoring() throws
+}
+
 public class QueryResults {
 
     /// Current search inside monitored folder. If no search is apply, search will be nil.
     public weak var rowDelegate: QueryResultsIndexPathRowDelegate?
+
+    init(rowDelegate: QueryResultsIndexPathRowDelegate?) {
+        self.rowDelegate = rowDelegate
+    }
 
     private func get(indexPath: IndexPath?, forType type: NSFetchedResultsChangeType) -> IndexPath? {
         guard let indexPath = indexPath else {
@@ -56,7 +69,7 @@ extension QueryResults: QueryResultsControllerDelegate {
     public func queryResultsControllerDidChangeSection(Info: NSFetchedResultsSectionInfo,
                                                        atSectionIndex sectionIndex: Int,
                                                        for type: NSFetchedResultsChangeType) {
-        // Intentionally ignored. query does not need to handle sections
+        // Intentionally ignored. query does not need to handle sections. Override if need it.
     }
 
     public func queryResultsControllerDidChangeResults() {

@@ -10,36 +10,27 @@ import Foundation
 import CoreData
 import pEpIOSToolbox
 
-public protocol AccountQueryResultsProtocol {
-    typealias MMO = Account
-    typealias CDObject = CdAccount
-    var all: [MMO] { get }
-    var count: Int { get }
-
-    init(rowDelegate: QueryResultsIndexPathRowDelegate?)
-    subscript(index: Int) -> MMO { get }
-    func startMonitoring() throws
-}
-
 /// Provides accounts and informs it's delegate about
 /// changes (insert, update, delete) in the query's results.
-public class AccountQueryResults: QueryResults, AccountQueryResultsProtocol {
+public class AccountQueryResults: QueryResults, QueryResultsProtocol {
+    typealias CDO = CdAccount
     private typealias QueryResultControllerType<T: QueryResultsControllerProtocol> = T
-    private lazy var queryResultController = getNewQueryResultController()
+    private lazy var queryResultController: QueryResultControllerType<QueryResultsController<CDO>> = {
+        return QueryResultsController(predicate: nil,
+                                      context: Stack.shared.mainContext,
+                                      cacheName: nil,
+                                      sortDescriptors: getSortDescriptors(),
+                                      delegate: self)
+    }()
 
     public var all: [MMO] {
         var results = [MMO]()
         do {
-           results = try queryResultController.getResults().map { MessageModelObjectUtils.getAccount(fromCdAccount: $0) }
+            results = try queryResultController.getResults().map { MessageModelObjectUtils.getAccount(fromCdAccount: $0) }
         } catch {
             Log.shared.errorAndCrash("Failed getting results")
         }
         return results
-    }
-
-    public required init(rowDelegate: QueryResultsIndexPathRowDelegate? = nil) {
-        super.init()
-        self.rowDelegate = rowDelegate
     }
 
     /// Return an Account by index
@@ -71,17 +62,8 @@ public class AccountQueryResults: QueryResults, AccountQueryResultsProtocol {
 
 extension AccountQueryResults {
 
-    private func getNewQueryResultController() -> QueryResultControllerType<QueryResultsController<CDObject>> {
-        return QueryResultsController(predicate: nil,
-                                      context: Stack.shared.mainContext,
-                                      cacheName: nil,
-                                      sortDescriptors: getSortDescriptors(),
-                                      delegate: self)
-    }
-
     private func getSortDescriptors() -> [NSSortDescriptor] {
-        return [NSSortDescriptor(key: CdIdentity.AttributeName.address, ascending: false),
-                NSSortDescriptor(key: CdAccount.AttributeName.includeFoldersInUnifiedFolders, ascending: true)]
+        return [NSSortDescriptor(key: CdIdentity.AttributeName.address, ascending: false)]
     }
 
     private func getAccount(forIndex index: Int) throws -> MMO {
