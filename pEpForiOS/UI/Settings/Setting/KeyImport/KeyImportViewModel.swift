@@ -109,25 +109,27 @@ class KeyImportViewModel {
     }
 
     /// Sets the given key as own and informs the delegate about success or error.
-    public func setOwnKey(key: KeyImportViewModel.KeyDetails) {
+    public func setOwnKeys(keys: [KeyImportViewModel.KeyDetails]) {
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
             guard let me = self else {
                 return // The handling VC can go out of scope
             }
 
-            me.keyImporter.setOwnKey(address: key.address,
-                                     fingerprint: key.fingerprint,
-                                     errorCallback: { error in
-                                        guard let _ = error as? KeyImportUtil.SetOwnKeyError else {
-                                            Log.shared.errorAndCrash(message: "Unexpected error have to handle it: \(error)")
-                                            return
-                                        }
-                                        DispatchQueue.main.async {
-                                            me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
-                                        }
-            }) {
-                DispatchQueue.main.async {
-                    me.checkDelegate()?.showSetOwnKeySuccess()
+            for key in keys {
+                me.keyImporter.setOwnKey(address: key.address,
+                                         fingerprint: key.fingerprint,
+                                         errorCallback: { error in
+                                            guard let _ = error as? KeyImportUtil.SetOwnKeyError else {
+                                                Log.shared.errorAndCrash(message: "Unexpected error have to handle it: \(error)")
+                                                return
+                                            }
+                                            DispatchQueue.main.async {
+                                                me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
+                                            }
+                }) {
+                    DispatchQueue.main.async {
+                        me.checkDelegate()?.showSetOwnKeySuccess()
+                    }
                 }
             }
         }
