@@ -12,8 +12,9 @@ import SwipeCellKit
 import Photos
 import pEpIOSToolbox
 import PEPObjCAdapterFramework
+import ContactsUI
 
-class ComposeTableViewController: BaseTableViewController {
+class ComposeTableViewController: UITableViewController {
     @IBOutlet var sendButton: UIBarButtonItem!
 
     private var suggestionsChildViewController: SuggestTableViewController?
@@ -51,6 +52,8 @@ class ComposeTableViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.title = title
+        tableView.hideSeperatorForEmptyCells()
         setupRecipientSuggestionsTableViewController()
         viewModel?.handleDidReAppear()
     }
@@ -66,6 +69,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     private func setupModel() {
         viewModel = ComposeViewModel()
+        viewModel?.suggestViewModel()
     }
 
     private final func setupRecipientSuggestionsTableViewController() {
@@ -80,7 +84,6 @@ class ComposeTableViewController: BaseTableViewController {
                 return
         }
         suggestionsChildViewController = suggestVc
-        suggestionsChildViewController?.appConfig = appConfig
         suggestionsChildViewController?.viewModel = vm.suggestViewModel()
         addChild(suggestVc)
         suggestView.isHidden = true
@@ -117,7 +120,7 @@ extension ComposeTableViewController {
         // Handshake on simple touch if possible
         vm.canDoHandshake { [weak self] (canDoHandshake) in
             guard let me = self else {
-                // Valid case. We might havebeen dismissed already.
+                // Valid case. We might have been dismissed already.
                 // Do nothing ...
                 return
             }
@@ -164,7 +167,7 @@ extension ComposeTableViewController {
         let action = UIAlertAction(title: pEpProtected ? disable : enable ,
                                    style: .default) { [weak self] (action) in
                                     guard let me = self, let vm = me.viewModel else {
-                                        Log.shared.errorAndCrash(message: "lost myself")
+                                        Log.shared.lostMySelf()
                                         return
                                     }
                                     let originalValueOfProtection = vm.state.pEpProtection
@@ -189,7 +192,7 @@ extension ComposeTableViewController {
         }
         vm.canDoHandshake { [weak self] (canDoHandshake) in
             guard let me = self else {
-                // Valid case. We might havebeen dismissed already.
+                // Valid case. We might have been dismissed already.
                 // Do nothing ...
                 return
             }
@@ -292,6 +295,27 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
         presentDocumentAttachmentPicker()
     }
 
+    func showContactsPicker() {
+        presentContactPicker()
+    }
+
+    /// Restore focus to the previous focused cell after closing the picker action
+    private func didHideContactPicker() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(message: "No VM!")
+            return
+        }
+        let idxPath = vm.beforeContactsPickerFocus()
+        guard let cellToFocus = tableView.cellForRow(at: idxPath)
+            as? TextViewContainingTableViewCell else {
+                Log.shared.errorAndCrash("Error casting")
+                return
+        }
+        DispatchQueue.main.async {
+            cellToFocus.setFocus()
+        }
+    }
+
     func documentAttachmentPickerDone() {
         self.setPreviousFocusAfterPicker()
     }
@@ -336,8 +360,6 @@ extension ComposeTableViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("No vm")
                 return
             }
-
-            destination.appConfig = appConfig
             guard let trustManagementViewModel = vm.trustManagementViewModel() else {
                 Log.shared.error("Message not found")
                 return
@@ -372,7 +394,7 @@ extension ComposeTableViewController {
             }
             guard let me = self,
             let picker = me.mediaAttachmentPickerProvider?.imagePicker else {
-                Log.shared.errorAndCrash("Lost somthing")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.present(picker, animated: true)
@@ -385,6 +407,58 @@ extension ComposeTableViewController {
 extension ComposeTableViewController {
     private func presentDocumentAttachmentPicker() {
         present(documentAttachmentPicker, animated: true, completion: nil)
+    }
+}
+
+// MARK: - CNContactPicker
+
+extension ComposeTableViewController: CNContactPickerDelegate {
+    private func presentContactPicker() {
+        let contactPickerVC = CNContactPickerViewController()
+        contactPickerVC.predicateForEnablingContact = NSPredicate(format: "emailAddresses.@count > 0")
+        contactPickerVC.predicateForSelectionOfContact = NSPredicate(format: "emailAddresses.@count == 1")
+        contactPickerVC.predicateForSelectionOfProperty = NSPredicate(format: "key == 'emailAddresses'")
+        contactPickerVC.delegate = self
+        present(contactPickerVC, animated: true)
+    }
+
+    // This gets called when the user cancels his request to pick a contact
+    func contactPickerDidCancel(_ picker: CNContactPickerViewController) {
+        // It's needed to set up an additional, extra work. For example update the focus in a tableview cell/row.
+        didHideContactPicker()
+    }
+
+    // If contact has more than one e-mail we show contact details and user can select only one e-mail
+    func contactPicker(_ picker: CNContactPickerViewController, didSelect contactProperty: CNContactProperty) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        guard let emailAddress = contactProperty.value as? String else {
+            Log.shared.errorAndCrash(message: "emailAddress MUST be valid!")
+            return
+        }
+        vm.handleContactSelected(address: emailAddress,
+                                 addressBookID: contactProperty.contact.identifier,
+                                 userName: contactProperty.contact.givenName)
+        didHideContactPicker()
+    }
+
+    // If contact has only one e-mail we choose that one
+    func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        guard let emailAddress = contact.emailAddresses.first else {
+            Log.shared.errorAndCrash(message: "emailAddress MUST be valid!")
+            return
+        }
+        vm.handleContactSelected(address: String(emailAddress.value),
+                                 addressBookID: contact.identifier,
+                                 userName: contact.givenName)
+
+        didHideContactPicker()
     }
 }
 
@@ -536,7 +610,7 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") {
             [weak self] action, indexPath in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             me.deleteAction(forCellAt: indexPath)
@@ -555,7 +629,7 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
             // The last cell is not yet displayed (as we are in "willDisplay ..."), thus async.
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                    // Valid case. We might have been dismissed already.
                     return
                 }
                 me.setInitialFocus()
@@ -592,7 +666,7 @@ extension ComposeTableViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        let idxPath = vm.beforePickerFocus()
+        let idxPath = vm.beforeDocumentAttachmentPickerFocus()
         guard let cellToFocus = tableView.cellForRow(at: idxPath)
             as? TextViewContainingTableViewCell else {
                 Log.shared.errorAndCrash("Error casting")
@@ -640,7 +714,7 @@ extension ComposeTableViewController {
         let text = vm.deleteActionTitle
         action = ac.action(text, .destructive) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             me.dismiss()
@@ -657,7 +731,7 @@ extension ComposeTableViewController {
         let text = vm.saveActionTitle
         action = ac.action(text, .default) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             vm.handleSaveActionTriggered()
@@ -675,7 +749,7 @@ extension ComposeTableViewController {
         let text = vm.keepInOutboxActionTitle
         action = ac.action(text, .default) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             me.dismiss()

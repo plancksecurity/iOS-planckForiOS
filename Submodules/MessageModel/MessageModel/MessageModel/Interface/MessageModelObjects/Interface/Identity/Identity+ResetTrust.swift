@@ -62,7 +62,7 @@ extension Identity {
     }
 
     private func allIdentitiesWithTheSameUserID() -> [Identity] {
-        let predicate = CdIdentity.PredicateFactory.sameUserID(value: userID)
+        let predicate = CdIdentity.PredicateFactory.with(userId: userID)
         guard let cdidentites = CdIdentity.all(predicate: predicate, in: moc) as? [CdIdentity]  else {
             Log.shared.errorAndCrash(message: "No identities found!!!")
             return []

@@ -9,12 +9,11 @@
 import UIKit
 import MessageModel
 
-final class EditableAccountSettingsViewController: BaseViewController {
+final class EditableAccountSettingsViewController: UIViewController {
 
-    @IBOutlet weak var saveButton: UIBarButtonItem!
+    @IBOutlet private weak var saveButton: UIBarButtonItem!
 
     var viewModel: EditableAccountSettingsViewModel?
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -48,7 +47,6 @@ final class EditableAccountSettingsViewController: BaseViewController {
                 EditableAccountSettingsTableViewModel(account: account,
                                                       delegate: tableViewController)
             viewModel?.tableViewModel = tableViewController.viewModel
-            tableViewController.appConfig = appConfig
         default:
             break
         }

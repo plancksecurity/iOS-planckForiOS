@@ -12,7 +12,7 @@ import pEpIOSToolbox
 import MessageModel
 import PantomimeFramework
 
-final class SMTPSettingsViewController: BaseViewController, TextfieldResponder {
+final class SMTPSettingsViewController: UIViewController, TextfieldResponder {
     @IBOutlet weak var manualAccountSetupContainerView: ManualAccountSetupContainerView!
 
     /// - Note: This VC doesn't have a view model yet, so this is used for the model.
@@ -201,7 +201,7 @@ extension SMTPSettingsViewController: VerifiableAccountDelegate {
                 try verifiableAccount?.save() { [weak self] success in
                     DispatchQueue.main.async { [weak self] in
                         guard let me = self else {
-                            Log.shared.errorAndCrash("Lost MySelf")
+                            // Valid case. We might have been dismissed already.
                             return
                         }
                         switch success {
@@ -220,7 +220,7 @@ extension SMTPSettingsViewController: VerifiableAccountDelegate {
         case .failure(let error):
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                    // Valid case. We might have been dismissed already.
                     return
                 }
                 me.isCurrentlyVerifying = false

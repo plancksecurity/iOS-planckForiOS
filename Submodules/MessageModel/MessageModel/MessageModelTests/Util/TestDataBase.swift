@@ -15,9 +15,7 @@ import PantomimeFramework
 
 /// Base class for test data.
 /// - Note:
-///   1. This class is used both in MessageModel and the app,
-///      so it's _duplicated code_ for the testing targets.
-///   2. Make sure that, in your SecretTestData, you override:
+///   1. Make sure that, in your SecretTestData, you override:
 ///      * `populateAccounts` if you don't use the greenmail local server for testing,
 ///        or you want to test against other servers for various reasons.
 ///      * `populateVerifiableAccounts` in order to provide verifiable servers, to test

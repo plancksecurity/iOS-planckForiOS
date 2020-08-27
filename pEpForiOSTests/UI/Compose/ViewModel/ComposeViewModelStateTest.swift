@@ -13,7 +13,7 @@ import XCTest
 @testable import MessageModel
 import PEPObjCAdapterFramework
 
-class ComposeViewModelStateTest: CoreDataDrivenTestBase {
+class ComposeViewModelStateTest: AccountDrivenTestBase {
     private var testDelegate: TestDelegate?
     var testee: ComposeViewModel.ComposeViewModelState?
     var draftedMessageAllButBccSet: Message?
@@ -25,7 +25,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         super.setUp()
         someone = Identity(address: "someone@someone.someone")
         let drafts = Folder(name: "Inbox", parent: nil, account: account, folderType: .drafts)
-        drafts.save()
+        drafts.session.commit()
         let msg = Message(uuid: UUID().uuidString, parentFolder: drafts)
         msg.from = account.user
         msg.replaceTo(with: [account.user, someone])
@@ -39,7 +39,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         msg.appendToAttachments(Attachment(data: Data(),
                                            mimeType: "image/jpg",
                                            contentDisposition: .inline))
-        msg.save()
+        msg.session.commit()
         draftedMessageAllButBccSet = msg
 
         setupSimpleTestee()

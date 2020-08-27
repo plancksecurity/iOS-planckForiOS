@@ -192,7 +192,8 @@ extension DecryptMessageOperation {
     private func updatePossibleFakeMessage(forFetchedMessage cdMessage: CdMessage,
                                            pEpDecryptedMessage: PEPMessage?) -> CdMessage {
         guard let uuid = pEpDecryptedMessage?.messageID else {
-            Log.shared.errorAndCrash("No uuid")
+            //Valid case. No message can be found because the it has been deleted from the DB.
+            // Probably the user deleted the belonging Account
             return cdMessage
         }
 

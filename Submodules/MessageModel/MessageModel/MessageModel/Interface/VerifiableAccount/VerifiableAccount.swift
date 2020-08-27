@@ -82,7 +82,6 @@ public class VerifiableAccount: VerifiableAccountProtocol {
          automaticallyTrustedImapServer: Bool = false,
          manuallyTrustedImapServer: Bool = false,
          keySyncEnable: Bool = true,
-         alsoCreatePEPFolder: Bool = false,
          containsCompleteServerInfo: Bool = false,
          usePEPFolderProvider: UsePEPFolderProviderProtocol? = nil) {
         self.verifiableAccountDelegate = verifiableAccountDelegate
@@ -264,8 +263,7 @@ extension VerifiableAccount {
 extension VerifiableAccount {
     private func findOrCreateAccount(context: NSManagedObjectContext,
                                      identity: CdIdentity) -> CdAccount {
-        let p = NSPredicate(format: "%K = %@" ,
-                            CdAccount.RelationshipName.identity, identity)
+        let p = CdAccount.PredicateFactory.belongingToIdentity(identity: identity)
         if let cdAccount = CdAccount.first(predicate: p, in: context) {
             return cdAccount
         } else {

@@ -21,7 +21,7 @@ class AttachmentViewModel: CellViewModel {
         var result: String? = nil
         attachment.session.performAndWait { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             result = me.attachment.fileName
@@ -33,7 +33,7 @@ class AttachmentViewModel: CellViewModel {
         var result: String? = nil
         attachment.session.performAndWait { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             guard let mimeType = me.attachment.mimeType else {

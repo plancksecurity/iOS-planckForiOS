@@ -10,7 +10,6 @@ import CoreData
 
 extension CdExtraKey {
     struct PredicateFactory {
-
         /// - returns: predicate for all CdExtraKeys with given FPR
         static func containing(fingerprinnt fpr: String) -> NSPredicate {
             return NSPredicate(format: "%K = %@", CdKey.AttributeName.fingerprint, fpr)

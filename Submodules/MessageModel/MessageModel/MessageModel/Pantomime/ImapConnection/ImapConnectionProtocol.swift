@@ -13,10 +13,13 @@ import CoreData
 /// You MUST use this to place IMAP related calls to Pantomime.
 /// Conform to ImapSyncDelegate to get IMAP ralated Pantomime delegate calls.
 protocol ImapConnectionProtocol {
+    var delegate: ImapConnectionDelegate? { get set }
+
     /// Indicates if a client certificate was set for this connection.
     var isClientCertificateSet: Bool { get }
 
-    var delegate: ImapConnectionDelegate? { get set }
+    /// Whether or not the server supports IMAP IDLE.
+    var supportsIdle: Bool { get }
 
     /// Calls `CWIMAPStore`'s `listFolders`, which sends a LIST command to the server.
     ///
@@ -79,7 +82,7 @@ protocol ImapConnectionProtocol {
 
     // MARK: - FOLDERS
 
-    func createFolderWithName(_ folderName: String)
+    func createFolderNamed(_ folderName: String)
 
     func deleteFolderWithName(_ folderName: String)
 

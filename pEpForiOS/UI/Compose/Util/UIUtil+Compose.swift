@@ -7,10 +7,9 @@
 //
 
 import MessageModel
+import pEpIOSToolbox
 
 // MARK: - UIUtil+Compose
-
-import MessageModel
 
 extension UIUtils {
 
@@ -20,17 +19,14 @@ extension UIUtils {
     ///
     /// - Parameters:
     ///   - url: url to parse recipients from
-    ///   - appConfig: AppConfig to forward
-    static public func presentComposeView(forRecipientInUrl url: URL?,
-                                   appConfig: AppConfig) {
+    static public func presentComposeView(forRecipientInUrl url: URL? = nil) {
         let address = url?.firstRecipientAddress()
         if url != nil && address == nil {
             // A URL has been passed, but it is no valid mailto URL.
             return
         }
 
-        presentComposeView(forRecipientWithAddress: address,
-                           appConfig: appConfig)
+        presentComposeView(forRecipientWithAddress: address)
     }
 
     /// Modally presents a "Compose New Mail" view.
@@ -41,8 +37,7 @@ extension UIUtils {
     ///   - address: address to prefill "To:" field with
     ///   - viewController: presenting view controller
     ///   - appConfig: AppConfig to forward
-    static public func presentComposeView(forRecipientWithAddress address: String?,
-                                   appConfig: AppConfig) {
+    static public func presentComposeView(forRecipientWithAddress address: String?) {
         let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
         guard
             let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
@@ -58,7 +53,6 @@ extension UIUtils {
         } else {
             composeVc.viewModel = composeViewModel(forRecipientWithAddress: address)
         }
-        composeVc.appConfig = appConfig
         present(composeNavigationController: composeNavigationController)
     }
 
@@ -71,11 +65,8 @@ extension UIUtils {
             Log.shared.errorAndCrash("Mail not found")
             return ComposeViewModel()
         }
-        var prefilledTo: Identity? = nil
         let to = Identity(address: address)
-        to.save()
-        prefilledTo = to
-        var initData = ComposeViewModel.InitData(withPrefilledToRecipient: prefilledTo, composeMode: .normal)
+        var initData = ComposeViewModel.InitData(withPrefilledToRecipient: to, composeMode: .normal)
         let deviceField = NSLocalizedString("Device", comment: "Device field, reporting issue")
         initData.bodyPlaintext = "\n\n\(deviceField): \(UIDevice().type.rawValue)" + "\n" + "OS: \(UIDevice.current.systemVersion)"
         let state = ComposeViewModel.ComposeViewModelState(initData: initData)
@@ -87,7 +78,7 @@ extension UIUtils {
         var prefilledTo: Identity? = nil
         if let address = address {
             let to = Identity(address: address)
-            to.save()
+            to.session.commit()
             prefilledTo = to
         }
         return ComposeViewModel(composeMode: .normal, prefilledTo: prefilledTo)
