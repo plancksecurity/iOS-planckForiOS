@@ -38,7 +38,7 @@ extension KeyImportUtil {
 }
 
 extension KeyImportUtil {
-    public struct KeyData {
+    public struct KeyData: Hashable {
         public let address: String
         public let fingerprint: String
         public let userName: String
@@ -72,6 +72,7 @@ extension KeyImportUtil: KeyImportUtilProtocol {
 
             var identityFoundWithMissingData = false
             var keyDatas = [KeyData]()
+            var keyDataSet = Set<KeyData>()
 
             for identity in identities {
                 guard let fingerprint = identity.fingerPrint else {
@@ -82,9 +83,13 @@ extension KeyImportUtil: KeyImportUtilProtocol {
                     identityFoundWithMissingData = true
                     break
                 }
-                keyDatas.append(KeyData(address: identity.address,
-                                        fingerprint: fingerprint,
-                                        userName: userName))
+                let theKeyData = KeyData(address: identity.address,
+                                         fingerprint: fingerprint,
+                                         userName: userName)
+                if !keyDataSet.contains(theKeyData) {
+                    keyDatas.append(theKeyData)
+                    keyDataSet.insert(theKeyData)
+                }
             }
 
             guard !identityFoundWithMissingData else {
