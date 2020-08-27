@@ -233,6 +233,20 @@ extension AppSettings: AppSettingsProtocol {
         }
     }
     
+    public var signatureAddresDictionary: [String:String] {
+        get {
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.keyAccountSignature) as? [String:String] else {
+                Log.shared.errorAndCrash(message: "Signature dictionary not found")
+                return [String:String]()
+            }
+            return dictionary
+        }
+        set {
+            AppSettings.userDefaults.set(newValue,
+                                         forKey: AppSettings.keyAccountSignature)
+        }
+    }
+    
     public func storeSignatureForAddress(address: String, signature: String) {
         let finalKey = AppSettings.keyDefaultAccountAddress + address
         AppSettings.userDefaults.set(signature,
