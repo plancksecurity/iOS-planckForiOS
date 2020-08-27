@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 
+/// The internal (!) protocol for MMOs
 protocol ManagedObjectWrapperProtocol: Persistable, SessionAware {
     associatedtype T: NSManagedObject
 
@@ -32,10 +33,6 @@ extension ManagedObjectWrapperProtocol {
 
     public var isDeleted: Bool {
         return cdObject.isDeleted
-    }
-
-    public func save() {
-        moc.saveAndLogErrors()
     }
 
     public func delete() {

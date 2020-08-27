@@ -16,13 +16,16 @@ import PEPObjCAdapterFramework
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
-    private var appConfig: AppConfig?
-
     /** The model */
     private var messageModelService: MessageModelServiceProtocol?
 
+    private var errorSubscriber = ErrorSubscriber()
+    
     /// Error Handler bubble errors up to the UI
-    private var errorPropagator = ErrorPropagator()
+    private lazy var errorPropagator: ErrorPropagator = {
+        let createe = ErrorPropagator(subscriber: errorSubscriber)
+        return createe
+    }()
 
     private let userInputProvider = UserInputProvider()
 
@@ -32,10 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
 
     private func setupInitialViewController() -> Bool {
-        guard let appConfig = appConfig else {
-            Log.shared.errorAndCrash("No AppConfig")
-            return false
-        }
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
         guard let initialNVC = mainStoryboard.instantiateViewController(withIdentifier: "main.initial.nvc") as? UISplitViewController,
             let navController = initialNVC.viewControllers.first as? UINavigationController,
@@ -44,7 +43,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 Log.shared.errorAndCrash("Problem initializing UI")
                 return false
         }
-        rootVC.appConfig = appConfig
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         window.rootViewController = initialNVC
@@ -60,12 +58,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                   keySyncStateProvider: AppSettings.shared,
                                                   usePEPFolderProvider: AppSettings.shared,
                                                   passphraseProvider: userInputProvider)
-
-        appConfig = AppConfig(errorPropagator: errorPropagator,
-                              oauth2AuthorizationFactory: oauth2Provider)
-
-        // This is a very dirty hack!! See SecureWebViewController docs for details.
-        SecureWebViewController.appConfigDirtyHack = appConfig
     }
 
     private func askUserForNotificationPermissions() {
@@ -76,7 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - HELPER
 
     private func cleanup(andCall completionHandler:(UIBackgroundFetchResult) -> Void,
-                                result:UIBackgroundFetchResult) {
+                         result:UIBackgroundFetchResult) {
         PEPSession.cleanup()
         completionHandler(result)
     }
@@ -100,14 +92,14 @@ extension AppDelegate {
         Log.shared.logDebugInfo()
 
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
-        Appearance.setup    ()
+        Appearance.setup()
         setupServices()
         askUserForNotificationPermissions()
         var result = setupInitialViewController()
 
         if let openedToOpenFile = launchOptions?[UIApplication.LaunchOptionsKey.url] as? URL {
             // We have been opened by the OS to handle a certain file.
-             result = handleUrlTheOSHasBroughtUsToForgroundFor(openedToOpenFile)
+            result = handleUrlTheOSHasBroughtUsToForgroundFor(openedToOpenFile)
         }
 
         return result
@@ -195,7 +187,7 @@ extension AppDelegate {
     func application(_ app: UIApplication,
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-         return handleUrlTheOSHasBroughtUsToForgroundFor(url)
+        return handleUrlTheOSHasBroughtUsToForgroundFor(url)
     }
 
     func application(_ application: UIApplication, continue userActivity: NSUserActivity,

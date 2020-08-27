@@ -8,6 +8,5 @@
 
 import Foundation
 
-/// MessageModelObject Protocol
-//???: obsolete?
+/// The public (!) protocol for MMOs
 public protocol MessageModelObjectProtocol: class, Persistable {}

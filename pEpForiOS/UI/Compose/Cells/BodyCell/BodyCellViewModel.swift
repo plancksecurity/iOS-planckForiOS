@@ -127,7 +127,7 @@ extension BodyCellViewModel {
         }
         attachment.session.performAndWait { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             attachment.contentDisposition = .inline

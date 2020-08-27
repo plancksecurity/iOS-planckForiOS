@@ -41,7 +41,7 @@ class AppendMailsToFolderOperation: ImapSyncOperation {
     }
 
     override public func main() {
-        if !checkImapSync() {
+        if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
         }

@@ -7,10 +7,12 @@
 //
 
 
-@testable import MessageModel
 import CoreData
-import PEPObjCAdapterFramework
 import XCTest
+
+@testable import MessageModel
+import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 class TestUtil {
     
@@ -505,7 +507,7 @@ extension TestUtil {
     }
 
     static func loadString(fileName: String) -> String? {
-        if let data = loadData(fileName: fileName) {
+        if let data = MiscUtil.loadData(bundleClass: self, fileName: fileName) {
             guard let content = NSString(data: data, encoding: String.Encoding.ascii.rawValue)
                 else {
                     XCTAssertTrue(
@@ -515,19 +517,6 @@ extension TestUtil {
             return content as String
         }
         return nil
-    }
-
-    static func loadData(fileName: String) -> Data? {
-        let testBundle = Bundle(for: PEPSessionTest.self)
-        guard let keyPath = testBundle.path(forResource: fileName, ofType: nil) else {
-            XCTFail("Could not find file named \(fileName)")
-            return nil
-        }
-        guard let data = try? Data(contentsOf: URL(fileURLWithPath: keyPath)) else {
-            XCTFail("Could not load file named \(fileName)")
-            return nil
-        }
-        return data
     }
 
     static func createCdAttachment(inlined: Bool = true) -> CdAttachment {

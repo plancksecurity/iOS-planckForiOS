@@ -44,6 +44,8 @@ protocol ComposeViewModelDelegate: class {
 
     func showDocumentAttachmentPicker()
 
+    func showContactsPicker()
+
     func documentAttachmentPickerDone()
 
     func showTwoButtonAlert(withTitle title: String,
@@ -147,8 +149,12 @@ class ComposeViewModel {
         }
     }
 
-    public func beforePickerFocus() -> IndexPath {
+    public func beforeDocumentAttachmentPickerFocus() -> IndexPath {
         return indexPathBodyVm
+    }
+
+    public func beforeContactsPickerFocus() -> IndexPath {
+        return lastRowWithSuggestions ?? indexPathBodyVm
     }
 
     public func handleUserSelectedRow(at indexPath: IndexPath) {
@@ -168,7 +174,7 @@ class ComposeViewModel {
         let safeState = state.makeSafe(forSession: Session.main)
         let sendClosure = { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
@@ -176,7 +182,7 @@ class ComposeViewModel {
                 return
             }
             msg.sent = Date()
-            msg.save()
+            msg.session.commit()
 
             guard let data = me.state.initData else {
                 Log.shared.errorAndCrash("No data")
@@ -192,7 +198,7 @@ class ComposeViewModel {
 
         showAlertFordwardingLessSecureIfRequired(forState: safeState) { [weak self] (accepted) in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             guard accepted else {
@@ -550,7 +556,7 @@ extension ComposeViewModel {
 
 extension ComposeViewModel {
     func suggestViewModel() -> SuggestViewModel {
-        let createe = SuggestViewModel(resultDelegate: self)
+        let createe = SuggestViewModel(from: state.from, resultDelegate: self)
         suggestionsVM = createe
         return createe
     }
@@ -643,8 +649,8 @@ extension ComposeViewModel {
         }
         let title: String
         if data.isDrafts {
-            title = NSLocalizedString("Discharge changes", comment:
-                "ComposeTableView: button to decide to discharge changes made on a drafted mail.")
+            title = NSLocalizedString("Delete Changes", comment:
+                "ComposeTableView: button to decide to delete changes made on a drafted mail.")
         } else if data.isOutbox {
             title = NSLocalizedString("Delete", comment:
                 "ComposeTableView: button to decide to delete a message from Outbox after " +
@@ -716,7 +722,7 @@ extension ComposeViewModel {
     func canDoHandshake(completion: @escaping (Bool)->Void) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.state.canHandshake(completion: completion)
@@ -788,6 +794,27 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         delegate?.showSuggestions(forRowAt: idxPath)
         suggestionsVM?.updateSuggestion(searchString: newText.cleanAttachments)
     }
+
+// MARK: - Add Contact
+
+    func addContactTapped() {
+        delegate?.showContactsPicker()
+    }
+
+    func handleContactSelected(address: String, addressBookID: String, userName: String) {
+        guard
+            let idxPath = lastRowWithSuggestions,
+            let recipientVM = sections[idxPath.section].rows[idxPath.row] as? RecipientCellViewModel
+            else {
+                Log.shared.errorAndCrash("No row VM")
+                return
+        }
+        let contactIdentity = Identity(address: address, userID: nil,
+                                       addressBookID: addressBookID,
+                                       userName: userName,
+                                       session: Session.main)
+        recipientVM.add(recipient: contactIdentity)
+    }
 }
 
 // MARK: AccountCellViewModelResultDelegate
@@ -852,7 +879,7 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
         // Dispatch as next to not "Attempted to call -cellForRowAtIndexPath: on the table view while it was in the process of updating its visible cells, which is not allowed. ...". See IOS-2347 for details.
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might havebeen dismissed already.
                 return
             }
             me.delegate?.contentChanged(inRowAt: idxPath)

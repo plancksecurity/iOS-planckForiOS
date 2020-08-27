@@ -153,7 +153,7 @@ extension Stack {
 
         changePropagatorContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         changePropagatorContext.persistentStoreCoordinator = coordinator
-        changePropagatorContext.name = "backgroundContext"
+        changePropagatorContext.name = "changePropagatorContext"
         changePropagatorContext.automaticallyMergesChangesFromParent = true
         changePropagatorContext.undoManager = nil
         changePropagatorContext.mergePolicy = Stack.objectWinsMergePolicy

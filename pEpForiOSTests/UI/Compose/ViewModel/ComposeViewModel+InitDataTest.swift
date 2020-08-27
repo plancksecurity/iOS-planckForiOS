@@ -10,8 +10,9 @@ import XCTest
 
 @testable import pEpForiOS
 @testable import MessageModel
+import pEpIOSToolbox
 
-class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
+class ComposeViewModel_InitDataTest: AccountDrivenTestBase {
     var inbox: Folder?
     var drafts: Folder?
     var outbox: Folder?
@@ -26,13 +27,13 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
 
         // Folders
         let inbox = Folder(name: "Inbox", parent: nil, account: account, folderType: .inbox)
-        inbox.save()
+        inbox.session.commit()
         self.inbox = inbox
         let drafts = Folder(name: "Drafts", parent: nil, account: account, folderType: .drafts)
-        drafts.save()
+        drafts.session.commit()
         self.drafts = drafts
         let outbox = Folder(name: "Outbox", parent: nil, account: account, folderType: .outbox)
-        outbox.save()
+        outbox.session.commit()
         self.outbox = outbox
         let message = createMessage(inFolder: inbox,
                                     from: account.user,
@@ -48,9 +49,9 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
                                     uid: nil)
 
 //        message.appendToAttachments(createTestAttachments())
-        message.save()
+        message.session.commit()
         messageAllButBccSet = message
-        someone.save()
+        someone.session.commit()
     }
 
     override func tearDown() {
@@ -612,7 +613,8 @@ extension ComposeViewModel_InitDataTest {
     }
     private func getStandardJpgData() -> Data {
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
-        guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
+        guard let imageData = MiscUtil.loadData(bundleClass: ComposeViewModel_InitDataTest.self,
+                                                fileName: imageFileName) else {
             XCTFail("imageData is nil!")
             return Data()
         }
@@ -631,7 +633,8 @@ extension ComposeViewModel_InitDataTest {
             var attachments = [Attachment]()
             let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg" //IOS-1399: move to Utils
             guard
-                let imageData = TestUtil.loadData(fileName: imageFileName),
+                let imageData = MiscUtil.loadData(bundleClass: ComposeViewModel_InitDataTest.self,
+                                                  fileName: imageFileName),
                 let image = UIImage(data: imageData) else {
                     XCTFail("No img")
                     return []

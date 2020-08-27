@@ -15,6 +15,8 @@ struct RelationshipKeyPath {
         CdFolder.RelationshipName.account
 
     /// CdMessage
+    static let cdMessage_parent_account_isUnifiable = CdMessage.RelationshipName.parent + "." +
+        CdFolder.RelationshipName.account + "." + CdAccount.AttributeName.includeFoldersInUnifiedFolders
     static let cdMessage_parent_account = CdMessage.RelationshipName.parent + "." +
         CdFolder.RelationshipName.account
     static let cdMessage_parent_name = CdMessage.RelationshipName.parent + "." +
