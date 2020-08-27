@@ -44,18 +44,20 @@ class KeyImportUtilTest: XCTestCase {
         }
 
         let expImport = expectation(description: "expImort")
-        var someKeyData: KeyImportUtil.KeyData? = nil
+        var someKeyDatas = [KeyImportUtil.KeyData]()
         KeyImportUtil().importKey(url: url,
                                   errorCallback: { error in
                                     XCTFail()
                                     expImport.fulfill()
-        }) { keyData in
-            someKeyData = keyData
+        }) { keyDatas in
+            someKeyDatas = keyDatas
             expImport.fulfill()
         }
         wait(for: [expImport], timeout: TestUtil.waitTime)
 
-        guard let theKeyData = someKeyData else {
+        XCTAssertFalse(someKeyDatas.isEmpty)
+
+        guard let theKeyData = someKeyDatas[safe: 0] else {
             XCTFail()
             return
         }
@@ -90,20 +92,22 @@ class KeyImportUtilTest: XCTestCase {
                                         return
         }
 
-        var someKeyData: KeyImportUtil.KeyData? = nil
+        var someKeyDatas = [KeyImportUtil.KeyData]()
 
         let expImport = expectation(description: "expImort")
         keyImport.importKey(url: url,
                             errorCallback: { error in
                                 XCTFail()
                                 expImport.fulfill()
-        }) { keyData in
-            someKeyData = keyData
+        }) { keyDatas in
+            someKeyDatas = keyDatas
             expImport.fulfill()
         }
         wait(for: [expImport], timeout: TestUtil.waitTime)
 
-        guard let theKeyData = someKeyData else {
+        XCTAssertFalse(someKeyDatas.isEmpty)
+
+        guard let theKeyData = someKeyDatas[safe: 0] else {
             XCTFail()
             return
         }
