@@ -99,20 +99,10 @@ extension KeyImportUtil: KeyImportUtilProtocol {
                           fingerprint: String,
                           errorCallback: @escaping (Error) -> (),
                           callback: @escaping () -> ()) {
-        let session = Session()
-
-        session.performAndWait {
-            guard let account = Account.by(address: address, in: session) else {
-                errorCallback(SetOwnKeyError.noMatchingAccount)
-                return
-            }
-
-            account.user.setOwnKey(fingerprint: fingerprint,
-                                   errorCallback: { error in
-                                    errorCallback(error)
-            }) {
-                callback()
-            }
-        }
+        let pEpId = PEPIdentity(address: address, userID: nil, userName: nil, isOwn: true)
+        PEPAsyncSession().setOwnKey(pEpId,
+                                    fingerprint: fingerprint,
+                                    errorCallback: errorCallback,
+                                    successCallback: callback)
     }
 }
