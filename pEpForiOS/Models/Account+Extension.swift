@@ -21,4 +21,16 @@ extension Account {
         }
         return Account.by(address: addressDefaultAccount)
     }
+    
+    var signature: String {
+        get {
+            let signatures = AppSettings.shared.signatureAddresDictionary
+            return signatures[user.address] ?? String.pepSignature
+        }
+        set {
+            var signatures = AppSettings.shared.signatureAddresDictionary
+            signatures[user.address] = newValue
+            AppSettings.shared.signatureAddresDictionary = signatures
+        }
+    }
 }

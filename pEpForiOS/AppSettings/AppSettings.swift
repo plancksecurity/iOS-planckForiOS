@@ -93,6 +93,7 @@ extension AppSettings {
         defaults[AppSettings.keyShouldShowTutorialWizard] = true
         defaults[AppSettings.keyUserHasBeenAskedForContactAccessPermissions] = false
         defaults[AppSettings.keyUnsecureReplyWarningEnabled] = false
+        defaults[AppSettings.keyAccountSignature] = [String:String]()
 
         AppSettings.userDefaults.register(defaults: defaults)
     }
