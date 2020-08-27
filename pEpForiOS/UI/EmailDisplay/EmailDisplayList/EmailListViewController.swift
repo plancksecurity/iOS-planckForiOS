@@ -29,10 +29,11 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     var viewModel: EmailListViewModel? {
         didSet {
             viewModel?.delegate = self
+            viewModel?.draftsPreviewDelegate = draftsPreviewDelegate
         }
     }
 
-    weak var draftsPreviewDelegate: DraftsPreviewProtocol?
+    public weak var draftsPreviewDelegate: DraftsPreviewProtocol?
 
     /// This is used to handle the selection row when it recives an update
     /// and also when swipeCellAction is performed to store from which cell the action is done.
@@ -672,6 +673,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                 tableView.deselectRow(at: indexPath, animated: true)
             }
         }
+
         updateBackButton(isTableViewEditing: tableView.isEditing)
     }
 

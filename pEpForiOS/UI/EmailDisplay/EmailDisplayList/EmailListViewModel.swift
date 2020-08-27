@@ -22,6 +22,9 @@ protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
 // MARK: - EmailListViewModel
 
 class EmailListViewModel: EmailDisplayViewModel {
+
+    public weak var draftsPreviewDelegate: DraftsPreviewProtocol?
+
     private var emailDetailViewModel: EmailDetailViewModel?
     private let contactImageTool = IdentityImageTool()
 

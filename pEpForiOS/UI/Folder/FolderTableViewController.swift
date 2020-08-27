@@ -112,10 +112,7 @@ final class FolderTableViewController: UITableViewController {
     @objc private func draftsPreviewTapped(sender: UILongPressGestureRecognizer) {
         if sender.state != .began {
             return
-// TODO: - AK
-//            UIUtils.presentDraftsPreview()
         }
-
         showDraftsPreview()
     }
     
@@ -209,9 +206,8 @@ extension FolderTableViewController: DraftsPreviewProtocol {
                 return
         }
         vc.folderVM = folderVM
-        vc.draftsPreviewProtocol = self
         vc.hidesBottomBarWhenPushed = false
-        vc.modalPresentationStyle = .currentContext
+        vc.modalPresentationStyle = .pageSheet
         vc.modalTransitionStyle = .coverVertical
         present(vc, animated: true)
     }

@@ -16,7 +16,6 @@ final class DraftsPreviewViewController: UIViewController {
     @IBOutlet weak var container: UIView!
 
     public var folderVM: FolderViewModel?
-    public weak var draftsPreviewProtocol: DraftsPreviewProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,12 +62,10 @@ final class DraftsPreviewViewController: UIViewController {
 // MARK: - IBActions
 
     @IBAction func composeAction() {
-        guard let delegate = draftsPreviewProtocol else {
-            Log.shared.errorAndCrash(message: "draftsPreviewDelegate is nil!")
-            return
+
+        dismiss(animated: true) {
+            UIUtils.presentComposeView()
         }
-        delegate.composeAction()
-        dismissView()
     }
 
     @IBAction func dismissView() {
