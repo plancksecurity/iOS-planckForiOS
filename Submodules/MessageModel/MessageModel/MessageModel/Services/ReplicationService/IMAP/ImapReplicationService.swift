@@ -43,53 +43,26 @@ class ImapReplicationService: OperationBasedService {
             cdAccount = privateMoc.object(with: cdAccountObjectID) as? CdAccount
         }
 
-//        // Custom finisBlock to make sure all local changes (made by the user) are synced with the server.
-//        finishBlock = { [weak self] in
-//            guard let me = self else {
-//                Log.shared.errorAndCrash("Lost myself")
-//                return
-//            }
-//            Log.shared.info("%@ - custom finishBlock called with state: %@)",
-//                            "\(type(of: self))", "\(me.state)")
-//
-//            me.backgroundQueue.cancelAllOperations() //BUFF: problem cancelling OPs. Sync delegate is set, OP never finishes. Assume Pantomime never aswers for some reason
-//            me.syncLocalChanges()
-//            me.state = .finshing
-//            me.doNotRestart()
-//        }
+        // Custom finisBlock to make sure all local changes (made by the user) are synced with the server.
+        finishBlock = { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.state = .finshing
+            let toDos = me.internalOperations(syncOnlyUserChanges: true)
+            me.backgroundQueue.addOperations(toDos, waitUntilFinished: false)
+            me.waitThenStop()
+        }
     }
 
-    //BUFF: move
-//    private func syncLocalChanges() {
-//        let toDos = internalOperations(syncOnlyUserChanges: true)
-//        Log.shared.info("%@ - syncLocalChanges called with state: %@ numOperations: %d",
-//                        "\(type(of: self))", "\(state)", toDos.count)
-//        guard !toDos.isEmpty else {
-//                // Nothing to do. Let everyone know we are ready.
-//                // Do not call next(). That would result in an endless loop
-//                // (lasstCommand == start, state == .ready, -> nothing todo, next(), ...).
-//                // Wait for QRC to trigger or client to call `start()` again instead.
-//                doNotRestart()
-//                return
-//        }
-//        let group = DispatchGroup()
-//        let toDosManagedByGroup = addCompletionOperations(handling: group, to: toDos)
-//        group.notify(queue: DispatchQueue.global(qos: .background)) { [weak self] in
-//            guard let me = self else {
-//                Log.shared.errorAndCrash("Lost myself")
-//                return
-//            }
-//            me.doNotRestart()
-//        }
-//        // registerBackgroundTask should already have been started when starting the service (in
-//        //startNextProcessingRound). To make sure we call it anyway just to make sure.
-//        // It does not hurt. BackgroundTaskManager will ignore it.
-//        registerBackgroundTask()
-//        backgroundQueue.addOperations(toDosManagedByGroup, waitUntilFinished: false)
-//    }
-    //
+    // MARK: - Overrides
 
-    override func finish() {
+    override func operations() -> [Operation] {
+        return internalOperations()
+    }
+
+	override func finish() {
         idleOperation?.stopIdling()
         idleOperation = nil
         super.finish()
@@ -100,6 +73,11 @@ class ImapReplicationService: OperationBasedService {
         idleOperation = nil
         super.stop()
     }
+}
+
+// MARK: - Private
+
+extension ImapReplicationService {
 
     private func internalOperations(syncOnlyUserChanges: Bool = false) -> [Operation] {
         var createes = [Operation]()
@@ -117,13 +95,6 @@ class ImapReplicationService: OperationBasedService {
                     createes.append(reportErrorAndWaitOp)
                     return
             }
-//            let imapConnection: ImapConnection //BUFF: creating new connection helps syncing local changes, the cached one seems broken
-//
-//            if syncOnlyUserChanges {
-//                imapConnection = ImapConnection(connectInfo: imapConnectInfo)
-//            } else {
-//                imapConnection = me.imapConnectionCache.imapConnection(for: imapConnectInfo)
-//            }
 
             let imapConnection = me.imapConnectionCache.imapConnection(for: imapConnectInfo)
 
@@ -160,10 +131,10 @@ class ImapReplicationService: OperationBasedService {
             // Server-to-client synchronization (IMAP)
             // fetch new messages
             if !syncOnlyUserChanges {
-            let fetchMessagesOp = FetchMessagesOperation(errorContainer: me.errorPropagator,
-                                                         imapConnection: imapConnection,
-                                                         folderInfos: folderInfos)
-            createes.append(fetchMessagesOp)
+                let fetchMessagesOp = FetchMessagesOperation(errorContainer: me.errorPropagator,
+                                                             imapConnection: imapConnection,
+                                                             folderInfos: folderInfos)
+                createes.append(fetchMessagesOp)
             }
 
             if me.pollingMode != .fastPolling && !syncOnlyUserChanges {
@@ -203,18 +174,6 @@ class ImapReplicationService: OperationBasedService {
         }
         return createes
     }
-    //
-
-    // MARK: - Overrides
-
-    override func operations() -> [Operation] {
-        return internalOperations()
-    }
-}
-
-// MARK: - Private
-
-extension ImapReplicationService {
 
     private func pollingPausingOp(errorContainer: ErrorContainerProtocol) -> Operation {
         let pauseOp = SelfReferencingOperation { [weak self] operation in
@@ -241,7 +200,7 @@ extension ImapReplicationService {
                                 "\(type(of: me))", me.sleepTimeInSeconds)
                 let startDate = Date()
                 while Date().timeIntervalSince(startDate) < me.sleepTimeInSeconds {
-                    if operation.isCancelled {
+                    if operation.isCancelled || me.lastCommand == .finish { // lastcommand should be private. We need to use it as we can curently not cancel the running OPs in finishBlock, due to IMAPSyncOPs concept makes graceful cancelling impossible. rm ` || me.lastCommand == .finish ` after IMAPSyncOPs are cancelable and make `lastCommand` privagte again.
                         break
                     }
                     sleep(1)
@@ -251,6 +210,9 @@ extension ImapReplicationService {
         }
         return pauseOp
     }
+
+    //BUFF:  Must be moved to use in OPs?
+    //BUFF: when IDLE is in, make all important folders interesting?
 
     /// Folders (other than inbox) that the user looked at in the last
     /// `timeIntervalForInterestingFolders` are considered sync-worthy.

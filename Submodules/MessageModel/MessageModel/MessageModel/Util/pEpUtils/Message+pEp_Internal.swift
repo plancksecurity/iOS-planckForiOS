@@ -66,7 +66,7 @@ extension Message {
         case .sent, .trash, .drafts:
             completion(originalRating ?? bestFallbackPepRatingWeCanGet(forCdMessage: message.cdObject))
         case .outbox:
-            return message.outgoingMessageRating(completion: completion)//!!!: IOS-2325_!
+            return message.outgoingMessageRating(completion: completion)
         case .all, .archive, .inbox, .normal, .spam, .flagged:
             if message.cdObject.isOnTrustedServer {
                 completion(originalRating ?? bestFallbackPepRatingWeCanGet(forCdMessage: message.cdObject))

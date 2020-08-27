@@ -217,7 +217,7 @@ extension DecryptMessageOperation {
 
 extension DecryptMessageOperation {
 
-    private func handleReUpload(cdMessage: CdMessage,//!!!: IOS-2325_!
+    private func handleReUpload(cdMessage: CdMessage,
                                 inOutMessage: PEPMessage,
                                 rating: PEPRating,
                                 decryptFlags: PEPDecryptFlags?) {
@@ -235,7 +235,7 @@ extension DecryptMessageOperation {
         } else if flagNeedsReupload {
             // The Engine gave us src_modified to signal us the message needs re-upload. (has been
             // reencrypted with extra keys, Unprotected subject or whatever other reason)
-            handleReUploadForReEncrypted(decryptedMessage: cdMessage,//!!!: IOS-2325_!
+            handleReUploadForReEncrypted(decryptedMessage: cdMessage,
                                          reEncryptedMessage: inOutMessage,
                                          decryptFlags: decryptFlags,
                                          originalRating: rating)
@@ -244,7 +244,7 @@ extension DecryptMessageOperation {
         }
     }
 
-    private func handleReUploadForTrustedServer(decryptedMessage: CdMessage,//!!!: IOS-2325_!
+    private func handleReUploadForTrustedServer(decryptedMessage: CdMessage,
                                                 originalRating: PEPRating) {
         // Create a copy of the decrypted message for append
         let messageCopyForReupload = decryptedMessage.cloneWithZeroUID(context: moc)
@@ -253,7 +253,7 @@ extension DecryptMessageOperation {
         decryptedMessage.imapMarkDeleted()
     }
 
-    private func handleReUploadForReEncrypted(decryptedMessage: CdMessage,//!!!: IOS-2325_!
+    private func handleReUploadForReEncrypted(decryptedMessage: CdMessage,
                                               reEncryptedMessage: PEPMessage,
                                               decryptFlags: PEPDecryptFlags?,
                                               originalRating: PEPRating) {
@@ -265,7 +265,7 @@ extension DecryptMessageOperation {
             cdReEncryptedMessage.flagsFromDecryptionRawValue = flags.rawValue
         }
 
-        setOriginalRatingHeader(rating: originalRating, toMessage: cdReEncryptedMessage)//!!!: IOS-2325_!
+        setOriginalRatingHeader(rating: originalRating, toMessage: cdReEncryptedMessage)
         // Delete the orininal, encrypted message
         decryptedMessage.imapMarkDeleted()
     }

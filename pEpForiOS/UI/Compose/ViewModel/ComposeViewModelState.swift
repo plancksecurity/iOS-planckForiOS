@@ -64,26 +64,26 @@ extension ComposeViewModel {
         var toRecipients = [Identity]() {
             didSet {
                 edited = true
-                validate()//!!!: IOS-2325_!
+                validate()
             }
         }
         var ccRecipients = [Identity]() {
             didSet {
                 edited = true
-                validate()//!!!: IOS-2325_!
+                validate()
             }
         }
         var bccRecipients = [Identity]() {
             didSet {
                 edited = true
-                validate()//!!!: IOS-2325_!
+                validate()
             }
         }
 
         var from: Identity? {
             didSet {
                 edited = true
-                validate()//!!!: IOS-2325_!
+                validate()
             }
         }
 
