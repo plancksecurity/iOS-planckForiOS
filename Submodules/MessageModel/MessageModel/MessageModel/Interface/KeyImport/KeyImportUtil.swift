@@ -56,7 +56,7 @@ extension KeyImportUtil {
 extension KeyImportUtil: KeyImportUtilProtocol {
     public func importKey(url: URL,
                           errorCallback: @escaping (Error) -> (),
-                          completion: @escaping (KeyData) -> ()) {
+                          completion: @escaping ([KeyData]) -> ()) {
         guard let dataString = try? String(contentsOf: url) else {
             errorCallback(ImportError.cannotLoadKey)
             return
@@ -66,19 +66,32 @@ extension KeyImportUtil: KeyImportUtilProtocol {
                                     errorCallback: { error in
                                         errorCallback(ImportError.malformedKey)
         }) { identities in
-            guard let firstIdentity = identities.first else {
+            guard !identities.isEmpty else {
+                // Importing a key with 0 identities doesn't make sense, signal an error
                 errorCallback(ImportError.malformedKey)
                 return
             }
 
-            guard let fingerprint = firstIdentity.fingerPrint else {
+            var identityFoundWithEmptyFingerprint = false
+            var keyDatas = [KeyData]()
+
+            for identity in identities {
+                guard let fingerprint = identity.fingerPrint else {
+                    identityFoundWithEmptyFingerprint = true
+                    break
+                }
+                keyDatas.append(KeyData(address: identity.address,
+                                        fingerprint: fingerprint,
+                                        userName: identity.userName))
+            }
+
+            guard !identityFoundWithEmptyFingerprint else {
+                // Consider identities without fingerprint an error
                 errorCallback(ImportError.malformedKey)
                 return
             }
 
-            completion(KeyData(address: firstIdentity.address,
-                               fingerprint: fingerprint,
-                               userName: firstIdentity.userName))
+            completion(keyDatas)
         }
     }
 

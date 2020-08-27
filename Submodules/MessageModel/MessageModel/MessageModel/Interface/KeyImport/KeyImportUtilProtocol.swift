@@ -16,7 +16,7 @@ public protocol KeyImportUtilProtocol {
     /// - Throws: KeyImportUtil.ImportError
     func importKey(url: URL,
                    errorCallback: @escaping (Error) -> (),
-                   completion: @escaping (KeyImportUtil.KeyData) -> ())
+                   completion: @escaping ([KeyImportUtil.KeyData]) -> ())
 
     /// Asynchronously sets the given key as own key.
     /// - Parameter address: The address to set this key as own key to
