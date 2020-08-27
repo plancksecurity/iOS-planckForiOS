@@ -13,24 +13,19 @@ import pEpIOSToolbox
 public protocol AccountQueryResultsProtocol {
     typealias MMO = Account
     typealias CDObject = CdAccount
-
-    var filter: AccountQueryResultsFilter? { get }
     var all: [MMO] { get }
     var count: Int { get }
 
-    init(filter: AccountQueryResultsFilter?, rowDelegate: QueryResultsIndexPathRowDelegate?)
-
+    init(rowDelegate: QueryResultsIndexPathRowDelegate?)
     subscript(index: Int) -> MMO { get }
-
     func startMonitoring() throws
 }
 
-/// Provides all accounts and informs it's delegate about
+/// Provides accounts and informs it's delegate about
 /// changes (insert, update, delete) in the query's results.
 public class AccountQueryResults: QueryResults, AccountQueryResultsProtocol {
     private typealias QueryResultControllerType<T: QueryResultsControllerProtocol> = T
     private lazy var queryResultController = getNewQueryResultController()
-    public let filter: AccountQueryResultsFilter?
 
     public var all: [MMO] {
         var results = [MMO]()
@@ -42,21 +37,15 @@ public class AccountQueryResults: QueryResults, AccountQueryResultsProtocol {
         return results
     }
 
-    /// Init
-    ///
-    /// - Parameters:
-    ///   - filter: set a filter to messages inside the folder. Set nil to disable filter.
-    public required init(filter: AccountQueryResultsFilter? = nil,
-                         rowDelegate: QueryResultsIndexPathRowDelegate? = nil) {
-        self.filter = filter
+    public required init(rowDelegate: QueryResultsIndexPathRowDelegate? = nil) {
         super.init()
         self.rowDelegate = rowDelegate
     }
 
-    /// Return a Account by index from displayableFolder, after applying filter
+    /// Return an Account by index
     ///
     /// - Parameter index: index of desire message
-    public subscript(index: Int) -> Account {
+    public subscript(index: Int) -> MMO {
         get {
             do {
                 return try getAccount(forIndex: index)
@@ -67,7 +56,7 @@ public class AccountQueryResults: QueryResults, AccountQueryResultsProtocol {
         }
     }
 
-    /// - Returns: the number of Accounts, after applying filter
+    /// - Returns: the number of Accounts
     public var count: Int {
         return queryResultController.count
     }
@@ -82,23 +71,14 @@ public class AccountQueryResults: QueryResults, AccountQueryResultsProtocol {
 extension AccountQueryResults {
 
     private func getNewQueryResultController() -> QueryResultControllerType<QueryResultsController<CDObject>> {
-        return QueryResultsController(predicate: getPredicates(),
+        return QueryResultsController(predicate: nil,
                                       context: Stack.shared.mainContext,
                                       cacheName: nil,
                                       sortDescriptors: getSortDescriptors(),
                                       delegate: self)
     }
 
-    private func getPredicates() -> NSPredicate {
-        var predicates = [NSPredicate]()
-        if let filterPredicate = filter?.predicate {
-            predicates.append(filterPredicate)
-        }
-        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-    }
-
     private func getSortDescriptors() -> [NSSortDescriptor] {
-        // Accounts are supposed to be sorted by ......... address (?)
         return [NSSortDescriptor(key: CdIdentity.AttributeName.address, ascending: false),
                 NSSortDescriptor(key: CdAccount.AttributeName.includeFoldersInUnifiedFolders, ascending: true)]
     }

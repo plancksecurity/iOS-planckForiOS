@@ -22,7 +22,6 @@ public class QueryResults {
         }
         return indexPath
     }
-    
 }
 
 // MARK: - QueryResultsControllerDelegate
