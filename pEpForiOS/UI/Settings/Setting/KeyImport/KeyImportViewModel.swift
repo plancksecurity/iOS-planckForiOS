@@ -90,7 +90,7 @@ extension KeyImportViewModel {
     /// - Returns: A user-presentable list of names representing the given key details,
     /// separated by newlines.
     public func userPresentableNames(keyDetails: [KeyDetails]) -> String {
-        let presentationStrings = keyDetails.map { $0.address }
+        let presentationStrings = keyDetails.map { $0.userPresentableNameAndAddress() }
         let presentationString = presentationStrings.joined(separator: "\n")
         return presentationString
     }

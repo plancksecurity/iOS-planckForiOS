@@ -90,7 +90,7 @@ extension KeyImportViewController: KeyImportViewModelDelegate {
                                            comment: "Title for yes button when trying to import a key")
         let noMessage = NSLocalizedString("Cancel",
                                           comment: "Title for no button (cancel) when trying to import a key")
-        let message = String.localizedStringWithFormat(NSLocalizedString("The fingerprint of this key is: %1$@\nIt contains the following identity / identities:\n%2$@\n\nDo you want to import and use this key?",
+        let message = String.localizedStringWithFormat(NSLocalizedString("The fingerprint of the selected key is:\n%1$@\n%2$@\n\nImport and use this key?",
                                                                          comment: "Message when asking user for confirmation about importing keys"),
                                                        viewModel.userPresentableFingerprint(keyDetails: keys),
                                                        viewModel.userPresentableNames(keyDetails: keys))
