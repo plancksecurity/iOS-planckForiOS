@@ -78,17 +78,20 @@ extension KeyImportViewModel {
         }
     }
 
-    /// - Returns: A user-presentable list of fingerprints representing the given key details.
-    public func userPresentableFingerprints(keyDetails: [KeyDetails]) -> String {
-        let fingerprintStrings = keyDetails.map { $0.prettyFingerprint() }
-        let fingerprintString = fingerprintStrings.joined(separator: ", ")
-        return fingerprintString
+    /// - Returns: The pretty-printed first fingerprint of the given list of key details.
+    /// - Note: There _must_ be a first element, or an empty string is returned.
+    public func userPresentableFingerprint(keyDetails: [KeyDetails]) -> String {
+        guard let firstItem = keyDetails[safe: 0] else {
+            return ""
+        }
+        return firstItem.prettyFingerprint()
     }
 
-    /// - Returns: A user-presentable list of names representing the given key details.
+    /// - Returns: A user-presentable list of names representing the given key details,
+    /// separated by newlines.
     public func userPresentableNames(keyDetails: [KeyDetails]) -> String {
-        let presentationStrings = keyDetails.map { $0.userPresentableNameAndAddress() }
-        let presentationString = presentationStrings.joined(separator: ", ")
+        let presentationStrings = keyDetails.map { $0.address }
+        let presentationString = presentationStrings.joined(separator: "\n")
         return presentationString
     }
 }

@@ -86,14 +86,14 @@ extension KeyImportViewController: KeyImportViewModelDelegate {
             // nothing to do
         }
 
-        let yesMessage = NSLocalizedString("Yes",
+        let yesMessage = NSLocalizedString("OK",
                                            comment: "Title for yes button when trying to import a key")
-        let noMessage = NSLocalizedString("No",
-                                           comment: "Title for no button (cancel) when trying to import a key")
-        let message = String.localizedStringWithFormat(NSLocalizedString("You are about to import the following keys:\n\nNames: %1$@\nFingerprints: %2$@\n\nAre you sure you want to import and use these keys?",
+        let noMessage = NSLocalizedString("Cancel",
+                                          comment: "Title for no button (cancel) when trying to import a key")
+        let message = String.localizedStringWithFormat(NSLocalizedString("The fingerprint of this key is: %1$@\nIt contains the following identity / identities:\n%2$@\n\nDo you want to import and use this key?",
                                                                          comment: "Message when asking user for confirmation about importing keys"),
-                                                       viewModel.userPresentableNames(keyDetails: keys),
-                                                       viewModel.userPresentableFingerprints(keyDetails: keys))
+                                                       viewModel.userPresentableFingerprint(keyDetails: keys),
+                                                       viewModel.userPresentableNames(keyDetails: keys))
 
         UIUtils.showTwoButtonAlert(withTitle: KeyImportViewController.alertTitle,
                                    message: message,
