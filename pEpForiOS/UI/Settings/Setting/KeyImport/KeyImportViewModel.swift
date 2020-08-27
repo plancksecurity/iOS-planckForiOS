@@ -17,7 +17,7 @@ protocol KeyImportViewModelDelegate: class {
     func rowsLoaded()
 
     /// The key was successfully imported, ask for permission to set it as an own key.
-    func showConfirmSetOwnKey(key: KeyImportViewModel.KeyDetails)
+    func showConfirmSetOwnKey(keys: [KeyImportViewModel.KeyDetails])
 
     /// An error ocurred, either during key import or set own key.
     func showError(message: String)
@@ -164,15 +164,18 @@ extension KeyImportViewModel {
                                     }
                                 }
             },
-                              completion: { [weak self] keyData in
+                              completion: { [weak self] keyDatas in
                                 // weak self because it's UI and the VC/VM can go out of scope
                                 guard let me = self else {
                                     return
                                 }
+                                let keyDetails = keyDatas.map {
+                                    KeyDetails(address: $0.address,
+                                               fingerprint: $0.fingerprint,
+                                               userName: $0.userName)
+                                }
                                 DispatchQueue.main.async {
-                                    me.checkDelegate()?.showConfirmSetOwnKey(key: KeyDetails(address: keyData.address,
-                                                                                             fingerprint: keyData.fingerprint,
-                                                                                             userName: keyData.userName))
+                                    me.checkDelegate()?.showConfirmSetOwnKey(keys: keyDetails)
                                 }
         })
     }

@@ -77,7 +77,7 @@ extension KeyImportViewController: KeyImportViewModelDelegate {
         tableView.reloadData()
     }
 
-    func showConfirmSetOwnKey(key: KeyImportViewModel.KeyDetails) {
+    func showConfirmSetOwnKey(keys: [KeyImportViewModel.KeyDetails]) {
         func userAccepted() {
             viewModel.setOwnKey(key: key)
         }
@@ -86,7 +86,32 @@ extension KeyImportViewController: KeyImportViewModelDelegate {
             // nothing to do
         }
 
-        var theFingerprint = key.fingerprint
+        let fingerprintStrings = keys.map { pretty(fingerprint: $0.fingerprint) }
+        let fingerprintString = fingerprintStrings.joined(separator: ", ")
+
+        let presentationStrings = keys.map { $0.userPresentableNameAndAddress() }
+        let presentationString = presentationStrings.joined(separator: ", ")
+
+        let yesMessage = NSLocalizedString("Yes",
+                                           comment: "Title for yes button when trying to import a key")
+        let noMessage = NSLocalizedString("No",
+                                           comment: "Title for no button (cancel) when trying to import a key")
+        let message = String.localizedStringWithFormat(NSLocalizedString("You are about to import the following keys:\n\nNames: %1$@\nFingerprints: %2$@\n\nAre you sure you want to import and use these keys?",
+                                                                         comment: "Message when asking user for confirmation about importing keys"),
+                                                       presentationString,
+                                                       fingerprintString)
+
+        UIUtils.showTwoButtonAlert(withTitle: KeyImportViewController.alertTitle,
+                                   message: message,
+                                   cancelButtonText: noMessage,
+                                   positiveButtonText: yesMessage,
+                                   cancelButtonAction: userCanceled,
+                                   positiveButtonAction: userAccepted)
+    }
+
+    private func pretty(fingerprint: String) -> String {
+        var theFingerprint = fingerprint
+
         let fprDist = theFingerprint.distance(from: theFingerprint.startIndex,
                                               to: theFingerprint.endIndex)
 
@@ -96,21 +121,7 @@ extension KeyImportViewController: KeyImportViewModelDelegate {
         }
         theFingerprint.insert("\n", at: index)
 
-        let yesMessage = NSLocalizedString("Yes",
-                                           comment: "Title for yes button when trying to import a key")
-        let noMessage = NSLocalizedString("No",
-                                           comment: "Title for no button (cancel) when trying to import a key")
-        let message = String.localizedStringWithFormat(NSLocalizedString("You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?",
-                                                                         comment: "Message when asking user for confirmation about importing a key"),
-                                                       key.userPresentableNameAndAddress(),
-                                                       theFingerprint)
-
-        UIUtils.showTwoButtonAlert(withTitle: KeyImportViewController.alertTitle,
-                                   message: message,
-                                   cancelButtonText: noMessage,
-                                   positiveButtonText: yesMessage,
-                                   cancelButtonAction: userCanceled,
-                                   positiveButtonAction: userAccepted)
+        return theFingerprint
     }
 
     func showError(message: String) {
