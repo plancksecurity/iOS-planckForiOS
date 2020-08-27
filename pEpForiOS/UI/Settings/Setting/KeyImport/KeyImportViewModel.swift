@@ -47,16 +47,12 @@ extension KeyImportViewModel {
         /// as in "user ID" of GPG/PGP, e.g. "Eldon Tyrell <eldon.tyrell@tyrell.corp>"
         /// or "eldon.tyrell@tyrell.corp" if the user name is missing.
         public func userPresentableNameAndAddress() -> String {
-            if let theUserName = userName {
-                return "\(theUserName) <\(address)>"
-            } else {
-                return address
-            }
+            return "\(userName) <\(address)>"
         }
 
-        private let userName: String?
+        public let userName: String
 
-        init(address: String, fingerprint: String, userName: String?) {
+        init(address: String, fingerprint: String, userName: String) {
             self.address = address
             self.fingerprint = fingerprint
             self.userName = userName
@@ -148,7 +144,8 @@ class KeyImportViewModel {
             }
 
             for key in keys {
-                me.keyImporter.setOwnKey(address: key.address,
+                me.keyImporter.setOwnKey(userName: key.userName,
+                                         address: key.address,
                                          fingerprint: key.fingerprint,
                                          errorCallback: { error in
                                             guard let _ = error as? KeyImportUtil.SetOwnKeyError else {

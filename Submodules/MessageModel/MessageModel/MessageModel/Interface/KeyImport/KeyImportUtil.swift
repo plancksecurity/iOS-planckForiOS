@@ -41,11 +41,9 @@ extension KeyImportUtil {
     public struct KeyData {
         public let address: String
         public let fingerprint: String
+        public let userName: String
 
-        /// This is not needed for setting an key as own, but may be displayed to the user
-        public let userName: String?
-
-        init(address: String, fingerprint: String, userName: String?) {
+        init(address: String, fingerprint: String, userName: String) {
             self.address = address
             self.fingerprint = fingerprint
             self.userName = userName
@@ -72,20 +70,24 @@ extension KeyImportUtil: KeyImportUtilProtocol {
                 return
             }
 
-            var identityFoundWithEmptyFingerprint = false
+            var identityFoundWithMissingData = false
             var keyDatas = [KeyData]()
 
             for identity in identities {
                 guard let fingerprint = identity.fingerPrint else {
-                    identityFoundWithEmptyFingerprint = true
+                    identityFoundWithMissingData = true
+                    break
+                }
+                guard let userName = identity.userName else {
+                    identityFoundWithMissingData = true
                     break
                 }
                 keyDatas.append(KeyData(address: identity.address,
                                         fingerprint: fingerprint,
-                                        userName: identity.userName))
+                                        userName: userName))
             }
 
-            guard !identityFoundWithEmptyFingerprint else {
+            guard !identityFoundWithMissingData else {
                 // Consider identities without fingerprint an error
                 errorCallback(ImportError.malformedKey)
                 return
@@ -95,11 +97,15 @@ extension KeyImportUtil: KeyImportUtilProtocol {
         }
     }
 
-    public func setOwnKey(address: String,
+    public func setOwnKey(userName: String,
+                          address: String,
                           fingerprint: String,
                           errorCallback: @escaping (Error) -> (),
                           callback: @escaping () -> ()) {
-        let pEpId = PEPIdentity(address: address, userID: nil, userName: nil, isOwn: true)
+        let pEpId = PEPIdentity(address: address,
+                                userID: CdIdentity.pEpOwnUserID,
+                                userName: userName,
+                                isOwn: true)
         PEPAsyncSession().setOwnKey(pEpId,
                                     fingerprint: fingerprint,
                                     errorCallback: errorCallback,

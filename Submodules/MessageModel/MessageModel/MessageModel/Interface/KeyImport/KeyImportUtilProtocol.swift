@@ -19,6 +19,7 @@ public protocol KeyImportUtilProtocol {
                    completion: @escaping ([KeyImportUtil.KeyData]) -> ())
 
     /// Asynchronously sets the given key as own key.
+    /// - Parameter address: The user name to set this key as own key to
     /// - Parameter address: The address to set this key as own key to
     /// - Parameter fingerprint: The fingerprint to identify the (already imported) key
     /// - Parameter errorCallback: Callback for signaling that an error ocurred.
@@ -26,7 +27,8 @@ public protocol KeyImportUtilProtocol {
     /// - Throws: Since the function works async, no error gets thrown, but instead
     /// given as parameter to the `errorCallback`: KeyImportUtil.SetOwnKeyError,
     /// SetOwnKeyError.noMatchingAccount
-    func setOwnKey(address: String,
+    func setOwnKey(userName: String,
+                   address: String,
                    fingerprint: String,
                    errorCallback: @escaping (Error) -> (),
                    callback: @escaping () -> ())

@@ -63,7 +63,8 @@ class KeyImportUtilTest: XCTestCase {
         }
 
         let expSetOwnKey = expectation(description: "expSetOwnKey")
-        KeyImportUtil().setOwnKey(address: theKeyData.address,
+        KeyImportUtil().setOwnKey(userName: theKeyData.userName,
+                                  address: theKeyData.address,
                                   fingerprint: theKeyData.fingerprint,
                                   errorCallback: { error in
                                     if let theError = error as? KeyImportUtil.SetOwnKeyError {
@@ -122,7 +123,8 @@ class KeyImportUtilTest: XCTestCase {
         Session.main.commit()
 
         let expSetOwnKey = expectation(description: "expSetOwnKey")
-        keyImport.setOwnKey(address: theKeyData.address,
+        keyImport.setOwnKey(userName: theKeyData.userName,
+                            address: theKeyData.address,
                             fingerprint: theKeyData.fingerprint,
                             errorCallback: { error in
                                 XCTFail()

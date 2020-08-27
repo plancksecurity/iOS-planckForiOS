@@ -69,7 +69,9 @@ class KeyImportViewModelTest: XCTestCase {
     }
 
     func testImportKey() {
-        let keyData = KeyImportUtil.KeyData(address: "address", fingerprint: "fpr", userName: nil)
+        let keyData = KeyImportUtil.KeyData(address: "address",
+                                            fingerprint: "fpr",
+                                            userName: "username")
         let keyImporter = KeyImporterMock(importKeyErrorToThrow: nil,
                                           importKeyDatas: [keyData])
 
@@ -95,7 +97,9 @@ class KeyImportViewModelTest: XCTestCase {
     }
 
     func testSetOwnKeyError() {
-        let keyData = KeyImportUtil.KeyData(address: "address", fingerprint: "fpr", userName: nil)
+        let keyData = KeyImportUtil.KeyData(address: "address",
+                                            fingerprint: "fpr",
+                                            userName: "username")
         let keyImporter = KeyImporterMock(importKeyErrorToThrow: nil,
                                           importKeyDatas: [keyData],
                                           setOwnKeyErrorToThrow: KeyImportUtil.SetOwnKeyError.noMatchingAccount)
@@ -113,13 +117,15 @@ class KeyImportViewModelTest: XCTestCase {
 
         vm.setOwnKeys(keys: [KeyImportViewModel.KeyDetails(address: "address",
                                                            fingerprint: "fingerprint",
-                                                           userName: nil)])
+                                                           userName: "username")])
 
         wait(for: [showErrorExpectation], timeout: TestUtil.waitTimeLocal)
     }
 
     func testSetOwnKeySuccess() {
-        let keyData = KeyImportUtil.KeyData(address: "address", fingerprint: "fpr", userName: nil)
+        let keyData = KeyImportUtil.KeyData(address: "address",
+                                            fingerprint: "fpr",
+                                            userName: "username")
         let keyImporter = KeyImporterMock(importKeyErrorToThrow: nil,
                                           importKeyDatas: [keyData])
 
@@ -136,7 +142,7 @@ class KeyImportViewModelTest: XCTestCase {
 
         vm.setOwnKeys(keys: [KeyImportViewModel.KeyDetails(address: "address",
                                                            fingerprint: "fingerprint",
-                                                           userName: nil)])
+                                                           userName: "username")])
 
         wait(for: [showSetOwnKeySuccessExpectation], timeout: TestUtil.waitTimeLocal)
     }
@@ -183,7 +189,8 @@ class KeyImporterMock: KeyImportUtilProtocol {
         }
     }
 
-    func setOwnKey(address: String,
+    func setOwnKey(userName: String,
+                   address: String,
                    fingerprint: String,
                    errorCallback: @escaping (Error) -> (),
                    callback: @escaping () -> ()) {
