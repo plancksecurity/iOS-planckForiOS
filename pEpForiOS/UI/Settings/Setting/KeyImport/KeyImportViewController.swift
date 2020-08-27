@@ -86,20 +86,14 @@ extension KeyImportViewController: KeyImportViewModelDelegate {
             // nothing to do
         }
 
-        let fingerprintStrings = keys.map { pretty(fingerprint: $0.fingerprint) }
-        let fingerprintString = fingerprintStrings.joined(separator: ", ")
-
-        let presentationStrings = keys.map { $0.userPresentableNameAndAddress() }
-        let presentationString = presentationStrings.joined(separator: ", ")
-
         let yesMessage = NSLocalizedString("Yes",
                                            comment: "Title for yes button when trying to import a key")
         let noMessage = NSLocalizedString("No",
                                            comment: "Title for no button (cancel) when trying to import a key")
         let message = String.localizedStringWithFormat(NSLocalizedString("You are about to import the following keys:\n\nNames: %1$@\nFingerprints: %2$@\n\nAre you sure you want to import and use these keys?",
                                                                          comment: "Message when asking user for confirmation about importing keys"),
-                                                       presentationString,
-                                                       fingerprintString)
+                                                       viewModel.userPresentableFingerprints(keyDetails: keys),
+                                                       viewModel.userPresentableFingerprints(keyDetails: keys))
 
         UIUtils.showTwoButtonAlert(withTitle: KeyImportViewController.alertTitle,
                                    message: message,
@@ -107,21 +101,6 @@ extension KeyImportViewController: KeyImportViewModelDelegate {
                                    positiveButtonText: yesMessage,
                                    cancelButtonAction: userCanceled,
                                    positiveButtonAction: userAccepted)
-    }
-
-    private func pretty(fingerprint: String) -> String {
-        var theFingerprint = fingerprint
-
-        let fprDist = theFingerprint.distance(from: theFingerprint.startIndex,
-                                              to: theFingerprint.endIndex)
-
-        var index = theFingerprint.startIndex
-        for _ in 1...fprDist/2 {
-            index = theFingerprint.index(after: index)
-        }
-        theFingerprint.insert("\n", at: index)
-
-        return theFingerprint
     }
 
     func showError(message: String) {

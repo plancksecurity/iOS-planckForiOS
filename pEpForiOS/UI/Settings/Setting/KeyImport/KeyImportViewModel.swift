@@ -61,6 +61,35 @@ extension KeyImportViewModel {
             self.fingerprint = fingerprint
             self.userName = userName
         }
+
+        func prettyFingerprint() -> String {
+            var theFingerprint = fingerprint
+
+            let fprDist = theFingerprint.distance(from: theFingerprint.startIndex,
+                                                  to: theFingerprint.endIndex)
+
+            var index = theFingerprint.startIndex
+            for _ in 1...fprDist/2 {
+                index = theFingerprint.index(after: index)
+            }
+            theFingerprint.insert("\n", at: index)
+
+            return theFingerprint
+        }
+    }
+
+    /// - Returns: A user-presentable list of fingerprints representing the given key details.
+    public func userPresentableFingerprints(keyDetails: [KeyDetails]) -> String {
+        let fingerprintStrings = keyDetails.map { $0.prettyFingerprint() }
+        let fingerprintString = fingerprintStrings.joined(separator: ", ")
+        return fingerprintString
+    }
+
+    /// - Returns: A user-presentable list of names representing the given key details.
+    public func userPresentableNames(keyDetails: [KeyDetails]) -> String {
+        let presentationStrings = keyDetails.map { $0.userPresentableNameAndAddress() }
+        let presentationString = presentationStrings.joined(separator: ", ")
+        return presentationString
     }
 }
 
