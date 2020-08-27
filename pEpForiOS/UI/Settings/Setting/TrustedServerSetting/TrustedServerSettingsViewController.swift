@@ -25,6 +25,11 @@ class TrustedServerSettingsViewController: BaseTableViewController {
         title = NSLocalizedString("Store Messages Securely", comment: "Store Messages Securely Title")
         viewModel.delegate = self
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        showNavigationBar()
+    }
 }
 
 // MARK: -  UITableViewDataSource
