@@ -63,18 +63,18 @@ extension KeyImportViewModel {
         }
 
         func prettyFingerprint() -> String {
-            var theFingerprint = fingerprint
+            let p1 = fingerprint.prefix(ofLength: 4)
+            let p2 = fingerprint.dropFirst(4).prefix(4)
+            let p3 = fingerprint.dropFirst(8).prefix(4)
+            let p4 = fingerprint.dropFirst(12).prefix(4)
+            let p5 = fingerprint.dropFirst(16).prefix(4)
+            let p6 = fingerprint.dropFirst(20).prefix(4)
+            let p7 = fingerprint.dropFirst(24).prefix(4)
+            let p8 = fingerprint.dropFirst(28).prefix(4)
+            let p9 = fingerprint.dropFirst(32).prefix(4)
+            let p10 = fingerprint.dropFirst(34).prefix(4)
 
-            let fprDist = theFingerprint.distance(from: theFingerprint.startIndex,
-                                                  to: theFingerprint.endIndex)
-
-            var index = theFingerprint.startIndex
-            for _ in 1...fprDist/2 {
-                index = theFingerprint.index(after: index)
-            }
-            theFingerprint.insert("\n", at: index)
-
-            return theFingerprint
+            return "\(p1) \(p2) \(p3) \(p4) \(p5)\n\(p6) \(p7) \(p8) \(p9) \(p10)"
         }
     }
 
