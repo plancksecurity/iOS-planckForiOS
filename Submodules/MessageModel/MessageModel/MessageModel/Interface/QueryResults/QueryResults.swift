@@ -21,7 +21,7 @@ public protocol QueryResultsProtocol {
 public class QueryResults {
 
     public weak var rowDelegate: QueryResultsIndexPathRowDelegate?
-    init(rowDelegate: QueryResultsIndexPathRowDelegate?) {
+    public init(rowDelegate: QueryResultsIndexPathRowDelegate?) {
         self.rowDelegate = rowDelegate
     }
 

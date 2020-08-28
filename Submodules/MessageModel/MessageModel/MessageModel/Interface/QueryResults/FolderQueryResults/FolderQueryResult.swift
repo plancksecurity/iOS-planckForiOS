@@ -13,7 +13,7 @@ import CoreData
 import pEpIOSToolbox
 
 public class FolderQueryResults: QueryResults, QueryResultsProtocol {
-    
+
     typealias CDO = CdFolder
     private typealias QueryResultControllerType<T: QueryResultsControllerProtocol> = T
     private lazy var queryResultController: QueryResultControllerType<QueryResultsController<CDO>> = {
@@ -21,7 +21,7 @@ public class FolderQueryResults: QueryResults, QueryResultsProtocol {
                                       sortDescriptors: getSortDescriptors(),
                                       delegate: self)
     }()
-    
+
     public var all: [MMO] {
         var results = [Folder]()
         do {
@@ -31,7 +31,7 @@ public class FolderQueryResults: QueryResults, QueryResultsProtocol {
         }
         return results
     }
-    
+
     /// Return an Folder by index
     ///
     /// - Parameter index: index of desire Folder
@@ -45,27 +45,26 @@ public class FolderQueryResults: QueryResults, QueryResultsProtocol {
             fatalError("Fail to get account for subscript")
         }
     }
-    
-    /// - Returns: the number of Folders
+
+    /// - Returns: the number of folders
     public var count: Int {
         return queryResultController.count
     }
-    
-    /// Start monitoring the accounts
+
+    /// Start monitoring the folders
     public func startMonitoring() throws {
         try queryResultController.startMonitoring()
     }
-    
 }
 
 // MARK: - Private
 
 extension FolderQueryResults {
-    
+
     private func getSortDescriptors() -> [NSSortDescriptor] {
-        return [NSSortDescriptor(key: CdIdentity.AttributeName.address, ascending: false)]
+        return [NSSortDescriptor(key: CdFolder.AttributeName.name, ascending: false)]
     }
-    
+
     private func getFolder(forIndex index: Int) throws -> Folder {
         let results = try queryResultController.getResults()
         return MessageModelObjectUtils.getFolder(fromCdObject: results[index])
