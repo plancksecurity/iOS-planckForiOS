@@ -22,7 +22,7 @@ class TrustedServerSettingsViewController: BaseTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        title = NSLocalizedString("Store Messages Securely", comment: "Store Messages Securely Title")
         viewModel.delegate = self
     }
 
