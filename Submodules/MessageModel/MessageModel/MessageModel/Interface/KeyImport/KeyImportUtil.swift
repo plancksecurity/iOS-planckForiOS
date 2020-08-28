@@ -114,15 +114,14 @@ extension KeyImportUtil: KeyImportUtilProtocol {
         PEPAsyncSession().setOwnKey(pEpId,
                                     fingerprint: fingerprint,
                                     errorCallback: errorCallback) {
-                                         let session = Session()
-
-                                        session.performAndWait {
-                                            let _ = Identity(address: address,
-                                                             userID: CdIdentity.pEpOwnUserID,
-                                                             addressBookID: nil,
-                                                             userName: userName,
-                                                             session: session)
-                                            session.commit()
+                                        let moc = Stack.shared.newPrivateConcurrentContext
+                                        moc.performAndWait {
+                                            CdIdentity.updateOrCreate(withAddress: address,
+                                                                      userID: CdIdentity.pEpOwnUserID,
+                                                                      addressBookID: nil,
+                                                                      userName: userName,
+                                                                      context: moc)
+                                            moc.saveAndLogErrors()
                                             callback()
                                         }
         }
