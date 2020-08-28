@@ -1,19 +1,20 @@
 //
-//  AccountQueryResults.swift
+//  FolderQueryResult.swift
 //  MessageModel
 //
-//  Created by Martin Brude on 27/08/2020.
+//  Created by Martin Brude on 28/08/2020.
 //  Copyright © 2020 pEp Security S.A. All rights reserved.
 //
+
+import Foundation
 
 import Foundation
 import CoreData
 import pEpIOSToolbox
 
-/// Provides accounts and informs it's delegate about
-/// changes (insert, update, delete) in the query's results.
-public class AccountQueryResults: QueryResults, QueryResultsProtocol {
-    typealias CDO = CdAccount
+public class FolderQueryResults: QueryResults, QueryResultsProtocol {
+    
+    typealias CDO = CdFolder
     private typealias QueryResultControllerType<T: QueryResultsControllerProtocol> = T
     private lazy var queryResultController: QueryResultControllerType<QueryResultsController<CDO>> = {
         return QueryResultsController(context: Stack.shared.mainContext,
@@ -22,22 +23,22 @@ public class AccountQueryResults: QueryResults, QueryResultsProtocol {
     }()
     
     public var all: [MMO] {
-        var results = [Account]()
+        var results = [Folder]()
         do {
-            results = try queryResultController.getResults().map { MessageModelObjectUtils.getAccount(fromCdAccount: $0) }
+            results = try queryResultController.getResults().map { MessageModelObjectUtils.getFolder(fromCdObject: $0)  }
         } catch {
             Log.shared.errorAndCrash("Failed getting results")
         }
         return results
     }
     
-    /// Return an Account by index
+    /// Return an Folder by index
     ///
-    /// - Parameter index: index of desire account
+    /// - Parameter index: index of desire Folder
     public subscript(index: Int) -> MMO {
         get {
             do {
-                return try getAccount(forIndex: index)
+                return try getFolder(forIndex: index)
             } catch{
                 Log.shared.errorAndCrash("Fail to get account for subscript")
             }
@@ -45,7 +46,7 @@ public class AccountQueryResults: QueryResults, QueryResultsProtocol {
         }
     }
     
-    /// - Returns: the number of accounts
+    /// - Returns: the number of Folders
     public var count: Int {
         return queryResultController.count
     }
@@ -54,18 +55,19 @@ public class AccountQueryResults: QueryResults, QueryResultsProtocol {
     public func startMonitoring() throws {
         try queryResultController.startMonitoring()
     }
+    
 }
 
 // MARK: - Private
 
-extension AccountQueryResults {
+extension FolderQueryResults {
     
     private func getSortDescriptors() -> [NSSortDescriptor] {
         return [NSSortDescriptor(key: CdIdentity.AttributeName.address, ascending: false)]
     }
     
-    private func getAccount(forIndex index: Int) throws -> Account {
+    private func getFolder(forIndex index: Int) throws -> Folder {
         let results = try queryResultController.getResults()
-        return MessageModelObjectUtils.getAccount(fromCdAccount: results[index])
+        return MessageModelObjectUtils.getFolder(fromCdObject: results[index])
     }
 }
