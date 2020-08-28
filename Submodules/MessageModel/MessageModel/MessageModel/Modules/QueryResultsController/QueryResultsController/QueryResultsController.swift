@@ -15,37 +15,10 @@ NSFetchedResultsControllerDelegate {
     var state = QueryResultsControllerState.uninitialized
 
     private var frc: NSFetchedResultsController<T>?
-    private func setupFRC(with predicate: NSPredicate?,
-                          context: NSManagedObjectContext,
-                          cacheName: String?,
-                          sectionNameKeyPath: String?,
-                          sortDescriptors: [NSSortDescriptor]? = []) {
-        let fetchRequest = T.createFetchRequest()
-        fetchRequest.predicate = predicate
-        fetchRequest.sortDescriptors = sortDescriptors
-        let createe = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                 managedObjectContext: context,
-                                                 sectionNameKeyPath: sectionNameKeyPath,
-                                                 cacheName: cacheName)
-            as! NSFetchedResultsController<T>
-        createe.delegate = self
-        frc = createe
-    }
 
     // MARK: - QueryResultsControllerProtocol
 
     weak var delegate: QueryResultsControllerDelegate?
-
-    func getResults() throws -> [T] {
-        guard let controller = frc else {
-            Log.shared.errorAndCrash("no controller")
-            throw QueryResultsController.InvalidStateError.notInitialized
-        }
-        guard let results = controller.fetchedObjects else {
-            throw QueryResultsController.InvalidStateError.notMonitoring
-        }
-        return results
-    }
 
     var count : Int {
         return frc?.fetchedObjects?.count ?? 0
@@ -78,6 +51,34 @@ NSFetchedResultsControllerDelegate {
                  sortDescriptors: sortDescriptors)
         self.delegate = delegate
         state = .initialized
+    }
+
+    private func setupFRC(with predicate: NSPredicate?,
+                          context: NSManagedObjectContext,
+                          cacheName: String?,
+                          sectionNameKeyPath: String?,
+                          sortDescriptors: [NSSortDescriptor]? = []) {
+        let fetchRequest = T.createFetchRequest()
+        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = sortDescriptors
+        let createe = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                 managedObjectContext: context,
+                                                 sectionNameKeyPath: sectionNameKeyPath,
+                                                 cacheName: cacheName)
+            as! NSFetchedResultsController<T>
+        createe.delegate = self
+        frc = createe
+    }
+
+    func getResults() throws -> [T] {
+        guard let controller = frc else {
+            Log.shared.errorAndCrash("no controller")
+            throw QueryResultsController.InvalidStateError.notInitialized
+        }
+        guard let results = controller.fetchedObjects else {
+            throw QueryResultsController.InvalidStateError.notMonitoring
+        }
+        return results
     }
 
     func startMonitoring() throws {
