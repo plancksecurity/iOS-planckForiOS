@@ -47,6 +47,10 @@ NSFetchedResultsControllerDelegate {
         return results
     }
 
+    var count : Int {
+        return frc?.fetchedObjects?.count ?? 0
+    }
+
     var sections: [NSFetchedResultsSectionInfo]? {
         return frc?.sections
     }
