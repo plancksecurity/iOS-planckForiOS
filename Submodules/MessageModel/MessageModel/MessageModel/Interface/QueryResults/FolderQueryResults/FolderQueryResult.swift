@@ -38,7 +38,7 @@ public class FolderQueryResults: QueryResults, QueryResultsProtocol {
     public subscript(index: Int) -> MMO {
         get {
             do {
-                return try getFolder(forIndex: index)
+                return try getFolder(at: index)
             } catch{
                 Log.shared.errorAndCrash("Fail to get account for subscript")
             }
@@ -65,7 +65,7 @@ extension FolderQueryResults {
         return [NSSortDescriptor(key: CdFolder.AttributeName.name, ascending: false)]
     }
 
-    private func getFolder(forIndex index: Int) throws -> Folder {
+    private func getFolder(at index: Int) throws -> Folder {
         let results = try queryResultController.getResults()
         return MessageModelObjectUtils.getFolder(fromCdObject: results[index])
     }

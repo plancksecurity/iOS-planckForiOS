@@ -37,7 +37,7 @@ public class AccountQueryResults: QueryResults, QueryResultsProtocol {
     public subscript(index: Int) -> MMO {
         get {
             do {
-                return try getAccount(forIndex: index)
+                return try getAccount(at: index)
             } catch{
                 Log.shared.errorAndCrash("Fail to get account for subscript")
             }
@@ -64,7 +64,7 @@ extension AccountQueryResults {
         return [NSSortDescriptor(key: CdIdentity.AttributeName.address, ascending: false)]
     }
     
-    private func getAccount(forIndex index: Int) throws -> Account {
+    private func getAccount(at index: Int) throws -> Account {
         let results = try queryResultController.getResults()
         return MessageModelObjectUtils.getAccount(fromCdAccount: results[index])
     }
