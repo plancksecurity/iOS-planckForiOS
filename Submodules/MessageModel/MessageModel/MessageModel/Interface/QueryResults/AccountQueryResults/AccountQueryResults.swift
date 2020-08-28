@@ -24,7 +24,7 @@ public class AccountQueryResults: QueryResults, QueryResultsProtocol {
     }()
 
     public var all: [MMO] {
-        var results = [MMO]()
+        var results = [Account]()
         do {
             results = try queryResultController.getResults().map { MessageModelObjectUtils.getAccount(fromCdAccount: $0) }
         } catch {
@@ -52,7 +52,7 @@ public class AccountQueryResults: QueryResults, QueryResultsProtocol {
         return queryResultController.count
     }
 
-    /// Start monitoryng the accounts
+    /// Start monitoring the accounts
     public func startMonitoring() throws {
         try queryResultController.startMonitoring()
     }
@@ -66,7 +66,7 @@ extension AccountQueryResults {
         return [NSSortDescriptor(key: CdIdentity.AttributeName.address, ascending: false)]
     }
 
-    private func getAccount(forIndex index: Int) throws -> MMO {
+    private func getAccount(forIndex index: Int) throws -> Account {
         let results = try queryResultController.getResults()
         return MessageModelObjectUtils.getAccount(fromCdAccount: results[index])
     }

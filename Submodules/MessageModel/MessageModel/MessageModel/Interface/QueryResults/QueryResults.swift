@@ -20,9 +20,7 @@ public protocol QueryResultsProtocol {
 
 public class QueryResults {
 
-    /// Current search inside monitored folder. If no search is apply, search will be nil.
     public weak var rowDelegate: QueryResultsIndexPathRowDelegate?
-
     init(rowDelegate: QueryResultsIndexPathRowDelegate?) {
         self.rowDelegate = rowDelegate
     }
