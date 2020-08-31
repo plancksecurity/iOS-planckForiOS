@@ -24,13 +24,13 @@ public class AccountQueryResults: AccountQueryResultsProtocol {
     private typealias QueryResultControllerType<T: QueryResultsControllerProtocol> = T
     private lazy var queryResultController: QueryResultControllerType<QueryResultsController<CDO>> = {
         return QueryResultsController(context: Stack.shared.mainContext,
-                                      sortDescriptors: getSortDescriptors(),
                                       delegate: self)
     }()
 
     /// - Returns: the number of accounts
     public var count: Int {
-        return queryResultController.count
+        let results = try? queryResultController.getResults()
+        return results?.count ?? 0
     }
 
     /// All accounts
@@ -73,10 +73,6 @@ public class AccountQueryResults: AccountQueryResultsProtocol {
 // MARK: - Private
 
 extension AccountQueryResults {
-
-    private func getSortDescriptors() -> [NSSortDescriptor] {
-        return [NSSortDescriptor(key: CdIdentity.AttributeName.address, ascending: false)]
-    }
 
     private func getAccount(at index: Int) throws -> Account {
         let results = try queryResultController.getResults()
