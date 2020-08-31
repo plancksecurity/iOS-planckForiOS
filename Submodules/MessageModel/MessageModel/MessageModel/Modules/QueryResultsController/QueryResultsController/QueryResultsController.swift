@@ -51,6 +51,10 @@ NSFetchedResultsControllerDelegate {
         return frc?.sections
     }
 
+    var count: Int {
+        return frc?.fetchedObjects?.count ?? 0
+    }
+
     var sectionIndexTitles: [String] {
         guard let controller = frc else {
             Log.shared.errorAndCrash(message: "no controller")
@@ -59,7 +63,7 @@ NSFetchedResultsControllerDelegate {
         return controller.sectionIndexTitles
     }
 
-    required init(predicate: NSPredicate?,
+    required init(predicate: NSPredicate? = nil,
                   context: NSManagedObjectContext,
                   cacheName: String? = "\(#file)-\(#function)",
                   sectionNameKeyPath: String? = nil,
