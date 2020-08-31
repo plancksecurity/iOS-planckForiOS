@@ -13,7 +13,7 @@ import pEpIOSToolbox
 /// Provides accounts and informs it's delegate about
 /// changes (insert, update, delete) in the query's results.
 public class AccountQueryResults: QueryResults, QueryResultsProtocol {
-    typealias CDO = CdAccount
+    private typealias CDO = CdAccount
     private typealias QueryResultControllerType<T: QueryResultsControllerProtocol> = T
     private lazy var queryResultController: QueryResultControllerType<QueryResultsController<CDO>> = {
         return QueryResultsController(context: Stack.shared.mainContext,

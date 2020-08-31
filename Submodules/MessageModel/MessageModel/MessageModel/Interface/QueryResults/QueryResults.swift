@@ -20,7 +20,9 @@ public protocol QueryResultsProtocol {
 
 public class QueryResults {
 
+    /// Where the row updates will be delivered
     public weak var rowDelegate: QueryResultsIndexPathRowDelegate?
+    
     public init(rowDelegate: QueryResultsIndexPathRowDelegate?) {
         self.rowDelegate = rowDelegate
     }
@@ -67,7 +69,7 @@ extension QueryResults: QueryResultsControllerDelegate {
     public func queryResultsControllerDidChangeSection(Info: NSFetchedResultsSectionInfo,
                                                        atSectionIndex sectionIndex: Int,
                                                        for type: NSFetchedResultsChangeType) {
-        // Intentionally ignored. query does not need to handle sections. Override if need it.
+        // Intentionally ignored. query does not need to handle sections. Override if needed.
     }
 
     public func queryResultsControllerDidChangeResults() {
