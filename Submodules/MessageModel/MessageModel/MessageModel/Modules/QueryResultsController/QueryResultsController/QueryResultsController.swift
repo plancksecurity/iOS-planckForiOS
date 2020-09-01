@@ -116,4 +116,8 @@ NSFetchedResultsControllerDelegate {
         state = .monitoringResults
         delegate?.queryResultsControllerDidChangeResults()
     }
+
+    var count : Int {
+        return frc?.fetchedObjects?.count ?? 0
+    }
 }

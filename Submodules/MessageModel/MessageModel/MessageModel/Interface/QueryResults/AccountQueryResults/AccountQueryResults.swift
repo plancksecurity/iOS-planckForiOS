@@ -29,8 +29,7 @@ public class AccountQueryResults: AccountQueryResultsProtocol {
 
     /// - Returns: the number of accounts
     public var count: Int {
-        let results = try? queryResultController.getResults()
-        return results?.count ?? 0
+        return queryResultController.count
     }
 
     /// All accounts
