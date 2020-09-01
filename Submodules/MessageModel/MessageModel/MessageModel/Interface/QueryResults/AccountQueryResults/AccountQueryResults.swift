@@ -121,7 +121,7 @@ extension AccountQueryResults : QueryResultsControllerDelegate {
 
     private func get(indexPath: IndexPath?, forType type: NSFetchedResultsChangeType) -> IndexPath? {
         guard let indexPath = indexPath else {
-            let error = "QuerryResultController indexPath for NSFetchedResultsChangeType: \(type.rawValue), should never be nil"
+            let error = "QueryResultController indexPath for NSFetchedResultsChangeType: \(type.rawValue), should never be nil"
             Log.shared.errorAndCrash(message: error)
             return nil
         }
