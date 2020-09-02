@@ -9,6 +9,8 @@
 import pEpIOSToolbox
 import CoreData
 
+/// Base class for operations that directly communicate with the imapConnection (and thus indirectly with Pantomime).
+/// Subclass if (and ONLY IF) you are an ImapConnectionDelegate.
 class ImapSyncOperation: ConcurrentBaseOperation {
     var imapConnection: ImapConnectionProtocol
     var syncDelegate: ImapConnectionDelegate?

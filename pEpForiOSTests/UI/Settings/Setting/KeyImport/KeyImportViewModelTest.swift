@@ -46,7 +46,7 @@ class KeyImportViewModelTest: XCTestCase {
 
     func testImportNoneKey() {
         let keyImporter = KeyImporterMock(importKeyErrorToThrow: .cannotLoadKey,
-                                          importKeyData: nil)
+                                          importKeyDatas: [])
 
         let documentsBrowser = DocumentsDirectoryBrowserMock(urls: [URL(fileURLWithPath: "file:///someFake")])
         let vm = KeyImportViewModel(documentsBrowser: documentsBrowser,
@@ -69,9 +69,11 @@ class KeyImportViewModelTest: XCTestCase {
     }
 
     func testImportKey() {
-        let keyData = KeyImportUtil.KeyData(address: "address", fingerprint: "fpr", userName: nil)
+        let keyData = KeyImportUtil.KeyData(address: "address",
+                                            fingerprint: "fpr",
+                                            userName: "username")
         let keyImporter = KeyImporterMock(importKeyErrorToThrow: nil,
-                                          importKeyData: keyData)
+                                          importKeyDatas: [keyData])
 
         let documentsBrowser = DocumentsDirectoryBrowserMock(urls: [URL(fileURLWithPath: "file:///someFake")])
         let vm = KeyImportViewModel(documentsBrowser: documentsBrowser,
@@ -95,9 +97,11 @@ class KeyImportViewModelTest: XCTestCase {
     }
 
     func testSetOwnKeyError() {
-        let keyData = KeyImportUtil.KeyData(address: "address", fingerprint: "fpr", userName: nil)
+        let keyData = KeyImportUtil.KeyData(address: "address",
+                                            fingerprint: "fpr",
+                                            userName: "username")
         let keyImporter = KeyImporterMock(importKeyErrorToThrow: nil,
-                                          importKeyData: keyData,
+                                          importKeyDatas: [keyData],
                                           setOwnKeyErrorToThrow: KeyImportUtil.SetOwnKeyError.noMatchingAccount)
 
         let documentsBrowser = DocumentsDirectoryBrowserMock(urls: [URL(fileURLWithPath: "file:///someFake")])
@@ -111,17 +115,19 @@ class KeyImportViewModelTest: XCTestCase {
                                                       showSetOwnKeySuccessExpectation: nil)
         vm.delegate = delegate
 
-        vm.setOwnKey(key: KeyImportViewModel.KeyDetails(address: "address",
-                                                        fingerprint: "fingerprint",
-                                                        userName: nil))
+        vm.setOwnKeys(keys: [KeyImportViewModel.KeyDetails(address: "address",
+                                                           fingerprint: "fingerprint",
+                                                           userName: "username")])
 
         wait(for: [showErrorExpectation], timeout: TestUtil.waitTimeLocal)
     }
 
     func testSetOwnKeySuccess() {
-        let keyData = KeyImportUtil.KeyData(address: "address", fingerprint: "fpr", userName: nil)
+        let keyData = KeyImportUtil.KeyData(address: "address",
+                                            fingerprint: "fpr",
+                                            userName: "username")
         let keyImporter = KeyImporterMock(importKeyErrorToThrow: nil,
-                                          importKeyData: keyData)
+                                          importKeyDatas: [keyData])
 
         let documentsBrowser = DocumentsDirectoryBrowserMock(urls: [URL(fileURLWithPath: "file:///someFake")])
         let vm = KeyImportViewModel(documentsBrowser: documentsBrowser,
@@ -134,9 +140,9 @@ class KeyImportViewModelTest: XCTestCase {
                                                       showSetOwnKeySuccessExpectation: showSetOwnKeySuccessExpectation)
         vm.delegate = delegate
 
-        vm.setOwnKey(key: KeyImportViewModel.KeyDetails(address: "address",
-                                                        fingerprint: "fingerprint",
-                                                        userName: nil))
+        vm.setOwnKeys(keys: [KeyImportViewModel.KeyDetails(address: "address",
+                                                           fingerprint: "fingerprint",
+                                                           userName: "username")])
 
         wait(for: [showSetOwnKeySuccessExpectation], timeout: TestUtil.waitTimeLocal)
     }
@@ -160,22 +166,22 @@ class DocumentsDirectoryBrowserMock: DocumentsDirectoryBrowserProtocol {
 
 class KeyImporterMock: KeyImportUtilProtocol {
     let importKeyErrorToThrow: KeyImportUtil.ImportError?
-    let importKeyData: KeyImportUtil.KeyData?
+    let importKeyDatas: [KeyImportUtil.KeyData]
     let setOwnKeyErrorToThrow: KeyImportUtil.SetOwnKeyError?
 
     init(importKeyErrorToThrow: KeyImportUtil.ImportError? = nil,
-         importKeyData: KeyImportUtil.KeyData? = nil,
+         importKeyDatas: [KeyImportUtil.KeyData] = [],
          setOwnKeyErrorToThrow: KeyImportUtil.SetOwnKeyError? = nil) {
         self.importKeyErrorToThrow = importKeyErrorToThrow
-        self.importKeyData = importKeyData
+        self.importKeyDatas = importKeyDatas
         self.setOwnKeyErrorToThrow = setOwnKeyErrorToThrow
     }
 
     func importKey(url: URL,
                    errorCallback: (Error) -> (),
-                   completion: (KeyImportUtil.KeyData) -> ()) {
-        if let theData = importKeyData {
-            return completion(theData)
+                   completion: ([KeyImportUtil.KeyData]) -> ()) {
+        if !importKeyDatas.isEmpty {
+            return completion(importKeyDatas)
         } else if let theImportError = importKeyErrorToThrow {
             errorCallback(theImportError)
         } else {
@@ -183,7 +189,8 @@ class KeyImporterMock: KeyImportUtilProtocol {
         }
     }
 
-    func setOwnKey(address: String,
+    func setOwnKey(userName: String,
+                   address: String,
                    fingerprint: String,
                    errorCallback: @escaping (Error) -> (),
                    callback: @escaping () -> ()) {
@@ -219,7 +226,7 @@ class KeyImportViewModelDelegateMock: KeyImportViewModelDelegate {
         }
     }
 
-    func showConfirmSetOwnKey(key: KeyImportViewModel.KeyDetails) {
+    func showConfirmSetOwnKey(keys: [KeyImportViewModel.KeyDetails]) {
         if let exp = showConfirmSetOwnKeyExpectation {
             exp.fulfill()
         }
