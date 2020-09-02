@@ -11,7 +11,6 @@ import Foundation
 import MessageModel
 
 class SetOwnKeyViewModel {
-    public var userName: String?
     public var email: String?
     public var fingerprint: String?
 
@@ -38,7 +37,22 @@ class SetOwnKeyViewModel {
                 return
         }
 
-        keyImporter.setOwnKey(address: theEmail,
+        guard let identity = ownIdentityBy(email: theEmail) else {
+            callback(NSLocalizedString(
+                "No account found with the given email.",
+                comment: "Error when no account found for set_own_key UI"))
+            return
+        }
+
+        guard let theUserName = identity.userName else {
+            callback(NSLocalizedString(
+                "The account with the given email has no user name.",
+                comment: "Error when account found for set_own_key UI, but has no user name"))
+            return
+        }
+
+        keyImporter.setOwnKey(userName: theUserName,
+                              address: theEmail,
                               fingerprint: theFingerprint,
                               errorCallback: { err in
                                 if let setOwnKeyError = err as? KeyImportUtil.SetOwnKeyError {
@@ -54,5 +68,13 @@ class SetOwnKeyViewModel {
         }) {
             callback(nil)
         }
+    }
+}
+
+// MARK: - Private
+
+extension SetOwnKeyViewModel {
+    private func ownIdentityBy(email: String) -> Identity? {
+        return Account.by(address: email)?.user
     }
 }
