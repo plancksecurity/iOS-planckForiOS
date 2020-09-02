@@ -462,8 +462,7 @@
 /* keySyncWizard intro view Next button title */
 "Next" = "İleri";
 
-/* Alert button while client certificate is importing: Try again? No
-   Title for no button (cancel) when trying to import a key */
+/* Alert button while client certificate is importing: Try again? No */
 "No" = "Hayır";
 
 /* Error when no account found for set_own_key UI */
@@ -1009,8 +1008,7 @@
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Hatalı Trustwords";
 
-/* Alert button while client certificate is importing: Try again? Yes
-   Title for yes button when trying to import a key */
+/* Alert button while client certificate is importing: Try again? Yes */
 "Yes" = "Evet";
 
 /* Confirm less secure answer message alert body */
@@ -1018,9 +1016,6 @@
 
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Güvenli bir mesajı güvenli olarak iletmek üzeresiniz. Devam etmeyi seçerseniz, sizi ve iletişim ortaklarınızı riske atacak gizli bilgiler sızdırılabilir. Devam etmek istediğine emin misin?";
-
-/* Message when asking user for confirmation about importing a key */
-"You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?" = "Aşağıdaki anahtarı içe aktarmak üzeresiniz:\n\nİsim:% 1 $ @\nParmak izi:% 2 $ @\n\nBu anahtarı içe aktarmak ve kullanmak istediğinizden emin misiniz?";
 
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Bu öğreticiyi Atla düğmesiyle istediğiniz zaman kapatabilirsiniz.";
