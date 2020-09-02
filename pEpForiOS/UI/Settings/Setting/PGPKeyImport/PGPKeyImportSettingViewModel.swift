@@ -83,22 +83,32 @@ class PGPKeyImportSettingViewModel {
 // MARK: - Private
 
 extension PGPKeyImportSettingViewModel {
+    private func getPGPKeyImportSectionHeaderTitle() -> NSAttributedString {
+        if isGrouped() {
+            return NSAttributedString(string: NSLocalizedString("You can not import keys while the device is in a device group.",
+                                                                comment: "PGPKeyImportSetting row title when grouped"))
+        } else {
+            // pgpkeyImportSection
+            let pgpKeyImportTitleString = NSLocalizedString("To import an existing PGP private key, you first need to transfer it from your computer.\n\nClick here for more information. Once the private key has been transferred to the device, you can import it here.",
+                                                            comment: "PGPKeyImportSetting row title")
+            let pgpKeyImportSectionHeaderTitle = NSMutableAttributedString(string: pgpKeyImportTitleString,
+                                                              attributes: nil)
+            // // Setup link
+            let linkString = NSLocalizedString("here",
+                                               comment: "PGPKeyImportSettingViewModel - part of pgpKeyImportTitle that should link to support page (... click _here_ for info ...)")
+            let linkRange = pgpKeyImportSectionHeaderTitle.mutableString.range(of: linkString)
+            pgpKeyImportSectionHeaderTitle.addAttribute(NSAttributedString.Key.link,
+                                           value: "https://pep.security/docs/ios.html#pgp-key-import",
+                                           range: linkRange)
+            pgpKeyImportSectionHeaderTitle.addAttribute(NSAttributedString.Key.foregroundColor,
+                                           value: UIColor.pEpGreen,
+                                           range: linkRange)
+
+            return pgpKeyImportSectionHeaderTitle
+        }
+    }
+
     private func setupSections() {
-        // pgpkeyImportSection
-        let pgpKeyImportTitleString = NSLocalizedString("To import an existing PGP private key, you first need to transfer it from your computer.\n\nClick here for more information. Once the private key has been transferred to the device, you can import it here.",
-                                                        comment: "PGPKeyImportSetting row title")
-        let pgpKeyImportSectionHeaderTitle = NSMutableAttributedString(string: pgpKeyImportTitleString,
-                                                          attributes: nil)
-        // // Setup link
-        let linkString = NSLocalizedString("here",
-                                           comment: "PGPKeyImportSettingViewModel - part of pgpKeyImportTitle that should link to support page (... click _here_ for info ...)")
-        let linkRange = pgpKeyImportSectionHeaderTitle.mutableString.range(of: linkString)
-        pgpKeyImportSectionHeaderTitle.addAttribute(NSAttributedString.Key.link,
-                                       value: "https://pep.security/docs/ios.html#pgp-key-import",
-                                       range: linkRange)
-        pgpKeyImportSectionHeaderTitle.addAttribute(NSAttributedString.Key.foregroundColor,
-                                       value: UIColor.pEpGreen,
-                                       range: linkRange)
         let pgpKeyImportRowTitle = NSLocalizedString("PGP Key Import",
                                                      comment: "PGPKeyImportSetting pgpKeyImportRowTitle")
         let pgpKeyImportRow = Row(type: .pgpKeyImport,
@@ -114,7 +124,7 @@ extension PGPKeyImportSettingViewModel {
                                       isEnabled: true,
                                       titleFontColor: .black)
         let pgpkeyImportSection = Section(rows: [pgpKeyImportRow, passphraseForNewKey],
-                                          title: pgpKeyImportSectionHeaderTitle)
+                                          title: getPGPKeyImportSectionHeaderTitle())
         // setOwnKeySection
         let setOwnKeySectionHeaderTitle = NSLocalizedString("ADVANCED",
                                                   comment: "setOwnKeyRowTitle row title")
