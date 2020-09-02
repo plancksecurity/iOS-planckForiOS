@@ -41,7 +41,7 @@ extension String {
     
     public func containsExternalContent() -> Bool {
         let pattern = """
-(<img.*? src=(3D)?"https?.*?>)
+(<img.*? src=(3D)?"((https?)|(www)).*?>)
 """
         let result = find(pattern: pattern)
         return result.count > 0
