@@ -9,6 +9,8 @@
 import UIKit
 
 class SetOwnKeyViewController: UIViewController {
+    private let viewModel = SetOwnKeyViewModel()
+
     @IBOutlet weak var fingerprintTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var errorTextField: UILabel!
@@ -61,13 +63,15 @@ class SetOwnKeyViewController: UIViewController {
     @IBAction func setOwnKeyButtonTapped(_ sender: Any) {
         viewModel.fingerprint = fingerprintTextField.text
         viewModel.email = emailTextField.text
-        viewModel.setOwnKey()
-        errorTextField.text = viewModel.rawErrorString
+        viewModel.setOwnKey { [weak self] errorString in
+            // Weak self because the VC can out of scope by user's decision
+            DispatchQueue.main.async {
+                self?.errorTextField.text = errorString
+            }
+        }
     }
 
     // MARK: - Private
-
-    private let viewModel = SetOwnKeyViewModel()
 
     private func convertTopEp(button: UIButton) {
         button.backgroundColor = .white

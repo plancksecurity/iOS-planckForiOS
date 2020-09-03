@@ -15,16 +15,13 @@ extension UIAlertController {
                        _ style: UIAlertAction.Style = .default,
                        _ closure: (() -> ())? = nil) ->  UIAlertAction {
         return UIAlertAction(title: title, style: style) { (action) in
-            if let clos = closure {
-                clos()
-            }
+            closure?()
         }
     }
 
-    public static func pEpAlertController(
-        title: String? = nil,
-        message: String? = nil,
-        preferredStyle: UIAlertController.Style = .actionSheet) -> UIAlertController {
+    public static func pEpAlertController(title: String? = nil,
+                                          message: String? = nil,
+                                          preferredStyle: UIAlertController.Style = .actionSheet) -> UIAlertController {
         let alertCtrl = UIAlertController(title: title, message: message,
                                           preferredStyle: preferredStyle)
         alertCtrl.view.tintColor = .pEpGreen

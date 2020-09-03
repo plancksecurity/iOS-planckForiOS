@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class AccountTypeSelectorViewController: BaseViewController {
+final class AccountTypeSelectorViewController: UIViewController {
 
     var viewModel = AccountTypeSelectorViewModel()
     var delegate: AccountTypeSelectorViewModelDelegate?
@@ -132,7 +132,7 @@ extension AccountTypeSelectorViewController: AccountTypeSelectorViewModelDelegat
                                         comment: "No client certificate exists alert message")
         UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.navigationController?.popViewController(animated: true)
@@ -167,7 +167,6 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("accountType is invalid")
                 return
             }
-            vc.appConfig = appConfig
             vc.viewModel = viewModel.loginViewModel()
             vc.delegate = loginDelegate
         case .clientCertManagementSegue:
@@ -175,7 +174,6 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("Invalid state")
                 return
             }
-            dvc.appConfig = appConfig
             dvc.viewModel = viewModel.clientCertificateManagementViewModel()
         }
     }

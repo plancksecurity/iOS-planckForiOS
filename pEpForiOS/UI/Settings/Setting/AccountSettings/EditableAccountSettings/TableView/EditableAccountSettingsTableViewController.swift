@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class EditableAccountSettingsTableViewController: BaseTableViewController {
+final class EditableAccountSettingsTableViewController: UITableViewController {
 
     @IBOutlet private var stackViews: [UIStackView]!
 
@@ -41,6 +41,11 @@ final class EditableAccountSettingsTableViewController: BaseTableViewController 
 
     private var firstResponder: UITextField?
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.title = title
+        tableView.hideSeperatorForEmptyCells()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
@@ -140,7 +145,7 @@ extension EditableAccountSettingsTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: pEpHeaderView.reuseIdentifier) as? pEpHeaderView else {
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: PEPHeaderView.reuseIdentifier) as? PEPHeaderView else {
             Log.shared.errorAndCrash("pEpHeaderView doesn't exist!")
             return nil
         }
@@ -178,8 +183,8 @@ extension EditableAccountSettingsTableViewController: EditableAccountSettingsTab
 extension EditableAccountSettingsTableViewController {
 
     private func setUpView() {
-        tableView.register(pEpHeaderView.self,
-                           forHeaderFooterViewReuseIdentifier: pEpHeaderView.reuseIdentifier)
+        tableView.register(PEPHeaderView.self,
+                           forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
         tableView.delegate = self
         smtpSecurityTextfield.inputView = securityPicker
         imapSecurityTextfield.inputView = securityPicker

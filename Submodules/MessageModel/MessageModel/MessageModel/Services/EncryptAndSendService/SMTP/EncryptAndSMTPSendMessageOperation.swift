@@ -53,7 +53,7 @@ extension EncryptAndSMTPSendMessageOperation {
             guard let cdMessage = me.cdMessage else {
                 Log.shared.errorAndCrash("No msg to send")
                 let error = BackgroundError.CoreDataError.couldNotFindMessage(info: "No message for ObjectId: \(me.cdMessageToSendObjectId)")
-                me.handleError(error)
+                me.handle(error: error)
                 return
             }
             cdMessage.sent = Date()
@@ -65,17 +65,39 @@ extension EncryptAndSMTPSendMessageOperation {
                 // Simply send out.
                 me.send(pEpMessage: pEpMsg)
             } else {
-                do {
-                    let exrtaKeys = CdExtraKey.fprsOfAllExtraKeys(in: me.privateMOC)
-                    let encryptedMessageToSend =
-                        try PEPUtils.encrypt(pEpMessage: pEpMsg,
-                                             encryptionFormat: cdMessage.pEpProtected ? .PEP : .none,
-                                             extraKeys: exrtaKeys)
-                    me.setOriginalRatingHeader(unencryptedCdMessage: cdMessage)
-                    me.send(pEpMessage: encryptedMessageToSend)
-                } catch {
-                    Log.shared.errorAndCrash(error: error)
-                    me.handleError(error)
+                let extraKeys = CdExtraKey.fprsOfAllExtraKeys(in: me.privateMOC)
+                PEPUtils.encrypt(pEpMessage: pEpMsg,
+                                 encryptionFormat: cdMessage.pEpProtected ? .PEP : .none,
+                                 extraKeys: extraKeys, errorCallback: { (error) in
+                                    let error = error as NSError
+                                    if error.domain == PEPObjCAdapterEngineStatusErrorDomain {
+                                        switch error.code {
+                                        case Int(PEPStatus.passphraseRequired.rawValue),
+                                             Int(PEPStatus.wrongPassphrase.rawValue):
+                                            // The adapter is responsible to ask for passphrase. We are not.
+                                            me.waitForBackgroundTasksAndFinish()
+                                            break
+                                        default:
+                                            Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
+                                            me.handle(error: BackgroundError.GeneralError.illegalState(info:
+                                                "##\nError: \(error)\nencrypting message: \(cdMessage)\n##"))
+                                        }
+                                    } else if error.domain == PEPObjCAdapterErrorDomain {
+                                        Log.shared.errorAndCrash("Unexpected ")
+                                        me.handle(error: BackgroundError.GeneralError.illegalState(info:
+                                            "We do not exept this error domain to show up here: \(error)"))
+                                    } else {
+                                        Log.shared.errorAndCrash("Unhandled error domain: %@", "\(error.domain)")
+                                        me.handle(error: BackgroundError.GeneralError.illegalState(info:
+                                            "Unhandled error domain: \(error.domain)"))
+                                    }
+                }) { (_, encryptedMessageToSend) in
+                    me.backgroundQueue.addOperation {
+                        me.privateMOC.perform {
+                            me.setOriginalRatingHeader(unencryptedCdMessage: cdMessage)
+                            me.send(pEpMessage: encryptedMessageToSend)
+                        }
+                    }
                 }
             }
         }
@@ -99,7 +121,7 @@ extension EncryptAndSMTPSendMessageOperation {
             }
             guard let cdMessage = me.cdMessage else {
                 let error = BackgroundError.CoreDataError.couldNotFindMessage(info: "No message")
-                me.handleError(error)
+                me.handle(error: error)
                 return
             }
             guard
@@ -121,12 +143,11 @@ extension EncryptAndSMTPSendMessageOperation {
                 me.privateMOC.saveAndLogErrors()
                 return
             }
-
-            let rating = cdMessage.outgoingMessageRating().rawValue
+            let rating = blockingGetOutgoingMessageRating(for: cdMessage)
 
             cdMessage.parent = sentFolder
             cdMessage.imap?.localFlags?.flagSeen = true
-            cdMessage.pEpRating = Int16(rating)
+            cdMessage.pEpRating = Int16(rating.rawValue)
 
             cdMessage.createFakeMessage(context: me.privateMOC)
 
@@ -138,9 +159,26 @@ extension EncryptAndSMTPSendMessageOperation {
     }
 
     private func setOriginalRatingHeader(unencryptedCdMessage: CdMessage) {
-        let originalRating = unencryptedCdMessage.outgoingMessageRating()
+        let originalRating = blockingGetOutgoingMessageRating(for: unencryptedCdMessage)
         unencryptedCdMessage.setOriginalRatingHeader(rating: originalRating)
         privateMOC.saveAndLogErrors()
+    }
+
+    /// THIS BLOCKS. Handle with care.
+    private func blockingGetOutgoingMessageRating(for cdMessage: CdMessage) -> PEPRating {
+        let group = DispatchGroup()
+        group.enter()
+        var outgoingRating: PEPRating? = nil
+        cdMessage.outgoingMessageRating { (rating) in
+            outgoingRating = rating
+            group.leave()
+        }
+        group.wait()
+        guard let rating: PEPRating = outgoingRating else {
+            Log.shared.errorAndCrash("No Rating")
+            return .undefined
+        }
+        return rating
     }
 }
 
@@ -165,7 +203,7 @@ extension EncryptAndSMTPSendMessageOperation {
 extension EncryptAndSMTPSendMessageOperation: SmtpConnectionDelegate {
     public func badResponse(_ smtpConnection: SmtpConnectionProtocol, response: String?) {
         let error = BackgroundError.SmtpError.badResponse(info: comp)
-        handleError(error, message: "badResponse")
+        handle(error: error, message: "badResponse")
     }
 
     public func messageSent(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
@@ -174,28 +212,28 @@ extension EncryptAndSMTPSendMessageOperation: SmtpConnectionDelegate {
 
     public func messageNotSent(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         let error = BackgroundError.SmtpError.messageNotSent(info: comp)
-        handleError(error, message: "messageNotSent")
+        handle(error: error, message: "messageNotSent")
     }
 
     public func transactionInitiationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 
     public func transactionInitiationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         let error = BackgroundError.SmtpError.transactionInitiationFailed(info: comp)
-        handleError(error, message: "transactionInitiationFailed")
+        handle(error: error, message: "transactionInitiationFailed")
     }
 
     public func recipientIdentificationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 
     public func recipientIdentificationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         let error = BackgroundError.SmtpError.recipientIdentificationFailed(info: comp)
-        handleError(error, message: "recipientIdentificationFailed")
+        handle(error: error, message: "recipientIdentificationFailed")
     }
 
     public func transactionResetCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 
     public func transactionResetFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         let error = BackgroundError.SmtpError.transactionResetFailed(info: comp)
-        handleError(error, message: "transactionResetFailed")
+        handle(error: error, message: "transactionResetFailed")
     }
 
     public func authenticationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
@@ -205,29 +243,29 @@ extension EncryptAndSMTPSendMessageOperation: SmtpConnectionDelegate {
 
     public func authenticationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         let error = BackgroundError.SmtpError.authenticationFailed(info: comp)
-        handleError(error, message: "authenticationFailed")
+        handle(error: error, message: "authenticationFailed")
     }
 
     public func connectionEstablished(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 
     public func connectionLost(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         let error = BackgroundError.SmtpError.connectionLost(info: comp)
-        handleError(error, message: "connectionLost")
+        handle(error: error, message: "connectionLost")
     }
 
     public func connectionTerminated(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         let error = BackgroundError.SmtpError.connectionTerminated(info: comp)
-        handleError(error, message: "connectionTerminated")
+        handle(error: error, message: "connectionTerminated")
     }
 
     public func connectionTimedOut(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         let error = BackgroundError.SmtpError.connectionTimedOut(info: comp)
-        handleError(error, message: "connectionTimedOut")
+        handle(error: error, message: "connectionTimedOut")
     }
 
     public func requestCancelled(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         let error = BackgroundError.SmtpError.requestCancelled(info: comp)
-        handleError(error, message: "requestCancelled")
+        handle(error: error, message: "requestCancelled")
     }
 
     public func serviceInitialized(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}

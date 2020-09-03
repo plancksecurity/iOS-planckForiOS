@@ -16,11 +16,8 @@ protocol SecureWebViewControllerDelegate: class {
 
 protocol SecureWebViewUrlClickHandlerProtocol: class {
     /// Called whenever a mailto:// URL has been clicked by the user.
-    /// - Parameters:
-    ///   - sender: caller of the message
-    ///   - mailToUrlClicked: the clicked URL
-    func secureWebViewController(_ webViewController: SecureWebViewController,
-                                 didClickMailToUrlLink url: URL)
+    /// - Parameter url: The mailto:// URL
+    func didClickOn(mailToUrlLink url: URL)
 }
 
 // WKContentRuleList is not available below iOS11, thus remote content would be loaded
@@ -107,11 +104,14 @@ class SecureWebViewController: UIViewController {
 
     // MARK: - API
 
-    public func display(html: String) {
+    public func display(html: String, showExternalContent: Bool) {
         setupBlocklist() { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
+            }
+            if showExternalContent {
+                me.webView.configuration.userContentController.removeAllContentRuleLists()
             }
             me.htmlOptimizer.optimizeForDislaying(html: html) { processedHtml in
                 me.webView.loadHTMLString(processedHtml, baseURL: nil)
@@ -241,7 +241,7 @@ extension SecureWebViewController: WKNavigationDelegate {
             }
             if url.scheme == "mailto" {
                 // The user clicked on an email URL.
-                urlClickHandler?.secureWebViewController(self, didClickMailToUrlLink: url)
+                urlClickHandler?.didClickOn(mailToUrlLink: url)
             } else {
                 // The user clicked a link type we do not allow custom handling for.
                 // Try to open it in an appropriate app, do nothing if that fails.
@@ -297,18 +297,7 @@ extension SecureWebViewController: UIScrollViewDelegate {
 }
 
 // MARK: -
-// MARK: !! EXTREMELY DIRTY HACK !! ( START )
 
-/// This is the only hack found to intercept WKWebViews default long-press on mailto: URL
-/// behaviour.
-/// !! IF YOU ARE AWARE OF A BETTER SOLUTION, PLEASE LET US KNOW OR IMPLEMENT !!
-/// We must intercept it to show our custom action sheet.
-/// The hack overrrides present(...) in the root view controller of the App (!).
-
-extension SecureWebViewController {
-    /// DIRTY HACK. Find details in below UISplitViewController extension
-    static var appConfigDirtyHack: AppConfig?
-}
 extension UISplitViewController {
 
     override open func present(_ viewControllerToPresent: UIViewController,
@@ -327,8 +316,7 @@ extension UISplitViewController {
 
         let alertTitle = alertController.title ?? ""
 
-        if alertTitle.isProbablyValidEmail(),
-            let appConfig = SecureWebViewController.appConfigDirtyHack {
+        if alertTitle.isProbablyValidEmail() {
             // It *is* an Action Sheet shown due to long-press on mailto: URL and we know the
             // clicked address.
             // Forward for custom handling.
@@ -346,8 +334,7 @@ extension UISplitViewController {
 
             UIUtils.presentActionSheetWithContactOptions(forContactWithEmailAddress: mailAddress,
                                                          at: alertRect,
-                                                         at: self.view,
-                                                         appConfig: appConfig)
+                                                         at: self.view)
         } else if alertTitle.hasPrefix(UrlClickHandler.Scheme.mailto.rawValue) {
             // It *is* an Action Sheet shown due to long-press on mailto: URL, but we do not know
             // the clicked address.

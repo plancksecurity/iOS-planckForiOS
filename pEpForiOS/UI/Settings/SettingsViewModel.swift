@@ -23,7 +23,7 @@ protocol SettingsViewModelDelegate: class {
 /// Protocol that represents the basic data in a row.
 protocol SettingsRowProtocol {
     // Identifier of the row
-    var identifier : SettingsViewModel.Row { get }
+    var identifier : SettingsViewModel.RowIdentifier { get }
     /// Title of the row.
     var title: String { get }
     /// boolean that indicates if the row action is dangerous.
@@ -65,12 +65,22 @@ final class SettingsViewModel {
     public func cellIdentifier(for indexPath: IndexPath) -> String {
         let row = section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
-        case .account, .defaultAccount, .setOwnKey, .credits, .extraKeys, .trustedServer,
-             .resetTrust:
+        case .account,
+             .defaultAccount,
+             .pgpKeyImport,
+             .credits,
+             .extraKeys,
+             .trustedServer,
+             .resetTrust, 
+             .tutorial:
             return "SettingsCell"
         case .resetAccounts:
             return "SettingsActionCell"
-        case .passiveMode, .protectMessageSubject, .pEpSync, .unsecureReplyWarningEnabled:
+        case .passiveMode,
+             .protectMessageSubject,
+             .pEpSync,
+             .usePEPFolder,
+             .unsecureReplyWarningEnabled:
             return "switchOptionCell"
         }
     }
@@ -95,7 +105,7 @@ final class SettingsViewModel {
 
     /// Returns the color of the title for the row passed. Red if the action is dangerous, nil otherwise.
     /// - Parameter rowIdentifier: The identifier of the row type.
-    public func titleColor(rowIdentifier: Row) -> UIColor? {
+    public func titleColor(rowIdentifier: RowIdentifier) -> UIColor? {
         switch rowIdentifier {
         case .resetAccounts, .resetTrust:
             return .pEpRed
@@ -124,8 +134,12 @@ final class SettingsViewModel {
     public func handleExtraKeysEditabilityGestureTriggered() {
         let newValue = !AppSettings.shared.extraKeysEditable
         AppSettings.shared.extraKeysEditable = newValue
-        
+
         delegate?.showExtraKeyEditabilityStateChangeAlert(newValue: newValue ? "ON" : "OFF")
+    }
+
+    public func pgpKeyImportSettingViewModel() -> PGPKeyImportSettingViewModel {
+        return PGPKeyImportSettingViewModel()
     }
 }
 
@@ -179,7 +193,7 @@ extension SettingsViewModel {
                                            isDangerous: false)
                 accountRow.action = { [weak self] in
                     guard let me = self else {
-                        Log.shared.errorAndCrash(message: "Lost myself")
+                        Log.shared.lostMySelf()
                         return
                     }
                     me.delete(account: acc)
@@ -197,7 +211,7 @@ extension SettingsViewModel {
             }
             rows.append(generateActionRow(type: .resetAccounts, isDangerous: true) { [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(message: "Lost myself")
+                    Log.shared.lostMySelf()
                     return
                 }
                 
@@ -207,7 +221,7 @@ extension SettingsViewModel {
             rows.append(generateNavigationRow(type: .defaultAccount, isDangerous: false))
             rows.append(generateNavigationRow(type: .credits, isDangerous: false))
             rows.append(generateNavigationRow(type: .trustedServer, isDangerous: false))
-            rows.append(generateNavigationRow(type: .setOwnKey, isDangerous: false))
+            rows.append(generateNavigationRow(type: .pgpKeyImport, isDangerous: false))
             rows.append(generateSwitchRow(type: .unsecureReplyWarningEnabled,
                                           isDangerous: false,
                                           isOn: AppSettings.shared.unsecureReplyWarningEnabled) {
@@ -226,12 +240,19 @@ extension SettingsViewModel {
                                             AppSettings.shared.passiveMode = value
             })
         case .pEpSync:
-            rows.append(generateSwitchRow(type: .pEpSync, isDangerous: false, isOn: keySyncStatus) { [weak self] (value) in
+            rows.append(generateSwitchRow(type: .pEpSync,
+                                          isDangerous: false,
+                                          isOn: keySyncStatus) { [weak self] (value) in
                 guard let me = self else {
                     Log.shared.lostMySelf()
                     return
                 }
-                me.PEPSyncUpdate(to: value)
+                me.setPEPSyncEnabled(to: value)
+            })
+            rows.append(generateSwitchRow(type: .usePEPFolder,
+                                          isDangerous: false,
+                                          isOn: AppSettings.shared.usePEPFolderEnabled) { (value) in
+                AppSettings.shared.usePEPFolderEnabled = value
             })
         case .contacts:
             rows.append(generateNavigationRow(type: .resetTrust, isDangerous: true))
@@ -245,7 +266,7 @@ extension SettingsViewModel {
     /// - Parameters:
     ///   - type: The type of row to generate
     ///   - isDangerous: If the action that performs this row is dangerous.
-    private func generateNavigationRow(type: Row, isDangerous: Bool) -> NavigationRow {
+    private func generateNavigationRow(type: RowIdentifier, isDangerous: Bool) -> NavigationRow {
         guard let rowTitle = rowTitle(type: type) else {
             Log.shared.errorAndCrash(message: "Row title not found")
             return NavigationRow(identifier: type, title: "")
@@ -260,7 +281,7 @@ extension SettingsViewModel {
     ///   - isDangerous: If the action that performs this row is dangerous.
     ///   - isOn: The default status of the switch
     ///   - action: The action to be performed.
-    private func generateSwitchRow(type: Row, isDangerous: Bool, isOn: Bool,
+    private func generateSwitchRow(type: RowIdentifier, isDangerous: Bool, isOn: Bool,
                                    action: @escaping SwitchBlock) -> SwitchRow {
         guard let rowTitle = rowTitle(type: type) else {
             Log.shared.errorAndCrash(message: "Row title not found")
@@ -274,7 +295,7 @@ extension SettingsViewModel {
     ///   - type: The type of row that needs to generate
     ///   - isDangerous: If the action that performs this row is dangerous. (E. g. Reset identities)
     ///   - action: The action to be performed
-    private func generateActionRow(type: Row, isDangerous: Bool,
+    private func generateActionRow(type: RowIdentifier, isDangerous: Bool,
                                    action: @escaping ActionBlock) -> ActionRow {
         guard let rowTitle = rowTitle(type: type) else {
             Log.shared.errorAndCrash(message: "Row title not found")
@@ -325,10 +346,10 @@ extension SettingsViewModel {
         }
     }
 
-    /// Thie method provides the title for each cell, regarding its type.
+    /// This method provides the title for each cell, regarding its type.
     /// - Parameter type: The row type to get the proper title
     /// - Returns: The title of the row. If it's an account row, it will be nil and the name of the account should be used.
-    private func rowTitle(type : Row) -> String? {
+    private func rowTitle(type : RowIdentifier) -> String? {
         switch type {
         case .account:
             return nil
@@ -344,9 +365,9 @@ extension SettingsViewModel {
         case .trustedServer:
             return NSLocalizedString("Store Messages Securely",
                                      comment: "Settings: Cell (button) title to view default account setting")
-        case .setOwnKey:
-            return NSLocalizedString("Set Own Key",
-                                     comment: "Settings: Cell (button) title for entering fingerprints that are made own keys")
+        case .pgpKeyImport:
+            return NSLocalizedString("PGP Key Import",
+                                     comment: "Settings: Cell (button) title for importing and using private PGP keys")
         case .extraKeys:
             return NSLocalizedString("Extra Keys",
                                      comment: "Settings: Cell (button) title to view Extra Keys setting")
@@ -362,41 +383,54 @@ extension SettingsViewModel {
         case .pEpSync:
             return NSLocalizedString("p≡p Sync",
                                      comment: "Settings: enable/disable p≡p Sync feature")
+        case .usePEPFolder:
+            return NSLocalizedString("Use p≡p Folder For Sync Messages",
+                                     comment: "Settings: title for enable/disable usePEPFolder feature")
         case .unsecureReplyWarningEnabled:
             return NSLocalizedString("Unsecure reply warning",
                                      comment: "setting row title: Unsecure reply warning")
+        case .tutorial:
+            return NSLocalizedString("Tutorial", comment: "setting row title: Tutorial")
         }
     }
 
-    /// Thie method provides the subtitle if needed.
+    /// This method provides the subtitle if needed.
     /// - Parameter type: The row type to get the proper title
     /// - Returns: The subtitle of the row.
-    private func rowSubtitle(type : Row) -> String? {
+    private func rowSubtitle(type : RowIdentifier) -> String? {
         switch type {
         case .defaultAccount:
             return AppSettings.shared.defaultAccount
-        case .account, .credits, .extraKeys, .passiveMode, .pEpSync,
-             .protectMessageSubject, .resetAccounts, .resetTrust, .setOwnKey, .trustedServer,
-             .unsecureReplyWarningEnabled:
+        case .account,
+             .credits,
+             .extraKeys,
+             .passiveMode,
+             .pEpSync,
+             .usePEPFolder,
+             .protectMessageSubject,
+             .resetAccounts,
+             .resetTrust,
+             .pgpKeyImport,
+             .trustedServer,
+             .unsecureReplyWarningEnabled, .tutorial:
             return nil
         }
     }
 
     /// This method sets the pEp Sync status according to the parameter value
     /// - Parameter value: The new value of the pEp Sync status
-    private func PEPSyncUpdate(to value: Bool) {
+    private func setPEPSyncEnabled(to value: Bool) {
         let grouped = KeySyncUtil.isInDeviceGroup
         if value {
             KeySyncUtil.enableKeySync()
         } else {
             if grouped {
-                do {
-                    try KeySyncUtil.leaveDeviceGroup()
-                } catch {
-                    Log.shared.errorAndCrash(error: error)
+                KeySyncUtil.leaveDeviceGroup() {
+                    // Nothing to do.
                 }
+            } else {
+                KeySyncUtil.disableKeySync()
             }
-            KeySyncUtil.disableKeySync()
         }
     }
 
@@ -455,19 +489,21 @@ extension SettingsViewModel {
     }
 
     /// Identifies semantically the type of row.
-    public enum Row {
+    public enum RowIdentifier {
         case account
         case resetAccounts
         case defaultAccount
         case credits
         case trustedServer
-        case setOwnKey
+        case pgpKeyImport
         case passiveMode
         case protectMessageSubject
         case unsecureReplyWarningEnabled
         case pEpSync
+        case usePEPFolder
         case resetTrust
         case extraKeys
+        case tutorial
     }
 
     /// Struct that represents a section in SettingsTableViewController
@@ -507,7 +543,7 @@ extension SettingsViewModel {
     /// Struct that is used to perform an action. represents a ActionRow in settingsTableViewController
     public struct ActionRow: SettingsRowProtocol {
         /// The type of the row.
-        var identifier: SettingsViewModel.Row
+        var identifier: SettingsViewModel.RowIdentifier
         /// Title of the action row
         var title: String
         /// Indicates if the action to be performed is dangerous.
@@ -519,7 +555,7 @@ extension SettingsViewModel {
     /// Struct that is used to perform a show detail action. represents a NavicationRow in SettingsTableViewController
     public struct NavigationRow: SettingsRowProtocol {
         /// The type of the row.
-        var identifier: SettingsViewModel.Row
+        var identifier: SettingsViewModel.RowIdentifier
         /// Title of the action row
         var title: String
         /// subtitle for a navigation row
@@ -531,7 +567,7 @@ extension SettingsViewModel {
     /// Struct that is used to show and interact with a switch. represents a SwitchRow in settingsTableViewController
     public struct SwitchRow: SettingsRowProtocol {
         //The row type
-        var identifier: SettingsViewModel.Row
+        var identifier: SettingsViewModel.RowIdentifier
         //The title of the swith row
         var title: String
         //Indicates if the action to be performed is dangerous

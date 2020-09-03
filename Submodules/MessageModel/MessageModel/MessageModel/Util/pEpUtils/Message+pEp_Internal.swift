@@ -16,8 +16,8 @@ extension Message {
         addToOptionalFields(key: Headers.originalRating.rawValue, value: rating)
     }
 
-    func outgoingMessageRating() -> PEPRating {
-        return cdObject.outgoingMessageRating()
+    func outgoingMessageRating(completion: @escaping (PEPRating)->Void) {
+        return cdObject.outgoingMessageRating(completion: completion)
     }
 }
 
@@ -50,35 +50,32 @@ extension Message {
 extension Message {
 
     //!!!: MUST be changed while refactoring HandshakeView. MUST NOT use Message MM intarnally.
-    static func pEpRating(message: Message, session: Session) -> PEPRating {
-        var result: PEPRating?
+    static func pEpRating(message: Message,
+                          session: Session,
+                          completion: @escaping (PEPRating)->Void) {
         session.performAndWait {
-            result = pEpRating(message: message)
+            pEpRating(message: message, completion: completion)
         }
-        guard let safeResut = result else {
-            Log.shared.errorAndCrash("Fail to get pEpRating in private session")
-            return .undefined
-        }
-        return safeResut
     }
 
     //!!!: MUST be changed while refactoring HandshakeView. MUST NOT use Message MM intarnally.
-    static func pEpRating(message: Message) -> PEPRating {
+    static func pEpRating(message: Message,
+                          completion: @escaping (PEPRating)->Void) {
         let originalRating = message.getOriginalRatingHeaderRating()
         switch message.parent.folderType {
         case .sent, .trash, .drafts:
-            return originalRating ?? bestFallbackPepRatingWeCanGet(forCdMessage: message.cdObject)
+            completion(originalRating ?? bestFallbackPepRatingWeCanGet(forCdMessage: message.cdObject))
         case .outbox:
-            return message.outgoingMessageRating()
+            return message.outgoingMessageRating(completion: completion)
         case .all, .archive, .inbox, .normal, .spam, .flagged:
             if message.cdObject.isOnTrustedServer {
-                return originalRating ?? bestFallbackPepRatingWeCanGet(forCdMessage: message.cdObject)
+                completion(originalRating ?? bestFallbackPepRatingWeCanGet(forCdMessage: message.cdObject))
             } else {
-                return PEPUtils.pEpRatingFromInt(message.pEpRatingInt) ?? .undefined
+                completion(PEPUtils.pEpRatingFromInt(message.pEpRatingInt) ?? .undefined)
             }
         case .pEpSync:
             // messages from this folder should never be shown to the user
-            return .unreliable
+            completion(.unreliable)
         }
     }
 

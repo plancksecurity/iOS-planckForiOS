@@ -43,6 +43,9 @@
 /* Class = "UILabel"; text = "Password"; ObjectID = "En6-h6-xZD"; */
 "En6-h6-xZD.text" = "Passwort:";
 
+/* Class = "UILabel"; text = "Title"; ObjectID = "GAd-Jm-sFz"; */
+"GAd-Jm-sFz.text" = "Titel";
+
 /* Class = "UILabel"; text = "Transport Security"; ObjectID = "hAL-c1-ngD"; */
 "hAL-c1-ngD.text" = "Transportsicherheit:";
 
@@ -69,6 +72,12 @@
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "Pdx-rN-QPm"; */
 "Pdx-rN-QPm.text" = "Titel";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "Pgw-uY-8FO"; */
+"Pgw-uY-8FO.text" = "Titel";
+
+/* Class = "UILabel"; text = "Use a passphrase for new keys"; ObjectID = "Ppr-kD-hKR"; */
+"Ppr-kD-hKR.text" = "Verwende Passphrase für neue Schlüssel";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "QcW-va-Qh4"; */
 "QcW-va-Qh4.text" = "Name:";

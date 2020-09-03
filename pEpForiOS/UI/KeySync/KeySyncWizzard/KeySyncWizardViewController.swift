@@ -177,7 +177,7 @@ extension KeySyncWizardViewController {
         handShakeViewController.completionHandler { [weak self] action in
 
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
 
@@ -268,10 +268,8 @@ extension KeySyncWizardViewController {
     }
 
     private func leaveDeviceGroup() {
-        do {
-            try KeySyncUtil.leaveDeviceGroup()
-        } catch {
-            Log.shared.errorAndCrash("%@", error.localizedDescription)
+        KeySyncUtil.leaveDeviceGroup() {
+            // Nothing to do.
         }
     }
 

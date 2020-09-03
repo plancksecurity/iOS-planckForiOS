@@ -40,18 +40,26 @@ public final class MessageModelService {
     private var cleanupServices = [ServiceProtocol]()
 
     // MARK: - Life Cycle
+
+    /// Must be called from the main queue
     public init(errorPropagator: ErrorPropagator? = nil,
                 cnContactsAccessPermissionProvider: CNContactsAccessPermissionProviderProtocol,
                 keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol? = nil,
-                keySyncStateProvider: KeySyncStateProvider) {
+                keySyncStateProvider: KeySyncStateProvider,
+                usePEPFolderProvider: UsePEPFolderProviderProtocol,
+                passphraseProvider: PassphraseProviderProtocol) {
         // Mega ugly, MUST go away. Fix with Stack update.
-        // Touch Stack once to assure it set's up the mainContext on the main queue
+        // Touch Stack once to assure it sets up the mainContext on the main queue
         let _ = Stack.shared
+
+        configureAdapter(withClientsPassphraseProvider: passphraseProvider)
 
         setupServices(errorPropagator: errorPropagator,
                       cnContactsAccessPermissionProvider: cnContactsAccessPermissionProvider,
                       keySyncServiceHandshakeHandler: keySyncServiceHandshakeHandler,
-                      keySyncStateProvider: keySyncStateProvider)
+                      keySyncStateProvider: keySyncStateProvider,
+                      usePEPFolderProvider: usePEPFolderProvider,
+                      passphraseProvider: passphraseProvider)
     }
 }
 
@@ -73,7 +81,9 @@ extension MessageModelService {
     private func setupServices(errorPropagator: ErrorPropagator?,
                                cnContactsAccessPermissionProvider: CNContactsAccessPermissionProviderProtocol,
                                keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol? = nil,
-                               keySyncStateProvider: KeySyncStateProvider) {
+                               keySyncStateProvider: KeySyncStateProvider,
+                               usePEPFolderProvider: UsePEPFolderProviderProtocol,
+                               passphraseProvider: PassphraseProviderProtocol) {
         //###
         // Servcies that run while the app is running (Send, decrypt, replicate, ...)
         let decryptService = DecryptService(backgroundTaskManager: backgroundTaskManager,
@@ -84,11 +94,16 @@ extension MessageModelService {
                                                        errorPropagator: errorPropagator)
         let keySyncService = KeySyncService(keySyncServiceHandshakeHandler: keySyncServiceHandshakeHandler,
                                             keySyncStateProvider: keySyncStateProvider,
-                                            fastPollingDelegate: replicationService)
+                                            fastPollingDelegate: replicationService,
+                                            passphraseProvider: passphraseProvider,
+                                            usePEPFolderProvider: usePEPFolderProvider)
+        let createPEPFolderService = CreatePepIMAPFolderService(backgroundTaskManager: backgroundTaskManager,
+                                                                usePEPFolderProviderProtocol: usePEPFolderProvider)
         runtimeServices = [decryptService,
                            encryptAndSendService,
                            replicationService,
-                           keySyncService]
+                           keySyncService,
+                           createPEPFolderService]
         //###
         // Services that cleanup once when the app finishes
         let updateIdentitiesAddressBookIdService =
@@ -97,13 +112,24 @@ extension MessageModelService {
         cleanupServices = [updateIdentitiesAddressBookIdService,
                            deleteOutdatedAutoconsumableMessagesService]
     }
+
+    private func configureAdapter(withClientsPassphraseProvider passphraseProvider: PassphraseProviderProtocol) {
+        PassphraseUtil().configureAdapterWithPassphraseForNewKeys()
+        PEPObjCAdapter.setPassphraseProvider(PEPPassphraseProvider(delegate: passphraseProvider))
+    }
 }
 
 extension MessageModelService: ServiceProtocol {
 
     public func start() {
-        // Forward service calls
-        runtimeServices.forEach { $0.start() }
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            // Forward service calls
+            me.runtimeServices.forEach { $0.start() }
+        }
     }
 
     public func finish() {

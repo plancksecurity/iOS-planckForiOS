@@ -52,16 +52,16 @@ final class LoginViewModel {
 
     public var shouldShowPasswordField: Bool {
            return !verifiableAccount.accountType.isOauth
-       }
+    }
 
     let qualifyServerIsLocalService = QualifyServerIsLocalService()
 
     init(verifiableAccount: VerifiableAccountProtocol? = nil) {
-        self.verifiableAccount = verifiableAccount ??
-            VerifiableAccount.verifiableAccount(for: .other)
+        self.verifiableAccount =
+            verifiableAccount ??
+            VerifiableAccount.verifiableAccount(for: .other,
+                                                usePEPFolderProvider: AppSettings.shared)
     }
-
-
 
     func isThereAnAccount() -> Bool {
         return !Account.all().isEmpty
@@ -135,7 +135,7 @@ final class LoginViewModel {
                                          provider: nil,
                                          flags: AS_FLAG_USE_ANY,
                                          credentials: nil)
-        acSettings.lookupCompletion() { [weak self] settings in
+        acSettings.lookupCompletion() { settings in
             GCD.onMain() {
                 libAccoutSettingsStatusOK()
             }
@@ -268,7 +268,7 @@ extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
     func didQualify(serverName: String, isLocal: Bool?, error: Error?) {
         GCD.onMain { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             if let err = error {
@@ -305,7 +305,7 @@ extension LoginViewModel: VerifiableAccountDelegate {
             do {
                 try verifiableAccount.save() { [weak self] success in
                     guard let me = self else {
-                        Log.shared.errorAndCrash("Lost MySelf")
+                        // Valid case. We might have been dismissed already.
                         return
                     }
                     me.informAccountVerificationResultDelegate(error: nil)

@@ -17,41 +17,63 @@ public protocol TrustManagementUtilProtocol: class {
     ///   - partnerIdentity: partner identity to do handshake.
     ///   - language: language code in ISO 639-1
     ///   - long: if false will return only 5 words, if true will return all posible trustwords for both identities.
-    /// - returns: The trustwords generated according to the parameters. If fails, nil.
+    ///    - completion returns the result if available, returns nil otherwize
     /// For example absense of fingerprints, or a failure in the session. If so will be nil.
-    func getTrustwords(for SelfIdentity: Identity, and partnerIdentity: Identity, language: String, long: Bool) throws -> String?
+    func getTrustwords(for SelfIdentity: Identity, and partnerIdentity: Identity,
+                       language: String,
+                       long: Bool,
+                       completion: @escaping (String?)->Void)
+
+    func getTrustwords(forFpr1 fpr1: String,
+                       fpr2: String,
+                       language: String,
+                       full: Bool,
+                       completion: @escaping (String?)->Void)
     
-    /// Method to confirm trust for an indentity.
-    /// - Parameter partnerIdentity: Identity in which the action will be taken.
-    func confirmTrust(for partnerIdentity: Identity)
-    
-    /// Method to deny trust for an indentity.
-    /// - Parameter partnerIdentity: Identity in which the action will be taken.
-    func denyTrust(for partnerIdentity: Identity)
-    
-    /// Method to reset trust for an identity.
-    /// - Parameter partnerIdentity: Identity in which the action will be taken.
-    func undoMisstrustOrTrust(for partnerIdentity: Identity, fingerprint: String?)
+    /// Confirms trust on a partner identity.
+    /// - Parameters:
+    ///   - partnerIdentity: The partner identity to deny trust on
+    ///   - completion: A block that gets called after the action has finished
+    func confirmTrust(for partnerIdentity: Identity,
+                      completion: @escaping (Error?) -> ())
+
+    /// Denies trust on a partner identity.
+    /// - Parameters:
+    ///   - partnerIdentity: The partner identity to deny trust on
+    ///   - completion: A block that gets called after the action has finished
+    func denyTrust(for partnerIdentity: Identity,
+                   completion: @escaping (Error?) -> ())
+
+    /// Asynchronously resets trust for a partner identity,
+    /// undoing any previous trust or mistrust action.
+    /// - Parameters:
+    ///   - partnerIdentity: The partner identity
+    ///   - fingerprint: The fingerprint of the identity
+    ///   - completion: A block that gets called after the action has finished.
+    func undoMisstrustOrTrust(for partnerIdentity: Identity,
+                              fingerprint: String?,
+                              completion: @escaping (Error?) -> ())
     
     /// Method that reset all information about the partner identity
     /// - Parameter partnerIdentity: Identity in which the action will be taken.
-    func resetTrust(for partnerIdentity: Identity?)
+    func resetTrust(for partnerIdentity: Identity?, completion: @escaping () -> ())
+
+    /// Calls the completion block with a list of available languages codes
+    /// in ISO 639-1 for the self identity
+    func languagesList(completion: @escaping ([String]) -> ())
     
-    /// - returns: List of available languages codes in ISO 639-1 for the self identity
-    func languagesList() -> [String]?
-    
-    /// Method that returns the actual fingerprints for the identity if there are ones, else will return nil
-    /// - Parameter Identity: Identity in which the action will be taken.
-    /// - returns: fingerprint of key of given identity if any, nil otherwize.
-    func getFingerprint(for Identity: Identity) -> String?
-    
+    func getFingerprint(for identity: Identity,
+                        completion: @escaping (String?) -> ())
+
     /// - Parameter message: The message to generate the handshake combinations.
     /// - returns: The possible handshake combinations.
-    func handshakeCombinations(message: Message) -> [TrustManagementUtil.HandshakeCombination]
+    func handshakeCombinations(message: Message,
+                               completion: @escaping ([TrustManagementUtil.HandshakeCombination])->Void)
 
     /// - Parameter identities: The identities to generate the handshake combinations
     /// - returns: The possible handshake combinations.
-    func handshakeCombinations(identities: [Identity]) -> [TrustManagementUtil.HandshakeCombination]
+    func handshakeCombinations(identities: [Identity],
+                               completion: @escaping ([TrustManagementUtil.HandshakeCombination])->Void)
 }
 
 /// This class acts as an intermediary to access different functions of the engine adapter.
@@ -62,19 +84,17 @@ public class TrustManagementUtil {
 
     /// Expose the init outside MM.
     public init() {}
-    
+
     private func determineTrustwords(identitySelf: PEPIdentity,
-                             identityPartner: PEPIdentity,
-                             language: String,
-                             full: Bool) -> String? {
-        do {
-            return try PEPSession().getTrustwordsIdentity1(identitySelf,
-                                                           identity2: identityPartner,
-                                                           language: language,
-                                                           full: full)
-        } catch let err as NSError {
-            Log.shared.error("%@", "\(err)")
-            return nil
+                                     identityPartner: PEPIdentity,
+                                     language: String,
+                                     full: Bool,
+                                     completion: @escaping (String?)->Void) {
+        PEPAsyncSession().getTrustwordsIdentity1(identitySelf, identity2: identityPartner, language: language, full: full, errorCallback: { (error) in
+            Log.shared.error("%@", "\(error)")
+            completion(nil)
+        }) { (trustwords) in
+            completion(trustwords)
         }
     }
 }
@@ -82,118 +102,232 @@ public class TrustManagementUtil {
 // MARK: - TrustManagementUtilProtocol
 
 extension TrustManagementUtil : TrustManagementUtilProtocol {
-    public func languagesList() -> [String]? {
-        do {
-            let languages = try PEPSession().languageList()
-            return languages.map { $0.code }
-        } catch {
+    public func languagesList(completion: @escaping ([String]) -> ()) {
+        PEPAsyncSession().languageList({ error in
             Log.shared.error("Missing lenguage list")
-            return nil
+            completion([])
+        }) { langs in
+            completion(langs.map { $0.code })
+        }
+    }
+
+    public func getTrustwords(forFpr1 fpr1: String,
+                              fpr2: String,
+                              language: String,
+                              full: Bool,
+                              completion: @escaping (String?)->Void) {
+        PEPAsyncSession().getTrustwordsFpr1(fpr1, fpr2: fpr2, language: language, full: full, errorCallback: { (error) in
+            Log.shared.error("%@", error.localizedDescription)
+            completion(nil)
+        }) { (trustwords) in
+            completion(trustwords)
         }
     }
 
     public func getTrustwords(for SelfIdentity: Identity,
                               and partnerIdentity: Identity,
                               language: String,
-                              long: Bool) -> String? {
-        let selfPEPIdentity = SelfIdentity.pEpIdentity()
-        let partnerPEPIdentity = partnerIdentity.pEpIdentity()
+                              long: Bool,
+                              completion: @escaping (String?)->Void) {
+        var selfPEPIdentity = SelfIdentity.pEpIdentity()
+        var partnerPEPIdentity = partnerIdentity.pEpIdentity()
         var isPartnerpEpUser = false
-        do{
-            try PEPSession().mySelf(selfPEPIdentity)
-            try PEPSession().update(partnerPEPIdentity)
-            isPartnerpEpUser = try PEPSession().isPEPUser(partnerPEPIdentity).boolValue
-        } catch {
-            Log.shared.error("unable to get the fingerprints")
+        let group = DispatchGroup()
+        var success = true
+
+        group.enter()
+        PEPAsyncSession().mySelf(selfPEPIdentity, errorCallback: { (error) in
+            Log.shared.errorAndCrash(error: error)
+            success = false
+            group.leave()
+        }) { (updatedOwnIdentity) in
+            selfPEPIdentity = updatedOwnIdentity
+            PEPAsyncSession().update(partnerPEPIdentity,
+                                     errorCallback: { _ in
+                                        Log.shared.error("unable to get the fingerprints")
+                                        success = false
+                                        group.leave()
+            }) { updatedPartnerIdentity in
+                partnerPEPIdentity = updatedPartnerIdentity
+                PEPAsyncSession().isPEPUser(updatedPartnerIdentity,
+                                            errorCallback: { _ in
+                                                success = false
+                                                group.leave()
+                }) { pEpUserOrNot in
+                    isPartnerpEpUser = pEpUserOrNot
+                    group.leave()
+                }
+            }
         }
 
-        if !isPartnerpEpUser, let fprSelf = selfPEPIdentity.fingerPrint,
-            let fprPartner = partnerPEPIdentity.fingerPrint  {
-            // partner is a PGP user
-            let fprPrettySelf = fprSelf.prettyFingerPrint()
-            let fprPrettyPartner = fprPartner.prettyFingerPrint()
-            return "\(partnerIdentity.userNameOrAddress):\n\(fprPrettyPartner)\n\n" + "\(SelfIdentity.userNameOrAddress):\n\(fprPrettySelf)"
-        } else {
-                return determineTrustwords(identitySelf: selfPEPIdentity,
-                                           identityPartner: partnerPEPIdentity,
-                                           language: language,
-                                           full: long)
+        group.notify(queue: DispatchQueue.main) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard success else {
+                completion(nil)
+                return
+            }
+
+            if !isPartnerpEpUser, let fprSelf = selfPEPIdentity.fingerPrint,
+                let fprPartner = partnerPEPIdentity.fingerPrint  {
+                // partner is a PGP user
+                let fprPrettySelf = fprSelf.prettyFingerPrint()
+                let fprPrettyPartner = fprPartner.prettyFingerPrint()
+                completion("\(partnerIdentity.userNameOrAddress):\n\(fprPrettyPartner)\n\n" + "\(SelfIdentity.userNameOrAddress):\n\(fprPrettySelf)")
+            } else {
+                me.determineTrustwords(identitySelf: selfPEPIdentity,
+                                    identityPartner: partnerPEPIdentity,
+                                    language: language,
+                                    full: long,
+                                    completion: completion)
+            }
         }
     }
             
-    public func confirmTrust(for partnerIdentity: Identity) {
+    public func confirmTrust(for partnerIdentity: Identity,
+                             completion: @escaping (Error?) -> ()) {
         let partnerPEPIdentity = partnerIdentity.pEpIdentity()
-        do {
-            try PEPSession().update(partnerPEPIdentity)
-            try PEPSession().trustPersonalKey(partnerPEPIdentity)
-        } catch {
+
+        func logError() {
             Log.shared.error("Not posible to perform confirm trust action")
         }
+
+        PEPAsyncSession().update(partnerPEPIdentity,
+                                 errorCallback: { error in
+                                    logError()
+                                    completion(error)
+        }) { identity in
+            PEPAsyncSession().trustPersonalKey(identity,
+                                               errorCallback: { error in
+                                                logError()
+                                                completion(error)
+            }) {
+                completion(nil)
+            }
+        }
     }
-    
-    public func denyTrust(for partnerIdentity: Identity) {
+
+    public func denyTrust(for partnerIdentity: Identity,
+                               completion: @escaping (Error?) -> ()) {
         let partnerPEPIdentity = partnerIdentity.pEpIdentity()
-        do {
-            try PEPSession().update(partnerPEPIdentity)
-            try PEPSession().keyMistrusted(partnerPEPIdentity)
-        } catch {
+
+        func logError() {
             Log.shared.error("not posible to perform deny trust action")
         }
+
+        PEPAsyncSession().update(partnerPEPIdentity,
+                                 errorCallback: { error in
+                                    logError()
+                                    completion(error)
+        }) { identity in
+            PEPAsyncSession().keyMistrusted(identity,
+                                            errorCallback: { error in
+                                                completion(error)
+            }) {
+                completion(nil)
+            }
+        }
     }
 
-    public func undoMisstrustOrTrust(for partnerIdentity: Identity, fingerprint: String?) {
+    public func undoMisstrustOrTrust(for partnerIdentity: Identity,
+                                     fingerprint: String?,
+                                     completion: @escaping (Error?) -> ()) {
         let partnerPEPIdentity = partnerIdentity.pEpIdentity()
-        do {
-            try PEPSession().update(partnerPEPIdentity)
-            if let fps = fingerprint {
-                partnerPEPIdentity.fingerPrint = fps
-            }
-            try PEPSession().keyResetTrust(partnerPEPIdentity)
-        } catch {
+
+        func logError() {
             Log.shared.error("Not posible to perform reset trust action")
         }
-    }
 
-    public func resetTrust(for partnerIdentity: Identity?) {
-        partnerIdentity?.resetTrust()
-    }
-
-    public func getFingerprint(for identity: Identity) -> String? {
-        let pepIdentity = identity.pEpIdentity()
-        do {
-            try PEPSession().update(pepIdentity)
-            return pepIdentity.fingerPrint
-        } catch {
-            Log.shared.error("some went wrong getting the fingerprint for one identity")
-            return nil
-        }
-    }
-
-    public func handshakeCombinations(identities: [Identity]) -> [HandshakeCombination] {
-        let ownIdentities = identities.filter { $0.isMySelf }
-        let ownIdentitiesWithKeys = ownIdentities.filter { $0.fingerprint != nil }
-        let partnerIdenties = identities.filter { !$0.isMySelf }
-        let handshakableIdentities = partnerIdenties.filter { $0.cdObject.canInvokeHandshakeAction() }
-        var combinations = [HandshakeCombination]()
-        for ownId in ownIdentitiesWithKeys {
-            for partnerId in handshakableIdentities {
-                let combination = HandshakeCombination(ownIdentity: ownId, partnerIdentity: partnerId)
-                combinations.append(combination)
+        PEPAsyncSession().update(partnerPEPIdentity,
+                                 errorCallback: { error in
+                                    logError()
+                                    completion(error)
+        }) { identity in
+            if let fps = fingerprint {
+                identity.fingerPrint = fps
+            }
+            PEPAsyncSession().keyResetTrust(identity,
+                                            errorCallback: { error in
+                                                logError()
+                                                completion(error)
+            }) {
+                completion(nil)
             }
         }
-        let uniqueCombinations = Set(combinations)
-        return Array(uniqueCombinations)
     }
 
-    public func handshakeCombinations(message: Message) -> [HandshakeCombination] {
+    public func resetTrust(for partnerIdentity: Identity?, completion: @escaping () -> ()) {
+        partnerIdentity?.resetTrust(completion: completion)
+    }
+
+    public func getFingerprint(for identity: Identity,
+                               completion: @escaping (String?) -> ()) {
+        let pepIdentity = identity.pEpIdentity()
+        PEPAsyncSession().update(pepIdentity,
+                                 errorCallback: { _ in
+                                    Log.shared.error("some went wrong getting the fingerprint for one identity")
+                                    completion(nil)
+        }) { identity in
+            completion(identity.fingerPrint)
+        }
+    }
+
+    public func handshakeCombinations(identities: [Identity],
+                                      completion: @escaping ([HandshakeCombination]) -> Void) {
+        let ownIdentities = identities.filter { $0.isMySelf }
+        let partnerIdenties = identities.filter { !$0.isMySelf }
+
+        let groupFingerprint = DispatchGroup()
+        var ownIdentitiesWithKeys = [Identity]()
+        for ident in ownIdentities {
+            groupFingerprint.enter()
+            ident.fingerprint() { fingerprint in
+                if fingerprint != nil {
+                    ownIdentitiesWithKeys.append(ident)
+                }
+                groupFingerprint.leave()
+            }
+        }
+
+        groupFingerprint.notify(queue: DispatchQueue.main) {
+            var handshakableIdentities = [Identity]()
+            let groupHandshakeAction = DispatchGroup()
+            for partnerIdentity in partnerIdenties {
+                groupHandshakeAction.enter()
+                partnerIdentity.cdObject.canInvokeHandshakeAction { (canInvoke) in
+                    if canInvoke {
+                        handshakableIdentities.append(partnerIdentity)
+                    }
+                    groupHandshakeAction.leave()
+                }
+            }
+            groupHandshakeAction.notify(queue: DispatchQueue.main) {
+                var combinations = [HandshakeCombination]()
+                for ownId in ownIdentitiesWithKeys {
+                    for partnerId in handshakableIdentities {
+                        let combination = HandshakeCombination(ownIdentity: ownId, partnerIdentity: partnerId)
+                        combinations.append(combination)
+                    }
+                }
+                let uniqueCombinations = Set(combinations)
+                completion(Array(uniqueCombinations))
+            }
+        }
+    }
+
+    public func handshakeCombinations(message: Message,
+                                      completion: @escaping ([HandshakeCombination])->Void) {
         let me = message.parent.account.user
         guard let from = message.from else {
             Log.shared.errorAndCrash("Mail from no one?")
-            return []
+            completion([])
+            return
         }
         let to = Set(message.to.allObjects.filter { !$0.isMySelf }) // I am in with `me` already
         let identities = [me, from] + Array(to)
-        return handshakeCombinations(identities: identities)
+        handshakeCombinations(identities: identities, completion: completion)
     }
 }
 

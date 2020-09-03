@@ -8,11 +8,17 @@
 
 import UIKit
 
-class MoveToFolderTableViewController: BaseTableViewController {
+class MoveToFolderTableViewController: UITableViewController {
 
     var viewModel : MoveToFolderViewModel?
     let storyboardId = "MoveToFolderViewController"
     private let cellId = "FolderCell"
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.title = title
+        tableView.hideSeperatorForEmptyCells()
+    }
 
     // MARK: - Table view data source
 

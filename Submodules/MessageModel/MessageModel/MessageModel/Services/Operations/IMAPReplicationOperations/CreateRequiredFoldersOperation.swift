@@ -50,7 +50,7 @@ class CreateRequiredFoldersOperation: ImapSyncOperation {
     }
 
     public override func main() {
-        if !checkImapSync() {
+        if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
         }
@@ -79,8 +79,7 @@ class CreateRequiredFoldersOperation: ImapSyncOperation {
             me.privateMOC.performAndWait {
                 guard
                     let account = me.imapConnection.cdAccount(moc: me.privateMOC) else {
-                        me.handleError(
-                            BackgroundError.CoreDataError.couldNotFindAccount(info: me.comp))
+                        me.handle(error: BackgroundError.CoreDataError.couldNotFindAccount(info: me.comp))
                         return
                 }
 
@@ -197,7 +196,7 @@ class CreateRequiredFoldersOperation: ImapSyncOperation {
     }
 
     private func startFolderCreation(folderToCreate: FolderToCreate) {
-        imapConnection.createFolderWithName(folderToCreate.folderName)
+        imapConnection.createFolderNamed(folderToCreate.folderName)
     }
 
     private func createLocal(folderToCreate: FolderToCreate) {

@@ -15,7 +15,7 @@ private struct Localized {
 }
 
 /// View that lists all imported client certificates and let's the user choose one.
-final class ClientCertificateManagementViewController: BaseViewController {
+final class ClientCertificateManagementViewController: UIViewController {
 
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var addCertButton: UIButton!
@@ -171,7 +171,6 @@ extension ClientCertificateManagementViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("No DVC")
                     return
             }
-            dvc.appConfig = appConfig
             let dvm = vm.loginViewModel()
             dvc.viewModel = dvm
         }
@@ -192,7 +191,7 @@ extension ClientCertificateManagementViewController: SwipeTableViewCellDelegate 
                         title: swipeActionDescriptor.title(forDisplayMode: .titleAndImage)) {
                             [weak self] action, indexPath in
                             guard let me = self else {
-                                Log.shared.errorAndCrash("Lost MySelf")
+                                Log.shared.lostMySelf() 
                                 return
                             }
                             me.swipeDelete = action

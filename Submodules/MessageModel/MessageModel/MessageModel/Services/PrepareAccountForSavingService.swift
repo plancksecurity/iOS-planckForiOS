@@ -18,6 +18,7 @@ public class PrepareAccountForSavingService {
 
     public func prepareAccount(cdAccount: CdAccount,
                                pEpSyncEnable: Bool,
+                               alsoCreatePEPFolder: Bool,
                                context: NSManagedObjectContext,
                                completion: @escaping (Success)->()) {
         // Generate Key
@@ -26,21 +27,26 @@ public class PrepareAccountForSavingService {
             completion(false)
             return
         }
-        do {
-            try KeyGeneratorService.generateKey(cdIdentity: cdIdentity,
-                                                context: context,
-                                                pEpSyncEnabled: pEpSyncEnable)
-        } catch {
-            Log.shared.errorAndCrash(error: error)
-            completion(false)
-            return
-        }
-        
-        // Assure folders exist
-        fetchService.fetchFolders(inCdAccount: cdAccount,
-                                  context: context,
-                                  saveContextWhenDone: false) { success in
-                                    completion(success)
+        KeyGeneratorService.generateKey(cdIdentity: cdIdentity,
+                                        context: context,
+                                        pEpSyncEnabled: pEpSyncEnable)
+        { [weak self] (success) in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard success else {
+                Log.shared.errorAndCrash("Error generating key")
+                completion(success)
+                return
+            }
+            // Assure folders exist
+            me.fetchService.fetchFolders(inCdAccount: cdAccount,
+                                         context: context,
+                                         alsoCreatePEPFolder: alsoCreatePEPFolder,
+                                         saveContextWhenDone: false,
+                                         completion: completion)
+
         }
     }
 }

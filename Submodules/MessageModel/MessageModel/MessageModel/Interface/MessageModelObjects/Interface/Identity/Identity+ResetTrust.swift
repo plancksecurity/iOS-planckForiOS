@@ -14,24 +14,39 @@ extension Identity {
     /// It reset trust for all identities with the same UserID as the identity in the parameter
     ///
     /// - Parameter identityToResetTrust: base identity to reset trust and find other identities with the same userID
-    public static func resetTrustAllIdentities(for identityToResetTrust: Identity) {
+    public static func resetTrustAllIdentities(for identityToResetTrust: Identity,
+                                               completion: @escaping () -> ()) {
         let identities = identityToResetTrust.allIdentitiesWithTheSameUserID()
         for identity in identities {
-            identity.resetTrust()
+            identity.resetTrust(completion: completion)
         }
     }
 
     /// Reset trust for the identity
-    public func resetTrust() {
-        let sesion = PEPSession()
-        let pEpIdent = pEpIdentity()
-        do {
-            try sesion.update(pEpIdent)
-            if let _ = pEpIdent.fingerPrint {
-                try sesion.keyReset(pEpIdent, fingerprint: pEpIdent.fingerPrint)
-            }
-        } catch {
+    public func resetTrust(completion: @escaping () -> ()) {
+        func logError() {
             Log.shared.info("User has choosen to rest trust for an identity we have no key for. Valid case, just for the record. The identity is: %@", self.debugDescription)
+        }
+
+        let pEpIdent = pEpIdentity()
+
+        PEPAsyncSession().update(pEpIdent, errorCallback: { _ in
+            logError()
+            completion()
+        }) { updatedIdentity in
+            guard let updatedFingerprint = updatedIdentity.fingerPrint else {
+                // Valid case. After mistrusting the key of a identity FPR is `nil`
+                completion()
+                return
+            }
+            PEPAsyncSession().keyReset(updatedIdentity,
+                                       fingerprint: updatedFingerprint,
+                                       errorCallback: { (_) in
+                                        logError()
+                                        completion()
+            }) {
+                completion()
+            }
         }
     }
 
@@ -47,7 +62,7 @@ extension Identity {
     }
 
     private func allIdentitiesWithTheSameUserID() -> [Identity] {
-        let predicate = CdIdentity.PredicateFactory.sameUserID(value: userID)
+        let predicate = CdIdentity.PredicateFactory.with(userId: userID)
         guard let cdidentites = CdIdentity.all(predicate: predicate, in: moc) as? [CdIdentity]  else {
             Log.shared.errorAndCrash(message: "No identities found!!!")
             return []

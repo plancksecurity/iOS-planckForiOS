@@ -1,5 +1,5 @@
 //
-//  PersistentImapFolder.swift
+//  CwImapFolderToCdFolderMapper.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 18/04/16.
@@ -11,8 +11,10 @@ import CoreData
 import pEpIOSToolbox
 import PantomimeFramework
 
-/// A `CWFolder`/`CWIMAPFolder` that is backed by core data. Use on the main thread.
-class PersistentImapFolder: CWIMAPFolder {
+/// This class bridges calls from Pantomime CWIMAPFolder to our persistant layer.
+/// All public methods are called from pantomime.
+/// This class allows Pantomime get messages, count them, remove them, or persist them, among other operations.
+class CoreDataPantomimeAdapter: CWIMAPFolder {
     private let accountID: NSManagedObjectID
 
     /** The underlying core data object. Only use from the internal context. */
@@ -81,7 +83,7 @@ class PersistentImapFolder: CWIMAPFolder {
         self.accountID = accountID
         privateMOC = Stack.shared.newPrivateConcurrentContext
 
-        if let f = PersistentImapFolder.setupCdFolder(name: name,
+        if let f = CoreDataPantomimeAdapter.setupCdFolder(name: name,
                                                       parentAccountID: accountID,
                                                       context: privateMOC) {
             cdFolder = f
@@ -119,7 +121,8 @@ class PersistentImapFolder: CWIMAPFolder {
     override func allMessages() -> [Any] {
         var result = [Any]()
         privateMOC.performAndWait {
-            result = CdMessage.all(predicate: cdFolder.allMessagesIncludingDeletedPredicate(),
+            let p = CdMessage.PredicateFactory.allMessagesIncludingDeleted(parentFolder: cdFolder)
+            result = CdMessage.all(predicate: p,
                                    in: privateMOC) ?? []
         }
         return result
@@ -199,10 +202,8 @@ class PersistentImapFolder: CWIMAPFolder {
         return uid
     }
 
-    private func cdMessage(withUID theUID: UInt) -> CdMessage? {
-        let pUid = NSPredicate(format: "%K = %d", CdMessage.AttributeName.uid, theUID)
-        let pFolder = NSPredicate(format: "%K = %@", CdMessage.RelationshipName.parent, cdFolder)
-        let p = NSCompoundPredicate(andPredicateWithSubpredicates: [pUid, pFolder])
+    private func cdMessage(withUID uid: UInt) -> CdMessage? {
+        let p = CdMessage.PredicateFactory.parentFolder(cdFolder, uid: uid)
 
         return CdMessage.first(predicate: p, in: privateMOC)
     }
@@ -244,7 +245,7 @@ class PersistentImapFolder: CWIMAPFolder {
 //MARK: - CWCache
 
 // Dummy implementations.
-extension PersistentImapFolder: CWCache {
+extension CoreDataPantomimeAdapter: CWCache {
     func invalidate() {
         // do nothing.
     }
@@ -256,7 +257,7 @@ extension PersistentImapFolder: CWCache {
 
 //MARK: - CWIMAPCache
 
-extension PersistentImapFolder: CWIMAPCache {
+extension CoreDataPantomimeAdapter: CWIMAPCache {
 
     func message(withUID theUID: UInt) -> CWIMAPMessage? {
         var result: CWIMAPMessage?

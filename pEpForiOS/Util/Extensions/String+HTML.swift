@@ -38,6 +38,14 @@ extension String {
             .nsMarkdownToHtml()? //!!!: //ADAM:
             .replacingOccurrencesOfPepSignatureWithHtmlVersion()
     }
+    
+    public func containsExternalContent() -> Bool {
+        let pattern = """
+(<img.*? src=(3D)?"((https?)|(www)).*?>)
+"""
+        let result = find(pattern: pattern)
+        return result.count > 0
+    }
 
     public func htmlConvertImageLinksToImageMarkdownString(html: String, attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate? = nil) -> String {
 

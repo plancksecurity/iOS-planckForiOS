@@ -15,7 +15,7 @@ protocol LoginViewControllerDelegate: class  {
     func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController)
 }
 
-final class LoginViewController: BaseViewController {
+final class LoginViewController: UIViewController {
 
     weak var delegate: LoginViewControllerDelegate?
 
@@ -63,6 +63,7 @@ final class LoginViewController: BaseViewController {
         if accountType == .icloud {
             showiCloudAlert()
         }
+
     }
 
     override func viewDidLayoutSubviews() {
@@ -118,7 +119,7 @@ final class LoginViewController: BaseViewController {
         // isOAuth2Possible is use to hide password field only if isOauthAccount is false and the
         // user type a possible ouath in the email textfield.
         if vm.verifiableAccount.accountType.isOauth {
-            let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
+            let oauth = OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer()
             vm.loginWithOAuth2(viewController: self,
                                emailAddress: email,
                                userName: userName,
@@ -192,13 +193,12 @@ extension LoginViewController: UITextFieldDelegate {
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        guard UIDevice.current.userInterfaceIdiom != .pad else { return }
-        //If is iOS13+ then this will be trigger in keyboard will appear
-        if !ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 13,
-                                                                          minorVersion: 0,
-                                                                          patchVersion: 0)) {
-            scrollView.scrollAndMakeVisible(textField)
-        }
+
+        let item = textField.inputAssistantItem
+        item.leadingBarButtonGroups = []
+        item.trailingBarButtonGroups = []
+
+        scrollView.scrollAndMakeVisible(textField)
     }
 
     func textField(_ textField: UITextField,
@@ -250,7 +250,6 @@ extension LoginViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("fail to cast to UserInfoViewController")
                     return
             }
-            vc.appConfig = appConfig
             // Give the next model all that we know.
             vc.verifiableAccount = vm.verifiableAccount
         default:
@@ -266,7 +265,7 @@ extension LoginViewController: AccountVerificationResultDelegate {
     func didVerify(result: AccountVerificationResult) {
         GCD.onMain() { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             LoadingInterface.removeLoadingInterface()
@@ -489,9 +488,6 @@ extension LoginViewController {
             target: self, action: #selector(LoginViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
 
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            scrollView.isScrollEnabled = false
-        }
         setManualSetupButtonHidden(true)
         hideSpecificDeviceButton()
         configureAnimatedTextFields()
@@ -621,7 +617,6 @@ extension LoginViewController {
                                    positiveButtonAction: openiCloudInfoInBrowser)
     }
 }
-
 // MARK: - Accessibility
 
 extension LoginViewController {

@@ -112,11 +112,11 @@ class FolderViewModelTest: AccountDrivenTestBase {
     }
 
     func givenThereIsAViewModel(withUniFiedInBox: Bool, and accounts: [Account]){
-        viewmodel = FolderViewModel(withFoldersIn: accounts, includeUnifiedInbox: withUniFiedInBox)
+        viewmodel = FolderViewModel(withFoldersIn: accounts)
     }
 
     func givenThereIsNotAccounts(withUnifiedInbox: Bool) {
         Account.all().forEach { $0.delete() }
-        viewmodel = FolderViewModel(withFoldersIn: nil, includeUnifiedInbox: withUnifiedInbox)
+        viewmodel = FolderViewModel(withFoldersIn: nil)
     }
 }

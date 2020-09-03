@@ -10,7 +10,7 @@ import PEPObjCAdapterFramework
 
 public protocol KeySyncServiceHandshakeHandlerProtocol: class {
 
-    /// Show KeySync
+    /// Show pEp Sync Wizzard
     ///
     /// - Parameters:
     ///   - me: my trust words
