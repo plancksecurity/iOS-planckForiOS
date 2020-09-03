@@ -282,10 +282,9 @@ extension NSManagedObjectContext {
                 // Save change propagator ...
                 try saveContextCorrectly(context: Stack.shared.changePropagatorContext)
                 // ... and main
-// Martin!!!
-//                DispatchQueue.main.async {
-//                    Stack.shared.mainContext.saveAndLogErrors()
-//                }
+                DispatchQueue.main.async {
+                    Stack.shared.mainContext.saveAndLogErrors()
+                }
             }
         } catch {
             Log.shared.errorAndCrash(error: error)
