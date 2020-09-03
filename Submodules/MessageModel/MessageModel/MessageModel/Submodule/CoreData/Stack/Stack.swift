@@ -7,6 +7,7 @@
 
 import CoreData
 import pEpIOSToolbox
+import pEp4iosIntern
 
 /// Our Core Data Stack
 class Stack {
@@ -76,7 +77,7 @@ class Stack {
 
 extension Stack {
 
-    static private let appGroupId = "group.security.pep.pep4ios"
+    static private let appGroupId = appGroupIdentifier
 
     /// Returns the final URL for the store with given name.
     ///

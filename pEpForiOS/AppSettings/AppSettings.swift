@@ -10,6 +10,7 @@ import Foundation
 
 import MessageModel
 import PEPObjCAdapterFramework
+import pEp4iosIntern
 
 // MARK: - Keys
 
@@ -59,7 +60,7 @@ public final class AppSettings: KeySyncStateProvider {
 
 extension AppSettings {
 
-    static private let appGroupId = "group.security.pep.pep4ios"
+    static private let appGroupId = appGroupIdentifier
     static private var userDefaults: UserDefaults = {
         guard let appGroupDefaults = UserDefaults.init(suiteName: appGroupId) else {
             Log.shared.errorAndCrash("Could not find app group defaults")
