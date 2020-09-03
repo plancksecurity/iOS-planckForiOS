@@ -139,7 +139,7 @@ public class PEPUtils {
             return
         }
 
-        PEPAsyncSession().rating(for: savePepIdentity, errorCallback: { (error) in
+        PEPSession().rating(for: savePepIdentity, errorCallback: { (error) in
             Log.shared.errorAndCrash(error: error)
             completion(.undefined)
         }) { (rating) in

@@ -105,7 +105,7 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                 for cdAccount in cdAccounts {
                     if let pEpUser = cdAccount.identity?.pEpIdentity() {
                         group.enter()
-                        PEPAsyncSession().mySelf(pEpUser, errorCallback: { (error) in
+                        PEPSession().mySelf(pEpUser, errorCallback: { (error) in
                             Log.shared.errorAndCrash(error: error)
                             group.leave()
                         }) { (_) in

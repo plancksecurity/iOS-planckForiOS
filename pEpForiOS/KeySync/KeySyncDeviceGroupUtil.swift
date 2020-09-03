@@ -30,7 +30,7 @@ class KeySyncUtil {
 extension KeySyncUtil: KeySyncUtilProtocol {
 
     static func leaveDeviceGroup(completion: @escaping ()->Void) {
-        PEPAsyncSession().leaveDeviceGroup({ (error: Error) in
+        PEPSession().leaveDeviceGroup({ (error: Error) in
             Log.shared.errorAndCrash(error: error)
             completion()
         }) {

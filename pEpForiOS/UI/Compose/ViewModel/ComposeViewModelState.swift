@@ -248,7 +248,7 @@ extension ComposeViewModel.ComposeViewModelState {
         let safeCc = Identity.makeSafe(ccRecipients, forSession: session)
         let safeBcc = Identity.makeSafe(bccRecipients, forSession: session)
 
-        PEPAsyncSession().outgoingMessageRating(from: safeFrom, to: safeTo, cc: safeCc, bcc: safeBcc) {
+        PEPSession().outgoingMessageRating(from: safeFrom, to: safeTo, cc: safeCc, bcc: safeBcc) {
             [weak self] (outgoingRating) in
 
             guard let me = self else {

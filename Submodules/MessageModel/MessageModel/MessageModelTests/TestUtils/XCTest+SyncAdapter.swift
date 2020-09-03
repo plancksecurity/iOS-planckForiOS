@@ -17,7 +17,7 @@ extension XCTestCase {
     func rating(for pEpIdentity: PEPIdentity) -> PEPRating{
         let exp = expectation(description: "exp")
         var pEpRating: PEPRating? = nil
-        PEPAsyncSession().rating(for: pEpIdentity, errorCallback: { (_) in
+        PEPSession().rating(for: pEpIdentity, errorCallback: { (_) in
             XCTFail()
             exp.fulfill()
         }) { (rating) in
@@ -37,7 +37,7 @@ extension XCTestCase {
         var updatedPEPIdentity: PEPIdentity? = nil
 
 
-        PEPAsyncSession().mySelf(pEpIdentity, errorCallback: { (_) in
+        PEPSession().mySelf(pEpIdentity, errorCallback: { (_) in
             XCTFail()
             exp.fulfill()
         }) { (identity) in
@@ -56,7 +56,7 @@ extension XCTestCase {
         var languages = [PEPLanguage]()
 
         let expHaveLanguages = expectation(description: "expHaveLanguages")
-        PEPAsyncSession().languageList({ error in
+        PEPSession().languageList({ error in
             XCTFail()
             expHaveLanguages.fulfill()
         }) { langs in

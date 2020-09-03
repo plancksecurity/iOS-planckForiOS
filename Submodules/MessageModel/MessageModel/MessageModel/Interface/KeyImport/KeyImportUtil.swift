@@ -60,7 +60,7 @@ extension KeyImportUtil: KeyImportUtilProtocol {
             return
         }
 
-        PEPAsyncSession().importKey(dataString,
+        PEPSession().importKey(dataString,
                                     errorCallback: { error in
                                         errorCallback(ImportError.malformedKey)
         }) { identities in
@@ -111,7 +111,7 @@ extension KeyImportUtil: KeyImportUtilProtocol {
                                 userID: CdIdentity.pEpOwnUserID,
                                 userName: userName,
                                 isOwn: true)
-        PEPAsyncSession().setOwnKey(pEpId,
+        PEPSession().setOwnKey(pEpId,
                                     fingerprint: fingerprint,
                                     errorCallback: errorCallback) {
 //                                        let moc = Stack.shared.newPrivateConcurrentContext

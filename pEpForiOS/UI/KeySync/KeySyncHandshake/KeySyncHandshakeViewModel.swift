@@ -45,7 +45,7 @@ final class KeySyncHandshakeViewModel {
         if !_languages.isEmpty {
             completion(_languages)
         } else {
-            PEPAsyncSession().languageList({ error in
+            PEPSession().languageList({ error in
                 Log.shared.errorAndCrash("%@", error.localizedDescription)
                 DispatchQueue.main.async {
                     completion([])

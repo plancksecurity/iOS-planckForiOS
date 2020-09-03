@@ -189,7 +189,7 @@ extension KeySyncHandshakeViewModelTest {
         var languages = [PEPLanguage]()
 
         let expHaveLanguages = expectation(description: "expHaveLanguages")
-        PEPAsyncSession().languageList({ error in
+        PEPSession().languageList({ error in
             XCTFail()
             expHaveLanguages.fulfill()
         }) { langs in

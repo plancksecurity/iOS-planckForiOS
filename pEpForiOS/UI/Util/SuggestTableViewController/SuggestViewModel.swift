@@ -189,7 +189,7 @@ extension SuggestViewModel {
             let sessionedFrom = Identity.makeSafe(from, forSession: me.session)
             let sessionedTo = Identity.makeSafe(to, forSession: me.session)
             me.session.performAndWait {
-                PEPAsyncSession().outgoingMessageRating(from: sessionedFrom, to: [sessionedTo], cc: [], bcc: []) { (rating) in
+                PEPSession().outgoingMessageRating(from: sessionedFrom, to: [sessionedTo], cc: [], bcc: []) { (rating) in
                     completion(rating.pEpColor().statusIconInContactPicture())
                 }
             }

@@ -13,7 +13,7 @@ import CoreData
 extension CdIdentity {
     func fingerprint(completion: @escaping (String?) -> ()) {
         let pEpID = pEpIdentity()
-        PEPAsyncSession().update(pEpID,
+        PEPSession().update(pEpID,
                                  errorCallback: { _ in
                                     completion(nil)
         }) { updatedIdentity in
