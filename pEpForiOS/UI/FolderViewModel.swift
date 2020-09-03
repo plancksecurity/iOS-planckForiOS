@@ -1,18 +1,24 @@
 //
 //  FolderViewModel.swift
-//  pEpForiOS
+//  pEp
 //
-//  Created by Xavier Algarra on 21/03/2017.
-//  Copyright © 2017 p≡p Security S.A. All rights reserved.
+//  Created by Martin Brude on 01/09/2020.
+//  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
 import Foundation
 import MessageModel
 
+public protocol FolderViewModelDelegate: class {
+    func update()
+}
+
 /// View Model for folder hierarchy.
 public class FolderViewModel {
-
+    private var accountQueryResults: AccountQueryResults?
     private lazy var folderSyncService = FetchImapFoldersService()
+
+    public weak var delegate: FolderViewModelDelegate?
     public var items: [FolderSectionViewModel]
 
     /// The hidden sections are the collapsed accounts.
@@ -23,7 +29,7 @@ public class FolderViewModel {
     }
 
     public var shouldShowUnifiedFolders: Bool {
-        return Account.countAllForUnified() > 1
+        return allAccounts.filter { $0.isIncludedInUnifiedFolders }.count > 1
     }
 
     public var folderForEmailListView: DisplayableFolderProtocol? {
@@ -60,6 +66,10 @@ public class FolderViewModel {
         return items.count
     }
 
+    private var allAccounts: [Account] {
+        return accountQueryResults?.all ?? [Account]()
+    }
+
     /// Instantiates a folder hierarchy model with:
     /// One section per account
     /// One row per folder
@@ -67,11 +77,13 @@ public class FolderViewModel {
     /// - Parameter accounts: accounts to to create folder hierarchy view model for.
     public init(withFoldersIn accounts: [Account]? = nil, isUnified: Bool = true) {
         items = [FolderSectionViewModel]()
+        self.accountQueryResults = AccountQueryResults(rowDelegate: self)
+        try? self.accountQueryResults?.startMonitoring()
         let accountsToUse: [Account]
         if let safeAccounts = accounts {
             accountsToUse = safeAccounts
         } else {
-            accountsToUse = Account.all()
+            accountsToUse = allAccounts
         }
         let includeInUnifiedFolders = isUnified && shouldShowUnifiedFolders
         generateSections(accounts: accountsToUse, includeInUnifiedFolders: includeInUnifiedFolders)
@@ -80,14 +92,14 @@ public class FolderViewModel {
     /// Indicates if there isn't accounts registered.
     /// - Returns: True if there is no accounts.
     public func noAccountsExist() -> Bool {
-        return Account.all().isEmpty
+        return accountQueryResults?.count ?? 0 == 0
     }
 
     /// Refresh the folder list for all accounts.
     /// - Parameter completion: Callback that is executed when the task ends.
     public func refreshFolderList(completion: (()->())? = nil) {
         do {
-            try folderSyncService.runService(inAccounts: Account.all()) { Success in
+            try folderSyncService.runService(inAccounts: allAccounts) { Success in
                 completion?()
             }
         } catch {
@@ -116,6 +128,46 @@ public class FolderViewModel {
         }
         for acc in accounts {
             items.append(FolderSectionViewModel(account: acc, unified: false))
+        }
+    }
+}
+
+extension FolderViewModel : QueryResultsIndexPathRowDelegate {
+
+    public func didMoveRow(from: IndexPath, to: IndexPath) {
+        // Intentionally we do not trigger any action here to avoid freezing the app.
+        Log.shared.info("Folder View Model did move row")
+    }
+
+    public func willChangeResults() {
+        // Intentionally we do not trigger any action here to avoid freezing the app.
+        Log.shared.info("Folder View Model will change results")
+    }
+
+    public func didChangeResults() {
+        // Intentionally we do not trigger any action here to avoid freezing the app.
+        Log.shared.info("Folder View Model did change results")
+    }
+
+    public func didInsertRow(indexPath: IndexPath) {
+        update()
+    }
+
+    public func didUpdateRow(indexPath: IndexPath) {
+        update()
+    }
+
+    public func didDeleteRow(indexPath: IndexPath) {
+        update()
+    }
+
+    private func update() {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                return
+            }
+            me.delegate?.update()
         }
     }
 }
