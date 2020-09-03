@@ -24,11 +24,8 @@ public class AccountQueryResults: AccountQueryResultsProtocol {
 
     private typealias CDO = CdAccount
     private typealias QueryResultControllerType<T: QueryResultsControllerProtocol> = T
-    private lazy var queryResultController: QueryResultControllerType<QueryResultsController<CDO>> = {
-        return QueryResultsController(predicate: getPredicates(),
-                                      context: Stack.shared.mainContext,
-                                      delegate: self)
-    }()
+    private lazy var queryResultController: QueryResultControllerType<QueryResultsController<CDO>> = getNewQueryResultController()
+
     public var filter: AccountQueryResultsFilter?
 
     /// - Returns: the number of accounts
@@ -89,6 +86,12 @@ extension AccountQueryResults {
             predicates.append(filterPredicate)
         }
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+    }
+
+    private func getNewQueryResultController() -> QueryResultControllerType<QueryResultsController<CDO>>  {
+        return QueryResultsController(predicate: getPredicates(),
+                                      context: Stack.shared.mainContext,
+                                      delegate: self)
     }
 }
 

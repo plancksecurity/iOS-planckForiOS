@@ -104,11 +104,11 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM.")
-            return
-        }
-        vm.updateLastLookAt()
+//        guard let vm = viewModel else {
+//            Log.shared.errorAndCrash("No VM.")
+//            return
+//        }
+//        vm.updateLastLookAt()
     }
 
     deinit {

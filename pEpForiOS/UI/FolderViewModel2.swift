@@ -15,13 +15,10 @@ public protocol FolderViewModelDelegate: class {
 
 /// View Model for folder hierarchy.
 public class FolderViewModel2 {
-    public weak var delegate: FolderViewModelDelegate?
-
-    private lazy var accountQueryResults : AccountQueryResults = {
-        return AccountQueryResults(rowDelegate: self)
-    }()
-
+    private var accountQueryResults: AccountQueryResults?
     private lazy var folderSyncService = FetchImapFoldersService()
+
+    public weak var delegate: FolderViewModelDelegate?
     public var items: [FolderSectionViewModel]
 
     /// The hidden sections are the collapsed accounts.
@@ -32,7 +29,7 @@ public class FolderViewModel2 {
     }
 
     public var shouldShowUnifiedFolders: Bool {
-        return accountQueryResults.all.filter { $0.isIncludedInUnifiedFolders }.count > 1
+        return allAccounts.filter { $0.isIncludedInUnifiedFolders }.count > 1
     }
 
     public var folderForEmailListView: DisplayableFolderProtocol? {
@@ -69,8 +66,8 @@ public class FolderViewModel2 {
         return items.count
     }
 
-    var allAccounts : [Account] {
-        return Account.makeSafe(accountQueryResults.all, forSession: .main)
+    private var allAccounts: [Account] {
+        return accountQueryResults?.all ?? [Account]()
     }
 
     /// Instantiates a folder hierarchy model with:
@@ -80,14 +77,14 @@ public class FolderViewModel2 {
     /// - Parameter accounts: accounts to to create folder hierarchy view model for.
     public init(withFoldersIn accounts: [Account]? = nil, isUnified: Bool = true) {
         items = [FolderSectionViewModel]()
-        try? accountQueryResults.startMonitoring()
+        self.accountQueryResults = AccountQueryResults(rowDelegate: self)
+        try? accountQueryResults?.startMonitoring()
 
         let accountsToUse: [Account]
         if let safeAccounts = accounts {
             accountsToUse = safeAccounts
         } else {
             accountsToUse = allAccounts
-//            accountsToUse = accountQueryResults.all
         }
         let includeInUnifiedFolders = isUnified && shouldShowUnifiedFolders
         generateSections(accounts: accountsToUse, includeInUnifiedFolders: includeInUnifiedFolders)
@@ -96,14 +93,13 @@ public class FolderViewModel2 {
     /// Indicates if there isn't accounts registered.
     /// - Returns: True if there is no accounts.
     public func noAccountsExist() -> Bool {
-        return accountQueryResults.count == 0
+        return accountQueryResults?.count ?? 0 == 0 
     }
 
     /// Refresh the folder list for all accounts.
     /// - Parameter completion: Callback that is executed when the task ends.
     public func refreshFolderList(completion: (()->())? = nil) {
         do {
-//            let allAccounts = accountQueryResults.all
             try folderSyncService.runService(inAccounts: allAccounts) { Success in
                 completion?()
             }
