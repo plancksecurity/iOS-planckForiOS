@@ -493,9 +493,7 @@ extension FolderTableViewController {
     }
 }
 
-
 extension FolderTableViewController: FolderViewModelDelegate {
-
     /// Update the view
     func update() {
         tableView.reloadData()
