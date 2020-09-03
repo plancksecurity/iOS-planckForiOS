@@ -16,6 +16,9 @@ protocol QueryResultsControllerProtocol {
     /// The object that is notified about state and result changes.
     var delegate: QueryResultsControllerDelegate? { get set }
 
+    /// Count the fetched results of the query
+    var count: Int { get }
+
     /// Returns the fetched results of the query. You must call `performFetch()` to populate this
     /// list.
     func getResults() throws -> [T]

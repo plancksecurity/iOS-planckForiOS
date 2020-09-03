@@ -371,6 +371,7 @@
 		5BC14ABF23E2EE78005F0AF3 /* TrustManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14ABE23E2EE78005F0AF3 /* TrustManagementViewModel.swift */; };
 		5BC14AC923E47A55005F0AF3 /* TrustManagementViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14AC823E47A55005F0AF3 /* TrustManagementViewModelTest.swift */; };
 		5BC14AF023EB19B5005F0AF3 /* TrustManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14AEF23EB19B5005F0AF3 /* TrustManagementViewController.swift */; };
+		5BC1766B2500F4F1005BAF03 /* FolderViewModel2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC1766A2500F4F1005BAF03 /* FolderViewModel2.swift */; };
 		5BC4E5FF240E99C2008C01ED /* CustomTraitCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4E5FE240E99C2008C01ED /* CustomTraitCollectionViewController.swift */; };
 		5BC4E601240FF156008C01ED /* TutorialStep1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4E600240FF155008C01ED /* TutorialStep1ViewController.swift */; };
 		5BC4E60724113659008C01ED /* TutorialStep2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4E60624113659008C01ED /* TutorialStep2ViewController.swift */; };
@@ -967,6 +968,7 @@
 		5BC14ABE23E2EE78005F0AF3 /* TrustManagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementViewModel.swift; sourceTree = "<group>"; };
 		5BC14AC823E47A55005F0AF3 /* TrustManagementViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementViewModelTest.swift; sourceTree = "<group>"; };
 		5BC14AEF23EB19B5005F0AF3 /* TrustManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementViewController.swift; sourceTree = "<group>"; };
+		5BC1766A2500F4F1005BAF03 /* FolderViewModel2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderViewModel2.swift; sourceTree = "<group>"; };
 		5BC4E5FE240E99C2008C01ED /* CustomTraitCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTraitCollectionViewController.swift; sourceTree = "<group>"; };
 		5BC4E600240FF155008C01ED /* TutorialStep1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep1ViewController.swift; sourceTree = "<group>"; };
 		5BC4E60624113659008C01ED /* TutorialStep2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep2ViewController.swift; sourceTree = "<group>"; };
@@ -2575,6 +2577,7 @@
 				B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */,
 				B722EC641E5B49BA00A2B9D5 /* FolderSectionViewModel.swift */,
 				B70A3C3F1E817CFA0036876F /* FolderViewModel.swift */,
+				5BC1766A2500F4F1005BAF03 /* FolderViewModel2.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -3044,6 +3047,7 @@
 				158A56502403F043003C0D7E /* ClientCertificateManagementViewController.swift in Sources */,
 				00EB89AF20E3E4A000CDFA0D /* ReplyAlertCreator.swift in Sources */,
 				B7C7E3122334E054009ABFFE /* ResetTrustViewController.swift in Sources */,
+				5BC1766B2500F4F1005BAF03 /* FolderViewModel2.swift in Sources */,
 				B78CF8251E76D706008C1739 /* FilterTableViewController.swift in Sources */,
 				5BB7C73524D2EB3700D5F328 /* UnifiedTrash.swift in Sources */,
 				222B35581DF96389007A1F82 /* Capability.swift in Sources */,

@@ -11,13 +11,13 @@ import pEpIOSToolbox
 import MessageModel
 
 final class FolderTableViewController: UITableViewController {
-    var folderVM: FolderViewModel?
+    var folderVM: FolderViewModel2?
     // Indicates if it's needed to lead the user to a new screen,
     // the email list or the new account, for example.
     private var shouldPresentNextView: Bool = true
 
     @IBOutlet private weak var addAccountButton: UIButton!
-
+    private var aqr : AccountQueryResults?
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -36,7 +36,8 @@ final class FolderTableViewController: UITableViewController {
 
     private func setup() {
         navigationController?.setToolbarHidden(false, animated: false)
-        folderVM = FolderViewModel()
+        folderVM = FolderViewModel2()
+        folderVM?.delegate = self
         tableView.reloadData()
     }
 
@@ -489,3 +490,11 @@ extension FolderTableViewController {
         }
     }
 }
+
+extension FolderTableViewController: FolderViewModelDelegate {
+    /// Update the view
+    func update() {
+        tableView.reloadData()
+    }
+}
+
