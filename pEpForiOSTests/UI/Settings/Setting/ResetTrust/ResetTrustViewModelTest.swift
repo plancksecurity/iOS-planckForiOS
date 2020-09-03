@@ -12,7 +12,7 @@ import XCTest
 
 class ResetTrustViewModelTest: AccountDrivenTestBase {
 
-    func testIOS2395() throws {
+    func testIOS2395() {
         //given
         let expectedNumberOfSections = 5
         let expectedIndexTitles = ["A","B","C","D","N"]
