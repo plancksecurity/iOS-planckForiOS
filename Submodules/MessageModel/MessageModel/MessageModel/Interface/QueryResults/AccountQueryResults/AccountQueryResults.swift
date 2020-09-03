@@ -15,17 +15,21 @@ public protocol AccountQueryResultsProtocol {
     subscript(index: Int) -> Account { get }
     func startMonitoring() throws
     var rowDelegate: QueryResultsIndexPathRowDelegate? { set get }
+    var filter: AccountQueryResultsFilter? { get }
 }
 
 /// Provides accounts and informs it's delegate about
 /// changes (insert, update, delete) in the query's results.
 public class AccountQueryResults: AccountQueryResultsProtocol {
+
     private typealias CDO = CdAccount
     private typealias QueryResultControllerType<T: QueryResultsControllerProtocol> = T
     private lazy var queryResultController: QueryResultControllerType<QueryResultsController<CDO>> = {
-        return QueryResultsController(context: Stack.shared.mainContext,
+        return QueryResultsController(predicate: getPredicates(),
+                                      context: Stack.shared.mainContext,
                                       delegate: self)
     }()
+    public var filter: AccountQueryResultsFilter?
 
     /// - Returns: the number of accounts
     public var count: Int {
@@ -61,8 +65,9 @@ public class AccountQueryResults: AccountQueryResultsProtocol {
     public weak var rowDelegate: QueryResultsIndexPathRowDelegate?
 
     /// Constructor
-    public init(rowDelegate: QueryResultsIndexPathRowDelegate?) {
+    public init(rowDelegate: QueryResultsIndexPathRowDelegate?, filter: AccountQueryResultsFilter? = nil) {
         self.rowDelegate = rowDelegate
+        self.filter = filter
     }
     /// Start monitoring the accounts
     public func startMonitoring() throws {
@@ -76,6 +81,14 @@ extension AccountQueryResults {
     private func getAccount(at index: Int) throws -> Account {
         let results = try queryResultController.getResults()
         return MessageModelObjectUtils.getAccount(fromCdAccount: results[index])
+    }
+
+    private func getPredicates() -> NSPredicate {
+        var predicates = [NSPredicate]()
+        if let filterPredicate = filter?.predicate {
+            predicates.append(filterPredicate)
+        }
+        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
 }
 

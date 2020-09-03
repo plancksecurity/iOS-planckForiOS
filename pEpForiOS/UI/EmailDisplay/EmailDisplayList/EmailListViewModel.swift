@@ -523,3 +523,13 @@ extension EmailListViewModel: EmailDetailViewModelSelectionChangeDelegate {
         del.select(itemAt: indexPath)
     }
 }
+
+extension EmailListViewModel {
+
+    /// Update the date of the last look at the current folder.
+    public func updateLastLookAt() {
+        if let f = folderToShow as? Folder {
+            f.updateLastLookAt()
+        }
+    }
+}

@@ -266,8 +266,9 @@ extension MessageViewModel: Equatable {
 extension MessageViewModel {
 
     private func getBodyPeekOperation(for message: Message, completion: @escaping (String)->()) -> Operation {
-
-        let session = Session()
+        /// Martin!!! - is this OK?.
+//        let session = Session()
+        let session = Session.main
         let safeMsg = message.safeForSession(session)
 
         let getBodyPeekOperation = SelfReferencingOperation { [weak self] operation in

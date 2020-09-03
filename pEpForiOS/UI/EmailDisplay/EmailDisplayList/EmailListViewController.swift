@@ -102,6 +102,14 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         updateEditButton()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM.")
+            return
+        }
+        vm.updateLastLookAt()
+    }
 
     deinit {
         unsubscribeAll()

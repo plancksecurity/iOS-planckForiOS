@@ -11,7 +11,8 @@ import pEpIOSToolbox
 import MessageModel
 
 final class FolderTableViewController: UITableViewController {
-    var folderVM: FolderViewModel?
+    var folderVM: FolderViewModel2?
+//    var folderVM: FolderViewModel?
     // Indicates if it's needed to lead the user to a new screen,
     // the email list or the new account, for example.
     private var shouldPresentNextView: Bool = true
@@ -36,7 +37,9 @@ final class FolderTableViewController: UITableViewController {
 
     private func setup() {
         navigationController?.setToolbarHidden(false, animated: false)
-        folderVM = FolderViewModel()
+//        folderVM = FolderViewModel()
+        folderVM = FolderViewModel2()
+        folderVM?.delegate = self
         tableView.reloadData()
     }
 
@@ -487,5 +490,14 @@ extension FolderTableViewController {
         } else {
             return tableView.sectionHeaderHeight
         }
+    }
+}
+
+
+extension FolderTableViewController: FolderViewModelDelegate {
+
+    /// Update the view
+    func update() {
+        tableView.reloadData()
     }
 }
