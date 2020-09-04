@@ -107,7 +107,10 @@ struct DisplayUserError: LocalizedError {
                 break
             case .connectionTerminated(_):
                 break
-            case .connectionTimedOut(_):
+            case .connectionTimedOut(_, errorDescription):
+                errorString = errorDescription
+                break
+            case .connectionTimedOut(_, _):
                 break
             case .badResponse(_):
                 break

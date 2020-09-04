@@ -84,7 +84,11 @@ extension LoginSmtpOperation: SmtpConnectionDelegate {
     }
 
     public func connectionTimedOut(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
-        addError(SmtpSendError.connectionTimedOut(#function))
+        if let error = theNotification?.userInfo?[PantomimeErrorExtra] as? NSError {
+            addError(SmtpSendError.connectionTimedOut(#function, error.localizedDescription))
+        } else {
+            addError(SmtpSendError.connectionTimedOut(#function, nil))
+        }
         waitForBackgroundTasksAndFinish()
     }
 

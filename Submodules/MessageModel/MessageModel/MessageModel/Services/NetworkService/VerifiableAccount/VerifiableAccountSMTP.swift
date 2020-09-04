@@ -88,8 +88,9 @@ extension VerifiableAccountSMTP: SmtpConnectionDelegate {
     public func connectionLost(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         if let error = theNotification?.userInfo?[PantomimeErrorExtra] as? NSError {
             notify(error: SmtpSendError.connectionLost(#function, error.localizedDescription))
+        } else {
+            notify(error: SmtpSendError.connectionLost(#function, nil))
         }
-        notify(error: SmtpSendError.connectionLost(#function, nil))
     }
 
     public func connectionTerminated(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
@@ -97,7 +98,11 @@ extension VerifiableAccountSMTP: SmtpConnectionDelegate {
     }
 
     public func connectionTimedOut(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
-        notify(error: SmtpSendError.connectionTimedOut(#function))
+        if let error = theNotification?.userInfo?[PantomimeErrorExtra] as? NSError {
+            notify(error: SmtpSendError.connectionTimedOut(#function, error.localizedDescription))
+        } else {
+            notify(error: SmtpSendError.connectionTimedOut(#function, nil))
+        }
     }
 
     public func badResponse(_ smtpConnection: SmtpConnectionProtocol, response: String?) {

@@ -15,7 +15,7 @@ public enum SmtpSendError: Error {
     case authenticationFailed(FunctionName, String)
     case connectionLost(FunctionName, String?)
     case connectionTerminated(FunctionName)
-    case connectionTimedOut(FunctionName)
+    case connectionTimedOut(FunctionName, String?)
     case badResponse(FunctionName)
 
     /// Indicates a problem with the client certificate
