@@ -462,8 +462,7 @@
 /* keySyncWizard intro view Next button title */
 "Next" = "Següent";
 
-/* Alert button while client certificate is importing: Try again? No
-   Title for no button (cancel) when trying to import a key */
+/* Alert button while client certificate is importing: Try again? No */
 "No" = "No";
 
 /* Error when no account found for set_own_key UI */
@@ -1009,8 +1008,7 @@
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Trustwords incorrectes";
 
-/* Alert button while client certificate is importing: Try again? Yes
-   Title for yes button when trying to import a key */
+/* Alert button while client certificate is importing: Try again? Yes */
 "Yes" = "Sí";
 
 /* Confirm less secure answer message alert body */
@@ -1018,9 +1016,6 @@
 
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Esteu a punt de reenviar un missatge segur com no segur. Si decidiu continuar, es podria filtrar informació confidencial, posant en risc vosaltres i els vostres col·laboradors de comunicació. Estàs segur que vols continuar?";
-
-/* Message when asking user for confirmation about importing a key */
-"You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?" = "Esteu a punt d’importar la següent clau:\n\nNom:% 1 $ @\nEmpremta digital:% 2 $ @\n\nEsteu segur que voleu importar i utilitzar aquesta clau?";
 
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Podeu tancar aquest tutorial en qualsevol moment amb el botó Saltar.";

@@ -716,6 +716,7 @@
 		434DC0DF1DAE78BE007C98B8 /* Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Attachment.swift; path = MessageModel/Interface/MessageModelObjects/Interface/Attachment/Attachment.swift; sourceTree = SOURCE_ROOT; };
 		434DC0E11DAE7A49007C98B8 /* Identity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identity.swift; sourceTree = "<group>"; };
 		434DC0E51DAE8BE7007C98B8 /* MutableOrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutableOrderedSet.swift; sourceTree = "<group>"; };
+		4350A6AC250259FE00809A18 /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjackSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43517239229FD4AA00D92026 /* TestUtil+LoadData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TestUtil+LoadData.swift"; sourceTree = "<group>"; };
 		4351723C229FD74000D92026 /* DecryptionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptionTest.swift; sourceTree = "<group>"; };
 		43517242229FD8EF00D92026 /* IOS-1432_message_from_outlook.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-1432_message_from_outlook.txt"; sourceTree = "<group>"; };
@@ -2396,6 +2397,7 @@
 		B7DB7FA322147000003968DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4350A6AC250259FE00809A18 /* CocoaLumberjackSwift.framework */,
 				4331CE79229BDD0900DDDC65 /* PantomimeFramework.framework */,
 				436981B42282F8D40006FA2D /* PEPObjCAdapterFramework.framework */,
 				43B1A39B22366D9700C387DE /* AppAuth.framework */,
