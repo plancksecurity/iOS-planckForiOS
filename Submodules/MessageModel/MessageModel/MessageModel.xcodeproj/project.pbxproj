@@ -210,7 +210,6 @@
 		434DC0E01DAE78BE007C98B8 /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0DF1DAE78BE007C98B8 /* Attachment.swift */; };
 		434DC0E21DAE7A49007C98B8 /* Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0E11DAE7A49007C98B8 /* Identity.swift */; };
 		434DC0E61DAE8BE7007C98B8 /* MutableOrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0E51DAE8BE7007C98B8 /* MutableOrderedSet.swift */; };
-		4350A6AD250259FE00809A18 /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4350A6AC250259FE00809A18 /* CocoaLumberjackSwift.framework */; };
 		4351723A229FD4AA00D92026 /* TestUtil+LoadData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43517239229FD4AA00D92026 /* TestUtil+LoadData.swift */; };
 		4351723D229FD74000D92026 /* DecryptionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4351723C229FD74000D92026 /* DecryptionTest.swift */; };
 		43517244229FD8EF00D92026 /* IOS-1432_message_from_outlook.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43517242229FD8EF00D92026 /* IOS-1432_message_from_outlook.txt */; };
@@ -889,7 +888,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4350A6AD250259FE00809A18 /* CocoaLumberjackSwift.framework in Frameworks */,
 				43B1A39C22366D9700C387DE /* AppAuth.framework in Frameworks */,
 				435F518122204731006EB11F /* PEPObjCAdapterFramework.framework in Frameworks */,
 				43EA489D221E95E3006E8F83 /* PantomimeFramework.framework in Frameworks */,
