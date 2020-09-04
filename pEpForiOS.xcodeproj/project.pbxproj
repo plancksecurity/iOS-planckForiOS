@@ -315,8 +315,7 @@
 		436796001EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch.asc in Resources */ = {isa = PBXBuildFile; fileRef = 436795FE1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch.asc */; };
 		436796021EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt in Resources */ = {isa = PBXBuildFile; fileRef = 436796011EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt */; };
 		436D0066215B5F3800966CC2 /* Undisplayable_HTML_Message.txt in Resources */ = {isa = PBXBuildFile; fileRef = 436D0065215B5F3800966CC2 /* Undisplayable_HTML_Message.txt */; };
-		436F1B97250286E9004426DC /* CocoaLumberjackSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 436F1B96250286E8004426DC /* CocoaLumberjackSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		436F1B9925028708004426DC /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 436F1B9825028708004426DC /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		436F1BA425028B8A004426DC /* CocoaLumberjackSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 436F1BA225028B7D004426DC /* CocoaLumberjackSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E131D36706A007E9829 /* StringExtensionsTest.swift */; };
 		437795C82154D6FD00CC62C2 /* PEPMessage+TestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437795C72154D6FD00CC62C2 /* PEPMessage+TestExtension.swift */; };
 		437E9BA9237AFB7F00E9A847 /* UIStoryboard+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437E9BA8237AFB7F00E9A847 /* UIStoryboard+Constants.swift */; };
@@ -501,6 +500,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				436F1BA425028B8A004426DC /* CocoaLumberjackSwift.framework in Embed Frameworks */,
 				B710526C24168481007148E8 /* AppAuth.framework in Embed Frameworks */,
 				1512133224166C7B009B7C88 /* PantomimeFramework.framework in Embed Frameworks */,
 				1512133E24166CE0009B7C88 /* ldns_xcode.framework in Embed Frameworks */,
@@ -508,8 +508,6 @@
 				B710526F241684AB007148E8 /* MessageModel.framework in Embed Frameworks */,
 				B710526924168474007148E8 /* pEpIOSToolbox.framework in Embed Frameworks */,
 				B710526624168400007148E8 /* SwipeCellKit.framework in Embed Frameworks */,
-				436F1B9925028708004426DC /* CocoaLumberjack.framework in Embed Frameworks */,
-				436F1B97250286E9004426DC /* CocoaLumberjackSwift.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -860,7 +858,6 @@
 		434F40931EB0B173002FBF0D /* ObservableValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableValue.swift; sourceTree = "<group>"; };
 		4350A6A6250255D700809A18 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4350A6A8250255E300809A18 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4350A6AE25025A1500809A18 /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjackSwift.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4351C2A21F4441190053381F /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
 		4351C2A31F4441190053381F /* chunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chunk.h; sourceTree = "<group>"; };
 		4351C2A41F4441190053381F /* cmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmark.h; sourceTree = "<group>"; };
@@ -912,8 +909,7 @@
 		436796011EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CommunicationTypeTests_Message_test001_to_test002.txt; sourceTree = "<group>"; };
 		436C5A8D1CFEDF59006A195F /* UIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
 		436D0065215B5F3800966CC2 /* Undisplayable_HTML_Message.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Undisplayable_HTML_Message.txt; sourceTree = "<group>"; };
-		436F1B96250286E8004426DC /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjackSwift.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		436F1B9825028708004426DC /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		436F1BA225028B7D004426DC /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjackSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		436F8E131D36706A007E9829 /* StringExtensionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTest.swift; sourceTree = "<group>"; };
 		4372ECD5219C436D00F84099 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/FolderViews.strings; sourceTree = "<group>"; };
 		4372ECD6219C436D00F84099 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Reusable.strings; sourceTree = "<group>"; };
@@ -2161,9 +2157,6 @@
 		43980E1A1CBD0BC900A7FC3C = {
 			isa = PBXGroup;
 			children = (
-				436F1B9825028708004426DC /* CocoaLumberjack.framework */,
-				4350A6AE25025A1500809A18 /* CocoaLumberjackSwift.framework */,
-				436F1B96250286E8004426DC /* CocoaLumberjackSwift.framework */,
 				4350A6A6250255D700809A18 /* CocoaLumberjack.framework */,
 				4350A6A8250255E300809A18 /* CocoaLumberjack.framework */,
 				43980E251CBD0BC900A7FC3C /* pEpForiOS */,
@@ -2521,6 +2514,7 @@
 		495560841E7150ED0016579E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				436F1BA225028B7D004426DC /* CocoaLumberjackSwift.framework */,
 				1512133C24166CDF009B7C88 /* ldns_xcode.framework */,
 				159E1F1422BD0756007D711F /* PEPObjCAdapterFramework.framework */,
 				159E1F1222BD074F007D711F /* PantomimeFramework.framework */,
