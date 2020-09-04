@@ -426,12 +426,12 @@ extension LoginViewController {
                 Log.shared.errorAndCrash("Login should not do ouath with other email address")
             }
         } else {
-            guard let error = DisplayUserError(withError: error) else {
+            guard let displayError = DisplayUserError(withError: error) else {
                 // Do nothing. The error type is not suitable to bother the user with.
                 return
             }
-            title = error.title
-            message = error.localizedDescription
+            title = displayError.title
+            message = displayError.errorDescription
         }
 
         let alertView = UIAlertController.pEpAlertController(title: title,
