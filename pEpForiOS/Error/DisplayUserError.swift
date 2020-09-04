@@ -100,17 +100,13 @@ struct DisplayUserError: LocalizedError {
                 extraInfo = account
             case .illegalState(_):
                 break
-            case .connectionLost(_, errorDescription):
+            case .connectionLost(_, let errorDescription):
                 errorString = errorDescription
-                break
-            case .connectionLost(_, _):
                 break
             case .connectionTerminated(_):
                 break
-            case .connectionTimedOut(_, errorDescription):
+            case .connectionTimedOut(_, let errorDescription):
                 errorString = errorDescription
-                break
-            case .connectionTimedOut(_, _):
                 break
             case .badResponse(_):
                 break
