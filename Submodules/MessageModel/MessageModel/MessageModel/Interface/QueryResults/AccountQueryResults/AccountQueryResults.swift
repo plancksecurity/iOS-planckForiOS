@@ -34,7 +34,7 @@ public class AccountQueryResults: AccountQueryResultsProtocol {
     }()
 
     public var count: Int {
-        return all.count
+        return queryResultController.count
     }
 
     public var all: [Account] {
