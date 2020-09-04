@@ -431,7 +431,7 @@ extension LoginViewController {
                 return
             }
             title = displayError.title
-            message = displayError.localizedDescription
+            message = displayError.errorDescription
         }
 
         let alertView = UIAlertController.pEpAlertController(title: title,
