@@ -29,6 +29,7 @@ public class FolderViewModel {
     }
 
     public var shouldShowUnifiedFolders: Bool {
+        // Show the unified folders if at least 2 will be included.
         return allAccounts.filter { $0.isIncludedInUnifiedFolders }.count > 1
     }
 

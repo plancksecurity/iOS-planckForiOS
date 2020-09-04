@@ -17,7 +17,7 @@ final class FolderTableViewController: UITableViewController {
     private var shouldPresentNextView: Bool = true
 
     @IBOutlet private weak var addAccountButton: UIButton!
-    private var aqr : AccountQueryResults?
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -490,6 +490,8 @@ extension FolderTableViewController {
         }
     }
 }
+
+// MARK: - FolderViewModelDelegate
 
 extension FolderTableViewController: FolderViewModelDelegate {
     /// Update the view

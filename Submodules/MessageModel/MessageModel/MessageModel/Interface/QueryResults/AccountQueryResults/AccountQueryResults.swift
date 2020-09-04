@@ -10,29 +10,33 @@ import Foundation
 import CoreData
 
 public protocol AccountQueryResultsProtocol {
+    /// All accounts
     var all: [Account] { get }
+    /// Count all accounts
     var count: Int { get }
+    /// Returns an Account according to its index
     subscript(index: Int) -> Account { get }
+    /// Start monitoring Accounts
     func startMonitoring() throws
+    /// Where the row updates will be delivered
     var rowDelegate: QueryResultsIndexPathRowDelegate? { set get }
-    var filter: AccountQueryResultsFilter? { get }
 }
 
 /// Provides accounts and informs it's delegate about
 /// changes (insert, update, delete) in the query's results.
 public class AccountQueryResults: AccountQueryResultsProtocol {
-
     private typealias QueryResultControllerType<T: QueryResultsControllerProtocol> = T
-    private lazy var queryResultController: QueryResultControllerType<QueryResultsController<CdAccount>> = getNewQueryResultController()
+    private lazy var queryResultController:  QueryResultControllerType<QueryResultsController<CdAccount>> = {
+        /// cacheName MUST be explicitly nil.
+        return QueryResultsController(context: Stack.shared.mainContext,
+                                      cacheName: nil,
+                                      delegate: self)
+    }()
 
-    public var filter: AccountQueryResultsFilter?
-
-    /// - Returns: the number of accounts
     public var count: Int {
         return all.count
     }
 
-    /// All accounts
     public var all: [Account] {
         var results = [Account]()
         do {
@@ -43,9 +47,6 @@ public class AccountQueryResults: AccountQueryResultsProtocol {
         return results
     }
 
-    /// Returns an Account by index
-    ///
-    /// - Parameter index: index of desire account
     public subscript(index: Int) -> Account {
         get {
             do {
@@ -57,15 +58,12 @@ public class AccountQueryResults: AccountQueryResultsProtocol {
         }
     }
 
-    /// Where the row updates will be delivered
     public weak var rowDelegate: QueryResultsIndexPathRowDelegate?
 
-    /// Constructor
-    public init(rowDelegate: QueryResultsIndexPathRowDelegate?, filter: AccountQueryResultsFilter? = nil) {
+    public init(rowDelegate: QueryResultsIndexPathRowDelegate?) {
         self.rowDelegate = rowDelegate
-        self.filter = filter
     }
-    /// Start monitoring the accounts
+
     public func startMonitoring() throws {
         try queryResultController.startMonitoring()
     }
@@ -78,26 +76,8 @@ extension AccountQueryResults {
         let results = try queryResultController.getResults()
         return MessageModelObjectUtils.getAccount(fromCdAccount: results[index])
     }
-
-    private func getPredicates() -> NSPredicate? {
-        var predicates = [NSPredicate]()
-        if let filterPredicate = filter?.predicate {
-            predicates.append(filterPredicate)
-        } else {
-            return nil
-        }
-        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-    }
-
-    private func getNewQueryResultController() -> QueryResultControllerType<QueryResultsController<CdAccount>>  {
-        return QueryResultsController(predicate: getPredicates(),
-                                      context: Stack.shared.mainContext,
-                                      cacheName: nil,
-                                      delegate: self)
-    }
 }
 
-///!!! MARTIN This extension is candidate to be in a generic class, QueryResults.
 extension AccountQueryResults : QueryResultsControllerDelegate {
     public func queryResultsControllerWillChangeResults() {
         rowDelegate?.willChangeResults()
