@@ -15,10 +15,10 @@
 "%1$@ wrote on %2$@:" = "%1$@ napísal na %2$@:";
 
 /* Reply to single contact, without date. Placeholder: Name. */
-"%1$@ wrote:" = "Napísal (-a)% 1 $ @:";
+"%1$@ wrote:" = "Napísal (-a) %1$@:";
 
 /* Number of filters instead of filter name */
-"%d filters" = "% d filtre";
+"%d filters" = "%d filtre";
 
 /* error message for .missingPassword */
 "A non-empty password is required" = "Heslo je povinné";
