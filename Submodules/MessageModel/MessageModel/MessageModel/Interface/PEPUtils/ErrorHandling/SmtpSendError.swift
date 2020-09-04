@@ -13,7 +13,7 @@ public enum SmtpSendError: Error {
     case illegalState(FunctionName)
 
     case authenticationFailed(FunctionName, String)
-    case connectionLost(FunctionName)
+    case connectionLost(FunctionName, String?)
     case connectionTerminated(FunctionName)
     case connectionTimedOut(FunctionName)
     case badResponse(FunctionName)

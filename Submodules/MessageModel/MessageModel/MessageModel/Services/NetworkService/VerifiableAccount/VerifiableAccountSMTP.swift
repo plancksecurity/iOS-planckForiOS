@@ -86,7 +86,10 @@ extension VerifiableAccountSMTP: SmtpConnectionDelegate {
     public func connectionEstablished(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 
     public func connectionLost(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
-        notify(error: SmtpSendError.connectionLost(#function))
+        if let error = theNotification?.userInfo?[PantomimeErrorExtra] as? NSError {
+            notify(error: SmtpSendError.connectionLost(#function, error.localizedDescription))
+        }
+        notify(error: SmtpSendError.connectionLost(#function, nil))
     }
 
     public func connectionTerminated(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
