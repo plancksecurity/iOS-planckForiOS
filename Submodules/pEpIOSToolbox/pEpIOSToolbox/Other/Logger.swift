@@ -14,7 +14,27 @@ public class Logger {
     public init(subsystem: String = "security.pEp.app.iOS", category: String) {
         self.subsystem = subsystem
         self.category = category
+        Logger.lumberjackInit
     }
+
+    static let lumberjackInit: Void = {
+        DDLog.add(DDOSLogger.sharedInstance) // Uses os_log
+
+        let documentsUrl = FileManager.default.urls(for: .documentDirectory,
+                                                    in: .userDomainMask).first
+        guard let theDocUrl = documentsUrl else {
+            return ()
+        }
+
+        let fileManager = DDLogFileManagerDefault(logsDirectory: theDocUrl.path)
+
+        let fileLogger: DDFileLogger = DDFileLogger(logFileManager: fileManager)
+        fileLogger.rollingFrequency = 60 * 60 * 24 // 24 hours
+        fileLogger.logFileManager.maximumNumberOfLogFiles = 7
+        DDLog.add(fileLogger)
+
+        return ()
+    }()
 
     /// Logs some info helpful when debugging when in DEBUG configuration. Does nothing otherwize.
     public func logDebugInfo() {
