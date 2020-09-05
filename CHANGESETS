@@ -1,6 +1,5 @@
 AppAuth-iOS: c9103384853af90b046219573f322286de306564
 CocoaLumberjack: 24deac32cdf5040297ab957dfd938b1a30d4b49e
-KEEP_sequoia4ios: 3f58a85b1901967eaf66467371689aec24e9246a
 OpenSSL-for-iPhone: 57461f2aac554ba9cbe4c8351e8034a31db8a2a3
 SwiftCoroutine: c137153e484f9bb04badc87d866ee8e9c9047d10
 SwipeCellKit: 00cd0cb5f9ceb4ae7a245fe21bf45643285d454b
@@ -10,8 +9,8 @@ libetpan: dc9bdf3d8bcdb8673727b1575782cfeeb4cbbea2
 pEp-Translate: bcb943f3893c2efe4779a8cd2bc2a86a88f74a44
 pEpEngine: c3e10511c29e
 pEpObjCAdapter: 5fd68f534b79
-pEp_for_iOS: 0b1cd508c350+
+pEp_for_iOS: ad044a05eb89+
 pEp_for_iOS_intern: 195b5dda3677
-pantomime-iOS: 6e983f30fa8f
+pantomime-iOS: 9e9e49f4e5d4
 sequoia: de497f59570437d448b293769eb57bf7a9741f30
 sequoia4ios: 631d8cbba9b4bfe0a64ef1b80489c52ddb55a8b0
