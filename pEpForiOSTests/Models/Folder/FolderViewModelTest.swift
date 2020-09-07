@@ -28,12 +28,16 @@ class FolderViewModelTest: AccountDrivenTestBase {
     func testAccountSectionsWithUnifiedFolderShouldBeOnePlusAccountNumber() {
         for accountNumber in 0...Input.maxNumberOfTestAccounts {
             let accounts = givenThereIs(numberOfAccounts: accountNumber)
-            givenThereIsAViewModel(withUniFiedInBox: true, and: accounts )
+            givenThereIsAViewModel(withUniFiedInBox: true, and: accounts)
 
-            let viewmodelSections = viewmodel.count
+            let viewModelSections = viewmodel.count
 
-            //If is unified inbox it should have accounts.count + 1 section
-            XCTAssertEqual(viewmodelSections, accounts.count + 1)
+            //We show a the unified folders if more than one account has the option ENABLED. 
+            if accountNumber < 2 {
+                XCTAssertEqual(viewModelSections, accounts.count)
+            } else {
+                XCTAssertEqual(viewModelSections, accounts.count + 1)
+            }
         }
     }
 
@@ -49,6 +53,7 @@ class FolderViewModelTest: AccountDrivenTestBase {
         let _ = Folder(name: "InsideInbox", parent: inbox, account: acc, folderType: .normal)
         let _ = Folder(name: "InsiDrafts", parent: drafts, account: acc, folderType: .normal)
         let expectedOrder : [FolderType] = [.inbox, .normal, .drafts, .normal, .sent, .spam, .trash, .outbox]
+        try? Stack.shared.mainContext.save()
 
         //the test
         givenThereIsAViewModel(withUniFiedInBox: false, and: [acc])
@@ -69,7 +74,7 @@ class FolderViewModelTest: AccountDrivenTestBase {
         for accountNumber in 0...Input.maxNumberOfTestAccounts {
 
             let accounts = givenThereIs(numberOfAccounts: accountNumber)
-            givenThereIsAViewModel(withUniFiedInBox: false, and: accounts )
+            givenThereIsAViewModel(withUniFiedInBox: false, and: accounts)
 
             let viewmodelSections = viewmodel.count
 
@@ -93,7 +98,7 @@ class FolderViewModelTest: AccountDrivenTestBase {
 
     //MARK: Initialization
 
-    func givenThereIs(numberOfAccounts: Int) -> [Account] {
+    func givenThereIs(numberOfAccounts: Int, isIncludedInUnifiedFolders: Bool? = true) -> [Account] {
         if numberOfAccounts > Input.maxNumberOfTestAccounts  || numberOfAccounts < 0 {
             XCTFail("Modify test to have more fake accounts")
         }
@@ -101,6 +106,7 @@ class FolderViewModelTest: AccountDrivenTestBase {
 
         for i in 0..<numberOfAccounts {
             let account = TestData().createWorkingAccount(number: i)
+            account.isIncludedInUnifiedFolders = isIncludedInUnifiedFolders ?? false
             accounts.append(account)
         }
 
@@ -112,7 +118,7 @@ class FolderViewModelTest: AccountDrivenTestBase {
     }
 
     func givenThereIsAViewModel(withUniFiedInBox: Bool, and accounts: [Account]){
-        viewmodel = FolderViewModel(withFoldersIn: accounts)
+        viewmodel = FolderViewModel(withFoldersIn: accounts, isUnified: withUniFiedInBox)
     }
 
     func givenThereIsNotAccounts(withUnifiedInbox: Bool) {
