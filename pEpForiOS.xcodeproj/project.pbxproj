@@ -2158,7 +2158,6 @@
 		43980E1A1CBD0BC900A7FC3C = {
 			isa = PBXGroup;
 			children = (
-				43A3C6D925028FF800CA29BA /* CocoaLumberjack.framework */,
 				43980E251CBD0BC900A7FC3C /* pEpForiOS */,
 				43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */,
 				43980E481CBD0BCA00A7FC3C /* pEpForiOSUITests */,
@@ -2514,6 +2513,7 @@
 		495560841E7150ED0016579E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43A3C6D925028FF800CA29BA /* CocoaLumberjack.framework */,
 				436F1BA225028B7D004426DC /* CocoaLumberjackSwift.framework */,
 				1512133C24166CDF009B7C88 /* ldns_xcode.framework */,
 				159E1F1422BD0756007D711F /* PEPObjCAdapterFramework.framework */,
