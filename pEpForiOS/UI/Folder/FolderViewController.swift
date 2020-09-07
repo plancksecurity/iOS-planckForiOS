@@ -10,11 +10,13 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-final class FolderTableViewController: UITableViewController {
+final class FolderViewController: UIViewController {
+    @IBOutlet weak var tableView: UITableView!
     var folderVM: FolderViewModel?
     // Indicates if it's needed to lead the user to a new screen,
     // the email list or the new account, for example.
     private var shouldPresentNextView: Bool = true
+    private var refreshControl: UIRefreshControl?
 
     @IBOutlet private weak var addAccountButton: UIButton!
 
@@ -48,10 +50,14 @@ final class FolderTableViewController: UITableViewController {
 
     private func initialConfig() {
         title = NSLocalizedString("Mailboxes", comment: "FoldersView navigationbar title")
+        //Table view
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
         tableView.sectionHeaderHeight = UITableView.automaticDimension
+        tableView.cellLayoutMarginsFollowReadableWidth = false
+
+        //Refresh button
         refreshControl = UIRefreshControl()
         refreshControl?.tintColor = UIColor.pEpGreen
         tableView.refreshControl = refreshControl
@@ -60,17 +66,17 @@ final class FolderTableViewController: UITableViewController {
             action:#selector(showSettingsViewController),
             target: self)
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
+            barButtonSystemItem: .flexibleSpace,
             target: nil,
             action: nil)
-        let compose = UIBarButtonItem.getComposeButton(
-            action:#selector(showCompose),
-            target: self)
+        let compose = UIBarButtonItem.getComposeButton(action:#selector(showCompose), target: self)
         toolbarItems = [flexibleSpace, compose, flexibleSpace, item]
-        tableView.cellLayoutMarginsFollowReadableWidth = false
+
+        // Add account button
         addAccountButton.titleLabel?.numberOfLines = 0
         addAccountButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
         addAccountButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        addAccountButton.titleLabel?.text = NSLocalizedString("Add Account", comment: "Add Account Button")
     }
 
     // MARK: - Cell Setup
@@ -108,7 +114,7 @@ final class FolderTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         guard let vm = folderVM else {
             //As folderVM is initialized on the setup method (first time in viewWillAppear), it might be nil the first time.
             return 0
@@ -116,7 +122,8 @@ final class FolderTableViewController: UITableViewController {
         return vm.count
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let vm = folderVM else {
             Log.shared.errorAndCrash("No VM")
             return 0
@@ -130,7 +137,7 @@ final class FolderTableViewController: UITableViewController {
         return vm[section].numberOfRows
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let vm = folderVM else {
             Log.shared.errorAndCrash("No VM")
             return UITableViewCell()
@@ -161,7 +168,7 @@ final class FolderTableViewController: UITableViewController {
 
     // MARK: - TableViewDelegate
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let folderViewModel = folderVM else {
             Log.shared.errorAndCrash("No VM")
             return
@@ -179,7 +186,7 @@ final class FolderTableViewController: UITableViewController {
 
 // MARK: - LoginTableViewControllerDelegate
 
-extension FolderTableViewController: LoginViewControllerDelegate {
+extension FolderViewController: LoginViewControllerDelegate {
     func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController) {
         setup()
         // The user has just logged in, he should see the email list view.
@@ -189,7 +196,7 @@ extension FolderTableViewController: LoginViewControllerDelegate {
 
 // MARK: - Segue
 
-extension FolderTableViewController: SegueHandlerType {
+extension FolderViewController: SegueHandlerType {
     enum SegueIdentifier: String {
         case newAccount
         case settingsSegue
@@ -274,7 +281,7 @@ extension FolderTableViewController: SegueHandlerType {
 
 // MARK: - Subfolder Indentation
 
-extension FolderTableViewController {
+extension FolderViewController {
 
     /// Indicates if a folder has subfolders
     /// - Parameter indexPath: To identify the cell to look for its subfolders.
@@ -303,7 +310,7 @@ extension FolderTableViewController {
 
 // MARK: - FolderTableViewCellDelegate
 
-extension FolderTableViewController: FolderTableViewCellDelegate {
+extension FolderViewController: FolderTableViewCellDelegate {
 
     /// Callback executed when the chevron arrow is tapped.
     /// - Parameter cell: The cell which trigger the action.
@@ -316,7 +323,7 @@ extension FolderTableViewController: FolderTableViewCellDelegate {
 
 // MARK: - Collapse / Expand
 
-extension FolderTableViewController {
+extension FolderViewController {
 
     /// Shows/Hides the selected account.
     /// - Parameter sender: The button that trigger the action.
@@ -436,9 +443,9 @@ extension FolderTableViewController {
 
 // MARK: - Header and Footer
 
-extension FolderTableViewController {
+extension FolderViewController {
 
-    override func tableView(_ tableView: UITableView,
+    func tableView(_ tableView: UITableView,
                             viewForHeaderInSection section: Int) -> UIView? {
         let header: CollapsibleTableViewHeader?
         if let head = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header")
@@ -472,12 +479,12 @@ extension FolderTableViewController {
         return header
     }
 
-    override func tableView(_ tableView: UITableView,
+    func tableView(_ tableView: UITableView,
                             heightForFooterInSection section: Int) -> CGFloat {
         return 26.0
     }
 
-    override func tableView(_ tableView: UITableView,
+    func tableView(_ tableView: UITableView,
                             heightForHeaderInSection section: Int) -> CGFloat {
         guard let vm = folderVM else {
             Log.shared.errorAndCrash("No VM.")
@@ -493,10 +500,18 @@ extension FolderTableViewController {
 
 // MARK: - FolderViewModelDelegate
 
-extension FolderTableViewController: FolderViewModelDelegate {
+extension FolderViewController: FolderViewModelDelegate {
     /// Update the view
     func update() {
         tableView.reloadData()
     }
 }
 
+
+extension FolderViewController: UITableViewDelegate {
+
+}
+
+extension FolderViewController: UITableViewDataSource {
+
+}

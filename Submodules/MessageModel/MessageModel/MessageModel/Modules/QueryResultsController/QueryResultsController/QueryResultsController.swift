@@ -59,7 +59,7 @@ NSFetchedResultsControllerDelegate {
         return controller.sectionIndexTitles
     }
 
-    required init(predicate: NSPredicate?,
+    required init(predicate: NSPredicate? = nil,
                   context: NSManagedObjectContext,
                   cacheName: String? = "\(#file)-\(#function)",
                   sectionNameKeyPath: String? = nil,
@@ -115,5 +115,9 @@ NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         state = .monitoringResults
         delegate?.queryResultsControllerDidChangeResults()
+    }
+
+    var count : Int {
+        return frc?.fetchedObjects?.count ?? 0
     }
 }
