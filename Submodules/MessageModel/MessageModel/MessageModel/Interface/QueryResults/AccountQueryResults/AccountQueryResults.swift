@@ -15,7 +15,7 @@ public protocol AccountQueryResultsProtocol {
     /// Count all accounts
     var count: Int { get }
     /// Returns an Account according to its index
-    subscript(index: Int) -> Account { get }
+    subscript(index: Int) -> Account? { get }
     /// Start monitoring Accounts
     func startMonitoring() throws
     /// Where the row updates will be delivered
@@ -27,7 +27,7 @@ public protocol AccountQueryResultsProtocol {
 public class AccountQueryResults: AccountQueryResultsProtocol {
     private typealias QueryResultControllerType<T: QueryResultsControllerProtocol> = T
     private lazy var queryResultController:  QueryResultControllerType<QueryResultsController<CdAccount>> = {
-        /// cacheName MUST be explicitly nil.
+        /// cacheName MUST be explicitly nil to disable persistent caching. Othewise it crashes in random places.
         return QueryResultsController(context: Stack.shared.mainContext,
                                       cacheName: nil,
                                       delegate: self)
@@ -47,14 +47,14 @@ public class AccountQueryResults: AccountQueryResultsProtocol {
         return results
     }
 
-    public subscript(index: Int) -> Account {
+    public subscript(index: Int) -> Account? {
         get {
             do {
                 return try getAccount(at: index)
             } catch {
                 Log.shared.errorAndCrash("Fail to get account for subscript")
             }
-            fatalError("Fail to get account for subscript")
+            return nil
         }
     }
 
@@ -108,7 +108,7 @@ extension AccountQueryResults : QueryResultsControllerDelegate {
     public func queryResultsControllerDidChangeSection(Info: NSFetchedResultsSectionInfo,
                                                        atSectionIndex sectionIndex: Int,
                                                        for type: NSFetchedResultsChangeType) {
-        // Intentionally ignored. query does not need to handle sections. Override if needed.
+        // Intentionally ignored. query does not need to handle sections.
     }
 
     /// Notify the delegate something changed in the results.
@@ -124,4 +124,8 @@ extension AccountQueryResults : QueryResultsControllerDelegate {
         }
         return indexPath
     }
+}
+
+protocol AccountsQueryResultsDelegate: QueryResultsIndexPathRowDelegate {
+    //TODO:
 }

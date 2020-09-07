@@ -15,7 +15,7 @@ public protocol FolderViewModelDelegate: class {
 
 /// View Model for folder hierarchy.
 public class FolderViewModel {
-    private var accountQueryResults: AccountQueryResults!
+    private var accountQueryResults: AccountQueryResults?
     private lazy var folderSyncService = FetchImapFoldersService()
 
     public weak var delegate: FolderViewModelDelegate?
@@ -68,7 +68,7 @@ public class FolderViewModel {
     }
 
     private var allAccounts: [Account] {
-        return accountQueryResults.all
+        return accountQueryResults?.all ?? [Account]()
     }
 
     /// Instantiates a folder hierarchy model with:
@@ -78,8 +78,7 @@ public class FolderViewModel {
     /// - Parameter accounts: accounts to to create folder hierarchy view model for.
     public init(withFoldersIn accounts: [Account]? = nil, isUnified: Bool = true) {
         items = [FolderSectionViewModel]()
-        self.accountQueryResults = AccountQueryResults(rowDelegate: self)
-        try? self.accountQueryResults.startMonitoring()
+        startMonitoring()
         let accountsToUse: [Account]
         if let safeAccounts = accounts {
             accountsToUse = safeAccounts
@@ -88,12 +87,19 @@ public class FolderViewModel {
         }
         let includeInUnifiedFolders = isUnified && shouldShowUnifiedFolders
         generateSections(accounts: accountsToUse, includeInUnifiedFolders: includeInUnifiedFolders)
+
+    }
+
+    private func startMonitoring() {
+        self.accountQueryResults = AccountQueryResults(rowDelegate: self)
+        try? accountQueryResults?.startMonitoring()
+
     }
 
     /// Indicates if there isn't accounts registered.
     /// - Returns: True if there is no accounts.
     public func noAccountsExist() -> Bool {
-        return accountQueryResults.count == 0
+        return accountQueryResults?.count == 0
     }
 
     /// Refresh the folder list for all accounts.
