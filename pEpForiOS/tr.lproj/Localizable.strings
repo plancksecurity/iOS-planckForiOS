@@ -2,7 +2,7 @@
 "\n            Client\n            Certificate\n            " = "\n            müşteri\n            sertifika\n            ";
 
 /* Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion. */
-"\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n% 1 $ @\n\n% 2 $ @\n\n% 3 $ @\n\nEkler devre dışı.\n\n";
+"\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n%1$@\n\n%2$@\n\n%3$@\n\nEkler devre dışı.\n\n";
 
 /* No privacy status explanation
    No privacy status suggestion */
@@ -12,13 +12,13 @@
 "(numMails) new messages received" = "(numMails) yeni mesaj alındı";
 
 /* Reply to single contact, with date. Placeholders: Name, date. */
-"%1$@ wrote on %2$@:" = "% 1 $ @% 2 $ @ 'da yazdı:";
+"%1$@ wrote on %2$@:" = "%1$@ %2$@ 'da yazdı:";
 
 /* Reply to single contact, without date. Placeholder: Name. */
-"%1$@ wrote:" = "% 1 $ @ şunu yazdı:";
+"%1$@ wrote:" = "%1$@ şunu yazdı:";
 
 /* Number of filters instead of filter name */
-"%d filters" = "% d filtre";
+"%d filters" = "%d filtre";
 
 /* error message for .missingPassword */
 "A non-empty password is required" = "Şifre gereklidir";
@@ -89,7 +89,7 @@
 "Attach media" = "Medya ekle";
 
 /* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
-"Attached Image %1$d (%2$@)" = "Ekli resim% 1 $ d (% 2 $ @)";
+"Attached Image %1$d (%2$@)" = "Ekli resim %1$d (%2$@)";
 
 /* title attachments filter cell */
 "Attachments" = "Ekler";
@@ -355,13 +355,13 @@
 "Internal Error" = "İç hata";
 
 /* Invalid input for account */
-"Invalid account name: %1$@" = "Geçersiz hesap adı:% 1 $ @";
+"Invalid account name: %1$@" = "Geçersiz hesap adı: %1$@";
 
 /* Please enter a valid Gmail address.Fail to log in, email does not match account type */
 "Invalid Address" = "Geçersiz adres";
 
 /* Invalid input for email address */
-"Invalid email address: %1$@" = "Geçersiz e-posta adresi:% 1 $ @";
+"Invalid email address: %1$@" = "Geçersiz e-posta adresi: %1$@";
 
 /* alert message. trying to add an invalid fingerprint
    alert title. trying to add an invalid fingerprint */
@@ -371,19 +371,19 @@
 "Invalid Input" = "Geçersiz Giriş";
 
 /* Invalid input for por */
-"Invalid port: %1$@" = "Geçersiz bağlantı noktası:% 1 $ @";
+"Invalid port: %1$@" = "Geçersiz bağlantı noktası: %1$@";
 
 /* Invalid input for server */
-"Invalid server: %1$@" = "Geçersiz sunucu:% 1 $ @";
+"Invalid server: %1$@" = "Geçersiz sunucu: %1$@";
 
 /* Invalid input for transport security */
-"Invalid transport security: %1$@" = "Geçersiz taşıma güvenliği:% 1 $ @";
+"Invalid transport security: %1$@" = "Geçersiz taşıma güvenliği: %1$@";
 
 /* Invalid input for username */
-"Invalid username: %1$@" = "Geçersiz kullanıcı adı:% 1 $ @";
+"Invalid username: %1$@" = "Geçersiz kullanıcı adı: %1$@";
 
 /* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
-"It was impossible to login to %1$@. Username or password is wrong." = "% 1 $ @ oturumu açmak mümkün değildi. Kullanıcı ismi veya parola yanlış.";
+"It was impossible to login to %1$@. Username or password is wrong." = "%1$@ oturumu açmak mümkün değildi. Kullanıcı ismi veya parola yanlış.";
 
 /* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
 "It was impossible to login to the server. Username or password is wrong." = "Sunucuda oturum açmak mümkün değildi. Kullanıcı ismi veya parola yanlış.";
@@ -462,8 +462,7 @@
 /* keySyncWizard intro view Next button title */
 "Next" = "İleri";
 
-/* Alert button while client certificate is importing: Try again? No
-   Title for no button (cancel) when trying to import a key */
+/* Alert button while client certificate is importing: Try again? No */
 "No" = "Hayır";
 
 /* Error when no account found for set_own_key UI */
@@ -758,7 +757,7 @@
 "Some mandatory fields are empty" = "Bazı zorunlu alanlar boş";
 
 /* Reply to unknown sender with date */
-"Someone wrote on %1$@:" = "Birisi% 1 $ @ üzerine yazdı:";
+"Someone wrote on %1$@:" = "Birisi %1$@ üzerine yazdı:";
 
 /* Reply to unknown sender without date */
 "Someone wrote:" = "Birisi şunu yazdı:";
@@ -1009,8 +1008,7 @@
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Hatalı Trustwords";
 
-/* Alert button while client certificate is importing: Try again? Yes
-   Title for yes button when trying to import a key */
+/* Alert button while client certificate is importing: Try again? Yes */
 "Yes" = "Evet";
 
 /* Confirm less secure answer message alert body */
@@ -1018,9 +1016,6 @@
 
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Güvenli bir mesajı güvenli olarak iletmek üzeresiniz. Devam etmeyi seçerseniz, sizi ve iletişim ortaklarınızı riske atacak gizli bilgiler sızdırılabilir. Devam etmek istediğine emin misin?";
-
-/* Message when asking user for confirmation about importing a key */
-"You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?" = "Aşağıdaki anahtarı içe aktarmak üzeresiniz:\n\nİsim:% 1 $ @\nParmak izi:% 2 $ @\n\nBu anahtarı içe aktarmak ve kullanmak istediğinizden emin misiniz?";
 
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Bu öğreticiyi Atla düğmesiyle istediğiniz zaman kapatabilirsiniz.";
