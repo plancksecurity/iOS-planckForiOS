@@ -16,6 +16,7 @@ final class FolderViewController: UIViewController {
     // Indicates if it's needed to lead the user to a new screen,
     // the email list or the new account, for example.
     private var shouldPresentNextView: Bool = true
+    private var refreshControl: UIRefreshControl?
 
     @IBOutlet private weak var addAccountButton: UIButton!
 
@@ -53,25 +54,25 @@ final class FolderViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
         tableView.sectionHeaderHeight = UITableView.automaticDimension
-//        refreshControl = UIRefreshControl()
-//        refreshControl?.tintColor = UIColor.pEpGreen
-//        tableView.refreshControl = refreshControl
-//        refreshControl?.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
+        refreshControl = UIRefreshControl()
+        refreshControl?.tintColor = UIColor.pEpGreen
+        tableView.refreshControl = refreshControl
+        refreshControl?.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
         let item = UIBarButtonItem.getPEPButton(
             action:#selector(showSettingsViewController),
             target: self)
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
+            barButtonSystemItem: .flexibleSpace,
             target: nil,
             action: nil)
-        let compose = UIBarButtonItem.getComposeButton(
-            action:#selector(showCompose),
-            target: self)
+        let compose = UIBarButtonItem.getComposeButton(action:#selector(showCompose), target: self)
         toolbarItems = [flexibleSpace, compose, flexibleSpace, item]
         tableView.cellLayoutMarginsFollowReadableWidth = false
+
         addAccountButton.titleLabel?.numberOfLines = 0
         addAccountButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
         addAccountButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        addAccountButton.titleLabel?.text = NSLocalizedString("Add Account", comment: "Add Account Button")
     }
 
     // MARK: - Cell Setup
@@ -95,7 +96,7 @@ final class FolderViewController: UIViewController {
                 return
             }
             me.setup()
-//            me.refreshControl?.endRefreshing()
+            me.refreshControl?.endRefreshing()
         }
     }
 
