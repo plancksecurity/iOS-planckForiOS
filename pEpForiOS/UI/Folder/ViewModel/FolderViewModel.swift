@@ -155,6 +155,8 @@ extension FolderViewModel : QueryResultsIndexPathRowDelegate {
     }
 
     public func didUpdateRow(indexPath: IndexPath) {
+        items = [FolderSectionViewModel]()
+        generateSections(accounts: allAccounts, includeInUnifiedFolders: shouldShowUnifiedFolders)
         update()
     }
 
