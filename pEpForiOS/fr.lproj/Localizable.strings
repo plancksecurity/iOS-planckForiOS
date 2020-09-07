@@ -18,7 +18,7 @@
 "%1$@ wrote:" = "%1$@ a écrit :";
 
 /* Number of filters instead of filter name */
-"%d filters" = "% d filtres";
+"%d filters" = "%d filtres";
 
 /* error message for .missingPassword */
 "A non-empty password is required" = "Mot de passe requis";
@@ -195,6 +195,9 @@
 
 /* Account delete confirmation comment */
 "delete account message" = "supprimer le message du compte";
+
+/* Device field, reporting issue */
+"Device" = "Appareil";
 
 /* keysync alert leave device group disable */
 "Disable" = "Désactiver";
