@@ -50,10 +50,14 @@ final class FolderViewController: UIViewController {
 
     private func initialConfig() {
         title = NSLocalizedString("Mailboxes", comment: "FoldersView navigationbar title")
+        //Table view
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
         tableView.sectionHeaderHeight = UITableView.automaticDimension
+        tableView.cellLayoutMarginsFollowReadableWidth = false
+
+        //Refresh button
         refreshControl = UIRefreshControl()
         refreshControl?.tintColor = UIColor.pEpGreen
         tableView.refreshControl = refreshControl
@@ -67,8 +71,8 @@ final class FolderViewController: UIViewController {
             action: nil)
         let compose = UIBarButtonItem.getComposeButton(action:#selector(showCompose), target: self)
         toolbarItems = [flexibleSpace, compose, flexibleSpace, item]
-        tableView.cellLayoutMarginsFollowReadableWidth = false
 
+        // Add account button
         addAccountButton.titleLabel?.numberOfLines = 0
         addAccountButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
         addAccountButton.titleLabel?.adjustsFontForContentSizeCategory = true
