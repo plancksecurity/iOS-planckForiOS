@@ -139,6 +139,8 @@ public class FolderViewModel {
     }
 }
 
+// MARK: - QueryResultsIndexPathRowDelegate
+
 extension FolderViewModel : QueryResultsIndexPathRowDelegate {
 
     public func didMoveRow(from: IndexPath, to: IndexPath) {

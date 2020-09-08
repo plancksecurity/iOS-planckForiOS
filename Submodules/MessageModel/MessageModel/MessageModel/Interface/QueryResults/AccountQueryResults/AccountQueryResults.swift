@@ -104,12 +104,6 @@ extension AccountQueryResults : QueryResultsControllerDelegate {
             Log.shared.errorAndCrash("New case is not handled")
         }
     }
-    /// Notify the delegate something happened in the results sections.
-    public func queryResultsControllerDidChangeSection(Info: NSFetchedResultsSectionInfo,
-                                                       atSectionIndex sectionIndex: Int,
-                                                       for type: NSFetchedResultsChangeType) {
-        // Intentionally ignored. query does not need to handle sections.
-    }
 
     /// Notify the delegate something changed in the results.
     public func queryResultsControllerDidChangeResults() {
