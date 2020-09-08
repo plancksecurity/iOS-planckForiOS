@@ -15,7 +15,14 @@ public protocol FolderViewModelDelegate: class {
 
 /// View Model for folder hierarchy.
 public class FolderViewModel {
-    private var accountQueryResults: AccountQueryResults?
+    private let queryResultsDelegateHandlingQueue: OperationQueue = {
+        let createe = OperationQueue()
+        createe.name = "FolderViewModel-queryResultsDelegateHandlingQueue"
+        createe.qualityOfService = .userInteractive
+        createe.maxConcurrentOperationCount = 1
+        return createe
+    }()
+    private var accountQueryResults: AccountQueryResults
     private lazy var folderSyncService = FetchImapFoldersService()
 
     public weak var delegate: FolderViewModelDelegate?
@@ -23,7 +30,6 @@ public class FolderViewModel {
 
     /// The hidden sections are the collapsed accounts.
     public var hiddenSections = Set<Int>()
-
     public var maxIndentationLevel: Int {
         return DeviceUtils.isIphone5 ? 3 : 4
     }
@@ -68,7 +74,7 @@ public class FolderViewModel {
     }
 
     private var allAccounts: [Account] {
-        return accountQueryResults?.all ?? [Account]()
+        return accountQueryResults.all
     }
 
     /// Instantiates a folder hierarchy model with:
@@ -78,6 +84,8 @@ public class FolderViewModel {
     /// - Parameter accounts: accounts to to create folder hierarchy view model for.
     public init(withFoldersIn accounts: [Account]? = nil, isUnified: Bool = true) {
         items = [FolderSectionViewModel]()
+        accountQueryResults = AccountQueryResults()
+        accountQueryResults.rowDelegate = self
         startMonitoring()
         let accountsToUse: [Account]
         if let safeAccounts = accounts {
@@ -87,19 +95,21 @@ public class FolderViewModel {
         }
         let includeInUnifiedFolders = isUnified && shouldShowUnifiedFolders
         generateSections(accounts: accountsToUse, includeInUnifiedFolders: includeInUnifiedFolders)
-
     }
 
+    /// Start monitoring accounts
     private func startMonitoring() {
-        self.accountQueryResults = AccountQueryResults(rowDelegate: self)
-        try? accountQueryResults?.startMonitoring()
-
+        do {
+            try accountQueryResults.startMonitoring()
+        } catch {
+            Log.shared.errorAndCrash("Error trying to start monitoring")
+        }
     }
 
     /// Indicates if there isn't accounts registered.
     /// - Returns: True if there is no accounts.
     public func noAccountsExist() -> Bool {
-        return accountQueryResults?.count == 0
+        return accountQueryResults.count == 0
     }
 
     /// Refresh the folder list for all accounts.
@@ -144,38 +154,43 @@ public class FolderViewModel {
 extension FolderViewModel : QueryResultsIndexPathRowDelegate {
 
     public func didMoveRow(from: IndexPath, to: IndexPath) {
-        // Intentionally we do not trigger any action here to avoid freezing the app.
-        Log.shared.info("Folder View Model did move row")
+        // Intentionally we do not trigger any action
     }
 
     public func willChangeResults() {
-        // Intentionally we do not trigger any action here to avoid freezing the app.
-        Log.shared.info("Folder View Model will change results")
+        // Intentionally we do not trigger any action
     }
 
     public func didChangeResults() {
-        // Intentionally we do not trigger any action here to avoid freezing the app.
-        Log.shared.info("Folder View Model did change results")
+        queryResultsDelegateHandlingQueue.addOperation { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed.
+                return
+            }
+            me.items = [FolderSectionViewModel]()
+            DispatchQueue.main.async {
+                me.generateSections(accounts: me.allAccounts, includeInUnifiedFolders: me.shouldShowUnifiedFolders)
+                me.update()
+            }
+        }
     }
 
     public func didInsertRow(indexPath: IndexPath) {
-        update()
+        // Intentionally we do not trigger any action
     }
 
     public func didUpdateRow(indexPath: IndexPath) {
-        items = [FolderSectionViewModel]()
-        generateSections(accounts: allAccounts, includeInUnifiedFolders: shouldShowUnifiedFolders)
-        update()
+        // Intentionally we do not trigger any action
     }
 
     public func didDeleteRow(indexPath: IndexPath) {
-        update()
+        // Intentionally we do not trigger any action
     }
 
     private func update() {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                // Valid case. We might have been dismissed already.
+                // Valid case. We might have been dismissed.
                 return
             }
             me.delegate?.update()

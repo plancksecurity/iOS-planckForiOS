@@ -60,7 +60,7 @@ public class AccountQueryResults: AccountQueryResultsProtocol {
 
     public weak var rowDelegate: QueryResultsIndexPathRowDelegate?
 
-    public init(rowDelegate: QueryResultsIndexPathRowDelegate?) {
+    public init(rowDelegate: QueryResultsIndexPathRowDelegate? = nil) {
         self.rowDelegate = rowDelegate
     }
 
