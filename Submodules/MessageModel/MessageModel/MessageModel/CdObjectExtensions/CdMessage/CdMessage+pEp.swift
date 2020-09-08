@@ -167,6 +167,14 @@ extension CdMessage {
             }
         }
 
+        if pEpMessage.direction == .incoming {
+            guard let pEpIdentityReceiver = parent?.account?.identity?.pEpIdentity() else {
+                Log.shared.errorAndCrash("An incomming message MUST be received by someone. Invalid state!")
+                return pEpMessage
+            }
+            pEpMessage.recv_by = pEpIdentityReceiver
+        }
+
         return pEpMessage
     }
 
