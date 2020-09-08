@@ -42,17 +42,17 @@ class ComposeDataSource: NSObject {
     }
 
     func numberOfRows() -> Int {
-        let visibleRows = getVisibleRows()
-        return visibleRows.count
+//        let visibleRows = getVisibleRows()
+        return filteredRows.count
     }
 
-    func getVisibleRows() -> [ComposeFieldModel] {
-        return filteredRows
-    }
+//    func getVisibleRows() -> [ComposeFieldModel] {
+//        return filteredRows
+//    }
 
     func getRow(at index: Int) -> ComposeFieldModel {
-        let visibleRows = getVisibleRows()
-        return visibleRows[index]
+//        let visibleRows = getVisibleRows()
+        return filteredRows[index]
     }
 
     // MARK: - AttachmentDataSource
