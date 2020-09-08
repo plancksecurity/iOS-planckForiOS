@@ -54,7 +54,7 @@ extension DecryptMessageOperation {
         }
 
         var inOutFlags = cdMessageToDecrypt.isOnTrustedServer ? PEPDecryptFlags.none : .untrustedServer
-        var inOutMessage = cdMessageToDecrypt.pEpMessage()
+        var inOutMessage = cdMessageToDecrypt.pEpMessage(outgoing: false)
         var fprsOfExtraKeys = CdExtraKey.fprsOfAllExtraKeys(in: moc)
         var rating = PEPRating.undefined
         var pEpDecryptedMessage: PEPMessage? = nil
@@ -62,19 +62,19 @@ extension DecryptMessageOperation {
         // We must block here until the adapter calls back. Else we will not exist any more when it
         // does and thus can not handle its results.
         var nsError: NSError? = nil
-        var isAFormallyEncryptedReuploadedMessage = false
+        var isAFormerlyEncryptedReuploadedMessage = false
         let group = DispatchGroup()
         group.enter()
         PEPAsyncSession().decryptMessage(inOutMessage, flags: inOutFlags, extraKeys: fprsOfExtraKeys, errorCallback: { (error) in
             nsError = error as NSError
             group.leave()
-        }) { (pEpSourceMessage, pEpDecryptedMsg, keyList, pEpRating, decryptFlags, isFormallyEncryptedReuploadedMessage) in
+        }) { (pEpSourceMessage, pEpDecryptedMsg, keyList, pEpRating, decryptFlags, isFormerlyEncryptedReuploadedMessage) in
             inOutMessage = pEpSourceMessage
             pEpDecryptedMessage = pEpDecryptedMsg
             fprsOfExtraKeys = keyList
             rating = pEpRating
             inOutFlags = decryptFlags
-            isAFormallyEncryptedReuploadedMessage = isFormallyEncryptedReuploadedMessage
+            isAFormerlyEncryptedReuploadedMessage = isFormerlyEncryptedReuploadedMessage
             group.leave()
         }
         group.wait()
@@ -110,7 +110,7 @@ extension DecryptMessageOperation {
                                     ratingBeforeEngine: ratingBeforeMessage,
                                     rating: rating,
                                     keys: fprsOfExtraKeys ?? [],
-                                    isFormallyEncryptedReuploadedMessage: isAFormallyEncryptedReuploadedMessage)
+                                    isFormerlyEncryptedReuploadedMessage: isAFormerlyEncryptedReuploadedMessage)
         }
         cdMessageToDecrypt.needsDecrypt = false
         moc.saveAndLogErrors()
@@ -123,7 +123,7 @@ extension DecryptMessageOperation {
                                          ratingBeforeEngine: Int16,
                                          rating: PEPRating,
                                          keys: [String],
-                                         isFormallyEncryptedReuploadedMessage: Bool) {
+                                         isFormerlyEncryptedReuploadedMessage: Bool) {
         if rating.shouldUpdateMessageContent() {
             updateWholeMessage(pEpDecryptedMessage: pEpDecryptedMessage,
                                rating: rating,
@@ -135,7 +135,7 @@ extension DecryptMessageOperation {
                            inOutMessage: inOutMessage,
                            rating: rating,
                            decryptFlags: decryptFlags,
-                           isFormallyEncryptedReuploadedMessage: isFormallyEncryptedReuploadedMessage)
+                           isFormerlyEncryptedReuploadedMessage: isFormerlyEncryptedReuploadedMessage)
         } else {
             if rating.rawValue != ratingBeforeEngine {
                 cdMessage.update(rating: rating)
@@ -225,9 +225,9 @@ extension DecryptMessageOperation {
                                 inOutMessage: PEPMessage,
                                 rating: PEPRating,
                                 decryptFlags: PEPDecryptFlags?,
-                                isFormallyEncryptedReuploadedMessage: Bool) {
+                                isFormerlyEncryptedReuploadedMessage: Bool) {
 
-        if isFormallyEncryptedReuploadedMessage || // The Eninge told us that this message is a formally encrypted message that has been reuploaded for trusted server. Do not reupload again.
+        if isFormerlyEncryptedReuploadedMessage || // The Eninge told us that this message is a formerly encrypted message that has been reuploaded for trusted server. Do not reupload again.
             PEPUtils.pEpRatingFromInt(Int(cdMessage.pEpRating)) == .unencrypted || // If the message was not encrypted, there is no reason to re-upload it.
             cdMessage.isAutoConsumable { // Message is an auto-consume message -> no re-upload!
             return
@@ -304,4 +304,3 @@ extension DecryptMessageOperation {
         msg.setOriginalRatingHeader(rating: rating)
     }
 }
-
