@@ -172,7 +172,7 @@ extension CdMessage {
                 Log.shared.errorAndCrash("An incomming message MUST be received by someone. Invalid state!")
                 return pEpMessage
             }
-            pEpMessage.recv_by = pEpIdentityReceiver
+            pEpMessage.receivedBy = pEpIdentityReceiver
         }
 
         return pEpMessage
