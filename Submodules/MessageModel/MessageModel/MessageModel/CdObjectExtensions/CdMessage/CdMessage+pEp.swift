@@ -235,11 +235,6 @@ extension CdMessage {
         return accountHasBeenCreatedInLocalNetwork || userDecidedToTrustServer
     }
 
-    // TODO: This is duplicated between MM and Cd.
-    var wasAlreadyUnencrypted: Bool {
-        return PEPUtils.pEpRatingFromInt(Int(self.pEpRating)) == .unencrypted
-    }
-
     /// - Returns: all messages marked for UidMoveToTrash
     static func allMessagesMarkedForMoveToFolder(inAccount account: CdAccount,
                                                  context: NSManagedObjectContext) -> [CdMessage] {
