@@ -27,7 +27,7 @@ public protocol AccountQueryResultsProtocol {
 public class AccountQueryResults: AccountQueryResultsProtocol {
     private typealias QueryResultControllerType<T: QueryResultsControllerProtocol> = T
     private lazy var queryResultController:  QueryResultControllerType<QueryResultsController<CdAccount>> = {
-        /// cacheName MUST be explicitly nil to disable persistent caching. Othewise it crashes in random places.
+        /// cacheName MUST be explicitly nil to disable persistent caching. Otherwise it crashes in random places.
         return QueryResultsController(context: Stack.shared.mainContext,
                                       cacheName: nil,
                                       delegate: self)
