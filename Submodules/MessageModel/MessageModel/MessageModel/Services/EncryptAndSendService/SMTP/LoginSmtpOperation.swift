@@ -65,13 +65,14 @@ extension LoginSmtpOperation: SmtpConnectionDelegate {
                     setSpecializedError = true
                 }
             default:
+                addError(SmtpSendError.connectionLost(#function, error.localizedDescription))
                 break
             }
         }
 
         if !setSpecializedError {
             // Did not find a more specific explanation for the error, so use the generic one
-            addError(SmtpSendError.connectionLost(#function))
+            addError(SmtpSendError.connectionLost(#function, nil))
         }
 
         waitForBackgroundTasksAndFinish()
@@ -83,7 +84,11 @@ extension LoginSmtpOperation: SmtpConnectionDelegate {
     }
 
     public func connectionTimedOut(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
-        addError(SmtpSendError.connectionTimedOut(#function))
+        if let error = theNotification?.userInfo?[PantomimeErrorExtra] as? NSError {
+            addError(SmtpSendError.connectionTimedOut(#function, error.localizedDescription))
+        } else {
+            addError(SmtpSendError.connectionTimedOut(#function, nil))
+        }
         waitForBackgroundTasksAndFinish()
     }
 

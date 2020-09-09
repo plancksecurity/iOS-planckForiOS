@@ -13,30 +13,3 @@ public enum AccountVerificationResult {
     case imapError(ImapSyncOperationError)
     case smtpError(SmtpSendError)
 }
-
-extension AccountVerificationResult: Equatable {
-    public static func ==(lhs: AccountVerificationResult, rhs: AccountVerificationResult) -> Bool {
-        switch (lhs, rhs) {
-        case (.ok, .ok):
-            return true
-        case (.noImapConnectData, .noImapConnectData):
-            return true
-        case (.noSmtpConnectData, .noSmtpConnectData):
-            return true
-        case (.imapError(let e1), .imapError(let e2)):
-            return e1 == e2
-        case (.smtpError(let e1), .smtpError(let e2)):
-            return e1 == e2
-        case (.ok, _):
-            return false
-        case (.imapError, _):
-            return false
-        case (.smtpError, _):
-            return false
-        case (.noImapConnectData, _):
-            return false
-        case (.noSmtpConnectData, _):
-            return false
-        }
-    }
-}

@@ -18,7 +18,7 @@
 "%1$@ wrote:" = "%1$@ schrieb:";
 
 /* Number of filters instead of filter name */
-"%d filters" = "% d Filter";
+"%d filters" = "%d Filter";
 
 /* error message for .missingPassword */
 "A non-empty password is required" = "Passwort ist erforderlich";
@@ -196,6 +196,9 @@
 /* Account delete confirmation comment */
 "delete account message" = "Kontonachricht löschen";
 
+/* Device field, reporting issue */
+"Device" = "Gerät";
+
 /* keysync alert leave device group disable */
 "Disable" = "Deaktivieren";
 
@@ -233,6 +236,9 @@
 
 /* possible private status action */
 "Enable Protection" = "Schutz aktivieren";
+
+/* Enter passphrase alert - message - shown while pEp sync is running */
+"Enter passphrase for p≡p Sync:" = "Passphrase eingeben für p≡p Sync:";
 
 /* Tableview section header: Enterprise Features */
 "Enterprise Features" = "Unternehmensfunktionen";
@@ -293,6 +299,9 @@
 
 /* possible privacy status action */
 "Handshake" = "Handshake";
+
+/* Contact Support - Mail subject */
+"Help" = "Hilfe";
 
 /* PGPKeyImportSettingViewModel - part of pgpKeyImportTitle that should link to support page (... click _here_ for info ...) */
 "here" = "hier";
@@ -462,8 +471,7 @@
 /* keySyncWizard intro view Next button title */
 "Next" = "Weiter";
 
-/* Alert button while client certificate is importing: Try again? No
-   Title for no button (cancel) when trying to import a key */
+/* Alert button while client certificate is importing: Try again? No */
 "No" = "Nein";
 
 /* Error when no account found for set_own_key UI */
@@ -740,6 +748,9 @@
    Settings view title */
 "Settings" = "Einstellungen";
 
+/* Enter passphrase alert - Negative button text - shown while pEp sync is running */
+"Shutdown p≡p Sync" = "p≡p Sync beenden";
+
 /* Login */
 "Sign In" = "Einloggen";
 
@@ -809,6 +820,9 @@
 
 /* Client certificate import: corrupted file error alert message */
 "The file could not be imported" = "Die Datei konnte nicht importiert werden";
+
+/* Message when asking user for confirmation about importing keys */
+"The fingerprint of the selected key is:\n%1$@\n%2$@\n\nImport and use this key?" = "Der Fingerabdruck des gewählten Schlüssels ist:\n%1$@\n%2$@\n\nSoll dieser Schlüssel importiert und verwendet werden?";
 
 /* Privacy Status Explanation */
 "The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:" = "Das Symbol in der oberen Leiste zeigt den Datenschutzstatus der Nachricht an. Dies ist der kleinste gemeinsame Nenner aller Kommunikationspartner dieser Nachricht. Beispiel:";
@@ -1034,8 +1048,7 @@
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Falsche Trustwords";
 
-/* Alert button while client certificate is importing: Try again? Yes
-   Title for yes button when trying to import a key */
+/* Alert button while client certificate is importing: Try again? Yes */
 "Yes" = "Ja";
 
 /* Confirm less secure answer message alert body */
@@ -1044,11 +1057,11 @@
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Sie sind dabei, eine sichere Nachricht als unsicher weiterzuleiten. Wenn Sie fortfahren, können vertrauliche Informationen verloren gehen, die Sie und Ihre Kommunikationspartner gefährden. Sind Sie sicher, dass Sie fortfahren wollen?";
 
-/* Message when asking user for confirmation about importing a key */
-"You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?" = "Sie importieren den folgenden Schlüssel:\n\nName: %1$@\nFingerabdruck: %2$@\n\nMöchten Sie diesen Schlüssel wirklich importieren und verwenden?";
-
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Sie können dieses Tutorial jederzeit mit der Schaltfläche Überspringen schließen.";
+
+/* PGPKeyImportSetting row title when grouped */
+"You can not import keys while the device is in a device group." = "Es können keine Schlüssel importiert werden, solange das Gerät in einer Gerätegruppe ist.";
 
 /* alert error message certificate delete */
 "You can only delete certificates that are not connected to an account. The certificate is currently used for the following account: (by)" = "Sie können nur Zertifikate löschen, die nicht mit einem Konto verbunden sind. Das Zertifikat wird derzeit für das folgende Konto verwendet: (by)";

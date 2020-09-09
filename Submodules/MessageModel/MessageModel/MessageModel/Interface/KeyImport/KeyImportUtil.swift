@@ -38,14 +38,12 @@ extension KeyImportUtil {
 }
 
 extension KeyImportUtil {
-    public struct KeyData {
+    public struct KeyData: Hashable {
         public let address: String
         public let fingerprint: String
+        public let userName: String
 
-        /// This is not needed for setting an key as own, but may be displayed to the user
-        public let userName: String?
-
-        init(address: String, fingerprint: String, userName: String?) {
+        init(address: String, fingerprint: String, userName: String) {
             self.address = address
             self.fingerprint = fingerprint
             self.userName = userName
@@ -56,7 +54,7 @@ extension KeyImportUtil {
 extension KeyImportUtil: KeyImportUtilProtocol {
     public func importKey(url: URL,
                           errorCallback: @escaping (Error) -> (),
-                          completion: @escaping (KeyData) -> ()) {
+                          completion: @escaping ([KeyData]) -> ()) {
         guard let dataString = try? String(contentsOf: url) else {
             errorCallback(ImportError.cannotLoadKey)
             return
@@ -66,38 +64,62 @@ extension KeyImportUtil: KeyImportUtilProtocol {
                                     errorCallback: { error in
                                         errorCallback(ImportError.malformedKey)
         }) { identities in
-            guard let firstIdentity = identities.first else {
+            guard !identities.isEmpty else {
+                // Importing a key with 0 identities doesn't make sense, signal an error
                 errorCallback(ImportError.malformedKey)
                 return
             }
 
-            guard let fingerprint = firstIdentity.fingerPrint else {
+            var identityFoundWithMissingData = false
+            var keyDatas = [KeyData]()
+            var keyDataSet = Set<KeyData>()
+
+            for identity in identities {
+                guard let fingerprint = identity.fingerPrint else {
+                    identityFoundWithMissingData = true
+                    break
+                }
+                guard let userName = identity.userName else {
+                    identityFoundWithMissingData = true
+                    break
+                }
+                let theKeyData = KeyData(address: identity.address,
+                                         fingerprint: fingerprint,
+                                         userName: userName)
+                if !keyDataSet.contains(theKeyData) {
+                    keyDatas.append(theKeyData)
+                    keyDataSet.insert(theKeyData)
+                }
+            }
+
+            guard !identityFoundWithMissingData else {
+                // Consider identities without fingerprint an error
                 errorCallback(ImportError.malformedKey)
                 return
             }
 
-            completion(KeyData(address: firstIdentity.address,
-                               fingerprint: fingerprint,
-                               userName: firstIdentity.userName))
+            completion(keyDatas)
         }
     }
 
-    public func setOwnKey(address: String,
+    public func setOwnKey(userName: String,
+                          address: String,
                           fingerprint: String,
                           errorCallback: @escaping (Error) -> (),
                           callback: @escaping () -> ()) {
-        let session = Session()
-
-        session.performAndWait {
-            guard let account = Account.by(address: address, in: session) else {
-                errorCallback(SetOwnKeyError.noMatchingAccount)
-                return
-            }
-
-            account.user.setOwnKey(fingerprint: fingerprint,
-                                   errorCallback: { error in
-                                    errorCallback(error)
-            }) {
+        let pEpId = PEPIdentity(address: address,
+                                userID: CdIdentity.pEpOwnUserID,
+                                userName: userName,
+                                isOwn: true)
+        PEPAsyncSession().setOwnKey(pEpId, fingerprint: fingerprint, errorCallback: errorCallback) {
+            let moc = Stack.shared.newPrivateConcurrentContext
+            moc.perform {
+                if let existingCdIdentity = CdIdentity.search(address: address, context: moc),
+                    let belongingAccount = existingCdIdentity.accounts?.allObjects.first as? CdAccount {
+                    // A new key has been set for an existing account. Try to re-decrypt all yet undecryptable messages.
+                    CdMessage.markAllUndecryptableMessagesForRetryDecrypt(for: belongingAccount, context: moc)
+                     moc.saveAndLogErrors()
+                }
                 callback()
             }
         }
