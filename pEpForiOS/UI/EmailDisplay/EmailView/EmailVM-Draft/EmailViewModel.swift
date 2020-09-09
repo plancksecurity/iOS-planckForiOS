@@ -9,24 +9,30 @@
 import Foundation
 import MessageModel
 
-protocol EmailViewModelDelegate {
-
+protocol EmailViewModelDelegate: class {
+    /// Show the preview of the Pdf in the provided URL
+    /// - Parameter url: The url of the PDF
+    func showPreview(ofPdfAt url : URL)
+    /// Show Certificates Import View.
+    func showClientCertificateImport()
+    /// Present the PDF af the provided URL in a Document Controller
+    /// - Parameter url: The url of the PDF
+    func presentDocumentInteractionController(ofPdfAt url : URL)
 }
 
 final class EmailViewModel {
-
     private var message : Message
-    public var items: [FieldViewModel] = [FieldViewModel]()
+    public var items: [FieldRowProtocol] = [FieldRowProtocol]()
     public weak var emailViewModelDelegate: EmailViewModelDelegate?
 
     /// Constructor
     /// - Parameter message: The message to setup.
     init(message : Message, emailViewModelDelegate: EmailViewModelDelegate) {
         self.message = message
-        self.EmailViewModelDelegate = emailViewModelDelegate
+        self.emailViewModelDelegate = emailViewModelDelegate
     }
 
-    subscript(index: Int) -> FieldViewModel {
+    subscript(index: Int) -> FieldRowProtocol {
         get {
             return self.items[index]
         }
@@ -45,8 +51,11 @@ final class EmailViewModel {
         return ""
     }
 
-    public func show(documentAt url: URL, givenMimeType: String?) {
-
+    /// Show the document at certain url
+    /// - Parameters:
+    ///   - url: The url of the document to show
+    ///   - attachmentMimeType: The given Mime Type.
+    public func show(documentAt url: URL, attachmentMimeType: String?) {
         // if ...,
         // delegate?.showPdfPreview
         // else
@@ -54,8 +63,8 @@ final class EmailViewModel {
         // or delegate?.presentDocumentInteractionController
     }
 
-    public var showExternalContent = false
-    public var showViewExternalContent = true
+    public var showExternalContent: Bool = false
+    public var showViewExternalContent: Bool = true
 
     public func saveToTmpDirectory(attachment : Attachment, completion: @escaping (URL?) -> Void) {
 
@@ -65,13 +74,14 @@ final class EmailViewModel {
     }
 }
 
+public enum FieldViewModelType : String {
+    case to, cc, bcc, from, subject, content, mailingList, none, attachment, wrapped
+}
+public enum FieldDisplayType: String {
+    case always, conditional
+}
+
 class FieldViewModel {
-    public enum FieldViewModelType : String {
-        case to, cc, bcc, from, subject, content, mailingList, none, attachment, wrapped
-    }
-    private enum FieldDisplayType: String {
-        case always, conditional
-    }
 
     public var type: FieldViewModelType = .to
     public var display: FieldDisplayType = .always
@@ -79,7 +89,7 @@ class FieldViewModel {
         return ""
     }
 
-    public var identifier {
+    public var identifier: String {
         switch type {
         case .to:
             return ""
@@ -89,19 +99,10 @@ class FieldViewModel {
     }
 }
 
-
-<key>value</key>
-<string></string>
-
-<key>visible</key>
-<string>always</string>
-
-<key>contactSuggestion</key>
-
 /// Protocol that represents the basic data in a row.
 protocol FieldRowProtocol {
     /// The type of the row
-    var type : AccountSettingsViewModel.RowType { get }
+    var type : FieldViewModelType { get }
     /// The title of the row.
     var title: String { get }
     /// Indicates if the row action is dangerous.
