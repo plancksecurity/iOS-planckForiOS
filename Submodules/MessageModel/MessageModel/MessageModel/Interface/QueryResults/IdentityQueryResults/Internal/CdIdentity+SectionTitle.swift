@@ -43,11 +43,11 @@ extension CdIdentity {
             let unicodeValue = firstChar.unicodeScalars.first?.value ?? 0
             // fix for characters in range of Halfwidth and Fullwidth Form of latin alphabet
             // see IOS-2395
-            if 65281...65376 ~= unicodeValue {
+            if (65281...65376).contains(unicodeValue) {
                 // Value of first character in the correct range of characters
                 let firstCharacter = "!".unicodeScalars.first?.value ?? 0
                 // Diffetence between the first character in the correct range and in the halfwidth range
-                let difference = unicodeValue - firstCharacter
+                let difference = 65281 - firstCharacter
                 let newUnicodeInCorrectRange = UnicodeScalar(unicodeValue - difference)!
                 return Character(newUnicodeInCorrectRange).uppercased()
             }
