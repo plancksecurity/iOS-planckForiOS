@@ -10,7 +10,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class ResetTrustViewModelTest: AccountDrivenTestBase {
+class ResetTrustViewModelTest: XCTest {
 
     func testIOS2395() {
         //given
