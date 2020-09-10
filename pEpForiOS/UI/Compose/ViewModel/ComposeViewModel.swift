@@ -280,7 +280,7 @@ extension ComposeViewModel {
             completion(true)
             return
         }
-        var originalRating: PEPRating? = nil
+        var originalRating: PEPRating? = nil //!!!: BUFF: AFAIU originalRating MUST NOT taken be taken into account any more since IOS-2414
         let group = DispatchGroup()
         group.enter()
         originalMessage.pEpRating { (rating) in
@@ -852,7 +852,7 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
         // Dispatch as next to not "Attempted to call -cellForRowAtIndexPath: on the table view while it was in the process of updating its visible cells, which is not allowed. ...". See IOS-2347 for details.
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. The view might have been dismissed already.
                 return
             }
             me.delegate?.contentChanged(inRowAt: idxPath)

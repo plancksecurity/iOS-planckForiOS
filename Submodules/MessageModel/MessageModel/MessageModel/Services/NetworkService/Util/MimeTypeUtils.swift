@@ -23,6 +23,8 @@ public class MimeTypeUtils {
         public static let pgpEncrypted = "application/pgp-encrypted"
         public static let attachedEmail = "message/rfc822"
         public static let plainText = "text/plain"
+        public static let pEpSync = "application/pep.sync"
+        public static let pEpSign = "application/pep.sign"
     }
 
     private var mimeTypeToExtension = [MimeType: String]()
@@ -81,7 +83,10 @@ public class MimeTypeUtils {
 
     static public var unviewableMimeTypes: Set<MimeType> {
         get {
-            return Set([ContentTypeUtils.ContentType.pgpKeys, MimesType.pgp])
+            return Set([ContentTypeUtils.ContentType.pgpKeys,
+                        MimesType.pgp,
+                        MimesType.pEpSync,
+                        MimesType.pEpSign])
         }
     }
 
@@ -126,7 +131,7 @@ extension MimeTypeUtils {
         for (theExtension, mimeType) in theData {
             mimeTypeToExtension[mimeType.lowercased()] = theExtension
         }
-        // "image/jpeg" is missing in ourt data. Fix it.
+        // "image/jpeg" is missing in our data. Fix it.
         mimeTypeToExtension[MimeTypeUtils.MimesType.jpeg] = "jpg"
     }
 }
