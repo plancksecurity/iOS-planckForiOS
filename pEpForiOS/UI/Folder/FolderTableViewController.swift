@@ -63,7 +63,8 @@ final class FolderTableViewController: UITableViewController {
             target: nil,
             action: nil)
         let compose = UIBarButtonItem.getComposeButton(
-            action:#selector(showCompose),
+            tapAction: #selector(showCompose),
+            longPressAction: #selector(draftsPreviewTapped),
             target: self)
         toolbarItems = [flexibleSpace, compose, flexibleSpace, item]
         tableView.cellLayoutMarginsFollowReadableWidth = false
@@ -103,6 +104,13 @@ final class FolderTableViewController: UITableViewController {
     
     @objc private func showSettingsViewController() {
         UIUtils.presentSettings()
+    }
+
+    @objc private func draftsPreviewTapped(sender: UILongPressGestureRecognizer) {
+        if sender.state != .began {
+            return
+        }
+        showDraftsPreview()
     }
 
     // MARK: - Table view data source
@@ -185,6 +193,69 @@ extension FolderTableViewController: LoginViewControllerDelegate {
         shouldPresentNextView = true
     }
 }
+
+// MARK: - Drafts Preview
+
+extension FolderTableViewController {
+
+    func showDraftsPreview() {
+        guard let vc = createEmailListViewController() else {
+            Log.shared.errorAndCrash(message: "EmailListViewController is not available!")
+            return
+        }
+        vc.hidesBottomBarWhenPushed = false
+        vc.modalPresentationStyle = .pageSheet
+        vc.modalTransitionStyle = .coverVertical
+
+        if let toolbar = navigationController?.toolbar {
+            vc.modalPresentationStyle = .popover
+            vc.preferredContentSize = CGSize(width: toolbar.frame.width - 16,
+                                             height: 420)
+            vc.popoverPresentationController?.sourceView = vc.view
+            let frame = CGRect(x: toolbar.frame.origin.x,
+                               y: toolbar.frame.origin.y - 10,
+                               width: toolbar.frame.width,
+                               height: toolbar.frame.height)
+            vc.popoverPresentationController?.sourceRect = frame
+        }
+
+        present(UINavigationController(rootViewController: vc), animated: true)
+    }
+
+    func composeAction() {
+        showCompose()
+    }
+
+    private func createEmailListViewController() -> EmailListViewController? {
+          let sb = UIStoryboard(name: EmailViewController.storyboard, bundle: nil)
+          guard
+              let vc = sb.instantiateViewController(
+                  withIdentifier: EmailListViewController.storyboardId) as? EmailListViewController,
+              let folderViewModel = folderVM else {
+                  Log.shared.errorAndCrash("Problem!")
+                  return nil
+          }
+
+          guard let draftsIndex = FolderType.displayOrder.firstIndex(where: { $0 == .drafts }) else {
+              Log.shared.errorAndCrash(message: "Drafts index is missing!")
+              return nil
+          }
+
+          guard let firstSection = folderViewModel.items.first else {
+              Log.shared.errorAndCrash(message: "First section was not found!")
+              return nil
+          }
+
+          let emailListVM = EmailListViewModel(delegate: vc,
+                                               folderToShow: firstSection[draftsIndex].folder)
+          vc.viewModel = emailListVM
+          vc.hidesBottomBarWhenPushed = true
+
+          return vc
+      }
+
+}
+
 
 // MARK: - Segue
 
