@@ -1606,7 +1606,6 @@
 			isa = PBXGroup;
 			children = (
 				B7B2912124FF8DEC00428CA6 /* ResetTrust */,
-				B73123C923D07739009EDC62 /* SettingsViewModelTest.swift */,
 				439EA15224727966005D6C9A /* KeyImport */,
 				37A710E2233B7A96001FEAF0 /* AccountSettings */,
 				37F272ED237075A8005C51AA /* EditableAccountSettings */,
@@ -3731,7 +3730,7 @@
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.210;
+				MARKETING_VERSION = 1.1.211;
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "-DDEBUG_LOGGING -D DEBUG $(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = security.pEp;
@@ -3770,7 +3769,7 @@
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.210;
+				MARKETING_VERSION = 1.1.211;
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = security.pEp;
 				PRODUCT_MODULE_NAME = pEpForiOS;
