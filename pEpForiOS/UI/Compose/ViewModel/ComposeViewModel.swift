@@ -643,8 +643,8 @@ extension ComposeViewModel {
         }
         let title: String
         if data.isDrafts {
-            title = NSLocalizedString("Discharge changes", comment:
-                "ComposeTableView: button to decide to discharge changes made on a drafted mail.")
+            title = NSLocalizedString("Delete Changes", comment:
+                "ComposeTableView: button to decide to delete changes made on a drafted mail.")
         } else if data.isOutbox {
             title = NSLocalizedString("Delete", comment:
                 "ComposeTableView: button to decide to delete a message from Outbox after " +
