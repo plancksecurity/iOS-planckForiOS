@@ -39,14 +39,13 @@ public class FetchImapFoldersService {
         }
         group.notify(queue: .main) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(message: "Lost myself")
+                /// Valid case: the VM that owns this service might be gone, so the service instance is nil.
                 completion(false)
                 return
             }
             completion(true)
             me.isFetching = false
         }
-
     }
 
     private func accountInContext(cdAccount: CdAccount) throws -> CdAccount?  {
