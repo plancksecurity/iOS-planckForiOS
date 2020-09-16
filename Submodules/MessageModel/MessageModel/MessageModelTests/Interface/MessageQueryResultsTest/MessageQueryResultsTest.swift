@@ -1,19 +1,28 @@
+//IOS-2241 CRASHES
+////
+////  MessageQueryResultsTest.swift
+////  MessageModelTests
+////
+////  Created by Alejandro Gelos on 22/02/2019.
+////  Copyright © 2019 pEp Security S.A. All rights reserved.
+////
 //
-//  MessageQueryResultsTest.swift
-//  MessageModelTests
+//import XCTest
+//import CoreData
+//@testable import MessageModel
 //
-//  Created by Alejandro Gelos on 22/02/2019.
-//  Copyright © 2019 pEp Security S.A. All rights reserved.
+//class MessageQueryResultTest: PersistentStoreDrivenTestBase {
+//    var messageQueryResults: MessageQueryResults?
+//    var account1: CdAccount!
+//    var account2: CdAccount!
+//    var cdFolder1: CdFolder!
 //
 
 import XCTest
-
 import CoreData
-
 @testable import MessageModel
-import PEPObjCAdapterFramework
 
-class MessageQueryResultsTest: PersistentStoreDrivenTestBase {
+class MessageQueryResultTest: PersistentStoreDrivenTestBase {
     var messageQueryResults: MessageQueryResults?
     var account1: CdAccount!
     var account2: CdAccount!
@@ -63,6 +72,42 @@ class MessageQueryResultsTest: PersistentStoreDrivenTestBase {
 
         // Then
         XCTAssertNotNil(messageQueryResults)
+    }
+
+    func testMessage2FilesAreNotShownAsAttachment() {
+        // Given
+        guard let cdFolder1 = account1.folders?.firstObject as? CdFolder else {
+            XCTFail()
+            return
+        }
+        let msg = createCdMessages(numMessages: 2, cdFolder: cdFolder1, context: moc)
+        //let msg = TestUtil.createCdMessage(cdFolder: cdFolder1, moc: moc)
+        let mimeType = MimeTypeUtils.mimeType(fromFileExtension: ".asc")
+        let attachment = Attachment(data: Data(base64Encoded: "just some data"), mimeType: mimeType, fileName: "msg.asc").cdObject
+        let pdfAttachment = Attachment(data: Data(base64Encoded: "just some data"), mimeType: mimeType, fileName: "text.pdf").cdObject
+        let messageWithNonShowableAttachent = msg[0]
+        messageWithNonShowableAttachent.addToAttachments([attachment])
+        let messageWithShowableAttachent = msg[1]
+        messageWithShowableAttachent.addToAttachments([pdfAttachment])
+        moc.saveAndLogErrors()
+
+        // When
+        let filter = MessageQueryResultsFilter(mustContainAttachments: true, accounts: [account1.account()])
+        let messageQueryResults = MessageQueryResults(withFolder: cdFolder1.folder(), filter: filter)
+        guard let _ = try? messageQueryResults.startMonitoring() else {
+            XCTFail()
+            return
+        }
+        // Then
+        let numberOfExpectedMessages = 1
+        XCTAssertNotNil(messageQueryResults)
+        XCTAssertEqual(numberOfExpectedMessages, try? messageQueryResults.count())
+        XCTAssertNotEqual(messageQueryResults[0],
+                          MessageModelObjectUtils.getMessage(fromCdMessage:
+                            messageWithNonShowableAttachent))
+        XCTAssertEqual(messageQueryResults[0],
+                       MessageModelObjectUtils.getMessage(fromCdMessage:
+                        messageWithShowableAttachent))
     }
 
     func testStartMonitoringWithOutElements() {
@@ -125,6 +170,21 @@ class MessageQueryResultsTest: PersistentStoreDrivenTestBase {
         // Then
 
         XCTAssertEqual(try? messageQueryResults.count(), expectedMessagesCount)
+    }
+
+    func testCountWithoutStartMonitoring() {
+        // Given
+        guard let messageQueryResults = messageQueryResults else {
+            XCTFail()
+            return
+        }
+
+        // When
+        createCdMessages(numMessages: 20, cdFolder: cdFolder1, context: moc)
+
+        // Then
+        XCTAssertThrowsError(try messageQueryResults.count(),
+                    QueryResultsController.InvalidStateError.notMonitoring.localizedDescription)
     }
 
     func testSubscript() {
@@ -318,7 +378,7 @@ class MessageQueryResultsTest: PersistentStoreDrivenTestBase {
         XCTAssertEqual(delegateTest.indexPath, IndexPath(item: 0, section: 0))
         XCTAssertEqual(delegateTest.newIndexPath, IndexPath(item: 19, section: 0))
     }
-
+    
     func testDelegateDidMoveToOtherFolderSoDelete() {
         // Given
         guard let messageQueryResults = messageQueryResults else {
@@ -360,7 +420,7 @@ class MessageQueryResultsTest: PersistentStoreDrivenTestBase {
 
 // MARK: - Helper
 
-extension MessageQueryResultsTest {
+extension MessageQueryResultTest {
 
     @discardableResult
     private func createCdMessages(numMessages: Int = 1,
@@ -371,13 +431,13 @@ extension MessageQueryResultsTest {
         createes.forEach {
             uid += 1
             $0.uid = Int32(uid)
-            $0.pEpRating = Int16(PEPRating.unencrypted.rawValue)
+            $0.pEpRating = Int16(0)
         }
         return createes
     }
 }
 
-/// MARK: - Delegate test class
+// MARK: - Delegate test class
 
 class MessageQueryResultsTestDelegate {
     let exp: XCTestExpectation

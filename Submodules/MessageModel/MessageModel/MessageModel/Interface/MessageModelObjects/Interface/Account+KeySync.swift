@@ -12,12 +12,18 @@ import PEPObjCAdapterFramework
 // MARK: - KeySync
 
 extension Account {
-    public func isKeySyncEnabled() throws -> Bool {
-        return try cdObject.isKeySyncEnabled()
+
+    public func isKeySyncEnabled(errorCallback: @escaping (Error) -> (),
+                                 successCallback: @escaping (Bool) -> ()) {
+        cdObject.isKeySyncEnabled(errorCallback: errorCallback, successCallback: successCallback)
     }
 
-    public func setKeySyncEnabled(enable: Bool) throws {
-        try cdObject.setKeySyncEnabled(enable: enable)
+    public func setKeySyncEnabled(enable: Bool,
+                                  errorCallback: @escaping (Error?) -> (),
+                                  successCallback: @escaping () -> ()) {
+        cdObject.setKeySyncEnabled(enable: enable,
+                                   errorCallback: errorCallback,
+                                   successCallback: successCallback)
     }
 
     /// Reset the key for this account
@@ -31,27 +37,27 @@ extension Account {
         DispatchQueue.global(qos: .utility).async {
             session.performAndWait {
                 let pEpIdentity = safeUser.pEpIdentity()
-                let pEpSession = PEPSession()
-                do {
-                    try pEpSession.update(pEpIdentity)
-                    try pEpSession.keyReset(pEpIdentity, fingerprint: pEpIdentity.fingerPrint)
-                    completion?(.success(()))
-                } catch {
-                    completion?(.failure(error))
+                PEPAsyncSession().update(pEpIdentity,
+                                         errorCallback: { error in
+                                            completion?(.failure(error))
+                }) { updatedIdentity in
+                    PEPAsyncSession().keyReset(updatedIdentity,
+                                               fingerprint: updatedIdentity.fingerPrint,
+                                               errorCallback: { (error: Error) in
+                                                completion?(.failure(error))
+                    }) {
+                        completion?(.success(()))
+                    }
                 }
             }
         }
     }
 
     public static func resetAllOwnKeys(completion: ((Result<Void, Error>) -> ())? = nil) {
-        DispatchQueue.global(qos: .utility).async {
-            let session = PEPSession()
-            do {
-                try session.keyResetAllOwnKeysError()
-                completion?(.success(()))
-            } catch {
-                completion?(.failure(error))
-            }
+        PEPAsyncSession().keyResetAllOwnKeys({ (error: Error) in
+            completion?(.failure(error))
+        }) {
+            completion?(.success(()))
         }
     }
 }

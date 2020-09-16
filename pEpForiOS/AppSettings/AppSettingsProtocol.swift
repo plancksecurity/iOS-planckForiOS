@@ -10,6 +10,7 @@ import MessageModel
 
 public protocol AppSettingsProtocol {
     var keySyncEnabled: Bool { get set }
+    var usePEPFolderEnabled: Bool { get set }
     var extraKeysEditable: Bool { get set }
     var unencryptedSubjectEnabled: Bool { get set }
     var threadedViewEnabled: Bool { get set }

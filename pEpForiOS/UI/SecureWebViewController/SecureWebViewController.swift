@@ -16,11 +16,8 @@ protocol SecureWebViewControllerDelegate: class {
 
 protocol SecureWebViewUrlClickHandlerProtocol: class {
     /// Called whenever a mailto:// URL has been clicked by the user.
-    /// - Parameters:
-    ///   - sender: caller of the message
-    ///   - mailToUrlClicked: the clicked URL
-    func secureWebViewController(_ webViewController: SecureWebViewController,
-                                 didClickMailToUrlLink url: URL)
+    /// - Parameter url: The mailto:// URL
+    func didClickOn(mailToUrlLink url: URL)
 }
 
 // WKContentRuleList is not available below iOS11, thus remote content would be loaded
@@ -107,11 +104,14 @@ class SecureWebViewController: UIViewController {
 
     // MARK: - API
 
-    public func display(html: String) {
+    public func display(html: String, showExternalContent: Bool) {
         setupBlocklist() { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
+            }
+            if showExternalContent {
+                me.webView.configuration.userContentController.removeAllContentRuleLists()
             }
             me.htmlOptimizer.optimizeForDislaying(html: html) { processedHtml in
                 me.webView.loadHTMLString(processedHtml, baseURL: nil)
@@ -241,7 +241,7 @@ extension SecureWebViewController: WKNavigationDelegate {
             }
             if url.scheme == "mailto" {
                 // The user clicked on an email URL.
-                urlClickHandler?.secureWebViewController(self, didClickMailToUrlLink: url)
+                urlClickHandler?.didClickOn(mailToUrlLink: url)
             } else {
                 // The user clicked a link type we do not allow custom handling for.
                 // Try to open it in an appropriate app, do nothing if that fails.

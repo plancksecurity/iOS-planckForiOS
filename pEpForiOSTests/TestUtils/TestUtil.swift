@@ -148,8 +148,8 @@ class TestUtil {
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
         guard let imageData = MiscUtil.loadData(bundleClass: TestUtil.self,
                                                 fileName: imageFileName) else {
-            XCTFail()
-            return Attachment(data: nil, mimeType: "meh", contentDisposition: .attachment)
+                                                    XCTFail()
+                                                    return Attachment(data: nil, mimeType: "meh", contentDisposition: .attachment)
         }
 
         let contentDisposition = inlined ? Attachment.ContentDispositionType.inline : .attachment
@@ -220,12 +220,61 @@ class TestUtil {
 
         return msg
     }
+    //
+    //    /// Determines the highest UID of _all_ the messages currently in the DB.
+    //    static func highestUid(context: NSManagedObjectContext) -> Int {
+    //        var theHighestUid: Int32 = 0
+    //        if let allCdMessages = CdMessage.all(in: context) as? [CdMessage] {
+    //            for cdMsg in allCdMessages {
+    //                if cdMsg.uid > theHighestUid {
+    //                    theHighestUid = cdMsg.uid
+    //                }
+    //            }
+    //        }
+    //        return Int(theHighestUid)
+    //    }
+    //
+    //    /**
+    //     - Returns: `highestUid()` + 1
+    //     */
+    //    static func nextUid(context: NSManagedObjectContext) -> Int {
+    //        return highestUid(context: context) + 1
+    //    }
 
-    // MARK: - MISC
+    // MARK: - SERVER
 
-    static func replacedCRLFWithLF(data: Data) -> Data {
-        let mData = NSMutableData(data: data)
-        mData.replaceCRLFWithLF()
-        return mData as Data
+    static func setServersTrusted(forCdAccount cdAccount: CdAccount, testCase: XCTestCase) {
+        guard let cdServers = cdAccount.servers?.allObjects as? [CdServer] else {
+            XCTFail("No Servers")
+            return
+        }
+        for server in cdServers {
+            server.automaticallyTrusted = true
+        }
+        guard let context = cdAccount.managedObjectContext else {
+            pEpForiOS.Log.shared.errorAndCrash("The account we are using has been deleted from moc!")
+            return
+        }
+        context.saveAndLogErrors()
+    }
+
+    // MARK: - ERROR
+
+    class TestErrorContainer: ErrorContainerProtocol { //!!!: rm. AFAICS the implementation is copy & pasted from ErrorContainer. If so, why not use ErrorContainer?
+        var error: Error?
+
+        func addError(_ error: Error) {
+            if self.error == nil {
+                self.error = error
+            }
+        }
+
+        var hasErrors: Bool {
+            return error != nil
+        }
+
+        func reset() {
+            error = nil
+        }
     }
 }

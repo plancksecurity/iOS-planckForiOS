@@ -18,7 +18,7 @@
 "%1$@ wrote:" = "%1$@ escribió:";
 
 /* Number of filters instead of filter name */
-"%d filters" = "% d filtros";
+"%d filters" = "%d filtros";
 
 /* error message for .missingPassword */
 "A non-empty password is required" = "Se necesita contraseña";
@@ -27,7 +27,7 @@
 "A non-empty username is required" = "Se necesita usuario";
 
 /* KeySyncWizard introduction message - two devices */
-"A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "Se ha encontrado un segundo dispositivo con el que puedes sincronizar toda tu tu privacidad. Quieres empezar a sincronizar?";
+"A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "Se ha encontrado un segundo dispositivo con el que puedes sincronizar toda tu tu privacidad. ¿Quieres empezar a sincronizar?";
 
 /* error message for .invalidEmail
    error message for .missingEmail */
@@ -71,7 +71,7 @@
 "And in the top bar when you open or write an email:" = "Y en la barra superior cuando abres o escribes un correo electrónico:";
 
 /* KeySyncWizard introduction message - more than two devices */
-"Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Se ha encontrado otro dispositivo con el que puedes sincronizar toda tu tu privacidad. Quieres empezar a sincronizar?";
+"Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Se ha encontrado otro dispositivo con el que puedes sincronizar toda tu tu privacidad. ¿Quieres empezar a sincronizar?";
 
 /* Archive button in slide-left menu */
 "Archive" = "Archivo";
@@ -143,7 +143,7 @@
 "Client Certificate" = "Certificado de Cliente";
 
 /* privacyStatusDescription yellow */
-"Communication with this contact will be completely Secure & Trusted by comparing the following Trustwords with your contact, for example by making a phone call." = "La comunicación con este contacto será completamente segura & Confíe en comparar las siguientes Trustwords con su contacto, por ejemplo haciendo una llamada telefónica.";
+"Communication with this contact will be completely Secure & Trusted by comparing the following Trustwords with your contact, for example by making a phone call." = "La comunicación con este contacto será completamente segura y confiable cuando compare las siguientes Trustwords con él, por ejemplo con una llamada telefónica.";
 
 /* Privacy status suggestion */
 "Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Complete un handshake con su interlocutor. Solo se necesita un handshake una vez por socio y garantizará una comunicación segura y confiable.";
@@ -307,7 +307,7 @@
 "If enabled, message subjects are also protected." = "Si está habilitado, los asuntos de los mensajes también están protegidos.";
 
 /* Secure & Trusted Description Label - Step 1 */
-"If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle." = "Si las Trustwords no son correctas, podría haber un ataque de un-hombre-en-el-medio.";
+"If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle." = "Si las Trustwords no son correctas, podría ser un ataque de intermediario.";
 
 /* Privacy status suggestion */
 "If this message was addressed to you, please inform the sender that you don't have the key." = "Si este mensaje fue dirigido a usted. Por favor informe al remitente que no tiene la clave.";
@@ -462,8 +462,7 @@
 /* keySyncWizard intro view Next button title */
 "Next" = "Siguiente";
 
-/* Alert button while client certificate is importing: Try again? No
-   Title for no button (cancel) when trying to import a key */
+/* Alert button while client certificate is importing: Try again? No */
 "No" = "No";
 
 /* Error when no account found for set_own_key UI */
@@ -540,6 +539,13 @@
 /* Passive mode title */
 "Passive mode" = "Modo pasivo";
 
+/* Passphrase placeholder
+   Passphrase title */
+"Passphrase" = "Frase de contraseña";
+
+/* Passphrase too long - title */
+"Passphrase too long" = "Frase de contraseña demasiado larga";
+
 /* password */
 "Password" = "Contraseña";
 
@@ -611,6 +617,12 @@
 
 /* Fail to log in, email does not match account type */
 "Please enter a valid Gmail address." = "Por favor, ingrese una dirección de Gmail válida.";
+
+/* Please enter one shorter - message */
+"Please enter one shorter" = "Por favor ingrese una más corta";
+
+/* Passphrase message */
+"Please enter the passphrase to continue" = "Por favor ingrese la Frase de contraseña para continuar";
 
 /* Description for client certificate password screen */
 "Please enter the password of the certificate to import it:" = "Por favor ingrese la contraseña del certificado para importarlo:";
@@ -803,6 +815,9 @@
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "El mensaje no se ha podido enviar. Por favor, inténtelo de nuevo más tarde.";
 
+/* Passphrase message */
+"The passphrase you entered is wrong. Please enter it again to continue" = "La frase de contraseña que que ha introducido es incorrecta. Por favor inténtelo de nuevo para continuar";
+
 /* error message for .minimumLengthUsername */
 "The username must contain more than 1 characters" = "El nombre de usuario debe contener más de 1 carácter";
 
@@ -825,7 +840,7 @@
 "This contact is completely trusted. All communication will be with the maximum level of privacy." = "Este contacto es completamente de confianza. Toda comunicación se realizará con el máximo nivel de privacidad.";
 
 /* privacyStatusDescription red */
-"This contact is mistrusted and might be an attack by a man-in-the-middle." = "Este contacto No es de confianza y podría ser un ataque de un-hombre-en-el-medio.";
+"This contact is mistrusted and might be an attack by a man-in-the-middle." = "Este contacto no es confiable y podría ser un ataque de intermediario.";
 
 /* Privacy status title */
 "This contact is mistrusted. If you rejected the Trustwords accidentally, you could reset the p≡p data." = "Este contacto No es de confianza. Si rechazó accidentalmente las Trustwords, podría restablecer los datos p≡p.";
@@ -953,6 +968,12 @@
 /* setting row title: Unsecure reply warning */
 "Unsecure reply warning" = "Advertencia de respuesta insegura";
 
+/* PGPKeyImportSetting - Use a Passphrase for new keys */
+"Use a passphrase for new keys" = "Usar una frase de contraseña para claves nuevas";
+
+/* Settings: title for enable/disable usePEPFolder feature */
+"Use p≡p Folder For Sync Messages" = "Utilice la carpeta p≡p para mensajes de sincronización";
+
 /* User Name placeholder for manual account IMAP setup
    User Name placeholder for manual account setup
    User Name placeholder for manual account SMTP setup */
@@ -978,6 +999,9 @@
 
 /* Client certificate import: wrong password alert message */
 "We could not import the certificate. We do not have permissions to open this file.\n\nTry again?" = "No pudimos importar el certificado. No tenemos permisos para abrir este archivo.\n\n¿Intentar de nuevo?";
+
+/* Passphrase message */
+"We recommend to use device encryption instead of using passphrases, because they're securing all data, not only keys. In case you want to use a passphrase anyway, please enter a passphrase here and enable it." = "Recomendamos usar el cifrado del dispositivo en lugar de usar frases de contraseña, porque protegen todos los datos, no solo las claves. En caso de que quiera usar una frase de contraseña de todos modos, ingrese una frase de contraseña aquí y actívela.";
 
 /* KeySyncWizard complete message - two devices */
 "We successfully created a device group. All your privacy is now synchronized." = "Se ha creado con éxito un grupo de dispositivos. Ahora toda tu privacidad está sincronizada.";
@@ -1009,8 +1033,7 @@
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Trustwords incorrectas";
 
-/* Alert button while client certificate is importing: Try again? Yes
-   Title for yes button when trying to import a key */
+/* Alert button while client certificate is importing: Try again? Yes */
 "Yes" = "Si";
 
 /* Confirm less secure answer message alert body */
@@ -1018,9 +1041,6 @@
 
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Está a punto de reenviar un mensaje seguro como no seguro. Si elige continuar, se puede filtrar información confidencial que lo pone a usted y a sus interlocutores en riesgo. ¿Está seguro de que quieres continuar?";
-
-/* Message when asking user for confirmation about importing a key */
-"You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?" = "Está a punto de importar la siguiente clave:\n\nNombre:% 1 $ @\nHuella digital:% 2 $ @\n\n¿Seguro que quieres importar y usar esta clave?";
 
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Puede cerrar este tutorial en cualquier momento con el botón Omitir.";

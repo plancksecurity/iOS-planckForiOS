@@ -12,9 +12,8 @@ import XCTest
 import PEPObjCAdapterFramework
 
 class DecryptionTest: PersistentStoreDrivenTestBase {
-    /// See IOS-1432. The message itself should be reliable,
-    /// but at least one of its extra keys has an undefined rating.
-    /// 353E7B7239A9B7B0F8419CB3924B17115179C280 expires 2023-01-15.
+    /// See IOS-1432. The message itself is reliable, but at least one of its extra
+    /// keys has an undefined rating, which the message inherits.
     func testLoadAndDecryptOutlookMessage() {
         guard let keyString = TestUtil.loadString(fileName: "IOS-1432_keypair.asc") else {
             XCTFail()
@@ -46,19 +45,21 @@ class DecryptionTest: PersistentStoreDrivenTestBase {
         }
 
         let pEpMsg = cdMessage.pEpMessage()
-
-        var flags: PEPDecryptFlags = .none
         var rating: PEPRating = .undefined
-        var extraKeys: NSArray?
-        var status: PEPStatus = .OK
-        try! session.decryptMessage(pEpMsg,
-                                    flags: &flags,
-                                    rating: &rating,
-                                    extraKeys: &extraKeys,
-                                    status: &status)
+        var extraKeys: [String]?
 
-        XCTAssertEqual(status, PEPStatus.OK)
-        XCTAssertEqual(rating.rawValue, PEPRating.unreliable.rawValue)
+        let exp = expectation(description: "exp")
+        PEPAsyncSession().decryptMessage(pEpMsg, flags: .none, extraKeys: extraKeys, errorCallback: { (error) in
+            XCTFail(error.localizedDescription)
+            exp.fulfill()
+        }) { (_, _, keyList, pEpRating, _) in
+            extraKeys = keyList
+            rating = pEpRating
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: TestUtil.waitTime)
+
+        XCTAssertEqual(rating.rawValue, PEPRating.undefined.rawValue)
         XCTAssertNotNil(extraKeys)
     }
 }

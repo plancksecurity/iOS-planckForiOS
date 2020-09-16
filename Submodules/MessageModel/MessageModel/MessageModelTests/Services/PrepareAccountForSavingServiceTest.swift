@@ -21,6 +21,7 @@ class PrepareAccountForSavingServiceTest: PersistentStoreDrivenTestBase {
             let testee = SecretTestData().createWorkingCdAccount(context: privateMoc, number: 0)
             accountPreparationService.prepareAccount(cdAccount: testee,
                                                      pEpSyncEnable: true,
+                                                     alsoCreatePEPFolder: false,
                                                      context: privateMoc) {
                 success in
                 XCTAssertTrue(success)
@@ -39,6 +40,7 @@ class PrepareAccountForSavingServiceTest: PersistentStoreDrivenTestBase {
             let testee = SecretTestData().createImapTimeOutCdAccount(context: privateMoc)
             accountPreparationService.prepareAccount(cdAccount: testee,
                                                      pEpSyncEnable: true,
+                                                     alsoCreatePEPFolder: false,
                                                      context: moc) {
                 success in
                 XCTAssertFalse(success)
@@ -61,6 +63,7 @@ class PrepareAccountForSavingServiceTest: PersistentStoreDrivenTestBase {
             }
             accountPreparationService.prepareAccount(cdAccount: testacc,
                                                      pEpSyncEnable: true,
+                                                     alsoCreatePEPFolder: false,
                                                      context: privateMoc) {
                 success in
                 XCTAssertTrue(success)
@@ -98,6 +101,7 @@ class PrepareAccountForSavingServiceTest: PersistentStoreDrivenTestBase {
             }
             accountPreparationService.prepareAccount(cdAccount: testacc,
                                                      pEpSyncEnable: true,
+                                                     alsoCreatePEPFolder: false,
                                                      context: privateMoc) {
                 success in
                 XCTAssertTrue(success)
@@ -111,8 +115,8 @@ class PrepareAccountForSavingServiceTest: PersistentStoreDrivenTestBase {
                 XCTFail()
                 return
             }
-            let rating = PEPUtils.pEpRating(cdIdentity: cdIndentity)
-            XCTAssertEqual(rating, PEPRating.trustedAndAnonymized)
+            let pEpRating = rating(for: cdIndentity.pEpIdentity())
+            XCTAssertEqual(pEpRating, PEPRating.trustedAndAnonymized)
         }
     }
 }

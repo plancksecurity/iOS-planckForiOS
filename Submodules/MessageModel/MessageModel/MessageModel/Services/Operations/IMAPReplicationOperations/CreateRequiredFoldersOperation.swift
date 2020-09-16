@@ -76,8 +76,7 @@ class CreateRequiredFoldersOperation: ImapSyncOperation {
             me.privateMOC.performAndWait {
                 guard
                     let account = me.imapConnection.cdAccount(moc: me.privateMOC) else {
-                        me.handleError(
-                            BackgroundError.CoreDataError.couldNotFindAccount(info: me.comp))
+                        me.handle(error: BackgroundError.CoreDataError.couldNotFindAccount(info: me.comp))
                         return
                 }
 

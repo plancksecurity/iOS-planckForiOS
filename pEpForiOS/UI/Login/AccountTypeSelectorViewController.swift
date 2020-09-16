@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class AccountTypeSelectorViewController: BaseViewController {
+final class AccountTypeSelectorViewController: UIViewController {
 
     var viewModel = AccountTypeSelectorViewModel()
     var delegate: AccountTypeSelectorViewModelDelegate?
@@ -132,7 +132,7 @@ extension AccountTypeSelectorViewController: AccountTypeSelectorViewModelDelegat
                                         comment: "No client certificate exists alert message")
         UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.navigationController?.popViewController(animated: true)

@@ -13,24 +13,25 @@ import CoreData
 /// both locally and on the server, and for each of those folders spawns a
 /// `ExpungeInImapFolderOperation` (via putting it into its `backgroundQueue`)
 /// that will handle the actual EXPUNGE (which is folder based).
-class ImapExpungeOperation: ImapSyncOperation {
-    override init(parentName: String = #function,
+class ImapExpungeOperation: ConcurrentBaseOperation {
+    var imapConnection: ImapConnectionProtocol
+
+    required init(parentName: String = #function,
                   context: NSManagedObjectContext? = nil,
                   errorContainer: ErrorContainerProtocol = ErrorPropagator(),
                   imapConnection: ImapConnectionProtocol) {
+        self.imapConnection = imapConnection
         super.init(parentName: parentName,
                    context: context,
-                   errorContainer: errorContainer,
-                   imapConnection: imapConnection)
-        backgroundQueue.maxConcurrentOperationCount = 1
+                   errorContainer: errorContainer)
     }
 
     public override func main() {
-        if !checkImapConnection() || isCancelled {
-            waitForBackgroundTasksAndFinish()
-            return
-        }
+        scheduleOperations()
+        waitForBackgroundTasksAndFinish()
+    }
 
+    private func scheduleOperations() {
         privateMOC.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -67,7 +68,5 @@ class ImapExpungeOperation: ImapSyncOperation {
                 }
             }
         }
-
-        waitForBackgroundTasksAndFinish()
     }
 }

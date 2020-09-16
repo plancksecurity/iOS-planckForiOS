@@ -167,6 +167,14 @@ extension CdMessage {
             }
         }
 
+        if pEpMessage.direction == .incoming {
+            guard let pEpIdentityReceiver = parent?.account?.identity?.pEpIdentity() else {
+                Log.shared.errorAndCrash("An incomming message MUST be received by someone. Invalid state!")
+                return pEpMessage
+            }
+            pEpMessage.receivedBy = pEpIdentityReceiver
+        }
+
         return pEpMessage
     }
 
@@ -178,22 +186,17 @@ extension CdMessage {
         return cdMessages
     }
 
-    func outgoingMessageRating() -> PEPRating {
-        guard let sender = from else {
-            Log.shared.errorAndCrash(
-                "No sender for outgoing message?")
-            return .undefined
-        }
+    func outgoingMessageRating(completion: @escaping (PEPRating)->Void) {
         if !pEpProtected {
-            return .unencrypted
+            completion(.unencrypted)
+            return
         }
-
-        let theTos = to?.array as? [CdIdentity] ?? []
-        let theCcs = cc?.array as? [CdIdentity] ?? []
-        let theBccs = bcc?.array as? [CdIdentity] ?? []
-
-        return PEPSession().outgoingMessageRating(
-            from: sender, to: theTos, cc: theCcs, bcc: theBccs)
+        
+        PEPAsyncSession().outgoingRating(for: pEpMessage(), errorCallback: { (_) in
+            completion(.undefined)
+        }) { (rating) in
+            completion(rating)
+        }
     }
 
     func setOriginalRatingHeader(rating: PEPRating) {
@@ -230,11 +233,6 @@ extension CdMessage {
         let accountHasBeenCreatedInLocalNetwork = imapServer.automaticallyTrusted
         let userDecidedToTrustServer = imapServer.manuallyTrusted
         return accountHasBeenCreatedInLocalNetwork || userDecidedToTrustServer
-    }
-
-    // TODO: This is duplicated between MM and Cd.
-    var wasAlreadyUnencrypted: Bool {
-        return PEPUtils.pEpRatingFromInt(Int(self.pEpRating)) == .unencrypted
     }
 
     /// - Returns: all messages marked for UidMoveToTrash

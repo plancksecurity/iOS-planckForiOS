@@ -25,15 +25,17 @@
 		3790456A223FA52B006DAB3B /* ReachabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904568223FA52B006DAB3B /* ReachabilityTests.swift */; };
 		37954C6E227C90C10099B8D8 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37954C6D227C90C10099B8D8 /* Log.swift */; };
 		3A0CBAAB23F582B900AE200C /* UITextView+Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0CBAAA23F582B900AE200C /* UITextView+Font.swift */; };
-		3AC1987D23F56B7300E71D43 /* UILabel+Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC1987C23F56B7300E71D43 /* UILabel+Font.swift */; };
 		3AE10BAD249A6EC60050BFB0 /* String+EmailHtml.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE10BAC249A6EC60050BFB0 /* String+EmailHtml.swift */; };
 		3AE10BAF249A6F1A0050BFB0 /* String+HtmlTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE10BAE249A6F1A0050BFB0 /* String+HtmlTest.swift */; };
 		431E68AC246C00F200B3A977 /* DocumentsDirectoryBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E68AB246C00F200B3A977 /* DocumentsDirectoryBrowser.swift */; };
 		431E68B0246C0FFC00B3A977 /* DocumentsDirectoryBrowserTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E68AF246C0FFC00B3A977 /* DocumentsDirectoryBrowserTest.swift */; };
+		436F1BA125028B2E004426DC /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436F1BA025028B2E004426DC /* CocoaLumberjackSwift.framework */; };
 		43BE66D2246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BE66D1246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift */; };
 		5B2F7E5F240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E5E240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift */; };
 		5B2F7E61240D0EA8004DDFA2 /* RangeExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E60240D0EA8004DDFA2 /* RangeExpression+Extension.swift */; };
 		5B87D79423F2C5CE009DACAA /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */; };
+		5BEC4D6F24B5F6E800EBF0E9 /* CGAffineTransform+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEC4D6E24B5F6E800EBF0E9 /* CGAffineTransform+Extension.swift */; };
+		5BA2F5E924C997ED00F27099 /* UIDevice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA2F5E824C997ED00F27099 /* UIDevice+Extension.swift */; };
 		B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5422005BD400EDCE61 /* Date+Extension.swift */; };
 		B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */; };
 		B70A3A7322006B9F00EDCE61 /* SystemUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */; };
@@ -58,6 +60,8 @@
 		B7A46C58220DA6190027CCB5 /* String+Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A46C57220DA6190027CCB5 /* String+Email.swift */; };
 		B7A46C5E220DBAF00027CCB5 /* OperationQueue+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A46C5D220DBAF00027CCB5 /* OperationQueue+Extension.swift */; };
 		B7A46C62220DCEA80027CCB5 /* NSAttributedString+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A46C61220DCEA80027CCB5 /* NSAttributedString+Parsing.swift */; };
+		B7CE922924E3BC6C00B5A874 /* RoundedCornersButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CE922824E3BC6C00B5A874 /* RoundedCornersButton.swift */; };
+		B7CE922B24E3BD2100B5A874 /* UIButton+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CE922A24E3BD2100B5A874 /* UIButton+extension.swift */; };
 		B7DB7F522213120B003968DA /* SortedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7F512213120B003968DA /* SortedSet.swift */; };
 		B7DB7F5C221315BD003968DA /* pEpIOSToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7911EB421F7358500D7F66F /* pEpIOSToolbox.framework */; };
 		B7DB7F8422144E4E003968DA /* SortedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7F8322144E4E003968DA /* SortedSetTest.swift */; };
@@ -93,15 +97,17 @@
 		37904568223FA52B006DAB3B /* ReachabilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityTests.swift; sourceTree = "<group>"; };
 		37954C6D227C90C10099B8D8 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		3A0CBAAA23F582B900AE200C /* UITextView+Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UITextView+Font.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/UIKit/UITextView+Font.swift"; sourceTree = "<group>"; };
-		3AC1987C23F56B7300E71D43 /* UILabel+Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UILabel+Font.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/UIKit/UILabel+Font.swift"; sourceTree = "<group>"; };
 		3AE10BAC249A6EC60050BFB0 /* String+EmailHtml.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+EmailHtml.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/String+EmailHtml.swift"; sourceTree = "<group>"; };
 		3AE10BAE249A6F1A0050BFB0 /* String+HtmlTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+HtmlTest.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/Foundation/String+HtmlTest.swift"; sourceTree = "<group>"; };
 		431E68AB246C00F200B3A977 /* DocumentsDirectoryBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsDirectoryBrowser.swift; sourceTree = "<group>"; };
 		431E68AF246C0FFC00B3A977 /* DocumentsDirectoryBrowserTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DocumentsDirectoryBrowserTest.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/Other/DocumentsDirectoryBrowserTest.swift; sourceTree = "<group>"; };
+		436F1BA025028B2E004426DC /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjackSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43BE66D1246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsDirectoryBrowserProtocol.swift; sourceTree = "<group>"; };
 		5B2F7E5E240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "StringProtocol+NSRanges.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/StringProtocol+NSRanges.swift"; sourceTree = "<group>"; };
 		5B2F7E60240D0EA8004DDFA2 /* RangeExpression+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "RangeExpression+Extension.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/RangeExpression+Extension.swift"; sourceTree = "<group>"; };
 		5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
+		5BEC4D6E24B5F6E800EBF0E9 /* CGAffineTransform+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGAffineTransform+Extension.swift"; sourceTree = "<group>"; };
+		5BA2F5E824C997ED00F27099 /* UIDevice+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A5422005BD400EDCE61 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemUtils.swift; sourceTree = "<group>"; };
@@ -128,6 +134,8 @@
 		B7A46C57220DA6190027CCB5 /* String+Email.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Email.swift"; sourceTree = "<group>"; };
 		B7A46C5D220DBAF00027CCB5 /* OperationQueue+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OperationQueue+Extension.swift"; sourceTree = "<group>"; };
 		B7A46C61220DCEA80027CCB5 /* NSAttributedString+Parsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Parsing.swift"; sourceTree = "<group>"; };
+		B7CE922824E3BC6C00B5A874 /* RoundedCornersButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedCornersButton.swift; sourceTree = "<group>"; };
+		B7CE922A24E3BD2100B5A874 /* UIButton+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIButton+extension.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/UIKit/UIButton+extension.swift"; sourceTree = "<group>"; };
 		B7DB7F512213120B003968DA /* SortedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedSet.swift; sourceTree = "<group>"; };
 		B7DB7F57221315BD003968DA /* pEpIOSToolboxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pEpIOSToolboxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7DB7F5B221315BD003968DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -136,10 +144,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		B7911EB121F7358500D7F66F /* Frameworks */ = {
+		436F1B9E25028B20004426DC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				436F1BA125028B2E004426DC /* CocoaLumberjackSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,6 +235,14 @@
 			path = Modules;
 			sourceTree = "<group>";
 		};
+		436F1B9F25028B2E004426DC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				436F1BA025028B2E004426DC /* CocoaLumberjackSwift.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B70A3A5222005A7600EDCE61 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
@@ -255,6 +272,8 @@
 		B70A3A5322005B9600EDCE61 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				B7CE922824E3BC6C00B5A874 /* RoundedCornersButton.swift */,
+				5BEC4D6E24B5F6E800EBF0E9 /* CGAffineTransform+Extension.swift */,
 				5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */,
 				155528C323A797DC008486DF /* UIView+Autolayout.swift */,
 				1505C5142316771E0078A210 /* UIApplication+NetworkActivitySpinner.swift */,
@@ -267,6 +286,8 @@
 				B7E9D25323561D360074F067 /* UiSplitViewController+DisplayMode.swift */,
 				3A0CBAAA23F582B900AE200C /* UITextView+Font.swift */,
 				158A564C24004619003C0D7E /* UIApplication+NavigationStack.swift */,
+				B7CE922A24E3BD2100B5A874 /* UIButton+extension.swift */,
+				5BA2F5E824C997ED00F27099 /* UIDevice+Extension.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -277,6 +298,7 @@
 				B7911EB621F7358500D7F66F /* pEpIOSToolbox */,
 				B7DB7F58221315BD003968DA /* pEpIOSToolboxTests */,
 				B7911EB521F7358500D7F66F /* Products */,
+				436F1B9F25028B2E004426DC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -348,9 +370,9 @@
 			buildPhases = (
 				B7911EAF21F7358500D7F66F /* Headers */,
 				B7911EB021F7358500D7F66F /* Sources */,
-				B7911EB121F7358500D7F66F /* Frameworks */,
 				B7911EB221F7358500D7F66F /* Resources */,
 				158A567F22BBDFBF00F98905 /* Warnings for TODO++ */,
+				436F1B9E25028B20004426DC /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -466,6 +488,8 @@
 				37904563223FA486006DAB3B /* Reachability.swift in Sources */,
 				B7911ECC21F8B46600D7F66F /* GCD.swift in Sources */,
 				B7A46C54220C73BE0027CCB5 /* String+Extensions.swift in Sources */,
+				B7CE922B24E3BD2100B5A874 /* UIButton+extension.swift in Sources */,
+				B7CE922924E3BC6C00B5A874 /* RoundedCornersButton.swift in Sources */,
 				B7A46C58220DA6190027CCB5 /* String+Email.swift in Sources */,
 				37904565223FA486006DAB3B /* ReachabilityProtocol.swift in Sources */,
 				37954C6E227C90C10099B8D8 /* Log.swift in Sources */,
@@ -490,6 +514,7 @@
 				5B2F7E5F240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift in Sources */,
 				B7911EC621F88AF800D7F66F /* UIImage+Extension.swift in Sources */,
 				B70A3A77220091D400EDCE61 /* Logger.swift in Sources */,
+				5BA2F5E924C997ED00F27099 /* UIDevice+Extension.swift in Sources */,
 				B7A46C56220DA5EB0027CCB5 /* Substring+Email.swift in Sources */,
 				1522956223044EAA00204FD3 /* String+FPR.swift in Sources */,
 				43BE66D2246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift in Sources */,
@@ -506,6 +531,7 @@
 				B7E9D25423561D370074F067 /* UiSplitViewController+DisplayMode.swift in Sources */,
 				B7465DE12211C6E9008A1708 /* UIImage+GIF.swift in Sources */,
 				B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */,
+				5BEC4D6F24B5F6E800EBF0E9 /* CGAffineTransform+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

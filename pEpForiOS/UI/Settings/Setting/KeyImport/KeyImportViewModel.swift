@@ -17,7 +17,7 @@ protocol KeyImportViewModelDelegate: class {
     func rowsLoaded()
 
     /// The key was successfully imported, ask for permission to set it as an own key.
-    func showConfirmSetOwnKey(key: KeyImportViewModel.KeyDetails)
+    func showConfirmSetOwnKey(keys: [KeyImportViewModel.KeyDetails])
 
     /// An error ocurred, either during key import or set own key.
     func showError(message: String)
@@ -47,20 +47,48 @@ extension KeyImportViewModel {
         /// as in "user ID" of GPG/PGP, e.g. "Eldon Tyrell <eldon.tyrell@tyrell.corp>"
         /// or "eldon.tyrell@tyrell.corp" if the user name is missing.
         public func userPresentableNameAndAddress() -> String {
-            if let theUserName = userName {
-                return "\(theUserName) <\(address)>"
-            } else {
-                return address
-            }
+            return "\(userName) <\(address)>"
         }
 
-        private let userName: String?
+        public let userName: String
 
-        init(address: String, fingerprint: String, userName: String?) {
+        init(address: String, fingerprint: String, userName: String) {
             self.address = address
             self.fingerprint = fingerprint
             self.userName = userName
         }
+
+        func prettyFingerprint() -> String {
+            let p1 = fingerprint.prefix(ofLength: 4)
+            let p2 = fingerprint.dropFirst(4).prefix(4)
+            let p3 = fingerprint.dropFirst(8).prefix(4)
+            let p4 = fingerprint.dropFirst(12).prefix(4)
+            let p5 = fingerprint.dropFirst(16).prefix(4)
+            let p6 = fingerprint.dropFirst(20).prefix(4)
+            let p7 = fingerprint.dropFirst(24).prefix(4)
+            let p8 = fingerprint.dropFirst(28).prefix(4)
+            let p9 = fingerprint.dropFirst(32).prefix(4)
+            let p10 = fingerprint.dropFirst(34).prefix(4)
+
+            return "\(p1) \(p2) \(p3) \(p4) \(p5)\n\(p6) \(p7) \(p8) \(p9) \(p10)"
+        }
+    }
+
+    /// - Returns: The pretty-printed first fingerprint of the given list of key details.
+    /// - Note: There _must_ be a first element, or an empty string is returned.
+    public func userPresentableFingerprint(keyDetails: [KeyDetails]) -> String {
+        guard let firstItem = keyDetails[safe: 0] else {
+            return ""
+        }
+        return firstItem.prettyFingerprint()
+    }
+
+    /// - Returns: A user-presentable list of names representing the given key details,
+    /// separated by newlines.
+    public func userPresentableNames(keyDetails: [KeyDetails]) -> String {
+        let presentationStrings = keyDetails.map { $0.userPresentableNameAndAddress() }
+        let presentationString = presentationStrings.joined(separator: "\n")
+        return presentationString
     }
 }
 
@@ -109,24 +137,39 @@ class KeyImportViewModel {
     }
 
     /// Sets the given key as own and informs the delegate about success or error.
-    public func setOwnKey(key: KeyImportViewModel.KeyDetails) {
+    public func setOwnKeys(keys: [KeyImportViewModel.KeyDetails]) {
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
             guard let me = self else {
                 return // The handling VC can go out of scope
             }
 
-            do {
-                try me.keyImporter.setOwnKey(address: key.address, fingerprint: key.fingerprint)
-                DispatchQueue.main.async {
-                    me.checkDelegate()?.showSetOwnKeySuccess()
+            let setOwnKeysGroup = DispatchGroup()
+            var setOwnKeysHasErrors = false
+
+            for key in keys {
+                setOwnKeysGroup.enter()
+                me.keyImporter.setOwnKey(userName: key.userName,
+                                         address: key.address,
+                                         fingerprint: key.fingerprint,
+                                         errorCallback: { error in
+                                            setOwnKeysHasErrors = true
+                                            setOwnKeysGroup.leave()
+
+                                            guard let _ = error as? KeyImportUtil.SetOwnKeyError else {
+                                                Log.shared.errorAndCrash(message: "Unexpected error have to handle it: \(error)")
+                                                return
+                                            }
+                }) {
+                    setOwnKeysGroup.leave()
                 }
-            } catch {
-                guard let _ = error as? KeyImportUtil.SetOwnKeyError else {
-                    Log.shared.errorAndCrash(message: "Unexpected error have to handle it: \(error)")
-                    return
-                }
-                DispatchQueue.main.async {
+            }
+
+            setOwnKeysGroup.wait()
+            DispatchQueue.main.async {
+                if setOwnKeysHasErrors {
                     me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
+                } else {
+                    me.checkDelegate()?.showSetOwnKeySuccess()
                 }
             }
         }
@@ -142,34 +185,41 @@ class KeyImportViewModel {
 
 extension KeyImportViewModel {
     private func importKey(url: URL) {
-        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-            guard let me = self else {
-                return // The handling VC can go out of scope
-            }
+        keyImporter.importKey(url: url,
+                              errorCallback: { [weak self] error in
+                                // weak self because it's UI and the VC/VM can go out of scope
+                                guard let me = self else {
+                                    return
+                                }
 
-            do {
-                let keyData = try me.keyImporter.importKey(url: url)
-                DispatchQueue.main.async {
-                    me.checkDelegate()?.showConfirmSetOwnKey(key: KeyDetails(address: keyData.address,
-                                                                             fingerprint: keyData.fingerprint,
-                                                                             userName: keyData.userName))
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    if let theError = error as? KeyImportUtil.ImportError {
-                        switch theError {
-                        case .cannotLoadKey:
-                            me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
-                        case .malformedKey:
-                            me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
-                        }
-                    } else {
-                        Log.shared.errorAndCrash(message: "Unhandled error. Check all possible cases.")
-                        me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
-                    }
-                }
-            }
-        }
+                                DispatchQueue.main.async {
+                                    if let theError = error as? KeyImportUtil.ImportError {
+                                        switch theError {
+                                        case .cannotLoadKey:
+                                            me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
+                                        case .malformedKey:
+                                            me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
+                                        }
+                                    } else {
+                                        Log.shared.errorAndCrash(message: "Unhandled error. Check all possible cases.")
+                                        me.checkDelegate()?.showError(message: me.keyImportErrorMessage)
+                                    }
+                                }
+            },
+                              completion: { [weak self] keyDatas in
+                                // weak self because it's UI and the VC/VM can go out of scope
+                                guard let me = self else {
+                                    return
+                                }
+                                let keyDetails = keyDatas.map {
+                                    KeyDetails(address: $0.address,
+                                               fingerprint: $0.fingerprint,
+                                               userName: $0.userName)
+                                }
+                                DispatchQueue.main.async {
+                                    me.checkDelegate()?.showConfirmSetOwnKey(keys: keyDetails)
+                                }
+        })
     }
 
     private func checkDelegate() -> KeyImportViewModelDelegate? {

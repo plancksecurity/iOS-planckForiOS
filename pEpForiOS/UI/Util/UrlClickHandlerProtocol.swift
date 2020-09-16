@@ -81,8 +81,7 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
 
     // MARK: - SecureWebViewUrlClickHandlerProtocol
 
-    func secureWebViewController(_ webViewController: SecureWebViewController,
-                                 didClickMailToUrlLink url: URL) {
+    public func didClickOn(mailToUrlLink url: URL) {
         presentComposeView(forRecipientInUrl: url)
     }
 }

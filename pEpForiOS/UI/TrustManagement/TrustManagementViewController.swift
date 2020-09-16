@@ -9,14 +9,18 @@
 import UIKit
 
 /// View Controller to handle the HandshakeView.
-class TrustManagementViewController: BaseViewController {
+class TrustManagementViewController: UIViewController {
     private let onlyMasterCellIdentifier = "TrustManagementTableViewCell_OnlyMaster"
     private let masterAndDetailCellIdentifier = "TrustManagementTableViewCell_Detailed"
     private let resetCellIdentifier = "TrustManagementTableViewResetCell"
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var optionsButton: UIBarButtonItem!
 
-    var viewModel : TrustManagementViewModel?
+    var viewModel : TrustManagementViewModel? {
+        didSet {
+            viewModel?.delegate = self
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +40,6 @@ class TrustManagementViewController: BaseViewController {
         } else {
             optionsButton.title = NSLocalizedString("Options", comment: "Options")
         }
-        vm.delegate = self
     }
 
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
@@ -69,7 +72,7 @@ class TrustManagementViewController: BaseViewController {
     @IBAction private func optionsButtonPressed(_ sender: UIBarButtonItem) {
         presentToogleProtectionActionSheet()
     }
-   
+
     deinit {
         unregisterNotifications()
     }
@@ -85,7 +88,7 @@ extension TrustManagementViewController {
     }
 }
 
-/// MARK: - UITableViewDataSource
+// MARK: - UITableViewDataSource
 
 extension TrustManagementViewController : UITableViewDataSource  {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -101,51 +104,34 @@ extension TrustManagementViewController : UITableViewDataSource  {
             Log.shared.error("The row couldn't be dequeued")
             return UITableViewCell()
         }
-        
-        /// Cell for reset
-        if row.color == .noColor,
-            let cell = tableView.dequeueReusableCell(withIdentifier: resetCellIdentifier, for: indexPath)
-                as? TrustManagementResetTableViewCell {
-            cell.delegate = self
-            cell.partnerNameLabel.text = row.name
-            viewModel?.getImage(forRowAt: indexPath, complete: { (image) in
-                DispatchQueue.main.async {
-                    cell.partnerImageView.image = image
-                }
-            })
+
+
+        if row.blockingColor() == .noColor {
+            // Cell for reset
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: resetCellIdentifier,
+                                                           for: indexPath) as? TrustManagementResetTableViewCell
+                else {
+                    Log.shared.errorAndCrash("No Cell")
+                    return UITableViewCell()
+            }
+            setupCell(cell, forRowAt: indexPath)
+            return cell
+        } else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier(forRowAt: indexPath),
+                                                           for: indexPath) as? TrustManagementTableViewCell
+                else {
+                    Log.shared.errorAndCrash("No Cell")
+                    return UITableViewCell()
+            }
+            setupCell(cell, forRowAt: indexPath)
+
+
             return cell
         }
-         
-        /// Cell ´no-noColor´ context
-        let identifier : String
-        if UIDevice.current.orientation.isLandscape ||
-            UIDevice.current.userInterfaceIdiom == .pad {
-            identifier = masterAndDetailCellIdentifier
-        } else {
-            identifier = onlyMasterCellIdentifier
-        }
-
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-            as? TrustManagementTableViewCell else {
-                Log.shared.error("The TrustManagementTableViewCell couldn't be dequeued")
-                return UITableViewCell()
-        }
-        viewModel?.getImage(forRowAt: indexPath) { (image) in
-            DispatchQueue.main.async {
-                cell.partnerImageView.image = image
-            }
-        }
-        cell.privacyStatusImageView.image = row.privacyStatusImage
-        cell.partnerNameLabel.text = row.name
-        cell.privacyStatusLabel.text = row.privacyStatusName
-        cell.descriptionLabel.text = row.description
-        setupCell(cell, withDataFrom: row, cellIdentifier: identifier)
-        cell.delegate = self
-        return cell
     }
 }
 
-/// MARK: - UIAlertControllers
+// MARK: - UIAlertControllers
 
 extension TrustManagementViewController {
     
@@ -193,35 +179,45 @@ extension TrustManagementViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        //For every language a row in the action sheet.
-        for language in vm.languages {
-            guard let languageName = NSLocale.current.localizedString(forLanguageCode: language)
-                else {
-                    Log.shared.debug("Language name not found")
-                    break
-            }
-            let action = UIAlertAction(title: languageName, style: .default) { (action) in
-                vm.handleDidSelect(language: language, forRowAt: indexPath)
-            }
-            alertController.addAction(action)
-        }
-        
-        //For the cancel button another action.
-        let cancel = NSLocalizedString("Cancel",
-                                       comment: "TrustManagementView: trustword language selector cancel button label")
-        let cancelAction = UIAlertAction(title: cancel, style: .cancel) { _ in
-            alertController.dismiss(animated: true, completion: nil)
-        }
-        alertController.addAction(cancelAction)
 
-        //Ipad behavior.
-        alertController.popoverPresentationController?.sourceView = cell.languageButton
-        alertController.popoverPresentationController?.sourceRect = cell.languageButton.bounds
-        present(alertController, animated: true, completion: nil)
+        //For every language a row in the action sheet.
+        vm.languages { [weak self] langs in
+            DispatchQueue.main.async {
+                guard let me = self else {
+                    // Valid case. We might have been dismissed already.
+                    return
+                }
+
+                for language in langs ?? [] {
+                    guard let languageName = NSLocale.current.localizedString(forLanguageCode: language)
+                        else {
+                            Log.shared.debug("Language name not found")
+                            break
+                    }
+                    let action = UIAlertAction(title: languageName, style: .default) { (action) in
+                        vm.handleDidSelect(language: language, forRowAt: indexPath)
+                    }
+                    alertController.addAction(action)
+                }
+
+                //For the cancel button another action.
+                let cancel = NSLocalizedString("Cancel",
+                                               comment: "TrustManagementView: trustword language selector cancel button label")
+                let cancelAction = UIAlertAction(title: cancel, style: .cancel) { _ in
+                    alertController.dismiss(animated: true, completion: nil)
+                }
+                alertController.addAction(cancelAction)
+
+                //Ipad behavior.
+                alertController.popoverPresentationController?.sourceView = cell.languageButton
+                alertController.popoverPresentationController?.sourceRect = cell.languageButton.bounds
+                me.present(alertController, animated: true, completion: nil)
+            }
+        }
     }
 }
 
-/// MARK: - TrustManagementViewModelDelegate
+// MARK: - TrustManagementViewModelDelegate
 
 extension TrustManagementViewController: TrustManagementViewModelDelegate {
 
@@ -237,7 +233,7 @@ extension TrustManagementViewController: TrustManagementViewModelDelegate {
     }
 }
 
-/// MARK: - Back button
+// MARK: - Back button
 
 extension TrustManagementViewController {
     
@@ -258,7 +254,7 @@ extension TrustManagementViewController {
     }
 }
 
-/// MARK: - Notification Center
+// MARK: - Notification Center
 
 extension TrustManagementViewController {
     
@@ -273,10 +269,9 @@ extension TrustManagementViewController {
     }
 }
 
-/// MARK: - TrustManagementTableViewCellDelegate
+// MARK: - TrustManagementTableViewCellDelegate & TrustManagementResetTableViewCellDelegate
 
-extension TrustManagementViewController: TrustManagementTableViewCellDelegate,
-TrustManagementResetTableViewCellDelegate {
+extension TrustManagementViewController: TrustManagementTableViewCellDelegate, TrustManagementResetTableViewCellDelegate {
     func languageButtonPressed(on cell: TrustManagementTableViewCell) {
         showLanguagesList(for: cell)
     }
@@ -290,7 +285,7 @@ TrustManagementResetTableViewCellDelegate {
             viewModel.handleRejectHandshakePressed(at: indexPath)
         }
     }
-    
+
     func confirmButtonPressed(on cell: TrustManagementTableViewCell) {
         guard let viewModel = viewModel else {
             Log.shared.errorAndCrash("TrustManagementViewModel is nil")
@@ -323,7 +318,7 @@ TrustManagementResetTableViewCellDelegate {
     }
 }
 
-/// MARK: - Cell configuration
+// MARK: - Cell configuration
 
 extension TrustManagementViewController {
     
@@ -332,37 +327,113 @@ extension TrustManagementViewController {
     /// The layout is different, so different UI structures are used.
     /// 
     /// - Parameters:
-    ///   - identifier: As we handle two different cells, the identifier is required in order to set the layout properly.
-    ///   - row: The row to get information to configure the cell.
     ///   - cell: The cell to be configured.
     ///   - indexPath: The indexPath of the row, to get the trustwords.
-    private func setupCell(_ cell: TrustManagementTableViewCell,
-                           withDataFrom row: TrustManagementViewModel.Row,
-                           cellIdentifier: String) { //MARTIN: bad & wrong. 1) uses PEPColor. MSUT use only UI.., String or VM. this causes 2) login in VC instead of VM 3) Logic completely untested as not in VM (untestable)
-        ///Yellow means secure but not trusted.
-        ///That means that's the only case must display the trustwords
-        if cellIdentifier == onlyMasterCellIdentifier {
-            if row.color == .yellow {
-                cell.trustwordsLabel.text = row.trustwords
-                cell.trustwordsStackView.isHidden = false
-                cell.trustwordsButtonsContainer.isHidden = false
-            } else {
-                cell.trustwordsStackView.isHidden = true
-                cell.trustwordsButtonsContainer.isHidden = true
+    private func setupCell(_ cell: TrustManagementTableViewCell, forRowAt indexPath: IndexPath) {
+        // After all async calls have returend the cell size need update
+        let updateSizeGroup = DispatchGroup()
+        guard let row = viewModel?.rows[indexPath.row] else {
+            Log.shared.errorAndCrash("No Row")
+            return
+        }
+
+        let identifier = cellIdentifier(forRowAt: indexPath)
+
+        updateSizeGroup.enter()
+        viewModel?.getImage(forRowAt: indexPath) { (image) in
+            cell.partnerImageView.image = image
+            updateSizeGroup.leave()
+        }
+        updateSizeGroup.enter()
+        row.privacyStatusImage { (image) in
+            cell.privacyStatusImageView.image = image
+            updateSizeGroup.leave()
+        }
+        cell.partnerNameLabel.text = row.name
+        updateSizeGroup.enter()
+        row.privacyStatusName { (name) in
+            cell.privacyStatusLabel.text = name
+            updateSizeGroup.leave()
+        }
+        updateSizeGroup.enter()
+        row.description { (description) in
+            cell.descriptionLabel.text = description
+            updateSizeGroup.leave()
+        }
+        updateSizeGroup.enter()
+        row.color { [weak self] (rowColor) in
+            defer { updateSizeGroup.leave() }
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                return
             }
-        } else if cellIdentifier == masterAndDetailCellIdentifier {
-            if row.color == .yellow {
-                cell.trustwordsLabel.text = row.trustwords
-                cell.trustwordsLabel.isHidden = false
-                cell.confirmButton.isHidden = false
-                cell.declineButton.isHidden = false
-                cell.languageButton.isHidden = false
-            } else {
-                cell.languageButton.isHidden = true
-                cell.trustwordsLabel.isHidden = true
-                cell.confirmButton.isHidden = true
-                cell.declineButton.isHidden = true
+            //Yellow means secure but not trusted.
+            //That means that's the only case must display the trustwords
+            if identifier == me.onlyMasterCellIdentifier {
+                if rowColor == .yellow {
+                    cell.trustwordsLabel.text = row.trustwords
+                    cell.trustwordsStackView.isHidden = false
+                    cell.trustwordsButtonsContainer.isHidden = false
+                } else {
+                    cell.trustwordsStackView.isHidden = true
+                    cell.trustwordsButtonsContainer.isHidden = true
+                }
+            } else if identifier == me.masterAndDetailCellIdentifier {
+                if rowColor == .yellow {
+                    cell.trustwordsLabel.text = row.trustwords
+                    cell.trustwordsLabel.isHidden = false
+                    cell.confirmButton.isHidden = false
+                    cell.declineButton.isHidden = false
+                    cell.languageButton.isHidden = false
+                } else {
+                    cell.languageButton.isHidden = true
+                    cell.trustwordsLabel.isHidden = true
+                    cell.confirmButton.isHidden = true
+                    cell.declineButton.isHidden = true
+                }
             }
         }
+        updateSizeGroup.notify(queue: DispatchQueue.main) { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.tableView.updateSize()
+        }
+        cell.delegate = self
+    }
+
+    private func setupCell(_ cell: TrustManagementResetTableViewCell, forRowAt indexPath: IndexPath) {
+        // After all async calls have returend the cell size need update
+        let updateSizeGroup = DispatchGroup()
+           guard let row = viewModel?.rows[indexPath.row] else {
+               Log.shared.errorAndCrash("No Row")
+               return
+           }
+        cell.delegate = self
+        cell.partnerNameLabel.text = row.name
+        updateSizeGroup.enter()
+        viewModel?.getImage(forRowAt: indexPath) { (image) in
+            cell.partnerImageView.image = image
+            updateSizeGroup.leave()
+        }
+        updateSizeGroup.notify(queue: DispatchQueue.main) { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.tableView.updateSize()
+        }
+    }
+
+    private func cellIdentifier(forRowAt indexpath: IndexPath) -> String {
+        let identifier : String
+        if UIDevice.current.orientation.isLandscape ||
+            UIDevice.current.userInterfaceIdiom == .pad {
+            identifier = masterAndDetailCellIdentifier
+        } else {
+            identifier = onlyMasterCellIdentifier
+        }
+        return identifier
     }
 }

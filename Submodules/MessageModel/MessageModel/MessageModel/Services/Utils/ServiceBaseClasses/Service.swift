@@ -17,15 +17,16 @@ extension Service {
         case ready
         /// The Service is currently doing backgrond work
         case running
-        /// The Service is currently running, but will not start new tasks after the currently
-        /// running ones finished.
+        /// The Service is currently running, but will not restart  after the current task(s) are done (i.e. will end with state `stopped`).
         case finshing
-        /// The Service has cancelled all operations and is waiting for the last running one(s) to
-        /// end. It will not start new tasks.
+        /// The Service is working on stopping all running or scheduled tasks asap.
+        /// It will not restart  afterwards (i.e. will end with state `stopped`).
         case stopping
+        /// The service has been stopped.
+        case stopped
     }
 
-    private enum Command {
+    enum Command {
         /// No command has yet been given.
         case none
         /// Tell the service to start.
@@ -79,13 +80,18 @@ class Service: ServiceProtocol {
     }
     /// The last command given from clients. Can be used to figure out what's to do next after a
     /// async task.  It is up to the Service if and how to take it into account.
-    private var lastCommand = Command.none
+    private(set) var lastCommand = Command.none
 
     let backgroundTaskManager: BackgroundTaskManagerProtocol
     let errorPropagator: ErrorPropagator
 
+    /// The job to be done when running the Service
     var startBlock: (()->Void)?
+    /// Called when the Service did it's job (startBlock done) and the client told us to `finish()`. Use for cleaning up or tasks that s
+    /// have to be done before the service is killed.
     var finishBlock: (()->Void)?
+    /// Called asap after the client told us to `stop()`.
+    /// The implementation must take care that the Service is shut down gracefully ASAP.
     var stopBlock: (()->Void)?
 
     /// Instantiate Service.
@@ -212,14 +218,19 @@ extension Service {
                 startBlock?()
             case .finish:
                 // We are not doing anything and the client told us to finish.
-                // Nothing to do.
-                endBackgroundTask()
+                // Actually there is nothing todo, but the client might want us to do something
+                // special when finishing. A cleanup task or such.
+                if let finishBlock = finishBlock {
+                    finishBlock()
+                } else {
+                    endBackgroundTask()
+                }
                 break
             case .stop:
                 // We are not doing anything and the client told us to stop.
-                // Nothing to do.
+                // There is nothing todo and the client must not want us to do something
+                // special when stopping. Stop means stop asap!
                 endBackgroundTask()
-                break
             }
 
         case .running:
@@ -233,7 +244,8 @@ extension Service {
                 break
             case .finish:
                 // We are running and the client told us to finish.
-                finishBlock?()
+                // Nothing to do. The `finishBlock`will be called in the next round. (Might have to be changed after IMAPSyncOPs are gracefully cancelable).
+//                finishBlock?()
                 break
             case .stop:
                 // We are running and the client told us to stop.
@@ -277,6 +289,28 @@ extension Service {
             case .stop:
                 // We are stopping and the client told us to stop.
                 // Nothing to do.
+                break
+            }
+
+       case .stopped:
+            switch lastCommand {
+            case .none:
+                Log.shared.errorAndCrash("I do not see a valid case. The service is stopping before the client has started it.")
+                break
+            case .start:
+                // We are stopped and the client told us to start.
+                state = .ready
+                next()
+                break
+            case .finish:
+                // We are stopped and the client told us to finish.
+                // Nothing to do.
+                endBackgroundTask()
+                break
+            case .stop:
+                // We are stopped and the client told us to stop.
+                // Nothing to do.
+                endBackgroundTask()
                 break
             }
         }

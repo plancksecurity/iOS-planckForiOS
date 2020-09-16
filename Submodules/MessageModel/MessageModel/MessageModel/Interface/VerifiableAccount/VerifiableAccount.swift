@@ -33,6 +33,9 @@ public class VerifiableAccount: VerifiableAccountProtocol {
     private var smtpResult: Result<Void, Error>? = nil
     /// Used for synchronizing the 2 asynchronous results (IMAP and SMTP verification).
     private let syncQueue = DispatchQueue(label: "VerifiableAccountSynchronization")
+    /// Someone who tells us whether or not to create a pEp folder for storing sync messages for
+    /// synced accounts.
+    private let usePEPFolderProvider: UsePEPFolderProviderProtocol?
 
     // MARK: - VerifiableAccountProtocol (delegate)
 
@@ -79,7 +82,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
          automaticallyTrustedImapServer: Bool = false,
          manuallyTrustedImapServer: Bool = false,
          keySyncEnable: Bool = true,
-         containsCompleteServerInfo: Bool = false) {
+         containsCompleteServerInfo: Bool = false,
+         usePEPFolderProvider: UsePEPFolderProviderProtocol? = nil) {
         self.verifiableAccountDelegate = verifiableAccountDelegate
         self.address = address
         self.userName = userName
@@ -98,6 +102,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         self.isManuallyTrustedImapServer = manuallyTrustedImapServer
         self.keySyncEnable = keySyncEnable
         self.containsCompleteServerInfo = containsCompleteServerInfo
+        self.usePEPFolderProvider = usePEPFolderProvider
     }
 
     // MARK: - VerifiableAccountProtocol (behaviour)
@@ -126,9 +131,10 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                 Log.shared.errorAndCrash("Lost MySelf")
                 return
             }
-
+            let alsoCreatePEPFolder = me.keySyncEnable && (me.usePEPFolderProvider?.usePepFolder ?? false)
             me.prepareAccountForSavingService.prepareAccount(cdAccount: cdAccount,
                                                       pEpSyncEnable: me.keySyncEnable,
+                                                      alsoCreatePEPFolder: alsoCreatePEPFolder,
                                                       context: moc) { success in
                 DispatchQueue.main.async {
                     if success {
@@ -272,7 +278,7 @@ extension VerifiableAccount {
     /// Throws on validation errors.
     /// - Returns: A 4-tuple consisting of the context the account was created in,
     ///   the account, and IMAP and SMTP connect infos.
-    private func createAccount() throws -> (NSManagedObjectContext, CdAccount, EmailConnectInfo, EmailConnectInfo)? { //BUFF: HERE: HANDLE CREATING CD CERT IN VERIFIABLE ACCOUNT
+    private func createAccount() throws -> (NSManagedObjectContext, CdAccount, EmailConnectInfo, EmailConnectInfo)? {
         if !isValid() {
             throw VerifiableAccountValidationError.invalidUserData
         }
@@ -470,7 +476,8 @@ extension VerifiableAccount {
     /// See `VerifiableAccountProtocol.containsCompleteServerInfo`
     /// to find out if server data is still missing or not.
     /// - Parameter type: The account type
-    public static func verifiableAccount(for type: AccountType) -> VerifiableAccountProtocol {
+    public static func verifiableAccount(for type: AccountType,
+                                         usePEPFolderProvider: UsePEPFolderProviderProtocol? = nil) -> VerifiableAccountProtocol {
         var account =  VerifiableAccount(verifiableAccountDelegate: nil,
                                          address: nil,
                                          userName: nil,
@@ -488,7 +495,8 @@ extension VerifiableAccount {
                                          automaticallyTrustedImapServer: false,
                                          manuallyTrustedImapServer: false,
                                          keySyncEnable: true,
-                                         containsCompleteServerInfo: false)
+                                         containsCompleteServerInfo: false,
+                                         usePEPFolderProvider: usePEPFolderProvider)
         switch type {
         case .gmail:
             account = VerifiableAccount(verifiableAccountDelegate: nil,
@@ -508,7 +516,8 @@ extension VerifiableAccount {
                                         automaticallyTrustedImapServer: false,
                                         manuallyTrustedImapServer: false,
                                         keySyncEnable: true,
-                                        containsCompleteServerInfo: true)
+                                        containsCompleteServerInfo: true,
+                                        usePEPFolderProvider: usePEPFolderProvider)
         case .o365:
             account =  VerifiableAccount(verifiableAccountDelegate: nil,
                                          address: nil,
@@ -527,7 +536,8 @@ extension VerifiableAccount {
                                          automaticallyTrustedImapServer: false,
                                          manuallyTrustedImapServer: false,
                                          keySyncEnable: true,
-                                         containsCompleteServerInfo: true)
+                                         containsCompleteServerInfo: true,
+                                         usePEPFolderProvider: usePEPFolderProvider)
         case .icloud:
             account =  VerifiableAccount(verifiableAccountDelegate: nil,
                                          address: nil,
@@ -546,7 +556,8 @@ extension VerifiableAccount {
                                          automaticallyTrustedImapServer: false,
                                          manuallyTrustedImapServer: false,
                                          keySyncEnable: true,
-                                         containsCompleteServerInfo: true)
+                                         containsCompleteServerInfo: true,
+                                         usePEPFolderProvider: usePEPFolderProvider)
         case .outlook:
             account =  VerifiableAccount(verifiableAccountDelegate: nil,
                                          address: nil,
@@ -565,7 +576,8 @@ extension VerifiableAccount {
                                          automaticallyTrustedImapServer: false,
                                          manuallyTrustedImapServer: false,
                                          keySyncEnable: true,
-                                         containsCompleteServerInfo: true)
+                                         containsCompleteServerInfo: true,
+                                         usePEPFolderProvider: usePEPFolderProvider)
         case .other, .clientCertificate:
             break
         }

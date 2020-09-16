@@ -15,7 +15,7 @@ protocol LoginViewControllerDelegate: class  {
     func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController)
 }
 
-final class LoginViewController: BaseViewController {
+final class LoginViewController: UIViewController {
 
     weak var delegate: LoginViewControllerDelegate?
 
@@ -63,6 +63,7 @@ final class LoginViewController: BaseViewController {
         if accountType == .icloud {
             showiCloudAlert()
         }
+
     }
 
     override func viewDidLayoutSubviews() {
@@ -192,13 +193,12 @@ extension LoginViewController: UITextFieldDelegate {
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        guard UIDevice.current.userInterfaceIdiom != .pad else { return }
-        //If is iOS13+ then this will be trigger in keyboard will appear
-        if !ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 13,
-                                                                          minorVersion: 0,
-                                                                          patchVersion: 0)) {
-            scrollView.scrollAndMakeVisible(textField)
-        }
+
+        let item = textField.inputAssistantItem
+        item.leadingBarButtonGroups = []
+        item.trailingBarButtonGroups = []
+
+        scrollView.scrollAndMakeVisible(textField)
     }
 
     func textField(_ textField: UITextField,
@@ -265,7 +265,7 @@ extension LoginViewController: AccountVerificationResultDelegate {
     func didVerify(result: AccountVerificationResult) {
         GCD.onMain() { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             LoadingInterface.removeLoadingInterface()
@@ -430,12 +430,12 @@ extension LoginViewController {
                 Log.shared.errorAndCrash("Login should not do ouath with other email address")
             }
         } else {
-            guard let error = DisplayUserError(withError: error) else {
+            guard let displayError = DisplayUserError(withError: error) else {
                 // Do nothing. The error type is not suitable to bother the user with.
                 return
             }
-            title = error.title
-            message = error.localizedDescription
+            title = displayError.title
+            message = displayError.errorDescription
         }
 
         let alertView = UIAlertController.pEpAlertController(title: title,
@@ -488,9 +488,6 @@ extension LoginViewController {
             target: self, action: #selector(LoginViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
 
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            scrollView.isScrollEnabled = false
-        }
         setManualSetupButtonHidden(true)
         hideSpecificDeviceButton()
         configureAnimatedTextFields()
@@ -620,7 +617,6 @@ extension LoginViewController {
                                    positiveButtonAction: openiCloudInfoInBrowser)
     }
 }
-
 // MARK: - Accessibility
 
 extension LoginViewController {

@@ -120,7 +120,14 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
                 }
             }
         }
-        setPepRatingImage(image: viewModel.getSecurityBadge())
+        viewModel.getSecurityBadge { [weak self] (badgeImage) in
+            guard let me = self else {
+                // Valid case. The view might have already been dismissed.
+                // Do nothing ...
+                return
+            }
+            me.setPepRatingImage(image: badgeImage)
+        }
     }
 
     public func clear() {
@@ -151,8 +158,8 @@ extension EmailListViewCell {
     //    }
 
     private func setPepRatingImage(image: UIImage?) {
-        self.ratingImage.image = image
-        self.ratingImage.isHidden = (image == nil)
+        ratingImage.image = image
+        ratingImage.isHidden = (image == nil)
     }
 
     private func setContactImage(image: UIImage?) {
@@ -213,12 +220,8 @@ extension EmailListViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: false)
         let viewForHighlight = UIView()
-        self.selectedBackgroundView = viewForHighlight
-        if self.isEditing {
-            viewForHighlight.backgroundColor = UIColor.clear
-        } else {
-            viewForHighlight.backgroundColor = originalBackgroundSelectionColor
-        }
+        selectedBackgroundView = viewForHighlight
+        viewForHighlight.backgroundColor = isEditing ? .clear : originalBackgroundSelectionColor
     }
 
     /// - Returns: " " (a space) instead of an empty String, otherwise the original String

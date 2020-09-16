@@ -282,7 +282,15 @@ class ComposeViewModelStateTest: AccountDrivenTestBase {
     private func assertValidatation(didChangeValidationStateMustBeCalled: Bool = true,
                                     expectedStateIsValid: Bool,
                                     expectedNewRating: PEPRating? = nil) {
-        try! PEPSession().mySelf(account.user.pEpIdentity())
+        let exp = expectation(description: "exp")
+
+        PEPAsyncSession().mySelf(account.user.pEpIdentity(), errorCallback: { (_) in
+            XCTFail()
+            exp.fulfill()
+        }) { (_) in
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: TestUtil.waitTime)
         assert(ignoreDelegateCallsWhileInitializing: true,
                didChangeValidationStateMustBeCalled: true,
                expectedStateIsValid: expectedStateIsValid,

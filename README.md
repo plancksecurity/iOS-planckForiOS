@@ -50,7 +50,7 @@ Restart your Console!
 ```
 sudo port install pkgconfig
 rustup update
-rustup target add aarch64-apple-ios x86_64-apple-ios armv7-apple-ios i386-apple-ios
+rustup target add aarch64-apple-ios x86_64-apple-ios
 ```
 
 ### Set up Xcode
@@ -79,6 +79,7 @@ cd ~/src
 git clone https://pep-security.lu/gitlab/misc/libetpan.git
 git clone https://pep-security.lu/gitlab/iOS/OpenSSL-for-iPhone.git
 git clone https://pep-security.lu/gitlab/iOS/SwipeCellKit.git/
+git clone https://pep-security.lu/gitlab/iOS/CocoaLumberjack
 git clone https://pep-security.lu/gitlab/iOS/AppAuth-iOS.git
 git clone https://pep-security.lu/gitlab/misc/ldns.git
 

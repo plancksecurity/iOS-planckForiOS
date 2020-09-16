@@ -20,7 +20,7 @@ class EncryptionTests: XCTestCase {
     func testPassiveModeHelper(enablePassiveMode: Bool) {
         PEPObjCAdapter.setPassiveModeEnabled(enablePassiveMode)
 
-        let me = PEPIdentity(address: "own@example.com",
+        var me = PEPIdentity(address: "own@example.com",
                              userID: "my_user_id",
                              userName: "My Username",
                              isOwn: true)
@@ -28,17 +28,28 @@ class EncryptionTests: XCTestCase {
                                     userID: "partner_user_id",
                                     userName: "Another Username",
                                     isOwn: false)
-        let session = PEPSession()
-        try! session.mySelf(me)
+        me = mySelf(for: me)
         let msg = PEPMessage()
         msg.direction = .outgoing
         msg.from = me
         msg.to = [recipient]
         msg.shortMessage = "subject: whatever"
         msg.longMessage = "text: whatever"
-        let theEncryptedMessage = try! PEPUtils.encrypt(pEpMessage: msg)
+        var theEncryptedMessage: PEPMessage?
 
-        let attachments = theEncryptedMessage.attachments ?? []
+        let exp = expectation(description: "exp")
+        PEPUtils.encrypt(pEpMessage: msg, errorCallback: { (_) in
+            XCTFail()
+        }) { (_, encryptedMessage) in
+            theEncryptedMessage = encryptedMessage
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: TestUtil.waitTime)
+        guard let encryptedMesage = theEncryptedMessage else {
+            XCTFail()
+            return
+        }
+        let attachments = encryptedMesage.attachments ?? []
 
         if enablePassiveMode {
             XCTAssertEqual(attachments.count, 0)

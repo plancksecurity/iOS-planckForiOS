@@ -10,7 +10,7 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-final class UserInfoViewController: BaseViewController {
+final class UserInfoViewController: UIViewController {
     @IBOutlet weak var manualAccountSetupContainerView: ManualAccountSetupContainerView!
 
     var fields = [UITextField]()

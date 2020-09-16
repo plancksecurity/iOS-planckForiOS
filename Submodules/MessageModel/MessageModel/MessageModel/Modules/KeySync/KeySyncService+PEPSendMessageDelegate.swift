@@ -41,18 +41,19 @@ extension KeySyncService: PEPSendMessageDelegate {
             if recipientsAccounts.count == recipients.count {
                 // all receivers are own accounts, we can append
                 resultingStatus = sendWithAppend(moc: moc,
-                                             receivingAccounts: recipientsAccounts,
-                                             message: message)
+                                                 receivingAccounts: recipientsAccounts,
+                                                 pEpMessage: message)
             } else {
                 // at least one receiver is not us, so send via SMTP
                 resultingStatus = sendWithSmtp(moc: moc,
-                                           senderCdAccount: cdFromAccount,
-                                           message: message)
+                                               senderCdAccount: cdFromAccount,
+                                               message: message)
             }
         }
 
         if !foundAccount {
-            // That is a valid case. We are generating keys before saving new account(s) and thus the Engine might
+            // That is a valid case. We are generating keys before saving new account(s) and thus
+            // the Engine might try to send something before a CdAccount is persisted.
             Log.shared.info("The Engine asked us to send a message from a non existing account")
         }
 
@@ -63,8 +64,8 @@ extension KeySyncService: PEPSendMessageDelegate {
     /// - Parameters:
     ///   - moc: The managed object context to use
     ///   - message: The pEp sync message, coming from the adapter
-    private func baseMessage(moc: NSManagedObjectContext, message: PEPMessage) -> CdMessage {
-        let cdMsg = CdMessage.from(pEpMessage: message, context: moc)
+    private func baseMessage(moc: NSManagedObjectContext, pEpMessage: PEPMessage) -> CdMessage {
+        let cdMsg = CdMessage.from(pEpMessage: pEpMessage, context: moc)
         cdMsg.sent = Date()
         cdMsg.uuid = UUID().uuidString
         return cdMsg
@@ -77,21 +78,25 @@ extension KeySyncService: PEPSendMessageDelegate {
     ///   - message: The pEp sync message, coming from the adapter
     private func sendWithAppend(moc: NSManagedObjectContext,
                                 receivingAccounts: [CdAccount],
-                                message: PEPMessage) -> PEPStatus {
+                                pEpMessage: PEPMessage) -> PEPStatus {
         for receiverAccount in receivingAccounts {
-            // Append to sync folder (preferred) or INBOX (2nd choice).
-            let appendFolder = CdFolder.pEpSyncFolder(in: moc, cdAccount: receiverAccount) ??
-                CdFolder.by(folderType: .inbox, account: receiverAccount, context: moc)
-
+            let appendFolder: CdFolder?
+            if  usePEPFolderProvider.usePepFolder,
+                let pEpFolder = CdFolder.pEpSyncFolder(in: moc, cdAccount: receiverAccount) {
+                appendFolder = pEpFolder
+            } else {
+                // No pEp folder exists or the user disabled using it we append to INBOX.
+                appendFolder = CdFolder.by(folderType: .inbox, account: receiverAccount, context: moc)
+            }
             // Make sure we have a folder to append to.
             guard let targetFolder = appendFolder else {
                 Log.shared.errorAndCrash("Neither sync folder nor inbox found for %@",
                                          receiverAccount.identity?.address ?? "nil address")
-                return .illegalValue
+                return .unknownError
             }
 
             // Create a new message that will be appended later by an IMAP service.
-            let cdMsg = baseMessage(moc: moc, message: message)
+            let cdMsg = baseMessage(moc: moc, pEpMessage: pEpMessage)
             cdMsg.parent = targetFolder
             cdMsg.uid = Int32(CdMessage.uidNeedsAppend)
 
@@ -116,11 +121,11 @@ extension KeySyncService: PEPSendMessageDelegate {
                                             context: moc)
             else {
                 Log.shared.errorAndCrash("No outbox")
-                return .illegalValue
+                return .unknownError
         }
 
         // Put the message into the outbox so it will be sent out later by an SMTP service.
-        let cdMsg = baseMessage(moc: moc, message: message)
+        let cdMsg = baseMessage(moc: moc, pEpMessage: message)
         cdMsg.parent = cdOutFolder
 
         moc.saveAndLogErrors()

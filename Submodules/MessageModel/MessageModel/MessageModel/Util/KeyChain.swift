@@ -10,22 +10,40 @@ import Foundation
 
 import pEpIOSToolbox
 
-//!!!: must be internal! (move test, make internal)
-/**
- Wraps saving account passwords into the keychain.
- */
-public class KeyChain {
+ /// Abstracts KeyChain ralted issues
+class KeyChain {
     public typealias Success = Bool
     static private let defaultServerType = "Server"
+}
 
-    // MARK: - API
+// MARK: - Passphrase For New Keys
 
+extension KeyChain {
+    private static let keyPassphrase = "security.pep.KeyChain.keyPassphrase"
+
+    static func storePassphraseForNewKeys(_ passphrase: String) {
+        add(key: keyPassphrase, password: passphrase)
+    }
+
+    static var passphraseForNewKeys: String? {
+        return password(key: keyPassphrase)
+    }
+
+    static func deletePassphraseForNewKeys() {
+        delete(key: keyPassphrase)
+    }
+}
+
+// MARK: - Account Passwords
+
+///Wraps saving account passwords into the keychain.
+extension KeyChain {
     /// Get a password for a given key from the system keychain.
     ///
     /// - Parameter key: key to get the password for
     /// - Returns:  if the key exists in keychain: password for the given key
     ///             nil otherwize
-    static public func password(key: String) -> String? {
+    static func password(key: String) -> String? {
         let query = [
             kSecClass as String: kSecClassGenericPassword as String,
             kSecMatchCaseInsensitive as String: kCFBooleanTrue,
@@ -65,7 +83,7 @@ public class KeyChain {
     ///   - password: password to create/update. Set to nil to delete a password for a given key
     ///   - key: key to create/update/delete the password for
     /// - Returns: true if no error(s) occured, false otherwize
-    @discardableResult static public func updateCreateOrDelete(password: String?,
+    @discardableResult static func updateCreateOrDelete(password: String?,
                                                                forKey key: String) -> Success {
         var success = false
 
@@ -92,11 +110,12 @@ public class KeyChain {
     }
 }
 
-// MARK: - INTERNAL
+// MARK: - Private
 
 extension KeyChain {
 
-    @discardableResult static private func add(key: String, serverType: String,
+    @discardableResult static private func add(key: String,
+                                               serverType: String = defaultServerType,
                                                password: String?) -> Success {
         guard let pass = password else {
             // No password, so nothing need to be done. Give a warning though.

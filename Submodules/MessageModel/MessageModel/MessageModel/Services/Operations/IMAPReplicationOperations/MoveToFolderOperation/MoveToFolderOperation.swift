@@ -183,7 +183,7 @@ extension MoveToFolderOperation {
             }
             me.privateMOC.performAndWait {
                 if let error = me.errorContainer.error {
-                    me.handleError(error)
+                    me.handle(error: error)
                     return
                 }
                 me.deleteLastCopiedMessage()
@@ -258,6 +258,6 @@ class MoveToFolderSyncDelegate: DefaultImapConnectionDelegate {
             Log.shared.errorAndCrash("Wrong delegate called")
             return
         }
-        handler.handleError(error)
+        handler.handle(error: error)
     }
 }

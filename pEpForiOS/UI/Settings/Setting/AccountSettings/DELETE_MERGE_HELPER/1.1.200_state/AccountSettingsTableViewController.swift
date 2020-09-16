@@ -11,54 +11,32 @@ import MessageModel
 import pEpIOSToolbox
 
 final class AccountSettingsTableViewController: BaseTableViewController {
-
-// MARK: - IBOutlets
-
-    @IBOutlet private var stackViews: [UIStackView]!
-
     //general account fields
-    @IBOutlet private weak var nameLabel: UILabel!
-    @IBOutlet private weak var nameTextfield: UITextField!
-    @IBOutlet private weak var emailLabel: UILabel!
-    @IBOutlet private weak var emailTextfield: UITextField!
-    @IBOutlet private weak var passwordTextfield: UITextField!
-    @IBOutlet private weak var resetIdentityLabel: UILabel!
-    @IBOutlet private weak var keySyncLabel: UILabel!
-    @IBOutlet private weak var keySyncSwitch: UISwitch!
-
+    @IBOutlet weak var nameTextfield: UITextField!
+    @IBOutlet weak var emailTextfield: UITextField!
+    @IBOutlet weak var passwordTextfield: UITextField!
+    @IBOutlet weak var resetIdentityLabel: UILabel!
+    @IBOutlet weak var keySyncLabel: UILabel!
+    @IBOutlet weak var keySyncSwitch: UISwitch!
+    @IBOutlet weak var certificateLabel: UITextField!
     //imap fields
-    @IBOutlet private weak var serverLabel: UILabel!
-    @IBOutlet private weak var imapServerTextfield: UITextField!
-    @IBOutlet private weak var portLabel: UILabel!
-    @IBOutlet private weak var imapPortTextfield: UITextField!
-    @IBOutlet private weak var imapSecurityTextfield: UITextField!
-    @IBOutlet private weak var imapUsernameTextField: UITextField!
-    @IBOutlet private weak var imapUsernameLabel: UILabel!
-
+    @IBOutlet weak var imapServerTextfield: UITextField!
+    @IBOutlet weak var imapPortTextfield: UITextField!
+    @IBOutlet weak var imapSecurityTextfield: UITextField!
+    @IBOutlet weak var imapUsernameTextField: UITextField!
     //smtp account fields
-    @IBOutlet private weak var smtpServerTextfield: UITextField!
-    @IBOutlet private weak var smtpPortTextfield: UITextField!
-    @IBOutlet private weak var smtpSecurityTextfield: UITextField!
-    @IBOutlet private weak var smtpUsernameTextField: UITextField!
+    @IBOutlet weak var smtpServerTextfield: UITextField!
+    @IBOutlet weak var smtpPortTextfield: UITextField!
+    @IBOutlet weak var smtpSecurityTextfield: UITextField!
+    @IBOutlet weak var smtpUsernameTextField: UITextField!
 
-    @IBOutlet private weak var certificateTableViewCell: UITableViewCell!
-    @IBOutlet private weak var passwordTableViewCell: UITableViewCell!
-    @IBOutlet private weak var oauth2TableViewCell: UITableViewCell!
-    @IBOutlet private weak var oauth2ActivityIndicator: UIActivityIndicatorView!
-    @IBOutlet private weak var resetIdentityCell: UITableViewCell!
-    @IBOutlet private weak var switchKeySyncCell: UITableViewCell!
+    @IBOutlet weak var certificateTableViewCell: UITableViewCell!
+    @IBOutlet weak var passwordTableViewCell: UITableViewCell!
+    @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
+    @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var resetIdentityCell: UITableViewCell!
+    @IBOutlet weak var switchKeySyncCell: UITableViewCell!
 
-    @IBOutlet private weak var smtpUsernameLabel: UILabel!
-    @IBOutlet private weak var smtpTransportSecurityLabel: UILabel!
-    @IBOutlet private weak var smtpPortLabel: UILabel!
-    @IBOutlet private weak var transportSecurityLabel: UILabel!
-
-    @IBOutlet private weak var oAuthReauthorizationLabel: UILabel!
-    @IBOutlet private weak var certificateLabel: UILabel!
-    @IBOutlet private weak var certificateTextfield: UITextField!
-    @IBOutlet private weak var passwordLabel: UILabel!
-
-// MARK: - Variables
     let oauthViewModel = OAuthAuthorizer()
     /**
      When dealing with an OAuth2 account, this is the index path of the cell that
@@ -77,22 +55,16 @@ final class AccountSettingsTableViewController: BaseTableViewController {
     private var resetIdentityIndexPath: IndexPath?
     private var certificateIndexPath: IndexPath?
 
-    @IBOutlet private weak var smtpServerLabel: UILabel!
-    
-    
-// MARK: - Life Cycle
 
-     override func viewDidLoad() {
+    // MARK: - Life Cycle
+
+    override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.register(PEPHeaderView.self,
                            forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
-        UIHelper.variableCellHeightsTableView(tableView)
-        UIHelper.variableSectionFootersHeightTableView(tableView)
-        UIHelper.variableSectionHeadersHeightTableView(tableView)
         viewModel?.delegate = self
-        configureView(for: traitCollection)
-        setFonts()
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -110,7 +82,7 @@ final class AccountSettingsTableViewController: BaseTableViewController {
         }
     }
 
-// MARK: - IBActions
+    // MARK: - IBActions
 
     @IBAction func switchPEPSyncToggle(_ sender: UISwitch) {
         viewModel?.pEpSync(enable: sender.isOn)
@@ -148,9 +120,7 @@ extension AccountSettingsTableViewController {
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         if cell == switchKeySyncCell {
-            setUpKeySyncCell(cell: cell,
-                                   isOn: viewModel?.pEpSync ?? false,
-                                   isGreyedOut: !(viewModel?.isPEPSyncSwitchGreyedOut() ?? false))
+            setUpKeySyncCell(cell: cell)
         }
 
         if (viewModel?.isOAuth2 ?? false) && cell == passwordTableViewCell {
@@ -178,38 +148,6 @@ extension AccountSettingsTableViewController {
         } else {
             return defaultValue
         }
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segue.destination {
-        case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
-            guard let account = viewModel?.account else {
-                Log.shared.errorAndCrash("No VM")
-                return
-            }
-            editableAccountSettingsViewController.viewModel = EditableAccountSettingsViewModel(account: account)
-        default:
-            break
-        }
-    }
-
-    /// Set up key sync cell
-    /// - Parameters:
-    ///   - cell: UITableViewCell
-    ///   - isOn: keySyncSwitch status
-    ///   - isGreyedOut: keySyncSwitch (if true - user can't interact with this cell)
-    private func setUpKeySyncCell(cell: UITableViewCell,
-                                        isOn: Bool,
-                                        isGreyedOut: Bool) {
-        cell.isUserInteractionEnabled = isGreyedOut
-        keySyncLabel.textColor = isGreyedOut
-            ? .pEpTextDark
-            : .gray
-        keySyncSwitch.isOn = isOn
-        keySyncSwitch.onTintColor = isGreyedOut
-            ? .pEpGreen
-            : .pEpGreyBackground
-        keySyncSwitch.isEnabled = isGreyedOut
     }
 }
 
@@ -267,8 +205,7 @@ extension AccountSettingsTableViewController: AccountSettingsViewModelDelegate {
 extension AccountSettingsTableViewController: OAuthAuthorizerDelegate {
     func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
         oauth2ActivityIndicator.stopAnimating()
-        //shouldHandleErrors = true
-        //!!!: this comment should be temporal
+        shouldHandleErrors = true
 
         if let error = oauth2Error {
             showErrorAlert(error: error)
@@ -295,20 +232,27 @@ extension AccountSettingsTableViewController {
         title = Localized.navigationTitle
         nameTextfield.text = viewModel?.account.user.userName
         emailTextfield.text = viewModel?.account.user.address
-        certificateTextfield.text = viewModel?.certificateInfo()
+        certificateLabel.text = viewModel?.certificateInfo()
         passwordTextfield.text = "JustAPassword"
         resetIdentityLabel.text = NSLocalizedString("Reset",
                                                     comment: "Account settings reset identity")
         resetIdentityLabel.textColor = .pEpRed
 
-        guard let viewModel = viewModel else {
+        guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
+            keySyncSwitch.isOn = false
             return
         }
 
-        keySyncSwitch.isOn = viewModel.pEpSync
+        vm.isPEPSyncEnabled { [weak self] (isOn) in
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                return
+            }
+            me.keySyncSwitch.isOn = isOn
+        }
 
-        guard let imapServer = viewModel.account.imapServer else {
+        guard let imapServer = vm.account.imapServer else {
             Log.shared.errorAndCrash("Account without IMAP server")
             return
         }
@@ -317,7 +261,7 @@ extension AccountSettingsTableViewController {
         imapSecurityTextfield.text = imapServer.transport.asString()
         imapUsernameTextField.text = imapServer.credentials.loginName
 
-        guard let smtpServer = viewModel.account.smtpServer else {
+        guard let smtpServer = vm.account.smtpServer else {
             Log.shared.errorAndCrash("Account without SMTP server")
             return
         }
@@ -353,6 +297,7 @@ extension AccountSettingsTableViewController {
         guard let vc = UIStoryboard.init(name: "AccountCreation", bundle: nil).instantiateViewController(withIdentifier: "ClientCertificateManagementViewController") as? ClientCertificateManagementViewController else {
             return
         }
+        vc.appConfig = appConfig
         let nextViewModel = viewModel?.clientCertificateViewModel()
         nextViewModel?.delegate = vc
         vc.viewModel = nextViewModel
@@ -373,12 +318,11 @@ extension AccountSettingsTableViewController {
         oauth2ActivityIndicator.startAnimating()
 
         // don't accept errors form other places
-        //shouldHandleErrors = false
-        //!!!: this comment is temporal
+        shouldHandleErrors = false
 
         oauthViewModel.delegate = self
         oauthViewModel.authorize(
-            authorizer: OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer(),
+            authorizer: appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer(),
             emailAddress: vm.account.user.address,
             accountType: accountType,
             viewController: self)
@@ -428,88 +372,49 @@ extension AccountSettingsTableViewController {
             self?.present(pepAlertViewController, animated: true)
         }
     }
-}
 
-//MARK : - Accessibility
-
-extension AccountSettingsTableViewController {
-
-    /// To support dynamic font with a font size limit we have set the font by code.
-    private func setFonts() {
-        let font = UIFont.pepFont(style: .body, weight: .regular)
-
-        //Name
-        nameLabel.font = font
-        nameTextfield.font = font
-
-        //Email
-        emailLabel.font = font
-        emailTextfield.font = font
-
-        //Password
-        passwordLabel.font = font
-        passwordTextfield.font = font
-
-        //Certificate
-        certificateLabel.font = font
-        certificateTextfield.font = font
-
-        //Key sync
-        keySyncLabel.font = font
-
-        //Reset Identity
-        resetIdentityLabel.font = font
-
-        //OAuth Reauthorization
-        oAuthReauthorizationLabel.font = font
-
-        //Server
-        serverLabel.font = font
-        imapServerTextfield.font = font
-
-        //Port
-        portLabel.font = font
-        imapPortTextfield.font = font
-
-        //Security
-        transportSecurityLabel.font = font
-        imapSecurityTextfield.font = font
-
-        //Username
-        imapUsernameLabel.font = font
-        imapUsernameTextField.font = font
-
-        //SMTP Server
-        smtpServerLabel.font = font
-        smtpServerTextfield.font = font
-
-        //SMTP Server Port
-        smtpPortLabel.font = font
-        smtpPortTextfield.font = font
-
-        //SMTP Server Transport Security
-        smtpTransportSecurityLabel.font = font
-        smtpSecurityTextfield.font = font
-
-        //SMTP Server Username
-        smtpUsernameLabel.font = font
-        smtpUsernameTextField.font = font
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.destination {
+        case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
+            guard let account = viewModel?.account else {
+                Log.shared.errorAndCrash("No VM")
+                return
+            }
+            editableAccountSettingsViewController.appConfig = appConfig
+            editableAccountSettingsViewController.viewModel = EditableAccountSettingsViewModel(account: account)
+        default:
+            break
+        }
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-      super.traitCollectionDidChange(previousTraitCollection)
-      if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-        configureView(for: traitCollection)
-      }
-    }
+    /// Set up key sync cell
+    /// - Parameters:
+    ///   - cell: UITableViewCell
+    ///   - isOn: keySyncSwitch status
+    ///   - isGreyedOut: keySyncSwitch (if true - user can't interact with this cell)
+    private func setUpKeySyncCell(cell: UITableViewCell) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            keySyncSwitch.isOn = false
+            return
+        }
+        let isGreyedOut = vm.isPEPSyncSwitchGreyedOut()
+        cell.isUserInteractionEnabled = isGreyedOut
+        keySyncLabel.textColor = isGreyedOut
+            ? .pEpTextDark
+            : .gray
 
-    private func configureView(for traitCollection: UITraitCollection) {
-        let contentSize = traitCollection.preferredContentSizeCategory
-        let axis : NSLayoutConstraint.Axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
-        let spacing : CGFloat = contentSize.isAccessibilityCategory ? 10.0 : 5.0
-        stackViews.forEach {
-            $0.axis = axis
-            $0.spacing = spacing
+        keySyncSwitch.onTintColor = isGreyedOut
+            ? .pEpGreen
+            : .pEpGreyBackground
+        keySyncSwitch.isEnabled = isGreyedOut
+
+        vm.isPEPSyncEnabled { [weak self] (isOn) in
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                return
+            }
+            me.keySyncSwitch.isOn = isOn
         }
     }
 }

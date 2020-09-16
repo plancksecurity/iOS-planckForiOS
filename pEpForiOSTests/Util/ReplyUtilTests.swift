@@ -173,7 +173,7 @@ extension ReplyUtilTests {
         let folder = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
         return Message(uuid: "001", uid: 1, parentFolder: folder)
     }
-    // WIP: only temporary - this function will be removed
+
     private func showDifference(string1: String, string2: String, onlyFirstChar: Bool = false) -> String {
         let difference = zip(string1, string2).filter { $0 != $1 }
         var diff1 = ""

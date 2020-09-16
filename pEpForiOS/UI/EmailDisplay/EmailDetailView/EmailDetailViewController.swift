@@ -11,7 +11,7 @@ import QuickLook
 import pEpIOSToolbox
 
 // Represents the a list of mails showing one mail with all details in full screen.
-class EmailDetailViewController: BaseViewController {
+class EmailDetailViewController: UIViewController {
     static private let cellXibName = "EmailDetailCollectionViewCell"
     static private let cellId = "EmailDetailViewCell"
     /// Collects all QueryResultsDelegate reported changes to call them in one CollectionView
@@ -82,7 +82,7 @@ class EmailDetailViewController: BaseViewController {
         // position is inbetween two cells after orientation change.
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.scrollToLastViewedCell()
@@ -135,19 +135,19 @@ class EmailDetailViewController: BaseViewController {
         let alert = ReplyAlertCreator(replyAllChecker: replyAllChecker)
             .withReplyOption { [weak self] action in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                    Log.shared.lostMySelf()
                     return
                 }
                 me.performSegue(withIdentifier: .segueReplyFrom , sender: self)
         }.withReplyAllOption() { [weak self] action in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             me.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
         }.withFordwardOption { [weak self] action in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             me.performSegue(withIdentifier: .segueForward , sender: self)
@@ -186,7 +186,7 @@ extension EmailDetailViewController {
         setupCollectionView()
         doOnce = { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.viewModel?.startMonitoring()
@@ -326,15 +326,24 @@ extension EmailDetailViewController {
             // List is empty. That is ok. The user might have deleted the last shown message.
             return
         }
-        guard let ratingView = showNavigationBarSecurityBadge(pEpRating: vm.pEpRating(forItemAt: indexPath)) else {
-            // Nothing to show for current message
-            return
-        }
 
-        if vm.shouldShowPrivacyStatus(forItemAt: indexPath) {
-            let tapGestureRecognizer = UITapGestureRecognizer(target: self,
-                                                              action: #selector(showTrustManagementView(gestureRecognizer:)))
-            ratingView.addGestureRecognizer(tapGestureRecognizer)
+        vm.pEpRating(forItemAt: indexPath) { [weak self] (rating) in
+            guard let me = self else {
+                // Valid case. The user might have dismissed the view meanwhile.
+                // Do nothing.
+                return
+            }
+            guard let ratingView = me.showNavigationBarSecurityBadge(pEpRating: rating) else {
+                // Nothing to show for current message
+                return
+            }
+            vm.shouldShowPrivacyStatus(forItemAt: indexPath) { (shouldShowPrivacyStatus) in
+                if shouldShowPrivacyStatus {
+                    let tapGestureRecognizer = UITapGestureRecognizer(target: me,
+                                                                      action: #selector(me.showTrustManagementView(gestureRecognizer:)))
+                    ratingView.addGestureRecognizer(tapGestureRecognizer)
+                }
+            }
         }
     }
     
@@ -348,7 +357,7 @@ extension EmailDetailViewController {
             title: NSLocalizedString("Settings", comment: "acction sheet title 2"),
             style: .default) { [weak self] (action) in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(message: "lost myself")
+                    Log.shared.lostMySelf()
                     return
                 }
                 me.showSettingsViewController()
@@ -368,7 +377,7 @@ extension EmailDetailViewController {
         let action = UIAlertAction(title: NSLocalizedString("Privacy Status", comment: "action sheet title 1"),
                                    style: .default) { [weak self] (action) in
                                     guard let me = self else {
-                                        Log.shared.errorAndCrash(message: "lost myself")
+                                        Log.shared.lostMySelf()
                                         return
                                     }
                                     me.showTrustManagementView()
@@ -613,7 +622,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
     func isNotUndecryptableAnyMore(indexPath: IndexPath) {
         addUpdateTask { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.collectionView?.reloadItems(at: [indexPath])
@@ -624,7 +633,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
                             didInsertDataAt indexPaths: [IndexPath]) {
         addUpdateTask { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.collectionView?.insertItems(at: indexPaths)
@@ -635,7 +644,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
                             didUpdateDataAt indexPaths: [IndexPath]) {
         addUpdateTask { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.configureView()
@@ -646,7 +655,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
                             didRemoveDataAt indexPaths: [IndexPath]) {
         addUpdateTask { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.collectionView?.deleteItems(at: indexPaths)
@@ -658,7 +667,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
                             toIndexPath: IndexPath) {
         addUpdateTask { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.collectionView?.moveItem(at: atIndexPath, to: toIndexPath)
@@ -677,7 +686,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
         // Perform updates ...
         let performChangesBlock = { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             let updateTasksToRun = Array(me.collectionViewUpdateTasks)

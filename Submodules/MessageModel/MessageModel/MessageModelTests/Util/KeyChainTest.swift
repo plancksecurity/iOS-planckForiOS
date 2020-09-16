@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import MessageModel
+@testable import MessageModel //!!!: move to MM-Tests
 
 /*
  This belongs to MessageModelTests, but has been moved here due an Apple bug.

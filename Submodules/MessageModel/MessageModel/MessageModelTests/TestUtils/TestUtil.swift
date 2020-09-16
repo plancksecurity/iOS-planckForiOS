@@ -292,8 +292,7 @@ extension TestUtil {
         testCase.wait(for: [expSynced], timeout: waitTime)
     }
 
-    //BUFF:
-    // MARK: - Moved from App target. Needs love, review, some ideally remove
+    // MARK: - Moved from App target. Needs love, review, ideally remove
 
     static func checkForExistanceAndUniqueness(uuids: [MessageID],
                                                context: NSManagedObjectContext) {
@@ -317,37 +316,37 @@ extension TestUtil {
         }
     }
 
-    static func setupSomeIdentities(_ session: PEPSession = PEPSession())
-           -> (identity: PEPIdentity, receiver1: PEPIdentity,
-           receiver2: PEPIdentity, receiver3: PEPIdentity,
-           receiver4: PEPIdentity) {
-               let identity = PEPIdentity(address: "somewhere@overtherainbow.com",
-                                          userID: CdIdentity.pEpOwnUserID,
-                                          userName: "Unit Test",
-                                          isOwn: true)
+    static func setupSomePEPIdentities()
+        -> (identity: PEPIdentity, receiver1: PEPIdentity,
+        receiver2: PEPIdentity, receiver3: PEPIdentity,
+        receiver4: PEPIdentity) {
+            let identity = PEPIdentity(address: "somewhere@overtherainbow.com",
+                                       userID: CdIdentity.pEpOwnUserID,
+                                       userName: "Unit Test",
+                                       isOwn: true)
 
-               let receiver1 = PEPIdentity(address: "receiver1@shopsmart.com",
-                                           userID: UUID().uuidString,
-                                           userName: "receiver1",
-                                           isOwn: false)
+            let receiver1 = PEPIdentity(address: "receiver1@shopsmart.com",
+                                        userID: UUID().uuidString,
+                                        userName: "receiver1",
+                                        isOwn: false)
 
-               let receiver2 = PEPIdentity(address: "receiver2@shopsmart.com",
-                                           userID:  UUID().uuidString,
-                                           userName: "receiver2",
-                                           isOwn: false)
+            let receiver2 = PEPIdentity(address: "receiver2@shopsmart.com",
+                                        userID:  UUID().uuidString,
+                                        userName: "receiver2",
+                                        isOwn: false)
 
-               let receiver3 = PEPIdentity(address: "receiver3@shopsmart.com",
-                                           userID:  UUID().uuidString,
-                                           userName: "receiver3",
-                                           isOwn: false)
+            let receiver3 = PEPIdentity(address: "receiver3@shopsmart.com",
+                                        userID:  UUID().uuidString,
+                                        userName: "receiver3",
+                                        isOwn: false)
 
-               let receiver4 = PEPIdentity(address: "receiver4@shopsmart.com",
-                                           userID:  UUID().uuidString,
-                                           userName: "receiver4",
-                                           isOwn: false)
+            let receiver4 = PEPIdentity(address: "receiver4@shopsmart.com",
+                                        userID:  UUID().uuidString,
+                                        userName: "receiver4",
+                                        isOwn: false)
 
-               return (identity, receiver1, receiver2, receiver3, receiver4)
-       }
+            return (identity, receiver1, receiver2, receiver3, receiver4)
+    }
 
     static func loadString(fileName: String) -> String? {
         if let data = MiscUtil.loadData(bundleClass: self, fileName: fileName) {

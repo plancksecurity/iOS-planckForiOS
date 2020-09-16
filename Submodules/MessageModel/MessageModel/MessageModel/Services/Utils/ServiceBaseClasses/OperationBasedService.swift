@@ -52,13 +52,14 @@ class OperationBasedService: Service, OperationBasedServiceProtocol {
     /// Queue for internal tasks that must not block backgroundQueue
     private let internalQueue: OperationQueue = {
         let createe = OperationQueue()
+        createe.maxConcurrentOperationCount = 1
         createe.name = #file + " - internalQueue"
         createe.qualityOfService = QualityOfService.userInitiated
         return createe
     }()
     /// Queue to schedule the Service's work on.
     /// You MUST queue all work on this queue to make the start/finish/stop cycle work!
-    private let backgroundQueue: OperationQueue = {
+    let backgroundQueue: OperationQueue = {
         let createe = OperationQueue()
         createe.name = #file + " - backgroundQueue"
         createe.qualityOfService = QualityOfService.background
@@ -108,8 +109,7 @@ class OperationBasedService: Service, OperationBasedServiceProtocol {
             me.startNextProcessingRound()
         }
 
-        finishBlock = {
-            [weak self] in
+        finishBlock = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
@@ -117,7 +117,7 @@ class OperationBasedService: Service, OperationBasedServiceProtocol {
             Log.shared.info("%@ - default finishBlock called with state: %@)",
                             "\(type(of: self))", "\(me.state)")
             me.state = .finshing
-            me.doNotRestart()
+            me.waitThenStop()
         }
 
         stopBlock = { [weak self] in
@@ -138,6 +138,35 @@ class OperationBasedService: Service, OperationBasedServiceProtocol {
 
     func operations() -> [Operation] {
         fatalError("You MUST override this")
+    }
+
+    /// Waits for all operations to finish and ends background task.
+    func doNotRestart() {
+        internalQueue.addOperation { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            Log.shared.info("%@ - started doNotRestart", "\(type(of: me))")
+            me.backgroundQueue.waitUntilAllOperationsAreFinished()
+            me.state = .ready
+            me.endBackgroundTask()
+            Log.shared.info("%@ - ended doNotRestart", "\(type(of: me))")
+        }
+    }
+
+    func waitThenStop() {
+        internalQueue.addOperation { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            Log.shared.info("%@ - started internalStop", "\(type(of: me))")
+            me.backgroundQueue.waitUntilAllOperationsAreFinished()
+            me.state = .stopped
+            me.next()
+            Log.shared.info("%@ - ended internalStop", "\(type(of: me))")
+        }
     }
 
     func report(error: Error) {
@@ -192,37 +221,20 @@ class OperationBasedService: Service, OperationBasedServiceProtocol {
 
 extension OperationBasedService {
 
-    private func startNextProcessingRound() {
-        let toDos = operations()
-        Log.shared.info("%@ - startNextProcessingRound called with state: %@ numOperations: %d",
-                        "\(type(of: self))", "\(state)", toDos.count)
-        guard !toDos.isEmpty else {
-                // Nothing to do. Let everyone know we are ready.
-                // Do not call next(). That would result in an endless loop
-                // (lasstCommand == start, state == .ready, -> nothing todo, next(), ...).
-                // Wait for QRC to trigger or client to call `start()` again instead.
-                state = .ready
-                return
-        }
-        let group = DispatchGroup()
-        let toDosManagedByGroup = addCompletionOperations(handling: group, to: toDos)
-        group.notify(queue: DispatchQueue.global(qos: .background)) { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
+    private func registerBackgroundTask() {
+        do {
+            try startBackgroundTask { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                me.finishAsFastAsPossible()
             }
-            Log.shared.info("%@ - allOperationFinish block called with state: %@ runOnce: %@)",
-                            "\(type(of: self))", "\(me.state)", "\(me.runOnce)")
-            me.state = .ready
-            if !me.runOnce {
-                me.next()
-            } else {
-                me.endBackgroundTask()
-            }
+        } catch BackgroundTaskManager.ManagingError.backgroundTaskAlreadyRunning {
+            // Intentionally ignore it. We already have a background task running.
+        } catch {
+            Log.shared.errorAndCrash(error: error)
         }
-
-        registerBackgroundTask()
-        backgroundQueue.addOperations(toDosManagedByGroup, waitUntilFinished: false)
     }
 
     /// This:
@@ -257,41 +269,43 @@ extension OperationBasedService {
         return allOps
     }
 
-    /// Cancels all operations, waits for them to finish and ends background task.
-    private func finishAsFastAsPossible() {
-        Log.shared.info("%@ - finishAsFastAsPossible called", "\(type(of: self))")
-        backgroundQueue.cancelAllOperations()
-        doNotRestart()
-    }
-
-    /// Waits for all operations to finish and ends background task.
-    private func doNotRestart() {
-        internalQueue.addOperation { [weak self] in
+    private func startNextProcessingRound() {
+        let toDos = operations()
+        Log.shared.info("%@ - startNextProcessingRound called with state: %@ numOperations: %d",
+                        "\(type(of: self))", "\(state)", toDos.count)
+        guard !toDos.isEmpty else {
+                // Nothing to do. Let everyone know we are ready.
+                // Do not call next(). That would result in an endless loop
+                // (lasstCommand == start, state == .ready, -> nothing todo, next(), ...).
+                // Wait for QRC to trigger or client to call `start()` again instead.
+                state = .ready
+                return
+        }
+        let group = DispatchGroup()
+        let toDosManagedByGroup = addCompletionOperations(handling: group, to: toDos)
+        group.notify(queue: DispatchQueue.global(qos: .background)) { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            Log.shared.info("%@ - started doNotRestart", "\(type(of: self))")
-            me.backgroundQueue.waitUntilAllOperationsAreFinished()
+            Log.shared.info("%@ - allOperationFinish block called with state: %@ runOnce: %@)",
+                            "\(type(of: self))", "\(me.state)", "\(me.runOnce)")
             me.state = .ready
-            me.endBackgroundTask()
-            Log.shared.info("%@ - ended doNotRestart", "\(type(of: self))")
+            if !me.runOnce {
+                me.next()
+            } else {
+                me.doNotRestart()
+            }
         }
+
+        registerBackgroundTask()
+        backgroundQueue.addOperations(toDosManagedByGroup, waitUntilFinished: false)
     }
 
-    private func registerBackgroundTask() {
-        do {
-            try startBackgroundTask { [weak self] in
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost myself")
-                    return
-                }
-                me.finishAsFastAsPossible()
-            }
-        } catch BackgroundTaskManager.ManagingError.backgroundTaskAlreadyRunning {
-            // Intentionally ignore it. We already have a background task running.
-        } catch {
-            Log.shared.errorAndCrash(error: error)
-        }
+    /// Cancels all operations, waits for them to finish and ends background task.
+    private func finishAsFastAsPossible() {
+        Log.shared.info("%@ - finishAsFastAsPossible called", "\(type(of: self))")
+        backgroundQueue.cancelAllOperations()
+        waitThenStop()
     }
 }

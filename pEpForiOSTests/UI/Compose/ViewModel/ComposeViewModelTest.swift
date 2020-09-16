@@ -1012,7 +1012,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
             return
         }
         let beforeFocus = indexPath(for: bodyVm)
-        let testee = vm?.beforePickerFocus()
+        let testee = vm?.beforeDocumentAttachmentPickerFocus()
         XCTAssertEqual(testee, beforeFocus)
         let toRecipientsIndPath = IndexPath(row: 0, section: 0)
         XCTAssertNotEqual(testee, toRecipientsIndPath)
@@ -1304,6 +1304,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
                         expectedProtectionEnabled: Bool? = nil,
                         hideSuggestionsMustBeCalled: Bool? = nil,
                         showSuggestionsMustBeCalled: Bool? = nil,
+                        showContactsMustBeCalled: Bool? = nil,
                         expectedShowSuggestionsIndexPath: IndexPath? = nil,
                         suggestionsScrollFocusChangedMustBeCalled: Bool? = nil,
                         expectedNewSuggestionsScrollFocusIsVisible: Bool? = nil,
@@ -1381,6 +1382,12 @@ class ComposeViewModelTest: AccountDrivenTestBase {
             expShowSuggestionsCalled?.isInverted = !exp
         }
 
+        var expShowContactsCalled: XCTestExpectation? = nil
+        if let exp = showContactsMustBeCalled {
+            expShowContactsCalled = expectation(description: "expShowContactsCalled")
+            expShowContactsCalled?.isInverted = !exp
+        }
+
         var expShowMediaAttachmentPickerCalled: XCTestExpectation? = nil
         if let exp = showMediaAttachmentPickerMustBeCalled {
             expShowMediaAttachmentPickerCalled =
@@ -1423,6 +1430,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
                          expectedProtectionEnabled: expectedProtectionEnabled,
                          expHideSuggestionsCalled: expHideSuggestionsCalled,
                          expShowSuggestionsCalled: expShowSuggestionsCalled,
+                         expShowContactsPickerCalled: expShowContactsCalled,
                          expSuggestionsScrollFocusChangedCalled: expSuggestionsScrollFocusChangedCalled,
                          expectedScrollFocus: expectedNewSuggestionsScrollFocusIsVisible,
                          expectedShowSuggestionsIndexPath: expectedShowSuggestionsIndexPath,
@@ -1441,7 +1449,8 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         testDelegate?.expColorBatchNeedsUpdateCalled = expColorBatchNeedsUpdateCalled
     }
 
-    private class TestDelegate:  ComposeViewModelDelegate {
+    private class TestDelegate: ComposeViewModelDelegate {
+
         func showTwoButtonAlert(withTitle title: String, message: String, cancelButtonText: String, positiveButtonText: String, cancelButtonAction: @escaping () -> Void, positiveButtonAction: @escaping () -> Void) {
         }
 
@@ -1468,6 +1477,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         let expHideSuggestionsCalled: XCTestExpectation?
 
         let expShowSuggestionsCalled: XCTestExpectation?
+        let expShowContactsPickerCalled: XCTestExpectation?
         let expectedShowSuggestionsIndexPath: IndexPath?
 
         let expSuggestionsScrollFocusChangedCalled: XCTestExpectation?
@@ -1494,6 +1504,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
              expectedProtectionEnabled: Bool?,
              expHideSuggestionsCalled: XCTestExpectation?,
              expShowSuggestionsCalled: XCTestExpectation?,
+             expShowContactsPickerCalled: XCTestExpectation?,
              expSuggestionsScrollFocusChangedCalled: XCTestExpectation?,
              expectedScrollFocus: Bool?,
              expectedShowSuggestionsIndexPath: IndexPath?,
@@ -1514,6 +1525,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
             self.expectedProtectionEnabled = expectedProtectionEnabled
             self.expHideSuggestionsCalled = expHideSuggestionsCalled
             self.expShowSuggestionsCalled = expShowSuggestionsCalled
+            self.expShowContactsPickerCalled = expShowContactsPickerCalled
             self.expSuggestionsScrollFocusChangedCalled = expSuggestionsScrollFocusChangedCalled
             self.expectedScrollFocus = expectedScrollFocus
             self.expectedShowSuggestionsIndexPath = expectedShowSuggestionsIndexPath
@@ -1604,6 +1616,14 @@ class ComposeViewModelTest: AccountDrivenTestBase {
             if let expected = expectedShowSuggestionsIndexPath {
                 XCTAssertEqual(indexPath, expected)
             }
+        }
+
+        func showContactsPicker() {
+            guard let exp = expShowContactsPickerCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
         }
 
         func suggestions(haveScrollFocus: Bool) {

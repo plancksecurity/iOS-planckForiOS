@@ -15,6 +15,7 @@ import PEPObjCAdapterFramework
 
 extension AppSettings {
     static private let keyKeySyncEnabled = "keyStartpEpSync"
+    static private let keyUsePEPFolderEnabled = "keyUsePEPFolderEnabled"
     static private let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
     static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
     static private let keyThreadedViewEnabled = "keyThreadedViewEnabled"
@@ -82,6 +83,7 @@ extension AppSettings {
     private func registerDefaults() {
         var defaults = [String: Any]()
         defaults[AppSettings.keyKeySyncEnabled] = true
+        defaults[AppSettings.keyUsePEPFolderEnabled] = true
         defaults[AppSettings.keyUnencryptedSubjectEnabled] = false
         defaults[AppSettings.keyThreadedViewEnabled] = true
         defaults[AppSettings.keyPassiveMode] = false
@@ -126,6 +128,16 @@ extension AppSettings: AppSettingsProtocol {
             AppSettings.userDefaults.set(newValue,
                                          forKey: AppSettings.keyKeySyncEnabled)
             stateChangeHandler?(newValue)
+        }
+    }
+
+    public var usePEPFolderEnabled: Bool {
+        get {
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyUsePEPFolderEnabled)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue,
+                                         forKey: AppSettings.keyUsePEPFolderEnabled)
         }
     }
 

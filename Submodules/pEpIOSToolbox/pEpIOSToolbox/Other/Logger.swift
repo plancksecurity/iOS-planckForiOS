@@ -7,13 +7,22 @@
 //
 
 import Foundation
-import os.log
+
+import CocoaLumberjackSwift
 
 public class Logger {
     public init(subsystem: String = "security.pEp.app.iOS", category: String) {
         self.subsystem = subsystem
         self.category = category
-        osLogger = OSLog(subsystem: subsystem, category: category)
+        initLumberjack()
+    }
+
+    /// Logs some info helpful when debugging when in DEBUG configuration. Does nothing otherwize.
+    public func logDebugInfo() {
+        #if DEBUG
+        let documentsDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        print("documentsDir: \(documentsDir)")
+        #endif
     }
 
     /// Use for warnings, anything that might cause trouble.
@@ -146,7 +155,9 @@ public class Logger {
     private let subsystem: String
     private let category: String
 
-    private let osLogger: Any?
+    private func initLumberjack() {
+        DDLog.add(DDOSLogger.sharedInstance) // Uses os_log
+    }
 
     private func saveLog(message: StaticString,
                          severity: Severity,
@@ -162,42 +173,24 @@ public class Logger {
               args: args)
     }
 
-    /// - Note: Wrapping `os_log` causes all kinds of problems, so until
-    ///   there is an official version of it that accepts `[CVarArg]` (os_logv?),
-    ///   interpolation is handled by us, under certain conditions.
     private func osLog(message: String,
                        severity: Severity,
                        function: String = #function,
                        filePath: String = #file,
                        fileLine: Int = #line,
                        args: [CVarArg]) {
-        var shouldLog = false
+        let interpolatedString = String(format: message, arguments: args)
+        let interpolatedMessage = "\(subsystem) \(category) \(filePath):\(fileLine) \(function) \(interpolatedString)"
 
-        #if DEBUG
-        // in a debug build, log everything
-        shouldLog = true
-        #else
-        // in a release, only log errors and warnings
-        if severity == .error || severity == .warn {
-            shouldLog = true
-        } else {
-            shouldLog = false
-        }
-        #endif
-
-        if shouldLog {
-            let theLog = osLogger as! OSLog
-            let theType = severity.osLogType()
-
-            let ourString = String(format: "\(message)", arguments: args)
-
-            os_log("%@ (%@:%d %@)",
-                   log: theLog,
-                   type: theType,
-                   ourString,
-                   filePath,
-                   fileLine,
-                   function)
+        switch severity {
+        case .debug:
+            DDLogDebug(interpolatedMessage)
+        case .info:
+            DDLogInfo(interpolatedMessage)
+        case .warn:
+            DDLogWarn(interpolatedMessage)
+        case .error:
+            DDLogError(interpolatedMessage)
         }
     }
 
@@ -215,19 +208,5 @@ public class Logger {
         /// Indicates an error.
         /// - Note: Gets persisted.
         case error
-
-        /// Mapping to `OSLogType`.
-        public func osLogType() -> OSLogType {
-            switch self {
-            case .info:
-                return .info
-            case .debug:
-                return .debug
-            case .warn:
-                return .default
-            case .error:
-                return .error
-            }
-        }
     }
 }

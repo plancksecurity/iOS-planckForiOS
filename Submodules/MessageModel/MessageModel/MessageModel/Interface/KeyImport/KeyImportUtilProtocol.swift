@@ -9,15 +9,27 @@
 import Foundation
 
 public protocol KeyImportUtilProtocol {
-    /// Imports a key from a local file URL.
-    /// - Note: The caller is responsible to execute this asynchronously, if needed.
+    /// Asynchronously imports a key from a local file URL and calls back.
     /// - Parameter url: The URL to interpret as ASCII-armored key data
+    /// - Parameter errorCallback: The error handler (called async)
+    /// - Parameter completion: The completions block called on success
     /// - Throws: KeyImportUtil.ImportError
-    func importKey(url: URL) throws -> KeyImportUtil.KeyData
+    func importKey(url: URL,
+                   errorCallback: @escaping (Error) -> (),
+                   completion: @escaping ([KeyImportUtil.KeyData]) -> ())
 
-    /// Sets the given key as own key.
+    /// Asynchronously sets the given key as own key.
+    /// - Parameter userName: The user name to set this key as own key to
     /// - Parameter address: The address to set this key as own key to
     /// - Parameter fingerprint: The fingerprint to identify the (already imported) key
-    /// - Throws: KeyImportUtil.SetOwnKeyError
-    func setOwnKey(address: String, fingerprint: String) throws
+    /// - Parameter errorCallback: Callback for signaling that an error ocurred.
+    /// - Parameter callback: Callback for signaling success.
+    /// - Throws: Since the function works async, no error gets thrown, but instead
+    /// given as parameter to the `errorCallback`: KeyImportUtil.SetOwnKeyError,
+    /// SetOwnKeyError.noMatchingAccount
+    func setOwnKey(userName: String,
+                   address: String,
+                   fingerprint: String,
+                   errorCallback: @escaping (Error) -> (),
+                   callback: @escaping () -> ())
 }

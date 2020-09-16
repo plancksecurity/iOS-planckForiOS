@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import MessageModel
+@testable import MessageModel //!!!: move to MM
 
 extension KeyChain {
 

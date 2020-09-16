@@ -34,7 +34,6 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
         message.parent = folder
         message.sent = Date()
         message.session.commit()
-        let session = PEPSession()
         guard let first = CdMessage.first(in: moc) else {
             XCTFail("No messages ...")
             return
@@ -44,16 +43,25 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
         let cdmessage2 = cdmessage1
         let pEpMessage = cdmessage1.pEpMessage()
 
-        try! session.encryptMessage(pEpMessage,
-                                    extraKeys: nil,
-                                    encFormat: .PEP,
-                                    status: nil)
-        try! session.decryptMessage(pEpMessage,
-                                    flags: nil,
-                                    rating: nil,
-                                    extraKeys: nil,
-                                    status: nil)
-        let moc = cdmessage2.managedObjectContext! //!!!: not nice
+        let expEncryptDone = expectation(description: "expEnDeCryptDone")
+        PEPAsyncSession().encryptMessage(pEpMessage, extraKeys: nil, encFormat: .PEP, errorCallback: { (_) in
+            XCTFail()
+            return
+        }) { (src, dest) in
+            expEncryptDone.fulfill()
+        }
+        waitForExpectations(timeout: TestUtil.waitTime)
+
+        let expDecryptDone = expectation(description: "expDecryptDone")
+        PEPAsyncSession().decryptMessage(pEpMessage, flags: .none, extraKeys: nil, errorCallback: { (_) in
+            XCTFail()
+            return
+        }) { (_, _, _, _, _) in
+            expDecryptDone.fulfill()
+        }
+        waitForExpectations(timeout: TestUtil.waitTime)
+        
+        let moc = cdmessage2.managedObjectContext!
         cdmessage2.update(pEpMessage: pEpMessage, context: moc)
         XCTAssertEqual(cdmessage2, cdmessage1)
     }
@@ -106,14 +114,23 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
 
     // MARK: - Helper
 
-    func tryDecryptMessage(
-        message: PEPMessage, myID: String, references: [String],
-        session: PEPSession = PEPSession()) {
-        var keys: NSArray?
-        let pepDecryptedMessage = try! session.decryptMessage(
-            message, flags: nil, rating: nil, extraKeys: &keys, status: nil)
-        XCTAssertEqual(pepDecryptedMessage.messageID, myID)
+    func tryDecryptMessage(message: PEPMessage,
+                           myID: String,
+                           references: [String]) {
+        var testee: PEPMessage? = nil
+
+        let exp = expectation(description: "exp")
+        PEPAsyncSession().decryptMessage(message, flags: .none, extraKeys: nil, errorCallback: { (error) in
+            XCTFail(error.localizedDescription)
+            exp.fulfill()
+        }) { (_, pEpDecrypted, _, _, _) in
+            testee = pEpDecrypted
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: TestUtil.waitTime)
+
+        XCTAssertEqual(testee?.messageID, myID)
         // check that original references are restored (ENGINE-290)
-        XCTAssertEqual(pepDecryptedMessage.references ?? [], references)
+        XCTAssertEqual(testee?.references ?? [], references)
     }
 }

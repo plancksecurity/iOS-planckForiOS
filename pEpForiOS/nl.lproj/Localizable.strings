@@ -462,8 +462,7 @@
 /* keySyncWizard intro view Next button title */
 "Next" = "Volgende";
 
-/* Alert button while client certificate is importing: Try again? No
-   Title for no button (cancel) when trying to import a key */
+/* Alert button while client certificate is importing: Try again? No */
 "No" = "Nee";
 
 /* Error when no account found for set_own_key UI */
@@ -540,6 +539,13 @@
 /* Passive mode title */
 "Passive mode" = "Passieve modus";
 
+/* Passphrase placeholder
+   Passphrase title */
+"Passphrase" = "Wachtwoordzin";
+
+/* Passphrase too long - title */
+"Passphrase too long" = "Wachtwoordzin is te lang";
+
 /* password */
 "Password" = "Wachtwoord";
 
@@ -611,6 +617,12 @@
 
 /* Fail to log in, email does not match account type */
 "Please enter a valid Gmail address." = "Voer een geldig Gmail adres in.";
+
+/* Please enter one shorter - message */
+"Please enter one shorter" = "Voer een kortere in";
+
+/* Passphrase message */
+"Please enter the passphrase to continue" = "Voer een wachtwoordzin in om door te gaan";
 
 /* Description for client certificate password screen */
 "Please enter the password of the certificate to import it:" = "Voer het wachtwoord van het certificaat in om het te importeren:";
@@ -803,6 +815,9 @@
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "Het bericht kon niet worden verzonden. Probeer het later opnieuw.";
 
+/* Passphrase message */
+"The passphrase you entered is wrong. Please enter it again to continue" = "De ingevoerde wachtwoordzin is fout. Voer nogmaals in om door te gaan";
+
 /* error message for .minimumLengthUsername */
 "The username must contain more than 1 characters" = "De gebruikersnaam moet meer dan 1 teken bevatten";
 
@@ -953,6 +968,12 @@
 /* setting row title: Unsecure reply warning */
 "Unsecure reply warning" = "Waarschuwing onveilig antwoord";
 
+/* PGPKeyImportSetting - Use a Passphrase for new keys */
+"Use a passphrase for new keys" = "Gebruik een wachtwoordzin voor nieuwe sleutels";
+
+/* Settings: title for enable/disable usePEPFolder feature */
+"Use p≡p Folder For Sync Messages" = "Gebruik p≡p Mappen Voor Sync Berichten";
+
 /* User Name placeholder for manual account IMAP setup
    User Name placeholder for manual account setup
    User Name placeholder for manual account SMTP setup */
@@ -978,6 +999,9 @@
 
 /* Client certificate import: wrong password alert message */
 "We could not import the certificate. We do not have permissions to open this file.\n\nTry again?" = "We konden het certificaat niet importeren. We hebben geen toestemming om dit bestand te openen.\n\nOpnieuw proberen?";
+
+/* Passphrase message */
+"We recommend to use device encryption instead of using passphrases, because they're securing all data, not only keys. In case you want to use a passphrase anyway, please enter a passphrase here and enable it." = "We raden aan om apparaatversleuteling te gebruiken in plaats van wachtzinnen, omdat ze alle gegevens beveiligen, niet alleen sleutels. Als je toch een wachtwoordzin wilt gebruiken, voer dan hier een wachtwoordzin in en schakel deze in.";
 
 /* KeySyncWizard complete message - two devices */
 "We successfully created a device group. All your privacy is now synchronized." = "We hebben een apparatengroep gemaakt. Al uw privacy is nu gesynchroniseerd.";
@@ -1009,8 +1033,7 @@
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Verkeerde Trustwords";
 
-/* Alert button while client certificate is importing: Try again? Yes
-   Title for yes button when trying to import a key */
+/* Alert button while client certificate is importing: Try again? Yes */
 "Yes" = "Ja";
 
 /* Confirm less secure answer message alert body */
@@ -1018,9 +1041,6 @@
 
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Je staat op het punt een beveiligd bericht als onveilig te beantwoorden. Als je ervoor kiest om door te gaan, kan er vertrouwelijke informatie lekken, waardoor jij en je communicatiepartners gevaar lopen. Weet je zeker dat je door wilt gaan?";
-
-/* Message when asking user for confirmation about importing a key */
-"You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?" = "U staat op het punt de volgende sleutel te importeren:\n\nNaam:% 1 $ @\nVingerafdruk:% 2 $ @\n\nWeet u zeker dat u deze sleutel wilt importeren en gebruiken?";
 
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Je kunt deze tutorial op elk moment sluiten met de Skip knop.";

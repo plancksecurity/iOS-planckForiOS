@@ -53,18 +53,55 @@ extension DecryptMessageOperation {
             return
         }
 
-        let flags = cdMessageToDecrypt.isOnTrustedServer ? PEPDecryptFlags.none : .untrustedServer
-
-        let inOutMessage = cdMessageToDecrypt.pEpMessage()
-        var inOutFlags = flags
-        var fprsOfExtraKeys = CdExtraKey.fprsOfAllExtraKeys(in: moc) as NSArray?
+        var inOutFlags = cdMessageToDecrypt.isOnTrustedServer ? PEPDecryptFlags.none : .untrustedServer
+        var inOutMessage = cdMessageToDecrypt.pEpMessage(outgoing: false)
+        var fprsOfExtraKeys = CdExtraKey.fprsOfAllExtraKeys(in: moc)
         var rating = PEPRating.undefined
-        do {
-            let pEpDecryptedMessage = try PEPSession().decryptMessage(inOutMessage,
-                                                                      flags: &inOutFlags,
-                                                                      rating: &rating,
-                                                                      extraKeys: &fprsOfExtraKeys,
-                                                                      status: nil)
+        var pEpDecryptedMessage: PEPMessage? = nil
+
+        // We must block here until the adapter calls back. Else we will not exist any more when it
+        // does and thus can not handle its results.
+        var nsError: NSError? = nil
+        var isAFormerlyEncryptedReuploadedMessage = false
+        let group = DispatchGroup()
+        group.enter()
+        PEPAsyncSession().decryptMessage(inOutMessage, flags: inOutFlags, extraKeys: fprsOfExtraKeys, errorCallback: { (error) in
+            nsError = error as NSError
+            group.leave()
+        }) { (pEpSourceMessage, pEpDecryptedMsg, keyList, pEpRating, decryptFlags, isFormerlyEncryptedReuploadedMessage) in
+            inOutMessage = pEpSourceMessage
+            pEpDecryptedMessage = pEpDecryptedMsg
+            fprsOfExtraKeys = keyList
+            rating = pEpRating
+            inOutFlags = decryptFlags
+            isAFormerlyEncryptedReuploadedMessage = isFormerlyEncryptedReuploadedMessage
+            group.leave()
+        }
+        group.wait()
+
+        if let error = nsError {
+            // An error occured
+            if error.domain == PEPObjCAdapterEngineStatusErrorDomain {
+                switch error.code {
+                case Int(PEPStatus.passphraseRequired.rawValue),
+                     Int(PEPStatus.wrongPassphrase.rawValue):
+                    // The adapter is responsible to handle this case.
+                    return
+                default:
+                    Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
+                    addError(BackgroundError.GeneralError.illegalState(info:
+                        "##\nError: \(error)\ndecrypting message: \(cdMessageToDecrypt)\n##"))
+                }
+            } else if error.domain == PEPObjCAdapterErrorDomain {
+                Log.shared.errorAndCrash("Unexpected ")
+                addError(BackgroundError.GeneralError.illegalState(info:
+                    "We do not expect this error domain to show up here: \(error)"))
+            } else {
+                Log.shared.errorAndCrash("Unhandled error domain: %@", "\(error.domain)")
+                addError(BackgroundError.GeneralError.illegalState(info:
+                    "Unhandled error domain: \(error.domain)"))
+            }
+        } else {
             let ratingBeforeMessage = cdMessageToDecrypt.pEpRating
             handleDecryptionSuccess(cdMessage: cdMessageToDecrypt,
                                     pEpDecryptedMessage: pEpDecryptedMessage,
@@ -72,13 +109,9 @@ extension DecryptMessageOperation {
                                     decryptFlags: inOutFlags,
                                     ratingBeforeEngine: ratingBeforeMessage,
                                     rating: rating,
-                                    keys: (fprsOfExtraKeys as? [String]) ?? [])
-        } catch {
-            Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
-            addError(BackgroundError.GeneralError.illegalState(info:
-                "##\nError: \(error)\ndecrypting message: \(cdMessageToDecrypt)\n##"))
+                                    keys: fprsOfExtraKeys ?? [],
+                                    isFormerlyEncryptedReuploadedMessage: isAFormerlyEncryptedReuploadedMessage)
         }
-
         cdMessageToDecrypt.needsDecrypt = false
         moc.saveAndLogErrors()
     }
@@ -89,7 +122,8 @@ extension DecryptMessageOperation {
                                          decryptFlags: PEPDecryptFlags?,
                                          ratingBeforeEngine: Int16,
                                          rating: PEPRating,
-                                         keys: [String]) {
+                                         keys: [String],
+                                         isFormerlyEncryptedReuploadedMessage: Bool) {
         if rating.shouldUpdateMessageContent() {
             updateWholeMessage(pEpDecryptedMessage: pEpDecryptedMessage,
                                rating: rating,
@@ -100,7 +134,8 @@ extension DecryptMessageOperation {
             handleReUpload(cdMessage: updatedMessage,
                            inOutMessage: inOutMessage,
                            rating: rating,
-                           decryptFlags: decryptFlags)
+                           decryptFlags: decryptFlags,
+                           isFormerlyEncryptedReuploadedMessage: isFormerlyEncryptedReuploadedMessage)
         } else {
             if rating.rawValue != ratingBeforeEngine {
                 cdMessage.update(rating: rating)
@@ -162,7 +197,8 @@ extension DecryptMessageOperation {
     private func updatePossibleFakeMessage(forFetchedMessage cdMessage: CdMessage,
                                            pEpDecryptedMessage: PEPMessage?) -> CdMessage {
         guard let uuid = pEpDecryptedMessage?.messageID else {
-            Log.shared.errorAndCrash("No uuid")
+            //Valid case. No message can be found because the it has been deleted from the DB.
+            // Probably the user deleted the belonging Account
             return cdMessage
         }
 
@@ -187,11 +223,13 @@ extension DecryptMessageOperation {
 extension DecryptMessageOperation {
 
     private func handleReUpload(cdMessage: CdMessage,
-                                          inOutMessage: PEPMessage,
-                                          rating: PEPRating,
-                                          decryptFlags: PEPDecryptFlags?) {
+                                inOutMessage: PEPMessage,
+                                rating: PEPRating,
+                                decryptFlags: PEPDecryptFlags?,
+                                isFormerlyEncryptedReuploadedMessage: Bool) {
 
-        if cdMessage.wasAlreadyUnencrypted || // If the message was not encrypted, there is no reason to re-upload it.
+        if isFormerlyEncryptedReuploadedMessage || // The Eninge told us that this message is a formerly encrypted message that has been reuploaded for trusted server. Do not reupload again.
+            PEPUtils.pEpRatingFromInt(Int(cdMessage.pEpRating)) == .unencrypted || // If the message was not encrypted, there is no reason to re-upload it.
             cdMessage.isAutoConsumable { // Message is an auto-consume message -> no re-upload!
             return
         }
@@ -243,8 +281,19 @@ extension DecryptMessageOperation {
     /// Otherwize:                                  sets the given rating as the original rating
     private func setOriginalRatingHeader(rating: PEPRating, toMessage cdMessage: CdMessage) {
         if cdMessage.parentOrCrash.folderType == .drafts {
-            let outgoingRating = cdMessage.outgoingMessageRating()
-            setOriginalRatingHeaderVerbatim(rating: outgoingRating, toCdMessage: cdMessage)
+            let group = DispatchGroup()
+            group.enter()
+            var outgoingRating: PEPRating? = nil
+            cdMessage.outgoingMessageRating { (rating) in
+                outgoingRating = rating
+                group.leave()
+            }
+            group.wait()
+            guard let rating = outgoingRating else {
+                Log.shared.errorAndCrash("No Rating")
+                return
+            }
+            setOriginalRatingHeaderVerbatim(rating: rating, toCdMessage: cdMessage)
         } else {
             setOriginalRatingHeaderVerbatim(rating: rating, toCdMessage: cdMessage)
         }
@@ -256,4 +305,3 @@ extension DecryptMessageOperation {
         msg.setOriginalRatingHeader(rating: rating)
     }
 }
-

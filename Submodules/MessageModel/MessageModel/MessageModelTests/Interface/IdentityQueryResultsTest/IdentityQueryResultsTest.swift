@@ -124,7 +124,7 @@ extension IdentityQueryResultTest {
     }
 }
 
-/// MARK: - Delegate test class
+// MARK: - Delegate test class
 
 class IdentityQueryResultTestDelegate {
     let exp: XCTestExpectation

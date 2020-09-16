@@ -150,6 +150,7 @@ class SyncFlagsToServerInImapFolderOperation: ImapSyncOperation {
                 imapConnection.store(info: info, command: string)
             } else {
                 Log.shared.errorAndCrash("No IMAP store command")
+                waitForBackgroundTasksAndFinish()
             }
         } else if mode == .add && currentMessageNeedSyncRemoveFlagsToServer() {
             updateFlags(to: .remove)
@@ -160,8 +161,7 @@ class SyncFlagsToServerInImapFolderOperation: ImapSyncOperation {
 
     private func storeMessages(notification n: Notification) {
         guard let folder = privateMOC.object(with: folderID) as? CdFolder else {
-            addError(BackgroundError.CoreDataError.couldNotFindFolder(info: comp))
-            waitForBackgroundTasksAndFinish()
+            handle(error: BackgroundError.CoreDataError.couldNotFindFolder(info: comp))
             return
         }
 
@@ -219,6 +219,10 @@ class SyncFlagsToServerInImapFolderOperation: ImapSyncOperation {
                     return
                 }
                 me.storeMessages(notification: n)
+                if me.isCancelled {
+                    me.waitForBackgroundTasksAndFinish()
+                    return
+                }
                 me.syncNextMessage()
             }
         }
@@ -246,5 +250,13 @@ class SyncFlagsToServerInImapFolderOperationDelegate: DefaultImapConnectionDeleg
             return
         }
         op.handleFolderOpenCompleted()
+    }
+
+    override func messageStoreFailed(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
+        guard let op = (errorHandler as? SyncFlagsToServerInImapFolderOperation) else {
+            Log.shared.errorAndCrash("lost active OP")
+            return
+        }
+        op.handle(error: BackgroundError.GeneralError.operationFailed(info: notification?.userInfo?.description))
     }
 }

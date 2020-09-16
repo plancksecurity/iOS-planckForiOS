@@ -12,24 +12,29 @@ import MessageModel
 
 class KeyImportUtilTest: XCTestCase {
     /// A key pair that can be imported. Gets loaded from the test bundle.
-    /// 353E7B7239A9B7B0F8419CB3924B17115179C280 expires: 2023-01-15
-    /// uid [unknown] test006@peptest.ch <test006@peptest.ch>
     let keyResourceName = "IOS-1432_keypair.asc"
 
     func testImportNonExistentKey() throws {
-        do {
-            let _ = try KeyImportUtil().importKey(url: URL(fileURLWithPath: "file:///ohno"))
+        let expImport = expectation(description: "expImort")
+        KeyImportUtil().importKey(url: URL(fileURLWithPath: "file:///ohno"),
+                                  errorCallback: { error in
+                                    if let theError = error as? KeyImportUtil.ImportError {
+                                        switch theError {
+                                        case .cannotLoadKey: // expected
+                                            break
+                                        default:
+                                            XCTFail()
+                                        }
+                                    }
+                                    expImport.fulfill()
+        }) { keyData in
             XCTFail()
-        } catch KeyImportUtil.ImportError.cannotLoadKey {
-            // expected
-        } catch {
-            XCTFail()
+            expImport.fulfill()
         }
+        wait(for: [expImport], timeout: TestUtil.waitTime)
     }
 
     func testSuccessfulImportButNoAccount() throws {
-        let keyImport = KeyImportUtil()
-
         let testBundle = Bundle(for: KeyImportUtilTest.self)
 
         guard let url = testBundle.url(forResource: keyResourceName,
@@ -38,13 +43,43 @@ class KeyImportUtilTest: XCTestCase {
                                         return
         }
 
-        let keyData = try keyImport.importKey(url: url)
-
-        do {
-            try keyImport.setOwnKey(address: keyData.address, fingerprint: keyData.fingerprint)
-        } catch KeyImportUtil.SetOwnKeyError.noMatchingAccount {
-            // expected
+        let expImport = expectation(description: "expImort")
+        var someKeyDatas = [KeyImportUtil.KeyData]()
+        KeyImportUtil().importKey(url: url,
+                                  errorCallback: { error in
+                                    XCTFail()
+                                    expImport.fulfill()
+        }) { keyDatas in
+            someKeyDatas = keyDatas
+            expImport.fulfill()
         }
+        wait(for: [expImport], timeout: TestUtil.waitTime)
+
+        XCTAssertFalse(someKeyDatas.isEmpty)
+
+        guard let theKeyData = someKeyDatas[safe: 0] else {
+            XCTFail()
+            return
+        }
+
+        let expSetOwnKey = expectation(description: "expSetOwnKey")
+        KeyImportUtil().setOwnKey(userName: theKeyData.userName,
+                                  address: theKeyData.address,
+                                  fingerprint: theKeyData.fingerprint,
+                                  errorCallback: { error in
+                                    if let theError = error as? KeyImportUtil.SetOwnKeyError {
+                                        switch theError {
+                                        case .noMatchingAccount: // expected
+                                            break
+                                        default:
+                                            XCTFail()
+                                        }
+                                    }
+                                    expSetOwnKey.fulfill()
+        }) {
+            expSetOwnKey.fulfill()
+        }
+        wait(for: [expSetOwnKey], timeout: TestUtil.waitTime)
     }
 
     func testSuccessfulImport() throws {
@@ -58,17 +93,45 @@ class KeyImportUtilTest: XCTestCase {
                                         return
         }
 
-        let keyData = try keyImport.importKey(url: url)
+        var someKeyDatas = [KeyImportUtil.KeyData]()
 
-        let ident = Identity(address: keyData.address,
+        let expImport = expectation(description: "expImort")
+        keyImport.importKey(url: url,
+                            errorCallback: { error in
+                                XCTFail()
+                                expImport.fulfill()
+        }) { keyDatas in
+            someKeyDatas = keyDatas
+            expImport.fulfill()
+        }
+        wait(for: [expImport], timeout: TestUtil.waitTime)
+
+        XCTAssertFalse(someKeyDatas.isEmpty)
+
+        guard let theKeyData = someKeyDatas[safe: 0] else {
+            XCTFail()
+            return
+        }
+
+        let ident = Identity(address: theKeyData.address,
                              userID: "some_user_id",
                              addressBookID: nil,
                              userName: "some name",
                              session: nil)
 
-        let account = Account(user: ident, servers: [])
-        account.session.commit()
+        let _ = Account(user: ident, servers: [])
+        Session.main.commit()
 
-        try keyImport.setOwnKey(address: keyData.address, fingerprint: keyData.fingerprint)
+        let expSetOwnKey = expectation(description: "expSetOwnKey")
+        keyImport.setOwnKey(userName: theKeyData.userName,
+                            address: theKeyData.address,
+                            fingerprint: theKeyData.fingerprint,
+                            errorCallback: { error in
+                                XCTFail()
+                                expSetOwnKey.fulfill()
+        }) {
+            expSetOwnKey.fulfill()
+        }
+        wait(for: [expSetOwnKey], timeout: TestUtil.waitTime)
     }
 }

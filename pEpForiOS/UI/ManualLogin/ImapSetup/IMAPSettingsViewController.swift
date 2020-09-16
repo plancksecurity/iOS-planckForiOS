@@ -23,7 +23,7 @@ extension UIAlertController {
     }
 }
 
-final class IMAPSettingsViewController: BaseViewController, TextfieldResponder {
+final class IMAPSettingsViewController: UIViewController, TextfieldResponder {
     @IBOutlet weak var manualAccountSetupContainerView: ManualAccountSetupContainerView!
 
     var fields = [UITextField]()

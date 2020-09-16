@@ -57,20 +57,28 @@ class AppendMailsToFolderOperation: ImapSyncOperation {
 extension AppendMailsToFolderOperation {
 
     private func handleNextMessage() {
+        guard !isCancelled else {
+            waitForBackgroundTasksAndFinish()
+            return
+        }
         backgroundQueue.addOperation { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
+            let group = DispatchGroup()
+            group.enter()
             me.privateMOC.performAndWait {
                 me.markLastMessageAsFinished()
                 guard !me.isCancelled else {
                     me.privateMOC.saveAndLogErrors()
                     me.waitForBackgroundTasksAndFinish()
+                    group.leave()
                     return
                 }
                 guard let (cdMessage, pEpidentity) = me.retrieveNextMessage() else {
                     me.waitForBackgroundTasksAndFinish()
+                    group.leave()
                     return
                 }
                 me.lastHandledMessageObjectID = cdMessage.objectID
@@ -87,6 +95,7 @@ extension AppendMailsToFolderOperation {
                 if shouldNotAppend {
                     // We are not supposed to append. Ignore this message. //!!!: should we delete it? I think so! Its a message marked for appending in a folder we should not append to. Imo it causes ending in this if clause on every replication loop for every affected message.
                     me.handleNextMessage()
+                    group.leave()
                     return
                 }
                 let pepRating = PEPRating(rawValue: Int32(cdMessage.pEpRating))
@@ -94,6 +103,7 @@ extension AppendMailsToFolderOperation {
                     // Do not encrypt messages that the user has sent force-unprotected when
                     // appending it to "Sent" folder.
                     me.appendMessage(pEpMessage: pEpMessage)
+                    group.leave()
                     return
                 }
 
@@ -107,22 +117,48 @@ extension AppendMailsToFolderOperation {
 
                 guard !appendWithoutBotheringTheEngine else {
                     me.appendMessage(pEpMessage: pEpMessage)
+                    group.leave()
                     return
                 }
 
-                do {
-                    let forceUnprotected = !cdMessage.pEpProtected
-                    let extraKeysFPRs = CdExtraKey.fprsOfAllExtraKeys(in: me.privateMOC)
-                    let encryptedMessage = try PEPUtils.encrypt(pEpMessage: pEpMessage,
-                                                                encryptionFormat: forceUnprotected ? .none : .PEP,
-                                                                forSelf: forceUnprotected ? nil : pEpidentity,
-                                                                extraKeys: extraKeysFPRs)
-                    me.appendMessage(pEpMessage: encryptedMessage)
-                } catch {
-                    me.handleError(error, message: "Cannot encrypt message")
-                    return
+                let forceUnprotected = !cdMessage.pEpProtected
+                let extraKeysFPRs = CdExtraKey.fprsOfAllExtraKeys(in: me.privateMOC)
+                PEPUtils.encrypt(pEpMessage: pEpMessage,
+                                 encryptionFormat: forceUnprotected ? .none : .PEP,
+                                 forSelf: forceUnprotected ? nil : pEpidentity,
+                                 extraKeys: extraKeysFPRs,
+                                 errorCallback: { (error) in
+                                    defer { group.leave() }
+                                    let error = error as NSError
+                                    if error.domain == PEPObjCAdapterEngineStatusErrorDomain {
+                                        switch error.code {
+                                        case Int(PEPStatus.passphraseRequired.rawValue),
+                                             Int(PEPStatus.wrongPassphrase.rawValue):
+                                            // The adapter is responsible to ask for passphrase. We are not.
+                                            me.handleNextMessage()
+                                            return
+                                        default:
+                                            Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
+                                            me.handle(error: BackgroundError.GeneralError.illegalState(info:
+                                                "##\nError: \(error)\nencrypting message: \(cdMessage)\n##"))
+                                        }
+                                    } else if error.domain == PEPObjCAdapterErrorDomain {
+                                        Log.shared.errorAndCrash("Unexpected ")
+                                        me.handle(error: BackgroundError.GeneralError.illegalState(info:
+                                            "We do not exept this error domain to show up here: \(error)"))
+                                    } else {
+                                        Log.shared.errorAndCrash("Unhandled error domain: %@", "\(error.domain)")
+                                        me.handle(error: BackgroundError.GeneralError.illegalState(info:
+                                            "Unhandled error domain: \(error.domain)"))
+                                    }
+                }) { (_, encryptedMessage) in
+                        me.privateMOC.performAndWait {
+                            me.appendMessage(pEpMessage: encryptedMessage)
+                            group.leave()
+                        }
                 }
             }
+            group.wait()
         }
     }
 
@@ -153,7 +189,7 @@ extension AppendMailsToFolderOperation {
             privateMOC.saveAndLogErrors()
         } else {
             Log.shared.errorAndCrash("Message disappeared")
-            handleError(BackgroundError.GeneralError.invalidParameter(info: #function),
+            handle(error: BackgroundError.GeneralError.invalidParameter(info: #function),
                         message: "Cannot find message just stored.")
             return
         }

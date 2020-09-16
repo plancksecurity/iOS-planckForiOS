@@ -21,7 +21,7 @@ extension MockNotifyHandshakeDelegate: PEPNotifyHandshakeDelegate {
 
     func notifyHandshake(_ object: UnsafeMutableRawPointer?,
                          me: PEPIdentity,
-                         partner: PEPIdentity,
+                         partner: PEPIdentity?,
                          signal: PEPSyncHandshakeSignal) -> PEPStatus {
         return .OK
     }

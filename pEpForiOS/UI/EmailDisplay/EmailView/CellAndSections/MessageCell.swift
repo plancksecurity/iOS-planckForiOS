@@ -11,10 +11,6 @@ import MessageModel
 
 public protocol MessageCellDelegate: class {}
 
-public protocol MessageContentCellDelegate: MessageCellDelegate {
-    func didUpdate(cell: MessageCell, height: CGFloat)
-}
-
 protocol MessageAttachmentDelegate {
     func didTap(cell: MessageCell, attachment: Attachment, location: CGPoint, inView: UIView?)
 }
@@ -38,7 +34,7 @@ open class MessageCell: UITableViewCell {
         super.awakeFromNib()
         selectionStyle = .none
     }
-    
+
     public func updateCell(model: ComposeFieldModel, message: Message) {
         fieldModel = model
         if titleLabel != nil {
