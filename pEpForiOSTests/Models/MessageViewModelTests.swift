@@ -88,12 +88,6 @@ class MessageViewModelTests: AccountDrivenTestBase {
         XCTAssertEqual(subject, Defaults.Inputs.shortMessage)
     }
 
-    func testBodyField() {
-        givenViewModelRepresentsASubjectAndBodyMessage()
-        let bodyString = viewModel.body.string
-        XCTAssertEqual(bodyString, Defaults.Inputs.longMessage)
-    }
-
     func testIsFlagged() {
         givenViewModelRepresentsOneFlaggedAndSeenMessage()
         let isFlagged = viewModel.isFlagged
