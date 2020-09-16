@@ -213,7 +213,6 @@
 		434DC0E21DAE7A49007C98B8 /* Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0E11DAE7A49007C98B8 /* Identity.swift */; };
 		434DC0E61DAE8BE7007C98B8 /* MutableOrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0E51DAE8BE7007C98B8 /* MutableOrderedSet.swift */; };
 		4351723A229FD4AA00D92026 /* TestUtil+LoadData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43517239229FD4AA00D92026 /* TestUtil+LoadData.swift */; };
-		4351723D229FD74000D92026 /* DecryptionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4351723C229FD74000D92026 /* DecryptionTest.swift */; };
 		43517244229FD8EF00D92026 /* IOS-1432_message_from_outlook.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43517242229FD8EF00D92026 /* IOS-1432_message_from_outlook.txt */; };
 		43517245229FD8EF00D92026 /* IOS-1432_keypair.asc in Resources */ = {isa = PBXBuildFile; fileRef = 43517243229FD8EF00D92026 /* IOS-1432_keypair.asc */; };
 		4352FA271DC7A1C20081161A /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4352FA261DC7A1C20081161A /* KeyChain.swift */; };
@@ -705,7 +704,6 @@
 		434DC0E51DAE8BE7007C98B8 /* MutableOrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutableOrderedSet.swift; sourceTree = "<group>"; };
 		4350A6AC250259FE00809A18 /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjackSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43517239229FD4AA00D92026 /* TestUtil+LoadData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TestUtil+LoadData.swift"; sourceTree = "<group>"; };
-		4351723C229FD74000D92026 /* DecryptionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptionTest.swift; sourceTree = "<group>"; };
 		43517242229FD8EF00D92026 /* IOS-1432_message_from_outlook.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-1432_message_from_outlook.txt"; sourceTree = "<group>"; };
 		43517243229FD8EF00D92026 /* IOS-1432_keypair.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-1432_keypair.asc"; sourceTree = "<group>"; };
 		4352FA261DC7A1C20081161A /* KeyChain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
@@ -1859,14 +1857,6 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		4351723B229FD74000D92026 /* Decryption */ = {
-			isa = PBXGroup;
-			children = (
-				4351723C229FD74000D92026 /* DecryptionTest.swift */,
-			);
-			path = Decryption;
-			sourceTree = "<group>";
-		};
 		43598DF51DA7F74F00EAD0B7 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
@@ -2081,7 +2071,6 @@
 				152E3C9A231BDEF600C1420B /* Submodule */,
 				490FF8061E795B6C00BC15F9 /* Util */,
 				439B16B022802D3800201DE5 /* Services */,
-				4351723B229FD74000D92026 /* Decryption */,
 				154D171F23732FF6001FDF78 /* FromApp_NeedsLove */,
 				43CB60921DA4EB4E0015281E /* Info.plist */,
 			);
@@ -3040,7 +3029,6 @@
 				430A2EF01E82758100878837 /* CdImapFields+TestHelper.swift in Sources */,
 				152E3CA9231C324000C1420B /* DecryptServiceTest.swift in Sources */,
 				43BBB49B244868B000A88B39 /* MailParsingTests.swift in Sources */,
-				4351723D229FD74000D92026 /* DecryptionTest.swift in Sources */,
 				43607DE423FE8D6F00FA66B8 /* ClientCertificateUtilTestInternal.swift in Sources */,
 				43F86BA324503E61008961DA /* Keychain+TestUtils.swift in Sources */,
 				434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */,
