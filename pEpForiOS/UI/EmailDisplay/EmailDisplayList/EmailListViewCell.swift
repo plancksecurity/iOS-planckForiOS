@@ -156,8 +156,8 @@ extension EmailListViewCell {
     //    }
 
     private func setPepRatingImage(image: UIImage?) {
-        self.ratingImage.image = image
-        self.ratingImage.isHidden = (image == nil)
+        ratingImage.image = image
+        ratingImage.isHidden = (image == nil)
     }
 
     private func setContactImage(image: UIImage?) {
