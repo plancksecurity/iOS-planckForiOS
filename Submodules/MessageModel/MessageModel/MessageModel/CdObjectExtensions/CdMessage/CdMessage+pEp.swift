@@ -166,15 +166,17 @@ extension CdMessage {
                 }
             }
         }
-
         if pEpMessage.direction == .incoming {
             guard let pEpIdentityReceiver = parent?.account?.identity?.pEpIdentity() else {
+                guard !isDeleted else {
+                    //Valid case: the account might be deleted
+                    return pEpMessage
+                }
                 Log.shared.errorAndCrash("An incomming message MUST be received by someone. Invalid state!")
                 return pEpMessage
             }
             pEpMessage.receivedBy = pEpIdentityReceiver
         }
-
         return pEpMessage
     }
 

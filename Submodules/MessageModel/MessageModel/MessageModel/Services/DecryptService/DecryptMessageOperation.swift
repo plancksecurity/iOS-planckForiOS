@@ -43,16 +43,15 @@ class DecryptMessageOperation: BaseOperation {
 extension DecryptMessageOperation {
 
     private func decryptMessage() {
-        guard let msg = moc.object(with: cdMessageToDecryptObjectId) as? CdMessage else {
+        guard let cdMessageToDecrypt = moc.object(with: cdMessageToDecryptObjectId) as? CdMessage else {
             Log.shared.errorAndCrash("No message")
             return
         }
-        processedCdMessaage = msg
-        guard let cdMessageToDecrypt = processedCdMessaage else {
-            Log.shared.errorAndCrash("No message")
+        processedCdMessaage = cdMessageToDecrypt
+        guard !cdMessageToDecrypt.isDeleted else {
+            //Valid case: the account might be deleted.
             return
         }
-
         var inOutFlags = cdMessageToDecrypt.isOnTrustedServer ? PEPDecryptFlags.none : .untrustedServer
         var inOutMessage = cdMessageToDecrypt.pEpMessage(outgoing: false)
         var fprsOfExtraKeys = CdExtraKey.fprsOfAllExtraKeys(in: moc)
@@ -197,10 +196,13 @@ extension DecryptMessageOperation {
     private func updatePossibleFakeMessage(forFetchedMessage cdMessage: CdMessage,
                                            pEpDecryptedMessage: PEPMessage?) -> CdMessage {
         guard let uuid = pEpDecryptedMessage?.messageID else {
+            guard !cdMessage.isDeleted else {
+                //Valid case: the account might be deleted
+                return cdMessage
+            }
             Log.shared.errorAndCrash("No uuid")
             return cdMessage
         }
-
         let updatedMessage = CdMessage.findAndUpdateFakeMessage(withUuid: uuid,
                                                                 realMessage: cdMessage,
                                                                 context: moc)
