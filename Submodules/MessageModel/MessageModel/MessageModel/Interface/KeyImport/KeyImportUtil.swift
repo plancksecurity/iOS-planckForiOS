@@ -114,17 +114,23 @@ extension KeyImportUtil: KeyImportUtilProtocol {
         PEPSession().setOwnKey(pEpId,
                                     fingerprint: fingerprint,
                                     errorCallback: errorCallback) {
-//                                        let moc = Stack.shared.newPrivateConcurrentContext
-//                                        moc.performAndWait {//BUFF: commented out as I understood volker we must not do that. The imported key could be too short and it will not be used for instance. In this case we would have an own identity without key. IOS-2405
+                                        let moc = Stack.shared.newPrivateConcurrentContext
+                                        moc.performAndWait {
+                                            //BUFF: commented out as I understood volker we must not do that. The imported key could be too short and it will not be used for instance. In this case we would have an own identity without key. IOS-2405
 //                                            CdIdentity.updateOrCreate(withAddress: address,
 //                                                                      userID: CdIdentity.pEpOwnUserID,
 //                                                                      addressBookID: nil,
 //                                                                      userName: userName,
 //                                                                      context: moc)
 //                                            moc.saveAndLogErrors()
-//                                            callback()
-//                                        }
-                                        callback()
+                                            if let existingCdIdentity = CdIdentity.search(address: address, context: moc),
+                                                let belongingAccount = existingCdIdentity.accounts?.allObjects.first as? CdAccount {
+                                                // A new key has been set for an existing account. Try to re-decrypt all yet undecryptable messages.
+                                                CdMessage.markAllUndecryptableMessagesForRetryDecrypt(for: belongingAccount, context: moc)
+                                                moc.saveAndLogErrors()
+                                            }
+                                            callback()
+                                        }
         }
     }
 }
