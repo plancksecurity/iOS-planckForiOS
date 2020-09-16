@@ -412,7 +412,6 @@
 		B722EC651E5B49BA00A2B9D5 /* FolderSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC641E5B49BA00A2B9D5 /* FolderSectionViewModel.swift */; };
 		B72C7BAA2395182F0013B12E /* AccountTypeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72C7BA92395182F0013B12E /* AccountTypeSelectorViewController.swift */; };
 		B72C7BAC2395198D0013B12E /* AccountTypeSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72C7BAB2395198D0013B12E /* AccountTypeSelectorViewModel.swift */; };
-		B73123CA23D07739009EDC62 /* SettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73123C923D07739009EDC62 /* SettingsViewModelTest.swift */; };
 		B745049D24F7B00F00293B8C /* String+htmlTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B745049C24F7B00F00293B8C /* String+htmlTest.swift */; };
 		B74F37CD24ADD2B00083501B /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F37CC24ADD2B00083501B /* EmailViewController.swift */; };
 		B74F81021EB0E20000519FCC /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F81011EB0E20000519FCC /* LoginViewModel.swift */; };
@@ -1011,7 +1010,6 @@
 		B722EC641E5B49BA00A2B9D5 /* FolderSectionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderSectionViewModel.swift; path = Folder/ViewModel/FolderSectionViewModel.swift; sourceTree = "<group>"; };
 		B72C7BA92395182F0013B12E /* AccountTypeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeSelectorViewController.swift; sourceTree = "<group>"; };
 		B72C7BAB2395198D0013B12E /* AccountTypeSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeSelectorViewModel.swift; sourceTree = "<group>"; };
-		B73123C923D07739009EDC62 /* SettingsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTest.swift; sourceTree = "<group>"; };
 		B745049C24F7B00F00293B8C /* String+htmlTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "String+htmlTest.swift"; path = "pEpForiOSTests/Util/String+htmlTest.swift"; sourceTree = SOURCE_ROOT; };
 		B74F37CC24ADD2B00083501B /* EmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
 		B74F81011EB0E20000519FCC /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -3287,7 +3285,6 @@
 				158BCFF024237FDB00E41F67 /* TestData.swift in Sources */,
 				B745049D24F7B00F00293B8C /* String+htmlTest.swift in Sources */,
 				15BA536E20A095410090F126 /* UnifiedInboxTest.swift in Sources */,
-				B73123CA23D07739009EDC62 /* SettingsViewModelTest.swift in Sources */,
 				15D7D990219AD38B00A1A2B9 /* MediaAttachmentPickerProviderViewModelTest.swift in Sources */,
 				15410D222199D83200BBF65F /* AccountCellViewModelTest.swift in Sources */,
 				3705704122B8EB27002E3AAD /* KeySyncDeviceGroupUtilMoc.swift in Sources */,
