@@ -66,24 +66,6 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         XCTAssertEqual(Folder.localizedName(realName: self.inbox.realName), emailListVM.folderName)
     }
 
-    func testGetDestructiveAction() {
-        TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: inbox)
-        setupViewModel()
-        emailListVM.startMonitoring()
-        let destructiveAction = emailListVM.getDestructiveAction(forMessageAt: 0)
-
-        XCTAssertEqual(destructiveAction, .trash)
-    }
-
-    func testGetDestructiveActionInOutgoingFolderIsTrash() {
-        _ = givenThereIsAMessageIn(folderType: .outbox)
-        setupViewModel()
-        emailListVM.startMonitoring()
-        let destructiveAction = emailListVM.getDestructiveAction(forMessageAt: 0)
-
-        XCTAssertEqual(destructiveAction, .trash)
-    }
-
     func testShouldShowToolbarEditButtonsIfItsNotOutboxFolder() {
         setupViewModel()
         emailListVM.startMonitoring()
@@ -95,47 +77,6 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         emailListVM.startMonitoring()
         showToolbarButtons = emailListVM.shouldShowToolbarEditButtons
         XCTAssertFalse(showToolbarButtons)
-    }
-
-    func testGetFlagAndMoreAction() {
-        let messages = TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: inbox)
-        setupViewModel()
-        emailListVM.startMonitoring()
-        var flagAction = emailListVM.getFlagAction(forMessageAt: 0)
-        let moreAction = emailListVM.getMoreAction(forMessageAt: 0)
-
-        XCTAssertEqual(flagAction, .flag)
-        XCTAssertEqual(moreAction, .more)
-
-        messages[0].imapFlags.flagged = true
-        messages[0].session.commit()
-
-        flagAction = emailListVM.getFlagAction(forMessageAt: 0)
-
-        XCTAssertEqual(flagAction, .unflag)
-    }
-
-    func testGetFlagAndMoreActionInOutgoingFolderIsNil() {
-        givenThereIsAMessageIn(folderType: .outbox)
-        setupViewModel()
-        emailListVM.startMonitoring()
-
-        let flagAction = emailListVM.getFlagAction(forMessageAt: 0)
-        let moreAction = emailListVM.getMoreAction(forMessageAt: 0)
-
-        XCTAssertEqual(flagAction, nil)
-        XCTAssertEqual(moreAction, nil)
-    }
-
-    func testGetFlagAndMoreActionInDraftFolderIsNil() {
-        givenThereIsAMessageIn(folderType: .drafts)
-        setupViewModel()
-        emailListVM.startMonitoring()
-        let flagAction = emailListVM.getFlagAction(forMessageAt: 0)
-        let moreAction = emailListVM.getMoreAction(forMessageAt: 0)
-
-        XCTAssertEqual(flagAction, nil)
-        XCTAssertEqual(moreAction, nil)
     }
 
     func testAccountExists() {
