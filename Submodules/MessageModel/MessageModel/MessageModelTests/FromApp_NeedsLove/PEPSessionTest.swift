@@ -56,7 +56,7 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
         PEPSession().decryptMessage(pEpMessage, flags: .none, extraKeys: nil, errorCallback: { (_) in
             XCTFail()
             return
-        }) { (_, _, _, _, _) in
+        }) { (_, _, _, _, _, _) in
             expDecryptDone.fulfill()
         }
         waitForExpectations(timeout: TestUtil.waitTime)
@@ -123,7 +123,7 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
         PEPSession().decryptMessage(message, flags: .none, extraKeys: nil, errorCallback: { (error) in
             XCTFail(error.localizedDescription)
             exp.fulfill()
-        }) { (_, pEpDecrypted, _, _, _) in
+        }) { (_, pEpDecrypted, _, _, _, _) in
             testee = pEpDecrypted
             exp.fulfill()
         }
