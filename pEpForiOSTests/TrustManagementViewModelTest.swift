@@ -12,7 +12,7 @@ import XCTest
 
 class TrustManagementViewModelTest: AccountDrivenTestBase {
     var selfIdentity : Identity?
-    var trustManagementViewModel : TrustManagementViewModel?
+    var trustManagementViewModel: TrustManagementViewModel?
     let numberOfRowsToGenerate = 1
     var identities = [Identity]()
     let delegate = TrustManagementViewModelDelegateMock()
