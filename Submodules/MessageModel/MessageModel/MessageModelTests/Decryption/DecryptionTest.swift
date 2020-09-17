@@ -54,7 +54,7 @@ class DecryptionTest: PersistentStoreDrivenTestBase {
         PEPAsyncSession().decryptMessage(pEpMsg, flags: .none, extraKeys: extraKeys, errorCallback: { (error) in
             XCTFail(error.localizedDescription)
             exp.fulfill()
-        }) { (_, _, keyList, pEpRating, _) in
+        }) { (_, _, keyList, pEpRating, _, _) in
             extraKeys = keyList
             rating = pEpRating
             exp.fulfill()
