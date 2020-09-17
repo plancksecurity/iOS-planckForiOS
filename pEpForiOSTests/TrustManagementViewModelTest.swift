@@ -1,4 +1,3 @@
-    //IOS-2241 DOES NOT COMPILE
 //
 //  TrustManagementViewModelTest.swift
 //  pEpForiOSTests
