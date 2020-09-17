@@ -44,7 +44,7 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
         let pEpMessage = cdmessage1.pEpMessage()
 
         let expEncryptDone = expectation(description: "expEnDeCryptDone")
-        PEPAsyncSession().encryptMessage(pEpMessage, extraKeys: nil, encFormat: .PEP, errorCallback: { (_) in
+        PEPSession().encryptMessage(pEpMessage, extraKeys: nil, encFormat: .PEP, errorCallback: { (_) in
             XCTFail()
             return
         }) { (src, dest) in
@@ -53,7 +53,7 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
         waitForExpectations(timeout: TestUtil.waitTime)
 
         let expDecryptDone = expectation(description: "expDecryptDone")
-        PEPAsyncSession().decryptMessage(pEpMessage, flags: .none, extraKeys: nil, errorCallback: { (_) in
+        PEPSession().decryptMessage(pEpMessage, flags: .none, extraKeys: nil, errorCallback: { (_) in
             XCTFail()
             return
         }) { (_, _, _, _, _, _) in
@@ -120,7 +120,7 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
         var testee: PEPMessage? = nil
 
         let exp = expectation(description: "exp")
-        PEPAsyncSession().decryptMessage(message, flags: .none, extraKeys: nil, errorCallback: { (error) in
+        PEPSession().decryptMessage(message, flags: .none, extraKeys: nil, errorCallback: { (error) in
             XCTFail(error.localizedDescription)
             exp.fulfill()
         }) { (_, pEpDecrypted, _, _, _, _) in

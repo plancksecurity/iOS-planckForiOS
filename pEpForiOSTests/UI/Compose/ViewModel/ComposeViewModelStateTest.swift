@@ -284,7 +284,7 @@ class ComposeViewModelStateTest: AccountDrivenTestBase {
                                     expectedNewRating: Rating? = nil) {
         let exp = expectation(description: "exp")
 
-        PEPAsyncSession().mySelf(account.user.pEpIdentity(), errorCallback: { (_) in
+        PEPSession().mySelf(account.user.pEpIdentity(), errorCallback: { (_) in
             XCTFail()
             exp.fulfill()
         }) { (_) in

@@ -110,11 +110,11 @@ extension KeySyncService {
                                             if result == .cancel || result == .rejected {
                                                 self?.fastPollingDelegate?.disableFastPolling()
                                             }
-                                            PEPAsyncSession().deliver(result.pEpSyncHandshakeResult(),
-                                                                      identitiesSharing: [me, partner],
-                                                                      errorCallback: { (error: Error) in
-                                                                        Log.shared.errorAndCrash("Error delivering handshake result: %@",
-                                                                                                 error.localizedDescription)
+                                            PEPSession().deliver(result.pEpSyncHandshakeResult(),
+                                                                 identitiesSharing: [me, partner],
+                                                                 errorCallback: { (error: Error) in
+                                                                    Log.shared.errorAndCrash("Error delivering handshake result: %@",
+                                                                                             error.localizedDescription)
                                             }) {
                                                 // Caller doesn't care about the result
                                             }

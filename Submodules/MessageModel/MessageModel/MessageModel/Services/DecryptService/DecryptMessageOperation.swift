@@ -65,7 +65,7 @@ extension DecryptMessageOperation {
         var isAFormerlyEncryptedReuploadedMessage = false
         let group = DispatchGroup()
         group.enter()
-        PEPAsyncSession().decryptMessage(inOutMessage, flags: inOutFlags, extraKeys: fprsOfExtraKeys, errorCallback: { (error) in
+        PEPSession().decryptMessage(inOutMessage, flags: inOutFlags, extraKeys: fprsOfExtraKeys, errorCallback: { (error) in
             nsError = error as NSError
             group.leave()
         }) { (pEpSourceMessage, pEpDecryptedMsg, keyList, pEpRating, decryptFlags, isFormerlyEncryptedReuploadedMessage) in
