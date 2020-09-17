@@ -6,8 +6,6 @@
 //  Copyright © 2019 pEp Security S.A. All rights reserved.
 //
 
-import PEPObjCAdapterFramework
-
 public protocol KeySyncServiceHandshakeHandlerProtocol: class {
 
     /// Show pEp Sync Wizzard
@@ -17,10 +15,10 @@ public protocol KeySyncServiceHandshakeHandlerProtocol: class {
     ///   - partner: my partner trust words
     ///   - isNewGroup: is it a new group creation or i am joining an existing group
     ///   - completion: handle the possible results of type PEPSyncHandshakeResult
-    func showHandshake(me: PEPIdentity,
-                       partner: PEPIdentity,
+    func showHandshake(meFingerprint: String?,
+                       partnerFingerprint: String?,
                        isNewGroup: Bool,
-                       completion: ((PEPSyncHandshakeResult)->())?)
+                       completion: ((KeySyncHandshakeResult)->())?)
 
     func cancelHandshake()
 
@@ -31,4 +29,16 @@ public protocol KeySyncServiceHandshakeHandlerProtocol: class {
 
 public enum KeySyncErrorResponse {
     case tryAgain, notNow
+}
+
+/// Derived from engine/adapter enums.
+public enum KeySyncHandshakeResult {
+    /// PEPSyncHandshakeResultCancel, SYNC_HANDSHAKE_CANCEL
+    case cancel
+
+    /// PEPSyncHandshakeResultAccepted, SYNC_HANDSHAKE_ACCEPTED
+    case accepted
+
+    /// PEPSyncHandshakeResultRejected, SYNC_HANDSHAKE_REJECTED
+    case rejected
 }
