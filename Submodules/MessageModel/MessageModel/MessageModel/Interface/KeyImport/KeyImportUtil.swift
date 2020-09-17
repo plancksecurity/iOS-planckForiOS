@@ -30,10 +30,6 @@ extension KeyImportUtil {
     public enum SetOwnKeyError: Error {
         /// No matching account could be found
         case noMatchingAccount
-
-        /// The key could not be set as an own key for other reasons,
-        /// e.g. there was an error in the engine
-        case cannotSetOwnKey
     }
 }
 
@@ -121,6 +117,38 @@ extension KeyImportUtil: KeyImportUtilProtocol {
                      moc.saveAndLogErrors()
                 }
                 callback()
+            }
+        }
+    }
+}
+
+extension KeyImportUtil {
+    /// Set the key with the given fingerprint as the new own key for the given identity.
+    /// - Note: The identity to call this on MUST be an own identity!
+    /// - Parameter identity: The identity to set own key to.
+    /// - Parameter fingerprint: The fingerprint of an already imported key
+    /// that should be set as the new own key for this identity.
+    /// - Throws: Status code errors from the engine's `set_own_key`.
+    static public func setOwnKey(identity: Identity,
+                                 fingerprint: String,
+                                 errorCallback: @escaping (Error) -> (),
+                                 completion: @escaping () -> ()) {
+        let pEpId = identity.pEpIdentity()
+
+        // The fingerprint is not needed by the engine's set_own_key.
+        pEpId.fingerPrint = nil
+
+        PEPAsyncSession().setOwnKey(pEpId,
+                                    fingerprint: fingerprint.despaced(),
+                                    errorCallback: { (error) in
+                                        errorCallback(error)
+        }) {
+            identity.session.perform {
+                // We got a new key. Try to derypt yet undecryptable messages.
+                let cdAccount = CdAccount.searchAccount(withAddress: identity.address,
+                                                        context: identity.session.moc)
+                Message.tryRedecryptYetUndecryptableMessages(for: cdAccount)
+                completion()
             }
         }
     }

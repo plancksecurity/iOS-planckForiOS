@@ -108,14 +108,15 @@ class ComposeTableViewController: UITableViewController {
 // MARK: - PEP Color View
 
 extension ComposeTableViewController {
-    private func setupPepColorView(for pEpRating: PEPRating, pEpProtected: Bool) {
+    private func setupPepColorView(for pEpRating: Rating, pEpProtected: Bool) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
         }
 
         //Not so nice. The view(controller) should not know about state and protection.
-        let pEpRatingView = showNavigationBarSecurityBadge(pEpRating: pEpRating, pEpProtection: pEpProtected)
+        let pEpRatingView = showNavigationBarSecurityBadge(pEpRating: pEpRating,
+                                                           pEpProtection: pEpProtected)
 
         // Handshake on simple touch if possible
         vm.canDoHandshake { [weak self] (canDoHandshake) in
@@ -273,7 +274,7 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
         tableView.endUpdates()
     }
 
-    func colorBatchNeedsUpdate(for rating: PEPRating, protectionEnabled: Bool) {
+    func colorBatchNeedsUpdate(for rating: Rating, protectionEnabled: Bool) {
         setupPepColorView(for: rating, pEpProtected: protectionEnabled)
     }
 

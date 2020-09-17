@@ -7,10 +7,9 @@
 //
 
 import Foundation
-
 import MessageModel
+
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
 
 class MessageViewModel: CustomDebugStringConvertible {
     static fileprivate var maxBodyPreviewCharacters = 120

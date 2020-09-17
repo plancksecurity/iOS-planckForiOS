@@ -27,7 +27,11 @@ class HandshakeTests: PersistentStoreDrivenTestBase {
         cdInbox.account = cdAccount
         moc.saveAndLogErrors()
 
-        decryptedMessageSetup(pEpMySelfIdentity: cdAccount.pEpIdentity())
+        guard let accountId = cdAccount.identity else {
+            XCTFail()
+            return
+        }
+        decryptedMessageSetup(pEpMySelfIdentity: accountId.pEpIdentity())
     }
 
     func decryptedMessageSetup(pEpMySelfIdentity: PEPIdentity) {
