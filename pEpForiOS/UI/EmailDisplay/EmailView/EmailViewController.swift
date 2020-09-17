@@ -37,8 +37,6 @@ class EmailViewController: BaseTableViewController {
         loadDatasource("MessageData")
         tableView.estimatedRowHeight = 72.0
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.setNeedsLayout()
-        tableView.layoutIfNeeded()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -176,14 +174,13 @@ extension EmailViewController {
 
     override func tableView(_ tableView: UITableView,
                             heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard
-            let row = tableData?.getRow(at: indexPath.row) else {
+        guard let row = tableData?.getRow(at: indexPath.row) else {
                 Log.shared.errorAndCrash("Missing data")
                 return tableView.estimatedRowHeight
         }
 
         if row.type == .content, htmlBody(message: message) != nil {
-            return htmlViewerViewController.contentSize?.height ?? tableView.rowHeight
+            return htmlViewerViewController.contentSize.height
         } else {
             return tableView.rowHeight
         }
@@ -287,8 +284,7 @@ extension EmailViewController: MessageAttachmentDelegate {
 // MARK: - SecureWebViewControllerDelegate
 
 extension EmailViewController: SecureWebViewControllerDelegate {
-    func secureWebViewController(_ webViewController: SecureWebViewController,
-                                 sizeChangedTo size: CGSize) {
+    func didFinishLoading() {
         tableView.updateSize()
     }
 }
