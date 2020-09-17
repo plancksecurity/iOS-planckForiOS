@@ -37,6 +37,19 @@ class FolderViewModelTest: AccountDrivenTestBase {
         }
     }
 
+    func testAccountSectionsWithoutUnifiedFolderShouldBeAccountNumber() {
+        for accountNumber in 0...Input.maxNumberOfTestAccounts {
+
+            let accounts = givenThereIs(numberOfAccounts: accountNumber)
+            givenThereIsAViewModel(withUniFiedInBox: false, and: accounts )
+
+            let viewmodelSections = viewmodel.count
+
+            //If it is not unified inbox it should have accounts.count section
+            XCTAssertEqual(viewmodelSections, accounts.count)
+        }
+    }
+
     func testFoldersAppearInTheCorrectOrder() {
         //preparing the folder structure
         let acc = givenThereIsAnAccountWithAFolder()
@@ -65,19 +78,6 @@ class FolderViewModelTest: AccountDrivenTestBase {
         }
     }
 
-    func testAccountSectionsWithoutUnifiedFolderShouldBeAccountNumber() {
-        for accountNumber in 0...Input.maxNumberOfTestAccounts {
-
-            let accounts = givenThereIs(numberOfAccounts: accountNumber)
-            givenThereIsAViewModel(withUniFiedInBox: false, and: accounts )
-
-            let viewmodelSections = viewmodel.count
-
-            //If it is not unified inbox it should have accounts.count section
-            XCTAssertEqual(viewmodelSections, accounts.count)
-        }
-    }
-    
     func testNoAccountExistTrueAfterDeleteAccounts() {
         givenThereIsNotAccounts(withUnifiedInbox: false)
         let noAccountsExist = viewmodel.noAccountsExist()
