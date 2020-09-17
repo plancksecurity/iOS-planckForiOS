@@ -147,10 +147,10 @@ extension KeyImportUtil {
         // The fingerprint is not needed by the engine's set_own_key.
         pEpId.fingerPrint = nil
 
-        PEPAsyncSession().setOwnKey(pEpId,
-                                    fingerprint: fingerprint.despaced(),
-                                    errorCallback: { (error) in
-                                        errorCallback(error)
+        PEPSession().setOwnKey(pEpId,
+                               fingerprint: fingerprint.despaced(),
+                               errorCallback: { (error) in
+                                errorCallback(error)
         }) {
             identity.session.perform {
                 // We got a new key. Try to derypt yet undecryptable messages.

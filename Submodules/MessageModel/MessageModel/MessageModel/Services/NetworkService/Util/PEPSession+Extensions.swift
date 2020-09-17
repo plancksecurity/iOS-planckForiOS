@@ -10,7 +10,7 @@ import PEPObjCAdapterFramework
 
 // MARK: - Useful extensions for PEPSession
 
-extension PEPAsyncSession {
+extension PEPSession {
     func outgoingMessageRating(from: Identity,
                                to: [Identity],
                                cc: [Identity],
