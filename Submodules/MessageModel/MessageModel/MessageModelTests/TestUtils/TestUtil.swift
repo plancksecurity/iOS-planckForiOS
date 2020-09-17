@@ -348,19 +348,6 @@ extension TestUtil {
             return (identity, receiver1, receiver2, receiver3, receiver4)
     }
 
-    static func loadString(fileName: String) -> String? {
-        if let data = MiscUtil.loadData(bundleClass: self, fileName: fileName) {
-            guard let content = NSString(data: data, encoding: String.Encoding.ascii.rawValue)
-                else {
-                    XCTAssertTrue(
-                        false, "Could not convert key with file name \(fileName) into data")
-                    return nil
-            }
-            return content as String
-        }
-        return nil
-    }
-
     static func createAttachment(inlined: Bool = true) -> Attachment {
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
         guard let imageData = TestUtil.loadData(testClass: self, fileName: imageFileName) else {
