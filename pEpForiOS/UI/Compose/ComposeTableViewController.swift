@@ -245,6 +245,7 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
             if cell.textView.text == "" {
                 cell.textView.text = " "
             }
+            setInitialFocus()
             cell.textView.sizeToFit()
             // We call this function only when focus is set (not before that)
             scrollUtil.layoutAfterTextDidChange(tableView: tableView, textView: cell.textView)
