@@ -7,9 +7,8 @@
 //
 
 import Foundation
-import MessageModel
-import PEPObjCAdapterFramework
 
+import MessageModel
 
 /// delegate protocol to inform about incoming changes in the tableview
 protocol ResetTrustViewModelDelegate: class {

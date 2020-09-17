@@ -7,19 +7,19 @@
 //
 
 import Foundation
-import PEPObjCAdapterFramework
+
+import MessageModel
 
 public struct PEPStatusText {
-    let rating: PEPRating
+    let rating: Rating
     let title: String
     let explanation: String
     let suggestion: String
 }
 
 extension String {
-    
     /// Struct that provides the texts to the trust management view according to the colors.
-    struct TrustManagementText {
+    private struct TrustManagementText {
         static let red = PEPStatusText(rating: .mistrust,
                                        title: NSLocalizedString("Mistrusted", comment: "Privacy status title"),
                                        explanation: NSLocalizedString("This contact is mistrusted. If you rejected the Trustwords accidentally, you could reset the p≡p data.", comment: "Privacy status title"),
@@ -41,7 +41,7 @@ extension String {
     /**
      All privacy status strings for the trust management.
      */
-    static let trustIdentityTranslation: [PEPRating: PEPStatusText] =
+    private static let trustIdentityTranslation: [Rating: PEPStatusText] =
         [.underAttack: TrustManagementText.red,
          .b0rken: TrustManagementText.red,
          .mistrust: TrustManagementText.red,
@@ -50,7 +50,6 @@ extension String {
          .haveNoKey: TrustManagementText.noColor,
          .cannotDecrypt: TrustManagementText.noColor,
          .unreliable: TrustManagementText.noColor,
-         .unencryptedForSome: TrustManagementText.noColor,
          .fullyAnonymous: TrustManagementText.green,
          .trustedAndAnonymized: TrustManagementText.green,
          .trusted: TrustManagementText.green,
@@ -59,7 +58,7 @@ extension String {
     /**
      All privacy status strings, i18n ready.
      */
-    static let pEpRatingTranslations: [PEPRating: PEPStatusText] =
+    private static let pEpRatingTranslations: [Rating: PEPStatusText] =
         [.underAttack:
             PEPStatusText(
                 rating: .underAttack,
@@ -144,17 +143,7 @@ extension String {
                 suggestion:
                 NSLocalizedString("This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p.",
                                   comment: "Privacy status suggestion")),
-         .unencryptedForSome:
-            PEPStatusText(
-                rating: .unencryptedForSome,
-                title: NSLocalizedString("Unsecure for Some",
-                                         comment: "Privacy status title"),
-                explanation:
-                NSLocalizedString("This message is unsecure for some communication partners.",
-                                  comment: "Privacy status explanation"),
-                suggestion:
-                NSLocalizedString("Make sure the privacy status for each communication partner listed is at least secure",
-                                  comment: "Privacy status suggestion")),
+
          .unencrypted:
             PEPStatusText(
                 rating: .unencrypted,
@@ -188,7 +177,7 @@ extension String {
                                   comment: "Privacy status suggestion")),
          .undefined: undefinedPEPMessageRating()]
 
-    public static func undefinedPEPMessageRating() -> PEPStatusText {
+    private static func undefinedPEPMessageRating() -> PEPStatusText {
         return PEPStatusText(
             rating: .undefined,
             title: NSLocalizedString("Unknown",
@@ -200,7 +189,7 @@ extension String {
                                           comment: "Privacy status suggestion"))
     }
 
-    public static func pEpRatingTranslation(pEpRating: PEPRating?) -> PEPStatusText {
+    public static func pEpRatingTranslation(pEpRating: Rating?) -> PEPStatusText {
         let defResult = undefinedPEPMessageRating()
         if let rating = pEpRating {
             return pEpRatingTranslations[rating] ??
@@ -211,7 +200,7 @@ extension String {
     }
     
     
-    public static func trustIdentityTranslation(pEpRating: PEPRating?) -> PEPStatusText {
+    public static func trustIdentityTranslation(pEpRating: Rating?) -> PEPStatusText {
         let defaultRestult = undefinedPEPTrustIdentityRating()
         if let rating = pEpRating {
             return trustIdentityTranslation[rating] ??
@@ -220,7 +209,7 @@ extension String {
             return defaultRestult
         }
     }
-    
+
     /// Default Status Text, for undefined identity's pEpRating.
     private static func undefinedPEPTrustIdentityRating() -> PEPStatusText {
         let explanation = NSLocalizedString("Unknown.", comment: "Privacy status explanation")
@@ -231,34 +220,5 @@ extension String {
             title: title,
             explanation: explanation,
             suggestion: suggestion)
-    }
-
-    public static func pEpTitle(pEpRating: PEPRating?) -> String {
-        return pEpRatingTranslation(pEpRating: pEpRating).title
-    }
-
-    public static func pEpExplanation(pEpRating: PEPRating?) -> String {
-        return pEpRatingTranslation(pEpRating: pEpRating).explanation
-    }
-
-    public static func pEpSuggestion(pEpRating: PEPRating?) -> String {
-        return pEpRatingTranslation(pEpRating: pEpRating).suggestion
-    }
-
-    static let pgpMessageTextRegex = try! NSRegularExpression(
-        pattern: "^(\\s)*-----BEGIN PGP MESSAGE-----",
-        options: [])
-
-    /**
-     Does this string start with "-----BEGIN PGP MESSAGE-----",
-     apart from any leading spaces?
-     */
-    public func startsWithBeginPgpMessage() -> Bool {
-        if let _ = String.pgpMessageTextRegex.firstMatch(
-            in: self, options: [],
-            range: wholeRange()) {
-            return true
-        }
-        return false
     }
 }

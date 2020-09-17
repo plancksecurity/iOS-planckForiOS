@@ -7,7 +7,6 @@
 //
 
 import MessageModel
-import PEPObjCAdapterFramework
 
 class KeySyncHandshakeService {
     private weak var pEpSyncWizard: KeySyncWizardViewController?
@@ -51,12 +50,12 @@ extension KeySyncHandshakeService {
 }
 
 extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
-    func showHandshake(me: PEPIdentity,
-                       partner: PEPIdentity,
+    func showHandshake(meFingerprint: String?,
+                       partnerFingerprint: String?,
                        isNewGroup: Bool,
-                       completion: ((PEPSyncHandshakeResult)->())? = nil) {
+                       completion: ((KeySyncHandshakeResult)->())? = nil) {
 
-        guard let meFPR = me.fingerPrint, let partnerFPR = partner.fingerPrint else {
+        guard let meFPR = meFingerprint, let partnerFPR = partnerFingerprint else {
             Log.shared.errorAndCrash("Missing FPRs")
             return
         }

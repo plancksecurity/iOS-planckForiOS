@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import PEPObjCAdapterFramework
 
 // MARK: - Message+ReDecrypt
 

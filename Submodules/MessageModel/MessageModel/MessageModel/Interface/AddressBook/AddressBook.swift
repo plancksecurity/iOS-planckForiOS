@@ -7,9 +7,9 @@
 //
 
 import Contacts
-import pEpIOSToolbox
-import PEPObjCAdapterFramework
 import CoreData
+
+import pEpIOSToolbox
 
 public class AddressBook {
     static private var updateidetityStateIsStopped: UnsafeMutablePointer<ObjCBool>?

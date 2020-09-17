@@ -6,8 +6,6 @@
 //  Copyright © 2019 pEp Security S.A. All rights reserved.
 //
 
-import PEPObjCAdapterFramework
-
 extension Notification.Name {
 
     /// Notification name for KeySync device group state change broadcasts.

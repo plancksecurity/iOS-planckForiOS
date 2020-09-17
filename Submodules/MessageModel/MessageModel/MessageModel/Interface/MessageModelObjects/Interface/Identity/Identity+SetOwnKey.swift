@@ -26,7 +26,7 @@ extension Identity {
         pEpId.fingerPrint = nil
 
         let me = self // TODO: potential memory leak
-        PEPAsyncSession().setOwnKey(pEpId,
+        PEPSession().setOwnKey(pEpId,
                                     fingerprint: fingerprint.despaced(),
                                     errorCallback: { (error) in
                                         errorCallback(error)

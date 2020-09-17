@@ -8,7 +8,6 @@
 
 import MessageModel
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
 
 protocol ComposeViewModelDelegate: class {
 
@@ -30,7 +29,7 @@ protocol ComposeViewModelDelegate: class {
 
     func sectionChanged(section: Int)
 
-    func colorBatchNeedsUpdate(for rating: PEPRating, protectionEnabled: Bool)
+    func colorBatchNeedsUpdate(for rating: Rating, protectionEnabled: Bool)
 
     func hideSuggestions()
 
@@ -286,7 +285,7 @@ extension ComposeViewModel {
             completion(true)
             return
         }
-        var originalRating: PEPRating? = nil //!!!: BUFF: AFAIU originalRating MUST NOT taken be taken into account any more since IOS-2414
+        var originalRating: Rating? = nil //!!!: BUFF: AFAIU originalRating MUST NOT taken be taken into account any more since IOS-2414
         let group = DispatchGroup()
         group.enter()
         originalMessage.pEpRating { (rating) in
@@ -345,7 +344,7 @@ extension ComposeViewModel: ComposeViewModelStateDelegate {
     }
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
-                               didChangePEPRatingTo newRating: PEPRating) {
+                               didChangePEPRatingTo newRating: Rating) {
         delegate?.colorBatchNeedsUpdate(for: newRating, protectionEnabled: state.pEpProtection)
     }
 
