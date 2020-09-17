@@ -11,19 +11,19 @@ import PEPObjCAdapterFramework
 // MARK: - Useful extensions for PEPSession
 
 extension PEPAsyncSession {
-
-    public func outgoingMessageRating(from: Identity,
-                                      to: [Identity],
-                                      cc: [Identity],
-                                      bcc: [Identity],
-                                      completion: @escaping (PEPRating)->Void) {
+    func outgoingMessageRating(from: Identity,
+                               to: [Identity],
+                               cc: [Identity],
+                               bcc: [Identity],
+                               completion: @escaping (PEPRating) -> Void) {
         let mapper: (Identity) -> CdIdentity = { ident in
             return ident.cdObject
         }
         outgoingMessageRating(from: from.cdObject,
                               to: to.map(mapper),
                               cc: cc.map(mapper),
-                              bcc: bcc.map(mapper), completion: completion)
+                              bcc: bcc.map(mapper),
+                              completion: completion)
     }
 }
 
