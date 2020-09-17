@@ -294,16 +294,6 @@ extension TestUtil {
 
     // MARK: - Moved from App target. Needs love, review, ideally remove
 
-    static func cdFolder(ofType type: FolderType,
-                         in cdAccount: CdAccount,
-                         context: NSManagedObjectContext? = nil) -> CdFolder {
-        guard let folder = CdFolder.by(folderType: type, account: cdAccount, context: context)
-            else {
-                fatalError()
-        }
-        return folder
-    }
-
     static func checkForExistanceAndUniqueness(uuids: [MessageID],
                                                context: NSManagedObjectContext) {
         for uuid in uuids {
