@@ -42,7 +42,9 @@ extension String {
     public func htmlConvertImageLinksToImageMarkdownString(html: String, attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate? = nil) -> String {
 
         //Pattern to get all images tags in the current html
-        let pattern = "<img\\b(?=\\s)(?=(?:[^>=]|='[^']*'|=\"[^\"]*\"|=[^'\"][^\\s>]*)*?\\ssrc\\s*=\\s*['\"]([^\"]*)['\"]?)(?:[^>=]|='[^']*'|=\"[^\"]*\"|=[^'\"\\s]*)*\"\\s?\\/?>"
+        let pattern = """
+(<img.*?)(src.*?=.*?)(".*?")(.*?)(\\/*?>)
+"""
 
         let results = html.find(pattern: pattern)
 
