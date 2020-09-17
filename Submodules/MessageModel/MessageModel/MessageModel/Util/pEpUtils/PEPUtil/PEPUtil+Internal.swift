@@ -41,14 +41,23 @@ extension PEPUtils {
         return nil
     }
 
-    static func pEpRatingFromInt(_ i: Int?) -> PEPRating? {
-        guard let theInt = i else {
-            return nil
+    /// Conversion from PEPRating raw value to PEPRating.
+    /// - note: `i`MUST NOT be nil. Its only optional for convenience reasons, as CdO params are nullable.
+    /// - Parameter i: raw value for PEPRating. MUST NOT be `nil`. Must be a valid value, i.e. an existing raw value of PEPRating.
+    /// - Returns: PEPRating initialized with the given raw value. .undefined if the given value is invalid or nil.
+    static func pEpRatingFromInt(_ rawValue: Int?) -> PEPRating {
+        guard let theInt = rawValue else {
+            Log.shared.errorAndCrash("Invalid int !")
+            return .undefined
         }
         if theInt == PEPRating.undefined.rawValue {
             return .undefined
         }
-        return PEPRating(rawValue: Int32(theInt))
+        guard let ratingFromInt =  PEPRating(rawValue: Int32(theInt)) else {
+            Log.shared.errorAndCrash("Invalid int !")
+            return .undefined
+        }
+        return ratingFromInt
     }
 
     static func pEpColor(cdIdentity: CdIdentity,

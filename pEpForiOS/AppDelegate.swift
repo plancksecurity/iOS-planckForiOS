@@ -35,8 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Log.shared.errorAndCrash("No AppConfig")
             return false
         }
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
-        guard let initialNVC = mainStoryboard.instantiateViewController(withIdentifier: "main.initial.nvc") as? UISplitViewController,
+        let folderViews: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
+        guard let initialNVC = folderViews.instantiateViewController(withIdentifier: "main.initial.nvc") as? UISplitViewController,
             let navController = initialNVC.viewControllers.first as? UINavigationController,
             let rootVC = navController.rootViewController as? FolderTableViewController
             else {

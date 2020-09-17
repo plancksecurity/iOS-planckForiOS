@@ -167,6 +167,14 @@ extension CdMessage {
             }
         }
 
+        if pEpMessage.direction == .incoming {
+            guard let pEpIdentityReceiver = parent?.account?.identity?.pEpIdentity() else {
+                Log.shared.errorAndCrash("An incomming message MUST be received by someone. Invalid state!")
+                return pEpMessage
+            }
+            pEpMessage.receivedBy = pEpIdentityReceiver
+        }
+
         return pEpMessage
     }
 
@@ -225,11 +233,6 @@ extension CdMessage {
         let accountHasBeenCreatedInLocalNetwork = imapServer.automaticallyTrusted
         let userDecidedToTrustServer = imapServer.manuallyTrusted
         return accountHasBeenCreatedInLocalNetwork || userDecidedToTrustServer
-    }
-
-    // TODO: This is duplicated between MM and Cd.
-    var wasAlreadyUnencrypted: Bool {
-        return PEPUtils.pEpRatingFromInt(Int(self.pEpRating)) == .unencrypted
     }
 
     /// - Returns: all messages marked for UidMoveToTrash
