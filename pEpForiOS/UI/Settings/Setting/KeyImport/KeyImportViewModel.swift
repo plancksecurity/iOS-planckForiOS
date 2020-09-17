@@ -9,7 +9,6 @@
 import Foundation
 
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
 import MessageModel
 
 protocol KeyImportViewModelDelegate: class {

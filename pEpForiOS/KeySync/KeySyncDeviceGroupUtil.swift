@@ -7,7 +7,6 @@
 //
 
 import MessageModel
-import PEPObjCAdapterFramework
 
 protocol KeySyncUtilProtocol: class {
     static func leaveDeviceGroup(completion: @escaping ()->Void)
@@ -30,7 +29,7 @@ class KeySyncUtil {
 extension KeySyncUtil: KeySyncUtilProtocol {
 
     static func leaveDeviceGroup(completion: @escaping ()->Void) {
-        PEPSession().leaveDeviceGroup({ (error: Error) in
+        LeaveDeviceGroupService.leaveDeviceGroup({ (error: Error) in
             Log.shared.errorAndCrash(error: error)
             completion()
         }) {

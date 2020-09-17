@@ -6,9 +6,9 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import PantomimeFramework
 import CoreData
-import PEPObjCAdapterFramework
+
+import PantomimeFramework
 
 extension VerifiableAccount {
     public enum AccountType: CaseIterable {

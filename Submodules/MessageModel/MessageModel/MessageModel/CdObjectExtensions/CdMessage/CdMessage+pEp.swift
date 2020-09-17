@@ -117,9 +117,9 @@ extension CdMessage {
         pEpMessage.longMessage = longMessage
         pEpMessage.longMessageFormatted = longMessageFormatted
 
-        pEpMessage.to = PEPUtils.pEpIdentities(cdIdentitiesSet: to)
-        pEpMessage.cc = PEPUtils.pEpIdentities(cdIdentitiesSet: cc)
-        pEpMessage.bcc = PEPUtils.pEpIdentities(cdIdentitiesSet: bcc)
+        pEpMessage.to = CdIdentity.pEpIdentities(cdIdentitiesSet: to)
+        pEpMessage.cc = CdIdentity.pEpIdentities(cdIdentitiesSet: cc)
+        pEpMessage.bcc = CdIdentity.pEpIdentities(cdIdentitiesSet: bcc)
 
         pEpMessage.from = from?.pEpIdentity()
         pEpMessage.messageID = uuid

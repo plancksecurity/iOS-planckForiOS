@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import PEPObjCAdapterFramework
+
 import MessageModel
 
 protocol KeySyncHandshakeViewModelDelegate: class {
@@ -39,26 +39,24 @@ final class KeySyncHandshakeViewModel {
     private var partnerFPR: String?
     private var isNewGroup = true
 
-    private var _languages = [PEPLanguage]()
+    private var _languages = [TrustwordsLanguage]()
 
-    func languages(completion: @escaping ([PEPLanguage]) -> ()) {
+    func languages(completion: @escaping ([TrustwordsLanguage]) -> ()) {
         if !_languages.isEmpty {
             completion(_languages)
         } else {
-            PEPSession().languageList({ error in
-                Log.shared.errorAndCrash("%@", error.localizedDescription)
-                DispatchQueue.main.async {
-                    completion([])
+            TrustwordsLanguage.languages() { [weak self] langs in
+                guard let me = self else {
+                    // UI, this can happen
+                    return
                 }
-            }) { [weak self] theLangs in
-                DispatchQueue.main.async {
-                    guard let me = self else {
-                        // UI, this can happen
-                        return
-                    }
-                    me._languages = theLangs
-                    completion(theLangs)
+
+                if langs.isEmpty {
+                    Log.shared.errorAndCrash("There must be trustwords languages defined")
                 }
+
+                me._languages = langs
+                completion(langs)
             }
         }
     }

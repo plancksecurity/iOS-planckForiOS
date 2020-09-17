@@ -7,15 +7,15 @@
 //
 
 import MessageModel
+
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
 
 protocol ComposeViewModelStateDelegate: class {
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                didChangeValidationStateTo isValid: Bool)
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
-                               didChangePEPRatingTo newRating: PEPRating)
+                               didChangePEPRatingTo newRating: Rating)
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                didChangeProtection newValue: Bool)
@@ -33,8 +33,7 @@ extension ComposeViewModel {
             }
         }
         public private(set) var edited = false
-
-        public private(set) var rating = PEPRating.undefined {
+        public private(set) var rating = Rating.undefined {
             didSet {
                 if rating != oldValue {
                     delegate?.composeViewModelState(self, didChangePEPRatingTo: rating)
@@ -238,7 +237,7 @@ extension ComposeViewModel.ComposeViewModelState {
         }
 
         guard let from = from else {
-            rating = PEPRating.undefined
+            rating = .undefined
             return
         }
 
@@ -248,11 +247,11 @@ extension ComposeViewModel.ComposeViewModelState {
         let safeCc = Identity.makeSafe(ccRecipients, forSession: session)
         let safeBcc = Identity.makeSafe(bccRecipients, forSession: session)
 
-        PEPSession().outgoingMessageRating(from: safeFrom, to: safeTo, cc: safeCc, bcc: safeBcc) {
-            [weak self] (outgoingRating) in
+        Rating.outgoingMessageRating(from: safeFrom, to: safeTo, cc: safeCc, bcc: safeBcc) {
+            [weak self] outgoingRating in
 
             guard let me = self else {
-                // Valiud case. Compose might have been dismissed.
+                // Valid case. Compose might have been dismissed.
                 return
             }
             DispatchQueue.main.async {

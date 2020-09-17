@@ -281,7 +281,7 @@ class ComposeViewModelStateTest: AccountDrivenTestBase {
 
     private func assertValidatation(didChangeValidationStateMustBeCalled: Bool = true,
                                     expectedStateIsValid: Bool,
-                                    expectedNewRating: PEPRating? = nil) {
+                                    expectedNewRating: Rating? = nil) {
         let exp = expectation(description: "exp")
 
         PEPSession().mySelf(account.user.pEpIdentity(), errorCallback: { (_) in
@@ -303,7 +303,7 @@ class ComposeViewModelStateTest: AccountDrivenTestBase {
                         didChangeValidationStateMustBeCalled: Bool? = nil,
                         expectedStateIsValid: Bool? = nil,
                         didChangePEPRatingMustBeCalled: Bool? = nil,
-                        expectedNewRating: PEPRating? = nil,
+                        expectedNewRating: Rating? = nil,
                         didChangeProtectionMustBeCalled: Bool? = nil,
                         expectedNewProtection: Bool? = nil) {
         var expDidChangeValidationStateToCalled: XCTestExpectation? = nil
@@ -359,7 +359,7 @@ class ComposeViewModelStateTest: AccountDrivenTestBase {
         let expectedStateIsValid: Bool?
 
         let expDidChangePEPRatingToCalled: XCTestExpectation?
-        let expectedNewRating: PEPRating?
+        let expectedNewRating: Rating?
 
         let expDidChangeProtectionCalled: XCTestExpectation?
         let expectedNewProtection: Bool?
@@ -367,7 +367,7 @@ class ComposeViewModelStateTest: AccountDrivenTestBase {
         init(expDidChangeValidationStateToCalled: XCTestExpectation? = nil,
              expectedStateIsValid: Bool? = nil,
              expDidChangePEPRatingToCalled: XCTestExpectation? = nil,
-             expectedNewRating: PEPRating? = nil,
+             expectedNewRating: Rating? = nil,
              expDidChangeProtectionCalled: XCTestExpectation? = nil,
              expectedNewProtection: Bool? = nil) {
             self.expDidChangeValidationStateToCalled = expDidChangeValidationStateToCalled
@@ -391,7 +391,7 @@ class ComposeViewModelStateTest: AccountDrivenTestBase {
         }
 
         func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
-                                   didChangePEPRatingTo newRating: PEPRating) {
+                                   didChangePEPRatingTo newRating: Rating) {
             guard let exp = expDidChangePEPRatingToCalled, !ignoreAll  else {
                 // We ignore called or not
                 return
