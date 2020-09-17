@@ -152,7 +152,6 @@
 		15A536902155136800CF6204 /* PEPUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A5368F2155136800CF6204 /* PEPUtilTest.swift */; };
 		15B220501FBF5D6E00CA52BA /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B2204F1FBF5D6E00CA52BA /* InfoPlist.swift */; };
 		15B220521FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B220511FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift */; };
-		15BA536E20A095410090F126 /* UnifiedInboxTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BA536D20A095410090F126 /* UnifiedInboxTest.swift */; };
 		15BBBC6B1FD0527200B9DCC8 /* DisplayUserErrorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BBBC6A1FD0527200B9DCC8 /* DisplayUserErrorTest.swift */; };
 		15BBBC6C1FD05F4300B9DCC8 /* DisplayUserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152130531FD00B7A00688DF2 /* DisplayUserError.swift */; };
 		15D3D48B239FC14700F2EBFB /* EmailDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D3D489239FC14700F2EBFB /* EmailDetailCollectionViewCell.swift */; };
@@ -666,7 +665,6 @@
 		15B75BF723FB027600DAE976 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Thread.strings; sourceTree = "<group>"; };
 		15B75BF823FB027600DAE976 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		15B75BF923FB027700DAE976 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
-		15BA536D20A095410090F126 /* UnifiedInboxTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedInboxTest.swift; sourceTree = "<group>"; };
 		15BA537B20A1F5F50090F126 /* MoveToAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToAccountViewController.swift; sourceTree = "<group>"; };
 		15BBBC6A1FD0527200B9DCC8 /* DisplayUserErrorTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayUserErrorTest.swift; sourceTree = "<group>"; };
 		15D3D489239FC14700F2EBFB /* EmailDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1408,14 +1406,6 @@
 				15147EF6237EBE2A003989FE /* AppSettings+KeySyncDeviceGroupStateChangeNotification.swift */,
 			);
 			path = KeySync;
-			sourceTree = "<group>";
-		};
-		1544BD0021524C6C0075C5A0 /* Filter */ = {
-			isa = PBXGroup;
-			children = (
-				15BA536D20A095410090F126 /* UnifiedInboxTest.swift */,
-			);
-			path = Filter;
 			sourceTree = "<group>";
 		};
 		1549184422B933AA0091B6D6 /* AppleiOSSDK */ = {
@@ -2315,7 +2305,6 @@
 			isa = PBXGroup;
 			children = (
 				00172F442163C2D60079B189 /* Settings */,
-				1544BD0021524C6C0075C5A0 /* Filter */,
 				F73E4F7B2180746400CCFFED /* Folder */,
 				B7F4A792212DDFC500507B76 /* EmailListViewModelTest.swift */,
 				0017CD1C2162614400F62F13 /* MoveToFolderCellViewModelTests.swift */,
@@ -3260,7 +3249,6 @@
 				00262056217DCCB200DDAFB5 /* TrustedServerSettingsViewModelTest.swift in Sources */,
 				158BCFF024237FDB00E41F67 /* TestData.swift in Sources */,
 				B745049D24F7B00F00293B8C /* String+htmlTest.swift in Sources */,
-				15BA536E20A095410090F126 /* UnifiedInboxTest.swift in Sources */,
 				15D7D990219AD38B00A1A2B9 /* MediaAttachmentPickerProviderViewModelTest.swift in Sources */,
 				15410D222199D83200BBF65F /* AccountCellViewModelTest.swift in Sources */,
 				15BBBC6B1FD0527200B9DCC8 /* DisplayUserErrorTest.swift in Sources */,
