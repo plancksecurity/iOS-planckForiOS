@@ -20,7 +20,12 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
     override func setUp() {
         super.setUp()
 
+        let account = TestData().createWorkingAccount()
+
+        let outbox = Folder(name: "outbox", parent: nil, account: account, folderType: .outbox)
+
         let message = Message.newOutgoingMessage()
+        message.parent = outbox
         let fromIdentity = TestData().createPartnerIdentity(number: 0)
         fromIdentity.session.commit()
         message.from = fromIdentity
