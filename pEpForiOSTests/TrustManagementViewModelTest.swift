@@ -19,6 +19,13 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
     
     override func setUp() {
         super.setUp()
+
+        let message = Message.newOutgoingMessage()
+        let fromIdentity = TestData().createPartnerIdentity(number: 0)
+        fromIdentity.session.commit()
+        message.from = fromIdentity
+        message.session.commit()
+
         identities = [Identity]()
         // Generate rows to test the handshake feature.
         // Note: The account is generated from test data row 0, so don't use this.
@@ -27,6 +34,11 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
             identity.session.commit()
             identities.append(identity)
         }
+
+        message.appendToTo(identities)
+
+        trustManagementViewModel = TrustManagementViewModel(message: message,
+                                                            pEpProtectionModifyable: true)
     }
     
     override func tearDown() {
