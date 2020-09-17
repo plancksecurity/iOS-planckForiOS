@@ -294,18 +294,6 @@ extension TestUtil {
 
     // MARK: - Moved from App target. Needs love, review, ideally remove
 
-    static func makeFolderInteresting(folderType: FolderType,
-                                      cdAccount: CdAccount,
-                                      context: NSManagedObjectContext? = nil) {
-        let folder = cdFolder(ofType: folderType, in: cdAccount, context: context)
-        folder.lastLookedAt = Date(timeInterval: -1, since: Date())
-        guard let context = cdAccount.managedObjectContext else {
-            Log.shared.errorAndCrash("The account we are using has been deleted from moc!")
-            return
-        }
-        context.saveAndLogErrors()
-    }
-
     static func cdFolder(ofType type: FolderType,
                          in cdAccount: CdAccount,
                          context: NSManagedObjectContext? = nil) -> CdFolder {
