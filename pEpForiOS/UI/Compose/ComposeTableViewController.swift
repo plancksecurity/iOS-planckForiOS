@@ -242,15 +242,11 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
                 }
             }
         } else if cell is BodyCell {
-            if cell.textView.text == "" {
-                cell.textView.text = " "
-            }
+            // Make sure initialFocus is set before layouting logic takes place
             setInitialFocus()
             cell.textView.sizeToFit()
-            // We call this function only when focus is set (not before that)
             scrollUtil.layoutAfterTextDidChange(tableView: tableView, textView: cell.textView)
         } else {
-            // We intentionally do not scroll recipinet fields (causes issues).
             tableView.updateSize()
         }
     }
