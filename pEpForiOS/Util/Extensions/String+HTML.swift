@@ -66,7 +66,9 @@ extension String {
 
     public func htmlToAttributedString(deleteInlinePictures: Bool = false,
                                        attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate?) -> NSAttributedString {
-
+        if Thread.current != Thread.main {
+            Log.shared.errorAndCrash("MUST NOT be called from a non-main Queue!")
+        }
         var htmlWithCitedChars = self
 
         let patternStartBlockqoute = "[<]blockquote[^>]*>(.*?)"
@@ -86,6 +88,7 @@ extension String {
                                  allowLossyConversion: true)
         let options: [NSAttributedString.DocumentReadingOptionKey : Any] =
             [.documentType : NSAttributedString.DocumentType.html]
+
         guard let attribString = try? NSAttributedString(data: htmlData ?? Data(),
                                                    options: options,
                                                    documentAttributes: nil) else {
