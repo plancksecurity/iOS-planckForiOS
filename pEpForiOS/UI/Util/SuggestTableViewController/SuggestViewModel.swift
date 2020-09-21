@@ -9,7 +9,6 @@
 import MessageModel
 import pEpIOSToolbox
 import Contacts
-import PEPObjCAdapterFramework
 
 protocol SuggestViewModelResultDelegate: class {
     /// Will be called whenever the user selects an Identity.
@@ -178,18 +177,18 @@ extension SuggestViewModel {
             }
             guard let from = row.from else {
                 Log.shared.errorAndCrash("No From")
-                completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
+                completion(Rating.undefined.pEpColor().statusIconInContactPicture())
                 return
             }
             guard let to = row.to else {
                 //Valid, might not be a "To" recipient.
-                completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
+                completion(Rating.undefined.pEpColor().statusIconInContactPicture())
                 return
             }
             let sessionedFrom = Identity.makeSafe(from, forSession: me.session)
             let sessionedTo = Identity.makeSafe(to, forSession: me.session)
             me.session.performAndWait {
-                PEPAsyncSession().outgoingMessageRating(from: sessionedFrom, to: [sessionedTo], cc: [], bcc: []) { (rating) in
+                Rating.outgoingMessageRating(from: sessionedFrom, to: [sessionedTo], cc: [], bcc: []) { (rating) in
                     completion(rating.pEpColor().statusIconInContactPicture())
                 }
             }

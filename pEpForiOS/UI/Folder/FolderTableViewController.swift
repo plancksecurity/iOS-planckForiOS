@@ -11,7 +11,11 @@ import pEpIOSToolbox
 import MessageModel
 
 final class FolderTableViewController: UITableViewController {
-    var folderVM: FolderViewModel?
+    var viewModel: FolderViewModel? {
+        didSet {
+            viewModel?.delegate = self
+        }
+    }
     // Indicates if it's needed to lead the user to a new screen,
     // the email list or the new account, for example.
     private var shouldPresentNextView: Bool = true
@@ -36,8 +40,7 @@ final class FolderTableViewController: UITableViewController {
 
     private func setup() {
         navigationController?.setToolbarHidden(false, animated: false)
-        folderVM = FolderViewModel()
-        folderVM?.delegate = self
+        viewModel = FolderViewModel()
         tableView.reloadData()
     }
 
@@ -88,7 +91,11 @@ final class FolderTableViewController: UITableViewController {
     // MARK: - Action
 
     @objc private func pullToRefresh() {
-        folderVM?.refreshFolderList() { [weak self] in
+        guard let viewModel = viewModel else {
+            // Valid case. We might have been dismissed already.
+            return
+        }
+        viewModel.refreshFolderList() { [weak self] in
             guard let me = self else {
                 // Valid case. We might have been dismissed already.
                 return
@@ -109,40 +116,40 @@ final class FolderTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        guard let vm = folderVM else {
-            //As folderVM is initialized on the setup method (first time in viewWillAppear), it might be nil the first time.
+        guard let viewModel = viewModel else {
+            //As viewModel is initialized on the setup method (first time in viewWillAppear), it might be nil the first time.
             return 0
         }
-        return vm.count
+        return viewModel.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let vm = folderVM else {
+        guard let viewModel = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return 0
         }
 
         /// Hidden sections are hidden!
-        if vm.hiddenSections.contains(section) {
+        if viewModel.hiddenSections.contains(section) {
             return 0
         }
         // number of rows means number of visible rows.
-        return vm[section].numberOfRows
+        return viewModel[section].numberOfRows
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let vm = folderVM else {
+        guard let viewModel = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return UITableViewCell()
         }
 
-        let fcvm = vm[indexPath.section].visibleFolderCellViewModel(index: indexPath.item)
+        let fcvm = viewModel[indexPath.section].visibleFolderCellViewModel(index: indexPath.item)
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "FolderTableViewCell", for: indexPath)
             as? FolderTableViewCell else {
             Log.shared.errorAndCrash("No subfolder cell found")
             return UITableViewCell()
         }
-        cell.indentationLevel = min(fcvm.indentationLevel, vm.maxIndentationLevel)
+        cell.indentationLevel = min(fcvm.indentationLevel, viewModel.maxIndentationLevel)
         cell.shouldRotateChevron = fcvm.shouldRotateChevron
         cell.chevronButton.isUserInteractionEnabled = fcvm.isChevronEnabled
         cell.padding = fcvm.padding
@@ -162,11 +169,11 @@ final class FolderTableViewController: UITableViewController {
     // MARK: - TableViewDelegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let folderViewModel = folderVM else {
+        guard let viewModel = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        let cellViewModel = folderViewModel[indexPath.section][indexPath.row]
+        let cellViewModel = viewModel[indexPath.section][indexPath.row]
         if !cellViewModel.isSelectable {
             // Me must not open unselectable folders. Unselectable folders are typically path
             // components/nodes that can not hold messages.
@@ -238,13 +245,13 @@ extension FolderTableViewController: SegueHandlerType {
 
     /// If needed, will show the email list of new account view.
     private func showNextViewIfNeeded() {
-        guard let vm = folderVM else {
+        guard let viewModel = viewModel else {
             Log.shared.errorAndCrash("VM not Found")
             return
         }
         if shouldPresentNextView {
-            if vm.shouldShowFolders {
-                showEmailList(folder:vm.folderToShow)
+            if viewModel.shouldShowFolders {
+                showEmailList(folder:viewModel.folderToShow)
             } else {
                 performSegue(withIdentifier:.newAccount, sender: self)
             }
@@ -280,11 +287,11 @@ extension FolderTableViewController {
     /// - Parameter indexPath: To identify the cell to look for its subfolders.
     /// - Returns: True if the folder has subfolders.
     private func hasSubfolders(indexPath: IndexPath) -> Bool {
-        guard let vm = folderVM else {
+        guard let viewModel = viewModel else {
             Log.shared.errorAndCrash("No View Model")
             return false
         }
-        let fcvm = vm[indexPath.section].visibleFolderCellViewModel(index: indexPath.item)
+        let fcvm = viewModel[indexPath.section].visibleFolderCellViewModel(index: indexPath.item)
         return fcvm.hasSubfolders()
     }
 
@@ -292,12 +299,12 @@ extension FolderTableViewController {
     /// - Parameter indexPath: To identify the cell to check if it's a subfolder.
     /// - Returns: True if it is.
     private func isSubfolder(indexPath: IndexPath) -> Bool {
-        guard let vm = folderVM else {
+        guard let viewModel = viewModel else {
             Log.shared.errorAndCrash("No View Model")
             return false
         }
 
-        return vm[indexPath.section].visibleFolderCellViewModel(index: indexPath.item).isSubfolder()
+        return viewModel[indexPath.section].visibleFolderCellViewModel(index: indexPath.item).isSubfolder()
     }
 }
 
@@ -322,7 +329,7 @@ extension FolderTableViewController {
     /// - Parameter sender: The button that trigger the action.
     @objc
     private func hideShowSection(sender: SectionButton) {
-        guard let vm = folderVM else {
+        guard let viewModel = viewModel else {
             Log.shared.errorAndCrash("No VM.")
             return
         }
@@ -344,28 +351,28 @@ extension FolderTableViewController {
         /// Modify the visibility of all rows in section
         /// - Parameter newValue: True to hide, false to show.
         func setAllRowsHidden(to newValue: Bool) {
-            for i in 0..<vm[section].count {
-                vm[section][i].isHidden = newValue
+            for i in 0..<viewModel[section].count {
+                viewModel[section][i].isHidden = newValue
                 if !newValue {
-                    vm[section][i].isExpand = true
+                    viewModel[section][i].isExpand = true
                 }
             }
         }
 
         /// - Returns: The indexPath of visibles rows in section.
         func indexPathsForSection() -> [IndexPath] {
-            return indexPathsBy(numberOfRows: vm[section].numberOfRows)
+            return indexPathsBy(numberOfRows: viewModel[section].numberOfRows)
         }
 
         /// - Returns: The indexPath of all rows in section.
         func allIndexPathsForSection() -> [IndexPath] {
-            return indexPathsBy(numberOfRows: vm[section].count)
+            return indexPathsBy(numberOfRows: viewModel[section].count)
         }
 
         // Toogle section visibility.
-        if vm.hiddenSections.contains(section) {
+        if viewModel.hiddenSections.contains(section) {
             sender.imageView?.transform = CGAffineTransform.rotate90Degress()
-            vm.hiddenSections.remove(section)
+            viewModel.hiddenSections.remove(section)
             //Do not change the order of this methods as the next line change the hidden status
             let ips = allIndexPathsForSection()
             setAllRowsHidden(to: false)
@@ -373,7 +380,7 @@ extension FolderTableViewController {
             tableView.insertRows(at: ips)
         } else {
             sender.imageView?.transform = .identity
-            vm.hiddenSections.insert(section)
+            viewModel.hiddenSections.insert(section)
             //Do not change the order of this methods as the next line change the hidden status
             let ips = indexPathsForSection()
             setAllRowsHidden(to: true)
@@ -384,7 +391,7 @@ extension FolderTableViewController {
     /// Shows/Hides the subfolder of the selected one.
     /// - Parameter indexPath: The indexPath of the selected folder.
     private func hideShowSubFolders(ofRowAt indexPath:  IndexPath) {
-        guard let vm = folderVM else {
+        guard let viewModel = viewModel else {
             Log.shared.errorAndCrash("No view model.")
             return
         }
@@ -393,7 +400,7 @@ extension FolderTableViewController {
         /// - Parameter isExpand: Indicates if the parent is Expanded
         /// - Returns: The children's Indexpaths.
         func childrenIndexPaths(isParentExpand isExpand : Bool) -> [IndexPath] {
-            let sectionVM = vm[indexPath.section]
+            let sectionVM = viewModel[indexPath.section]
             var childrenIndexPaths = [IndexPath]()
             let children = sectionVM.children(of: folderCellViewModel).filter { $0.isHidden == isExpand }
             if !isExpand {
@@ -416,10 +423,10 @@ extension FolderTableViewController {
         }
 
         //Expand or collapse the root folder
-        let folderCellViewModel = vm[indexPath.section].visibleFolderCellViewModel(index: indexPath.item)
+        let folderCellViewModel = viewModel[indexPath.section].visibleFolderCellViewModel(index: indexPath.item)
         folderCellViewModel.isExpand.toggle()
         let childrenIPs = childrenIndexPaths(isParentExpand : folderCellViewModel.isExpand)
-        let children = vm[indexPath.section].children(of: folderCellViewModel)
+        let children = viewModel[indexPath.section].children(of: folderCellViewModel)
         children.forEach {
             $0.isHidden = !folderCellViewModel.isExpand
             $0.isExpand = folderCellViewModel.isExpand
@@ -459,16 +466,16 @@ extension FolderTableViewController {
         header?.sectionButton.contentVerticalAlignment = .top
         header?.sectionButton.imageView?.transform = CGAffineTransform.rotate90Degress()
 
-        guard let vm = folderVM, let safeHeader = header else {
+        guard let viewModel = viewModel, let safeHeader = header else {
             Log.shared.errorAndCrash("No header or no VM.")
             return header
         }
 
-        if vm[section].hidden {
+        if viewModel[section].hidden {
             return nil
         }
 
-        safeHeader.configure(viewModel: vm[section], section: section)
+        safeHeader.configure(viewModel: viewModel[section], section: section)
         return header
     }
 
@@ -479,11 +486,11 @@ extension FolderTableViewController {
 
     override func tableView(_ tableView: UITableView,
                             heightForHeaderInSection section: Int) -> CGFloat {
-        guard let vm = folderVM else {
+        guard let viewModel = viewModel else {
             Log.shared.errorAndCrash("No VM.")
             return 0.0
         }
-        if vm[section].hidden {
+        if viewModel[section].hidden {
             return 0.0
         } else {
             return tableView.sectionHeaderHeight
@@ -499,4 +506,3 @@ extension FolderTableViewController: FolderViewModelDelegate {
         tableView.reloadData()
     }
 }
-

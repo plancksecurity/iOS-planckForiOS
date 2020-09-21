@@ -56,7 +56,6 @@ extension PEPRating {
 
         case .undefined,
              .unencrypted,
-             .unencryptedForSome,
              .unreliable,
              .reliable,
              .trusted,
@@ -86,7 +85,6 @@ extension PEPRating {
              .cannotDecrypt,
              .haveNoKey,
              .unencrypted,
-             .unencryptedForSome,
              .unreliable,
              .reliable,
              .trusted,

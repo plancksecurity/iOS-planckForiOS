@@ -7,9 +7,9 @@
 //
 
 import Foundation
+
 import pEpIOSToolbox
 import MessageModel
-import PEPObjCAdapterFramework
 
 protocol EmailDisplayViewModelDelegate: class {
     func emailListViewModel(viewModel: EmailDisplayViewModel,

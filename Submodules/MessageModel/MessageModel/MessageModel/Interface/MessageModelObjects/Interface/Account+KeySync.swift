@@ -7,6 +7,7 @@
 //
 
 import Foundation
+
 import PEPObjCAdapterFramework
 
 // MARK: - KeySync
@@ -37,11 +38,11 @@ extension Account {
         DispatchQueue.global(qos: .utility).async {
             session.performAndWait {
                 let pEpIdentity = safeUser.pEpIdentity()
-                PEPAsyncSession().update(pEpIdentity,
+                PEPSession().update(pEpIdentity,
                                          errorCallback: { error in
                                             completion?(.failure(error))
                 }) { updatedIdentity in
-                    PEPAsyncSession().keyReset(updatedIdentity,
+                    PEPSession().keyReset(updatedIdentity,
                                                fingerprint: updatedIdentity.fingerPrint,
                                                errorCallback: { (error: Error) in
                                                 completion?(.failure(error))
@@ -54,7 +55,7 @@ extension Account {
     }
 
     public static func resetAllOwnKeys(completion: ((Result<Void, Error>) -> ())? = nil) {
-        PEPAsyncSession().keyResetAllOwnKeys({ (error: Error) in
+        PEPSession().keyResetAllOwnKeys({ (error: Error) in
             completion?(.failure(error))
         }) {
             completion?(.success(()))

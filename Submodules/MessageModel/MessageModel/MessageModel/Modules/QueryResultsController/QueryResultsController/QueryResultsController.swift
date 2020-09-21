@@ -108,12 +108,12 @@ NSFetchedResultsControllerDelegate {
                                                           newIndexPath: newIndexPath)
     }
 
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        delegate?.queryResultsControllerDidChangeSection(Info: sectionInfo, atSectionIndex: sectionIndex, for: type)
+    }
+
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         state = .monitoringResults
         delegate?.queryResultsControllerDidChangeResults()
-    }
-
-    var count : Int {
-        return frc?.fetchedObjects?.count ?? 0
     }
 }

@@ -14,16 +14,6 @@ import PEPObjCAdapterFramework
 // MARK: - Internal
 
 extension PEPUtils {
-
-    static func add(pEpIdentities: [PEPIdentity], toPantomimeMessage: CWIMAPMessage,
-                    recipientType: PantomimeRecipientType) {
-        let addresses = pantomime(
-            pEpIdentities: pEpIdentities, recipientType: recipientType)
-        for a in addresses {
-            toPantomimeMessage.addRecipient(a)
-        }
-    }
-
     /// Converts a given `CdMessage` into the equivalent `CWIMAPMessage`.
     static func pantomime(cdMessage: CdMessage) -> CWIMAPMessage {
         return pantomime(pEpMessage: cdMessage.pEpMessage())
@@ -52,31 +42,45 @@ extension PEPUtils {
         return nil
     }
 
-    static func pEpRatingFromInt(_ i: Int?) -> PEPRating? {
-        guard let theInt = i else {
-            return nil
+    /// Conversion from PEPRating raw value to PEPRating.
+    /// - note: `i`MUST NOT be nil. Its only optional for convenience reasons, as CdO params are nullable.
+    /// - Parameter i: raw value for PEPRating. MUST NOT be `nil`. Must be a valid value, i.e. an existing raw value of PEPRating.
+    /// - Returns: PEPRating initialized with the given raw value. .undefined if the given value is invalid or nil.
+    static func pEpRatingFromInt(_ rawValue: Int?) -> PEPRating {
+        guard let theInt = rawValue else {
+            Log.shared.errorAndCrash("Invalid int !")
+            return .undefined
         }
         if theInt == PEPRating.undefined.rawValue {
             return .undefined
         }
-        return PEPRating(rawValue: Int32(theInt))
+        guard let ratingFromInt =  PEPRating(rawValue: Int32(theInt)) else {
+            Log.shared.errorAndCrash("Invalid int !")
+            return .undefined
+        }
+        return ratingFromInt
+    }
+
+    static func pEpColor(cdIdentity: CdIdentity,
+                         context: NSManagedObjectContext = Stack.shared.mainContext,
+                         completion: @escaping (PEPColor) -> Void) {
+        pEpRating(cdIdentity: cdIdentity, context: context) { (rating) in
+            completion(rating.pEpRating().pEpColor())
+        }
+    }
+
+    static func pEpColor(pEpRating: PEPRating?) -> PEPColor {
+        if let rating = pEpRating {
+            return PEPSession().color(from: rating)
+        } else {
+            return PEPColor.noColor
+        }
     }
 }
 
 // MARK: - Private
 
 extension PEPUtils {
-
-    /// Converts a list of pEp identities of a given receiver type to a list of pantomime recipients.
-    private static func pantomime(pEpIdentities: [PEPIdentity],
-                                  recipientType: PantomimeRecipientType) -> [CWInternetAddress] {
-        return pEpIdentities.map {
-            let pant = pantomime(pEpIdentity: $0)
-            pant.setType(recipientType)
-            return pant
-        }
-    }
-
     /// Converts the given long message (may be HTML) into a pantomime part.
     ///
     /// The content will be encoded (base64), to avoid exceeding MIME line length limits.

@@ -34,7 +34,7 @@ public class AccountQueryResults: AccountQueryResultsProtocol {
     }()
 
     public var count: Int {
-        return queryResultController.count
+        return all.count
     }
 
     public var all: [Account] {
@@ -117,6 +117,10 @@ extension AccountQueryResults : QueryResultsControllerDelegate {
             return nil
         }
         return indexPath
+    }
+
+    func queryResultsControllerDidChangeSection(Info: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        // Intentionally ignored. Query does not need to handle section.
     }
 }
 

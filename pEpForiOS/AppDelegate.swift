@@ -10,7 +10,6 @@ import CoreData
 
 import pEpIOSToolbox
 import MessageModel
-import PEPObjCAdapterFramework
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -35,10 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
 
     private func setupInitialViewController() -> Bool {
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
-        guard let initialNVC = mainStoryboard.instantiateViewController(withIdentifier: "main.initial.nvc") as? UISplitViewController,
-            let navController = initialNVC.viewControllers.first as? UINavigationController,
-            navController.rootViewController is FolderViewController
+        let folderViews: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
+        guard let initialNVC = folderViews.instantiateViewController(withIdentifier: "main.initial.nvc") as? UISplitViewController
             else {
                 Log.shared.errorAndCrash("Problem initializing UI")
                 return false
@@ -68,8 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - HELPER
 
     private func cleanup(andCall completionHandler:(UIBackgroundFetchResult) -> Void,
-                         result:UIBackgroundFetchResult) {
-        PEPSession.cleanup()
+                                result:UIBackgroundFetchResult) {
         completionHandler(result)
     }
 }
@@ -157,7 +153,6 @@ extension AppDelegate {
     /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
         messageModelService?.stop()
-        PEPSession.cleanup()
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler

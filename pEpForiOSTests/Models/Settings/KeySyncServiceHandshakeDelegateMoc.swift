@@ -11,10 +11,10 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 class KeySyncServiceHandshakeHandlerMoc: KeySyncServiceHandshakeHandlerProtocol {
-    func showHandshake(me: PEPIdentity,
-                       partner: PEPIdentity,
+    func showHandshake(meFingerprint: String?,
+                       partnerFingerprint: String?,
                        isNewGroup: Bool,
-                       completion: ((PEPSyncHandshakeResult) -> ())?) {}
+                       completion: ((KeySyncHandshakeResult) -> ())?) {}
 
     func showError(error: Error?, completion: ((KeySyncErrorResponse) -> ())?) {}
 

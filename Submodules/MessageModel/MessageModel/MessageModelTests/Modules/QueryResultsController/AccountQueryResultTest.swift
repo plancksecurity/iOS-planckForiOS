@@ -40,11 +40,8 @@ class AccountQueryResultTest: PersistentStoreDrivenTestBase {
     }
 
     func testSubscript() {
-        let result0 = accountQueryResults.all[0]
-        let result1 = accountQueryResults.all[1]
-
-        XCTAssert(result0.user.address == account2.account().user.address)
-        XCTAssert(result1.user.address == account1.account().user.address)
+        XCTAssert(accountQueryResults.all.contains(account2.account()))
+        XCTAssert(accountQueryResults.all.contains(account1.account()))
     }
 
     func testRowDelegateNotNil() {
