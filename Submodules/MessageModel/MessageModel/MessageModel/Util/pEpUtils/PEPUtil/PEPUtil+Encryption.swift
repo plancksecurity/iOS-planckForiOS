@@ -18,7 +18,6 @@ extension  PEPUtils {
         extraKeys: [String]? = nil,
         errorCallback: @escaping (_ error:Error) -> Void,
         successCallback: @escaping (_ srcMsg:PEPMessage, _ destMsg:PEPMessage) -> Void) {
-        var status = PEPStatus.unknownError
         if let ident = forSelf {
             PEPAsyncSession().encryptMessage(pEpMessage, forSelf: ident,
                                              extraKeys: extraKeys,

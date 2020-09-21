@@ -51,6 +51,9 @@ public struct Capability {
                 case .restricted:
                     completion(false, .restricted)
                     break
+                @unknown default:
+                    Log.shared.errorAndCrash("Unhandled case")
+                    completion(false, .denied)
                 }
             }
         }
