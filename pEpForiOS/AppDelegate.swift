@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
 
     private func setupInitialViewController() -> Bool {
-        let folderViews: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
+        let folderViews: UIStoryboard = UIStoryboard(name: Constants.folderViewsStoryboard, bundle: nil)
         guard let initialNVC = folderViews.instantiateViewController(withIdentifier: "main.initial.nvc") as? UISplitViewController
             else {
                 Log.shared.errorAndCrash("Problem initializing UI")
