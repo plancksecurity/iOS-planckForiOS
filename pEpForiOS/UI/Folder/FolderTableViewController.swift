@@ -351,32 +351,31 @@ extension FolderTableViewController {
         /// Modify the visibility of all rows in section
         /// - Parameter newValue: True to hide, false to show.
         func setAllRowsHidden(to newValue: Bool) {
-            for i in 0..<viewModel[section].count {
-                viewModel[section][i].isHidden = newValue
+            for i in 0..<vm[section].count {
+                vm[section][i].isHidden = newValue
                 if !newValue {
-                    viewModel[section][i].isExpand = true
+                    vm[section][i].isExpand = true
                 }
             }
         }
 
         /// - Returns: The indexPath of visibles rows in section.
         func indexPathsForSection() -> [IndexPath] {
-            return indexPathsBy(numberOfRows: viewModel[section].numberOfRows)
+            return indexPathsBy(numberOfRows: vm[section].numberOfRows)
         }
 
         /// - Returns: The indexPath of all rows in section.
         func allIndexPathsForSection() -> [IndexPath] {
-            return indexPathsBy(numberOfRows: viewModel[section].count)
+            return indexPathsBy(numberOfRows: vm[section].count)
         }
 
         // Toogle section visibility.
         if vm.hiddenSections.contains(section) {
             sender.imageView?.transform = CGAffineTransform.rotate90Degress()
-            viewModel.hiddenSections.remove(section)
+            vm.hiddenSections.remove(section)
             //Do not change the order of this methods as the next line change the hidden status
             let ips = allIndexPathsForSection()
             setAllRowsHidden(to: false)
-
             tableView.insertRows(at: ips)
         } else {
             sender.imageView?.transform = .identity
@@ -400,7 +399,7 @@ extension FolderTableViewController {
         /// - Parameter isExpand: Indicates if the parent is Expanded
         /// - Returns: The children's Indexpaths.
         func childrenIndexPaths(isParentExpand isExpand : Bool) -> [IndexPath] {
-            let sectionVM = viewModel[indexPath.section]
+            let sectionVM = vm[indexPath.section]
             var childrenIndexPaths = [IndexPath]()
             let children = sectionVM.children(of: folderCellViewModel).filter { $0.isHidden == isExpand }
             if !isExpand {
