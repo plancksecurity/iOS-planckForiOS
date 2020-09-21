@@ -54,7 +54,6 @@ class FolderViewModelTest: AccountDrivenTestBase {
         let _ = Folder(name: "InsiDrafts", parent: drafts, account: acc, folderType: .normal)
         let expectedOrder : [FolderType] = [.inbox, .normal, .drafts, .normal, .sent, .spam, .trash, .outbox]
         acc.session.commit()
-//        try? Stack.shared.mainContext.save()
 
         //the test
         givenThereIsAViewModel(withUniFiedInBox: false, and: [acc])
