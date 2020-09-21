@@ -412,6 +412,7 @@
 		5B394E1323ED5673006A1FC0 /* TrustManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */; };
 		5B3C13BF23D8AF2E00FC0A53 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */; };
 		5B41C6082418F15100C268CE /* TutorialStep3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41C6072418F15100C268CE /* TutorialStep3ViewController.swift */; };
+		5B5842822518D8390039E08D /* NSObject+EPWebSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B5842802518D8390039E08D /* NSObject+EPWebSafe.m */; };
 		5BB7C74524D82B6300D5F328 /* Constants+Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C74424D82B6300D5F328 /* Constants+Support.swift */; };
 		5BB7C74724D85A3B00D5F328 /* PEPWebviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C74624D85A3A00D5F328 /* PEPWebviewController.swift */; };
 		5BC14ABF23E2EE78005F0AF3 /* TrustManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14ABE23E2EE78005F0AF3 /* TrustManagementViewModel.swift */; };
@@ -1056,6 +1057,8 @@
 		5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCell.swift; sourceTree = "<group>"; };
 		5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		5B41C6072418F15100C268CE /* TutorialStep3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep3ViewController.swift; sourceTree = "<group>"; };
+		5B5842802518D8390039E08D /* NSObject+EPWebSafe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+EPWebSafe.m"; sourceTree = "<group>"; };
+		5B5842812518D8390039E08D /* NSObject+EPWebSafe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+EPWebSafe.h"; sourceTree = "<group>"; };
 		5BB7C74424D82B6300D5F328 /* Constants+Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constants+Support.swift"; sourceTree = "<group>"; };
 		5BB7C74624D85A3A00D5F328 /* PEPWebviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPWebviewController.swift; sourceTree = "<group>"; };
 		5BC14ABE23E2EE78005F0AF3 /* TrustManagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementViewModel.swift; sourceTree = "<group>"; };
@@ -2123,6 +2126,7 @@
 		4362398D1EAE08F400BD2EB9 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				5B58427F2518D82D0039E08D /* WebSafe */,
 				B70A3A62220065F500EDCE61 /* String+pEp.swift */,
 				43E657D01F3C33C30014CBEC /* String+HTML.swift */,
 				431C2B181F38888B00D87FFD /* ConnectionTransport+AccountSettings.swift */,
@@ -2564,6 +2568,15 @@
 				49C34AF520E4F649009D11CC /* CellDetailTransition.swift */,
 			);
 			path = Transitions;
+			sourceTree = "<group>";
+		};
+		5B58427F2518D82D0039E08D /* WebSafe */ = {
+			isa = PBXGroup;
+			children = (
+				5B5842812518D8390039E08D /* NSObject+EPWebSafe.h */,
+				5B5842802518D8390039E08D /* NSObject+EPWebSafe.m */,
+			);
+			path = WebSafe;
 			sourceTree = "<group>";
 		};
 		5B87D79223F2C57F009DACAA /* SF */ = {
@@ -3198,6 +3211,7 @@
 				5B0B339F24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift in Sources */,
 				15FB60532437410600398391 /* HtmlOptimizerUtil.swift in Sources */,
 				43A9818C24E53BFF00830603 /* Color+PrivacyStatusDescription.swift in Sources */,
+				5B5842822518D8390039E08D /* NSObject+EPWebSafe.m in Sources */,
 				49228A5320D3D29900A51E9D /* ThreadViewController+SegueHandlerType.swift in Sources */,
 				434AC3E320A450D800C11B7F /* UIAlertController+Extension.swift in Sources */,
 				152A39C921905C3E00D9F8E4 /* Message+ComposeUtils.swift in Sources */,
