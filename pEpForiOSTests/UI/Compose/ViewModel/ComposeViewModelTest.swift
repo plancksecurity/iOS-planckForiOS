@@ -841,7 +841,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
     }
 
     func testComposeViewModelDidChangePEPRatingTo() {
-        let expectedRating = PEPRating.reliable
+        let expectedRating = Rating.reliable
         vm?.state.pEpProtection = true
         let expectedProtection = vm?.state.pEpProtection ?? false
         assert(contentChangedMustBeCalled: false,
@@ -872,7 +872,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
     // MARK: - Delegate Setter Side Effect
 
     func testDelegateSetter() {
-        let expectedRating = PEPRating.undefined
+        let expectedRating = Rating.undefined
         let expectedProtection = true
         assert(contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
@@ -1022,7 +1022,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
     // MARK: - handleUserChangedProtectionStatus
 
     func testHandleUserChangedProtectionStatus_change() {
-        let expectedRating = PEPRating.undefined
+        let expectedRating = Rating.undefined
         let expectedProtection = false
         assert(contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
@@ -1486,7 +1486,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
                         sectionChangedMustBeCalled: Bool? = nil,
                         expectedSection: Int? = nil,
                         colorBatchNeedsUpdateMustBeCalled: Bool? = nil,
-                        expectedRating: PEPRating? = nil,
+                        expectedRating: Rating? = nil,
                         expectedProtectionEnabled: Bool? = nil,
                         hideSuggestionsMustBeCalled: Bool? = nil,
                         showSuggestionsMustBeCalled: Bool? = nil,
@@ -1657,7 +1657,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         let expectedSection: Int?
 
         var expColorBatchNeedsUpdateCalled: XCTestExpectation?
-        let expectedRating: PEPRating?
+        let expectedRating: Rating?
         let expectedProtectionEnabled: Bool?
 
         let expHideSuggestionsCalled: XCTestExpectation?
@@ -1686,7 +1686,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
              expSectionChangedCalled: XCTestExpectation?,
              expectedSection: Int?,
              expColorBatchNeedsUpdateCalled: XCTestExpectation?,
-             expectedRating: PEPRating?,
+             expectedRating: Rating?,
              expectedProtectionEnabled: Bool?,
              expHideSuggestionsCalled: XCTestExpectation?,
              expShowSuggestionsCalled: XCTestExpectation?,
@@ -1771,7 +1771,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
             }
         }
 
-        func colorBatchNeedsUpdate(for rating: PEPRating, protectionEnabled: Bool) {
+        func colorBatchNeedsUpdate(for rating: Rating, protectionEnabled: Bool) {
             guard let exp = expColorBatchNeedsUpdateCalled else {
                 // We ignore called or not
                 return

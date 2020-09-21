@@ -18,7 +18,7 @@ extension CdAccount {
             successCallback(false)
             return
         }
-        PEPAsyncSession().queryKeySyncEnabled(for: user.pEpIdentity(),
+        PEPSession().queryKeySyncEnabled(for: user.pEpIdentity(),
                                               errorCallback: errorCallback,
                                               successCallback: successCallback)
     }
@@ -32,14 +32,14 @@ extension CdAccount {
             return
         }
         if enable {
-            PEPAsyncSession().enableSync(for: user.pEpIdentity(),
+            PEPSession().enableSync(for: user.pEpIdentity(),
                                          errorCallback: { error in
                                             errorCallback(error)
             }) {
                 successCallback()
             }
         } else {
-            PEPAsyncSession().disableSync(for: user.pEpIdentity(),
+            PEPSession().disableSync(for: user.pEpIdentity(),
                                           errorCallback: { error in
                                             errorCallback(error)
             }) {

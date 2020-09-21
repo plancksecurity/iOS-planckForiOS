@@ -37,7 +37,7 @@ struct KeyGeneratorService {
             var success = true
             let group = DispatchGroup()
             group.enter()
-            PEPAsyncSession().mySelf(pEpIdentity, errorCallback: { (_) in
+            PEPSession().mySelf(pEpIdentity, errorCallback: { (_) in
                 success = false
                 group.leave()
             }) { (updatedIdentity) in
@@ -51,14 +51,14 @@ struct KeyGeneratorService {
             }
 
             if pEpSyncEnabled {
-                PEPAsyncSession().enableSync(for: pEpIdentity,
+                PEPSession().enableSync(for: pEpIdentity,
                                              errorCallback: { _ in
                                                 completion(false)
                 }) {
                     completion(true)
                 }
             } else {
-                PEPAsyncSession().disableSync(for: pEpIdentity,
+                PEPSession().disableSync(for: pEpIdentity,
                                               errorCallback: { _ in
                                                 completion(false)
                 }) {

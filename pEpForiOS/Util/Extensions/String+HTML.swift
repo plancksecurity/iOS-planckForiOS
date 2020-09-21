@@ -41,7 +41,7 @@ extension String {
     
     public func containsExternalContent() -> Bool {
         let pattern = """
-(<img.*? src=(3D)?"https?.*?>)
+(<img.*? src=(3D)?"((https?)|(www)).*?>)
 """
         let result = find(pattern: pattern)
         return result.count > 0
@@ -49,7 +49,10 @@ extension String {
 
     public func htmlConvertImageLinksToImageMarkdownString(html: String, attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate? = nil) -> String {
 
-        let pattern = "<img\\b(?=\\s)(?=(?:[^>=]|='[^']*'|=\"[^\"]*\"|=[^'\"][^\\s>]*)*?\\ssrc=['\"]([^\"]*)['\"]?)(?:[^>=]|='[^']*'|=\"[^\"]*\"|=[^'\"\\s]*)*\"\\s?\\/?>"
+        //Pattern to get all images tags in the current html
+        let pattern = """
+(<img.*?)(src.*?=.*?)(".*?")(.*?)(\\/*?>)
+"""
 
         let results = html.find(pattern: pattern)
 

@@ -11,7 +11,6 @@ import MessageModel
 import SwipeCellKit
 import Photos
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
 import ContactsUI
 
 class ComposeTableViewController: UITableViewController {
@@ -31,6 +30,7 @@ class ComposeTableViewController: UITableViewController {
     }()
     private var isInitialFocusSet = false
     private var scrollUtil = TextViewInTableViewScrollUtil()
+    private var doOnce: (()->())?
 
     var viewModel: ComposeViewModel? {
         didSet {
@@ -48,14 +48,28 @@ class ComposeTableViewController: UITableViewController {
         if viewModel == nil {
             setupModel()
         }
+        doOnce = { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.tableView.reloadData()
+            me.doOnce = nil
+        }
+        registerForNotifications()
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+		// We intentionally violate the Apple docs ("you must call super. ...") and do *not* call `super.` as the UITableViewController's magic in viewWillAppear() interferes with our scrolling implementation, which causes UI issues (see: IOS-2429)
+        doOnce?()
         navigationController?.title = title
         tableView.hideSeperatorForEmptyCells()
         setupRecipientSuggestionsTableViewController()
         viewModel?.handleDidReAppear()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - Setup & Configuration
@@ -108,14 +122,15 @@ class ComposeTableViewController: UITableViewController {
 // MARK: - PEP Color View
 
 extension ComposeTableViewController {
-    private func setupPepColorView(for pEpRating: PEPRating, pEpProtected: Bool) {
+    private func setupPepColorView(for pEpRating: Rating, pEpProtected: Bool) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
         }
 
         //Not so nice. The view(controller) should not know about state and protection.
-        let pEpRatingView = showNavigationBarSecurityBadge(pEpRating: pEpRating, pEpProtection: pEpProtected)
+        let pEpRatingView = showNavigationBarSecurityBadge(pEpRating: pEpRating,
+                                                           pEpProtection: pEpProtected)
 
         // Handshake on simple touch if possible
         vm.canDoHandshake { [weak self] (canDoHandshake) in
@@ -245,11 +260,11 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
                 }
             }
         } else if cell is BodyCell {
+            // Make sure initialFocus is set before layouting logic takes place
+            setInitialFocus()
             cell.textView.sizeToFit()
             scrollUtil.layoutAfterTextDidChange(tableView: tableView, textView: cell.textView)
-            tableView.updateSize()
         } else {
-            // We intentionally do not scroll recipinet fields (causes issues).
             tableView.updateSize()
         }
     }
@@ -273,7 +288,7 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
         tableView.endUpdates()
     }
 
-    func colorBatchNeedsUpdate(for rating: PEPRating, protectionEnabled: Bool) {
+    func colorBatchNeedsUpdate(for rating: Rating, protectionEnabled: Bool) {
         setupPepColorView(for: rating, pEpProtected: protectionEnabled)
     }
 
@@ -763,5 +778,39 @@ extension ComposeTableViewController {
             return UIAlertAction()
         }
         return ac.action(vm.cancelActionTitle, .cancel)
+    }
+}
+
+// MARK: - Keyboard Related Issues
+
+extension ComposeTableViewController {
+
+    private func registerForNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleKeyboardDidShow),
+                                               name: UIResponder.keyboardDidShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleKeyboardDidHide),
+                                               name: UIResponder.keyboardDidHideNotification,
+                                               object: nil)
+    }
+
+    @objc
+    private func handleKeyboardDidShow(notification: NSNotification) {
+        tableView.contentInset.bottom =  keyBoardHeight(notification: notification)
+    }
+
+    @objc
+    private func handleKeyboardDidHide(notification: NSNotification) {
+        tableView.contentInset.bottom = 0.0
+    }
+
+    private func keyBoardHeight(notification: NSNotification) -> CGFloat {
+        guard let keyboardSize = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+                return 0
+        }
+
+        return keyboardSize.height
     }
 }

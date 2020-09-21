@@ -7,6 +7,7 @@
 //
 
 import CoreData
+
 import PEPObjCAdapterFramework
 
 protocol RatingReEvaluatorProtocol {
@@ -32,7 +33,7 @@ extension RatingReEvaluator: RatingReEvaluatorProtocol {
         if let originalRatingString = message.optionalFields[Headers.originalRating.rawValue] {
             originaRating = PEPRating.fromString(str: originalRatingString)
         }
-        PEPAsyncSession().reEvaluateMessage(pepMessage, xKeyList: keys, originalRating: originaRating, errorCallback: { (error) in
+        PEPSession().reEvaluateMessage(pepMessage, xKeyList: keys, originalRating: originaRating, errorCallback: { (error) in
             Log.shared.errorAndCrash("%@", error.localizedDescription)
             completion()
         }) { (newRating) in
