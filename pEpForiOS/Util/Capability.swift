@@ -24,9 +24,12 @@ public struct Capability {
         public final func authorized() -> Bool {
             let status = PHPhotoLibrary.authorizationStatus()
             switch status {
-            case .authorized:
+            case .authorized, .limited:
                 return true
             case .denied, .notDetermined, .restricted:
+                return false
+            default:
+                Log.shared.errorAndCrash("Unhandledcase")
                 return false
             }
         }
@@ -39,7 +42,7 @@ public struct Capability {
             @escaping (_ granted: Bool, _ error: AccessError?) -> (Void)) {
             PHPhotoLibrary.requestAuthorization() { status in
                 switch status {
-                case .authorized:
+                case .authorized, .limited: 
                     completion(true, nil)
                     break
                 case .denied, .notDetermined:
