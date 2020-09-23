@@ -59,46 +59,6 @@ class ComposeViewModelStateTest: AccountDrivenTestBase {
         print("DEBUG: did tearDown")
     }
 
-    // MARK: - initData
-
-    func testInitData() {
-        let initData = ComposeViewModel.InitData()
-        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
-        guard let testeeInitData = testee?.initData else {
-            XCTFail("No testee")
-            return
-        }
-        XCTAssertNotNil(testeeInitData)
-    }
-
-    // MARK: - delegate
-
-    func testInitialDelegateIsSet() {
-        let initData = ComposeViewModel.InitData()
-        let delegate = TestDelegate()
-        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: delegate)
-        XCTAssertNotNil(testee?.delegate)
-    }
-
-    // MARK: - bccWrapped
-
-    func testBccWrapped_initial() {
-        guard let wrapped = testee?.bccWrapped else {
-            XCTFail()
-            return
-        }
-        XCTAssertTrue(wrapped)
-    }
-
-    func testBccWrapped_unwrapped() {
-        testee?.setBccUnwrapped()
-        guard let wrapped = testee?.bccWrapped else {
-            XCTFail()
-            return
-        }
-        XCTAssertFalse(wrapped)
-    }
-
     // MARK: - Validation ( recipient changes )
 
     func testValidate() {
