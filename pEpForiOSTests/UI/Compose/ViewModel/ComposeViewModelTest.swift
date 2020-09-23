@@ -513,7 +513,4 @@ class ComposeViewModelTest: AccountDrivenTestBase {
             exp.fulfill()
         }
     }
-
-    // MARK: - MediaAttachmentPickerProviderViewModel
-    class TestMediaAttachmentPickerProviderViewModel: MediaAttachmentPickerProviderViewModel {} // Dummy to pass something
 }
