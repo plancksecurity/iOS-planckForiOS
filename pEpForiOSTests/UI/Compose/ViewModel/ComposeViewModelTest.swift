@@ -82,28 +82,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
                       "Last row in last section must be attachment")
     }
 
-    // MARK: - handleUserChangedProtectionStatus
-
-    func testHandleUserChangedProtectionStatus_noChange() {
-        assert(contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        vm?.handleUserChangedProtectionStatus(to: true)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     // MARK: - handleUserSelectedRow
 
     func testHandleUserSelectedRow_ccWrapped_wrapperCellSelected() {
