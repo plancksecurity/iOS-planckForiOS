@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-/// This category aims to fix in native WebSafeForwarder where the delegate was being released.
 @interface NSObject (EPWebSafe)
 
 @end
