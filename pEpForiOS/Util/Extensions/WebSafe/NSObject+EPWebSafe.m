@@ -35,7 +35,6 @@ SwizzleMethod(Class _originClass, SEL _originSelector, Class _newClass, SEL _new
     [self cleanHtmlDelegate];
 }
 
-/// Set the htmlDelegate if needed.
 - (void)recordHtmlDelegate:(id)htmlDelegate {
     NSUInteger index = [self.htmlDelegates.allObjects indexOfObject:htmlDelegate];
     if (index == NSNotFound) {
@@ -43,7 +42,6 @@ SwizzleMethod(Class _originClass, SEL _originSelector, Class _newClass, SEL _new
     }
 }
 
-/// Remove the htmlDelegate.
 - (void)removeHtmlDelegate:(id )htmlDelegate {
     NSUInteger index = [self.htmlDelegates.allObjects indexOfObject:htmlDelegate];
     if (index != NSNotFound) {
@@ -51,7 +49,6 @@ SwizzleMethod(Class _originClass, SEL _originSelector, Class _newClass, SEL _new
     }
 }
 
-/// Set the htmlDelegate as the target.
 - (void)cleanHtmlDelegate {
     [self.htmlDelegates.allObjects enumerateObjectsUsingBlock:^(id htmlDelegate, NSUInteger idx, BOOL * _Nonnull stop) {
         if ([htmlDelegate isKindOfClass:NSClassFromString(@"_WebSafeForwarder")]) {
@@ -60,7 +57,6 @@ SwizzleMethod(Class _originClass, SEL _originSelector, Class _newClass, SEL _new
     }];
 }
 
-///Replace htmlDelgates
 - (void)setHtmlDelegates:(NSMutableSet *)htmlDelegates {
     objc_setAssociatedObject(self, @selector(htmlDelegates), htmlDelegates, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
@@ -95,8 +91,10 @@ SwizzleMethod(Class _originClass, SEL _originSelector, Class _newClass, SEL _new
 
 
 + (void)load {
-    ///  Swizzle method to use a safer one, only for WebSafeForwarder.
-   SwizzleMethod(NSClassFromString(@"_WebSafeForwarder"),NSSelectorFromString(@"initWithTarget:defaultTarget:"), self, @selector(safe_initWithTarget:defaultTarget:));
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+       SwizzleMethod(NSClassFromString(@"_WebSafeForwarder"), NSSelectorFromString(@"initWithTarget:defaultTarget:"), self, @selector(safe_initWithTarget:defaultTarget:));
+    });
 }
 
 - (id)safe_initWithTarget:(id)arg1 defaultTarget:(id)arg2 {
