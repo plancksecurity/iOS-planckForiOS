@@ -164,21 +164,4 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
         XCTAssert(sonIndex != NSNotFound)
         XCTAssert(sonIndex! > index!)
     }
-
-    func testvisibleFolderCellViewModel() {
-        let parentFolder = Folder(name: "Parent", parent: nil, account: account, folderType: .inbox)
-        self.folder = Folder(name: "Escafoides", parent: parentFolder, account: account, folderType: .normal)
-        self.folder.session.commit()
-
-        let account = TestData().createWorkingAccount()
-        viewModel = FolderSectionViewModel(account: account, unified: true)
-
-        let parentFCVM = FolderCellViewModel(folder: parentFolder, level: 0)
-
-        let children = viewModel.visibleChildren(of: parentFCVM)
-        //2 because the order is All, parent, child
-        let fcvm = viewModel.visibleFolderCellViewModel(index: 2)
-        XCTAssert(children.count > 0)
-        XCTAssert(fcvm.title == children.first!.title)
-    }
 }
