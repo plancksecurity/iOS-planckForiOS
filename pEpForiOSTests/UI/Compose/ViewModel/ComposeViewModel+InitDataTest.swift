@@ -252,14 +252,6 @@ class ComposeViewModel_InitDataTest: AccountDrivenTestBase {
         assertIsDraftsAndOrOutbox(forOriginalMessageWithParentFolder: parent)
     }
 
-    func testIsDraftsOrOutbox_drafts() {
-        guard let parent = drafts else {
-            XCTFail("No folder")
-            return
-        }
-        assertIsDraftsAndOrOutbox(forOriginalMessageWithParentFolder: parent)
-    }
-
     func testIsDraftsOrOutbox_outbox() {
         guard let parent = outbox else {
             XCTFail("No folder")
