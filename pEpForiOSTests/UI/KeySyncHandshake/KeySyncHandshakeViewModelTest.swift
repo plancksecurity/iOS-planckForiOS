@@ -39,21 +39,6 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
         super.tearDown()
     }
 
-    func testDidSelectLanguageToOtherOrSame() {
-        // GIVEN
-        guard let keySyncHandshakeVM = keySyncHandshakeVM else {
-            XCTFail()
-            return
-        }
-        expected = State(didCallClosePicker: true, didCallToUpdateTrustedWords: true)
-
-        // WHEN
-        keySyncHandshakeVM.didSelect(languageRow: 0)
-
-        // THEN
-        assertExpectations()
-    }
-
     func testDidPressActionAccept() {
         // GIVEN
         guard let keySyncHandshakeVM = keySyncHandshakeVM else {
