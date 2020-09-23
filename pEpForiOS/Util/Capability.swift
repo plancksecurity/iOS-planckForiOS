@@ -21,19 +21,6 @@ public struct Capability {
     }
     
     public class Media {
-        public final func authorized() -> Bool {
-            let status = PHPhotoLibrary.authorizationStatus()
-            switch status {
-            case .authorized, .limited:
-                return true
-            case .denied, .notDetermined, .restricted:
-                return false
-            default:
-                Log.shared.errorAndCrash("Unhandledcase")
-                return false
-            }
-        }
-
         /// Figures out whether or not we have permission to access the Photo Gallery.
         ///
         /// - Parameters:
