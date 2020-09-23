@@ -36,29 +36,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         assureSentExists()
     }
 
-    // MARK: - Test the Test Helper
-
-    func testAssertHelperTest_doNothing_noCallback() {
-        assert(contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     // MARK: - init
-
 
     func testInit_stateSetupCorrectly() {
         let mode = ComposeUtil.ComposeMode.replyAll
