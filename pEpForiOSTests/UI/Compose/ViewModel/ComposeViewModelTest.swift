@@ -36,23 +36,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         assureSentExists()
     }
 
-    // MARK: - RecipientCellViewModelResultDelegate Handling
-
-    private func recipientCellViewModel(type: RecipientCellViewModel.FieldType) -> RecipientCellViewModel? {
-        guard let sections = vm?.sections else {
-            XCTFail()
-            return nil
-        }
-        for section in sections {
-            for row in section.rows where row is RecipientCellViewModel {
-                if let row = row as? RecipientCellViewModel, row.type == type {
-                    return row
-                }
-            }
-        }
-        return nil
-    }
-
     // MARK: - isAttachmentSection
 
     func testIsAttachmentSection() {
@@ -140,59 +123,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         let testee = vm?.showKeepInOutbox
         XCTAssertEqual(testee, type == .outbox)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
-    private func assertRecipientCellViewModelDidChangeRecipients(
-        fieldType type: RecipientCellViewModel.FieldType) {
-        let secondAccount = TestData().createWorkingAccount(number: 1)
-        secondAccount.session.commit()
-        let om = draftMessage(bccSet: true, attachmentsSet: false)
-        assert(originalMessage: om,
-               contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: true,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: true,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        guard let recipientVm = recipientCellViewModel(type: type) else {
-            XCTFail()
-            return
-        }
-
-        let beforeCount: Int
-        switch type {
-        case .to:
-            beforeCount = vm?.state.toRecipients.count ?? -2
-        case .cc:
-            beforeCount = vm?.state.ccRecipients.count ?? -2
-        case .bcc:
-            beforeCount = vm?.state.bccRecipients.count ?? -2
-        }
-
-        let newRecipients = [account.user, secondAccount.user]
-        vm?.recipientCellViewModel(recipientVm, didChangeRecipients: newRecipients)
-
-        let afterCount: Int
-        switch type {
-        case .to:
-            afterCount = vm?.state.toRecipients.count ?? -2
-        case .cc:
-            afterCount = vm?.state.ccRecipients.count ?? -2
-        case .bcc:
-            afterCount = vm?.state.bccRecipients.count ?? -2
-        }
-        XCTAssertNotEqual(afterCount, beforeCount)
-        XCTAssertEqual(afterCount, newRecipients.count)
-        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime) // Async calls involved (get pEp color)
     }
 
     private func viewmodel(ofType vmType: AnyClass) -> CellViewModel? {
