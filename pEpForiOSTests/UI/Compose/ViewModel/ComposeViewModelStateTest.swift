@@ -93,14 +93,6 @@ class ComposeViewModelStateTest: AccountDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
     }
 
-    func testValidate_changeCCs_green() {
-        let recipients = [account.user]
-        assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: .trustedAndAnonymized)
-        testee?.ccRecipients = recipients
-        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
-    }
-
     // MARK: - edited
 
     func testEdited_noChange() {
