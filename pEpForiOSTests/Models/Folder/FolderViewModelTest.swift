@@ -25,18 +25,6 @@ class FolderViewModelTest: AccountDrivenTestBase {
         folder.session.commit()
     }
 
-    func testAccountSectionsWithUnifiedFolderShouldBeOnePlusAccountNumber() {
-        for accountNumber in 0...Input.maxNumberOfTestAccounts {
-            let accounts = givenThereIs(numberOfAccounts: accountNumber)
-            givenThereIsAViewModel(withUniFiedInBox: true, and: accounts )
-
-            let viewmodelSections = viewmodel.count
-
-            //If is unified inbox it should have accounts.count + 1 section
-            XCTAssertEqual(viewmodelSections, accounts.count + 1)
-        }
-    }
-
     func testFoldersAppearInTheCorrectOrder() {
         //preparing the folder structure
         let acc = givenThereIsAnAccountWithAFolder()
