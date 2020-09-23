@@ -69,27 +69,6 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
         assertExpectations()
     }
 
-    func testDidPressActionChangeLanguage() {
-        // GIVEN
-        guard let keySyncHandshakeVM = keySyncHandshakeVM else {
-            XCTFail()
-            return
-        }
-        let languages = pEpSessionMocLanaguages()
-        let languagesToShow = languages.map { $0.name }
-        let selectedLanguageIndex =
-            languages.map { $0.code }.firstIndex(of: Locale.current.languageCode)
-        expected = State(didCallShowPicker: true,
-                         languagesToShow: languagesToShow,
-                         selectedLanguageIndex: selectedLanguageIndex)
-
-        // WHEN
-        keySyncHandshakeVM.handle(action: .changeLanguage)
-
-        // THEN
-        assertExpectations()
-    }
-
     func testDidPressActionDecline() {
         // GIVEN
         guard let keySyncHandshakeVM = keySyncHandshakeVM else {
