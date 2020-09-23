@@ -82,37 +82,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
                       "Last row in last section must be attachment")
     }
 
-    // MARK: - initialFocus
-
-    func testInitialFocus_toSet() {
-        let originalMessage = draftMessage()
-        originalMessage.replaceTo(with: [account.user])
-        originalMessage.session.commit()
-        assert(originalMessage: originalMessage,
-               contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        guard let testee = vm?.initialFocus() else {
-            XCTFail()
-            return
-        }
-        let toRecipientsIndexPath = IndexPath(row: 0, section: 0)
-        XCTAssertNotEqual(testee, toRecipientsIndexPath)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     // MARK: - Helper
 
     private func indexPath(for cellViewModel: CellViewModel) -> IndexPath? {
