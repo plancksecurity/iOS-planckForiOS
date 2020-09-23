@@ -234,28 +234,6 @@ class ComposeViewModel_InitDataTest: AccountDrivenTestBase {
                           expectedHtmlBody: nil)
     }
 
-    func testComposeMode_fromInbox_forward() {
-        let mode = ComposeUtil.ComposeMode.forward
-        guard let originalMessage = messageAllButBccSet else {
-            XCTFail("No message")
-            return
-        }
-        let expectedSubject = ReplyUtil.forwardSubject(message: originalMessage)
-        // Body
-        guard let origBodyAttributedString =
-            originalMessage.longMessageFormatted?.htmlToAttributedString(deleteInlinePictures: false, attachmentDelegate: nil)
-            else {
-                XCTFail("No body")
-                return
-        }
-        let expectedHtmlBody = ReplyUtil.citedMessageText(textToCite: origBodyAttributedString,
-                                                          fromMessage: originalMessage)
-        assertComposeMode(mode,
-                          originalMessage: originalMessage,
-                          expectedSubject: expectedSubject,
-                          expectedHtmlBody: expectedHtmlBody)
-    }
-
     func testComposeMode_fromInbox_replyFrom() {
         let mode = ComposeUtil.ComposeMode.replyFrom
         guard let originalMessage = messageAllButBccSet else {
