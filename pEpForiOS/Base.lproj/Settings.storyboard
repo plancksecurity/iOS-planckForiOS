@@ -58,6 +58,7 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsActionCell" textLabel="Pdx-rN-QPm" style="IBUITableViewCellStyleDefault" id="7NR-lI-dKq" userLabel="Account">
                                 <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
@@ -75,6 +76,7 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="switchOptionCell" rowHeight="100" id="tyi-tA-7WC" userLabel="SwitchOption" customClass="SettingSwitchTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="143.5" width="375" height="100"/>
@@ -122,6 +124,7 @@
                                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="O22-FB-lMm" secondAttribute="bottom" constant="5" id="yA4-ta-YvL"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="switchDescription" destination="Ag8-Qj-N8l" id="eNB-uC-Hk3"/>
                                     <outlet property="switchItem" destination="qPx-oD-7wO" id="78Z-iO-fzB"/>
@@ -414,6 +417,7 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="PGPKeyImportSettingsSwitchTableViewCell" id="YEh-n9-C7K" userLabel="PGPKeyImportSettingsSwitchTableViewCell" customClass="PGPKeyImportSettingSwitchTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="99" width="375" height="45"/>
@@ -446,6 +450,7 @@
                                                 <constraint firstAttribute="bottomMargin" secondItem="Ppr-kD-hKR" secondAttribute="bottom" constant="1" id="sfB-M5-8B9"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="passphraseSwitch" destination="3Bj-jJ-n3c" id="Fu9-cR-yMv"/>
                                             <outlet property="titleLabel" destination="Ppr-kD-hKR" id="O1g-gE-CcK"/>
@@ -1115,6 +1120,7 @@
                                         <constraint firstItem="b26-mD-vaw" firstAttribute="centerY" secondItem="dSZ-uk-uWx" secondAttribute="centerY" id="ii7-7r-v2b"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="address" destination="X0Z-Ju-XOO" id="60U-G5-76p"/>
                                     <outlet property="onOfSwitch" destination="b26-mD-vaw" id="AKc-Rt-H7o"/>
@@ -1156,6 +1162,7 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableViewCell>
                         </prototypes>
                         <connections>
