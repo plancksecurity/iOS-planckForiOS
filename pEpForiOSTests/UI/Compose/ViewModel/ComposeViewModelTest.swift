@@ -85,22 +85,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         XCTAssertNotNil(sent)
     }
 
-    private func viewmodel(ofType vmType: AnyClass) -> CellViewModel? {
-        guard let sections = vm?.sections else {
-            XCTFail()
-            return nil
-        }
-        for section in sections {
-            guard let vm = section.rows.first else {
-                continue
-            }
-            if type(of: vm) == vmType {
-                return  section.rows.first
-            }
-        }
-        return nil
-    }
-
     private func draftMessage(bccSet: Bool = false, attachmentsSet: Bool = false) -> Message {
         return message(inFolderOfType: .drafts, bccSet: bccSet, attachmentsSet: attachmentsSet)
     }
