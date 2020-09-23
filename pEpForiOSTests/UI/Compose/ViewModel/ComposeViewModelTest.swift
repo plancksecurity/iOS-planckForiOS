@@ -514,9 +514,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         }
     }
 
-    // MARK: - DocumentAttachmentPickerViewModel
-    class TestDocumentAttachmentPickerViewModel: DocumentAttachmentPickerViewModel {} // Dummy to pass something
-
     // MARK: - MediaAttachmentPickerProviderViewModel
     class TestMediaAttachmentPickerProviderViewModel: MediaAttachmentPickerProviderViewModel {} // Dummy to pass something
 }
