@@ -111,31 +111,6 @@ class BodyCellViewModelTest: XCTestCase {
 
     // MARK: - handleTextChange
 
-    func testHandleTextChange() {
-        let newPlainText = "testPlainText"
-        let newAttributedContent = "testAttributedText"
-        let newAttributedText = NSAttributedString(string: newAttributedContent)
-
-        let attributedTextWins = newAttributedContent
-        let expectedPlainText = attributedTextWins
-        let expectedHtml = htmlVersion(of: newAttributedContent)
-
-        setupAssertionDelegates(initialPlaintext: nil,
-                                initialAttributedText: nil,
-                                initialInlinedAttachments: nil,
-                                expectInsertCalled: expInsertTextCalled(mustBeCalled: false),
-                                inserted: nil,
-                                expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: false),
-                                expUserWantsToAddDocumentCalled: expUserWantsToAddDocumentCalled(mustBeCalled: false),
-                                expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: false),
-                                inlined: nil,
-                                expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: true),
-                                exectedPlain: expectedPlainText,
-                                exectedHtml: expectedHtml)
-        vm.handleTextChange(newText: newPlainText, newAttributedText: newAttributedText)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     func testHandleTextChange_notCalled() {
         setupAssertionDelegates(initialPlaintext: nil,
                                 initialAttributedText: nil,
