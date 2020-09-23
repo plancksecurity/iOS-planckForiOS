@@ -84,30 +84,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
 
     // MARK: - handleUserChangedProtectionStatus
 
-    func testHandleUserChangedProtectionStatus_change() {
-        let expectedRating = Rating.undefined
-        let expectedProtection = false
-        assert(contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: true,
-               expectedRating: expectedRating,
-               expectedProtectionEnabled: expectedProtection,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        vm?.handleUserChangedProtectionStatus(to: false)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     func testHandleUserChangedProtectionStatus_noChange() {
         assert(contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
