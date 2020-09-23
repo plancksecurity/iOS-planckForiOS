@@ -33,7 +33,6 @@
 		150B8E991FCDACBB00374438 /* AccountSettingsUserInputError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150B8E971FCDACBB00374438 /* AccountSettingsUserInputError.swift */; };
 		150B8EB31FCEB93D00374438 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150B8EB21FCEB93D00374438 /* UIUtils.swift */; };
 		150DF6D02052A13700A9DCF7 /* SecureWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150DF6CF2052A13700A9DCF7 /* SecureWebViewController.swift */; };
-		150E18C0219D8C6C009E9048 /* ComposeViewModelSectionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150E18BF219D8C6C009E9048 /* ComposeViewModelSectionTest.swift */; };
 		1512132724166AD9009B7C88 /* small-animated-gif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1512132524166AD8009B7C88 /* small-animated-gif.gif */; };
 		1512132824166AD9009B7C88 /* large-animated-gif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1512132624166AD8009B7C88 /* large-animated-gif.gif */; };
 		1512133124166C7B009B7C88 /* PantomimeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 159E1F1222BD074F007D711F /* PantomimeFramework.framework */; };
@@ -395,7 +394,6 @@
 		B71EBBBC1E55E4AE00150177 /* FolderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71EBBBB1E55E4AE00150177 /* FolderTableViewController.swift */; };
 		B722EC4D1E5B01B300A2B9D5 /* FolderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */; };
 		B722EC651E5B49BA00A2B9D5 /* FolderSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC641E5B49BA00A2B9D5 /* FolderSectionViewModel.swift */; };
-		B724AE1225138524008516AC /* String+HTMLTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B724AE1125138524008516AC /* String+HTMLTest.swift */; };
 		B72C7BAA2395182F0013B12E /* AccountTypeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72C7BA92395182F0013B12E /* AccountTypeSelectorViewController.swift */; };
 		B72C7BAC2395198D0013B12E /* AccountTypeSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72C7BAB2395198D0013B12E /* AccountTypeSelectorViewModel.swift */; };
 		B745049D24F7B00F00293B8C /* String+htmlTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B745049C24F7B00F00293B8C /* String+htmlTest.swift */; };
@@ -498,7 +496,6 @@
 		150B8E971FCDACBB00374438 /* AccountSettingsUserInputError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsUserInputError.swift; sourceTree = "<group>"; };
 		150B8EB21FCEB93D00374438 /* UIUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtils.swift; sourceTree = "<group>"; };
 		150DF6CF2052A13700A9DCF7 /* SecureWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureWebViewController.swift; sourceTree = "<group>"; };
-		150E18BF219D8C6C009E9048 /* ComposeViewModelSectionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewModelSectionTest.swift; sourceTree = "<group>"; };
 		1512132524166AD8009B7C88 /* small-animated-gif.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "small-animated-gif.gif"; sourceTree = "<group>"; };
 		1512132624166AD8009B7C88 /* large-animated-gif.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "large-animated-gif.gif"; sourceTree = "<group>"; };
 		1512133C24166CDF009B7C88 /* ldns_xcode.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ldns_xcode.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1676,7 +1673,6 @@
 				15D7D994219B2C5C00A1A2B9 /* ComposeViewModel+InitDataTest.swift */,
 				15D7D996219C374600A1A2B9 /* ComposeViewModelStateTest.swift */,
 				151AD7AC219D74C700FC36FF /* ComposeViewModelTest.swift */,
-				150E18BF219D8C6C009E9048 /* ComposeViewModelSectionTest.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -3266,7 +3262,6 @@
 				15410D1F2199CA1100BBF65F /* XCTTestCase+Utils.swift in Sources */,
 				15D7D995219B2C5C00A1A2B9 /* ComposeViewModel+InitDataTest.swift in Sources */,
 				158A6E2F230D53E3006A9ECE /* ExtraKeysSettingViewModelTest.swift in Sources */,
-				150E18C0219D8C6C009E9048 /* ComposeViewModelSectionTest.swift in Sources */,
 				150707DC21006CD000AA213F /* ComposeUtilTest.swift in Sources */,
 				15D439A5216F7E0E00EB3933 /* AccountPickerViewModelTest.swift in Sources */,
 				1574D07D2114696B00FEDC93 /* URL+MailToTest.swift in Sources */,
