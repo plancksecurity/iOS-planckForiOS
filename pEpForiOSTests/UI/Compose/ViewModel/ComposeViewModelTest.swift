@@ -84,35 +84,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
 
     // MARK: - initialFocus
 
-    func testInitialFocus_emptyTo() {
-        let originalMessage = draftMessage()
-        originalMessage.replaceTo(with: [])
-        originalMessage.session.commit()
-        assert(originalMessage: originalMessage,
-               contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        guard let testee = vm?.initialFocus() else {
-            XCTFail()
-            return
-        }
-        let toRecipientsIndPath = IndexPath(row: 0, section: 0)
-        XCTAssertEqual(testee, toRecipientsIndPath)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     func testInitialFocus_toSet() {
         let originalMessage = draftMessage()
         originalMessage.replaceTo(with: [account.user])
