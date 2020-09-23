@@ -26,11 +26,6 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
         XCTAssertTrue(viewModel.hidden)
     }
     
-    func testCountIsOneWhenUnifiedInbox() {
-        givenThereIsAViewModelWithoutAccount(withUnifiedInbox: true)
-        XCTAssertEqual(viewModel.count, 1)
-    }
-    
     func testNotHiddenWithoutUnifiedInbox() {
         givenThereIsAViewModelWithAccount(withUnifiedInbox: false)
         XCTAssertFalse(viewModel.hidden)
