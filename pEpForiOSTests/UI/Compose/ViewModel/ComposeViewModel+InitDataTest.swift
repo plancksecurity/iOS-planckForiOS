@@ -303,14 +303,6 @@ class ComposeViewModel_InitDataTest: AccountDrivenTestBase {
         }
     }
 
-    // MARK: - inlinedAttachments
-
-    func testInlinedAttachments() {
-        ComposeUtil.ComposeMode.allCases.forEach {
-            assertInlinedAttachments(forComposeMode: $0)
-        }
-    }
-
     // MARK: - Helper
 
     private func assertNonInlinedAttachments(forComposeMode mode: ComposeUtil.ComposeMode) {
