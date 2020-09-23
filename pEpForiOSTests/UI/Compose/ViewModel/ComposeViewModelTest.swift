@@ -36,55 +36,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         assureSentExists()
     }
 
-    // MARK: - DocumentAttachmentPickerResultDelegate Handling
-
-    func testDidPickDocumentAttachment() {
-        let attachmentSectionSection = 4
-        assert(contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: true,
-               expectedSection: attachmentSectionSection,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: true,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        let countBefore = vm?.state.nonInlinedAttachments.count ?? -1
-        let att = attachment()
-        vm?.documentAttachmentPickerViewModel(TestDocumentAttachmentPickerViewModel(session: Session()),
-                                              didPick: att)
-        let countAfter = vm?.state.nonInlinedAttachments.count ?? -1
-        XCTAssertEqual(countAfter, countBefore + 1)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
-    func testDocumentAttachmentPickerDone() {
-        assert(contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: true,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        vm?.documentAttachmentPickerViewModelDidCancel(TestDocumentAttachmentPickerViewModel(session: Session()))
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     // MARK: - MediaAttachmentPickerProviderViewModelResultDelegate Handling
 
     func testMediaAttachmentPickerProviderViewModelFactory() {
