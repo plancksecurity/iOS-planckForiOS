@@ -82,22 +82,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
                       "Last row in last section must be attachment")
     }
 
-    // MARK: - viewModel(for:)
-
-    func testViewModelForIndexPath_notAlwaysWrapper() {
-        assert()
-        guard let wrapperVM = viewmodel(ofType: WrappedBccViewModel.self) else {
-                XCTFail("No VM")
-                return
-        }
-        let toRecipientsIdxPath = IndexPath(row: 0, section: 0)
-        guard let testee = vm?.viewModel(for: toRecipientsIdxPath) else {
-            XCTFail()
-            return
-        }
-        XCTAssertFalse(testee === wrapperVM)
-    }
-
     // MARK: - initialFocus
 
     func testInitialFocus_emptyTo() {
