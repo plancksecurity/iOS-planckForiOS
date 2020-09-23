@@ -297,33 +297,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         return viewmodel(ofType: AccountCellViewModel.self) as? AccountCellViewModel
     }
 
-    func testAccountCellViewModelAccountChangedTo() {
-        let secondAccount = TestData().createWorkingAccount(number: 1)
-        secondAccount.session.commit()
-        assert(contentChangedMustBeCalled: true,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: true,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        guard let accountVm = accountCellViewModel else {
-            XCTFail()
-            return
-        }
-        vm?.accountCellViewModel(accountVm, accountChangedTo: secondAccount)
-        XCTAssertEqual(vm?.state.from, secondAccount.user)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     // MARK: - RecipientCellViewModelResultDelegate Handling
 
     private func recipientCellViewModel(type: RecipientCellViewModel.FieldType) -> RecipientCellViewModel? {
@@ -870,21 +843,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
             return
         }
         XCTAssertFalse(testee === wrapperVM)
-    }
-
-    // MARK: - beforePickerFocus
-
-    func testBeforePickerFocus() {
-        assert()
-        guard let bodyVm = vm?.bodyVM else {
-            XCTFail()
-            return
-        }
-        let beforeFocus = indexPath(for: bodyVm)
-        let testee = vm?.beforeDocumentAttachmentPickerFocus()
-        XCTAssertEqual(testee, beforeFocus)
-        let toRecipientsIndPath = IndexPath(row: 0, section: 0)
-        XCTAssertNotEqual(testee, toRecipientsIndPath)
     }
 
     // MARK: - initialFocus
