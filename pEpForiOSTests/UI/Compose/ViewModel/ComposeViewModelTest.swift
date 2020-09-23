@@ -84,27 +84,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
 
     // MARK: - handleUserSelectedRow
 
-    func testHandleUserSelectedRow_ccWrapped_recipientCellSelected() {
-        assert(contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        let idxPathToRecipients = IndexPath(row: 0, section: 0)
-        vm?.handleUserSelectedRow(at: idxPathToRecipients)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     func testHandleUserSelectedRow_ccUnwrapped_recipientCellSelected() {
         let originalMessage = draftMessage()
         assert(originalMessage: originalMessage,
