@@ -61,18 +61,6 @@ class ComposeViewModelStateTest: AccountDrivenTestBase {
 
     // MARK: - Validation ( recipient changes )
 
-    func testValidate() {
-        let expectedStateIsValid = false
-        assert(ignoreDelegateCallsWhileInitializing: false,
-               didChangeValidationStateMustBeCalled: true,
-               expectedStateIsValid: expectedStateIsValid,
-               didChangePEPRatingMustBeCalled: false,
-               expectedNewRating: nil,
-               didChangeProtectionMustBeCalled: false,
-               expectedNewProtection: nil)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     func testValidate_changeTos_noRecipients() {
         let recipients = [Identity]()
         assertValidatation(expectedStateIsValid: false,
