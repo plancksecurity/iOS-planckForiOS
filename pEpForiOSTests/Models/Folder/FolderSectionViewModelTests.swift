@@ -94,7 +94,6 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
 
 
     func testNoChildrenOf() {
-        let account = TestData().createWorkingAccount()
         viewModel = FolderSectionViewModel(account: account, unified: true)
         let fcvm = FolderCellViewModel(folder: folder, level: 0)
 
