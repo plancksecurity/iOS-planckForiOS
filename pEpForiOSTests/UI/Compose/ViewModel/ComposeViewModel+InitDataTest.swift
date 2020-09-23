@@ -287,14 +287,6 @@ class ComposeViewModel_InitDataTest: AccountDrivenTestBase {
         assertTesteeForExpectedValues(pEpProtection: expectedProtected)
     }
 
-    // MARK: - nonInlinedAttachments
-
-    func testNonInlinedAttachments() {
-        ComposeUtil.ComposeMode.allCases.forEach {
-            assertNonInlinedAttachments(forComposeMode: $0)
-        }
-    }
-
     // MARK: - Helper
 
     private func assertNonInlinedAttachments(forComposeMode mode: ComposeUtil.ComposeMode) {
