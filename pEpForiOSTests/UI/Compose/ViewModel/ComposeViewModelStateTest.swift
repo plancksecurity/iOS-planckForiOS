@@ -59,16 +59,6 @@ class ComposeViewModelStateTest: AccountDrivenTestBase {
         print("DEBUG: did tearDown")
     }
 
-    // MARK: - Validation ( recipient changes )
-
-    func testValidate_changeTos_noRecipients() {
-        let recipients = [Identity]()
-        assertValidatation(expectedStateIsValid: false,
-                           expectedNewRating: nil)
-        testee?.toRecipients = recipients
-        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
-    }
-
     // MARK: - edited
 
     func testEdited_noChange() {
