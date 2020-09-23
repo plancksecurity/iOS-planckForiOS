@@ -55,23 +55,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
 
     // MARK: - Helper
 
-    private func indexPath(for cellViewModel: CellViewModel) -> IndexPath? {
-        guard let vm = vm else {
-            XCTFail("No VM")
-            return nil
-        }
-        for s in 0..<vm.sections.count {
-            let section = vm.sections[s]
-            for r in 0..<section.rows.count {
-                let row = section.rows[r]
-                if row === cellViewModel {
-                    return IndexPath(row: r, section: s)
-                }
-            }
-        }
-        return nil
-    }
-
     private func assureOutboxExists() {
         if outbox == nil {
             let createe = Folder(name: "outbox", parent: nil, account: account, folderType: .outbox)
