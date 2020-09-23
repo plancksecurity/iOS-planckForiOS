@@ -82,24 +82,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
                       "Last row in last section must be attachment")
     }
 
-    // MARK: - handleUserClickedSendButton
-
-    func testHandleUserClickedSendButton() {
-        assert()
-        let toRecipient = Identity(address: "testHandleUserClickedSend@Butt.on")
-        vm?.state.toRecipients = [toRecipient]
-        vm?.state.from = account.user
-        let outMsgsBefore = Folder.by(account: account, folderType: .outbox)?
-            .allMessages()
-            .count ?? -1
-        vm?.handleUserClickedSendButton()
-        let outMsgsAfter = Folder.by(account: account, folderType: .outbox)?
-            .allMessages()
-            .count ?? -1
-        XCTAssertEqual(outMsgsAfter, outMsgsBefore + 1)
-        XCTAssertGreaterThan(outMsgsAfter, 0)
-    }
-
     // MARK: - handleUserChangedProtectionStatus
 
     func testHandleUserChangedProtectionStatus_change() {
