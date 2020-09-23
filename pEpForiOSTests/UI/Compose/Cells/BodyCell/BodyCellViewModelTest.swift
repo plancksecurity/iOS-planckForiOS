@@ -82,14 +82,6 @@ class BodyCellViewModelTest: XCTestCase {
         XCTAssertEqual(text, .pepSignature)
     }
 
-    func testInititalText_emptyInit_signatureSet() {
-        setupAssertionDelegates(initialPlaintext: nil,
-                                initialAttributedText: nil,
-                                initialInlinedAttachments: nil)
-        let (text, _) = vm.inititalText()
-        XCTAssertEqual(text, .pepSignature)
-    }
-
     // MARK: - Initial Inlined Attachents
 
     func testInitialAttachments() {
