@@ -85,29 +85,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         XCTAssertNotNil(sent)
     }
 
-    private func assertShowKeepInOutbox(forMessageInfolderOfType type: FolderType) {
-        let msg = message(inFolderOfType: type)
-        assert(originalMessage: msg,
-               contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        let testee = vm?.showKeepInOutbox
-        XCTAssertEqual(testee, type == .outbox)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     private func viewmodel(ofType vmType: AnyClass) -> CellViewModel? {
         guard let sections = vm?.sections else {
             XCTFail()
