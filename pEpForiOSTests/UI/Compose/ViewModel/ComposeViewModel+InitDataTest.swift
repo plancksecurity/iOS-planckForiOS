@@ -262,27 +262,6 @@ class ComposeViewModel_InitDataTest: AccountDrivenTestBase {
                           expectedHtmlBody: nil)
     }
 
-    func testComposeMode_fromDrafts() {
-        let mode = ComposeUtil.ComposeMode.normal
-        guard
-            let originalMessage = messageAllButBccSet,
-            let drafts = drafts,
-            let origSubject = originalMessage.shortMessage,
-            let htmlBody =
-            originalMessage.longMessageFormatted?.htmlToAttributedString(deleteInlinePictures: false, attachmentDelegate: nil)
-            else {
-                XCTFail()
-                return
-        }
-        originalMessage.parent = drafts
-        let expectedSubject = origSubject
-        let expectedHtmlBody = htmlBody
-        assertComposeMode(mode,
-                          originalMessage: originalMessage,
-                          expectedSubject: expectedSubject,
-                          expectedHtmlBody: expectedHtmlBody)
-    }
-
     // MARK: - isDraftsOrOutbox isDrafts isOutbox
 
     func testIsDraftsOrOutbox_noOrigMessage() {
