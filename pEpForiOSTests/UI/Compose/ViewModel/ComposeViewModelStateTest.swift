@@ -190,26 +190,6 @@ class ComposeViewModelStateTest: AccountDrivenTestBase {
         XCTAssertFalse(canToggleProtection)
     }
 
-    // testUserCanToggleProtection: state yellow is untested. To expensive.
-
-    func testUserCanToggleProtection_green_bccSet() {
-        // Setup green state ...
-        let recipients = [account.user]
-        assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: .trustedAndAnonymized)
-        testee?.toRecipients = recipients
-        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
-        // ... set BCC ...
-        testDelegate?.ignoreAll = true
-        testee?.bccRecipients = recipients
-        // ... and assert can toggle works correctly
-        guard let canToggleProtection = testee?.userCanToggleProtection() else {
-            XCTFail()
-            return
-        }
-        XCTAssertFalse(canToggleProtection)
-    }
-
     // MARK: - HELPER
 
     private func assertValidatation(didChangeValidationStateMustBeCalled: Bool = true,
