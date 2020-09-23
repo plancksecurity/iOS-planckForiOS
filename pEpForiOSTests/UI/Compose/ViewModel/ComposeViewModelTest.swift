@@ -84,36 +84,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
 
     // MARK: - viewModel(for:)
 
-    func testViewModelForIndexPath() {
-        assert(contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        guard
-            let wrapperVM = viewmodel(ofType: WrappedBccViewModel.self),
-            let idxPath = indexPath(for: wrapperVM) else {
-                XCTFail("No VM")
-                return
-        }
-        guard let testee = vm?.viewModel(for: idxPath) else {
-            XCTFail()
-            return
-        }
-        XCTAssertTrue(testee === wrapperVM)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     func testViewModelForIndexPath_notAlwaysWrapper() {
         assert()
         guard let wrapperVM = viewmodel(ofType: WrappedBccViewModel.self) else {
