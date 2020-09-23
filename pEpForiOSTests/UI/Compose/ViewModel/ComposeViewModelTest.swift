@@ -36,67 +36,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         assureSentExists()
     }
 
-    // MARK: - init
-
-    func testInit_stateSetupCorrectly() {
-        let mode = ComposeUtil.ComposeMode.replyAll
-        let vm = ComposeViewModel(composeMode: mode,
-                                  prefilledTo: nil,
-                                  originalMessage: nil)
-        guard
-            let testee = vm.state.initData,
-            let testeeMode = vm.state.initData?.composeMode,
-            let stateDelegate = vm.state.delegate else {
-            XCTFail()
-            return
-        }
-        XCTAssertNotNil(testee)
-        XCTAssertEqual(testeeMode, mode)
-        XCTAssertTrue(vm === stateDelegate)
-    }
-
-    // MARK: - Sections
-
-    func testSections_setupCorrectly() {
-        let testOriginalMessage = draftMessage(bccSet: false, attachmentsSet: false)
-        assertSections(forVMIniitaliizedWith: testOriginalMessage,
-                       expectBccWrapperSectionExists: true,
-                       expectAccountSectionExists: false,
-                       expectAttachmentSectionExists: false)
-    }
-
-    func testSections_unwrappedbcc() {
-        let testOriginalMessage = draftMessage(bccSet: true, attachmentsSet: false)
-        assertSections(forVMIniitaliizedWith: testOriginalMessage,
-                       expectBccWrapperSectionExists: false,
-                       expectAccountSectionExists: false,
-                       expectAttachmentSectionExists: false)
-    }
-
-    func testSections_accountSelector() {
-        let testOriginalMessage = draftMessage(bccSet: false, attachmentsSet: false)
-        let secondAccount = TestData().createWorkingAccount(number: 1)
-        secondAccount.session.commit()
-        assertSections(forVMIniitaliizedWith: testOriginalMessage,
-                       expectBccWrapperSectionExists: true,
-                       expectAccountSectionExists: true,
-                       expectAttachmentSectionExists: false)
-    }
-
-    func testSections_attachments() {
-        let testOriginalMessage = draftMessage(bccSet: false, attachmentsSet: true)
-        assertSections(forVMIniitaliizedWith: testOriginalMessage,
-                       expectBccWrapperSectionExists: true,
-                       expectAccountSectionExists: false,
-                       expectAttachmentSectionExists: true)
-    }
-
     // MARK: - DocumentAttachmentPickerResultDelegate Handling
-
-    func testDocumentAttachmentPickerViewModel() {
-        let testee = vm?.documentAttachmentPickerViewModel()
-        XCTAssertNotNil(testee)
-    }
 
     func testDidPickDocumentAttachment() {
         let attachmentSectionSection = 4
