@@ -13,8 +13,6 @@ import XCTest
 
 class ComposeViewModelSectionTest: AccountDrivenTestBase {
     var state: ComposeViewModel.ComposeViewModelState?
-    var composeViewModelStateDelegate = ComposeViewModelStateDelegateMock()
-    var expRatingChanged: XCTestExpectation?
 
     override func setUp() {
         super.setUp()
@@ -22,9 +20,6 @@ class ComposeViewModelSectionTest: AccountDrivenTestBase {
     }
 
     override func tearDown() {
-        if let theExp = expRatingChanged {
-            wait(for: [theExp], timeout: TestUtil.waitTimeForever)
-        }
         state = nil
         super.tearDown()
     }
@@ -212,9 +207,6 @@ class ComposeViewModelSectionTest: AccountDrivenTestBase {
                                   ccRecipients: [Identity] = [],
                                   bccRecipients: [Identity] = [],
                                   isWapped: Bool = true) -> ComposeViewModel.ComposeViewModelState {
-        expRatingChanged = expectation(description: "expRatingChanged")
-        composeViewModelStateDelegate = ComposeViewModelStateDelegateMock()
-
         let drafts = Folder(name: "Inbox", parent: nil, account: account, folderType: .drafts)
         drafts.session.commit()
         let msg = Message(uuid: UUID().uuidString, parentFolder: drafts)
@@ -230,25 +222,10 @@ class ComposeViewModelSectionTest: AccountDrivenTestBase {
         let initData = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
                                                  orForOriginalMessage: msg,
                                                  composeMode: .normal)
-        let createe = ComposeViewModel.ComposeViewModelState(initData: initData,
-                                                             delegate: composeViewModelStateDelegate)
+        let createe = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
         if !isWapped {
             createe.setBccUnwrapped()
         }
         return createe
-    }
-}
-
-class ComposeViewModelStateDelegateMock : ComposeViewModelStateDelegate {
-    func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState, didChangeValidationStateTo isValid: Bool) {
-        print("*** didChangeValidationStateTo isValid \(isValid)")
-    }
-
-    func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState, didChangePEPRatingTo newRating: Rating) {
-        print("*** didChangePEPRatingTo")
-    }
-
-    func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState, didChangeProtection newValue: Bool) {
-        print("*** didChangeProtection")
     }
 }
