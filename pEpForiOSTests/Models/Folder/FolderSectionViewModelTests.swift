@@ -107,7 +107,6 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
         self.folder = Folder(name: "Escafoides", parent: parentFolder, account: account, folderType: .normal)
         self.folder.session.commit()
 
-        let account = TestData().createWorkingAccount()
         viewModel = FolderSectionViewModel(account: account, unified: true)
 
         //Parent
