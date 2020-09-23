@@ -84,32 +84,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
 
     // MARK: - handleUserSelectedRow
 
-    func testHandleUserSelectedRow_ccWrapped_wrapperCellSelected() {
-        assert(contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: true,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        guard
-            let wrapperVM = viewmodel(ofType: WrappedBccViewModel.self),
-            let idxPath = indexPath(for: wrapperVM) else {
-                XCTFail("No VM")
-                return
-        }
-        vm?.handleUserSelectedRow(at: idxPath)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     func testHandleUserSelectedRow_ccWrapped_recipientCellSelected() {
         assert(contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
