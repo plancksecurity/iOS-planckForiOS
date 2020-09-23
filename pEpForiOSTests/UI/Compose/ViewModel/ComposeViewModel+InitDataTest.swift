@@ -248,20 +248,6 @@ class ComposeViewModel_InitDataTest: AccountDrivenTestBase {
                           expectedHtmlBody: nil)
     }
 
-    func testComposeMode_fromInbox_replyAll() {
-        let mode = ComposeUtil.ComposeMode.replyAll
-        guard let originalMessage = messageAllButBccSet else {
-            XCTFail("No message")
-            return
-        }
-        let expectedSubject = ReplyUtil.replySubject(message: originalMessage)
-
-        assertComposeMode(mode,
-                          originalMessage: originalMessage,
-                          expectedSubject: expectedSubject,
-                          expectedHtmlBody: nil)
-    }
-
     // MARK: - isDraftsOrOutbox isDrafts isOutbox
 
     func testIsDraftsOrOutbox_noOrigMessage() {
