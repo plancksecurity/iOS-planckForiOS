@@ -98,21 +98,6 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
         // THEN
         assertExpectations()
     }
-
-    func testDidLongPressWords() {
-        // GIVEN
-        guard let keySyncHandshakeVM = keySyncHandshakeVM else {
-            XCTFail()
-            return
-        }
-        expected = State(didCallToUpdateTrustedWords: true, fullWordsVersion: true)
-
-        // WHEN
-        keySyncHandshakeVM.didLongPressWords()
-
-        // THEN
-        assertExpectations()
-    }
 }
 
 // MARK: - KeySyncHandshakeViewModelDelegate
