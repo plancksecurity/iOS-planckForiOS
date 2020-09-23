@@ -38,39 +38,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
 
     // MARK: - MediaAttachmentPickerProviderViewModelResultDelegate Handling
 
-    func testDidSelectMediaAttachment_image() {
-        let msg = draftMessage()
-        let imageAttachment = attachment(ofType: .inline)
-        msg.replaceAttachments(with: [imageAttachment])
-        assert(originalMessage: msg,
-               contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: true,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        let mediaAtt =
-            MediaAttachmentPickerProviderViewModel.MediaAttachment(type: .image,
-                                                                   attachment: imageAttachment)
-        let countBefore = vm?.state.inlinedAttachments.count ?? -1
-        vm?.mediaAttachmentPickerProviderViewModel(
-            TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil, session: Session()),
-            didSelect: mediaAtt)
-        let countAfter = vm?.state.inlinedAttachments.count ?? -1
-        XCTAssertEqual(countAfter, countBefore + 1)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-
-    }
-
     func testDidSelectMediaAttachment_video() {
         let msg = draftMessage()
         let imageAttachment = attachment(ofType: .inline)
