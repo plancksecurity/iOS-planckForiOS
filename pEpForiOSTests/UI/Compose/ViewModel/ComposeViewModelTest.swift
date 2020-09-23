@@ -36,12 +36,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         assureSentExists()
     }
 
-    // MARK: - SubjectCellViewModelResultDelegate Handling
-
-    private var subjectCellViewModel: SubjectCellViewModel? {
-        return viewmodel(ofType: SubjectCellViewModel.self) as? SubjectCellViewModel
-    }
-
     // MARK: - AccountCellViewModelResultDelegate handling
 
     private var accountCellViewModel: AccountCellViewModel? {
