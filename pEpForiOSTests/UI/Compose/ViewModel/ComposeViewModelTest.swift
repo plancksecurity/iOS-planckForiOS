@@ -82,31 +82,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
                       "Last row in last section must be attachment")
     }
 
-    // MARK: - handleUserSelectedRow
-
-    func testHandleUserSelectedRow_ccUnwrapped_recipientCellSelected() {
-        let originalMessage = draftMessage()
-        assert(originalMessage: originalMessage,
-               contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        let idxPathToRecipients = IndexPath(row: 0, section: 0)
-        vm?.handleUserSelectedRow(at: idxPathToRecipients)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     // MARK: - viewModel(for:)
 
     func testViewModelForIndexPath() {
