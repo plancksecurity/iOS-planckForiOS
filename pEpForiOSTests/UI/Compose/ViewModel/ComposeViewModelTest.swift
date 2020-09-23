@@ -38,11 +38,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
 
     // MARK: - MediaAttachmentPickerProviderViewModelResultDelegate Handling
 
-    func testMediaAttachmentPickerProviderViewModelFactory() {
-        let testee = vm?.mediaAttachmentPickerProviderViewModel()
-        XCTAssertNotNil(testee)
-    }
-
     func testDidSelectMediaAttachment_image() {
         let msg = draftMessage()
         let imageAttachment = attachment(ofType: .inline)
