@@ -12,7 +12,7 @@ import CoreData
 import pEpIOSToolbox
 
 public class AddressBook {
-    static private var updateidetityStateIsStopped: UnsafeMutablePointer<ObjCBool>?
+    static private var shouldStopUpdatingExistingIdentities = false
 
     // MARK: - Public API
 
@@ -92,6 +92,9 @@ extension AddressBook {
     ///
     /// - Parameter context: MOC we are called on
     static public func updateExistingIdentities(context: NSManagedObjectContext) {
+        defer {
+            shouldStopUpdatingExistingIdentities = false
+        }
         Log.shared.info("starting updateExistingIdentities")
         let store = CNContactStore()
         let predicate = CdIdentity.PredicateFactory.contactsIdentifierUnknown()
@@ -107,9 +110,10 @@ extension AddressBook {
         var uniqueIdentities = Set(cdIidentities)
         do {
             try store.enumerateContacts(with: contactFetchRequest()) { contact, stop in
-                updateidetityStateIsStopped = stop
+                stop.pointee = shouldStopUpdatingExistingIdentities ? true : false
                 if uniqueIdentities.isEmpty {
                     stop.pointee = true
+                    return
                 }
                 let idetifier = contact.identifier
                 for email in contact.emailAddresses {
@@ -136,7 +140,7 @@ extension AddressBook {
     }
 
     static public func cancelUpdateExistingIdentities() {
-        updateidetityStateIsStopped?.pointee = true
+        shouldStopUpdatingExistingIdentities = true
     }
 }
 
