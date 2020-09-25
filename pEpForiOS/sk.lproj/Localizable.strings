@@ -196,6 +196,12 @@
 /* Account delete confirmation comment */
 "delete account message" = "vymazať správu účtu";
 
+/* ComposeTableView: button to decide to delete changes made on a drafted mail. */
+"Delete Changes" = "Odstrániť zmeny";
+
+/* Device field, reporting issue */
+"Device" = "zariadenie";
+
 /* keysync alert leave device group disable */
 "Disable" = "Zakázať";
 
@@ -296,6 +302,9 @@
 
 /* possible privacy status action */
 "Handshake" = "Handshake";
+
+/* Contact Support - Mail subject */
+"Help" = "Získať pomoc";
 
 /* PGPKeyImportSettingViewModel - part of pgpKeyImportTitle that should link to support page (... click _here_ for info ...) */
 "here" = "tu";
