@@ -836,6 +836,11 @@ extension EmailDetailViewController {
         separatorsArray.append(contentsOf: [spacer,midSpacer])
     }
     private func setupToolbar() {
+        if navigationController?.topViewController != self {
+            // To configure the toolbar and navigation bar, navigationController and presented vc must be correct.
+            return
+        }
+
         if onlySplitViewMasterIsShown {
             navigationController?.setToolbarHidden(false, animated: false)
         } else {
