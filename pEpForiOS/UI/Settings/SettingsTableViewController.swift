@@ -68,7 +68,7 @@ extension SettingsTableViewController {
             Log.shared.errorAndCrash("Invalid state.")
             return SwipeTableViewCell()
         }
-        cell.backgroundColor = UIColor.white
+        cell.backgroundColor = UIColor.pEpCellBackground
         cell.textLabel?.text = row.title
         cell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
         cell.detailTextLabel?.text = nil
@@ -81,7 +81,7 @@ extension SettingsTableViewController {
     ///   - dequeuedCell: the cell to configure
     ///   - row: the row with the information to configure the cell
     private func prepareActionCell(_ dequeuedCell: UITableViewCell, for row: SettingsRowProtocol) -> UITableViewCell {
-        dequeuedCell.backgroundColor = UIColor.white
+        dequeuedCell.backgroundColor = UIColor.pEpCellBackground
         dequeuedCell.textLabel?.text = row.title
         dequeuedCell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
         dequeuedCell.detailTextLabel?.text = nil
@@ -98,7 +98,7 @@ extension SettingsTableViewController {
             Log.shared.errorAndCrash("Invalid state.")
             return SettingSwitchTableViewCell()
         }
-        cell.backgroundColor = UIColor.white
+        cell.backgroundColor = UIColor.pEpCellBackground
         cell.switchDescription.text = row.title
         cell.switchDescription.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
         cell.delegate = self
@@ -114,7 +114,7 @@ extension SettingsTableViewController {
     private func dequeueCell(for tableView: UITableView, for indexPath: IndexPath) -> UITableViewCell {
         let cellId = viewModel.cellIdentifier(for: indexPath)
         let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        dequeuedCell.backgroundColor = UIColor.white
+        dequeuedCell.backgroundColor = UIColor.pEpCellBackground
         let row : SettingsRowProtocol = viewModel.section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
         case .account:
