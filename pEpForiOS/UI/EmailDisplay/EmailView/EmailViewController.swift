@@ -94,7 +94,6 @@ class EmailViewController: BaseTableViewController {
             !htmlBody.isEmpty else {
                 return nil
         }
-
         return htmlBody
     }
 

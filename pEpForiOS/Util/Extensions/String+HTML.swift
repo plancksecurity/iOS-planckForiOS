@@ -64,6 +64,12 @@ extension String {
         return htmlConverted
     }
 
+    @discardableResult
+    public mutating func removeFontFaces() -> String {
+        removeRegexMatches(of: "/@font-face[^{]*{([^{}]|{[^{}]*})*}/gi")
+        return self
+    }
+
     public func htmlToAttributedString(deleteInlinePictures: Bool = false,
                                        attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate?) -> NSAttributedString {
         if Thread.current != Thread.main {
@@ -83,7 +89,8 @@ extension String {
 
         // prepare HTML for HTML foundation framework parsing
         // we change cid to image coded with base64
-        let html = htmlConvertImageLinksToImageMarkdownString(html: htmlWithCitedChars, attachmentDelegate: attachmentDelegate)
+        var html = htmlConvertImageLinksToImageMarkdownString(html: htmlWithCitedChars, attachmentDelegate: attachmentDelegate)
+        html.removeFontFaces()
         let htmlData = html.data(using: .utf8,
                                  allowLossyConversion: true)
         let options: [NSAttributedString.DocumentReadingOptionKey : Any] =
