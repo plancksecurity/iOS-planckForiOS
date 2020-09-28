@@ -60,9 +60,9 @@ extension Message {
     static func pEpRating(message: Message,
                           completion: @escaping (PEPRating)->Void) {
         switch message.parent.folderType {
-        case .outbox, .sent, .drafts:
+        case .outbox, .drafts:
             return message.outgoingMessageRating(completion: completion)
-        case .all, .archive, .inbox, .normal, .spam, .flagged, .trash:
+        case .all, .archive, .inbox, .normal, .sent, .spam, .flagged, .trash:
             completion(PEPUtils.pEpRatingFromInt(message.pEpRatingInt))
         case .pEpSync:
             // messages from this folder should never be shown to the user
