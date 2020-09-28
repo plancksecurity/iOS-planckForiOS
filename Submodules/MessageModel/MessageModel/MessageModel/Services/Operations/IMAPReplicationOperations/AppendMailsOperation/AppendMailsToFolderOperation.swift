@@ -121,11 +121,15 @@ extension AppendMailsToFolderOperation {
                     return
                 }
 
+                let folderTypesYouMustEncryptForSelfFor = [FolderType.drafts, .trash]
+                let isEncryptForSelfFolderType = folderTypesYouMustEncryptForSelfFor.contains(cdMessage.parent?.folderType ?? FolderType.normal)
+
                 let forceUnprotected = !cdMessage.pEpProtected
                 let extraKeysFPRs = CdExtraKey.fprsOfAllExtraKeys(in: me.privateMOC)
+
                 PEPUtils.encrypt(pEpMessage: pEpMessage,
                                  encryptionFormat: forceUnprotected ? .none : .PEP,
-                                 forSelf: forceUnprotected ? nil : pEpidentity,
+                                 forSelf: (!forceUnprotected && isEncryptForSelfFolderType) ? pEpidentity : nil,
                                  extraKeys: extraKeysFPRs,
                                  errorCallback: { (error) in
                                     defer { group.leave() }
