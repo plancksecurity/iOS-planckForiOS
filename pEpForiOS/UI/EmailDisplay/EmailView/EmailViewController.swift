@@ -253,8 +253,8 @@ extension EmailViewController: MessageAttachmentDelegate {
             }
             present(vc, animated: true)
         } else if QLPreviewController.canPreview(url as QLPreviewItem) {
-                delegate?.showPdfPreview(forPdfAt: url)
-            } else {
+            delegate?.showPdfPreview(forPdfAt: url)
+        } else {
             documentInteractionController.url = url
             let presentingView = view ?? cell
             let dim: CGFloat = 40
