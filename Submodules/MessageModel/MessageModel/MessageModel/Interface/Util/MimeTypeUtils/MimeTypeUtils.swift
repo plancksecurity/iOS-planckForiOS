@@ -11,7 +11,7 @@ import MobileCoreServices
 
 //!!!: Must move to Interface. Refactor.
 public class MimeTypeUtils {
-    private var mimeTypeToExtension = [MimeTypeString: String]() //BUFF: move
+    private var mimeTypeToExtension = [MimeTypeString: String]()
 
     public init?() {
         do {
@@ -22,7 +22,7 @@ public class MimeTypeUtils {
         }
     }
 
-    public func fileExtension(fromMimeType mimeType: MimeTypeString) -> String? { //BUFF: move
+    public func fileExtension(fromMimeType mimeType: MimeTypeString) -> String? {
         return mimeTypeToExtension[mimeType.lowercased()]
     }
 
@@ -53,11 +53,11 @@ public class MimeTypeUtils {
     /**
      Is the given mimetype suitable for creating an `UIImage`?
      */
-    static public func isImage(mimeType theMimeType: String) -> Bool { //BUFF: move
-        let lcMT = theMimeType.lowercased()
-        if lcMT == MimeTypeUtils.mimeType(fromFileExtension: "png") ||
-            lcMT == MimeTypeUtils.mimeType(fromFileExtension: "jpg") ||
-            lcMT == MimeTypeUtils.mimeType(fromFileExtension: "gif") {
+    static public func isImage(mimeType: String) -> Bool {
+        let lcMimeType = mimeType.lowercased()
+        if lcMimeType == MimeTypeUtils.mimeType(fromFileExtension: "png") ||
+            lcMimeType == MimeTypeUtils.mimeType(fromFileExtension: "jpg") ||
+            lcMimeType == MimeTypeUtils.mimeType(fromFileExtension: "gif") {
             return true
         }
         return false
