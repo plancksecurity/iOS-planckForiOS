@@ -74,7 +74,7 @@ public class FolderViewModel {
     }
 
     private var allAccounts: [Account] {
-        return accountQueryResults.all
+        return Account.all()
     }
 
     /// Instantiates a folder hierarchy model with:

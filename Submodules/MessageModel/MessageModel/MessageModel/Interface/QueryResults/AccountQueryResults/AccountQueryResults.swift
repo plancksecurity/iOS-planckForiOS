@@ -123,7 +123,3 @@ extension AccountQueryResults : QueryResultsControllerDelegate {
         // Intentionally ignored. Query does not need to handle section.
     }
 }
-
-protocol AccountsQueryResultsDelegate: QueryResultsIndexPathRowDelegate {
-    //TODO:
-}
