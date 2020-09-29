@@ -59,7 +59,7 @@ NSFetchedResultsControllerDelegate {
         return controller.sectionIndexTitles
     }
 
-    required init(predicate: NSPredicate?,
+    required init(predicate: NSPredicate? = nil,
                   context: NSManagedObjectContext,
                   cacheName: String? = "\(#file)-\(#function)",
                   sectionNameKeyPath: String? = nil,

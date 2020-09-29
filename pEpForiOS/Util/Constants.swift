@@ -29,6 +29,9 @@ struct Constants {
     /// Name of Storyboard that contains KeySyncWizardViewController.
     static let keySyncWizardStoryboard = "Reusable"
 
+    /// Name of Storyboard that contains Folder related views.
+    static let folderViewsStoryboard = "FolderViews"
+
     struct XibNames {
         static let loadingInterface = "LoadingInterface"
     }
