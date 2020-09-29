@@ -31,6 +31,25 @@ class FolderViewModelTest: AccountDrivenTestBase {
         XCTAssert(viewmodel.count == 1)
     }
 
+    func testshouldShowUnifiedFolders() {
+        let accounts = givenThereIs(numberOfAccounts: 2)
+        givenThereIsAViewModel(withUniFiedInBox: true, and: accounts)
+        XCTAssert(viewmodel.shouldShowUnifiedFolders)
+    }
+
+    func testshouldNotShowUnifiedFoldersBecauseThereIsOnlyOneAccount() {
+        let accounts = givenThereIs(numberOfAccounts: 1)
+        givenThereIsAViewModel(withUniFiedInBox: true, and: accounts)
+        XCTAssertFalse(viewmodel.shouldShowUnifiedFolders)
+    }
+
+    func testShouldNotShowUnifiedFoldersBecauseItsDisabled() {
+        let accounts = givenThereIs(numberOfAccounts: 2)
+        accounts.forEach { $0.isIncludedInUnifiedFolders = false }
+        givenThereIsAViewModel(withUniFiedInBox: false, and: accounts)
+        XCTAssertFalse(viewmodel.shouldShowUnifiedFolders)
+    }
+
     func testAccountSectionsWithUnifiedFolderShouldBeOnePlusAccountNumber() {
         for accountNumber in 0...Input.maxNumberOfTestAccounts {
             let accounts = givenThereIs(numberOfAccounts: accountNumber)
