@@ -163,6 +163,7 @@
 		159AB56D23539D67008AB1F3 /* AppSettings+CNContactsAccessPermissionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159AB56C23539D67008AB1F3 /* AppSettings+CNContactsAccessPermissionProvider.swift */; };
 		159E1F1322BD074F007D711F /* PantomimeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 159E1F1222BD074F007D711F /* PantomimeFramework.framework */; };
 		159E1F1522BD0756007D711F /* PEPObjCAdapterFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 159E1F1422BD0756007D711F /* PEPObjCAdapterFramework.framework */; };
+		15A06499252333D8002F15D0 /* MimeTypeUtils_MimeType+QLPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A06498252333D8002F15D0 /* MimeTypeUtils_MimeType+QLPreview.swift */; };
 		15A536902155136800CF6204 /* PEPUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A5368F2155136800CF6204 /* PEPUtilTest.swift */; };
 		15A763D11F72D68000670313 /* KeyChainTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A763D01F72D68000670313 /* KeyChainTest.swift */; };
 		15A8B8FC20908D2300D2B0B6 /* Keychain+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A8B8FB20908D2300D2B0B6 /* Keychain+TestUtils.swift */; };
@@ -703,6 +704,7 @@
 		159AB56C23539D67008AB1F3 /* AppSettings+CNContactsAccessPermissionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+CNContactsAccessPermissionProvider.swift"; sourceTree = "<group>"; };
 		159E1F1222BD074F007D711F /* PantomimeFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		159E1F1422BD0756007D711F /* PEPObjCAdapterFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PEPObjCAdapterFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		15A06498252333D8002F15D0 /* MimeTypeUtils_MimeType+QLPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MimeTypeUtils_MimeType+QLPreview.swift"; sourceTree = "<group>"; };
 		15A5368F2155136800CF6204 /* PEPUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPUtilTest.swift; sourceTree = "<group>"; };
 		15A763D01F72D68000670313 /* KeyChainTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainTest.swift; sourceTree = "<group>"; };
 		15A8B8FB20908D2300D2B0B6 /* Keychain+TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keychain+TestUtils.swift"; sourceTree = "<group>"; };
@@ -2136,6 +2138,7 @@
 				3A796BAA242CC31F00083BB5 /* NSAttributedString+Html.swift */,
 				3A796BAC242E5CFC00083BB5 /* String+NSAttributedString.swift */,
 				43A9818B24E53BFF00830603 /* Color+PrivacyStatusDescription.swift */,
+				15A06498252333D8002F15D0 /* MimeTypeUtils_MimeType+QLPreview.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3155,6 +3158,7 @@
 				B76CF8B320D2739B002429A8 /* MoveToFolderViewModel.swift in Sources */,
 				43425EDD1FE3DF3B004A2728 /* OAuth2Provider.swift in Sources */,
 				152A39E021905C3E00D9F8E4 /* RecipientCell.swift in Sources */,
+				15A06499252333D8002F15D0 /* MimeTypeUtils_MimeType+QLPreview.swift in Sources */,
 				152A39C721905C3E00D9F8E4 /* ComposeViewModel.swift in Sources */,
 				43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */,
 				431D60DB1E93BB2D001266D7 /* AttachmentsView.swift in Sources */,

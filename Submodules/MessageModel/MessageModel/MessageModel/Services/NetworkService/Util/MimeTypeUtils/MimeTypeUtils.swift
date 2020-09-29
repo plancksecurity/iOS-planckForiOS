@@ -6,64 +6,12 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-//!!!: must go to interfaces or better: make internal
 import Foundation
 import MobileCoreServices
 
-public typealias MimeTypeString = String
-
 //!!!: Must move to Interface. Refactor.
 public class MimeTypeUtils {
-
-    public enum MimeType: String {
-        case defaultMimeType = "application/octet-stream"
-
-        case pgpKeys = "application/pgp-keys"
-        case html = "text/html"
-        case multipartMixed = "multipart/mixed"
-        case multipartEncrypted = "multipart/encrypted"
-        case multipartRelated = "multipart/related"
-        case multipartAlternative = "multipart/alternative"
-
-        case jpeg = "image/jpeg"
-        case pgp =  "application/pgp-signature"
-        case pdf  = "application/pdf"
-        case pgpEncrypted = "application/pgp-encrypted"
-        case attachedEmail = "message/rfc822"
-        case plainText = "text/plain"
-        case pEpSync = "application/pep.sync"
-        case pEpSign = "application/pep.sign"
-        // Microsoft Office
-        // Microsoft Office
-        case msword, dot, word, w6w = "application/msword"
-        case docx = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        case dotx = "application/vnd.openxmlformats-officedocument.wordprocessingml.template"
-        case docm, dotm = "application/vnd.ms-word.document.macroEnabled.12"
-
-        case xls, xlt, xla, xlw = "application/msexcel"
-        case xlsx = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        case xltx = "application/vnd.openxmlformats-officedocument.spreadsheetml.template"
-
-        case xlsm = "application/vnd.ms-excel.sheet.macroEnabled.12"
-        case xlsb = "application/vnd.ms-excel.sheet.binary.macroEnabled.12"
-        case xltm = "application/vnd.ms-excel.template.macroEnabled.12"
-        case xlam = "application/vnd.ms-excel.addin.macroEnabled.12"
-
-        case ppt, pot, pps, ppa = "application/mspowerpoint"
-        case pptx = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
-        case potx = "application/vnd.openxmlformats-officedocument.presentationml.template"
-        case ppsx = "application/vnd.openxmlformats-officedocument.presentationml.slideshow"
-        case ppam = "application/vnd.ms-powerpoint.addin.macroEnabled.12"
-        case pptm = "application/vnd.ms-powerpoint.presentation.macroEnabled.12"
-        case ppsm = "application/vnd.ms-powerpoint.slideshow.macroEnabled.12"
-        case potm = "application/vnd.ms-powerpoint.template.macroEnabled.12"
-
-
-        case mdb, accda, accdb, accde, accdr, accdt, ade, adp, adn, mde, mdf, mdn, mdt, mdw = "application/msaccess"
-        case wri = "application/mswrite"
-    }
-
-    private var mimeTypeToExtension = [MimeTypeString: String]()
+    private var mimeTypeToExtension = [MimeTypeString: String]() //BUFF: move
 
     public init?() {
         do {
@@ -74,7 +22,7 @@ public class MimeTypeUtils {
         }
     }
 
-    public func fileExtension(fromMimeType mimeType: MimeTypeString) -> String? {
+    public func fileExtension(fromMimeType mimeType: MimeTypeString) -> String? { //BUFF: move
         return mimeTypeToExtension[mimeType.lowercased()]
     }
 
@@ -93,15 +41,13 @@ public class MimeTypeUtils {
     /// - Returns:  the given mime type if it is specific (not "application/octet-stream") already,
     ///             otherwize the best MimeType we coud figure out
     static public func findBestMimeType(forFileAt url: URL,
-                                        withGivenMimeType mimeType: MimeTypeString?) -> MimeTypeString? {
+                                        withGivenMimeType mimeType: MimeTypeString?) -> MimeType? {
         if let mimeType = mimeType, mimeType != MimeTypeUtils.MimeType.defaultMimeType.rawValue {
             // Is already a specific type, that is the best we can get.
-            return mimeType
+            return MimeType(rawValue: mimeType)
         }
-
-        let foundMimeType: MimeTypeString? = MimeTypeUtils.mimeType(fromFileExtension: url.pathExtension)
-
-        return foundMimeType ?? mimeType
+        let foundMimeTypeString = MimeTypeUtils.mimeType(fromFileExtension: url.pathExtension)
+        return MimeType(rawValue: foundMimeTypeString)
     }
 
     static public func mimeType(fromFileExtension fileExtension: String) -> MimeTypeString {
@@ -127,7 +73,7 @@ public class MimeTypeUtils {
     /**
      Is the given mimetype suitable for creating an `UIImage`?
      */
-    static public func isImage(mimeType theMimeType: String) -> Bool {
+    static public func isImage(mimeType theMimeType: String) -> Bool { //BUFF: move
         let lcMT = theMimeType.lowercased()
         if lcMT == MimeTypeUtils.mimeType(fromFileExtension: "png") ||
             lcMT == MimeTypeUtils.mimeType(fromFileExtension: "jpg") ||
@@ -138,41 +84,6 @@ public class MimeTypeUtils {
     }
 }
 
-// MARK: - Microsoft Office
-
-extension MimeTypeUtils.MimeType {
-
-    //    public var isMicrosoftOfficeMimeType: String {
-    //        // Microsoft Office
-    //        case msword, dot, word, w6w = "application/msword"
-    //        case docx = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    //        case dotx = "application/vnd.openxmlformats-officedocument.wordprocessingml.template"
-    //        case docm, dotm = "application/vnd.ms-word.document.macroEnabled.12"
-    //
-    //        case xls, xlt, xla, xlw = "application/msexcel"
-    //        case xlsx = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    //        case xltx = "application/vnd.openxmlformats-officedocument.spreadsheetml.template"
-    //
-    //        case xlsm = "application/vnd.ms-excel.sheet.macroEnabled.12"
-    //        case xlsb = "application/vnd.ms-excel.sheet.binary.macroEnabled.12"
-    //        case xltm = "application/vnd.ms-excel.template.macroEnabled.12"
-    //        case xlam = "application/vnd.ms-excel.addin.macroEnabled.12"
-    //
-    //        case ppt, pot, pps, ppa = "application/mspowerpoint"
-    //        case pptx = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
-    //        case potx = "application/vnd.openxmlformats-officedocument.presentationml.template"
-    //        case ppsx = "application/vnd.openxmlformats-officedocument.presentationml.slideshow"
-    //        case ppam = "application/vnd.ms-powerpoint.addin.macroEnabled.12"
-    //        case pptm = "application/vnd.ms-powerpoint.presentation.macroEnabled.12"
-    //        case ppsm = "application/vnd.ms-powerpoint.slideshow.macroEnabled.12"
-    //        case potm = "application/vnd.ms-powerpoint.template.macroEnabled.12"
-    //
-    //
-    //        case mdb, accda, accdb, accde, accdr, accdt, ade, adp, adn, mde, mdf, mdn, mdt, mdw = "application/msaccess"
-    //        case wri = "application/mswrite"
-    //        }
-
-}
 // MARK: - Private
 
 extension MimeTypeUtils {
