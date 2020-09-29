@@ -69,10 +69,12 @@ public class FolderViewModel {
         }
     }
 
+    /// Count the items / sections.
     public var count: Int {
         return items.count
     }
 
+    /// All the accounts
     private var allAccounts: [Account] {
         return Account.all()
     }
@@ -95,15 +97,6 @@ public class FolderViewModel {
         }
         let includeInUnifiedFolders = isUnified && shouldShowUnifiedFolders
         generateSections(accounts: accountsToUse, includeInUnifiedFolders: includeInUnifiedFolders)
-    }
-
-    /// Start monitoring accounts
-    private func startMonitoring() {
-        do {
-            try accountQueryResults.startMonitoring()
-        } catch {
-            Log.shared.errorAndCrash("Error trying to start monitoring")
-        }
     }
 
     /// Indicates if there isn't accounts registered.
@@ -138,7 +131,20 @@ public class FolderViewModel {
     }
 
     // MARK: - Private
+    /// Start monitoring accounts
+    private func startMonitoring() {
+        do {
+            try accountQueryResults.startMonitoring()
+        } catch {
+            Log.shared.errorAndCrash("Error trying to start monitoring")
+        }
+    }
 
+    /// Generates the section and put it into the items.
+    ///
+    /// - Parameters:
+    ///   - accounts: The accounts to generate the sections.
+    ///   - includeInUnifiedFolders: Indicates if Unified Folders should be generated.
     private func generateSections(accounts: [Account], includeInUnifiedFolders: Bool = true) {
         if includeInUnifiedFolders {
             items.append(FolderSectionViewModel(account: nil, unified: true))

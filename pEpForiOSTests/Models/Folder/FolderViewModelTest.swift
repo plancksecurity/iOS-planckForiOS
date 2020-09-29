@@ -25,6 +25,12 @@ class FolderViewModelTest: AccountDrivenTestBase {
         folder.session.commit()
     }
 
+    func testFolderToShow() {
+        let accounts = givenThereIs(numberOfAccounts: 1)
+        givenThereIsAViewModel(withUniFiedInBox: true, and: accounts)
+        XCTAssertNotNil(viewmodel.folderToShow)
+    }
+
     func testCount() {
         let accounts = givenThereIs(numberOfAccounts: 1)
         givenThereIsAViewModel(withUniFiedInBox: true, and: accounts)

@@ -460,7 +460,6 @@ extension FolderViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
         guard let vm = folderVM else {
-            //As folderVM is initialized on the setup method (first time in viewWillAppear), it might be nil the first time.
             return 0
         }
         return vm.count
