@@ -224,7 +224,10 @@ final class TrustManagementViewModel {
     private var message: Message
     private var trustManagementUtil : TrustManagementUtilProtocol
     private let undoManager = UndoManager()
-    private var actionPerformed = [String]()
+    /// This holds the names of the opposite actions.
+    /// Will be the name of the action to revert a previous one performed.
+    /// For example: 'Undo Trust Rejection', in case the last action was a Trust Rejection.
+    private var revertActionName = [String]()
     
     /// Items to be displayed in the View Controller
     private (set) var rows: [Row] = [Row]()
@@ -252,8 +255,8 @@ final class TrustManagementViewModel {
     /// Reject the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to reject the handshake
     public func handleRejectHandshakePressed(at indexPath: IndexPath) {
-        let actionName = NSLocalizedString("Trust Rejection", comment: "Action name to be suggested at the moment of revert")
-        actionPerformed.append(actionName)
+        let actionName = NSLocalizedString("Undo Trust Rejection", comment: "Action name to be suggested at the moment of revert")
+        revertActionName.append(actionName)
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
@@ -281,8 +284,8 @@ final class TrustManagementViewModel {
     /// Confirm the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to confirm the handshake
     public func handleConfirmHandshakePressed(at indexPath: IndexPath) {
-        let actionName = NSLocalizedString("Trust Confirmation", comment: "Action name to be suggested at the moment of revert")
-        actionPerformed.append(actionName)
+        let actionName = NSLocalizedString("Undo Trust Confirmation", comment: "Action name to be suggested at the moment of revert")
+        revertActionName.append(actionName)
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
@@ -367,9 +370,9 @@ final class TrustManagementViewModel {
         return undoManager.canUndo
     }
     
-    /// - returns: The name of the last action performed, nil if there isn't any.
-    public func lastActionPerformed() -> String? {
-        return actionPerformed.last
+    /// - returns: The name of the action to revert the last one performed, nil if there isn't any.
+    public func revertAction() -> String? {
+        return revertActionName.last
     }
 
     /// Method that makes the trustwords long or short (more or less trustwords in fact).
@@ -387,7 +390,7 @@ final class TrustManagementViewModel {
         if (undoManager.canUndo) {
             undoManager.undo()
             delegate?.reload()
-            _ = actionPerformed.popLast()
+            _ = revertActionName.popLast()
         }
     }
 
