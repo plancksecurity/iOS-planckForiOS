@@ -39,7 +39,7 @@ extension Attachment {
         var clone = self // Dummy value to vaid Optional
         session.moc.performAndWait {
             clone = Attachment(data: data,
-                               mimeType: mimeType ?? MimeTypeUtils.MimesType.defaultMimeType,
+                               mimeType: mimeType ?? MimeTypeUtils.MimeType.defaultMimeType.rawValue,
                                fileName: fileName,
                                image: image,
                                assetUrl: assetUrl,

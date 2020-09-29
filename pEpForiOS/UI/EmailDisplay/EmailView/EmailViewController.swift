@@ -175,8 +175,8 @@ extension EmailViewController {
     override func tableView(_ tableView: UITableView,
                             heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let row = tableData?.getRow(at: indexPath.row) else {
-                Log.shared.errorAndCrash("Missing data")
-                return tableView.estimatedRowHeight
+            Log.shared.errorAndCrash("Missing data")
+            return tableView.estimatedRowHeight
         }
 
         if row.type == .content, htmlBody(message: message) != nil {
@@ -245,9 +245,6 @@ extension EmailViewController: MessageAttachmentDelegate {
                             representedBy cell: MessageCell,
                             showAt location: CGPoint,
                             in view: UIView?) {
-        let mimeType = MimeTypeUtils.findBestMimeType(forFileAt: url,
-                                                      withGivenMimeType: givenMimeType)
-
         if url.pathExtension == "pEp12" || url.pathExtension == "pfx" {
             setupClientCertificateImportViewController(forClientCertificateAt: url)
             guard let vc = clientCertificateImportViewController else {
@@ -255,8 +252,7 @@ extension EmailViewController: MessageAttachmentDelegate {
                 return
             }
             present(vc, animated: true)
-        } else if mimeType == MimeTypeUtils.MimesType.pdf
-            && QLPreviewController.canPreview(url as QLPreviewItem) {
+        } else if QLPreviewController.canPreview(url as QLPreviewItem) {
             delegate?.showPdfPreview(forPdfAt: url)
         } else {
             documentInteractionController.url = url
@@ -273,7 +269,7 @@ extension EmailViewController: MessageAttachmentDelegate {
         guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil)
             .instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController else {
                 Log.shared.errorAndCrash("No VC")
-            return
+                return
         }
         vc.viewModel = ClientCertificateImportViewModel(certificateUrl: url, delegate: vc)
         vc.modalPresentationStyle = .fullScreen
