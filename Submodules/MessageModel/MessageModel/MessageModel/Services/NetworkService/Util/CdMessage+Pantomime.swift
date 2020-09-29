@@ -695,8 +695,8 @@ extension CdMessage {
             return
         }
 
-        let isText = part.contentType()?.lowercased() == MimeTypeUtils.MimesType.plainText.rawValue
-        let isHtml = part.contentType()?.lowercased() == MimeTypeUtils.MimesType.html.rawValue
+        let isText = part.contentType()?.lowercased() == MimeTypeUtils.MimeType.plainText.rawValue
+        let isHtml = part.contentType()?.lowercased() == MimeTypeUtils.MimeType.html.rawValue
         var contentData: Data?
         if let message = content as? CWMessage {
             contentData = message.dataValue()

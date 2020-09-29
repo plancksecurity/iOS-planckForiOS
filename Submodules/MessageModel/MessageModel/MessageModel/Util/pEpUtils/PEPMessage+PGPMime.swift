@@ -22,7 +22,7 @@ extension PEPMessage {
             guard let filename = attachment.mimeType else {
                 continue
             }
-            if filename.lowercased() == MimeTypeUtils.MimesType.pgpEncrypted.rawValue {
+            if filename.lowercased() == MimeTypeUtils.MimeType.pgpEncrypted.rawValue {
                 foundAttachmentPGPEncrypted = true
                 break
             }

@@ -78,7 +78,7 @@ extension CWIMAPMessage {
             if isEncrypted {
                 self.setContentType(ContentTypeUtils.ContentType.multipartEncrypted)
                 self.setContentTransferEncoding(PantomimeEncoding8bit)
-                self.setParameter(MimeTypeUtils.MimesType.pgpEncrypted, forKey: "protocol")
+                self.setParameter(MimeTypeUtils.MimeType.pgpEncrypted, forKey: "protocol")
             } else {
                 self.setContentType(ContentTypeUtils.ContentType.multipartRelated)
                 self.setContentTransferEncoding(PantomimeEncoding8bit)

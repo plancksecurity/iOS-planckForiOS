@@ -10,12 +10,12 @@
 import Foundation
 import MobileCoreServices
 
-public typealias MimeType = String
+public typealias MimeTypeString = String
 
 //!!!: Must move to Interface. Refactor.
 public class MimeTypeUtils {
 
-    public enum MimesType: String {
+    public enum MimeType: String {
         case defaultMimeType = "application/octet-stream"
 
         case pgpKeys = "application/pgp-keys"
@@ -63,7 +63,7 @@ public class MimeTypeUtils {
         case wri = "application/mswrite"
     }
 
-    private var mimeTypeToExtension = [MimeType: String]()
+    private var mimeTypeToExtension = [MimeTypeString: String]()
 
     public init?() {
         do {
@@ -74,11 +74,11 @@ public class MimeTypeUtils {
         }
     }
 
-    public func fileExtension(fromMimeType mimeType: MimeType) -> String? {
+    public func fileExtension(fromMimeType mimeType: MimeTypeString) -> String? {
         return mimeTypeToExtension[mimeType.lowercased()]
     }
 
-    static public func mimeType(fromURL url: URL) -> MimeType {
+    static public func mimeType(fromURL url: URL) -> MimeTypeString {
         return MimeTypeUtils.mimeType(fromFileExtension: url.pathExtension)
     }
 
@@ -93,35 +93,35 @@ public class MimeTypeUtils {
     /// - Returns:  the given mime type if it is specific (not "application/octet-stream") already,
     ///             otherwize the best MimeType we coud figure out
     static public func findBestMimeType(forFileAt url: URL,
-                                        withGivenMimeType mimeType: MimeType?) -> MimeType? {
-        if let mimeType = mimeType, mimeType != MimeTypeUtils.MimesType.defaultMimeType.rawValue {
+                                        withGivenMimeType mimeType: MimeTypeString?) -> MimeTypeString? {
+        if let mimeType = mimeType, mimeType != MimeTypeUtils.MimeType.defaultMimeType.rawValue {
             // Is already a specific type, that is the best we can get.
             return mimeType
         }
 
-        let foundMimeType: MimeType? = MimeTypeUtils.mimeType(fromFileExtension: url.pathExtension)
+        let foundMimeType: MimeTypeString? = MimeTypeUtils.mimeType(fromFileExtension: url.pathExtension)
 
         return foundMimeType ?? mimeType
     }
 
-    static public func mimeType(fromFileExtension fileExtension: String) -> MimeType {
-        var foundMimeType: MimeType? = nil
+    static public func mimeType(fromFileExtension fileExtension: String) -> MimeTypeString {
+        var foundMimeType: MimeTypeString? = nil
         if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension,
                                                            fileExtension as NSString,
                                                            nil)? .takeRetainedValue() {
             foundMimeType = (UTTypeCopyPreferredTagWithClass(uti,
                                                              kUTTagClassMIMEType)?
-                .takeRetainedValue()) as MimeType?
+                .takeRetainedValue()) as MimeTypeString?
         }
 
-        return foundMimeType ?? MimeTypeUtils.MimesType.defaultMimeType.rawValue
+        return foundMimeType ?? MimeTypeUtils.MimeType.defaultMimeType.rawValue
     }
 
-    static public var unviewableMimeTypes: Set<MimeType> {
-        return Set([MimesType.pgpKeys.rawValue,
-                    MimesType.pgp.rawValue,
-                    MimesType.pEpSync.rawValue,
-                    MimesType.pEpSign.rawValue])
+    static public var unviewableMimeTypes: Set<MimeTypeString> {
+        return Set([MimeType.pgpKeys.rawValue,
+                    MimeType.pgp.rawValue,
+                    MimeType.pEpSync.rawValue,
+                    MimeType.pEpSign.rawValue])
     }
 
     /**
@@ -140,7 +140,7 @@ public class MimeTypeUtils {
 
 // MARK: - Microsoft Office
 
-extension MimeTypeUtils.MimesType {
+extension MimeTypeUtils.MimeType {
 
     //    public var isMicrosoftOfficeMimeType: String {
     //        // Microsoft Office
@@ -201,6 +201,6 @@ extension MimeTypeUtils {
             mimeTypeToExtension[mimeType.lowercased()] = theExtension
         }
         // "image/jpeg" is missing in our data. Fix it.
-        mimeTypeToExtension[MimeTypeUtils.MimesType.jpeg.rawValue] = "jpg"
+        mimeTypeToExtension[MimeTypeUtils.MimeType.jpeg.rawValue] = "jpg"
     }
 }

@@ -248,8 +248,8 @@ extension EmailViewController: MessageAttachmentDelegate {
         let mimeType = MimeTypeUtils.findBestMimeType(forFileAt: url,
                                                       withGivenMimeType: givenMimeType)
 //        let isQLPreviewSupportedType =
-//            (mimeType == MimeTypeUtils.MimesType.pdf || url.pathExtension.caseInsensitiveCompare(MimeTypeUtils.fileExtension(MimeTypeUtils.MimesType.pdf)) == .orderedSame) ||
-//        (mimeType == MimeTypeUtils.MimesType.pdf || url.pathExtension.caseInsensitiveCompare("PDF") == .orderedSame)
+//            (mimeType == MimeTypeUtils.MimeType.pdf || url.pathExtension.caseInsensitiveCompare(MimeTypeUtils.fileExtension(MimeTypeUtils.MimeType.pdf)) == .orderedSame) ||
+//        (mimeType == MimeTypeUtils.MimeType.pdf || url.pathExtension.caseInsensitiveCompare("PDF") == .orderedSame)
 
 
         if url.pathExtension == "pEp12" || url.pathExtension == "pfx" {
@@ -259,7 +259,7 @@ extension EmailViewController: MessageAttachmentDelegate {
                 return
             }
             present(vc, animated: true)
-        } else if (mimeType == MimeTypeUtils.MimesType.pdf.rawValue || url.pathExtension.caseInsensitiveCompare("PDF") == .orderedSame)
+        } else if (mimeType == MimeTypeUtils.MimeType.pdf.rawValue || url.pathExtension.caseInsensitiveCompare("PDF") == .orderedSame)
             && QLPreviewController.canPreview(url as QLPreviewItem) {
                 delegate?.showPdfPreview(forPdfAt: url)
             } else {
