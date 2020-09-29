@@ -34,8 +34,6 @@ final class FolderViewController: UIViewController {
         showEmptyDetailViewIfNeeded()
     }
 
-    // MARK: - Setup
-
     private func hideToolbar() {
         navigationController?.setToolbarHidden(false, animated: false)
     }
