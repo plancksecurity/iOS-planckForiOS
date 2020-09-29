@@ -1177,7 +1177,7 @@ extension EmailListViewController: SegueHandlerType {
             vc.hidesBottomBarWhenPushed = true
             break
         case .segueFolderViews:
-            guard let vC = segue.destination as? FolderTableViewController  else {
+            guard let vC = segue.destination as? FolderViewController  else {
                 Log.shared.errorAndCrash("Segue issue")
                 return
             }

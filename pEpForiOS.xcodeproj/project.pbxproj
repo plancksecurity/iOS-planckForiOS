@@ -348,6 +348,8 @@
 		49DCCD2821E8ABDF00ABE487 /* ScreenshotTestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495F689921E6600500A10C63 /* ScreenshotTestUtil.swift */; };
 		5B0B339D24AC85E800CABD0B /* UIUtils+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */; };
 		5B0B339F24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0B339E24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift */; };
+		5B18E6F4250222EE0013AE60 /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B18E6F3250222EE0013AE60 /* FolderViewModel.swift */; };
+		5B18E6F82506320B0013AE60 /* FolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B18E6F72506320B0013AE60 /* FolderViewController.swift */; };
 		5B1C0E1823FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */; };
 		5B2F7E63240D25CF004DDFA2 /* TutorialStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */; };
 		5B394E1323ED5673006A1FC0 /* TrustManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */; };
@@ -386,7 +388,6 @@
 		A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C5A8D1CFEDF59006A195F /* UIHelper.swift */; };
 		A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A811CD26FF100B1A997 /* Constants.swift */; };
 		B70A3A63220065F600EDCE61 /* String+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A62220065F500EDCE61 /* String+pEp.swift */; };
-		B70A3C401E817CFA0036876F /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3C3F1E817CFA0036876F /* FolderViewModel.swift */; };
 		B710526524168400007148E8 /* SwipeCellKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B710526424168400007148E8 /* SwipeCellKit.framework */; };
 		B710526624168400007148E8 /* SwipeCellKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B710526424168400007148E8 /* SwipeCellKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B710526824168474007148E8 /* pEpIOSToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B710526724168474007148E8 /* pEpIOSToolbox.framework */; };
@@ -397,7 +398,7 @@
 		B710526F241684AB007148E8 /* MessageModel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B710526D241684AB007148E8 /* MessageModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B71052732417D0B7007148E8 /* AccountTypeSelectorTextCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71052722417D0B7007148E8 /* AccountTypeSelectorTextCollectionViewCell.swift */; };
 		B716056020D3ECC900A733D6 /* MoveToFolderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B716055F20D3ECC900A733D6 /* MoveToFolderTableViewController.swift */; };
-		B71EBBBC1E55E4AE00150177 /* FolderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71EBBBB1E55E4AE00150177 /* FolderTableViewController.swift */; };
+		B71EBBBC1E55E4AE00150177 /* FolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71EBBBB1E55E4AE00150177 /* FolderViewController.swift */; };
 		B722EC4D1E5B01B300A2B9D5 /* FolderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */; };
 		B722EC651E5B49BA00A2B9D5 /* FolderSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC641E5B49BA00A2B9D5 /* FolderSectionViewModel.swift */; };
 		B724AE1225138524008516AC /* String+HTMLTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B724AE1125138524008516AC /* String+HTMLTest.swift */; };
@@ -950,6 +951,8 @@
 		49DCCD1F21E75BE300ABE487 /* nojavascript.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = nojavascript.pdf; sourceTree = "<group>"; };
 		5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+Passphrase.swift"; sourceTree = "<group>"; };
 		5B0B339E24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGPKeyImportSettingSwitchTableViewCell.swift; sourceTree = "<group>"; };
+		5B18E6F3250222EE0013AE60 /* FolderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderViewModel.swift; path = Folder/ViewModel/FolderViewModel.swift; sourceTree = "<group>"; };
+		5B18E6F72506320B0013AE60 /* FolderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderViewController.swift; path = Folder/FolderViewController.swift; sourceTree = "<group>"; };
 		5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCellProtocols.swift; sourceTree = "<group>"; };
 		5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepViewController.swift; sourceTree = "<group>"; };
 		5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCell.swift; sourceTree = "<group>"; };
@@ -987,14 +990,13 @@
 		8B69E3981E30F80E0022959E /* Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		A1B50A811CD26FF100B1A997 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B70A3A62220065F500EDCE61 /* String+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+pEp.swift"; sourceTree = "<group>"; };
-		B70A3C3F1E817CFA0036876F /* FolderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderViewModel.swift; path = Folder/ViewModel/FolderViewModel.swift; sourceTree = "<group>"; };
 		B710526424168400007148E8 /* SwipeCellKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwipeCellKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B710526724168474007148E8 /* pEpIOSToolbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = pEpIOSToolbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B710526A24168481007148E8 /* AppAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B710526D241684AB007148E8 /* MessageModel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MessageModel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B71052722417D0B7007148E8 /* AccountTypeSelectorTextCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeSelectorTextCollectionViewCell.swift; sourceTree = "<group>"; };
 		B716055F20D3ECC900A733D6 /* MoveToFolderTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderTableViewController.swift; sourceTree = "<group>"; };
-		B71EBBBB1E55E4AE00150177 /* FolderTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderTableViewController.swift; path = Folder/FolderTableViewController.swift; sourceTree = "<group>"; };
+		B71EBBBB1E55E4AE00150177 /* FolderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderViewController.swift; path = Folder/FolderViewController.swift; sourceTree = "<group>"; };
 		B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderCellViewModel.swift; path = Folder/ViewModel/FolderCellViewModel.swift; sourceTree = "<group>"; };
 		B722EC641E5B49BA00A2B9D5 /* FolderSectionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderSectionViewModel.swift; path = Folder/ViewModel/FolderSectionViewModel.swift; sourceTree = "<group>"; };
 		B724AE1125138524008516AC /* String+HTMLTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+HTMLTest.swift"; sourceTree = "<group>"; };
@@ -2576,9 +2578,10 @@
 		B71EBBB41E55E43100150177 /* Folder */ = {
 			isa = PBXGroup;
 			children = (
+				5B18E6F72506320B0013AE60 /* FolderViewController.swift */,
 				B722EC7B1E5CA59100A2B9D5 /* CellsAndSections */,
 				B722EC471E5B019B00A2B9D5 /* ViewModel */,
-				B71EBBBB1E55E4AE00150177 /* FolderTableViewController.swift */,
+				B71EBBBB1E55E4AE00150177 /* FolderViewController.swift */,
 			);
 			name = Folder;
 			sourceTree = "<group>";
@@ -2586,9 +2589,9 @@
 		B722EC471E5B019B00A2B9D5 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				5B18E6F3250222EE0013AE60 /* FolderViewModel.swift */,
 				B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */,
 				B722EC641E5B49BA00A2B9D5 /* FolderSectionViewModel.swift */,
-				B70A3C3F1E817CFA0036876F /* FolderViewModel.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -2941,7 +2944,6 @@
 				437E9BA9237AFB7F00E9A847 /* UIStoryboard+Constants.swift in Sources */,
 				4315E4C3201242BB00F68763 /* OAuth2Type+Extension.swift in Sources */,
 				4351C2D11F4441190053381F /* houdini_html_u.c in Sources */,
-				B70A3C401E817CFA0036876F /* FolderViewModel.swift in Sources */,
 				0038494A20D25576008000EA /* ProfilePictureComposerProtocol.swift in Sources */,
 				1543B6A822ABDAAE002B59AB /* Identity+pEp.swift in Sources */,
 				43AA825D1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift in Sources */,
@@ -3064,6 +3066,7 @@
 				43236E652459891B00D8318D /* OAuth2Type+VerifiableAccountType.swift in Sources */,
 				43B0444C20077323007BCE3F /* OAuth2Configuration.swift in Sources */,
 				43257C801F50064100DDC7F0 /* HtmlToTextSaxParser.swift in Sources */,
+				5B18E6F82506320B0013AE60 /* FolderViewController.swift in Sources */,
 				431C2B191F38888B00D87FFD /* ConnectionTransport+AccountSettings.swift in Sources */,
 				158A56502403F043003C0D7E /* ClientCertificateManagementViewController.swift in Sources */,
 				00EB89AF20E3E4A000CDFA0D /* ReplyAlertCreator.swift in Sources */,
@@ -3093,6 +3096,7 @@
 				15BBBC6C1FD05F4300B9DCC8 /* DisplayUserError.swift in Sources */,
 				5B71016E243619CF00BAE405 /* TrustedServerSettingsViewController.swift in Sources */,
 				B72C7BAA2395182F0013B12E /* AccountTypeSelectorViewController.swift in Sources */,
+				5B18E6F4250222EE0013AE60 /* FolderViewModel.swift in Sources */,
 				43A469FA21513B10002E1036 /* PEPSwipeTableViewCell.swift in Sources */,
 				5B3BFC6124DACB6900B99FA6 /* UIDevice+Extension.swift in Sources */,
 				00BEC89720B85FD300A36E60 /* NothingSelectedViewController.swift in Sources */,
@@ -3243,7 +3247,7 @@
 				B7DB7FD7221AD3BB003968DA /* UIButton+Extension.swift in Sources */,
 				4351C2D91F4441190053381F /* render.c in Sources */,
 				B722EC4D1E5B01B300A2B9D5 /* FolderCellViewModel.swift in Sources */,
-				B71EBBBC1E55E4AE00150177 /* FolderTableViewController.swift in Sources */,
+				B71EBBBC1E55E4AE00150177 /* FolderViewController.swift in Sources */,
 				492EF92F20C699D0004EAE14 /* ThreadViewController+TableView.swift in Sources */,
 				43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */,
 				B7B0E8F324094BB1003A34DC /* SplitViewHandlingProtocol.swift in Sources */,

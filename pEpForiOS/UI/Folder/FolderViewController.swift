@@ -10,15 +10,13 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-final class FolderTableViewController: UITableViewController {
-    var viewModel: FolderViewModel? {
-        didSet {
-            viewModel?.delegate = self
-        }
-    }
+final class FolderViewController: UIViewController {
+    @IBOutlet weak var tableView: UITableView!
+    var folderVM: FolderViewModel?
     // Indicates if it's needed to lead the user to a new screen,
     // the email list or the new account, for example.
     private var shouldPresentNextView: Bool = true
+    private var refreshControl: UIRefreshControl?
 
     @IBOutlet private weak var addAccountButton: UIButton!
 
@@ -31,17 +29,13 @@ final class FolderTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setup()
+        hideToolbar()
         showNextViewIfNeeded()
         showEmptyDetailViewIfNeeded()
     }
 
-    // MARK: - Setup
-
-    private func setup() {
+    private func hideToolbar() {
         navigationController?.setToolbarHidden(false, animated: false)
-        viewModel = FolderViewModel()
-        tableView.reloadData()
     }
 
     private func showEmptyDetailViewIfNeeded() {
@@ -50,11 +44,17 @@ final class FolderTableViewController: UITableViewController {
     }
 
     private func initialConfig() {
+        folderVM = FolderViewModel()
+        folderVM?.delegate = self
         title = NSLocalizedString("Mailboxes", comment: "FoldersView navigationbar title")
+        //Table view
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
         tableView.sectionHeaderHeight = UITableView.automaticDimension
+        tableView.cellLayoutMarginsFollowReadableWidth = false
+
+        //Refresh button
         refreshControl = UIRefreshControl()
         refreshControl?.tintColor = UIColor.pEpGreen
         tableView.refreshControl = refreshControl
@@ -63,17 +63,17 @@ final class FolderTableViewController: UITableViewController {
             action:#selector(showSettingsViewController),
             target: self)
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
+            barButtonSystemItem: .flexibleSpace,
             target: nil,
             action: nil)
-        let compose = UIBarButtonItem.getComposeButton(
-            action:#selector(showCompose),
-            target: self)
+        let compose = UIBarButtonItem.getComposeButton(action:#selector(showCompose), target: self)
         toolbarItems = [flexibleSpace, compose, flexibleSpace, item]
-        tableView.cellLayoutMarginsFollowReadableWidth = false
+
+        // Add account button
         addAccountButton.titleLabel?.numberOfLines = 0
         addAccountButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
         addAccountButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        addAccountButton.titleLabel?.text = NSLocalizedString("Add Account", comment: "Add Account Button")
     }
 
     // MARK: - Cell Setup
@@ -91,16 +91,12 @@ final class FolderTableViewController: UITableViewController {
     // MARK: - Action
 
     @objc private func pullToRefresh() {
-        guard let vm = viewModel else {
-            // Valid case. We might have been dismissed already.
-            return
-        }
-        vm.refreshFolderList() { [weak self] in
+        folderVM?.refreshFolderList() { [weak self] in
             guard let me = self else {
                 // Valid case. We might have been dismissed already.
                 return
             }
-            me.setup()
+            me.hideToolbar()
             me.refreshControl?.endRefreshing()
         }
     }
@@ -112,83 +108,13 @@ final class FolderTableViewController: UITableViewController {
     @objc private func showSettingsViewController() {
         UIUtils.presentSettings()
     }
-
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        guard let vm = viewModel else {
-            //As viewModel is initialized on the setup method (first time in viewWillAppear), it might be nil the first time.
-            return 0
-        }
-        return vm.count
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return 0
-        }
-
-        /// Hidden sections are hidden!
-        if vm.hiddenSections.contains(section) {
-            return 0
-        }
-        // number of rows means number of visible rows.
-        return vm[section].numberOfRows
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return UITableViewCell()
-        }
-
-        let fcvm = vm[indexPath.section].visibleFolderCellViewModel(index: indexPath.item)
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "FolderTableViewCell", for: indexPath)
-            as? FolderTableViewCell else {
-            Log.shared.errorAndCrash("No subfolder cell found")
-            return UITableViewCell()
-        }
-        cell.indentationLevel = min(fcvm.indentationLevel, vm.maxIndentationLevel)
-        cell.shouldRotateChevron = fcvm.shouldRotateChevron
-        cell.chevronButton.isUserInteractionEnabled = fcvm.isChevronEnabled
-        cell.padding = fcvm.padding
-        cell.titleLabel.text = fcvm.title
-        cell.titleLabel.font = UIFont.pepFont(style: .body, weight: .regular)
-        cell.titleLabel.adjustsFontForContentSizeCategory = true
-        cell.titleLabel?.textColor = fcvm.isSelectable ? .black : .pEpGray
-        cell.unreadMailsLabel.font = UIFont.pepFont(style: .body, weight: .regular)
-        let numUnreadMails = fcvm.numUnreadMails
-        cell.unreadMailsLabel.text = numUnreadMails > 0 ? String(numUnreadMails) : ""
-        cell.iconImageView.image = fcvm.image
-        cell.separatorImageView.isHidden = fcvm.shouldHideSeparator()
-        cell.delegate = self
-        return cell
-    }
-
-    // MARK: - TableViewDelegate
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
-        }
-        let cellViewModel = vm[indexPath.section][indexPath.row]
-        if !cellViewModel.isSelectable {
-            // Me must not open unselectable folders. Unselectable folders are typically path
-            // components/nodes that can not hold messages.
-            tableView.deselectRow(at: indexPath, animated: true)
-            return
-        }
-        showEmailList(folder: cellViewModel.folder)
-    }
 }
 
 // MARK: - LoginTableViewControllerDelegate
 
-extension FolderTableViewController: LoginViewControllerDelegate {
+extension FolderViewController: LoginViewControllerDelegate {
     func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController) {
-        setup()
+        hideToolbar()
         // The user has just logged in, he should see the email list view.
         shouldPresentNextView = true
     }
@@ -196,7 +122,7 @@ extension FolderTableViewController: LoginViewControllerDelegate {
 
 // MARK: - Segue
 
-extension FolderTableViewController: SegueHandlerType {
+extension FolderViewController: SegueHandlerType {
     enum SegueIdentifier: String {
         case newAccount
         case settingsSegue
@@ -245,13 +171,13 @@ extension FolderTableViewController: SegueHandlerType {
 
     /// If needed, will show the email list of new account view.
     private func showNextViewIfNeeded() {
-        guard let vm = viewModel else {
+        guard let vm = folderVM else {
             Log.shared.errorAndCrash("VM not Found")
             return
         }
         if shouldPresentNextView {
             if vm.shouldShowFolders {
-                showEmailList(folder:viewModel.folderToShow)
+                showEmailList(folder:vm.folderToShow)
             } else {
                 performSegue(withIdentifier:.newAccount, sender: self)
             }
@@ -281,13 +207,13 @@ extension FolderTableViewController: SegueHandlerType {
 
 // MARK: - Subfolder Indentation
 
-extension FolderTableViewController {
+extension FolderViewController {
 
     /// Indicates if a folder has subfolders
     /// - Parameter indexPath: To identify the cell to look for its subfolders.
     /// - Returns: True if the folder has subfolders.
     private func hasSubfolders(indexPath: IndexPath) -> Bool {
-        guard let vm = viewModel else {
+        guard let vm = folderVM else {
             Log.shared.errorAndCrash("No View Model")
             return false
         }
@@ -299,7 +225,7 @@ extension FolderTableViewController {
     /// - Parameter indexPath: To identify the cell to check if it's a subfolder.
     /// - Returns: True if it is.
     private func isSubfolder(indexPath: IndexPath) -> Bool {
-        guard let vm = viewModel else {
+        guard let vm = folderVM else {
             Log.shared.errorAndCrash("No View Model")
             return false
         }
@@ -310,7 +236,7 @@ extension FolderTableViewController {
 
 // MARK: - FolderTableViewCellDelegate
 
-extension FolderTableViewController: FolderTableViewCellDelegate {
+extension FolderViewController: FolderTableViewCellDelegate {
 
     /// Callback executed when the chevron arrow is tapped.
     /// - Parameter cell: The cell which trigger the action.
@@ -323,13 +249,13 @@ extension FolderTableViewController: FolderTableViewCellDelegate {
 
 // MARK: - Collapse / Expand
 
-extension FolderTableViewController {
+extension FolderViewController {
 
     /// Shows/Hides the selected account.
     /// - Parameter sender: The button that trigger the action.
     @objc
     private func hideShowSection(sender: SectionButton) {
-        guard let vm = viewModel else {
+        guard let vm = folderVM else {
             Log.shared.errorAndCrash("No VM.")
             return
         }
@@ -376,6 +302,7 @@ extension FolderTableViewController {
             //Do not change the order of this methods as the next line change the hidden status
             let ips = allIndexPathsForSection()
             setAllRowsHidden(to: false)
+
             tableView.insertRows(at: ips)
         } else {
             sender.imageView?.transform = .identity
@@ -390,7 +317,7 @@ extension FolderTableViewController {
     /// Shows/Hides the subfolder of the selected one.
     /// - Parameter indexPath: The indexPath of the selected folder.
     private func hideShowSubFolders(ofRowAt indexPath:  IndexPath) {
-        guard let vm = viewModel else {
+        guard let vm = folderVM else {
             Log.shared.errorAndCrash("No view model.")
             return
         }
@@ -422,10 +349,10 @@ extension FolderTableViewController {
         }
 
         //Expand or collapse the root folder
-        let folderCellViewModel = viewModel[indexPath.section].visibleFolderCellViewModel(index: indexPath.item)
+        let folderCellViewModel = vm[indexPath.section].visibleFolderCellViewModel(index: indexPath.item)
         folderCellViewModel.isExpand.toggle()
         let childrenIPs = childrenIndexPaths(isParentExpand : folderCellViewModel.isExpand)
-        let children = viewModel[indexPath.section].children(of: folderCellViewModel)
+        let children = vm[indexPath.section].children(of: folderCellViewModel)
         children.forEach {
             $0.isHidden = !folderCellViewModel.isExpand
             $0.isExpand = folderCellViewModel.isExpand
@@ -442,9 +369,9 @@ extension FolderTableViewController {
 
 // MARK: - Header and Footer
 
-extension FolderTableViewController {
+extension FolderViewController {
 
-    override func tableView(_ tableView: UITableView,
+    func tableView(_ tableView: UITableView,
                             viewForHeaderInSection section: Int) -> UIView? {
         let header: CollapsibleTableViewHeader?
         if let head = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header")
@@ -465,7 +392,7 @@ extension FolderTableViewController {
         header?.sectionButton.contentVerticalAlignment = .top
         header?.sectionButton.imageView?.transform = CGAffineTransform.rotate90Degress()
 
-        guard let vm = viewModel, let safeHeader = header else {
+        guard let vm = folderVM, let safeHeader = header else {
             Log.shared.errorAndCrash("No header or no VM.")
             return header
         }
@@ -478,14 +405,14 @@ extension FolderTableViewController {
         return header
     }
 
-    override func tableView(_ tableView: UITableView,
+    func tableView(_ tableView: UITableView,
                             heightForFooterInSection section: Int) -> CGFloat {
         return 26.0
     }
 
-    override func tableView(_ tableView: UITableView,
+    func tableView(_ tableView: UITableView,
                             heightForHeaderInSection section: Int) -> CGFloat {
-        guard let vm = viewModel else {
+        guard let vm = folderVM else {
             Log.shared.errorAndCrash("No VM.")
             return 0.0
         }
@@ -499,9 +426,85 @@ extension FolderTableViewController {
 
 // MARK: - FolderViewModelDelegate
 
-extension FolderTableViewController: FolderViewModelDelegate {
+extension FolderViewController: FolderViewModelDelegate {
     /// Update the view
     func update() {
         tableView.reloadData()
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension FolderViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let folderViewModel = folderVM else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        let cellViewModel = folderViewModel[indexPath.section][indexPath.row]
+        if !cellViewModel.isSelectable {
+            // Me must not open unselectable folders. Unselectable folders are typically path
+            // components/nodes that can not hold messages.
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
+        }
+        showEmailList(folder: cellViewModel.folder)
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+// MARK: - UITableViewDataSource
+
+extension FolderViewController: UITableViewDataSource {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        guard let vm = folderVM else {
+            return 0
+        }
+        return vm.count
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let vm = folderVM else {
+            Log.shared.errorAndCrash("No VM")
+            return 0
+        }
+
+        /// Hidden sections are hidden!
+        if vm.hiddenSections.contains(section) {
+            return 0
+        }
+        // number of rows means number of visible rows.
+        return vm[section].numberOfRows
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let vm = folderVM else {
+            Log.shared.errorAndCrash("No VM")
+            return UITableViewCell()
+        }
+
+        let fcvm = vm[indexPath.section].visibleFolderCellViewModel(index: indexPath.item)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "FolderTableViewCell", for: indexPath)
+            as? FolderTableViewCell else {
+            Log.shared.errorAndCrash("No subfolder cell found")
+            return UITableViewCell()
+        }
+        cell.indentationLevel = min(fcvm.indentationLevel, vm.maxIndentationLevel)
+        cell.shouldRotateChevron = fcvm.shouldRotateChevron
+        cell.chevronButton.isUserInteractionEnabled = fcvm.isChevronEnabled
+        cell.padding = fcvm.padding
+        cell.titleLabel.text = fcvm.title
+        cell.titleLabel.font = UIFont.pepFont(style: .body, weight: .regular)
+        cell.titleLabel.adjustsFontForContentSizeCategory = true
+        cell.titleLabel?.textColor = fcvm.isSelectable ? .black : .pEpGray
+        cell.unreadMailsLabel.font = UIFont.pepFont(style: .body, weight: .regular)
+        let numUnreadMails = fcvm.numUnreadMails
+        cell.unreadMailsLabel.text = numUnreadMails > 0 ? String(numUnreadMails) : ""
+        cell.iconImageView.image = fcvm.image
+        cell.separatorImageView.isHidden = fcvm.shouldHideSeparator()
+        cell.delegate = self
+        return cell
     }
 }

@@ -23,17 +23,15 @@ protocol QueryResultsControllerDelegate: class {
     ///   - newIndexPath: index path of the changed object *after* the change happened
     func queryResultsControllerDidChangeObjectAt(indexPath: IndexPath?,
                                                  forChangeType changeType: NSFetchedResultsChangeType,
-                                                 newIndexPath: IndexPath?)
+                                                 newIndexPath: IndexPath?)   
 
-
-    /// notifies the reciver that one section did change (due to an insert, delete, move or update).
-    /// 
-    /// - Parameters:
-    ///   - Info: section data with it's content
-    ///   - sectionIndex: position of the section
-    ///   - type: type of the change
-    func queryResultsControllerDidChangeSection(Info: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType)
-    
+     /// notifies the reciver that one section did change (due to an insert, delete, move or update).
+     ///
+     /// - Parameters:
+     ///   - Info: section data with it's content
+     ///   - sectionIndex: position of the section
+     ///   - type: type of the change
+     func queryResultsControllerDidChangeSection(Info: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType)
 
     /// Noftifies the receiver that the query results controller has completed processing of
     /// one or more changes (due to an insert, delete, move or update).
