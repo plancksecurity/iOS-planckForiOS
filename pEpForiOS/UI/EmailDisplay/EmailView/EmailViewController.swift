@@ -245,21 +245,6 @@ extension EmailViewController: MessageAttachmentDelegate {
                             representedBy cell: MessageCell,
                             showAt location: CGPoint,
                             in view: UIView?) {
-//        var mimeType: MimeTypeUtils.MimeType? = nil
-//        if let given = givenMimeType {
-//            mimeType = MimeTypeUtils.MimeType(rawValueIgnoringCase: given)
-//        }
-//        mimeType = mimeType ?? MimeTypeUtils.findBestMimeType(forFileAt: url,
-//                                                              withGivenMimeType: givenMimeType)
-
-
-        let mimeTypeForFileExtension = MimeTypeUtils.findBestMimeType(forFileAt: url,
-                                                                      withGivenMimeType: givenMimeType)
-        var mimeType = mimeTypeForFileExtension
-        if let given = givenMimeType, mimeType == nil {
-            mimeType = MimeTypeUtils.MimeType(rawValueIgnoringCase: given)
-        }
-
         if url.pathExtension == "pEp12" || url.pathExtension == "pfx" {
             setupClientCertificateImportViewController(forClientCertificateAt: url)
             guard let vc = clientCertificateImportViewController else {
@@ -267,8 +252,7 @@ extension EmailViewController: MessageAttachmentDelegate {
                 return
             }
             present(vc, animated: true)
-        } else if (mimeType?.isSupportedByQLPreviewController ?? false || url.pathExtension.caseInsensitiveCompare("PDF") == .orderedSame)
-            && QLPreviewController.canPreview(url as QLPreviewItem) {
+        } else if QLPreviewController.canPreview(url as QLPreviewItem) {
                 delegate?.showPdfPreview(forPdfAt: url)
             } else {
             documentInteractionController.url = url

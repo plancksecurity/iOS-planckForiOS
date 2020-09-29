@@ -30,6 +30,7 @@ extension MimeTypeUtils {
         case pEpSign = "application/pep.sign"
         case xml = "text/xml"
         case csv = "text/csv"
+        case rtf = "text/rtf"
 
         // Microsoft Office
         case msword, dot, word, w6w = "application/msword"
@@ -62,23 +63,6 @@ extension MimeTypeUtils {
         public init?(rawValueIgnoringCase: String) {
             let lowercased = rawValueIgnoringCase.lowercased()
             self.init(rawValue: lowercased)
-        }
-    }
-}
-
-extension MimeTypeUtils.MimeType {
-
-    public var isMicrosoftOfficeMimeType: Bool {
-        switch self {
-        case .defaultMimeType, .pgpKeys, .html,.jpeg, .pgp, .pdf, .pgpEncrypted, .attachedEmail,
-             .plainText, .pEpSync, .pEpSign, .xml, .csv:
-            return false
-        case .msword, .dot, .word,  .w6w,  .docx,  .dotx,  .docm,  .dotm,  .xls,  .xlt,  .xla,
-             .xlw, .thunderbirdAttachedXls, .xlsx,  .xltx,  .xlsm,  .xlsb,  .xltm,  .xlam,  .ppt,  .pot,  .pps,  .ppa,
-             .pptx,  .potx,  .ppsx,  .ppam,  .pptm,  .ppsm,  .potm,  .mdb,  .accda,  .accdb,
-             .accde,  .accdr,  .accdt,  .ade,  .adp,  .adn,  .mde,  .mdf,  .mdn,  .mdt,  .mdw,
-             .wri:
-            return true
         }
     }
 }

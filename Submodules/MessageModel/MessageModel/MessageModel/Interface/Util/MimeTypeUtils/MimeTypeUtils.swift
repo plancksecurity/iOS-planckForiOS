@@ -30,26 +30,6 @@ public class MimeTypeUtils {
         return MimeTypeUtils.mimeType(fromFileExtension: url.pathExtension)
     }
 
-    /// Trys to figure out the best fitting MimeType for an attachment in case no specific MimiType
-    /// is given (but "application/octet-stream").
-    ///
-    /// Currently only the file's extention is taken into account.
-    ///
-    /// - Parameters:
-    ///   - url: url of file to figure the MimeType out for
-    ///   - mimeType: the original mime type given in the mime-message-source
-    /// - Returns:  the given mime type if it is specific (not "application/octet-stream") already,
-    ///             otherwize the best MimeType we coud figure out
-    static public func findBestMimeType(forFileAt url: URL,
-                                        withGivenMimeType mimeType: MimeTypeString?) -> MimeType? {
-        if let mimeType = mimeType, mimeType != MimeTypeUtils.MimeType.defaultMimeType.rawValue {
-            // Is already a specific type, that is the best we can get.
-            return MimeType(rawValue: mimeType)
-        }
-        let foundMimeTypeString = MimeTypeUtils.mimeType(fromFileExtension: url.pathExtension)
-        return MimeType(rawValue: foundMimeTypeString)
-    }
-
     static public func mimeType(fromFileExtension fileExtension: String) -> MimeTypeString {
         var foundMimeType: MimeTypeString? = nil
         if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension,

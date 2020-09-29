@@ -2096,7 +2096,6 @@
 		43EA47ED221E9518006E8F83 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				15A064912522262A002F15D0 /* MimeTypeUtils */,
 				43AD46CF22705AE300047D75 /* ConnectionTransport+Transport.swift */,
 				43753CEB222D39B3002EE98B /* ImapFlags+Pantomime.swift */,
 				43753CDD222D2DA7002EE98B /* ContentDispositionType+Conversion.swift */,
@@ -2239,6 +2238,7 @@
 		5B88A19E2406C1A4003240B8 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				15A064912522262A002F15D0 /* MimeTypeUtils */,
 				5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */,
 				15E01F9E24AB420B00DFADA3 /* PassphraseUtil.swift */,
 			);
