@@ -12,7 +12,7 @@ extension CdAttachment {
 
     public override func validateForInsert() throws {
         if mimeType == nil {
-           mimeType = MimeTypeUtils.MimesType.defaultMimeType
+            mimeType = MimeTypeUtils.MimesType.defaultMimeType.rawValue
         }
         try super.validateForInsert()
     }

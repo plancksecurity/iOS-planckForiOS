@@ -1580,6 +1580,14 @@
 			path = Server;
 			sourceTree = "<group>";
 		};
+		15A064912522262A002F15D0 /* MimeTypeUtils */ = {
+			isa = PBXGroup;
+			children = (
+				43EA4814221E9518006E8F83 /* MimeTypeUtils.swift */,
+			);
+			path = MimeTypeUtils;
+			sourceTree = "<group>";
+		};
 		15B854E2232D3D6F00DB8FB1 /* Identity */ = {
 			isa = PBXGroup;
 			children = (
@@ -2085,6 +2093,7 @@
 		43EA47ED221E9518006E8F83 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				15A064912522262A002F15D0 /* MimeTypeUtils */,
 				43AD46CF22705AE300047D75 /* ConnectionTransport+Transport.swift */,
 				43753CEB222D39B3002EE98B /* ImapFlags+Pantomime.swift */,
 				43753CDD222D2DA7002EE98B /* ContentDispositionType+Conversion.swift */,
@@ -2104,7 +2113,6 @@
 				43EA4809221E9518006E8F83 /* AuthMethod.swift */,
 				43EA480F221E9518006E8F83 /* Notification+CWServiceClientNotificationParsing.swift */,
 				43EA4813221E9518006E8F83 /* Message+IMAP.swift */,
-				43EA4814221E9518006E8F83 /* MimeTypeUtils.swift */,
 				370DB3D02281795000BC929A /* ContentTypeUtils.swift */,
 				37FED9702283354A004C7804 /* jsonMimeType.txt */,
 				43EA47F4221E9518006E8F83 /* VirtualMailbox */,
