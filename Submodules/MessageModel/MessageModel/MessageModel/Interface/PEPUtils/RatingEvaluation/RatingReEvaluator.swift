@@ -29,7 +29,7 @@ extension RatingReEvaluator: RatingReEvaluatorProtocol {
     static public func reevaluate(message: Message, completion:  @escaping ()->Void) {
         let pEpMessage = message.cdObject.pEpMessage()
         if pEpMessage.direction == .outgoing {
-            PEPAsyncSession().outgoingRating(for: pEpMessage, errorCallback: { (error) in
+            PEPSession().outgoingRating(for: pEpMessage, errorCallback: { (error) in
                 Log.shared.errorAndCrash("%@", error.localizedDescription)
                 completion()
             }) { (rating) in
@@ -41,7 +41,7 @@ extension RatingReEvaluator: RatingReEvaluatorProtocol {
             if let originalRatingString = message.optionalFields[Headers.originalRating.rawValue] {
                 originaRating = PEPRating.fromString(str: originalRatingString)
             }
-            PEPAsyncSession().reEvaluateMessage(pEpMessage, xKeyList: keys, originalRating: originaRating, errorCallback: { (error) in
+            PEPSession().reEvaluateMessage(pEpMessage, xKeyList: keys, originalRating: originaRating, errorCallback: { (error) in
                 Log.shared.errorAndCrash("%@", error.localizedDescription)
                 completion()
             }) { (newRating) in
