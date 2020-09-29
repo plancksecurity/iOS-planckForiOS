@@ -13,12 +13,11 @@ import PEPObjCAdapterFramework
 extension  PEPUtils {
     
     static func encrypt(pEpMessage: PEPMessage,
-        encryptionFormat: PEPEncFormat = .PEP,
-        forSelf: PEPIdentity? = nil,
-        extraKeys: [String]? = nil,
-        errorCallback: @escaping (_ error:Error) -> Void,
-        successCallback: @escaping (_ srcMsg:PEPMessage, _ destMsg:PEPMessage) -> Void) {
-        var status = PEPStatus.unknownError
+                        encryptionFormat: PEPEncFormat = .PEP,
+                        forSelf: PEPIdentity? = nil,
+                        extraKeys: [String]? = nil,
+                        errorCallback: @escaping (_ error:Error) -> Void,
+                        successCallback: @escaping (_ srcMsg:PEPMessage, _ destMsg:PEPMessage) -> Void) {
         if let ident = forSelf {
             PEPSession().encryptMessage(pEpMessage, forSelf: ident,
                                              extraKeys: extraKeys,

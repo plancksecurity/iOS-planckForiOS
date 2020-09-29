@@ -107,9 +107,10 @@ extension CdMessage {
     }
 
     /// Converts a core data message into the format required by pEp.
-    /// - Parameter outgoing: Whether or not the message is outgoing
     /// - Returns: A PEPMessage suitable for processing with pEp.
-    func pEpMessage(outgoing: Bool = true) -> PEPMessage {
+    func pEpMessage() -> PEPMessage {
+        let outgoingFolderTypes = [FolderType.sent, .drafts, .outbox]
+        let isOutgoing = outgoingFolderTypes.contains(parent?.folderType ?? FolderType.normal)
         let pEpMessage = PEPMessage()
 
         pEpMessage.sentDate = sent
@@ -123,7 +124,7 @@ extension CdMessage {
 
         pEpMessage.from = from?.pEpIdentity()
         pEpMessage.messageID = uuid
-        pEpMessage.direction = outgoing ? .outgoing : .incoming
+        pEpMessage.direction = isOutgoing ? .outgoing : .incoming
 
         if let cdAttachments = attachments?.array as? [CdAttachment] {
             pEpMessage.attachments = cdAttachments.map {
