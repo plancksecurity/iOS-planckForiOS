@@ -28,8 +28,7 @@ class SuggestViewModelTest: AccountDrivenTestBase {
 
     func testSearchTermNotEmpty() {
         let searchTerm = "security"
-        assertResults(for: searchTerm,
-                      numExpectedResults: SuggestViewModelTest.defaultNumExistingContacts)
+        assertResults(for: searchTerm, numExpectedResults: defaultNumExistingContacts)
     }
 
     func testSearchTermEmpty() {
