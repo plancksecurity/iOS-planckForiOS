@@ -10,7 +10,7 @@ import WebKit
 import pEpIOSToolbox
 
 protocol SecureWebViewControllerDelegate: class {
-    /// Called on content size changes when content is loaded.
+    /// Called on content size changes while content is loaded.
     func didFinishLoading()
 }
 
@@ -33,24 +33,22 @@ class SecureWebViewController: UIViewController {
 
     public var contentSize: CGSize {
         get {
-            return webView?.scrollView.contentSize ?? CGSize.zero
+            return webView?.scrollView.contentSize ?? .zero
         }
     }
-
+    private var _userInteractionEnabled: Bool = true
     private var _scrollingEnabled = false
     private var scrollingEnabled: Bool {
         get {
             return _scrollingEnabled
         }
-        set {
-            _scrollingEnabled = newValue
-            if let wv = webView {
-                wv.scrollView.isScrollEnabled = _scrollingEnabled
-            }
-        }
     }
 
-    private var _userInteractionEnabled = true
+
+    weak public var delegate: SecureWebViewControllerDelegate?
+    weak public var urlClickHandler: SecureWebViewUrlClickHandlerProtocol?
+    public var minimumFontSize: CGFloat = 16.0
+    public var zoomingEnabled: Bool = true
     private var userInteractionEnabled: Bool {
         get {
             return _userInteractionEnabled
@@ -63,10 +61,6 @@ class SecureWebViewController: UIViewController {
         }
     }
 
-    weak public var delegate: SecureWebViewControllerDelegate?
-    weak public var urlClickHandler: SecureWebViewUrlClickHandlerProtocol?
-    public var minimumFontSize: CGFloat = 16.0
-    public var zoomingEnabled: Bool = true
     private var webView: WKWebView!
     private var htmlOptimizer = HtmlOptimizerUtil(minimumFontSize: 16.0)
 
@@ -292,7 +286,7 @@ extension SecureWebViewController: UIScrollViewDelegate {
 
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         // We disable vertical scrolling if we are not zoomed in.
-        scrollingEnabled = scrollView.contentSize.width > view.frame.size.width
+        _scrollingEnabled = scrollView.contentSize.width > view.frame.size.width
     }
 }
 

@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 import WebKit
+
 import MessageModel
-import PEPObjCAdapterFramework
 
 public protocol MessageContentCellDelegate: MessageCellDelegate {
     func heightChanged()

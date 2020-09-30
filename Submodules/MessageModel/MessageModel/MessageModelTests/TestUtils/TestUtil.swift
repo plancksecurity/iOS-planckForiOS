@@ -332,119 +332,6 @@ extension TestUtil {
         return folder
     }
 
-    /// Creates outgoing messages
-    ///
-    /// - Parameters:
-    ///   - cdAccount: account to send from. Is ignored if fromIdentity is not nil
-    ///   - fromIdentity: identity used as sender
-    ///   - toIdentity: identity used as recipient
-    ///   - setSentTimeOffsetForManualOrdering: Add some time difference to date sent tp be
-    ///                                         recognised by Date().sort. That makes it easier to
-    ///                                         misuse thoses mails for manual debugging.
-    //
-    ///   - testCase: the one to make fail
-    ///   - numberOfMails: num mails to create
-    ///   - withAttachments: Whether or not messages should contain attachments
-    ///   - attachmentsInlined: Whether or not the attachments should be inlined
-    ///   - encrypt: Whether or not to import a key for the receipient. Is ignored if `toIdentity`
-    ///              is not nil
-    ///   - forceUnencrypted: mark mails force unencrypted
-    ///   - context: context to create messages in. If no context is given, main context is used
-    /// - Returns: created mails
-    /// - Throws: error importing key
-    static func createOutgoingMails(cdAccount: CdAccount,
-                                    toIdentity: CdIdentity? = nil,
-                                    setSentTimeOffsetForManualOrdering: Bool = false,
-                                    testCase: XCTestCase,
-                                    numberOfMails: Int,
-                                    withAttachments: Bool = true,
-                                    attachmentsInlined: Bool = false,
-                                    encrypt: Bool = true,
-                                    forceUnencrypted: Bool = false,
-                                    context: NSManagedObjectContext) throws -> [CdMessage] {
-        testCase.continueAfterFailure = false
-
-        if numberOfMails == 0 {
-            return []
-        }
-
-        let existingSentFolder = CdFolder.by(folderType: .sent,
-                                             account: cdAccount,
-                                             context: context)
-
-        if existingSentFolder == nil {
-            // Make sure folders are synced
-            syncAndWait(testCase: testCase)
-        }
-
-        guard let outbox = CdFolder.by(folderType: .outbox,
-                                       account: cdAccount,
-                                       context: context) else {
-                                        XCTFail()
-                                        return []
-        }
-
-        let from = cdAccount.identity
-
-        let to: CdIdentity
-        if let toIdentity = toIdentity {
-            to = toIdentity
-        } else {
-            if encrypt {
-                let session = PEPSession()
-                try TestUtil.importKeyByFileName(
-                    session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
-            }
-            let toWithKey = CdIdentity(context: context)
-            toWithKey.userName = "Unit 001"
-            toWithKey.address = "unittest.ios.1@peptest.ch"
-            to = toWithKey
-        }
-
-        // Build emails
-        var messagesInTheQueue = [CdMessage]()
-        for i in 1...numberOfMails {
-            let message = CdMessage(context: context)
-            message.from = from
-            message.parent = outbox
-            message.shortMessage = "Some subject \(i)"
-            message.longMessage = "Long message \(i)"
-            message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            message.pEpProtected = !forceUnencrypted
-            if setSentTimeOffsetForManualOrdering {
-                // Add some time difference recognised by Date().sort.
-                // That makes it easier to misuse thoses mails for manual debugging.
-                let sentTimeOffset = Double(i) - 1
-                message.sent = Date().addingTimeInterval(sentTimeOffset)
-            } else {
-                message.sent = Date()
-            }
-            message.addToTo(to)
-
-            // add attachments
-            if withAttachments {
-                message.addToAttachments(createCdAttachment(inlined: attachmentsInlined))
-            }
-
-            messagesInTheQueue.append(message)
-        }
-        context.saveAndLogErrors()
-
-        if let cdOutgoingMsgs = outbox.messages?.sortedArray(
-            using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] {
-            let unsent = cdOutgoingMsgs.filter { $0.uid == 0 }
-            XCTAssertEqual(unsent.count, numberOfMails)
-            for m in unsent {
-                XCTAssertEqual(m.parent?.folderType, FolderType.outbox)
-                XCTAssertEqual(m.uid, Int32(0))
-            }
-        } else {
-            XCTFail()
-        }
-
-        return messagesInTheQueue
-    }
-
     static func checkForExistanceAndUniqueness(uuids: [MessageID],
                                                context: NSManagedObjectContext) {
         for uuid in uuids {
@@ -499,13 +386,6 @@ extension TestUtil {
             return (identity, receiver1, receiver2, receiver3, receiver4)
     }
 
-    static func importKeyByFileName(_ session: PEPSession = PEPSession(), fileName: String)
-        throws {
-            if let content = loadString(fileName: fileName) {
-                try session.importKey(content as String)
-            }
-    }
-
     static func loadString(fileName: String) -> String? {
         if let data = MiscUtil.loadData(bundleClass: self, fileName: fileName) {
             guard let content = NSString(data: data, encoding: String.Encoding.ascii.rawValue)
@@ -544,7 +424,7 @@ extension TestUtil {
         let contentDisposition = inlined ? Attachment.ContentDispositionType.inline : .attachment
 
         return Attachment(data: imageData,
-                          mimeType: MimeTypeUtils.MimesType.jpeg,
+                          mimeType: MimeTypeUtils.MimeType.jpeg,
                           fileName: imageFileName,
                           contentDisposition: contentDisposition)
     }

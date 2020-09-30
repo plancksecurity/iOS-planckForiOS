@@ -20,11 +20,14 @@ class UpdateIdentitiesAddressBookIdService: Service {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
+
             guard cnContactsAccessPermissionProvider.userHasBeenAskedForContactAccessPermissions
                 else {
                     // For better  user acceptance we want to ask the user for contact access
                     // permissions in the moment he uses a feature that requires access. Thus we
                     // do not touch CNContacts before that happened.
+                    Log.shared.info("We do not have permissions to access CNContacts thus no Contacts will be imported.")
+                    me.state = .ready
                 return
             }
             me.startUpdate()
@@ -72,6 +75,7 @@ class UpdateIdentitiesAddressBookIdService: Service {
     }
 
     private func stopUpdate() {
+        Log.shared.info("stopUpdate called")
         AddressBook.cancelUpdateExistingIdentities()
         state = .ready
         endBackgroundTask()

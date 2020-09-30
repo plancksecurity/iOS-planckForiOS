@@ -8,6 +8,7 @@
 
 import UIKit
 import QuickLook
+
 import pEpIOSToolbox
 
 // Represents the a list of mails showing one mail with all details in full screen.
@@ -738,7 +739,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
 // MARK: - EmailViewControllerDelegate
 
 extension EmailDetailViewController: EmailViewControllerDelegate {
-    func showPdfPreview(forPdfAt url: URL) {
+    func openQLPreviewController(toShowDocumentWithUrl url: URL) {
         pdfPreviewUrl = url
         let previewController = QLPreviewController()
         previewController.dataSource = self

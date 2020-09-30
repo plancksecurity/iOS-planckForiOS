@@ -54,7 +54,7 @@ extension DecryptMessageOperation {
         }
 
         var inOutFlags = cdMessageToDecrypt.isOnTrustedServer ? PEPDecryptFlags.none : .untrustedServer
-        var inOutMessage = cdMessageToDecrypt.pEpMessage(outgoing: false)
+        var inOutMessage = cdMessageToDecrypt.pEpMessage()
         var fprsOfExtraKeys = CdExtraKey.fprsOfAllExtraKeys(in: moc)
         var rating = PEPRating.undefined
         var pEpDecryptedMessage: PEPMessage? = nil
@@ -65,7 +65,7 @@ extension DecryptMessageOperation {
         var isAFormerlyEncryptedReuploadedMessage = false
         let group = DispatchGroup()
         group.enter()
-        PEPAsyncSession().decryptMessage(inOutMessage, flags: inOutFlags, extraKeys: fprsOfExtraKeys, errorCallback: { (error) in
+        PEPSession().decryptMessage(inOutMessage, flags: inOutFlags, extraKeys: fprsOfExtraKeys, errorCallback: { (error) in
             nsError = error as NSError
             group.leave()
         }) { (pEpSourceMessage, pEpDecryptedMsg, keyList, pEpRating, decryptFlags, isFormerlyEncryptedReuploadedMessage) in
