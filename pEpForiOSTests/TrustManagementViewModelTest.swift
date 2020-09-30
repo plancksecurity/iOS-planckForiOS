@@ -417,11 +417,16 @@ extension TrustManagementViewModelTest {
             }
             let message = TestUtil.createMessage(inFolder: folder1, from:from, tos: [selfIdentity])
 
+            let expDidFinishSetup = expectation(description: "expDidFinishSetup")
+            let delegate = TrustManagementViewModelDelegateSetupMock(expDidFinishSetup: expDidFinishSetup)
+
             trustManagementViewModel = TrustManagementViewModel(message: message,
                                                                 pEpProtectionModifyable: true,
-                                                                delegate: nil,
+                                                                delegate: delegate,
                                                                 protectionStateChangeDelegate: ComposeViewModel(),
                                                                 trustManagementUtil: util ?? TrustManagementUtilMock())
+
+            wait(for: [expDidFinishSetup], timeout: TestUtil.waitTimeCoupleOfSeconds)
         }
     }
 }
