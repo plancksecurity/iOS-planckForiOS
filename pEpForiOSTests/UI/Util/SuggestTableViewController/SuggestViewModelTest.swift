@@ -127,10 +127,8 @@ class SuggestViewModelTest: AccountDrivenTestBase {
                 expectationDidSelectCalled: expectationDidSelectCalled,
                 expectationDidToggleVisibilityToCalled: expectationDidToggleVisibilityToCalled,
                 expectedDidToggleVisibilityToValue: expectedDidToggleVisibilityToValue)
-        let shouldCallDidReset = true
         let testViewModelDelegate =
-            TestViewModelDelegate(shouldCallDidReset: shouldCallDidReset,
-                                  expectationDidResetCalled: expectationDidResetCalled)
+            TestViewModelDelegate(expectationDidResetCalled: expectationDidResetCalled)
         let vm = SuggestViewModel(from: fromIdentity)
         viewModel = vm
         vm.delegate = testViewModelDelegate
@@ -216,22 +214,15 @@ extension SuggestViewModelTest {
 extension SuggestViewModelTest {
 
     class TestViewModelDelegate: SuggestViewModelDelegate {
-        let shouldCallDidReset: Bool
         let expectationDidResetCalled: XCTestExpectation?
 
-        init(shouldCallDidReset: Bool = true,
-             expectationDidResetCalled: XCTestExpectation? = nil) {
-            self.shouldCallDidReset = shouldCallDidReset
+        init(expectationDidResetCalled: XCTestExpectation? = nil) {
             self.expectationDidResetCalled = expectationDidResetCalled
         }
 
         //  SuggestViewModelDelegate
 
         func suggestViewModelDidResetModel(showResults: Bool) {
-            guard shouldCallDidReset else {
-                XCTFail("Should not be called")
-                return
-            }
             expectationDidResetCalled?.fulfill()
         }
     }
