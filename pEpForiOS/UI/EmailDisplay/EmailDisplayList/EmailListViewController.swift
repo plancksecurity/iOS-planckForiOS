@@ -19,14 +19,21 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     /// True if the pEp button on the left/master side should be shown.
     private var shouldShowPepButtonInMasterToolbar = true
 
-    private var enableFilterButton: UIBarButtonItem!
-
     public static let storyboardId = "EmailListViewController"
     static let FILTER_TITLE_MAX_XAR = 20
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var editButton: UIBarButtonItem!
+
+    private var tempToolbarItems: [UIBarButtonItem]?
+    private var editRightButton: UIBarButtonItem?
+    private var flagToolbarButton: UIBarButtonItem?
+    private var unflagToolbarButton: UIBarButtonItem?
+    private var readToolbarButton: UIBarButtonItem?
+    private var unreadToolbarButton: UIBarButtonItem?
+    private var deleteToolbarButton: UIBarButtonItem?
+    private var moveToolbarButton: UIBarButtonItem?
+    private var enableFilterButton: UIBarButtonItem!
 
     var viewModel: EmailListViewModel? {
         didSet {
@@ -116,6 +123,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         tableView.tableFooterView = UIView()
         tableView.allowsMultipleSelectionDuringEditing = true
         setupSearchBar()
+        setupNavigationBar()
 
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
@@ -138,11 +146,11 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
             viewModel = EmailListViewModel(delegate: self, folderToShow: UnifiedInbox())
         }
 
-        title = viewModel?.folderName
-        navigationController?.title = title
-
         showStandardToolbar()
         setupRefreshControl()
+
+        title = viewModel?.folderName
+        navigationController?.title = title
     }
 
     private func setupRefreshControl() {
@@ -188,12 +196,16 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
             //Valid case: might be dismissed.
             return
         }
+        guard let editRightButton = editRightButton else {
+            Log.shared.errorAndCrash(message: "editRightButton is not initialized!")
+            return
+        }
         if vm.rowCount == 0 {
-            editButton.isEnabled = false
-            editButton.tintColor = .clear
+            editRightButton.isEnabled = false
+            editRightButton.tintColor = .clear
         } else {
-            editButton.isEnabled = true
-            editButton.tintColor = .pEpGreen
+            editRightButton.isEnabled = true
+            editRightButton.tintColor = .pEpGreen
         }
     }
 
@@ -236,18 +248,17 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
     // MARK: - Action Edit Button
 
-//    private var tempToolbarItems: [UIBarButtonItem]?
-    private var editRightButton: UIBarButtonItem?
-    private var flagToolbarButton: UIBarButtonItem?
-    private var unflagToolbarButton: UIBarButtonItem?
-    private var readToolbarButton: UIBarButtonItem?
-    private var unreadToolbarButton: UIBarButtonItem?
-    private var deleteToolbarButton: UIBarButtonItem?
-    private var moveToolbarButton: UIBarButtonItem?
+    private func setupNavigationBar() {
+        editRightButton = UIBarButtonItem(title: NSLocalizedString("Edit",
+                                                                   comment: "Edit - Right bar button item in Email List"),
+                                          style: .plain,
+                                          target: self,
+                                          action: #selector(editButtonPressed(_:)))
+    }
 
     private func showEditToolbar() {
 
-//        tempToolbarItems = toolbarItems
+        tempToolbarItems = toolbarItems
 
         // Flexible Space separation between the buttons
         let flexibleSpace = createFlexibleBarButtonItem()
@@ -318,8 +329,6 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
                                      style: UIBarButtonItem.Style.plain,
                                      target: self,
                                      action: #selector(cancelToolbar(_:)))
-
-        editRightButton = navigationItem.rightBarButtonItem
         navigationItem.rightBarButtonItem = cancel
     }
 

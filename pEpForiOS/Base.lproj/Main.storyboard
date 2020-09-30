@@ -182,16 +182,9 @@
                             <color key="tintColor" red="0.1524262428" green="0.70983916520000001" blue="0.39209908249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="Inbox" id="aP4-ia-HTP">
-                        <barButtonItem key="rightBarButtonItem" title="Edit" id="4U1-dM-wKT">
-                            <connections>
-                                <action selector="editButtonPressed:" destination="ldy-GA-D6J" id="Ck9-Xw-mLV"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Inbox" id="aP4-ia-HTP"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="editButton" destination="4U1-dM-wKT" id="VcG-h3-ItV"/>
                         <outlet property="tableView" destination="1Oj-l2-jRA" id="dbk-cO-CLi"/>
                         <outlet property="tableViewBottomConstraint" destination="BVY-Ij-lOg" id="bwv-t1-ufe"/>
                         <segue destination="Rly-af-89k" kind="presentation" identifier="segueAddNewAccount" id="Sq5-Lx-gH6"/>
