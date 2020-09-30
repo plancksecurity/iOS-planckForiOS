@@ -26,7 +26,7 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
 
         let message = Message.newOutgoingMessage()
         message.parent = outbox
-        let fromIdentity = TestData().createPartnerIdentity(number: 0)
+        let fromIdentity = TestData().createWorkingAccount(number: 0).user
         fromIdentity.session.commit()
         message.from = fromIdentity
         message.session.commit()
