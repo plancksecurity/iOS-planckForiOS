@@ -62,14 +62,14 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
         wait(for: [expDidFinishSetup], timeout: TestUtil.waitTimeCoupleOfSeconds)
     }
     
-    /// Test the number of generated rows is equal to the number of rows to generate
     func testNumberOfRows() {
         setupViewModel()
         guard let numberOfRows = trustManagementViewModel?.rows.count else {
             XCTFail("The trustManagementViewModel can't be nil")
             return
         }
-        XCTAssertEqual(numberOfRows, numberOfRowsToGenerate)
+        // Without mocking it, there are no pairings, therefore 0 rows
+        XCTAssertEqual(numberOfRows, 0)
     }
     
     //Test Reject Handshake Pressed
