@@ -42,18 +42,24 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
 
         message.appendToTo(identities)
 
-        let expDidFinishSetup = expectation(description: "expDidFinishSetup")
-        let delegate = TrustManagementViewModelDelegateSetupMock(expDidFinishSetup: expDidFinishSetup)
-
-        trustManagementViewModel = TrustManagementViewModel(message: message,
-                                                            pEpProtectionModifyable: true,
-                                                            delegate: delegate)
-        wait(for: [expDidFinishSetup], timeout: TestUtil.waitTimeCoupleOfSeconds)
+        setupViewModelAndWait() { delegate in
+            return TrustManagementViewModel(message: message,
+                                            pEpProtectionModifyable: true,
+                                            delegate: delegate)
+        }
     }
     
     override func tearDown() {
         super.tearDown()
         trustManagementViewModel = nil
+    }
+
+    private func setupViewModelAndWait(viewModelCreatorFn: (TrustManagementViewModelDelegate) -> TrustManagementViewModel) {
+        let expDidFinishSetup = expectation(description: "expDidFinishSetup")
+        let delegate = TrustManagementViewModelDelegateSetupMock(expDidFinishSetup: expDidFinishSetup)
+
+        trustManagementViewModel = viewModelCreatorFn(delegate)
+        wait(for: [expDidFinishSetup], timeout: TestUtil.waitTimeCoupleOfSeconds)
     }
     
     /// Test the number of generated rows is equal to the number of rows to generate
@@ -417,16 +423,13 @@ extension TrustManagementViewModelTest {
             }
             let message = TestUtil.createMessage(inFolder: folder1, from:from, tos: [selfIdentity])
 
-            let expDidFinishSetup = expectation(description: "expDidFinishSetup")
-            let delegate = TrustManagementViewModelDelegateSetupMock(expDidFinishSetup: expDidFinishSetup)
-
-            trustManagementViewModel = TrustManagementViewModel(message: message,
-                                                                pEpProtectionModifyable: true,
-                                                                delegate: delegate,
-                                                                protectionStateChangeDelegate: ComposeViewModel(),
-                                                                trustManagementUtil: util ?? TrustManagementUtilMock())
-
-            wait(for: [expDidFinishSetup], timeout: TestUtil.waitTimeCoupleOfSeconds)
+            setupViewModelAndWait() { delegate in
+                return TrustManagementViewModel(message: message,
+                                                pEpProtectionModifyable: true,
+                                                delegate: delegate,
+                                                protectionStateChangeDelegate: ComposeViewModel(),
+                                                trustManagementUtil: util ?? TrustManagementUtilMock())
+            }
         }
     }
 }
