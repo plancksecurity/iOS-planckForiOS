@@ -81,22 +81,6 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
         waitForExpectations(timeout: TestUtil.waitTime)
     }
     
-    // Test handshake confirmation: utils and delegate methods must be called.
-    func testHandleConfirmHandshakePressed() {
-        let confirmExpectation = expectation(description: "confirm")
-        let didConfirmExpectation = expectation(description: "didConfirm")
-        let expDataDidChange = expectation(description: "expDataDidChange")
-        let mockDelegate = TrustManagementViewModelDelegateMock(didConfirmHandshakeExpectation: didConfirmExpectation,
-                                                                didDataChangedExpectation: expDataDidChange)
-        let util = TrustManagementUtilMock(confirmExpectation: confirmExpectation)
-        setupViewModel(util: util)
-        trustManagementViewModel?.delegate = mockDelegate
-        
-        let firstItemPosition = IndexPath(item: 0, section: 0)
-        trustManagementViewModel?.handleConfirmHandshakePressed(at: firstItemPosition)
-        waitForExpectations(timeout: TestUtil.waitTime)
-    }
-    
     // Test trustManagementViewModel reset: utils and delegate methods must be called.
     func testHandleResetPressed() {
         let didResetExpectation = expectation(description: "didReset")
