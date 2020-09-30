@@ -83,7 +83,6 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
                 Log.shared.errorAndCrash("No VM")
                 return
             }
-
             me.showNoMessageSelected()
 
             me.updateFilterButtonView()
@@ -129,8 +128,6 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         // rm seperator lines for empty view/cells
         tableView.tableFooterView = UIView()
         tableView.allowsMultipleSelectionDuringEditing = true
-        setupSearchBar()
-        setupNavigationBar()
 
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
@@ -154,12 +151,9 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         if vm.folderToShow is UnifiedInbox {
             viewModel = EmailListViewModel(delegate: self, folderToShow: UnifiedInbox())
         }
-
-        showStandardToolbar(isDraftsPreview: draftsPreviewModeEnabled)
+        setupSearchBar()
+        setupNavigationBar()
         setupRefreshControl()
-
-        title = viewModel?.folderName
-        navigationController?.title = title
     }
 
     private func setupRefreshControl() {
@@ -189,6 +183,9 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     }
 
     private func setupNavigationBar() {
+        title = viewModel?.folderName
+        navigationController?.title = title
+
         editRightButton = UIBarButtonItem(title: NSLocalizedString("Edit",
                                                                    comment: "Edit - Right bar button item in Email List"),
                                           style: .plain,
@@ -200,6 +197,8 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
                                              style: .plain,
                                              target: self,
                                              action: #selector(dismissButtonPressed(_:)))
+
+        showStandardToolbar(isDraftsPreview: draftsPreviewModeEnabled)
     }
 
     // MARK: - Search Bar
@@ -438,16 +437,21 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
     //recover the original toolbar and right button
     private func showStandardToolbar(isDraftsPreview: Bool = false) {
+        let flexibleSpace = createFlexibleBarButtonItem()
+        let composeBtn = UIBarButtonItem.getComposeButton(tapAction: #selector(showCompose),
+                                                          longPressAction: #selector(draftsPreviewTapped),
+                                                          target: self)
+        let settingsBtn = createPepBarButtonItem()
         enableFilterButton = UIBarButtonItem.getFilterOnOffButton(action: #selector(filterButtonHasBeenPressed),
                                                                   target: self)
-        let flexibleSpace = createFlexibleBarButtonItem()
-        let composeBtn = UIBarButtonItem.getComposeButton(
-            tapAction: #selector(showCompose),
-            longPressAction: #selector(draftsPreviewTapped),
-            target: self)
-        let settingsBtn = createPepBarButtonItem()
-        toolbarItems = [enableFilterButton, flexibleSpace, composeBtn, flexibleSpace, settingsBtn]
-        navigationItem.rightBarButtonItem = isDraftsPreview ? dismissRightButton : editRightButton
+
+        if isDraftsPreview {
+            toolbarItems = [flexibleSpace, composeBtn, flexibleSpace]
+            navigationItem.rightBarButtonItem = isDraftsPreview ? dismissRightButton : editRightButton
+        } else {
+            toolbarItems = [enableFilterButton, flexibleSpace, composeBtn, flexibleSpace, settingsBtn]
+            navigationItem.rightBarButtonItem = editRightButton
+        }
     }
 
     @objc private func showCompose() {
