@@ -10,12 +10,16 @@ import XCTest
 @testable import MessageModel
 
 class Attachment_ExtensionTests: PersistentStoreDrivenTestBase {
+    struct ContentType {
+        static let plainText = "text/plain"
+        static let pgpKeys = "application/pgp-keys"
+    }
 
     func testIsViewableWithInlinePlainText() {
         // GIVEN
         let attachmentTest = TestUtil.createAttachmentNamed()
         attachmentTest.data = Data()
-        attachmentTest.mimeType = ContentTypeUtils.ContentType.plainText
+        attachmentTest.mimeType = ContentType.plainText
         attachmentTest.contentDisposition = .inline
 
         // WHEN
@@ -42,7 +46,7 @@ class Attachment_ExtensionTests: PersistentStoreDrivenTestBase {
         // GIVEN
         let attachmentTest = TestUtil.createAttachment()
         attachmentTest.data = Data()
-        attachmentTest.mimeType = ContentTypeUtils.ContentType.pgpKeys
+        attachmentTest.mimeType = ContentType.pgpKeys
 
         // WHEN
         let isViewable = attachmentTest.isViewable()
@@ -55,7 +59,7 @@ class Attachment_ExtensionTests: PersistentStoreDrivenTestBase {
         // GIVEN
         let attachmentTest = TestUtil.createAttachment()
         attachmentTest.data = Data()
-        attachmentTest.mimeType = MimeTypeUtils.MimeType.pgp
+        attachmentTest.mimeType = MimeTypeUtils.MimeType.pgp.rawValue
 
         // WHEN
         let isViewable = attachmentTest.isViewable()
