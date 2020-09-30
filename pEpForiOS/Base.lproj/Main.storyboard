@@ -176,16 +176,10 @@
                         <viewLayoutGuide key="safeArea" id="gL5-KI-75G"/>
                     </view>
                     <toolbarItems>
-                        <barButtonItem image="unread-icon" id="qvK-qQ-Gk6" userLabel="Enable Filter Button">
-                            <connections>
-                                <action selector="filterButtonHasBeenPressed:" destination="ldy-GA-D6J" id="ywQ-Ih-ND0"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem image="unread-icon" id="qvK-qQ-Gk6" userLabel="Enable Filter Button"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Syt-Kn-S3E"/>
                         <barButtonItem image="compose" id="uUt-t6-VUj" userLabel="Show Compose Button">
-                            <connections>
-                                <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueCompose" id="2Ml-4S-RYf"/>
-                            </connections>
+                            <color key="tintColor" red="0.1524262428" green="0.70983916520000001" blue="0.39209908249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Inbox" id="aP4-ia-HTP">
@@ -198,7 +192,6 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="editButton" destination="4U1-dM-wKT" id="VcG-h3-ItV"/>
-                        <outlet property="enableFilterButton" destination="qvK-qQ-Gk6" id="c4d-QA-utg"/>
                         <outlet property="tableView" destination="1Oj-l2-jRA" id="dbk-cO-CLi"/>
                         <outlet property="tableViewBottomConstraint" destination="BVY-Ij-lOg" id="bwv-t1-ufe"/>
                         <segue destination="Rly-af-89k" kind="presentation" identifier="segueAddNewAccount" id="Sq5-Lx-gH6"/>
@@ -1009,11 +1002,8 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="cRe-YG-393"/>
-        <segue reference="CKh-jT-ski"/>
-        <segue reference="Bs0-pZ-8nY"/>
-        <segue reference="e2D-Sv-Lmt"/>
         <segue reference="jws-oj-jHZ"/>
-        <segue reference="X1h-eK-GkJ"/>
+        <segue reference="VVX-sZ-2dU"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="attachment-list-icon" width="14" height="15"/>

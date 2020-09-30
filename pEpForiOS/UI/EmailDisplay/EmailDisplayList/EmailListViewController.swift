@@ -19,12 +19,12 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     /// True if the pEp button on the left/master side should be shown.
     private var shouldShowPepButtonInMasterToolbar = true
 
+    private var enableFilterButton: UIBarButtonItem!
+
     public static let storyboardId = "EmailListViewController"
     static let FILTER_TITLE_MAX_XAR = 20
 
-    @IBOutlet weak var enableFilterButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
-
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var editButton: UIBarButtonItem!
 
@@ -102,7 +102,6 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         updateEditButton()
     }
 
-
     deinit {
         unsubscribeAll()
     }
@@ -138,13 +137,12 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         if vm.folderToShow is UnifiedInbox {
             viewModel = EmailListViewModel(delegate: self, folderToShow: UnifiedInbox())
         }
-        setupRefreshControl()
 
         title = viewModel?.folderName
         navigationController?.title = title
 
-        let flexibleSpace = createFlexibleBarButtonItem()
-        toolbarItems?.append(contentsOf: [flexibleSpace, createPepBarButtonItem()])
+        showStandardToolbar()
+        setupRefreshControl()
     }
 
     private func setupRefreshControl() {
@@ -238,7 +236,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
     // MARK: - Action Edit Button
 
-    private var tempToolbarItems: [UIBarButtonItem]?
+//    private var tempToolbarItems: [UIBarButtonItem]?
     private var editRightButton: UIBarButtonItem?
     private var flagToolbarButton: UIBarButtonItem?
     private var unflagToolbarButton: UIBarButtonItem?
@@ -249,7 +247,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
     private func showEditToolbar() {
 
-        tempToolbarItems = toolbarItems
+//        tempToolbarItems = toolbarItems
 
         // Flexible Space separation between the buttons
         let flexibleSpace = createFlexibleBarButtonItem()
@@ -410,8 +408,27 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
     //recover the original toolbar and right button
     private func showStandardToolbar() {
-        toolbarItems = tempToolbarItems
+        enableFilterButton = UIBarButtonItem.getFilterOnOffButton(action: #selector(filterButtonHasBeenPressed),
+                                                                  target: self)
+        let flexibleSpace = createFlexibleBarButtonItem()
+        let composeBtn = UIBarButtonItem.getComposeButton(
+            tapAction: #selector(showCompose),
+            longPressAction: #selector(draftsPreviewTapped),
+            target: self)
+        let settingsBtn = createPepBarButtonItem()
+        toolbarItems = [enableFilterButton, flexibleSpace, composeBtn, flexibleSpace, settingsBtn]
         navigationItem.rightBarButtonItem = editRightButton
+    }
+
+    @objc private func showCompose() {
+        UIUtils.presentComposeView()
+    }
+
+    @objc private func draftsPreviewTapped(sender: UILongPressGestureRecognizer) {
+        if sender.state != .began {
+            return
+        }
+//        showDraftsPreview()
     }
 
     private func moveSelectionIfNeeded(fromIndexPath: IndexPath, toIndexPath: IndexPath) {
@@ -1177,7 +1194,7 @@ extension EmailListViewController: SegueHandlerType {
             vc.hidesBottomBarWhenPushed = true
             break
         case .segueFolderViews:
-            guard let vC = segue.destination as? FolderTableViewController  else {
+            guard segue.destination is FolderTableViewController  else {
                 Log.shared.errorAndCrash("Segue issue")
                 return
             }

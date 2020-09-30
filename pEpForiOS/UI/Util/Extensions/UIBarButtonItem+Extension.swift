@@ -32,6 +32,10 @@ extension UIBarButtonItem {
 
         return compose
     }
+    public static func getFilterOnOffButton(action: Selector, target: Any) -> UIBarButtonItem {
+        let img = UIImage(named: "unread-icon")
+        return getButton(image: img, action: action, target: target)
+    }
     public static func getPEPButton(action: Selector, target: Any) -> UIBarButtonItem {
         let img = UIImage(named: "icon-settings")
         return getButton(image: img, action: action, target: target)
