@@ -215,6 +215,9 @@ extension SuggestViewModelTest {
 
     class TestViewModelDelegate: SuggestViewModelDelegate {
         let expectationDidResetCalled: XCTestExpectation?
+        // suggestViewModelDidResetModel has to be called twice to fire
+        let requiredNumberOfCalls = 2
+        var numberOfCalls = 0
 
         init(expectationDidResetCalled: XCTestExpectation? = nil) {
             self.expectationDidResetCalled = expectationDidResetCalled
@@ -223,7 +226,10 @@ extension SuggestViewModelTest {
         //  SuggestViewModelDelegate
 
         func suggestViewModelDidResetModel(showResults: Bool) {
-            expectationDidResetCalled?.fulfill()
+            numberOfCalls += 1
+            if numberOfCalls == requiredNumberOfCalls {
+                expectationDidResetCalled?.fulfill()
+            }
         }
     }
 }
