@@ -79,8 +79,7 @@ class Appearance {
         appearance.configureWithOpaqueBackground()
         let font = UIFont.pepFont(style: .headline, weight: .medium)
         let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: color,
-                                                                   .font: font,
-                                                                   .baselineOffset: 2]
+                                                                   .font: font]
         let buttonsAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.pEpGreen]
         appearance.buttonAppearance.normal.titleTextAttributes = buttonsAttributes
         appearance.titleTextAttributes = titleTextAttributes

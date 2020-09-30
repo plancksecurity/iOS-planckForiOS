@@ -188,7 +188,7 @@ extension TrustManagementViewController {
                     return
                 }
 
-                for language in langs ?? [] {
+                for language in langs {
                     guard let languageName = NSLocale.current.localizedString(forLanguageCode: language)
                         else {
                             Log.shared.debug("Language name not found")
