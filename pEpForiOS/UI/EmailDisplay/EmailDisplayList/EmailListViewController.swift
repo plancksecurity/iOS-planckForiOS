@@ -25,6 +25,13 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
 
+    // This class is also used for display Drafts Preview
+    // (long press on create a new message icon/button)
+    private var draftsPreviewModeEnabled = false
+
+    // Right toolbar button for dismiss modal view in Drafts Preview mode
+    private var dismissRightButton: UIBarButtonItem?
+
     private var tempToolbarItems: [UIBarButtonItem]?
     private var editRightButton: UIBarButtonItem?
     private var flagToolbarButton: UIBarButtonItem?
@@ -130,6 +137,8 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
             return
         }
 
+        draftsPreviewModeEnabled = vm.folderToShow is UnifiedDraft
+
         if vm.showLoginView {
             showLoginScreen()
             return
@@ -146,7 +155,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
             viewModel = EmailListViewModel(delegate: self, folderToShow: UnifiedInbox())
         }
 
-        showStandardToolbar()
+        showStandardToolbar(isDraftsPreview: draftsPreviewModeEnabled)
         setupRefreshControl()
 
         title = viewModel?.folderName
@@ -177,6 +186,20 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
         textFilterButton.setTitleTextAttributes(attributes, for: UIControl.State.normal)
         textFilterButton.setTitleTextAttributes(attributes, for: UIControl.State.selected)
+    }
+
+    private func setupNavigationBar() {
+        editRightButton = UIBarButtonItem(title: NSLocalizedString("Edit",
+                                                                   comment: "Edit - Right bar button item in Email List"),
+                                          style: .plain,
+                                          target: self,
+                                          action: #selector(editButtonPressed(_:)))
+
+        dismissRightButton = UIBarButtonItem(title: NSLocalizedString("Cancel",
+                                                                      comment: "Cancel - right bar button item in Email List to dismiss a view for Drafts Preview mode"),
+                                             style: .plain,
+                                             target: self,
+                                             action: #selector(dismissButtonPressed(_:)))
     }
 
     // MARK: - Search Bar
@@ -246,15 +269,13 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         return
     }
 
-    // MARK: - Action Edit Button
+    // MARK: - Action Dismiss for Cancel Button in Drafts Preview mode
 
-    private func setupNavigationBar() {
-        editRightButton = UIBarButtonItem(title: NSLocalizedString("Edit",
-                                                                   comment: "Edit - Right bar button item in Email List"),
-                                          style: .plain,
-                                          target: self,
-                                          action: #selector(editButtonPressed(_:)))
+    @IBAction func dismissButtonPressed(_ sender: UIBarButtonItem) {
+        dismiss(animated: true)
     }
+
+    // MARK: - Action Edit Button
 
     private func showEditToolbar() {
 
@@ -416,7 +437,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     }
 
     //recover the original toolbar and right button
-    private func showStandardToolbar() {
+    private func showStandardToolbar(isDraftsPreview: Bool = false) {
         enableFilterButton = UIBarButtonItem.getFilterOnOffButton(action: #selector(filterButtonHasBeenPressed),
                                                                   target: self)
         let flexibleSpace = createFlexibleBarButtonItem()
@@ -426,7 +447,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
             target: self)
         let settingsBtn = createPepBarButtonItem()
         toolbarItems = [enableFilterButton, flexibleSpace, composeBtn, flexibleSpace, settingsBtn]
-        navigationItem.rightBarButtonItem = editRightButton
+        navigationItem.rightBarButtonItem = isDraftsPreview ? dismissRightButton : editRightButton
     }
 
     @objc private func showCompose() {

@@ -236,18 +236,8 @@ extension FolderTableViewController {
                   return nil
           }
 
-          guard let draftsIndex = FolderType.displayOrder.firstIndex(where: { $0 == .drafts }) else {
-              Log.shared.errorAndCrash(message: "Drafts index is missing!")
-              return nil
-          }
-
-          guard let firstSection = folderViewModel.items.first else {
-              Log.shared.errorAndCrash(message: "First section was not found!")
-              return nil
-          }
-
           let emailListVM = EmailListViewModel(delegate: vc,
-                                               folderToShow: firstSection[draftsIndex].folder)
+                                               folderToShow: UnifiedDraft())
           vc.viewModel = emailListVM
           vc.hidesBottomBarWhenPushed = true
 
