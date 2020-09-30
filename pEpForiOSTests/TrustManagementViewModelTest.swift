@@ -41,12 +41,6 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
         }
 
         message.appendToTo(identities)
-
-        setupViewModelAndWait() { delegate in
-            return TrustManagementViewModel(message: message,
-                                            pEpProtectionModifyable: true,
-                                            delegate: delegate)
-        }
     }
     
     override func tearDown() {
