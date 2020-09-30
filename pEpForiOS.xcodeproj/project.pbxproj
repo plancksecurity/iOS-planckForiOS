@@ -75,7 +75,6 @@
 		1526597A21623652006A78DF /* SuggestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597921623652006A78DF /* SuggestViewModel.swift */; };
 		1526597D21637759006A78DF /* SuggestViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597C21637759006A78DF /* SuggestViewModelTest.swift */; };
 		152A39942190587200D9F8E4 /* TextViewInTableViewScrollUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39932190587100D9F8E4 /* TextViewInTableViewScrollUtil.swift */; };
-		152A39C521905C3E00D9F8E4 /* ComposeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A399521905C3A00D9F8E4 /* ComposeTableViewController.swift */; };
 		152A39C621905C3E00D9F8E4 /* ComposeViewModelState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A399721905C3B00D9F8E4 /* ComposeViewModelState.swift */; };
 		152A39C721905C3E00D9F8E4 /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A399821905C3B00D9F8E4 /* ComposeViewModel.swift */; };
 		152A39C821905C3E00D9F8E4 /* ComposeViewModel+InitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A399921905C3B00D9F8E4 /* ComposeViewModel+InitData.swift */; };
@@ -541,7 +540,6 @@
 		1526597921623652006A78DF /* SuggestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestViewModel.swift; sourceTree = "<group>"; };
 		1526597C21637759006A78DF /* SuggestViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestViewModelTest.swift; sourceTree = "<group>"; };
 		152A39932190587100D9F8E4 /* TextViewInTableViewScrollUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewInTableViewScrollUtil.swift; sourceTree = "<group>"; };
-		152A399521905C3A00D9F8E4 /* ComposeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeTableViewController.swift; sourceTree = "<group>"; };
 		152A399721905C3B00D9F8E4 /* ComposeViewModelState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModelState.swift; sourceTree = "<group>"; };
 		152A399821905C3B00D9F8E4 /* ComposeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModel.swift; sourceTree = "<group>"; };
 		152A399921905C3B00D9F8E4 /* ComposeViewModel+InitData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ComposeViewModel+InitData.swift"; sourceTree = "<group>"; };
@@ -1206,7 +1204,6 @@
 			isa = PBXGroup;
 			children = (
 				5BCFE662252470F4001323C3 /* ComposeViewController.swift */,
-				152A399521905C3A00D9F8E4 /* ComposeTableViewController.swift */,
 				152A399621905C3B00D9F8E4 /* ViewModel */,
 				152A39A421905C3D00D9F8E4 /* Cells */,
 				152A399A21905C3D00D9F8E4 /* Util */,
@@ -3184,7 +3181,6 @@
 				49D3BECC20F8F7330043E05D /* LoginViewController.swift in Sources */,
 				43425EDB1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift in Sources */,
 				1526596A216230B1006A78DF /* ComposeDataSource.swift in Sources */,
-				152A39C521905C3E00D9F8E4 /* ComposeTableViewController.swift in Sources */,
 				150B8E991FCDACBB00374438 /* AccountSettingsUserInputError.swift in Sources */,
 				4351C2DE1F4457620053381F /* NSString+Markdown.m in Sources */,
 				43306EBE1FE125B50045DD00 /* OAuth2Authorization.swift in Sources */,
