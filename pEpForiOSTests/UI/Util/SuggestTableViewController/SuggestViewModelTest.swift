@@ -61,6 +61,16 @@ class SuggestViewModelTest: AccountDrivenTestBase {
         assertResults(for: searchTerm, numExpectedResults: 1)
     }
 
+    func testFindOne_byEmail() {
+        guard let id = existingIdentities.first else {
+                XCTFail("No ID")
+                return
+        }
+        let searchTerm = id.address
+
+        assertResults(for: searchTerm, numExpectedResults: 1)
+    }
+
     func testNonExisting() {
         let searchTerm = "aTermThatIsNotContained"
         assertResults(for: searchTerm, numExpectedResults: 0)
