@@ -744,7 +744,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
 
 extension EmailDetailViewController: EmailViewControllerDelegate {
 
-    func showPdfPreview(forPdfAt url: URL) {
+    func openQLPreviewController(toShowDocumentWithUrl url: URL) {
         pdfPreviewUrl = url
         let previewController = QLPreviewController()
         previewController.dataSource = self

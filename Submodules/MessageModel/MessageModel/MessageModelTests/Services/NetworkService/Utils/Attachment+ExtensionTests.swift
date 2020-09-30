@@ -55,7 +55,7 @@ class Attachment_ExtensionTests: PersistentStoreDrivenTestBase {
         // GIVEN
         let attachmentTest = TestUtil.createAttachment()
         attachmentTest.data = Data()
-        attachmentTest.mimeType = MimeTypeUtils.MimesType.pgp
+        attachmentTest.mimeType = MimeTypeUtils.MimeType.pgp
 
         // WHEN
         let isViewable = attachmentTest.isViewable()

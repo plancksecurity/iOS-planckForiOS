@@ -22,7 +22,7 @@ extension Attachment {
             return false
         }
         if contentDisposition == .inline,
-            mimeType?.lowercased() == MimeTypeUtils.MimesType.plainText {
+        mimeType?.lowercased() == MimeTypeUtils.MimeType.plainText.rawValue {
             return false
         }
         return true
