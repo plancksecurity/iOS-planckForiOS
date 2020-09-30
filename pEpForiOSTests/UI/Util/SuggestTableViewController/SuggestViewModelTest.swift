@@ -43,7 +43,7 @@ class SuggestViewModelTest: AccountDrivenTestBase {
 
     func testSearchTermNotEnoughChars_twoChars() {
         let searchTerm = "id"
-        assertResults(for: searchTerm, numExpectedResults: 0)
+        assertResults(for: searchTerm, numExpectedResults: defaultNumExistingContacts)
     }
 
     func testSearchTermJustEnoughChars_threeChars() {
