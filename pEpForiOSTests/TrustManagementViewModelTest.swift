@@ -42,8 +42,13 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
 
         message.appendToTo(identities)
 
+        let expDidFinishSetup = expectation(description: "expDidFinishSetup")
+        let delegate = TrustManagementViewModelDelegateSetupMock(expDidFinishSetup: expDidFinishSetup)
+
         trustManagementViewModel = TrustManagementViewModel(message: message,
-                                                            pEpProtectionModifyable: true)
+                                                            pEpProtectionModifyable: true,
+                                                            delegate: delegate)
+        wait(for: [expDidFinishSetup], timeout: TestUtil.waitTimeCoupleOfSeconds)
     }
     
     override func tearDown() {
@@ -324,6 +329,7 @@ class TrustManagementViewModelDelegateMock : TrustManagementViewModelDelegate {
     var didChangeProtectionStatusExpectation: XCTestExpectation?
     var didSelectLanguageExpectation: XCTestExpectation?
     var didToogleLongTrustwordsExpectation: XCTestExpectation?
+
     init(didEndShakeMotionExpectation: XCTestExpectation? = nil,
          didResetHandshakeExpectation: XCTestExpectation? = nil,
          didConfirmHandshakeExpectation: XCTestExpectation? = nil,
@@ -375,6 +381,26 @@ class TrustManagementViewModelDelegateMock : TrustManagementViewModelDelegate {
         }
     }
 }
+
+/// Use for waiting for successful model setup
+class TrustManagementViewModelDelegateSetupMock: TrustManagementViewModelDelegate {
+    let expDidFinishSetup: XCTestExpectation
+
+    init(expDidFinishSetup: XCTestExpectation) {
+        self.expDidFinishSetup = expDidFinishSetup
+    }
+
+    func dataChanged(forRowAt indexPath: IndexPath) {
+    }
+
+    func reload() {
+        expDidFinishSetup.fulfill()
+    }
+
+    func didToogleProtection(forRowAt indexPath: IndexPath) {
+    }
+}
+
 
 extension TrustManagementViewModelTest {
     private func setupViewModel(util : TrustManagementUtilProtocol? = nil) {
