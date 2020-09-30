@@ -85,7 +85,9 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
     func testHandleConfirmHandshakePressed() {
         let confirmExpectation = expectation(description: "confirm")
         let didConfirmExpectation = expectation(description: "didConfirm")
-        let mockDelegate = TrustManagementViewModelDelegateMock(didConfirmHandshakeExpectation: didConfirmExpectation)
+        let expDataDidChange = expectation(description: "expDataDidChange")
+        let mockDelegate = TrustManagementViewModelDelegateMock(didConfirmHandshakeExpectation: didConfirmExpectation,
+                                                                didDataChangedExpectation: expDataDidChange)
         let util = TrustManagementUtilMock(confirmExpectation: confirmExpectation)
         setupViewModel(util: util)
         trustManagementViewModel?.delegate = mockDelegate
@@ -318,10 +320,6 @@ class TrustManagementUtilMock: TrustManagementUtilProtocol {
 
 /// Use this mock class to verify the calls on the delegate are being performed
 class TrustManagementViewModelDelegateMock : TrustManagementViewModelDelegate {
-    func dataChanged(forRowAt indexPath: IndexPath) {
-        //MARTIN: take care
-    }
-
     var didEndShakeMotionExpectation: XCTestExpectation?
     var didResetHandshakeExpectation: XCTestExpectation?
     var didConfirmHandshakeExpectation: XCTestExpectation?
@@ -329,6 +327,7 @@ class TrustManagementViewModelDelegateMock : TrustManagementViewModelDelegate {
     var didChangeProtectionStatusExpectation: XCTestExpectation?
     var didSelectLanguageExpectation: XCTestExpectation?
     var didToogleLongTrustwordsExpectation: XCTestExpectation?
+    var didDataChangedExpectation: XCTestExpectation?
 
     init(didEndShakeMotionExpectation: XCTestExpectation? = nil,
          didResetHandshakeExpectation: XCTestExpectation? = nil,
@@ -336,7 +335,8 @@ class TrustManagementViewModelDelegateMock : TrustManagementViewModelDelegate {
          didDenyHandshakeExpectation: XCTestExpectation? = nil,
          didChangeProtectionStatusExpectation: XCTestExpectation? = nil,
          didSelectLanguageExpectation: XCTestExpectation? = nil,
-         didToogleLongTrustwordsExpectation: XCTestExpectation? = nil) {
+         didToogleLongTrustwordsExpectation: XCTestExpectation? = nil,
+         didDataChangedExpectation: XCTestExpectation? = nil) {
         self.didEndShakeMotionExpectation = didEndShakeMotionExpectation
         self.didResetHandshakeExpectation = didResetHandshakeExpectation
         self.didConfirmHandshakeExpectation = didConfirmHandshakeExpectation
@@ -344,8 +344,13 @@ class TrustManagementViewModelDelegateMock : TrustManagementViewModelDelegate {
         self.didChangeProtectionStatusExpectation = didChangeProtectionStatusExpectation
         self.didSelectLanguageExpectation = didSelectLanguageExpectation
         self.didToogleLongTrustwordsExpectation = didToogleLongTrustwordsExpectation
+        self.didDataChangedExpectation = didDataChangedExpectation
     }
     
+    func dataChanged(forRowAt indexPath: IndexPath) {
+        didDataChangedExpectation?.fulfill()
+    }
+
     func reload() {
         if didEndShakeMotionExpectation != nil {
             didEndShakeMotionExpectation?.fulfill()
