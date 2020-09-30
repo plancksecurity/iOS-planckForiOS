@@ -33,7 +33,7 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
 
         identities = [Identity]()
         // Generate rows to test the handshake feature.
-        // Note: The account is generated from test data row 0, so don't use this.
+        // Note: The account is generated from test data row 0, so skip this.
         for index in 1..<numberOfRowsToGenerate {
             let identity = TestData().createPartnerIdentity(number: index)
             identity.session.commit()
