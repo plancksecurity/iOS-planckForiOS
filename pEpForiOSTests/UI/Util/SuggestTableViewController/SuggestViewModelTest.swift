@@ -15,6 +15,7 @@ import XCTest
 class SuggestViewModelTest: AccountDrivenTestBase {
     static let defaultNumExistingContacts = 5
     var existingIdentities = [Identity]()
+    var fromIdentity: Identity?
     var viewModel: SuggestViewModel?
 
     // MARK: - Setup
@@ -80,7 +81,7 @@ class SuggestViewModelTest: AccountDrivenTestBase {
 
     private func setupContacts(numContacts: Int = SuggestViewModelTest.defaultNumExistingContacts) {
         existingIdentities = []
-        for i in 1...numContacts {
+        for i in 0...numContacts {
             let id = Identity(address: "email\(i)@pep.security",
                 userID: "\(i)",
                 addressBookID: nil,
@@ -88,6 +89,8 @@ class SuggestViewModelTest: AccountDrivenTestBase {
             existingIdentities.append(id)
             id.session.commit()
         }
+        fromIdentity = existingIdentities[0]
+        existingIdentities.remove(at: 0)
     }
 
     /// - Parameters:
@@ -131,7 +134,7 @@ class SuggestViewModelTest: AccountDrivenTestBase {
         let testViewModelDelegate =
             TestViewModelDelegate(shouldCallDidReset: shouldCallDidReset,
                                   expectationDidResetCalled: expectationDidResetCalled)
-        let vm = SuggestViewModel()
+        let vm = SuggestViewModel(from: fromIdentity)
         viewModel = vm
         vm.delegate = testViewModelDelegate
         vm.resultDelegate = testResultDelegate
