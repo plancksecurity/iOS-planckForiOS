@@ -38,7 +38,7 @@ class SuggestViewModelTest: AccountDrivenTestBase {
 
     func testSearchTermNotEnoughChars_oneChar() {
         let searchTerm = "i"
-        assertResults(for: searchTerm, numExpectedResults: 0)
+        assertResults(for: searchTerm, numExpectedResults: defaultNumExistingContacts)
     }
 
     func testSearchTermNotEnoughChars_twoChars() {
@@ -215,9 +215,6 @@ extension SuggestViewModelTest {
 
     class TestViewModelDelegate: SuggestViewModelDelegate {
         let expectationDidResetCalled: XCTestExpectation?
-        // suggestViewModelDidResetModel has to be called twice to fire
-        let requiredNumberOfCalls = 2
-        var numberOfCalls = 0
 
         init(expectationDidResetCalled: XCTestExpectation? = nil) {
             self.expectationDidResetCalled = expectationDidResetCalled
@@ -226,10 +223,7 @@ extension SuggestViewModelTest {
         //  SuggestViewModelDelegate
 
         func suggestViewModelDidResetModel(showResults: Bool) {
-            numberOfCalls += 1
-            if numberOfCalls == requiredNumberOfCalls {
-                expectationDidResetCalled?.fulfill()
-            }
+            expectationDidResetCalled?.fulfill()
         }
     }
 }
