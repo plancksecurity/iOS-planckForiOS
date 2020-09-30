@@ -21,16 +21,6 @@ public struct Capability {
     }
     
     public class Media {
-        public final func authorized() -> Bool {
-            let status = PHPhotoLibrary.authorizationStatus()
-            switch status {
-            case .authorized:
-                return true
-            case .denied, .notDetermined, .restricted:
-                return false
-            }
-        }
-
         /// Figures out whether or not we have permission to access the Photo Gallery.
         ///
         /// - Parameters:
@@ -39,7 +29,7 @@ public struct Capability {
             @escaping (_ granted: Bool, _ error: AccessError?) -> (Void)) {
             PHPhotoLibrary.requestAuthorization() { status in
                 switch status {
-                case .authorized:
+                case .authorized, .limited: 
                     completion(true, nil)
                     break
                 case .denied, .notDetermined:
@@ -48,6 +38,9 @@ public struct Capability {
                 case .restricted:
                     completion(false, .restricted)
                     break
+                @unknown default:
+                    Log.shared.errorAndCrash("Unhandled case")
+                    completion(false, .denied)
                 }
             }
         }

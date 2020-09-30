@@ -48,15 +48,24 @@ extension ConnectionTransport {
             return NSLocalizedString("SSL/TLS", comment: transport_security_text)
         case .startTLS:
             return NSLocalizedString("StartTLS", comment: transport_security_text)
+        @unknown default:
+            Log.shared.errorAndCrash("Unhandled case")
+            return NSLocalizedString("None", comment: transport_security_text)
         }
     }
 
     // XXX: Here material from the Model area is used: to be avoided or code-shared.
     public func toServerTransport() -> Server.Transport {
         switch self {
-        case .plain: return Server.Transport.plain
-        case .TLS: return Server.Transport.tls
-        case .startTLS: return Server.Transport.startTls
+        case .plain:
+            return Server.Transport.plain
+        case .TLS:
+            return Server.Transport.tls
+        case .startTLS:
+            return Server.Transport.startTls
+        @unknown default:
+            Log.shared.errorAndCrash("Unhandled case")
+            return Server.Transport.plain
         }
     }
 }
