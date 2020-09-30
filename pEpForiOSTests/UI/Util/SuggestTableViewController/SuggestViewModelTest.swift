@@ -12,7 +12,7 @@ import XCTest
 @testable import MessageModel
 
 class SuggestViewModelTest: AccountDrivenTestBase {
-    static let defaultNumExistingContacts = 5
+    let defaultNumExistingContacts = 5
     var existingIdentities = [Identity]()
     var fromIdentity: Identity?
     var viewModel: SuggestViewModel?
@@ -78,9 +78,9 @@ class SuggestViewModelTest: AccountDrivenTestBase {
 
     // MARK: - Helper
 
-    private func setupContacts(numContacts: Int = SuggestViewModelTest.defaultNumExistingContacts) {
+    private func setupContacts() {
         existingIdentities = []
-        for i in 0...numContacts {
+        for i in 1...defaultNumExistingContacts {
             let id = Identity(address: "email\(i)@pep.security",
                 userID: "\(i)",
                 addressBookID: nil,
@@ -89,7 +89,6 @@ class SuggestViewModelTest: AccountDrivenTestBase {
             id.session.commit()
         }
         fromIdentity = existingIdentities[0]
-        existingIdentities.remove(at: 0)
     }
 
     /// - Parameters:
