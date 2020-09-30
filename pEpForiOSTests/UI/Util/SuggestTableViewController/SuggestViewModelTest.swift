@@ -138,7 +138,7 @@ class SuggestViewModelTest: AccountDrivenTestBase {
         if let selectRow = simulateUserSelectedRow {
             vm.handleRowSelected(at: selectRow)
         }
-        waitForExpectations(timeout: TestUtil.waitTime)
+        waitForExpectations(timeout: TestUtil.waitTimeCoupleOfSeconds)
     }
 
     /**
