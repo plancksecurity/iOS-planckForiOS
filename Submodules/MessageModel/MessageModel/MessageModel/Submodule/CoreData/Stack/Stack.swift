@@ -183,6 +183,11 @@ extension Stack {
         objc_sync_enter(Stack.unitTestLock)
         defer { objc_sync_exit(Stack.unitTestLock) }
         guard MiscUtil.isUnitTest() else { fatalError("Not permited to use in production code.") }
+
+        // A `reset(context:)` can involve a merge, which can crash a test.
+        // Not wanted.
+        stopReceivingContextNotifications()
+
         reset(context: mainContext)
         reset(context: changePropagatorContext)
         Stack.shared = Stack() //BUFF: MUST GO AWAY!
