@@ -18,9 +18,7 @@ final class SubjectCell: TextViewContainingTableViewCell {
     public func setup(with viewModel: SubjectCellViewModel) {
         self.viewModel = viewModel
         setStyle()
-        if viewModel.content != nil {
-            self.textView.text = viewModel.content
-        }
+        self.textView.text = viewModel.content
     }
 
     private func setStyle() {

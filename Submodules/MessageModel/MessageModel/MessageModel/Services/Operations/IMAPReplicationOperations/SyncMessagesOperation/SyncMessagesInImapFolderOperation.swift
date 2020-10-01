@@ -79,11 +79,6 @@ extension SyncMessagesInImapFolderOperation {
 
         resetUidCache()
 
-        guard let id = folderID else {
-            Log.shared.errorAndCrash("No ID")
-            waitForBackgroundTasksAndFinish()
-            return
-        }
         if !imapConnection.openMailBox(name: folderToOpen, updateExistsCount: true) {
             syncMessages()
         }

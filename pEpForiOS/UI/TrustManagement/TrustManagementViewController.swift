@@ -44,8 +44,8 @@ class TrustManagementViewController: BaseViewController {
 
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         guard let vm = viewModel, vm.canUndo() && motion == .motionShake,
-            let actionName = vm.lastActionPerformed() else { return }
-        let title = NSLocalizedString("Undo \(actionName)", comment: "Undo trust change verification alert title")
+            let actionName = vm.revertAction() else { return }
+        let title = NSLocalizedString(actionName, comment: "Revert last action performed named - alert title")
         let alertController = UIAlertController.pEpAlertController(title: title,
                                                                    message: nil,
                                                                    preferredStyle: .alert)
@@ -188,7 +188,7 @@ extension TrustManagementViewController {
                     return
                 }
 
-                for language in langs ?? [] {
+                for language in langs {
                     guard let languageName = NSLocale.current.localizedString(forLanguageCode: language)
                         else {
                             Log.shared.debug("Language name not found")
