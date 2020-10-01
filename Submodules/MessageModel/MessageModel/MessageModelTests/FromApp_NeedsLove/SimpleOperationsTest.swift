@@ -74,35 +74,6 @@ class SimpleOperationsTest: PersistentStoreDrivenTestBase {
         TestUtil.checkForExistanceAndUniqueness(uuids: uuids, context: moc)
     }
 
-    func testSyncMessagesFailedOperation() {
-        testSyncFoldersFromServerOperation()
-
-        guard
-            let folder = CdFolder.by(folderType: .inbox, account: cdAccount),
-            let folderName = folder.name else {
-                XCTFail()
-                return
-        }
-
-        let expMailsSynced = expectation(description: "expMailsSynced")
-
-        let op = SyncMessagesInImapFolderOperation(parentName: #function,
-                                                   imapConnection: imapConnection,
-                                                   folderName: folderName,
-                                                   firstUID: 10,
-                                                   lastUID: 5)
-        op.completionBlock = {
-            op.completionBlock = nil
-            expMailsSynced.fulfill()
-        }
-
-        op.start()
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertTrue(op.hasErrors)
-        })
-    }
-
     func dumpAllAccounts() {
         let cdAccounts = CdAccount.all(in: moc) as? [CdAccount]
         if let accs = cdAccounts {
