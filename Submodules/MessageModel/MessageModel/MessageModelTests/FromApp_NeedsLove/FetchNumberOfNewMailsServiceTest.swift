@@ -30,10 +30,6 @@ class FetchNumberOfNewMailsServiceTest: PersistentStoreDrivenTestBase {
 
     // MARK: - Normal Mails Only
 
-    func testUnreadMail_normalOnly_two() {
-        assertNewMailsService(numNewNormalMessages: 2, numNewAutoconsumableMessages: 0)
-    }
-
     func testUnreadMail_normalOnly_many() {
         assertNewMailsService(numNewNormalMessages: 5, numNewAutoconsumableMessages: 0)
     }
