@@ -100,7 +100,7 @@ public class Attachment: MessageModelObjectProtocol, ManagedObjectWrapperProtoco
             return URL(string: urlString)
         }
         set {
-            cdObject.assetUrl = assetUrl?.absoluteString
+            cdObject.assetUrl = newValue?.absoluteString
         }
     }
 

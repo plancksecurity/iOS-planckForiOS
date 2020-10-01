@@ -54,7 +54,7 @@ extension DecryptMessageOperation {
         }
 
         var inOutFlags = cdMessageToDecrypt.isOnTrustedServer ? PEPDecryptFlags.none : .untrustedServer
-        var inOutMessage = cdMessageToDecrypt.pEpMessage(outgoing: false)
+        var inOutMessage = cdMessageToDecrypt.pEpMessage()
         var fprsOfExtraKeys = CdExtraKey.fprsOfAllExtraKeys(in: moc)
         var rating = PEPRating.undefined
         var pEpDecryptedMessage: PEPMessage? = nil

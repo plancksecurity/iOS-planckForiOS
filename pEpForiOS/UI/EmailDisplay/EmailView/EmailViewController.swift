@@ -14,7 +14,7 @@ import pEpIOSToolbox
 import MessageModel
 
 protocol EmailViewControllerDelegate: class {
-    func showPdfPreview(forPdfAt url: URL)
+    func openQLPreviewController(toShowDocumentWithUrl url: URL)
 }
 
 class EmailViewController: UIViewController {
@@ -273,9 +273,6 @@ extension EmailViewController: MessageAttachmentDelegate {
                             representedBy cell: MessageCell,
                             showAt location: CGPoint,
                             in view: UIView?) {
-        let mimeType = MimeTypeUtils.findBestMimeType(forFileAt: url,
-                                                      withGivenMimeType: givenMimeType)
-        
         if url.pathExtension == "pEp12" || url.pathExtension == "pfx" {
             setupClientCertificateImportViewController(forClientCertificateAt: url)
             guard let vc = clientCertificateImportViewController else {
@@ -283,9 +280,8 @@ extension EmailViewController: MessageAttachmentDelegate {
                 return
             }
             present(vc, animated: true)
-        } else if mimeType == MimeTypeUtils.MimesType.pdf
-            && QLPreviewController.canPreview(url as QLPreviewItem) {
-            delegate?.showPdfPreview(forPdfAt: url)
+        } else if QLPreviewController.canPreview(url as QLPreviewItem) {
+            delegate?.openQLPreviewController(toShowDocumentWithUrl: url)
         } else {
             documentInteractionController.url = url
             let presentingView = view ?? cell
