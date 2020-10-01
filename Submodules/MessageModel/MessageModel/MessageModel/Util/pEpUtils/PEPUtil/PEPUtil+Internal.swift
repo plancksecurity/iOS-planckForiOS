@@ -105,11 +105,11 @@ extension PEPUtils {
         var parts: [CWPart] = []
 
         if let part = makeLongMessagePart(text: pEpMessage.longMessage,
-                                          contentType: ContentTypeUtils.ContentType.plainText) {
+                                          contentType: MimeTypeUtils.MimeType.plainText.rawValue) {
             parts.append(part)
         }
         if let part = makeLongMessagePart(text: pEpMessage.longMessageFormatted,
-                                          contentType: ContentTypeUtils.ContentType.html) {
+                                          contentType: MimeTypeUtils.MimeType.html.rawValue) {
             parts.append(part)
         }
 

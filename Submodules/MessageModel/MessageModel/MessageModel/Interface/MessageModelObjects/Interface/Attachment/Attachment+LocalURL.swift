@@ -39,7 +39,7 @@ extension Attachment {
                 let fileName = ( safeAttachment.fileName ?? Attachment.defaultFileName).extractFileNameOrCid()
                 var url = tmpDir.appendingPathComponent(fileName)
 
-                if let mimeType = safeAttachment.mimeType, mimeType == MimeTypeUtils.MimesType.pdf {
+                if let mimeType = safeAttachment.mimeType, mimeType == MimeTypeUtils.MimeType.pdf.rawValue {
                     url = url.appendingPathExtension("pdf")
                 }
                 do {

@@ -86,6 +86,7 @@ class MoveToFolderViewModel {
         }
     }
 
+    @discardableResult
     func moveMessagesTo(index: Int) -> Bool {
         if !(index >= 0 && index < items.count) {
             Log.shared.error("Index out of bounds")
