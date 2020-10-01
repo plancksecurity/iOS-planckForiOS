@@ -58,28 +58,4 @@ class MessageTest: PersistentStoreDrivenTestBase {
 
         XCTAssertTrue(msg.attachments.contains(attachmentInsert))
     }
-
-    func testModifyingImapFlagsDoesNotDuplicateAttachments() {
-        let numAttachmentsBefore = 2
-        let message = TestUtil.createMessage(numAttachments: numAttachmentsBefore)
-        guard let inbox = cdAccount.account().firstFolder(ofType: .inbox) else {
-            XCTFail("No Inbox")
-            return
-        }
-        message.parent = inbox
-        message.session.commit()
-
-        //toggle flag
-        let currentFlags =  message.imapFlags
-        message.imapFlags.flagged = !currentFlags.flagged
-        message.session.commit()
-
-        guard let savedCdMessage = CdMessage.search(message: message) else {
-            XCTFail("Saved message not found")
-            return
-        }
-        let msg = MessageModelObjectUtils.getMessage(fromCdMessage: savedCdMessage)
-
-        XCTAssertEqual(msg.attachments.count, numAttachmentsBefore)
-    }
 }
