@@ -336,9 +336,6 @@
 		49A6114E2179F3A1006BA3C5 /* UnitTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A6114D2179F3A1006BA3C5 /* UnitTestUtils.swift */; };
 		49C34AF620E4F649009D11CC /* CellDetailTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C34AF520E4F649009D11CC /* CellDetailTransition.swift */; };
 		49D3BECC20F8F7330043E05D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D3BECB20F8F7330043E05D /* LoginViewController.swift */; };
-		49DCCD2521E8ABA900ABE487 /* SecurePDFScreenshotTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A2BC0B21DCE78D00E10C1A /* SecurePDFScreenshotTest.swift */; };
-		49DCCD2621E8ABD300ABE487 /* nojavascript.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 49DCCD1F21E75BE300ABE487 /* nojavascript.pdf */; };
-		49DCCD2721E8ABD600ABE487 /* javascript.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 49079D9821E3867900D15A0D /* javascript.pdf */; };
 		49DCCD2821E8ABDF00ABE487 /* ScreenshotTestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495F689921E6600500A10C63 /* ScreenshotTestUtil.swift */; };
 		5B0B339D24AC85E800CABD0B /* UIUtils+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */; };
 		5B0B339F24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0B339E24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift */; };
@@ -918,7 +915,6 @@
 		43F9D9991E92725700F78A1C /* AttachmentsViewHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsViewHelper.swift; sourceTree = "<group>"; };
 		43FC02111F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "NSHTML_2017-08-09 15_40_53 +0000.html"; sourceTree = "<group>"; };
 		4902244E20E50488000E8D7C /* ThreadNavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadNavigationDelegate.swift; sourceTree = "<group>"; };
-		49079D9821E3867900D15A0D /* javascript.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = javascript.pdf; sourceTree = "<group>"; };
 		490CEBA62100EAD500E8579C /* SelfDismissable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfDismissable.swift; sourceTree = "<group>"; };
 		491116BC216E0DF4005A42D2 /* MessageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModelTests.swift; sourceTree = "<group>"; };
 		491B656120CFE0FD00C2ADDA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Thread.storyboard; sourceTree = "<group>"; };
@@ -930,11 +926,9 @@
 		495F689921E6600500A10C63 /* ScreenshotTestUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTestUtil.swift; sourceTree = "<group>"; };
 		496355B020ECEA2900AA4387 /* ThreadedEmailViewModel+EmailDisplayDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreadedEmailViewModel+EmailDisplayDelegate.swift"; sourceTree = "<group>"; };
 		49691B1420D7FD0200CA9367 /* MessageViewModelConfigurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModelConfigurable.swift; sourceTree = "<group>"; };
-		49A2BC0B21DCE78D00E10C1A /* SecurePDFScreenshotTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurePDFScreenshotTest.swift; sourceTree = "<group>"; };
 		49A6114D2179F3A1006BA3C5 /* UnitTestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitTestUtils.swift; sourceTree = "<group>"; };
 		49C34AF520E4F649009D11CC /* CellDetailTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellDetailTransition.swift; sourceTree = "<group>"; };
 		49D3BECB20F8F7330043E05D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		49DCCD1F21E75BE300ABE487 /* nojavascript.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = nojavascript.pdf; sourceTree = "<group>"; };
 		5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+Passphrase.swift"; sourceTree = "<group>"; };
 		5B0B339E24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGPKeyImportSettingSwitchTableViewCell.swift; sourceTree = "<group>"; };
 		5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCellProtocols.swift; sourceTree = "<group>"; };
@@ -2074,7 +2068,6 @@
 		43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */ = {
 			isa = PBXGroup;
 			children = (
-				49174CAD21EE408F006DBD63 /* PDF Security Tests */,
 				151F71EB202A06750057C74D /* TestUtils */,
 				43B2C3151D2280ED00A08557 /* Resources */,
 				15BBBC691FD0522E00B9DCC8 /* Error */,
@@ -2288,16 +2281,6 @@
 				43ED53661CC77F95006AB156 /* IMAPSettingsViewController.swift */,
 			);
 			path = ImapSetup;
-			sourceTree = "<group>";
-		};
-		49174CAD21EE408F006DBD63 /* PDF Security Tests */ = {
-			isa = PBXGroup;
-			children = (
-				49A2BC0B21DCE78D00E10C1A /* SecurePDFScreenshotTest.swift */,
-				49DCCD1F21E75BE300ABE487 /* nojavascript.pdf */,
-				49079D9821E3867900D15A0D /* javascript.pdf */,
-			);
-			path = "PDF Security Tests";
 			sourceTree = "<group>";
 		};
 		4918EBF91E783C70006207FC /* Models */ = {
@@ -2827,8 +2810,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				431BB9451E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */,
-				49DCCD2721E8ABD600ABE487 /* javascript.pdf in Resources */,
-				49DCCD2621E8ABD300ABE487 /* nojavascript.pdf in Resources */,
 				4395CDF020AAD0D7003FC5F1 /* icon_001.gif in Resources */,
 				1512132824166AD9009B7C88 /* large-animated-gif.gif in Resources */,
 				43FC02121F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html in Resources */,
@@ -3272,7 +3253,6 @@
 				3756434E2370810400FB354D /* EditableAccountSettingsViewModelTest.swift in Sources */,
 				157C05482180756300E530DE /* DocumentAttachmentPickerViewModelTest.swift in Sources */,
 				B7B2912524FF8EB700428CA6 /* ResetTrustViewModelTest.swift in Sources */,
-				49DCCD2521E8ABA900ABE487 /* SecurePDFScreenshotTest.swift in Sources */,
 				151F7200202A06760057C74D /* TestUtil.swift in Sources */,
 				15410D252199ECD700BBF65F /* AttachmentViewModelTest.swift in Sources */,
 				43257C861F50659200DDC7F0 /* StringHTMLExtensionTests.swift in Sources */,
