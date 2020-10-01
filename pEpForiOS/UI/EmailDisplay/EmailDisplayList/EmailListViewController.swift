@@ -462,7 +462,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         if sender.state != .began {
             return
         }
-//        showDraftsPreview()
+        UIUtils.presentDraftsPreview()
     }
 
     private func moveSelectionIfNeeded(fromIndexPath: IndexPath, toIndexPath: IndexPath) {

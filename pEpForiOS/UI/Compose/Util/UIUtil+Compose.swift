@@ -35,8 +35,6 @@ extension UIUtils {
     ///
     /// - Parameters:
     ///   - address: address to prefill "To:" field with
-    ///   - viewController: presenting view controller
-    ///   - appConfig: AppConfig to forward
     static public func presentComposeView(forRecipientWithAddress address: String?) {
         let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
         guard
@@ -56,6 +54,34 @@ extension UIUtils {
         present(composeNavigationController: composeNavigationController)
     }
 
+    /// Modally presents a "Drafts Preview"
+    static public func presentDraftsPreview() {
+        guard let vc = createEmailListViewController() else {
+            Log.shared.errorAndCrash(message: "EmailListViewController is not available!")
+            return
+        }
+        vc.hidesBottomBarWhenPushed = false
+        vc.modalPresentationStyle = .pageSheet
+        vc.modalTransitionStyle = .coverVertical
+
+        let navigationController = UINavigationController(rootViewController: vc)
+
+        if let toolbar = navigationController.toolbar {
+            vc.modalPresentationStyle = .popover
+            vc.preferredContentSize = CGSize(width: toolbar.frame.width - 16,
+                                             height: 420)
+            vc.popoverPresentationController?.sourceView = vc.view
+            let frame = CGRect(x: toolbar.frame.origin.x,
+                               y: toolbar.frame.origin.y - 10,
+                               width: toolbar.frame.width,
+                               height: toolbar.frame.height)
+            vc.popoverPresentationController?.sourceRect = frame
+        }
+        present(composeNavigationController: navigationController)
+    }
+
+
+
     // MARK: - Private - ComposeViewModel
 
     private static func composeViewModelForSupport() -> ComposeViewModel {
@@ -72,6 +98,23 @@ extension UIUtils {
         let state = ComposeViewModel.ComposeViewModelState(initData: initData)
         state.subject = NSLocalizedString("Help", comment: "Contact Support - Mail subject") 
         return ComposeViewModel(state: state)
+    }
+
+    private static func createEmailListViewController() -> EmailListViewController? {
+        let sb = UIStoryboard(name: EmailViewController.storyboard, bundle: nil)
+        guard
+            let vc = sb.instantiateViewController(
+                withIdentifier: EmailListViewController.storyboardId) as? EmailListViewController else {
+                Log.shared.errorAndCrash("Problem!")
+                return nil
+        }
+
+        let emailListVM = EmailListViewModel(delegate: vc,
+                                             folderToShow: UnifiedDraft())
+        vc.viewModel = emailListVM
+        vc.hidesBottomBarWhenPushed = true
+
+        return vc
     }
 
     private static func composeViewModel(forRecipientWithAddress address: String?) -> ComposeViewModel {
