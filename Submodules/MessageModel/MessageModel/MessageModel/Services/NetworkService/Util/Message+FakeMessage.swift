@@ -36,7 +36,7 @@ extension Message { //!!!: does not belong to Network service. Move to MM Interf
         appendee.uid = Int32(CdMessage.uidNeedsAppend)
         appendee.uuid = newUuid
 
-        let fakeMsg = msg.cdObject.createFakeMessage(context: moc)
+        let _ = msg.cdObject.createFakeMessage(context: moc)
 
         moc.saveAndLogErrors()
     }

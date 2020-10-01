@@ -120,8 +120,7 @@ extension DynamicHeightScrollView {
             return
         }
         var bottomSafeArea: CGFloat = 0
-        if #available(iOS 11.0, *),
-            let window = window {
+        if let window = window {
             bottomSafeArea = window.safeAreaInsets.bottom
         }
 
