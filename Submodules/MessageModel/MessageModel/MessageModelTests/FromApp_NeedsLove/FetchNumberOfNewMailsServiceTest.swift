@@ -106,10 +106,9 @@ extension FetchNumberOfNewMailsServiceTest {
 
         // Create new normal mails
         for _ in 0..<numNewNormalMessages {
-            let newNormalMail = CdMessage(context: moc) //!!!: replace with TestuTil.createCdMessage after this file has been moved to MM
+            let newNormalMail = TestUtil.createCdMessage(cdFolder: cdInbox, moc: moc)
             newNormalMail.uuid = UUID().uuidString
             newNormalMail.uid = 0
-            newNormalMail.parent = cdInbox
             newNormalMail.addToTo(partnerId)
             newNormalMail.shortMessage = "Are you ok?"
             newNormalMail.longMessage = "Hi there!"
@@ -118,12 +117,10 @@ extension FetchNumberOfNewMailsServiceTest {
 
         // Create new autoconsumable mails
         for _ in 0..<numNewAutoconsumableMessages {
-            let newAutoConsumableMail = CdMessage(context: moc)//!!!: replace with TestuTil.createCdMessage after this file has been moved to MM
+            let newAutoConsumableMail = TestUtil.createCdMessage(cdFolder: cdInbox, moc: moc)
             newAutoConsumableMail.uuid = UUID().uuidString
             newAutoConsumableMail.uid = 0
-            newAutoConsumableMail.parent = cdInbox
             newAutoConsumableMail.addToTo(partnerId)
-            //
             newAutoConsumableMail.shortMessage = "auto-consumable"
             newAutoConsumableMail.longMessage = "auto-consumable"
             let header = CdHeaderField(context: moc)
