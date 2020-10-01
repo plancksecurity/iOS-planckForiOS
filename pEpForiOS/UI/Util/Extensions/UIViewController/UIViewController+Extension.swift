@@ -17,6 +17,13 @@ extension UIViewController {
     var isLandscape: Bool {
         return UIDevice.current.orientation.isLandscape
     }
+    var isModalPresented: Bool {
+        let presentingIsModal = presentingViewController != nil
+        let presentingIsNavigation = navigationController?.presentingViewController?.presentedViewController == navigationController
+        let presentingIsTabBar = tabBarController?.presentingViewController is UITabBarController
+
+        return presentingIsModal || presentingIsNavigation || presentingIsTabBar
+    }
     var isModalViewCurrentlyShown: Bool {
         return presentedViewController != nil
     }

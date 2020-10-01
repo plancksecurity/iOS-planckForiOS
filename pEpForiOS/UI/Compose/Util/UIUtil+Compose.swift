@@ -65,7 +65,6 @@ extension UIUtils {
         vc.modalTransitionStyle = .coverVertical
 
         let navigationController = UINavigationController(rootViewController: vc)
-
         if let toolbar = navigationController.toolbar {
             vc.modalPresentationStyle = .popover
             vc.preferredContentSize = CGSize(width: toolbar.frame.width - 16,
@@ -77,6 +76,22 @@ extension UIUtils {
                                height: toolbar.frame.height)
             vc.popoverPresentationController?.sourceRect = frame
         }
+        present(composeNavigationController: navigationController)
+    }
+
+    static public func presentEditDraft(composeVM: ComposeViewModel) {
+        let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
+        guard
+            let navigationController = storyboard.instantiateViewController(withIdentifier:
+                Constants.composeSceneStoryboardId) as? UINavigationController,
+            let composeVc = navigationController.rootViewController
+                    as? ComposeTableViewController
+            else {
+                Log.shared.errorAndCrash("Missing required VCs")
+                return
+        }
+        composeVc.viewModel = composeVM
+
         present(composeNavigationController: navigationController)
     }
 

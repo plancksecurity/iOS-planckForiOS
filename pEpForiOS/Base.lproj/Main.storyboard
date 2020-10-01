@@ -192,7 +192,6 @@
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAll" id="yAp-Cu-TCw"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="ok6-PZ-sCI"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReply" id="Bs0-pZ-8nY"/>
-                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueEditDraft" id="VVX-sZ-2dU"/>
                         <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" id="cRe-YG-393"/>
                         <segue destination="nc4-kR-K9D" kind="show" identifier="segueShowFilter" id="t4t-3T-ovM"/>
                         <segue destination="fRo-D2-Fjz" kind="showDetail" identifier="segueShowEmail" id="bq8-0O-guL"/>
@@ -997,7 +996,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="cRe-YG-393"/>
         <segue reference="jws-oj-jHZ"/>
-        <segue reference="ok6-PZ-sCI"/>
+        <segue reference="Bs0-pZ-8nY"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="attachment-list-icon" width="14" height="15"/>

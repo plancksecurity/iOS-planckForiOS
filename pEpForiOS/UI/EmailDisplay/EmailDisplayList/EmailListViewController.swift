@@ -250,7 +250,21 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     // MARK: - Other
 
     private func showEditDraftComposeView() {
-        performSegue(withIdentifier: SegueIdentifier.segueEditDraft, sender: self)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("composeViewController setup issue")
+            return
+        }
+        guard let indexPath = lastSelectedIndexPath else {
+            Log.shared.info("Can happen if the message the user wanted to reply to has been deleted in between performeSeque and here")
+            return
+        }
+        guard let composeVM = vm.composeViewModel(forMessageRepresentedByItemAt: indexPath,
+                                                  composeMode: .normal) else {
+            Log.shared.errorAndCrash(message: "Compose View Model for this indexPath doesn't exist!")
+            return
+        }
+
+        UIUtils.presentEditDraft(composeVM: composeVM)
     }
 
     private func showEmail(forCellAt indexPath: IndexPath) {
@@ -455,14 +469,18 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     }
 
     @objc private func showCompose() {
-        UIUtils.presentComposeView()
+        dismiss(animated: true) {
+            UIUtils.presentComposeView()
+        }
     }
 
     @objc private func draftsPreviewTapped(sender: UILongPressGestureRecognizer) {
         if sender.state != .began {
             return
         }
-        UIUtils.presentDraftsPreview()
+        if !isModalPresented {
+            UIUtils.presentDraftsPreview()
+        }
     }
 
     private func moveSelectionIfNeeded(fromIndexPath: IndexPath, toIndexPath: IndexPath) {
@@ -688,9 +706,21 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                 lastSelectedIndexPath = indexPath
                 tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
                 if vm.isEditable(messageAt: indexPath) {
-                    showEditDraftComposeView()
+                    dismiss(animated: true) { [weak self] in
+                        guard let me = self else {
+                            Log.shared.lostMySelf()
+                            return
+                        }
+                        me.showEditDraftComposeView()
+                    }
                 } else {
-                    showEmail(forCellAt: indexPath)
+                    dismiss(animated: true) { [weak self] in
+                        guard let me = self else {
+                            Log.shared.lostMySelf()
+                            return
+                        }
+                        me.showEmail(forCellAt: indexPath)
+                    }
                 }
             } else {
                 tableView.deselectRow(at: indexPath, animated: true)
@@ -1179,7 +1209,6 @@ extension EmailListViewController: SegueHandlerType {
         case segueReply
         case segueReplyAll
         case segueForward
-        case segueEditDraft
         case segueShowFilter
         case segueFolderViews
         case segueShowMoveToFolder
@@ -1193,8 +1222,7 @@ extension EmailListViewController: SegueHandlerType {
         case .segueReply,
              .segueReplyAll,
              .segueForward,
-             .segueCompose,
-             .segueEditDraft:
+             .segueCompose:
             setupComposeViewController(for: segue)
         case .segueShowEmail:
             guard
@@ -1297,8 +1325,6 @@ extension EmailListViewController: SegueHandlerType {
         case .segueForward:
             return .forward
         case .segueCompose:
-            return .normal
-        case .segueEditDraft:
             return .normal
         default:
             return nil
