@@ -295,7 +295,6 @@
 		43B6BE1923E43BCE00E3A60B /* ImapConnectionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B6BE1823E43BCE00E3A60B /* ImapConnectionProtocol.swift */; };
 		43BBB49524485AB800A88B39 /* HandshakeTests_mail_001.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43BBB49424485AB800A88B39 /* HandshakeTests_mail_001.txt */; };
 		43BBB49724485EAF00A88B39 /* URL+MIME.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BBB49624485EAF00A88B39 /* URL+MIME.swift */; };
-		43BBB4992448676B00A88B39 /* CdMessagePEPMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BBB4982448676B00A88B39 /* CdMessagePEPMessageTests.swift */; };
 		43BBB49B244868B000A88B39 /* MailParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BBB49A244868B000A88B39 /* MailParsingTests.swift */; };
 		43BBB49D24486A4300A88B39 /* Undisplayable_HTML_Message.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43BBB49C24486A4300A88B39 /* Undisplayable_HTML_Message.txt */; };
 		43BBB49F24486A8900A88B39 /* 1364_Mail_missing_attached_image.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43BBB49E24486A8900A88B39 /* 1364_Mail_missing_attached_image.txt */; };
@@ -795,7 +794,6 @@
 		43B6BE1823E43BCE00E3A60B /* ImapConnectionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImapConnectionProtocol.swift; sourceTree = "<group>"; };
 		43BBB49424485AB800A88B39 /* HandshakeTests_mail_001.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HandshakeTests_mail_001.txt; sourceTree = "<group>"; };
 		43BBB49624485EAF00A88B39 /* URL+MIME.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+MIME.swift"; sourceTree = "<group>"; };
-		43BBB4982448676B00A88B39 /* CdMessagePEPMessageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdMessagePEPMessageTests.swift; sourceTree = "<group>"; };
 		43BBB49A244868B000A88B39 /* MailParsingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailParsingTests.swift; sourceTree = "<group>"; };
 		43BBB49C24486A4300A88B39 /* Undisplayable_HTML_Message.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Undisplayable_HTML_Message.txt; sourceTree = "<group>"; };
 		43BBB49E24486A8900A88B39 /* 1364_Mail_missing_attached_image.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 1364_Mail_missing_attached_image.txt; sourceTree = "<group>"; };
@@ -2284,7 +2282,6 @@
 				4384D405243F455A006CCBA2 /* MiscTests.swift */,
 				4384D409243F5245006CCBA2 /* MessagePantomimeTests.swift */,
 				43BBB49624485EAF00A88B39 /* URL+MIME.swift */,
-				43BBB4982448676B00A88B39 /* CdMessagePEPMessageTests.swift */,
 				43BBB49A244868B000A88B39 /* MailParsingTests.swift */,
 				43F86BA224503E61008961DA /* KeyChainTest.swift */,
 			);
@@ -2770,7 +2767,7 @@
 				43A536E623E4626E0040715D /* SmtpConnectionProtocol.swift in Sources */,
 				15C7A88B2385ABA000C47364 /* Notification+KeySyncState.swift in Sources */,
 				43B1B10C221ED15000DB26AB /* CoreDataPantomimeAdapter.swift in Sources */,
-				43B1B10C221ED15000DB26AB /* PersistentImapFolder.swift in Sources */,
+				43B1B10C221ED15000DB26AB /* CoreDataPantomimeAdapter.swift in Sources */,
 				43A9818024E52FF700830603 /* Identity+pEpIdentity.swift in Sources */,
 				158A6E1023073DB0006A9ECE /* PEPDecryptFlags+ReUpload.swift in Sources */,
 				1543B6AE22ABF368002B59AB /* DeviceGroupState.swift in Sources */,
@@ -3076,7 +3073,6 @@
 				B7C1F4EE2459B1EF00070DCC /* CdIdentityPredicateFactoryTest.swift in Sources */,
 				15ECD7061F5430C1002889B8 /* Message+TestUtils.swift in Sources */,
 				B7A1152522C4B55E00FB6E91 /* PrepareAccountForSavingServiceTest.swift in Sources */,
-				43BBB4992448676B00A88B39 /* CdMessagePEPMessageTests.swift in Sources */,
 				490FF8081E795B6C00BC15F9 /* Int16+FlagBitsTest.swift in Sources */,
 				153E4E4F1F5039C00021CBD8 /* PersistentStoreDrivenTestBase.swift in Sources */,
 				154D173023732FF7001FDF78 /* LoginImapOperationTest.swift in Sources */,
