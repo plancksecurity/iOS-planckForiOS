@@ -14,15 +14,6 @@ class SimpleOperationsTest: PersistentStoreDrivenTestBase {
         XCTAssertTrue(f.comp.contains(#function))
     }
 
-    func dumpAllAccounts() {
-        let cdAccounts = CdAccount.all(in: moc) as? [CdAccount]
-        if let accs = cdAccounts {
-            for acc in accs {
-                print("\(String(describing: acc.identity?.address)) \(String(describing: acc.identity?.userName))")
-            }
-        }
-    }
-
     /**
      It's important to always provide the correct kPepUserID for a local account ID.
      */
