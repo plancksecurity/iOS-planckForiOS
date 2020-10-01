@@ -222,7 +222,6 @@
 		4355E4CF233C98C0005772D5 /* CWIMAPMessage+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4355E4CE233C98C0005772D5 /* CWIMAPMessage+pEp.swift */; };
 		4355E4D1233C9B63005772D5 /* CdMessageFromPantomimeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4355E4D0233C9B63005772D5 /* CdMessageFromPantomimeTest.swift */; };
 		4355E4D3233C9C4E005772D5 /* CdMessageIsAutoConsumeableTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4355E4D2233C9C4E005772D5 /* CdMessageIsAutoConsumeableTest.swift */; };
-		4355E4D7233C9DD0005772D5 /* PantomimeFromPEPMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4355E4D6233C9DCF005772D5 /* PantomimeFromPEPMessageTest.swift */; };
 		4358A06622A5011F00C49E43 /* MockNotifyHandshakeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4358A06522A5011F00C49E43 /* MockNotifyHandshakeDelegate.swift */; };
 		4358D1181DC5F6BF00385CC5 /* NSOrderedSet+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4358D1171DC5F6BF00385CC5 /* NSOrderedSet+Extension.swift */; };
 		435C0CC0222939A10025C6B5 /* PEPRating+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C0CBF222939A10025C6B5 /* PEPRating+Extension.swift */; };
@@ -720,7 +719,6 @@
 		4355E4CE233C98C0005772D5 /* CWIMAPMessage+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CWIMAPMessage+pEp.swift"; sourceTree = "<group>"; };
 		4355E4D0233C9B63005772D5 /* CdMessageFromPantomimeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdMessageFromPantomimeTest.swift; sourceTree = "<group>"; };
 		4355E4D2233C9C4E005772D5 /* CdMessageIsAutoConsumeableTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdMessageIsAutoConsumeableTest.swift; sourceTree = "<group>"; };
-		4355E4D6233C9DCF005772D5 /* PantomimeFromPEPMessageTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PantomimeFromPEPMessageTest.swift; sourceTree = "<group>"; };
 		4358A06522A5011F00C49E43 /* MockNotifyHandshakeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNotifyHandshakeDelegate.swift; sourceTree = "<group>"; };
 		4358D1171DC5F6BF00385CC5 /* NSOrderedSet+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOrderedSet+Extension.swift"; sourceTree = "<group>"; };
 		435C0CBF222939A10025C6B5 /* PEPRating+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPRating+Extension.swift"; sourceTree = "<group>"; };
@@ -2275,7 +2273,6 @@
 				430CDA882296BEFC00AAC37F /* CdMessageCreation.swift */,
 				4358A06522A5011F00C49E43 /* MockNotifyHandshakeDelegate.swift */,
 				152EC88622E73721001836F9 /* CdMessage+FakeTest.swift */,
-				4355E4D6233C9DCF005772D5 /* PantomimeFromPEPMessageTest.swift */,
 				4384D3F7243F2DAE006CCBA2 /* CdMessage+PantomimeTest.swift */,
 				4384D3FF243F3456006CCBA2 /* PantomimeFolderAttribute+ExtensionsTest.swift */,
 				4384D401243F3626006CCBA2 /* MimeTests.swift */,
@@ -3063,7 +3060,6 @@
 				43CB60911DA4EB4E0015281E /* IdentityTest.swift in Sources */,
 				490FF8051E795B3900BC15F9 /* TestUtil.swift in Sources */,
 				43B2271224236602007EB91E /* CdAccount+ProviderSpecificTest.swift in Sources */,
-				4355E4D7233C9DD0005772D5 /* PantomimeFromPEPMessageTest.swift in Sources */,
 				430A2EF01E82758100878837 /* CdImapFields+TestHelper.swift in Sources */,
 				152E3CA9231C324000C1420B /* DecryptServiceTest.swift in Sources */,
 				43BBB49B244868B000A88B39 /* MailParsingTests.swift in Sources */,
