@@ -14,66 +14,6 @@ class SimpleOperationsTest: PersistentStoreDrivenTestBase {
         XCTAssertTrue(f.comp.contains(#function))
     }
 
-    func testFetchMessagesOperation() {
-        XCTAssertNil(CdMessage.all(in: moc))
-
-        TestUtil.syncAndWait(testCase: self)
-
-        XCTAssertGreaterThan(
-            CdFolder.countBy(predicate: NSPredicate(value: true), context: moc), 0)
-        XCTAssertGreaterThan(
-            CdMessage.all(in: moc)?.count ?? 0, 0)
-
-        guard let allMessages = CdMessage.all(in: moc) as? [CdMessage] else {
-            XCTFail()
-            return
-        }
-
-        guard let hostnameData = CWMIMEUtility.hostname() else {
-            XCTFail()
-            return
-        }
-        guard let localHostname = hostnameData.toStringWithIANACharset("UTF-8") else {
-            XCTFail()
-            return
-        }
-
-        // Check all messages for validity
-        var uuids = [MessageID]()
-        for m in allMessages {
-            if let uuid = m.messageID {
-                uuids.append(uuid)
-            } else {
-                XCTFail()
-            }
-
-            XCTAssertNotNil(m.uid)
-            XCTAssertGreaterThan(m.uid, 0)
-            XCTAssertNotNil(m.imap)
-            XCTAssertNotNil(m.sent)
-            XCTAssertNotNil(m.received)
-
-            guard let uuid = m.uuid else {
-                XCTFail()
-                continue
-            }
-            XCTAssertFalse(uuid.contains(localHostname))
-
-            XCTAssertTrue(m.isValidMessage())
-
-            guard let cdFolder = m.parent else {
-                XCTFail()
-                break
-            }
-            XCTAssertTrue(cdFolder.name?.isInboxFolderName() ?? false)
-           let cdMessages = cdFolder.allMessages(context: moc)
-            XCTAssertEqual(cdMessages.count, 1)
-
-            XCTAssertNotNil(m.imap)
-        }
-        TestUtil.checkForExistanceAndUniqueness(uuids: uuids, context: moc)
-    }
-
     func dumpAllAccounts() {
         let cdAccounts = CdAccount.all(in: moc) as? [CdAccount]
         if let accs = cdAccounts {
