@@ -194,7 +194,6 @@
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReply" id="Bs0-pZ-8nY"/>
                         <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" id="cRe-YG-393"/>
                         <segue destination="nc4-kR-K9D" kind="show" identifier="segueShowFilter" id="t4t-3T-ovM"/>
-                        <segue destination="fRo-D2-Fjz" kind="showDetail" identifier="segueShowEmail" id="bq8-0O-guL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m6c-dF-C80" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -994,8 +993,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="cRe-YG-393"/>
-        <segue reference="jws-oj-jHZ"/>
+        <segue reference="g1q-wK-tff"/>
+        <segue reference="CKh-jT-ski"/>
         <segue reference="Bs0-pZ-8nY"/>
     </inferredMetricsTieBreakers>
     <resources>

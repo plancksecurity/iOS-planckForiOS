@@ -268,7 +268,23 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     }
 
     private func showEmail(forCellAt indexPath: IndexPath) {
-        performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
+        guard let indexPath = lastSelectedIndexPath else {
+                Log.shared.errorAndCrash("IndexPath problem!")
+                return
+        }
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(message: "viewModel doesn't exist!")
+            return
+        }
+
+        guard let naviController = navigationController else {
+            Log.shared.errorAndCrash(message: "Navigation Controller is missing!")
+            return
+        }
+
+        UIUtils.presentEmailDisplayView(navigationController: naviController,
+                                        vm: vm.emailDetialViewModel(),
+                                        indexPath: indexPath)
     }
 
     private func showNoMessageSelected() {
@@ -1204,7 +1220,6 @@ extension EmailListViewController: SegueHandlerType {
     
     enum SegueIdentifier: String {
         case segueAddNewAccount
-        case segueShowEmail
         case segueCompose
         case segueReply
         case segueReplyAll
@@ -1224,15 +1239,6 @@ extension EmailListViewController: SegueHandlerType {
              .segueForward,
              .segueCompose:
             setupComposeViewController(for: segue)
-        case .segueShowEmail:
-            guard
-                let vc = segue.destination as? EmailDetailViewController,
-                let indexPath = lastSelectedIndexPath else {
-                    Log.shared.errorAndCrash("Segue issue")
-                    return
-            }
-            vc.viewModel = viewModel?.emailDetialViewModel()
-            vc.firstItemToShow = indexPath
         case .segueShowFilter:
             guard let destiny = segue.destination as? FilterTableViewController else {
                 Log.shared.errorAndCrash("Segue issue")
