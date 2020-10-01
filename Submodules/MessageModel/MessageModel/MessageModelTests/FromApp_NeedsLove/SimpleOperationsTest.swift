@@ -103,41 +103,6 @@ class SimpleOperationsTest: PersistentStoreDrivenTestBase {
         })
     }
 
-    func testSyncFoldersFromServerOperation() {
-        let expFoldersFetched = expectation(description: "expFoldersFetched")
-
-        let opLogin = LoginImapOperation(parentName: #function,
-                                         imapConnection: imapConnection)
-        let op = SyncFoldersFromServerOperation(parentName: #function,
-                                                imapConnection: imapConnection)
-        op.completionBlock = {
-            op.completionBlock = nil
-            expFoldersFetched.fulfill()
-        }
-        op.addDependency(opLogin)
-
-        let bgQueue = OperationQueue()
-        bgQueue.addOperation(opLogin)
-        bgQueue.addOperation(op)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-        })
-
-        XCTAssertGreaterThanOrEqual(
-            CdFolder.countBy(predicate: NSPredicate(value: true), context: moc), 1)
-
-        var options: [String: Any] = ["folderTypeRawValue": FolderType.inbox.rawValue,
-                                      "account": cdAccount as Any]
-        let inboxFolder = CdFolder.first(attributes: options)
-        options["folderTypeRawValue"] = FolderType.sent.rawValue
-        XCTAssertNotNil(inboxFolder)
-        XCTAssertTrue(inboxFolder?.name?.isInboxFolderName() ?? false)
-
-        let sentFolder = CdFolder.first(attributes: options)
-        XCTAssertNotNil(sentFolder)
-    }
-
     func dumpAllAccounts() {
         let cdAccounts = CdAccount.all(in: moc) as? [CdAccount]
         if let accs = cdAccounts {
