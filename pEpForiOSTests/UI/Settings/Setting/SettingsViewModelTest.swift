@@ -57,24 +57,6 @@ class SettingsViewModelTest: AccountDrivenTestBase {
         XCTAssertEqual(settingsVM.section(for: indexPath).rows.count, numberOfRows)
     }
 
-    func testSwitchBehaviorOnPassiveModeRow() {
-        let delegate = SettingsViewModeldelegate()
-        setupViewModel(delegate: delegate)
-        let globalSettingsSectionIndex = 1
-        let protectRowIndexInSection = 4
-        let indexPath = IndexPath(row: 0, section: globalSettingsSectionIndex)
-        let globalSettingsSection = settingsVM.section(for: indexPath)
-        if let passiveModeRow = globalSettingsSection.rows[protectRowIndexInSection] as? SettingsViewModel.SwitchRow {
-            let action = passiveModeRow.action
-            let previousValue = AppSettings.shared.passiveMode
-            action(!previousValue)
-            let newPassiveMode = AppSettings.shared.passiveMode
-            XCTAssert(previousValue != newPassiveMode)
-        } else {
-            XCTFail()
-        }
-    }
-    
     func testSwitchBehaviorOnProtectMessageSubject() {
         let delegate = SettingsViewModeldelegate()
         setupViewModel(delegate: delegate)
@@ -127,39 +109,6 @@ class SettingsViewModelTest: AccountDrivenTestBase {
         let delegate = SettingsViewModeldelegate()
         setupViewModel(delegate: delegate)
         testDeleteAccountWithOnlyOneAccount()
-    }
-
-    func testDeleteAccountWithMoreThanOneAccountUpdatesDefaultAccount() {
-        givenThereAreTwoAccounts()
-        let delegate = SettingsViewModeldelegate()
-        setupViewModel(delegate: delegate)
-        let accountSectionIP = IndexPath(row: 0, section: 0)
-        if let firstAccountRow = settingsVM.section(for: accountSectionIP)
-            .rows.first as? SettingsViewModel.ActionRow,
-            let secondAccountRow = settingsVM.section(for: accountSectionIP)
-            .rows[1] as? SettingsViewModel.ActionRow {
-
-            //Test first account is setted
-            AppSettings.shared.defaultAccount = firstAccountRow.title
-            XCTAssertEqual(AppSettings.shared.defaultAccount, firstAccountRow.title)
-
-            //Delete default account
-            let firstSection = settingsVM.section(for: accountSectionIP)
-            let firstSectionRows = firstSection.rows
-            if let row = firstSectionRows.first as? SettingsViewModel.ActionRow,
-                let action = row.action {
-                action()
-            }
-
-            //Test the first account (that was deleted) is not the default account anymore
-            XCTAssertNotEqual(AppSettings.shared.defaultAccount, firstAccountRow.title)
-
-            //Test the Default account still exists
-            XCTAssertNotNil(AppSettings.shared.defaultAccount)
-
-            //Test the second account is the default account
-            XCTAssertEqual(AppSettings.shared.defaultAccount, secondAccountRow.title)
-        }
     }
 }
 
