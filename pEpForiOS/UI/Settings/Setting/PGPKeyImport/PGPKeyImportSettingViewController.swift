@@ -48,6 +48,7 @@ extension PGPKeyImportSettingViewController: UITableViewDelegate {
             return
         }
         vm.handleDidSelect(rowAt: indexPath)
+        tableView.deselectRow(at: indexPath, animated: false)
     }
 }
 
