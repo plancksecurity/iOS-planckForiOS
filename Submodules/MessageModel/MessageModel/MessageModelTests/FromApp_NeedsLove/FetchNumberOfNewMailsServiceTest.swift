@@ -61,10 +61,6 @@ class FetchNumberOfNewMailsServiceTest: PersistentStoreDrivenTestBase {
     func testUnreadMail_normalAndAutoconsumable_one() {
         assertNewMailsService(numNewNormalMessages: 1, numNewAutoconsumableMessages: 1)
     }
-
-    func testUnreadMail_normalAndAutoconsumable_multi_sameCount() {
-        assertNewMailsService(numNewNormalMessages: 2, numNewAutoconsumableMessages: 2)
-    }
 }
 
 // MARK: - HELPERS
