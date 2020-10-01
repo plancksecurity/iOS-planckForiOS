@@ -1,14 +1,9 @@
-////  FetchNumberOfNewMailsServiceTest.swift
-////  pEpForiOSTests
-////
-////  Created by Dirk Zimmermann on 16.11.18.
-////  Copyright © 2018 p≡p Security S.A. All rights reserved.
-////
-//
-//import XCTest
-//
-//import CoreData
-//
+///  FetchNumberOfNewMailsServiceTest.swift
+///  pEpForiOSTests
+///
+///  Created by Dirk Zimmermann on 16.11.18.
+///  Copyright © 2018 p≡p Security S.A. All rights reserved.
+///
 
 import XCTest
 
@@ -17,7 +12,6 @@ import PEPObjCAdapterFramework
 
 @testable import MessageModel
 
-//!!!: must be moved to MM
 class FetchNumberOfNewMailsServiceTest: PersistentStoreDrivenTestBase {
     var errorContainer: ErrorContainerProtocol!
     var queue: OperationQueue!
