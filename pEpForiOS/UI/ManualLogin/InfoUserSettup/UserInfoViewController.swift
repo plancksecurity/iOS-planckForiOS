@@ -252,7 +252,7 @@ extension UserInfoViewController {
         let userNamePlaceholder = NSLocalizedString("User Name", comment: "User Name placeholder for manual account setup")
         setupView.firstTextField.placeholder = userNamePlaceholder
 
-        let emailPlaceholder = NSLocalizedString("E-mail Address", comment: "Email address placeholder for manual account setup")
+        let emailPlaceholder = NSLocalizedString("Email Address", comment: "Email address placeholder for manual account setup")
         setupView.secondTextField.placeholder = emailPlaceholder
 
         let passwordPlaceholder = NSLocalizedString("Password", comment: "Password placeholder for manual account setup")
