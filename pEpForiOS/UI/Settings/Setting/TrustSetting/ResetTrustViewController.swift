@@ -44,29 +44,9 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
         tableView.sectionIndexColor = UIColor.pEpGreen
 
         title = NSLocalizedString("Contacts", comment: "ResetTrustView title")
-        if #available(iOS 11.0, *) {
-            searchController.isActive = false
-            navigationItem.searchController = searchController
-            navigationItem.hidesSearchBarWhenScrolling = true
-        } else {
-            addSearchBar10()
-
-            if tableView.tableHeaderView == nil {
-                tableView.tableHeaderView = searchController.searchBar
-            }
-
-            /// some notifications to control when the app enter and recover from background
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(didBecomeActiveInstallSearchBar10),
-                name: UIApplication.didBecomeActiveNotification,
-                object: nil)
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(didBecomeInactiveUninstallSearchbar10),
-                name: UIApplication.didEnterBackgroundNotification,
-                object: nil)
-        }
+        searchController.isActive = false
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = true
     }
 
     /// Configure the search controller, shared between iOS versions 11 and earlier.

@@ -155,7 +155,7 @@ class IdentityQueryResultTestDelegate {
 
 extension IdentityQueryResultTestDelegate: QueryResultsIndexPathRowDelegate {
     func didInsertRow(indexPath: IndexPath) {
-        // TODO
+        // 
     }
 
     func didInsertCell(indexPath: IndexPath) {
