@@ -1368,7 +1368,6 @@
 			children = (
 				154D173E2373330E001FDF78 /* SimpleOperationsTest.swift */,
 				154D173A237331FE001FDF78 /* ImapFlagsTests.swift */,
-				154D172123732FF6001FDF78 /* FetchNumberOfNewMailsServiceTest.swift */,
 				154D172523732FF6001FDF78 /* LoginImapOperationTest.swift */,
 			);
 			path = FromApp_NeedsLove;
@@ -1998,6 +1997,7 @@
 				B7A1152422C4B55E00FB6E91 /* PrepareAccountForSavingServiceTest.swift */,
 				377B8C7A22C371720007803B /* NetworkService */,
 				B745C15E231D270900D3CC69 /* FetchImapFolderTest.swift */,
+				154D172123732FF6001FDF78 /* FetchNumberOfNewMailsServiceTest.swift */,
 				43607DE223FE8D5900FA66B8 /* Certificates */,
 			);
 			path = Services;
