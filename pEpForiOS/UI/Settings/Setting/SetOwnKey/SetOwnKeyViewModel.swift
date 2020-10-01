@@ -37,17 +37,15 @@ class SetOwnKeyViewModel {
                 return
         }
 
+        let accountNotFoundTextError = NSLocalizedString("No account found with the given email address.", comment: "Error when no account found for set_own_key UI")
         guard let identity = ownIdentityBy(email: theEmail) else {
-            callback(NSLocalizedString(
-                "No account found with the given email.",
-                comment: "Error when no account found for set_own_key UI"))
+            callback(accountNotFoundTextError)
             return
         }
 
         guard let theUserName = identity.userName else {
-            callback(NSLocalizedString(
-                "The account with the given email has no user name.",
-                comment: "Error when account found for set_own_key UI, but has no user name"))
+            let theAccountHasNoUserNameTextError = NSLocalizedString("The account with the given email address has no user name.", comment: "Error when account found for set_own_key UI, but has no user name")
+            callback(theAccountHasNoUserNameTextError)
             return
         }
 
@@ -58,9 +56,7 @@ class SetOwnKeyViewModel {
                                 if let setOwnKeyError = err as? KeyImportUtil.SetOwnKeyError {
                                     switch(setOwnKeyError) {
                                     case .noMatchingAccount:
-                                        callback(NSLocalizedString(
-                                            "No account found with the given email.",
-                                            comment: "Error when no account found for set_own_key UI"))
+                                        callback(accountNotFoundTextError)
                                     }
                                 } else {
                                     callback(err.localizedDescription)
