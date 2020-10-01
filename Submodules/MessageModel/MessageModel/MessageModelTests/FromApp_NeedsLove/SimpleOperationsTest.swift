@@ -147,60 +147,6 @@ class SimpleOperationsTest: PersistentStoreDrivenTestBase {
         }
     }
 
-    func testAppendSentMailsOperation() {
-        let imapConnection = ImapConnection(connectInfo: imapConnectInfo)
-        let errorContainer = ErrorPropagator()
-
-        let queue = OperationQueue()
-
-        loginIMAP(imapConnection: imapConnection, errorContainer: errorContainer, queue: queue)
-        fetchFoldersIMAP(imapConnection: imapConnection, queue: queue)
-
-        guard let from = cdAccount.identity else {
-            XCTFail()
-            return
-        }
-
-        let to = CdIdentity(context: moc)
-        to.userName = "Unit 001"
-        to.address = "unittest.ios.1@peptest.ch"
-
-        guard let folder = CdFolder.by(folderType: .sent, account: cdAccount) else {
-            XCTFail("No folder")
-            return
-        }
-
-        // Build emails
-        let numMails = 5
-        for i in 1...numMails {
-            let message = CdMessage(context: moc)
-            message.from = from
-            message.parent = folder
-            message.shortMessage = "Some subject \(i)"
-            message.longMessage = "Long message \(i)"
-            message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            message.sent = Date()
-            message.addToTo(to)
-        }
-        moc.saveAndLogErrors()
-
-        if let msgs = CdMessage.all(in: moc) as? [CdMessage] {
-            for m in msgs {
-                XCTAssertEqual(m.parent?.folderType, FolderType.sent)
-                XCTAssertEqual(m.uid, Int32(0))
-            }
-        } else {
-            XCTFail()
-        }
-
-        appendMailsIMAP(folder: folder,
-                        imapConnection: imapConnection,
-                        errorContainer: errorContainer,
-                        queue: queue)
-
-        XCTAssertEqual((CdMessage.all(in: moc) ?? []).count, 0)
-    }
-
     /**
      It's important to always provide the correct kPepUserID for a local account ID.
      */
