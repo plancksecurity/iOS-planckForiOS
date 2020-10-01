@@ -739,7 +739,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
 // MARK: - EmailViewControllerDelegate
 
 extension EmailDetailViewController: EmailViewControllerDelegate {
-    func showPdfPreview(forPdfAt url: URL) {
+    func openQLPreviewController(toShowDocumentWithUrl url: URL) {
         pdfPreviewUrl = url
         let previewController = QLPreviewController()
         previewController.dataSource = self
@@ -831,6 +831,14 @@ extension EmailDetailViewController {
         separatorsArray.append(contentsOf: [spacer,midSpacer])
     }
     private func setupToolbar() {
+        if navigationController?.topViewController != self {
+            // Only configure toolbar and navbar if possible.
+            // This might be called in different moments of the view life cycle: for example in a transition due a rotation, when configuring a view (cell will display, or view will appear), or when the scrolling ends, among others.
+            // Setting up the toolbar from multiple places and moments may generate an inconsistent state: the navigationController might be nil or the presented vc might not be EmailDetailView. It could be SettingsTableViewController for example.
+            // This work arounds a UI glitch where the toolbar does not disappear
+            return
+        }
+
         if onlySplitViewMasterIsShown {
             navigationController?.setToolbarHidden(false, animated: false)
         } else {

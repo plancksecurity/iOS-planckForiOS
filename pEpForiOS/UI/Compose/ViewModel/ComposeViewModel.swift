@@ -838,7 +838,7 @@ extension ComposeViewModel: SubjectCellViewModelResultDelegate {
             Log.shared.errorAndCrash("We got called by a non-existing VM?")
             return
         }
-        state.subject = vm.content ?? ""
+        state.subject = vm.content
         delegate?.contentChanged(inRowAt: idxPath)
     }
 }

@@ -29,13 +29,17 @@ public extension UISplitViewController {
                 return .onlyMaster
             } else {
                 switch displayMode {
-                case .allVisible, .primaryOverlay:
-                    return .masterAndDetail
-                case .primaryHidden:
-                    return .onlyDetail
                 case .automatic:
                     //this case is never posible as splitviewcontroller.displaymode never will return that
                     return .onlyMaster
+                case .secondaryOnly:
+                    return .onlyDetail
+                case .oneOverSecondary,
+                     .oneBesideSecondary,
+                     .twoOverSecondary,
+                     .twoDisplaceSecondary,
+                     .twoBesideSecondary:
+                    return .masterAndDetail
                 @unknown default:
                     //this case is because apple do not assures other posible cases for displayMode.
                     return .onlyMaster

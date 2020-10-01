@@ -15,6 +15,44 @@ NSFetchedResultsControllerDelegate {
     var state = QueryResultsControllerState.uninitialized
 
     private var frc: NSFetchedResultsController<T>?
+
+    // MARK: - QueryResultsControllerProtocol
+
+    weak var delegate: QueryResultsControllerDelegate?
+
+    var count : Int {
+        return frc?.fetchedObjects?.count ?? 0
+    }
+
+    var sections: [NSFetchedResultsSectionInfo]? {
+        return frc?.sections
+    }
+
+    var sectionIndexTitles: [String] {
+        guard let controller = frc else {
+            Log.shared.errorAndCrash(message: "no controller")
+            return []
+        }
+        return controller.sectionIndexTitles
+    }
+
+    required init(predicate: NSPredicate? = nil,
+                  context: NSManagedObjectContext,
+                  cacheName: String? = "\(#file)-\(#function)",
+                  sectionNameKeyPath: String? = nil,
+                  sortDescriptors: [NSSortDescriptor]? = [],
+                  delegate: QueryResultsControllerDelegate? = nil) {
+        // Is a NSObject, thus we must call super
+        super.init()
+        setupFRC(with: predicate,
+                 context: context,
+                 cacheName: cacheName,
+                 sectionNameKeyPath: sectionNameKeyPath,
+                 sortDescriptors: sortDescriptors)
+        self.delegate = delegate
+        state = .initialized
+    }
+
     private func setupFRC(with predicate: NSPredicate?,
                           context: NSManagedObjectContext,
                           cacheName: String?,
@@ -32,10 +70,6 @@ NSFetchedResultsControllerDelegate {
         frc = createe
     }
 
-    // MARK: - QueryResultsControllerProtocol
-
-    weak var delegate: QueryResultsControllerDelegate?
-
     func getResults() throws -> [T] {
         guard let controller = frc else {
             Log.shared.errorAndCrash("no controller")
@@ -45,35 +79,6 @@ NSFetchedResultsControllerDelegate {
             throw QueryResultsController.InvalidStateError.notMonitoring
         }
         return results
-    }
-
-    var sections: [NSFetchedResultsSectionInfo]? {
-        return frc?.sections
-    }
-
-    var sectionIndexTitles: [String] {
-        guard let controller = frc else {
-            Log.shared.errorAndCrash(message: "no controller")
-            return []
-        }
-        return controller.sectionIndexTitles
-    }
-
-    required init(predicate: NSPredicate?,
-                  context: NSManagedObjectContext,
-                  cacheName: String? = "\(#file)-\(#function)",
-                  sectionNameKeyPath: String? = nil,
-                  sortDescriptors: [NSSortDescriptor]? = [],
-                  delegate: QueryResultsControllerDelegate? = nil) {
-        // Is a NSObject, thus we must call super
-        super.init()
-        setupFRC(with: predicate,
-                 context: context,
-                 cacheName: cacheName,
-                 sectionNameKeyPath: sectionNameKeyPath,
-                 sortDescriptors: sortDescriptors)
-        self.delegate = delegate
-        state = .initialized
     }
 
     func startMonitoring() throws {

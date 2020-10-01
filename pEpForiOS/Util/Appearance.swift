@@ -74,9 +74,9 @@ class Appearance {
     static private func navigationBarAppearanceDefault(color: UIColor) -> UINavigationBarAppearance {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        
+        let font = UIFont.pepFont(style: .headline, weight: .medium)
         let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: color,
-                                                                   .baselineOffset: 2]
+                                                                   .font: font]
         let buttonsAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.pEpGreen]
         appearance.buttonAppearance.normal.titleTextAttributes = buttonsAttributes
         appearance.titleTextAttributes = titleTextAttributes
