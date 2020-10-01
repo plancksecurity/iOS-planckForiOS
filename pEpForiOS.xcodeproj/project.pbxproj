@@ -71,7 +71,6 @@
 		1526596F216230B2006A78DF /* ComposeFieldModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265957216230B0006A78DF /* ComposeFieldModel.swift */; };
 		1526597821623637006A78DF /* SuggestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597721623637006A78DF /* SuggestTableViewController.swift */; };
 		1526597A21623652006A78DF /* SuggestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597921623652006A78DF /* SuggestViewModel.swift */; };
-		1526597D21637759006A78DF /* SuggestViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597C21637759006A78DF /* SuggestViewModelTest.swift */; };
 		152A39942190587200D9F8E4 /* TextViewInTableViewScrollUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39932190587100D9F8E4 /* TextViewInTableViewScrollUtil.swift */; };
 		152A39C521905C3E00D9F8E4 /* ComposeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A399521905C3A00D9F8E4 /* ComposeTableViewController.swift */; };
 		152A39C621905C3E00D9F8E4 /* ComposeViewModelState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A399721905C3B00D9F8E4 /* ComposeViewModelState.swift */; };
@@ -527,7 +526,6 @@
 		15265957216230B0006A78DF /* ComposeFieldModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeFieldModel.swift; sourceTree = "<group>"; };
 		1526597721623637006A78DF /* SuggestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestTableViewController.swift; sourceTree = "<group>"; };
 		1526597921623652006A78DF /* SuggestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestViewModel.swift; sourceTree = "<group>"; };
-		1526597C21637759006A78DF /* SuggestViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestViewModelTest.swift; sourceTree = "<group>"; };
 		152A39932190587100D9F8E4 /* TextViewInTableViewScrollUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewInTableViewScrollUtil.swift; sourceTree = "<group>"; };
 		152A399521905C3A00D9F8E4 /* ComposeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeTableViewController.swift; sourceTree = "<group>"; };
 		152A399721905C3B00D9F8E4 /* ComposeViewModelState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModelState.swift; sourceTree = "<group>"; };
@@ -1207,14 +1205,6 @@
 				1526597721623637006A78DF /* SuggestTableViewController.swift */,
 				1526597921623652006A78DF /* SuggestViewModel.swift */,
 				15265949216230B0006A78DF /* ContactCell.swift */,
-			);
-			path = SuggestTableViewController;
-			sourceTree = "<group>";
-		};
-		1526597B2163772C006A78DF /* SuggestTableViewController */ = {
-			isa = PBXGroup;
-			children = (
-				1526597C21637759006A78DF /* SuggestViewModelTest.swift */,
 			);
 			path = SuggestTableViewController;
 			sourceTree = "<group>";
@@ -1975,7 +1965,6 @@
 			isa = PBXGroup;
 			children = (
 				15D439A1216F7DCA00EB3933 /* AccountPickerViewModel */,
-				1526597B2163772C006A78DF /* SuggestTableViewController */,
 				4356FFEB21356CB600804089 /* ReplyAllPossibleCheckerTest.swift */,
 			);
 			path = Util;
@@ -3218,7 +3207,6 @@
 				0017CD1D2162614400F62F13 /* MoveToFolderCellViewModelTests.swift in Sources */,
 				37816549231035F000B967E3 /* PEPAlertViewModelTest.swift in Sources */,
 				43D1900E2513734400A36973 /* SettingsViewModelTest.swift in Sources */,
-				1526597D21637759006A78DF /* SuggestViewModelTest.swift in Sources */,
 				F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */,
 				431C2B171F387C4100D87FFD /* LoginViewModelTests.swift in Sources */,
 				151AD7AD219D74C700FC36FF /* ComposeViewModelTest.swift in Sources */,
