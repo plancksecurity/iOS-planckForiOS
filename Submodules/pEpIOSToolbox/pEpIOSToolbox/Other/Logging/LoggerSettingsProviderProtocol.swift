@@ -9,12 +9,12 @@
 import Foundation
 
 /// High-level (app view) verbosity of the logging
-enum LoggerSettingsProviderLogLevel {
+public enum LoggerSettingsProviderLogLevel {
     case normal
     case verbose
 }
 
-protocol LoggerSettingsProviderProtocol {
+public protocol LoggerSettingsProviderProtocol {
     /// Indicates a change in the level of logging verbosity
     func loglevelChanged(to newLogLevel: LoggerSettingsProviderLogLevel)
 }
