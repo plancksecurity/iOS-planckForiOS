@@ -95,23 +95,6 @@ class LoginViewModelTests: AccountDrivenTestBase {
         if accountSettings.idAddress.contains("yahoo") {
             return
         }
-        // Accountsettingsadapter recommended server settings
-//        let adapterRecomendations = ASAccountSettings(accountName: accountSettings.idAddress,
-//                                                      provider: passw,
-//                                                      flags: AS_FLAG_USE_ANY,
-//                                                      credentials: nil)
-//        // If Imap or SMTP server settings differ, this test makes no sense and we succeed and return.
-//        guard accountSettings.imapServerPort == UInt16(adapterRecomendations.incoming.port),
-//            accountSettings.imapServerTransport== Int16(ConnectionTransport(
-//                accountSettingsTransport: adapterRecomendations.incoming.transport).rawValue),
-//            accountSettings.imapServerAddress == adapterRecomendations.incoming.hostname,
-//
-//        accountSettings.smtpServerPort == UInt16(adapterRecomendations.outgoing.port),
-//        accountSettings.smtpServerTransport.rawValue == Int16(ConnectionTransport(
-//        accountSettingsTransport: adapterRecomendations.outgoing.transport).rawValue),
-//            accountSettings.smtpServerAddress == adapterRecomendations.outgoing.hostname else {
-//                return
-//        }
 
         let expLookedUp = expectation(description: "expLookedUp")
         let verifiableAccount =
