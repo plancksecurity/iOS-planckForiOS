@@ -20,9 +20,8 @@ public class Logger {
     /// Logs some info helpful when debugging when in DEBUG configuration. Does nothing otherwize.
     public func logDebugInfo() {
         #if DEBUG
-        let documentsDir = getLoggingDirectory()
-        print("documentsDir: \(documentsDir?.path ?? "unknown")")
-        #endif
+        let documentsDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        print("documentsDir: \(documentsDir)")        #endif
     }
 
     /// Use for warnings, anything that might cause trouble.
