@@ -231,6 +231,14 @@
 			path = Modules;
 			sourceTree = "<group>";
 		};
+		433805B22527443C006DE126 /* Logging */ = {
+			isa = PBXGroup;
+			children = (
+				B70A3A75220091D400EDCE61 /* Logger.swift */,
+			);
+			path = Logging;
+			sourceTree = "<group>";
+		};
 		436F1B9F25028B2E004426DC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -334,7 +342,7 @@
 			children = (
 				15793490246D49C700E2D8D2 /* DocumentsDirectoryBrowser */,
 				3790455D223FA486006DAB3B /* Reachability */,
-				B70A3A75220091D400EDCE61 /* Logger.swift */,
+				433805B22527443C006DE126 /* Logging */,
 				B75390852212E20500B1FCF9 /* Collection+Extensions.swift */,
 				B7465DCB2211BEE9008A1708 /* Tuple.swift */,
 				B7A46C4F220C1F0C0027CCB5 /* MiscUtil.swift */,
