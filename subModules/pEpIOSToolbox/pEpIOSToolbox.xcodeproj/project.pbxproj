@@ -169,13 +169,6 @@
 			path = Foundation;
 			sourceTree = "<group>";
 		};
-		15175ED9221E9F4200C91DB8 /* UIKit */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = UIKit;
-			sourceTree = "<group>";
-		};
 		15175EDA221E9F4C00C91DB8 /* Other */ = {
 			isa = PBXGroup;
 			children = (
@@ -330,7 +323,6 @@
 			children = (
 				378B76532240F8B900D6662C /* TestUtils */,
 				15175ED8221E9F3800C91DB8 /* Foundation */,
-				15175ED9221E9F4200C91DB8 /* UIKit */,
 				15175EDA221E9F4C00C91DB8 /* Other */,
 				B7DB7F5B221315BD003968DA /* Info.plist */,
 			);
