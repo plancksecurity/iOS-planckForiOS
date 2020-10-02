@@ -20,8 +20,8 @@ public class Logger {
     /// Logs some info helpful when debugging when in DEBUG configuration. Does nothing otherwize.
     public func logDebugInfo() {
         #if DEBUG
-        let documentsDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        print("documentsDir: \(documentsDir)")
+        let documentsDir = getLoggingDirectory()
+        print("documentsDir: \(documentsDir?.path ?? "unknown")")
         #endif
     }
 
@@ -157,28 +157,46 @@ public class Logger {
 
     private func initLumberjack() {
         DDLog.add(DDOSLogger.sharedInstance) // Uses os_log
-        let documentsUrl = FileManager.default.urls(for: .documentDirectory,
-                                                    in: .userDomainMask).first
-        guard var theDocUrl = documentsUrl else {
+
+        guard let theDocUrl = createLoggingDirectory() else {
             return
         }
 
+        let fileManager = DDLogFileManagerDefault(logsDirectory: theDocUrl.path)
+
+        let fileLogger: DDFileLogger = DDFileLogger(logFileManager: fileManager)
+        fileLogger.rollingFrequency = 60 * 60 * 24 // 24 hours
+        fileLogger.logFileManager.maximumNumberOfLogFiles = 7
+        DDLog.add(fileLogger)
+    }
+
+    private func getLoggingDirectory() -> URL? {
+        let documentsUrl = FileManager.default.urls(for: .documentDirectory,
+                                                    in: .userDomainMask).first
+        guard var theDocUrl = documentsUrl else {
+            return nil
+        }
+
         theDocUrl.appendPathComponent("logs")
+
+        return theDocUrl
+    }
+
+    private func createLoggingDirectory() -> URL? {
+        guard let theDocUrl = getLoggingDirectory() else {
+            return nil
+        }
 
         do {
             try FileManager.default.createDirectory(at: theDocUrl,
                                                     withIntermediateDirectories: true,
                                                     attributes: nil)
-
-            let fileManager = DDLogFileManagerDefault(logsDirectory: theDocUrl.path)
-
-            let fileLogger: DDFileLogger = DDFileLogger(logFileManager: fileManager)
-            fileLogger.rollingFrequency = 60 * 60 * 24 // 24 hours
-            fileLogger.logFileManager.maximumNumberOfLogFiles = 7
-            DDLog.add(fileLogger)
+            return theDocUrl
         } catch {
             errorAndCrash("Could not create the logging directory")
         }
+
+        return nil
     }
 
     private func saveLog(message: StaticString,
