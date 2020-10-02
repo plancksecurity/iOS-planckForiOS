@@ -8,6 +8,11 @@
 
 import Foundation
 
+class LoggerSettingsProvider: LoggerSettingsProviderProtocol {
+    func loglevelChanged(to newLogLevel: LoggerSettingsProviderLogLevel) {
+    }
+}
+
 /// Shared instance of logger.
 class Log {
     static let shared = Logger(subsystem: "security.pEp.pEpIOSToolbox", category: "general")
