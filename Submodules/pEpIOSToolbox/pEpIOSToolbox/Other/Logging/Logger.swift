@@ -11,10 +11,7 @@ import Foundation
 import CocoaLumberjackSwift
 
 public class Logger {
-    public init(subsystem: String = "security.pEp.app.iOS",
-                category: String) {
-        self.subsystem = subsystem
-        self.category = category
+    public init() {
         initLumberjack()
     }
 
@@ -152,9 +149,6 @@ public class Logger {
         errorAndCrash("Lost MySelf")
     }
 
-    private let subsystem: String
-    private let category: String
-
     private func initLumberjack() {
         DDLog.add(DDOSLogger.sharedInstance) // Uses os_log
 
@@ -233,7 +227,7 @@ public class Logger {
                        fileLine: Int = #line,
                        args: [CVarArg]) {
         let interpolatedString = String(format: message, arguments: args)
-        let interpolatedMessage = "\(subsystem) \(category) \(filePath):\(fileLine) \(function) \(interpolatedString)"
+        let interpolatedMessage = "\(filePath):\(fileLine) \(function) \(interpolatedString)"
 
         switch severity {
         case .debug:
