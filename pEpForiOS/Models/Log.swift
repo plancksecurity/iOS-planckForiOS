@@ -11,8 +11,7 @@ import pEpIOSToolbox
 /// Shared instance of logger.
 class Log {
     static let shared = Logger(subsystem: "security.pEp.app.pEpForiOS",
-                               category: "general",
-                               loggerSettingsProvider: AppSettings.shared)
+                               category: "general")
 
     /// Init is forbidden. Singleton...
     private init() {}

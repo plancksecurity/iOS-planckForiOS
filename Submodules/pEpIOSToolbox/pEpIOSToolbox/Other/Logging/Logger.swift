@@ -12,11 +12,9 @@ import CocoaLumberjackSwift
 
 public class Logger {
     public init(subsystem: String = "security.pEp.app.iOS",
-                category: String,
-                loggerSettingsProvider: LoggerSettingsProviderProtocol) {
+                category: String) {
         self.subsystem = subsystem
         self.category = category
-        self.loggerSettingsProvider = loggerSettingsProvider
         initLumberjack()
     }
 
@@ -156,7 +154,6 @@ public class Logger {
 
     private let subsystem: String
     private let category: String
-    private let loggerSettingsProvider: LoggerSettingsProviderProtocol
 
     private func initLumberjack() {
         DDLog.add(DDOSLogger.sharedInstance) // Uses os_log
