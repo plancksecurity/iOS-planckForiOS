@@ -12,9 +12,6 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-// ReplyUtilsTest code coverage ~80% on date 20200228
-// ReplyUtilsTest all tests are green on date 20200313
-
 class ReplyUtilTests: XCTestCase {
 
     func testRepliesSubject() {
