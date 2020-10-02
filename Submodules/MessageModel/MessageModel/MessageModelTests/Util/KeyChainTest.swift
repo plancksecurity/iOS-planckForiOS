@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import MessageModel //!!!: move to MM-Tests
+@testable import MessageModel
 
 class KeyChainTest: XCTestCase {
     let pass = "0001"
