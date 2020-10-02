@@ -1353,14 +1353,6 @@
 			path = PredicateFactory;
 			sourceTree = "<group>";
 		};
-		154D171F23732FF6001FDF78 /* FromApp_NeedsLove */ = {
-			isa = PBXGroup;
-			children = (
-				154D173A237331FE001FDF78 /* ImapFlagsTests.swift */,
-			);
-			path = FromApp_NeedsLove;
-			sourceTree = "<group>";
-		};
 		155FE568228B5092003D3E68 /* CdObjects */ = {
 			isa = PBXGroup;
 			children = (
@@ -1771,6 +1763,7 @@
 				152881B322E1D7D000BBE7AE /* CdFolder+VirtualMailboxTest.swift */,
 				37688A7423030AAD00A561C1 /* CdMessage+cloneTest.swift */,
 				4355E4D0233C9B63005772D5 /* CdMessageFromPantomimeTest.swift */,
+				154D173A237331FE001FDF78 /* ImapFlagsTests.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2089,7 +2082,6 @@
 				152E3C9A231BDEF600C1420B /* Submodule */,
 				490FF8061E795B6C00BC15F9 /* Util */,
 				439B16B022802D3800201DE5 /* Services */,
-				154D171F23732FF6001FDF78 /* FromApp_NeedsLove */,
 				43CB60921DA4EB4E0015281E /* Info.plist */,
 			);
 			path = MessageModelTests;
