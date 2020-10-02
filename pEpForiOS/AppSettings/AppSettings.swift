@@ -9,6 +9,7 @@
 import Foundation
 
 import MessageModel
+import pEpIOSToolbox
 
 // MARK: - Keys
 

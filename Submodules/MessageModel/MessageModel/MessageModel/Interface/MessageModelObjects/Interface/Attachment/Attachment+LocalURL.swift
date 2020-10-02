@@ -8,6 +8,8 @@
 
 import Foundation
 
+import pEpIOSToolbox
+
 /// Saves a gien attachment to the /tmp dir.
 /// Some iOS SDK calls require a URL (e.g. showing a PDF with QLPreviewController)
 

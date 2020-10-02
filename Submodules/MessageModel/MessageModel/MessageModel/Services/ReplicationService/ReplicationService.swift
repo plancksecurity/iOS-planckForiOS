@@ -8,6 +8,8 @@
 
 import Foundation
 
+import pEpIOSToolbox
+
 /// If you conform to this you must guarantee the provided Servcie is appropriate for syncing the
 /// server state with the local persistence store. If there is no appropriate service it is OK to
 /// return `nil though.

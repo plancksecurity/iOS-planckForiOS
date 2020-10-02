@@ -9,6 +9,7 @@
 import Foundation
 
 import MessageModel
+import pEpIOSToolbox
 
 protocol KeySyncHandshakeViewModelDelegate: class {
     func showPicker(withLanguages languages: [String], selectedLanguageIndex: Int?)

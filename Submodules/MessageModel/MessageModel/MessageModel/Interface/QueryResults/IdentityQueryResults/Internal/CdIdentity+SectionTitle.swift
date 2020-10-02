@@ -8,6 +8,8 @@
 
 import Foundation
 
+import pEpIOSToolbox
+
 // Mark: - CdIdentity+firstLetterOfName
 
 extension CdIdentity {

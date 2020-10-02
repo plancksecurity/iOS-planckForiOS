@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpIOSToolbox
 
 class KeySyncHandshakeService {
     private var pEpSyncWizard: KeySyncWizardViewController?

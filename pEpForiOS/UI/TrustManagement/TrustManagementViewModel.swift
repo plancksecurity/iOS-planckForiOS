@@ -9,6 +9,7 @@
 import Foundation
 
 import MessageModel
+import pEpIOSToolbox
 
 /// TrustManagementViewModel View Mode Delegate
 protocol TrustManagementViewModelDelegate: class {

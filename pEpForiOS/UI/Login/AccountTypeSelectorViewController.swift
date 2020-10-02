@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 final class AccountTypeSelectorViewController: BaseViewController {
 
     var viewModel = AccountTypeSelectorViewModel()

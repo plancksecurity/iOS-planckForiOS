@@ -7,7 +7,9 @@
 //
 
 import CoreData
+
 import PantomimeFramework
+import pEpIOSToolbox
 
 /// Sends (syncs) local changes of Imap flags to server.
 class SyncFlagsToServerInImapFolderOperation: ImapSyncOperation {

@@ -7,7 +7,9 @@
 //
 
 import UIKit
+
 import MessageModel
+import pEpIOSToolbox
 
 struct KeySyncErrorView {
     enum KeySyncErrorAlertAction {

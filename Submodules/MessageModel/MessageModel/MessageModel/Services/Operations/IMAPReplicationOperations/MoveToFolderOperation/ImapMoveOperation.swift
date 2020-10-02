@@ -9,6 +9,7 @@
 import CoreData
 
 import PantomimeFramework
+import pEpIOSToolbox
 
 /// IMAP MOVEs all messages marked to move to the specified `targetFolder`.
 /// - note: the operations MUST NOT run concurrently. Thus we are using a serial queue.

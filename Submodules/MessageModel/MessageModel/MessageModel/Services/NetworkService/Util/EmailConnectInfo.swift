@@ -6,8 +6,10 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
-import PantomimeFramework
 import CoreData
+
+import PantomimeFramework
+import pEpIOSToolbox
 
 extension ConnectionTransport {
     public init?(fromInt: Int?) {

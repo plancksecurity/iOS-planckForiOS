@@ -9,8 +9,8 @@
 import Foundation
 
 /// Shared instance of logger.
-class Log {
-    static let shared = Logger()
+public class Log {
+    static public let shared = Logger()
 
     /// Init is forbidden. Singleton...
     private init() {}
