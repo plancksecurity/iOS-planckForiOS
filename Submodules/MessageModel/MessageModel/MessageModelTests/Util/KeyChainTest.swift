@@ -9,10 +9,6 @@
 import XCTest
 @testable import MessageModel //!!!: move to MM-Tests
 
-/*
- This belongs to MessageModelTests, but has been moved here due an Apple bug.
- See: IOS-733
- */
 class KeyChainTest: XCTestCase {
     let pass = "0001"
     var numItemsBefore = 0
