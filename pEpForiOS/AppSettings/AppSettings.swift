@@ -232,4 +232,14 @@ extension AppSettings: AppSettingsProtocol {
                                          forKey: AppSettings.keyUnsecureReplyWarningEnabled)
         }
     }
+
+    public var verboseLogginEnabled: Bool {
+        get {
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyVerboseLogginEnabled)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue,
+                                         forKey: AppSettings.keyVerboseLogginEnabled)
+        }
+    }
 }
