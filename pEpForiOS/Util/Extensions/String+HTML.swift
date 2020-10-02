@@ -64,17 +64,17 @@ extension String {
         return htmlConverted
     }
 
-    @discardableResult
-    public mutating func removeFontFaces() -> String {
-        removeRegexMatches(of: "/@font-face[^{]*{([^{}]|{[^{}]*})*}/gi")
-        return self
+    /// Remove all font-faces (@font-face{...})
+    ///
+    /// We found a crash trying to show some mails because NSAttributedString has problems with external content in the html. It uses a webview under the hood.
+    /// As any external content in NSAttributedString is potentially dangeurous and font-faces load fonts from external resources, this method prevents the crash.
+    /// To go deeper please read https://pep.foundation/jira/browse/IOS-2434.
+    public mutating func removeFontFaces() {
+        removeRegexMatches(of: #"@font-face\s*\{[^}]*\}"#)
     }
 
     public func htmlToAttributedString(deleteInlinePictures: Bool = false,
                                        attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate?) -> NSAttributedString {
-        if Thread.current != Thread.main {
-            Log.shared.errorAndCrash("MUST NOT be called from a non-main Queue!")
-        }
         var htmlWithCitedChars = self
 
         let patternStartBlockqoute = "[<]blockquote[^>]*>(.*?)"

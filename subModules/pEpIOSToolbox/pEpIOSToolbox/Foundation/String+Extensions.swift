@@ -100,7 +100,7 @@ extension String {
             let regex =
                 try NSRegularExpression(pattern: pattern,
                                         options: NSRegularExpression.Options.caseInsensitive)
-            let range = NSMakeRange(0, self.count)
+            let range = NSMakeRange(0, count)
             self = regex.stringByReplacingMatches(in: self,
                                                   options: [],
                                                   range: range,
@@ -133,7 +133,6 @@ extension String {
                                                     range: range,
                                                     withTemplate: replacee)
         } catch {
-            Log.shared.errorAndCrash("Catched!")
             return result
         }
         return result
