@@ -25,7 +25,7 @@ class TestUtil {
 
     static public func createMessage(stringData: String = "test",
                                      numAttachments num: Int) -> Message {
-        let createe = Message.fakeMessage(uuid: "\(stringData)")
+        let createe = Message.createTestMessage(uuid: "\(stringData)")
         createe.shortMessage = "s\(stringData)"
         createe.longMessage = "l\(stringData)"
         let attachments = createAttachments(numAttachments: num)
