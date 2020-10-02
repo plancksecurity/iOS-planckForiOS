@@ -33,7 +33,6 @@
 		152881B422E1D7D000BBE7AE /* CdFolder+VirtualMailboxTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152881B322E1D7D000BBE7AE /* CdFolder+VirtualMailboxTest.swift */; };
 		15293836224E1C6D00CAE126 /* UnappendableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15293835224E1C6D00CAE126 /* UnappendableArray.swift */; };
 		152E3C9F231BE34100C1420B /* BackgroundTaskManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152E3C9E231BE34100C1420B /* BackgroundTaskManagerTest.swift */; };
-		152E3CA9231C324000C1420B /* DecryptServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152E3CA8231C324000C1420B /* DecryptServiceTest.swift */; };
 		152EC88722E73721001836F9 /* CdMessage+FakeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152EC88622E73721001836F9 /* CdMessage+FakeTest.swift */; };
 		152F09672126D27E001BCF20 /* CdServer+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152F09662126D27E001BCF20 /* CdServer+PredicateFactory.swift */; };
 		15326E2F24A4C45B00EA8C9B /* UsePEPFolderProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15326E2E24A4C45B00EA8C9B /* UsePEPFolderProviderProtocol.swift */; };
@@ -494,7 +493,6 @@
 		152881B322E1D7D000BBE7AE /* CdFolder+VirtualMailboxTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+VirtualMailboxTest.swift"; sourceTree = "<group>"; };
 		15293835224E1C6D00CAE126 /* UnappendableArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnappendableArray.swift; sourceTree = "<group>"; };
 		152E3C9E231BE34100C1420B /* BackgroundTaskManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTaskManagerTest.swift; sourceTree = "<group>"; };
-		152E3CA8231C324000C1420B /* DecryptServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptServiceTest.swift; sourceTree = "<group>"; };
 		152EC88622E73721001836F9 /* CdMessage+FakeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+FakeTest.swift"; sourceTree = "<group>"; };
 		152F09662126D27E001BCF20 /* CdServer+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdServer+PredicateFactory.swift"; sourceTree = "<group>"; };
 		15326E2E24A4C45B00EA8C9B /* UsePEPFolderProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsePEPFolderProviderProtocol.swift; sourceTree = "<group>"; };
@@ -1264,14 +1262,6 @@
 			path = Submodule;
 			sourceTree = "<group>";
 		};
-		152E3CA7231C322700C1420B /* DecryptService */ = {
-			isa = PBXGroup;
-			children = (
-				152E3CA8231C324000C1420B /* DecryptServiceTest.swift */,
-			);
-			path = DecryptService;
-			sourceTree = "<group>";
-		};
 		15326E3024A4DF0A00EA8C9B /* CreatePEPFolderService */ = {
 			isa = PBXGroup;
 			children = (
@@ -1990,7 +1980,6 @@
 		439B16B022802D3800201DE5 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				152E3CA7231C322700C1420B /* DecryptService */,
 				152E3C9E231BE34100C1420B /* BackgroundTaskManagerTest.swift */,
 				439B16B122802D3800201DE5 /* VerifiableAccountTest.swift */,
 				B7A1152422C4B55E00FB6E91 /* PrepareAccountForSavingServiceTest.swift */,
@@ -3082,7 +3071,6 @@
 				490FF8051E795B3900BC15F9 /* TestUtil.swift in Sources */,
 				43B2271224236602007EB91E /* CdAccount+ProviderSpecificTest.swift in Sources */,
 				430A2EF01E82758100878837 /* CdImapFields+TestHelper.swift in Sources */,
-				152E3CA9231C324000C1420B /* DecryptServiceTest.swift in Sources */,
 				43607DE423FE8D6F00FA66B8 /* ClientCertificateUtilTestInternal.swift in Sources */,
 				43F86BA324503E61008961DA /* Keychain+TestUtils.swift in Sources */,
 				434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */,
