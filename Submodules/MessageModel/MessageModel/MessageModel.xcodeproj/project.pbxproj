@@ -1356,9 +1356,7 @@
 		154D171F23732FF6001FDF78 /* FromApp_NeedsLove */ = {
 			isa = PBXGroup;
 			children = (
-				154D173E2373330E001FDF78 /* SimpleOperationsTest.swift */,
 				154D173A237331FE001FDF78 /* ImapFlagsTests.swift */,
-				154D172523732FF6001FDF78 /* LoginImapOperationTest.swift */,
 			);
 			path = FromApp_NeedsLove;
 			sourceTree = "<group>";
@@ -1838,6 +1836,8 @@
 		4327430F22F95F7900DE5E5F /* Operations */ = {
 			isa = PBXGroup;
 			children = (
+				154D173E2373330E001FDF78 /* SimpleOperationsTest.swift */,
+				154D172523732FF6001FDF78 /* LoginImapOperationTest.swift */,
 				4368309E22F9682A0005880D /* DeleteOldSyncMailsOperationTest.swift */,
 			);
 			path = Operations;
