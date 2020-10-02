@@ -30,6 +30,7 @@
 		3AE10BAF249A6F1A0050BFB0 /* String+HtmlTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE10BAE249A6F1A0050BFB0 /* String+HtmlTest.swift */; };
 		431E68AC246C00F200B3A977 /* DocumentsDirectoryBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E68AB246C00F200B3A977 /* DocumentsDirectoryBrowser.swift */; };
 		431E68B0246C0FFC00B3A977 /* DocumentsDirectoryBrowserTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E68AF246C0FFC00B3A977 /* DocumentsDirectoryBrowserTest.swift */; };
+		433805B425274486006DE126 /* LoggerSettingsProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433805B325274486006DE126 /* LoggerSettingsProviderProtocol.swift */; };
 		436F1BA125028B2E004426DC /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436F1BA025028B2E004426DC /* CocoaLumberjackSwift.framework */; };
 		43BE66D2246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BE66D1246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift */; };
 		5B2F7E5F240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E5E240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift */; };
@@ -100,6 +101,7 @@
 		3AE10BAE249A6F1A0050BFB0 /* String+HtmlTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+HtmlTest.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/Foundation/String+HtmlTest.swift"; sourceTree = "<group>"; };
 		431E68AB246C00F200B3A977 /* DocumentsDirectoryBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsDirectoryBrowser.swift; sourceTree = "<group>"; };
 		431E68AF246C0FFC00B3A977 /* DocumentsDirectoryBrowserTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DocumentsDirectoryBrowserTest.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/Other/DocumentsDirectoryBrowserTest.swift; sourceTree = "<group>"; };
+		433805B325274486006DE126 /* LoggerSettingsProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoggerSettingsProviderProtocol.swift; path = ../../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Other/Logging/LoggerSettingsProviderProtocol.swift; sourceTree = "<group>"; };
 		436F1BA025028B2E004426DC /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjackSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43BE66D1246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsDirectoryBrowserProtocol.swift; sourceTree = "<group>"; };
 		5B2F7E5E240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "StringProtocol+NSRanges.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/StringProtocol+NSRanges.swift"; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 			isa = PBXGroup;
 			children = (
 				B70A3A75220091D400EDCE61 /* Logger.swift */,
+				433805B325274486006DE126 /* LoggerSettingsProviderProtocol.swift */,
 			);
 			path = Logging;
 			sourceTree = "<group>";
@@ -490,6 +493,7 @@
 				B7465DE72211E969008A1708 /* CGRect+Util.swift in Sources */,
 				B7465DCC2211BEEA008A1708 /* Tuple.swift in Sources */,
 				158A564D24004619003C0D7E /* UIApplication+NavigationStack.swift in Sources */,
+				433805B425274486006DE126 /* LoggerSettingsProviderProtocol.swift in Sources */,
 				37904562223FA486006DAB3B /* NetworkReachabilityProtocol.swift in Sources */,
 				B7A46C50220C1F0C0027CCB5 /* MiscUtil.swift in Sources */,
 				5B2F7E61240D0EA8004DDFA2 /* RangeExpression+Extension.swift in Sources */,
