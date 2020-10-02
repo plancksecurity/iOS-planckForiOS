@@ -41,7 +41,7 @@ extension UIUtils {
             let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
                 Constants.composeSceneStoryboardId) as? UINavigationController,
             let composeVc = composeNavigationController.rootViewController
-                as? ComposeTableViewController
+                as? ComposeViewController
             else {
                 Log.shared.errorAndCrash("Missing required data")
                 return
@@ -85,7 +85,7 @@ extension UIUtils {
             let navigationController = storyboard.instantiateViewController(withIdentifier:
                 Constants.composeSceneStoryboardId) as? UINavigationController,
             let composeVc = navigationController.rootViewController
-                    as? ComposeTableViewController
+                    as? ComposeViewController
             else {
                 Log.shared.errorAndCrash("Missing required VCs")
                 return

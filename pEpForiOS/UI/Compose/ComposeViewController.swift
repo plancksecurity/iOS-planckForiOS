@@ -1,9 +1,9 @@
 //
-//  ComposeTableViewController.swift
+//  ComposeViewController.swift
 //  pEp
 //
-//  Created by Andreas Buff on 03.10.18.
-//  Copyright © 2018 p≡p Security S.A. All rights reserved.
+//  Created by Martin Brude on 30/09/2020.
+//  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
 import UIKit
@@ -13,8 +13,9 @@ import Photos
 import pEpIOSToolbox
 import ContactsUI
 
-class ComposeTableViewController: UITableViewController {
+class ComposeViewController: UIViewController {
     @IBOutlet var sendButton: UIBarButtonItem!
+    @IBOutlet var tableView: UITableView!
 
     private var suggestionsChildViewController: SuggestTableViewController?
     lazy private var mediaAttachmentPickerProvider: MediaAttachmentPickerProvider? = {
@@ -36,7 +37,6 @@ class ComposeTableViewController: UITableViewController {
         didSet {
             // Make sure we are the delegate. Always.
             viewModel?.delegate = self
-            tableView.reloadData()
         }
     }
 
@@ -60,7 +60,7 @@ class ComposeTableViewController: UITableViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-		// We intentionally violate the Apple docs ("you must call super. ...") and do *not* call `super.` as the UITableViewController's magic in viewWillAppear() interferes with our scrolling implementation, which causes UI issues (see: IOS-2429)
+        super.viewWillAppear(animated)
         doOnce?()
         navigationController?.title = title
         tableView.hideSeperatorForEmptyCells()
@@ -83,7 +83,7 @@ class ComposeTableViewController: UITableViewController {
 
     private func setupModel() {
         viewModel = ComposeViewModel()
-        viewModel?.suggestViewModel()
+        _ = viewModel?.suggestViewModel()
     }
 
     private final func setupRecipientSuggestionsTableViewController() {
@@ -121,7 +121,7 @@ class ComposeTableViewController: UITableViewController {
 
 // MARK: - PEP Color View
 
-extension ComposeTableViewController {
+extension ComposeViewController {
     private func setupPepColorView(for pEpRating: Rating, pEpProtected: Bool) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
@@ -220,7 +220,7 @@ extension ComposeTableViewController {
 
 // MARK: - ComposeViewModelDelegate
 
-extension ComposeTableViewController: ComposeViewModelDelegate {
+extension ComposeViewController: ComposeViewModelDelegate {
 
     func hideSuggestions() {
         suggestionsChildViewController?.view.isHidden = true
@@ -356,7 +356,7 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
 
 // MARK: - SegueHandlerType
 
-extension ComposeTableViewController: SegueHandlerType {
+extension ComposeViewController: SegueHandlerType {
 
     enum SegueIdentifier: String {
         case segueTrustManagement
@@ -386,7 +386,7 @@ extension ComposeTableViewController: SegueHandlerType {
 
 // MARK: - Address Suggestions
 
-extension ComposeTableViewController {
+extension ComposeViewController {
     private final func updateSuggestTable(suggestionsForCellAt indexPath: IndexPath) {
         let rectCell = tableView.rectForRow(at: indexPath)
         let position = rectCell.origin.y + rectCell.height
@@ -398,7 +398,7 @@ extension ComposeTableViewController {
 
 // MARK: - MediaAttachmentPickerProvider
 
-extension ComposeTableViewController {
+extension ComposeViewController {
 
     private func presentMediaAttachmentPickerProvider() {
         let media = Capability.media
@@ -419,7 +419,7 @@ extension ComposeTableViewController {
 
 // MARK: - DocumentAttachmentPickerViewController
 
-extension ComposeTableViewController {
+extension ComposeViewController {
     private func presentDocumentAttachmentPicker() {
         present(documentAttachmentPicker, animated: true, completion: nil)
     }
@@ -427,7 +427,7 @@ extension ComposeTableViewController {
 
 // MARK: - CNContactPicker
 
-extension ComposeTableViewController: CNContactPickerDelegate {
+extension ComposeViewController: CNContactPickerDelegate {
     private func presentContactPicker() {
         let contactPickerVC = CNContactPickerViewController()
         contactPickerVC.predicateForEnablingContact = NSPredicate(format: "emailAddresses.@count > 0")
@@ -479,9 +479,9 @@ extension ComposeTableViewController: CNContactPickerDelegate {
 
 // MARK: - UITableViewDataSource
 
-extension ComposeTableViewController {
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
+extension ComposeViewController: UITableViewDataSource {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return 0
@@ -489,8 +489,7 @@ extension ComposeTableViewController {
         return vm.sections.count
     }
 
-    override func tableView(_ tableView: UITableView,
-                            numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return 0
@@ -498,7 +497,7 @@ extension ComposeTableViewController {
         return vm.sections[section].rows.count
     }
 
-    override func tableView(_ tableView: UITableView,
+    func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = setupCellForIndexPath(indexPath, in: tableView) else {
             Log.shared.errorAndCrash("No cell")
@@ -583,15 +582,15 @@ extension ComposeTableViewController {
 
 // MARK: - UITableViewDelegate
 
-extension ComposeTableViewController {
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+extension ComposeViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel?.handleUserSelectedRow(at: indexPath)
     }
 }
 
 // MARK: - XIBs
 
-extension ComposeTableViewController {
+extension ComposeViewController {
     private func registerXibs() {
         let nib = UINib(nibName: AttachmentCell.reuseId, bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: AttachmentCell.reuseId)
@@ -600,7 +599,7 @@ extension ComposeTableViewController {
 
 // MARK: - SwipeAction
 
-extension ComposeTableViewController {
+extension ComposeViewController {
     // MARK: - SwipeTableViewCell
 
     private func deleteAction(forCellAt indexPath: IndexPath) {
@@ -613,7 +612,7 @@ extension ComposeTableViewController {
 
 // MARK: - SwipeTableViewCellDelegate
 
-extension ComposeTableViewController: SwipeTableViewCellDelegate {
+extension ComposeViewController: SwipeTableViewCellDelegate {
 
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath,
                    for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
@@ -637,7 +636,7 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
         return (orientation == .right ?   [deleteAction] : nil)
     }
 
-    override func tableView(_ tableView: UITableView,
+    func tableView(_ tableView: UITableView,
                             willDisplay cell: UITableViewCell,
                             forRowAt indexPath: IndexPath) {
         if isLastRow(indexPath: indexPath) {
@@ -655,7 +654,7 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
 
 // MARK: - First Responder / Focus
 
-extension ComposeTableViewController {
+extension ComposeViewController {
 
     private func setInitialFocus() {
         guard !isInitialFocusSet else {
@@ -703,7 +702,7 @@ extension ComposeTableViewController {
 
 // MARK: - Cancel UIAlertController
 
-extension ComposeTableViewController {
+extension ComposeViewController {
 
     private func showAlertControllerWithOptionsForCanceling(sender: Any) {
         let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
@@ -783,7 +782,7 @@ extension ComposeTableViewController {
 
 // MARK: - Keyboard Related Issues
 
-extension ComposeTableViewController {
+extension ComposeViewController {
 
     private func registerForNotifications() {
         NotificationCenter.default.addObserver(self,
