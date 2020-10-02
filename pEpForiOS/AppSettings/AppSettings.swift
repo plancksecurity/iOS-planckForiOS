@@ -24,6 +24,7 @@ extension AppSettings {
     static private let keyShouldShowTutorialWizard = "keyShouldShowTutorialWizard"
     static private let keyUserHasBeenAskedForContactAccessPermissions = "keyUserHasBeenAskedForContactAccessPermissions"
     static private let keyUnsecureReplyWarningEnabled = "keyUnsecureReplyWarningEnabled"
+    static private let keyVerboseLogginEnabled = "keyVerboseLogginEnabled"
 }
 
 // MARK: - AppSettings
