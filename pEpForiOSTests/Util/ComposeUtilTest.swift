@@ -1,6 +1,3 @@
-//IOS-2241 DOES NOT COMPILE
-//!!!: broke by merging IOS-1542.
-
 //
 //  ComposeUtilTest.swift
 //  pEpForiOSTests
