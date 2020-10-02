@@ -133,6 +133,7 @@ extension String {
                                                     range: range,
                                                     withTemplate: replacee)
         } catch {
+            Log.shared.errorAndCrash("Catched!")
             return result
         }
         return result
