@@ -1215,7 +1215,7 @@ extension EmailListViewController: SegueHandlerType {
         let segueId = segueIdentifier(for: segue)
         guard
             let nav = segue.destination as? UINavigationController,
-            let composeVc = nav.topViewController as? ComposeTableViewController,
+            let composeVc = nav.topViewController as? ComposeViewController,
             let composeMode = composeMode(for: segueId),
             let vm = viewModel else {
                 Log.shared.errorAndCrash("composeViewController setup issue")

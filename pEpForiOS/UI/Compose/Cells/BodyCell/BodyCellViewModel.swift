@@ -86,11 +86,11 @@ class BodyCellViewModel: CellViewModel {
 
     // MARK: - Context Menu
 
-    public let contextMenuItemTitleAttachMedia =
-        NSLocalizedString("Attach media", comment: "Attach photo/video (message text context menu)")
+    public let contextMenuItemTitleAddPhotoOrVideo =
+        NSLocalizedString("Add Photo/Video", comment: "Attach photo/video (message text context menu)")
 
-    public let contextMenuItemTitleAttachFile =
-        NSLocalizedString("Attach file",   comment: "Insert document in message text context menu")
+    public let contextMenuItemTitleAddDocument =
+        NSLocalizedString("Add Document",  comment: "Insert document in message text context menu")
 
     public func handleUserClickedSelectMedia() {
         let potentialImage = 1
