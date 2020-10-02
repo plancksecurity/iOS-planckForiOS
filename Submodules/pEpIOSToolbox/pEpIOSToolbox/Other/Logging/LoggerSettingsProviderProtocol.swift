@@ -8,13 +8,7 @@
 
 import Foundation
 
-/// High-level (app view) verbosity of the logging
-public enum LoggerSettingsProviderLogLevel {
-    case normal
-    case verbose
-}
-
 public protocol LoggerSettingsProviderProtocol {
-    /// Indicates a change in the level of logging verbosity
-    func loglevelChanged(to newLogLevel: LoggerSettingsProviderLogLevel)
+    /// Indicates whether logging should be verbose or not
+    func isVerboseLogging() -> Bool
 }

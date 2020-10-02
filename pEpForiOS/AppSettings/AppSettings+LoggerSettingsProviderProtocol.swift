@@ -11,12 +11,7 @@ import Foundation
 import pEpIOSToolbox
 
 extension AppSettings: LoggerSettingsProviderProtocol {
-    public func loglevelChanged(to newLogLevel: LoggerSettingsProviderLogLevel) {
-        switch newLogLevel {
-        case .normal:
-            verboseLogginEnabled = false
-        case .verbose:
-            verboseLogginEnabled = true
-        }
+    public func isVerboseLogging() -> Bool {
+        return verboseLogginEnabled
     }
 }

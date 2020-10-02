@@ -8,10 +8,17 @@
 
 import pEpIOSToolbox
 
+class LoggerSettingsProvider: LoggerSettingsProviderProtocol {
+    func isVerboseLogging() -> Bool {
+        return true
+    }
+}
+
 /// Shared instance of logger.
 class Log {
     static let shared = Logger(subsystem: "security.pEp.app.pEpForiOS.MessageModel",
-                               category: "general")
+                               category: "general",
+                               loggerSettingsProvider: LoggerSettingsProvider())
 
     /// Init is forbidden. Singleton...
     private init() {}
