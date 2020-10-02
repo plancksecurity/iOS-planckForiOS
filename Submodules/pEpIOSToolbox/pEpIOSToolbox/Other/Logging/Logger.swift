@@ -251,5 +251,25 @@ public class Logger {
         /// Indicates an error.
         /// - Note: Gets persisted.
         case error
+
+        /// Determines if this severity should lead to logging,
+        /// depending on the verbose flag.
+        /// - Returns: `true` when this severity should lead to logging, `false` otherwise
+        func shouldBeLogged(verbose: Bool) {
+            if verbose {
+                return true
+            } else {
+                switch self {
+                case .info:
+                    return false
+                case .debug:
+                    return false
+                case .warn:
+                    return true
+                case .error:
+                    return true
+                }
+            }
+        }
     }
 }
