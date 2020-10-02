@@ -10,7 +10,6 @@
 import CoreData
 
 extension Message {
-    //!!!: Duplicates fakeMessage in pEp4IOSTests
     //!!!: also, bad naming now that we have fake messages (uid == -1). Confusing!
     static public func fakeMessage(uuid: MessageID, uid: Int = 0) -> Message {
         let fakeId = Identity(address: "unifiedInbox@fake.address.com",
