@@ -208,7 +208,6 @@
 		3A928C86242259E300FEFA4C /* HtmlTagParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A928C85242259E200FEFA4C /* HtmlTagParser.swift */; };
 		3AC2B843240E5FD900E08EB3 /* ClientCertificateImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B842240E5FD900E08EB3 /* ClientCertificateImportViewController.swift */; };
 		3AC2B845240E692600E08EB3 /* ClientCertificateImportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B844240E692600E08EB3 /* ClientCertificateImportViewModel.swift */; };
-		3AC2B847241021C300E08EB3 /* ClientCertificatePasswordViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B846241021C300E08EB3 /* ClientCertificatePasswordViewModelTest.swift */; };
 		3AD0E0A123E4659F006FFED3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AD0E0A023E4659F006FFED3 /* Assets.xcassets */; };
 		3AD2CBC923FD92650003A536 /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD2CBC823FD92640003A536 /* AccountSettingsViewModel.swift */; };
 		43038EA2246D897F008FC36E /* KeyImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43038EA1246D897F008FC36E /* KeyImportViewController.swift */; };
@@ -711,7 +710,6 @@
 		3A928C85242259E200FEFA4C /* HtmlTagParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlTagParser.swift; sourceTree = "<group>"; };
 		3AC2B842240E5FD900E08EB3 /* ClientCertificateImportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateImportViewController.swift; sourceTree = "<group>"; };
 		3AC2B844240E692600E08EB3 /* ClientCertificateImportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateImportViewModel.swift; sourceTree = "<group>"; };
-		3AC2B846241021C300E08EB3 /* ClientCertificatePasswordViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificatePasswordViewModelTest.swift; sourceTree = "<group>"; };
 		3AD0E0A023E4659F006FFED3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3AD2CBC823FD92640003A536 /* AccountSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModel.swift; sourceTree = "<group>"; };
 		43038EA1246D897F008FC36E /* KeyImportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportViewController.swift; sourceTree = "<group>"; };
@@ -2237,7 +2235,6 @@
 				0017CD1C2162614400F62F13 /* MoveToFolderCellViewModelTests.swift */,
 				431C2B161F387C4100D87FFD /* LoginViewModelTests.swift */,
 				491116BC216E0DF4005A42D2 /* MessageViewModelTests.swift */,
-				3AC2B846241021C300E08EB3 /* ClientCertificatePasswordViewModelTest.swift */,
 				B78602B02412B6380027132B /* AccountTypeSelectorTest.swift */,
 			);
 			path = Models;
@@ -3133,7 +3130,6 @@
 				F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */,
 				431C2B171F387C4100D87FFD /* LoginViewModelTests.swift in Sources */,
 				151AD7AD219D74C700FC36FF /* ComposeViewModelTest.swift in Sources */,
-				3AC2B847241021C300E08EB3 /* ClientCertificatePasswordViewModelTest.swift in Sources */,
 				439EA1542472797B005D6C9A /* KeyImportViewModelTest.swift in Sources */,
 				151F71F7202A06760057C74D /* TestDataBase.swift in Sources */,
 				1541D7F01FC81ED900D52A5D /* URL+ExtensionsTest.swift in Sources */,
