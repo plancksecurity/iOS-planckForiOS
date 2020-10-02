@@ -157,6 +157,28 @@ public class Logger {
 
     private func initLumberjack() {
         DDLog.add(DDOSLogger.sharedInstance) // Uses os_log
+        let documentsUrl = FileManager.default.urls(for: .documentDirectory,
+                                                    in: .userDomainMask).first
+        guard var theDocUrl = documentsUrl else {
+            return
+        }
+
+        theDocUrl.appendPathComponent("logs")
+
+        do {
+            try FileManager.default.createDirectory(at: theDocUrl,
+                                                    withIntermediateDirectories: true,
+                                                    attributes: nil)
+
+            let fileManager = DDLogFileManagerDefault(logsDirectory: theDocUrl.path)
+
+            let fileLogger: DDFileLogger = DDFileLogger(logFileManager: fileManager)
+            fileLogger.rollingFrequency = 60 * 60 * 24 // 24 hours
+            fileLogger.logFileManager.maximumNumberOfLogFiles = 7
+            DDLog.add(fileLogger)
+        } catch {
+            errorAndCrash("Could not create the logging directory")
+        }
     }
 
     private func saveLog(message: StaticString,
