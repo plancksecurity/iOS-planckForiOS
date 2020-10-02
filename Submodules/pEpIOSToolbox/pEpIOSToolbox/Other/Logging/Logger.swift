@@ -211,10 +211,12 @@ public class Logger {
         var shouldLog = false
 
         #if DEBUG
+        // log everything
         shouldLog = true
         #else
+        // log depending on the severity
         let isVerbose = loggerSettingsProvider.isVerboseLogging()
-        shouldLog = isVerbose || severity.shouldBeLogged(verbose: isVerbose)
+        shouldLog = isVerbose || severity.shouldBeLoggedIfNotDebug(verbose: isVerbose)
         #endif
 
         if (shouldLog) {
@@ -264,9 +266,10 @@ public class Logger {
         case error
 
         /// Determines if this severity should lead to logging,
-        /// depending on the verbose flag.
+        /// depending on the provided verbose flag,
+        /// in environments that are not DEBUG (e.g., in release builds).
         /// - Returns: `true` when this severity should lead to logging, `false` otherwise
-        func shouldBeLogged(verbose: Bool) -> Bool {
+        func shouldBeLoggedIfNotDebug(verbose: Bool) -> Bool {
             if verbose {
                 return true
             } else {
