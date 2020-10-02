@@ -651,17 +651,7 @@ class BodyCellViewModelTest: XCTestCase {
             }
         }
 
-        func bodyCellViewModel(_ vm: BodyCellViewModel, bodyAttributedString: NSAttributedString) { //!!!: ADAM: commented due to the changes
-//            guard let exp = expBodyChangedCalled else {
-//                // We ignore called or not
-//                return
-//            }
-//            exp.fulfill()
-//            let expBody = bodyAttributedString.toHtml()
-//            let expPlainText = expBody.plainText
-//            if let expected1 = exectedPlain {
-//                XCTAssertEqual(expPlainText, expected1)
-//            }
+        func bodyCellViewModel(_ vm: BodyCellViewModel, bodyAttributedString: NSAttributedString) {
         }
     }
 }
