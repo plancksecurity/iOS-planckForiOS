@@ -212,10 +212,6 @@
    Display Name TextField Placeholder in Login Screen */
 "Display Name" = "Nom de visualització";
 
-/* Email address placeholder for manual account setup
-   Email TextField Placeholder in Login Screen */
-"E-mail Address" = "Correu electrònic";
-
 /* Email */
 "Email" = "Correu electrònic";
 
@@ -899,12 +895,6 @@
 /* Alert trust button title before trusting an account */
 "Trust" = "Confia";
 
-/* Action name to be suggested at the moment of revert */
-"Trust Confirmation" = "Confirmació de confiança";
-
-/* Action name to be suggested at the moment of revert */
-"Trust Rejection" = "Rebuig de confiança";
-
 /* keySyncWizard error view Try Again button title */
 "Try Again" = "Proveu de nou";
 
@@ -916,9 +906,6 @@
 
 /* Undo trust change verification button title */
 "Undo" = "Desfer";
-
-/* Undo trust change verification alert title */
-"Undo (actionName)" = "Desfés (actionName)";
 
 /* read button in slide-left menu */
 "Unflag" = "Unflag";

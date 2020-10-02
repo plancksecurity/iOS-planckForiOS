@@ -118,7 +118,6 @@ class EmailViewController: UIViewController {
             !htmlBody.isEmpty else {
                 return nil
         }
-        
         return htmlBody
     }
     

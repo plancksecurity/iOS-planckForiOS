@@ -212,10 +212,6 @@
    Display Name TextField Placeholder in Login Screen */
 "Display Name" = "Weergavenaam";
 
-/* Email address placeholder for manual account setup
-   Email TextField Placeholder in Login Screen */
-"E-mail Address" = "E-mailadres";
-
 /* Email */
 "Email" = "E-mail";
 
@@ -915,12 +911,6 @@
 /* Alert trust button title before trusting an account */
 "Trust" = "Vertrouwen";
 
-/* Action name to be suggested at the moment of revert */
-"Trust Confirmation" = "Bevestiging Van Vertrouwen";
-
-/* Action name to be suggested at the moment of revert */
-"Trust Rejection" = "Afwijzing Van Vertrouwen";
-
 /* keySyncWizard error view Try Again button title */
 "Try Again" = "Probeer Opnieuw";
 
@@ -932,9 +922,6 @@
 
 /* Undo trust change verification button title */
 "Undo" = "Ongedaan Maken";
-
-/* Undo trust change verification alert title */
-"Undo (actionName)" = "Ongedaan Maken (actionName)";
 
 /* read button in slide-left menu */
 "Unflag" = "Demarkeren";
