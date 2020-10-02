@@ -208,12 +208,23 @@ public class Logger {
                          filePath: String = #file,
                          fileLine: Int = #line,
                          args: [CVarArg]) {
-        osLog(message: "\(message)",
-              severity: severity,
-              function: function,
-              filePath: filePath,
-              fileLine: fileLine,
-              args: args)
+        var shouldLog = false
+
+        #if DEBUG
+        shouldLog = true
+        #else
+        let isVerbose = loggerSettingsProvider.isVerboseLogging()
+        shouldLog = isVerbose || severity.shouldBeLogged(verbose: isVerbose)
+        #endif
+
+        if (shouldLog) {
+            osLog(message: "\(message)",
+                  severity: severity,
+                  function: function,
+                  filePath: filePath,
+                  fileLine: fileLine,
+                  args: args)
+        }
     }
 
     private func osLog(message: String,
@@ -255,7 +266,7 @@ public class Logger {
         /// Determines if this severity should lead to logging,
         /// depending on the verbose flag.
         /// - Returns: `true` when this severity should lead to logging, `false` otherwise
-        func shouldBeLogged(verbose: Bool) {
+        func shouldBeLogged(verbose: Bool) -> Bool {
             if verbose {
                 return true
             } else {
