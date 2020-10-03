@@ -212,10 +212,6 @@
    Display Name TextField Placeholder in Login Screen */
 "Display Name" = "Ekran adı";
 
-/* Email address placeholder for manual account setup
-   Email TextField Placeholder in Login Screen */
-"E-mail Address" = "E";
-
 /* Email */
 "Email" = "E-posta";
 
@@ -899,12 +895,6 @@
 /* Alert trust button title before trusting an account */
 "Trust" = "Güven";
 
-/* Action name to be suggested at the moment of revert */
-"Trust Confirmation" = "Güven Onayı";
-
-/* Action name to be suggested at the moment of revert */
-"Trust Rejection" = "Güven Reddi";
-
 /* keySyncWizard error view Try Again button title */
 "Try Again" = "Tekrar deneyin";
 
@@ -916,9 +906,6 @@
 
 /* Undo trust change verification button title */
 "Undo" = "Geri alma";
-
-/* Undo trust change verification alert title */
-"Undo (actionName)" = "Geri al (actionName)";
 
 /* read button in slide-left menu */
 "Unflag" = "İşaretini Kaldır";

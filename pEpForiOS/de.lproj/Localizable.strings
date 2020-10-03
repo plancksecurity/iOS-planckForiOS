@@ -215,10 +215,6 @@
    Display Name TextField Placeholder in Login Screen */
 "Display Name" = "Anzeigename";
 
-/* Email address placeholder for manual account setup
-   Email TextField Placeholder in Login Screen */
-"E-mail Address" = "E-Mail-Addresse";
-
 /* Email */
 "Email" = "E-Mail";
 
@@ -930,12 +926,6 @@
 /* Alert trust button title before trusting an account */
 "Trust" = "Vertrauen";
 
-/* Action name to be suggested at the moment of revert */
-"Trust Confirmation" = "Vertrauensbestätigung";
-
-/* Action name to be suggested at the moment of revert */
-"Trust Rejection" = "Vertrauensverweigerung";
-
 /* keySyncWizard error view Try Again button title */
 "Try Again" = "Erneut versuchen";
 
@@ -947,9 +937,6 @@
 
 /* Undo trust change verification button title */
 "Undo" = "Rückgängig machen";
-
-/* Undo trust change verification alert title */
-"Undo (actionName)" = "Rückgängig machen (actionName)";
 
 /* read button in slide-left menu */
 "Unflag" = "Markierung entfernen";
