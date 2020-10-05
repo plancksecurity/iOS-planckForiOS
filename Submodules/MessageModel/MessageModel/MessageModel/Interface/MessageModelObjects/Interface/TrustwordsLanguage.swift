@@ -24,7 +24,11 @@ public struct TrustwordsLanguage {
     /// Retrieves all known languages, calling the completion block on the main queue.
     static public func languages(completion: @escaping ([TrustwordsLanguage]) -> ()) {
         PEPSession().languageList({ error in
-            Log.shared.errorAndCrash("%@", error.localizedDescription)
+            if error.isPassphraseError {
+                Log.shared.error("%@", "\(error)")
+            } else {
+                Log.shared.errorAndCrash("%@", error.localizedDescription)
+            }
             DispatchQueue.main.async {
                 completion([])
             }

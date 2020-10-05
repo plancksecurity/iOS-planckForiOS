@@ -113,8 +113,12 @@ extension KeySyncService {
                                             PEPSession().deliver(result.pEpSyncHandshakeResult(),
                                                                  identitiesSharing: [me, partner],
                                                                  errorCallback: { (error: Error) in
-                                                                    Log.shared.errorAndCrash("Error delivering handshake result: %@",
-                                                                                             error.localizedDescription)
+                                                                    if error.isPassphraseError {
+                                                                        Log.shared.error("Error delivering handshake result: %@",
+                                                                                                 error.localizedDescription)
+                                                                    } else {
+                                                                        Log.shared.errorAndCrash("%@", error.localizedDescription)
+                                                                    }
                                             }) {
                                                 // Caller doesn't care about the result
                                             }

@@ -137,7 +137,11 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
 
         group.enter()
         PEPSession().mySelf(selfPEPIdentity, errorCallback: { (error) in
-            Log.shared.errorAndCrash(error: error)
+            if error.isPassphraseError {
+                Log.shared.error("%@", "\(error)")
+            } else {
+                Log.shared.errorAndCrash("%@", error.localizedDescription)
+            }
             success = false
             group.leave()
         }) { (updatedOwnIdentity) in

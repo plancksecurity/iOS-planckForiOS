@@ -106,7 +106,11 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                     if let pEpUser = cdAccount.identity?.pEpIdentity() {
                         group.enter()
                         PEPSession().mySelf(pEpUser, errorCallback: { (error) in
-                            Log.shared.errorAndCrash(error: error)
+                            if error.isPassphraseError {
+                                Log.shared.error("%@", "\(error)")
+                            } else {
+                                Log.shared.errorAndCrash("%@", error.localizedDescription)
+                            }
                             group.leave()
                         }) { (_) in
                             group.leave()
