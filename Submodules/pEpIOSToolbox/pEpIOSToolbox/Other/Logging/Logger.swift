@@ -89,7 +89,7 @@ import CocoaLumberjackSwift
                               filePath: String = #file,
                               fileLine: UInt = #line,
                               error: Error) {
-        osLog(message: "*** errorAndCrash: \(error)",
+        interpolateAndLog(message: "*** errorAndCrash: \(error)",
             severity: .error,
             function: function,
             filePath: filePath,
@@ -104,7 +104,7 @@ import CocoaLumberjackSwift
                               filePath: String = #file,
                               fileLine: UInt = #line,
                               message: String) {
-        osLog(message: "*** errorAndCrash: \(message)",
+        interpolateAndLog(message: "*** errorAndCrash: \(message)",
             severity: .error,
             function: function,
             filePath: filePath,
@@ -121,7 +121,7 @@ import CocoaLumberjackSwift
                               fileLine: UInt = #line,
                               _ message: StaticString,
                               _ args: CVarArg...) {
-        osLog(message: "*** errorAndCrash: \(message)",
+        interpolateAndLog(message: "*** errorAndCrash: \(message)",
             severity: .error,
             function: function,
             filePath: filePath,
@@ -212,7 +212,7 @@ import CocoaLumberjackSwift
         #endif
 
         if (shouldLog) {
-            osLog(message: message,
+            interpolateAndLog(message: message,
                   severity: severity,
                   function: function,
                   filePath: filePath,
@@ -233,12 +233,12 @@ import CocoaLumberjackSwift
               args: [])
     }
 
-    private func osLog(message: String,
-                       severity: Severity,
-                       function: String = #function,
-                       filePath: String = #file,
-                       fileLine: UInt = #line,
-                       args: [CVarArg]) {
+    private func interpolateAndLog(message: String,
+                                   severity: Severity,
+                                   function: String = #function,
+                                   filePath: String = #file,
+                                   fileLine: UInt = #line,
+                                   args: [CVarArg]) {
         let interpolatedString = String(format: message, arguments: args)
         let interpolatedMessage = "\(filePath):\(fileLine) \(function) \(interpolatedString)"
 
