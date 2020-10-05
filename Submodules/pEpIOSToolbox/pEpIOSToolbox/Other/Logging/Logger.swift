@@ -30,7 +30,7 @@ import CocoaLumberjackSwift
                      fileLine: UInt = #line,
                      _ message: StaticString,
                      _ args: CVarArg...) {
-        saveLog(message: message,
+        saveLog(message: "\(message)",
                 severity: .warn,
                 function: function,
                 filePath: filePath,
@@ -47,7 +47,7 @@ import CocoaLumberjackSwift
                      fileLine: UInt = #line,
                      _ message: StaticString,
                      _ args: CVarArg...) {
-        saveLog(message: message,
+        saveLog(message: "\(message)",
                 severity: .info,
                 function: function,
                 filePath: filePath,
@@ -61,7 +61,7 @@ import CocoaLumberjackSwift
                       fileLine: UInt = #line,
                       _ message: StaticString,
                       _ args: CVarArg...) {
-        saveLog(message: message,
+        saveLog(message: "\(message)",
                 severity: .debug,
                 function: function,
                 filePath: filePath,
@@ -76,7 +76,7 @@ import CocoaLumberjackSwift
                       fileLine: UInt = #line,
                       _ message: StaticString,
                       _ args: CVarArg...) {
-        saveLog(message: message,
+        saveLog(message: "\(message)",
                 severity: .error,
                 function: function,
                 filePath: filePath,
@@ -194,7 +194,7 @@ import CocoaLumberjackSwift
         return nil
     }
 
-    private func saveLog(message: StaticString,
+    private func saveLog(message: String,
                          severity: Severity,
                          function: String = #function,
                          filePath: String = #file,
@@ -212,7 +212,7 @@ import CocoaLumberjackSwift
         #endif
 
         if (shouldLog) {
-            osLog(message: "\(message)",
+            osLog(message: message,
                   severity: severity,
                   function: function,
                   filePath: filePath,
