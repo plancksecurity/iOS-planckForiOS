@@ -241,7 +241,7 @@ import CocoaLumberjackSwift
                          args: [CVarArg]) {
         var shouldLog = false
 
-        #if DEBUG1
+        #if DEBUG
         // log everything
         shouldLog = true
         #else
