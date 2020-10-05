@@ -296,12 +296,14 @@ import CocoaLumberjackSwift
         /// - Returns: `true` when this severity should lead to logging, `false` otherwise
         func shouldBeLoggedIfNotDebug(verbose: Bool) -> Bool {
             #if DEBUG
+            // Log everything in DEBUG
             return true
             #else
             if verbose {
-                // Even if not in DEBUG, log everything if verbose
+                // In !DEBUG, log if verbose is ON.
                 return true
             } else {
+                // In !DEBUG, !verbose, log depending on severity
                 switch self {
                 case .info:
                     return false
