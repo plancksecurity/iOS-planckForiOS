@@ -1,14 +1,14 @@
 //
-//  CreditsViewController.swift
+//  CreditsWebViewController.swift
 //  pEp
 //
-//  Created by Andreas Buff on 13.12.17.
-//  Copyright © 2017 p≡p Security S.A. All rights reserved.
+//  Created by Andreas Buff on 05.10.20.
+//  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
 import WebKit
 
-class CreditsViewController: PEPWebViewController {
+class CreditsWebViewController: PEPWebViewController {
 
     // MARK: - Life Cycle
 
@@ -152,4 +152,5 @@ class CreditsViewController: PEPWebViewController {
         return eula
     }
 }
+
 

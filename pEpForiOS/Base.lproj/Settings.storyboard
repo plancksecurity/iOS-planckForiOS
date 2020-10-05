@@ -8,6 +8,24 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Credits Web View Controller-->
+        <scene sceneID="7Hy-BQ-HB4">
+            <objects>
+                <viewController id="Zm5-ki-2iG" customClass="CreditsWebViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fmE-ns-5Ce"/>
+                        <viewControllerLayoutGuide type="bottom" id="02b-aC-FFK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="FFU-eh-fPY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="585"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aAo-Uu-Pyl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3022" y="-365"/>
+        </scene>
         <!--Credits View Controller-->
         <scene sceneID="T9v-3i-MfR">
             <objects>
@@ -19,12 +37,57 @@
                     <view key="view" contentMode="scaleToFill" id="QiT-Mr-baO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bKk-4n-FeT">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="585"/>
+                                <connections>
+                                    <segue destination="Zm5-ki-2iG" kind="embed" id="Ugg-wV-scd"/>
+                                </connections>
+                            </containerView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5eB-ze-50V">
+                                <rect key="frame" x="0.0" y="585" width="375" height="62"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verbose Logging Enabled" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fGY-OS-V4W">
+                                        <rect key="frame" x="8" y="8" width="310" height="46"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rWL-mw-ch6">
+                                        <rect key="frame" x="318" y="15.5" width="51" height="31"/>
+                                        <connections>
+                                            <action selector="switchedVerboseLoggingEnabled:" destination="9LH-QE-79O" eventType="valueChanged" id="VGh-WC-epy"/>
+                                        </connections>
+                                    </switch>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="62" id="0De-Do-fx0"/>
+                                    <constraint firstItem="fGY-OS-V4W" firstAttribute="leading" secondItem="5eB-ze-50V" secondAttribute="leadingMargin" id="8L5-L6-eYV"/>
+                                    <constraint firstItem="rWL-mw-ch6" firstAttribute="centerY" secondItem="5eB-ze-50V" secondAttribute="centerY" id="EgF-tq-O1k"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="rWL-mw-ch6" secondAttribute="trailing" id="GHX-Bz-H52"/>
+                                    <constraint firstAttribute="bottomMargin" secondItem="fGY-OS-V4W" secondAttribute="bottom" id="VU9-rE-XD0"/>
+                                    <constraint firstItem="rWL-mw-ch6" firstAttribute="leading" secondItem="fGY-OS-V4W" secondAttribute="trailing" id="oyo-E3-Kyi"/>
+                                    <constraint firstItem="fGY-OS-V4W" firstAttribute="top" secondItem="5eB-ze-50V" secondAttribute="topMargin" id="xbi-uQ-2BI"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="5eB-ze-50V" firstAttribute="top" secondItem="bKk-4n-FeT" secondAttribute="bottom" id="0be-hH-d3V"/>
+                            <constraint firstItem="kh8-Xi-wkE" firstAttribute="top" secondItem="5eB-ze-50V" secondAttribute="bottom" id="Dr5-Hl-HGq"/>
+                            <constraint firstItem="5eB-ze-50V" firstAttribute="leading" secondItem="QiT-Mr-baO" secondAttribute="leading" id="LSS-KP-8Mp"/>
+                            <constraint firstItem="bKk-4n-FeT" firstAttribute="leading" secondItem="QiT-Mr-baO" secondAttribute="leading" id="Mtf-rt-AqF"/>
+                            <constraint firstAttribute="trailing" secondItem="bKk-4n-FeT" secondAttribute="trailing" id="Uf4-Do-e5Y"/>
+                            <constraint firstItem="5eB-ze-50V" firstAttribute="top" secondItem="bKk-4n-FeT" secondAttribute="bottom" id="pzJ-mE-bEw"/>
+                            <constraint firstItem="bKk-4n-FeT" firstAttribute="top" secondItem="8aO-3d-WS9" secondAttribute="bottom" id="qAA-M0-uPi"/>
+                            <constraint firstAttribute="trailing" secondItem="5eB-ze-50V" secondAttribute="trailing" id="rrU-Jl-edZ"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mXj-Sq-nBh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2242" y="-390"/>
+            <point key="canvasLocation" x="-2242.4000000000001" y="-390.85457271364322"/>
         </scene>
         <!--Settings Table View Controller-->
         <scene sceneID="ODz-Rf-1g6">

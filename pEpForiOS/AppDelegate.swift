@@ -15,7 +15,7 @@ import MessageModel
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
-    private var appConfig: AppConfig?
+    var appConfig: AppConfig?
 
     /** The model */
     private var messageModelService: MessageModelServiceProtocol?
