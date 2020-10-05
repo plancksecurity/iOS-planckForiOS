@@ -11,6 +11,8 @@ import Foundation
 import CocoaLumberjackSwift
 
 @objc public class Logger: NSObject {
+    var verboseLogginEnabled: Bool = false
+
     public override init() {
         super.init()
         initLumberjack()
@@ -239,13 +241,12 @@ import CocoaLumberjackSwift
                          args: [CVarArg]) {
         var shouldLog = false
 
-        #if DEBUG
+        #if DEBUG1
         // log everything
         shouldLog = true
         #else
         // log depending on the severity
-        let isVerbose = loggerSettingsProvider.isVerboseLogging()
-        shouldLog = isVerbose || severity.shouldBeLoggedIfNotDebug(verbose: isVerbose)
+        shouldLog = severity.shouldBeLoggedIfNotDebug(verbose: verboseLogginEnabled)
         #endif
 
         if (shouldLog) {
@@ -306,6 +307,7 @@ import CocoaLumberjackSwift
         /// - Returns: `true` when this severity should lead to logging, `false` otherwise
         func shouldBeLoggedIfNotDebug(verbose: Bool) -> Bool {
             if verbose {
+                // Even if not in DEBUG, log everything if verbose
                 return true
             } else {
                 switch self {
