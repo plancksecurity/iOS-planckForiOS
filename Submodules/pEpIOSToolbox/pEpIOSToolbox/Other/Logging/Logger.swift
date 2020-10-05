@@ -194,6 +194,18 @@ import CocoaLumberjackSwift
         return nil
     }
 
+    @objc public func logInfo(message: String,
+                              function: String = #function,
+                              filePath: String = #file,
+                              fileLine: UInt = #line) {
+        saveLog(message: message,
+                severity: .info,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                args: [])
+    }
+
     private func saveLog(message: String,
                          severity: Severity,
                          function: String = #function,
@@ -219,18 +231,6 @@ import CocoaLumberjackSwift
                   fileLine: fileLine,
                   args: args)
         }
-    }
-
-    @objc public func logInfo(message: String,
-                              function: String = #function,
-                              filePath: String = #file,
-                              fileLine: UInt = #line) {
-        osLog(message: message,
-              severity: .info,
-              function: function,
-              filePath: filePath,
-              fileLine: fileLine,
-              args: [])
     }
 
     private func interpolateAndLog(message: String,
