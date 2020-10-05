@@ -218,10 +218,6 @@
    Display Name TextField Placeholder in Login Screen */
 "Display Name" = "Zobraziť meno";
 
-/* Email address placeholder for manual account setup
-   Email TextField Placeholder in Login Screen */
-"E-mail Address" = "E-mailová adresa";
-
 /* Email */
 "Email" = "E-mail";
 
@@ -930,12 +926,6 @@
 /* Alert trust button title before trusting an account */
 "Trust" = "Dôvera";
 
-/* Action name to be suggested at the moment of revert */
-"Trust Confirmation" = "Potvrdenie dôvery";
-
-/* Action name to be suggested at the moment of revert */
-"Trust Rejection" = "Zamietnutie dôvery";
-
 /* keySyncWizard error view Try Again button title */
 "Try Again" = "Skúste to znova";
 
@@ -947,9 +937,6 @@
 
 /* Undo trust change verification button title */
 "Undo" = "Vrátenie späť";
-
-/* Undo trust change verification alert title */
-"Undo (actionName)" = "Vrátiť späť (actionName)";
 
 /* read button in slide-left menu */
 "Unflag" = "zrušiť označenie";
