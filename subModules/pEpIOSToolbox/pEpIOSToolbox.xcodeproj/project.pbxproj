@@ -32,6 +32,7 @@
 		431E68B0246C0FFC00B3A977 /* DocumentsDirectoryBrowserTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E68AF246C0FFC00B3A977 /* DocumentsDirectoryBrowserTest.swift */; };
 		436F1BA125028B2E004426DC /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436F1BA025028B2E004426DC /* CocoaLumberjackSwift.framework */; };
 		43BE66D2246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BE66D1246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift */; };
+		43E1A723252AFBF600307A7D /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43E1A722252AFBF600307A7D /* CocoaLumberjack.framework */; };
 		5B2F7E5F240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E5E240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift */; };
 		5B2F7E61240D0EA8004DDFA2 /* RangeExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E60240D0EA8004DDFA2 /* RangeExpression+Extension.swift */; };
 		5B87D79423F2C5CE009DACAA /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */; };
@@ -102,6 +103,7 @@
 		431E68AF246C0FFC00B3A977 /* DocumentsDirectoryBrowserTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DocumentsDirectoryBrowserTest.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/Other/DocumentsDirectoryBrowserTest.swift; sourceTree = "<group>"; };
 		436F1BA025028B2E004426DC /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjackSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43BE66D1246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsDirectoryBrowserProtocol.swift; sourceTree = "<group>"; };
+		43E1A722252AFBF600307A7D /* CocoaLumberjack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B2F7E5E240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "StringProtocol+NSRanges.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/StringProtocol+NSRanges.swift"; sourceTree = "<group>"; };
 		5B2F7E60240D0EA8004DDFA2 /* RangeExpression+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "RangeExpression+Extension.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/RangeExpression+Extension.swift"; sourceTree = "<group>"; };
 		5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43E1A723252AFBF600307A7D /* CocoaLumberjack.framework in Frameworks */,
 				436F1BA125028B2E004426DC /* CocoaLumberjackSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -235,6 +238,7 @@
 		436F1B9F25028B2E004426DC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43E1A722252AFBF600307A7D /* CocoaLumberjack.framework */,
 				436F1BA025028B2E004426DC /* CocoaLumberjackSwift.framework */,
 			);
 			name = Frameworks;
