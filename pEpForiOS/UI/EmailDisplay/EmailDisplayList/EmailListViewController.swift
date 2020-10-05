@@ -25,10 +25,6 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
 
-    // This class is also used for display Drafts Preview
-    // (long press on create a new message icon/button)
-    private var draftsPreviewModeEnabled = false
-
     // Right toolbar button for dismiss modal view in Drafts Preview mode
     private var dismissRightButton: UIBarButtonItem?
 
@@ -54,7 +50,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
     private let searchController = UISearchController(searchResultsController: nil)
 
-    //swipe acctions types
+    // swipe actions types
     var buttonDisplayMode: ButtonDisplayMode = .titleAndImage
     var buttonStyle: ButtonStyle = .backgroundColor
 
@@ -134,8 +130,6 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
             return
         }
 
-        draftsPreviewModeEnabled = vm.folderToShow is UnifiedDraft
-
         if vm.showLoginView {
             showLoginScreen()
             return
@@ -198,7 +192,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
                                              target: self,
                                              action: #selector(dismissButtonPressed(_:)))
 
-        showStandardToolbar(isDraftsPreview: draftsPreviewModeEnabled)
+        showStandardToolbar()
     }
 
     // MARK: - Search Bar
@@ -466,7 +460,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     }
 
     //recover the original toolbar and right button
-    private func showStandardToolbar(isDraftsPreview: Bool = false) {
+    private func showStandardToolbar() {
         let flexibleSpace = createFlexibleBarButtonItem()
         let composeBtn = UIBarButtonItem.getComposeButton(tapAction: #selector(showCompose),
                                                           longPressAction: #selector(draftsPreviewTapped),
@@ -475,9 +469,14 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         enableFilterButton = UIBarButtonItem.getFilterOnOffButton(action: #selector(filterButtonHasBeenPressed),
                                                                   target: self)
 
-        if isDraftsPreview {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(message: "No VM!")
+            return
+        }
+
+        if vm.isDraftsPreviewMode {
             toolbarItems = [flexibleSpace, composeBtn, flexibleSpace]
-            navigationItem.rightBarButtonItem = isDraftsPreview ? dismissRightButton : editButton
+            navigationItem.rightBarButtonItem = dismissRightButton
         } else {
             toolbarItems = [enableFilterButton, flexibleSpace, composeBtn, flexibleSpace, settingsBtn]
             navigationItem.rightBarButtonItem = editButton

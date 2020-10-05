@@ -69,6 +69,9 @@ class EmailListViewModel: EmailDisplayViewModel {
         return Folder.localizedName(realName: folderToShow.title)
     }
 
+    public var isDraftsPreviewMode: Bool {
+        return folderToShow is UnifiedDraft
+    }
     /// - Parameter indexPath: indexPath to check editability for.
     /// - returns:  Whether or not to show compose view rather then the email for message
     ///             represented by row at given `indexPath`.
