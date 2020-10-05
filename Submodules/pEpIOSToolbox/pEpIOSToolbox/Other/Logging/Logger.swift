@@ -239,17 +239,7 @@ import CocoaLumberjackSwift
                          filePath: String = #file,
                          fileLine: UInt = #line,
                          args: [CVarArg]) {
-        var shouldLog = false
-
-        #if DEBUG
-        // log everything
-        shouldLog = true
-        #else
-        // log depending on the severity
-        shouldLog = severity.shouldBeLoggedIfNotDebug(verbose: verboseLoggingEnabled)
-        #endif
-
-        if (shouldLog) {
+        if (severity.shouldBeLoggedIfNotDebug(verbose: verboseLoggingEnabled)) {
             interpolateAndLog(message: message,
                   severity: severity,
                   function: function,
@@ -302,10 +292,12 @@ import CocoaLumberjackSwift
         case error
 
         /// Determines if this severity should lead to logging,
-        /// depending on the provided verbose flag,
-        /// in environments that are not DEBUG (e.g., in release builds).
+        /// depending on the provided verbose flag, and if DEBUG is set or not.
         /// - Returns: `true` when this severity should lead to logging, `false` otherwise
         func shouldBeLoggedIfNotDebug(verbose: Bool) -> Bool {
+            #if DEBUG
+            return true
+            #else
             if verbose {
                 // Even if not in DEBUG, log everything if verbose
                 return true
@@ -321,6 +313,7 @@ import CocoaLumberjackSwift
                     return true
                 }
             }
+            #endif
         }
     }
 }
