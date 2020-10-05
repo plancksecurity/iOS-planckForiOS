@@ -263,6 +263,12 @@ import CocoaLumberjackSwift
                                    filePath: String = #file,
                                    fileLine: UInt = #line,
                                    args: [CVarArg]) {
+        // Note that we interpolate _both_ the args _and_ the location info ourselves,
+        // instead of letting the logging framework handle it.
+        // This is necessary to be compatible with ObjC, who doesn't know about StaticString,
+        // while lumberjack only accepts StaticString in its (swift) interface.
+        // Alternatively, we could move this file into ObjC world, and use
+        // only the ObjC version of lumberjack.
         let interpolatedString = String(format: message, arguments: args)
         let interpolatedMessage = "\(filePath):\(fileLine) \(function) \(interpolatedString)"
 
