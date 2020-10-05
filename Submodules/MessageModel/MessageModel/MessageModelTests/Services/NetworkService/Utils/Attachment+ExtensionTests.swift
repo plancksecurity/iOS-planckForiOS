@@ -7,7 +7,9 @@
 //
 
 import XCTest
+
 @testable import MessageModel
+import pEpIOSToolbox
 
 class Attachment_ExtensionTests: PersistentStoreDrivenTestBase {
 

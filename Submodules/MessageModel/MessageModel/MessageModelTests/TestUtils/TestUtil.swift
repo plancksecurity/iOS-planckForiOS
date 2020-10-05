@@ -7,10 +7,12 @@
 //
 
 
-@testable import MessageModel
-import CoreData
-import PEPObjCAdapterFramework
 import XCTest
+import CoreData
+
+@testable import MessageModel
+import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 class TestUtil {
     
