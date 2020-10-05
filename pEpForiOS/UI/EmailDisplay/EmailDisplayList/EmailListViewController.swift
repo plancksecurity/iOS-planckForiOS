@@ -44,9 +44,14 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         }
     }
 
-    /// This is used to handle the selection row when it recives an update
-    /// and also when swipeCellAction is performed to store from which cell the action is done.
-    private var lastSelectedIndexPath: IndexPath?
+    private var lastSelectedIndexPath: IndexPath? {
+        get {
+            viewModel?.lastSelectedIndexPath
+        }
+        set {
+            viewModel?.lastSelectedIndexPath = newValue
+        }
+    }
 
     private let searchController = UISearchController(searchResultsController: nil)
 
@@ -259,26 +264,6 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         }
 
         presentComposeViewToEditDraft(composeVM: composeVM)
-    }
-
-    private func showEmail(forCellAt indexPath: IndexPath) {
-        guard let indexPath = lastSelectedIndexPath else {
-                Log.shared.errorAndCrash("IndexPath problem!")
-                return
-        }
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash(message: "viewModel doesn't exist!")
-            return
-        }
-
-        guard let naviController = navigationController else {
-            Log.shared.errorAndCrash(message: "Navigation Controller is missing!")
-            return
-        }
-
-        presentEmailDisplayView(navigationController: naviController,
-                                        vm: vm.emailDetialViewModel(),
-                                        indexPath: indexPath)
     }
 
     private func showNoMessageSelected() {
@@ -724,29 +709,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
             }
             vm.handleEditModeSelectionChange(selectedIndexPaths: selectedIndexPaths)
         } else {
-            if vm.isSelectable(messageAt: indexPath) {
-                lastSelectedIndexPath = indexPath
-                tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-                if vm.isEditable(messageAt: indexPath) {
-                    dismiss(animated: true) { [weak self] in
-                        guard let me = self else {
-                            Log.shared.lostMySelf()
-                            return
-                        }
-                        me.showEditDraftComposeView()
-                    }
-                } else {
-                    dismiss(animated: true) { [weak self] in
-                        guard let me = self else {
-                            Log.shared.lostMySelf()
-                            return
-                        }
-                        me.showEmail(forCellAt: indexPath)
-                    }
-                }
-            } else {
-                tableView.deselectRow(at: indexPath, animated: true)
-            }
+            vm.handleDidSelectRow(indexPath: indexPath)
         }
         updateBackButton(isTableViewEditing: tableView.isEditing)
     }
@@ -874,21 +837,50 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 // MARK: - EmailListViewModelDelegate
 
 extension EmailListViewController: EmailListViewModelDelegate {
+    public func showEditDraftInComposeView() {
+        dismiss(animated: true) { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.showEditDraftComposeView()
+        }
+    }
 
-    func reloadData(viewModel: EmailDisplayViewModel) {
+    public func showEmail(forCellAt indexPath: IndexPath) {
+        guard let indexPath = lastSelectedIndexPath else {
+                Log.shared.errorAndCrash("IndexPath problem!")
+                return
+        }
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(message: "viewModel doesn't exist!")
+            return
+        }
+
+        guard let naviController = navigationController else {
+            Log.shared.errorAndCrash(message: "Navigation Controller is missing!")
+            return
+        }
+
+        presentEmailDisplayView(navigationController: naviController,
+                                        vm: vm.emailDetialViewModel(),
+                                        indexPath: indexPath)
+    }
+
+    public func reloadData(viewModel: EmailDisplayViewModel) {
         tableView.reloadData()
     }
 
-    func willReceiveUpdates(viewModel: EmailDisplayViewModel) {
+    public func willReceiveUpdates(viewModel: EmailDisplayViewModel) {
         tableView.beginUpdates()
     }
 
-    func allUpdatesReceived(viewModel: EmailDisplayViewModel) {
+    public func allUpdatesReceived(viewModel: EmailDisplayViewModel) {
         tableView.endUpdates()
         updateEditButton()
     }
 
-    func setToolbarItemsEnabledState(to newValue: Bool) {
+    public func setToolbarItemsEnabledState(to newValue: Bool) {
         if viewModel?.shouldShowToolbarEditButtons ?? true {
             // Never enable those for outbox
             flagToolbarButton?.isEnabled = newValue
@@ -900,7 +892,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
         deleteToolbarButton?.isEnabled = newValue
     }
 
-    func showUnflagButton(enabled: Bool) {
+    public func showUnflagButton(enabled: Bool) {
         if enabled {
 
             if let button = unflagToolbarButton {
@@ -916,7 +908,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
         }
     }
 
-    func showUnreadButton(enabled: Bool) {
+    public func showUnreadButton(enabled: Bool) {
         if enabled {
             if let button = unreadToolbarButton {
                 toolbarItems?.remove(at: 2)
@@ -930,7 +922,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
         }
     }
 
-    func select(itemAt indexPath: IndexPath) {
+    public func select(itemAt indexPath: IndexPath) {
         guard !onlySplitViewMasterIsShown else {
             // We want to follow EmailDetailViewSelection only if it is shown at the same time (if
             // master/EmailList_and_ detail/EmailDetail views are both currently shown).
@@ -976,12 +968,16 @@ extension EmailListViewController: EmailListViewModelDelegate {
                             scrollPosition: scrollPosition)
     }
 
-    func emailListViewModel(viewModel: EmailDisplayViewModel, didInsertDataAt indexPaths: [IndexPath]) {
+    public func deselect(itemAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+
+    public func emailListViewModel(viewModel: EmailDisplayViewModel, didInsertDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = nil
         tableView.insertRows(at: indexPaths, with: .automatic)
     }
 
-    func emailListViewModel(viewModel: EmailDisplayViewModel, didRemoveDataAt indexPaths: [IndexPath]) {
+    public func emailListViewModel(viewModel: EmailDisplayViewModel, didRemoveDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow ?? lastSelectedIndexPath
 
         if let swipeDelete = self.swipeDelete {
@@ -995,7 +991,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
         }
     }
 
-    func emailListViewModel(viewModel: EmailDisplayViewModel,
+    public func emailListViewModel(viewModel: EmailDisplayViewModel,
                             didUpdateDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.reloadRows(at: indexPaths, with: .none)
@@ -1013,7 +1009,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
 
     }
 
-    func emailListViewModel(viewModel: EmailDisplayViewModel,
+    public func emailListViewModel(viewModel: EmailDisplayViewModel,
                             didMoveData atIndexPath: IndexPath,
                             toIndexPath: IndexPath) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
