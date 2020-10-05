@@ -10,8 +10,9 @@ import Foundation
 
 import CocoaLumberjackSwift
 
-public class Logger {
-    public init() {
+@objc public class Logger: NSObject {
+    public override init() {
+        super.init()
         initLumberjack()
     }
 
