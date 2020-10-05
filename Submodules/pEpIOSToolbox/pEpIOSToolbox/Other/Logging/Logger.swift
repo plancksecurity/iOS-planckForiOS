@@ -24,9 +24,9 @@ public class Logger {
 
     /// Use for warnings, anything that might cause trouble.
     /// - Note: Gets persisted, so a later sysinfo on the device will recover it.
-    public func warn(function: String = #function,
-                     filePath: String = #file,
-                     fileLine: Int = #line,
+    public func warn(function: StaticString = #function,
+                     filePath: StaticString = #file,
+                     fileLine: UInt = #line,
                      _ message: StaticString,
                      _ args: CVarArg...) {
         saveLog(message: message,
@@ -41,9 +41,9 @@ public class Logger {
     /// - Note: Even in a debug build,
     ///     does not get persisted by default (unless an error follows closely),
     ///     so don't expect to find this in a sysinfo log.
-    public func info(function: String = #function,
-                     filePath: String = #file,
-                     fileLine: Int = #line,
+    public func info(function: StaticString = #function,
+                     filePath: StaticString = #file,
+                     fileLine: UInt = #line,
                      _ message: StaticString,
                      _ args: CVarArg...) {
         saveLog(message: message,
@@ -55,9 +55,9 @@ public class Logger {
     }
 
     /// Use for debug messages only, will not be persisted.
-    public func debug(function: String = #function,
-                      filePath: String = #file,
-                      fileLine: Int = #line,
+    public func debug(function: StaticString = #function,
+                      filePath: StaticString = #file,
+                      fileLine: UInt = #line,
                       _ message: StaticString,
                       _ args: CVarArg...) {
         saveLog(message: message,
@@ -70,9 +70,9 @@ public class Logger {
 
     /// Use this for indicating error conditions.
     /// - Note: Gets persisted, so a later sysinfo on the device will recover it.
-    public func error(function: String = #function,
-                      filePath: String = #file,
-                      fileLine: Int = #line,
+    public func error(function: StaticString = #function,
+                      filePath: StaticString = #file,
+                      fileLine: UInt = #line,
                       _ message: StaticString,
                       _ args: CVarArg...) {
         saveLog(message: message,
@@ -84,9 +84,9 @@ public class Logger {
     }
 
     /// Logs an error and crashes in a debug build, continues to run in a release build.
-    public func errorAndCrash(function: String = #function,
-                              filePath: String = #file,
-                              fileLine: Int = #line,
+    public func errorAndCrash(function: StaticString = #function,
+                              filePath: StaticString = #file,
+                              fileLine: UInt = #line,
                               error: Error) {
         osLog(message: "*** errorAndCrash: \(error)",
             severity: .error,
@@ -99,9 +99,9 @@ public class Logger {
     }
 
     /// Logs an error message and crashes in a debug build, continues to run in a release build.
-    public func errorAndCrash(function: String = #function,
-                              filePath: String = #file,
-                              fileLine: Int = #line,
+    public func errorAndCrash(function: StaticString = #function,
+                              filePath: StaticString = #file,
+                              fileLine: UInt = #line,
                               message: String) {
         osLog(message: "*** errorAndCrash: \(message)",
             severity: .error,
@@ -115,9 +115,9 @@ public class Logger {
 
     /// Logs an error message (with parameters) and crashes in a debug build,
     /// continues to run in a release build.
-    public func errorAndCrash(function: String = #function,
-                              filePath: String = #file,
-                              fileLine: Int = #line,
+    public func errorAndCrash(function: StaticString = #function,
+                              filePath: StaticString = #file,
+                              fileLine: UInt = #line,
                               _ message: StaticString,
                               _ args: CVarArg...) {
         osLog(message: "*** errorAndCrash: \(message)",
@@ -132,9 +132,9 @@ public class Logger {
     }
 
     /// Logs an error.
-    public func log(function: String = #function,
-                    filePath: String = #file,
-                    fileLine: Int = #line,
+    public func log(function: StaticString = #function,
+                    filePath: StaticString = #file,
+                    fileLine: UInt = #line,
                     error theError: Error) {
         error(function: function,
               filePath: filePath,
@@ -195,9 +195,9 @@ public class Logger {
 
     private func saveLog(message: StaticString,
                          severity: Severity,
-                         function: String = #function,
-                         filePath: String = #file,
-                         fileLine: Int = #line,
+                         function: StaticString = #function,
+                         filePath: StaticString = #file,
+                         fileLine: UInt = #line,
                          args: [CVarArg]) {
         var shouldLog = false
 
@@ -222,22 +222,24 @@ public class Logger {
 
     private func osLog(message: String,
                        severity: Severity,
-                       function: String = #function,
-                       filePath: String = #file,
-                       fileLine: Int = #line,
+                       function: StaticString = #function,
+                       filePath: StaticString = #file,
+                       fileLine: UInt = #line,
                        args: [CVarArg]) {
         let interpolatedString = String(format: message, arguments: args)
-        let interpolatedMessage = "\(filePath):\(fileLine) \(function) \(interpolatedString)"
 
         switch severity {
         case .debug:
-            DDLogDebug(interpolatedMessage)
+            DDLogDebug(interpolatedString, file: filePath, function: function, line: fileLine)
         case .info:
-            DDLogInfo(interpolatedMessage)
+            DDLogInfo(interpolatedString, file: filePath, function: function, line: fileLine)
+            break
         case .warn:
-            DDLogWarn(interpolatedMessage)
+            DDLogWarn(interpolatedString, file: filePath, function: function, line: fileLine)
+            break
         case .error:
-            DDLogError(interpolatedMessage)
+            DDLogError(interpolatedString, file: filePath, function: function, line: fileLine)
+            break
         }
     }
 
