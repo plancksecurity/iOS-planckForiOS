@@ -241,6 +241,7 @@ extension AppSettings: AppSettingsProtocol {
         set {
             AppSettings.userDefaults.set(newValue,
                                          forKey: AppSettings.keyVerboseLogginEnabled)
+            Logger.verboseLoggingEnabled = newValue
         }
     }
 }

@@ -11,7 +11,7 @@ import Foundation
 import CocoaLumberjackSwift
 
 @objc public class Logger: NSObject {
-    var verboseLogginEnabled: Bool = false
+    public var verboseLogginEnabled: Bool = false
 
     public override init() {
         super.init()
