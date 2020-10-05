@@ -20,7 +20,8 @@ import CocoaLumberjackSwift
     public func logDebugInfo() {
         #if DEBUG
         let documentsDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        print("documentsDir: \(documentsDir)")        #endif
+        print("documentsDir: \(documentsDir)")
+        #endif
     }
 
     /// Use for warnings, anything that might cause trouble.
