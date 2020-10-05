@@ -557,7 +557,7 @@ extension TestUtil {
         let contentDisposition = inlined ? Attachment.ContentDispositionType.inline : .attachment
 
         return Attachment(data: imageData,
-                          mimeType: MimeTypeUtils.MimeType.jpeg,
+                          mimeType: MimeTypeUtils.MimeType.jpeg.rawValue,
                           fileName: imageFileName,
                           contentDisposition: contentDisposition)
     }
