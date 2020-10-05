@@ -264,7 +264,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
             return
         }
 
-        UIUtils.presentEditDraft(composeVM: composeVM)
+        presentComposeViewToEditDraft(composeVM: composeVM)
     }
 
     private func showEmail(forCellAt indexPath: IndexPath) {
@@ -282,7 +282,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
             return
         }
 
-        UIUtils.presentEmailDisplayView(navigationController: naviController,
+        presentEmailDisplayView(navigationController: naviController,
                                         vm: vm.emailDetialViewModel(),
                                         indexPath: indexPath)
     }
@@ -1420,5 +1420,52 @@ extension EmailListViewController {
         }
         viewModel?.handleEditModeSelectionChange(selectedIndexPaths: [])
         navigationItem.leftBarButtonItems = [selectAllBarButton]
+    }
+}
+
+// MARK: - Present Views
+
+extension EmailListViewController {
+    /// Push view controller on given navigation controller
+    /// - Parameters:
+    ///   - navigationController: Navigation controller to use
+    ///   - vm: EmailDetailViewModel
+    ///   - indexPath: IndexPath is needed to show specified e-mail
+    private func presentEmailDisplayView(navigationController: UINavigationController,
+                                               vm: EmailDetailViewModel,
+                                               indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
+        guard
+            let emailDetailVC = storyboard.instantiateViewController(withIdentifier:
+                Constants.emailDetailSceneStoryboard) as? EmailDetailViewController
+            else {
+                Log.shared.errorAndCrash("Missing required data")
+                return
+        }
+
+        emailDetailVC.viewModel = vm
+        emailDetailVC.firstItemToShow = indexPath
+
+        navigationController.pushViewController(emailDetailVC, animated: true)
+    }
+
+    private func presentComposeViewToEditDraft(composeVM: ComposeViewModel) {
+        let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
+        guard
+            let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
+                Constants.composeSceneStoryboardId) as? UINavigationController,
+            let composeVc = composeNavigationController.rootViewController
+                    as? ComposeViewController
+            else {
+                Log.shared.errorAndCrash("Missing required VCs")
+                return
+        }
+        composeVc.viewModel = composeVM
+
+        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("No VC")
+            return
+        }
+        presenterVc.present(composeNavigationController, animated: true)
     }
 }
