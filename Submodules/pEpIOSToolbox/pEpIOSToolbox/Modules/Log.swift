@@ -9,9 +9,9 @@
 import Foundation
 
 /// Shared instance of logger.
-public class Log {
-    static public let shared = Logger()
+@objc public class Log: NSObject {
+    @objc static public let shared = Logger()
 
     /// Init is forbidden. Singleton...
-    private init() {}
+    private override init() {}
 }
