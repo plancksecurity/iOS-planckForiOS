@@ -33,7 +33,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     private var dismissRightButton: UIBarButtonItem?
 
     private var tempToolbarItems: [UIBarButtonItem]?
-    private var editRightButton: UIBarButtonItem?
+    private var editButton: UIBarButtonItem?
     private var flagToolbarButton: UIBarButtonItem?
     private var unflagToolbarButton: UIBarButtonItem?
     private var readToolbarButton: UIBarButtonItem?
@@ -186,7 +186,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         title = viewModel?.folderName
         navigationController?.title = title
 
-        editRightButton = UIBarButtonItem(title: NSLocalizedString("Edit",
+        editButton = UIBarButtonItem(title: NSLocalizedString("Edit",
                                                                    comment: "Edit - Right bar button item in Email List"),
                                           style: .plain,
                                           target: self,
@@ -218,16 +218,16 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
             //Valid case: might be dismissed.
             return
         }
-        guard let editRightButton = editRightButton else {
-            Log.shared.errorAndCrash(message: "editRightButton is not initialized!")
+        guard let editButton = editButton else {
+            Log.shared.errorAndCrash(message: "editButton in navigation is not initialized!")
             return
         }
         if vm.rowCount == 0 {
-            editRightButton.isEnabled = false
-            editRightButton.tintColor = .clear
+            editButton.isEnabled = false
+            editButton.tintColor = .clear
         } else {
-            editRightButton.isEnabled = true
-            editRightButton.tintColor = .pEpGreen
+            editButton.isEnabled = true
+            editButton.tintColor = .pEpGreen
         }
     }
 
@@ -251,16 +251,16 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
     private func showEditDraftComposeView() {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash("composeViewController setup issue")
+            Log.shared.errorAndCrash("No VM!")
             return
         }
         guard let indexPath = lastSelectedIndexPath else {
-            Log.shared.info("Can happen if the message the user wanted to reply to has been deleted in between performeSeque and here")
+            Log.shared.warn("No IndexPath. (Can happen if the message the user wanted to reply to has been deleted in between performeSeque and here)")
             return
         }
         guard let composeVM = vm.composeViewModel(forMessageRepresentedByItemAt: indexPath,
                                                   composeMode: .normal) else {
-            Log.shared.errorAndCrash(message: "Compose View Model for this indexPath doesn't exist!")
+            Log.shared.errorAndCrash(message: "No VM! (Compose View Model for this indexPath doesn't exist!)")
             return
         }
 
@@ -477,10 +477,10 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
         if isDraftsPreview {
             toolbarItems = [flexibleSpace, composeBtn, flexibleSpace]
-            navigationItem.rightBarButtonItem = isDraftsPreview ? dismissRightButton : editRightButton
+            navigationItem.rightBarButtonItem = isDraftsPreview ? dismissRightButton : editButton
         } else {
             toolbarItems = [enableFilterButton, flexibleSpace, composeBtn, flexibleSpace, settingsBtn]
-            navigationItem.rightBarButtonItem = editRightButton
+            navigationItem.rightBarButtonItem = editButton
         }
     }
 
@@ -491,9 +491,16 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     }
 
     @objc private func draftsPreviewTapped(sender: UILongPressGestureRecognizer) {
+        // We need to separate state of long press.
+        // We have to take an action only once after long press is recognized
+        // (Example: User clicks and hold compose icon for a while (~one, two seconds)
+        // and this condition triggers action with state .began)
         if sender.state != .began {
             return
         }
+        // If drafts preview action was presented before (drafts preview is already
+        // visible in modal) we have to prevent run another modal view with
+        // the same drafts preview view.
         if !isModalPresented {
             UIUtils.presentDraftsPreview()
         }
