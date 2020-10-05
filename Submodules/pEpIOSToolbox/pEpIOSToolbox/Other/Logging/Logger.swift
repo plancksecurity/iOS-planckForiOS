@@ -221,6 +221,18 @@ import CocoaLumberjackSwift
         }
     }
 
+    @objc public func logInfo(message: String,
+                              function: String = #function,
+                              filePath: String = #file,
+                              fileLine: UInt = #line) {
+        osLog(message: message,
+              severity: .info,
+              function: function,
+              filePath: filePath,
+              fileLine: fileLine,
+              args: [])
+    }
+
     private func osLog(message: String,
                        severity: Severity,
                        function: String = #function,
