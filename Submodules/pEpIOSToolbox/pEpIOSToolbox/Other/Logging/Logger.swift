@@ -206,6 +206,30 @@ import CocoaLumberjackSwift
                 args: [])
     }
 
+    @objc public func logError(message: String,
+                               function: String = #function,
+                               filePath: String = #file,
+                               fileLine: UInt = #line) {
+        saveLog(message: message,
+                severity: .error,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                args: [])
+    }
+
+    @objc public func logWarn(message: String,
+                              function: String = #function,
+                              filePath: String = #file,
+                              fileLine: UInt = #line) {
+        saveLog(message: message,
+                severity: .warn,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                args: [])
+    }
+
     private func saveLog(message: String,
                          severity: Severity,
                          function: String = #function,
