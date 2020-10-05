@@ -17,8 +17,6 @@ struct Constants {
     /// Name of Storyboard that contains ComposeViewController.
     static let composeSceneStoryboard = "Main"
 
-    static let emailDetailSceneStoryboard = "EmailDetailViewController"
-
     /// Name of Storyboard that contains AddToContactsViewController.
     static let addToContactsStoryboard = "Reusable"
 

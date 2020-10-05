@@ -1438,8 +1438,7 @@ extension EmailListViewController {
                                                indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
         guard
-            let emailDetailVC = storyboard.instantiateViewController(withIdentifier:
-                Constants.emailDetailSceneStoryboard) as? EmailDetailViewController
+            let emailDetailVC = storyboard.instantiateViewController(withIdentifier: "EmailDetailViewController") as? EmailDetailViewController
             else {
                 Log.shared.errorAndCrash("Missing required data")
                 return

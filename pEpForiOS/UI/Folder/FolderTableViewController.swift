@@ -194,16 +194,6 @@ extension FolderTableViewController: LoginViewControllerDelegate {
     }
 }
 
-// MARK: - Drafts Preview
-
-extension FolderTableViewController {
-
-    func composeAction() {
-        showCompose()
-    }
-}
-
-
 // MARK: - Segue
 
 extension FolderTableViewController: SegueHandlerType {
