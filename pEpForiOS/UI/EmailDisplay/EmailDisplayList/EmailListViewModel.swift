@@ -318,6 +318,7 @@ class EmailListViewModel: EmailDisplayViewModel {
         }
     }
 
+    /// Handles did select row action and make a decision what to do next (show different view or something else)
     public func handleDidSelectRow(indexPath: IndexPath) {
         guard let del = delegate as? EmailListViewModelDelegate else {
             Log.shared.errorAndCrash("Wrong Delegate")

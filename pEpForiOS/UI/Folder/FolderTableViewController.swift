@@ -106,7 +106,7 @@ final class FolderTableViewController: UITableViewController {
         UIUtils.presentSettings()
     }
 
-    @objc private func draftsPreviewTapped(sender: UILongPressGestureRecognizer) {
+    @objc func draftsPreviewTapped(sender: UILongPressGestureRecognizer) {
         if sender.state != .began {
             return
         }
