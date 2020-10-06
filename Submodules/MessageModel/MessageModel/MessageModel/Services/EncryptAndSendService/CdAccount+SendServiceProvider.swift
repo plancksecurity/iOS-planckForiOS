@@ -8,6 +8,8 @@
 
 import CoreData
 
+import pEpIOSToolbox
+
 // MARK: - CdAccount+SendServiceProvider
 
 extension CdAccount: SendServiceProvider {

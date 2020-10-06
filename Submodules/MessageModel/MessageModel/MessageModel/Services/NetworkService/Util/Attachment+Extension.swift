@@ -8,6 +8,8 @@
 
 import Foundation
 
+import pEpIOSToolbox
+
 extension Attachment {
     /// Is this attachment meant to show to the user?
     public func isViewable() -> Bool {

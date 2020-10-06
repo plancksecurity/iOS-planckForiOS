@@ -9,6 +9,8 @@
 import Foundation
 import MobileCoreServices
 
+import pEpIOSToolbox
+
 //!!!: Must move to Interface. Refactor.
 public class MimeTypeUtils {
     private var mimeTypeToExtension = [MimeTypeString: String]()

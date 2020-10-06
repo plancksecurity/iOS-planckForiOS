@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UISearchResultsUpdating {
 
     private let cellId = "ResetTrustSettingCell"

@@ -8,6 +8,8 @@
 
 import CoreData
 
+import pEpIOSToolbox
+
 public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
 
     // MARK: - ManagedObjectWrapperProtocol

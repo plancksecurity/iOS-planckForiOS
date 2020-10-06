@@ -7,7 +7,9 @@
 //
 
 import CoreData
+
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 extension CdAccount {
     

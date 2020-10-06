@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 class MoveToFolderTableViewController: UITableViewController {
 
     var viewModel : MoveToFolderViewModel?
