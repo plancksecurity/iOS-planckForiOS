@@ -14,6 +14,12 @@ import MessageModel
 
 extension UIUtils {
 
+    static public func presentComposeView(from mailto: Mailto) {
+        DispatchQueue.main.async {
+            ///TODO: present it. 
+        }
+    }
+
     /// Modally presents a "Compose New Mail" view.
     /// If we can parse a recipient from the url (e.g. "mailto:me@me.com") we prefill the "To:"
     /// field of the presented compose view.

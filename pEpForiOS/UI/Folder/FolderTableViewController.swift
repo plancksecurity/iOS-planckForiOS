@@ -23,7 +23,6 @@ class FolderTableViewController: BaseTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setup()
-
         if showNext {
             show(folder: UnifiedInbox())
         }

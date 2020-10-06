@@ -222,6 +222,14 @@ extension AppDelegate {
 
     @discardableResult
     private func handleUrlTheOSHasBroughtUsToForgroundFor(_ url: URL) -> Bool {
+        if url.isMailto {
+            guard let mailto = Mailto(url: url) else {
+                Log.shared.errorAndCrash("Mailto parsing failed")
+                return false
+            }
+            UIUtils.presentComposeView(from: mailto)
+            return false
+        }
         switch url.pathExtension {
         case ClientCertificateImportViewController.pEpClientCertificateExtension:
             return handleClientCertificateImport(forCertAt: url)
@@ -253,3 +261,5 @@ extension AppDelegate {
         return true
     }
 }
+
+
