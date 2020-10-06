@@ -8,6 +8,8 @@
 
 import PEPObjCAdapterFramework
 
+import pEpIOSToolbox
+
 /// Pass to adapter PEPObjCAdapter.setPassphraseProvider(PEPPassphraseProviderProtocol).
 /// - see: PEPObjCAdapter.PEPPassphraseProviderProtocol docs for details.
 class PEPPassphraseProvider: NSObject {

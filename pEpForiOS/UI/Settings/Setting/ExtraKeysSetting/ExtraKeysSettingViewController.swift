@@ -6,6 +6,8 @@
 //  Copyright © 2019 p≡p Security S.A. All rights reserved.
 //
 
+import pEpIOSToolbox
+
 class ExtraKeysSettingViewController: UIViewController {
     static private let uiTableViewCellID = "ExtraKeysSettingCell"
 

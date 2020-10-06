@@ -7,7 +7,9 @@
 //
 
 import CoreData
+
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 /// IMAP Appends all mails that need append for one account.
 /// - note: the operations MUST NOT run concurrently. Thus we are using a serial queue.

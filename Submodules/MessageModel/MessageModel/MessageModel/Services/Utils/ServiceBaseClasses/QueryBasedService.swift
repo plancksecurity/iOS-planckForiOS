@@ -8,6 +8,8 @@
 
 import CoreData
 
+import pEpIOSToolbox
+
 protocol QueryBasedServiceProtocol: OperationBasedServiceProtocol {
     associatedtype T: NSManagedObject
 

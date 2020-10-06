@@ -24,4 +24,7 @@ public protocol AppSettingsProtocol {
     /// Whether or not to warn the user in case a forwarded message is less secure as the forwarded
     /// (original) message.
     var unsecureReplyWarningEnabled: Bool { get set }
+
+    /// Should the logging be verbose, or not?
+    var verboseLogginEnabled: Bool { get set }
 }

@@ -132,7 +132,6 @@
 		15C7A88D2385C08100C47364 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 15C7A88C2385C08100C47364 /* PorpoiseGalaxy_HubbleFraile_960.jpg */; };
 		15C7A8902387EF9500C47364 /* PantomimeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C7A88F2387EF9500C47364 /* PantomimeStore.swift */; };
 		15CCE2C52225BCE5004A8306 /* CoreDataEntityAttributeNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CCE2C42225BCE5004A8306 /* CoreDataEntityAttributeNames.swift */; };
-		15CCE2FB22297228004A8306 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CCE2FA22297228004A8306 /* Log.swift */; };
 		15CCE30022297464004A8306 /* LogTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CCE2FF22297464004A8306 /* LogTest.swift */; };
 		15E01F9F24AB420B00DFADA3 /* PassphraseUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E01F9E24AB420B00DFADA3 /* PassphraseUtil.swift */; };
 		15E39FC422551D650016A1C4 /* Message+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E39FC322551D650016A1C4 /* Message+SessionAware.swift */; };
@@ -639,7 +638,6 @@
 		15C7A88C2385C08100C47364 /* PorpoiseGalaxy_HubbleFraile_960.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = PorpoiseGalaxy_HubbleFraile_960.jpg; sourceTree = "<group>"; };
 		15C7A88F2387EF9500C47364 /* PantomimeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantomimeStore.swift; sourceTree = "<group>"; };
 		15CCE2C42225BCE5004A8306 /* CoreDataEntityAttributeNames.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataEntityAttributeNames.swift; sourceTree = "<group>"; };
-		15CCE2FA22297228004A8306 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		15CCE2FF22297464004A8306 /* LogTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogTest.swift; sourceTree = "<group>"; };
 		15E01F9E24AB420B00DFADA3 /* PassphraseUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseUtil.swift; sourceTree = "<group>"; };
 		15E39FC322551D650016A1C4 /* Message+SessionAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+SessionAware.swift"; sourceTree = "<group>"; };
@@ -1088,7 +1086,6 @@
 			isa = PBXGroup;
 			children = (
 				430CD9AA22929D2000AAC37F /* KeySync */,
-				15CCE2F9222971FE004A8306 /* Log */,
 				15175EBA221D74C200C91DB8 /* QueryResultsController */,
 			);
 			path = Modules;
@@ -1702,14 +1699,6 @@
 				15C7A88F2387EF9500C47364 /* PantomimeStore.swift */,
 			);
 			path = ImapConnection;
-			sourceTree = "<group>";
-		};
-		15CCE2F9222971FE004A8306 /* Log */ = {
-			isa = PBXGroup;
-			children = (
-				15CCE2FA22297228004A8306 /* Log.swift */,
-			);
-			path = Log;
 			sourceTree = "<group>";
 		};
 		15CCE2FC22297434004A8306 /* Log */ = {
@@ -3050,7 +3039,6 @@
 				3AECFB7B2462C9B2004842D6 /* CdHeaderField+PredicateFactory.swift in Sources */,
 				4352FA271DC7A1C20081161A /* KeyChain.swift in Sources */,
 				154660C22333927B008D2137 /* Service.swift in Sources */,
-				15CCE2FB22297228004A8306 /* Log.swift in Sources */,
 				43EA4881221E9518006E8F83 /* BaseOperation.swift in Sources */,
 				439B16AD22802B6B00201DE5 /* VerifiableAccountIMAP.swift in Sources */,
 				43123FBD225374030038D72C /* CdFolder+IMAP.swift in Sources */,

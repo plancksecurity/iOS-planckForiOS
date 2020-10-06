@@ -7,7 +7,9 @@
 //
 
 import Foundation
+
 import MessageModel
+import pEpIOSToolbox
 
 class PGPKeyImportSettingViewController: UIViewController {
     static private let switchCellID = "PGPKeyImportSettingsSwitchTableViewCell"
