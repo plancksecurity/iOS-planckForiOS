@@ -257,6 +257,8 @@
 		431E65631EEAE65200B8BBFC /* HandshakeUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E65621EEAE65200B8BBFC /* HandshakeUITest.swift */; };
 		431E68B3246C267A00B3A977 /* KeyImportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E68B2246C267A00B3A977 /* KeyImportViewModel.swift */; };
 		431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */; };
+		4320294C252C8E4E00986C44 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4320294B252C8E4E00986C44 /* CocoaLumberjack.framework */; };
+		4320294D252C8E4E00986C44 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4320294B252C8E4E00986C44 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4322E82F1F9DE8260011FC55 /* Microsoft_Outlook_Probing_Message_001.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4322E82E1F9DE8260011FC55 /* Microsoft_Outlook_Probing_Message_001.txt */; };
 		43236E652459891B00D8318D /* OAuth2Type+VerifiableAccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43236E642459891B00D8318D /* OAuth2Type+VerifiableAccountType.swift */; };
 		43257C801F50064100DDC7F0 /* HtmlToTextSaxParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43257C7F1F50064100DDC7F0 /* HtmlToTextSaxParser.swift */; };
@@ -505,6 +507,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				436F1BA425028B8A004426DC /* CocoaLumberjackSwift.framework in Embed Frameworks */,
+				4320294D252C8E4E00986C44 /* CocoaLumberjack.framework in Embed Frameworks */,
 				B710526C24168481007148E8 /* AppAuth.framework in Embed Frameworks */,
 				1512133224166C7B009B7C88 /* PantomimeFramework.framework in Embed Frameworks */,
 				1512133E24166CE0009B7C88 /* ldns_xcode.framework in Embed Frameworks */,
@@ -833,6 +836,7 @@
 		431E65621EEAE65200B8BBFC /* HandshakeUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeUITest.swift; sourceTree = "<group>"; };
 		431E68B2246C267A00B3A977 /* KeyImportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportViewModel.swift; sourceTree = "<group>"; };
 		431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
+		4320294B252C8E4E00986C44 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4322E82E1F9DE8260011FC55 /* Microsoft_Outlook_Probing_Message_001.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Microsoft_Outlook_Probing_Message_001.txt; sourceTree = "<group>"; };
 		43236E642459891B00D8318D /* OAuth2Type+VerifiableAccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OAuth2Type+VerifiableAccountType.swift"; sourceTree = "<group>"; };
 		43257C7F1F50064100DDC7F0 /* HtmlToTextSaxParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlToTextSaxParser.swift; sourceTree = "<group>"; };
@@ -1126,6 +1130,7 @@
 			files = (
 				B710526524168400007148E8 /* SwipeCellKit.framework in Frameworks */,
 				1512133524166C95009B7C88 /* libAccountSettingsAdapter.a in Frameworks */,
+				4320294C252C8E4E00986C44 /* CocoaLumberjack.framework in Frameworks */,
 				B710526824168474007148E8 /* pEpIOSToolbox.framework in Frameworks */,
 				1512133124166C7B009B7C88 /* PantomimeFramework.framework in Frameworks */,
 				1512133D24166CE0009B7C88 /* ldns_xcode.framework in Frameworks */,
@@ -2531,6 +2536,7 @@
 			isa = PBXGroup;
 			children = (
 				436F1BA225028B7D004426DC /* CocoaLumberjackSwift.framework */,
+				4320294B252C8E4E00986C44 /* CocoaLumberjack.framework */,
 				1512133C24166CDF009B7C88 /* ldns_xcode.framework */,
 				159E1F1422BD0756007D711F /* PEPObjCAdapterFramework.framework */,
 				159E1F1222BD074F007D711F /* PantomimeFramework.framework */,
