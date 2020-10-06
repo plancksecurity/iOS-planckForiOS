@@ -8,6 +8,8 @@
 
 import XCTest
 
+import pEpIOSToolbox
+
 @testable import MessageModel
 
 class LogTest: XCTestCase {

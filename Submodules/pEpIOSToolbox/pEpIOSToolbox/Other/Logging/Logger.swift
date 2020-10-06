@@ -10,10 +10,11 @@ import Foundation
 
 import CocoaLumberjackSwift
 
-public class Logger {
-    public init(subsystem: String = "security.pEp.app.iOS", category: String) {
-        self.subsystem = subsystem
-        self.category = category
+@objc public class Logger: NSObject {
+    public var verboseLoggingEnabled: Bool = false
+
+    public override init() {
+        super.init()
         initLumberjack()
     }
 
@@ -29,10 +30,10 @@ public class Logger {
     /// - Note: Gets persisted, so a later sysinfo on the device will recover it.
     public func warn(function: String = #function,
                      filePath: String = #file,
-                     fileLine: Int = #line,
+                     fileLine: UInt = #line,
                      _ message: StaticString,
                      _ args: CVarArg...) {
-        saveLog(message: message,
+        saveLog(message: "\(message)",
                 severity: .warn,
                 function: function,
                 filePath: filePath,
@@ -46,10 +47,10 @@ public class Logger {
     ///     so don't expect to find this in a sysinfo log.
     public func info(function: String = #function,
                      filePath: String = #file,
-                     fileLine: Int = #line,
+                     fileLine: UInt = #line,
                      _ message: StaticString,
                      _ args: CVarArg...) {
-        saveLog(message: message,
+        saveLog(message: "\(message)",
                 severity: .info,
                 function: function,
                 filePath: filePath,
@@ -60,10 +61,10 @@ public class Logger {
     /// Use for debug messages only, will not be persisted.
     public func debug(function: String = #function,
                       filePath: String = #file,
-                      fileLine: Int = #line,
+                      fileLine: UInt = #line,
                       _ message: StaticString,
                       _ args: CVarArg...) {
-        saveLog(message: message,
+        saveLog(message: "\(message)",
                 severity: .debug,
                 function: function,
                 filePath: filePath,
@@ -75,10 +76,10 @@ public class Logger {
     /// - Note: Gets persisted, so a later sysinfo on the device will recover it.
     public func error(function: String = #function,
                       filePath: String = #file,
-                      fileLine: Int = #line,
+                      fileLine: UInt = #line,
                       _ message: StaticString,
                       _ args: CVarArg...) {
-        saveLog(message: message,
+        saveLog(message: "\(message)",
                 severity: .error,
                 function: function,
                 filePath: filePath,
@@ -89,9 +90,9 @@ public class Logger {
     /// Logs an error and crashes in a debug build, continues to run in a release build.
     public func errorAndCrash(function: String = #function,
                               filePath: String = #file,
-                              fileLine: Int = #line,
+                              fileLine: UInt = #line,
                               error: Error) {
-        osLog(message: "*** errorAndCrash: \(error)",
+        interpolateAndLog(message: "*** errorAndCrash: \(error)",
             severity: .error,
             function: function,
             filePath: filePath,
@@ -104,9 +105,9 @@ public class Logger {
     /// Logs an error message and crashes in a debug build, continues to run in a release build.
     public func errorAndCrash(function: String = #function,
                               filePath: String = #file,
-                              fileLine: Int = #line,
+                              fileLine: UInt = #line,
                               message: String) {
-        osLog(message: "*** errorAndCrash: \(message)",
+        interpolateAndLog(message: "*** errorAndCrash: \(message)",
             severity: .error,
             function: function,
             filePath: filePath,
@@ -120,10 +121,10 @@ public class Logger {
     /// continues to run in a release build.
     public func errorAndCrash(function: String = #function,
                               filePath: String = #file,
-                              fileLine: Int = #line,
+                              fileLine: UInt = #line,
                               _ message: StaticString,
                               _ args: CVarArg...) {
-        osLog(message: "*** errorAndCrash: \(message)",
+        interpolateAndLog(message: "*** errorAndCrash: \(message)",
             severity: .error,
             function: function,
             filePath: filePath,
@@ -137,7 +138,7 @@ public class Logger {
     /// Logs an error.
     public func log(function: String = #function,
                     filePath: String = #file,
-                    fileLine: Int = #line,
+                    fileLine: UInt = #line,
                     error theError: Error) {
         error(function: function,
               filePath: filePath,
@@ -152,35 +153,116 @@ public class Logger {
         errorAndCrash("Lost MySelf")
     }
 
-    private let subsystem: String
-    private let category: String
-
     private func initLumberjack() {
         DDLog.add(DDOSLogger.sharedInstance) // Uses os_log
+
+        guard let theDocUrl = createLoggingDirectory() else {
+            return
+        }
+
+        let fileManager = DDLogFileManagerDefault(logsDirectory: theDocUrl.path)
+
+        let fileLogger: DDFileLogger = DDFileLogger(logFileManager: fileManager)
+        fileLogger.rollingFrequency = 60 * 60 * 24 // 24 hours
+        fileLogger.logFileManager.maximumNumberOfLogFiles = 7
+        DDLog.add(fileLogger)
     }
 
-    private func saveLog(message: StaticString,
+    private func getLoggingDirectory() -> URL? {
+        let documentsUrl = FileManager.default.urls(for: .documentDirectory,
+                                                    in: .userDomainMask).first
+        guard var theDocUrl = documentsUrl else {
+            return nil
+        }
+
+        theDocUrl.appendPathComponent("logs")
+
+        return theDocUrl
+    }
+
+    private func createLoggingDirectory() -> URL? {
+        guard let theDocUrl = getLoggingDirectory() else {
+            return nil
+        }
+
+        do {
+            try FileManager.default.createDirectory(at: theDocUrl,
+                                                    withIntermediateDirectories: true,
+                                                    attributes: nil)
+            return theDocUrl
+        } catch {
+            errorAndCrash("Could not create the logging directory")
+        }
+
+        return nil
+    }
+
+    @objc public func logInfo(message: String,
+                              function: String = #function,
+                              filePath: String = #file,
+                              fileLine: UInt = #line) {
+        saveLog(message: message,
+                severity: .info,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                args: [])
+    }
+
+    @objc public func logError(message: String,
+                               function: String = #function,
+                               filePath: String = #file,
+                               fileLine: UInt = #line) {
+        saveLog(message: message,
+                severity: .error,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                args: [])
+    }
+
+    @objc public func logWarn(message: String,
+                              function: String = #function,
+                              filePath: String = #file,
+                              fileLine: UInt = #line) {
+        saveLog(message: message,
+                severity: .warn,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                args: [])
+    }
+
+    private func saveLog(message: String,
                          severity: Severity,
                          function: String = #function,
                          filePath: String = #file,
-                         fileLine: Int = #line,
+                         fileLine: UInt = #line,
                          args: [CVarArg]) {
-        osLog(message: "\(message)",
-              severity: severity,
-              function: function,
-              filePath: filePath,
-              fileLine: fileLine,
-              args: args)
+        if (severity.shouldBeLoggedIfNotDebug(verbose: verboseLoggingEnabled)) {
+            interpolateAndLog(message: message,
+                  severity: severity,
+                  function: function,
+                  filePath: filePath,
+                  fileLine: fileLine,
+                  args: args)
+        }
     }
 
-    private func osLog(message: String,
-                       severity: Severity,
-                       function: String = #function,
-                       filePath: String = #file,
-                       fileLine: Int = #line,
-                       args: [CVarArg]) {
+    private func interpolateAndLog(message: String,
+                                   severity: Severity,
+                                   function: String = #function,
+                                   filePath: String = #file,
+                                   fileLine: UInt = #line,
+                                   args: [CVarArg]) {
+        // Note that we interpolate _both_ the args _and_ the location info ourselves,
+        // instead of letting the logging framework handle it.
+        // This is necessary to be compatible with ObjC, who doesn't know about StaticString,
+        // while lumberjack only accepts StaticString in its (swift) interface.
+        // Alternatively, we could move this file into ObjC world, and use
+        // only the ObjC version of lumberjack.
         let interpolatedString = String(format: message, arguments: args)
-        let interpolatedMessage = "\(subsystem) \(category) \(filePath):\(fileLine) \(function) \(interpolatedString)"
+        let interpolatedMessage = "\(filePath):\(fileLine) \(function) \(interpolatedString)"
 
         switch severity {
         case .debug:
@@ -208,5 +290,32 @@ public class Logger {
         /// Indicates an error.
         /// - Note: Gets persisted.
         case error
+
+        /// Determines if this severity should lead to logging,
+        /// depending on the provided verbose flag, and if DEBUG is set or not.
+        /// - Returns: `true` when this severity should lead to logging, `false` otherwise
+        func shouldBeLoggedIfNotDebug(verbose: Bool) -> Bool {
+            #if DEBUG
+            // Log everything in DEBUG
+            return true
+            #else
+            if verbose {
+                // In !DEBUG, log if verbose is ON.
+                return true
+            } else {
+                // In !DEBUG, !verbose, log depending on severity
+                switch self {
+                case .info:
+                    return false
+                case .debug:
+                    return false
+                case .warn:
+                    return true
+                case .error:
+                    return true
+                }
+            }
+            #endif
+        }
     }
 }

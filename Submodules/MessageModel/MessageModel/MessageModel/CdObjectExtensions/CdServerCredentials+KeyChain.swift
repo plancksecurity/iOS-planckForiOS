@@ -8,6 +8,8 @@
 
 import CoreData
 
+import pEpIOSToolbox
+
 // MARK: - Password & KeyChain Access
 
 extension CdServerCredentials {

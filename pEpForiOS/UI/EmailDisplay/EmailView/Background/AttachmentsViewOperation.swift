@@ -10,6 +10,7 @@
 import Foundation
 
 import MessageModel
+import pEpIOSToolbox
 
 class AttachmentsViewOperation: Operation {
     enum AttachmentContainer {

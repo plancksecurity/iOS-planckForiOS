@@ -8,6 +8,8 @@
 
 import Foundation
 
+import pEpIOSToolbox
+
 /// Updates existing Identities with CNContact.identifier if found.
 class UpdateIdentitiesAddressBookIdService: Service {
     let cnContactsAccessPermissionProvider: CNContactsAccessPermissionProviderProtocol

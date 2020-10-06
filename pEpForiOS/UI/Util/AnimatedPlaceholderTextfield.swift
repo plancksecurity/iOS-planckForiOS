@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 @IBDesignable
 /// TextField with animated placeholder (moves above TextField).
 /// If textField text is empty and not first responder placeholde will be center in TextField (as normal).

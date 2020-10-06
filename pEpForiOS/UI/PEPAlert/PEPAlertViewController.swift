@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 final class PEPAlertViewController: UIViewController {
 
     @IBOutlet weak var alertTitle: UILabel!

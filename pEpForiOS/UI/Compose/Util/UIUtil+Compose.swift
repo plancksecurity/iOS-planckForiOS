@@ -6,11 +6,11 @@
 //  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
+
 import MessageModel
+import pEpIOSToolbox
 
 // MARK: - UIUtil+Compose
-
-import MessageModel
 
 extension UIUtils {
 
