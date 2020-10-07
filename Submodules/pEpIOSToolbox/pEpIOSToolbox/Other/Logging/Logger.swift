@@ -189,6 +189,11 @@ import CocoaLumberjackSwift
                 args: [])
     }
 
+    /// Gets the latest log entries as a string
+    public func getLogString() -> String {
+        return ""
+    }
+
     private func initLumberjack() {
         DDLog.add(DDOSLogger.sharedInstance) // Uses os_log
 
