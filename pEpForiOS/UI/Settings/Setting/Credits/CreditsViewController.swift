@@ -21,3 +21,10 @@ class CreditsViewController: UIViewController {
         viewModel.handleVerboseLoggingSwitchChange(newValue: sender.isOn)
     }
 }
+
+extension CreditsViewController {
+    /// Identifier of the segues.
+    enum SegueIdentifier: String {
+        case segueShowLog
+    }
+}
