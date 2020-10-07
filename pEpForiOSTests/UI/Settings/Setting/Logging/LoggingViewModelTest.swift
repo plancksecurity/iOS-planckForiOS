@@ -43,7 +43,7 @@ class LoggingViewModelTest: XCTestCase {
             Log.shared.logWarn(message: line)
         }
 
-        wait(for: [expLogged], timeout: TestUtil.waitTimeCoupleOfSeconds)
+        wait(for: [expLogged], timeout: TestUtil.waitTime)
         XCTAssertFalse(delegateMock.logEntries.isEmpty)
     }
 }
