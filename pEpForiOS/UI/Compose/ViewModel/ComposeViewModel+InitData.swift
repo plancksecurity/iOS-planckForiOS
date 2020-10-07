@@ -110,13 +110,12 @@ extension ComposeViewModel {
         public var nonInlinedAttachments = [Attachment]()
         public var inlinedAttachments = [Attachment]()
 
-        init(composeMode: ComposeUtil.ComposeMode? = nil,
-             prefilledTos: [Identity]? = nil,
+        init(prefilledTos: [Identity]? = nil,
              prefilledCCs: [Identity]? = nil,
              prefilledBCCs: [Identity]? = nil) {
-            self.prefilledTos = prefilledTos
-            self.composeMode = composeMode ?? .normal
+            self.composeMode = .normal
             self.prefilledFrom = nil
+            self.prefilledTos = prefilledTos
             self.prefilledCCs = prefilledCCs
             self.prefilledBCCs = prefilledBCCs
         }

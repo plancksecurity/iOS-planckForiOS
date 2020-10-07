@@ -7,8 +7,10 @@
 //
 
 import Foundation
-import PEPObjCAdapterFramework
 import CoreData
+
+import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 extension CdMessage {
 

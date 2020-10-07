@@ -7,10 +7,12 @@
 //
 
 
-@testable import MessageModel
-import CoreData
-import PEPObjCAdapterFramework
 import XCTest
+import CoreData
+
+@testable import MessageModel
+import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 class TestUtil {
     
@@ -555,7 +557,7 @@ extension TestUtil {
         let contentDisposition = inlined ? Attachment.ContentDispositionType.inline : .attachment
 
         return Attachment(data: imageData,
-                          mimeType: MimeTypeUtils.MimeType.jpeg,
+                          mimeType: MimeTypeUtils.MimeType.jpeg.rawValue,
                           fileName: imageFileName,
                           contentDisposition: contentDisposition)
     }

@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpIOSToolbox
 
 // MARK: - Passphrase Dialogs for using a key with  Passphrase (PASSPHRASE_REQUIRED)
 

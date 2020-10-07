@@ -8,6 +8,8 @@
 
 import CoreData
 
+import pEpIOSToolbox
+
 ///Syncs existing messages in one IMAP fiolder with the servers, e.g., detecting deleted ones.
 class SyncMessagesInImapFolderOperation: ImapSyncOperation {
     private var folderID: NSManagedObjectID?

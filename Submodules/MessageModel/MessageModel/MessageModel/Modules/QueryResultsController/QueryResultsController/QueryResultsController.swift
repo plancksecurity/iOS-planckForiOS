@@ -8,6 +8,8 @@
 
 import CoreData
 
+import pEpIOSToolbox
+
 // We must inherit from NSObject to be able to conform to NSFetchedResultsControllerDelegate
 class QueryResultsController<T: NSManagedObject>: NSObject, QueryResultsControllerProtocol,
 NSFetchedResultsControllerDelegate {

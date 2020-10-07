@@ -7,7 +7,9 @@
 //
 
 import XCTest
+
 @testable import MessageModel
+import pEpIOSToolbox
 
 class FetchMessagesServiceTest: PersistentStoreDrivenTestBase {
     var inbox: Folder? {
