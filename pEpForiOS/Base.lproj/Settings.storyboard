@@ -93,10 +93,10 @@
             </objects>
             <point key="canvasLocation" x="-2242.4000000000001" y="-390.85457271364322"/>
         </scene>
-        <!--Logging View Controller-->
+        <!--Live Log View Controller-->
         <scene sceneID="aut-kE-1r4">
             <objects>
-                <viewController id="oQJ-uA-URQ" customClass="LoggingViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="oQJ-uA-URQ" customClass="LiveLogViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="vOB-z1-Y8a"/>
                         <viewControllerLayoutGuide type="bottom" id="WYN-Gx-FVL"/>
