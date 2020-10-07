@@ -9,4 +9,20 @@
 import UIKit
 
 class LoggingViewController: UIViewController {
+    private var viewModel = LoggingViewModel()
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.delegate = self
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        viewModel.delegate = nil
+    }
+}
+
+extension LoggingViewController: LogViewModelDelegate {
+    func updateLogContents(logString: String) {
+        print("**** have log!")
+    }
 }
