@@ -17,11 +17,11 @@
                         <viewControllerLayoutGuide type="bottom" id="6O9-Ey-98d"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Hc0-nI-vWy">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ulj-Nd-oXa">
-                                <rect key="frame" x="28" y="8" width="319" height="651"/>
+                                <rect key="frame" x="28" y="8" width="319" height="631"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" systemColor="labelColor"/>
@@ -51,7 +51,7 @@
                         <viewControllerLayoutGuide type="bottom" id="02b-aC-FFK"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="FFU-eh-fPY">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="585"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
@@ -75,7 +75,9 @@
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bKk-4n-FeT">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="585"/>
                                 <connections>
-                                    <segue destination="Zm5-ki-2iG" kind="embed" id="Ugg-wV-scd"/>
+                                    <segue destination="r1k-Au-i91" kind="popoverPresentation" identifier="segueShowLog" popoverAnchorView="bKk-4n-FeT" id="cPe-5k-gg7">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
                                 </connections>
                             </containerView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5eB-ze-50V">
