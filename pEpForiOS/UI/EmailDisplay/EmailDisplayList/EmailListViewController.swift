@@ -25,11 +25,10 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
 
-    // Right toolbar button for dismiss modal view in Drafts Preview mode
-    private var dismissRightButton: UIBarButtonItem?
-
     private var tempToolbarItems: [UIBarButtonItem]?
     private var editButton: UIBarButtonItem?
+    // Right toolbar button for dismiss modal view in Drafts Preview mode
+    private var dismissButton: UIBarButtonItem?
     private var flagToolbarButton: UIBarButtonItem?
     private var unflagToolbarButton: UIBarButtonItem?
     private var readToolbarButton: UIBarButtonItem?
@@ -191,7 +190,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
                                           target: self,
                                           action: #selector(editButtonPressed(_:)))
 
-        dismissRightButton = UIBarButtonItem(title: NSLocalizedString("Cancel",
+        dismissButton = UIBarButtonItem(title: NSLocalizedString("Cancel",
                                                                       comment: "Cancel - right bar button item in Email List to dismiss a view for Drafts Preview mode"),
                                              style: .plain,
                                              target: self,
@@ -461,7 +460,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
         if vm.isDraftsPreviewMode {
             toolbarItems = [flexibleSpace, composeBtn, flexibleSpace]
-            navigationItem.rightBarButtonItem = dismissRightButton
+            navigationItem.rightBarButtonItem = dismissButton
         } else {
             toolbarItems = [enableFilterButton, flexibleSpace, composeBtn, flexibleSpace, settingsBtn]
             navigationItem.rightBarButtonItem = editButton
