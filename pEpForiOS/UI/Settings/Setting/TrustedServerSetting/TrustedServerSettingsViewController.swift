@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 class TrustedServerSettingsViewController: UIViewController {
 
     @IBOutlet private weak var tableView: UITableView!

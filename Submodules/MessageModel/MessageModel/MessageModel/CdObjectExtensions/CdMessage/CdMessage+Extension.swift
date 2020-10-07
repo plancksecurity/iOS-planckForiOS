@@ -8,6 +8,8 @@
 
 import CoreData
 
+import pEpIOSToolbox
+
 extension CdMessage {
 
     @discardableResult static func create(withContentOf msg: Message) -> CdMessage? {

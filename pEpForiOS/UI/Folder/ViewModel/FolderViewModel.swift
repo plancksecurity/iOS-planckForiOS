@@ -7,7 +7,9 @@
 //
 
 import Foundation
+
 import MessageModel
+import pEpIOSToolbox
 
 /// View Model for folder hierarchy.
 public class FolderViewModel {

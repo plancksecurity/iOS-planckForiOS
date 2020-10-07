@@ -9,6 +9,8 @@
 import Foundation
 import WebKit
 
+import pEpIOSToolbox
+
 class PEPWebViewController: UIViewController {
 
     override var collapsedBehavior: CollapsedSplitViewBehavior {

@@ -7,8 +7,8 @@
 //
 
 
-import CoreData
 import XCTest
+import CoreData
 
 @testable import MessageModel
 import PEPObjCAdapterFramework

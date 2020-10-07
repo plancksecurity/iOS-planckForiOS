@@ -9,6 +9,7 @@
 import Foundation
 
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 /// Wraps `PEPLanguage`, indicating a trustwords language.
 public struct TrustwordsLanguage {
