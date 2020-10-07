@@ -14,16 +14,6 @@ import pEpIOSToolbox
 class LoggingViewModelTest: XCTestCase {
     let logUpdateInterval = 0.3
 
-    func testEmpty() {
-        let vm = LoggingViewModel()
-        vm.updateInterval = logUpdateInterval
-        let expLogged = expectation(description: "expLogged")
-        let delegateMock = LoggingMock(expLogged: expLogged)
-        vm.delegate = delegateMock
-        wait(for: [expLogged], timeout: TestUtil.waitTimeCoupleOfSeconds)
-        XCTAssertEqual(delegateMock.logEntries.count, 0)
-    }
-
     func testCoupleOfLines() {
         let vm = LoggingViewModel()
         vm.updateInterval = logUpdateInterval
@@ -54,7 +44,7 @@ class LoggingViewModelTest: XCTestCase {
         }
 
         wait(for: [expLogged], timeout: TestUtil.waitTimeCoupleOfSeconds)
-        XCTAssertEqual(delegateMock.logEntries, logLines)
+        XCTAssertFalse(delegateMock.logEntries.isEmpty)
     }
 }
 
