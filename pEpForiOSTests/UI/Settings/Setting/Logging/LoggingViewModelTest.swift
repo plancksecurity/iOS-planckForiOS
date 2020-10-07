@@ -15,7 +15,7 @@ class LoggingViewModelTest: XCTestCase {
     let logUpdateInterval = 0.3
 
     func testCoupleOfLines() {
-        let vm = LoggingViewModel()
+        let vm = LiveLogViewModel()
         vm.updateInterval = logUpdateInterval
         let expLogged = expectation(description: "expLogged")
         let delegateMock = LoggingMock(expLogged: expLogged)
@@ -31,7 +31,7 @@ class LoggingViewModelTest: XCTestCase {
     }
 
     func testRepeatingCoupleOfLines() {
-        let vm = LoggingViewModel()
+        let vm = LiveLogViewModel()
         vm.updateInterval = logUpdateInterval
         let expLogged = expectation(description: "expLogged")
         expLogged.expectedFulfillmentCount = 2
@@ -48,7 +48,7 @@ class LoggingViewModelTest: XCTestCase {
     }
 }
 
-class LoggingMock: LogViewModelDelegate {
+class LoggingMock: LiveLogViewModelDelegate {
     var logEntries = [String]()
     var expLogged: XCTestExpectation?
 
