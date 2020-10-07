@@ -12,9 +12,11 @@ import XCTest
 import pEpIOSToolbox
 
 class LoggingViewModelTest: XCTestCase {
+    let logUpdateInterval = 0.3
+
     func testEmpty() {
         let vm = LoggingViewModel()
-        vm.updateInterval = 0.5
+        vm.updateInterval = logUpdateInterval
         let expLogged = expectation(description: "expLogged")
         let delegateMock = LoggingMock(expLogged: expLogged)
         vm.delegate = delegateMock
@@ -24,7 +26,7 @@ class LoggingViewModelTest: XCTestCase {
 
     func testCoupleOfLines() {
         let vm = LoggingViewModel()
-        vm.updateInterval = 0.5
+        vm.updateInterval = logUpdateInterval
         let expLogged = expectation(description: "expLogged")
         let delegateMock = LoggingMock(expLogged: expLogged)
         vm.delegate = delegateMock
@@ -40,7 +42,7 @@ class LoggingViewModelTest: XCTestCase {
 
     func testRepeatingCoupleOfLines() {
         let vm = LoggingViewModel()
-        vm.updateInterval = 0.5
+        vm.updateInterval = logUpdateInterval
         let expLogged = expectation(description: "expLogged")
         expLogged.expectedFulfillmentCount = 2
         let delegateMock = LoggingMock(expLogged: expLogged)
@@ -65,7 +67,9 @@ class LoggingMock: LogViewModelDelegate {
     }
 
     func updateLogContents(logString: String) {
-        logEntries.append(logString)
+        if !logString.isEmpty {
+            logEntries.append(logString)
+        }
         expLogged?.fulfill()
     }
 }
