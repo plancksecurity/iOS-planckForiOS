@@ -316,12 +316,9 @@ extension LoginViewController {
 extension LoginViewController.LoginError: LocalizedError {
     var errorDescription: String? {
         switch self {
-        case .missingEmail:
-            return NSLocalizedString("A valid email is required",
-                                     comment: "error message for .missingEmail")
-        case .invalidEmail:
-            return NSLocalizedString("A valid email is required",
-                                     comment: "error message for .invalidEmail")
+        case .missingEmail, .invalidEmail:
+            return NSLocalizedString("A valid email address is required",
+                                     comment: "error message for .missingEmail or .invalidEmail")
         case .missingPassword:
             return NSLocalizedString("A non-empty password is required",
                                      comment: "error message for .missingPassword")
@@ -430,12 +427,12 @@ extension LoginViewController {
                 Log.shared.errorAndCrash("Login should not do ouath with other email address")
             }
         } else {
-            guard let error = DisplayUserError(withError: error) else {
+            guard let displayError = DisplayUserError(withError: error) else {
                 // Do nothing. The error type is not suitable to bother the user with.
                 return
             }
-            title = error.title
-            message = error.localizedDescription
+            title = displayError.title
+            message = displayError.errorDescription
         }
 
         let alertView = UIAlertController.pEpAlertController(title: title,
@@ -520,7 +517,7 @@ extension LoginViewController {
                                                  comment: "Password TextField Placeholder in Login Screen")
 
         emailAddress.textColorWithText = .pEpGreen
-        emailAddress.placeholder = NSLocalizedString("E-mail Address",
+        emailAddress.placeholder = NSLocalizedString("Email Address",
                                                      comment: "Email TextField Placeholder in Login Screen")
     }
 

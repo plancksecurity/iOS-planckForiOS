@@ -8,6 +8,8 @@
 
 import Foundation
 
+import pEpIOSToolbox
+
 /// Removes (mark as deleted in IMAP terms) old autoconsumable messages.
 ///
 /// Messages to be deleted must have the following characteristics:

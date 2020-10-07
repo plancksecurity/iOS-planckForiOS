@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 final class AccountSettingsSwitchTableViewCell: UITableViewCell {
 
     static let identifier = "SwitchTableViewCell"

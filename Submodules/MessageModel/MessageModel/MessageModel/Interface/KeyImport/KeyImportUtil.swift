@@ -30,10 +30,6 @@ extension KeyImportUtil {
     public enum SetOwnKeyError: Error {
         /// No matching account could be found
         case noMatchingAccount
-
-        /// The key could not be set as an own key for other reasons,
-        /// e.g. there was an error in the engine
-        case cannotSetOwnKey
     }
 }
 
@@ -60,7 +56,7 @@ extension KeyImportUtil: KeyImportUtilProtocol {
             return
         }
 
-        PEPAsyncSession().importKey(dataString,
+        PEPSession().importKey(dataString,
                                     errorCallback: { error in
                                         errorCallback(ImportError.malformedKey)
         }) { identities in
@@ -111,20 +107,58 @@ extension KeyImportUtil: KeyImportUtilProtocol {
                                 userID: CdIdentity.pEpOwnUserID,
                                 userName: userName,
                                 isOwn: true)
-        PEPAsyncSession().setOwnKey(pEpId,
+        PEPSession().setOwnKey(pEpId,
                                     fingerprint: fingerprint,
                                     errorCallback: errorCallback) {
-//                                        let moc = Stack.shared.newPrivateConcurrentContext
-//                                        moc.performAndWait {//BUFF: commented out as I understood volker we must not do that. The imported key could be too short and it will not be used for instance. In this case we would have an own identity without key. IOS-2405
+                                        let moc = Stack.shared.newPrivateConcurrentContext
+                                        moc.performAndWait {
+                                            //BUFF: commented out as I understood volker we must not do that. The imported key could be too short and it will not be used for instance. In this case we would have an own identity without key. IOS-2405
 //                                            CdIdentity.updateOrCreate(withAddress: address,
 //                                                                      userID: CdIdentity.pEpOwnUserID,
 //                                                                      addressBookID: nil,
 //                                                                      userName: userName,
 //                                                                      context: moc)
 //                                            moc.saveAndLogErrors()
-//                                            callback()
-//                                        }
-                                        callback()
+                                            if let existingCdIdentity = CdIdentity.search(address: address, context: moc),
+                                                let belongingAccount = existingCdIdentity.accounts?.allObjects.first as? CdAccount {
+                                                // A new key has been set for an existing account. Try to re-decrypt all yet undecryptable messages.
+                                                CdMessage.markAllUndecryptableMessagesForRetryDecrypt(for: belongingAccount, context: moc)
+                                                moc.saveAndLogErrors()
+                                            }
+                                            callback()
+                                        }
+        }
+    }
+}
+
+extension KeyImportUtil {
+    /// Set the key with the given fingerprint as the new own key for the given identity.
+    /// - Note: The identity to call this on MUST be an own identity!
+    /// - Parameter identity: The identity to set own key to.
+    /// - Parameter fingerprint: The fingerprint of an already imported key
+    /// that should be set as the new own key for this identity.
+    /// - Throws: Status code errors from the engine's `set_own_key`.
+    static public func setOwnKey(identity: Identity,
+                                 fingerprint: String,
+                                 errorCallback: @escaping (Error) -> (),
+                                 completion: @escaping () -> ()) {
+        let pEpId = identity.pEpIdentity()
+
+        // The fingerprint is not needed by the engine's set_own_key.
+        pEpId.fingerPrint = nil
+
+        PEPSession().setOwnKey(pEpId,
+                               fingerprint: fingerprint.despaced(),
+                               errorCallback: { (error) in
+                                errorCallback(error)
+        }) {
+            identity.session.perform {
+                // We got a new key. Try to derypt yet undecryptable messages.
+                let cdAccount = CdAccount.searchAccount(withAddress: identity.address,
+                                                        context: identity.session.moc)
+                Message.tryRedecryptYetUndecryptableMessages(for: cdAccount)
+                completion()
+            }
         }
     }
 }

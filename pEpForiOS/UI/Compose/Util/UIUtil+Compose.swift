@@ -6,6 +6,7 @@
 //  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
+
 import MessageModel
 import pEpIOSToolbox
 
@@ -43,7 +44,7 @@ extension UIUtils {
             let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
                 Constants.composeSceneStoryboardId) as? UINavigationController,
             let composeVc = composeNavigationController.rootViewController
-                as? ComposeTableViewController
+                as? ComposeViewController
             else {
                 Log.shared.errorAndCrash("Missing required data")
                 return

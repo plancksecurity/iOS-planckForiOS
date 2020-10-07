@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 /// Protocol to handle ManualAccountSetupView events
 protocol ManualAccountSetupViewDelegate: class {
     func didPressCancelButton()

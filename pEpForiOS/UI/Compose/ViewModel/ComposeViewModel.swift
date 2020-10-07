@@ -8,7 +8,6 @@
 
 import MessageModel
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
 
 protocol ComposeViewModelDelegate: class {
 
@@ -30,7 +29,7 @@ protocol ComposeViewModelDelegate: class {
 
     func sectionChanged(section: Int)
 
-    func colorBatchNeedsUpdate(for rating: PEPRating, protectionEnabled: Bool)
+    func colorBatchNeedsUpdate(for rating: Rating, protectionEnabled: Bool)
 
     func hideSuggestions()
 
@@ -286,7 +285,7 @@ extension ComposeViewModel {
             completion(true)
             return
         }
-        var originalRating: PEPRating? = nil
+        var originalRating: Rating? = nil //!!!: BUFF: AFAIU originalRating MUST NOT taken be taken into account any more since IOS-2414
         let group = DispatchGroup()
         group.enter()
         originalMessage.pEpRating { (rating) in
@@ -345,7 +344,7 @@ extension ComposeViewModel: ComposeViewModelStateDelegate {
     }
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
-                               didChangePEPRatingTo newRating: PEPRating) {
+                               didChangePEPRatingTo newRating: Rating) {
         delegate?.colorBatchNeedsUpdate(for: newRating, protectionEnabled: state.pEpProtection)
     }
 
@@ -839,7 +838,7 @@ extension ComposeViewModel: SubjectCellViewModelResultDelegate {
             Log.shared.errorAndCrash("We got called by a non-existing VM?")
             return
         }
-        state.subject = vm.content ?? ""
+        state.subject = vm.content
         delegate?.contentChanged(inRowAt: idxPath)
     }
 }
@@ -879,7 +878,7 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
         // Dispatch as next to not "Attempted to call -cellForRowAtIndexPath: on the table view while it was in the process of updating its visible cells, which is not allowed. ...". See IOS-2347 for details.
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                // Valid case. We might havebeen dismissed already.
+                // Valid case. The view might have been dismissed already.
                 return
             }
             me.delegate?.contentChanged(inRowAt: idxPath)

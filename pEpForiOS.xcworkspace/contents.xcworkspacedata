@@ -31,4 +31,7 @@
    <FileRef
       location = "container:../AppAuth-iOS/AppAuth.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:../CocoaLumberjack/Lumberjack.xcodeproj">
+   </FileRef>
 </Workspace>

@@ -9,8 +9,7 @@
 import Foundation
 
 import MessageModel
-import PEPObjCAdapterFramework
-import pEp4iosIntern
+import pEpIOSToolbox
 
 // MARK: - Keys
 
@@ -26,6 +25,7 @@ extension AppSettings {
     static private let keyShouldShowTutorialWizard = "keyShouldShowTutorialWizard"
     static private let keyUserHasBeenAskedForContactAccessPermissions = "keyUserHasBeenAskedForContactAccessPermissions"
     static private let keyUnsecureReplyWarningEnabled = "keyUnsecureReplyWarningEnabled"
+    static private let keyVerboseLogginEnabled = "keyVerboseLogginEnabled"
 }
 
 // MARK: - AppSettings
@@ -77,8 +77,8 @@ extension AppSettings {
     }
 
     private func setupObjcAdapter() {
-        PEPObjCAdapter.setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled)
-        PEPObjCAdapter.setPassiveModeEnabled(passiveMode)
+        MessageModelConfig.setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled)
+        MessageModelConfig.setPassiveModeEnabled(passiveMode)
     }
 
     private func registerDefaults() {
@@ -93,6 +93,7 @@ extension AppSettings {
         defaults[AppSettings.keyShouldShowTutorialWizard] = true
         defaults[AppSettings.keyUserHasBeenAskedForContactAccessPermissions] = false
         defaults[AppSettings.keyUnsecureReplyWarningEnabled] = false
+        defaults[AppSettings.keyVerboseLogginEnabled] = false
 
         AppSettings.userDefaults.register(defaults: defaults)
     }
@@ -158,7 +159,7 @@ extension AppSettings: AppSettingsProtocol {
         set {
             AppSettings.userDefaults.set(newValue,
                                          forKey: AppSettings.keyUnencryptedSubjectEnabled)
-            PEPObjCAdapter.setUnEncryptedSubjectEnabled(newValue)
+            MessageModelConfig.setUnEncryptedSubjectEnabled(newValue)
         }
     }
 
@@ -177,7 +178,7 @@ extension AppSettings: AppSettingsProtocol {
         }
         set {
             AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPassiveMode)
-            PEPObjCAdapter.setPassiveModeEnabled(newValue)
+            MessageModelConfig.setPassiveModeEnabled(newValue)
         }
     }
 
@@ -230,6 +231,17 @@ extension AppSettings: AppSettingsProtocol {
         set {
             AppSettings.userDefaults.set(newValue,
                                          forKey: AppSettings.keyUnsecureReplyWarningEnabled)
+        }
+    }
+
+    public var verboseLogginEnabled: Bool {
+        get {
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyVerboseLogginEnabled)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue,
+                                         forKey: AppSettings.keyVerboseLogginEnabled)
+            Log.shared.verboseLoggingEnabled = newValue
         }
     }
 }

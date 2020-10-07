@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 /// Enables the user to move an IMAP message to a folder of her choice
 class MoveToAccountViewController: UIViewController {
     static let storyboardId = "MoveToAccountViewController"

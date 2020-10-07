@@ -8,6 +8,8 @@
 
 import CoreData
 
+import pEpIOSToolbox
+
 protocol PerAccountServiceAbstractProtocol: ServiceProtocol {
 
     /// You MUST override this method and return Service[Protocol] of your need for the given account

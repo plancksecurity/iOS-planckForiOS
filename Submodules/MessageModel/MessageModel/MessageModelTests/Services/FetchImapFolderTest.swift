@@ -7,7 +7,9 @@
 //
 
 import XCTest
+
 @testable import MessageModel
+import pEpIOSToolbox
 
 class FetchImapFolderTest: PersistentStoreDrivenTestBase {
     var a: CdAccount?

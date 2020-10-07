@@ -15,10 +15,10 @@
 "%1$@ wrote on %2$@:" = "%1$@ napísal na %2$@:";
 
 /* Reply to single contact, without date. Placeholder: Name. */
-"%1$@ wrote:" = "Napísal (-a)% 1 $ @:";
+"%1$@ wrote:" = "Napísal (-a) %1$@:";
 
 /* Number of filters instead of filter name */
-"%d filters" = "% d filtre";
+"%d filters" = "%d filtre";
 
 /* error message for .missingPassword */
 "A non-empty password is required" = "Heslo je povinné";
@@ -196,6 +196,12 @@
 /* Account delete confirmation comment */
 "delete account message" = "vymazať správu účtu";
 
+/* ComposeTableView: button to decide to delete changes made on a drafted mail. */
+"Delete Changes" = "Odstrániť zmeny";
+
+/* Device field, reporting issue */
+"Device" = "zariadenie";
+
 /* keysync alert leave device group disable */
 "Disable" = "Zakázať";
 
@@ -211,10 +217,6 @@
 /* Display Name placeholder for manual account setup
    Display Name TextField Placeholder in Login Screen */
 "Display Name" = "Zobraziť meno";
-
-/* Email address placeholder for manual account setup
-   Email TextField Placeholder in Login Screen */
-"E-mail Address" = "E-mailová adresa";
 
 /* Email */
 "Email" = "E-mail";
@@ -296,6 +298,9 @@
 
 /* possible privacy status action */
 "Handshake" = "Handshake";
+
+/* Contact Support - Mail subject */
+"Help" = "Získať pomoc";
 
 /* PGPKeyImportSettingViewModel - part of pgpKeyImportTitle that should link to support page (... click _here_ for info ...) */
 "here" = "tu";
@@ -465,8 +470,7 @@
 /* keySyncWizard intro view Next button title */
 "Next" = "Ďalej";
 
-/* Alert button while client certificate is importing: Try again? No
-   Title for no button (cancel) when trying to import a key */
+/* Alert button while client certificate is importing: Try again? No */
 "No" = "Nie";
 
 /* Error when no account found for set_own_key UI */
@@ -922,12 +926,6 @@
 /* Alert trust button title before trusting an account */
 "Trust" = "Dôvera";
 
-/* Action name to be suggested at the moment of revert */
-"Trust Confirmation" = "Potvrdenie dôvery";
-
-/* Action name to be suggested at the moment of revert */
-"Trust Rejection" = "Zamietnutie dôvery";
-
 /* keySyncWizard error view Try Again button title */
 "Try Again" = "Skúste to znova";
 
@@ -939,9 +937,6 @@
 
 /* Undo trust change verification button title */
 "Undo" = "Vrátenie späť";
-
-/* Undo trust change verification alert title */
-"Undo (actionName)" = "Vrátiť späť (actionName)";
 
 /* read button in slide-left menu */
 "Unflag" = "zrušiť označenie";
@@ -1040,8 +1035,7 @@
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Chybné Trustwords";
 
-/* Alert button while client certificate is importing: Try again? Yes
-   Title for yes button when trying to import a key */
+/* Alert button while client certificate is importing: Try again? Yes */
 "Yes" = "Áno";
 
 /* Confirm less secure answer message alert body */
@@ -1049,9 +1043,6 @@
 
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Chystáte sa poslať zabezpečenú správu ako nezabezpečenú. Ak sa rozhodnete pokračovať, môže dôjsť k úniku dôverných informácií, čo vás a vašich komunikačných partnerov ohrozí. Ste si istý, že chcete pokračovať?";
-
-/* Message when asking user for confirmation about importing a key */
-"You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?" = "Chystáte sa importovať nasledujúci kľúč:\n\nMeno: %1$@\nOdtlačok prsta PGP: %2$@\n\nNaozaj chcete importovať a používať tento kľúč?";
 
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Túto príručku môžete kedykoľvek zavrieť pomocou tlačidla Preskočiť.";

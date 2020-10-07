@@ -107,9 +107,10 @@ extension CdMessage {
     }
 
     /// Converts a core data message into the format required by pEp.
-    /// - Parameter outgoing: Whether or not the message is outgoing
     /// - Returns: A PEPMessage suitable for processing with pEp.
-    func pEpMessage(outgoing: Bool = true) -> PEPMessage {
+    func pEpMessage() -> PEPMessage {
+        let outgoingFolderTypes = [FolderType.sent, .drafts, .outbox]
+        let isOutgoing = outgoingFolderTypes.contains(parent?.folderType ?? FolderType.normal)
         let pEpMessage = PEPMessage()
 
         pEpMessage.sentDate = sent
@@ -117,13 +118,13 @@ extension CdMessage {
         pEpMessage.longMessage = longMessage
         pEpMessage.longMessageFormatted = longMessageFormatted
 
-        pEpMessage.to = PEPUtils.pEpIdentities(cdIdentitiesSet: to)
-        pEpMessage.cc = PEPUtils.pEpIdentities(cdIdentitiesSet: cc)
-        pEpMessage.bcc = PEPUtils.pEpIdentities(cdIdentitiesSet: bcc)
+        pEpMessage.to = CdIdentity.pEpIdentities(cdIdentitiesSet: to)
+        pEpMessage.cc = CdIdentity.pEpIdentities(cdIdentitiesSet: cc)
+        pEpMessage.bcc = CdIdentity.pEpIdentities(cdIdentitiesSet: bcc)
 
         pEpMessage.from = from?.pEpIdentity()
         pEpMessage.messageID = uuid
-        pEpMessage.direction = outgoing ? .outgoing : .incoming
+        pEpMessage.direction = isOutgoing ? .outgoing : .incoming
 
         if let cdAttachments = attachments?.array as? [CdAttachment] {
             pEpMessage.attachments = cdAttachments.map {
@@ -167,6 +168,14 @@ extension CdMessage {
             }
         }
 
+        if pEpMessage.direction == .incoming {
+            guard let pEpIdentityReceiver = parent?.account?.identity?.pEpIdentity() else {
+                Log.shared.errorAndCrash("An incomming message MUST be received by someone. Invalid state!")
+                return pEpMessage
+            }
+            pEpMessage.receivedBy = pEpIdentityReceiver
+        }
+
         return pEpMessage
     }
 
@@ -184,7 +193,7 @@ extension CdMessage {
             return
         }
         
-        PEPAsyncSession().outgoingRating(for: pEpMessage(), errorCallback: { (_) in
+        PEPSession().outgoingRating(for: pEpMessage(), errorCallback: { (_) in
             completion(.undefined)
         }) { (rating) in
             completion(rating)
@@ -225,11 +234,6 @@ extension CdMessage {
         let accountHasBeenCreatedInLocalNetwork = imapServer.automaticallyTrusted
         let userDecidedToTrustServer = imapServer.manuallyTrusted
         return accountHasBeenCreatedInLocalNetwork || userDecidedToTrustServer
-    }
-
-    // TODO: This is duplicated between MM and Cd.
-    var wasAlreadyUnencrypted: Bool {
-        return PEPUtils.pEpRatingFromInt(Int(self.pEpRating)) == .unencrypted
     }
 
     /// - Returns: all messages marked for UidMoveToTrash

@@ -8,6 +8,8 @@
 
 import CoreData
 
+import pEpIOSToolbox
+
 /// Sets and keeps an account in IDLE mode 
 /// if:
 ///     * IDLE is supported by server

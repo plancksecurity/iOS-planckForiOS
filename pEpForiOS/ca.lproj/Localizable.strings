@@ -2,7 +2,7 @@
 "\n            Client\n            Certificate\n            " = "\n            Client\n            Certificat\n            ";
 
 /* Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion. */
-"\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n% 1 $ @\n\n% 2 $ @\n\n% 3 $ @\n\nEls fitxers adjunts estan desactivats.\n\n";
+"\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n%1$@\n\n%2$@\n\n%3$@\n\nEls fitxers adjunts estan desactivats.\n\n";
 
 /* No privacy status explanation
    No privacy status suggestion */
@@ -12,13 +12,13 @@
 "(numMails) new messages received" = "(numMails) missatges nous rebuts";
 
 /* Reply to single contact, with date. Placeholders: Name, date. */
-"%1$@ wrote on %2$@:" = "% 1 $ @ ha escrit el% 2 $ @:";
+"%1$@ wrote on %2$@:" = "%1$@ ha escrit el %2$@:";
 
 /* Reply to single contact, without date. Placeholder: Name. */
-"%1$@ wrote:" = "% 1 $ @ ha escrit:";
+"%1$@ wrote:" = "%1$@ ha escrit:";
 
 /* Number of filters instead of filter name */
-"%d filters" = "% d filtres";
+"%d filters" = "%d filtres";
 
 /* error message for .missingPassword */
 "A non-empty password is required" = "Es requereix contrasenya";
@@ -89,7 +89,7 @@
 "Attach media" = "Adjunteu suports";
 
 /* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
-"Attached Image %1$d (%2$@)" = "Imatge adjunta% 1 $ d (% 2 $ @)";
+"Attached Image %1$d (%2$@)" = "Imatge adjunta %1$d (%2$@)";
 
 /* title attachments filter cell */
 "Attachments" = "Adjunts";
@@ -212,10 +212,6 @@
    Display Name TextField Placeholder in Login Screen */
 "Display Name" = "Nom de visualització";
 
-/* Email address placeholder for manual account setup
-   Email TextField Placeholder in Login Screen */
-"E-mail Address" = "Correu electrònic";
-
 /* Email */
 "Email" = "Correu electrònic";
 
@@ -258,7 +254,7 @@
 "Extra Keys Editable" = "Claus addicionals editables";
 
 /* 'Filter by' in formatted string, followed by the localized filter name */
-"Filter by: %@" = "Filtra per:% @";
+"Filter by: %@" = "Filtra per: %@";
 
 /* Filter Title */
 "Filters" = "Filtres";
@@ -355,13 +351,13 @@
 "Internal Error" = "Error intern";
 
 /* Invalid input for account */
-"Invalid account name: %1$@" = "Nom del compte no vàlid:% 1 $ @";
+"Invalid account name: %1$@" = "Nom del compte no vàlid: %1$@";
 
 /* Please enter a valid Gmail address.Fail to log in, email does not match account type */
 "Invalid Address" = "Adreça no vàlida";
 
 /* Invalid input for email address */
-"Invalid email address: %1$@" = "Adreça de correu electrònic no vàlida:% 1 $ @";
+"Invalid email address: %1$@" = "Adreça de correu electrònic no vàlida: %1$@";
 
 /* alert message. trying to add an invalid fingerprint
    alert title. trying to add an invalid fingerprint */
@@ -371,19 +367,19 @@
 "Invalid Input" = "Entrada incorrecta";
 
 /* Invalid input for por */
-"Invalid port: %1$@" = "Port no vàlid:% 1 $ @";
+"Invalid port: %1$@" = "Port no vàlid: %1$@";
 
 /* Invalid input for server */
-"Invalid server: %1$@" = "Servidor no vàlid:% 1 $ @";
+"Invalid server: %1$@" = "Servidor no vàlid: %1$@";
 
 /* Invalid input for transport security */
-"Invalid transport security: %1$@" = "Seguretat de transport no vàlida:% 1 $ @";
+"Invalid transport security: %1$@" = "Seguretat de transport no vàlida: %1$@";
 
 /* Invalid input for username */
-"Invalid username: %1$@" = "Nom d'usuari no vàlid:% 1 $ @";
+"Invalid username: %1$@" = "Nom d'usuari no vàlid: %1$@";
 
 /* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
-"It was impossible to login to %1$@. Username or password is wrong." = "No s'ha pogut iniciar la sessió a% 1 $ @. El nom d’usuari o la contrasenya són incorrectes.";
+"It was impossible to login to %1$@. Username or password is wrong." = "No s'ha pogut iniciar la sessió a %1$@. El nom d’usuari o la contrasenya són incorrectes.";
 
 /* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
 "It was impossible to login to the server. Username or password is wrong." = "No s'ha pogut iniciar la sessió al servidor. El nom d’usuari o la contrasenya són incorrectes.";
@@ -462,8 +458,7 @@
 /* keySyncWizard intro view Next button title */
 "Next" = "Següent";
 
-/* Alert button while client certificate is importing: Try again? No
-   Title for no button (cancel) when trying to import a key */
+/* Alert button while client certificate is importing: Try again? No */
 "No" = "No";
 
 /* Error when no account found for set_own_key UI */
@@ -758,7 +753,7 @@
 "Some mandatory fields are empty" = "Alguns camps obligatoris estan buits";
 
 /* Reply to unknown sender with date */
-"Someone wrote on %1$@:" = "Algú va escriure el% 1 $ @:";
+"Someone wrote on %1$@:" = "Algú va escriure el %1$@:";
 
 /* Reply to unknown sender without date */
 "Someone wrote:" = "Algú va escriure:";
@@ -900,12 +895,6 @@
 /* Alert trust button title before trusting an account */
 "Trust" = "Confia";
 
-/* Action name to be suggested at the moment of revert */
-"Trust Confirmation" = "Confirmació de confiança";
-
-/* Action name to be suggested at the moment of revert */
-"Trust Rejection" = "Rebuig de confiança";
-
 /* keySyncWizard error view Try Again button title */
 "Try Again" = "Proveu de nou";
 
@@ -917,9 +906,6 @@
 
 /* Undo trust change verification button title */
 "Undo" = "Desfer";
-
-/* Undo trust change verification alert title */
-"Undo (actionName)" = "Desfés (actionName)";
 
 /* read button in slide-left menu */
 "Unflag" = "Unflag";
@@ -1009,8 +995,7 @@
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Trustwords incorrectes";
 
-/* Alert button while client certificate is importing: Try again? Yes
-   Title for yes button when trying to import a key */
+/* Alert button while client certificate is importing: Try again? Yes */
 "Yes" = "Sí";
 
 /* Confirm less secure answer message alert body */
@@ -1018,9 +1003,6 @@
 
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Esteu a punt de reenviar un missatge segur com no segur. Si decidiu continuar, es podria filtrar informació confidencial, posant en risc vosaltres i els vostres col·laboradors de comunicació. Estàs segur que vols continuar?";
-
-/* Message when asking user for confirmation about importing a key */
-"You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?" = "Esteu a punt d’importar la següent clau:\n\nNom:% 1 $ @\nEmpremta digital:% 2 $ @\n\nEsteu segur que voleu importar i utilitzar aquesta clau?";
 
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Podeu tancar aquest tutorial en qualsevol moment amb el botó Saltar.";

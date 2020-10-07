@@ -7,7 +7,9 @@
 //
 
 import Foundation
+
 import MessageModel
+import pEpIOSToolbox
 
 class PGPKeyImportSettingViewController: UIViewController {
     static private let switchCellID = "PGPKeyImportSettingsSwitchTableViewCell"
@@ -48,6 +50,7 @@ extension PGPKeyImportSettingViewController: UITableViewDelegate {
             return
         }
         vm.handleDidSelect(rowAt: indexPath)
+        tableView.deselectRow(at: indexPath, animated: false)
     }
 }
 
