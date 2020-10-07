@@ -25,7 +25,11 @@ public class LoggingViewModel {
     public var updateInterval: TimeInterval = 2.0
 
     /// The delegate for log updates
-    public weak var delegate: LogViewModelDelegate?
+    public weak var delegate: LogViewModelDelegate? {
+        didSet {
+            sendTheLog()
+        }
+    }
 
     public init() {
         setupTimers()

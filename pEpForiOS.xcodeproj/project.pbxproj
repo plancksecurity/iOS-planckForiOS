@@ -1648,7 +1648,7 @@
 		15874BAF2127493E00A3A4A6 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
-				43EB61B1252DB4590066B45D /* Logging */,
+				43EB61B1252DB4590066B45D /* LiveLog */,
 				15FE1F741FE122B200CC2D97 /* Credits */,
 				431E68B1246C266800B3A977 /* KeyImport */,
 				1579348B246D490700E2D8D2 /* PGPKeyImport */,
@@ -2439,13 +2439,13 @@
 			path = Axt;
 			sourceTree = "<group>";
 		};
-		43EB61B1252DB4590066B45D /* Logging */ = {
+		43EB61B1252DB4590066B45D /* LiveLog */ = {
 			isa = PBXGroup;
 			children = (
 				43EB61B2252DB47A0066B45D /* LoggingViewController.swift */,
 				4349E8BA252DCC58000F2BBB /* LoggingViewModel.swift */,
 			);
-			path = Logging;
+			path = LiveLog;
 			sourceTree = "<group>";
 		};
 		43EC75AA2164C24800048CFE /* SetOwnKey */ = {
