@@ -9,8 +9,10 @@
 import WebKit
 
 class CreditsViewController: UIViewController {
-    private var viewModel = CreditsViewModel()
     @IBOutlet weak var verboseLoggingSwitch: UISwitch!
+
+    private var viewModel = CreditsViewModel()
+    private var secretTapGesture: UITapGestureRecognizer?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -18,16 +20,24 @@ class CreditsViewController: UIViewController {
         installLogViewGesture()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if let theSecretTapGesture = secretTapGesture {
+            view.removeGestureRecognizer(theSecretTapGesture)
+        }
+    }
+
     @IBAction func switchedVerboseLoggingEnabled(_ sender: UISwitch) {
         viewModel.handleVerboseLoggingSwitchChange(newValue: sender.isOn)
     }
 
     private func installLogViewGesture() {
-        let secretTapGesture = UITapGestureRecognizer(target: self,
-                                                      action: #selector(secretGestureAction(_:)))
-        secretTapGesture.numberOfTouchesRequired = 1
-        secretTapGesture.numberOfTapsRequired = 1
-        self.view.addGestureRecognizer(secretTapGesture)
+        let theSecretTapGesture = UITapGestureRecognizer(target: self,
+                                                         action: #selector(secretGestureAction(_:)))
+        theSecretTapGesture.numberOfTouchesRequired = 1
+        theSecretTapGesture.numberOfTapsRequired = 1
+        secretTapGesture = theSecretTapGesture
+        view.addGestureRecognizer(theSecretTapGesture)
     }
 }
 
