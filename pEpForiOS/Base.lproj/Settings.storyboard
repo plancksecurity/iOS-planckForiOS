@@ -1461,7 +1461,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="RSp-qK-Tzq">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SignatureCell" id="wdm-AT-m5z" customClass="SignatureTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
@@ -1483,6 +1483,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="0Ht-YN-GKS" secondAttribute="bottom" id="zZZ-nJ-Q2m"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="editableSignature" destination="0Ht-YN-GKS" id="tZO-YI-RTA"/>
                                         </connections>
@@ -1490,7 +1491,7 @@
                                 </prototypes>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="upk-91-vYb" firstAttribute="top" secondItem="RSp-qK-Tzq" secondAttribute="bottom" id="InB-Wl-KdU"/>
                             <constraint firstAttribute="trailing" secondItem="RSp-qK-Tzq" secondAttribute="trailing" id="KJp-Nb-Jhp"/>
@@ -1512,6 +1513,9 @@
         <segue reference="voI-Bz-LUT"/>
     </inferredMetricsTieBreakers>
     <resources>
+        <systemColor name="groupTableViewBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="groupTableViewBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
