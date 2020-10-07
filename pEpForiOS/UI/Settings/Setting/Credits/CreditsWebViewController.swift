@@ -30,10 +30,11 @@ class CreditsWebViewController: PEPWebViewController {
         let styleP = "p {color: \(fontColor);font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}"
         let styleBody = "body {background-color: \(backgroundColor);}"
         let styleA = "a {color: \(fontColor);font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}"
+        let styleLink = "a:link {color:\(UIColor.pEpDarkGreenHex); text-decoration: underline; word-break: break-all; !important;}"
         let styleColumnMasterAndDetail = ".column {float: left;margin: -15px 0px -20px 0px;font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}.left {width: 40%;}.right {width: 60%;}.row:after {content: \"\";display: table;clear: both;}"
         let styleColumnRegular = ".column {float: left;margin: -15px 0px -20px 0px;font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}.left {width: 25%;}.right {width: 75%;}.row:after {content: \"\";display: table;clear: both;}"
         let styleColumn = splitViewController?.currentDisplayMode == .masterAndDetail ? styleColumnMasterAndDetail : styleColumnRegular
-        let style = "<style>\(styleP)\(styleBody)\(styleColumn)\(styleA)</style>"
+        let style = "<style>\(styleP)\(styleBody)\(styleColumn)\(styleA)\(styleLink)</style>"
         let result = """
         <html>
          <head>

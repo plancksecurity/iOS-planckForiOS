@@ -47,7 +47,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5eB-ze-50V">
                                 <rect key="frame" x="0.0" y="585" width="375" height="62"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verbose Logging Enabled" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fGY-OS-V4W">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verbose Logging" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fGY-OS-V4W">
                                         <rect key="frame" x="8" y="8" width="310" height="46"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -84,6 +84,9 @@
                             <constraint firstAttribute="trailing" secondItem="5eB-ze-50V" secondAttribute="trailing" id="rrU-Jl-edZ"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="verboseLoggingSwitch" destination="rWL-mw-ch6" id="ece-K3-ULq"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mXj-Sq-nBh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
