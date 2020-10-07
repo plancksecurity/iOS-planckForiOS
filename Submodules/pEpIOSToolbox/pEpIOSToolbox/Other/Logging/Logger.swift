@@ -191,7 +191,15 @@ import CocoaLumberjackSwift
 
     /// Gets the latest log entries as a string
     public func getLogString() -> String {
-        return ""
+        guard let filePath = fileLogger?.currentLogFileInfo?.filePath else {
+            return ""
+        }
+        do {
+            return try String(contentsOfFile: filePath)
+        } catch {
+            log(error: error)
+            return ""
+        }
     }
 
     // MARK: -- Private
