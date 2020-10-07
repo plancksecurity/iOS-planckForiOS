@@ -25,6 +25,6 @@ class LoggingViewController: UIViewController {
 
 extension LoggingViewController: LogViewModelDelegate {
     func updateLogContents(logString: String) {
-        print("**** have log!")
+        logTextView.text = logString
     }
 }
