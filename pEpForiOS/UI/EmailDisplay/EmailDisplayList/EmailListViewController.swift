@@ -261,7 +261,6 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
             Log.shared.errorAndCrash(message: "No VM! (Compose View Model for this indexPath doesn't exist!)")
             return
         }
-
         presentComposeViewToEditDraft(composeVM: composeVM)
     }
 
@@ -851,19 +850,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
                 Log.shared.errorAndCrash("IndexPath problem!")
                 return
         }
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash(message: "viewModel doesn't exist!")
-            return
-        }
-
-        guard let naviController = navigationController else {
-            Log.shared.errorAndCrash(message: "Navigation Controller is missing!")
-            return
-        }
-
-        presentEmailDisplayView(navigationController: naviController,
-                                        vm: vm.emailDetialViewModel(),
-                                        indexPath: indexPath)
+        performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: indexPath)
     }
 
     public func reloadData(viewModel: EmailDisplayViewModel) {
@@ -1221,6 +1208,7 @@ extension EmailListViewController: SegueHandlerType {
     
     enum SegueIdentifier: String {
         case segueAddNewAccount
+        case segueShowEmail
         case segueCompose
         case segueReply
         case segueReplyAll
@@ -1240,6 +1228,22 @@ extension EmailListViewController: SegueHandlerType {
              .segueForward,
              .segueCompose:
             setupComposeViewController(for: segue)
+        case .segueShowEmail:
+            let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
+            guard
+                let emailDetailVC = segue.destination as? EmailDetailViewController,
+                let indexPath = sender as? IndexPath
+                else {
+                    Log.shared.errorAndCrash("Missing required data")
+                    return
+            }
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("No VM")
+                return
+            }
+
+            emailDetailVC.viewModel = vm.emailDetialViewModel()
+            emailDetailVC.firstItemToShow = indexPath
         case .segueShowFilter:
             guard let destiny = segue.destination as? FilterTableViewController else {
                 Log.shared.errorAndCrash("Segue issue")
@@ -1424,30 +1428,9 @@ extension EmailListViewController {
     }
 }
 
-// MARK: - Present Views
+// MARK: - Present Modal View
 
 extension EmailListViewController {
-    /// Push view controller on given navigation controller
-    /// - Parameters:
-    ///   - navigationController: Navigation controller to use
-    ///   - vm: EmailDetailViewModel
-    ///   - indexPath: IndexPath is needed to show specified e-mail
-    private func presentEmailDisplayView(navigationController: UINavigationController,
-                                               vm: EmailDetailViewModel,
-                                               indexPath: IndexPath) {
-        let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
-        guard
-            let emailDetailVC = storyboard.instantiateViewController(withIdentifier: "EmailDetailViewController") as? EmailDetailViewController
-            else {
-                Log.shared.errorAndCrash("Missing required data")
-                return
-        }
-
-        emailDetailVC.viewModel = vm
-        emailDetailVC.firstItemToShow = indexPath
-
-        navigationController.pushViewController(emailDetailVC, animated: true)
-    }
 
     private func presentComposeViewToEditDraft(composeVM: ComposeViewModel) {
         let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
