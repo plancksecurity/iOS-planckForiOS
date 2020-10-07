@@ -34,9 +34,8 @@ public class LoggingViewModel {
     private var timer: Timer?
 
     private func setupTimers() {
-        let theTimer = Timer(fire: Date(timeIntervalSinceNow: updateInterval),
-                             interval: updateInterval,
-                             repeats: true) { [weak self] timer in
+        let theTimer = Timer.scheduledTimer(withTimeInterval: updateInterval,
+                                            repeats: true) { [weak self] timer in
             guard let me = self else {
                 // can happen, e.g. owning VC goes out of view/scope
                 return
