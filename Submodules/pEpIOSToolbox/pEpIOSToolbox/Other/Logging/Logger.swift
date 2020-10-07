@@ -189,7 +189,9 @@ import CocoaLumberjackSwift
                 args: [])
     }
 
-    /// Gets the latest log entries as a string
+    /// Gets the latest log entries as a string.
+    ///
+    /// Can be used for polling for log contents.
     public func getLatestLogString() -> String {
         guard let filePath = fileLogger?.currentLogFileInfo?.filePath else {
             return ""
