@@ -10,7 +10,7 @@ import Foundation
 
 struct Mailto {
 
-    enum Pattern: String {
+    private enum Pattern: String {
         case scheme = "mailto:"
         case cc = "cc="
         case bcc = "bcc="
@@ -32,10 +32,10 @@ struct Mailto {
     /// The body of the email
     public var body: String?
 
-    private var url: URL
-
+    /// Optional initializer. Returns nil if the url is not mailto.
+    ///
+    /// - Parameter url: The mailto url.
     init?(url : URL) {
-        self.url = url
         guard url.isMailto else {
             return nil
         }
@@ -48,10 +48,10 @@ struct Mailto {
                 self.ccs = ccs
             } else if let bccs = parseRecipientField(with: part, and: Pattern.bcc.rawValue) {
                 self.bccs = bccs
-            } else if let body = parseTextField(with: part, and:  Pattern.body.rawValue) {
-                self.body = body
+            } else if let body = parseTextField(with: part, and: Pattern.body.rawValue) {
+                self.body = body.removingPercentEncoding
             } else if let subject = parseTextField(with: part, and: Pattern.subject.rawValue) {
-                self.subject = subject
+                self.subject = subject.removingPercentEncoding
             }
         }
 
@@ -68,9 +68,5 @@ struct Mailto {
             }
             return nil
         }
-    }
-
-    public var description: String {
-        return url.absoluteString
     }
 }

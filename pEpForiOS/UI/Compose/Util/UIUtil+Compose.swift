@@ -129,11 +129,11 @@ extension UIUtils {
         var initData = ComposeViewModel.InitData(prefilledTos: tos,
                                                  prefilledCCs: ccs,
                                                  prefilledBCCs: bccs)
-        if let body = mailTo.body?.removingPercentEncoding {
+        if let body = mailTo.body {
             initData.bodyPlaintext = body
         }
         let state = ComposeViewModel.ComposeViewModelState(initData: initData)
-        if let subject = mailTo.subject?.removingPercentEncoding {
+        if let subject = mailTo.subject {
             state.subject = subject
         }
         return ComposeViewModel(state: state)

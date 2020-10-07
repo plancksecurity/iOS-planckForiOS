@@ -62,6 +62,8 @@ extension String.SubSequence {
         return replaceFirst(of: pattern, with: "")
     }
 
+    /// Splits a text that uses commas as separator.
+    /// - Returns: The indepentent texts.
     public func componentsSeparatedByComma() -> [String] {
         return split {$0 == "," }.map { String($0) }
     }
