@@ -1,5 +1,5 @@
 //
-//  LoggingViewModel.swift
+//  LiveLogViewModel.swift
 //  pEp
 //
 //  Created by Dirk Zimmermann on 07.10.20.
@@ -10,14 +10,14 @@ import Foundation
 
 import pEpIOSToolbox
 
-public protocol LiveLogViewModelDelegate: class {
+protocol LiveLogViewModelDelegate: class {
     /// The view should be updated with the latest log contents.
     /// - Note: The updates _may_ occur every `updateInterval`, regardless
     /// if the log changed or not.
     func updateLogContents(logString: String)
 }
 
-public class LiveLogViewModel {
+class LiveLogViewModel {
     /// Update interval in seconds.
     ///
     /// The VM will pull the latest log string every interval and inform

@@ -206,7 +206,7 @@ import CocoaLumberjackSwift
 
     // MARK: -- Private
 
-    var fileLogger: DDFileLogger?
+    private var fileLogger: DDFileLogger?
 
     private func initLumberjack() {
         DDLog.add(DDOSLogger.sharedInstance) // Uses os_log

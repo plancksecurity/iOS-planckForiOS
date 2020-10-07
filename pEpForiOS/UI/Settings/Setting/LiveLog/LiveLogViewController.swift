@@ -1,5 +1,5 @@
 //
-//  LoggingViewController.swift
+//  LiveLogViewController.swift
 //  pEp
 //
 //  Created by Dirk Zimmermann on 07.10.20.
@@ -9,7 +9,7 @@
 import UIKit
 
 class LiveLogViewController: UIViewController {
-    @IBOutlet weak var logTextView: UITextView!
+    @IBOutlet public weak var logTextView: UITextView!
 
     private var viewModel = LiveLogViewModel()
 
