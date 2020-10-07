@@ -9,6 +9,8 @@
 import UIKit
 
 class LoggingViewController: UIViewController {
+    @IBOutlet weak var logTextView: UITextView!
+
     private var viewModel = LoggingViewModel()
 
     override func viewWillAppear(_ animated: Bool) {
