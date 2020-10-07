@@ -68,7 +68,7 @@
 		1521B793241BDD33000EAE57 /* UIUtils+ActionSheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521B792241BDD33000EAE57 /* UIUtils+ActionSheets.swift */; };
 		1521B795241BDFE5000EAE57 /* UIUtil+Compose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521B794241BDFE5000EAE57 /* UIUtil+Compose.swift */; };
 		1521B797241BE026000EAE57 /* UIUtils+ActivityIndecator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521B796241BE026000EAE57 /* UIUtils+ActivityIndecator.swift */; };
-		1521B799241BE086000EAE57 /* UIUtil+Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521B798241BE086000EAE57 /* UIUtil+Contacts.swift */; };
+		1521B799241BE086000EAE57 /* UIUtils+Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521B798241BE086000EAE57 /* UIUtils+Contacts.swift */; };
 		152295542302F72900204FD3 /* ExtraKeysSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152295532302F72900204FD3 /* ExtraKeysSettingViewController.swift */; };
 		152295572302F7E200204FD3 /* ExtraKeysSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152295562302F7E200204FD3 /* ExtraKeysSettingViewModel.swift */; };
 		15255B031F825CD100A2CFC9 /* IdentityImageTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */; };
@@ -581,7 +581,7 @@
 		1521B792241BDD33000EAE57 /* UIUtils+ActionSheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+ActionSheets.swift"; sourceTree = "<group>"; };
 		1521B794241BDFE5000EAE57 /* UIUtil+Compose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtil+Compose.swift"; sourceTree = "<group>"; };
 		1521B796241BE026000EAE57 /* UIUtils+ActivityIndecator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+ActivityIndecator.swift"; sourceTree = "<group>"; };
-		1521B798241BE086000EAE57 /* UIUtil+Contacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtil+Contacts.swift"; sourceTree = "<group>"; };
+		1521B798241BE086000EAE57 /* UIUtils+Contacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+Contacts.swift"; sourceTree = "<group>"; };
 		152295532302F72900204FD3 /* ExtraKeysSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtraKeysSettingViewController.swift; sourceTree = "<group>"; };
 		152295562302F7E200204FD3 /* ExtraKeysSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtraKeysSettingViewModel.swift; sourceTree = "<group>"; };
 		15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityImageTool.swift; sourceTree = "<group>"; };
@@ -1300,7 +1300,7 @@
 				5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */,
 				1521B792241BDD33000EAE57 /* UIUtils+ActionSheets.swift */,
 				1521B796241BE026000EAE57 /* UIUtils+ActivityIndecator.swift */,
-				1521B798241BE086000EAE57 /* UIUtil+Contacts.swift */,
+				1521B798241BE086000EAE57 /* UIUtils+Contacts.swift */,
 			);
 			path = UIUtils;
 			sourceTree = "<group>";
@@ -3277,7 +3277,7 @@
 				152A39DF21905C3E00D9F8E4 /* WrappedBccViewModel.swift in Sources */,
 				B74F81021EB0E20000519FCC /* LoginViewModel.swift in Sources */,
 				B7DFEA52225368670080A2BA /* VirtualFolder.swift in Sources */,
-				1521B799241BE086000EAE57 /* UIUtil+Contacts.swift in Sources */,
+				1521B799241BE086000EAE57 /* UIUtils+Contacts.swift in Sources */,
 				5B2F7E63240D25CF004DDFA2 /* TutorialStepViewController.swift in Sources */,
 				B722EC7A1E5C879000A2B9D5 /* FolderUiProtocols.swift in Sources */,
 				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,
