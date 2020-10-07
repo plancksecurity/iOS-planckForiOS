@@ -31,6 +31,12 @@ public class LoggingViewModel {
         setupTimers()
     }
 
+    deinit {
+        timer?.invalidate()
+    }
+
+    // MARK: - Private
+
     private var timer: Timer?
 
     private func setupTimers() {
@@ -44,9 +50,5 @@ public class LoggingViewModel {
             me.delegate?.updateLogContents(logString: logString)
         }
         timer = theTimer
-    }
-
-    deinit {
-        timer?.invalidate()
     }
 }
