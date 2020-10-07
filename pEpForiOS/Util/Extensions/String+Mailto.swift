@@ -16,13 +16,26 @@ extension String {
     /// - Parameters:
     ///   - pattern: The pattern to match
     ///   - replacement: The replacement.
-    /// - Returns: The string with the replacement done.
-    public func replaceFirst(of pattern:String, with replacement: String) -> String {
+    /// - Returns: The text with the replacement done.
+    public func replaceFirst(of pattern: String, with replacement: String) -> String {
         if let range = range(of: pattern) {
             return replacingCharacters(in: range, with: replacement)
-        } else{
+        } else {
             return self
         }
+    }
+
+    /// Remove only the first occureance of the pattern.
+    /// For example:
+    /// "holahola".removeFirst(of: "hola") will return "hola"
+    ///   - pattern: The pattern to match
+    /// - Returns: The text without the first occoureance of the pattern.
+    public func removeFirst(pattern: String) -> String {
+        return replaceFirst(of: pattern, with: "")
+    }
+
+    public func componentsSeparatedByComma() -> [String] {
+        return split {$0 == "," }.map { String($0) }
     }
 }
 
@@ -38,5 +51,18 @@ extension String.SubSequence {
     public func replaceFirst(of pattern:String, with replacement: String) -> String {
         let selfString = String(self)
         return selfString.replaceFirst(of: pattern, with: replacement)
+    }
+
+    /// Remove only the first occureance of the pattern.
+    /// For example:
+    /// "holahola".removeFirst(of: "hola") will return "hola"
+    ///   - pattern: The pattern to match
+    /// - Returns: The text without the first occoureance of the pattern.
+    public func removeFirst(pattern: String) -> String {
+        return replaceFirst(of: pattern, with: "")
+    }
+
+    public func componentsSeparatedByComma() -> [String] {
+        return split {$0 == "," }.map { String($0) }
     }
 }

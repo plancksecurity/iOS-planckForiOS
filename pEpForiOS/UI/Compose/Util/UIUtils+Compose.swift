@@ -14,9 +14,21 @@ import MessageModel
 
 extension UIUtils {
 
-    static public func presentComposeView(from mailto: Mailto) {
+    static public func presentComposeView(from mailto: Mailto, appConfig: AppConfig) {
         DispatchQueue.main.async {
-            ///TODO: present it. 
+            let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
+            guard
+                let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
+                    Constants.composeSceneStoryboardId) as? UINavigationController,
+                let composeVc = composeNavigationController.rootViewController
+                    as? ComposeTableViewController
+                else {
+                    Log.shared.errorAndCrash("Missing required data")
+                    return
+            }
+            composeVc.viewModel = composeViewModel(with: mailto)
+            composeVc.appConfig = appConfig
+            present(composeNavigationController: composeNavigationController)
         }
     }
 
@@ -98,6 +110,26 @@ extension UIUtils {
         }
         return ComposeViewModel(composeMode: .normal, prefilledTo: prefilledTo)
     }
+
+
+    private static func composeViewModel(with mailTo: Mailto) -> ComposeViewModel {
+//        var prefilledTo: Identity? = nil
+        let tos = mailTo.tos.map { Identity(address: $0) }
+
+        var initData = ComposeViewModel.InitData(composeMode: .normal)
+        if let body = mailTo.body {
+            initData.bodyPlaintext = body
+        }
+
+        initData.toRecipients =
+        let state = ComposeViewModel.ComposeViewModelState(initData: initData)
+        if let subject = mailTo.subject {
+            state.subject = subject
+        }
+
+        return ComposeViewModel(state: state)
+    }
+
 
     // MARK: - Private - Present
 

@@ -227,7 +227,11 @@ extension AppDelegate {
                 Log.shared.errorAndCrash("Mailto parsing failed")
                 return false
             }
-            UIUtils.presentComposeView(from: mailto)
+            guard let appConfig = appConfig else {
+                Log.shared.errorAndCrash("AppConfig not found")
+                return false
+            }
+            UIUtils.presentComposeView(from: mailto, appConfig: appConfig)
             return false
         }
         switch url.pathExtension {
