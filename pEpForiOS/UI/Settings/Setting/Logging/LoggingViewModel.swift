@@ -29,6 +29,7 @@ public class LoggingViewModel {
 
     public init() {
         setupTimers()
+        sendTheLog()
     }
 
     deinit {
@@ -39,6 +40,13 @@ public class LoggingViewModel {
 
     private var timer: Timer?
 
+    private func sendTheLog() {
+        if let theDelegate = delegate {
+            let logString = Log.shared.getLatestLogString()
+            theDelegate.updateLogContents(logString: logString)
+        }
+    }
+
     private func setupTimers() {
         let theTimer = Timer.scheduledTimer(withTimeInterval: updateInterval,
                                             repeats: true) { [weak self] timer in
@@ -46,8 +54,7 @@ public class LoggingViewModel {
                 // can happen, e.g. owning VC goes out of view/scope
                 return
             }
-            let logString = Log.shared.getLatestLogString()
-            me.delegate?.updateLogContents(logString: logString)
+            me.sendTheLog()
         }
         timer = theTimer
     }
