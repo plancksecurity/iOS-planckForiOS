@@ -15,16 +15,33 @@ class CreditsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         verboseLoggingSwitch.isOn = AppSettings.shared.verboseLogginEnabled
+        installLogViewGesture()
     }
 
     @IBAction func switchedVerboseLoggingEnabled(_ sender: UISwitch) {
         viewModel.handleVerboseLoggingSwitchChange(newValue: sender.isOn)
     }
+
+    private func installLogViewGesture() {
+        let secretTapGesture = UITapGestureRecognizer(target: self,
+                                                      action: #selector(secretGestureAction(_:)))
+        secretTapGesture.numberOfTouchesRequired = 3
+        secretTapGesture.numberOfTapsRequired = 5
+        self.view.addGestureRecognizer(secretTapGesture)
+    }
 }
 
-extension CreditsViewController {
+extension CreditsViewController: SegueHandlerType {
     /// Identifier of the segues.
     enum SegueIdentifier: String {
         case segueShowLog
+    }
+}
+
+extension CreditsViewController {
+    @IBAction func secretGestureAction(_ sender: UITapGestureRecognizer) {
+        if sender.state == .ended {
+            performSegue(withIdentifier: SegueIdentifier.segueShowLog, sender: self)
+        }
     }
 }
