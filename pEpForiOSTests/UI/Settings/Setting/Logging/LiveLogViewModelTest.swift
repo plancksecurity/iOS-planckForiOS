@@ -1,5 +1,5 @@
 //
-//  LoggingViewModelTest.swift
+//  LiveLogViewModelTest.swift
 //  pEpForiOSTests
 //
 //  Created by Dirk Zimmermann on 07.10.20.
@@ -11,14 +11,14 @@ import XCTest
 @testable import pEpForiOS
 import pEpIOSToolbox
 
-class LoggingViewModelTest: XCTestCase {
+class LiveLogViewModelTest: XCTestCase {
     let logUpdateInterval = 0.3
 
     func testCoupleOfLines() {
         let vm = LiveLogViewModel()
         vm.updateInterval = logUpdateInterval
         let expLogged = expectation(description: "expLogged")
-        let delegateMock = LoggingMock(expLogged: expLogged)
+        let delegateMock = LiveLogMock(expLogged: expLogged)
         vm.delegate = delegateMock
 
         let logLines = ["line1", "line2", "line3"]
@@ -35,7 +35,7 @@ class LoggingViewModelTest: XCTestCase {
         vm.updateInterval = logUpdateInterval
         let expLogged = expectation(description: "expLogged")
         expLogged.expectedFulfillmentCount = 2
-        let delegateMock = LoggingMock(expLogged: expLogged)
+        let delegateMock = LiveLogMock(expLogged: expLogged)
         vm.delegate = delegateMock
 
         let logLines = ["line1", "line2", "line3"]
@@ -48,7 +48,7 @@ class LoggingViewModelTest: XCTestCase {
     }
 }
 
-class LoggingMock: LiveLogViewModelDelegate {
+class LiveLogMock: LiveLogViewModelDelegate {
     var logEntries = [String]()
     var expLogged: XCTestExpectation?
 
