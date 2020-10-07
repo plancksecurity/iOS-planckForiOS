@@ -9,25 +9,25 @@
 import WebKit
 
 class CreditsViewController: UIViewController {
-    @IBOutlet weak var verboseLoggingSwitch: UISwitch!
+    @IBOutlet public weak var verboseLoggingSwitch: UISwitch!
 
     private var viewModel = CreditsViewModel()
     private var secretTapGesture: UITapGestureRecognizer?
 
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         verboseLoggingSwitch.isOn = AppSettings.shared.verboseLogginEnabled
         installLogViewGesture()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
+    override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         if let theSecretTapGesture = secretTapGesture {
             view.removeGestureRecognizer(theSecretTapGesture)
         }
     }
 
-    @IBAction func switchedVerboseLoggingEnabled(_ sender: UISwitch) {
+    @IBAction public func switchedVerboseLoggingEnabled(_ sender: UISwitch) {
         viewModel.handleVerboseLoggingSwitchChange(newValue: sender.isOn)
     }
 
@@ -43,13 +43,13 @@ class CreditsViewController: UIViewController {
 
 extension CreditsViewController: SegueHandlerType {
     /// Identifier of the segues.
-    enum SegueIdentifier: String {
+    public enum SegueIdentifier: String {
         case segueShowLog
     }
 }
 
 extension CreditsViewController {
-    @IBAction func secretGestureAction(_ sender: UITapGestureRecognizer) {
+    @IBAction public func secretGestureAction(_ sender: UITapGestureRecognizer) {
         if sender.state == .ended {
             performSegue(withIdentifier: SegueIdentifier.segueShowLog, sender: self)
         }

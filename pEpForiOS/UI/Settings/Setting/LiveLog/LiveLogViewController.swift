@@ -13,18 +13,18 @@ class LiveLogViewController: UIViewController {
 
     private var viewModel = LiveLogViewModel()
 
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.delegate = self
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
+    override public func viewWillDisappear(_ animated: Bool) {
         viewModel.delegate = nil
     }
 }
 
 extension LiveLogViewController: LiveLogViewModelDelegate {
-    func scrollTextViewToBottom(textView: UITextView) {
+    private func scrollTextViewToBottom(textView: UITextView) {
         let theCount = textView.text.count
         if theCount > 0 {
             let location = theCount - 1
@@ -33,7 +33,7 @@ extension LiveLogViewController: LiveLogViewModelDelegate {
         }
     }
 
-    func updateLogContents(logString: String) {
+    public func updateLogContents(logString: String) {
         logTextView.text = logString
         scrollTextViewToBottom(textView: logTextView)
     }
