@@ -34,8 +34,8 @@ class CreditsViewController: UIViewController {
     private func installLogViewGesture() {
         let theSecretTapGesture = UITapGestureRecognizer(target: self,
                                                          action: #selector(secretGestureAction(_:)))
-        theSecretTapGesture.numberOfTouchesRequired = 1
-        theSecretTapGesture.numberOfTapsRequired = 1
+        theSecretTapGesture.numberOfTouchesRequired = 3
+        theSecretTapGesture.numberOfTapsRequired = 5
         secretTapGesture = theSecretTapGesture
         view.addGestureRecognizer(theSecretTapGesture)
     }
