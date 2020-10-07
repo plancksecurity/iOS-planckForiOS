@@ -153,6 +153,42 @@ import CocoaLumberjackSwift
         errorAndCrash("Lost MySelf")
     }
 
+    @objc public func logInfo(message: String,
+                              function: String = #function,
+                              filePath: String = #file,
+                              fileLine: UInt = #line) {
+        saveLog(message: message,
+                severity: .info,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                args: [])
+    }
+
+    @objc public func logError(message: String,
+                               function: String = #function,
+                               filePath: String = #file,
+                               fileLine: UInt = #line) {
+        saveLog(message: message,
+                severity: .error,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                args: [])
+    }
+
+    @objc public func logWarn(message: String,
+                              function: String = #function,
+                              filePath: String = #file,
+                              fileLine: UInt = #line) {
+        saveLog(message: message,
+                severity: .warn,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                args: [])
+    }
+
     private func initLumberjack() {
         DDLog.add(DDOSLogger.sharedInstance) // Uses os_log
 
@@ -195,42 +231,6 @@ import CocoaLumberjackSwift
         }
 
         return nil
-    }
-
-    @objc public func logInfo(message: String,
-                              function: String = #function,
-                              filePath: String = #file,
-                              fileLine: UInt = #line) {
-        saveLog(message: message,
-                severity: .info,
-                function: function,
-                filePath: filePath,
-                fileLine: fileLine,
-                args: [])
-    }
-
-    @objc public func logError(message: String,
-                               function: String = #function,
-                               filePath: String = #file,
-                               fileLine: UInt = #line) {
-        saveLog(message: message,
-                severity: .error,
-                function: function,
-                filePath: filePath,
-                fileLine: fileLine,
-                args: [])
-    }
-
-    @objc public func logWarn(message: String,
-                              function: String = #function,
-                              filePath: String = #file,
-                              fileLine: UInt = #line) {
-        saveLog(message: message,
-                severity: .warn,
-                function: function,
-                filePath: filePath,
-                fileLine: fileLine,
-                args: [])
     }
 
     private func saveLog(message: String,
