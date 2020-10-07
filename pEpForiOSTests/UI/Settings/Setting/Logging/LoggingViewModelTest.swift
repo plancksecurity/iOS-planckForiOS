@@ -9,6 +9,7 @@
 import XCTest
 
 @testable import pEpForiOS
+import pEpIOSToolbox
 
 class LoggingViewModelTest: XCTestCase {
     func testEmpty() {
@@ -19,6 +20,39 @@ class LoggingViewModelTest: XCTestCase {
         vm.delegate = delegateMock
         wait(for: [expLogged], timeout: TestUtil.waitTimeCoupleOfSeconds)
         XCTAssertEqual(delegateMock.logEntries.count, 0)
+    }
+
+    func testCoupleOfLines() {
+        let vm = LoggingViewModel()
+        vm.updateInterval = 0.5
+        let expLogged = expectation(description: "expLogged")
+        let delegateMock = LoggingMock(expLogged: expLogged)
+        vm.delegate = delegateMock
+
+        let logLines = ["line1", "line2", "line3"]
+        for line in logLines {
+            Log.shared.logWarn(message: line)
+        }
+
+        wait(for: [expLogged], timeout: TestUtil.waitTimeCoupleOfSeconds)
+        XCTAssertEqual(delegateMock.logEntries, logLines)
+    }
+
+    func testRepeatingCoupleOfLines() {
+        let vm = LoggingViewModel()
+        vm.updateInterval = 0.5
+        let expLogged = expectation(description: "expLogged")
+        expLogged.expectedFulfillmentCount = 2
+        let delegateMock = LoggingMock(expLogged: expLogged)
+        vm.delegate = delegateMock
+
+        let logLines = ["line1", "line2", "line3"]
+        for line in logLines {
+            Log.shared.logWarn(message: line)
+        }
+
+        wait(for: [expLogged], timeout: TestUtil.waitTimeCoupleOfSeconds)
+        XCTAssertEqual(delegateMock.logEntries, logLines)
     }
 }
 
