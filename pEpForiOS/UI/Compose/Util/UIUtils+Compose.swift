@@ -111,22 +111,32 @@ extension UIUtils {
         return ComposeViewModel(composeMode: .normal, prefilledTo: prefilledTo)
     }
 
-
     private static func composeViewModel(with mailTo: Mailto) -> ComposeViewModel {
-//        var prefilledTo: Identity? = nil
-        let tos = mailTo.tos.map { Identity(address: $0) }
-
-        var initData = ComposeViewModel.InitData(composeMode: .normal)
+        func identities(addresses: [String]) -> [Identity]? {
+            return addresses.map { return Identity(address: $0) }
+        }
+        var tos: [Identity]? = nil
+        if let mailtos = mailTo.tos {
+            tos = identities(addresses: mailtos)
+        }
+        var ccs: [Identity]? = nil
+        if let mailccs = mailTo.ccs {
+            ccs = identities(addresses: mailccs)
+        }
+        var bccs: [Identity]? = nil
+        if let mailbccs = mailTo.bccs {
+            bccs = identities(addresses: mailbccs)
+        }
+        var initData = ComposeViewModel.InitData(prefilledTos: tos,
+                                                 prefilledCCs: ccs,
+                                                 prefilledBCCs: bccs)
         if let body = mailTo.body {
             initData.bodyPlaintext = body
         }
-
-        initData.toRecipients =
         let state = ComposeViewModel.ComposeViewModelState(initData: initData)
         if let subject = mailTo.subject {
             state.subject = subject
         }
-
         return ComposeViewModel(state: state)
     }
 

@@ -14,9 +14,17 @@ import pEpIOSToolbox
 extension ComposeViewModel {
     /// Wraps properties used for initial setup
     struct InitData {
-        /// Recipient to set as "To:".
+        /// Recipients to set as "To:".
         /// Is ignored if a originalMessage is set.
-        public let prefilledTo: Identity?
+        public let prefilledTos: [Identity]?
+
+        /// Recipients to set as "CC:".
+        /// are ignored if a originalMessage is set.
+        public let prefilledCCs: [Identity]?
+
+        /// Recipients to set as "BCC:".
+        /// are ignored if a originalMessage is set.
+        public let prefilledBCCs: [Identity]?
 
         /// Sender to set as "From:".
         /// If null it will be calculated from compose mode or set as default user.
@@ -68,13 +76,16 @@ extension ComposeViewModel {
         var toRecipients: [Identity] {
             if let om = originalMessage {
                 return ComposeUtil.initialTos(composeMode: composeMode, originalMessage: om)
-            } else if let presetTo = prefilledTo {
-                return [presetTo]
+            } else if let presetTos = prefilledTos {
+                return presetTos
             }
             return []
         }
 
         var ccRecipients: [Identity] {
+            if let prefilledCCs = prefilledCCs {
+                return prefilledCCs
+            }
             guard let om = originalMessage else {
                 return []
             }
@@ -82,6 +93,9 @@ extension ComposeViewModel {
         }
 
         var bccRecipients: [Identity] {
+            if let prefilledBCCs = prefilledBCCs {
+                return prefilledBCCs
+            }
             guard let om = originalMessage else {
                 return []
             }
@@ -96,6 +110,17 @@ extension ComposeViewModel {
         public var nonInlinedAttachments = [Attachment]()
         public var inlinedAttachments = [Attachment]()
 
+        init(composeMode: ComposeUtil.ComposeMode? = nil,
+             prefilledTos: [Identity]? = nil,
+             prefilledCCs: [Identity]? = nil,
+             prefilledBCCs: [Identity]? = nil) {
+            self.prefilledTos = prefilledTos
+            self.composeMode = composeMode ?? .normal
+            self.prefilledFrom = nil
+            self.prefilledCCs = prefilledCCs
+            self.prefilledBCCs = prefilledBCCs
+        }
+
         init(withPrefilledToRecipient prefilledTo: Identity? = nil,
              prefilledFromSender prefilledFrom: Identity? = nil,
              orForOriginalMessage om: Message? = nil,
@@ -106,7 +131,14 @@ extension ComposeViewModel {
             // We use it for settingus up and delete afterwards.
             let cloneMessage = om?.cloneWithZeroUID(session: Session.main)
             self.composeMode = composeMode ?? ComposeUtil.ComposeMode.normal
-            self.prefilledTo = cloneMessage == nil ? prefilledTo : nil
+
+            if let prefilledTo = prefilledTo {
+                self.prefilledTos = cloneMessage == nil ? [prefilledTo] : nil
+            } else {
+                self.prefilledTos = nil
+            }
+            self.prefilledCCs = nil
+            self.prefilledBCCs = nil
             self.prefilledFrom = prefilledFrom
             self.originalMessage = om
             self.inlinedAttachments = ComposeUtil.initialAttachments(composeMode: self.composeMode,
