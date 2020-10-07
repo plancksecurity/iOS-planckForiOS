@@ -8,7 +8,6 @@
 
 import MessageModel
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
 
 protocol ComposeViewModelDelegate: class {
 
@@ -30,7 +29,7 @@ protocol ComposeViewModelDelegate: class {
 
     func sectionChanged(section: Int)
 
-    func colorBatchNeedsUpdate(for rating: PEPRating, protectionEnabled: Bool)
+    func colorBatchNeedsUpdate(for rating: Rating, protectionEnabled: Bool)
 
     func hideSuggestions()
 
@@ -124,7 +123,7 @@ class ComposeViewModel {
     }
 
     public func handleDidReAppear() {
-        state.validate()//!!!: IOS-2325_!
+        state.validate()
     }
 
     public func viewModel(for indexPath: IndexPath) -> CellViewModel {
@@ -174,7 +173,7 @@ class ComposeViewModel {
         let safeState = state.makeSafe(forSession: Session.main)
         let sendClosure = { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
@@ -198,7 +197,7 @@ class ComposeViewModel {
 
         showAlertFordwardingLessSecureIfRequired(forState: safeState) { [weak self] (accepted) in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             guard accepted else {
@@ -264,7 +263,7 @@ extension ComposeViewModel {
     typealias Accepted = Bool
     /// When forwarding/answering a previously decrypted message and the pEpRating is considered as
     /// less secure as the original message's pEp rating, warn the user.
-    private func showAlertFordwardingLessSecureIfRequired(forState state: ComposeViewModelState,//!!!: IOS-2325_!
+    private func showAlertFordwardingLessSecureIfRequired(forState state: ComposeViewModelState,
                                                           completion: @escaping (Accepted)->()) {
         guard AppSettings.shared.unsecureReplyWarningEnabled else {
             // Setting is disabled ...
@@ -286,7 +285,7 @@ extension ComposeViewModel {
             completion(true)
             return
         }
-        var originalRating: PEPRating? = nil
+        var originalRating: Rating? = nil //!!!: BUFF: AFAIU originalRating MUST NOT taken be taken into account any more since IOS-2414
         let group = DispatchGroup()
         group.enter()
         originalMessage.pEpRating { (rating) in
@@ -345,7 +344,7 @@ extension ComposeViewModel: ComposeViewModelStateDelegate {
     }
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
-                               didChangePEPRatingTo newRating: PEPRating) {
+                               didChangePEPRatingTo newRating: Rating) {
         delegate?.colorBatchNeedsUpdate(for: newRating, protectionEnabled: state.pEpProtection)
     }
 
@@ -649,8 +648,8 @@ extension ComposeViewModel {
         }
         let title: String
         if data.isDrafts {
-            title = NSLocalizedString("Discharge changes", comment:
-                "ComposeTableView: button to decide to discharge changes made on a drafted mail.")
+            title = NSLocalizedString("Delete Changes", comment:
+                "ComposeTableView: button to decide to delete changes made on a drafted mail.")
         } else if data.isOutbox {
             title = NSLocalizedString("Delete", comment:
                 "ComposeTableView: button to decide to delete a message from Outbox after " +
@@ -722,7 +721,7 @@ extension ComposeViewModel {
     func canDoHandshake(completion: @escaping (Bool)->Void) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.state.canHandshake(completion: completion)
@@ -778,7 +777,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
     }
 
     func recipientCellViewModelDidEndEditing(_ vm: RecipientCellViewModel) {
-        state.validate()//!!!: IOS-2325_!
+        state.validate()
         delegate?.focusSwitched()
         delegate?.hideSuggestions()
     }
@@ -839,7 +838,7 @@ extension ComposeViewModel: SubjectCellViewModelResultDelegate {
             Log.shared.errorAndCrash("We got called by a non-existing VM?")
             return
         }
-        state.subject = vm.content ?? ""
+        state.subject = vm.content
         delegate?.contentChanged(inRowAt: idxPath)
     }
 }
@@ -879,7 +878,7 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
         // Dispatch as next to not "Attempted to call -cellForRowAtIndexPath: on the table view while it was in the process of updating its visible cells, which is not allowed. ...". See IOS-2347 for details.
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                // Valid case. We might have been dismissed already.
+                // Valid case. The view might have been dismissed already.
                 return
             }
             me.delegate?.contentChanged(inRowAt: idxPath)

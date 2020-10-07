@@ -42,26 +42,27 @@ class ImapReplicationService: OperationBasedService {
         privateMoc.performAndWait {
             cdAccount = privateMoc.object(with: cdAccountObjectID) as? CdAccount
         }
-        setupFinishBlock()
-    }
 
-    /// Cancels all queued operations and add OPs that assure that local changes are synced to server before going inactive.
-    private func setupFinishBlock() {
-        let superFinishBlock = finishBlock
-        let newFinishBlock = {[weak self] in
+        // Custom finisBlock to make sure all local changes (made by the user) are synced with the server.
+        finishBlock = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            let finishOPs = me.internalOperations(syncOnlyUserChanges: true)
-            me.backgroundQueue.cancelAllOperations()
-            me.backgroundQueue.addOperations(finishOPs, waitUntilFinished: false)
-            superFinishBlock?()
+            me.state = .finshing
+            let toDos = me.internalOperations(syncOnlyUserChanges: true)
+            me.backgroundQueue.addOperations(toDos, waitUntilFinished: false)
+            me.waitThenStop()
         }
-        finishBlock = newFinishBlock
     }
 
-    override func finish() {
+    // MARK: - Overrides
+
+    override func operations() -> [Operation] {
+        return internalOperations()
+    }
+
+	override func finish() {
         idleOperation?.stopIdling()
         idleOperation = nil
         super.finish()
@@ -72,6 +73,11 @@ class ImapReplicationService: OperationBasedService {
         idleOperation = nil
         super.stop()
     }
+}
+
+// MARK: - Private
+
+extension ImapReplicationService {
 
     private func internalOperations(syncOnlyUserChanges: Bool = false) -> [Operation] {
         var createes = [Operation]()
@@ -168,18 +174,6 @@ class ImapReplicationService: OperationBasedService {
         }
         return createes
     }
-    //
-
-    // MARK: - Overrides
-
-    override func operations() -> [Operation] {
-        return internalOperations()
-    }
-}
-
-// MARK: - Private
-
-extension ImapReplicationService {
 
     private func pollingPausingOp(errorContainer: ErrorContainerProtocol) -> Operation {
         let pauseOp = SelfReferencingOperation { [weak self] operation in
@@ -206,7 +200,7 @@ extension ImapReplicationService {
                                 "\(type(of: me))", me.sleepTimeInSeconds)
                 let startDate = Date()
                 while Date().timeIntervalSince(startDate) < me.sleepTimeInSeconds {
-                    if operation.isCancelled {
+                    if operation.isCancelled || me.lastCommand == .finish { // lastcommand should be private. We need to use it as we can curently not cancel the running OPs in finishBlock, due to IMAPSyncOPs concept makes graceful cancelling impossible. rm ` || me.lastCommand == .finish ` after IMAPSyncOPs are cancelable and make `lastCommand` privagte again.
                         break
                     }
                     sleep(1)
@@ -216,6 +210,9 @@ extension ImapReplicationService {
         }
         return pauseOp
     }
+
+    //BUFF:  Must be moved to use in OPs?
+    //BUFF: when IDLE is in, make all important folders interesting?
 
     /// Folders (other than inbox) that the user looked at in the last
     /// `timeIntervalForInterestingFolders` are considered sync-worthy.

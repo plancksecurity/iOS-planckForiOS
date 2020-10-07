@@ -89,13 +89,13 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
     }
     
     func givenThereIsAViewModel(withUnifiedInbox: Bool, and account: Account?){
-        viewModel = FolderSectionViewModel(account: account, Unified: withUnifiedInbox)
+        viewModel = FolderSectionViewModel(account: account, unified: withUnifiedInbox)
     }
 
 
     func testNoChildrenOf() {
         let account = TestData().createWorkingAccount()
-        viewModel = FolderSectionViewModel(account: account, Unified: true)
+        viewModel = FolderSectionViewModel(account: account, unified: true)
         let fcvm = FolderCellViewModel(folder: folder, level: 0)
 
         let numberOfChildren = viewModel.children(of: fcvm).count
@@ -108,7 +108,7 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
         self.folder.session.commit()
 
         let account = TestData().createWorkingAccount()
-        viewModel = FolderSectionViewModel(account: account, Unified: true)
+        viewModel = FolderSectionViewModel(account: account, unified: true)
 
         //Parent
         let parentFCVM = FolderCellViewModel(folder: parentFolder, level: 0)
@@ -123,7 +123,7 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
         self.folder.session.commit()
 
         let account = TestData().createWorkingAccount()
-        viewModel = FolderSectionViewModel(account: account, Unified: true)
+        viewModel = FolderSectionViewModel(account: account, unified: true)
 
         //Parent
         let parentFCVM = FolderCellViewModel(folder: parentFolder, level: 0)
@@ -138,7 +138,7 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
         self.folder.session.commit()
 
         let account = TestData().createWorkingAccount()
-        viewModel = FolderSectionViewModel(account: account, Unified: true)
+        viewModel = FolderSectionViewModel(account: account, unified: true)
 
         //Parent
         let parentFCVM = FolderCellViewModel(folder: parentFolder, level: 0)
@@ -153,7 +153,7 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
         self.folder.session.commit()
 
         let account = TestData().createWorkingAccount()
-        viewModel = FolderSectionViewModel(account: account, Unified: true)
+        viewModel = FolderSectionViewModel(account: account, unified: true)
 
         //Parent
         let parentFCVM = FolderCellViewModel(folder: parentFolder, level: 0)
@@ -175,7 +175,7 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
         self.folder.session.commit()
 
         let account = TestData().createWorkingAccount()
-        viewModel = FolderSectionViewModel(account: account, Unified: true)
+        viewModel = FolderSectionViewModel(account: account, unified: true)
 
         let parentFCVM = FolderCellViewModel(folder: parentFolder, level: 0)
 

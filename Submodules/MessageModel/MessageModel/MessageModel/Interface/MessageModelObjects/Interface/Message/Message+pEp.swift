@@ -1,5 +1,5 @@
 //
-//  Message+Extension.swift
+//  Message+pEp.swift
 //  MessageModel
 //
 //  Created by Martin Brude on 14/02/2020.
@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import PEPObjCAdapterFramework
 
 extension Message {
 
@@ -18,24 +17,21 @@ extension Message {
 
     /// Persists the original rating header to the current message.
     /// - Parameter rating: The PEPRating to be set.
-    public func setOriginalRatingHeader(rating: PEPRating) {
-        setOriginalRatingHeader(rating: rating.asString())
+    public func setOriginalRatingHeader(rating: Rating) {
+        setOriginalRatingHeader(rating: rating.toString())
     }
 
     /// - returns: the pepRating
-    public func pEpRating(completion: @escaping (PEPRating)->Void) {
+    public func pEpRating(completion: @escaping (Rating) -> Void) {
         //see: https://dev.pep.security/Common%20App%20Documentation/algorithms/MessageColors
         if session.moc == Session.main.moc {
-            return  Message.pEpRating(message: self, completion: completion)
+            return Message.pEpRating(message: self) { pEpRating in
+                completion(Rating(pEpRating: pEpRating))
+            }
         } else {
-            return  Message.pEpRating(message: self, session: session, completion: completion)
-        }
-    }
-
-    /// - returns: the pepColor
-    public func pEpColor(completion: @escaping (PEPColor)->Void) {
-        pEpRating { (rating) in
-            completion(rating.pEpColor())
+            return  Message.pEpRating(message: self, session: session) { pEpRating in
+                completion(Rating(pEpRating: pEpRating))
+            }
         }
     }
 

@@ -7,22 +7,24 @@
 //
 
 import CoreData
+
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 /// IMAP Appends all mails that need append for one account.
 /// - note: the operations MUST NOT run concurrently. Thus we are using a serial queue.
-class AppendMailsOperation: ImapSyncOperation {
+class AppendMailsOperation: ConcurrentBaseOperation {
+    var imapConnection: ImapConnectionProtocol
     let changePropagatorMoc: NSManagedObjectContext = Stack.shared.changePropagatorContext
-
-    override init(parentName: String = #function,
+    
+    required init(parentName: String = #function,
                   context: NSManagedObjectContext? = nil,
                   errorContainer: ErrorContainerProtocol = ErrorPropagator(),
                   imapConnection: ImapConnectionProtocol) {
+        self.imapConnection = imapConnection
         super.init(parentName: parentName,
                    context: context,
-                   errorContainer: errorContainer,
-                   imapConnection: imapConnection)
-        backgroundQueue.maxConcurrentOperationCount = 1
+                   errorContainer: errorContainer)
     }
 
     public override func main() {

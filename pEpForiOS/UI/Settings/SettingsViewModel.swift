@@ -193,7 +193,7 @@ extension SettingsViewModel {
                                            isDangerous: false)
                 accountRow.action = { [weak self] in
                     guard let me = self else {
-                        Log.shared.errorAndCrash(message: "Lost myself")
+                        Log.shared.lostMySelf()
                         return
                     }
                     me.delete(account: acc)
@@ -211,7 +211,7 @@ extension SettingsViewModel {
             }
             rows.append(generateActionRow(type: .resetAccounts, isDangerous: true) { [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(message: "Lost myself")
+                    Log.shared.lostMySelf()
                     return
                 }
                 

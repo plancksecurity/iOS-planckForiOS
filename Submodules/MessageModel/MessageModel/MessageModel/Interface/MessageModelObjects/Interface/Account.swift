@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+import pEpIOSToolbox
+
 public class Account: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
 
     // MARK: - ManagedObjectWrapperProtocol
@@ -157,6 +159,16 @@ extension Account {
             return nil
         }
         return Server(cdObject: cdServer, context: moc)
+    }
+}
+
+// - MARK: Count
+
+extension Account {
+
+    public static func countAllForUnified() -> Int {
+        let isInUnifiedPredicate = CdAccount.PredicateFactory.isInUnified()
+        return CdAccount.count(predicate: isInUnifiedPredicate)
     }
 }
 

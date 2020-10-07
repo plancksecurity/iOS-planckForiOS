@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 /// View Controller that handles the tutorial
 final class TutorialWizardViewController: PEPPageViewControllerBase {
     private static let storyboardId = "TutorialWizardViewController"

@@ -7,8 +7,9 @@
 //
 
 import Foundation
+
 import MessageModel
-import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 /// TrustManagementViewModel View Mode Delegate
 protocol TrustManagementViewModelDelegate: class {
@@ -50,9 +51,9 @@ extension TrustManagementViewModel {
         }
 
         /// The description for the row
-        public func description(completion: @escaping (String)->Void) {
+        public func description(completion: @escaping (String) -> Void) {
             if forceRed {
-                completion(PEPColor.red.privacyStatusDescription)
+                completion(Color.red.privacyStatusDescription)
             } else {
                 color { (color) in
                     DispatchQueue.main.async {
@@ -77,9 +78,9 @@ extension TrustManagementViewModel {
         }
 
         /// The privacy status image
-        public func privacyStatusImage(completion: @escaping (UIImage?)->Void) {
+        public func privacyStatusImage(completion: @escaping (UIImage?) -> Void) {
             if forceRed {
-                completion(PEPColor.red.statusIconForMessage(enabled: true, withText: false))
+                completion(Color.red.statusIconForMessage(enabled: true, withText: false))
             }else {
                 color { (color) in
                     DispatchQueue.main.async {
@@ -105,9 +106,9 @@ extension TrustManagementViewModel {
         /// The privacy status in between the current user and the partner
         var privacyStatus: String?
         /// Status indicator
-        func color(completion: @escaping (PEPColor)->Void){
+        func color(completion: @escaping (Color) -> Void){
             if forceRed {
-                completion(PEPColor.red)
+                completion(.red)
             } else {
                 handshakeCombination.partnerIdentity.pEpColor { (color) in
                     DispatchQueue.main.async {
@@ -120,10 +121,10 @@ extension TrustManagementViewModel {
         /// Mega ugly.
         /// Do not use with the expection of the following use case:
         /// In cellForRowAtIndexpath, there is no way without blocking. See implementi0on.
-        func blockingColor() -> PEPColor {
-            var result = PEPColor.noColor
+        func blockingColor() -> Color {
+            var result = Color.noColor
             if forceRed {
-                result = PEPColor.red
+                result = .red
             } else {
                 let partner = handshakeCombination.partnerIdentity
                 let group = DispatchGroup()
@@ -224,7 +225,9 @@ final class TrustManagementViewModel {
     private var message: Message
     private var trustManagementUtil : TrustManagementUtilProtocol
     private let undoManager = UndoManager()
-    private var actionPerformed = [String]()
+    /// It contains the names of the actions that are going to revert previously executed actions.
+    /// For example: 'Undo Trust Rejection'. In case the last action was a Trust Rejection.
+    private var revertActionNames = [String]()
     
     /// Items to be displayed in the View Controller
     private (set) var rows: [Row] = [Row]()
@@ -252,8 +255,8 @@ final class TrustManagementViewModel {
     /// Reject the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to reject the handshake
     public func handleRejectHandshakePressed(at indexPath: IndexPath) {
-        let actionName = NSLocalizedString("Trust Rejection", comment: "Action name to be suggested at the moment of revert")
-        actionPerformed.append(actionName)
+        let actionName = NSLocalizedString("Undo Trust Rejection", comment: "Action name to be suggested at the moment of revert")
+        revertActionNames.append(actionName)
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
@@ -281,8 +284,8 @@ final class TrustManagementViewModel {
     /// Confirm the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to confirm the handshake
     public func handleConfirmHandshakePressed(at indexPath: IndexPath) {
-        let actionName = NSLocalizedString("Trust Confirmation", comment: "Action name to be suggested at the moment of revert")
-        actionPerformed.append(actionName)
+        let actionName = NSLocalizedString("Undo Trust Confirmation", comment: "Action name to be suggested at the moment of revert")
+        revertActionNames.append(actionName)
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
@@ -367,9 +370,9 @@ final class TrustManagementViewModel {
         return undoManager.canUndo
     }
     
-    /// - returns: The name of the last action performed, nil if there isn't any.
-    public func lastActionPerformed() -> String? {
-        return actionPerformed.last
+    /// - returns: The name of the action to revert the last one performed, nil if there isn't any.
+    public func revertAction() -> String? {
+        return revertActionNames.last
     }
 
     /// Method that makes the trustwords long or short (more or less trustwords in fact).
@@ -387,7 +390,7 @@ final class TrustManagementViewModel {
         if (undoManager.canUndo) {
             undoManager.undo()
             delegate?.reload()
-            _ = actionPerformed.popLast()
+            _ = revertActionNames.popLast()
         }
     }
 
@@ -400,7 +403,7 @@ final class TrustManagementViewModel {
     private func reevaluateMessage(forRowAt indexPath: IndexPath) {
         message.session.performAndWait { [weak self] in
             guard let me = self else {
-                Log.shared.error("Lost myself - The message will not be reevaluated")
+                // Valid case. We might have been dismissed already.
                 return
             }
             RatingReEvaluator.reevaluate(message: me.message) {

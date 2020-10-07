@@ -24,6 +24,8 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
+
+    @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var editButton: UIBarButtonItem!
 
     var viewModel: EmailListViewModel? {
@@ -55,11 +57,12 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        subscribeForKeyboardNotifications()
         edgesForExtendedLayout = .all
 
         doOnce = { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             guard let vm = me.viewModel else {
@@ -101,7 +104,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
 
     deinit {
-        NotificationCenter.default.removeObserver(self)
+        unsubscribeAll()
     }
 
     // MARK: - Setup
@@ -173,15 +176,13 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     // MARK: - Search Bar
 
     private func setupSearchBar() {
-        if #available(iOS 11.0, *) {
-            searchController.isActive = false
-            searchController.searchResultsUpdater = self
-            searchController.dimsBackgroundDuringPresentation = false
-            searchController.delegate = self
-            definesPresentationContext = true
-            navigationItem.searchController = searchController
-            navigationItem.hidesSearchBarWhenScrolling = true
-        }
+        searchController.isActive = false
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.delegate = self
+        definesPresentationContext = true
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = true
     }
 
     private func updateEditButton() {
@@ -540,7 +541,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                         title: destructiveDescriptor.title(forDisplayMode: .titleAndImage)) {
                             [weak self] action, indexPath in
                             guard let me = self else {
-                                Log.shared.errorAndCrash("Lost MySelf")
+                                Log.shared.lostMySelf()
                                 return
                             }
                             me.swipeDelete = action
@@ -554,7 +555,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
             let flagAction = SwipeAction(style: .default, title: "Flag") {
                 [weak self] action, indexPath in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                    Log.shared.lostMySelf()
                     return
                 }
                 me.flagAction(forCellAt: indexPath)
@@ -570,7 +571,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
             let moreAction = SwipeAction(style: .default, title: "More") {
                 [weak self] action, indexPath in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                    Log.shared.lostMySelf()
                     return
                 }
                 me.moreAction(forCellAt: indexPath)
@@ -586,7 +587,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
             let readAction = SwipeAction(style: .default, title: "Read") {
                 [weak self] action, indexPath in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                    Log.shared.lostMySelf()
                     return
                 }
                 me.readAction(forCellAt: indexPath)
@@ -960,7 +961,7 @@ extension EmailListViewController {
         let title = NSLocalizedString("Move to Folder", comment: "EmailList action title")
         return UIAlertAction(title: title, style: .default) { [weak self] action in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             me.performSegue(withIdentifier: .segueShowMoveToFolder, sender: me)
@@ -979,7 +980,7 @@ extension EmailListViewController {
 
         return UIAlertAction(title: title, style: .default) { [weak self] action in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             guard let cell = me.tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
@@ -1005,7 +1006,7 @@ extension EmailListViewController {
         return UIAlertAction(title: title, style: .default) {
             [weak self] action in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             me.performSegue(withIdentifier: .segueReply, sender: me)
@@ -1022,7 +1023,7 @@ extension EmailListViewController {
             return UIAlertAction(title: title, style: .default) {
                 [weak self] action in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                    Log.shared.lostMySelf()
                     return
                 }
                 me.performSegue(withIdentifier: .segueReplyAll, sender: me)
@@ -1037,7 +1038,7 @@ extension EmailListViewController {
         return UIAlertAction(title: title, style: .default) {
             [weak self] action in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             me.performSegue(withIdentifier: .segueForward, sender: me)
@@ -1214,7 +1215,7 @@ extension EmailListViewController: SegueHandlerType {
         let segueId = segueIdentifier(for: segue)
         guard
             let nav = segue.destination as? UINavigationController,
-            let composeVc = nav.topViewController as? ComposeTableViewController,
+            let composeVc = nav.topViewController as? ComposeViewController,
             let composeMode = composeMode(for: segueId),
             let vm = viewModel else {
                 Log.shared.errorAndCrash("composeViewController setup issue")

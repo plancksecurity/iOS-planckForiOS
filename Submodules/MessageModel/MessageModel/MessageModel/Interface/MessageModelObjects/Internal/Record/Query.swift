@@ -24,6 +24,8 @@
 
 import CoreData
 
+import pEpIOSToolbox
+
 //!!!: review, cleanup, move
 
 /**
@@ -186,11 +188,11 @@ public extension NSManagedObject {
 
     /// Count elements based on a predicate
     /// - Parameters:
-    ///   - predicate: The predicate to filter the elements to count
+    ///   - predicate: The predicate to filter the elements to count. If nil, will count them all.
     ///   - context: The context to trigger the query.
     ///   If not passed, main context will be used.
     /// - Returns: The amount of elements that match the predicate
-    class func count(predicate: NSPredicate,
+    class func count(predicate: NSPredicate? = nil,
                      in context: NSManagedObjectContext? = nil) -> Int {
         let moc: NSManagedObjectContext = context ?? Stack.shared.mainContext
         let request = createFetchRequest(predicate: predicate)

@@ -8,6 +8,8 @@
 
 import Foundation
 
+import pEpIOSToolbox
+
 public class FetchServiceBaseClass {
 
     public enum FetchError: Error {

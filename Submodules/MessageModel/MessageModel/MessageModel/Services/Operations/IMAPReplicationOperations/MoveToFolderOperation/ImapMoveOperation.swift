@@ -9,20 +9,22 @@
 import CoreData
 
 import PantomimeFramework
+import pEpIOSToolbox
 
 /// IMAP MOVEs all messages marked to move to the specified `targetFolder`.
 /// - note: the operations MUST NOT run concurrently. Thus we are using a serial queue.
-class ImapMoveOperation: ImapSyncOperation {
+class ImapMoveOperation: ConcurrentBaseOperation {
+    var imapConnection: ImapConnectionProtocol
     let changePropagatorMoc: NSManagedObjectContext = Stack.shared.changePropagatorContext
 
-    override init(parentName: String = #function,
+    required init(parentName: String = #function,
                   context: NSManagedObjectContext? = nil,
                   errorContainer: ErrorContainerProtocol = ErrorPropagator(),
                   imapConnection: ImapConnectionProtocol) {
+        self.imapConnection = imapConnection
         super.init(parentName: parentName,
                    context: context,
-                   errorContainer: errorContainer,
-                   imapConnection: imapConnection)
+                   errorContainer: errorContainer)
         backgroundQueue.maxConcurrentOperationCount = 1
     }
 

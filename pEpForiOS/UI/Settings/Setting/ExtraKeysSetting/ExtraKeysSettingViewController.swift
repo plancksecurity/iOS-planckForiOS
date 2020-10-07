@@ -6,6 +6,8 @@
 //  Copyright © 2019 p≡p Security S.A. All rights reserved.
 //
 
+import pEpIOSToolbox
+
 class ExtraKeysSettingViewController: UIViewController {
     static private let uiTableViewCellID = "ExtraKeysSettingCell"
 
@@ -150,7 +152,7 @@ extension ExtraKeysSettingViewController: UITableViewDataSource {
             UITableViewRowAction(style: .destructive, title: title) {
                 [weak self] (action , indexPath) -> Void in
                 guard let me = self, let vm = me.viewModel else {
-                    Log.shared.errorAndCrash("Uups")
+                    Log.shared.lostMySelf()
                     return
                 }
                 vm.handleDeleteActionTriggered(for: indexPath.row)

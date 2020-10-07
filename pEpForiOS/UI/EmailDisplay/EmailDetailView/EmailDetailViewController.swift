@@ -8,6 +8,7 @@
 
 import UIKit
 import QuickLook
+
 import pEpIOSToolbox
 
 // Represents the a list of mails showing one mail with all details in full screen.
@@ -82,7 +83,7 @@ class EmailDetailViewController: UIViewController {
         // position is inbetween two cells after orientation change.
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.scrollToLastViewedCell()
@@ -135,19 +136,19 @@ class EmailDetailViewController: UIViewController {
         let alert = ReplyAlertCreator(replyAllChecker: replyAllChecker)
             .withReplyOption { [weak self] action in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                    Log.shared.lostMySelf()
                     return
                 }
                 me.performSegue(withIdentifier: .segueReplyFrom , sender: self)
         }.withReplyAllOption() { [weak self] action in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             me.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
         }.withFordwardOption { [weak self] action in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             me.performSegue(withIdentifier: .segueForward , sender: self)
@@ -186,7 +187,7 @@ extension EmailDetailViewController {
         setupCollectionView()
         doOnce = { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.viewModel?.startMonitoring()
@@ -357,7 +358,7 @@ extension EmailDetailViewController {
             title: NSLocalizedString("Settings", comment: "acction sheet title 2"),
             style: .default) { [weak self] (action) in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(message: "lost myself")
+                    Log.shared.lostMySelf()
                     return
                 }
                 me.showSettingsViewController()
@@ -377,7 +378,7 @@ extension EmailDetailViewController {
         let action = UIAlertAction(title: NSLocalizedString("Privacy Status", comment: "action sheet title 1"),
                                    style: .default) { [weak self] (action) in
                                     guard let me = self else {
-                                        Log.shared.errorAndCrash(message: "lost myself")
+                                        Log.shared.lostMySelf()
                                         return
                                     }
                                     me.showTrustManagementView()
@@ -547,7 +548,7 @@ extension EmailDetailViewController: SegueHandlerType {
         switch theId {
         case .segueReplyFrom, .segueReplyAllForm, .segueForward:
             guard  let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? ComposeTableViewController else {
+                let destination = nav.topViewController as? ComposeViewController else {
                     Log.shared.errorAndCrash("No DVC?")
                     break
             }
@@ -622,7 +623,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
     func isNotUndecryptableAnyMore(indexPath: IndexPath) {
         addUpdateTask { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.collectionView?.reloadItems(at: [indexPath])
@@ -633,7 +634,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
                             didInsertDataAt indexPaths: [IndexPath]) {
         addUpdateTask { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.collectionView?.insertItems(at: indexPaths)
@@ -644,7 +645,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
                             didUpdateDataAt indexPaths: [IndexPath]) {
         addUpdateTask { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.configureView()
@@ -655,7 +656,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
                             didRemoveDataAt indexPaths: [IndexPath]) {
         addUpdateTask { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.collectionView?.deleteItems(at: indexPaths)
@@ -667,7 +668,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
                             toIndexPath: IndexPath) {
         addUpdateTask { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.collectionView?.moveItem(at: atIndexPath, to: toIndexPath)
@@ -686,7 +687,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
         // Perform updates ...
         let performChangesBlock = { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             let updateTasksToRun = Array(me.collectionViewUpdateTasks)
@@ -738,7 +739,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
 // MARK: - EmailViewControllerDelegate
 
 extension EmailDetailViewController: EmailViewControllerDelegate {
-    func showPdfPreview(forPdfAt url: URL) {
+    func openQLPreviewController(toShowDocumentWithUrl url: URL) {
         pdfPreviewUrl = url
         let previewController = QLPreviewController()
         previewController.dataSource = self
@@ -830,6 +831,14 @@ extension EmailDetailViewController {
         separatorsArray.append(contentsOf: [spacer,midSpacer])
     }
     private func setupToolbar() {
+        if navigationController?.topViewController != self {
+            // Only configure toolbar and navbar if possible.
+            // This might be called in different moments of the view life cycle: for example in a transition due a rotation, when configuring a view (cell will display, or view will appear), or when the scrolling ends, among others.
+            // Setting up the toolbar from multiple places and moments may generate an inconsistent state: the navigationController might be nil or the presented vc might not be EmailDetailView. It could be SettingsTableViewController for example.
+            // This work arounds a UI glitch where the toolbar does not disappear
+            return
+        }
+
         if onlySplitViewMasterIsShown {
             navigationController?.setToolbarHidden(false, animated: false)
         } else {

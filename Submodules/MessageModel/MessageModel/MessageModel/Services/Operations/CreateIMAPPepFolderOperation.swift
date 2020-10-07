@@ -51,7 +51,7 @@ class CreateIMAPPepFolderOperation: ImapSyncOperation {
             me.privateMOC.performAndWait {
                 guard
                     let cdAccount = me.imapConnection.cdAccount(moc: me.privateMOC) else {
-                        me.handleError(
+                        me.handle(error:
                             BackgroundError.CoreDataError.couldNotFindAccount(info: me.comp))
                         return
                 }
@@ -77,7 +77,7 @@ class CreateIMAPPepFolderOperation: ImapSyncOperation {
 
     private func createPEPFolder(for cdAccount: CdAccount) {
         guard let pEpFolderName = createPepFolderName(for: cdAccount) else {
-                handleError(BackgroundError.ImapError.invalidAccount)
+                handle(error: BackgroundError.ImapError.invalidAccount)
                 return
         }
         imapConnection.createFolderNamed(pEpFolderName)
@@ -89,7 +89,7 @@ class CreateIMAPPepFolderOperation: ImapSyncOperation {
             let inbox = CdFolder.by(folderType: .inbox, account: cdAccount, context: privateMOC),
             let inboxName = inbox.name
             else {
-                handleError(BackgroundError.ImapError.invalidAccount)
+                handle(error: BackgroundError.ImapError.invalidAccount)
                 return nil
         }
         let pEpFolderName = inboxName + seperator + CdFolder.pEpSyncFolderName
@@ -110,7 +110,7 @@ class CreateIMAPPepFolderOperation: ImapSyncOperation {
                                                          account: cdAccount,
                                                          context: privateMOC)
             else {
-                handleError(BackgroundError.ImapError.invalidAccount)
+                handle(error: BackgroundError.ImapError.invalidAccount)
                 return
         }
         localPEPFolder.parent = inbox

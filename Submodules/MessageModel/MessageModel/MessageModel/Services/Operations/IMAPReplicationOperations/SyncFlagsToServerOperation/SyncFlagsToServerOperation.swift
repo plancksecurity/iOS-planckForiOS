@@ -7,26 +7,29 @@
 //
 
 import CoreData
+
 import PantomimeFramework
+import pEpIOSToolbox
 
 /// Sends (syncs) local changes of Imap flags to server for all given folders.
 /// - note: the operations MUST NOT run concurrently. Thus we are using a serial queue.
-class SyncFlagsToServerOperation: ImapSyncOperation {
+class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     let folderInfos: [FolderInfo]
+    var imapConnection: ImapConnectionProtocol
 
-    init(parentName: String = #function,
-         context: NSManagedObjectContext? = nil,
-         errorContainer: ErrorContainerProtocol = ErrorPropagator(),
-         imapConnection: ImapConnectionProtocol,
-         folderInfos: [FolderInfo]) { //BUFF: refactor to get account and get interesting folders++ here. The data given when init-ing might be outdated when
+    required init(parentName: String = #function,
+                  context: NSManagedObjectContext? = nil,
+                  errorContainer: ErrorContainerProtocol = ErrorPropagator(),
+                  imapConnection: ImapConnectionProtocol,
+                  folderInfos: [FolderInfo]) { //BUFF: refactor to get account and get interesting folders++ here. The data given when init-ing might be outdated when
         self.folderInfos = folderInfos
+        self.imapConnection = imapConnection
         super.init(parentName: parentName,
                    context: context,
-                   errorContainer: errorContainer,
-                   imapConnection: imapConnection)
+                   errorContainer: errorContainer)
         backgroundQueue.maxConcurrentOperationCount = 1
     }
-
+    
     public override func main() {
         scheduleOperations()
         waitForBackgroundTasksAndFinish()

@@ -8,6 +8,8 @@
 
 import Foundation
 
+import pEpIOSToolbox
+
 extension Account {
     /// Indicate if you should show a warning before trusting this account
     public var shouldShowWaringnBeforeTrusting: Bool {

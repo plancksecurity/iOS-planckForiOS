@@ -33,12 +33,12 @@ extension PEPRating {
 }
 
 extension PEPRating {
-    static func fromString(str: String) -> PEPRating {//???: IOS-2325_!
-        return PEPSession().rating(from:str)//???: IOS-2325_!
+    static func fromString(str: String) -> PEPRating {
+        return PEPSession().rating(from:str)
     }
 
-    func asString() -> String {//???: IOS-2325_!
-        return PEPSession().string(from: self)//???: IOS-2325_!
+    func asString() -> String {
+        return PEPSession().string(from: self)
     }
 }
 
@@ -56,7 +56,6 @@ extension PEPRating {
 
         case .undefined,
              .unencrypted,
-             .unencryptedForSome,
              .unreliable,
              .reliable,
              .trusted,
@@ -86,7 +85,6 @@ extension PEPRating {
              .cannotDecrypt,
              .haveNoKey,
              .unencrypted,
-             .unencryptedForSome,
              .unreliable,
              .reliable,
              .trusted,

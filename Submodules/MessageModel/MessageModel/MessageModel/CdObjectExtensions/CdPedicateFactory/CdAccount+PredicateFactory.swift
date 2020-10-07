@@ -19,5 +19,9 @@ extension CdAccount {
         static func by(address: String) -> NSPredicate {
             return NSPredicate(format: "identity.address like[c] %@", address)
         }
+
+        static func isInUnified() -> NSPredicate {
+            return NSPredicate(format: "%K = true",  CdAccount.AttributeName.includeFoldersInUnifiedFolders)
+        }
     }
 }

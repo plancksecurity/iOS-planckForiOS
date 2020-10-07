@@ -9,7 +9,6 @@
 import MessageModel
 import pEpIOSToolbox
 import Contacts
-import PEPObjCAdapterFramework
 
 protocol SuggestViewModelResultDelegate: class {
     /// Will be called whenever the user selects an Identity.
@@ -22,14 +21,9 @@ protocol SuggestViewModelDelegate: class {
     func suggestViewModelDidResetModel(showResults: Bool)
 }
 
-/// All operations with Identities (MMOs) in this class happens in a private session, internally defined.
-/// To guarantee the identity exist in the session you can do:
-///     `let sessionedIdentity = Identity.makeSafe(anIdentity, forSession: session)`
-/// To access or modify that identity you can do:
-///     `session.performAndWait { ... }`
 class SuggestViewModel {
     struct Row {
-        // These identities should not be used within the main session.
+        // These identities MUST be used on `session` only!
         fileprivate let from: Identity?
         fileprivate let to: Identity?
         public let name: String
@@ -84,7 +78,7 @@ class SuggestViewModel {
 
     // MARK: - Life Cycle
 
-    public init(minNumberSearchStringChars: UInt = 3,
+    public init(minNumberSearchStringChars: UInt = 1,
                 from: Identity? = nil,
                 resultDelegate: SuggestViewModelResultDelegate? = nil,
                 showEmptyList: Bool = false) {
@@ -183,18 +177,18 @@ extension SuggestViewModel {
             }
             guard let from = row.from else {
                 Log.shared.errorAndCrash("No From")
-                completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
+                completion(Rating.undefined.pEpColor().statusIconInContactPicture())
                 return
             }
             guard let to = row.to else {
                 //Valid, might not be a "To" recipient.
-                completion(PEPRating.undefined.pEpColor().statusIconInContactPicture())
+                completion(Rating.undefined.pEpColor().statusIconInContactPicture())
                 return
             }
             let sessionedFrom = Identity.makeSafe(from, forSession: me.session)
             let sessionedTo = Identity.makeSafe(to, forSession: me.session)
             me.session.performAndWait {
-                PEPAsyncSession().outgoingMessageRating(from: sessionedFrom, to: [sessionedTo], cc: [], bcc: []) { (rating) in
+                Rating.outgoingMessageRating(from: sessionedFrom, to: [sessionedTo], cc: [], bcc: []) { (rating) in
                     completion(rating.pEpColor().statusIconInContactPicture())
                 }
             }
@@ -226,7 +220,7 @@ extension SuggestViewModel {
         var mergedRows = [Row]()
         session.performAndWait { [weak self] in
             guard let me = self else {
-                // Valid case. We might have been dismissed.
+                // Valid case. We might have been dismissed already.
                 return
             }
             let emailsOfIdentities = identities.map { $0.address }
@@ -266,7 +260,7 @@ extension SuggestViewModel {
     private func informDelegatesModelChanged(callingOperation: SelfReferencingOperation?) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             if let operationWeRunOn = callingOperation {

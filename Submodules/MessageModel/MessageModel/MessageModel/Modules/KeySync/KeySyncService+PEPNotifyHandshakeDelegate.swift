@@ -7,6 +7,7 @@
 //
 
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 extension KeySyncService: PEPNotifyHandshakeDelegate {
 
@@ -103,19 +104,21 @@ extension KeySyncService {
     private func showHandshakeAndHandleResult(inBetween me: PEPIdentity,
                                               and partner: PEPIdentity,
                                               isNewGroup: Bool) {
-        handshakeHandler?.showHandshake(me: me, partner: partner, isNewGroup: isNewGroup) {
-            [weak self] result in
-            if result == .cancel || result == .rejected {
-                self?.fastPollingDelegate?.disableFastPolling()
-            }
-            PEPAsyncSession().deliver(result,
-                                      identitiesSharing: [me, partner],
-                                      errorCallback: { (error: Error) in
-                                        Log.shared.errorAndCrash("Error delivering handshake result: %@",
-                                                                 error.localizedDescription)
-            }) {
-                // Caller doesn't care about the result
-            }
+        handshakeHandler?.showHandshake(meFingerprint: me.fingerPrint,
+                                        partnerFingerprint: partner.fingerPrint,
+                                        isNewGroup: isNewGroup) {
+                                            [weak self] result in
+                                            if result == .cancel || result == .rejected {
+                                                self?.fastPollingDelegate?.disableFastPolling()
+                                            }
+                                            PEPSession().deliver(result.pEpSyncHandshakeResult(),
+                                                                 identitiesSharing: [me, partner],
+                                                                 errorCallback: { (error: Error) in
+                                                                    Log.shared.errorAndCrash("Error delivering handshake result: %@",
+                                                                                             error.localizedDescription)
+                                            }) {
+                                                // Caller doesn't care about the result
+                                            }
         }
     }
 

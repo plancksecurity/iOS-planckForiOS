@@ -7,7 +7,9 @@
 //
 
 import Foundation
+
 import MessageModel
+import pEpIOSToolbox
 
 public class FolderCellViewModel {
 
@@ -115,6 +117,16 @@ public class FolderCellViewModel {
                     parent = parent?.parent
                 }
             }
+        }
+        return false
+    }
+
+    /// Indicates if the folder of the type passed by parameter.
+    /// - Parameter type: The Folder type
+    /// - Returns: True if it is a folder of that type
+    public func isFolder(of type: FolderType) -> Bool {
+        if let f = folder as? Folder {
+            return f.folderType == type
         }
         return false
     }

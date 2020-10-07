@@ -7,7 +7,9 @@
 //
 
 import Foundation
+
 import MessageModel
+import pEpIOSToolbox
 
 public class ErrorSubscriber {
     private func errorShouldBeDisplayed(error: Error) -> Bool{

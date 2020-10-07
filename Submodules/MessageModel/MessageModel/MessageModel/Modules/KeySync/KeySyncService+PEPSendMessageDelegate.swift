@@ -9,6 +9,7 @@
 import CoreData
 
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 extension KeySyncService: PEPSendMessageDelegate {
 
@@ -42,7 +43,7 @@ extension KeySyncService: PEPSendMessageDelegate {
                 // all receivers are own accounts, we can append
                 resultingStatus = sendWithAppend(moc: moc,
                                                  receivingAccounts: recipientsAccounts,
-                                                 message: message)
+                                                 pEpMessage: message)
             } else {
                 // at least one receiver is not us, so send via SMTP
                 resultingStatus = sendWithSmtp(moc: moc,
@@ -64,8 +65,8 @@ extension KeySyncService: PEPSendMessageDelegate {
     /// - Parameters:
     ///   - moc: The managed object context to use
     ///   - message: The pEp sync message, coming from the adapter
-    private func baseMessage(moc: NSManagedObjectContext, message: PEPMessage) -> CdMessage {
-        let cdMsg = CdMessage.from(pEpMessage: message, context: moc)
+    private func baseMessage(moc: NSManagedObjectContext, pEpMessage: PEPMessage) -> CdMessage {
+        let cdMsg = CdMessage.from(pEpMessage: pEpMessage, context: moc)
         cdMsg.sent = Date()
         cdMsg.uuid = UUID().uuidString
         return cdMsg
@@ -78,7 +79,7 @@ extension KeySyncService: PEPSendMessageDelegate {
     ///   - message: The pEp sync message, coming from the adapter
     private func sendWithAppend(moc: NSManagedObjectContext,
                                 receivingAccounts: [CdAccount],
-                                message: PEPMessage) -> PEPStatus {
+                                pEpMessage: PEPMessage) -> PEPStatus {
         for receiverAccount in receivingAccounts {
             let appendFolder: CdFolder?
             if  usePEPFolderProvider.usePepFolder,
@@ -96,7 +97,7 @@ extension KeySyncService: PEPSendMessageDelegate {
             }
 
             // Create a new message that will be appended later by an IMAP service.
-            let cdMsg = baseMessage(moc: moc, message: message)
+            let cdMsg = baseMessage(moc: moc, pEpMessage: pEpMessage)
             cdMsg.parent = targetFolder
             cdMsg.uid = Int32(CdMessage.uidNeedsAppend)
 
@@ -125,7 +126,7 @@ extension KeySyncService: PEPSendMessageDelegate {
         }
 
         // Put the message into the outbox so it will be sent out later by an SMTP service.
-        let cdMsg = baseMessage(moc: moc, message: message)
+        let cdMsg = baseMessage(moc: moc, pEpMessage: message)
         cdMsg.parent = cdOutFolder
 
         moc.saveAndLogErrors()

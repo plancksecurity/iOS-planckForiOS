@@ -8,6 +8,8 @@
 
 import CoreData
 
+import pEpIOSToolbox
+
 ///Syncs existing messages in one IMAP fiolder with the servers, e.g., detecting deleted ones.
 class SyncMessagesInImapFolderOperation: ImapSyncOperation {
     private var folderID: NSManagedObjectID?
@@ -37,7 +39,7 @@ class SyncMessagesInImapFolderOperation: ImapSyncOperation {
             return
         }
         if firstUID > lastUID {
-            handleError(BackgroundError.GeneralError.invalidParameter(info: #function),
+            handle(error: BackgroundError.GeneralError.invalidParameter(info: #function),
                         message: "firstUID should be <= lastUID?")
             return
         }
@@ -61,8 +63,7 @@ extension SyncMessagesInImapFolderOperation {
             }
 
             guard let cdAccount = me.imapConnection.cdAccount(moc: privateMOC) else {
-                me.handleError(
-                    BackgroundError.CoreDataError.couldNotFindAccount(info: nil))
+                me.handle(error: BackgroundError.CoreDataError.couldNotFindAccount(info: nil))
                 return
             }
             guard
@@ -70,7 +71,7 @@ extension SyncMessagesInImapFolderOperation {
                                            account: cdAccount,
                                            context: me.privateMOC)
                 else {
-                    me.handleError(BackgroundError.CoreDataError.couldNotFindFolder(info: nil))
+                    me.handle(error: BackgroundError.CoreDataError.couldNotFindFolder(info: nil))
                     return
             }
             me.folderID = cdFolder.objectID
@@ -109,7 +110,7 @@ extension SyncMessagesInImapFolderOperation {
                                     existingUIDs: Set<AnyHashable>) {
         guard let theFolderID = folderID,
             let folder = context.object(with: theFolderID) as? CdFolder else {
-                handleError(BackgroundError.CoreDataError.couldNotFindFolder(info: nil))
+                handle(error: BackgroundError.CoreDataError.couldNotFindFolder(info: nil))
                 return
         }
         let p1 = CdMessage.PredicateFactory.allMessagesBetweenUids(firstUid: firstUID,

@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 class TrustedServerSettingsViewController: UIViewController {
 
     @IBOutlet private weak var tableView: UITableView!
@@ -23,6 +25,7 @@ class TrustedServerSettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         tableView.register(PEPHeaderView.self, forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
         tableView.register(pEpFooterView.self, forHeaderFooterViewReuseIdentifier: pEpFooterView.reuseIdentifier)
         tableView.contentInsetAdjustmentBehavior = .always
@@ -33,7 +36,13 @@ class TrustedServerSettingsViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
 
+        title = NSLocalizedString("Store Messages Securely", comment: "Store Messages Securely Title")
         viewModel.delegate = self
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        showNavigationBar()
     }
 }
 

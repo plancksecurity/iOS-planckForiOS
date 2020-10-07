@@ -9,7 +9,7 @@
 import Foundation
 
 import MessageModel
-import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 // MARK: - Keys
 
@@ -26,6 +26,7 @@ extension AppSettings {
     static private let keyUserHasBeenAskedForContactAccessPermissions = "keyUserHasBeenAskedForContactAccessPermissions"
     static private let keyUnsecureReplyWarningEnabled = "keyUnsecureReplyWarningEnabled"
     static private var keyAccountSignature = "keyAccountSignature"
+    static private let keyVerboseLogginEnabled = "keyVerboseLogginEnabled"
 }
 
 // MARK: - AppSettings
@@ -77,8 +78,8 @@ extension AppSettings {
     }
 
     private func setupObjcAdapter() {
-        PEPObjCAdapter.setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled)
-        PEPObjCAdapter.setPassiveModeEnabled(passiveMode)
+        MessageModelConfig.setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled)
+        MessageModelConfig.setPassiveModeEnabled(passiveMode)
     }
 
     private func registerDefaults() {
@@ -94,6 +95,7 @@ extension AppSettings {
         defaults[AppSettings.keyUserHasBeenAskedForContactAccessPermissions] = false
         defaults[AppSettings.keyUnsecureReplyWarningEnabled] = false
         defaults[AppSettings.keyAccountSignature] = [String:String]()
+        defaults[AppSettings.keyVerboseLogginEnabled] = false
 
         AppSettings.userDefaults.register(defaults: defaults)
     }
@@ -159,7 +161,7 @@ extension AppSettings: AppSettingsProtocol {
         set {
             AppSettings.userDefaults.set(newValue,
                                          forKey: AppSettings.keyUnencryptedSubjectEnabled)
-            PEPObjCAdapter.setUnEncryptedSubjectEnabled(newValue)
+            MessageModelConfig.setUnEncryptedSubjectEnabled(newValue)
         }
     }
 
@@ -178,7 +180,7 @@ extension AppSettings: AppSettingsProtocol {
         }
         set {
             AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPassiveMode)
-            PEPObjCAdapter.setPassiveModeEnabled(newValue)
+            MessageModelConfig.setPassiveModeEnabled(newValue)
         }
     }
 
@@ -260,5 +262,16 @@ extension AppSettings: AppSettingsProtocol {
         }
         let finalKey = AppSettings.keyDefaultAccountAddress + finalAddress
         return AppSettings.userDefaults.string(forKey: finalKey) ?? String.pepSignature
+    }
+
+    public var verboseLogginEnabled: Bool {
+        get {
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyVerboseLogginEnabled)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue,
+                                         forKey: AppSettings.keyVerboseLogginEnabled)
+            Log.shared.verboseLoggingEnabled = newValue
+        }
     }
 }

@@ -7,7 +7,9 @@
 //
 
 import Foundation
+
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 extension Identity {
 
@@ -30,7 +32,7 @@ extension Identity {
 
         let pEpIdent = pEpIdentity()
 
-        PEPAsyncSession().update(pEpIdent, errorCallback: { _ in
+        PEPSession().update(pEpIdent, errorCallback: { _ in
             logError()
             completion()
         }) { updatedIdentity in
@@ -39,7 +41,7 @@ extension Identity {
                 completion()
                 return
             }
-            PEPAsyncSession().keyReset(updatedIdentity,
+            PEPSession().keyReset(updatedIdentity,
                                        fingerprint: updatedFingerprint,
                                        errorCallback: { (_) in
                                         logError()

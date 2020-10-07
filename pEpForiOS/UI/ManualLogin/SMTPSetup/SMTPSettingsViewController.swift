@@ -127,8 +127,6 @@ extension SMTPSettingsViewController: ManualAccountSetupViewDelegate {
                 case .invalidUserData:
                     errorMessage = NSLocalizedString("Some mandatory fields are empty",
                                                      comment: "Message of alert: a required field is empty")
-                default:
-                    Log.shared.errorAndCrash("Unhandled case in SMTPSettingsViewController")
                 }
             } else {
                 errorMessage = error.localizedDescription
@@ -201,7 +199,7 @@ extension SMTPSettingsViewController: VerifiableAccountDelegate {
                 try verifiableAccount?.save() { [weak self] success in
                     DispatchQueue.main.async { [weak self] in
                         guard let me = self else {
-                            Log.shared.errorAndCrash("Lost MySelf")
+                            // Valid case. We might have been dismissed already.
                             return
                         }
                         switch success {
@@ -220,7 +218,7 @@ extension SMTPSettingsViewController: VerifiableAccountDelegate {
         case .failure(let error):
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                    // Valid case. We might have been dismissed already.
                     return
                 }
                 me.isCurrentlyVerifying = false

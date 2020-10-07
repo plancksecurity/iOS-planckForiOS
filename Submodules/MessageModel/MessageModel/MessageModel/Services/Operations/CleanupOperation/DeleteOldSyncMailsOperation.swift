@@ -8,12 +8,14 @@
 
 import Foundation
 
-/// Removes (mark as deleted in IMAP terms) old p≡p synchronization messages from the INBOX.
+import pEpIOSToolbox
+
+/// Removes (mark as deleted in IMAP terms) old autoconsumable messages.
 ///
 /// Messages to be deleted must have the following characteristics:
 /// * older than a certain threshold
 /// * not yet marked as IMAP-delete
-/// * in the inbox
+/// * in the inbox OR pEpFolder
 /// * contain certain headers that mark them as "auto-consumable"
 class DeleteOldSyncMailsOperation: ConcurrentBaseOperation {
     open override func main() {

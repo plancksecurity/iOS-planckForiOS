@@ -130,9 +130,9 @@ extension BodyCell {
 
 extension BodyCell {
     private func setupContextMenu() {
-        let media = UIMenuItem(title: viewModel?.contextMenuItemTitleAttachMedia ?? "",
+        let media = UIMenuItem(title: viewModel?.contextMenuItemTitleAddPhotoOrVideo ?? "",
                                action: #selector(userClickedSelectMedia))
-        let attachment = UIMenuItem(title: viewModel?.contextMenuItemTitleAttachFile ?? "",
+        let attachment = UIMenuItem(title: viewModel?.contextMenuItemTitleAddDocument ?? "",
                                     action: #selector(userClickedSelectDocument))
         UIMenuController.shared.menuItems = [media, attachment]
     }

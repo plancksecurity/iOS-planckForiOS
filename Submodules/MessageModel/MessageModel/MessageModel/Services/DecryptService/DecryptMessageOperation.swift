@@ -62,17 +62,19 @@ extension DecryptMessageOperation {
         // We must block here until the adapter calls back. Else we will not exist any more when it
         // does and thus can not handle its results.
         var nsError: NSError? = nil
+        var isAFormerlyEncryptedReuploadedMessage = false
         let group = DispatchGroup()
         group.enter()
-        PEPAsyncSession().decryptMessage(inOutMessage, flags: inOutFlags, extraKeys: fprsOfExtraKeys, errorCallback: { (error) in
+        PEPSession().decryptMessage(inOutMessage, flags: inOutFlags, extraKeys: fprsOfExtraKeys, errorCallback: { (error) in
             nsError = error as NSError
             group.leave()
-        }) { (pEpSourceMessage, pEpDecryptedMsg, keyList, pEpRating, decryptFlags) in
+        }) { (pEpSourceMessage, pEpDecryptedMsg, keyList, pEpRating, decryptFlags, isFormerlyEncryptedReuploadedMessage) in
             inOutMessage = pEpSourceMessage
             pEpDecryptedMessage = pEpDecryptedMsg
             fprsOfExtraKeys = keyList
             rating = pEpRating
             inOutFlags = decryptFlags
+            isAFormerlyEncryptedReuploadedMessage = isFormerlyEncryptedReuploadedMessage
             group.leave()
         }
         group.wait()
@@ -107,7 +109,8 @@ extension DecryptMessageOperation {
                                     decryptFlags: inOutFlags,
                                     ratingBeforeEngine: ratingBeforeMessage,
                                     rating: rating,
-                                    keys: fprsOfExtraKeys ?? [])
+                                    keys: fprsOfExtraKeys ?? [],
+                                    isFormerlyEncryptedReuploadedMessage: isAFormerlyEncryptedReuploadedMessage)
         }
         cdMessageToDecrypt.needsDecrypt = false
         moc.saveAndLogErrors()
@@ -119,7 +122,8 @@ extension DecryptMessageOperation {
                                          decryptFlags: PEPDecryptFlags?,
                                          ratingBeforeEngine: Int16,
                                          rating: PEPRating,
-                                         keys: [String]) {
+                                         keys: [String],
+                                         isFormerlyEncryptedReuploadedMessage: Bool) {
         if rating.shouldUpdateMessageContent() {
             updateWholeMessage(pEpDecryptedMessage: pEpDecryptedMessage,
                                rating: rating,
@@ -130,7 +134,8 @@ extension DecryptMessageOperation {
             handleReUpload(cdMessage: updatedMessage,
                            inOutMessage: inOutMessage,
                            rating: rating,
-                           decryptFlags: decryptFlags)
+                           decryptFlags: decryptFlags,
+                           isFormerlyEncryptedReuploadedMessage: isFormerlyEncryptedReuploadedMessage)
         } else {
             if rating.rawValue != ratingBeforeEngine {
                 cdMessage.update(rating: rating)
@@ -192,7 +197,8 @@ extension DecryptMessageOperation {
     private func updatePossibleFakeMessage(forFetchedMessage cdMessage: CdMessage,
                                            pEpDecryptedMessage: PEPMessage?) -> CdMessage {
         guard let uuid = pEpDecryptedMessage?.messageID else {
-            Log.shared.errorAndCrash("No uuid")
+            //Valid case. No message can be found because the it has been deleted from the DB.
+            // Probably the user deleted the belonging Account
             return cdMessage
         }
 
@@ -216,12 +222,14 @@ extension DecryptMessageOperation {
 
 extension DecryptMessageOperation {
 
-    private func handleReUpload(cdMessage: CdMessage,//!!!: IOS-2325_!
+    private func handleReUpload(cdMessage: CdMessage,
                                 inOutMessage: PEPMessage,
                                 rating: PEPRating,
-                                decryptFlags: PEPDecryptFlags?) {
+                                decryptFlags: PEPDecryptFlags?,
+                                isFormerlyEncryptedReuploadedMessage: Bool) {
 
-        if cdMessage.wasAlreadyUnencrypted || // If the message was not encrypted, there is no reason to re-upload it.
+        if isFormerlyEncryptedReuploadedMessage || // The Eninge told us that this message is a formerly encrypted message that has been reuploaded for trusted server. Do not reupload again.
+            PEPUtils.pEpRatingFromInt(Int(cdMessage.pEpRating)) == .unencrypted || // If the message was not encrypted, there is no reason to re-upload it.
             cdMessage.isAutoConsumable { // Message is an auto-consume message -> no re-upload!
             return
         }
@@ -234,7 +242,7 @@ extension DecryptMessageOperation {
         } else if flagNeedsReupload {
             // The Engine gave us src_modified to signal us the message needs re-upload. (has been
             // reencrypted with extra keys, Unprotected subject or whatever other reason)
-            handleReUploadForReEncrypted(decryptedMessage: cdMessage,//!!!: IOS-2325_!
+            handleReUploadForReEncrypted(decryptedMessage: cdMessage,
                                          reEncryptedMessage: inOutMessage,
                                          decryptFlags: decryptFlags,
                                          originalRating: rating)
@@ -243,7 +251,7 @@ extension DecryptMessageOperation {
         }
     }
 
-    private func handleReUploadForTrustedServer(decryptedMessage: CdMessage,//!!!: IOS-2325_!
+    private func handleReUploadForTrustedServer(decryptedMessage: CdMessage,
                                                 originalRating: PEPRating) {
         // Create a copy of the decrypted message for append
         let messageCopyForReupload = decryptedMessage.cloneWithZeroUID(context: moc)
@@ -252,7 +260,7 @@ extension DecryptMessageOperation {
         decryptedMessage.imapMarkDeleted()
     }
 
-    private func handleReUploadForReEncrypted(decryptedMessage: CdMessage,//!!!: IOS-2325_!
+    private func handleReUploadForReEncrypted(decryptedMessage: CdMessage,
                                               reEncryptedMessage: PEPMessage,
                                               decryptFlags: PEPDecryptFlags?,
                                               originalRating: PEPRating) {
@@ -264,7 +272,7 @@ extension DecryptMessageOperation {
             cdReEncryptedMessage.flagsFromDecryptionRawValue = flags.rawValue
         }
 
-        setOriginalRatingHeader(rating: originalRating, toMessage: cdReEncryptedMessage)//!!!: IOS-2325_!
+        setOriginalRatingHeader(rating: originalRating, toMessage: cdReEncryptedMessage)
         // Delete the orininal, encrypted message
         decryptedMessage.imapMarkDeleted()
     }
@@ -297,4 +305,3 @@ extension DecryptMessageOperation {
         msg.setOriginalRatingHeader(rating: rating)
     }
 }
-

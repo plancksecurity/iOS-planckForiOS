@@ -7,7 +7,9 @@
 //
 
 import Foundation
+
 import MessageModel
+import pEpIOSToolbox
 
 class PGPKeyImportSettingViewController: UIViewController {
     static private let switchCellID = "PGPKeyImportSettingsSwitchTableViewCell"
@@ -31,6 +33,11 @@ class PGPKeyImportSettingViewController: UIViewController {
         tableView.register(PEPHeaderView.self,
                            forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        showNavigationBar()
+    }
 }
 
 // MARK: - UITableViewDelegate
@@ -43,22 +50,13 @@ extension PGPKeyImportSettingViewController: UITableViewDelegate {
             return
         }
         vm.handleDidSelect(rowAt: indexPath)
+        tableView.deselectRow(at: indexPath, animated: false)
     }
 }
 
 // MARK: - UITableViewDataSource
 
 extension PGPKeyImportSettingViewController: UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        // Makes sure the footer added to suppresse seperator lines does not alter the layout.
-        return 0.0
-    }
-
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        // Suppresses seperator lines for empty cells
-        return UIView(frame: .zero)
-    }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let vm = viewModel else {
@@ -120,11 +118,17 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
             }
             cell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
             cell.textLabel?.text = row.title
-            if let fontColor = row.titleFontColor {
-                cell.textLabel?.textColor = fontColor
 
+            if row.isEnabled {
+                if let fontColor = row.titleFontColor {
+                    cell.textLabel?.textColor = fontColor
+
+                }
+            } else {
+                cell.textLabel?.textColor = .gray
             }
-            if row.type == .setOwnKey {
+
+            if row.type == .setOwnKey && row.isEnabled {
                 cell.accessoryType = .disclosureIndicator
             }
             return cell

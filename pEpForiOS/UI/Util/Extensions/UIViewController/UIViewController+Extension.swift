@@ -7,7 +7,8 @@
 //
 
 import UIKit
-import PEPObjCAdapterFramework
+
+import MessageModel
 
 extension UIViewController {
     var isIpad : Bool {
@@ -48,7 +49,7 @@ extension UIViewController {
     /// - Returns: The view that was put into the navigation item title, or nil,
     ///   if no view was put there. In that case, the navigation item title view has
     ///   been nil'ed.
-    @discardableResult func showNavigationBarSecurityBadge(pEpRating: PEPRating?,
+    @discardableResult func showNavigationBarSecurityBadge(pEpRating: Rating?,
                                                            pEpProtection: Bool = true) -> UIView? {
         let titleView = navigationItemTitleView(pEpRating: pEpRating, pEpProtection: pEpProtection)
         titleView?.isUserInteractionEnabled = true
@@ -57,7 +58,7 @@ extension UIViewController {
         return titleView
     }
 
-    private func navigationItemTitleView(pEpRating: PEPRating?, pEpProtection: Bool = true) -> UIView? {
+    private func navigationItemTitleView(pEpRating: Rating?, pEpProtection: Bool = true) -> UIView? {
         if let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) {
             // according to apple's design guidelines ('Hit Targets'):
             // https://developer.apple.com/design/tips/

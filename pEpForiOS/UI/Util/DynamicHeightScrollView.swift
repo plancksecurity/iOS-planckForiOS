@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 protocol DynamicHeightScrollViewDelegate: class {
     /// Bottom constraint of the scroll view. Used to change the hegiht of the scrollView, modifying the constant
     var bottomConstraint: NSLayoutConstraint { get }
@@ -120,8 +122,7 @@ extension DynamicHeightScrollView {
             return
         }
         var bottomSafeArea: CGFloat = 0
-        if #available(iOS 11.0, *),
-            let window = window {
+        if let window = window {
             bottomSafeArea = window.safeAreaInsets.bottom
         }
 

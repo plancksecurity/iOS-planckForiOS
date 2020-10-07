@@ -7,7 +7,10 @@
 //
 
 import UIKit
+
 import SwipeCellKit
+
+import pEpIOSToolbox
 
 private struct Localized {
     static let importDate = NSLocalizedString("Import date",
@@ -191,7 +194,7 @@ extension ClientCertificateManagementViewController: SwipeTableViewCellDelegate 
                         title: swipeActionDescriptor.title(forDisplayMode: .titleAndImage)) {
                             [weak self] action, indexPath in
                             guard let me = self else {
-                                Log.shared.errorAndCrash("Lost MySelf")
+                                Log.shared.lostMySelf() 
                                 return
                             }
                             me.swipeDelete = action
