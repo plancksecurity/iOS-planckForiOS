@@ -10,8 +10,6 @@ import UIKit
 
 extension UIBarButtonItem {
 
-    public static let composeButtonTag = 666
-
     public static func getComposeButton(tapAction: Selector, longPressAction: Selector, target: Any) -> UIBarButtonItem {
         let tapGesture = UITapGestureRecognizer(target: target, action: tapAction)
         let longGesture = UILongPressGestureRecognizer(target: target, action: longPressAction)
@@ -30,7 +28,6 @@ extension UIBarButtonItem {
         viewContainerForComposeButton.addGestureRecognizer(longGesture)
         let compose = UIBarButtonItem(customView: viewContainerForComposeButton)
         compose.tintColor = .white
-        compose.tag = UIBarButtonItem.composeButtonTag
         return compose
     }
 }
