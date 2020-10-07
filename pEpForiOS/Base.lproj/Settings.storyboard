@@ -92,6 +92,24 @@
             </objects>
             <point key="canvasLocation" x="-2242.4000000000001" y="-390.85457271364322"/>
         </scene>
+        <!--Logging View Controller-->
+        <scene sceneID="aut-kE-1r4">
+            <objects>
+                <viewController id="oQJ-uA-URQ" customClass="LoggingViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="vOB-z1-Y8a"/>
+                        <viewControllerLayoutGuide type="bottom" id="WYN-Gx-FVL"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="fSD-DJ-4ev">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Vy-uI-QTS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2450" y="-1112"/>
+        </scene>
         <!--Settings Table View Controller-->
         <scene sceneID="ODz-Rf-1g6">
             <objects>
