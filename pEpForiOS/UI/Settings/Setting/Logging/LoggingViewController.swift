@@ -25,8 +25,9 @@ class LoggingViewController: UIViewController {
 
 extension LoggingViewController: LogViewModelDelegate {
     func scrollTextViewToBottom(textView: UITextView) {
-        if textView.text.count > 0 {
-            let location = textView.text.count - 1
+        let theCount = textView.text.count
+        if theCount > 0 {
+            let location = theCount - 1
             let bottom = NSMakeRange(location, 1)
             textView.scrollRangeToVisible(bottom)
         }
