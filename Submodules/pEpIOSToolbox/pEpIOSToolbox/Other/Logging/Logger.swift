@@ -194,6 +194,10 @@ import CocoaLumberjackSwift
         return ""
     }
 
+    // MARK: -- Private
+
+    var fileLogger: DDFileLogger?
+
     private func initLumberjack() {
         DDLog.add(DDOSLogger.sharedInstance) // Uses os_log
 
@@ -203,10 +207,12 @@ import CocoaLumberjackSwift
 
         let fileManager = DDLogFileManagerDefault(logsDirectory: theDocUrl.path)
 
-        let fileLogger: DDFileLogger = DDFileLogger(logFileManager: fileManager)
-        fileLogger.rollingFrequency = 60 * 60 * 24 // 24 hours
-        fileLogger.logFileManager.maximumNumberOfLogFiles = 7
-        DDLog.add(fileLogger)
+        let theFileLogger: DDFileLogger = DDFileLogger(logFileManager: fileManager)
+        theFileLogger.rollingFrequency = 60 * 60 * 24 // 24 hours
+        theFileLogger.logFileManager.maximumNumberOfLogFiles = 7
+        DDLog.add(theFileLogger)
+
+        self.fileLogger = theFileLogger
     }
 
     private func getLoggingDirectory() -> URL? {
