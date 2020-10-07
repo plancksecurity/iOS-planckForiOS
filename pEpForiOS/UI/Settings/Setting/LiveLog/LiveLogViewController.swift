@@ -8,10 +8,10 @@
 
 import UIKit
 
-class LoggingViewController: UIViewController {
+class LiveLogViewController: UIViewController {
     @IBOutlet weak var logTextView: UITextView!
 
-    private var viewModel = LoggingViewModel()
+    private var viewModel = LiveLogViewModel()
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -23,7 +23,7 @@ class LoggingViewController: UIViewController {
     }
 }
 
-extension LoggingViewController: LogViewModelDelegate {
+extension LiveLogViewController: LiveLogViewModelDelegate {
     func scrollTextViewToBottom(textView: UITextView) {
         let theCount = textView.text.count
         if theCount > 0 {

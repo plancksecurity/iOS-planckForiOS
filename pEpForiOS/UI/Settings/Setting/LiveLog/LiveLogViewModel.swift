@@ -10,14 +10,14 @@ import Foundation
 
 import pEpIOSToolbox
 
-public protocol LogViewModelDelegate: class {
+public protocol LiveLogViewModelDelegate: class {
     /// The view should be updated with the latest log contents.
     /// - Note: The updates _may_ occur every `updateInterval`, regardless
     /// if the log changed or not.
     func updateLogContents(logString: String)
 }
 
-public class LoggingViewModel {
+public class LiveLogViewModel {
     /// Update interval in seconds.
     ///
     /// The VM will pull the latest log string every interval and inform
@@ -25,7 +25,7 @@ public class LoggingViewModel {
     public var updateInterval: TimeInterval = 2.0
 
     /// The delegate for log updates
-    public weak var delegate: LogViewModelDelegate? {
+    public weak var delegate: LiveLogViewModelDelegate? {
         didSet {
             sendTheLog()
         }
