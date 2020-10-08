@@ -86,11 +86,48 @@
                     </view>
                     <connections>
                         <outlet property="verboseLoggingSwitch" destination="rWL-mw-ch6" id="ece-K3-ULq"/>
+                        <segue destination="oQJ-uA-URQ" kind="presentation" identifier="segueShowLog" id="Lmz-r1-7PI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mXj-Sq-nBh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2242.4000000000001" y="-390.85457271364322"/>
+        </scene>
+        <!--Live Log View Controller-->
+        <scene sceneID="aut-kE-1r4">
+            <objects>
+                <viewController id="oQJ-uA-URQ" customClass="LiveLogViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="vOB-z1-Y8a"/>
+                        <viewControllerLayoutGuide type="bottom" id="WYN-Gx-FVL"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="fSD-DJ-4ev">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Sd7-5Q-wWF">
+                                <rect key="frame" x="16" y="8" width="343" height="631"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Sd7-5Q-wWF" firstAttribute="leading" secondItem="fSD-DJ-4ev" secondAttribute="leadingMargin" id="HMK-4T-oRs"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Sd7-5Q-wWF" secondAttribute="trailing" id="dTU-0c-yNB"/>
+                            <constraint firstItem="Sd7-5Q-wWF" firstAttribute="top" secondItem="vOB-z1-Y8a" secondAttribute="bottom" constant="8" symbolic="YES" id="x7G-3Q-NgB"/>
+                            <constraint firstItem="WYN-Gx-FVL" firstAttribute="top" secondItem="Sd7-5Q-wWF" secondAttribute="bottom" constant="8" symbolic="YES" id="yzb-PE-hho"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="logTextView" destination="Sd7-5Q-wWF" id="ZUO-Md-Yfc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Vy-uI-QTS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2450" y="-1112"/>
         </scene>
         <!--Settings Table View Controller-->
         <scene sceneID="ODz-Rf-1g6">
@@ -1746,6 +1783,9 @@
         </systemColor>
         <systemColor name="groupTableViewBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
