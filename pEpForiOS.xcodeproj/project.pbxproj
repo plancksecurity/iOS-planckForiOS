@@ -248,6 +248,8 @@
 		43425EDF1FE3E052004A2728 /* OAuth2ProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43425EDE1FE3E052004A2728 /* OAuth2ProviderFactory.swift */; };
 		43498CDB200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43498CDA200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift */; };
 		43498CDD200D0790006DC947 /* LoginViewModelOAuth2ErrorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43498CDC200D0790006DC947 /* LoginViewModelOAuth2ErrorDelegate.swift */; };
+		4349E8BB252DCC58000F2BBB /* LiveLogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4349E8BA252DCC58000F2BBB /* LiveLogViewModel.swift */; };
+		4349E8C0252DCD42000F2BBB /* LiveLogViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4349E8BF252DCD42000F2BBB /* LiveLogViewModelTest.swift */; };
 		434AC3E320A450D800C11B7F /* UIAlertController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434AC3E220A450D700C11B7F /* UIAlertController+Extension.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
@@ -307,6 +309,7 @@
 		43E657D11F3C33C30014CBEC /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E657D01F3C33C30014CBEC /* String+HTML.swift */; };
 		43E657E01F3C74030014CBEC /* AXHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 43E657DD1F3C72360014CBEC /* AXHTMLParser.m */; };
 		43E657E71F3CAB310014CBEC /* HtmlToMarkdownSaxParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E657E61F3CAB310014CBEC /* HtmlToMarkdownSaxParser.swift */; };
+		43EB61B3252DB47A0066B45D /* LiveLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EB61B2252DB47A0066B45D /* LiveLogViewController.swift */; };
 		43EC75AC2164C26100048CFE /* SetOwnKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC75AB2164C26100048CFE /* SetOwnKeyViewController.swift */; };
 		43EC75AE2164D03500048CFE /* SetOwnKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC75AD2164D03500048CFE /* SetOwnKeyViewModel.swift */; };
 		43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53631CC77F95006AB156 /* EmailListViewCell.swift */; };
@@ -758,6 +761,8 @@
 		43425EDE1FE3E052004A2728 /* OAuth2ProviderFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2ProviderFactory.swift; sourceTree = "<group>"; };
 		43498CDA200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelLoginErrorDelegate.swift; sourceTree = "<group>"; };
 		43498CDC200D0790006DC947 /* LoginViewModelOAuth2ErrorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelOAuth2ErrorDelegate.swift; sourceTree = "<group>"; };
+		4349E8BA252DCC58000F2BBB /* LiveLogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveLogViewModel.swift; sourceTree = "<group>"; };
+		4349E8BF252DCD42000F2BBB /* LiveLogViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveLogViewModelTest.swift; sourceTree = "<group>"; };
 		434AC3E220A450D700C11B7F /* UIAlertController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extension.swift"; sourceTree = "<group>"; };
 		434F40931EB0B173002FBF0D /* ObservableValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableValue.swift; sourceTree = "<group>"; };
 		4351C2A21F4441190053381F /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
@@ -883,6 +888,7 @@
 		43E657DD1F3C72360014CBEC /* AXHTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AXHTMLParser.m; sourceTree = "<group>"; };
 		43E657DE1F3C72360014CBEC /* Axt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Axt.h; sourceTree = "<group>"; };
 		43E657E61F3CAB310014CBEC /* HtmlToMarkdownSaxParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlToMarkdownSaxParser.swift; sourceTree = "<group>"; };
+		43EB61B2252DB47A0066B45D /* LiveLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveLogViewController.swift; sourceTree = "<group>"; };
 		43EC75AB2164C26100048CFE /* SetOwnKeyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetOwnKeyViewController.swift; sourceTree = "<group>"; };
 		43EC75AD2164D03500048CFE /* SetOwnKeyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetOwnKeyViewModel.swift; sourceTree = "<group>"; };
 		43ED53631CC77F95006AB156 /* EmailListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewCell.swift; sourceTree = "<group>"; };
@@ -1467,6 +1473,7 @@
 		15874BAF2127493E00A3A4A6 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
+				43EB61B1252DB4590066B45D /* LiveLog */,
 				15FE1F741FE122B200CC2D97 /* Credits */,
 				431E68B1246C266800B3A977 /* KeyImport */,
 				1579348B246D490700E2D8D2 /* PGPKeyImport */,
@@ -1536,6 +1543,7 @@
 			isa = PBXGroup;
 			children = (
 				43D1900D2513734400A36973 /* SettingsViewModelTest.swift */,
+				4349E8BE252DCD34000F2BBB /* Logging */,
 				1546CBFD252B5D3A00A7AA7D /* Credits */,
 				B7B2912124FF8DEC00428CA6 /* ResetTrust */,
 				439EA15224727966005D6C9A /* KeyImport */,
@@ -1883,6 +1891,14 @@
 			path = OAuth2;
 			sourceTree = "<group>";
 		};
+		4349E8BE252DCD34000F2BBB /* Logging */ = {
+			isa = PBXGroup;
+			children = (
+				4349E8BF252DCD42000F2BBB /* LiveLogViewModelTest.swift */,
+			);
+			path = Logging;
+			sourceTree = "<group>";
+		};
 		4351C2A01F4441190053381F /* Markdown */ = {
 			isa = PBXGroup;
 			children = (
@@ -2180,6 +2196,15 @@
 				43E657DE1F3C72360014CBEC /* Axt.h */,
 			);
 			path = Axt;
+			sourceTree = "<group>";
+		};
+		43EB61B1252DB4590066B45D /* LiveLog */ = {
+			isa = PBXGroup;
+			children = (
+				43EB61B2252DB47A0066B45D /* LiveLogViewController.swift */,
+				4349E8BA252DCC58000F2BBB /* LiveLogViewModel.swift */,
+			);
+			path = LiveLog;
 			sourceTree = "<group>";
 		};
 		43EC75AA2164C24800048CFE /* SetOwnKey */ = {
@@ -3076,6 +3101,7 @@
 				1521B795241BDFE5000EAE57 /* UIUtil+Compose.swift in Sources */,
 				5BB7C73924D2EC4400D5F328 /* UnifiedSent.swift in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
+				4349E8BB252DCC58000F2BBB /* LiveLogViewModel.swift in Sources */,
 				3705096622CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift in Sources */,
 				49C34AF620E4F649009D11CC /* CellDetailTransition.swift in Sources */,
 				5B394E1323ED5673006A1FC0 /* TrustManagementTableViewCell.swift in Sources */,
@@ -3088,6 +3114,7 @@
 				49691B1520D7FD0200CA9367 /* MessageViewModelConfigurable.swift in Sources */,
 				5BE35A9A249139DD00AC605C /* AccountSettingsViewController.swift in Sources */,
 				3705096822CF6AD100CB73D6 /* KeySyncHandshakeViewController.swift in Sources */,
+				43EB61B3252DB47A0066B45D /* LiveLogViewController.swift in Sources */,
 				152A39CF21905C3E00D9F8E4 /* ComposeUtil.swift in Sources */,
 				152A39C821905C3E00D9F8E4 /* ComposeViewModel+InitData.swift in Sources */,
 				0038494C20D2587F008000EA /* PepPictureComposer.swift in Sources */,
@@ -3170,6 +3197,7 @@
 				154D173D2373327C001FDF78 /* AccountDrivenTestBase.swift in Sources */,
 				00DF2C3B2164C53F004EBA6C /* FolderViewModelTest.swift in Sources */,
 				3756434E2370810400FB354D /* EditableAccountSettingsViewModelTest.swift in Sources */,
+				4349E8C0252DCD42000F2BBB /* LiveLogViewModelTest.swift in Sources */,
 				157C05482180756300E530DE /* DocumentAttachmentPickerViewModelTest.swift in Sources */,
 				B7B2912524FF8EB700428CA6 /* ResetTrustViewModelTest.swift in Sources */,
 				151F7200202A06760057C74D /* TestUtil.swift in Sources */,
@@ -3568,7 +3596,7 @@
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.213;
+				MARKETING_VERSION = 1.1.214;
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "-DDEBUG_LOGGING -D DEBUG $(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = security.pEp;
@@ -3607,7 +3635,7 @@
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.213;
+				MARKETING_VERSION = 1.1.214;
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = security.pEp;
 				PRODUCT_MODULE_NAME = pEpForiOS;
