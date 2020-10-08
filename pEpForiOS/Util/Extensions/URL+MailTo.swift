@@ -36,4 +36,12 @@ extension URL {
     public var isMailto: Bool {
         return absoluteString.starts(with: "mailto:")
     }
+
+    /// Retrives the mailto object if possible, otherwise nil.
+    public var mailto: Mailto? {
+        if isMailto {
+            return Mailto(url: self)
+        }
+        return nil
+    }
 }

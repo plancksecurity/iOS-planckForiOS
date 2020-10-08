@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Mailto {
+public struct Mailto {
 
     private enum Pattern: String {
         case scheme = "mailto:"
@@ -39,11 +39,11 @@ struct Mailto {
         guard url.isMailto else {
             return nil
         }
-        let content = url.absoluteString.removeFirst(pattern: Pattern.scheme.rawValue)
+        let content = url.absoluteString.removeFirstOccurrence(of: Pattern.scheme.rawValue)
         let parts = content.split {$0 == "&" || $0 == "?"}
         parts.forEach { (part) in
             if !part.contains(equalsSeparator) {
-                tos = part.componentsSeparatedByComma()
+                tos = part.components(separatedBy: ",")
             } else if let ccs = parseRecipientField(with: part, and: Pattern.cc.rawValue) {
                 self.ccs = ccs
             } else if let bccs = parseRecipientField(with: part, and: Pattern.bcc.rawValue) {
@@ -57,7 +57,7 @@ struct Mailto {
 
         func parseRecipientField(with part: String.SubSequence, and pattern: String) -> [String]? {
             if part.starts(with:pattern) {
-                return part.removeFirst(pattern: pattern).componentsSeparatedByComma()
+                return part.removeFirst(pattern: pattern).components(separatedBy: ",")
             }
             return nil
         }
