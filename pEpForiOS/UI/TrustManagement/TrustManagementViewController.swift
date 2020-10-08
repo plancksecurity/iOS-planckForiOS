@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 /// View Controller to handle the HandshakeView.
 class TrustManagementViewController: BaseViewController {
     private let onlyMasterCellIdentifier = "TrustManagementTableViewCell_OnlyMaster"
@@ -44,8 +46,8 @@ class TrustManagementViewController: BaseViewController {
 
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         guard let vm = viewModel, vm.canUndo() && motion == .motionShake,
-            let actionName = vm.lastActionPerformed() else { return }
-        let title = NSLocalizedString("Undo \(actionName)", comment: "Undo trust change verification alert title")
+            let actionName = vm.revertAction() else { return }
+        let title = NSLocalizedString(actionName, comment: "Revert last action performed named - alert title")
         let alertController = UIAlertController.pEpAlertController(title: title,
                                                                    message: nil,
                                                                    preferredStyle: .alert)

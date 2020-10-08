@@ -32,6 +32,8 @@
 		431E68B0246C0FFC00B3A977 /* DocumentsDirectoryBrowserTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E68AF246C0FFC00B3A977 /* DocumentsDirectoryBrowserTest.swift */; };
 		436F1BA125028B2E004426DC /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436F1BA025028B2E004426DC /* CocoaLumberjackSwift.framework */; };
 		43BE66D2246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BE66D1246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift */; };
+		43E1A866252B6A1300307A7D /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43E1A865252B6A1300307A7D /* CocoaLumberjack.framework */; };
+		43EB61A6252DA4160066B45D /* LoggerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EB61A5252DA4160066B45D /* LoggerTest.swift */; };
 		5B2F7E5F240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E5E240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift */; };
 		5B2F7E61240D0EA8004DDFA2 /* RangeExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E60240D0EA8004DDFA2 /* RangeExpression+Extension.swift */; };
 		5B87D79423F2C5CE009DACAA /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */; };
@@ -102,6 +104,8 @@
 		431E68AF246C0FFC00B3A977 /* DocumentsDirectoryBrowserTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DocumentsDirectoryBrowserTest.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/Other/DocumentsDirectoryBrowserTest.swift; sourceTree = "<group>"; };
 		436F1BA025028B2E004426DC /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjackSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43BE66D1246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsDirectoryBrowserProtocol.swift; sourceTree = "<group>"; };
+		43E1A865252B6A1300307A7D /* CocoaLumberjack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43EB61A5252DA4160066B45D /* LoggerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoggerTest.swift; path = ../../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/Other/Logging/LoggerTest.swift; sourceTree = "<group>"; };
 		5B2F7E5E240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "StringProtocol+NSRanges.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/StringProtocol+NSRanges.swift"; sourceTree = "<group>"; };
 		5B2F7E60240D0EA8004DDFA2 /* RangeExpression+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "RangeExpression+Extension.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/RangeExpression+Extension.swift"; sourceTree = "<group>"; };
 		5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
@@ -144,6 +148,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43E1A866252B6A1300307A7D /* CocoaLumberjack.framework in Frameworks */,
 				436F1BA125028B2E004426DC /* CocoaLumberjackSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -169,16 +174,10 @@
 			path = Foundation;
 			sourceTree = "<group>";
 		};
-		15175ED9221E9F4200C91DB8 /* UIKit */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = UIKit;
-			sourceTree = "<group>";
-		};
 		15175EDA221E9F4C00C91DB8 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				43EB61A4252DA3FF0066B45D /* Logging */,
 				37904566223FA52B006DAB3B /* ReachabilityUtilsTest */,
 				B7DB7F8322144E4E003968DA /* SortedSetTest.swift */,
 				431E68AF246C0FFC00B3A977 /* DocumentsDirectoryBrowserTest.swift */,
@@ -231,12 +230,29 @@
 			path = Modules;
 			sourceTree = "<group>";
 		};
+		433805B22527443C006DE126 /* Logging */ = {
+			isa = PBXGroup;
+			children = (
+				B70A3A75220091D400EDCE61 /* Logger.swift */,
+			);
+			path = Logging;
+			sourceTree = "<group>";
+		};
 		436F1B9F25028B2E004426DC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43E1A865252B6A1300307A7D /* CocoaLumberjack.framework */,
 				436F1BA025028B2E004426DC /* CocoaLumberjackSwift.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		43EB61A4252DA3FF0066B45D /* Logging */ = {
+			isa = PBXGroup;
+			children = (
+				43EB61A5252DA4160066B45D /* LoggerTest.swift */,
+			);
+			path = Logging;
 			sourceTree = "<group>";
 		};
 		B70A3A5222005A7600EDCE61 /* Foundation */ = {
@@ -322,7 +338,6 @@
 			children = (
 				378B76532240F8B900D6662C /* TestUtils */,
 				15175ED8221E9F3800C91DB8 /* Foundation */,
-				15175ED9221E9F4200C91DB8 /* UIKit */,
 				15175EDA221E9F4C00C91DB8 /* Other */,
 				B7DB7F5B221315BD003968DA /* Info.plist */,
 			);
@@ -334,7 +349,7 @@
 			children = (
 				15793490246D49C700E2D8D2 /* DocumentsDirectoryBrowser */,
 				3790455D223FA486006DAB3B /* Reachability */,
-				B70A3A75220091D400EDCE61 /* Logger.swift */,
+				433805B22527443C006DE126 /* Logging */,
 				B75390852212E20500B1FCF9 /* Collection+Extensions.swift */,
 				B7465DCB2211BEE9008A1708 /* Tuple.swift */,
 				B7A46C4F220C1F0C0027CCB5 /* MiscUtil.swift */,
@@ -537,6 +552,7 @@
 				378B76552240F93A00D6662C /* TestUtils.swift in Sources */,
 				B7371AA1230175B7007B37A3 /* String+ExtensionsTest.swift in Sources */,
 				1522956623044FD000204FD3 /* String+FPRTest.swift in Sources */,
+				43EB61A6252DA4160066B45D /* LoggerTest.swift in Sources */,
 				431E68B0246C0FFC00B3A977 /* DocumentsDirectoryBrowserTest.swift in Sources */,
 				3AE10BAF249A6F1A0050BFB0 /* String+HtmlTest.swift in Sources */,
 			);

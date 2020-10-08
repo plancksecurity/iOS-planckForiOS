@@ -8,6 +8,8 @@
 
 import MessageModel
 
+import pEpIOSToolbox
+
 class AttachmentViewModel: CellViewModel {
     /// - note: Before crafting a message to send, this is a dangling Attachment! (message == nil).
     ///         Thus it MUST life on a private Session and MUST NOT be saved.

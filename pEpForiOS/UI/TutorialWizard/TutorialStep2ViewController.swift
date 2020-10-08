@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+import pEpIOSToolbox
+
 class TutorialStep2ViewController: TutorialStepViewController {
     
     @IBOutlet private weak var secureLabel: UILabel!

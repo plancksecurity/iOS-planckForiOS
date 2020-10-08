@@ -153,7 +153,7 @@ class StringHTMLExtensionTests: XCTestCase {
         let theData = "Not an image".data(using: .utf8)
         let theMimeType = MimeTypeUtils.MimeType.jpeg
         let attachment = Attachment(data: theData,
-                                    mimeType: theMimeType,
+                                    mimeType: theMimeType.rawValue,
                                     fileName: "cid:\(cid1)",
             contentDisposition: .attachment)
 
@@ -170,7 +170,7 @@ class StringHTMLExtensionTests: XCTestCase {
         XCTAssertEqual(sthWithCiteTag, exp)
         XCTAssertEqual(sthWithBlockquoteTag, exp)
         XCTAssertEqual(attachmentDelegate.numberOfAttachmentsUsed, 1)
-        XCTAssertEqual(attachmentDelegate.attachments[0].mimeType, theMimeType)
+        XCTAssertEqual(attachmentDelegate.attachments[0].mimeType, theMimeType.rawValue)
 
         let (markdown, attachments) = attributedString.convertToMarkDown()
         XCTAssertEqual(attachments.count, 1)

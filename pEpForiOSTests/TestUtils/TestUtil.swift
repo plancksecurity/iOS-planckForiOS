@@ -96,7 +96,7 @@ class TestUtil {
             cdServer.port = 2525
         }
         guard let context = cdAccount.managedObjectContext else {
-            pEpForiOS.Log.shared.errorAndCrash("The account we are using has been deleted from moc!")
+            Log.shared.errorAndCrash("The account we are using has been deleted from moc!")
             return
         }
         context.saveAndLogErrors()
@@ -190,7 +190,7 @@ class TestUtil {
         let contentDisposition = inlined ? Attachment.ContentDispositionType.inline : .attachment
 
         return Attachment(data: imageData,
-                          mimeType: MimeTypeUtils.MimeType.jpeg,
+                          mimeType: MimeTypeUtils.MimeType.jpeg.rawValue,
                           fileName: imageFileName,
                           contentDisposition: contentDisposition)
     }
@@ -287,7 +287,7 @@ class TestUtil {
             server.automaticallyTrusted = true
         }
         guard let context = cdAccount.managedObjectContext else {
-            pEpForiOS.Log.shared.errorAndCrash("The account we are using has been deleted from moc!")
+            Log.shared.errorAndCrash("The account we are using has been deleted from moc!")
             return
         }
         context.saveAndLogErrors()

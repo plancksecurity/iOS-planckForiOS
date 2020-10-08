@@ -9,6 +9,7 @@
 import CoreData
 
 import PantomimeFramework
+import pEpIOSToolbox
 
 extension VerifiableAccount {
     public enum AccountType: CaseIterable {

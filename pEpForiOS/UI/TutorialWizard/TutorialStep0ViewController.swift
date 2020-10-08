@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 /// ViewController that configures the layout of the first step of the tutorial.
 /// It basically set the texts and it's properties.
 /// The layout differences regarding the device orientation and screen size are configured
@@ -91,7 +93,6 @@ extension TutorialStep0ViewController {
         distanceBetweenSkipAndTitleConstraint.constant = isLandscape ? Constants.Landscape.skipTitleDistance : Constants.Portrait.skipTitleDistance
         distanceBetweenTitleViewAndTopConstraint.constant = isLandscape ? Constants.Landscape.titleViewTopDistance : Constants.Portrait.titleViewTopDistance
         distanceBetweenPrivacyStatusAndSkipConstraint.constant = isLandscape ? Constants.Landscape.privacyStatusSkipDistance : Constants.Portrait.privacyStatusSkipDistance
-        distanceBetweenAvatarAndPrivacyStatus2LabelConstraint.constant = isLandscape ? Constants.Landscape.avatarPrivacyStatus2Distance : Constants.Portrait.avatarPrivacyStatus2Distance
         titleLabelLeadingContraint.constant = isLandscape ? Constants.Landscape.titleLabelLeading : Constants.Portrait.titleLabelLeading
         distanceBetweenTopbarLabelAndPrivacyStatus2Constraint.constant = isLandscape ? Constants.Landscape.distanceBetweenTopbarLabelAndPrivacyStatus2 :
             Constants.Portrait.distanceBetweenTopbarLabelAndPrivacyStatus2

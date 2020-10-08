@@ -8,6 +8,8 @@
 
 import Foundation
 
+import pEpIOSToolbox
+
 protocol PGPKeyImportSettingSwitchTableViewCellDelegate: class {
     func passphraseSwitchChanged(sender: PGPKeyImportSettingSwitchTableViewCell, didChangeSwitchValue newValue: Bool, cancelCallback: (() -> Void)?)
 }

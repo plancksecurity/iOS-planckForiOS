@@ -319,10 +319,10 @@
                                 </view>
                             </subviews>
                             <constraints>
+                                <constraint firstItem="ZKp-HP-GpN" firstAttribute="centerX" secondItem="wep-Xm-sou" secondAttribute="centerX" id="0s5-UZ-eWh"/>
                                 <constraint firstItem="OjY-aN-ucH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wep-Xm-sou" secondAttribute="leading" constant="30" id="3jz-tV-gBC"/>
                                 <constraint firstItem="9fb-qy-5Z9" firstAttribute="centerY" secondItem="wep-Xm-sou" secondAttribute="centerY" id="5Rf-a8-0qH"/>
                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="ZKp-HP-GpN" secondAttribute="bottom" constant="10" id="Ajf-gz-6yS"/>
-                                <constraint firstItem="ZKp-HP-GpN" firstAttribute="trailing" secondItem="OjY-aN-ucH" secondAttribute="trailing" id="AoN-5y-VNp"/>
                                 <constraint firstItem="ZKp-HP-GpN" firstAttribute="leading" secondItem="OjY-aN-ucH" secondAttribute="leading" id="LhS-J2-oV7"/>
                                 <constraint firstItem="OjY-aN-ucH" firstAttribute="centerY" secondItem="wep-Xm-sou" secondAttribute="centerY" id="WQJ-Sm-ij8"/>
                                 <constraint firstItem="ZKp-HP-GpN" firstAttribute="centerY" secondItem="wep-Xm-sou" secondAttribute="centerY" id="YsY-cI-r96"/>

@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 protocol DynamicHeightScrollViewDelegate: class {
     /// Bottom constraint of the scroll view. Used to change the hegiht of the scrollView, modifying the constant
     var bottomConstraint: NSLayoutConstraint { get }

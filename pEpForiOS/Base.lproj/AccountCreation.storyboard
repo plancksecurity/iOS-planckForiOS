@@ -353,6 +353,9 @@
                                                 <include reference="Sub-2j-OvV"/>
                                                 <include reference="wIi-CI-cLC"/>
                                             </mask>
+                                            <mask key="constraints">
+                                                <include reference="Pfw-9B-YOE"/>
+                                            </mask>
                                         </variation>
                                     </view>
                                 </subviews>
