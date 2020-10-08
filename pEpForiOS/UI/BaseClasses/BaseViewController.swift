@@ -84,15 +84,15 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
             switch smtpError {
             case .authenticationFailed( _, let account):
                 extraInfo = account
-            case .illegalState(_):
+            case .illegalState:
                 break
-            case .connectionLost(_):
+            case .connectionLost:
                 break
-            case .connectionTerminated(_):
+            case .connectionTerminated:
                 break
-            case .connectionTimedOut(_):
+            case .connectionTimedOut:
                 break
-            case .badResponse(_):
+            case .badResponse:
                 break
             case .clientCertificateNotAccepted:
                 break
