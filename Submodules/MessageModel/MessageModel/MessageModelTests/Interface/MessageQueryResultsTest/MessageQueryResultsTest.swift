@@ -48,6 +48,8 @@ class MessageQueryResultsTest: PersistentStoreDrivenTestBase {
     override func tearDown() {
         messageQueryResults?.rowDelegate = nil
         messageQueryResults = nil
+        //waitInTheBackground()
+        print("**** tearDown")
         super.tearDown()
     }
 
@@ -81,11 +83,8 @@ class MessageQueryResultsTest: PersistentStoreDrivenTestBase {
         // Then
         let expectedMessagesCount = 0
         XCTAssertEqual(try? messageQueryResults.count(), expectedMessagesCount)
-
-        waitForever()
     }
 
-    /*
     func testStartMonitoringWithElements() {
         // Given
         guard let messageQueryResults = messageQueryResults else {
@@ -359,7 +358,6 @@ class MessageQueryResultsTest: PersistentStoreDrivenTestBase {
         XCTAssertEqual(delegateTest.indexPath, IndexPath(item: 0,
                                                          section: 0))
     }
-     */
 }
 
 // MARK: - Helper
@@ -380,9 +378,15 @@ extension MessageQueryResultsTest {
         return createes
     }
 
-    private func waitForever() {
+    private func waitInTheBackground() {
+        print("**** waitInTheBackground start")
+        let waitInterval: TimeInterval = 0.1
         let expNever = expectation(description: "expNever")
-        wait(for: [expNever], timeout: 30000, enforceOrder: false)
+        Timer.scheduledTimer(withTimeInterval: waitInterval, repeats: false) { timer in
+            expNever.fulfill()
+        }
+        wait(for: [expNever], timeout: waitInterval, enforceOrder: false)
+        print("**** waitInTheBackground finished")
     }
 }
 

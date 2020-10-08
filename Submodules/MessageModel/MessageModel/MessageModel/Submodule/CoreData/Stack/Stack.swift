@@ -223,6 +223,7 @@ extension Stack {
             objc_sync_enter(Stack.unitTestLock)
             context.perform {
                 context.mergeChanges(fromContextDidSave: notification)
+                print("**** merged \(context)")
             }
             objc_sync_exit(Stack.unitTestLock)
         } else {
