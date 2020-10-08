@@ -9,7 +9,7 @@
 import MessageModel
 import pEpIOSToolbox
 
-// MARK: - UIUtil+Compose
+// MARK: - UIUtils+Compose
 
 extension UIUtils {
 

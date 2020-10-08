@@ -18,9 +18,6 @@ public struct Mailto {
         case subject = "subject="
     }
 
-    private let commaSeparator = ","
-    private let equalsSeparator = "="
-
     /// The emails addresses for the to: field
     public var tos: [String]?
     /// The emails addresses for the cc: field
@@ -42,7 +39,7 @@ public struct Mailto {
         let content = url.absoluteString.removeFirstOccurrence(of: Pattern.scheme.rawValue)
         let parts = content.split {$0 == "&" || $0 == "?"}
         parts.forEach { (part) in
-            if !part.contains(equalsSeparator) {
+            if !part.contains("=") {
                 tos = part.components(separatedBy: ",")
             } else if let ccs = parseRecipientField(with: part, and: Pattern.cc.rawValue) {
                 self.ccs = ccs
@@ -55,6 +52,11 @@ public struct Mailto {
             }
         }
 
+        /// Parse the recipient fields (tos, ccs, bccs)
+        /// - Parameters:
+        ///   - part: The part of the url that contains the fields.
+        ///   - pattern: The pattern ('tos', 'ccs', 'bccs', the header fields).
+        /// - Returns: the email addresses for the field
         func parseRecipientField(with part: String.SubSequence, and pattern: String) -> [String]? {
             if part.starts(with:pattern) {
                 return part.removeFirst(pattern: pattern).components(separatedBy: ",")
@@ -62,6 +64,11 @@ public struct Mailto {
             return nil
         }
 
+        /// Parse the text fields (subject and body)
+        /// - Parameters:
+        ///   - part: The part of the url that contains the text fields.
+        ///   - pattern: The pattern ('subject' or 'body', the header fields).
+        /// - Returns: The text for the field. 
         func parseTextField(with part: String.SubSequence, and pattern: String) -> String? {
             if part.starts(with: pattern) {
                 return part.removeFirst(pattern: pattern)
