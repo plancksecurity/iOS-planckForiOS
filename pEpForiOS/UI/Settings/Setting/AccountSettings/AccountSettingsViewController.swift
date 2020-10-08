@@ -48,7 +48,6 @@ final class AccountSettingsViewController: UIViewController {
     }
     
     enum SegueIdentifier: String {
-        
         case EditSignatureSegue
     }
     
@@ -73,7 +72,7 @@ final class AccountSettingsViewController: UIViewController {
     }
 }
 
-//MARK : - UITableViewDelegate
+// MARK: - UITableViewDelegate
 
 extension AccountSettingsViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -102,7 +101,7 @@ extension AccountSettingsViewController : UITableViewDelegate {
     }
 }
 
-//MARK : - UITableViewDataSource
+// MARK: - UITableViewDataSource
 
 extension AccountSettingsViewController : UITableViewDataSource {
 
@@ -225,7 +224,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
     }
 }
 
-//MARK : - ViewModel Delegate
+// MARK: - ViewModel Delegate
 
 extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
     func setLoadingView(visible: Bool) {
@@ -245,7 +244,7 @@ extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
     }
 }
 
-//MARK : - Identity
+//MARK: - Identity
 
 extension AccountSettingsViewController {
 
@@ -291,7 +290,7 @@ extension AccountSettingsViewController {
     }
 }
 
-//MARK : - Accessibility
+// MARK: - Accessibility
 
 extension AccountSettingsViewController {
 
