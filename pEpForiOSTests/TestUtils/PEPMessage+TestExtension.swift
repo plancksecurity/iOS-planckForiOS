@@ -18,8 +18,8 @@ extension PEPMessage {
             return false
         }
         return attachments.count == 2 &&
-            attachments[0].mimeType == MimeTypeUtils.MimeType.pgpEncrypted &&
-            attachments[1].mimeType == MimeTypeUtils.MimeType.defaultMimeType &&
+            attachments[0].mimeType == MimeTypeUtils.MimeType.pgpEncrypted.rawValue &&
+            attachments[1].mimeType == MimeTypeUtils.MimeType.defaultMimeType.rawValue &&
             attachments[1].filename == "file://msg.asc"
     }
 }

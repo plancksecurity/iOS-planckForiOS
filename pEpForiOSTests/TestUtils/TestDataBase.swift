@@ -12,6 +12,7 @@ import CoreData
 @testable import MessageModel
 import PEPObjCAdapterFramework
 import PantomimeFramework
+import pEpIOSToolbox
 
 /// Base class for test data.
 /// - Note:

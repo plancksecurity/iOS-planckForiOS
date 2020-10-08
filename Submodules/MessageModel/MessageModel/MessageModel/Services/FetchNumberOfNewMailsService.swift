@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+import pEpIOSToolbox
+
 /// Figures out the number of new (to us) messages in Inbox, taking all verified accounts
 /// into account.
 class FetchNumberOfNewMailsService {

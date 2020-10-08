@@ -7,7 +7,9 @@
 //
 
 import Foundation
+
 import MessageModel
+import pEpIOSToolbox
 
 protocol ClientCertificateImportViewModelDelegate: class {
     func dismiss()

@@ -8,6 +8,8 @@
 
 import Foundation
 
+import pEpIOSToolbox
+
 /// Conform to this if you want to be a subscriber of ErrorPropagator.
 public protocol ErrorPropagatorSubscriber: class {
     /// Called whenever an Error is added.

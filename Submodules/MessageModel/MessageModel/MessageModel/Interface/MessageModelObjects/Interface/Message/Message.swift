@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+import pEpIOSToolbox
+
 public class Message: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
 
     // MARK: - ManagedObjectWrapperProtocol

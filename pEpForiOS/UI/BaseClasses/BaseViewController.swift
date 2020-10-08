@@ -38,7 +38,7 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
     var appConfig: AppConfig! {
         get {
             guard _appConfig != nil else {
-                Log.shared.errorAndCrash("No appConfig?")
+                Log.shared.warn("No appConfig?")
                 return nil
             }
             return _appConfig
