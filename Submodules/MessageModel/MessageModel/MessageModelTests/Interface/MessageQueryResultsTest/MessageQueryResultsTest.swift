@@ -83,6 +83,7 @@ class MessageQueryResultsTest: PersistentStoreDrivenTestBase {
         XCTAssertEqual(try? messageQueryResults.count(), expectedMessagesCount)
     }
 
+    /*
     func testStartMonitoringWithElements() {
         // Given
         guard let messageQueryResults = messageQueryResults else {
@@ -356,6 +357,7 @@ class MessageQueryResultsTest: PersistentStoreDrivenTestBase {
         XCTAssertEqual(delegateTest.indexPath, IndexPath(item: 0,
                                                          section: 0))
     }
+     */
 }
 
 // MARK: - Helper
