@@ -59,8 +59,8 @@ class BodyCellViewModel: CellViewModel {
 
     public func inititalText() -> (text: String?, attributedText: NSAttributedString?) {
         if plaintext.isEmpty {
-            let signature = AppSettings.shared.loadSignatureForAddress(address: identity?.address)
-            plaintext.append(signature)
+            let signature = AppSettings.shared.signature(forAddress: identity?.address)
+            plaintext.append("\n\n\(signature)\n")
         }
         attributedText?.assureMaxTextAttachmentImageWidth(maxTextattachmentWidth)
         return (plaintext, attributedText)
@@ -174,7 +174,7 @@ extension BodyCellViewModel {
 // MARK: - HTML
 
 extension BodyCellViewModel {
-    private func createHtmlVersionAndInformDelegate(newAttributedText attrText: NSAttributedString) { //!!!: ADAM: (I assume) you made this dead code
+    private func createHtmlVersionAndInformDelegate(newAttributedText attrText: NSAttributedString) {
         resultDelegate?.bodyCellViewModel(self, bodyAttributedString: attrText)
     }
 }

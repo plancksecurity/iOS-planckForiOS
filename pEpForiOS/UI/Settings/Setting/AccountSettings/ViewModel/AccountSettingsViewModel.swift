@@ -362,7 +362,7 @@ extension AccountSettingsViewModel {
                 rows.append(passwordRow)
             }
             
-            let signature = AppSettings.shared.loadSignatureForAddress(address: account.user.address)
+            let signature = account.signature
             let signatureRow = getDisplayRow(type: .signature, value: signature)
             
             rows.append(signatureRow)

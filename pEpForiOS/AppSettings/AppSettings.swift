@@ -236,7 +236,7 @@ extension AppSettings: AppSettingsProtocol {
         }
     }
     
-    public var signatureAddresDictionary: [String:String] {
+    private var signatureAddresDictionary: [String:String] {
         get {
             guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.keyAccountSignature) as? [String:String] else {
                 Log.shared.errorAndCrash(message: "Signature dictionary not found")
@@ -249,19 +249,18 @@ extension AppSettings: AppSettingsProtocol {
                                          forKey: AppSettings.keyAccountSignature)
         }
     }
-    
-    public func storeSignatureForAddress(address: String, signature: String) {
-        let finalKey = AppSettings.keyDefaultAccountAddress + address
-        AppSettings.userDefaults.set(signature,
-                                     forKey: finalKey)
+
+    public func setSignature(_ signature: String, forAddress address: String) {
+        var signaturesForAdresses = signatureAddresDictionary
+        signaturesForAdresses[address] = signature
+        signatureAddresDictionary = signaturesForAdresses
     }
     
-    public func loadSignatureForAddress(address: String?) -> String {
-        guard let finalAddress = address else {
+    public func signature(forAddress address: String?) -> String {
+        guard let safeAddress = address else {
             return String.pepSignature
         }
-        let finalKey = AppSettings.keyDefaultAccountAddress + finalAddress
-        return AppSettings.userDefaults.string(forKey: finalKey) ?? String.pepSignature
+        return signatureAddresDictionary[safeAddress] ?? String.pepSignature
     }
 
     public var verboseLogginEnabled: Bool {

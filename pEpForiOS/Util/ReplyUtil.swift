@@ -17,7 +17,7 @@ public struct ReplyUtil {
      Gets the quoted message body for the given `Message`.
      */
     public static func quotedMessageText(message: Message, replyAll: Bool) -> NSAttributedString {
-        let footerPlainText = footer()
+        let footerPlainText = footer(for: message)
 
         guard let quotedText = quotedText(for: message) else {
             return "\n\n\(footerPlainText)".attribString()
@@ -25,7 +25,7 @@ public struct ReplyUtil {
         let citationPlainText = citationHeaderForMessage(message)
 
         return "\n\n".attribString()
-            + footer().attribString()
+            + footer(for: message).attribString()
             + "\n\n"
             + citationPlainText.attribString()
             + "\n\n"
@@ -40,7 +40,7 @@ public struct ReplyUtil {
     /// - Returns: text with citation header and "send by pEp" footer
     static func citedMessageText(textToCite: String, fromMessage msg: Message) -> String {
         let citation = citationHeaderForMessage(msg)
-        return "\n\n\(footer())\n\n\(citation)\n\n\(citedTextWithNewLines(textToCite: textToCite))"
+        return "\n\n\(footer(for: msg))\n\n\(citation)\n\n\(citedTextWithNewLines(textToCite: textToCite))"
     }
 
     public static func citedTextWithNewLines(textToCite: String) -> String {
@@ -73,7 +73,7 @@ public struct ReplyUtil {
                                         fromMessage msg: Message) -> NSAttributedString {
         let citation = citationHeaderForMessage(msg)
         let defaultFont = UIFont.preferredFont(forTextStyle: .body)
-        let result = NSAttributedString(string: "\n\n\(footer())\n\n\(citation)\n\n",
+        let result = NSAttributedString(string: "\n\n\(footer(for: msg))\n\n\(citation)\n\n",
             attributes: [NSAttributedString.Key(rawValue: "NSFont"): defaultFont])
 
         return result + textToCite.toCitation(addCitationLevel: true)
@@ -185,7 +185,7 @@ public struct ReplyUtil {
         }
     }
 
-    static private func footer() -> String {
-        return String.pepSignature
+    static private func footer(for message: Message) -> String {
+        return message.parent.account.signature
     }
 }

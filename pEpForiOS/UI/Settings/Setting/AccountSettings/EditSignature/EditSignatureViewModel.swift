@@ -13,24 +13,23 @@ class EditSignatureViewModel {
     
     private let account: Account
     
-    private weak var delegate: EditableAccountSettingsDelegate?
-    
+    private weak var editableAccountSettingsdelegate: EditableAccountSettingsDelegate?
     
     public var numberOfRows: Int {
         return 1
     }
     
-    init(account: Account, delegate: EditableAccountSettingsDelegate) {
+    init(account: Account, delegate: EditableAccountSettingsDelegate? = nil) {
         self.account = account
-        self.delegate = delegate
+        self.editableAccountSettingsdelegate = delegate
     }
     
     public func updateSignature(newSignature: String) {
-        AppSettings.shared.storeSignatureForAddress(address: account.user.address,signature: newSignature)
-        delegate?.didChange()
+        account.signature = newSignature
+        editableAccountSettingsdelegate?.didChange()
     }
     
-    public func actualSignature() -> String {
-        return AppSettings.shared.loadSignatureForAddress(address: account.user.address)
+    public func signature() -> String {
+        return account.signature
     }
 }

@@ -404,7 +404,6 @@
 		B722EC651E5B49BA00A2B9D5 /* FolderSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC641E5B49BA00A2B9D5 /* FolderSectionViewModel.swift */; };
 		B72C7BAA2395182F0013B12E /* AccountTypeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72C7BA92395182F0013B12E /* AccountTypeSelectorViewController.swift */; };
 		B72C7BAC2395198D0013B12E /* AccountTypeSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72C7BAB2395198D0013B12E /* AccountTypeSelectorViewModel.swift */; };
-		B73123CA23D07739009EDC62 /* SettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73123C923D07739009EDC62 /* SettingsViewModelTest.swift */; };
 		B745049924ED144A00293B8C /* EditSignatureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B745049824ED144A00293B8C /* EditSignatureViewModel.swift */; };
 		B745049B24ED6C8300293B8C /* SignatureTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B745049A24ED6C8300293B8C /* SignatureTableViewCell.swift */; };
 		B745049D24F7B00F00293B8C /* String+htmlTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B745049C24F7B00F00293B8C /* String+htmlTest.swift */; };
@@ -1006,7 +1005,6 @@
 		B724AE1125138524008516AC /* String+HTMLTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+HTMLTest.swift"; sourceTree = "<group>"; };
 		B72C7BA92395182F0013B12E /* AccountTypeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeSelectorViewController.swift; sourceTree = "<group>"; };
 		B72C7BAB2395198D0013B12E /* AccountTypeSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeSelectorViewModel.swift; sourceTree = "<group>"; };
-		B73123C923D07739009EDC62 /* SettingsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTest.swift; sourceTree = "<group>"; };
 		B745049824ED144A00293B8C /* EditSignatureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSignatureViewModel.swift; sourceTree = "<group>"; };
 		B745049A24ED6C8300293B8C /* SignatureTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureTableViewCell.swift; sourceTree = "<group>"; };
 		B745049C24F7B00F00293B8C /* String+htmlTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "String+htmlTest.swift"; path = "pEpForiOSTests/Util/String+htmlTest.swift"; sourceTree = SOURCE_ROOT; };
@@ -2485,8 +2483,7 @@
 				5BBE80CA24B733C0008DE0E5 /* AccountSettingsTableViewCell.swift */,
 				5BBE80C924B733C0008DE0E5 /* SettingSwitchTableViewCell.swift */,
 			);
-			name = Cells;
-			path = ../../Cells;
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		B706C0EF1EA8C378006B2F6C /* StoryboardFiles */ = {
