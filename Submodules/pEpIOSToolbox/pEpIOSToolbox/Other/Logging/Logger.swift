@@ -153,50 +153,6 @@ import CocoaLumberjackSwift
         errorAndCrash("Lost MySelf")
     }
 
-    private func initLumberjack() {
-        DDLog.add(DDOSLogger.sharedInstance) // Uses os_log
-
-        guard let theDocUrl = createLoggingDirectory() else {
-            return
-        }
-
-        let fileManager = DDLogFileManagerDefault(logsDirectory: theDocUrl.path)
-
-        let fileLogger: DDFileLogger = DDFileLogger(logFileManager: fileManager)
-        fileLogger.rollingFrequency = 60 * 60 * 24 // 24 hours
-        fileLogger.logFileManager.maximumNumberOfLogFiles = 7
-        DDLog.add(fileLogger)
-    }
-
-    private func getLoggingDirectory() -> URL? {
-        let documentsUrl = FileManager.default.urls(for: .documentDirectory,
-                                                    in: .userDomainMask).first
-        guard var theDocUrl = documentsUrl else {
-            return nil
-        }
-
-        theDocUrl.appendPathComponent("logs")
-
-        return theDocUrl
-    }
-
-    private func createLoggingDirectory() -> URL? {
-        guard let theDocUrl = getLoggingDirectory() else {
-            return nil
-        }
-
-        do {
-            try FileManager.default.createDirectory(at: theDocUrl,
-                                                    withIntermediateDirectories: true,
-                                                    attributes: nil)
-            return theDocUrl
-        } catch {
-            errorAndCrash("Could not create the logging directory")
-        }
-
-        return nil
-    }
-
     @objc public func logInfo(message: String,
                               function: String = #function,
                               filePath: String = #file,
@@ -231,6 +187,71 @@ import CocoaLumberjackSwift
                 filePath: filePath,
                 fileLine: fileLine,
                 args: [])
+    }
+
+    /// Gets the latest log entries as a string.
+    ///
+    /// Can be used for polling for log contents.
+    public func getLatestLogString() -> String {
+        guard let filePath = fileLogger?.currentLogFileInfo?.filePath else {
+            return ""
+        }
+        do {
+            return try String(contentsOfFile: filePath)
+        } catch {
+            log(error: error)
+            return ""
+        }
+    }
+
+    // MARK: -- Private
+
+    private var fileLogger: DDFileLogger?
+
+    private func initLumberjack() {
+        DDLog.add(DDOSLogger.sharedInstance) // Uses os_log
+
+        guard let theDocUrl = createLoggingDirectory() else {
+            return
+        }
+
+        let fileManager = DDLogFileManagerDefault(logsDirectory: theDocUrl.path)
+
+        let theFileLogger: DDFileLogger = DDFileLogger(logFileManager: fileManager)
+        theFileLogger.rollingFrequency = 60 * 60 * 24 // 24 hours
+        theFileLogger.logFileManager.maximumNumberOfLogFiles = 7
+        DDLog.add(theFileLogger)
+
+        self.fileLogger = theFileLogger
+    }
+
+    private func getLoggingDirectory() -> URL? {
+        let documentsUrl = FileManager.default.urls(for: .documentDirectory,
+                                                    in: .userDomainMask).first
+        guard var theDocUrl = documentsUrl else {
+            return nil
+        }
+
+        theDocUrl.appendPathComponent("logs")
+
+        return theDocUrl
+    }
+
+    private func createLoggingDirectory() -> URL? {
+        guard let theDocUrl = getLoggingDirectory() else {
+            return nil
+        }
+
+        do {
+            try FileManager.default.createDirectory(at: theDocUrl,
+                                                    withIntermediateDirectories: true,
+                                                    attributes: nil)
+            return theDocUrl
+        } catch {
+            errorAndCrash("Could not create the logging directory")
+        }
+
+        return nil
     }
 
     private func saveLog(message: String,
