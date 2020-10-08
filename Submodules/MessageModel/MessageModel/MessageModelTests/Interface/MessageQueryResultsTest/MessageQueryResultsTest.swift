@@ -81,6 +81,8 @@ class MessageQueryResultsTest: PersistentStoreDrivenTestBase {
         // Then
         let expectedMessagesCount = 0
         XCTAssertEqual(try? messageQueryResults.count(), expectedMessagesCount)
+
+        waitForever()
     }
 
     /*
@@ -376,6 +378,11 @@ extension MessageQueryResultsTest {
             $0.pEpRating = Int16(PEPRating.unencrypted.rawValue)
         }
         return createes
+    }
+
+    private func waitForever() {
+        let expNever = expectation(description: "expNever")
+        wait(for: [expNever], timeout: 30000, enforceOrder: false)
     }
 }
 
