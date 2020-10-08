@@ -105,10 +105,11 @@ class ComposeViewModel {
          prefilledTo: Identity? = nil,
          prefilledFrom: Identity? = nil,
          originalMessage: Message? = nil) {
-        let initData = InitData(withPrefilledToRecipient: prefilledTo,
-                                prefilledFromSender: prefilledFrom,
-                                orForOriginalMessage: originalMessage,
-                                composeMode: composeMode)
+        var prefilledTos: [Identity]?
+        if let to = prefilledTo {
+            prefilledTos = [to]
+        }
+        let initData = InitData(prefilledTos: prefilledTos, composeMode: composeMode, orForOriginalMessage: originalMessage, prefilledFromSender: prefilledFrom)
         self.state = ComposeViewModelState(initData: initData)
         self.state.delegate = self
         setup()

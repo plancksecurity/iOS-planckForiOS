@@ -23,9 +23,7 @@ extension UIUtils {
                                                             at rect: CGRect,
                                                             at view: UIView,
                                                             appConfig: AppConfig) {
-        let alertSheet = UIAlertController.init(title: nil,
-                                                message: nil,
-                                                preferredStyle: .actionSheet)
+        let alertSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         setIPadAnchor(for: alertSheet, in: rect, at: view)
         alertSheet.view.tintColor = UIColor.pEpDarkGreen
         let newMailtitle = NSLocalizedString("New Mail Message", comment:
@@ -71,7 +69,6 @@ extension UIUtils {
                                       at view: UIView) {
 
         actionSheet.popoverPresentationController?.sourceRect = rect
-
         actionSheet.popoverPresentationController?.sourceView = view
         actionSheet.popoverPresentationController?.permittedArrowDirections
             = UIPopoverArrowDirection.up

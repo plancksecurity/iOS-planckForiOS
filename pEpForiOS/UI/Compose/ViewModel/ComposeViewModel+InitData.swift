@@ -112,32 +112,22 @@ extension ComposeViewModel {
 
         init(prefilledTos: [Identity]? = nil,
              prefilledCCs: [Identity]? = nil,
-             prefilledBCCs: [Identity]? = nil) {
-            self.composeMode = .normal
-            self.prefilledFrom = nil
-            self.prefilledTos = prefilledTos
-            self.prefilledCCs = prefilledCCs
-            self.prefilledBCCs = prefilledBCCs
-        }
-
-        init(withPrefilledToRecipient prefilledTo: Identity? = nil,
-             prefilledFromSender prefilledFrom: Identity? = nil,
+             prefilledBCCs: [Identity]? = nil,
+             composeMode: ComposeUtil.ComposeMode? = nil,
              orForOriginalMessage om: Message? = nil,
-             composeMode: ComposeUtil.ComposeMode? = nil) {
-
+             prefilledFromSender prefilledFrom: Identity? = nil) {
             // We are cloning the message to get a clone off the attachments and the
             // longMessageFormatted updated with the CID:s of the cloned attachments.
             // We use it for settingus up and delete afterwards.
             let cloneMessage = om?.cloneWithZeroUID(session: Session.main)
             self.composeMode = composeMode ?? ComposeUtil.ComposeMode.normal
-
-            if let prefilledTo = prefilledTo {
-                self.prefilledTos = cloneMessage == nil ? [prefilledTo] : nil
+            if let prefilledTos = prefilledTos {
+                self.prefilledTos = cloneMessage == nil ? prefilledTos : nil
             } else {
                 self.prefilledTos = nil
             }
-            self.prefilledCCs = nil
-            self.prefilledBCCs = nil
+            self.prefilledCCs = prefilledCCs
+            self.prefilledBCCs = prefilledBCCs
             self.prefilledFrom = prefilledFrom
             self.originalMessage = om
             self.inlinedAttachments = ComposeUtil.initialAttachments(composeMode: self.composeMode,
