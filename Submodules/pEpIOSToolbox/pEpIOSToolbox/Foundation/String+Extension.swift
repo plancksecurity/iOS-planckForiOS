@@ -33,10 +33,6 @@ extension String {
     public func removeFirstOccurrence(of replacee: String) -> String {
         return replaceFirstOccurrence(of: replacee, with: "")
     }
-
-    public func componentsSeparatedByComma() -> [String] {
-        return split {$0 == "," }.map { String($0) }
-    }
 }
 
 extension String.SubSequence {
