@@ -31,9 +31,9 @@ extension RatingReEvaluator: RatingReEvaluatorProtocol {
         if pEpMessage.direction == .outgoing {
             PEPSession().outgoingRating(for: pEpMessage, errorCallback: { (error) in
                 if error.isPassphraseError {
-                    Log.shared.error("%@", "\(error)")
+                    Log.shared.log(error: error)
                 } else {
-                    Log.shared.errorAndCrash("%@", error.localizedDescription)
+                    Log.shared.errorAndCrash(error: error)
                 }
                 completion()
             }) { (rating) in
@@ -47,9 +47,9 @@ extension RatingReEvaluator: RatingReEvaluatorProtocol {
             }
             PEPSession().reEvaluateMessage(pEpMessage, xKeyList: keys, originalRating: originaRating, errorCallback: { (error) in
                 if error.isPassphraseError {
-                    Log.shared.error("%@", "\(error)")
+                    Log.shared.log(error: error)
                 } else {
-                    Log.shared.errorAndCrash("%@", error.localizedDescription)
+                    Log.shared.errorAndCrash(error: error)
                 }
                 completion()
             }) { (newRating) in

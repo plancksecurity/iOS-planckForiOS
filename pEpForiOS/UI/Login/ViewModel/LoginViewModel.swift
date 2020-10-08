@@ -143,7 +143,7 @@ final class LoginViewModel {
 
         func libAccoutSettingsStatusOK() {
             if let error = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
-                Log.shared.error("%@", "\(error)")
+                Log.shared.log(error: error)
                 loginViewModelLoginErrorDelegate?.handle(loginError: error)
                 return
             }
@@ -230,7 +230,7 @@ extension LoginViewModel {
         do {
             try verifiableAccount.verify()
         } catch {
-            Log.shared.error("%@", "\(error)")
+            Log.shared.log(error: error)
             loginViewModelLoginErrorDelegate?.handle(loginError: error)
         }
     }

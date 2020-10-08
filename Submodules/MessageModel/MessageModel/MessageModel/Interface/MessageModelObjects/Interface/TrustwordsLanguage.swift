@@ -25,9 +25,9 @@ public struct TrustwordsLanguage {
     static public func languages(completion: @escaping ([TrustwordsLanguage]) -> ()) {
         PEPSession().languageList({ error in
             if error.isPassphraseError {
-                Log.shared.error("%@", "\(error)")
+                Log.shared.log(error: error)
             } else {
-                Log.shared.errorAndCrash("%@", error.localizedDescription)
+                Log.shared.errorAndCrash(error: error)
             }
             DispatchQueue.main.async {
                 completion([])
