@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MessageModel
 
 public struct Mailto {
 
@@ -19,11 +20,11 @@ public struct Mailto {
     }
 
     /// The emails addresses for the to: field
-    public var tos: [String]?
+    public var tos: [Identity]?
     /// The emails addresses for the cc: field
-    public var ccs: [String]?
+    public var ccs: [Identity]?
     /// The emails addresses for the bcc: field
-    public var bccs: [String]?
+    public var bccs: [Identity]?
     /// The subject of the email
     public var subject: String?
     /// The body of the email
@@ -40,7 +41,7 @@ public struct Mailto {
         let parts = content.split {$0 == "&" || $0 == "?"}
         parts.forEach { (part) in
             if !part.contains("=") {
-                tos = part.components(separatedBy: ",")
+                tos = part.components(separatedBy: ",").map { return Identity(address: $0) } 
             } else if let ccs = parseRecipientField(with: part, and: Pattern.cc.rawValue) {
                 self.ccs = ccs
             } else if let bccs = parseRecipientField(with: part, and: Pattern.bcc.rawValue) {
@@ -57,9 +58,9 @@ public struct Mailto {
         ///   - part: The part of the url that contains the fields.
         ///   - pattern: The pattern ('tos', 'ccs', 'bccs', the header fields).
         /// - Returns: the email addresses for the field
-        func parseRecipientField(with part: String.SubSequence, and pattern: String) -> [String]? {
+        func parseRecipientField(with part: String.SubSequence, and pattern: String) -> [Identity]? {
             if part.starts(with:pattern) {
-                return part.removeFirst(pattern: pattern).components(separatedBy: ",")
+                return part.removeFirst(pattern: pattern).components(separatedBy: ",").map { return Identity(address: $0) }
             }
             return nil
         }
