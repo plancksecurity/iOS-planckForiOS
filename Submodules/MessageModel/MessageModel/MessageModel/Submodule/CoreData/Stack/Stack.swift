@@ -191,8 +191,11 @@ extension Stack {
         reset(context: mainContext)
         reset(context: changePropagatorContext)
 
-        configureManagedObjectContexts()
-        startReceivingContextNotifications()
+        do {
+            try loadCoreDataStack(storeType: NSInMemoryStoreType)
+        } catch {
+            fatalError("No Stack, no running app, sorry.")
+        }
     }
 
     private func reset(context: NSManagedObjectContext) {
