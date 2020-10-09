@@ -190,6 +190,9 @@ extension Stack {
 
         reset(context: mainContext)
         reset(context: changePropagatorContext)
+
+        configureManagedObjectContexts()
+        startReceivingContextNotifications()
     }
 
     private func reset(context: NSManagedObjectContext) {
