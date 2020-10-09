@@ -190,8 +190,6 @@ extension Stack {
 
         reset(context: mainContext)
         reset(context: changePropagatorContext)
-        Stack.shared = Stack() //BUFF: MUST GO AWAY!
-
     }
 
     private func reset(context: NSManagedObjectContext) {
