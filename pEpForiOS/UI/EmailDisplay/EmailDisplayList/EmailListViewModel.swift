@@ -16,7 +16,10 @@ protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
     func setToolbarItemsEnabledState(to newValue: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
+    func showEmail(forCellAt: IndexPath)
+    func showEditDraftInComposeView()
     func select(itemAt indexPath: IndexPath)
+    func deselect(itemAt indexPath: IndexPath)
 }
 
 // MARK: - EmailListViewModel
@@ -69,6 +72,13 @@ class EmailListViewModel: EmailDisplayViewModel {
         return Folder.localizedName(realName: folderToShow.title)
     }
 
+    /// This is used to handle the selection row when it receives an update
+    /// and also when swipeCellAction is performed to store from which cell the action is done.
+    public var lastSelectedIndexPath: IndexPath?
+
+    public var isDraftsPreviewMode: Bool {
+        return folderToShow is UnifiedDraft
+    }
     /// - Parameter indexPath: indexPath to check editability for.
     /// - returns:  Whether or not to show compose view rather then the email for message
     ///             represented by row at given `indexPath`.
@@ -305,6 +315,26 @@ class EmailListViewModel: EmailDisplayViewModel {
             delegate.setToolbarItemsEnabledState(to: true)
         } else {
             delegate.setToolbarItemsEnabledState(to: false)
+        }
+    }
+
+    /// Handles did select row action and make a decision what to do next (show different view or something else)
+    public func handleDidSelectRow(indexPath: IndexPath) {
+        guard let del = delegate as? EmailListViewModelDelegate else {
+            Log.shared.errorAndCrash("Wrong Delegate")
+            return
+        }
+
+        if isSelectable(messageAt: indexPath) {
+            lastSelectedIndexPath = indexPath
+            del.select(itemAt: indexPath)
+            if isEditable(messageAt: indexPath) {
+                del.showEditDraftInComposeView()
+            } else {
+                del.showEmail(forCellAt: indexPath)
+            }
+        } else {
+            del.deselect(itemAt: indexPath)
         }
     }
 
