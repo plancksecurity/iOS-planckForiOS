@@ -10,9 +10,8 @@ import Foundation
 import UIKit
 
 extension UIBarButtonItem {
-    
-    public static func getComposeButton(action: Selector, target: Any) -> UIBarButtonItem {
-        let img = UIImage(named: "compose")
+    public static func getFilterOnOffButton(action: Selector, target: Any) -> UIBarButtonItem {
+        let img = UIImage(named: "unread-icon")
         return getButton(image: img, action: action, target: target)
     }
     public static func getPEPButton(action: Selector, target: Any) -> UIBarButtonItem {
@@ -30,5 +29,4 @@ extension UIBarButtonItem {
     private static func getButton(image: UIImage?, action: Selector, target: Any) -> UIBarButtonItem {
         return UIBarButtonItem(image: image, style: .plain, target: target, action: action)
     }
-    
 }
