@@ -1477,11 +1477,73 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="8RY-1m-iPg" id="6j5-my-u0h"/>
+                        <segue destination="9xa-gb-As9" kind="showDetail" identifier="EditSignatureSegue" id="zu9-rf-a0j"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LS6-yP-8JC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1306" y="-391"/>
+        </scene>
+        <!--Edit Signature View Controller-->
+        <scene sceneID="jKa-BP-q9y">
+            <objects>
+                <viewController id="9xa-gb-As9" customClass="EditSignatureViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="96G-dd-Z7U"/>
+                        <viewControllerLayoutGuide type="bottom" id="upk-91-vYb"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="lwm-G1-qLZ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="RSp-qK-Tzq">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SignatureCell" id="wdm-AT-m5z" customClass="SignatureTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wdm-AT-m5z" id="A3d-Jj-WZG">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="signature" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="0Ht-YN-GKS">
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="44"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="0Ht-YN-GKS" firstAttribute="leading" secondItem="A3d-Jj-WZG" secondAttribute="leading" constant="15" id="9EN-kw-CA5"/>
+                                                <constraint firstItem="0Ht-YN-GKS" firstAttribute="top" secondItem="A3d-Jj-WZG" secondAttribute="top" id="Zbr-8y-tji"/>
+                                                <constraint firstAttribute="trailing" secondItem="0Ht-YN-GKS" secondAttribute="trailing" constant="15" id="kJh-Ye-1fR"/>
+                                                <constraint firstAttribute="bottom" secondItem="0Ht-YN-GKS" secondAttribute="bottom" id="zZZ-nJ-Q2m"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="editableSignature" destination="0Ht-YN-GKS" id="tZO-YI-RTA"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="upk-91-vYb" firstAttribute="top" secondItem="RSp-qK-Tzq" secondAttribute="bottom" id="InB-Wl-KdU"/>
+                            <constraint firstAttribute="trailing" secondItem="RSp-qK-Tzq" secondAttribute="trailing" id="KJp-Nb-Jhp"/>
+                            <constraint firstItem="RSp-qK-Tzq" firstAttribute="leading" secondItem="lwm-G1-qLZ" secondAttribute="leading" id="wFr-pz-mmh"/>
+                            <constraint firstItem="RSp-qK-Tzq" firstAttribute="top" secondItem="96G-dd-Z7U" secondAttribute="bottom" id="yha-n0-bDF"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="dtZ-bH-CeW"/>
+                    <connections>
+                        <outlet property="tableView" destination="RSp-qK-Tzq" id="seq-D9-EaD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6u7-Q7-Rpz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2220" y="385"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
