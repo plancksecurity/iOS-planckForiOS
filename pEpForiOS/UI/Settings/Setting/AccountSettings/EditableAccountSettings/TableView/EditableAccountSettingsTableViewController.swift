@@ -206,7 +206,7 @@ extension EditableAccountSettingsTableViewController {
 }
 
 
-//MARK : - Accessibility
+// MARK: - Accessibility
 
 extension EditableAccountSettingsTableViewController {
 
