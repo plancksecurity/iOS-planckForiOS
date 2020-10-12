@@ -445,22 +445,25 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     //recover the original toolbar and right button
     private func showStandardToolbar() {
         let flexibleSpace = createFlexibleBarButtonItem()
-        let composeBtn = UIBarButtonItem.getComposeButton(tapAction: #selector(showCompose),
-                                                          longPressAction: #selector(draftsPreviewTapped),
-                                                          target: self)
         let settingsBtn = createPepBarButtonItem()
         enableFilterButton = UIBarButtonItem.getFilterOnOffButton(action: #selector(filterButtonHasBeenPressed),
                                                                   target: self)
-
         guard let vm = viewModel else {
             Log.shared.errorAndCrash(message: "No VM!")
             return
         }
 
         if vm.isDraftsPreviewMode {
+            // In this case longPressAction is disabled.
+            // User cannot display another drafts preview from drafts preview
+            let composeBtn = UIBarButtonItem.getComposeButton(tapAction: #selector(showCompose),
+                                                              target: self)
             toolbarItems = [flexibleSpace, composeBtn, flexibleSpace]
             navigationItem.rightBarButtonItem = dismissButton
         } else {
+            let composeBtn = UIBarButtonItem.getComposeButton(tapAction: #selector(showCompose),
+                                                              longPressAction: #selector(draftsPreviewTapped),
+                                                              target: self)
             toolbarItems = [enableFilterButton, flexibleSpace, composeBtn, flexibleSpace, settingsBtn]
             navigationItem.rightBarButtonItem = editButton
         }
@@ -475,17 +478,11 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     @objc private func draftsPreviewTapped(sender: UILongPressGestureRecognizer) {
         // We need to separate state of long press.
         // We have to take an action only once after long press is recognized
-        // (Example: User clicks and hold compose icon for a while (~one, two seconds)
-        // and this condition triggers action with state .began)
+        // We block to do any action when sender.state is in different state (.ended)
         if sender.state != .began {
             return
         }
-        // If drafts preview action was presented before (drafts preview is already
-        // visible in modal) we have to prevent run another modal view with
-        // the same drafts preview view.
-        if !isModalPresented {
-            UIUtils.presentDraftsPreview()
-        }
+        UIUtils.presentDraftsPreview()
     }
 
     private func moveSelectionIfNeeded(fromIndexPath: IndexPath, toIndexPath: IndexPath) {

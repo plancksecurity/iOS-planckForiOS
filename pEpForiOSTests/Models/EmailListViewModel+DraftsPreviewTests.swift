@@ -8,110 +8,71 @@
 
 import XCTest
 @testable import pEpForiOS
+@testable import MessageModel
 
-class EmailListViewModel_DraftsPreviewTests: XCTestCase {
+class EmailListViewModel_DraftsPreviewTests: AccountDrivenTestBase {
 
     // sut - System Under Test
-    private var sut: MockEmailListViewModel!
+    private var sut: EmailListViewModel!
+    private var folderToShow: Folder!
 
-    private static var testMode: TestMode = .notSpecified
-
-    private var selectDidHandle: TestBoolState = .notChanged
-    private var deselectDidHandle: TestBoolState = .notChanged
-    private var showEmailDidHandle: TestBoolState = .notChanged
-    private var showEditDraftInComposeViewDidHandle: TestBoolState = .notChanged
+    private var selectDidHandle: TestBoolState = .unspecified
+    private var deselectDidHandle: TestBoolState = .unspecified
+    private var showEmailDidHandle: TestBoolState = .unspecified
+    private var showEditDraftInComposeViewDidHandle: TestBoolState = .unspecified
 
     override func setUp() {
-        sut = MockEmailListViewModel(delegate: self,
-                                     folderToShow: UnifiedDraft())
-        // Reset states for our mocked vm delegate for EmailListViewModelDelegate
-        selectDidHandle = .notChanged
-        deselectDidHandle = .notChanged
-        showEmailDidHandle = .notChanged
-        showEditDraftInComposeViewDidHandle = .notChanged
+        selectDidHandle = .unspecified
+        deselectDidHandle = .unspecified
+        showEmailDidHandle = .unspecified
+        showEditDraftInComposeViewDidHandle = .unspecified
     }
 
     override func tearDown() {
         sut = nil
     }
 
-    func testIsSelectableItemMockData() {
-        // GIVEN
-        EmailListViewModel_DraftsPreviewTests.testMode = .selectableAndEditableItem
-        // WHEN
-        let isSelectable = sut.isSelectable(messageAt: IndexPath(row: 0, section: 0))
-        // THEN
-        XCTAssertTrue(isSelectable)
-    }
-
-    func testIsNotSelectableItemMockData() {
-        // GIVEN
-        EmailListViewModel_DraftsPreviewTests.testMode = .notSelectableAndNotEditableItem
-        // WHEN
-        let isSelectable = sut.isSelectable(messageAt: IndexPath(row: 0, section: 0))
-        // THEN
-        XCTAssertFalse(isSelectable)
-    }
-
-    func testIsEditableItemMockData() {
-        // GIVEN
-        EmailListViewModel_DraftsPreviewTests.testMode = .notSelectableButEditableItem
-        // WHEN
-        let isEditable = sut.isEditable(messageAt: IndexPath(row: 0, section: 0))
-        // THEN
-        XCTAssertTrue(isEditable)
-    }
-
-    func testIsNotEditableItemMockData() {
-        // GIVEN
-        EmailListViewModel_DraftsPreviewTests.testMode = .notSelectableAndNotEditableItem
-        // WHEN
-        let isEditable = sut.isEditable(messageAt: IndexPath(row: 0, section: 0))
-        // THEN
-        XCTAssertFalse(isEditable)
-    }
-
-    func testHandleDidSelectRowWhenItemIsSelectableButNotEditable() {
-        // GIVEN
-        EmailListViewModel_DraftsPreviewTests.testMode = .selectableButNotEditableItem
-        // WHEN
+    func testHandleDidSelectRowInStandardInboxMode() {
+        let account = TestData().createWorkingAccount()
+        let draftsFolder = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
+        let _ = TestUtil.createMessage(uid: 1, inFolder: draftsFolder)
+        sut = EmailListViewModel(delegate: self,
+                                 folderToShow: draftsFolder)
+        sut.startMonitoring()
         sut.handleDidSelectRow(indexPath: IndexPath(row: 0, section: 0))
-        // THEN
-        XCTAssertTrue(selectDidHandle == .changed)
-        XCTAssertTrue(showEmailDidHandle == .changed)
-        XCTAssertTrue(deselectDidHandle == .notChanged)
-        XCTAssertTrue(showEditDraftInComposeViewDidHandle == .notChanged)
+        XCTAssertTrue(showEmailDidHandle == .called)
     }
-    func testSelectItemWhenIsNotSelectableAndNotEditable() {
-        // GIVEN
-        EmailListViewModel_DraftsPreviewTests.testMode = .notSelectableAndNotEditableItem
-        // WHEN
+
+    func testHandleDidSelectRowInDraftsPreviewMode() {
+        let account = TestData().createWorkingAccount()
+        let draftsFolder = Folder(name: "drafts", parent: nil, account: account, folderType: .drafts)
+        let _ = TestUtil.createMessage(uid: 1, inFolder: draftsFolder)
+        sut = EmailListViewModel(delegate: self,
+                                 folderToShow: draftsFolder)
+        sut.startMonitoring()
         sut.handleDidSelectRow(indexPath: IndexPath(row: 0, section: 0))
-        // THEN
-        XCTAssertTrue(deselectDidHandle == .changed)
-        XCTAssertTrue(selectDidHandle == .notChanged)
-        XCTAssertTrue(showEmailDidHandle == .notChanged)
-        XCTAssertTrue(showEditDraftInComposeViewDidHandle == .notChanged)
+        XCTAssertTrue(showEditDraftInComposeViewDidHandle == .called)
     }
 }
 
 extension EmailListViewModel_DraftsPreviewTests: EmailListViewModelDelegate {
     func select(itemAt indexPath: IndexPath) {
-        selectDidHandle = .changed
+        selectDidHandle = .called
     }
 
     func deselect(itemAt indexPath: IndexPath) {
-        deselectDidHandle = .changed
+        deselectDidHandle = .called
     }
 
     func showEmail(forCellAt: IndexPath) {
-        showEmailDidHandle = .changed
+        showEmailDidHandle = .called
     }
 
     func showEditDraftInComposeView() {
-        showEditDraftInComposeViewDidHandle = .changed
+        showEditDraftInComposeViewDidHandle = .called
     }
 
+    // These tests are for different features.
     func setToolbarItemsEnabledState(to newValue: Bool) {}
     func showUnflagButton(enabled: Bool) {}
     func showUnreadButton(enabled: Bool) {}
@@ -127,74 +88,8 @@ extension EmailListViewModel_DraftsPreviewTests: EmailListViewModelDelegate {
 // MARK: - Mock Data
 
 extension EmailListViewModel_DraftsPreviewTests {
-    private struct Constants_Given {
-        struct selectableButNotEditableItem {
-            static let isSelectable = true
-            static let isEditable = false
-        }
-        struct selectableAndEditableItem {
-            static let isSelectable = true
-            static let isEditable = true
-        }
-        struct notSelectableButEditableItem {
-            static let isSelectable = false
-            static let isEditable = true
-        }
-        struct notSelectableAndNotEditableItem {
-            static let isSelectable = false
-            static let isEditable = false
-        }
-    }
-
-    private enum TestMode {
-        case selectableButNotEditableItem
-        case selectableAndEditableItem
-        case notSelectableButEditableItem
-        case notSelectableAndNotEditableItem
-        case notSpecified
-    }
-
     private enum TestBoolState {
-        case notChanged
-        case changed
-    }
-
-    class MockEmailListViewModel: EmailListViewModel {
-
-        override func isSelectable(messageAt indexPath: IndexPath) -> Bool {
-            var toReturn: Bool
-
-            switch testMode {
-            case .selectableButNotEditableItem,
-                 .selectableAndEditableItem:
-                toReturn = true
-            case .notSelectableButEditableItem,
-                 .notSelectableAndNotEditableItem:
-                toReturn = false
-            case .notSpecified:
-                XCTFail("testMode is in illegal state!")
-                return false
-            }
-
-            return toReturn
-        }
-
-        override func isEditable(messageAt indexPath: IndexPath) -> Bool {
-            var toReturn: Bool
-
-            switch testMode {
-            case .selectableAndEditableItem,
-                 .notSelectableButEditableItem:
-                toReturn = true
-            case .selectableButNotEditableItem,
-                 .notSelectableAndNotEditableItem:
-                toReturn = false
-            case .notSpecified:
-                XCTFail("testMode is in illegal state!")
-                return false
-            }
-
-            return toReturn
-        }
+        case unspecified
+        case called
     }
 }
