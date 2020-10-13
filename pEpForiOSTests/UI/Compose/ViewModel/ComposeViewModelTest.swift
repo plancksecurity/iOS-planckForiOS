@@ -609,39 +609,39 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
-//    func testHandleSaveActionTriggered_origDrafts() {
-//        let testMessageId = UUID().uuidString + "testHandleSaveActionTriggered"
-//        let originalMessage = message(inFolderOfType: .drafts)
-//        originalMessage.messageID = testMessageId
-//        originalMessage.from = account.user
-//
-//        assert(originalMessage: originalMessage,
-//               contentChangedMustBeCalled: false,
-//               focusSwitchedMustBeCalled: false,
-//               validatedStateChangedMustBeCalled: false,
-//               modelChangedMustBeCalled: false,
-//               sectionChangedMustBeCalled: false,
-//               colorBatchNeedsUpdateMustBeCalled: false,
-//               hideSuggestionsMustBeCalled: false,
-//               showSuggestionsMustBeCalled: false,
-//               showMediaAttachmentPickerMustBeCalled: false,
-//               hideMediaAttachmentPickerMustBeCalled: false,
-//               showDocumentAttachmentPickerMustBeCalled: false,
-//               documentAttachmentPickerDonePickerCalled: false,
-//               didComposeNewMailMustBeCalled: false,
-//               didModifyMessageMustBeCalled: true,
-//               didDeleteMessageMustBeCalled: true)
-//        vm?.handleSaveActionTriggered()
-//        let msgWithTestMessageId = Message.by(uid: originalMessage.uid,
-//                                              uuid: originalMessage.uuid,
-//                                              folderName: originalMessage.parent.name,
-//                                              accountAddress: account.user.address,
-//                                              includingDeleted: true)
-//        XCTAssertTrue(msgWithTestMessageId?.imapFlags.deleted ?? false,
-//                     "The user edited draft. Technically we save a new message, thus the original" +
-//            " must be deleted.")
-//        waitForExpectations(timeout: UnitTestUtils.waitTime)
-//    }
+    func testHandleSaveActionTriggered_origDrafts() {
+        let testMessageId = UUID().uuidString + "testHandleSaveActionTriggered"
+        let originalMessage = message(inFolderOfType: .drafts)
+        originalMessage.messageID = testMessageId
+        originalMessage.from = account.user
+
+        assert(originalMessage: originalMessage,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: true,
+               didDeleteMessageMustBeCalled: true)
+        vm?.handleSaveActionTriggered()
+        let msgWithTestMessageId = Message.by(uid: originalMessage.uid,
+                                              uuid: originalMessage.uuid,
+                                              folderName: originalMessage.parent.name,
+                                              accountAddress: account.user.address,
+                                              includingDeleted: true)
+        XCTAssertTrue(msgWithTestMessageId?.imapFlags.deleted ?? false,
+                     "The user edited draft. Technically we save a new message, thus the original" +
+            " must be deleted.")
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 
     //!!!: crashes randomly due to the known issue (composeviewModel is running stuff in background (e.g.calculatePepRating() , maybe more) which we are not waiting for. to fix: extract calculatePepRating() to a dependency and mock it or wait for it to be called.
 
