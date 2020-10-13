@@ -260,29 +260,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         XCTAssertNotNil(testee)
     }
 
-    func testBodyChangedToPlaintextHtml() {
-        assert(contentChangedMustBeCalled: true,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        let newHtml = "<p>fake</p>"
-        let attributedString = newHtml.htmlToAttributedString(attachmentDelegate: nil)
-        vm?.bodyCellViewModel(bodyVm, bodyAttributedString: attributedString)
-        XCTAssertEqual(vm?.state.bodyText, attributedString)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     // MARK: - SubjectCellViewModelResultDelegate Handling
 
     private var subjectCellViewModel: SubjectCellViewModel? {
