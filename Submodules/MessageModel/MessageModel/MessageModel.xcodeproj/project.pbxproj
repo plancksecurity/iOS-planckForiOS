@@ -310,6 +310,7 @@
 		43D47A4E225C729900E97C5B /* AccountInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D47A4D225C729900E97C5B /* AccountInfoCache.swift */; };
 		43D47A50225C751500E97C5B /* ServerInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D47A4F225C751500E97C5B /* ServerInfoCache.swift */; };
 		43D47A52225C767B00E97C5B /* ServerCredentialsInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D47A51225C767B00E97C5B /* ServerCredentialsInfoCache.swift */; };
+		43D576442535B02C00968745 /* NSManagedObjectContext+TestInvalidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D576432535B02C00968745 /* NSManagedObjectContext+TestInvalidation.swift */; };
 		43D7565123AB9F2F000F915F /* BaseImapFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D7565023AB9F2F000F915F /* BaseImapFolderOperation.swift */; };
 		43D7565323ABA48B000F915F /* ExpungeInImapFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D7565223ABA48B000F915F /* ExpungeInImapFolderOperation.swift */; };
 		43E3A244224E2BED004CAC84 /* CdMessage+Clone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3A243224E2BED004CAC84 /* CdMessage+Clone.swift */; };
@@ -810,6 +811,7 @@
 		43D47A4D225C729900E97C5B /* AccountInfoCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoCache.swift; sourceTree = "<group>"; };
 		43D47A4F225C751500E97C5B /* ServerInfoCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerInfoCache.swift; sourceTree = "<group>"; };
 		43D47A51225C767B00E97C5B /* ServerCredentialsInfoCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerCredentialsInfoCache.swift; sourceTree = "<group>"; };
+		43D576432535B02C00968745 /* NSManagedObjectContext+TestInvalidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+TestInvalidation.swift"; sourceTree = "<group>"; };
 		43D7565023AB9F2F000F915F /* BaseImapFolderOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseImapFolderOperation.swift; sourceTree = "<group>"; };
 		43D7565223ABA48B000F915F /* ExpungeInImapFolderOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpungeInImapFolderOperation.swift; sourceTree = "<group>"; };
 		43E3A243224E2BED004CAC84 /* CdMessage+Clone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+Clone.swift"; sourceTree = "<group>"; };
@@ -1440,6 +1442,7 @@
 			isa = PBXGroup;
 			children = (
 				8BE4608F1DB7B5FC008D63C6 /* Stack.swift */,
+				43D576432535B02C00968745 /* NSManagedObjectContext+TestInvalidation.swift */,
 			);
 			path = Stack;
 			sourceTree = "<group>";
@@ -2926,6 +2929,7 @@
 				1522955E2302FB3400204FD3 /* ExtraKey+SessionAware.swift in Sources */,
 				151747E822DDD48C00180F8E /* CdIdentity+UserID.swift in Sources */,
 				158A5E4A23532AFE002277A6 /* SyncFlagsToServerOperation.swift in Sources */,
+				43D576442535B02C00968745 /* NSManagedObjectContext+TestInvalidation.swift in Sources */,
 				43EA4877221E9518006E8F83 /* SyncFlagsToServerInImapFolderOperation.swift in Sources */,
 				158A5E4623532761002277A6 /* FolderInfo.swift in Sources */,
 				43E3A250224E4280004CAC84 /* CdHeaderField+Clone.swift in Sources */,
@@ -3003,7 +3007,6 @@
 			files = (
 				152EC88722E73721001836F9 /* CdMessage+FakeTest.swift in Sources */,
 				154D173723733133001FDF78 /* CdAccount+TestUtils.swift in Sources */,
-				154D172B23732FF7001FDF78 /* MoveToFolderOperationTest.swift in Sources */,
 				490FF8161E79942500BC15F9 /* CdImapFlags+TestHelper.swift in Sources */,
 				158BCFF22423800400E41F67 /* SecretTestData.swift in Sources */,
 				43648283249246FF00DD44ED /* XCTestCase+IMAP.swift in Sources */,
