@@ -609,28 +609,26 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
-    //!!!: crashes randomly due to the known issue (composeviewModel is running stuff in background (e.g.calculatePepRating() , maybe more) which we are not waiting for. to fix: extract calculatePepRating() to a dependency and mock it or wait for it to be called.
-
-//    func testHandleSaveActionTriggered_normal() {
-//        assert(originalMessage: nil,
-//               contentChangedMustBeCalled: false,
-//               focusSwitchedMustBeCalled: false,
-//               validatedStateChangedMustBeCalled: false,
-//               modelChangedMustBeCalled: false,
-//               sectionChangedMustBeCalled: false,
-//               colorBatchNeedsUpdateMustBeCalled: false,
-//               hideSuggestionsMustBeCalled: false,
-//               showSuggestionsMustBeCalled: false,
-//               showMediaAttachmentPickerMustBeCalled: false,
-//               hideMediaAttachmentPickerMustBeCalled: false,
-//               showDocumentAttachmentPickerMustBeCalled: false,
-//               documentAttachmentPickerDonePickerCalled: false,
-//               didComposeNewMailMustBeCalled: false,
-//               didModifyMessageMustBeCalled: false,
-//               didDeleteMessageMustBeCalled: false)
-//        vm?.handleSaveActionTriggered()
-//        waitForExpectations(timeout: UnitTestUtils.waitTime)
-//    }
+    func testHandleSaveActionTriggered_normal() {
+        assert(originalMessage: nil,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        vm?.handleSaveActionTriggered()
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 
     //!!!: crash
 //    func testHandleDeleteActionTriggered_origOutbox() {
