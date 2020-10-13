@@ -58,7 +58,6 @@ final class LoginViewController: BaseViewController {
         if accountType == .icloud {
             showiCloudAlert()
         }
-
     }
 
     override func viewDidLayoutSubviews() {
