@@ -577,42 +577,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         XCTAssertTrue(testee)
     }
 
-//    func testHandleSaveActionTriggered() {
-//        assert(originalMessage: nil,
-//               contentChangedMustBeCalled: false,
-//               focusSwitchedMustBeCalled: false,
-//               validatedStateChangedMustBeCalled: false,
-//               modelChangedMustBeCalled: false,
-//               sectionChangedMustBeCalled: false,
-//               colorBatchNeedsUpdateMustBeCalled: false,
-//               hideSuggestionsMustBeCalled: false,
-//               showSuggestionsMustBeCalled: false,
-//               showMediaAttachmentPickerMustBeCalled: false,
-//               hideMediaAttachmentPickerMustBeCalled: false,
-//               showDocumentAttachmentPickerMustBeCalled: false,
-//               documentAttachmentPickerDonePickerCalled: false,
-//               didComposeNewMailMustBeCalled: false,
-//               didModifyMessageMustBeCalled: false,
-//               didDeleteMessageMustBeCalled: false)
-//
-//        let testSubject = UUID().uuidString + "testSubject"
-//        vm?.state.subject = testSubject
-//
-//        vm?.handleSaveActionTriggered()
-//
-//        guard
-//            let draftsFolder = drafts,
-//            let testeeDrafted = Message.by(uid: 0,
-//                                           folderName: draftsFolder.name,
-//                                           accountAddress: account.user.address)
-//            else {
-//                XCTFail("Message not saved to drafts")
-//                return
-//        }
-//        XCTAssertEqual(testeeDrafted.shortMessage, testSubject)
-//        waitForExpectations(timeout: UnitTestUtils.waitTime)
-//    }
-
     //!!!: crash
 //    func testHandleSaveActionTriggered_origOutbox() {
 //        let testMessageId = UUID().uuidString + "testHandleSaveActionTriggered"
