@@ -11,7 +11,6 @@ public enum ImapSyncOperationError: Error {
      Received an unexpected callback.
      */
     case illegalState(FunctionName)
-
     case authenticationFailed(FunctionName, String)
     case connectionLost(FunctionName)
     case connectionTerminated(FunctionName)
@@ -29,8 +28,10 @@ extension ImapSyncOperationError: Equatable {
         switch (lhs, rhs) {
         case (.illegalState(let fn1), .illegalState(let fn2)):
             return fn1 == fn2
-        case (.authenticationFailed(let fn1), .authenticationFailed(let fn2)):
-            return fn1 == fn2
+        case (.authenticationFailed(let fn1, let account1), .authenticationFailed(let fn2, let account2)):
+            let sameAccount = account1 == account2
+            let sameFunctionName = fn1 == fn2
+            return sameAccount && sameFunctionName
         case (.connectionLost(let fn1), .connectionLost(let fn2)):
             return fn1 == fn2
         case (.connectionTerminated(let fn1), .connectionTerminated(let fn2)):

@@ -17,27 +17,19 @@ public struct ReplyUtil {
      Gets the quoted message body for the given `Message`.
      */
     public static func quotedMessageText(message: Message, replyAll: Bool) -> NSAttributedString {
-        // commented out until IOS-1124 is done.
-//        let footerPlainText = footer()
+        let footerPlainText = footer(for: message)
 
         guard let quotedText = quotedText(for: message) else {
-            // commented out until IOS-1124 is done.
-//            return "\n\n\(footerPlainText)".attribString()
-            return "".attribString()
+            return "\n\n\(footerPlainText)".attribString()
         }
         let citationPlainText = citationHeaderForMessage(message)
 
-        // commented out until IOS-1124 is done.
-//        return "\n\n".attribString()
-//            + footer().attribString()
-//            + "\n\n"
-//            + citationPlainText.attribString()
-//            + "\n\n"
-//            + quotedText
         return "\n\n".attribString()
-        + citationPlainText.attribString()
-        + "\n\n"
-        + quotedText
+            + footer(for: message).attribString()
+            + "\n\n"
+            + citationPlainText.attribString()
+            + "\n\n"
+            + quotedText
     }
 
     /// Adds citation header with data of a given message to a given text.
@@ -48,9 +40,7 @@ public struct ReplyUtil {
     /// - Returns: text with citation header and "send by pEp" footer
     static func citedMessageText(textToCite: String, fromMessage msg: Message) -> String {
         let citation = citationHeaderForMessage(msg)
-        // commented out until IOS-1124 is done.
-//        return "\n\n\(footer())\n\n\(citation)\n\n\(citedTextWithNewLines(textToCite: textToCite))"
-        return "\n\n\(citation)\n\n\(citedTextWithNewLines(textToCite: textToCite))"
+        return "\n\n\(footer(for: msg))\n\n\(citation)\n\n\(citedTextWithNewLines(textToCite: textToCite))"
     }
 
     public static func citedTextWithNewLines(textToCite: String) -> String {
@@ -83,11 +73,8 @@ public struct ReplyUtil {
                                         fromMessage msg: Message) -> NSAttributedString {
         let citation = citationHeaderForMessage(msg)
         let defaultFont = UIFont.preferredFont(forTextStyle: .body)
-        // commented out until IOS-1124 is done.
-//        let result = NSAttributedString(string: "\n\n\(footer())\n\n\(citation)\n\n",
-//            attributes: [NSAttributedString.Key(rawValue: "NSFont"): defaultFont])
-        let result = NSAttributedString(string: "\n\n\(citation)\n\n",
-        attributes: [NSAttributedString.Key(rawValue: "NSFont"): defaultFont])
+        let result = NSAttributedString(string: "\n\n\(footer(for: msg))\n\n\(citation)\n\n",
+            attributes: [NSAttributedString.Key(rawValue: "NSFont"): defaultFont])
 
         return result + textToCite.toCitation(addCitationLevel: true)
     }
@@ -198,7 +185,7 @@ public struct ReplyUtil {
         }
     }
 
-    static private func footer() -> String {
-        return String.pepSignature
+    static private func footer(for message: Message) -> String {
+        return message.parent.account.signature
     }
 }

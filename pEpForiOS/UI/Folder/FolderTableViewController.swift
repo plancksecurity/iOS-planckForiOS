@@ -63,7 +63,8 @@ final class FolderTableViewController: UITableViewController {
             target: nil,
             action: nil)
         let compose = UIBarButtonItem.getComposeButton(
-            action:#selector(showCompose),
+            tapAction: #selector(showCompose),
+            longPressAction: #selector(draftsPreviewTapped),
             target: self)
         toolbarItems = [flexibleSpace, compose, flexibleSpace, item]
         tableView.cellLayoutMarginsFollowReadableWidth = false
@@ -103,6 +104,13 @@ final class FolderTableViewController: UITableViewController {
     
     @objc private func showSettingsViewController() {
         UIUtils.presentSettings()
+    }
+
+    @objc func draftsPreviewTapped(sender: UILongPressGestureRecognizer) {
+        if sender.state != .began {
+            return
+        }
+        UIUtils.presentDraftsPreview()
     }
 
     // MARK: - Table view data source

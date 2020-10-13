@@ -46,7 +46,11 @@ final class AccountSettingsViewController: UIViewController {
         title = NSLocalizedString("Account", comment: "Account view title")
         navigationController?.navigationController?.setToolbarHidden(true, animated: false)
     }
-
+    
+    enum SegueIdentifier: String {
+        case EditSignatureSegue
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.destination {
         case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
@@ -55,13 +59,20 @@ final class AccountSettingsViewController: UIViewController {
                 return
             }
             editableAccountSettingsViewController.viewModel = EditableAccountSettingsViewModel(account: account, editableAccountSettingsDelegate: self)
+        case let signatureEditor as EditSignatureViewController:
+            guard let account = viewModel?.account else {
+                Log.shared.errorAndCrash("No VM")
+                return
+            }
+            let vm = EditSignatureViewModel(account: account, delegate: self)
+            signatureEditor.viewModel = vm
         default:
             break
         }
     }
 }
 
-//MARK : - UITableViewDelegate
+// MARK: - UITableViewDelegate
 
 extension AccountSettingsViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -83,11 +94,14 @@ extension AccountSettingsViewController : UITableViewDelegate {
             cell.activityIndicator.startAnimating()
             vm.handleOauth2Reauth(onViewController: self)
         }
+        if row.type == .signature {
+            performSegue(withIdentifier: "EditSignatureSegue", sender: self)
+        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
-//MARK : - UITableViewDataSource
+// MARK: - UITableViewDataSource
 
 extension AccountSettingsViewController : UITableViewDataSource {
 
@@ -132,8 +146,13 @@ extension AccountSettingsViewController : UITableViewDataSource {
             dequeuedCell.configure(with: row, for: traitCollection)
             return dequeuedCell
 
-        case .name, .email,
-             .server, .port, .tranportSecurity, .username:
+        case .name,
+             .email,
+             .server,
+             .port,
+             .tranportSecurity,
+             .username,
+             .signature:
             let dequeuedCell = dequeue(with: row, type: AccountSettingsTableViewCell.self)
             guard let row = row as? AccountSettingsViewModel.DisplayRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
@@ -205,7 +224,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
     }
 }
 
-//MARK : - ViewModel Delegate
+// MARK: - ViewModel Delegate
 
 extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
     func setLoadingView(visible: Bool) {
@@ -225,7 +244,7 @@ extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
     }
 }
 
-//MARK : - Identity
+//MARK: - Identity
 
 extension AccountSettingsViewController {
 
@@ -271,7 +290,7 @@ extension AccountSettingsViewController {
     }
 }
 
-//MARK : - Accessibility
+// MARK: - Accessibility
 
 extension AccountSettingsViewController {
 

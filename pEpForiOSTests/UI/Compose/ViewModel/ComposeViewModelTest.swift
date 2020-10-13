@@ -36,6 +36,866 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         assureSentExists()
     }
 
+    // MARK: - Test the Test Helper
+
+    func testAssertHelperTest_doNothing_noCallback() {
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    // MARK: - init
+
+
+    func testInit_stateSetupCorrectly() {
+        let mode = ComposeUtil.ComposeMode.replyAll
+        let vm = ComposeViewModel(composeMode: mode,
+                                  prefilledTo: nil,
+                                  originalMessage: nil)
+        guard
+            let testee = vm.state.initData,
+            let testeeMode = vm.state.initData?.composeMode,
+            let stateDelegate = vm.state.delegate else {
+            XCTFail()
+            return
+        }
+        XCTAssertNotNil(testee)
+        XCTAssertEqual(testeeMode, mode)
+        XCTAssertTrue(vm === stateDelegate)
+    }
+
+    // MARK: - Sections
+
+    func testSections_setupCorrectly() {
+        let testOriginalMessage = draftMessage(bccSet: false, attachmentsSet: false)
+        assertSections(forVMIniitaliizedWith: testOriginalMessage,
+                       expectBccWrapperSectionExists: true,
+                       expectAccountSectionExists: false,
+                       expectAttachmentSectionExists: false)
+    }
+
+    func testSections_unwrappedbcc() {
+        let testOriginalMessage = draftMessage(bccSet: true, attachmentsSet: false)
+        assertSections(forVMIniitaliizedWith: testOriginalMessage,
+                       expectBccWrapperSectionExists: false,
+                       expectAccountSectionExists: false,
+                       expectAttachmentSectionExists: false)
+    }
+
+    func testSections_accountSelector() {
+        let testOriginalMessage = draftMessage(bccSet: false, attachmentsSet: false)
+        let secondAccount = TestData().createWorkingAccount(number: 1)
+        secondAccount.session.commit()
+        assertSections(forVMIniitaliizedWith: testOriginalMessage,
+                       expectBccWrapperSectionExists: true,
+                       expectAccountSectionExists: true,
+                       expectAttachmentSectionExists: false)
+    }
+
+    func testSections_attachments() {
+        let testOriginalMessage = draftMessage(bccSet: false, attachmentsSet: true)
+        assertSections(forVMIniitaliizedWith: testOriginalMessage,
+                       expectBccWrapperSectionExists: true,
+                       expectAccountSectionExists: false,
+                       expectAttachmentSectionExists: true)
+    }
+
+    // MARK: - DocumentAttachmentPickerResultDelegate Handling
+
+    func testDocumentAttachmentPickerViewModel() {
+        let testee = vm?.documentAttachmentPickerViewModel()
+        XCTAssertNotNil(testee)
+    }
+
+    func testDidPickDocumentAttachment() {
+        let attachmentSectionSection = 4
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: true,
+               expectedSection: attachmentSectionSection,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: true,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        let countBefore = vm?.state.nonInlinedAttachments.count ?? -1
+        let att = attachment()
+        vm?.documentAttachmentPickerViewModel(TestDocumentAttachmentPickerViewModel(session: Session()),
+                                              didPick: att)
+        let countAfter = vm?.state.nonInlinedAttachments.count ?? -1
+        XCTAssertEqual(countAfter, countBefore + 1)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testDocumentAttachmentPickerDone() {
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: true,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        vm?.documentAttachmentPickerViewModelDidCancel(TestDocumentAttachmentPickerViewModel(session: Session()))
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    // MARK: - MediaAttachmentPickerProviderViewModelResultDelegate Handling
+
+    func testMediaAttachmentPickerProviderViewModelFactory() {
+        let testee = vm?.mediaAttachmentPickerProviderViewModel()
+        XCTAssertNotNil(testee)
+    }
+
+    func testDidSelectMediaAttachment_image() {
+        let msg = draftMessage()
+        let imageAttachment = attachment(ofType: .inline)
+        msg.replaceAttachments(with: [imageAttachment])
+        assert(originalMessage: msg,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: true,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        let mediaAtt =
+            MediaAttachmentPickerProviderViewModel.MediaAttachment(type: .image,
+                                                                   attachment: imageAttachment)
+        let countBefore = vm?.state.inlinedAttachments.count ?? -1
+        vm?.mediaAttachmentPickerProviderViewModel(
+            TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil, session: Session()),
+            didSelect: mediaAtt)
+        let countAfter = vm?.state.inlinedAttachments.count ?? -1
+        XCTAssertEqual(countAfter, countBefore + 1)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+
+    }
+
+    func testDidSelectMediaAttachment_video() {
+        let msg = draftMessage()
+        let imageAttachment = attachment(ofType: .inline)
+        msg.replaceAttachments(with: [imageAttachment])
+
+        let attachmentSectionSection = 4
+
+        assert(originalMessage: msg,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: true,
+               expectedSection: attachmentSectionSection,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: true,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        let mediaAtt =
+            MediaAttachmentPickerProviderViewModel.MediaAttachment(type: .movie,
+                                                                   attachment: imageAttachment)
+        let countBefore = vm?.state.nonInlinedAttachments.count ?? -1
+        vm?.mediaAttachmentPickerProviderViewModel(
+            TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil, session: Session()),
+            didSelect: mediaAtt)
+        let countAfter = vm?.state.nonInlinedAttachments.count ?? -1
+        XCTAssertEqual(countAfter, countBefore + 1)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testMediaPickerDidCancel() {
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: true,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+      vm?.mediaAttachmentPickerProviderViewModelDidCancel(
+        TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil, session: Session()))
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    // MARK: - BodyCellViewModelResultDelegate handling
+
+    private var bodyVm: BodyCellViewModel {
+        return vm?.bodyVM ?? BodyCellViewModel(resultDelegate: nil,
+                                               account: nil)
+    }
+
+    func testBodyVM() {
+        let testee = vm?.bodyVM
+        XCTAssertNotNil(testee)
+    }
+
+    func testBodyCellViewModelUserWantsToAddMedia() {
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: true,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        vm?.bodyCellViewModelUserWantsToAddMedia(bodyVm)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testBodyCellViewModelUserWantsToAddDocument() {
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: true,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        vm?.bodyCellViewModelUserWantsToAddDocument(bodyVm)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testBodyCellViewModelInlinedAttachmentsChanged_moreAttachments() {
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: true,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        let countBefore = vm?.state.inlinedAttachments.count ?? -1
+        vm?.bodyCellViewModel(bodyVm,
+                              inlinedAttachmentsChanged: [attachment()])
+        let countAfter = vm?.state.inlinedAttachments.count ?? -1
+        XCTAssertEqual(countAfter, countBefore + 1)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testBodyCellViewModelInlinedAttachmentsChanged_lessAttachments() {
+        let msg = draftMessage()
+        let imageAttachment = attachment(ofType: .inline)
+        msg.replaceAttachments(with: [imageAttachment])
+        assert(originalMessage: msg,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: true,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        let lessAttachments = [Attachment]()
+        vm?.bodyCellViewModel(bodyVm,
+                              inlinedAttachmentsChanged: lessAttachments)
+        XCTAssertEqual(vm?.state.inlinedAttachments.count, lessAttachments.count)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testBodyChangedToPlaintextHtml() {
+        assert(contentChangedMustBeCalled: true,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        let newHtml = "<p>fake</p>"
+        let attributedString = newHtml.htmlToAttributedString(attachmentDelegate: nil)
+        vm?.bodyCellViewModel(bodyVm, bodyAttributedString: attributedString)
+        XCTAssertEqual(vm?.state.bodyText, attributedString)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    // MARK: - SubjectCellViewModelResultDelegate Handling
+
+    private var subjectCellViewModel: SubjectCellViewModel? {
+        return viewmodel(ofType: SubjectCellViewModel.self) as? SubjectCellViewModel
+    }
+//
+//    //!!!: crash
+////    func testSubjectCellViewModelDidChangeSubject() {
+////        assert(contentChangedMustBeCalled: true,
+////               focusSwitchedMustBeCalled: false,
+////               validatedStateChangedMustBeCalled: false,
+////               modelChangedMustBeCalled: false,
+////               sectionChangedMustBeCalled: false,
+////               colorBatchNeedsUpdateMustBeCalled: false,
+////               hideSuggestionsMustBeCalled: false,
+////               showSuggestionsMustBeCalled: false,
+////               showMediaAttachmentPickerMustBeCalled: false,
+////               hideMediaAttachmentPickerMustBeCalled: false,
+////               showDocumentAttachmentPickerMustBeCalled: false,
+////               documentAttachmentPickerDonePickerCalled: false,
+////               didComposeNewMailMustBeCalled: false,
+////               didModifyMessageMustBeCalled: false,
+////               didDeleteMessageMustBeCalled: false)
+////        guard let subjectVm = subjectCellViewModel  else {
+////            XCTFail()
+////            return
+////        }
+////        let newSubject = "testSubjectCellViewModelDidChangeSubject content"
+////        subjectVm.content = newSubject
+////        vm?.subjectCellViewModelDidChangeSubject(subjectVm)
+////        XCTAssertEqual(vm?.state.subject, newSubject)
+////        waitForExpectations(timeout: UnitTestUtils.waitTime)
+////    }
+//
+    // MARK: - AccountCellViewModelResultDelegate handling
+
+    private var accountCellViewModel: AccountCellViewModel? {
+        return viewmodel(ofType: AccountCellViewModel.self) as? AccountCellViewModel
+    }
+
+    func testAccountCellViewModelAccountChangedTo() {
+        let secondAccount = TestData().createWorkingAccount(number: 1)
+        secondAccount.session.commit()
+        assert(contentChangedMustBeCalled: true,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: true,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        guard let accountVm = accountCellViewModel else {
+            XCTFail()
+            return
+        }
+        vm?.accountCellViewModel(accountVm, accountChangedTo: secondAccount)
+        XCTAssertEqual(vm?.state.from, secondAccount.user)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    // MARK: - RecipientCellViewModelResultDelegate Handling
+
+    private func recipientCellViewModel(type: RecipientCellViewModel.FieldType) -> RecipientCellViewModel? {
+        guard let sections = vm?.sections else {
+            XCTFail()
+            return nil
+        }
+        for section in sections {
+            for row in section.rows where row is RecipientCellViewModel {
+                if let row = row as? RecipientCellViewModel, row.type == type {
+                    return row
+                }
+            }
+        }
+        return nil
+    }
+
+//    func testRecipientCellViewModelDidChangeRecipients_to() {
+//        assertRecipientCellViewModelDidChangeRecipients(fieldType: .to)
+//    }
+//
+//    func testRecipientCellViewModelDidChangeRecipients_cc() {
+//        assertRecipientCellViewModelDidChangeRecipients(fieldType: .cc)
+//    }
+//
+//    func testRecipientCellViewModelDidChangeRecipients_bcc() {
+//        assertRecipientCellViewModelDidChangeRecipients(fieldType: .bcc)
+//    }
+
+    func testRecipientCellViewModelDidEndEditing() {
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: true,
+               validatedStateChangedMustBeCalled: true,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: true,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        guard let recipientVm = recipientCellViewModel(type: .to) else {
+            XCTFail()
+            return
+        }
+        vm?.recipientCellViewModelDidEndEditing(recipientVm)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testRecipientCellViewModelDidBeginEditing() {
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: true,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        guard let recipientVm = recipientCellViewModel(type: .to) else {
+            XCTFail()
+            return
+        }
+        let text = "testRecipientCellViewModelDidBeginEditing text"
+        vm?.recipientCellViewModel(recipientVm, didBeginEditing: text)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testRecipientCellViewModelTextChanged() {
+        assert(contentChangedMustBeCalled: true,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: true,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: true,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        guard let recipientVm = recipientCellViewModel(type: .to) else {
+            XCTFail()
+            return
+        }
+        let text = "testRecipientCellViewModelDidBeginEditing text"
+        vm?.recipientCellViewModel(recipientVm, textChanged: text)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    // MARK: - Cancel Actions
+
+    /*
+    func testShowKeepInOutbox() {
+        FolderType.allCases.forEach {
+            assertShowKeepInOutbox(forMessageInfolderOfType: $0)
+        }
+    }
+ */
+
+//    func testShowCancelActionsv() {
+//        let msg = message()
+//        assert(originalMessage: msg)
+//        guard let testee = vm?.showCancelActions else {
+//            XCTFail()
+//            return
+//        }
+//        XCTAssertFalse(testee)
+//    }
+
+    func testShowCancelActions_edited() {
+        let msg = message()
+        assert(originalMessage: msg)
+        let idet = Identity(address: "testShow@Cancel.Actions")
+        idet.session.commit()
+        vm?.state.toRecipients = [idet]
+        guard let testee = vm?.showCancelActions else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(testee)
+    }
+
+//    func testHandleSaveActionTriggered() {
+//        assert(originalMessage: nil,
+//               contentChangedMustBeCalled: false,
+//               focusSwitchedMustBeCalled: false,
+//               validatedStateChangedMustBeCalled: false,
+//               modelChangedMustBeCalled: false,
+//               sectionChangedMustBeCalled: false,
+//               colorBatchNeedsUpdateMustBeCalled: false,
+//               hideSuggestionsMustBeCalled: false,
+//               showSuggestionsMustBeCalled: false,
+//               showMediaAttachmentPickerMustBeCalled: false,
+//               hideMediaAttachmentPickerMustBeCalled: false,
+//               showDocumentAttachmentPickerMustBeCalled: false,
+//               documentAttachmentPickerDonePickerCalled: false,
+//               didComposeNewMailMustBeCalled: false,
+//               didModifyMessageMustBeCalled: false,
+//               didDeleteMessageMustBeCalled: false)
+//
+//        let testSubject = UUID().uuidString + "testSubject"
+//        vm?.state.subject = testSubject
+//
+//        vm?.handleSaveActionTriggered()
+//
+//        guard
+//            let draftsFolder = drafts,
+//            let testeeDrafted = Message.by(uid: 0,
+//                                           folderName: draftsFolder.name,
+//                                           accountAddress: account.user.address)
+//            else {
+//                XCTFail("Message not saved to drafts")
+//                return
+//        }
+//        XCTAssertEqual(testeeDrafted.shortMessage, testSubject)
+//        waitForExpectations(timeout: UnitTestUtils.waitTime)
+//    }
+
+    //!!!: crash
+//    func testHandleSaveActionTriggered_origOutbox() {
+//        let testMessageId = UUID().uuidString + "testHandleSaveActionTriggered"
+//        let originalMessage = message(inFolderOfType: .outbox)
+//        originalMessage.messageID = testMessageId
+//        originalMessage.from = account.user
+//
+//        assert(originalMessage: originalMessage,
+//               contentChangedMustBeCalled: false,
+//               focusSwitchedMustBeCalled: false,
+//               validatedStateChangedMustBeCalled: false,
+//               modelChangedMustBeCalled: false,
+//               sectionChangedMustBeCalled: false,
+//               colorBatchNeedsUpdateMustBeCalled: false,
+//               hideSuggestionsMustBeCalled: false,
+//               showSuggestionsMustBeCalled: false,
+//               showMediaAttachmentPickerMustBeCalled: false,
+//               hideMediaAttachmentPickerMustBeCalled: false,
+//               showDocumentAttachmentPickerMustBeCalled: false,
+//               documentAttachmentPickerDonePickerCalled: false,
+//               didComposeNewMailMustBeCalled: false,
+//               didModifyMessageMustBeCalled: false,
+//               didDeleteMessageMustBeCalled: true)
+//        vm?.handleSaveActionTriggered()
+//        let msgWithTestMessageId = Message.by(uid: originalMessage.uid,
+//                                              uuid: originalMessage.uuid,
+//                                              folderName: originalMessage.parent.name,
+//                                              accountAddress: account.user.address)
+//        XCTAssertNil(msgWithTestMessageId,
+//                     "original message must be deleted, a copy is safed to drafts")
+//        waitForExpectations(timeout: UnitTestUtils.waitTime)
+//    }
+
+//    func testHandleSaveActionTriggered_origDrafts() {
+//        let testMessageId = UUID().uuidString + "testHandleSaveActionTriggered"
+//        let originalMessage = message(inFolderOfType: .drafts)
+//        originalMessage.messageID = testMessageId
+//        originalMessage.from = account.user
+//
+//        assert(originalMessage: originalMessage,
+//               contentChangedMustBeCalled: false,
+//               focusSwitchedMustBeCalled: false,
+//               validatedStateChangedMustBeCalled: false,
+//               modelChangedMustBeCalled: false,
+//               sectionChangedMustBeCalled: false,
+//               colorBatchNeedsUpdateMustBeCalled: false,
+//               hideSuggestionsMustBeCalled: false,
+//               showSuggestionsMustBeCalled: false,
+//               showMediaAttachmentPickerMustBeCalled: false,
+//               hideMediaAttachmentPickerMustBeCalled: false,
+//               showDocumentAttachmentPickerMustBeCalled: false,
+//               documentAttachmentPickerDonePickerCalled: false,
+//               didComposeNewMailMustBeCalled: false,
+//               didModifyMessageMustBeCalled: true,
+//               didDeleteMessageMustBeCalled: true)
+//        vm?.handleSaveActionTriggered()
+//        let msgWithTestMessageId = Message.by(uid: originalMessage.uid,
+//                                              uuid: originalMessage.uuid,
+//                                              folderName: originalMessage.parent.name,
+//                                              accountAddress: account.user.address,
+//                                              includingDeleted: true)
+//        XCTAssertTrue(msgWithTestMessageId?.imapFlags.deleted ?? false,
+//                     "The user edited draft. Technically we save a new message, thus the original" +
+//            " must be deleted.")
+//        waitForExpectations(timeout: UnitTestUtils.waitTime)
+//    }
+
+    //!!!: crashes randomly due to the known issue (composeviewModel is running stuff in background (e.g.calculatePepRating() , maybe more) which we are not waiting for. to fix: extract calculatePepRating() to a dependency and mock it or wait for it to be called.
+
+//    func testHandleSaveActionTriggered_normal() {
+//        assert(originalMessage: nil,
+//               contentChangedMustBeCalled: false,
+//               focusSwitchedMustBeCalled: false,
+//               validatedStateChangedMustBeCalled: false,
+//               modelChangedMustBeCalled: false,
+//               sectionChangedMustBeCalled: false,
+//               colorBatchNeedsUpdateMustBeCalled: false,
+//               hideSuggestionsMustBeCalled: false,
+//               showSuggestionsMustBeCalled: false,
+//               showMediaAttachmentPickerMustBeCalled: false,
+//               hideMediaAttachmentPickerMustBeCalled: false,
+//               showDocumentAttachmentPickerMustBeCalled: false,
+//               documentAttachmentPickerDonePickerCalled: false,
+//               didComposeNewMailMustBeCalled: false,
+//               didModifyMessageMustBeCalled: false,
+//               didDeleteMessageMustBeCalled: false)
+//        vm?.handleSaveActionTriggered()
+//        waitForExpectations(timeout: UnitTestUtils.waitTime)
+//    }
+
+    //!!!: crash
+//    func testHandleDeleteActionTriggered_origOutbox() {
+//        let testMessageId = UUID().uuidString + "testHandleDeleteActionTriggered_origOutbox"
+//        let originalMessage = message(inFolderOfType: .outbox)
+//        originalMessage.messageID = testMessageId
+//        originalMessage.from = account.user
+//
+//        assert(originalMessage: originalMessage,
+//               contentChangedMustBeCalled: false,
+//               focusSwitchedMustBeCalled: false,
+//               validatedStateChangedMustBeCalled: false,
+//               modelChangedMustBeCalled: false,
+//               sectionChangedMustBeCalled: false,
+//               colorBatchNeedsUpdateMustBeCalled: false,
+//               hideSuggestionsMustBeCalled: false,
+//               showSuggestionsMustBeCalled: false,
+//               showMediaAttachmentPickerMustBeCalled: false,
+//               hideMediaAttachmentPickerMustBeCalled: false,
+//               showDocumentAttachmentPickerMustBeCalled: false,
+//               documentAttachmentPickerDonePickerCalled: false,
+//               didComposeNewMailMustBeCalled: false,
+//               didModifyMessageMustBeCalled: false,
+//               didDeleteMessageMustBeCalled: true)
+//        vm?.handleSaveActionTriggered()
+//        let msgWithTestMessageId = Message.by(uid: originalMessage.uid,
+//                                              uuid: originalMessage.uuid,
+//                                              folderName: originalMessage.parent.name,
+//                                              accountAddress: account.user.address)
+//        XCTAssertNil(msgWithTestMessageId,
+//                     "original message must be deleted, a copy is safed to drafts")
+//        waitForExpectations(timeout: UnitTestUtils.waitTime)
+//    }
+
+    // MARK: - Suggestions
+
+//    func testSuggestViewModel() {
+//        let testee = vm?.suggestViewModel()
+//        XCTAssertNotNil(testee)
+//        XCTAssertTrue(testee?.resultDelegate === vm)
+//    }
+
+    // showSuggestions and hideSuggestions are tested altering recipients
+
+    //!!!: crash
+//    func testShowSuggestionsScrollFocus_nonEmpty() {
+//        let expectedSuggestionsVisibility = true
+//        assert(contentChangedMustBeCalled: false,
+//               focusSwitchedMustBeCalled: false,
+//               validatedStateChangedMustBeCalled: false,
+//               expectedIsValidated: nil,
+//               modelChangedMustBeCalled: false,
+//               sectionChangedMustBeCalled: false,
+//               colorBatchNeedsUpdateMustBeCalled: false,
+//               hideSuggestionsMustBeCalled: false,
+//               showSuggestionsMustBeCalled: false,
+//               suggestionsScrollFocusChangedMustBeCalled: true,
+//               expectedNewSuggestionsScrollFocusIsVisible: expectedSuggestionsVisibility,
+//               showMediaAttachmentPickerMustBeCalled: false,
+//               hideMediaAttachmentPickerMustBeCalled: false,
+//               showDocumentAttachmentPickerMustBeCalled: false,
+//               documentAttachmentPickerDonePickerCalled: false,
+//               didComposeNewMailMustBeCalled: false,
+//               didModifyMessageMustBeCalled: false,
+//               didDeleteMessageMustBeCalled: false)
+//        let _ = vm?.suggestViewModel(SuggestViewModel(),
+//                                     didToggleVisibilityTo: expectedSuggestionsVisibility)
+//        waitForExpectations(timeout: UnitTestUtils.waitTime)
+//    }
+
+//    func testShowSuggestionsScrollFocus_empty() {
+//        let expectedSuggestionsVisibility = false
+//        assert(contentChangedMustBeCalled: false,
+//               focusSwitchedMustBeCalled: false,
+//               validatedStateChangedMustBeCalled: false,
+//               expectedIsValidated: nil,
+//               modelChangedMustBeCalled: false,
+//               sectionChangedMustBeCalled: false,
+//               colorBatchNeedsUpdateMustBeCalled: false,
+//               hideSuggestionsMustBeCalled: false,
+//               showSuggestionsMustBeCalled: false,
+//               suggestionsScrollFocusChangedMustBeCalled: true,
+//               expectedNewSuggestionsScrollFocusIsVisible: expectedSuggestionsVisibility,
+//               showMediaAttachmentPickerMustBeCalled: false,
+//               hideMediaAttachmentPickerMustBeCalled: false,
+//               showDocumentAttachmentPickerMustBeCalled: false,
+//               documentAttachmentPickerDonePickerCalled: false,
+//               didComposeNewMailMustBeCalled: false,
+//               didModifyMessageMustBeCalled: false,
+//               didDeleteMessageMustBeCalled: false)
+//        let _ = vm?.suggestViewModel(SuggestViewModel(),
+//                                     didToggleVisibilityTo: expectedSuggestionsVisibility)
+//        waitForExpectations(timeout: UnitTestUtils.waitTime)
+//    }
+
+// MARK: - ComposeViewModelStateDelegate Handling
+
+    func testComposeViewModelStateDidChangeValidationStateTo() {
+        let expectedIsValid = true
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: true,
+               expectedIsValidated: expectedIsValid,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        guard let state = vm?.state else {
+            XCTFail()
+            return
+        }
+        vm?.composeViewModelState(state, didChangeValidationStateTo: expectedIsValid)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testComposeViewModelDidChangePEPRatingTo() {
+        let expectedRating = Rating.reliable
+        vm?.state.pEpProtection = true
+        let expectedProtection = vm?.state.pEpProtection ?? false
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: true,
+               expectedRating: expectedRating,
+               expectedProtectionEnabled: expectedProtection,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        guard let state = vm?.state else {
+            XCTFail()
+            return
+        }
+        vm?.composeViewModelState(state, didChangePEPRatingTo: expectedRating)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    // MARK: - Delegate Setter Side Effect
+
+    func testDelegateSetter() {
+        let expectedRating = Rating.undefined
+        let expectedProtection = true
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: true,
+               expectedRating: expectedRating,
+               expectedProtectionEnabled: expectedProtection,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        vm?.delegate = testDelegate
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
     // MARK: - isAttachmentSection
 
     func testIsAttachmentSection() {
