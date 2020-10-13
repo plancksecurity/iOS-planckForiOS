@@ -587,34 +587,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
-// MARK: - ComposeViewModelStateDelegate Handling
-
-    func testComposeViewModelStateDidChangeValidationStateTo() {
-        let expectedIsValid = true
-        assert(contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: true,
-               expectedIsValidated: expectedIsValid,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        guard let state = vm?.state else {
-            XCTFail()
-            return
-        }
-        vm?.composeViewModelState(state, didChangeValidationStateTo: expectedIsValid)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     // MARK: - Delegate Setter Side Effect
 
     func testDelegateSetter() {
