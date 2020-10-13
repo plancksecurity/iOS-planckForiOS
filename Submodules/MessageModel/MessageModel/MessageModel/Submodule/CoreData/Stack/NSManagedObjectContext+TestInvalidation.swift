@@ -23,8 +23,8 @@ extension NSManagedObjectContext {
             return flag.boolValue
         }
         set {
-            userInfo.setValue(NSNumber(booleanLiteral: newValue),
-                              forKey: NSManagedObjectContext.keyIsInvalid)
+            let value = NSNumber(booleanLiteral: newValue)
+            userInfo.setValue(value, forKey: NSManagedObjectContext.keyIsInvalid)
         }
     }
 }
