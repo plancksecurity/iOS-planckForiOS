@@ -562,15 +562,15 @@ class ComposeViewModelTest: AccountDrivenTestBase {
     }
  */
 
-//    func testShowCancelActionsv() {
-//        let msg = message()
-//        assert(originalMessage: msg)
-//        guard let testee = vm?.showCancelActions else {
-//            XCTFail()
-//            return
-//        }
-//        XCTAssertFalse(testee)
-//    }
+    func testShowCancelActionsv() {
+        let msg = message()
+        assert(originalMessage: msg)
+        guard let testee = vm?.showCancelActions else {
+            XCTFail()
+            return
+        }
+        XCTAssertFalse(testee)
+    }
 
     func testShowCancelActions_edited() {
         let msg = message()
