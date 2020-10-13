@@ -11,7 +11,6 @@ import XCTest
 
 @testable import pEpForiOS
 @testable import MessageModel
-import PEPObjCAdapterFramework
 
 class ComposeViewModelStateTest: AccountDrivenTestBase {
     private var testDelegate: TestDelegate?
@@ -149,26 +148,6 @@ class ComposeViewModelStateTest: AccountDrivenTestBase {
     }
 
     // MARK: - HELPER
-
-    private func assertValidatation(didChangeValidationStateMustBeCalled: Bool = true,
-                                    expectedStateIsValid: Bool,
-                                    expectedNewRating: Rating? = nil) {
-        let exp = expectation(description: "exp")
-
-        PEPSession().mySelf(account.user.pEpIdentity(), errorCallback: { (_) in
-            XCTFail()
-            exp.fulfill()
-        }) { (_) in
-            exp.fulfill()
-        }
-        waitForExpectations(timeout: TestUtil.waitTime)
-        assert(ignoreDelegateCallsWhileInitializing: true,
-               didChangeValidationStateMustBeCalled: true,
-               expectedStateIsValid: expectedStateIsValid,
-               didChangePEPRatingMustBeCalled: expectedNewRating != nil,
-               expectedNewRating: expectedNewRating,
-               didChangeProtectionMustBeCalled: false)
-    }
 
     private func assert(ignoreDelegateCallsWhileInitializing: Bool = true,
                         didChangeValidationStateMustBeCalled: Bool? = nil,
