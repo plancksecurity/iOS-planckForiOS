@@ -166,6 +166,9 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    // MARK: - DocumentAttachmentPickerViewModel
+    class TestDocumentAttachmentPickerViewModel: DocumentAttachmentPickerViewModel {} // Dummy to pass something
+
     // MARK: - MediaAttachmentPickerProviderViewModelResultDelegate Handling
 
     func testMediaAttachmentPickerProviderViewModelFactory() {
