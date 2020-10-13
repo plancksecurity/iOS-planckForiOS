@@ -920,6 +920,22 @@ class ComposeViewModelTest: AccountDrivenTestBase {
 
     // MARK: - Helper
 
+    private func viewmodel(ofType vmType: AnyClass) -> CellViewModel? {
+        guard let sections = vm?.sections else {
+            XCTFail()
+            return nil
+        }
+        for section in sections {
+            guard let vm = section.rows.first else {
+                continue
+            }
+            if type(of: vm) == vmType {
+                return  section.rows.first
+            }
+        }
+        return nil
+    }
+
     private func assertSections(forVMIniitaliizedWith originalMessage: Message,
                                 expectBccWrapperSectionExists: Bool = true,
                                 expectAccountSectionExists: Bool = false,
