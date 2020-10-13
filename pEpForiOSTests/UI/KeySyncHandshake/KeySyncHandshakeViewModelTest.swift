@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import PEPObjCAdapterFramework
+
 @testable import pEpForiOS
 
 final class KeySyncHandshakeViewModelTest: XCTestCase {
@@ -132,22 +132,6 @@ extension KeySyncHandshakeViewModelTest {
 
         //In case some if missing or added but not checked
         XCTAssertEqual(expected, actual)
-    }
-
-    private func pEpSessionMocLanaguages() -> [PEPLanguage] {
-        var languages = [PEPLanguage]()
-
-        let expHaveLanguages = expectation(description: "expHaveLanguages")
-        PEPSession().languageList({ error in
-            XCTFail()
-            expHaveLanguages.fulfill()
-        }) { langs in
-            languages = langs
-            expHaveLanguages.fulfill()
-        }
-        wait(for: [expHaveLanguages], timeout: TestUtil.waitTime)
-
-        return languages
     }
 }
 
