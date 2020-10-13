@@ -971,13 +971,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		151645A922393FE2009532BE /* IdentityModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = IdentityModel;
-			sourceTree = "<group>";
-		};
 		15175E4C221D59DD00C91DB8 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
@@ -1011,7 +1004,6 @@
 			children = (
 				15175F21222583ED00C91DB8 /* MoveTo_pEPIOSToolbox */,
 				43598DF51DA7F74F00EAD0B7 /* CoreData */,
-				151645A922393FE2009532BE /* IdentityModel */,
 			);
 			path = Submodule;
 			sourceTree = "<group>";
