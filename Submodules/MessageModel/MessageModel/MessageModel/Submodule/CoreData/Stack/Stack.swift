@@ -188,8 +188,8 @@ extension Stack {
         // Not wanted.
         stopReceivingContextNotifications()
 
-        mainContext.isInvalid = true
-        changePropagatorContext.isInvalid = true
+        mainContext.hasBeenReset = true
+        changePropagatorContext.hasBeenReset = true
 
         reset(context: mainContext)
         reset(context: changePropagatorContext)
@@ -229,7 +229,7 @@ extension Stack {
         if MiscUtil.isUnitTest() {
             objc_sync_enter(Stack.unitTestLock)
             context.perform {
-                if !context.isInvalid {
+                if !context.hasBeenReset {
                     context.mergeChanges(fromContextDidSave: notification)
                 }
             }

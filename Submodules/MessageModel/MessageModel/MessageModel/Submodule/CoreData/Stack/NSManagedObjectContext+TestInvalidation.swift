@@ -10,16 +10,16 @@ import Foundation
 import CoreData
 
 extension NSManagedObjectContext {
-    static let keyIsInvalid = "isInvalid"
+    static let keyHasBeenReset = "isInvalid"
 
     /// Boolean property that's used in tests to flag a context as "not to be used anymore".
     ///
     /// Gets set to `true` on the main contexts when the DB gets reset.
-    var isInvalid: Bool {
+    var hasBeenReset: Bool {
         get {
             var result = false
             performAndWait {
-                guard let flag = userInfo.object(forKey: NSManagedObjectContext.keyIsInvalid) as? NSNumber else {
+                guard let flag = userInfo.object(forKey: NSManagedObjectContext.keyHasBeenReset) as? NSNumber else {
                     result =  false
                     return
                 }
@@ -30,7 +30,7 @@ extension NSManagedObjectContext {
         set {
             performAndWait {
                 let value = NSNumber(booleanLiteral: newValue)
-                userInfo.setValue(value, forKey: NSManagedObjectContext.keyIsInvalid)
+                userInfo.setValue(value, forKey: NSManagedObjectContext.keyHasBeenReset)
             }
         }
     }
