@@ -260,26 +260,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         XCTAssertNotNil(testee)
     }
 
-    func testBodyCellViewModelUserWantsToAddMedia() {
-        assert(contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: true,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        vm?.bodyCellViewModelUserWantsToAddMedia(bodyVm)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     func testBodyChangedToPlaintextHtml() {
         assert(contentChangedMustBeCalled: true,
                focusSwitchedMustBeCalled: false,
