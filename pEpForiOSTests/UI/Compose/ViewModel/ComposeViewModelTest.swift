@@ -400,35 +400,34 @@ class ComposeViewModelTest: AccountDrivenTestBase {
     private var subjectCellViewModel: SubjectCellViewModel? {
         return viewmodel(ofType: SubjectCellViewModel.self) as? SubjectCellViewModel
     }
-//
-//    //!!!: crash
-////    func testSubjectCellViewModelDidChangeSubject() {
-////        assert(contentChangedMustBeCalled: true,
-////               focusSwitchedMustBeCalled: false,
-////               validatedStateChangedMustBeCalled: false,
-////               modelChangedMustBeCalled: false,
-////               sectionChangedMustBeCalled: false,
-////               colorBatchNeedsUpdateMustBeCalled: false,
-////               hideSuggestionsMustBeCalled: false,
-////               showSuggestionsMustBeCalled: false,
-////               showMediaAttachmentPickerMustBeCalled: false,
-////               hideMediaAttachmentPickerMustBeCalled: false,
-////               showDocumentAttachmentPickerMustBeCalled: false,
-////               documentAttachmentPickerDonePickerCalled: false,
-////               didComposeNewMailMustBeCalled: false,
-////               didModifyMessageMustBeCalled: false,
-////               didDeleteMessageMustBeCalled: false)
-////        guard let subjectVm = subjectCellViewModel  else {
-////            XCTFail()
-////            return
-////        }
-////        let newSubject = "testSubjectCellViewModelDidChangeSubject content"
-////        subjectVm.content = newSubject
-////        vm?.subjectCellViewModelDidChangeSubject(subjectVm)
-////        XCTAssertEqual(vm?.state.subject, newSubject)
-////        waitForExpectations(timeout: UnitTestUtils.waitTime)
-////    }
-//
+
+    func testSubjectCellViewModelDidChangeSubject() {
+        assert(contentChangedMustBeCalled: true,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        guard let subjectVm = subjectCellViewModel  else {
+            XCTFail()
+            return
+        }
+        let newSubject = "testSubjectCellViewModelDidChangeSubject content"
+        subjectVm.content = newSubject
+        vm?.subjectCellViewModelDidChangeSubject(subjectVm)
+        XCTAssertEqual(vm?.state.subject, newSubject)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
     // MARK: - AccountCellViewModelResultDelegate handling
 
     private var accountCellViewModel: AccountCellViewModel? {
