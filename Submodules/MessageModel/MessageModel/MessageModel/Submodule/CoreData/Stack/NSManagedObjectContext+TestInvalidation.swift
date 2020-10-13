@@ -17,14 +17,21 @@ extension NSManagedObjectContext {
     /// Gets set to `true` on the main contexts when the DB gets reset.
     var isInvalid: Bool {
         get {
-            guard let flag = userInfo.object(forKey: NSManagedObjectContext.keyIsInvalid) as? NSNumber else {
-                return false
+            var result = false
+            performAndWait {
+                guard let flag = userInfo.object(forKey: NSManagedObjectContext.keyIsInvalid) as? NSNumber else {
+                    result =  false
+                    return
+                }
+                result = flag.boolValue
             }
-            return flag.boolValue
+            return result
         }
         set {
-            let value = NSNumber(booleanLiteral: newValue)
-            userInfo.setValue(value, forKey: NSManagedObjectContext.keyIsInvalid)
+            performAndWait {
+                let value = NSNumber(booleanLiteral: newValue)
+                userInfo.setValue(value, forKey: NSManagedObjectContext.keyIsInvalid)
+            }
         }
     }
 }

@@ -188,13 +188,8 @@ extension Stack {
         // Not wanted.
         stopReceivingContextNotifications()
 
-        mainContext.performAndWait {
-            mainContext.isInvalid = true
-        }
-
-        changePropagatorContext.performAndWait {
-            changePropagatorContext.isInvalid = true
-        }
+        mainContext.isInvalid = true
+        changePropagatorContext.isInvalid = true
 
         reset(context: mainContext)
         reset(context: changePropagatorContext)
