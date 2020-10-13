@@ -10,7 +10,6 @@ import XCTest
 
 @testable import pEpForiOS
 @testable import MessageModel
-import PEPObjCAdapterFramework
 import pEpIOSToolbox
 
 class ComposeViewModelTest: AccountDrivenTestBase {
