@@ -16,10 +16,6 @@ import PEPObjCAdapterFramework
 open class AccountDrivenTestBase: XCTestCase {
     var account: Account!
 
-    var session: PEPSession {
-        return PEPSession()
-    }
-
     override open func setUp() {
         super.setUp()
         Stack.shared.reset() //!!!: this should not be required. Rm after all tests use a propper base class!
