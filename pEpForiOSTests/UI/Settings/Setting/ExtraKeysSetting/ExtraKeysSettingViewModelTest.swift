@@ -7,10 +7,10 @@
 //
 
 import XCTest
+import CoreData
 
 @testable import pEpForiOS
 @testable import MessageModel
-import CoreData
 
 class ExtraKeysSettingViewModelTest: AccountDrivenTestBase {
 
