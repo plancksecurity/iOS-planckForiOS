@@ -98,26 +98,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         XCTAssertNotNil(testee)
     }
 
-    func testDocumentAttachmentPickerDone() {
-        assert(contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: true,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        vm?.documentAttachmentPickerViewModelDidCancel(TestDocumentAttachmentPickerViewModel(session: Session()))
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     // MARK: - DocumentAttachmentPickerViewModel
     class TestDocumentAttachmentPickerViewModel: DocumentAttachmentPickerViewModel {} // Dummy to pass something
 
