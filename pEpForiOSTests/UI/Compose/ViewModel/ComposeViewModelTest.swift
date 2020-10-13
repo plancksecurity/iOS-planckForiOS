@@ -59,7 +59,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
 
     // MARK: - init
 
-
     func testInit_stateSetupCorrectly() {
         let mode = ComposeUtil.ComposeMode.replyAll
         let vm = ComposeViewModel(composeMode: mode,
