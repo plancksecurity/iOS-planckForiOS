@@ -48,26 +48,6 @@ class TestUtil {
     static var initialNumberOfServices = 0
 
     /**
-     Dumps some diff between two NSDirectories to the console.
-     */
-    static func diffDictionaries(_ dict1: NSDictionary, dict2: NSDictionary) {
-        for (k,v1) in dict1 {
-            if let v2 = dict2[k as! NSCopying] {
-                if !(v1 as AnyObject).isEqual(v2) {
-                    print("Difference in '\(k)': '\(v2)' <-> '\(v1)'")
-                }
-            } else {
-                print("Only in dict1: \(k)")
-            }
-        }
-        for (k,_) in dict2 {
-            if dict1[k as! NSCopying] == nil {
-                print("Only in dict2: \(k)")
-            }
-        }
-    }
-
-    /**
      Makes the servers for this account unreachable, for tests that expects failure.
      */
     static func makeServersUnreachable(cdAccount: CdAccount) {
