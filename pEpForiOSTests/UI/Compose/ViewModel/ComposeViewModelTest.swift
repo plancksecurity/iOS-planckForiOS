@@ -615,35 +615,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
-    func testComposeViewModelDidChangePEPRatingTo() {
-        let expectedRating = Rating.reliable
-        vm?.state.pEpProtection = true
-        let expectedProtection = vm?.state.pEpProtection ?? false
-        assert(contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: true,
-               expectedRating: expectedRating,
-               expectedProtectionEnabled: expectedProtection,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        guard let state = vm?.state else {
-            XCTFail()
-            return
-        }
-        vm?.composeViewModelState(state, didChangePEPRatingTo: expectedRating)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     // MARK: - Delegate Setter Side Effect
 
     func testDelegateSetter() {
