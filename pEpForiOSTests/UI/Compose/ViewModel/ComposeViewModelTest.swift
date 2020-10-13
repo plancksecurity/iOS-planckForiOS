@@ -478,18 +478,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         return nil
     }
 
-//    func testRecipientCellViewModelDidChangeRecipients_to() {
-//        assertRecipientCellViewModelDidChangeRecipients(fieldType: .to)
-//    }
-//
-//    func testRecipientCellViewModelDidChangeRecipients_cc() {
-//        assertRecipientCellViewModelDidChangeRecipients(fieldType: .cc)
-//    }
-//
-//    func testRecipientCellViewModelDidChangeRecipients_bcc() {
-//        assertRecipientCellViewModelDidChangeRecipients(fieldType: .bcc)
-//    }
-
     func testRecipientCellViewModelDidEndEditing() {
         assert(contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: true,
