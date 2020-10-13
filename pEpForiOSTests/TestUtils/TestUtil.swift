@@ -12,7 +12,6 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
 import PantomimeFramework
 
 class TestUtil {
@@ -122,7 +121,7 @@ class TestUtil {
         msg.longMessageFormatted = longMessageFormatted
         msg.sent = dateSent
         if engineProccesed {
-            msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
+            msg.pEpRatingInt = Int(Rating.unreliable.toInt())
         }
         msg.replaceAttachments(with: createAttachments(number: attachments))
         return msg
@@ -131,7 +130,7 @@ class TestUtil {
     static func createMessage(uid: Int, inFolder folder: Folder) -> Message {
         let msg = Message(uuid: "\(uid)", uid: uid, parentFolder: folder)
         XCTAssertEqual(msg.uid, uid)
-        msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
+        msg.pEpRatingInt = Int(Rating.unreliable.toInt())
         return msg
     }
 
@@ -214,7 +213,7 @@ class TestUtil {
                           parentFolder: folder)
         msg.from = blueprint.from
         msg.replaceTo(with: [receiver])
-        msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
+        msg.pEpRatingInt = Int(Rating.unreliable.toInt())
         msg.sent = Date(timeIntervalSince1970: Double(number))
         msg.session.commit()
 
