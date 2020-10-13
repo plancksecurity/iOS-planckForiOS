@@ -111,27 +111,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         XCTAssertNotNil(testee)
     }
 
-    func testMediaPickerDidCancel() {
-        assert(contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: true,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-      vm?.mediaAttachmentPickerProviderViewModelDidCancel(
-        TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil, session: Session()))
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     // MARK: - BodyCellViewModelResultDelegate handling
 
     private var bodyVm: BodyCellViewModel {
