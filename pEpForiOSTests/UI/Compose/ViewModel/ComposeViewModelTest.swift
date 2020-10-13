@@ -664,11 +664,11 @@ class ComposeViewModelTest: AccountDrivenTestBase {
 
     // MARK: - Suggestions
 
-//    func testSuggestViewModel() {
-//        let testee = vm?.suggestViewModel()
-//        XCTAssertNotNil(testee)
-//        XCTAssertTrue(testee?.resultDelegate === vm)
-//    }
+    func testSuggestViewModel() {
+        let testee = vm?.suggestViewModel()
+        XCTAssertNotNil(testee)
+        XCTAssertTrue(testee?.resultDelegate === vm)
+    }
 
     // showSuggestions and hideSuggestions are tested altering recipients
 
