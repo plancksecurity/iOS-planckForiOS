@@ -914,6 +914,28 @@ class ComposeViewModelTest: AccountDrivenTestBase {
 
     // MARK: - Helper
 
+    private func assertSections(forVMIniitaliizedWith originalMessage: Message,
+                                expectBccWrapperSectionExists: Bool = true,
+                                expectAccountSectionExists: Bool = false,
+                                expectAttachmentSectionExists: Bool = false) {
+        let vm = ComposeViewModel(composeMode: .normal,
+                                  prefilledTo: nil,
+                                  originalMessage: originalMessage)
+        let testee = vm.sections
+        let recipientSection = 1
+        let bccWrapperSection = expectBccWrapperSectionExists ? 1 : 0
+        let accountSelectorSection = expectAccountSectionExists ? 1 : 0
+        let subjectSection = 1
+        let bodySection = 1
+        let attachmentSection = expectAttachmentSectionExists ? 1 : 0
+        XCTAssertEqual(testee.count,  recipientSection +
+                        bccWrapperSection +
+                        accountSelectorSection +
+                        subjectSection +
+                        bodySection +
+                        attachmentSection)
+    }
+
     private func assureOutboxExists() {
         if outbox == nil {
             let createe = Folder(name: "outbox", parent: nil, account: account, folderType: .outbox)
