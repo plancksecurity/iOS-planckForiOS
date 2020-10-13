@@ -49,7 +49,7 @@ extension ComposeViewModel {
         public let composeMode: ComposeUtil.ComposeMode
 
         /// Whether or not the original message is in Drafts folder
-        var isDrafts: Bool {
+        public var isDrafts: Bool {
             if let om = originalMessage {
                 return om.parent.folderType == .drafts
             }
@@ -57,23 +57,23 @@ extension ComposeViewModel {
         }
 
         /// Whether or not the original message is in Outbox
-        var isOutbox: Bool {
+        public var isOutbox: Bool {
             if let om = originalMessage {
                 return om.parent.folderType == .outbox
             }
             return false
         }
 
-        var pEpProtection: Bool {
+        public var pEpProtection: Bool {
             return originalMessage?.pEpProtected ?? true
         }
 
-        var from: Identity? {
+        public var from: Identity? {
             return prefilledFrom ?? ComposeUtil.initialFrom(composeMode: composeMode,
                                            originalMessage: originalMessage)
         }
 
-        var toRecipients: [Identity] {
+        public var toRecipients: [Identity] {
             if let om = originalMessage {
                 return ComposeUtil.initialTos(composeMode: composeMode, originalMessage: om)
             } else if let presetTos = prefilledTos {
@@ -82,7 +82,7 @@ extension ComposeViewModel {
             return []
         }
 
-        var ccRecipients: [Identity] {
+        public var ccRecipients: [Identity] {
             if let prefilledCCs = prefilledCCs {
                 return prefilledCCs
             }
@@ -92,7 +92,7 @@ extension ComposeViewModel {
             return ComposeUtil.initialCcs(composeMode: composeMode, originalMessage: om)
         }
 
-        var bccRecipients: [Identity] {
+        public var bccRecipients: [Identity] {
             if let prefilledBCCs = prefilledBCCs {
                 return prefilledBCCs
             }
@@ -102,10 +102,10 @@ extension ComposeViewModel {
             return ComposeUtil.initialBccs(composeMode: composeMode, originalMessage: om)
         }
 
-        var subject = " "
+        public var subject = " "
 
-        var bodyPlaintext = ""
-        var bodyHtml: NSAttributedString?
+        public var bodyPlaintext = ""
+        public var bodyHtml: NSAttributedString?
 
         public var nonInlinedAttachments = [Attachment]()
         public var inlinedAttachments = [Attachment]()
