@@ -84,6 +84,7 @@ extension DecryptMessageOperation {
             if error.domain == PEPObjCAdapterEngineStatusErrorDomain {
                 if error.isPassphraseError {
                     // The adapter is responsible to handle this case.
+                    Log.shared.error("Passphrase error trying to decrypt a message")
                     return
                 }
                 Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
