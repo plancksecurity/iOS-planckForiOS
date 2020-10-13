@@ -577,38 +577,37 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         XCTAssertTrue(testee)
     }
 
-    //!!!: crash
-//    func testHandleSaveActionTriggered_origOutbox() {
-//        let testMessageId = UUID().uuidString + "testHandleSaveActionTriggered"
-//        let originalMessage = message(inFolderOfType: .outbox)
-//        originalMessage.messageID = testMessageId
-//        originalMessage.from = account.user
-//
-//        assert(originalMessage: originalMessage,
-//               contentChangedMustBeCalled: false,
-//               focusSwitchedMustBeCalled: false,
-//               validatedStateChangedMustBeCalled: false,
-//               modelChangedMustBeCalled: false,
-//               sectionChangedMustBeCalled: false,
-//               colorBatchNeedsUpdateMustBeCalled: false,
-//               hideSuggestionsMustBeCalled: false,
-//               showSuggestionsMustBeCalled: false,
-//               showMediaAttachmentPickerMustBeCalled: false,
-//               hideMediaAttachmentPickerMustBeCalled: false,
-//               showDocumentAttachmentPickerMustBeCalled: false,
-//               documentAttachmentPickerDonePickerCalled: false,
-//               didComposeNewMailMustBeCalled: false,
-//               didModifyMessageMustBeCalled: false,
-//               didDeleteMessageMustBeCalled: true)
-//        vm?.handleSaveActionTriggered()
-//        let msgWithTestMessageId = Message.by(uid: originalMessage.uid,
-//                                              uuid: originalMessage.uuid,
-//                                              folderName: originalMessage.parent.name,
-//                                              accountAddress: account.user.address)
-//        XCTAssertNil(msgWithTestMessageId,
-//                     "original message must be deleted, a copy is safed to drafts")
-//        waitForExpectations(timeout: UnitTestUtils.waitTime)
-//    }
+    func testHandleSaveActionTriggered_origOutbox() {
+        let testMessageId = UUID().uuidString + "testHandleSaveActionTriggered"
+        let originalMessage = message(inFolderOfType: .outbox)
+        originalMessage.messageID = testMessageId
+        originalMessage.from = account.user
+
+        assert(originalMessage: originalMessage,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: true)
+        vm?.handleSaveActionTriggered()
+        let msgWithTestMessageId = Message.by(uid: originalMessage.uid,
+                                              uuid: originalMessage.uuid,
+                                              folderName: originalMessage.parent.name,
+                                              accountAddress: account.user.address)
+        XCTAssertNil(msgWithTestMessageId,
+                     "original message must be deleted, a copy is safed to drafts")
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 
 //    func testHandleSaveActionTriggered_origDrafts() {
 //        let testMessageId = UUID().uuidString + "testHandleSaveActionTriggered"
