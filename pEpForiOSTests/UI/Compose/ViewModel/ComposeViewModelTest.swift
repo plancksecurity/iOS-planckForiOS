@@ -267,7 +267,8 @@ class ComposeViewModelTest: AccountDrivenTestBase {
     // MARK: - BodyCellViewModelResultDelegate handling
 
     private var bodyVm: BodyCellViewModel {
-        return vm?.bodyVM ?? BodyCellViewModel(resultDelegate: nil)
+        return vm?.bodyVM ?? BodyCellViewModel(resultDelegate: nil,
+                                               account: nil)
     }
 
     func testBodyVM() {

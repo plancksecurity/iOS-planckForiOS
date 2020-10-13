@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 /// ViewController that configures the layout of the first step of the tutorial.
 /// It basically set the texts and it's properties.
 /// The layout differences regarding the device orientation and screen size are configured

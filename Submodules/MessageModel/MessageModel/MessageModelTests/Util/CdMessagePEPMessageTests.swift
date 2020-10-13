@@ -22,7 +22,7 @@ class CdMessagePEPMessageTests: PersistentStoreDrivenTestBase {
 
         let pEpReceiver = cdReceiver.pEpIdentity()
 
-        let pEpMsg = cdMsg.pEpMessage(outgoing: true)
+        let pEpMsg = cdMsg.pEpMessage()
 
         XCTAssertEqual(pEpMsg.to?[0], pEpReceiver)
     }

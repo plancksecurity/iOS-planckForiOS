@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 final class EditableAccountSettingsTableViewController: UITableViewController {
 
     @IBOutlet private var stackViews: [UIStackView]!
@@ -204,7 +206,7 @@ extension EditableAccountSettingsTableViewController {
 }
 
 
-//MARK : - Accessibility
+// MARK: - Accessibility
 
 extension EditableAccountSettingsTableViewController {
 

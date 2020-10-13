@@ -9,6 +9,8 @@
 import XCTest
 import CoreData
 
+import pEpIOSToolbox
+
 @testable import MessageModel
 
 class MessageModelTests: PersistentStoreDrivenTestBase {

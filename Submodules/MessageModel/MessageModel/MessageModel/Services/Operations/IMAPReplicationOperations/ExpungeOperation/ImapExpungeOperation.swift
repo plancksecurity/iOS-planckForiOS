@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+import pEpIOSToolbox
+
 /// When run, queries for folders that contain messages that are flagged with (IMAP) \Delete
 /// both locally and on the server, and for each of those folders spawns a
 /// `ExpungeInImapFolderOperation` (via putting it into its `backgroundQueue`)

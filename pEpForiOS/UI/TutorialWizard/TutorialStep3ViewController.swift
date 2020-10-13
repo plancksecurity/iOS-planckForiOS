@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 class TutorialStep3ViewController: TutorialStepViewController {
     
     @IBOutlet private weak var titleLabel: UILabel!

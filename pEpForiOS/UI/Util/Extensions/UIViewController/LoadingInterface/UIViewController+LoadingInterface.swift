@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 final class LoadingInterface {
     static weak var loadingInterface: UIView?
 

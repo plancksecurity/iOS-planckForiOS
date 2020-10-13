@@ -21,4 +21,14 @@ extension Account {
         }
         return Account.by(address: addressDefaultAccount)
     }
+
+    /// The signature to use for this account
+    var signature: String {
+        get {
+            return AppSettings.shared.signature(forAddress: user.address)
+        }
+        set {
+            AppSettings.shared.setSignature(newValue, forAddress: user.address)
+        }
+    }
 }

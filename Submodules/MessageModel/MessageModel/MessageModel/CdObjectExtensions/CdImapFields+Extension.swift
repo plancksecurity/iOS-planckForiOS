@@ -8,6 +8,7 @@
 
 import CoreData
 
+import pEpIOSToolbox
 
 extension CdImapFields {
     func imapFlags() -> ImapFlags {

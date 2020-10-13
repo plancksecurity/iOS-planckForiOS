@@ -8,6 +8,24 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Credits Web View Controller-->
+        <scene sceneID="7Hy-BQ-HB4">
+            <objects>
+                <viewController id="Zm5-ki-2iG" customClass="CreditsWebViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fmE-ns-5Ce"/>
+                        <viewControllerLayoutGuide type="bottom" id="02b-aC-FFK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="FFU-eh-fPY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="585"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aAo-Uu-Pyl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3022" y="-365"/>
+        </scene>
         <!--Credits View Controller-->
         <scene sceneID="T9v-3i-MfR">
             <objects>
@@ -19,12 +37,97 @@
                     <view key="view" contentMode="scaleToFill" id="QiT-Mr-baO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bKk-4n-FeT">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="585"/>
+                                <connections>
+                                    <segue destination="Zm5-ki-2iG" kind="embed" id="Ugg-wV-scd"/>
+                                </connections>
+                            </containerView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5eB-ze-50V">
+                                <rect key="frame" x="0.0" y="585" width="375" height="62"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verbose Logging" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fGY-OS-V4W">
+                                        <rect key="frame" x="8" y="8" width="310" height="46"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rWL-mw-ch6">
+                                        <rect key="frame" x="318" y="15.5" width="51" height="31"/>
+                                        <connections>
+                                            <action selector="switchedVerboseLoggingEnabled:" destination="9LH-QE-79O" eventType="valueChanged" id="VGh-WC-epy"/>
+                                        </connections>
+                                    </switch>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="62" id="0De-Do-fx0"/>
+                                    <constraint firstItem="fGY-OS-V4W" firstAttribute="leading" secondItem="5eB-ze-50V" secondAttribute="leadingMargin" id="8L5-L6-eYV"/>
+                                    <constraint firstItem="rWL-mw-ch6" firstAttribute="centerY" secondItem="5eB-ze-50V" secondAttribute="centerY" id="EgF-tq-O1k"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="rWL-mw-ch6" secondAttribute="trailing" id="GHX-Bz-H52"/>
+                                    <constraint firstAttribute="bottomMargin" secondItem="fGY-OS-V4W" secondAttribute="bottom" id="VU9-rE-XD0"/>
+                                    <constraint firstItem="rWL-mw-ch6" firstAttribute="leading" secondItem="fGY-OS-V4W" secondAttribute="trailing" id="oyo-E3-Kyi"/>
+                                    <constraint firstItem="fGY-OS-V4W" firstAttribute="top" secondItem="5eB-ze-50V" secondAttribute="topMargin" id="xbi-uQ-2BI"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="5eB-ze-50V" firstAttribute="top" secondItem="bKk-4n-FeT" secondAttribute="bottom" id="0be-hH-d3V"/>
+                            <constraint firstItem="kh8-Xi-wkE" firstAttribute="top" secondItem="5eB-ze-50V" secondAttribute="bottom" id="Dr5-Hl-HGq"/>
+                            <constraint firstItem="5eB-ze-50V" firstAttribute="leading" secondItem="QiT-Mr-baO" secondAttribute="leading" id="LSS-KP-8Mp"/>
+                            <constraint firstItem="bKk-4n-FeT" firstAttribute="leading" secondItem="QiT-Mr-baO" secondAttribute="leading" id="Mtf-rt-AqF"/>
+                            <constraint firstAttribute="trailing" secondItem="bKk-4n-FeT" secondAttribute="trailing" id="Uf4-Do-e5Y"/>
+                            <constraint firstItem="5eB-ze-50V" firstAttribute="top" secondItem="bKk-4n-FeT" secondAttribute="bottom" id="pzJ-mE-bEw"/>
+                            <constraint firstItem="bKk-4n-FeT" firstAttribute="top" secondItem="8aO-3d-WS9" secondAttribute="bottom" id="qAA-M0-uPi"/>
+                            <constraint firstAttribute="trailing" secondItem="5eB-ze-50V" secondAttribute="trailing" id="rrU-Jl-edZ"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="verboseLoggingSwitch" destination="rWL-mw-ch6" id="ece-K3-ULq"/>
+                        <segue destination="oQJ-uA-URQ" kind="presentation" identifier="segueShowLog" id="Lmz-r1-7PI"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mXj-Sq-nBh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2242" y="-390"/>
+            <point key="canvasLocation" x="-2242.4000000000001" y="-390.85457271364322"/>
+        </scene>
+        <!--Live Log View Controller-->
+        <scene sceneID="aut-kE-1r4">
+            <objects>
+                <viewController id="oQJ-uA-URQ" customClass="LiveLogViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="vOB-z1-Y8a"/>
+                        <viewControllerLayoutGuide type="bottom" id="WYN-Gx-FVL"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="fSD-DJ-4ev">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Sd7-5Q-wWF">
+                                <rect key="frame" x="16" y="8" width="343" height="631"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Sd7-5Q-wWF" firstAttribute="leading" secondItem="fSD-DJ-4ev" secondAttribute="leadingMargin" id="HMK-4T-oRs"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Sd7-5Q-wWF" secondAttribute="trailing" id="dTU-0c-yNB"/>
+                            <constraint firstItem="Sd7-5Q-wWF" firstAttribute="top" secondItem="vOB-z1-Y8a" secondAttribute="bottom" constant="8" symbolic="YES" id="x7G-3Q-NgB"/>
+                            <constraint firstItem="WYN-Gx-FVL" firstAttribute="top" secondItem="Sd7-5Q-wWF" secondAttribute="bottom" constant="8" symbolic="YES" id="yzb-PE-hho"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="logTextView" destination="Sd7-5Q-wWF" id="ZUO-Md-Yfc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Vy-uI-QTS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2450" y="-1112"/>
         </scene>
         <!--Settings Table View Controller-->
         <scene sceneID="ODz-Rf-1g6">
@@ -1374,11 +1477,73 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="8RY-1m-iPg" id="6j5-my-u0h"/>
+                        <segue destination="9xa-gb-As9" kind="showDetail" identifier="EditSignatureSegue" id="zu9-rf-a0j"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LS6-yP-8JC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1306" y="-391"/>
+        </scene>
+        <!--Edit Signature View Controller-->
+        <scene sceneID="jKa-BP-q9y">
+            <objects>
+                <viewController id="9xa-gb-As9" customClass="EditSignatureViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="96G-dd-Z7U"/>
+                        <viewControllerLayoutGuide type="bottom" id="upk-91-vYb"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="lwm-G1-qLZ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="RSp-qK-Tzq">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SignatureCell" id="wdm-AT-m5z" customClass="SignatureTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wdm-AT-m5z" id="A3d-Jj-WZG">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="signature" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="0Ht-YN-GKS">
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="44"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="0Ht-YN-GKS" firstAttribute="leading" secondItem="A3d-Jj-WZG" secondAttribute="leading" constant="15" id="9EN-kw-CA5"/>
+                                                <constraint firstItem="0Ht-YN-GKS" firstAttribute="top" secondItem="A3d-Jj-WZG" secondAttribute="top" id="Zbr-8y-tji"/>
+                                                <constraint firstAttribute="trailing" secondItem="0Ht-YN-GKS" secondAttribute="trailing" constant="15" id="kJh-Ye-1fR"/>
+                                                <constraint firstAttribute="bottom" secondItem="0Ht-YN-GKS" secondAttribute="bottom" id="zZZ-nJ-Q2m"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="editableSignature" destination="0Ht-YN-GKS" id="tZO-YI-RTA"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="upk-91-vYb" firstAttribute="top" secondItem="RSp-qK-Tzq" secondAttribute="bottom" id="InB-Wl-KdU"/>
+                            <constraint firstAttribute="trailing" secondItem="RSp-qK-Tzq" secondAttribute="trailing" id="KJp-Nb-Jhp"/>
+                            <constraint firstItem="RSp-qK-Tzq" firstAttribute="leading" secondItem="lwm-G1-qLZ" secondAttribute="leading" id="wFr-pz-mmh"/>
+                            <constraint firstItem="RSp-qK-Tzq" firstAttribute="top" secondItem="96G-dd-Z7U" secondAttribute="bottom" id="yha-n0-bDF"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="dtZ-bH-CeW"/>
+                    <connections>
+                        <outlet property="tableView" destination="RSp-qK-Tzq" id="seq-D9-EaD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6u7-Q7-Rpz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2220" y="385"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
@@ -1393,6 +1558,12 @@
         </systemColor>
         <systemColor name="groupTableViewBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="groupTableViewBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

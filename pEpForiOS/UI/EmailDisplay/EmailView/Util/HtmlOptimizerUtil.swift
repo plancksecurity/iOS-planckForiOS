@@ -8,6 +8,8 @@
 
 import Foundation
 
+import pEpIOSToolbox
+
 protocol HtmlOptimizerUtilProtocol {
     /// Optimizes a given HTML for displaying.
     /// The optimization process might or might not (depending on the HTML) process heavy parsing

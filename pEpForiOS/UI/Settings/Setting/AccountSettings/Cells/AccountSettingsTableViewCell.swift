@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 /// Cell that displays a title and a value.
 final class AccountSettingsTableViewCell: UITableViewCell {
 

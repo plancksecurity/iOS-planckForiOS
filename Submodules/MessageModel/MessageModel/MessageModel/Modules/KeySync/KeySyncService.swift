@@ -6,8 +6,10 @@
 //  Copyright © 2019 pEp Security S.A. All rights reserved.
 //
 
-import PEPObjCAdapterFramework
 import CoreData
+
+import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 /// Provides pEp Sync [en|dis]abled state and state changes.
 public protocol KeySyncStateProvider: class {

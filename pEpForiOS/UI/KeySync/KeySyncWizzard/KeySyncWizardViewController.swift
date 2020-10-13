@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 extension KeySyncWizardViewController {
 
     enum Action {

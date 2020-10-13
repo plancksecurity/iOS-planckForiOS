@@ -9,9 +9,9 @@
 import Foundation
 
 /// Shared instance of logger.
-class Log {
-    static let shared = Logger(subsystem: "security.pEp.pEpIOSToolbox", category: "general")
+@objc public class Log: NSObject {
+    @objc static public let shared = Logger()
 
     /// Init is forbidden. Singleton...
-    private init() {}
+    private override init() {}
 }

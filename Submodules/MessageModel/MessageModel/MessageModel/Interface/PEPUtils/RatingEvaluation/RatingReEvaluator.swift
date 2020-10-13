@@ -9,6 +9,7 @@
 import CoreData
 
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 protocol RatingReEvaluatorProtocol {
     /// Reevaluates the pEp rating of the given message and saves it.
