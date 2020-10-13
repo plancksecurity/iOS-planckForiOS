@@ -587,32 +587,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
-    // MARK: - Delegate Setter Side Effect
-
-    func testDelegateSetter() {
-        let expectedRating = Rating.undefined
-        let expectedProtection = true
-        assert(contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: true,
-               expectedRating: expectedRating,
-               expectedProtectionEnabled: expectedProtection,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: false,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        vm?.delegate = testDelegate
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     // MARK: - isAttachmentSection
 
     func testIsAttachmentSection() {
