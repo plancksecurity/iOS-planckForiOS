@@ -300,30 +300,6 @@ class ComposeViewModelTest: AccountDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
-    func testBodyCellViewModelInlinedAttachmentsChanged_moreAttachments() {
-        assert(contentChangedMustBeCalled: false,
-               focusSwitchedMustBeCalled: false,
-               validatedStateChangedMustBeCalled: false,
-               modelChangedMustBeCalled: false,
-               sectionChangedMustBeCalled: false,
-               colorBatchNeedsUpdateMustBeCalled: false,
-               hideSuggestionsMustBeCalled: false,
-               showSuggestionsMustBeCalled: false,
-               showMediaAttachmentPickerMustBeCalled: false,
-               hideMediaAttachmentPickerMustBeCalled: true,
-               showDocumentAttachmentPickerMustBeCalled: false,
-               documentAttachmentPickerDonePickerCalled: false,
-               didComposeNewMailMustBeCalled: false,
-               didModifyMessageMustBeCalled: false,
-               didDeleteMessageMustBeCalled: false)
-        let countBefore = vm?.state.inlinedAttachments.count ?? -1
-        vm?.bodyCellViewModel(bodyVm,
-                              inlinedAttachmentsChanged: [attachment()])
-        let countAfter = vm?.state.inlinedAttachments.count ?? -1
-        XCTAssertEqual(countAfter, countBefore + 1)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
     func testBodyChangedToPlaintextHtml() {
         assert(contentChangedMustBeCalled: true,
                focusSwitchedMustBeCalled: false,
