@@ -438,4 +438,13 @@ private class TestMasterViewController: EmailListViewModelDelegate {
             XCTFail()
         }
     }
+
+    func showEmail(forCellAt: IndexPath) {
+    }
+
+    func showEditDraftInComposeView() {
+    }
+
+    func deselect(itemAt indexPath: IndexPath) {
+    }
 }
