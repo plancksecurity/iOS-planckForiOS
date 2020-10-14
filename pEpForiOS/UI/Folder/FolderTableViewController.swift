@@ -23,7 +23,6 @@ class FolderTableViewController: BaseTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setup()
-
         if showNext {
             show(folder: UnifiedInbox())
         }
@@ -78,7 +77,7 @@ class FolderTableViewController: BaseTableViewController {
     // MARK: - Action
 
     @objc private func showCompose() {
-        UIUtils.presentComposeView(forRecipientInUrl: nil, appConfig: appConfig)
+        UIUtils.presentComposeView(appConfig: appConfig)
     }
 
     @objc private func showSettingsViewController() {

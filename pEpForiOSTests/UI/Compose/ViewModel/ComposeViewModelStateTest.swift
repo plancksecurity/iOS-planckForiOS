@@ -62,7 +62,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     // MARK: - initData
 
     func testInitData() {
-        let initData = ComposeViewModel.InitData()
+        let initData = ComposeViewModel.InitData(composeMode: .normal)
         testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
         guard let testeeInitData = testee?.initData else {
             XCTFail("No testee")
