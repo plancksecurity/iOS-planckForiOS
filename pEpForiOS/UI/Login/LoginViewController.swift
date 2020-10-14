@@ -404,7 +404,7 @@ extension LoginViewController {
     }
 
     private func handleLoginError(error: Error, offerManualSetup: Bool) {
-        Log.shared.error("%@", "\(error)")
+        Log.shared.log(error: error)
         isCurrentlyVerifying = false
 
         guard let vm = viewModel else {

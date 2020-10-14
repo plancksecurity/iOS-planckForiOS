@@ -177,6 +177,7 @@
 		3A3FAC892451CB1000239FFC /* Query+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FAC882451CB1000239FFC /* Query+PredicateFactory.swift */; };
 		3A7400BE2492235F00AE6A79 /* CdMessageReference+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7400BD2492235F00AE6A79 /* CdMessageReference+PredicateFactory.swift */; };
 		3A798E0A2476754200510B02 /* CdMessage+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A798E092476754200510B02 /* CdMessage+PredicateFactory.swift */; };
+		3AB50D2A2500F3B1005E2170 /* pEp4iosIntern.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB50D292500F3B1005E2170 /* pEp4iosIntern.framework */; };
 		3AECFB772462B93C004842D6 /* CdAccount+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECFB762462B93C004842D6 /* CdAccount+PredicateFactory.swift */; };
 		3AECFB792462C690004842D6 /* CdAttachment+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECFB782462C690004842D6 /* CdAttachment+PredicateFactory.swift */; };
 		3AECFB7B2462C9B2004842D6 /* CdHeaderField+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECFB7A2462C9B2004842D6 /* CdHeaderField+PredicateFactory.swift */; };
@@ -397,6 +398,8 @@
 		493B6D051E70589800364D60 /* SystemUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493B6D041E70589800364D60 /* SystemUtils.swift */; };
 		49E6CE3B1E72F70B004EE2AD /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43CB60821DA4EB4E0015281E /* MessageModel.framework */; };
 		5B0BEB3824F8E25900A00D57 /* FolderQueryResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0BEB3724F8E25900A00D57 /* FolderQueryResult.swift */; };
+		5B4A715C252B5B6F00436FCF /* NSError+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A715A252B5B6F00436FCF /* NSError+Passphrase.swift */; };
+		5B4A715D252B5B6F00436FCF /* Error+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A715B252B5B6F00436FCF /* Error+Passphrase.swift */; };
 		5B87D79A23F3117D009DACAA /* String+Fingerprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D79923F3117D009DACAA /* String+Fingerprint.swift */; };
 		5B88A19D2406C1A2003240B8 /* TrustManagementUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */; };
 		5BD4466324F7DA5F00422594 /* AccountQueryResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4466224F7DA5F00422594 /* AccountQueryResults.swift */; };
@@ -461,18 +464,6 @@
 			remoteInfo = MessageModelTestApp;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		43E2A90B22368F2A0036CDA6 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00B06B3E2142871A00EFE569 /* FilterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterType.swift; sourceTree = "<group>"; };
@@ -683,6 +674,7 @@
 		3A3FAC882451CB1000239FFC /* Query+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Query+PredicateFactory.swift"; sourceTree = "<group>"; };
 		3A7400BD2492235F00AE6A79 /* CdMessageReference+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessageReference+PredicateFactory.swift"; sourceTree = "<group>"; };
 		3A798E092476754200510B02 /* CdMessage+PredicateFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+PredicateFactory.swift"; sourceTree = "<group>"; };
+		3AB50D292500F3B1005E2170 /* pEp4iosIntern.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = pEp4iosIntern.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AECFB762462B93C004842D6 /* CdAccount+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAccount+PredicateFactory.swift"; sourceTree = "<group>"; };
 		3AECFB782462C690004842D6 /* CdAttachment+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAttachment+PredicateFactory.swift"; sourceTree = "<group>"; };
 		3AECFB7A2462C9B2004842D6 /* CdHeaderField+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdHeaderField+PredicateFactory.swift"; sourceTree = "<group>"; };
@@ -909,6 +901,8 @@
 		493B6D041E70589800364D60 /* SystemUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemUtils.swift; sourceTree = "<group>"; };
 		5B0BEB3724F8E25900A00D57 /* FolderQueryResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderQueryResult.swift; sourceTree = "<group>"; };
 		5B3BFC6324DAF07200B99FA6 /* 1.1.205.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.1.205.xcdatamodel; sourceTree = "<group>"; };
+		5B4A715A252B5B6F00436FCF /* NSError+Passphrase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSError+Passphrase.swift"; sourceTree = "<group>"; };
+		5B4A715B252B5B6F00436FCF /* Error+Passphrase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Error+Passphrase.swift"; sourceTree = "<group>"; };
 		5B87D79923F3117D009DACAA /* String+Fingerprint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Fingerprint.swift"; sourceTree = "<group>"; };
 		5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustManagementUtil.swift; sourceTree = "<group>"; };
 		5BD4466224F7DA5F00422594 /* AccountQueryResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountQueryResults.swift; sourceTree = "<group>"; };
@@ -966,6 +960,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AB50D2A2500F3B1005E2170 /* pEp4iosIntern.framework in Frameworks */,
 				43B1A39C22366D9700C387DE /* AppAuth.framework in Frameworks */,
 				435F518122204731006EB11F /* PEPObjCAdapterFramework.framework in Frameworks */,
 				43EA489D221E95E3006E8F83 /* PantomimeFramework.framework in Frameworks */,
@@ -2328,6 +2323,8 @@
 		5B88A19E2406C1A4003240B8 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				5B4A715A252B5B6F00436FCF /* NSError+Passphrase.swift */,
+				5B4A715B252B5B6F00436FCF /* Error+Passphrase.swift */,
 				15A064912522262A002F15D0 /* MimeTypeUtils */,
 				5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */,
 				15E01F9E24AB420B00DFADA3 /* PassphraseUtil.swift */,
@@ -2476,7 +2473,6 @@
 				43CB60801DA4EB4E0015281E /* Resources */,
 				4961BA0F1E7BF09700920DF8 /* Warnings for TODO++ Script */,
 				151573B81F2093AA0049BB0B /* Log Build Time Stop Script */,
-				43E2A90B22368F2A0036CDA6 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -2746,6 +2742,7 @@
 				155FE56C228B5164003D3E68 /* CdAttachment+Extensions.swift in Sources */,
 				431FD70522EEF1A30001FF37 /* Message+PredicateFactory+KeySync.swift in Sources */,
 				43D47A50225C751500E97C5B /* ServerInfoCache.swift in Sources */,
+				5B4A715C252B5B6F00436FCF /* NSError+Passphrase.swift in Sources */,
 				15679F022292CADA0051DCC3 /* CdAccount+Trusted.swift in Sources */,
 				43EA4853221E9518006E8F83 /* ProviderSpecificInformationProtocol.swift in Sources */,
 				B7C1F4F02459CD5F00070DCC /* Identity+Fetching.swift in Sources */,
@@ -2793,7 +2790,7 @@
 				43A536E623E4626E0040715D /* SmtpConnectionProtocol.swift in Sources */,
 				15C7A88B2385ABA000C47364 /* Notification+KeySyncState.swift in Sources */,
 				43B1B10C221ED15000DB26AB /* CoreDataPantomimeAdapter.swift in Sources */,
-				43B1B10C221ED15000DB26AB /* PersistentImapFolder.swift in Sources */,
+				43B1B10C221ED15000DB26AB /* CoreDataPantomimeAdapter.swift in Sources */,
 				43A9818024E52FF700830603 /* Identity+pEpIdentity.swift in Sources */,
 				158A6E1023073DB0006A9ECE /* PEPDecryptFlags+ReUpload.swift in Sources */,
 				5BD4466924F7FEA600422594 /* QueryResults.swift in Sources */,
@@ -2944,6 +2941,7 @@
 				43EA4857221E9518006E8F83 /* Attachment+Extension.swift in Sources */,
 				B7A6B7BA233BC18100CAC6E3 /* Identity+ResetTrust.swift in Sources */,
 				372904792252492D00B3B801 /* MessageModelService.swift in Sources */,
+				5B4A715D252B5B6F00436FCF /* Error+Passphrase.swift in Sources */,
 				43EA488E221E9518006E8F83 /* SmtpConnection.swift in Sources */,
 				15F274FD233CB0410069C1E0 /* SendServiceProtocol.swift in Sources */,
 				1546612C233A77F2008D2137 /* Message+ReDecrypt.swift in Sources */,
@@ -3357,7 +3355,6 @@
 		43CB60971DA4EB4E0015281E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
@@ -3381,7 +3378,6 @@
 		43CB60981DA4EB4E0015281E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = NQLYU6MGPN;

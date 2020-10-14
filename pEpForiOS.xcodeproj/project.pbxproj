@@ -211,6 +211,8 @@
 		3A2119DF2412515D0030C3E4 /* DynamicHeightScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2119DE2412515D0030C3E4 /* DynamicHeightScrollView.swift */; };
 		3A2119E1241251A80030C3E4 /* ClientCertificateManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2119E0241251A70030C3E4 /* ClientCertificateManagementTableViewCell.swift */; };
 		3A2119E424125AC60030C3E4 /* Certificates.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A2119E624125AC60030C3E4 /* Certificates.storyboard */; };
+		3A68CB2C252E24B800F1B71C /* pEp4iosIntern.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A68CB2B252E24B800F1B71C /* pEp4iosIntern.framework */; };
+		3A68CB2D252E24B800F1B71C /* pEp4iosIntern.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A68CB2B252E24B800F1B71C /* pEp4iosIntern.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3A796BA9242CC26100083BB5 /* HtmlConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BA8242CC26100083BB5 /* HtmlConversions.swift */; };
 		3A796BAB242CC31F00083BB5 /* NSAttributedString+Html.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BAA242CC31F00083BB5 /* NSAttributedString+Html.swift */; };
 		3A796BAD242E5CFC00083BB5 /* String+NSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BAC242E5CFC00083BB5 /* String+NSAttributedString.swift */; };
@@ -476,6 +478,7 @@
 				B710526C24168481007148E8 /* AppAuth.framework in Embed Frameworks */,
 				1512133224166C7B009B7C88 /* PantomimeFramework.framework in Embed Frameworks */,
 				1512133E24166CE0009B7C88 /* ldns_xcode.framework in Embed Frameworks */,
+				3A68CB2D252E24B800F1B71C /* pEp4iosIntern.framework in Embed Frameworks */,
 				1512133424166C83009B7C88 /* PEPObjCAdapterFramework.framework in Embed Frameworks */,
 				B710526F241684AB007148E8 /* MessageModel.framework in Embed Frameworks */,
 				B710526924168474007148E8 /* pEpIOSToolbox.framework in Embed Frameworks */,
@@ -747,6 +750,8 @@
 		3A2119F024125AD60030C3E4 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Certificates.strings; sourceTree = "<group>"; };
 		3A2119F224125AD70030C3E4 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Certificates.strings; sourceTree = "<group>"; };
 		3A2119F424125AD80030C3E4 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Certificates.strings; sourceTree = "<group>"; };
+		3A68C9EA252E135400F1B71C /* pEp4iosIntern.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = pEp4iosIntern.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A68CB2B252E24B800F1B71C /* pEp4iosIntern.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = pEp4iosIntern.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A796BA8242CC26100083BB5 /* HtmlConversions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlConversions.swift; sourceTree = "<group>"; };
 		3A796BAA242CC31F00083BB5 /* NSAttributedString+Html.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Html.swift"; sourceTree = "<group>"; };
 		3A796BAC242E5CFC00083BB5 /* String+NSAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+NSAttributedString.swift"; sourceTree = "<group>"; };
@@ -1061,6 +1066,7 @@
 				B710526524168400007148E8 /* SwipeCellKit.framework in Frameworks */,
 				1512133524166C95009B7C88 /* libAccountSettingsAdapter.a in Frameworks */,
 				4320294C252C8E4E00986C44 /* CocoaLumberjack.framework in Frameworks */,
+				3A68CB2C252E24B800F1B71C /* pEp4iosIntern.framework in Frameworks */,
 				B710526824168474007148E8 /* pEpIOSToolbox.framework in Frameworks */,
 				1512133124166C7B009B7C88 /* PantomimeFramework.framework in Frameworks */,
 				1512133D24166CE0009B7C88 /* ldns_xcode.framework in Frameworks */,
@@ -2429,6 +2435,8 @@
 		495560841E7150ED0016579E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3A68CB2B252E24B800F1B71C /* pEp4iosIntern.framework */,
+				3A68C9EA252E135400F1B71C /* pEp4iosIntern.framework */,
 				436F1BA225028B7D004426DC /* CocoaLumberjackSwift.framework */,
 				4320294B252C8E4E00986C44 /* CocoaLumberjack.framework */,
 				1512133C24166CDF009B7C88 /* ldns_xcode.framework */,
@@ -3794,7 +3802,7 @@
 					"$(SRCROOT)/../AppAuth-iOS/Source/iOS",
 				);
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.1.214;
 				ONLY_ACTIVE_ARCH = "$(inherited)";
@@ -3833,7 +3841,7 @@
 					"$(SRCROOT)/../AppAuth-iOS/Source/iOS",
 				);
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.1.214;
 				ONLY_ACTIVE_ARCH = "$(inherited)";
