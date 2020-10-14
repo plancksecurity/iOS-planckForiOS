@@ -73,6 +73,7 @@ extension EncryptAndSMTPSendMessageOperation {
                                     if error.domain == PEPObjCAdapterEngineStatusErrorDomain {
                                         if error.isPassphraseError {
                                             // The adapter is responsible to ask for passphrase. We are not.
+                                            Log.shared.error("Passphrase error trying to encrypt a message")
                                             me.waitForBackgroundTasksAndFinish()
                                             return
                                         }
