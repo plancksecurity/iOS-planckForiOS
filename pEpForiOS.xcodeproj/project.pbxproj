@@ -214,6 +214,8 @@
 		3A503A9F253737B20070AB6A /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A503A9E253737B20070AB6A /* ShareViewController.swift */; };
 		3A503AA2253737B20070AB6A /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A503AA0253737B20070AB6A /* MainInterface.storyboard */; };
 		3A503AA6253737B20070AB6A /* pEp-share.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3A503A9C253737B20070AB6A /* pEp-share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3A503B18253744390070AB6A /* ComposeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A503B17253744390070AB6A /* ComposeTableViewController.swift */; };
+		3A503B1D253744D40070AB6A /* UIImage+Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A503B1C253744D40070AB6A /* UIImage+Resize.swift */; };
 		3A68CB2C252E24B800F1B71C /* pEp4iosIntern.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A68CB2B252E24B800F1B71C /* pEp4iosIntern.framework */; };
 		3A68CB2D252E24B800F1B71C /* pEp4iosIntern.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A68CB2B252E24B800F1B71C /* pEp4iosIntern.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3A796BA9242CC26100083BB5 /* HtmlConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BA8242CC26100083BB5 /* HtmlConversions.swift */; };
@@ -775,6 +777,8 @@
 		3A503A9E253737B20070AB6A /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		3A503AA1253737B20070AB6A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		3A503AA3253737B20070AB6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3A503B17253744390070AB6A /* ComposeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeTableViewController.swift; sourceTree = "<group>"; };
+		3A503B1C253744D40070AB6A /* UIImage+Resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Resize.swift"; sourceTree = "<group>"; };
 		3A68C9EA252E135400F1B71C /* pEp4iosIntern.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = pEp4iosIntern.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A68CB2B252E24B800F1B71C /* pEp4iosIntern.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = pEp4iosIntern.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A796BA8242CC26100083BB5 /* HtmlConversions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlConversions.swift; sourceTree = "<group>"; };
@@ -1955,11 +1959,37 @@
 		3A503A9D253737B20070AB6A /* pEp-share */ = {
 			isa = PBXGroup;
 			children = (
-				3A503A9E253737B20070AB6A /* ShareViewController.swift */,
-				3A503AA0253737B20070AB6A /* MainInterface.storyboard */,
 				3A503AA3253737B20070AB6A /* Info.plist */,
+				3A503B212537456A0070AB6A /* Storyboards */,
+				3A503B222537457D0070AB6A /* ViewControllers */,
+				3A503B292537459C0070AB6A /* Extensions */,
 			);
 			path = "pEp-share";
+			sourceTree = "<group>";
+		};
+		3A503B212537456A0070AB6A /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				3A503AA0253737B20070AB6A /* MainInterface.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		3A503B222537457D0070AB6A /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				3A503A9E253737B20070AB6A /* ShareViewController.swift */,
+				3A503B17253744390070AB6A /* ComposeTableViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		3A503B292537459C0070AB6A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				3A503B1C253744D40070AB6A /* UIImage+Resize.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		3A8079302525F76600065121 /* ViewModel */ = {
@@ -3089,7 +3119,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A503B18253744390070AB6A /* ComposeTableViewController.swift in Sources */,
 				3A503A9F253737B20070AB6A /* ShareViewController.swift in Sources */,
+				3A503B1D253744D40070AB6A /* UIImage+Resize.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
