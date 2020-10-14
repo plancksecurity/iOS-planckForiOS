@@ -43,6 +43,9 @@
 /* Class = "UILabel"; text = "Password"; ObjectID = "En6-h6-xZD"; */
 "En6-h6-xZD.text" = "Contraseña:";
 
+/* Class = "UILabel"; text = "Verbose Logging"; ObjectID = "fGY-OS-V4W"; */
+"fGY-OS-V4W.text" = "Registro de Verbosa";
+
 /* Class = "UILabel"; text = "Title"; ObjectID = "GAd-Jm-sFz"; */
 "GAd-Jm-sFz.text" = "Título";
 
