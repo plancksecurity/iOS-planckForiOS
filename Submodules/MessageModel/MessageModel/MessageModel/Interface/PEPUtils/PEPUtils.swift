@@ -76,7 +76,11 @@ public class PEPUtils {
         }
 
         PEPSession().rating(for: savePepIdentity, errorCallback: { (error) in
-            Log.shared.errorAndCrash(error: error)
+            if error.isPassphraseError {
+                Log.shared.log(error: error)
+            } else {
+                Log.shared.errorAndCrash(error: error)
+            }
             completion(.undefined)
         }) { (rating) in
             completion(Rating(pEpRating: rating))

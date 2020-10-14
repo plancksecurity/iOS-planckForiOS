@@ -136,17 +136,14 @@ extension AppendMailsToFolderOperation {
                                     defer { group.leave() }
                                     let error = error as NSError
                                     if error.domain == PEPObjCAdapterEngineStatusErrorDomain {
-                                        switch error.code {
-                                        case Int(PEPStatus.passphraseRequired.rawValue),
-                                             Int(PEPStatus.wrongPassphrase.rawValue):
+                                        if error.isPassphraseError {
                                             // The adapter is responsible to ask for passphrase. We are not.
                                             me.handleNextMessage()
                                             return
-                                        default:
-                                            Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
-                                            me.handle(error: BackgroundError.GeneralError.illegalState(info:
-                                                "##\nError: \(error)\nencrypting message: \(cdMessage)\n##"))
                                         }
+                                        Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
+                                        me.handle(error: BackgroundError.GeneralError.illegalState(info:
+                                            "##\nError: \(error)\nencrypting message: \(cdMessage)\n##"))
                                     } else if error.domain == PEPObjCAdapterErrorDomain {
                                         Log.shared.errorAndCrash("Unexpected ")
                                         me.handle(error: BackgroundError.GeneralError.illegalState(info:
