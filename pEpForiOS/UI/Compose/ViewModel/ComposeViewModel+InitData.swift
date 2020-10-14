@@ -14,13 +14,21 @@ import pEpIOSToolbox
 extension ComposeViewModel {
     /// Wraps properties used for initial setup
     struct InitData {
-        /// Recipient to set as "To:".
+        /// Recipients to set as "To:".
         /// Is ignored if a originalMessage is set.
-        public let prefilledTo: Identity?
+        public var prefilledTos: [Identity]? = nil
+
+        /// Recipients to set as "CC:".
+        /// are ignored if a originalMessage is set.
+        public var prefilledCCs: [Identity]? = nil
+
+        /// Recipients to set as "BCC:".
+        /// are ignored if a originalMessage is set.
+        public var prefilledBCCs: [Identity]? = nil
 
         /// Sender to set as "From:".
         /// If null it will be calculated from compose mode or set as default user.
-        public let prefilledFrom: Identity?
+        public var prefilledFrom: Identity? = nil
 
         /// Original message to compute content and recipients from (e.g. a message we reply to).
         private var _originalMessage: Message? = nil
@@ -41,7 +49,7 @@ extension ComposeViewModel {
         public let composeMode: ComposeUtil.ComposeMode
 
         /// Whether or not the original message is in Drafts folder
-        var isDrafts: Bool {
+        public var isDrafts: Bool {
             if let om = originalMessage {
                 return om.parent.folderType == .drafts
             }
@@ -49,56 +57,69 @@ extension ComposeViewModel {
         }
 
         /// Whether or not the original message is in Outbox
-        var isOutbox: Bool {
+        public var isOutbox: Bool {
             if let om = originalMessage {
                 return om.parent.folderType == .outbox
             }
             return false
         }
 
-        var pEpProtection: Bool {
+        public var pEpProtection: Bool {
             return originalMessage?.pEpProtected ?? true
         }
 
-        var from: Identity? {
+        public var from: Identity? {
             return prefilledFrom ?? ComposeUtil.initialFrom(composeMode: composeMode,
                                            originalMessage: originalMessage)
         }
 
-        var toRecipients: [Identity] {
+        public var toRecipients: [Identity] {
             if let om = originalMessage {
                 return ComposeUtil.initialTos(composeMode: composeMode, originalMessage: om)
-            } else if let presetTo = prefilledTo {
-                return [presetTo]
+            } else if let presetTos = prefilledTos {
+                return presetTos
             }
             return []
         }
 
-        var ccRecipients: [Identity] {
+        public var ccRecipients: [Identity] {
+            if let prefilledCCs = prefilledCCs {
+                return prefilledCCs
+            }
             guard let om = originalMessage else {
                 return []
             }
             return ComposeUtil.initialCcs(composeMode: composeMode, originalMessage: om)
         }
 
-        var bccRecipients: [Identity] {
+        public var bccRecipients: [Identity] {
+            if let prefilledBCCs = prefilledBCCs {
+                return prefilledBCCs
+            }
             guard let om = originalMessage else {
                 return []
             }
             return ComposeUtil.initialBccs(composeMode: composeMode, originalMessage: om)
         }
 
-        var subject = " "
+        public var subject: String? = " "
 
-        var bodyPlaintext = ""
-        var bodyHtml: NSAttributedString?
+        public var bodyPlaintext: String? = ""
+        public var bodyHtml: NSAttributedString?
 
         public var nonInlinedAttachments = [Attachment]()
         public var inlinedAttachments = [Attachment]()
-
-        init(withPrefilledToRecipient prefilledTo: Identity? = nil,
-             prefilledFromSender prefilledFrom: Identity? = nil,
-             orForOriginalMessage om: Message? = nil,
+        
+        /// Constructor
+        ///  Use it to prefill fields to initialize mails  based on another mail (for example forward or reply).
+        /// - Parameters:
+        ///   - prefilledTo: The To: field to prefill
+        ///   - prefilledFrom: The From: field to prefill
+        ///   - om: The original message
+        ///   - composeMode: The compose mode.
+        init(prefilledTo: Identity? = nil,
+             prefilledFrom: Identity? = nil,
+             originalMessage om: Message? = nil,
              composeMode: ComposeUtil.ComposeMode? = nil) {
 
             // We are cloning the message to get a clone off the attachments and the
@@ -106,7 +127,9 @@ extension ComposeViewModel {
             // We use it for settingus up and delete afterwards.
             let cloneMessage = om?.cloneWithZeroUID(session: Session.main)
             self.composeMode = composeMode ?? ComposeUtil.ComposeMode.normal
-            self.prefilledTo = cloneMessage == nil ? prefilledTo : nil
+            if let prefilledTo = prefilledTo {
+                self.prefilledTos = cloneMessage == nil ? [prefilledTo] : nil
+            }
             self.prefilledFrom = prefilledFrom
             self.originalMessage = om
             self.inlinedAttachments = ComposeUtil.initialAttachments(composeMode: self.composeMode,
@@ -118,6 +141,18 @@ extension ComposeViewModel {
             setupInitialSubject()
             setupInitialBody(from: cloneMessage)
             cloneMessage?.delete()
+        }
+        
+        /// Constructor
+        ///  Use it to prefill fields in cases not  based on another mail (for example forward or reply).
+        /// - Parameter mailto: Mailto with data to prefill emails fields.
+        init(mailto: Mailto) {
+            self.composeMode = .normal
+            self.prefilledTos = mailto.tos
+            self.prefilledCCs = mailto.ccs
+            self.prefilledBCCs = mailto.bccs
+            self.subject = mailto.subject
+            self.bodyPlaintext = mailto.body
         }
 
         mutating private func setupInitialSubject() {
