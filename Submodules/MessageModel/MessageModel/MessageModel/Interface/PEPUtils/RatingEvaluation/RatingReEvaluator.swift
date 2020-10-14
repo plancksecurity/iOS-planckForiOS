@@ -31,7 +31,11 @@ extension RatingReEvaluator: RatingReEvaluatorProtocol {
         let pEpMessage = message.cdObject.pEpMessage()
         if pEpMessage.direction == .outgoing {
             PEPSession().outgoingRating(for: pEpMessage, errorCallback: { (error) in
-                Log.shared.errorAndCrash("%@", error.localizedDescription)
+                if error.isPassphraseError {
+                    Log.shared.log(error: error)
+                } else {
+                    Log.shared.errorAndCrash(error: error)
+                }
                 completion()
             }) { (rating) in
                 storeNewRating(pEpRating: rating, to: message.cdObject, completion: completion)
@@ -43,7 +47,11 @@ extension RatingReEvaluator: RatingReEvaluatorProtocol {
                 originaRating = PEPRating.fromString(str: originalRatingString)
             }
             PEPSession().reEvaluateMessage(pEpMessage, xKeyList: keys, originalRating: originaRating, errorCallback: { (error) in
-                Log.shared.errorAndCrash("%@", error.localizedDescription)
+                if error.isPassphraseError {
+                    Log.shared.log(error: error)
+                } else {
+                    Log.shared.errorAndCrash(error: error)
+                }
                 completion()
             }) { (newRating) in
                 storeNewRating(pEpRating: newRating, to: message.cdObject, completion: completion)

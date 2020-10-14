@@ -92,7 +92,7 @@ public class TrustManagementUtil {
                                      full: Bool,
                                      completion: @escaping (String?)->Void) {
         PEPSession().getTrustwordsIdentity1(identitySelf, identity2: identityPartner, language: language, full: full, errorCallback: { (error) in
-            Log.shared.error("%@", "\(error)")
+            Log.shared.log(error: error)
             completion(nil)
         }) { (trustwords) in
             completion(trustwords)
@@ -138,7 +138,11 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
 
         group.enter()
         PEPSession().mySelf(selfPEPIdentity, errorCallback: { (error) in
-            Log.shared.errorAndCrash(error: error)
+            if error.isPassphraseError {
+                Log.shared.log(error: error)
+            } else {
+                Log.shared.errorAndCrash(error: error)
+            }
             success = false
             group.leave()
         }) { (updatedOwnIdentity) in

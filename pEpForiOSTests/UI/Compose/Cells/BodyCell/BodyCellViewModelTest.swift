@@ -551,7 +551,8 @@ class BodyCellViewModelTest: XCTestCase {
         vm = BodyCellViewModel(resultDelegate: newTestResultDelegate,
                                initialPlaintext: initialPlaintext,
                                initialAttributedText: initialAttributedText,
-                               inlinedAttachments: initialInlinedAttachments)
+                               inlinedAttachments: initialInlinedAttachments,
+                               account: nil)
         vm.delegate = testDelegate
         let aNonNullValue: CGFloat = 300.0
         vm.maxTextattachmentWidth = aNonNullValue
