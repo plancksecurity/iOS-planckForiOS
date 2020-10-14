@@ -65,26 +65,6 @@ class ComposeViewModel_InitDataTest: AccountDrivenTestBase {
 
     // MARK: - prefilledTo
 
-    func testPrefilledTo_set() {
-        let mode = ComposeUtil.ComposeMode.normal
-        testee = ComposeViewModel.InitData(originalMessage: nil,
-                                           composeMode: mode)
-        let expectedTo: [Identity] = [someone]
-        assertTesteeForExpectedValues(composeMode: mode,
-                                      isDrafts: false,
-                                      isOutbox: false,
-                                      pEpProtection: true,
-                                      from: account.user,
-                                      toRecipients: expectedTo,
-                                      ccRecipients: [],
-                                      bccRecipients: [],
-                                      subject: Constant.shortMessage,
-                                      bodyPlaintext: Constant.bodyPlainText,
-                                      bodyHtml: nil,
-                                      nonInlinedAttachments: [],
-                                      inlinedAttachments: [])
-    }
-
     func testPrefilledTo_notSet() {
         let mode = ComposeUtil.ComposeMode.normal
         testee = ComposeViewModel.InitData(originalMessage: nil,
