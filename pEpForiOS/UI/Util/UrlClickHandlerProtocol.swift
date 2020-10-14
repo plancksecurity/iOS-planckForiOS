@@ -29,7 +29,8 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
     }
 
     private func presentComposeView(forRecipientInUrl url: URL) {
-        UIUtils.presentComposeView(forRecipientInUrl: url)
+        let mailto = Mailto(url: url)
+        UIUtils.presentComposeView(from: mailto)
     }
     
     private func presentAvailableMailtoUrlHandlingChoices(for url: URL, at rect: CGRect, at view: UIView) {

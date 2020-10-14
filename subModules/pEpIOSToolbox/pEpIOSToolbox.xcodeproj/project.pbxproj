@@ -38,6 +38,7 @@
 		5B87D79423F2C5CE009DACAA /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */; };
 		5BEC4D6F24B5F6E800EBF0E9 /* CGAffineTransform+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEC4D6E24B5F6E800EBF0E9 /* CGAffineTransform+Extension.swift */; };
 		5BA2F5E924C997ED00F27099 /* UIDevice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA2F5E824C997ED00F27099 /* UIDevice+Extension.swift */; };
+		5BD917EE252E17D20092B30F /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD917ED252E17D20092B30F /* String+Extension.swift */; };
 		B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5422005BD400EDCE61 /* Date+Extension.swift */; };
 		B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */; };
 		B70A3A7322006B9F00EDCE61 /* SystemUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */; };
@@ -112,6 +113,7 @@
 		5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		5BEC4D6E24B5F6E800EBF0E9 /* CGAffineTransform+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGAffineTransform+Extension.swift"; sourceTree = "<group>"; };
 		5BA2F5E824C997ED00F27099 /* UIDevice+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extension.swift"; sourceTree = "<group>"; };
+		5BD917ED252E17D20092B30F /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A5422005BD400EDCE61 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemUtils.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 				B7465DC522119EB1008A1708 /* Array+SortingAndSearching.swift */,
 				1522956123044EAA00204FD3 /* String+FPR.swift */,
 				37903EE322FD667700E0AB39 /* String+pEp.swift */,
+				5BD917ED252E17D20092B30F /* String+Extension.swift */,
 				154660E9233A7359008D2137 /* NSAttributedString+AttributeCleanup.swift */,
 			);
 			path = Foundation;
@@ -537,6 +540,7 @@
 				370DB3CF22804A3600BC929A /* NSSecureCoding+Extension.swift in Sources */,
 				B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */,
 				B7465DBE22119D3A008A1708 /* Thread+Extension.swift in Sources */,
+				5BD917EE252E17D20092B30F /* String+Extension.swift in Sources */,
 				37904564223FA486006DAB3B /* NetworkReachability.swift in Sources */,
 				B7A46C52220C732E0027CCB5 /* Data+Extensions.swift in Sources */,
 				154944CF229A97AA00CC6431 /* SelfReferencingOperation.swift in Sources */,
