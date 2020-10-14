@@ -7,6 +7,7 @@
 
 import CoreData
 import pEpIOSToolbox
+import pEp4iosIntern
 
 /// Our Core Data Stack
 class Stack {
@@ -76,15 +77,13 @@ class Stack {
 
 extension Stack {
 
-    static private let appGroupId = "group.security.pep.pep4ios"
-
     /// Returns the final URL for the store with given name.
     ///
     /// - Parameter name: Filename for the .sqlite store.
     /// - Returns: File URL for the store with given name
     static private func storeURL(for name: String) -> URL {
         guard let directoryURL =
-            FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupId)
+            FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier)
             else {
                 fatalError("No DB, no app, sorry.")
         }

@@ -82,16 +82,14 @@ extension DecryptMessageOperation {
         if let error = nsError {
             // An error occured
             if error.domain == PEPObjCAdapterEngineStatusErrorDomain {
-                switch error.code {
-                case Int(PEPStatus.passphraseRequired.rawValue),
-                     Int(PEPStatus.wrongPassphrase.rawValue):
+                if error.isPassphraseError {
                     // The adapter is responsible to handle this case.
+                    Log.shared.error("Passphrase error trying to decrypt a message")
                     return
-                default:
-                    Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
-                    addError(BackgroundError.GeneralError.illegalState(info:
-                        "##\nError: \(error)\ndecrypting message: \(cdMessageToDecrypt)\n##"))
                 }
+                Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
+                addError(BackgroundError.GeneralError.illegalState(info:
+                    "##\nError: \(error)\ndecrypting message: \(cdMessageToDecrypt)\n##"))
             } else if error.domain == PEPObjCAdapterErrorDomain {
                 Log.shared.errorAndCrash("Unexpected ")
                 addError(BackgroundError.GeneralError.illegalState(info:

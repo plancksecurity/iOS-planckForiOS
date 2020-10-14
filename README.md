@@ -51,8 +51,6 @@ Restart your Console!
 sudo port install pkgconfig
 rustup update
 rustup target add aarch64-apple-ios x86_64-apple-ios
-cargo install xargo
-rustup default nightly
 rustup update nightly
 rustup component add rust-src
 ```

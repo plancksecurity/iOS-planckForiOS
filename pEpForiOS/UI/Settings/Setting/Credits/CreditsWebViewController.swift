@@ -74,6 +74,7 @@ class CreditsWebViewController: PEPWebViewController {
                      "Pantomime",
                      "OpenSSL-for-iPhone",
                      "SwipeCellKit",
+                     "Lumberjack",
                      "AppAuth-iOS",
                      "Sequoia-PGP"]
         let links = ["https://pep.foundation/dev/repos/pEpEngine/",
@@ -85,6 +86,7 @@ class CreditsWebViewController: PEPWebViewController {
                      "http://wiki.gnustep.org/index.php/Pantomime  https://github.com/timburks/Pantomime",
                      "https://github.com/x2on/OpenSSL-for-iPhone",
                      "https://github.com/SwipeCellKit/SwipeCellKit",
+                     "https://github.com/CocoaLumberjack/CocoaLumberjack",
                      "https://github.com/openid/AppAuth-iOS",
                      "https://sequoia-pgp.org/"]
 
