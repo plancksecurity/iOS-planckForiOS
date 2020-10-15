@@ -45,10 +45,6 @@ final class LoginViewController: BaseViewController {
         }
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setup()
