@@ -34,6 +34,7 @@ public enum Model : String {
     iPad5              = "iPad 5",
     iPad6              = "iPad 6",
     iPad7              = "iPad 7",
+    iPad8              = "iPad 8",
 
     iPadMini           = "iPad Mini",
     iPadMini2          = "iPad Mini 2",
@@ -57,7 +58,7 @@ public enum Model : String {
     iPhone6Plus        = "iPhone 6 Plus",
     iPhone6S           = "iPhone 6S",
     iPhone6SPlus       = "iPhone 6S Plus",
-    iPhoneSE           = "iPhone SE",
+    iPhoneSE           = "iPhone SE 1st gen",
     iPhone7            = "iPhone 7",
     iPhone7Plus        = "iPhone 7 Plus",
     iPhone8            = "iPhone 8",
@@ -69,7 +70,11 @@ public enum Model : String {
     iPhone11           = "iPhone 11",
     iPhone11Pro        = "iPhone 11 Pro",
     iPhone11ProMax     = "iPhone 11 Pro Max",
-    iPhoneSE2          = "iPhone SE 2",
+    iPhoneSE2          = "iPhone SE 2nd gen",
+    iPhone12Mini       = "iPhone 12 Mini",
+    iPhone12           = "iPhone 12",
+    iPhone12Pro        = "iPhone 12 Pro",
+    iPhone12ProMax     = "iPhone 12 Pro Max",
 
     AppleTV            = "Apple TV",
     AppleTV_4K         = "Apple TV 4K",
@@ -123,6 +128,8 @@ public extension UIDevice {
             "iPad7,6"   : .iPad6,
             "iPad7,11"  : .iPad7,
             "iPad7,12"  : .iPad7,
+            "iPad11,6"  : .iPad8,
+            "iPad11,7"  : .iPad8,
 
             "iPad2,5"   : .iPadMini,
             "iPad2,6"   : .iPadMini,
@@ -196,6 +203,10 @@ public extension UIDevice {
             "iPhone12,3" : .iPhone11Pro,
             "iPhone12,5" : .iPhone11ProMax,
             "iPhone12,8" : .iPhoneSE2,
+            "iPhone13,1" : .iPhone12Mini,
+            "iPhone13,2" : .iPhone12,
+            "iPhone13,3" : .iPhone12Pro,
+            "iPhone13,4" : .iPhone12ProMax,
 
             "AppleTV5,3" : .AppleTV,
             "AppleTV6,2" : .AppleTV_4K
