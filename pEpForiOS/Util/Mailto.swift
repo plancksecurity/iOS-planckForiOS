@@ -37,7 +37,7 @@ public struct Mailto {
         guard url.isMailto else {
             return nil
         }
-        let content = url.absoluteString.removeFirstOccurrence(of: Pattern.scheme.rawValue)
+        let content = url.absoluteString.removeFirst(pattern: Pattern.scheme.rawValue)
         let parts = content.split {$0 == "&" || $0 == "?"}
         parts.forEach { (part) in
             if !part.contains("=") {
