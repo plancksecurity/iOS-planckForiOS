@@ -28,6 +28,7 @@ public enum Model : String {
     iPad5              = "iPad 5",
     iPad6              = "iPad 6",
     iPad7              = "iPad 7",
+    iPad8              = "iPad 8",
 
     iPadMini           = "iPad Mini",
     iPadMini2          = "iPad Mini 2",
@@ -116,6 +117,8 @@ public extension UIDevice {
             "iPad7,6"   : .iPad6,
             "iPad7,11"  : .iPad7,
             "iPad7,12"  : .iPad7,
+            "iPad11,6"  : .iPad8,
+            "iPad11,7"  : .iPad8,
 
             "iPad2,5"   : .iPadMini,
             "iPad2,6"   : .iPadMini,
