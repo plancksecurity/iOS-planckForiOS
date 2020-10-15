@@ -39,7 +39,7 @@ public class FetchImapFoldersService {
         }
         group.notify(queue: .main) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(message: "Lost myself")
+                // Valid case. The object that owns this service might been dismissed already.
                 completion(false)
                 return
             }
