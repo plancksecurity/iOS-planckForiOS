@@ -11,6 +11,12 @@ import UIKit
 
 /// Apple models, not all support pep.
 public enum Model : String {
+
+    /// returns iPhone5C, iPhone5S, iPhone5, iPhone4, iPhone4S, iPhoneSE, iPhoneSE2
+    public static var smallDevices : [Model] {
+        return [.iPhone5C, .iPhone5S, .iPhone5, .iPhone4, .iPhone4S, .iPhoneSE, .iPhoneSE2]
+    }
+
     case simulator     = "simulator",
 
     iPod1              = "iPod 1",
@@ -80,6 +86,11 @@ public enum Model : String {
 // UIDevice lacks a feature to determe which device is used and there is no other built-in way to get the correct device name.
 // The disadvange is to add manually each new device Apple releases.
 public extension UIDevice {
+
+    /// Indicates if it is an iPhone5C, iPhone5S, iPhone5, iPhone4, iPhone4S, iPhoneSE or iPhoneSE2.
+    static var isSmall: Bool {
+        return Model.smallDevices.contains(UIDevice().type)
+    }
 
     /// returns the device model: e.g: "iPhone 11 Pro Max".
     var type: Model {
