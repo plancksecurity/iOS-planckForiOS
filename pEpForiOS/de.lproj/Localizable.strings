@@ -29,6 +29,9 @@
 /* KeySyncWizard introduction message - two devices */
 "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "Es wurde ein zweites Gerät gefunden, mit dem Sie Ihre Datenschutzeinstellungen synchronisieren können. Möchten Sie mit der Synchronisierung beginnen?";
 
+/* error message for .missingEmail or .invalidEmail */
+"A valid email address is required" = "Eine gültige E-Mail-Adresse ist erforderlich.";
+
 /* error message for .invalidEmail
    error message for .missingEmail */
 "A valid email is required" = "Eine gültige E-Mail Adresse wird benötigt";
@@ -51,6 +54,12 @@
 
 /* Tableview section  header */
 "Accounts" = "Konten";
+
+/* Insert document in message text context menu */
+"Add Document" = "Dokument hinzufügen";
+
+/* Attach photo/video (message text context menu) */
+"Add Photo/Video" = "Foto/Video hinzufügen";
 
 /* UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts */
 "Add to Contacts" = "Zu Kontakten hinzufügen";
@@ -196,6 +205,9 @@
 /* Account delete confirmation comment */
 "delete account message" = "Kontonachricht löschen";
 
+/* ComposeTableView: button to decide to delete changes made on a drafted mail. */
+"Delete Changes" = "Änderungen löschen";
+
 /* Device field, reporting issue */
 "Device" = "Gerät";
 
@@ -217,6 +229,10 @@
 
 /* Email */
 "Email" = "E-Mail";
+
+/* Email address placeholder for manual account setup
+   Email TextField Placeholder in Login Screen */
+"Email Address" = "E-Mail-Adresse";
 
 /* Title of alert: a required field is empty */
 "Empty Field" = "Fehlende Eingabe";
@@ -469,6 +485,9 @@
 
 /* Alert button while client certificate is importing: Try again? No */
 "No" = "Nein";
+
+/* Error when no account found for set_own_key UI */
+"No account found with the given email address." = "Kein Konto mit der angegebenen E-Mail-Adresse gefunden.";
 
 /* Error when no account found for set_own_key UI */
 "No account found with the given email." = "Kein Konto für die E-Mail vorhanden.";
@@ -808,6 +827,9 @@
 /* error message for .accountExistence */
 "The account already exists" = "Dieser Account existiert bereits";
 
+/* Error when account found for set_own_key UI, but has no user name */
+"The account with the given email address has no user name." = "Das Konto mit der angegebenen E-Mail-Adresse hat keinen Benutzernamen.";
+
 /* Error message shown to the user on problems with the client certificate */
 "The client certificate was rejected by the server" = "Das Client-Zertifikat wurde vom Server abgelehnt";
 
@@ -938,6 +960,12 @@
 /* Undo trust change verification button title */
 "Undo" = "Rückgängig machen";
 
+/* Action name to be suggested at the moment of revert */
+"Undo Trust Confirmation" = "Vertrauensbestätigung rückgängig machen";
+
+/* Action name to be suggested at the moment of revert */
+"Undo Trust Rejection" = "Vertrauens-Ablehnung rückgängig machen";
+
 /* read button in slide-left menu */
 "Unflag" = "Markierung entfernen";
 
@@ -992,6 +1020,9 @@
 
 /* Error message shown to the user in case we can not connect to the IMAP server */
 "We could not connect to the IMAP server." = "Der IMAP-Server konnte nicht erreicht werden.";
+
+/* Error message shown to the user in case we can not connect to the SMTP server */
+"We could not connect to the SMTP server: %1@" = "Wir konnten keine Verbindung mit dem SMTP-Server herstellen: %1@";
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
 "We could not connect to the SMTP server." = "Der SMTP_Server konnte nicht erreicht werden.";

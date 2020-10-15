@@ -221,6 +221,10 @@
 /* Email */
 "Email" = "E-mail";
 
+/* Email address placeholder for manual account setup
+   Email TextField Placeholder in Login Screen */
+"Email Address" = "E-mailová adresa";
+
 /* Title of alert: a required field is empty */
 "Empty Field" = "Prázdne pole";
 
@@ -472,6 +476,9 @@
 
 /* Alert button while client certificate is importing: Try again? No */
 "No" = "Nie";
+
+/* Error when no account found for set_own_key UI */
+"No account found with the given email address." = "S daným e-mailom sa nenašiel žiadny účet.";
 
 /* Error when no account found for set_own_key UI */
 "No account found with the given email." = "S daným e-mailom sa nenašiel žiadny účet.";
@@ -992,6 +999,9 @@
 
 /* Error message shown to the user in case we can not connect to the IMAP server */
 "We could not connect to the IMAP server." = "Nepodarilo sa pripojiť k serveru IMAP.";
+
+/* Error message shown to the user in case we can not connect to the SMTP server */
+"We could not connect to the SMTP server: %1@" = "K serveru SMTP sa nepodarilo pripojiť.";
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
 "We could not connect to the SMTP server." = "K serveru SMTP sa nepodarilo pripojiť.";
