@@ -173,6 +173,7 @@
 		3AECFB772462B93C004842D6 /* CdAccount+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECFB762462B93C004842D6 /* CdAccount+PredicateFactory.swift */; };
 		3AECFB792462C690004842D6 /* CdAttachment+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECFB782462C690004842D6 /* CdAttachment+PredicateFactory.swift */; };
 		3AECFB7B2462C9B2004842D6 /* CdHeaderField+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECFB7A2462C9B2004842D6 /* CdHeaderField+PredicateFactory.swift */; };
+		4303EA3D253824E9006151D3 /* Stack+ContextReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4303EA3C253824E9006151D3 /* Stack+ContextReset.swift */; };
 		4304FB7F22B76F9800DE20C9 /* DeleteOldSyncMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4304FB7E22B76F9800DE20C9 /* DeleteOldSyncMailsOperation.swift */; };
 		43062B8C24ED177E00489258 /* PEPIdentity+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43062B8B24ED177E00489258 /* PEPIdentity+Pantomime.swift */; };
 		43062B9024ED3DB700489258 /* TrustwordsLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43062B8F24ED3DB700489258 /* TrustwordsLanguage.swift */; };
@@ -659,6 +660,7 @@
 		3AECFB762462B93C004842D6 /* CdAccount+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAccount+PredicateFactory.swift"; sourceTree = "<group>"; };
 		3AECFB782462C690004842D6 /* CdAttachment+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAttachment+PredicateFactory.swift"; sourceTree = "<group>"; };
 		3AECFB7A2462C9B2004842D6 /* CdHeaderField+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdHeaderField+PredicateFactory.swift"; sourceTree = "<group>"; };
+		4303EA3C253824E9006151D3 /* Stack+ContextReset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stack+ContextReset.swift"; sourceTree = "<group>"; };
 		4304FB7E22B76F9800DE20C9 /* DeleteOldSyncMailsOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteOldSyncMailsOperation.swift; sourceTree = "<group>"; };
 		43062B8B24ED177E00489258 /* PEPIdentity+Pantomime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPIdentity+Pantomime.swift"; sourceTree = "<group>"; };
 		43062B8F24ED3DB700489258 /* TrustwordsLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustwordsLanguage.swift; sourceTree = "<group>"; };
@@ -1430,6 +1432,7 @@
 			children = (
 				8BE4608F1DB7B5FC008D63C6 /* Stack.swift */,
 				43D576432535B02C00968745 /* NSManagedObjectContext+TestInvalidation.swift */,
+				4303EA3C253824E9006151D3 /* Stack+ContextReset.swift */,
 			);
 			path = Stack;
 			sourceTree = "<group>";
@@ -1764,6 +1767,14 @@
 			path = MessageQueryResultsTest;
 			sourceTree = "<group>";
 		};
+		4303E9E72538220C006151D3 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				3AB50D292500F3B1005E2170 /* pEp4iosIntern.framework */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		430CD9AA22929D2000AAC37F /* KeySync */ = {
 			isa = PBXGroup;
 			children = (
@@ -2006,6 +2017,7 @@
 				B751B99322D4D5100018DE0D /* MessageModelTestApp */,
 				43CB60831DA4EB4E0015281E /* Products */,
 				B7DB7FA322147000003968DA /* Frameworks */,
+				4303E9E72538220C006151D3 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2927,6 +2939,7 @@
 				43753CC2222D247D002EE98B /* CdMessage+pEp.swift in Sources */,
 				374A8AE6224E2D16001914D5 /* RelationshipKeyPath.swift in Sources */,
 				43EA486B221E9518006E8F83 /* CdMessage+Extension.swift in Sources */,
+				4303EA3D253824E9006151D3 /* Stack+ContextReset.swift in Sources */,
 				43A9818824E5393300830603 /* Color+pEp.swift in Sources */,
 				43062BA424EE9CD400489258 /* MessageModelConfig.swift in Sources */,
 				43D47A52225C767B00E97C5B /* ServerCredentialsInfoCache.swift in Sources */,
