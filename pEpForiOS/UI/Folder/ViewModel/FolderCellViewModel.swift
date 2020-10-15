@@ -73,11 +73,11 @@ public class FolderCellViewModel {
     }
 
     public var shouldRotateChevron : Bool {
-        return isExpand && hasSubfolders() && isChevronEnabled
+        return isExpand && hasSubfolders() && isChevronEnabled && !isFolder(of: .inbox)
     }
 
     public var isChevronEnabled: Bool {
-        return hasSubfolders() && !(folder is UnifiedInbox)
+        return hasSubfolders() && !(folder is UnifiedInbox) && !isFolder(of: .inbox)
     }
 
     /// Indicates if the current folder cell view model has subfolders.
