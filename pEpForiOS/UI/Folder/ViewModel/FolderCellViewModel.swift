@@ -73,11 +73,11 @@ public class FolderCellViewModel {
     }
 
     public var shouldRotateChevron : Bool {
-        return isExpand && hasSubfolders() && isChevronEnabled && !isFolder(of: .inbox)
+        return isExpand && hasSubfolders() && isChevronEnabled && !isFolder(ofType: .inbox)
     }
 
     public var isChevronEnabled: Bool {
-        return hasSubfolders() && !(folder is UnifiedInbox) && !isFolder(of: .inbox)
+        return hasSubfolders() && !(folder is UnifiedInbox) && !isFolder(ofType: .inbox)
     }
 
     /// Indicates if the current folder cell view model has subfolders.
@@ -124,7 +124,7 @@ public class FolderCellViewModel {
     /// Indicates if the folder of the type passed by parameter.
     /// - Parameter type: The Folder type
     /// - Returns: True if it is a folder of that type
-    public func isFolder(of type: FolderType) -> Bool {
+    public func isFolder(ofType type: FolderType) -> Bool {
         if let f = folder as? Folder {
             return f.folderType == type
         }
