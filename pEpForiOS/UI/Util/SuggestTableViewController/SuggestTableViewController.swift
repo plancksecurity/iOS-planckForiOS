@@ -87,7 +87,7 @@ extension SuggestTableViewController {
             return
         }
         guard let row = vm[indexPath.row] else {
-            /// Valid case: the datasource might changed
+            /// Valid case: the data source changed after the reload was triggered. 
             return
         }
         cell.nameLabel.text = row.name
