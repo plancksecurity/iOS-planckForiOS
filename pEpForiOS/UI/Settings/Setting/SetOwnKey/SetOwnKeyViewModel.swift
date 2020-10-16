@@ -11,9 +11,14 @@ import Foundation
 import MessageModel
 
 class SetOwnKeyViewModel {
-    public var userName: String?
     public var email: String?
     public var fingerprint: String?
+
+    private let keyImporter: KeyImportUtilProtocol
+
+    public init(keyImporter: KeyImportUtilProtocol = KeyImportUtil()) {
+        self.keyImporter = keyImporter
+    }
 
     /// Tries to set the own key based on member variables and
     /// invokes `callback`.
@@ -32,23 +37,39 @@ class SetOwnKeyViewModel {
                 return
         }
 
+        let accountNotFoundTextError = NSLocalizedString("No account found with the given email address.", comment: "Error when no account found for set_own_key UI")
         guard let identity = ownIdentityBy(email: theEmail) else {
-            callback(NSLocalizedString(
-                "No account found with the given email.",
-                comment: "Error when no account found for set_own_key UI"))
+            callback(accountNotFoundTextError)
             return
         }
 
-        identity.setOwnKey(fingerprint: theFingerprint,
-                           errorCallback: { error in callback(error.localizedDescription) },
-                           completion: { callback(nil) })
+        guard let theUserName = identity.userName else {
+            let theAccountHasNoUserNameTextError = NSLocalizedString("The account with the given email address has no user name.", comment: "Error when account found for set_own_key UI, but has no user name")
+            callback(theAccountHasNoUserNameTextError)
+            return
+        }
+
+        keyImporter.setOwnKey(userName: theUserName,
+                              address: theEmail,
+                              fingerprint: theFingerprint,
+                              errorCallback: { err in
+                                if let setOwnKeyError = err as? KeyImportUtil.SetOwnKeyError {
+                                    switch(setOwnKeyError) {
+                                    case .noMatchingAccount:
+                                        callback(accountNotFoundTextError)
+                                    }
+                                } else {
+                                    callback(err.localizedDescription)
+                                }
+        }) {
+            callback(nil)
+        }
     }
 }
 
 // MARK: - Private
 
 extension SetOwnKeyViewModel {
-
     private func ownIdentityBy(email: String) -> Identity? {
         return Account.by(address: email)?.user
     }

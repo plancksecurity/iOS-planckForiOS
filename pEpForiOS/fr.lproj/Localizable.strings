@@ -29,6 +29,9 @@
 /* KeySyncWizard introduction message - two devices */
 "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "Un deuxième appareil a été détecté. Nous pouvons former un groupe d'appareils pour synchroniser toute votre confidentialité sur les deux appareils. Pouvons-nous commencer la synchronisation ?";
 
+/* error message for .missingEmail or .invalidEmail */
+"A valid email address is required" = "Une adresse électronique valide est requise";
+
 /* error message for .invalidEmail
    error message for .missingEmail */
 "A valid email is required" = "Une adresse courriel valide est requise";
@@ -51,6 +54,12 @@
 
 /* Tableview section  header */
 "Accounts" = "Comptes";
+
+/* Insert document in message text context menu */
+"Add Document" = "Ajouter un document";
+
+/* Attach photo/video (message text context menu) */
+"Add Photo/Video" = "Ajouter une photo/vidéo";
 
 /* UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts */
 "Add to Contacts" = "Ajouter aux contacts";
@@ -196,6 +205,9 @@
 /* Account delete confirmation comment */
 "delete account message" = "supprimer le message du compte";
 
+/* ComposeTableView: button to decide to delete changes made on a drafted mail. */
+"Delete Changes" = "Supprimer les modifications";
+
 /* Device field, reporting issue */
 "Device" = "Appareil";
 
@@ -215,12 +227,12 @@
    Display Name TextField Placeholder in Login Screen */
 "Display Name" = "nom d'affichage";
 
-/* Email address placeholder for manual account setup
-   Email TextField Placeholder in Login Screen */
-"E-mail Address" = "Adresse de courriel";
-
 /* Email */
 "Email" = "Courriel";
+
+/* Email address placeholder for manual account setup
+   Email TextField Placeholder in Login Screen */
+"Email Address" = "Adresse courriel";
 
 /* Title of alert: a required field is empty */
 "Empty Field" = "Champ vide";
@@ -236,6 +248,9 @@
 
 /* possible private status action */
 "Enable Protection" = "Activer la protection";
+
+/* Enter passphrase alert - message - shown while pEp sync is running */
+"Enter passphrase for p≡p Sync:" = "Entrez la phrase de passe pour p≡p Sync :";
 
 /* Tableview section header: Enterprise Features */
 "Enterprise Features" = "Fonctionnalités d'entreprise";
@@ -296,6 +311,9 @@
 
 /* possible privacy status action */
 "Handshake" = "Handshake";
+
+/* Contact Support - Mail subject */
+"Help" = "Aide";
 
 /* PGPKeyImportSettingViewModel - part of pgpKeyImportTitle that should link to support page (... click _here_ for info ...) */
 "here" = "ici";
@@ -467,6 +485,9 @@
 
 /* Alert button while client certificate is importing: Try again? No */
 "No" = "Non";
+
+/* Error when no account found for set_own_key UI */
+"No account found with the given email address." = "Aucun compte trouvé avec l'adresse électronique donnée.";
 
 /* Error when no account found for set_own_key UI */
 "No account found with the given email." = "Aucun compte trouvé avec l'e-mail donné.";
@@ -742,6 +763,9 @@
    Settings view title */
 "Settings" = "Paramètres";
 
+/* Enter passphrase alert - Negative button text - shown while pEp sync is running */
+"Shutdown p≡p Sync" = "Shutdown p≡p Sync";
+
 /* Login */
 "Sign In" = "Se connecter";
 
@@ -803,6 +827,9 @@
 /* error message for .accountExistence */
 "The account already exists" = "Ce compte existe déjà";
 
+/* Error when account found for set_own_key UI, but has no user name */
+"The account with the given email address has no user name." = "Le compte avec l'adresse électronique donnée n'a pas de nom d'utilisateur.";
+
 /* Error message shown to the user on problems with the client certificate */
 "The client certificate was rejected by the server" = "Le certificat client a été rejeté par le serveur";
 
@@ -811,6 +838,9 @@
 
 /* Client certificate import: corrupted file error alert message */
 "The file could not be imported" = "Le fichier n'a pas pu être importé";
+
+/* Message when asking user for confirmation about importing keys */
+"The fingerprint of the selected key is:\n%1$@\n%2$@\n\nImport and use this key?" = "L'empreinte digitale de la clé sélectionnée est :\n%1$@\n%2$@\n\nImporter et utiliser cette clé ?";
 
 /* Privacy Status Explanation */
 "The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:" = "L'icône dans la barre supérieure reflète l'état de confidentialité du message, qui est le plus petit dénominateur commun le plus bas de tous les partenaires de communication de ce message, par exemple :";
@@ -918,12 +948,6 @@
 /* Alert trust button title before trusting an account */
 "Trust" = "Confiance";
 
-/* Action name to be suggested at the moment of revert */
-"Trust Confirmation" = "Confirmation de confiance";
-
-/* Action name to be suggested at the moment of revert */
-"Trust Rejection" = "Rejet de confiance";
-
 /* keySyncWizard error view Try Again button title */
 "Try Again" = "Essayer de nouveau";
 
@@ -936,8 +960,11 @@
 /* Undo trust change verification button title */
 "Undo" = "Annuler";
 
-/* Undo trust change verification alert title */
-"Undo (actionName)" = "Annuler (actionName)";
+/* Action name to be suggested at the moment of revert */
+"Undo Trust Confirmation" = "Annuler la confirmation de la confiance";
+
+/* Action name to be suggested at the moment of revert */
+"Undo Trust Rejection" = "Annuler le rejet de la confiance";
 
 /* read button in slide-left menu */
 "Unflag" = "Désignaler";
@@ -995,6 +1022,9 @@
 "We could not connect to the IMAP server." = "Nous n'avons pas pu nous connecter au serveur IMAP.";
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
+"We could not connect to the SMTP server: %1@" = "Nous n'avons pas pu nous connecter au serveur SMTP : %1@";
+
+/* Error message shown to the user in case we can not connect to the SMTP server */
 "We could not connect to the SMTP server." = "Nous n'avons pas pu nous connecter au serveur SMTP.";
 
 /* Client certificate import: wrong password alert message */
@@ -1047,6 +1077,9 @@
 
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Vous pouvez fermer ce didacticiel à tout moment avec le bouton Ignorer.";
+
+/* PGPKeyImportSetting row title when grouped */
+"You can not import keys while the device is in a device group." = "Vous ne pouvez pas importer de clés lorsque l'appareil se trouve dans un groupe d'appareils.";
 
 /* alert error message certificate delete */
 "You can only delete certificates that are not connected to an account. The certificate is currently used for the following account: (by)" = "Vous ne pouvez supprimer que des certificats qui ne sont pas connectés à un compte. Le certificat est actuellement utilisé pour le compte suivant : (par)";

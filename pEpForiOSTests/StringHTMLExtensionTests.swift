@@ -11,6 +11,7 @@ import UIKit
 
 @testable import pEpForiOS
 @testable import MessageModel
+import pEpIOSToolbox
 
 // StringHTMLExtensionTests all tests are green on date 20200313
 
@@ -54,7 +55,8 @@ class StringHTMLExtensionTests: XCTestCase {
     func testToMarkdown() {
         let imgDelegate = TestMarkdownImageDelegate()
 
-        guard let data = TestUtil.loadData(fileName: "NSHTML_2017-08-09 15_40_53 +0000.html") else {
+        guard let data = MiscUtil.loadData(bundleClass: StringHTMLExtensionTests.self,
+                                           fileName: "NSHTML_2017-08-09 15_40_53 +0000.html") else {
             XCTFail()
             return
         }
@@ -151,9 +153,9 @@ class StringHTMLExtensionTests: XCTestCase {
         let alt1 = "Attached Image 1 (jpg)"
 
         let theData = "Not an image".data(using: .utf8)
-        let theMimeType = MimeTypeUtils.MimesType.jpeg
+        let theMimeType = MimeTypeUtils.MimeType.jpeg
         let attachment = Attachment(data: theData,
-                                    mimeType: theMimeType,
+                                    mimeType: theMimeType.rawValue,
                                     fileName: "cid:\(cid1)",
             contentDisposition: .attachment)
 
@@ -170,7 +172,7 @@ class StringHTMLExtensionTests: XCTestCase {
         XCTAssertEqual(sthWithCiteTag, exp)
         XCTAssertEqual(sthWithBlockquoteTag, exp)
         XCTAssertEqual(attachmentDelegate.numberOfAttachmentsUsed, 1)
-        XCTAssertEqual(attachmentDelegate.attachments[0].mimeType, theMimeType)
+        XCTAssertEqual(attachmentDelegate.attachments[0].mimeType, theMimeType.rawValue)
 
         let (markdown, attachments) = attributedString.convertToMarkDown()
         XCTAssertEqual(attachments.count, 1)

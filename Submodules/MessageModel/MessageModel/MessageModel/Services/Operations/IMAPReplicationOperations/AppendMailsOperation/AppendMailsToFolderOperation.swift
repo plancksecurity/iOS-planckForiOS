@@ -10,6 +10,7 @@ import CoreData
 
 import PantomimeFramework
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 /// Operation for storing mails in any type of IMAP folder.
 class AppendMailsToFolderOperation: ImapSyncOperation {
@@ -41,7 +42,7 @@ class AppendMailsToFolderOperation: ImapSyncOperation {
     }
 
     override public func main() {
-        if !checkImapSync() {
+        if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
         }
@@ -121,27 +122,28 @@ extension AppendMailsToFolderOperation {
                     return
                 }
 
+                let folderTypesYouMustEncryptForSelfFor = [FolderType.drafts, .trash]
+                let isEncryptForSelfFolderType = folderTypesYouMustEncryptForSelfFor.contains(cdMessage.parent?.folderType ?? FolderType.normal)
+
                 let forceUnprotected = !cdMessage.pEpProtected
                 let extraKeysFPRs = CdExtraKey.fprsOfAllExtraKeys(in: me.privateMOC)
+
                 PEPUtils.encrypt(pEpMessage: pEpMessage,
                                  encryptionFormat: forceUnprotected ? .none : .PEP,
-                                 forSelf: forceUnprotected ? nil : pEpidentity,
+                                 forSelf: (!forceUnprotected && isEncryptForSelfFolderType) ? pEpidentity : nil,
                                  extraKeys: extraKeysFPRs,
                                  errorCallback: { (error) in
                                     defer { group.leave() }
                                     let error = error as NSError
                                     if error.domain == PEPObjCAdapterEngineStatusErrorDomain {
-                                        switch error.code {
-                                        case Int(PEPStatus.passphraseRequired.rawValue),
-                                             Int(PEPStatus.wrongPassphrase.rawValue):
+                                        if error.isPassphraseError {
                                             // The adapter is responsible to ask for passphrase. We are not.
                                             me.handleNextMessage()
                                             return
-                                        default:
-                                            Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
-                                            me.handle(error: BackgroundError.GeneralError.illegalState(info:
-                                                "##\nError: \(error)\nencrypting message: \(cdMessage)\n##"))
                                         }
+                                        Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
+                                        me.handle(error: BackgroundError.GeneralError.illegalState(info:
+                                            "##\nError: \(error)\nencrypting message: \(cdMessage)\n##"))
                                     } else if error.domain == PEPObjCAdapterErrorDomain {
                                         Log.shared.errorAndCrash("Unexpected ")
                                         me.handle(error: BackgroundError.GeneralError.illegalState(info:

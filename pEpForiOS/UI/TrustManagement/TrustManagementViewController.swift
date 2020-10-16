@@ -8,8 +8,10 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 /// View Controller to handle the HandshakeView.
-class TrustManagementViewController: BaseViewController {
+class TrustManagementViewController: UIViewController {
     private let onlyMasterCellIdentifier = "TrustManagementTableViewCell_OnlyMaster"
     private let masterAndDetailCellIdentifier = "TrustManagementTableViewCell_Detailed"
     private let resetCellIdentifier = "TrustManagementTableViewResetCell"
@@ -44,8 +46,8 @@ class TrustManagementViewController: BaseViewController {
 
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         guard let vm = viewModel, vm.canUndo() && motion == .motionShake,
-            let actionName = vm.lastActionPerformed() else { return }
-        let title = NSLocalizedString("Undo \(actionName)", comment: "Undo trust change verification alert title")
+            let actionName = vm.revertAction() else { return }
+        let title = NSLocalizedString(actionName, comment: "Revert last action performed named - alert title")
         let alertController = UIAlertController.pEpAlertController(title: title,
                                                                    message: nil,
                                                                    preferredStyle: .alert)
@@ -184,11 +186,11 @@ extension TrustManagementViewController {
         vm.languages { [weak self] langs in
             DispatchQueue.main.async {
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost myself")
+                    // Valid case. We might have been dismissed already.
                     return
                 }
 
-                for language in langs ?? [] {
+                for language in langs {
                     guard let languageName = NSLocale.current.localizedString(forLanguageCode: language)
                         else {
                             Log.shared.debug("Language name not found")
@@ -364,7 +366,7 @@ extension TrustManagementViewController {
         row.color { [weak self] (rowColor) in
             defer { updateSizeGroup.leave() }
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             //Yellow means secure but not trusted.
@@ -395,7 +397,7 @@ extension TrustManagementViewController {
         }
         updateSizeGroup.notify(queue: DispatchQueue.main) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.tableView.updateSize()
@@ -419,7 +421,7 @@ extension TrustManagementViewController {
         }
         updateSizeGroup.notify(queue: DispatchQueue.main) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.tableView.updateSize()

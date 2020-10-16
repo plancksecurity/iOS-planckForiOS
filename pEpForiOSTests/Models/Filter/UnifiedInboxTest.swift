@@ -12,32 +12,32 @@ import XCTest
 @testable import pEpForiOS
 import PEPObjCAdapterFramework
 
-class UnifiedInboxTest: CoreDataDrivenTestBase {
+class UnifiedInboxTest: AccountDrivenTestBase {
     let unifiedInbox = UnifiedInbox()
     let expectedMessages = 2
 
     override func setUp() {
         super.setUp()
-        let account1 = SecretTestData().createWorkingAccount(context: moc)
-        account1.save()
-        let account2 = SecretTestData().createWorkingAccount(number: 1, context: moc)
-        account2.save()
+        let account1 = TestData().createWorkingAccount()
+        account1.session.commit()
+        let account2 = TestData().createWorkingAccount(number: 1)
+        account2.session.commit()
         let folder1 = Folder(name: "inbox", parent: nil, account: account1, folderType: .inbox)
-        folder1.save()
+        folder1.session.commit()
         let folder2 = Folder(name: "inbox", parent: nil, account: account2, folderType: .inbox)
-        folder2.save()
+        folder2.session.commit()
         let folder3 = Folder(name: "folder", parent: nil, account: account1, folderType: .normal)
-        folder3.save()
+        folder3.session.commit()
         let folder4 = Folder(name: "sent", parent: nil, account: account2, folderType: .sent)
-        folder4.save()
+        folder4.session.commit()
         let msg1 = Message(uuid: "uuidm1", parentFolder: folder1)
-        msg1.save()
+        msg1.session.commit()
         let msg2 = Message(uuid: "uuidm2", parentFolder: folder2)
-        msg2.save()
+        msg2.session.commit()
         let msg3 = Message(uuid: "uuidm3", parentFolder: folder3)
-        msg3.save()
+        msg3.session.commit()
         let msg4 = Message(uuid: "uuidm4", parentFolder: folder4)
-        msg4.save()
+        msg4.session.commit()
     }
 
     func testUnifiedInboxPredicateReturnAllMessagesInInbox() {

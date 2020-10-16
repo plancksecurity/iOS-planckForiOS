@@ -11,7 +11,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
+class ComposeViewModelSectionTest: AccountDrivenTestBase {
     var state: ComposeViewModel.ComposeViewModelState?
 
     override func setUp() {
@@ -84,8 +84,8 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
     }
 
     func testAccount_twoExisting() {
-        let account = SecretTestData().createWorkingAccount(number: 1, context: moc)
-        account.save()
+        let account = TestData().createWorkingAccount(number: 1)
+        account.session.commit()
         assertAccountSection()
     }
 
@@ -208,7 +208,7 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
                                   bccRecipients: [Identity] = [],
                                   isWapped: Bool = true) -> ComposeViewModel.ComposeViewModelState {
         let drafts = Folder(name: "Inbox", parent: nil, account: account, folderType: .drafts)
-        drafts.save()
+        drafts.session.commit()
         let msg = Message(uuid: UUID().uuidString, parentFolder: drafts)
         msg.from = account.user
         msg.replaceTo(with: toRecipients)
@@ -218,10 +218,8 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
         msg.longMessage = "longMessage"
         msg.longMessageFormatted = "longMessageFormatted"
         msg.replaceAttachments(with: [])
-        msg.save()
-        let initData = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
-                                                 orForOriginalMessage: msg,
-                                                 composeMode: .normal)
+        msg.session.commit()
+        let initData = ComposeViewModel.InitData(prefilledTo: nil, prefilledFrom: nil, originalMessage: msg, composeMode: .normal)
         let createe = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
         if !isWapped {
             createe.setBccUnwrapped()

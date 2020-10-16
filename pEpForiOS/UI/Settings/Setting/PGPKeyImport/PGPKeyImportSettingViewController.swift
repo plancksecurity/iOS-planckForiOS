@@ -7,9 +7,11 @@
 //
 
 import Foundation
-import MessageModel
 
-class PGPKeyImportSettingViewController: BaseViewController {
+import MessageModel
+import pEpIOSToolbox
+
+class PGPKeyImportSettingViewController: UIViewController {
     static private let switchCellID = "PGPKeyImportSettingsSwitchTableViewCell"
     static private let cellID = "PGPKeyImportSettingTableViewCell"
     public var viewModel: PGPKeyImportSettingViewModel? {
@@ -48,6 +50,7 @@ extension PGPKeyImportSettingViewController: UITableViewDelegate {
             return
         }
         vm.handleDidSelect(rowAt: indexPath)
+        tableView.deselectRow(at: indexPath, animated: false)
     }
 }
 
@@ -157,7 +160,6 @@ extension PGPKeyImportSettingViewController {
                 Log.shared.errorAndCrash("No KeyImportViewController as segue destination")
                 return
             }
-            vc.appConfig = appConfig
             break
         case .none:
             Log.shared.errorAndCrash("No segue")

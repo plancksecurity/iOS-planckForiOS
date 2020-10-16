@@ -104,4 +104,17 @@ struct MessageModelObjectUtils {
             context ?? cdObject.managedObjectContext ??  Stack.shared.mainContext
         return ClientCertificate(cdObject: cdObject, context: moc)
     }
+    
+    /// Creates an server wrapping a given CdServer.
+    /// - Parameters:
+    ///   - cdObject: object to wrap
+    ///   - context:    MOC suitable for the queue you want to use the returned object on.
+    ///                 Defaults the best suitable moc that can be found, which might lead to undefined behaviour.
+    /// - Returns: MMO wrapping given CD-Object
+    static func getServer(fromCdObject cdObject: CdServer,
+                          context: NSManagedObjectContext? = nil) -> Server {
+        let moc: NSManagedObjectContext =
+            context ?? cdObject.managedObjectContext ?? Stack.shared.mainContext
+        return Server(cdObject: cdObject, context: moc)
+    }
 }

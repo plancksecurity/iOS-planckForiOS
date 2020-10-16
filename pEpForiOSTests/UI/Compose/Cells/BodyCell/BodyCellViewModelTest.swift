@@ -10,6 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 import MessageModel
+import pEpIOSToolbox
 
 class BodyCellViewModelTest: XCTestCase {
     var vm: BodyCellViewModel!
@@ -550,7 +551,8 @@ class BodyCellViewModelTest: XCTestCase {
         vm = BodyCellViewModel(resultDelegate: newTestResultDelegate,
                                initialPlaintext: initialPlaintext,
                                initialAttributedText: initialAttributedText,
-                               inlinedAttachments: initialInlinedAttachments)
+                               inlinedAttachments: initialInlinedAttachments,
+                               account: nil)
         vm.delegate = testDelegate
         let aNonNullValue: CGFloat = 300.0
         vm.maxTextattachmentWidth = aNonNullValue
@@ -592,7 +594,8 @@ class BodyCellViewModelTest: XCTestCase {
             var attachments = [Attachment]()
             let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg" //IOS-1399: move to Utils
             guard
-                let imageData = TestUtil.loadData(fileName: imageFileName),
+                let imageData = MiscUtil.loadData(bundleClass: BodyCellViewModelTest.self,
+                                                  fileName: imageFileName),
                 let image = UIImage(data: imageData) else {
                     XCTFail("No img")
                     return []

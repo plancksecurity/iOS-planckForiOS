@@ -8,6 +8,8 @@
 
 import Foundation
 
+import pEpIOSToolbox
+
 protocol PGPKeyImportSettingSwitchTableViewCellDelegate: class {
     func passphraseSwitchChanged(sender: PGPKeyImportSettingSwitchTableViewCell, didChangeSwitchValue newValue: Bool, cancelCallback: (() -> Void)?)
 }
@@ -21,7 +23,7 @@ class PGPKeyImportSettingSwitchTableViewCell: UITableViewCell {
         delegate?.passphraseSwitchChanged(sender: self, didChangeSwitchValue: sender.isOn,
                                           cancelCallback: { [weak self] in
                                             guard let me = self else {
-                                                Log.shared.errorAndCrash("Lost myself")
+                                                Log.shared.lostMySelf()
                                                 return
                                             }
                                             me.passphraseSwitch.setOn(false, animated: true)

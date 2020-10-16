@@ -8,20 +8,11 @@
 
 import CoreData
 
+import pEpIOSToolbox
+
 extension CdMessage {
 
-    //!!!: cleanup
-//    public static func create(messageID: String, uid: Int,
-//                              parent: CdFolder? = nil) -> CdMessage {
-//        let msg = CdMessage.create()
-//        msg.uuid = messageID
-//        msg.uid = Int32(uid)
-//        msg.parent = parent
-//        msg.imap = CdImapFields.create()
-//        return msg
-//    }
-
-    @discardableResult public static func create(withContentOf msg: Message) -> CdMessage? {
+    @discardableResult static func create(withContentOf msg: Message) -> CdMessage? {
         guard let moc = msg.cdObject.managedObjectContext else { //!!!: beware! Context!
             Log.shared.errorAndCrash("no moc")
             return nil

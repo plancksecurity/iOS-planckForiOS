@@ -67,14 +67,14 @@ extension CdAccount {
     /**
      - Returns: The first found IMAP connect info.
      */
-    public var imapConnectInfo: EmailConnectInfo? {
+    var imapConnectInfo: EmailConnectInfo? {
         return connectInfos().filter { return $0.emailProtocol == .imap }.first
     }
 
     /**
      - Returns: The first found SMTP connect info.
      */
-    public var smtpConnectInfo: EmailConnectInfo? {
+    var smtpConnectInfo: EmailConnectInfo? {
         return connectInfos().filter { return $0.emailProtocol == .smtp }.first
     }
 

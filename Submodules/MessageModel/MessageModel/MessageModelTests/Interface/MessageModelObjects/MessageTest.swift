@@ -21,7 +21,7 @@ class MessageTest: PersistentStoreDrivenTestBase {
             return
         }
         message.parent = inbox
-        message.save()
+        message.session.commit()
 
         let attachmentUpdate = message.attachments[0]
         let newFileName = "newFileName"
@@ -38,7 +38,7 @@ class MessageTest: PersistentStoreDrivenTestBase {
                                           mimeType: mimeType,
                                           contentDisposition: attachmentUpdate.contentDisposition)
         message.appendToAttachments(attachmentInsert)
-        message.save()
+        message.session.commit()
 
         guard let savedCdMessage = CdMessage.search(message: message) else {
             XCTFail("Saved message not found")
@@ -67,12 +67,12 @@ class MessageTest: PersistentStoreDrivenTestBase {
             return
         }
         message.parent = inbox
-        message.save()
+        message.session.commit()
 
         //toggle flag
         let currentFlags =  message.imapFlags
         message.imapFlags.flagged = !currentFlags.flagged
-        message.save()
+        message.session.commit()
 
         guard let savedCdMessage = CdMessage.search(message: message) else {
             XCTFail("Saved message not found")

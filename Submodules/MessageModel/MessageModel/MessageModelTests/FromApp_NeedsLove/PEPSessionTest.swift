@@ -18,10 +18,10 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
 
     func testPEPConversion() {
         let account = SecretTestData().createWorkingAccount(context: moc)
-        account.save()
+        account.session.commit()
 
         let folder = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
-        folder.save()
+        folder.session.commit()
 
         let uuid = UUID().uuidString
         let message = Message(uuid: uuid, parentFolder: folder)
@@ -33,7 +33,7 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
         message.replaceCc(with: [account.user])
         message.parent = folder
         message.sent = Date()
-        message.save()
+        message.session.commit()
         guard let first = CdMessage.first(in: moc) else {
             XCTFail("No messages ...")
             return
@@ -44,7 +44,7 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
         let pEpMessage = cdmessage1.pEpMessage()
 
         let expEncryptDone = expectation(description: "expEnDeCryptDone")
-        PEPAsyncSession().encryptMessage(pEpMessage, extraKeys: nil, encFormat: .PEP, errorCallback: { (_) in
+        PEPSession().encryptMessage(pEpMessage, extraKeys: nil, encFormat: .PEP, errorCallback: { (_) in
             XCTFail()
             return
         }) { (src, dest) in
@@ -53,10 +53,10 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
         waitForExpectations(timeout: TestUtil.waitTime)
 
         let expDecryptDone = expectation(description: "expDecryptDone")
-        PEPAsyncSession().decryptMessage(pEpMessage, flags: .none, extraKeys: nil, errorCallback: { (_) in
+        PEPSession().decryptMessage(pEpMessage, flags: .none, extraKeys: nil, errorCallback: { (_) in
             XCTFail()
             return
-        }) { (_, _, _, _, _) in
+        }) { (_, _, _, _, _, _) in
             expDecryptDone.fulfill()
         }
         waitForExpectations(timeout: TestUtil.waitTime)
@@ -120,10 +120,10 @@ class PEPSessionTest: PersistentStoreDrivenTestBase {
         var testee: PEPMessage? = nil
 
         let exp = expectation(description: "exp")
-        PEPAsyncSession().decryptMessage(message, flags: .none, extraKeys: nil, errorCallback: { (error) in
+        PEPSession().decryptMessage(message, flags: .none, extraKeys: nil, errorCallback: { (error) in
             XCTFail(error.localizedDescription)
             exp.fulfill()
-        }) { (_, pEpDecrypted, _, _, _) in
+        }) { (_, pEpDecrypted, _, _, _, _) in
             testee = pEpDecrypted
             exp.fulfill()
         }

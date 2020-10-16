@@ -11,7 +11,7 @@ import XCTest
 @testable import pEpForiOS
 import MessageModel
 
-class AccountCellViewModelTest: CoreDataDrivenTestBase {
+class AccountCellViewModelTest: AccountDrivenTestBase {
     private var vm: AccountCellViewModel!
     private var resultDelegate: TestResultDelegate?
     private var delegate: TestDelegate?
@@ -19,18 +19,17 @@ class AccountCellViewModelTest: CoreDataDrivenTestBase {
     // MARK: - displayAccount
 
     func testDisplayAccount() {
-        let initialAccount = account
-        assert(initialAccount: initialAccount,
+        assert(initialAccount: account,
                accountChangedMustBeCalled: false,
                expectedAccount: nil)
         let testee = vm.displayAccount
-        XCTAssertEqual(testee, initialAccount.user.address)
+        XCTAssertEqual(testee, account.user.address)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
     func testDisplayAccount_unknownAccount() {
         let initialAccount = account
-        let anotherAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
+        let anotherAccount = TestData().createWorkingAccount(number: 1)
         assert(initialAccount: initialAccount,
                accountChangedMustBeCalled: false,
                expectedAccount: nil)
@@ -42,20 +41,19 @@ class AccountCellViewModelTest: CoreDataDrivenTestBase {
     // MARK: - accountPickerViewModel(_:didSelect:)
 
     func testAccountPickerViewModelDidSelect_initialSet() {
-        let initialAccount = account
-        let selectedAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
-        assert(initialAccount: initialAccount,
+        let selectedAccount = TestData().createWorkingAccount(number: 1)
+        assert(initialAccount: account,
                accountChangedMustBeCalled: true,
                expectedAccount: selectedAccount)
         vm.accountPickerViewModel(TestAccountPickerViewModel(), didSelect: selectedAccount)
         let testee = vm.displayAccount
         XCTAssertEqual(testee, selectedAccount.user.address)
-        XCTAssertNotEqual(testee, initialAccount.user.address)
+        XCTAssertNotEqual(testee, account.user.address)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
     func testAccountPickerViewModelDidSelect_initialNotSet() {
-        let selectedAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
+        let selectedAccount = TestData().createWorkingAccount(number: 1)
         assert(initialAccount: nil,
                accountChangedMustBeCalled: true,
                expectedAccount: selectedAccount)

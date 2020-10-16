@@ -24,7 +24,8 @@ extension Identity {
     ///   - addressBookID: Apple Contacts ID. `nil` values are ignored.
     /// - Returns: true if the instance has been updated, false otherwize.
     @discardableResult
-    public func update(userName: String? = nil, addressBookID: String? = nil) -> Updated {
+    public func update(userName: String? = nil,
+                       addressBookID: String? = nil) -> Updated {
         var updated = false
         if let name = userName, name != self.userName {
             cdObject.userName = name

@@ -11,7 +11,6 @@ import XCTest
 import CoreData
 import pEpIOSToolbox
 
-//!!!: move to MM
 extension CdAccount {
     /**
      - Note: The test for the `sendFrom` identity is very strict and will fail

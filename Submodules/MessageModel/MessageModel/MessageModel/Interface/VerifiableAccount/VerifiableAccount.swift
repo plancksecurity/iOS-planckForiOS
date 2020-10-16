@@ -6,9 +6,10 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import PantomimeFramework
 import CoreData
-import PEPObjCAdapterFramework
+
+import PantomimeFramework
+import pEpIOSToolbox
 
 extension VerifiableAccount {
     public enum AccountType: CaseIterable {
@@ -82,7 +83,6 @@ public class VerifiableAccount: VerifiableAccountProtocol {
          automaticallyTrustedImapServer: Bool = false,
          manuallyTrustedImapServer: Bool = false,
          keySyncEnable: Bool = true,
-         alsoCreatePEPFolder: Bool = false,
          containsCompleteServerInfo: Bool = false,
          usePEPFolderProvider: UsePEPFolderProviderProtocol? = nil) {
         self.verifiableAccountDelegate = verifiableAccountDelegate
@@ -264,8 +264,7 @@ extension VerifiableAccount {
 extension VerifiableAccount {
     private func findOrCreateAccount(context: NSManagedObjectContext,
                                      identity: CdIdentity) -> CdAccount {
-        let p = NSPredicate(format: "%K = %@" ,
-                            CdAccount.RelationshipName.identity, identity)
+        let p = CdAccount.PredicateFactory.belongingToIdentity(identity: identity)
         if let cdAccount = CdAccount.first(predicate: p, in: context) {
             return cdAccount
         } else {

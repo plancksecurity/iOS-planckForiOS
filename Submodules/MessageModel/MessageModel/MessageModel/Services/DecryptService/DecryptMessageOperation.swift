@@ -54,7 +54,7 @@ extension DecryptMessageOperation {
         }
 
         var inOutFlags = cdMessageToDecrypt.isOnTrustedServer ? PEPDecryptFlags.none : .untrustedServer
-        var inOutMessage = cdMessageToDecrypt.pEpMessage(outgoing: false)
+        var inOutMessage = cdMessageToDecrypt.pEpMessage()
         var fprsOfExtraKeys = CdExtraKey.fprsOfAllExtraKeys(in: moc)
         var rating = PEPRating.undefined
         var pEpDecryptedMessage: PEPMessage? = nil
@@ -65,7 +65,7 @@ extension DecryptMessageOperation {
         var isAFormerlyEncryptedReuploadedMessage = false
         let group = DispatchGroup()
         group.enter()
-        PEPAsyncSession().decryptMessage(inOutMessage, flags: inOutFlags, extraKeys: fprsOfExtraKeys, errorCallback: { (error) in
+        PEPSession().decryptMessage(inOutMessage, flags: inOutFlags, extraKeys: fprsOfExtraKeys, errorCallback: { (error) in
             nsError = error as NSError
             group.leave()
         }) { (pEpSourceMessage, pEpDecryptedMsg, keyList, pEpRating, decryptFlags, isFormerlyEncryptedReuploadedMessage) in
@@ -82,16 +82,14 @@ extension DecryptMessageOperation {
         if let error = nsError {
             // An error occured
             if error.domain == PEPObjCAdapterEngineStatusErrorDomain {
-                switch error.code {
-                case Int(PEPStatus.passphraseRequired.rawValue),
-                     Int(PEPStatus.wrongPassphrase.rawValue):
+                if error.isPassphraseError {
                     // The adapter is responsible to handle this case.
+                    Log.shared.error("Passphrase error trying to decrypt a message")
                     return
-                default:
-                    Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
-                    addError(BackgroundError.GeneralError.illegalState(info:
-                        "##\nError: \(error)\ndecrypting message: \(cdMessageToDecrypt)\n##"))
                 }
+                Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
+                addError(BackgroundError.GeneralError.illegalState(info:
+                    "##\nError: \(error)\ndecrypting message: \(cdMessageToDecrypt)\n##"))
             } else if error.domain == PEPObjCAdapterErrorDomain {
                 Log.shared.errorAndCrash("Unexpected ")
                 addError(BackgroundError.GeneralError.illegalState(info:
@@ -197,7 +195,8 @@ extension DecryptMessageOperation {
     private func updatePossibleFakeMessage(forFetchedMessage cdMessage: CdMessage,
                                            pEpDecryptedMessage: PEPMessage?) -> CdMessage {
         guard let uuid = pEpDecryptedMessage?.messageID else {
-            Log.shared.errorAndCrash("No uuid")
+            //Valid case. No message can be found because the it has been deleted from the DB.
+            // Probably the user deleted the belonging Account
             return cdMessage
         }
 

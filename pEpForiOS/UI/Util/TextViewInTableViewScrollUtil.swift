@@ -18,7 +18,13 @@ class TextViewInTableViewScrollUtil {
                                                            valueOptions: .strongMemory)
 
     func layoutAfterTextDidChange(tableView: UITableView, textView: UITextView) {
+        if textView.text == "" {
+            // If not calling updateSize() for empty text, the textView.width == 0
+            // (the user can not tab into it because of zero size)
+            tableView.updateSize()
+        }
         if heightDidChange(for: textView) {
+            // The textview height changed,thus we must update the contaner cell's size.
             tableView.updateSize()
         }
         self.scrollCaretToVisible(tableView: tableView, textView: textView)

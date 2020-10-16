@@ -11,7 +11,10 @@ import MessageModel
 import SwipeCellKit
 
 final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
+
     static public let storyboardId = "EmailListViewCell"
+
+    @IBOutlet weak var firstLineStackView: UIStackView!
 
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var subjectLabel: UILabel!
@@ -80,10 +83,6 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
         resetToDefault()
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-    }
-
     public func configure(for viewModel: MessageViewModel) {
         self.viewModel = viewModel
 
@@ -91,8 +90,10 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
         // _after_ this function has ended and the cell has already been
         // layouted, leading to a smaller cell than usual.
         summaryLabel.text = " "
-
+        summaryLabel.font = UIFont.pepFont(style: .subheadline, weight: .regular)
+        addressLabel.font = UIFont.pepFont(style: .body, weight: .regular)
         addressLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.displayedUsername)
+        subjectLabel.font = UIFont.pepFont(style: .subheadline, weight: .regular)
         subjectLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.subject)
 
         viewModel.bodyPeekCompletion = { [weak self] bodyPeek in
@@ -104,6 +105,7 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
 
         hasAttachment = viewModel.showAttchmentIcon
         dateLabel.text = viewModel.dateText
+        dateLabel.font = UIFont.pepFont(style: .subheadline, weight: .regular)
 
         // Message threading is not supported. Let's keep it for now. It might be helpful for
         // reimplementing.
@@ -156,8 +158,8 @@ extension EmailListViewCell {
     //    }
 
     private func setPepRatingImage(image: UIImage?) {
-        self.ratingImage.image = image
-        self.ratingImage.isHidden = (image == nil)
+        ratingImage.image = image
+        ratingImage.isHidden = (image == nil)
     }
 
     private func setContactImage(image: UIImage?) {
@@ -218,12 +220,8 @@ extension EmailListViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: false)
         let viewForHighlight = UIView()
-        self.selectedBackgroundView = viewForHighlight
-        if self.isEditing {
-            viewForHighlight.backgroundColor = UIColor.clear
-        } else {
-            viewForHighlight.backgroundColor = originalBackgroundSelectionColor
-        }
+        selectedBackgroundView = viewForHighlight
+        viewForHighlight.backgroundColor = isEditing ? .clear : originalBackgroundSelectionColor
     }
 
     /// - Returns: " " (a space) instead of an empty String, otherwise the original String

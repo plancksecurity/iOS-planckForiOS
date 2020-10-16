@@ -11,7 +11,7 @@ import ContactsUI
 import pEpIOSToolbox
 
 /// Represents ContactsUI for "add a contact" to the system address book
-class AddToContactsViewController: BaseViewController {
+class AddToContactsViewController: UIViewController {
     static let storyboardId = "AddToContactsViewController"
     /// Known data of the contact.
     /// Currently only email is supported.

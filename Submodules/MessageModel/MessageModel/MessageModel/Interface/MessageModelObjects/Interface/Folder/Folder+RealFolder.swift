@@ -15,7 +15,7 @@ extension Folder: RealFolderProtocol  {
      */
     public func updateLastLookAt() {
         lastLookedAt = Date()
-        save()
+        session.commit()
     }
 
 }

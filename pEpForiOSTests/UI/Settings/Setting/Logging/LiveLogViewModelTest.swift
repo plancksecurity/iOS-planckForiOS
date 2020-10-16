@@ -1,0 +1,65 @@
+//
+//  LiveLogViewModelTest.swift
+//  pEpForiOSTests
+//
+//  Created by Dirk Zimmermann on 07.10.20.
+//  Copyright © 2020 p≡p Security S.A. All rights reserved.
+//
+
+import XCTest
+
+@testable import pEpForiOS
+import pEpIOSToolbox
+
+class LiveLogViewModelTest: XCTestCase {
+    let logUpdateInterval = 0.3
+
+    func testCoupleOfLines() {
+        let vm = LiveLogViewModel()
+        vm.updateInterval = logUpdateInterval
+        let expLogged = expectation(description: "expLogged")
+        let delegateMock = LiveLogMock(expLogged: expLogged)
+        vm.delegate = delegateMock
+
+        let logLines = ["line1", "line2", "line3"]
+        for line in logLines {
+            Log.shared.logWarn(message: line)
+        }
+
+        wait(for: [expLogged], timeout: TestUtil.waitTimeCoupleOfSeconds)
+        XCTAssertFalse(delegateMock.logEntries.isEmpty)
+    }
+
+    func testRepeatingCoupleOfLines() {
+        let vm = LiveLogViewModel()
+        vm.updateInterval = logUpdateInterval
+        let expLogged = expectation(description: "expLogged")
+        expLogged.expectedFulfillmentCount = 2
+        let delegateMock = LiveLogMock(expLogged: expLogged)
+        vm.delegate = delegateMock
+
+        let logLines = ["line1", "line2", "line3"]
+        for line in logLines {
+            Log.shared.logWarn(message: line)
+        }
+
+        wait(for: [expLogged], timeout: TestUtil.waitTime)
+        XCTAssertFalse(delegateMock.logEntries.isEmpty)
+    }
+}
+
+class LiveLogMock: LiveLogViewModelDelegate {
+    var logEntries = [String]()
+    var expLogged: XCTestExpectation?
+
+    init(expLogged: XCTestExpectation? = nil) {
+        self.expLogged = expLogged
+    }
+
+    func updateLogContents(logString: String) {
+        if !logString.isEmpty {
+            logEntries.append(logString)
+        }
+        expLogged?.fulfill()
+    }
+}

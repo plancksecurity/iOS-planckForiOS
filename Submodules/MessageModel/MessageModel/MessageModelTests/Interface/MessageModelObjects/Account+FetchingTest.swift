@@ -31,7 +31,7 @@ class Acount_FetchingTest: PersistentStoreDrivenTestBase {
                                               moc: moc)
         let account3 = cdAccount3.account()
         account3.imapServer!.automaticallyTrusted = true
-        account3.save()
+        account3.session.commit()
 
         moc.saveAndLogErrors()
     }

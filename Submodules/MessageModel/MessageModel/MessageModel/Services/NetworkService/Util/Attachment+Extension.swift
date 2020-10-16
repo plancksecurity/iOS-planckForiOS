@@ -8,6 +8,8 @@
 
 import Foundation
 
+import pEpIOSToolbox
+
 extension Attachment {
     /// Is this attachment meant to show to the user?
     public func isViewable() -> Bool {
@@ -22,7 +24,7 @@ extension Attachment {
             return false
         }
         if contentDisposition == .inline,
-            mimeType?.lowercased() == MimeTypeUtils.MimesType.plainText {
+        mimeType?.lowercased() == MimeTypeUtils.MimeType.plainText.rawValue {
             return false
         }
         return true

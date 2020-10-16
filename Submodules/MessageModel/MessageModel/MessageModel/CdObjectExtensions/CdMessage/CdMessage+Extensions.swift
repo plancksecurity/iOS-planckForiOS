@@ -8,8 +8,10 @@
 
 import CoreData
 
+import pEpIOSToolbox
+
 extension CdMessage {
-    public typealias Uid = Int32
+    typealias Uid = Int32
 }
 
 // MARK: - Validation
@@ -27,58 +29,8 @@ extension CdMessage {
 
 extension CdMessage {
     //!!!: rename in DB
-    public var messageID: String? {
+    var messageID: String? {
         return uuid
-    }
-
-    static func by(uuid: MessageID,
-                   account: CdAccount,
-                   context: NSManagedObjectContext) -> [CdMessage] {
-        return CdMessage.all(
-            predicate: NSPredicate(format: "%K = %@ AND %K = %@",
-                                   CdMessage.AttributeName.uuid,
-                                   uuid,
-                                   RelationshipKeyPath.cdMessage_parent_account,
-                                   account), in: context) as? [CdMessage] ?? []
-    }
-
-    static func by(uuid: MessageID,
-                   uid: UInt,
-                   account: CdAccount,
-                   context: NSManagedObjectContext) -> CdMessage? {
-        return CdMessage.first(predicate:
-            NSPredicate(format: "uuid = %@ AND uid = %d AND parent.account.identity.address = %@",
-                        uuid, uid, account.identity!.address!),
-                               in: context)
-    }
-
-    static func by(uuid: MessageID,
-                   folderName: String,
-                   account: CdAccount,
-                   includingDeleted: Bool = true,
-                   context: NSManagedObjectContext) -> CdMessage? {
-        let p = NSPredicate(format: "uuid = %@ and parent.name = %@ AND parent.account = %@",
-                            uuid, folderName, account)
-        guard
-            let messages = CdMessage.all(predicate: p,
-                                         in: context) as? [CdMessage]
-            else {
-                return nil
-        }
-        var found = messages
-        if !includingDeleted {
-            found = found.filter { $0.imapFields(context: context).imapFlags().deleted == false }
-        }
-
-        if found.count > 1 {
-            //filter fake msgs
-            found = found.filter { $0.uid != -1 }
-            if found.count > 1 {
-                Log.shared.errorAndCrash("ultiple messages with UUID %@ in folder %@. Messages: %@",
-                                         uuid, folderName, found)
-            }
-        }
-        return found.first
     }
 
     /// Calls:
@@ -87,7 +39,7 @@ extension CdMessage {
     ///
     /// - Parameter message: message to search for
     /// - Returns: existing message if found, nil otherwize
-    public static func search(message: Message) -> CdMessage? {
+    static func search(message: Message) -> CdMessage? {
         guard  let cdAccount = message.cdObject.parent?.account else {
             Log.shared.errorAndCrash("Account not found?")
             return nil
@@ -102,7 +54,7 @@ extension CdMessage {
     /// Searches message by UID + UUID + foldername + parentFolder.account.
     /// - Parameter message: message to search for
     /// - Returns: existing message if found, nil otherwize
-    static public func search(uid: Uid?,
+    static func search(uid: Uid?,
                               uuid: String,
                               folderName folder: String?,
                               inAccount account: CdAccount,
@@ -138,7 +90,7 @@ extension CdMessage {
         }
     }
 
-    public func replace(referenceStrings: [String], context: NSManagedObjectContext) {
+    func replace(referenceStrings: [String], context: NSManagedObjectContext) {
         let refs = referenceStrings.map {
             addMessageReference(messageID: $0, referenceType: .reference, context: context)
         }
@@ -179,11 +131,11 @@ extension CdMessage {
  */
 extension CdMessage {
     @available(*, deprecated, message: "Use MessageModelObjectUtils.getMessage(fromCdMessage:)")
-    public func message() -> Message? {
+    func message() -> Message? {
         return MessageModelObjectUtils.getMessage(fromCdMessage: self)
     }
 
-    public func delete(context: NSManagedObjectContext) {
+    func delete(context: NSManagedObjectContext) {
         context.delete(self)
         CdHeaderField.deleteOrphans(context: context)
     }

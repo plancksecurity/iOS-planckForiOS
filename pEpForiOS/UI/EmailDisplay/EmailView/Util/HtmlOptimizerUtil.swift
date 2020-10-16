@@ -8,6 +8,8 @@
 
 import Foundation
 
+import pEpIOSToolbox
+
 protocol HtmlOptimizerUtilProtocol {
     /// Optimizes a given HTML for displaying.
     /// The optimization process might or might not (depending on the HTML) process heavy parsing
@@ -61,7 +63,7 @@ extension HtmlOptimizerUtil {
         var html = html
         // Remove existing viewport definitions that are pontentially unsupported by WKWebview.
         html.removeRegexMatches(of: "<meta name=\\\"viewport\\\".*?>")
-
+        html.removeFontFaces()
 
         // Define viewport WKWebview can deal with
         let screenWidth = UIScreen.main.bounds.width

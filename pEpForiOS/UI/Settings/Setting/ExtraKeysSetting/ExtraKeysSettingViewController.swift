@@ -6,13 +6,15 @@
 //  Copyright © 2019 p≡p Security S.A. All rights reserved.
 //
 
-class ExtraKeysSettingViewController: BaseViewController {
+import pEpIOSToolbox
+
+class ExtraKeysSettingViewController: UIViewController {
     static private let uiTableViewCellID = "ExtraKeysSettingCell"
 
-    @IBOutlet weak var addExtraKeyButton: UIButton!
-    @IBOutlet weak var addFprView: UIStackView!
-    @IBOutlet weak var fpr: UITextView!
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet private weak var addExtraKeyButton: UIButton!
+    @IBOutlet private weak var addFprView: UIStackView!
+    @IBOutlet private weak var fpr: UITextView!
+    @IBOutlet private weak var tableView: UITableView!
 
     private var viewModel: ExtraKeysSettingViewModel?
 
@@ -29,6 +31,8 @@ class ExtraKeysSettingViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         fpr.delegate = self
+        fpr.font = UIFont.pepFont(style: .callout, weight: .regular)
+        addExtraKeyButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
         subscribeForKeyboardNotifications()
     }
 
@@ -126,6 +130,7 @@ extension ExtraKeysSettingViewController: UITableViewDataSource {
         // Multi line to avoud truncation of FPRs
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.text = viewModel?[indexPath.row]
+        cell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
 
         return cell
     }
@@ -147,7 +152,7 @@ extension ExtraKeysSettingViewController: UITableViewDataSource {
             UITableViewRowAction(style: .destructive, title: title) {
                 [weak self] (action , indexPath) -> Void in
                 guard let me = self, let vm = me.viewModel else {
-                    Log.shared.errorAndCrash("Uups")
+                    Log.shared.lostMySelf()
                     return
                 }
                 vm.handleDeleteActionTriggered(for: indexPath.row)

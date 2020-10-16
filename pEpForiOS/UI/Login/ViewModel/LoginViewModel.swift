@@ -143,7 +143,7 @@ final class LoginViewModel {
 
         func libAccoutSettingsStatusOK() {
             if let error = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
-                Log.shared.error("%@", "\(error)")
+                Log.shared.log(error: error)
                 loginViewModelLoginErrorDelegate?.handle(loginError: error)
                 return
             }
@@ -230,7 +230,7 @@ extension LoginViewModel {
         do {
             try verifiableAccount.verify()
         } catch {
-            Log.shared.error("%@", "\(error)")
+            Log.shared.log(error: error)
             loginViewModelLoginErrorDelegate?.handle(loginError: error)
         }
     }
@@ -268,7 +268,7 @@ extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
     func didQualify(serverName: String, isLocal: Bool?, error: Error?) {
         GCD.onMain { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             if let err = error {
@@ -305,7 +305,7 @@ extension LoginViewModel: VerifiableAccountDelegate {
             do {
                 try verifiableAccount.save() { [weak self] success in
                     guard let me = self else {
-                        Log.shared.errorAndCrash("Lost MySelf")
+                        // Valid case. We might have been dismissed already.
                         return
                     }
                     me.informAccountVerificationResultDelegate(error: nil)

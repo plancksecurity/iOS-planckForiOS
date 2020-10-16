@@ -7,13 +7,15 @@
 //
 
 import Foundation
-import PEPObjCAdapterFramework
 import CoreData
+
+import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 extension CdIdentity {
     func fingerprint(completion: @escaping (String?) -> ()) {
         let pEpID = pEpIdentity()
-        PEPAsyncSession().update(pEpID,
+        PEPSession().update(pEpID,
                                  errorCallback: { _ in
                                     completion(nil)
         }) { updatedIdentity in
@@ -56,9 +58,8 @@ extension CdIdentity {
                            language: nil)
     }
 
-    //!!!: MUST become internal after tests have been moved
-    public static func from(pEpContact: PEPIdentity?,
-                            context: NSManagedObjectContext) -> CdIdentity? {
+    static func from(pEpContact: PEPIdentity?,
+                     context: NSManagedObjectContext) -> CdIdentity? {
         guard let pEpC = pEpContact else {
             return nil
         }
@@ -91,12 +92,24 @@ extension CdIdentity {
         return contacts
     }
 
-    func pEpRating(completion: @escaping (PEPRating)->Void) {
-        PEPUtils.pEpRating(cdIdentity: self, completion: completion)
+    func pEpRating(completion: @escaping (PEPRating) -> Void) {
+        PEPUtils.pEpRating(cdIdentity: self) { rating in
+            completion(rating.pEpRating())
+        }
     }
 
     func pEpColor(context: NSManagedObjectContext = Stack.shared.mainContext,
-                  completion: @escaping (PEPColor)->Void) {
+                  completion: @escaping (PEPColor) -> Void) {
         PEPUtils.pEpColor(cdIdentity: self, context: context, completion: completion)
+    }
+
+    /// Converts a typical core data set of CdIdentities into pEp identities.
+    static func pEpIdentities(cdIdentitiesSet: NSOrderedSet?) -> [PEPIdentity]? {
+        guard let cdIdentities = cdIdentitiesSet?.array as? [CdIdentity] else {
+            return nil
+        }
+        return cdIdentities.map {
+            return $0.pEpIdentity()
+        }
     }
 }

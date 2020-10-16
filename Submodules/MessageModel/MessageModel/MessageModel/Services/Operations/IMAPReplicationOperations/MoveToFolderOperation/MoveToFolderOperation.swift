@@ -9,6 +9,7 @@
 import CoreData
 
 import PantomimeFramework
+import pEpIOSToolbox
 
 /// Moves all messages in the given folder to targetFolder if parent != tagetfolder.
 class MoveToFolderOperation: ImapSyncOperation {
@@ -30,7 +31,7 @@ class MoveToFolderOperation: ImapSyncOperation {
     }
 
     override public func main() {
-        if !checkImapSync() {
+        if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
         }

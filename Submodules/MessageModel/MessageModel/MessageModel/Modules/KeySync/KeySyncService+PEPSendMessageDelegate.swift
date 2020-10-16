@@ -9,11 +9,12 @@
 import CoreData
 
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 extension KeySyncService: PEPSendMessageDelegate {
 
     func send(_ message: PEPMessage) -> PEPStatus {
-        guard let address = message.from?.address else {
+            guard let address = message.from?.address else {
             return PEPStatus.illegalValue
         }
 

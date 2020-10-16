@@ -7,7 +7,9 @@
 //
 
 import XCTest
+
 @testable import MessageModel
+import pEpIOSToolbox
 
 class Attachment_ExtensionTests: PersistentStoreDrivenTestBase {
 
@@ -15,7 +17,7 @@ class Attachment_ExtensionTests: PersistentStoreDrivenTestBase {
         // GIVEN
         let attachmentTest = TestUtil.createAttachmentNamed()
         attachmentTest.data = Data()
-        attachmentTest.mimeType = ContentTypeUtils.ContentType.plainText
+        attachmentTest.mimeType = MimeTypeUtils.MimeType.plainText.rawValue
         attachmentTest.contentDisposition = .inline
 
         // WHEN
@@ -42,7 +44,7 @@ class Attachment_ExtensionTests: PersistentStoreDrivenTestBase {
         // GIVEN
         let attachmentTest = TestUtil.createAttachment()
         attachmentTest.data = Data()
-        attachmentTest.mimeType = ContentTypeUtils.ContentType.pgpKeys
+        attachmentTest.mimeType = MimeTypeUtils.MimeType.pgpKeys.rawValue
 
         // WHEN
         let isViewable = attachmentTest.isViewable()
@@ -55,7 +57,7 @@ class Attachment_ExtensionTests: PersistentStoreDrivenTestBase {
         // GIVEN
         let attachmentTest = TestUtil.createAttachment()
         attachmentTest.data = Data()
-        attachmentTest.mimeType = MimeTypeUtils.MimesType.pgp
+        attachmentTest.mimeType = MimeTypeUtils.MimeType.pgp.rawValue
 
         // WHEN
         let isViewable = attachmentTest.isViewable()

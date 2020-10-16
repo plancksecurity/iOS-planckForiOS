@@ -8,22 +8,14 @@
 
 import Foundation
 import CoreData
+
 import PantomimeFramework
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 // MARK: - Internal
 
 extension PEPUtils {
-
-    static func add(pEpIdentities: [PEPIdentity], toPantomimeMessage: CWIMAPMessage,
-                    recipientType: PantomimeRecipientType) {
-        let addresses = pantomime(
-            pEpIdentities: pEpIdentities, recipientType: recipientType)
-        for a in addresses {
-            toPantomimeMessage.addRecipient(a)
-        }
-    }
-
     /// Converts a given `CdMessage` into the equivalent `CWIMAPMessage`.
     static func pantomime(cdMessage: CdMessage) -> CWIMAPMessage {
         return pantomime(pEpMessage: cdMessage.pEpMessage())
@@ -40,6 +32,7 @@ extension PEPUtils {
             return theBodyParts[0]
         } else if theBodyParts.count > 1 {
             let partAlt = CWPart()
+            partAlt.setContentDisposition(PantomimeInlineDisposition)
             partAlt.setContentType(ContentTypeUtils.ContentType.multipartAlternative)
             let partMulti = CWMIMEMultipart()
             for part in theBodyParts {
@@ -69,22 +62,27 @@ extension PEPUtils {
         }
         return ratingFromInt
     }
+
+    static func pEpColor(cdIdentity: CdIdentity,
+                         context: NSManagedObjectContext = Stack.shared.mainContext,
+                         completion: @escaping (PEPColor) -> Void) {
+        pEpRating(cdIdentity: cdIdentity, context: context) { (rating) in
+            completion(rating.pEpRating().pEpColor())
+        }
+    }
+
+    static func pEpColor(pEpRating: PEPRating?) -> PEPColor {
+        if let rating = pEpRating {
+            return PEPSession().color(from: rating)
+        } else {
+            return PEPColor.noColor
+        }
+    }
 }
 
 // MARK: - Private
 
 extension PEPUtils {
-
-    /// Converts a list of pEp identities of a given receiver type to a list of pantomime recipients.
-    private static func pantomime(pEpIdentities: [PEPIdentity],
-                                  recipientType: PantomimeRecipientType) -> [CWInternetAddress] {
-        return pEpIdentities.map {
-            let pant = pantomime(pEpIdentity: $0)
-            pant.setType(recipientType)
-            return pant
-        }
-    }
-
     /// Converts the given long message (may be HTML) into a pantomime part.
     ///
     /// The content will be encoded (base64), to avoid exceeding MIME line length limits.
@@ -101,6 +99,7 @@ extension PEPUtils {
             part.setContent(t.data(using: String.Encoding.utf8) as NSObject?)
             part.setCharset("UTF-8")
             part.setContentTransferEncoding(PantomimeEncodingBase64)
+            part.setContentDisposition(PantomimeInlineDisposition)
             return part
         }
         return nil
@@ -110,11 +109,11 @@ extension PEPUtils {
         var parts: [CWPart] = []
 
         if let part = makeLongMessagePart(text: pEpMessage.longMessage,
-                                          contentType: ContentTypeUtils.ContentType.plainText) {
+                                          contentType: MimeTypeUtils.MimeType.plainText.rawValue) {
             parts.append(part)
         }
         if let part = makeLongMessagePart(text: pEpMessage.longMessageFormatted,
-                                          contentType: ContentTypeUtils.ContentType.html) {
+                                          contentType: MimeTypeUtils.MimeType.html.rawValue) {
             parts.append(part)
         }
 

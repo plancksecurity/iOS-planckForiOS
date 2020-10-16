@@ -16,15 +16,6 @@ public struct ViewBusyState {
 }
 
 extension UIView {
-    func dumpConstraints(axis: NSLayoutConstraint.Axis) {
-        let constrs = constraintsAffectingLayout(for: axis)
-        if constrs.isEmpty {
-            print("no constraints")
-        }
-        for con in constrs {
-            print("\(con)")
-        }
-    }
 
     /**
      Marks the view as busy, e.g. by adding some spinning animation view.

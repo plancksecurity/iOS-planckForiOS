@@ -8,7 +8,6 @@
 
 import MessageModel
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
 
 protocol ComposeViewModelDelegate: class {
 
@@ -30,7 +29,7 @@ protocol ComposeViewModelDelegate: class {
 
     func sectionChanged(section: Int)
 
-    func colorBatchNeedsUpdate(for rating: PEPRating, protectionEnabled: Bool)
+    func colorBatchNeedsUpdate(for rating: Rating, protectionEnabled: Bool)
 
     func hideSuggestions()
 
@@ -43,6 +42,8 @@ protocol ComposeViewModelDelegate: class {
     func hideMediaAttachmentPicker()
 
     func showDocumentAttachmentPicker()
+
+    func showContactsPicker()
 
     func documentAttachmentPickerDone()
 
@@ -106,15 +107,20 @@ class ComposeViewModel {
          prefilledTo: Identity? = nil,
          prefilledFrom: Identity? = nil,
          originalMessage: Message? = nil) {
-        let initData = InitData(withPrefilledToRecipient: prefilledTo,
-                                prefilledFromSender: prefilledFrom,
-                                orForOriginalMessage: originalMessage,
-                                composeMode: composeMode)
+        let initData = InitData(prefilledTo: prefilledTo, prefilledFrom: prefilledFrom, originalMessage: originalMessage, composeMode: composeMode)
         self.state = ComposeViewModelState(initData: initData)
         self.state.delegate = self
         setup()
     }
 
+    
+    init(mailTo: Mailto) {
+        let initData = InitData(mailto: mailTo)
+        self.state = ComposeViewModelState(initData: initData)
+        self.state.delegate = self
+        setup()
+    }
+    
     init(state : ComposeViewModelState) {
         self.state = state
         self.state.delegate = self
@@ -147,8 +153,12 @@ class ComposeViewModel {
         }
     }
 
-    public func beforePickerFocus() -> IndexPath {
+    public func beforeDocumentAttachmentPickerFocus() -> IndexPath {
         return indexPathBodyVm
+    }
+
+    public func beforeContactsPickerFocus() -> IndexPath {
+        return lastRowWithSuggestions ?? indexPathBodyVm
     }
 
     public func handleUserSelectedRow(at indexPath: IndexPath) {
@@ -168,7 +178,7 @@ class ComposeViewModel {
         let safeState = state.makeSafe(forSession: Session.main)
         let sendClosure = { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
@@ -176,7 +186,7 @@ class ComposeViewModel {
                 return
             }
             msg.sent = Date()
-            msg.save()
+            msg.session.commit()
 
             guard let data = me.state.initData else {
                 Log.shared.errorAndCrash("No data")
@@ -192,7 +202,7 @@ class ComposeViewModel {
 
         showAlertFordwardingLessSecureIfRequired(forState: safeState) { [weak self] (accepted) in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             guard accepted else {
@@ -280,7 +290,7 @@ extension ComposeViewModel {
             completion(true)
             return
         }
-        var originalRating: PEPRating? = nil //!!!: BUFF: AFAIU originalRating MUST NOT taken be taken into account any more since IOS-2414
+        var originalRating: Rating? = nil //!!!: BUFF: AFAIU originalRating MUST NOT taken be taken into account any more since IOS-2414
         let group = DispatchGroup()
         group.enter()
         originalMessage.pEpRating { (rating) in
@@ -339,7 +349,7 @@ extension ComposeViewModel: ComposeViewModelStateDelegate {
     }
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
-                               didChangePEPRatingTo newRating: PEPRating) {
+                               didChangePEPRatingTo newRating: Rating) {
         delegate?.colorBatchNeedsUpdate(for: newRating, protectionEnabled: state.pEpProtection)
     }
 
@@ -418,7 +428,8 @@ extension ComposeViewModel {
                 rows.append(BodyCellViewModel(resultDelegate: cellVmDelegate,
                                               initialPlaintext: state?.initData?.bodyPlaintext,
                                               initialAttributedText: state?.initData?.bodyHtml,
-                                              inlinedAttachments: state?.initData?.inlinedAttachments))
+                                              inlinedAttachments: state?.initData?.inlinedAttachments,
+                                              account: state?.from))
             case .attachments:
                 for att in state?.nonInlinedAttachments ?? [] {
                     rows.append(AttachmentViewModel(attachment: att))
@@ -550,7 +561,7 @@ extension ComposeViewModel {
 
 extension ComposeViewModel {
     func suggestViewModel() -> SuggestViewModel {
-        let createe = SuggestViewModel(resultDelegate: self)
+        let createe = SuggestViewModel(from: state.from, resultDelegate: self)
         suggestionsVM = createe
         return createe
     }
@@ -716,7 +727,7 @@ extension ComposeViewModel {
     func canDoHandshake(completion: @escaping (Bool)->Void) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.state.canHandshake(completion: completion)
@@ -788,6 +799,27 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         delegate?.showSuggestions(forRowAt: idxPath)
         suggestionsVM?.updateSuggestion(searchString: newText.cleanAttachments)
     }
+
+// MARK: - Add Contact
+
+    func addContactTapped() {
+        delegate?.showContactsPicker()
+    }
+
+    func handleContactSelected(address: String, addressBookID: String, userName: String) {
+        guard
+            let idxPath = lastRowWithSuggestions,
+            let recipientVM = sections[idxPath.section].rows[idxPath.row] as? RecipientCellViewModel
+            else {
+                Log.shared.errorAndCrash("No row VM")
+                return
+        }
+        let contactIdentity = Identity(address: address, userID: nil,
+                                       addressBookID: addressBookID,
+                                       userName: userName,
+                                       session: Session.main)
+        recipientVM.add(recipient: contactIdentity)
+    }
 }
 
 // MARK: AccountCellViewModelResultDelegate
@@ -812,7 +844,7 @@ extension ComposeViewModel: SubjectCellViewModelResultDelegate {
             Log.shared.errorAndCrash("We got called by a non-existing VM?")
             return
         }
-        state.subject = vm.content ?? ""
+        state.subject = vm.content
         delegate?.contentChanged(inRowAt: idxPath)
     }
 }

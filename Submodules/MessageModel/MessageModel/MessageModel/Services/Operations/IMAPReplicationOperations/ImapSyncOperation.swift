@@ -23,7 +23,7 @@ class ImapSyncOperation: ConcurrentBaseOperation {
         super.init(parentName: parentName, context: context, errorContainer: errorContainer)
     }
 
-    func checkImapSync() -> Bool {
+    func checkImapConnection() -> Bool {
         let authenticationCompleted = imapConnection.authenticationCompleted
         let hasErrors = imapConnection.hasError
         if hasErrors || !authenticationCompleted {

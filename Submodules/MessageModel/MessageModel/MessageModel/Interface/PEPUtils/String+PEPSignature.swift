@@ -23,17 +23,20 @@ extension String {
 
         var result = replacingOccurrences(of: pEpSignatureTrimmed, with: String.pEpSignatureHtml)
 
-        //!!!: DIRTY HACK. //ADAM: when an image is inlined, the signature looks like this for some reason.
-        let strangePEPSignaturePattern = #"<p class=\"[\S][\S]\"><span class=\"[\S][\S]\">sent with p<\/span><span class=\"[\S][\S]\">≡<\/span><span class=\"[\S][\S]\">p<\/span><\/p>"#
-        guard let strangePEPSignatureRegex = try? NSRegularExpression(pattern: strangePEPSignaturePattern,
-                                                           options: [])
+        // The signature comes in different formats here for some reason. Search & replace all known versions
+        let strangePEPSignaturePatterns = [#"<p class=\"[\S][\S]\"><span class=\"[\S][\S]\">sent with p<\/span><span class=\"[\S][\S]\">≡<\/span><span class=\"[\S][\S]\">p<\/span><\/p>"#,
+                                           #"<p class=\"p2\"><span class=\"s2\">sent with p&#x2261;p</span></p>"#]
+        for strangePEPSignaturePattern in strangePEPSignaturePatterns {
+            guard let strangePEPSignatureRegex = try? NSRegularExpression(pattern: strangePEPSignaturePattern,
+                                                                          options: [])
             else {
                 return result
+            }
+            result = strangePEPSignatureRegex.stringByReplacingMatches(in: result,
+                                                                       options: [],
+                                                                       range: result.wholeRange(),
+                                                                       withTemplate: String.pEpSignatureHtml)
         }
-        result = strangePEPSignatureRegex.stringByReplacingMatches(in: result,
-                                                                   options: [],
-                                                                   range: result.wholeRange(),
-                                                                   withTemplate: String.pEpSignatureHtml)
         return result
     }
 }

@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+import pEpIOSToolbox
+
 /// Base for an operation that needs to open an IMAP folder to do its work.
 class BaseImapFolderOperation: ImapSyncOperation {
     private var folderToOpen: String
@@ -26,7 +28,7 @@ class BaseImapFolderOperation: ImapSyncOperation {
     }
 
     override open func main() {
-        if !checkImapSync() {
+        if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
         }

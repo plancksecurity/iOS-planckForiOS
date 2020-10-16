@@ -7,10 +7,9 @@
 //
 
 import Foundation
-
 import MessageModel
+
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
 
 class MessageViewModel: CustomDebugStringConvertible {
     static fileprivate var maxBodyPreviewCharacters = 120
@@ -222,8 +221,12 @@ class MessageViewModel: CustomDebugStringConvertible {
         queueForHeavyStuff.addOperation(operation)
     }
 
-    func getSecurityBadge(completion: @escaping (UIImage?)->Void){
-        return message.securityBadgeForContactPicture(completion: completion)
+    func getSecurityBadge(completion: @escaping (UIImage?)->Void) {
+        message.securityBadgeForContactPicture { (image) in
+            DispatchQueue.main.async {
+                completion(image)
+            }
+        }
     }
 
     func getTo()->NSMutableAttributedString {

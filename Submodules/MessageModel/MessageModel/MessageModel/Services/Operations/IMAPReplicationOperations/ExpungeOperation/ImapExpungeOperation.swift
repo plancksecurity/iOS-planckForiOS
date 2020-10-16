@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+import pEpIOSToolbox
+
 /// When run, queries for folders that contain messages that are flagged with (IMAP) \Delete
 /// both locally and on the server, and for each of those folders spawns a
 /// `ExpungeInImapFolderOperation` (via putting it into its `backgroundQueue`)
@@ -45,19 +47,11 @@ class ImapExpungeOperation: ConcurrentBaseOperation {
                 return
             }
 
-            let pImapDeletedLocally = NSPredicate(
-                format: "%K = %d AND %K = %@",
-                RelationshipKeyPath.cdMessage_imap_localFlags_flagDeleted,
-                true,
-                RelationshipKeyPath.cdMessage_parent_account,
-                cdAccount)
+            let pImapDeletedLocally = CdMessage.PredicateFactory
+                .imapDeletedLocally(cdAccount: cdAccount)
 
-            let pImapDeletedOnServer = NSPredicate(
-                format: "%K = %d AND %K = %@",
-                RelationshipKeyPath.cdMessage_imap_serverFlags_flagDeleted,
-                true,
-                RelationshipKeyPath.cdMessage_parent_account,
-                cdAccount)
+            let pImapDeletedOnServer = CdMessage.PredicateFactory
+                .imapDeletedOnServer(cdAccount: cdAccount)
 
             let pImapDeleted = NSCompoundPredicate(
                 andPredicateWithSubpredicates: [pImapDeletedLocally, pImapDeletedOnServer])

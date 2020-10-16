@@ -11,8 +11,9 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
-class ComposeViewModelTest: CoreDataDrivenTestBase {
+class ComposeViewModelTest: AccountDrivenTestBase {
     private var testDelegate: TestDelegate?
     var vm: ComposeViewModel?
     var outbox: Folder? {
@@ -96,8 +97,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     func testSections_accountSelector() {
         let testOriginalMessage = draftMessage(bccSet: false, attachmentsSet: false)
-        let secondAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
-        secondAccount.save()
+        let secondAccount = TestData().createWorkingAccount(number: 1)
+        secondAccount.session.commit()
         assertSections(forVMIniitaliizedWith: testOriginalMessage,
                        expectBccWrapperSectionExists: true,
                        expectAccountSectionExists: true,
@@ -266,7 +267,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     // MARK: - BodyCellViewModelResultDelegate handling
 
     private var bodyVm: BodyCellViewModel {
-        return vm?.bodyVM ?? BodyCellViewModel(resultDelegate: nil)
+        return vm?.bodyVM ?? BodyCellViewModel(resultDelegate: nil,
+                                               account: nil)
     }
 
     func testBodyVM() {
@@ -429,8 +431,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testAccountCellViewModelAccountChangedTo() {
-        let secondAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
-        secondAccount.save()
+        let secondAccount = TestData().createWorkingAccount(number: 1)
+        secondAccount.session.commit()
         assert(contentChangedMustBeCalled: true,
                focusSwitchedMustBeCalled: false,
                validatedStateChangedMustBeCalled: true,
@@ -582,7 +584,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         let msg = message()
         assert(originalMessage: msg)
         let idet = Identity(address: "testShow@Cancel.Actions")
-        idet.save()
+        idet.session.commit()
         vm?.state.toRecipients = [idet]
         guard let testee = vm?.showCancelActions else {
             XCTFail()
@@ -840,7 +842,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testComposeViewModelDidChangePEPRatingTo() {
-        let expectedRating = PEPRating.reliable
+        let expectedRating = Rating.reliable
         vm?.state.pEpProtection = true
         let expectedProtection = vm?.state.pEpProtection ?? false
         assert(contentChangedMustBeCalled: false,
@@ -871,7 +873,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     // MARK: - Delegate Setter Side Effect
 
     func testDelegateSetter() {
-        let expectedRating = PEPRating.undefined
+        let expectedRating = Rating.undefined
         let expectedProtection = true
         assert(contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
@@ -916,7 +918,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     func testHandleRemovedRow_removeAttachment() {
         let msgWithAttachments = draftMessage(attachmentsSet: true)
         msgWithAttachments.appendToAttachments(attachment(ofType: .attachment))
-        msgWithAttachments.save()
+        msgWithAttachments.session.commit()
         assert(originalMessage: msgWithAttachments)
         vm?.state.nonInlinedAttachments = msgWithAttachments.attachments.array
         guard
@@ -969,7 +971,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 //        let originalMessage = draftMessage()
 //        originalMessage.messageID = testMessageId
 //        originalMessage.from = account.user
-//        originalMessage.save()
+//        originalMessage.session.commit()
 //        XCTAssertNotNil(Message.by(uid: originalMessage.uid,
 //                                   uuid: originalMessage.uuid,
 //                                   folderName: originalMessage.parent.name,
@@ -999,7 +1001,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 //        let originalMessage = message(inFolderOfType: .outbox)
 //        originalMessage.messageID = testMessageId
 //        originalMessage.from = account.user
-//        originalMessage.save()
+//        originalMessage.session.commit()
 //        XCTAssertNotNil(Message.by(uid: originalMessage.uid,
 //                                   uuid: originalMessage.uuid,
 //                                   folderName: originalMessage.parent.name,
@@ -1021,7 +1023,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     // MARK: - handleUserChangedProtectionStatus
 
     func testHandleUserChangedProtectionStatus_change() {
-        let expectedRating = PEPRating.undefined
+        let expectedRating = Rating.undefined
         let expectedProtection = false
         assert(contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
@@ -1192,7 +1194,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             return
         }
         let beforeFocus = indexPath(for: bodyVm)
-        let testee = vm?.beforePickerFocus()
+        let testee = vm?.beforeDocumentAttachmentPickerFocus()
         XCTAssertEqual(testee, beforeFocus)
         let toRecipientsIndPath = IndexPath(row: 0, section: 0)
         XCTAssertNotEqual(testee, toRecipientsIndPath)
@@ -1203,7 +1205,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     func testInitialFocus_emptyTo() {
         let originalMessage = draftMessage()
         originalMessage.replaceTo(with: [])
-        originalMessage.save()
+        originalMessage.session.commit()
         assert(originalMessage: originalMessage,
                contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
@@ -1232,7 +1234,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     func testInitialFocus_toSet() {
         let originalMessage = draftMessage()
         originalMessage.replaceTo(with: [account.user])
-        originalMessage.save()
+        originalMessage.session.commit()
         assert(originalMessage: originalMessage,
                contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
@@ -1285,7 +1287,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     private func assureOutboxExists() {
         if outbox == nil {
             let createe = Folder(name: "outbox", parent: nil, account: account, folderType: .outbox)
-            createe.save()
+            createe.session.commit()
         }
         XCTAssertNotNil(outbox)
     }
@@ -1296,7 +1298,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                                  parent: nil,
                                  account: account,
                                  folderType: .drafts)
-            createe.save()
+            createe.session.commit()
         }
         XCTAssertNotNil(drafts)
     }
@@ -1307,7 +1309,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                                  parent: nil,
                                  account: account,
                                  folderType: .sent)
-            createe.save()
+            createe.session.commit()
         }
         XCTAssertNotNil(sent)
     }
@@ -1337,8 +1339,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     private func assertRecipientCellViewModelDidChangeRecipients(
         fieldType type: RecipientCellViewModel.FieldType) {
-        let secondAccount = SecretTestData().createWorkingAccount(number: 1, context: moc)
-        secondAccount.save()
+        let secondAccount = TestData().createWorkingAccount(number: 1)
+        secondAccount.session.commit()
         let om = draftMessage(bccSet: true, attachmentsSet: false)
         assert(originalMessage: om,
                contentChangedMustBeCalled: false,
@@ -1415,7 +1417,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             parent: parentType == .inbox ? nil : account.firstFolder(ofType: .inbox),
             account: account,
             folderType: parentType)
-        folder.save()
+        folder.session.commit()
         let createe = Message(uuid: UUID().uuidString, parentFolder: folder)
         if bccSet {
             createe.replaceBcc(with: [account.user])
@@ -1424,7 +1426,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             let att = attachment()
             createe.replaceAttachments(with: [att])
         }
-        createe.save()
+        createe.session.commit()
         return createe
     }
 
@@ -1432,7 +1434,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         ofType type: Attachment.ContentDispositionType = .attachment ) -> Attachment {
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
         guard
-            let imageData = TestUtil.loadData(fileName: imageFileName),
+            let imageData = MiscUtil.loadData(bundleClass: ComposeViewModelTest.self,
+                                              fileName: imageFileName),
             let image = UIImage(data: imageData) else {
             XCTFail()
             return Attachment(data: nil, mimeType: "meh", contentDisposition: .attachment)
@@ -1484,10 +1487,11 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                         sectionChangedMustBeCalled: Bool? = nil,
                         expectedSection: Int? = nil,
                         colorBatchNeedsUpdateMustBeCalled: Bool? = nil,
-                        expectedRating: PEPRating? = nil,
+                        expectedRating: Rating? = nil,
                         expectedProtectionEnabled: Bool? = nil,
                         hideSuggestionsMustBeCalled: Bool? = nil,
                         showSuggestionsMustBeCalled: Bool? = nil,
+                        showContactsMustBeCalled: Bool? = nil,
                         expectedShowSuggestionsIndexPath: IndexPath? = nil,
                         suggestionsScrollFocusChangedMustBeCalled: Bool? = nil,
                         expectedNewSuggestionsScrollFocusIsVisible: Bool? = nil,
@@ -1565,6 +1569,12 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             expShowSuggestionsCalled?.isInverted = !exp
         }
 
+        var expShowContactsCalled: XCTestExpectation? = nil
+        if let exp = showContactsMustBeCalled {
+            expShowContactsCalled = expectation(description: "expShowContactsCalled")
+            expShowContactsCalled?.isInverted = !exp
+        }
+
         var expShowMediaAttachmentPickerCalled: XCTestExpectation? = nil
         if let exp = showMediaAttachmentPickerMustBeCalled {
             expShowMediaAttachmentPickerCalled =
@@ -1607,6 +1617,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                          expectedProtectionEnabled: expectedProtectionEnabled,
                          expHideSuggestionsCalled: expHideSuggestionsCalled,
                          expShowSuggestionsCalled: expShowSuggestionsCalled,
+                         expShowContactsPickerCalled: expShowContactsCalled,
                          expSuggestionsScrollFocusChangedCalled: expSuggestionsScrollFocusChangedCalled,
                          expectedScrollFocus: expectedNewSuggestionsScrollFocusIsVisible,
                          expectedShowSuggestionsIndexPath: expectedShowSuggestionsIndexPath,
@@ -1625,7 +1636,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         testDelegate?.expColorBatchNeedsUpdateCalled = expColorBatchNeedsUpdateCalled
     }
 
-    private class TestDelegate:  ComposeViewModelDelegate {
+    private class TestDelegate: ComposeViewModelDelegate {
+
         func showTwoButtonAlert(withTitle title: String, message: String, cancelButtonText: String, positiveButtonText: String, cancelButtonAction: @escaping () -> Void, positiveButtonAction: @escaping () -> Void) {
         }
 
@@ -1646,12 +1658,13 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         let expectedSection: Int?
 
         var expColorBatchNeedsUpdateCalled: XCTestExpectation?
-        let expectedRating: PEPRating?
+        let expectedRating: Rating?
         let expectedProtectionEnabled: Bool?
 
         let expHideSuggestionsCalled: XCTestExpectation?
 
         let expShowSuggestionsCalled: XCTestExpectation?
+        let expShowContactsPickerCalled: XCTestExpectation?
         let expectedShowSuggestionsIndexPath: IndexPath?
 
         let expSuggestionsScrollFocusChangedCalled: XCTestExpectation?
@@ -1674,10 +1687,11 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
              expSectionChangedCalled: XCTestExpectation?,
              expectedSection: Int?,
              expColorBatchNeedsUpdateCalled: XCTestExpectation?,
-             expectedRating: PEPRating?,
+             expectedRating: Rating?,
              expectedProtectionEnabled: Bool?,
              expHideSuggestionsCalled: XCTestExpectation?,
              expShowSuggestionsCalled: XCTestExpectation?,
+             expShowContactsPickerCalled: XCTestExpectation?,
              expSuggestionsScrollFocusChangedCalled: XCTestExpectation?,
              expectedScrollFocus: Bool?,
              expectedShowSuggestionsIndexPath: IndexPath?,
@@ -1698,6 +1712,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             self.expectedProtectionEnabled = expectedProtectionEnabled
             self.expHideSuggestionsCalled = expHideSuggestionsCalled
             self.expShowSuggestionsCalled = expShowSuggestionsCalled
+            self.expShowContactsPickerCalled = expShowContactsPickerCalled
             self.expSuggestionsScrollFocusChangedCalled = expSuggestionsScrollFocusChangedCalled
             self.expectedScrollFocus = expectedScrollFocus
             self.expectedShowSuggestionsIndexPath = expectedShowSuggestionsIndexPath
@@ -1757,7 +1772,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             }
         }
 
-        func colorBatchNeedsUpdate(for rating: PEPRating, protectionEnabled: Bool) {
+        func colorBatchNeedsUpdate(for rating: Rating, protectionEnabled: Bool) {
             guard let exp = expColorBatchNeedsUpdateCalled else {
                 // We ignore called or not
                 return
@@ -1788,6 +1803,14 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             if let expected = expectedShowSuggestionsIndexPath {
                 XCTAssertEqual(indexPath, expected)
             }
+        }
+
+        func showContactsPicker() {
+            guard let exp = expShowContactsPickerCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
         }
 
         func suggestions(haveScrollFocus: Bool) {

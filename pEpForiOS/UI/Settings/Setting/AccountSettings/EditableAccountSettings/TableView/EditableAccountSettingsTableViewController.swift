@@ -8,33 +8,51 @@
 
 import UIKit
 
-final class EditableAccountSettingsTableViewController: BaseTableViewController {
+import pEpIOSToolbox
 
-    @IBOutlet weak var nameTextfield: UITextField!
-    @IBOutlet weak var emailTextfield: UITextField!
-    @IBOutlet weak var passwordTextfield: UITextField!
+final class EditableAccountSettingsTableViewController: UITableViewController {
 
-    @IBOutlet weak var imapServerTextfield: UITextField!
-    @IBOutlet weak var imapPortTextfield: UITextField!
-    @IBOutlet weak var imapSecurityTextfield: UITextField!
-    @IBOutlet weak var imapUsernameTextfield: UITextField!
+    @IBOutlet private var stackViews: [UIStackView]!
 
-    @IBOutlet weak var smtpServerTextfield: UITextField!
-    @IBOutlet weak var smtpPortTextfield: UITextField!
-    @IBOutlet weak var smtpSecurityTextfield: UITextField!
-    @IBOutlet weak var smtpUsernameTextfield: UITextField!
-
-    @IBOutlet weak var passwordTableViewCell: UITableViewCell!
-    @IBOutlet weak var securityPicker: UIPickerView!
-
+    @IBOutlet private weak var nameLabel: UILabel!
+    @IBOutlet private weak var nameTextfield: UITextField!
+    @IBOutlet private weak var emailLabel: UILabel!
+    @IBOutlet private weak var emailTextfield: UITextField!
+    @IBOutlet private weak var passwordLabel: UILabel!
+    @IBOutlet private weak var passwordTextfield: UITextField!
+    @IBOutlet private weak var imapServerLabel: UILabel!
+    @IBOutlet private weak var imapServerTextfield: UITextField!
+    @IBOutlet private weak var imapPortLabel: UILabel!
+    @IBOutlet private weak var imapPortTextfield: UITextField!
+    @IBOutlet private weak var imapSecurityTextfield: UITextField!
+    @IBOutlet private weak var imapUsernameTextfield: UITextField!
+    @IBOutlet private weak var imapTransportSecurityLabel: UILabel!
+    @IBOutlet private weak var smtpServerTextfield: UITextField!
+    @IBOutlet private weak var smtpPortTextfield: UITextField!
+    @IBOutlet private weak var smtpSecurityTextfield: UITextField!
+    @IBOutlet private weak var smtpUsernameTextfield: UITextField!
+    @IBOutlet private weak var usernameLabel: UILabel!
+    @IBOutlet private weak var passwordTableViewCell: UITableViewCell!
+    @IBOutlet private weak var securityPicker: UIPickerView!
+    @IBOutlet private weak var serverLabel: UILabel!
+    @IBOutlet private weak var portLabel: UILabel!
+    @IBOutlet private weak var transportSecurityLabel: UILabel!
+    @IBOutlet private weak var smtpUsernameLabel: UILabel!
+    
     var viewModel: EditableAccountSettingsTableViewModel?
 
     private var firstResponder: UITextField?
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.title = title
+        tableView.hideSeperatorForEmptyCells()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setUpView()
+        configureView(for: traitCollection)
+        setFonts()
     }
 }
 
@@ -172,6 +190,7 @@ extension EditableAccountSettingsTableViewController {
         tableView.delegate = self
         smtpSecurityTextfield.inputView = securityPicker
         imapSecurityTextfield.inputView = securityPicker
+        setFonts()
     }
 
     private func isTransportSecurityField() -> Bool {
@@ -182,6 +201,71 @@ extension EditableAccountSettingsTableViewController {
         if isTransportSecurityField(),
             let picker = firstResponder?.inputView as? UIPickerView {
             picker.reloadAllComponents()
+        }
+    }
+}
+
+
+// MARK: - Accessibility
+
+extension EditableAccountSettingsTableViewController {
+
+    /// To support dynamic font with a font size limit we have set the font by code.
+    private func setFonts() {
+        let font = UIFont.pepFont(style: .body, weight: .regular)
+
+        //Name
+        nameLabel.font = font
+        nameTextfield.font = font
+
+        //Email
+        emailLabel.font = font
+        emailTextfield.font = font
+
+        //Password
+        passwordLabel.font = font
+        passwordTextfield.font = font
+
+        //Server
+        serverLabel.font = font
+        imapServerTextfield.font = font
+
+        //Port
+        portLabel.font = font
+        imapPortTextfield.font = font
+
+        //Security
+        transportSecurityLabel.font = font
+        imapSecurityTextfield.font = font
+
+        //SMTP Server
+        smtpServerTextfield.font = font
+
+        //SMTP Server Port
+        smtpPortTextfield.font = font
+
+        //SMTP Server Transport Security
+        smtpSecurityTextfield.font = font
+
+        //SMTP Server Username
+        smtpUsernameLabel.font = font
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+      super.traitCollectionDidChange(previousTraitCollection)
+      if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+        configureView(for: traitCollection)
+      }
+    }
+
+    private func configureView(for traitCollection: UITraitCollection) {
+        let contentSize = traitCollection.preferredContentSizeCategory
+        let axis : NSLayoutConstraint.Axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
+        let spacing : CGFloat = contentSize.isAccessibilityCategory ? 10.0 : 5.0
+
+        stackViews.forEach {
+            $0.axis = axis
+            $0.spacing = spacing
         }
     }
 }

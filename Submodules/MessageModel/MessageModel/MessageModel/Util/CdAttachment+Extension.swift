@@ -12,7 +12,7 @@ extension CdAttachment {
 
     public override func validateForInsert() throws {
         if mimeType == nil {
-           mimeType = MimeTypeUtils.MimesType.defaultMimeType
+            mimeType = MimeTypeUtils.MimeType.defaultMimeType.rawValue
         }
         try super.validateForInsert()
     }
@@ -22,8 +22,7 @@ extension CdAttachment {
      Therefore, call this function.
      */
     public static func deleteOrphans(context: NSManagedObjectContext) {
-        let p = NSPredicate(format: "%K = nil",
-                            CdAttachment.RelationshipName.message)
+        let p = CdAttachment.PredicateFactory.itemsWithoutAnyRelationshipMessage()
         if let orphans = CdAttachment.all(predicate: p, in: context ) as? [CdAttachment] {
             for o in orphans {
                 context.delete(o)

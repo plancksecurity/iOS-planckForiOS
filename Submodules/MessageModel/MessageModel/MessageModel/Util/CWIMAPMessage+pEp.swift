@@ -18,24 +18,24 @@ extension CWIMAPMessage {
         self.init()
 
         if let from = pEpMessage.from {
-            let address = PEPUtils.pantomime(pEpIdentity: from)
+            let address = from.pantomimeAddress()
             self.setFrom(address)
         }
 
         if let recipients = pEpMessage.to {
-            PEPUtils.add(pEpIdentities: recipients,
-                         toPantomimeMessage: self,
-                         recipientType: .toRecipient)
+            PEPIdentity.add(pEpIdentities: recipients,
+                            toPantomimeMessage: self,
+                            recipientType: .toRecipient)
         }
         if let recipients = pEpMessage.cc {
-            PEPUtils.add(pEpIdentities: recipients,
-                         toPantomimeMessage: self,
-                         recipientType: .ccRecipient)
+            PEPIdentity.add(pEpIdentities: recipients,
+                            toPantomimeMessage: self,
+                            recipientType: .ccRecipient)
         }
         if let recipients = pEpMessage.bcc {
-            PEPUtils.add(pEpIdentities: recipients,
-                         toPantomimeMessage: self,
-                         recipientType: .bccRecipient)
+            PEPIdentity.add(pEpIdentities: recipients,
+                            toPantomimeMessage: self,
+                            recipientType: .bccRecipient)
         }
         if let messageID = pEpMessage.messageID {
             self.setMessageID(messageID)
@@ -69,16 +69,18 @@ extension CWIMAPMessage {
             }
         }
 
+        setContentDisposition(PantomimeInlineDisposition)
+
         let attachmentDicts = pEpMessage.attachments ?? []
         if !attachmentDicts.isEmpty {
-            let isEncrypted = PEPUtils.isProbablyPGPMime(pEpMessage: pEpMessage)
+            let isEncrypted = pEpMessage.isProbablyPGPMime()
 
             // Create multipart mail
             let multiPart = CWMIMEMultipart()
             if isEncrypted {
                 self.setContentType(ContentTypeUtils.ContentType.multipartEncrypted)
                 self.setContentTransferEncoding(PantomimeEncoding8bit)
-                self.setParameter(ContentTypeUtils.ContentType.pgpEncrypted, forKey: "protocol")
+                self.setParameter(MimeTypeUtils.MimeType.pgpEncrypted, forKey: "protocol")
             } else {
                 self.setContentType(ContentTypeUtils.ContentType.multipartRelated)
                 self.setContentTransferEncoding(PantomimeEncoding8bit)

@@ -212,12 +212,12 @@
    Display Name TextField Placeholder in Login Screen */
 "Display Name" = "Nom de visualització";
 
-/* Email address placeholder for manual account setup
-   Email TextField Placeholder in Login Screen */
-"E-mail Address" = "Correu electrònic";
-
 /* Email */
 "Email" = "Correu electrònic";
+
+/* Email address placeholder for manual account setup
+   Email TextField Placeholder in Login Screen */
+"Email Address" = "Adreça de correu";
 
 /* Title of alert: a required field is empty */
 "Empty Field" = "Camp buit";
@@ -464,6 +464,9 @@
 
 /* Alert button while client certificate is importing: Try again? No */
 "No" = "No";
+
+/* Error when no account found for set_own_key UI */
+"No account found with the given email address." = "No s'ha trobat cap compte amb el correu electrònic indicat.";
 
 /* Error when no account found for set_own_key UI */
 "No account found with the given email." = "No s'ha trobat cap compte amb el correu electrònic indicat.";
@@ -899,12 +902,6 @@
 /* Alert trust button title before trusting an account */
 "Trust" = "Confia";
 
-/* Action name to be suggested at the moment of revert */
-"Trust Confirmation" = "Confirmació de confiança";
-
-/* Action name to be suggested at the moment of revert */
-"Trust Rejection" = "Rebuig de confiança";
-
 /* keySyncWizard error view Try Again button title */
 "Try Again" = "Proveu de nou";
 
@@ -916,9 +913,6 @@
 
 /* Undo trust change verification button title */
 "Undo" = "Desfer";
-
-/* Undo trust change verification alert title */
-"Undo (actionName)" = "Desfés (actionName)";
 
 /* read button in slide-left menu */
 "Unflag" = "Unflag";
@@ -968,6 +962,9 @@
 
 /* Error message shown to the user in case we can not connect to the IMAP server */
 "We could not connect to the IMAP server." = "No hem pogut connectar-nos al servidor IMAP.";
+
+/* Error message shown to the user in case we can not connect to the SMTP server */
+"We could not connect to the SMTP server: %1@" = "No hem pogut connectar-nos al servidor SMTP.";
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
 "We could not connect to the SMTP server." = "No hem pogut connectar-nos al servidor SMTP.";

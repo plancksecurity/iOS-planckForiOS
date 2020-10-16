@@ -48,7 +48,7 @@ extension Folder: DisplayableFolderProtocol  {
         get {
             self.updateLastLookAt()
             guard let safeCdFolder = cdFolder() else {
-                Log.shared.errorAndCrash("folder without cdFolder is not posible sorry")
+                Log.shared.errorAndCrash("folder without cdFolder is not possible sorry")
                 return NSPredicate(value: false)
             }
             var predicates: [NSPredicate] = []

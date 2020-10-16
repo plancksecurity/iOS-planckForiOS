@@ -9,7 +9,9 @@
 import Foundation
 import WebKit
 
-class PEPWebViewController: BaseViewController {
+import pEpIOSToolbox
+
+class PEPWebViewController: UIViewController {
 
     override var collapsedBehavior: CollapsedSplitViewBehavior {
         return .needed
@@ -25,7 +27,7 @@ class PEPWebViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         showNavigationBar()
-        urlClickHandler = UrlClickHandler(appConfig: self.appConfig)
+        urlClickHandler = UrlClickHandler()
     }
 
     override func loadView() {

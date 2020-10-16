@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+import pEpIOSToolbox
+
 //!!!: afaics this is used unly in one test. If so rm test and code
 
 extension NSMergeConflict {

@@ -10,8 +10,9 @@ import XCTest
 
 @testable import pEpForiOS
 @testable import MessageModel
+import pEpIOSToolbox
 
-class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
+class ComposeViewModel_InitDataTest: AccountDrivenTestBase {
     var inbox: Folder?
     var drafts: Folder?
     var outbox: Folder?
@@ -26,13 +27,13 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
 
         // Folders
         let inbox = Folder(name: "Inbox", parent: nil, account: account, folderType: .inbox)
-        inbox.save()
+        inbox.session.commit()
         self.inbox = inbox
         let drafts = Folder(name: "Drafts", parent: nil, account: account, folderType: .drafts)
-        drafts.save()
+        drafts.session.commit()
         self.drafts = drafts
         let outbox = Folder(name: "Outbox", parent: nil, account: account, folderType: .outbox)
-        outbox.save()
+        outbox.session.commit()
         self.outbox = outbox
         let message = createMessage(inFolder: inbox,
                                     from: account.user,
@@ -48,9 +49,9 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
                                     uid: nil)
 
 //        message.appendToAttachments(createTestAttachments())
-        message.save()
+        message.session.commit()
         messageAllButBccSet = message
-        someone.save()
+        someone.session.commit()
     }
 
     override func tearDown() {
@@ -66,9 +67,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
 
     func testPrefilledTo_set() {
         let mode = ComposeUtil.ComposeMode.normal
-        testee = ComposeViewModel.InitData(withPrefilledToRecipient: someone,
-                                           orForOriginalMessage: nil,
-                                           composeMode: mode)
+        testee = ComposeViewModel.InitData(prefilledTo: someone, prefilledFrom: account.user, originalMessage: nil, composeMode: mode)
         let expectedTo: [Identity] = [someone]
         assertTesteeForExpectedValues(composeMode: mode,
                                       isDrafts: false,
@@ -87,9 +86,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
 
     func testPrefilledTo_notSet() {
         let mode = ComposeUtil.ComposeMode.normal
-        testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
-                                           orForOriginalMessage: nil,
-                                           composeMode: mode)
+        testee = ComposeViewModel.InitData(prefilledTo: nil, prefilledFrom: nil, originalMessage: nil, composeMode: mode)
         let expectedTo = [Identity]()
         assertTesteeForExpectedValues(composeMode: mode,
                                       isDrafts: false,
@@ -108,9 +105,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
 
     func testPrefilledTo_originalMessageWins() {
         let mode = ComposeUtil.ComposeMode.normal
-        testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
-                                           orForOriginalMessage: messageAllButBccSet,
-                                           composeMode: mode)
+        testee = ComposeViewModel.InitData(prefilledTo: nil, prefilledFrom: nil, originalMessage: messageAllButBccSet, composeMode: mode)
         let expectedTo = [Identity]()
         assertTesteeForExpectedValues(composeMode: mode,
                                       isDrafts: false,
@@ -129,7 +124,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
 
     func testPrefilledFrom_set() {
         let mode = ComposeUtil.ComposeMode.normal
-        testee = ComposeViewModel.InitData(prefilledFromSender:someone)
+        testee = ComposeViewModel.InitData(prefilledTo: nil, prefilledFrom: someone, originalMessage: nil, composeMode: nil)
         let expectedFrom = someone
         assertTesteeForExpectedValues(composeMode: mode,
                                       isDrafts: false,
@@ -150,9 +145,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
     func testOriginalMessage_isSet() {
         let mode = ComposeUtil.ComposeMode.normal
         let originalMessage = messageAllButBccSet
-        testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
-                                           orForOriginalMessage: originalMessage,
-                                           composeMode: mode)
+        testee = ComposeViewModel.InitData(prefilledTo: nil, prefilledFrom: nil, originalMessage: originalMessage, composeMode: mode)
         let expectedTo = [Identity]()
         assertTesteeForExpectedValues(composeMode: mode,
                                       originalMessage: originalMessage,
@@ -173,9 +166,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
     func testOriginalMessage_alsoSetWithGivenPrefilledTo() {
         let mode = ComposeUtil.ComposeMode.normal
         let originalMessage = messageAllButBccSet
-        testee = ComposeViewModel.InitData(withPrefilledToRecipient: someone,
-                                           orForOriginalMessage: originalMessage,
-                                           composeMode: mode)
+        testee = ComposeViewModel.InitData(prefilledTo: someone, prefilledFrom: nil, originalMessage: originalMessage, composeMode: mode)
         let expectedTo = [Identity]()
         assertTesteeForExpectedValues(composeMode: mode,
                                       originalMessage: originalMessage,
@@ -197,27 +188,21 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
 
     func testComposeMode_default() {
         let mode: ComposeUtil.ComposeMode? = nil
-        testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
-                                           orForOriginalMessage: nil,
-                                           composeMode: mode)
+        testee = ComposeViewModel.InitData(prefilledTo: nil, prefilledFrom: nil, originalMessage: nil, composeMode: mode)
         let defaultComposeMode = ComposeUtil.ComposeMode.normal
         assertTesteeForExpectedValues(composeMode: defaultComposeMode)
     }
 
     func testComposeMode_isSet_normal() {
         let mode = ComposeUtil.ComposeMode.normal
-        testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
-                                           orForOriginalMessage: nil,
-                                           composeMode: mode)
+        testee = ComposeViewModel.InitData(prefilledTo: nil, prefilledFrom: nil, originalMessage: nil, composeMode: mode)
         let expectedComposeMode = mode
         assertTesteeForExpectedValues(composeMode: expectedComposeMode)
     }
 
     func testComposeMode_isSet_notNormal() {
         let mode = ComposeUtil.ComposeMode.replyFrom
-        testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
-                                           orForOriginalMessage: nil,
-                                           composeMode: mode)
+        testee = ComposeViewModel.InitData(prefilledTo: nil, prefilledFrom: nil, originalMessage: nil, composeMode: mode)
         let expectedComposeMode = mode
         assertTesteeForExpectedValues(composeMode: expectedComposeMode)
     }
@@ -329,9 +314,8 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
 
     func testIsDraftsOrOutbox_noOrigMessage() {
         let mode = ComposeUtil.ComposeMode.normal
-        testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
-                                           orForOriginalMessage: nil,
-                                           composeMode: mode)
+        
+        testee = ComposeViewModel.InitData(prefilledTo: nil, prefilledFrom: nil, originalMessage: nil, composeMode: mode)
         assertTesteeIsDraftsAndOrOutbox(originalMessage: nil)
     }
 
@@ -366,9 +350,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
 
     func testPEpProtection_noOriginalMessage() {
         let mode = ComposeUtil.ComposeMode.normal
-        testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
-                                           orForOriginalMessage: nil,
-                                           composeMode: mode)
+        testee = ComposeViewModel.InitData(prefilledTo: nil, prefilledFrom: nil, originalMessage: nil, composeMode: mode)
         let expectedProtected = true
         assertTesteeForExpectedValues(pEpProtection: expectedProtected)
     }
@@ -379,9 +361,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
             XCTFail("No message")
             return
         }
-        testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
-                                           orForOriginalMessage: om,
-                                           composeMode: mode)
+        testee = ComposeViewModel.InitData(prefilledTo: nil, prefilledFrom: nil, originalMessage: om, composeMode: mode)
         let expectedProtected = om.pEpProtected
         assertTesteeForExpectedValues(pEpProtection: expectedProtected)
     }
@@ -418,9 +398,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
             XCTFail("No message")
             return
         }
-        testee = ComposeViewModel.InitData(withPrefilledToRecipient: someone,
-                                           orForOriginalMessage: om,
-                                           composeMode: mode)
+        testee = ComposeViewModel.InitData(prefilledTo: someone, prefilledFrom: nil, originalMessage: om, composeMode: mode)
         let expectedAttachments =
             ComposeUtil.initialAttachments(composeMode: mode,
                                            contentDisposition: contentDisposition,
@@ -437,9 +415,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         let mode = ComposeUtil.ComposeMode.normal
         messageAllButBccSet?.parent = folder
         let originalMessage = messageAllButBccSet
-        testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
-                                           orForOriginalMessage: originalMessage,
-                                           composeMode: mode)
+        testee = ComposeViewModel.InitData(prefilledTo: nil, prefilledFrom: nil, originalMessage: originalMessage, composeMode: mode)
         assertTesteeIsDraftsAndOrOutbox(originalMessage: originalMessage)
     }
 
@@ -465,9 +441,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
                                    expectedPlaintextBody: String = Constant.bodyPlainText,
                                    expectedHtmlBody: NSAttributedString? = nil) {
         let mode = composeMode
-        testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
-                                           orForOriginalMessage: originalMessage,
-                                           composeMode: mode)
+        testee = ComposeViewModel.InitData(prefilledTo: nil, prefilledFrom: nil, originalMessage: originalMessage, composeMode: mode)
         let expectedTos = ComposeUtil.initialTos(composeMode: mode,
                                                  originalMessage: originalMessage)
         let expectedCcs = ComposeUtil.initialCcs(composeMode: mode,
@@ -612,7 +586,8 @@ extension ComposeViewModel_InitDataTest {
     }
     private func getStandardJpgData() -> Data {
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
-        guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
+        guard let imageData = MiscUtil.loadData(bundleClass: ComposeViewModel_InitDataTest.self,
+                                                fileName: imageFileName) else {
             XCTFail("imageData is nil!")
             return Data()
         }
@@ -631,7 +606,8 @@ extension ComposeViewModel_InitDataTest {
             var attachments = [Attachment]()
             let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg" //IOS-1399: move to Utils
             guard
-                let imageData = TestUtil.loadData(fileName: imageFileName),
+                let imageData = MiscUtil.loadData(bundleClass: ComposeViewModel_InitDataTest.self,
+                                                  fileName: imageFileName),
                 let image = UIImage(data: imageData) else {
                     XCTFail("No img")
                     return []

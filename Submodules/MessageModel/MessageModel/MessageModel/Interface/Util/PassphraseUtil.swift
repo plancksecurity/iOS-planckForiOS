@@ -7,6 +7,7 @@
 //
 
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 public protocol PassphraseUtilProtocol {
 

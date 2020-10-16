@@ -17,10 +17,6 @@ extension Folder {
         switch realName {
         case let tmp where  validInboxNameVariations.contains(tmp):
             return NSLocalizedString("Inbox", comment: "Name of INBOX mailbox (of one account)")
-        case UnifiedInbox.defaultUnifiedInboxName:
-            return NSLocalizedString("All",
-                                     comment:
-                "Name of unified inbox (showing messages of all accoounts")
         case FolderType.outbox.folderName():
             return NSLocalizedString("Outbox",
                                      comment:

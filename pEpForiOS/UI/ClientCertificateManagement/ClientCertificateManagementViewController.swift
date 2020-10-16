@@ -7,7 +7,10 @@
 //
 
 import UIKit
+
 import SwipeCellKit
+
+import pEpIOSToolbox
 
 private struct Localized {
     static let importDate = NSLocalizedString("Import date",
@@ -15,11 +18,13 @@ private struct Localized {
 }
 
 /// View that lists all imported client certificates and let's the user choose one.
-final class ClientCertificateManagementViewController: BaseViewController {
+final class ClientCertificateManagementViewController: UIViewController {
 
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var addCertButton: UIButton!
-    
+    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var addCertButton: UIButton!
+    @IBOutlet private weak var selectCertificateTitleLabel: UILabel!
+    @IBOutlet private weak var selectCertificateSubtitleLabel: UILabel!
+
     public var viewModel: ClientCertificateManagementViewModel?
     
     //swipe acctions types
@@ -35,7 +40,7 @@ final class ClientCertificateManagementViewController: BaseViewController {
         setupTableView()
         configureAppearance()
     }
-    
+
     @IBAction func addCertificateButtonPressed(_ sender: Any) {
         let picker = UIDocumentPickerViewController(documentTypes: ["public.data"], in: .import)
         picker.delegate = self
@@ -59,6 +64,14 @@ extension ClientCertificateManagementViewController: UIDocumentPickerDelegate {
 
 extension ClientCertificateManagementViewController {
     private func configureAppearance() {
+        selectCertificateTitleLabel.font = UIFont.pepFont(style: .title2, weight: .regular)
+        selectCertificateTitleLabel.adjustsFontForContentSizeCategory = true
+        selectCertificateSubtitleLabel.font = UIFont.pepFont(style: .title3, weight: .regular)
+        selectCertificateSubtitleLabel.adjustsFontForContentSizeCategory = true
+
+        addCertButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        addCertButton.titleLabel?.adjustsFontForContentSizeCategory = true
+
         if #available(iOS 13, *) {
             Appearance.customiseForLogin(viewController: self)
         } else {
@@ -72,7 +85,7 @@ extension ClientCertificateManagementViewController {
         let image = UIImage(named: "button-add")
         addCertButton.setImage(image?.withRenderingMode(.alwaysTemplate), for: .normal)
         addCertButton.tintColor = UIColor.white
-        
+
         let backButtonTitle = NSLocalizedString("Cancel",
                                                 comment: "Back button for client cert managment")
         let newBackButton = UIBarButtonItem(title: backButtonTitle,
@@ -161,7 +174,6 @@ extension ClientCertificateManagementViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("No DVC")
                     return
             }
-            dvc.appConfig = appConfig
             let dvm = vm.loginViewModel()
             dvc.viewModel = dvm
         }
@@ -182,7 +194,7 @@ extension ClientCertificateManagementViewController: SwipeTableViewCellDelegate 
                         title: swipeActionDescriptor.title(forDisplayMode: .titleAndImage)) {
                             [weak self] action, indexPath in
                             guard let me = self else {
-                                Log.shared.errorAndCrash("Lost MySelf")
+                                Log.shared.lostMySelf() 
                                 return
                             }
                             me.swipeDelete = action

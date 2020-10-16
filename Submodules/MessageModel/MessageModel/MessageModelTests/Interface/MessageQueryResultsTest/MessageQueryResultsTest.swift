@@ -1,9 +1,21 @@
+//IOS-2241 CRASHES
+////
+////  MessageQueryResultsTest.swift
+////  MessageModelTests
+////
+////  Created by Alejandro Gelos on 22/02/2019.
+////  Copyright © 2019 pEp Security S.A. All rights reserved.
+////
 //
-//  MessageQueryResultsTest.swift
-//  MessageModelTests
+//import XCTest
+//import CoreData
+//@testable import MessageModel
 //
-//  Created by Alejandro Gelos on 22/02/2019.
-//  Copyright © 2019 pEp Security S.A. All rights reserved.
+//class MessageQueryResultTest: PersistentStoreDrivenTestBase {
+//    var messageQueryResults: MessageQueryResults?
+//    var account1: CdAccount!
+//    var account2: CdAccount!
+//    var cdFolder1: CdFolder!
 //
 
 import XCTest
@@ -376,7 +388,7 @@ class MessageQueryResultTest: PersistentStoreDrivenTestBase {
         let messages = createCdMessages(numMessages: 20, cdFolder: cdFolder1, context: moc)
 
         let newFolder = Folder(name: "Spam", parent: nil, account: cdFolder1.account!.account(), folderType: FolderType.spam)
-        newFolder.save()
+        newFolder.session.commit()
 
         let exp = expectation(description: "delegate called for didDelete")
         let delegateTest = MessageQueryResultsTestDelegate(withExp: exp,

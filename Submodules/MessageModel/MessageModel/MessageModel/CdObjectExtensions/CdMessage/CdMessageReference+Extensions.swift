@@ -8,7 +8,7 @@
 import CoreData
 
 extension CdMessageReference {
-    static public func create(messageID: String,
+    static func create(messageID: String,
                               context: NSManagedObjectContext) -> CdMessageReference {
         return CdMessageReference.firstOrCreate(attribute: "reference",
                                                 value: messageID,

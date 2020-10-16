@@ -13,7 +13,7 @@ import XCTest
 @testable import MessageModel
 import PEPObjCAdapterFramework
 
-class ComposeViewModelStateTest: CoreDataDrivenTestBase {
+class ComposeViewModelStateTest: AccountDrivenTestBase {
     private var testDelegate: TestDelegate?
     var testee: ComposeViewModel.ComposeViewModelState?
     var draftedMessageAllButBccSet: Message?
@@ -25,7 +25,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         super.setUp()
         someone = Identity(address: "someone@someone.someone")
         let drafts = Folder(name: "Inbox", parent: nil, account: account, folderType: .drafts)
-        drafts.save()
+        drafts.session.commit()
         let msg = Message(uuid: UUID().uuidString, parentFolder: drafts)
         msg.from = account.user
         msg.replaceTo(with: [account.user, someone])
@@ -39,7 +39,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         msg.appendToAttachments(Attachment(data: Data(),
                                            mimeType: "image/jpg",
                                            contentDisposition: .inline))
-        msg.save()
+        msg.session.commit()
         draftedMessageAllButBccSet = msg
 
         setupSimpleTestee()
@@ -62,7 +62,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     // MARK: - initData
 
     func testInitData() {
-        let initData = ComposeViewModel.InitData()
+        let initData = ComposeViewModel.InitData(composeMode: .normal)
         testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
         guard let testeeInitData = testee?.initData else {
             XCTFail("No testee")
@@ -281,10 +281,10 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
 
     private func assertValidatation(didChangeValidationStateMustBeCalled: Bool = true,
                                     expectedStateIsValid: Bool,
-                                    expectedNewRating: PEPRating? = nil) {
+                                    expectedNewRating: Rating? = nil) {
         let exp = expectation(description: "exp")
 
-        PEPAsyncSession().mySelf(account.user.pEpIdentity(), errorCallback: { (_) in
+        PEPSession().mySelf(account.user.pEpIdentity(), errorCallback: { (_) in
             XCTFail()
             exp.fulfill()
         }) { (_) in
@@ -303,7 +303,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
                         didChangeValidationStateMustBeCalled: Bool? = nil,
                         expectedStateIsValid: Bool? = nil,
                         didChangePEPRatingMustBeCalled: Bool? = nil,
-                        expectedNewRating: PEPRating? = nil,
+                        expectedNewRating: Rating? = nil,
                         didChangeProtectionMustBeCalled: Bool? = nil,
                         expectedNewProtection: Bool? = nil) {
         var expDidChangeValidationStateToCalled: XCTestExpectation? = nil
@@ -359,7 +359,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         let expectedStateIsValid: Bool?
 
         let expDidChangePEPRatingToCalled: XCTestExpectation?
-        let expectedNewRating: PEPRating?
+        let expectedNewRating: Rating?
 
         let expDidChangeProtectionCalled: XCTestExpectation?
         let expectedNewProtection: Bool?
@@ -367,7 +367,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         init(expDidChangeValidationStateToCalled: XCTestExpectation? = nil,
              expectedStateIsValid: Bool? = nil,
              expDidChangePEPRatingToCalled: XCTestExpectation? = nil,
-             expectedNewRating: PEPRating? = nil,
+             expectedNewRating: Rating? = nil,
              expDidChangeProtectionCalled: XCTestExpectation? = nil,
              expectedNewProtection: Bool? = nil) {
             self.expDidChangeValidationStateToCalled = expDidChangeValidationStateToCalled
@@ -391,7 +391,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         }
 
         func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
-                                   didChangePEPRatingTo newRating: PEPRating) {
+                                   didChangePEPRatingTo newRating: Rating) {
             guard let exp = expDidChangePEPRatingToCalled, !ignoreAll  else {
                 // We ignore called or not
                 return

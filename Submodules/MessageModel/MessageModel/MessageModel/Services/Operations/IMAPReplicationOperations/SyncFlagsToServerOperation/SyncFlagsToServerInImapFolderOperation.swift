@@ -7,7 +7,9 @@
 //
 
 import CoreData
+
 import PantomimeFramework
+import pEpIOSToolbox
 
 /// Sends (syncs) local changes of Imap flags to server.
 class SyncFlagsToServerInImapFolderOperation: ImapSyncOperation {
@@ -49,7 +51,7 @@ class SyncFlagsToServerInImapFolderOperation: ImapSyncOperation {
     }
 
     public override func main() {
-        if !checkImapSync() {
+        if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
         }

@@ -1,6 +1,7 @@
-//!!!: No cras, but: "Illegal attempt to establish a relationship 'from' between objects in different contexts...!
-// /Users/buff/workspace/pEp/src/pEp_for_iOS/pEpForiOSTests/TestUtils/TestUtil.swift:454: error: -[pEpForiOSTests.MessageViewModelTests testBodyPeekIsAddedToQueue] : failed: caught "NSInvalidArgumentException", "Illegal attempt to establish a relationship 'from' between objects in different contexts (source = <CdMessage: 0x6070007f2d20> (entity: CdMessage;
-
+//IOS-2241 DOES NOT COMPILE
+////!!!: No cras, but: "Illegal attempt to establish a relationship 'from' between objects in different contexts...!
+//// /Users/buff/workspace/pEp/src/pEp_for_iOS/pEpForiOSTests/TestUtils/TestUtil.swift:454: error: -[pEpForiOSTests.MessageViewModelTests testBodyPeekIsAddedToQueue] : failed: caught "NSInvalidArgumentException", "Illegal attempt to establish a relationship 'from' between objects in different contexts (source = <CdMessage: 0x6070007f2d20> (entity: CdMessage;
+//
 ////
 ////  MessageViewModelTests.swift
 ////  pEpForiOSTests
@@ -57,7 +58,7 @@
 //        super.setUp()
 //        let account = SecretTestData().createWorkingAccount()
 //        folder = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
-//        folder.save()
+//        folder.session.commit()
 //    }
 //
 //    //PRAGMA - MARK: TESTS
@@ -372,7 +373,7 @@
 //
 //    private func givenThereIsAOneRecipientMessage() -> Message {
 //        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, tos: [Defaults.Inputs.toIdentity])
-//        message.save()
+//        message.session.commit()
 //        return message
 //    }
 //
@@ -380,43 +381,43 @@
 //        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity)
 //        message.imapFlags.seen = true
 //        message.imapFlags.flagged = true
-//        message.save()
+//        message.session.commit()
 //        return message
 //    }
 //
 //    private func givenThereIsAMessageWithSubjectAndBody() -> Message {
 //        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, shortMessage: Defaults.Inputs.shortMessage, longMessage: Defaults.Inputs.longMessage)
-//        message.save()
+//        message.session.commit()
 //        return message
 //    }
 //
 //    private func givenThereIsAMessageWithSubjectAndLongBody() -> Message {
 //        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, shortMessage: Defaults.Inputs.shortMessage, longMessage: Defaults.Inputs.longlongMessage)
-//        message.save()
+//        message.session.commit()
 //        return message
 //    }
 //
 //    private func givenThereIsAmessageWithFormattedBody() -> Message {
 //        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, shortMessage: Defaults.Inputs.shortMessage, longMessageFormatted: Defaults.Inputs.longMessageFormated)
-//        message.save()
+//        message.session.commit()
 //        return message
 //    }
 //
 //    private func givenThereIsAMessageWithASentDate() -> Message {
 //        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, dateSent: Defaults.Inputs.sentDate)
-//        message.save()
+//        message.session.commit()
 //        return message
 //    }
 //
 //    private func givenThereIsAMultipleRecipientMessage() -> Message {
 //        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, tos: Defaults.Inputs.toIdentities)
-//        message.save()
+//        message.session.commit()
 //        return message
 //    }
 //
 //    private func givenThereIsAMessageWithAttachments() -> Message {
 //        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, attachments: Defaults.Inputs.numberOfAttachments)
-//        message.save()
+//        message.session.commit()
 //        return message
 //    }
 //

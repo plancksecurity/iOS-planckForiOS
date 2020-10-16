@@ -10,21 +10,21 @@ import UIKit
 
 extension CdImapFlags {
     //!!!: RM ?!
-    public func imapFlags() -> ImapFlags {
+    func imapFlags() -> ImapFlags {
         return ImapFlags(cdObject: self, context: managedObjectContext ?? Stack.shared.mainContext)
     }
 
-    public func rawFlagsAsShort() -> Int16 {
+    func rawFlagsAsShort() -> Int16 {
         return ImapFlagsUtility.int16(
             answered: flagAnswered, draft: flagDraft, flagged: flagFlagged, recent: flagRecent,
             seen: flagSeen, deleted: flagDeleted)
     }
 
-    public func imapFlagsBits() -> ImapFlagsBits {
+    func imapFlagsBits() -> ImapFlagsBits {
         return rawFlagsAsShort()
     }
 
-    public func update(cdImapFlags: CdImapFlags) {
+    func update(cdImapFlags: CdImapFlags) {
         flagAnswered = cdImapFlags.flagAnswered
         flagDraft = cdImapFlags.flagDraft
         flagFlagged = cdImapFlags.flagFlagged
@@ -33,7 +33,7 @@ extension CdImapFlags {
         flagDeleted = cdImapFlags.flagDeleted
     }
 
-    public func update(rawValue16: ImapFlagsBits) {
+    func update(rawValue16: ImapFlagsBits) {
         flagAnswered = rawValue16.imapFlagBitIsSet(flagbit: .answered)
         flagDraft = rawValue16.imapFlagBitIsSet(flagbit: .draft)
         flagFlagged = rawValue16.imapFlagBitIsSet(flagbit: .flagged)
