@@ -35,6 +35,7 @@ final class pEpFooterView: UITableViewHeaderFooterView {
 extension pEpFooterView {
     
     private func setup() {
+        contentView.backgroundColor = .groupTableViewBackground
         contentView.addSubview(titleLabel)
         configure(titleLabel: titleLabel)
         setFont(titleLabel: titleLabel)
