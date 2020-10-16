@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpIOSToolbox
 
 extension NSAttributedString {
 
@@ -41,15 +42,19 @@ extension NSAttributedString {
             .enumerateAttribute(
                 .attachment,
                 in: mutableAttribString.wholeRange()) { (value, range, stop) in
-
                     if let textAttachment = value as? TextAttachment {
                         let delegate = ToMarkdownDelegate()
-                        textAttachment.attachment = inlinedAttachments[idx]
-                        idx += 1
-                        if let stringForTextAttachment = delegate.stringFor(attachment: textAttachment) { //BUFF: !!! HERE
-                            if delegate.attachments.count > 0 {
-                                images[range] = stringForTextAttachment.cleanAttachments
+                        if idx < inlinedAttachments.count {
+                            textAttachment.attachment = inlinedAttachments[idx]
+                            idx += 1
+                            if let stringForTextAttachment = delegate.stringFor(attachment: textAttachment) { //BUFF: !!! HERE
+                                if delegate.attachments.count > 0 {
+                                    images[range] = stringForTextAttachment.cleanAttachments
+                                }
                             }
+                        } else {
+                            Log.shared.errorAndCrash("Inconsistant state, idx out of bounds")
+                            stop.pointee = true
                         }
                     }
         }
