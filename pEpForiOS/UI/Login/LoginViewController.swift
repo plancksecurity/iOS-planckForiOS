@@ -18,8 +18,9 @@ protocol LoginViewControllerDelegate: class  {
 final class LoginViewController: UIViewController {
 
     weak var delegate: LoginViewControllerDelegate?
-
+    
     @IBOutlet private weak var pepSyncLabel: UILabel!
+    @IBOutlet private weak var syncStackView: UIStackView!
     @IBOutlet private weak var user: AnimatedPlaceholderTextfield!
     @IBOutlet private weak var password: AnimatedPlaceholderTextfield!
     @IBOutlet private weak var emailAddress: AnimatedPlaceholderTextfield!
@@ -63,12 +64,13 @@ final class LoginViewController: UIViewController {
         if accountType == .icloud {
             showiCloudAlert()
         }
-
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setManualSetupButtonHidden(manualConfigButton.isHidden)
+        syncStackView.axis = UIDevice.isSmall && isLandscape ? .vertical : .horizontal
+        syncStackView.superview?.layoutIfNeeded()
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
@@ -546,17 +548,6 @@ extension LoginViewController {
 
     private func setManualSetupButtonHidden(_ hidden: Bool) {
         manualConfigButton.isHidden = hidden
-        pEpSyncViewCenterHConstraint.isActive = hidden
-        UIView.animate(withDuration: 0.25,
-                       delay: 0,
-                       options: .curveEaseInOut,
-                       animations: { [weak self] in
-                        guard let me = self else {
-                            Log.shared.lostMySelf()
-                            return
-                        }
-                        me.mainContainerView.layoutIfNeeded()
-        })
     }
 
     private func updateView() {
