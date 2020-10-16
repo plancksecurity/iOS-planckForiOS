@@ -120,10 +120,10 @@ class SuggestViewModel {
     }
 
     public subscript(index: Int) -> Row? {
-        if rows.count > index {
-            return rows[index]
+        guard index < rows.count else {
+            return nil
         }
-        return nil
+        return rows[index]
     }
 
     /// Update the suggestions based of the user input.
