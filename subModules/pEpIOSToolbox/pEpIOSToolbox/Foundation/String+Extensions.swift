@@ -18,7 +18,6 @@ extension String {
     static let endWhiteSpaceRegex = try! NSRegularExpression(pattern: "^(.*?)\\s*$", options: [])
     static let newlineRegex = try! NSRegularExpression(pattern: "(\\n|\\r\\n)+", options: [])
     static let threeOrMoreNewlinesRegex = try! NSRegularExpression(pattern: "(\\n|\\r\\n){3,}", options: [])
-    static let fileExtensionRegex = try! NSRegularExpression(pattern: "^(.+?)\\.([^.]+)$", options: [])
     static let emailRegex = try! NSRegularExpression(pattern: "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}", options: [])
 
     private var firstLetterCapitalized: String {
@@ -278,8 +277,13 @@ extension String {
     }
 
     public func splitFileExtension() -> (String, String?) {
-        let url = NSURL(fileURLWithPath: self)
-        return (url.path ?? self, url.pathExtension)
+        let theDot = "."
+        let comps = components(separatedBy: theDot)
+        if let theExt = comps.last {
+            return (comps.dropLast().joined(separator: theDot), theExt)
+        } else {
+            return (self, nil)
+        }
     }
 
     /**
