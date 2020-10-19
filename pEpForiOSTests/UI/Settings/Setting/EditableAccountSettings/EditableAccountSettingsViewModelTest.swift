@@ -44,22 +44,6 @@ final class EditableAccountSettingsViewModelTest: AccountDrivenTestBase {
         super.tearDown()
     }
 
-    func testHandleSaveButtonSucceed() {
-        // GIVEN
-        expected = State(didCallShowLoadingView: true,
-                         didCallHideLoadingView: true,
-                         didCallPopViewController: true,
-                         didSaveVerifiableAccount: true)
-        expectations = TestExpectations(testCase: self, expected: expected)
-
-        // WHEN
-        viewModel?.handleSaveButton()
-        waitForExpectations(timeout: TestUtil.waitTime)
-
-        //THEN
-        assertExpectations()
-    }
-
     func testHandleSaveButtonInputsFail() {
         // GIVEN
         expected = State(didCallShowErrorAlert: true,

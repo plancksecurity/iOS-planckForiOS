@@ -12,7 +12,6 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
 import PantomimeFramework
 
 class TestUtil {
@@ -46,26 +45,6 @@ class TestUtil {
 
     static var initialNumberOfRunningConnections = 0
     static var initialNumberOfServices = 0
-
-    /**
-     Dumps some diff between two NSDirectories to the console.
-     */
-    static func diffDictionaries(_ dict1: NSDictionary, dict2: NSDictionary) {
-        for (k,v1) in dict1 {
-            if let v2 = dict2[k as! NSCopying] {
-                if !(v1 as AnyObject).isEqual(v2) {
-                    print("Difference in '\(k)': '\(v2)' <-> '\(v1)'")
-                }
-            } else {
-                print("Only in dict1: \(k)")
-            }
-        }
-        for (k,_) in dict2 {
-            if dict1[k as! NSCopying] == nil {
-                print("Only in dict2: \(k)")
-            }
-        }
-    }
 
     /**
      Makes the servers for this account unreachable, for tests that expects failure.
@@ -142,7 +121,7 @@ class TestUtil {
         msg.longMessageFormatted = longMessageFormatted
         msg.sent = dateSent
         if engineProccesed {
-            msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
+            msg.pEpRatingInt = Int(Rating.unreliable.toInt())
         }
         msg.replaceAttachments(with: createAttachments(number: attachments))
         return msg
@@ -151,7 +130,7 @@ class TestUtil {
     static func createMessage(uid: Int, inFolder folder: Folder) -> Message {
         let msg = Message(uuid: "\(uid)", uid: uid, parentFolder: folder)
         XCTAssertEqual(msg.uid, uid)
-        msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
+        msg.pEpRatingInt = Int(Rating.unreliable.toInt())
         return msg
     }
 
@@ -234,32 +213,12 @@ class TestUtil {
                           parentFolder: folder)
         msg.from = blueprint.from
         msg.replaceTo(with: [receiver])
-        msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
+        msg.pEpRatingInt = Int(Rating.unreliable.toInt())
         msg.sent = Date(timeIntervalSince1970: Double(number))
         msg.session.commit()
 
         return msg
     }
-    //
-    //    /// Determines the highest UID of _all_ the messages currently in the DB.
-    //    static func highestUid(context: NSManagedObjectContext) -> Int {
-    //        var theHighestUid: Int32 = 0
-    //        if let allCdMessages = CdMessage.all(in: context) as? [CdMessage] {
-    //            for cdMsg in allCdMessages {
-    //                if cdMsg.uid > theHighestUid {
-    //                    theHighestUid = cdMsg.uid
-    //                }
-    //            }
-    //        }
-    //        return Int(theHighestUid)
-    //    }
-    //
-    //    /**
-    //     - Returns: `highestUid()` + 1
-    //     */
-    //    static func nextUid(context: NSManagedObjectContext) -> Int {
-    //        return highestUid(context: context) + 1
-    //    }
 
     // MARK: - SERVER
 
