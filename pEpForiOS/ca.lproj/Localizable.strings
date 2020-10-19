@@ -215,6 +215,10 @@
 /* Email */
 "Email" = "Correu electrònic";
 
+/* Email address placeholder for manual account setup
+   Email TextField Placeholder in Login Screen */
+"Email Address" = "Adreça de correu";
+
 /* Title of alert: a required field is empty */
 "Empty Field" = "Camp buit";
 
@@ -460,6 +464,9 @@
 
 /* Alert button while client certificate is importing: Try again? No */
 "No" = "No";
+
+/* Error when no account found for set_own_key UI */
+"No account found with the given email address." = "No s'ha trobat cap compte amb el correu electrònic indicat.";
 
 /* Error when no account found for set_own_key UI */
 "No account found with the given email." = "No s'ha trobat cap compte amb el correu electrònic indicat.";
@@ -955,6 +962,9 @@
 
 /* Error message shown to the user in case we can not connect to the IMAP server */
 "We could not connect to the IMAP server." = "No hem pogut connectar-nos al servidor IMAP.";
+
+/* Error message shown to the user in case we can not connect to the SMTP server */
+"We could not connect to the SMTP server: %1@" = "No hem pogut connectar-nos al servidor SMTP.";
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
 "We could not connect to the SMTP server." = "No hem pogut connectar-nos al servidor SMTP.";
