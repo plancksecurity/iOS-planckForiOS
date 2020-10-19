@@ -56,4 +56,12 @@ class StringTest: XCTestCase {
         XCTAssertEqual(testee.string(everythingStrippedThatIsNotInCharset: charset),
                           expected)
     }
+
+    func testSplitFileExtension() {
+        let name = "blah"
+        let ext = "asc"
+        let (resName, resExt) = "\(name).\(ext)".splitFileExtension()
+        XCTAssertEqual(resName, name)
+        XCTAssertEqual(resExt, ext)
+    }
 }
