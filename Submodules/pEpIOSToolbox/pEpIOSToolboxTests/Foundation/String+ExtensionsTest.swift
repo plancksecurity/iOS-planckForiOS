@@ -57,6 +57,8 @@ class StringTest: XCTestCase {
                           expected)
     }
 
+    // MARK: - String.splitFileExtension
+
     func testSplitFileExtension() {
         func checkSplitFileExtension(filename: String, name: String, fileExtension: String?) {
             let (resName, resExt) = filename.splitFileExtension()
