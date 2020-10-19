@@ -279,8 +279,9 @@ extension String {
     public func splitFileExtension() -> (String, String?) {
         let theDot = "."
         let comps = components(separatedBy: theDot)
-        if let theExt = comps.last {
-            return (comps.dropLast().joined(separator: theDot), theExt)
+        let mainPart = comps.dropLast().joined(separator: theDot)
+        if let theExt = comps.last, !mainPart.isEmpty {
+            return (mainPart, theExt)
         } else {
             return (self, nil)
         }
