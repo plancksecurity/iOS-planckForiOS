@@ -63,11 +63,17 @@ class StringTest: XCTestCase {
         checkSplitFileExtension(filename: "blah.txt.gpg.asc",
                                 name: "blah.txt.gpg",
                                 fileExtension: "asc")
+        checkSplitFileExtension(filename: ".asc", name: ".asc", fileExtension: nil)
+        checkSplitFileExtension(filename: "noneasc", name: "noneasc", fileExtension: nil)
+        checkSplitFileExtension(filename: "emptyext.", name: "emptyext.", fileExtension: nil)
+        checkSplitFileExtension(filename: "doubledot..", name: "doubledot..", fileExtension: nil)
+        checkSplitFileExtension(filename: ".......", name: ".......", fileExtension: nil)
+        checkSplitFileExtension(filename: "single.m", name: "single", fileExtension: "m")
     }
 
     // MARK: - Helpers
 
-    private func checkSplitFileExtension(filename: String, name: String, fileExtension: String) {
+    private func checkSplitFileExtension(filename: String, name: String, fileExtension: String?) {
         let (resName, resExt) = filename.splitFileExtension()
         XCTAssertEqual(resName, name)
         XCTAssertEqual(resExt, fileExtension)
