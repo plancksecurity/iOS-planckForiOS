@@ -150,7 +150,7 @@ public class FolderSectionViewModel {
 
     /// - Returns: the first Folder Cell View Model which folder is an Inbox
     public func firstInbox() -> FolderCellViewModel  {
-        guard let fcvm = items.first(where: {$0.isFolder(of: .inbox)}) else {
+        guard let fcvm = items.first(where: {$0.isFolder(ofType: .inbox)}) else {
             Log.shared.errorAndCrash("Inbox not found")
             return FolderCellViewModel(folder: items[0] as! DisplayableFolderProtocol, level: 0)
         }
