@@ -59,6 +59,7 @@ class StringTest: XCTestCase {
 
     func testSplitFileExtension() {
         checkSplitFileExtension(filename: "blah.asc", name: "blah", fileExtension: "asc")
+        checkSplitFileExtension(filename: "blah.txt.asc", name: "blah", fileExtension: "asc")
     }
 
     // MARK: - Helpers
