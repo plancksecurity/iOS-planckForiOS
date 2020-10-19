@@ -278,16 +278,8 @@ extension String {
     }
 
     public func splitFileExtension() -> (String, String?) {
-        if let match = String.fileExtensionRegex.firstMatch(
-            in: self, options: [],
-            range: wholeRange()) {
-            let r1 = match.range(at: 1)
-            let name = (self as NSString).substring(with: r1)
-            let r2 = match.range(at: 2)
-            let ext = (self as NSString).substring(with: r2)
-            return (name, ext)
-        }
-        return (self, nil)
+        let url = NSURL(fileURLWithPath: self)
+        return (url.path ?? self, url.pathExtension)
     }
 
     /**
