@@ -58,10 +58,14 @@ class StringTest: XCTestCase {
     }
 
     func testSplitFileExtension() {
-        let name = "blah"
-        let ext = "asc"
-        let (resName, resExt) = "\(name).\(ext)".splitFileExtension()
+        checkSplitFileExtension(filename: "blah.asc", name: "blah", fileExtension: "asc")
+    }
+
+    // MARK: - Helpers
+
+    private func checkSplitFileExtension(filename: String, name: String, fileExtension: String) {
+        let (resName, resExt) = filename.splitFileExtension()
         XCTAssertEqual(resName, name)
-        XCTAssertEqual(resExt, ext)
+        XCTAssertEqual(resExt, fileExtension)
     }
 }
