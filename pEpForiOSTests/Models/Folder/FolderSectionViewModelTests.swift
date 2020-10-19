@@ -26,11 +26,6 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
         XCTAssertTrue(viewModel.hidden)
     }
     
-    func testCountIsOneWhenUnifiedInbox() {
-        givenThereIsAViewModelWithoutAccount(withUnifiedInbox: true)
-        XCTAssertEqual(viewModel.count, 1)
-    }
-    
     func testNotHiddenWithoutUnifiedInbox() {
         givenThereIsAViewModelWithAccount(withUnifiedInbox: false)
         XCTAssertFalse(viewModel.hidden)
@@ -94,7 +89,6 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
 
 
     func testNoChildrenOf() {
-        let account = TestData().createWorkingAccount()
         viewModel = FolderSectionViewModel(account: account, unified: true)
         let fcvm = FolderCellViewModel(folder: folder, level: 0)
 
@@ -107,7 +101,6 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
         self.folder = Folder(name: "Escafoides", parent: parentFolder, account: account, folderType: .normal)
         self.folder.session.commit()
 
-        let account = TestData().createWorkingAccount()
         viewModel = FolderSectionViewModel(account: account, unified: true)
 
         //Parent
@@ -122,7 +115,6 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
         self.folder = Folder(name: "Escafoides", parent: parentFolder, account: account, folderType: .normal)
         self.folder.session.commit()
 
-        let account = TestData().createWorkingAccount()
         viewModel = FolderSectionViewModel(account: account, unified: true)
 
         //Parent
@@ -137,7 +129,6 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
         self.folder = Folder(name: "Escafoides", parent: parentFolder, account: account, folderType: .normal)
         self.folder.session.commit()
 
-        let account = TestData().createWorkingAccount()
         viewModel = FolderSectionViewModel(account: account, unified: true)
 
         //Parent
@@ -167,22 +158,5 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
         XCTAssert(index != NSNotFound)
         XCTAssert(sonIndex != NSNotFound)
         XCTAssert(sonIndex! > index!)
-    }
-
-    func testvisibleFolderCellViewModel() {
-        let parentFolder = Folder(name: "Parent", parent: nil, account: account, folderType: .inbox)
-        self.folder = Folder(name: "Escafoides", parent: parentFolder, account: account, folderType: .normal)
-        self.folder.session.commit()
-
-        let account = TestData().createWorkingAccount()
-        viewModel = FolderSectionViewModel(account: account, unified: true)
-
-        let parentFCVM = FolderCellViewModel(folder: parentFolder, level: 0)
-
-        let children = viewModel.visibleChildren(of: parentFCVM)
-        //2 because the order is All, parent, child
-        let fcvm = viewModel.visibleFolderCellViewModel(index: 2)
-        XCTAssert(children.count > 0)
-        XCTAssert(fcvm.title == children.first!.title)
     }
 }
