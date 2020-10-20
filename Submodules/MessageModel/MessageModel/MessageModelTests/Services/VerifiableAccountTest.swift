@@ -22,29 +22,6 @@ class VerifiableAccountTest: PersistentStoreDrivenTestBase {
         account2 = SecretTestData().createWorkingAccount(number: 1)
     }
 
-    func testBasicSuccess() {
-        let verifier = VerifiableAccount()
-
-        var verifierType: VerifiableAccountProtocol = verifier
-        SecretTestData().populateVerifiableAccount(
-            verifiableAccount: &verifierType)
-        let expDidVerify = expectation(description: "expDidVerify")
-        let delegate = VerifiableAccountTestDelegate(expDidVerify: expDidVerify)
-        try! check(verifier: &verifierType, delegate: delegate)
-        wait(for: [expDidVerify], timeout: TestUtil.waitTime)
-
-        guard let theResult = delegate.result else {
-            XCTFail()
-            return
-        }
-        switch theResult {
-        case .success(()):
-            break
-        case .failure(_):
-            XCTFail()
-        }
-    }
-
     func testFailingValidation() {
         let (exceptionOnVerify, exceptionOnSave) = checkFailingValidation() {
             var newOne = $0
