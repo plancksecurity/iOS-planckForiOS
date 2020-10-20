@@ -220,7 +220,7 @@ extension AppDelegate {
                 return false
             }
             UIUtils.presentComposeView(from: mailto)
-            return false
+            return true
         }
         switch url.pathExtension {
         case ClientCertificateImportViewController.pEpClientCertificateExtension:
