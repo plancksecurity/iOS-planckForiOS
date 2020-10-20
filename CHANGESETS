@@ -9,8 +9,8 @@ libetpan: f711d5129a0eb5b74110c6057d6d20a2034842d4
 pEp-Translate: 1ba81d746a6331a33bfc5dd9b7d5db32bfcc0012
 pEpEngine: 0d9856973e52
 pEpObjCAdapter: b5c3e00c0d3a
-pEp_for_iOS: 0ef12e3d4c7b+
+pEp_for_iOS: cfeda9846cce+
 pEp_for_iOS_intern: 4f34de964928
 pantomime-iOS: 16e6ec6e5c28
 sequoia: 365d00a08bec6a5a48d48a7c7893d78c27092b59
-sequoia4ios: ace5c1eb4aa2ad971dae5bc97473e85f5f4dc23e
+sequoia4ios: a0f2b3a4b5352e45e627ae8f1325dca57fe44e0e
