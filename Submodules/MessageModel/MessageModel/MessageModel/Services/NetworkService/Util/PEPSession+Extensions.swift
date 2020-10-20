@@ -7,6 +7,7 @@
 //
 
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 // MARK: - Useful extensions for PEPSession
 

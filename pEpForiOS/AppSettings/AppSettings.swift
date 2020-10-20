@@ -9,6 +9,7 @@
 import Foundation
 
 import MessageModel
+import pEpIOSToolbox
 
 // MARK: - Keys
 
@@ -24,6 +25,7 @@ extension AppSettings {
     static private let keyShouldShowTutorialWizard = "keyShouldShowTutorialWizard"
     static private let keyUserHasBeenAskedForContactAccessPermissions = "keyUserHasBeenAskedForContactAccessPermissions"
     static private let keyUnsecureReplyWarningEnabled = "keyUnsecureReplyWarningEnabled"
+    static private let keyVerboseLogginEnabled = "keyVerboseLogginEnabled"
 }
 
 // MARK: - AppSettings
@@ -91,6 +93,7 @@ extension AppSettings {
         defaults[AppSettings.keyShouldShowTutorialWizard] = true
         defaults[AppSettings.keyUserHasBeenAskedForContactAccessPermissions] = false
         defaults[AppSettings.keyUnsecureReplyWarningEnabled] = false
+        defaults[AppSettings.keyVerboseLogginEnabled] = false
 
         AppSettings.userDefaults.register(defaults: defaults)
     }
@@ -228,6 +231,17 @@ extension AppSettings: AppSettingsProtocol {
         set {
             AppSettings.userDefaults.set(newValue,
                                          forKey: AppSettings.keyUnsecureReplyWarningEnabled)
+        }
+    }
+
+    public var verboseLogginEnabled: Bool {
+        get {
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyVerboseLogginEnabled)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue,
+                                         forKey: AppSettings.keyVerboseLogginEnabled)
+            Log.shared.verboseLoggingEnabled = newValue
         }
     }
 }

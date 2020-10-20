@@ -8,6 +8,8 @@
 
 import Foundation
 
+import pEpIOSToolbox
+
 extension CdAccount {
     /// The account type that was used when creating this account, if able to
     /// determine from the IMAP and SMTP server.

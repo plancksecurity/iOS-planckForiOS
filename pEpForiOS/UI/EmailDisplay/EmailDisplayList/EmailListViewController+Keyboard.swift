@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+import pEpIOSToolbox
+
 /// Protocol to handle keyboard hide/show events when having table view that occupes the full height.
 protocol KeyboardHandlingProtocol {
     /// Constraint from Safe Area Bottom to Table View Bottom

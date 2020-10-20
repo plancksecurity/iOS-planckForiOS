@@ -7,6 +7,7 @@
 //
 
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 extension KeySyncService: PEPNotifyHandshakeDelegate {
 

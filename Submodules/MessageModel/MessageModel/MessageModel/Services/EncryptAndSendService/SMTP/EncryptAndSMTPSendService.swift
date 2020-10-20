@@ -8,6 +8,8 @@
 
 import CoreData
 
+import pEpIOSToolbox
+
 /// Service that handles sending of messages for one SMTP supporting account.
 /// Usage:
 /// * init

@@ -51,6 +51,11 @@ Restart your Console!
 sudo port install pkgconfig
 rustup update
 rustup target add aarch64-apple-ios x86_64-apple-ios
+sudo port pkgconfig
+rustup update nightly
+rustup default nightly
+rustup component add rust-src
+rustup default stable
 ```
 
 ### Set up Xcode

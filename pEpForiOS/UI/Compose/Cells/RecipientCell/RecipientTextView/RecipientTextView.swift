@@ -147,6 +147,18 @@ extension RecipientTextView: UITextViewDelegate {
             .filter { !$0.recipient.address.isEmpty }
             .forEach { UIPasteboard.general.strings?.append($0.recipient.address) }
     }
+
+    func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        /// iOS 14 introduced a bug: it's not possible to focus the textfield when there is an attachment.
+        /// Instead of calling the begin editing delegate of the textfield this method is called.
+        /// So we just trigger the focus manually.
+        /// For more information please go to https://pep.foundation/jira/browse/IOS-2472
+        if #available(iOS 14, *) {
+            textView.selectedRange = NSRange(location: viewModel?.numberOfRecipientAttachments ?? 1, length: 0)
+            textView.becomeFirstResponder()
+        }
+        return true
+    }
 }
 
 // MARK: - RecipientTextViewModelDelegate

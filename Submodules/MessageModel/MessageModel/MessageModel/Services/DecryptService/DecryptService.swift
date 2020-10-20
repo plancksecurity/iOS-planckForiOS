@@ -8,6 +8,8 @@
 
 import CoreData
 
+import pEpIOSToolbox
+
 class DecryptService: QueryBasedService<CdMessage> {
 
     ///   see Service.init for docs

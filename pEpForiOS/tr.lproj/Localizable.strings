@@ -215,6 +215,10 @@
 /* Email */
 "Email" = "E-posta";
 
+/* Email address placeholder for manual account setup
+   Email TextField Placeholder in Login Screen */
+"Email Address" = "E-posta adresi";
+
 /* Title of alert: a required field is empty */
 "Empty Field" = "Boş alan";
 
@@ -460,6 +464,9 @@
 
 /* Alert button while client certificate is importing: Try again? No */
 "No" = "Hayır";
+
+/* Error when no account found for set_own_key UI */
+"No account found with the given email address." = "Belirtilen e-postayla hesap bulunamadı.";
 
 /* Error when no account found for set_own_key UI */
 "No account found with the given email." = "Belirtilen e-postayla hesap bulunamadı.";
@@ -955,6 +962,9 @@
 
 /* Error message shown to the user in case we can not connect to the IMAP server */
 "We could not connect to the IMAP server." = "IMAP sunucusuna bağlanamadık.";
+
+/* Error message shown to the user in case we can not connect to the SMTP server */
+"We could not connect to the SMTP server: %1@" = "SMTP sunucusuna bağlanamadık.";
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
 "We could not connect to the SMTP server." = "SMTP sunucusuna bağlanamadık.";

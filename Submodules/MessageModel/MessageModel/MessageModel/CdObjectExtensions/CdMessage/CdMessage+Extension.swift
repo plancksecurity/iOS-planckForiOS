@@ -8,6 +8,8 @@
 
 import CoreData
 
+import pEpIOSToolbox
+
 extension CdMessage {
 
     //!!!: cleanup

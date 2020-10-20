@@ -15,7 +15,7 @@ import MessageModel
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
-    private var appConfig: AppConfig?
+    var appConfig: AppConfig?
 
     /** The model */
     private var messageModelService: MessageModelServiceProtocol?
@@ -95,6 +95,8 @@ extension AppDelegate {
             // and pretty much don't do anything.
             return false
         }
+        Log.shared.verboseLoggingEnabled = AppSettings.shared.verboseLogginEnabled
+
         Log.shared.logDebugInfo()
 
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
@@ -222,6 +224,18 @@ extension AppDelegate {
 
     @discardableResult
     private func handleUrlTheOSHasBroughtUsToForgroundFor(_ url: URL) -> Bool {
+        if url.isMailto {
+            guard let mailto = Mailto(url: url) else {
+                Log.shared.errorAndCrash("Mailto parsing failed")
+                return false
+            }
+            guard let appConfig = appConfig else {
+                Log.shared.errorAndCrash("AppConfig not found")
+                return false
+            }
+            UIUtils.presentComposeView(from: mailto, appConfig: appConfig)
+            return false
+        }
         switch url.pathExtension {
         case ClientCertificateImportViewController.pEpClientCertificateExtension:
             return handleClientCertificateImport(forCertAt: url)
@@ -253,3 +267,5 @@ extension AppDelegate {
         return true
     }
 }
+
+

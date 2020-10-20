@@ -8,6 +8,8 @@
 
 import Foundation
 
+import pEpIOSToolbox
+
 extension CdServer {
     var serverType: Server.ServerType {
         get {

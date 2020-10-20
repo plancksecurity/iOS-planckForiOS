@@ -8,6 +8,8 @@
 
 import MessageModel
 
+import pEpIOSToolbox
+
 protocol KeySyncDeviceGroupStateChangeNotificationHandlerProtocol {
     func handleDeviceGroupStateChangeNotification(userInfo: [String:Any])
 }

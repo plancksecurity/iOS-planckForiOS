@@ -7,6 +7,7 @@
 //
 
 import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 /// Util that contains all handshake related actions.
 public protocol TrustManagementUtilProtocol: class {
