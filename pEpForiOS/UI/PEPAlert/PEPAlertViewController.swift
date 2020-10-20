@@ -25,6 +25,9 @@ final class PEPAlertViewController: UIViewController {
     @IBOutlet weak private var alertImageViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak private var alertTitleTopViewHeightConstraint: NSLayoutConstraint!
 
+    public var isError: Bool {
+        return viewModel.alertType == .pEpDefault
+    }
     private var viewModel: PEPAlertViewModelProtocol
     private var titleString: String?
     private var message: String?
