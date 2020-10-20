@@ -274,20 +274,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43980E441CBD0BCA00A7FC3C"
-               BuildableName = "pEpForiOSUITests.xctest"
-               BlueprintName = "pEpForiOSUITests"
-               ReferencedContainer = "container:pEpForiOS.xcodeproj">
+               BlueprintIdentifier = "43CB608A1DA4EB4E0015281E"
+               BuildableName = "MessageModelTests.xctest"
+               BlueprintName = "MessageModelTests"
+               ReferencedContainer = "container:Submodules/MessageModel/MessageModel/MessageModel.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43CB608A1DA4EB4E0015281E"
-               BuildableName = "MessageModelTests.xctest"
-               BlueprintName = "MessageModelTests"
-               ReferencedContainer = "container:Submodules/MessageModel/MessageModel/MessageModel.xcodeproj">
+               BlueprintIdentifier = "3AE6870924FFA5ED00B416ED"
+               BuildableName = "pEp4iosInternTests.xctest"
+               BlueprintName = "pEp4iosInternTests"
+               ReferencedContainer = "container:../pEp_for_iOS_intern/pEp4iosIntern/pEp4iosIntern.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
