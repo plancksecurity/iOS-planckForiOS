@@ -25,7 +25,9 @@ extension NSAttributedString {
 
     func toHtml(inlinedAttachments:[Attachment]) -> (plainText: String, html: String?) { //!!!: ADAM: DIRTY WORKARAOUND
 
-        let htmlDocAttribKey = [NSAttributedString.DocumentAttributeKey.documentType: NSAttributedString.DocumentType.html]
+        let encodingUtf8 = NSNumber(value: String.Encoding.utf8.rawValue)
+        let htmlDocAttribKey: [NSAttributedString.DocumentAttributeKey : Any] = [NSAttributedString.DocumentAttributeKey.documentType: NSAttributedString.DocumentType.html,
+                                                                                 NSAttributedString.DocumentAttributeKey.characterEncoding: encodingUtf8]
 
         // conversion NSTextAttachment with image to <img src.../> html tag with cid:{cid}
 
