@@ -205,10 +205,8 @@ extension EmailViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(
         _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            guard
-                let row = tableData?.getRow(at: indexPath.row),
-                let cell = tableView.dequeueReusableCell(withIdentifier: row.identifier,
-                                                         for: indexPath) as? MessageCell,
+            guard let row = tableData?.getRow(at: indexPath.row),
+                let cell = tableView.dequeueReusableCell(withIdentifier: row.identifier, for: indexPath) as? MessageCell,
                 let m = message
                 else {
                     return UITableViewCell()
@@ -318,7 +316,6 @@ extension EmailViewController: UIPopoverPresentationControllerDelegate {
     
     func popoverPresentationController(_ popoverPresentationController: UIPopoverPresentationController, willRepositionPopoverTo rect:
         UnsafeMutablePointer<CGRect>, in view: AutoreleasingUnsafeMutablePointer<UIView>) {
-        
         guard let titleView = navigationItem.titleView else {
             return
         }

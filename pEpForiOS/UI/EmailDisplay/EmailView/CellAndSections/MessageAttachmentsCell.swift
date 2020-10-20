@@ -53,6 +53,7 @@ class MessageAttachmentsCell: MessageCell {
 
 extension MessageAttachmentsCell: AttachmentsViewDelegate {
     func didTap(attachment: Attachment, location: CGPoint, inView: UIView?) {
+        //TODO: change this. Cell should not know anything about Attachments.
         (delegate as? MessageAttachmentDelegate)?.didTap(cell: self, attachment: attachment,
                                                          location: location, inView: inView)
     }
