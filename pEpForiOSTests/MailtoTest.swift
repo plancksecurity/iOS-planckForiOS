@@ -58,12 +58,12 @@ class MailtoTest: XCTestCase {
                 return
             }
 
-            XCTAssertTrue(tos.contains("martin@martin.com"))
-            XCTAssertTrue(tos.contains("aaa@pepp.com"))
-            XCTAssertTrue(ccs.contains("a@a.com"))
-            XCTAssertTrue(ccs.contains("b@b.com"))
-            XCTAssertTrue(bccs.contains("c@c.com"))
-            XCTAssertTrue(bccs.contains("d@d.com"))
+            XCTAssertNotNil(tos.filter({$0.address == "martin@martin.com"}))
+            XCTAssertNotNil(tos.filter({$0.address == "aaa@pepp.com"}))
+            XCTAssertNotNil(ccs.filter({$0.address == "a@a.com"}))
+            XCTAssertNotNil(ccs.filter({$0.address == "b@b.com"}))
+            XCTAssertNotNil(bccs.filter({$0.address == "c@c.com"}))
+            XCTAssertNotNil(bccs.filter({$0.address == "d@d.com"}))
             XCTAssertTrue(body.contains("body\r\nasdas\r\n\r\na"))
             XCTAssertTrue(subject.contains("subject"))
         } else {

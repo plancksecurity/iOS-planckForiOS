@@ -219,9 +219,7 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
         msg.longMessageFormatted = "longMessageFormatted"
         msg.replaceAttachments(with: [])
         msg.save()
-        let initData = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
-                                                 orForOriginalMessage: msg,
-                                                 composeMode: .normal)
+        let initData = ComposeViewModel.InitData(prefilledTo: nil, prefilledFrom: nil, originalMessage: msg, composeMode: .normal)
         let createe = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
         if !isWapped {
             createe.setBccUnwrapped()
