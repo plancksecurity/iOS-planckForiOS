@@ -75,36 +75,42 @@ class MessageModelTests: PersistentStoreDrivenTestBase {
     func testAccountSave() {
         let account = SecretTestData().createWorkingAccount()
         account.session.commit()
-        
-        let cdAccounts = CdAccount.all(in: moc) as? [CdAccount] ?? []
-        XCTAssertFalse(cdAccounts.isEmpty)
-        for cdAcc in cdAccounts {
-            guard let cdId = cdAcc.identity else {
-                XCTFail()
-                return
-            }
 
-            XCTAssertTrue(cdId.isMySelf)
+        guard let cdAcc = CdAccount.searchAccount(withAddress: account.user.address, context: moc) else {
+            XCTFail()
+            return
         }
-        moc.saveAndLogErrors()
-        
-        let accounts = Account.all()
-        XCTAssertFalse(accounts.isEmpty)
-        for acc in accounts {
-            XCTAssertTrue(acc.user.isMySelf)
+
+        guard let cdId = cdAcc.identity else {
+            XCTFail()
+            return
         }
+
+        XCTAssertTrue(cdId.isMySelf)
+
+        guard let account2 = Account.by(address: account.user.address) else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertTrue(account2.user.isMySelf)
     }
 
     func testCdAccountDelete() {
-        let account1 = SecretTestData().createWorkingAccount(number: 0)
-        let user = account1.user.address
-        
-        if let account2 = Account.by(address: user) {
-            XCTAssertEqual(account1.user, account2.user)
+        guard let userAddress = cdAccount.identity?.address else {
+            XCTFail()
+            return
         }
+
+        guard let account1 = Account.by(address: userAddress) else {
+            XCTFail()
+            return
+        }
+
         account1.delete()
-        XCTAssertNil(Account.by(address: user))
-        XCTAssertNil(CdServer.all(in: moc))
+        account1.session.commit()
+
+        XCTAssertNil(Account.by(address: userAddress))
     }
 
     func testExistingAccount() {

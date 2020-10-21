@@ -73,10 +73,10 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
     public var automaticallyTrusted: Bool {
         get{
             // Only IMAP servers can be trusted.
-            return cdObject.manuallyTrusted
+            return cdObject.automaticallyTrusted
         }
         set{
-            cdObject.manuallyTrusted = newValue
+            cdObject.automaticallyTrusted = newValue
         }
     }
 

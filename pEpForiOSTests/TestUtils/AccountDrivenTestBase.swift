@@ -10,15 +10,11 @@ import XCTest
 
 @testable import pEpForiOS
 @testable import MessageModel //FIXME:
-import PEPObjCAdapterFramework
+import PEPObjCAdapterFramework // Only for the tear down
 
 /// Base class for tests that need an account set up.
 open class AccountDrivenTestBase: XCTestCase {
     var account: Account!
-
-    var session: PEPSession {
-        return PEPSession()
-    }
 
     override open func setUp() {
         super.setUp()

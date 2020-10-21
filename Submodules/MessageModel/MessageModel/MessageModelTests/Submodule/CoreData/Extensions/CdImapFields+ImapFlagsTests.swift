@@ -65,10 +65,6 @@ class CdImapFields_ImapFlagsTests: PersistentStoreDrivenTestBase {
                       "flag is set")
     }
 
-    // MARK: - flagsFromServer
-
-    // MARK: GET
-
     // MARK: starting from all true
 
     func testFlagsFromServerGet_allZero_answered() {

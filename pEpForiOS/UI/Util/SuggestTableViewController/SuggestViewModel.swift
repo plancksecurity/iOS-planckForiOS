@@ -119,7 +119,10 @@ class SuggestViewModel {
         return rows.count
     }
 
-    public subscript(index: Int) -> Row {
+    public subscript(index: Int) -> Row? {
+        guard index < rows.count else {
+            return nil
+        }
         return rows[index]
     }
 

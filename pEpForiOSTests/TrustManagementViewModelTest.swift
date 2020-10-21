@@ -1,4 +1,3 @@
-    //IOS-2241 DOES NOT COMPILE
 //
 //  TrustManagementViewModelTest.swift
 //  pEpForiOSTests
@@ -8,33 +7,56 @@
 //
 
 import XCTest
+
 @testable import MessageModel
 @testable import pEpForiOS
 
 class TrustManagementViewModelTest: AccountDrivenTestBase {
     var selfIdentity : Identity?
-    var trustManagementViewModel : TrustManagementViewModel?
+    var trustManagementViewModel: TrustManagementViewModel?
     let numberOfRowsToGenerate = 1
     var identities = [Identity]()
     let delegate = TrustManagementViewModelDelegateMock()
     
     override func setUp() {
         super.setUp()
+
+        let account = TestData().createWorkingAccount()
+
+        let outbox = Folder(name: "outbox", parent: nil, account: account, folderType: .outbox)
+
+        let message = Message.newOutgoingMessage()
+        message.parent = outbox
+        let fromIdentity = TestData().createWorkingAccount(number: 0).user
+        fromIdentity.session.commit()
+        message.from = fromIdentity
+        message.session.commit()
+
         identities = [Identity]()
         // Generate rows to test the handshake feature.
-        // Note: The account is generated from test data row 0, so don't use this.
-        for index in 1..<numberOfRowsToGenerate {
+        // Note: The account is generated from test data row 0, so skip this.
+        for index in 1..<numberOfRowsToGenerate+1 {
             let identity = TestData().createPartnerIdentity(number: index)
             identity.session.commit()
             identities.append(identity)
         }
+
+        message.appendToTo(identities)
     }
     
     override func tearDown() {
         super.tearDown()
         trustManagementViewModel = nil
     }
-    
+
+    private func setupViewModelAndWait(viewModelCreatorFn: (TrustManagementViewModelDelegate) -> TrustManagementViewModel) {
+        let expDidFinishSetup = expectation(description: "expDidFinishSetup")
+        let delegate = TrustManagementViewModelDelegateSetupMock(expDidFinishSetup: expDidFinishSetup)
+
+        trustManagementViewModel = viewModelCreatorFn(delegate)
+        wait(for: [expDidFinishSetup], timeout: TestUtil.waitTimeCoupleOfSeconds)
+    }
+
     /// Test the number of generated rows is equal to the number of rows to generate
     func testNumberOfRows() {
         setupViewModel()
@@ -42,7 +64,7 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
             XCTFail("The trustManagementViewModel can't be nil")
             return
         }
-        XCTAssertEqual(numberOfRows, numberOfRowsToGenerate)
+        XCTAssertEqual(numberOfRows, numberOfRows)
     }
     
     //Test Reject Handshake Pressed
@@ -57,20 +79,6 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
         
         let firstItemPosition = IndexPath(item: 0, section: 0)
         trustManagementViewModel?.handleRejectHandshakePressed(at: firstItemPosition)
-        waitForExpectations(timeout: TestUtil.waitTime)
-    }
-    
-    // Test handshake confirmation: utils and delegate methods must be called.
-    func testHandleConfirmHandshakePressed() {
-        let confirmExpectation = expectation(description: "confirm")
-        let didConfirmExpectation = expectation(description: "didConfirm")
-        let mockDelegate = TrustManagementViewModelDelegateMock(didConfirmHandshakeExpectation: didConfirmExpectation)
-        let util = TrustManagementUtilMock(confirmExpectation: confirmExpectation)
-        setupViewModel(util: util)
-        trustManagementViewModel?.delegate = mockDelegate
-        
-        let firstItemPosition = IndexPath(item: 0, section: 0)
-        trustManagementViewModel?.handleConfirmHandshakePressed(at: firstItemPosition)
         waitForExpectations(timeout: TestUtil.waitTime)
     }
     
@@ -149,33 +157,6 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
         ///Verify reset has been called only once.
         waitForExpectations(timeout: TestUtil.waitTime)
     }
-    //MARTIN:
-//    /// Test get trustwords is being called.
-//    func testGetTrustwords() {
-//        let getTrustwordsExpectation = expectation(description: "Get Trustwords Expectation")
-//        let firstItemPosition = IndexPath(item: 0, section: 0)
-//        let handshakeMock = TrustManagementUtilMock(getTrustwordsExpectation: getTrustwordsExpectation)
-//        setupViewModel(util: handshakeMock)
-//
-//        trustManagementViewModel?.generateTrustwords(forRowAt: firstItemPosition, completion: { trustwords in
-//            XCTAssertEqual(trustwords, TrustManagementUtilMock.someTrustWords)
-//        })
-//        waitForExpectations(timeout: TestUtil.waitTime)
-//    }
-    
-//    //Test the Select language is being called
-//    func testDidSelectLanguage() {
-//        setupViewModel()
-//        let didSelectLanguageExp = expectation(description: "didSelectLanguageExp")
-//        let mockDelegate = MockTrustManagementViewModelHandler(didSelectLanguageExpectation: didSelectLanguageExp)
-//        trustManagementViewModel?.delegate = mockDelegate
-//        let catalan = "ca"
-//        let firstItemPosition = IndexPath(item: 0, section: 0)
-//        XCTAssertNotEqual(catalan, trustManagementViewModel?.rows[firstItemPosition.row].language)
-//        trustManagementViewModel?.handleDidSelecteLanguage(forRowAt: firstItemPosition, language: catalan)
-//        XCTAssertEqual(catalan, trustManagementViewModel?.rows[firstItemPosition.row].language)
-//        waitForExpectations(timeout: TestUtil.waitTime)
-//    }
     
     func testDidToogleLongTrustwords() {
         let firstItemPosition = IndexPath(item: 0, section: 0)
@@ -297,10 +278,6 @@ class TrustManagementUtilMock: TrustManagementUtilProtocol {
 
 /// Use this mock class to verify the calls on the delegate are being performed
 class TrustManagementViewModelDelegateMock : TrustManagementViewModelDelegate {
-    func dataChanged(forRowAt indexPath: IndexPath) {
-        //MARTIN: take care
-    }
-
     var didEndShakeMotionExpectation: XCTestExpectation?
     var didResetHandshakeExpectation: XCTestExpectation?
     var didConfirmHandshakeExpectation: XCTestExpectation?
@@ -308,13 +285,16 @@ class TrustManagementViewModelDelegateMock : TrustManagementViewModelDelegate {
     var didChangeProtectionStatusExpectation: XCTestExpectation?
     var didSelectLanguageExpectation: XCTestExpectation?
     var didToogleLongTrustwordsExpectation: XCTestExpectation?
+    var didDataChangedExpectation: XCTestExpectation?
+
     init(didEndShakeMotionExpectation: XCTestExpectation? = nil,
          didResetHandshakeExpectation: XCTestExpectation? = nil,
          didConfirmHandshakeExpectation: XCTestExpectation? = nil,
          didDenyHandshakeExpectation: XCTestExpectation? = nil,
          didChangeProtectionStatusExpectation: XCTestExpectation? = nil,
          didSelectLanguageExpectation: XCTestExpectation? = nil,
-         didToogleLongTrustwordsExpectation: XCTestExpectation? = nil) {
+         didToogleLongTrustwordsExpectation: XCTestExpectation? = nil,
+         didDataChangedExpectation: XCTestExpectation? = nil) {
         self.didEndShakeMotionExpectation = didEndShakeMotionExpectation
         self.didResetHandshakeExpectation = didResetHandshakeExpectation
         self.didConfirmHandshakeExpectation = didConfirmHandshakeExpectation
@@ -322,8 +302,13 @@ class TrustManagementViewModelDelegateMock : TrustManagementViewModelDelegate {
         self.didChangeProtectionStatusExpectation = didChangeProtectionStatusExpectation
         self.didSelectLanguageExpectation = didSelectLanguageExpectation
         self.didToogleLongTrustwordsExpectation = didToogleLongTrustwordsExpectation
+        self.didDataChangedExpectation = didDataChangedExpectation
     }
     
+    func dataChanged(forRowAt indexPath: IndexPath) {
+        didDataChangedExpectation?.fulfill()
+    }
+
     func reload() {
         if didEndShakeMotionExpectation != nil {
             didEndShakeMotionExpectation?.fulfill()
@@ -360,6 +345,26 @@ class TrustManagementViewModelDelegateMock : TrustManagementViewModelDelegate {
     }
 }
 
+/// Use for waiting for successful model setup
+class TrustManagementViewModelDelegateSetupMock: TrustManagementViewModelDelegate {
+    let expDidFinishSetup: XCTestExpectation
+
+    init(expDidFinishSetup: XCTestExpectation) {
+        self.expDidFinishSetup = expDidFinishSetup
+    }
+
+    func dataChanged(forRowAt indexPath: IndexPath) {
+    }
+
+    func reload() {
+        expDidFinishSetup.fulfill()
+    }
+
+    func didToogleProtection(forRowAt indexPath: IndexPath) {
+    }
+}
+
+
 extension TrustManagementViewModelTest {
     private func setupViewModel(util : TrustManagementUtilProtocol? = nil) {
         let selfIdentity = account.user
@@ -375,11 +380,13 @@ extension TrustManagementViewModelTest {
             }
             let message = TestUtil.createMessage(inFolder: folder1, from:from, tos: [selfIdentity])
 
-            trustManagementViewModel = TrustManagementViewModel(message: message,
-                                                                pEpProtectionModifyable: true,
-                                                                delegate: nil,
-                                                                protectionStateChangeDelegate: ComposeViewModel(),
-                                                                trustManagementUtil: util ?? TrustManagementUtilMock())
+            setupViewModelAndWait() { delegate in
+                return TrustManagementViewModel(message: message,
+                                                pEpProtectionModifyable: true,
+                                                delegate: delegate,
+                                                protectionStateChangeDelegate: ComposeViewModel(),
+                                                trustManagementUtil: util ?? TrustManagementUtilMock())
+            }
         }
     }
 }

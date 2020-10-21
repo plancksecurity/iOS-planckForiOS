@@ -26,7 +26,7 @@ class LoginImapOperationTest: PersistentStoreDrivenTestBase {
         let imapLogin = LoginImapOperation(parentName: #function,
                                            errorContainer: errorContainer,
                                            imapConnection: imapConnection)
-        imapLogin.completionBlock = { [weak self] in
+        imapLogin.completionBlock = {
             expLoginSucceeds.fulfill()
         }
 

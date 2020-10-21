@@ -35,11 +35,13 @@ class PersistentStoreDrivenTestBase: XCTestCase {
         cdInbox = TestUtil.createFolder(moc: moc)
         cdInbox.account = cdAccount
 
+        // NOTE: Must be saved before the various connect infos grab the `objectID`.
+        // Order is important here.
+        moc.saveAndLogErrors()
+
         imapConnectInfo = cdAccount.imapConnectInfo
         smtpConnectInfo = cdAccount.smtpConnectInfo
         imapConnection = ImapConnection(connectInfo: imapConnectInfo)
-
-        moc.saveAndLogErrors()
     }
 
     override func tearDown() {

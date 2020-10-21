@@ -105,10 +105,8 @@ extension PEPHeaderView {
         NSLayoutConstraint.activate([
             titleTextView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             titleTextView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-            titleTextView.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor,
-                                            constant: Constants.Margin.top),
-            titleTextView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
-                                               constant: -Constants.Margin.bottom)
+            titleTextView.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: Constants.Margin.top),
+            titleTextView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -Constants.Margin.bottom).usingPriority(.defaultHigh)
         ])
     }
 }

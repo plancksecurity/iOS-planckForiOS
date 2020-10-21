@@ -59,7 +59,7 @@ class IdentityQueryResultTest: PersistentStoreDrivenTestBase {
 
         // Then
         let expectedMessagesCount = 0
-        XCTAssertEqual(try? identityQueryResults.count(), expectedMessagesCount)
+        XCTAssertEqual(identityQueryResults.count(), expectedMessagesCount)
     }
 
     func testStartMonitoringWithElements() {
@@ -79,7 +79,7 @@ class IdentityQueryResultTest: PersistentStoreDrivenTestBase {
         }
         // Then
         let expectedIdentitiesCount = 1
-        let identitiesCount = try! identityQueryResults.count()
+        let identitiesCount = identityQueryResults.count()
         XCTAssertEqual(identitiesCount, expectedIdentitiesCount)
         for i in 1..<identitiesCount {
             XCTAssertTrue(type(of: identityQueryResults[i]) ==  Identity.self)
