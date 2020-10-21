@@ -7,10 +7,9 @@
 //
 
 import XCTest
-import CoreData
 
 @testable import pEpForiOS
-@testable import MessageModel
+import MessageModel
 
 class ExtraKeysSettingViewModelTest: AccountDrivenTestBase {
 
@@ -102,21 +101,18 @@ class ExtraKeysSettingViewModelTest: AccountDrivenTestBase {
 
 extension ExtraKeysSettingViewModelTest {
 
+    /// MUST be used only on main queue.
     @discardableResult
     private func createAndSaveExtraKeys(numKeys: Int) -> [ExtraKey]{
-        let moc: NSManagedObjectContext = Stack.shared.mainContext // We are using Core Data here as the alternative would be to alter production code, which is king.
         var createes = [ExtraKey]()
         for _ in 0..<numKeys {
-            let cdCreatee = CdExtraKey(context: moc)
-            cdCreatee.fingerprint = UUID().uuidString
-            let createe = ExtraKey(cdObject: cdCreatee, context: moc)
+            let createe = ExtraKey(withFpr: UUID().uuidString)
             createes.append(createe)
         }
-        moc.saveAndLogErrors()
+        Session.main.commit()
 
         return createes
     }
-
 
     fileprivate class TestDelegate: ExtraKeysSettingViewModelDelegate {
         let expectationShowFprInvalidAlert: XCTestExpectation?

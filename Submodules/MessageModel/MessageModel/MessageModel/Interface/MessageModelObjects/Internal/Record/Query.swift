@@ -34,7 +34,7 @@ import pEpIOSToolbox
  All queries are called as class functions on any object that is kind of `NSManagedObject`,
  and `Record.Context.default` is used if you don't specify any custom.
  */
-public extension NSManagedObject {
+extension NSManagedObject {
 
     // MARK: - General
 
