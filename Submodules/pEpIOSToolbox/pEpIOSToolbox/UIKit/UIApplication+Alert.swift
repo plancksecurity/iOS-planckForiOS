@@ -13,9 +13,10 @@ extension UIApplication {
     /// Indicates if it possible to show an alert.
     /// - Returns: True if possible, false otherwise.
     class public func canShowAlert() -> Bool {
+        /// Show the alert view if there is no other alert view already presented. 
         guard let alert = UIApplication.currentlyVisibleViewController() as? UIAlertController else {
             return true
         }
-        return alert.preferredStyle == .alert
+        return alert.preferredStyle != .alert
     }
 }
