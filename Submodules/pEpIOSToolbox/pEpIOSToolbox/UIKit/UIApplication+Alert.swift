@@ -1,5 +1,5 @@
 //
-//  UIApplication+ErrorAlert.swift
+//  UIApplication+Alert.swift
 //  pEp
 //
 //  Created by Martín Brude on 20/10/2020.
