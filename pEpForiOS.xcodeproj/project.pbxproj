@@ -163,6 +163,7 @@
 		15D439A5216F7E0E00EB3933 /* AccountPickerViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D439A4216F7E0E00EB3933 /* AccountPickerViewModelTest.swift */; };
 		15D7D990219AD38B00A1A2B9 /* MediaAttachmentPickerProviderViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7D98F219AD38B00A1A2B9 /* MediaAttachmentPickerProviderViewModelTest.swift */; };
 		15D7D992219B154000A1A2B9 /* Attachment+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7D991219B154000A1A2B9 /* Attachment+Extensions.swift */; };
+		15D7D995219B2C5C00A1A2B9 /* ComposeViewModel+InitDataTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7D994219B2C5C00A1A2B9 /* ComposeViewModel+InitDataTest.swift */; };
 		15D7D997219C374600A1A2B9 /* ComposeViewModelStateTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7D996219C374600A1A2B9 /* ComposeViewModelStateTest.swift */; };
 		15F136F424B6294E00A7F810 /* UserInputProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F136F324B6294E00A7F810 /* UserInputProvider.swift */; };
 		15F136F624B62A4900A7F810 /* UserInputProvider+PassphraseProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F136F524B62A4900A7F810 /* UserInputProvider+PassphraseProviderProtocol.swift */; };
@@ -672,6 +673,7 @@
 		15D439A4216F7E0E00EB3933 /* AccountPickerViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPickerViewModelTest.swift; sourceTree = "<group>"; };
 		15D7D98F219AD38B00A1A2B9 /* MediaAttachmentPickerProviderViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaAttachmentPickerProviderViewModelTest.swift; sourceTree = "<group>"; };
 		15D7D991219B154000A1A2B9 /* Attachment+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Attachment+Extensions.swift"; sourceTree = "<group>"; };
+		15D7D994219B2C5C00A1A2B9 /* ComposeViewModel+InitDataTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ComposeViewModel+InitDataTest.swift"; sourceTree = "<group>"; };
 		15D7D996219C374600A1A2B9 /* ComposeViewModelStateTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewModelStateTest.swift; sourceTree = "<group>"; };
 		15F136F324B6294E00A7F810 /* UserInputProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInputProvider.swift; sourceTree = "<group>"; };
 		15F136F524B62A4900A7F810 /* UserInputProvider+PassphraseProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInputProvider+PassphraseProviderProtocol.swift"; sourceTree = "<group>"; };
@@ -958,6 +960,7 @@
 		5BC4E60624113659008C01ED /* TutorialStep2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep2ViewController.swift; sourceTree = "<group>"; };
 		5BCFE662252470F4001323C3 /* ComposeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		5BD4465F24F65DE300422594 /* EmailListViewController+Keyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EmailListViewController+Keyboard.swift"; sourceTree = "<group>"; };
+		5BD917E1252DD64D0092B30F /* MailtoTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailtoTest.swift; sourceTree = "<group>"; };
 		5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewController.swift; sourceTree = "<group>"; };
 		5BE35AA324913B4700AC605C /* SettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		5BEAECB425370C3E0082AAC6 /* String+Mailto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Mailto.swift"; sourceTree = "<group>"; };
@@ -1664,6 +1667,7 @@
 		15D7D993219B2C1200A1A2B9 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				15D7D994219B2C5C00A1A2B9 /* ComposeViewModel+InitDataTest.swift */,
 				15D7D996219C374600A1A2B9 /* ComposeViewModelStateTest.swift */,
 				151AD7AC219D74C700FC36FF /* ComposeViewModelTest.swift */,
 			);
@@ -3234,6 +3238,7 @@
 				5B3B019524B49DD700FBB4B5 /* AccountSettingsViewModelTest.swift in Sources */,
 				15410D1D2199C2E500BBF65F /* SubjectCellViewModelTest.swift in Sources */,
 				15410D1F2199CA1100BBF65F /* XCTTestCase+Utils.swift in Sources */,
+				15D7D995219B2C5C00A1A2B9 /* ComposeViewModel+InitDataTest.swift in Sources */,
 				158A6E2F230D53E3006A9ECE /* ExtraKeysSettingViewModelTest.swift in Sources */,
 				150707DC21006CD000AA213F /* ComposeUtilTest.swift in Sources */,
 				15D439A5216F7E0E00EB3933 /* AccountPickerViewModelTest.swift in Sources */,
