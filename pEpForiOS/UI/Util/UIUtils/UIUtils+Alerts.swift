@@ -34,6 +34,10 @@ extension UIUtils {
             Log.shared.errorAndCrash("No VC")
             return
         }
+        guard UIApplication.canShowAlert() else {
+            /// Valid case: there might be an alert already shown
+            return
+        }
         presenterVc.present(alertView, animated: true, completion: nil)
     }
 
@@ -62,9 +66,13 @@ extension UIUtils {
             Log.shared.errorAndCrash("No VC")
             return
         }
+        guard UIApplication.canShowAlert() else {
+            /// Valid case: there might be an alert already shown
+            return
+        }
         presenterVc.present(alertView, animated: true, completion: nil)
     }
-
+    
     /// Generic method to show an alert and require information throught a textfield
     /// - Parameters:
     ///   - title: The title of the alert
@@ -112,6 +120,10 @@ extension UIUtils {
         alertController.addAction(cancelAction)
         guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
             Log.shared.errorAndCrash("No VC")
+            return
+        }
+        guard UIApplication.canShowAlert() else {
+            /// Valid case: there might be an alert already shown
             return
         }
         DispatchQueue.main.async {

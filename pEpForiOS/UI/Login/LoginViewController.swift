@@ -492,6 +492,11 @@ extension LoginViewController {
                                                selector: #selector(hideSpecificDeviceButton),
                                                name: UIDevice.orientationDidChangeNotification,
                                                object: nil)
+
+        UIUtils.showPassphraseRequiredForPEPSyncAlert(completion: <#T##((String?) -> Void)?##((String?) -> Void)?##(String?) -> Void#>)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            UIUtils.showAlertWithOnlyPositiveButton(title: "c", message: "d")
+        }
     }
 
     private func setupPasswordField() {

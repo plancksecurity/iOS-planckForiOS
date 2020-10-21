@@ -150,9 +150,17 @@ extension SettingsTableViewController {
 
     /// Presents an alert controller if the user taps the reset all identity cell.
     private func handleResetAllIdentity(action : @escaping SettingsViewModel.ActionBlock) {
+        guard UIApplication.canShowAlert() else {
+            /// Valid case: there might be an alert already shown
+            return
+        }
         if let pepAlertViewController = getResetAllIdentityAlertController(action: action) {
             DispatchQueue.main.async { [weak self] in
-                self?.present(pepAlertViewController, animated: true)
+                guard let me = self else {
+                    // Valid case. We might havebeen dismissed already.
+                    return
+                }
+                me.present(pepAlertViewController, animated: true)
             }
         }
     }
@@ -450,7 +458,7 @@ extension SettingsTableViewController {
         return alert
     }
 
-    func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PEPAlertViewController? {
+    private func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PEPAlertViewController? {
         let title = NSLocalizedString("Disable p≡p Sync",
                                       comment: "Leave device group confirmation")
         let comment = NSLocalizedString("If you disable p≡p Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable p≡p Sync?",
@@ -501,7 +509,7 @@ extension SettingsTableViewController: SwitchCellDelegate {
         }
 
         if row.identifier == SettingsViewModel.Row.pEpSync {
-            if viewModel.isGrouped() {
+            if viewModel.isGrouped(), UIApplication.canShowAlert() {
                 guard let alertToShow = showpEpSyncLeaveGroupAlert(action: row.action,
                                                                    newValue: newValue) else {
                                                                     Log.shared.error("alert lost")

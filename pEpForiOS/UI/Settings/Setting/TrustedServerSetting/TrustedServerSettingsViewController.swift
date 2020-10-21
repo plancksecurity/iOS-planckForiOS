@@ -94,6 +94,10 @@ extension TrustedServerSettingsViewController: TrustedServerSettingsViewModelDel
             viewModel.setStoreSecurely(indexPath: indexPath, toValue: true)
             return
         }
+        guard UIApplication.canShowAlert() else {
+            /// Valid case: there might be an alert already shown
+            return
+        }
         present(storingSecurelyAlert, animated: true)
     }
 }

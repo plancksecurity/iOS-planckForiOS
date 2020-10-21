@@ -34,11 +34,7 @@ class UIUtils {
                 // Do nothing. The error type is not suitable to bother the user with.
                 return
             }
-            if UIApplication.canShowErrorAlert() {
-                showAlertWithOnlyPositiveButton(title: displayError.title, message: displayError.errorDescription)
-            } else {
-                Log.shared.error("Can't show error alert view")
-            }
+            showAlertWithOnlyPositiveButton(title: displayError.title, message: displayError.errorDescription)
         }
 
         if Thread.current == Thread.main {

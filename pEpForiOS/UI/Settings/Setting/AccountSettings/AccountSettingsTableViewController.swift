@@ -368,11 +368,19 @@ extension AccountSettingsTableViewController {
         pepAlertViewController.modalPresentationStyle = .overFullScreen
         pepAlertViewController.modalTransitionStyle = .crossDissolve
 
+        guard UIApplication.canShowAlert() else {
+            /// Valid case: there might be an alert already shown
+            return
+        }
         DispatchQueue.main.async { [weak self] in
-            self?.present(pepAlertViewController, animated: true)
+            guard let me = self else {
+                // Valid case. We might have been dismissed.
+                return
+            }
+            me.present(pepAlertViewController, animated: true)
         }
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.destination {
         case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
