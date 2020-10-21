@@ -92,6 +92,7 @@ hg clone https://pep.foundation/dev/repos/pantomime-iOS/
 hg clone https://pep.foundation/dev/repos/pEpEngine
 hg clone https://pep.foundation/dev/repos/pEpObjCAdapter
 hg clone https://pep.foundation/dev/repos/libAccountSettings/
+hg up tag_for_1.1.300
 
 hg clone https://pep-security.ch/dev/repos/pEp_for_iOS/
 
