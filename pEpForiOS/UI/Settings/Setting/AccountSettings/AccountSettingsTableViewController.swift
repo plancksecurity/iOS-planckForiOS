@@ -364,21 +364,9 @@ extension AccountSettingsTableViewController {
                                             me.viewModel?.handleResetIdentity()
         })
         pepAlertViewController.add(action: resetAction)
-
         pepAlertViewController.modalPresentationStyle = .overFullScreen
         pepAlertViewController.modalTransitionStyle = .crossDissolve
-
-        guard UIApplication.canShowAlert() else {
-            /// Valid case: there might be an alert already shown
-            return
-        }
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                // Valid case. We might have been dismissed.
-                return
-            }
-            me.present(pepAlertViewController, animated: true)
-        }
+        UIUtils.present(pepAlertViewController)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

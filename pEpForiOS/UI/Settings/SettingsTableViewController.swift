@@ -150,18 +150,8 @@ extension SettingsTableViewController {
 
     /// Presents an alert controller if the user taps the reset all identity cell.
     private func handleResetAllIdentity(action : @escaping SettingsViewModel.ActionBlock) {
-        guard UIApplication.canShowAlert() else {
-            /// Valid case: there might be an alert already shown
-            return
-        }
         if let pepAlertViewController = getResetAllIdentityAlertController(action: action) {
-            DispatchQueue.main.async { [weak self] in
-                guard let me = self else {
-                    // Valid case. We might havebeen dismissed already.
-                    return
-                }
-                me.present(pepAlertViewController, animated: true)
-            }
+            UIUtils.present(pepAlertViewController)
         }
     }
 
@@ -509,7 +499,7 @@ extension SettingsTableViewController: SwitchCellDelegate {
         }
 
         if row.identifier == SettingsViewModel.Row.pEpSync {
-            if viewModel.isGrouped(), UIApplication.canShowAlert() {
+            if viewModel.isGrouped() {
                 guard let alertToShow = showpEpSyncLeaveGroupAlert(action: row.action,
                                                                    newValue: newValue) else {
                                                                     Log.shared.error("alert lost")

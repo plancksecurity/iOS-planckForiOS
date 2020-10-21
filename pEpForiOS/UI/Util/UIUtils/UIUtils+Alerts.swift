@@ -11,6 +11,13 @@ import pEpIOSToolbox
 // MARK: - UIUtild+Alerts
 
 extension UIUtils {
+    private static var alertPresenter: UIViewController {
+        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("No VC")
+            return UIViewController()
+        }
+        return presenterVc
+    }
 
     /// Shows an alert with "OK" button only.
     /// - Parameters:
@@ -21,26 +28,17 @@ extension UIUtils {
                                                 message: String?,
                                                 inNavigationStackOf viewController: UIViewController? = nil,
                                                 completion: (()->Void)? = nil) {
-        let alertView = UIAlertController.pEpAlertController(title: title,
-                                                             message: message,
-                                                             preferredStyle: .alert)
-        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment:
-            "General alert positive button"),
+        let alertViewController = UIAlertController.pEpAlertController(title: title,
+                                                                       message: message,
+                                                                       preferredStyle: .alert)
+        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "General alert positive button"),
                                      style: .default) { action in
-                                        completion?()
+            completion?()
         }
-        alertView.addAction(okAction)
-        guard let presenterVc = UIApplication.currentlyVisibleViewController(inNavigationStackOf: viewController) else {
-            Log.shared.errorAndCrash("No VC")
-            return
-        }
-        guard UIApplication.canShowAlert() else {
-            /// Valid case: there might be an alert already shown
-            return
-        }
-        presenterVc.present(alertView, animated: true, completion: nil)
+        alertViewController.addAction(okAction)
+        present(alertViewController)
     }
-
+    
     static func showTwoButtonAlert(withTitle title: String,
                                    message: String,
                                    cancelButtonText: String = NSLocalizedString("Cancel",
@@ -50,27 +48,18 @@ extension UIUtils {
                                    cancelButtonAction: @escaping ()->Void,
                                    positiveButtonAction: @escaping () -> Void,
                                    inNavigationStackOf viewController: UIViewController? = nil) {
-        let alertView = UIAlertController.pEpAlertController(title: title,
-                                                             message: message,
-                                                             preferredStyle: .alert)
-        alertView.addAction(UIAlertAction(title: positiveButtonText,
-                                          style: .default) { (alertAction) in
-                                            positiveButtonAction()
+        let alertViewController = UIAlertController.pEpAlertController(title: title,
+                                                                       message: message,
+                                                                       preferredStyle: .alert)
+        alertViewController.addAction(UIAlertAction(title: positiveButtonText,
+                                                    style: .default) { (alertAction) in
+            positiveButtonAction()
         })
-        alertView.addAction(UIAlertAction(title: cancelButtonText,
-                                          style: .cancel) { (alertAction) in
-                                            cancelButtonAction()
+        alertViewController.addAction(UIAlertAction(title: cancelButtonText,
+                                                    style: .cancel) { (alertAction) in
+            cancelButtonAction()
         })
-
-        guard let presenterVc = UIApplication.currentlyVisibleViewController(inNavigationStackOf: viewController) else {
-            Log.shared.errorAndCrash("No VC")
-            return
-        }
-        guard UIApplication.canShowAlert() else {
-            /// Valid case: there might be an alert already shown
-            return
-        }
-        presenterVc.present(alertView, animated: true, completion: nil)
+        present(alertViewController)
     }
     
     /// Generic method to show an alert and require information throught a textfield
@@ -116,18 +105,29 @@ extension UIUtils {
             UIAlertAction(title: cancelTitle, style: negativeButtonStyle) { (action) in
                 cancelCallback?()
         }
-
         alertController.addAction(cancelAction)
-        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.errorAndCrash("No VC")
-            return
-        }
-        guard UIApplication.canShowAlert() else {
-            /// Valid case: there might be an alert already shown
+        present(alertController)
+    }
+
+    /// Present the pep alert if possible.
+    /// - Parameter alertController: The controller to present.
+    public static func present(_ alertController: PEPAlertViewController) {
+        guard alertPresenter is PEPAlertViewController else {
+            /// Valid case: there is an alert already shown
             return
         }
         DispatchQueue.main.async {
-            presenterVc.present(alertController, animated: true, completion: nil)
+            alertPresenter.present(alertController, animated: true)
+        }
+    }
+
+    private static func present(_ alertController: UIAlertController) {
+        guard !UIApplication.isCurrentlyShowingAlert else {
+            /// Valid case: there is an alert already shown
+            return
+        }
+        DispatchQueue.main.async {
+            alertPresenter.present(alertController, animated: true)
         }
     }
 }
