@@ -77,18 +77,17 @@ extension KeySyncWizardViewController {
     static private func fromStoryboard() -> KeySyncWizardViewController? {
         let storyboard = UIStoryboard(name: Constants.keySyncWizardStoryboard, bundle: .main)
         guard
-            let wizzardVC = storyboard.instantiateViewController(
+            let wizardVC = storyboard.instantiateViewController(
                 withIdentifier: storyboardId) as? KeySyncWizardViewController else {
                     Log.shared.errorAndCrash("Fail to instantiateViewController PEPAlertViewController")
                     return nil
         }
-        wizzardVC.isScrollEnable = false
-        wizzardVC.pageControlTint = nil
-        wizzardVC.pageControlPageIndicatorColor = nil
-        wizzardVC.showDots = false
-        wizzardVC.pageControlBackgroundColor = nil
-
-        return wizzardVC
+        wizardVC.isScrollEnable = false
+        wizardVC.pageControlTint = nil
+        wizardVC.pageControlPageIndicatorColor = nil
+        wizardVC.showDots = false
+        wizardVC.pageControlBackgroundColor = nil
+        return wizardVC
     }
 
     private func setup(pageCompletion: @escaping (Action) -> Void,
