@@ -45,10 +45,10 @@ struct KeySyncErrorView {
 
             if let presentedViewController = viewController.presentedViewController {
                 presentedViewController.dismiss(animated: true) {
-                    viewController.present(keySyncErrorView, animated: true, completion: nil)
+                    viewController.present(keySyncErrorView, animated: true)
                 }
             } else {
-                viewController.present(keySyncErrorView, animated: true, completion: nil)
+                viewController.present(keySyncErrorView, animated: true)
             }
         }
     }
@@ -103,7 +103,7 @@ extension KeySyncErrorView {
             return
         }
         DispatchQueue.main.async {
-            errorView.dismiss(animated: true, completion: nil)
+            errorView.dismiss(animated: true)
         }
     }
 }

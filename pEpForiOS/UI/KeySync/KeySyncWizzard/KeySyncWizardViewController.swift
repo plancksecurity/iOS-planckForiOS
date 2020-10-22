@@ -66,7 +66,6 @@ final class KeySyncWizardViewController: PEPPageViewControllerBase {
                       isNewGroup: isNewGroup)
         createe.modalTransitionStyle = .crossDissolve
         createe.modalPresentationStyle = .overFullScreen
-
         return createe
     }
 }
@@ -97,6 +96,7 @@ extension KeySyncWizardViewController {
                        partnerFPR: String,
                        isNewGroup: Bool) {
         self.isNewGroup = isNewGroup
+
         self.views = wizardViews(pageCompletion: pageCompletion,
                                  meFPR: meFPR,
                                  partnerFPR: partnerFPR,
