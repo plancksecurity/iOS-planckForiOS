@@ -103,38 +103,12 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
             self?.pEpSyncWizard?.goTo(index: completedViewIndex)
         }
     }
-    
+
     // We must dismiss pEpSyncWizard before presenting pEpSyncWizard error view.
-    func showError(error: Error?,
-                   completion: ((KeySyncErrorResponse) -> ())? = nil) {
-
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
-            }
-            guard let presentingViewController = me.pEpSyncWizard?.presentingViewController else {
-                //presentingViewController is nil then, pEpSyncWizard failed to be shown.
-                //So we call tryAgain to engine, to give it a another try to show pEpSyncWizard.
-                completion?(.tryAgain)
-                return
-            }
-
-            let isNewGroup = me.pEpSyncWizard?.isNewGroup ?? true
-
-            me.pEpSyncWizard?.dismiss(animated: true) {
-                KeySyncErrorView.presentKeySyncError(viewController: presentingViewController,
-                                                     isNewGroup: isNewGroup,
-                                                     error: error) {
-                    action in
-                    switch action {
-                    case .tryAgain:
-                        completion?(.tryAgain)
-                    case .notNow:
-                        completion?(.notNow)
-                    }
-                }
-            }
+    func showError(error: Error?, completion: ((KeySyncErrorResponse) -> ())? = nil) {
+        let isNewGroup = pEpSyncWizard?.isNewGroup ?? true
+        pEpSyncWizard?.dismiss(animated: true) {
+            UIUtils.presentKeySyncErrorView(isNewGroup: isNewGroup, error: error, completion: completion)
         }
     }
 }

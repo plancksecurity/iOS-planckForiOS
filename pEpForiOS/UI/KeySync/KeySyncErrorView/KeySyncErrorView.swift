@@ -17,14 +17,12 @@ struct KeySyncErrorView {
     }
 
     private init() {}
-
-    static func presentKeySyncError(viewController: UIViewController,
-                                    isNewGroup: Bool,
-                                    error: Error?,
-                                    completion: ((KeySyncErrorResponse) -> ())?) {
-        guard let keySyncErrorView = KeySyncErrorView.errorView(isNewGroup: isNewGroup,
-                                                                completion: {
-            action in
+    
+    static public func keySyncErrorView(viewController: UIViewController,
+                                        isNewGroup: Bool,
+                                        error: Error?,
+                                        completion: ((KeySyncErrorResponse) -> ())?) -> PEPAlertViewController? {
+        return KeySyncErrorView.errorView(isNewGroup: isNewGroup, completion: { action in
             switch action {
             case .tryAgain:
                 dismiss(from: viewController)
@@ -33,24 +31,7 @@ struct KeySyncErrorView {
                 dismiss(from: viewController)
                 completion?(.notNow)
             }
-        }) else {
-            return
-        }
-
-        DispatchQueue.main.async { [weak viewController] in
-            guard let viewController = viewController else {
-                Log.shared.errorAndCrash("Lost viewController, to present KeySyncError view")
-                return
-            }
-
-            if let presentedViewController = viewController.presentedViewController {
-                presentedViewController.dismiss(animated: true) {
-                    viewController.present(keySyncErrorView, animated: true)
-                }
-            } else {
-                viewController.present(keySyncErrorView, animated: true)
-            }
-        }
+        })
     }
 }
 
