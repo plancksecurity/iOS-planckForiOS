@@ -1208,7 +1208,7 @@
 		15033C7223473CD20060A1A2 /* KeySync */ = {
 			isa = PBXGroup;
 			children = (
-				3781653A230EC51100B967E3 /* KeySyncWizzard */,
+				3781653A230EC51100B967E3 /* KeySyncWizard */,
 				3705096422CF686C00CB73D6 /* KeySyncHandshake */,
 				37033E99231AD8D7008DD6F0 /* KeySyncErrorView */,
 			);
@@ -1964,13 +1964,13 @@
 			path = TutorialWizard;
 			sourceTree = "<group>";
 		};
-		3781653A230EC51100B967E3 /* KeySyncWizzard */ = {
+		3781653A230EC51100B967E3 /* KeySyncWizard */ = {
 			isa = PBXGroup;
 			children = (
 				15146C8B237F006F00D69495 /* KeySyncWizardViewController.swift */,
 				1521B78E241BDC27000EAE57 /* UIUtils+KeySyncWizard.swift */,
 			);
-			path = KeySyncWizzard;
+			path = KeySyncWizard;
 			sourceTree = "<group>";
 		};
 		37816540230EC66F00B967E3 /* PEPAlert */ = {
