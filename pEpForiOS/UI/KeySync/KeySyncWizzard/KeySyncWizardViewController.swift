@@ -96,7 +96,6 @@ extension KeySyncWizardViewController {
                        partnerFPR: String,
                        isNewGroup: Bool) {
         self.isNewGroup = isNewGroup
-
         self.views = wizardViews(pageCompletion: pageCompletion,
                                  meFPR: meFPR,
                                  partnerFPR: partnerFPR,
