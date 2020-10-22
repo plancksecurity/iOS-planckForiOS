@@ -57,7 +57,7 @@ final class KeySyncWizardViewController: PEPPageViewControllerBase {
                                isNewGroup: Bool,
                                completion: @escaping (Action) -> Void) -> KeySyncWizardViewController? {
         guard let createe = fromStoryboard() else {
-            Log.shared.errorAndCrash("Missing wizzard")
+            Log.shared.errorAndCrash("Missing wizard")
             return nil
         }
         createe.setup(pageCompletion: completion,
