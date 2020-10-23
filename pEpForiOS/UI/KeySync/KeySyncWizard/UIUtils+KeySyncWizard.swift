@@ -42,29 +42,20 @@ extension UIUtils {
     ///   - error: The key sync error
     ///   - completion: The callback to be executed when the user interacts with the error alert view buttons.
     public static func presentKeySyncErrorView(isNewGroup: Bool, error: Error?, completion: ((KeySyncErrorResponse) -> ())? = nil) {
-        let presenter = self.presenter // Avoid repeating the search of the presenter.
-        func showError() {
-            guard canPresent else {
-                return
+        let keySyncErrorViewController = PEPAlertViewController.getKeySyncErrorViewController(isNewGroup: isNewGroup) { (action) in
+            switch action {
+            case .tryAgain:
+                completion?(.tryAgain)
+            case .notNow:
+                completion?(.notNow)
             }
-            guard let view = KeySyncErrorView.keySyncErrorView(viewController: presenter,
-                                                               isNewGroup: isNewGroup,
-                                                               error: error,
-                                                               completion: completion) else {
-                Log.shared.errorAndCrash("KeySyncErrorView cant be instanciated")
-                return
-            }
-            UIUtils.present(view)
         }
         
-        /// Dismiss the wizard if needed to show the error
-        if presenter is KeySyncWizardViewController {
-            presenter.dismiss(animated: true) {
-                showError()
-            }
-        } else {
-            showError()
+        guard let keySyncErrorView = keySyncErrorViewController else {
+            Log.shared.errorAndCrash("KeySyncErrorView cant be instanciated")
+            return
         }
+        UIUtils.present(keySyncErrorView)
     }
 }
 
@@ -99,13 +90,23 @@ extension UIUtils {
     /// Present an alert view if possible.
     /// - Parameter keySyncErrorViewController: The view controller to present.
     private static func present(_ keySyncErrorViewController: PEPAlertViewController) {
+        let presenter = self.presenter
+        /// If there is an error already
         if let presentedViewController = presenter.presentedViewController {
-            presentedViewController.dismiss(animated: true)
-        }
-        guard canPresent else {
+            presentedViewController.dismiss(animated: true) {
+                UIUtils.present(keySyncErrorViewController)
+            }
             return
         }
-        presenter.present(keySyncErrorViewController, animated: true)
+
+        /// If there is a Keysync presented.
+        if presenter is KeySyncWizardViewController {
+            presenter.dismiss(animated: true) {
+                self.presenter.present(keySyncErrorViewController, animated: true, completion: nil)
+            }
+            return
+        }
+        self.presenter.present(keySyncErrorViewController, animated: true, completion: nil)
     }
 
     /// Present the keysync wizard if possible.
