@@ -36,7 +36,6 @@ extension UIUtils {
         return present(pEpSyncWizard)
     }
 
-    
     /// Present the alert views, if possible
     /// - Parameters:
     ///   - isNewGroup: Indicates if it's a new group or it's joining an existing group
