@@ -44,18 +44,16 @@ extension KeySyncHandshakeService {
                 // We want to dismiss any wizard view but the SuccessfullyGrouped one.
                 return
             }
-
             wizard.dismiss()
         }
     }
 }
 
 extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
-    func showHandshake(meFingerprint: String?,
-                       partnerFingerprint: String?,
-                       isNewGroup: Bool,
-                       completion: ((KeySyncHandshakeResult)->())? = nil) {
-
+    public func showHandshake(meFingerprint: String?,
+                              partnerFingerprint: String?,
+                              isNewGroup: Bool,
+                              completion: ((KeySyncHandshakeResult)->())? = nil) {
         guard let meFPR = meFingerprint, let partnerFPR = partnerFingerprint else {
             Log.shared.errorAndCrash("Missing FPRs")
             return
@@ -72,43 +70,53 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
             me.pEpSyncWizard = UIUtils.presentKeySyncWizard(meFPR: meFPR,
                                                             partnerFPR: partnerFPR,
                                                             isNewGroup: isNewGroup) { action in
-                                                                switch action {
-                                                                case .accept:
-                                                                    completion?(.accepted)
-                                                                case .cancel:
-                                                                    completion?(.cancel)
-                                                                case .decline:
-                                                                    completion?(.rejected)
-                                                                }
+                switch action {
+                case .accept:
+                    completion?(.accepted)
+                case .cancel:
+                    completion?(.cancel)
+                case .decline:
+                    completion?(.rejected)
+                }
             }
         }
     }
 
-    func cancelHandshake() {
+    public func cancelHandshake() {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.pEpSyncWizard?.dismiss()
         }
     }
 
-    func showSuccessfullyGrouped() {
+    public func showSuccessfullyGrouped() {
         guard let pEpSyncWizard = pEpSyncWizard else {
             return
         }
         let completedViewIndex = pEpSyncWizard.views.count - 1
         DispatchQueue.main.async { [weak self] in
-            self?.pEpSyncWizard?.goTo(index: completedViewIndex)
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                return
+            }
+            me.pEpSyncWizard?.goTo(index: completedViewIndex)
         }
     }
 
     // We must dismiss pEpSyncWizard before presenting pEpSyncWizard error view.
-    func showError(error: Error?, completion: ((KeySyncErrorResponse) -> ())? = nil) {
+    public func showError(error: Error?, completion: ((KeySyncErrorResponse) -> ())? = nil) {
         let isNewGroup = pEpSyncWizard?.isNewGroup ?? true
-        pEpSyncWizard?.dismiss(animated: true) {
-            UIUtils.presentKeySyncErrorView(isNewGroup: isNewGroup, error: error, completion: completion)
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self, let pEpSyncWizard = me.pEpSyncWizard else {
+                // Valid case. We might have been dismissed already.
+                return
+            }
+            pEpSyncWizard.dismiss(animated: true) {
+                UIUtils.presentKeySyncErrorView(isNewGroup: isNewGroup, error: error, completion: completion)
+            }
         }
     }
 }
