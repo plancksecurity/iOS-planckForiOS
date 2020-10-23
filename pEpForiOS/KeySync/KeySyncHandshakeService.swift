@@ -112,6 +112,7 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
         DispatchQueue.main.async { [weak self] in
             guard let me = self, let pEpSyncWizard = me.pEpSyncWizard else {
                 // Valid case. We might have been dismissed already.
+                UIUtils.presentKeySyncErrorView(isNewGroup: isNewGroup, error: error, completion: completion)
                 return
             }
             pEpSyncWizard.dismiss(animated: true) {
