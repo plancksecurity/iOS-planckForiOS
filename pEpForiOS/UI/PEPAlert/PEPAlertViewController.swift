@@ -88,7 +88,7 @@ final class PEPAlertViewController: UIViewController {
 
 extension PEPAlertViewController: PEPAlertViewModelDelegate {
     func dismiss() {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 }
 
@@ -142,8 +142,7 @@ extension PEPAlertViewController {
         case .pEpSyncWizard:
             alertButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .semibold)
         case .pEpDefault:
-            alertButton.titleLabel?.font = .boldSystemFont(ofSize: 15) // ??? Dynamic font?
-            break
+            alertButton.titleLabel?.font = UIFont.pepFont(style: .callout, weight: .bold)
         }
     }
 
@@ -163,4 +162,3 @@ extension PEPAlertViewController {
         }
     }
 }
-

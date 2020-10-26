@@ -409,7 +409,7 @@ extension LoginViewController {
             return
         }
 
-        var title: String?
+        var title: String
         var message: String?
 
         if let oauthError = error as? OAuthAuthorizerError,
@@ -431,22 +431,13 @@ extension LoginViewController {
             title = displayError.title
             message = displayError.errorDescription
         }
-
-        let alertView = UIAlertController.pEpAlertController(title: title,
-                                                             message: message,
-                                                             preferredStyle: .alert)
-        alertView.addAction(UIAlertAction(
-            title: NSLocalizedString(
-                "OK",
-                comment: "UIAlertAction ok after error"),
-            style: .default, handler: { [weak self] action in
-                guard let me = self else {
-                    Log.shared.lostMySelf()
-                    return
-                }
-                me.setManualSetupButtonHidden(!offerManualSetup)
-        }))
-        present(alertView, animated: true, completion: nil)
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.setManualSetupButtonHidden(!offerManualSetup)
+        }
     }
 
     private func configureView() {
@@ -587,16 +578,12 @@ extension LoginViewController {
                                       options: [:],
                                       completionHandler: nil)
         }
-
-        UIUtils.showTwoButtonAlert(withTitle: NSLocalizedString("iCloud",
-                                                                comment: "Alert title for iCloud instructions"),
-                                   message: NSLocalizedString("You need to create an app-specific password in your iCloud account.",
-                                                              comment: "iCloud instructions"),
-                                   cancelButtonText: NSLocalizedString("OK",
-                                                                       comment: "OK (dismiss) button for iCloud instructions alert"),
-                                   positiveButtonText: NSLocalizedString("Info",
-                                                                         comment: "Info button for showing iCloud page"),
+        UIUtils.showTwoButtonAlert(withTitle: NSLocalizedString("iCloud", comment: "Alert title for iCloud instructions"),
+                                   message: NSLocalizedString("You need to create an app-specific password in your iCloud account.", comment: "iCloud instructions"),
+                                   cancelButtonText: NSLocalizedString("OK", comment: "OK (dismiss) button for iCloud instructions alert"),
+                                   positiveButtonText: NSLocalizedString("Info", comment: "Info button for showing iCloud page"),
                                    cancelButtonAction: {},
-                                   positiveButtonAction: openiCloudInfoInBrowser)
+                                   positiveButtonAction: openiCloudInfoInBrowser,
+                                   style: .default)
     }
 }

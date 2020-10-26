@@ -48,22 +48,16 @@ class TrustManagementViewController: BaseViewController {
         guard let vm = viewModel, vm.canUndo() && motion == .motionShake,
             let actionName = vm.revertAction() else { return }
         let title = NSLocalizedString(actionName, comment: "Revert last action performed named - alert title")
-        let alertController = UIAlertController.pEpAlertController(title: title,
-                                                                   message: nil,
-                                                                   preferredStyle: .alert)
         let confirmTitle = NSLocalizedString("Undo", comment: "Undo trust change verification button title")
-        let action = UIAlertAction(title: confirmTitle, style: .default) { [weak vm] (action) in
-            vm?.handleShakeMotionDidEnd()
-        }
-        alertController.addAction(action)
-        
-        //For the cancel button another action.
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel trust change to be undone")
-        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { _ in
-            alertController.dismiss(animated: true, completion: nil)
-        }
-        alertController.addAction(cancelAction)
-        present(alertController, animated: true, completion: nil)
+        UIUtils.showTwoButtonAlert(withTitle: title,
+                                   cancelButtonText: cancelTitle,
+                                   positiveButtonText: confirmTitle,
+                                   positiveButtonAction: { [weak vm] in
+                                    vm?.handleShakeMotionDidEnd()
+                                   },
+                                   inNavigationStackOf: self,
+                                   style: .warn)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -143,8 +137,7 @@ extension TrustManagementViewController {
             Log.shared.errorAndCrash("View Model must not be nil")
             return
         }
-        let alertController = UIAlertController.pEpAlertController(title: nil, message: nil,
-                                                                   preferredStyle: .actionSheet)
+        let alertController = UIUtils.actionSheet()
         let enable = NSLocalizedString("Enable Protection", comment: "Enable Protection")
         let disable = NSLocalizedString("Disable Protection", comment: "Disable Protection")
         let toogleProtectionTitle = viewModel.pEpProtected  ? disable : enable
@@ -157,7 +150,7 @@ extension TrustManagementViewController {
             alertController.dismiss(animated: true, completion: nil)
         }
         alertController.addAction(cancelAction)
-        
+
         /// A broken contraint comes up, it's a known issue in iOS.
         /// https://github.com/lionheart/openradar-mirror/issues/21120
         if let buttonView = optionsButton.value(forKey: "view") as? UIView {
@@ -174,14 +167,11 @@ extension TrustManagementViewController {
             Log.shared.error("IndexPath not found")
             return
         }
-        let alertController = UIAlertController.pEpAlertController(title: nil,
-                                                                   message: nil,
-                                                                   preferredStyle: .actionSheet)
+        let alertController = UIUtils.actionSheet()
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
         }
-
         //For every language a row in the action sheet.
         vm.languages { [weak self] langs in
             DispatchQueue.main.async {

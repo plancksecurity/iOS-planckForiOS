@@ -87,62 +87,35 @@ extension TrustedServerSettingsViewController: TrustedServerSettingCellDelegate 
 // MARK: - TrustedServerSettingsViewModelDelegate
 
 extension TrustedServerSettingsViewController: TrustedServerSettingsViewModelDelegate {
-    func showAlertBeforeStoringSecurely(forIndexPath indexPath: IndexPath) {
-        guard let storingSecurelyAlert = storingSecurelyAlert(forIndexPath: indexPath) else {
-            Log.shared.errorAndCrash("Fail to init storingSecurely pEpAlert")
-            //If fail to init the alert, we just skip the alert and store it securely
-            viewModel.setStoreSecurely(indexPath: indexPath, toValue: true)
-            return
-        }
-        UIUtils.present(storingSecurelyAlert)
-    }
-}
-
-// MARK: - Private
-
-extension TrustedServerSettingsViewController {
-    private func storingSecurelyAlert(forIndexPath indexPath: IndexPath) -> PEPAlertViewController? {
-        let title = NSLocalizedString("Security Alert",
-                                      comment: "Alert title before trusting an account")
-        let message = NSLocalizedString("This is a public cloud account. Your data will be exposed. Are you sure you want to configure this as trusted?",
-                                        comment: "Alert message before trusting an account")
-
-        let pepAlert = PEPAlertViewController.fromStoryboard(title: title, message: message)
-
-        let cancelActionTitle = NSLocalizedString("Cancel",
-                                                  comment: "Alert cancel button title before trusting an account")
-        let cancelAction = PEPUIAlertAction(title: cancelActionTitle,
-                                            style: .pEpBlue,
-                                            handler: { [weak self] _ in
-                                                guard let me = self else {
-                                                    Log.shared.lostMySelf()
-                                                    return
-                                                }
-                                                guard let trustCell = me.tableView.cellForRow(at: indexPath) as? TrustedServerSettingCell else {
-                                                    Log.shared.errorAndCrash("Fail to get TrustedServerSettingCell")
-                                                    return
-                                                }
-                                                trustCell.onOfSwitch.setOn(false, animated: true)
-                                                pepAlert?.dismiss()
-        })
-
-        let trustActionTitle = NSLocalizedString("Trust",
-                                                 comment: "Alert trust button title before trusting an account")
-        let trustAction = PEPUIAlertAction(title: trustActionTitle,
-                                           style: .pEpRed,
-                                           handler: { [weak self] _ in
-                                            guard let me = self else {
-                                                Log.shared.lostMySelf()
-                                                pepAlert?.dismiss()
-                                                return
-                                            }
-                                            me.viewModel.setStoreSecurely(indexPath: indexPath,
-                                                                          toValue: false)
-                                            pepAlert?.dismiss()
-        })
-        pepAlert?.add(action: cancelAction)
-        pepAlert?.add(action: trustAction)
-
-        return pepAlert
+    public func showAlertBeforeStoringSecurely(forIndexPath indexPath: IndexPath) {
+        let title = NSLocalizedString("Security Alert", comment: "Alert title before trusting an account")
+        let message = NSLocalizedString("This is a public cloud account. Your data will be exposed. Are you sure you want to configure this as trusted?", comment: "Alert message before trusting an account")
+        let cancelActionTitle = NSLocalizedString("Cancel", comment: "Alert cancel button title before trusting an account")
+        let trustActionTitle = NSLocalizedString("Trust", comment: "Alert trust button title before trusting an account")
+        let cancelAction = { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed.
+                return
+            }
+            guard let trustCell = me.tableView.cellForRow(at: indexPath) as? TrustedServerSettingCell else {
+                Log.shared.errorAndCrash("Fail to get TrustedServerSettingCell")
+                return
+            }
+            trustCell.onOfSwitch.setOn(false, animated: true)
+           }
+        let positiveAction = { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed.
+                return
+            }
+            me.viewModel.setStoreSecurely(indexPath: indexPath, toValue: false)
+           }
+        UIUtils.showTwoButtonAlert(withTitle: title, message: message,
+                                   cancelButtonText: cancelActionTitle,
+                                   positiveButtonText: trustActionTitle,
+                                   cancelButtonAction: cancelAction,
+                                   positiveButtonAction: positiveAction,
+                                   inNavigationStackOf: self,
+                                   style: .warn)
     }
 }

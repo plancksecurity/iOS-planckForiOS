@@ -224,12 +224,9 @@ extension IMAPSettingsViewController {
     }
 
     private func alertWithSecurityValues(_ sender: UITextField) {
-        let alertController = UIAlertController.pEpAlertController(
-            title: NSLocalizedString("Transport protocol",
-                                     comment: "UI alert title for transport protocol"),
-            message: NSLocalizedString("Choose a Security protocol for your accont",
-                                       comment: "UI alert message for transport protocol"),
-            preferredStyle: .actionSheet)
+        let title = NSLocalizedString("Transport protocol", comment: "UI alert title for transport protocol")
+        let message = NSLocalizedString("Choose a Security protocol for your accont", comment: "UI alert message for transport protocol")
+        let alertController = UIUtils.actionSheet(title: title, message: message)
         let block: (ConnectionTransport) -> () = { transport in
             sender.text = transport.localizedString()
             self.verifiableAccount?.transportIMAP = transport

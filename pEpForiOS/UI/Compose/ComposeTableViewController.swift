@@ -161,7 +161,7 @@ extension ComposeTableViewController {
             return
         }
 
-        let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
+        let actionSheetController = UIUtils.actionSheet()
         actionSheetController.addAction(changeSecureStatusAction(pEpProtected: vm.state.pEpProtection))
         actionSheetController.addAction(disableAlertAction())
         actionSheetController.popoverPresentationController?.sourceView = titleView
@@ -315,14 +315,16 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
                             message: String,
                             cancelButtonText: String,
                             positiveButtonText: String,
-                            cancelButtonAction: @escaping () -> Void,
+                            cancelButtonAction: (() -> Void)? = nil,
                             positiveButtonAction: @escaping () -> Void) {
         UIUtils.showTwoButtonAlert(withTitle: title,
                                    message: message,
                                    cancelButtonText: cancelButtonText,
                                    positiveButtonText: positiveButtonText,
                                    cancelButtonAction: cancelButtonAction,
-                                   positiveButtonAction: positiveButtonAction)
+                                   positiveButtonAction: positiveButtonAction,
+                                   style: .default)
+
     }
 
    func dismiss() {
@@ -627,12 +629,12 @@ extension ComposeTableViewController {
     }
 }
 
-// MARK: - Cancel UIAlertController
+// MARK: - Action Sheet
 
 extension ComposeTableViewController {
 
     private func showAlertControllerWithOptionsForCanceling(sender: Any) {
-        let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
+        let actionSheetController = UIUtils.actionSheet()
         if let popoverPresentationController = actionSheetController.popoverPresentationController {
             popoverPresentationController.barButtonItem = sender as? UIBarButtonItem
         }

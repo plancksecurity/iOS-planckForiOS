@@ -10,58 +10,105 @@ import pEpIOSToolbox
 
 // MARK: - UIUtild+Alerts
 
+
 extension UIUtils {
-    private static var alertPresenter: UIViewController {
-        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.errorAndCrash("No VC")
-            return UIViewController()
-        }
-        return presenterVc
+    public enum AlertStyle : Int {
+        case `default` = 0
+        case warn = 1
     }
 
+    private enum NumberOfButtons : Int {
+        case one
+        case two
+    }
     /// Shows an alert with "OK" button only.
     /// - Parameters:
     ///   - title: alert title
     ///   - message: alert message
     ///   - completion: called when "OK" has been pressed
-    static func showAlertWithOnlyPositiveButton(title: String?,
+    static func showAlertWithOnlyPositiveButton(title: String,
                                                 message: String?,
                                                 inNavigationStackOf viewController: UIViewController? = nil,
-                                                completion: (()->Void)? = nil) {
-        let alertViewController = UIAlertController.pEpAlertController(title: title,
-                                                                       message: message,
-                                                                       preferredStyle: .alert)
-        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "General alert positive button"),
-                                     style: .default) { action in
-            completion?()
+                                                completion: (()->Void)? = nil,
+                                                style: UIUtils.AlertStyle = .default) {
+        guard let alertViewController = UIUtils.getAlert(withTitle: title,
+                                                   message: message,
+                                                   positiveButtonAction: {
+                                                    completion?()
+                                                   },
+                                                   inNavigationStackOf: viewController,
+                                                   style: style,
+                                                   numberOfButtons: .one) else {
+            Log.shared.errorAndCrash("Can't instanciate alert")
+            return
         }
-        alertViewController.addAction(okAction)
-        present(alertViewController)
+        UIUtils.present(alertViewController)
     }
-    
+
     static func showTwoButtonAlert(withTitle title: String,
-                                   message: String,
-                                   cancelButtonText: String = NSLocalizedString("Cancel",
-                                                                                comment: "Default cancel button text"),
-                                   positiveButtonText: String = NSLocalizedString("OK",
-                                                                                  comment: "Default positive button text"),
-                                   cancelButtonAction: @escaping ()->Void,
+                                   message: String? = nil,
+                                   cancelButtonText: String = NSLocalizedString("Cancel", comment: "Default cancel button text"),
+                                   positiveButtonText: String = NSLocalizedString("OK", comment: "Default positive button text"),
+                                   cancelButtonAction: (() -> Void)? = nil,
                                    positiveButtonAction: @escaping () -> Void,
-                                   inNavigationStackOf viewController: UIViewController? = nil) {
-        let alertViewController = UIAlertController.pEpAlertController(title: title,
-                                                                       message: message,
-                                                                       preferredStyle: .alert)
-        alertViewController.addAction(UIAlertAction(title: positiveButtonText,
-                                                    style: .default) { (alertAction) in
-            positiveButtonAction()
-        })
-        alertViewController.addAction(UIAlertAction(title: cancelButtonText,
-                                                    style: .cancel) { (alertAction) in
-            cancelButtonAction()
-        })
-        present(alertViewController)
+                                   inNavigationStackOf viewController: UIViewController? = nil,
+                                   style: UIUtils.AlertStyle) {
+        guard let alertViewController = UIUtils.getAlert(withTitle: title,
+                                                   message: message,
+                                                   cancelButtonText: cancelButtonText,
+                                                   positiveButtonText: positiveButtonText,
+                                                   cancelButtonAction: cancelButtonAction,
+                                                   positiveButtonAction: positiveButtonAction,
+                                                   inNavigationStackOf: viewController,
+                                                   style: style,
+                                                   numberOfButtons: .two) else {
+            Log.shared.errorAndCrash("Can't instanciate alert")
+            return
+        }
+        UIUtils.present(alertViewController)
     }
     
+    
+    private static func getAlert(withTitle title: String,
+                          message: String? = nil,
+                          cancelButtonText: String = NSLocalizedString("Cancel", comment: "Default cancel button text"),
+                          positiveButtonText: String = NSLocalizedString("OK", comment: "Default positive button text"),
+                          cancelButtonAction: (() -> Void)? = nil,
+                          positiveButtonAction: @escaping () -> Void,
+                          inNavigationStackOf viewController: UIViewController? = nil,
+                          style: UIUtils.AlertStyle,
+                          numberOfButtons: NumberOfButtons) -> PEPAlertViewController? {
+        guard let pepAlertViewController = PEPAlertViewController.fromStoryboard(title: title, message: message, paintPEPInTitle: true) else {
+                Log.shared.errorAndCrash("Fail to init PEPAlertViewController")
+            return nil
+        }
+        var primaryColor: UIColor
+        var secondaryColor: UIColor
+        switch style {
+        case .default:
+            primaryColor = .pEpGreen
+            secondaryColor = .pEpGreen
+        case .warn:
+            primaryColor = .pEpRed
+            secondaryColor = .pEpGray
+        }
+        let positiveAction = PEPUIAlertAction(title: positiveButtonText, style: primaryColor) { _ in
+            positiveButtonAction()
+            pepAlertViewController.dismiss()
+        }
+        if numberOfButtons == .two {
+            let cancelAction = PEPUIAlertAction(title: cancelButtonText, style: secondaryColor) { _ in
+                cancelButtonAction?()
+                pepAlertViewController.dismiss()
+            }
+            pepAlertViewController.add(action: cancelAction)
+        }
+        pepAlertViewController.add(action: positiveAction)
+        pepAlertViewController.modalPresentationStyle = .overFullScreen
+        pepAlertViewController.modalTransitionStyle = .crossDissolve
+        return pepAlertViewController
+    }
+
     /// Generic method to show an alert and require information throught a textfield
     /// - Parameters:
     ///   - title: The title of the alert
@@ -112,22 +159,61 @@ extension UIUtils {
     /// Present the pep alert if possible.
     /// - Parameter alertController: The controller to present.
     public static func present(_ alertController: PEPAlertViewController) {
-        guard alertPresenter is PEPAlertViewController else {
-            /// Valid case: there is an alert already shown
+        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("No VC")
             return
         }
+
+//     TODO: prevent overlapping in other way.
+//        guard presenterVc is PEPAlertViewController else {
+//            /// Valid case: there is an alert already shown
+//            return
+//        }
         DispatchQueue.main.async {
-            alertPresenter.present(alertController, animated: true)
+            presenterVc.present(alertController, animated: true)
         }
     }
 
     private static func present(_ alertController: UIAlertController) {
+        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("No VC")
+            return
+        }
+
         guard !UIApplication.isCurrentlyShowingAlert else {
             /// Valid case: there is an alert already shown
             return
         }
         DispatchQueue.main.async {
-            alertPresenter.present(alertController, animated: true)
+            presenterVc.present(alertController, animated: true)
         }
+    }
+}
+
+// MARK: - UIUtils+ActionSheet
+
+extension UIUtils {
+    
+    /// - Parameters:
+    ///   - title: The title of the alert action
+    ///   - style: The style of the alert action
+    ///   - closure: The closure to be executed for the action.
+    /// - Returns: An alert action.
+    public func action(_ title: String,
+                       _ style: UIAlertAction.Style = .default,
+                       _ closure: (() -> ())? = nil) ->  UIAlertAction {
+        return UIAlertAction(title: title, style: style) { (action) in
+            closure?()
+        }
+    }
+    
+    /// - Parameters:
+    ///   - title: The title of the action sheet.
+    ///   - message: The message of the action sheet
+    /// - Returns: An action sheet with pEp green tint color.
+    public static func actionSheet(title: String? = nil, message: String? = nil) -> UIAlertController {
+        let alertCtrl = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        alertCtrl.view.tintColor = .pEpGreen
+        return alertCtrl
     }
 }

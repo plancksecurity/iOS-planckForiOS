@@ -123,8 +123,18 @@ final class SettingsViewModel {
     public func handleExtraKeysEditabilityGestureTriggered() {
         let newValue = !AppSettings.shared.extraKeysEditable
         AppSettings.shared.extraKeysEditable = newValue
-        
         delegate?.showExtraKeyEditabilityStateChangeAlert(newValue: newValue ? "ON" : "OFF")
+    }
+
+    public func handleResetAllIdentitiesPressed(action: @escaping ActionBlock) {
+        let title = NSLocalizedString("Reset All Identities", comment: "Settings confirm to reset all identity title alert")
+        let message = NSLocalizedString("This action will reset all your identities. \n Are you sure you want to reset?", comment: "Account settings confirm to reset identity title alert")
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
+        let resetTitle = NSLocalizedString("Reset All", comment: "Reset account identity button title")
+        UIUtils.showTwoButtonAlert(withTitle: title, message: message, cancelButtonText: cancelTitle, positiveButtonText: resetTitle, positiveButtonAction: {
+            action()
+        },
+        style: .warn)
     }
 
     public func accountSettingsViewModel(forAccountAt indexPath: IndexPath) -> AccountSettingsViewModel {

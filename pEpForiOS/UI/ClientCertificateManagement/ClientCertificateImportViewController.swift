@@ -166,17 +166,18 @@ extension ClientCertificateImportViewController {
     private func showWrongPasswordError() {
         UIUtils.showTwoButtonAlert(withTitle: Localized.WrongPasswordError.title,
                                    message: Localized.WrongPasswordError.message,
-                                       cancelButtonText: Localized.no,
-                                       positiveButtonText: Localized.yes,
-                                       cancelButtonAction: { [weak self] in
-                                        guard let me = self else {
-                                            Log.shared.lostMySelf()
-                                            return
-                                        }
-                                        me.dismiss(animated: true, completion: nil)
-            }, positiveButtonAction: {
-                // We don't need to do something here. Our expectation is close this alert
-        }, inNavigationStackOf: self)
+                                   cancelButtonText: Localized.no,
+                                   positiveButtonText: Localized.yes,
+                                   cancelButtonAction: { [weak self] in
+                                    guard let me = self else {
+                                        Log.shared.lostMySelf()
+                                        return
+                                    }
+                                    me.dismiss(animated: true, completion: nil)
+                                   }, positiveButtonAction: {
+                                    // We don't need to do something here. Our expectation is close this alert
+                                   }, inNavigationStackOf: self,
+                                   style: .warn)
     }
 }
 
