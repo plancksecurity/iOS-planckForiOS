@@ -431,7 +431,7 @@ extension LoginViewController {
             title = displayError.title
             message = displayError.errorDescription
         }
-        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message, style: .warn) { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return

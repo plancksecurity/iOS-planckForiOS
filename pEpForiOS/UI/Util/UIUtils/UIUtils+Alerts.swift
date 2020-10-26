@@ -12,10 +12,6 @@ import pEpIOSToolbox
 
 
 extension UIUtils {
-    public enum AlertStyle : Int {
-        case `default` = 0
-        case warn = 1
-    }
 
     private enum NumberOfButtons : Int {
         case one
@@ -29,8 +25,8 @@ extension UIUtils {
     static func showAlertWithOnlyPositiveButton(title: String,
                                                 message: String?,
                                                 inNavigationStackOf viewController: UIViewController? = nil,
-                                                completion: (()->Void)? = nil,
-                                                style: UIUtils.AlertStyle = .default) {
+                                                style: AlertStyle = .default,
+                                                completion: (()->Void)? = nil) {
         guard let alertViewController = UIUtils.getAlert(withTitle: title,
                                                    message: message,
                                                    positiveButtonAction: {
@@ -52,7 +48,7 @@ extension UIUtils {
                                    cancelButtonAction: (() -> Void)? = nil,
                                    positiveButtonAction: @escaping () -> Void,
                                    inNavigationStackOf viewController: UIViewController? = nil,
-                                   style: UIUtils.AlertStyle) {
+                                   style: AlertStyle) {
         guard let alertViewController = UIUtils.getAlert(withTitle: title,
                                                    message: message,
                                                    cancelButtonText: cancelButtonText,
@@ -76,7 +72,7 @@ extension UIUtils {
                           cancelButtonAction: (() -> Void)? = nil,
                           positiveButtonAction: @escaping () -> Void,
                           inNavigationStackOf viewController: UIViewController? = nil,
-                          style: UIUtils.AlertStyle,
+                          style: AlertStyle,
                           numberOfButtons: NumberOfButtons) -> PEPAlertViewController? {
         guard let pepAlertViewController = PEPAlertViewController.fromStoryboard(title: title, message: message, paintPEPInTitle: true) else {
                 Log.shared.errorAndCrash("Fail to init PEPAlertViewController")
@@ -158,19 +154,25 @@ extension UIUtils {
 
     /// Present the pep alert if possible.
     /// - Parameter alertController: The controller to present.
-    public static func present(_ alertController: PEPAlertViewController) {
+    private static func present(_ alertController: PEPAlertViewController) {
         guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
             Log.shared.errorAndCrash("No VC")
             return
         }
 
-//     TODO: prevent overlapping in other way.
-//        guard presenterVc is PEPAlertViewController else {
-//            /// Valid case: there is an alert already shown
-//            return
-//        }
-        DispatchQueue.main.async {
-            presenterVc.present(alertController, animated: true)
+        func shouldPresent() -> Bool {
+            if let presenter = presenterVc as? PEPAlertViewController {
+                if presenter.style == .warn && alertController.style == .warn {
+                    return false
+                }
+            }
+            return true
+        }
+
+        if shouldPresent() {
+            DispatchQueue.main.async {
+                presenterVc.present(alertController, animated: true)
+            }
         }
     }
 
