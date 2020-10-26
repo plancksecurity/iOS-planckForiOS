@@ -212,8 +212,8 @@ extension UIUtils {
     ///   - message: The message of the action sheet
     /// - Returns: An action sheet with pEp green tint color.
     public static func actionSheet(title: String? = nil, message: String? = nil) -> UIAlertController {
-        let alertCtrl = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        alertCtrl.view.tintColor = .pEpGreen
-        return alertCtrl
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        alertController.view.tintColor = .pEpGreen
+        return alertController
     }
 }
