@@ -82,6 +82,9 @@ mkdir ~/src
 cd ~/src
 
 git clone https://pep-security.lu/gitlab/misc/libetpan.git
+pushd libetpan
+git checkout ios_1.1.200
+popd
 git clone https://pep-security.lu/gitlab/iOS/OpenSSL-for-iPhone.git
 git clone https://pep-security.lu/gitlab/iOS/SwipeCellKit.git/
 git clone https://pep-security.lu/gitlab/iOS/CocoaLumberjack
@@ -98,8 +101,9 @@ hg up tag_for_1.1.300
 hg clone https://pep-security.ch/dev/repos/pEp_for_iOS/
 
 git clone http://pep-security.lu/gitlab/iOS/sequoia4ios.git
-cd sequoia4ios
+pushd sequoia4ios
 sh build.sh
+popd
 ```
 
 ### Build Project
