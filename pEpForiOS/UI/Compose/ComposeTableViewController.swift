@@ -315,7 +315,7 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
                             message: String,
                             cancelButtonText: String,
                             positiveButtonText: String,
-                            cancelButtonAction: (() -> Void)? = nil,
+                            cancelButtonAction: @escaping () -> Void,
                             positiveButtonAction: @escaping () -> Void) {
         UIUtils.showTwoButtonAlert(withTitle: title,
                                    message: message,
@@ -328,7 +328,7 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
     }
 
    func dismiss() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 }
 

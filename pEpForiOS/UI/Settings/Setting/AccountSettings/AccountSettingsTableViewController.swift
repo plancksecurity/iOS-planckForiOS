@@ -335,7 +335,7 @@ extension AccountSettingsTableViewController {
             }
             me.dismiss(animated: true)
             me.viewModel?.handleResetIdentity()
-        }, inNavigationStackOf: self,
+        },
         style: .warn)
     }
     

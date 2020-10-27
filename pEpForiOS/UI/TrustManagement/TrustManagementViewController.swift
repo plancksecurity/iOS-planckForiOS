@@ -56,7 +56,6 @@ class TrustManagementViewController: BaseViewController {
                                    positiveButtonAction: { [weak vm] in
                                     vm?.handleShakeMotionDidEnd()
                                    },
-                                   inNavigationStackOf: self,
                                    style: .warn)
     }
 

@@ -115,7 +115,6 @@ extension TrustedServerSettingsViewController: TrustedServerSettingsViewModelDel
                                    positiveButtonText: trustActionTitle,
                                    cancelButtonAction: cancelAction,
                                    positiveButtonAction: positiveAction,
-                                   inNavigationStackOf: self,
                                    style: .warn)
     }
 }

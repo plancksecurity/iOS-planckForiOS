@@ -49,8 +49,8 @@ protocol ComposeViewModelDelegate: class {
                             message: String,
                             cancelButtonText: String,
                             positiveButtonText: String ,
-                            cancelButtonAction:  (() -> Void)?,
-                            positiveButtonAction: @escaping ()->Void)
+                            cancelButtonAction: @escaping () -> Void,
+                            positiveButtonAction: @escaping () -> Void)
     func dismiss()
 }
 

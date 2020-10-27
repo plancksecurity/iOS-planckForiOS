@@ -19,7 +19,6 @@ extension UIUtils {
     ///   - completion: called when "OK" has been pressed
     public static func showAlertWithOnlyPositiveButton(title: String,
                                                 message: String?,
-                                                inNavigationStackOf viewController: UIViewController? = nil,
                                                 style: AlertStyle = .default,
                                                 completion: (()->Void)? = nil) {
         guard let alertViewController = UIUtils.getAlert(withTitle: title,
@@ -27,7 +26,6 @@ extension UIUtils {
                                                    positiveButtonAction: {
                                                     completion?()
                                                    },
-                                                   inNavigationStackOf: viewController,
                                                    style: style,
                                                    numberOfButtons: .one) else {
             Log.shared.errorAndCrash("Can't instanciate alert")
@@ -35,14 +33,22 @@ extension UIUtils {
         }
         UIUtils.present(alertViewController)
     }
-
+    
+    /// Shows a two alert button alert configured with the values passed by parameter.
+    /// - Parameters:
+    ///   - title: The title of the Alert
+    ///   - message: The message of the alert
+    ///   - cancelButtonText: The cancel button text, will be "Cancel" localized by default.
+    ///   - positiveButtonText: The positive  button text, will be "Ok" localized by default.
+    ///   - cancelButtonAction: The cancel button callback
+    ///   - positiveButtonAction: The positive callback
+    ///   - style: The style of the warning. 
     public static func showTwoButtonAlert(withTitle title: String,
                                    message: String? = nil,
                                    cancelButtonText: String = NSLocalizedString("Cancel", comment: "Default cancel button text"),
                                    positiveButtonText: String = NSLocalizedString("OK", comment: "Default positive button text"),
                                    cancelButtonAction: (() -> Void)? = nil,
                                    positiveButtonAction: @escaping () -> Void,
-                                   inNavigationStackOf viewController: UIViewController? = nil,
                                    style: AlertStyle) {
         guard let alertViewController = UIUtils.getAlert(withTitle: title,
                                                    message: message,
@@ -50,7 +56,6 @@ extension UIUtils {
                                                    positiveButtonText: positiveButtonText,
                                                    cancelButtonAction: cancelButtonAction,
                                                    positiveButtonAction: positiveButtonAction,
-                                                   inNavigationStackOf: viewController,
                                                    style: style,
                                                    numberOfButtons: .two) else {
             Log.shared.errorAndCrash("Can't instanciate alert")
@@ -160,7 +165,6 @@ extension UIUtils {
                           positiveButtonText: String = NSLocalizedString("OK", comment: "Default positive button text"),
                           cancelButtonAction: (() -> Void)? = nil,
                           positiveButtonAction: @escaping () -> Void,
-                          inNavigationStackOf viewController: UIViewController? = nil,
                           style: AlertStyle,
                           numberOfButtons: NumberOfButtons) -> PEPAlertViewController? {
         guard let pepAlertViewController = PEPAlertViewController.fromStoryboard(title: title, message: message, paintPEPInTitle: true) else {

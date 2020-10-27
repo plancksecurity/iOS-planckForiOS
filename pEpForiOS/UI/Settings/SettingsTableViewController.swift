@@ -404,11 +404,9 @@ extension SettingsTableViewController {
 
     private func getBeforeDeleteAlert(deleteCallback: @escaping SettingsViewModel.AlertActionBlock) -> UIAlertController {
         let title = NSLocalizedString("Are you sure you want to delete the account?", comment: "Account delete confirmation")
-        let message = NSLocalizedString("delete account message", comment: "Account delete confirmation comment")
         let deleteButtonTitle = NSLocalizedString("Delete", comment: "Delete account button title")
         let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel title button")
-
-        let alert = UIUtils.actionSheet(title: title, message: message)
+        let alert = UIUtils.actionSheet(title: title)
         let deleteAction = UIAlertAction(title: deleteButtonTitle, style: .destructive) { _ in
             deleteCallback()
         }

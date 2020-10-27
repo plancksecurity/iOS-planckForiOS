@@ -141,8 +141,7 @@ extension ClientCertificateImportViewController {
 
     private func showPermissionsDeniedError() {
         UIUtils.showAlertWithOnlyPositiveButton(title: Localized.PermissionsDeniedError.title,
-                                                message: Localized.PermissionsDeniedError.message,
-                                                inNavigationStackOf: self) { [weak self] in
+                                                message: Localized.PermissionsDeniedError.message) { [weak self] in
                                                     guard let me = self else {
                                                         Log.shared.lostMySelf()
                                                         return
@@ -153,8 +152,7 @@ extension ClientCertificateImportViewController {
     
     private func showCorruptedFileError() {
         UIUtils.showAlertWithOnlyPositiveButton(title: Localized.CorruptedFileError.title,
-                                                message: Localized.CorruptedFileError.message,
-                                                inNavigationStackOf: self) { [weak self] in
+                                                message: Localized.CorruptedFileError.message) { [weak self] in
                                                     guard let me = self else {
                                                         Log.shared.lostMySelf()
                                                         return
@@ -176,7 +174,7 @@ extension ClientCertificateImportViewController {
                                     me.dismiss(animated: true, completion: nil)
                                    }, positiveButtonAction: {
                                     // We don't need to do something here. Our expectation is close this alert
-                                   }, inNavigationStackOf: self,
+                                   },
                                    style: .warn)
     }
 }
