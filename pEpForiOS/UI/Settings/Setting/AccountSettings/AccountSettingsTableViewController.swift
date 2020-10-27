@@ -365,15 +365,15 @@ extension AccountSettingsTableViewController {
             return
         }
         let isGreyedOut = vm.isPEPSyncSwitchGreyedOut()
-        cell.isUserInteractionEnabled = isGreyedOut
+        cell.isUserInteractionEnabled = !isGreyedOut
         keySyncLabel.textColor = isGreyedOut
-            ? .pEpTextDark
-            : .gray
+            ? .gray
+            : .pEpTextDark
 
         keySyncSwitch.onTintColor = isGreyedOut
-            ? .pEpGreen
-            : .pEpGreyBackground
-        keySyncSwitch.isEnabled = isGreyedOut
+            ? .pEpGreyBackground
+            : .pEpGreen
+        keySyncSwitch.isEnabled = !isGreyedOut
 
         vm.isPEPSyncEnabled { [weak self] (isOn) in
             guard let me = self else {
