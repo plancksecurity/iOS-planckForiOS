@@ -14,7 +14,6 @@ import pEpIOSToolbox
 final class EditableAccountSettingsViewController: BaseViewController {
 
     @IBOutlet weak var saveButton: UIBarButtonItem!
-
     var viewModel: EditableAccountSettingsViewModel?
 
     override func viewDidLoad() {
@@ -35,8 +34,8 @@ final class EditableAccountSettingsViewController: BaseViewController {
     }
 
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
-            view.endEditing(true)
-            viewModel?.handleSaveButton()
+        view.endEditing(true)
+        viewModel?.handleSaveButton()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

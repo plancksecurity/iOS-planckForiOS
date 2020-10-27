@@ -18,8 +18,8 @@ extension UIUtils {
     ///   - closure: The closure to be executed for the action.
     /// - Returns: An alert action.
     public static func action(_ title: String,
-                       _ style: UIAlertAction.Style = .default,
-                       _ closure: (() -> ())? = nil) ->  UIAlertAction {
+                              _ style: UIAlertAction.Style = .default,
+                              _ closure: (() -> ())? = nil) ->  UIAlertAction {
         return UIAlertAction(title: title, style: style) { (action) in
             closure?()
         }
@@ -41,7 +41,7 @@ extension UIUtils {
     /// - Parameters:
     ///   - address: address to show custom actions for
     ///   - appConfig: AppConfig to forward to potentionally created viewControllers
-    static public func presentActionSheetWithContactOptions(forContactWithEmailAddress address: String,
+    static public func showActionSheetWithContactOptions(forContactWithEmailAddress address: String,
                                                             at rect: CGRect,
                                                             at view: UIView,
                                                             appConfig: AppConfig) {
@@ -49,7 +49,7 @@ extension UIUtils {
         setIPadAnchor(for: alertSheet, in: rect, at: view)
         alertSheet.view.tintColor = UIColor.pEpDarkGreen
         let newMailtitle = NSLocalizedString("New Mail Message", comment:
-            "UIUtils.presentActionSheetWithContactOptions.button.title New Mail Message")
+                                                "UIUtils.showActionSheetWithContactOptions.button.title New Mail Message")
         alertSheet.addAction(UIAlertAction(title: newMailtitle, style: .default) { (action) in
             let mailtoAddress = "mailto:" + address
             guard let url = URL(string: mailtoAddress) else {
@@ -57,23 +57,22 @@ extension UIUtils {
                 return
             }
             let mailto = Mailto(url: url)
-            presentComposeView(from: mailto, appConfig: appConfig)
+            showComposeView(from: mailto, appConfig: appConfig)
         })
-        let addTitle = NSLocalizedString("Add to Contacts", comment: "UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts")
+        let addTitle = NSLocalizedString("Add to Contacts", comment: "UIUtils.showActionSheetWithContactOptions.button.title Add to Contacts")
         let contact = Identity(address: address)
         alertSheet.addAction(UIAlertAction(title: addTitle, style: .default) { (action) in
             presentAddToContactsView(for: contact, appConfig: appConfig)
         })
         let copyTitle = NSLocalizedString("Copy Email", comment:
-            "UIUtils.presentActionSheetWithContactOptions.button.title Copy Email")
+                                            "UIUtils.showActionSheetWithContactOptions.button.title Copy Email")
         alertSheet.addAction(UIAlertAction(title: copyTitle, style: .default) { (action) in
             UIPasteboard.general.string = address
         })
         let cancelTitle = NSLocalizedString("Cancel", comment:
-            "UIUtils.presentActionSheetWithContactOptions.button.title Cancel")
-        alertSheet.addAction(UIAlertAction(title: cancelTitle, style: .cancel) { (action) in
-            print("cancel action")
-        })
+                                                "UIUtils.showActionSheetWithContactOptions.button.title Cancel")
+        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { (action) in }
+        alertSheet.addAction(cancelAction)
         guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
             Log.shared.errorAndCrash("No VC")
             return
@@ -89,10 +88,8 @@ extension UIUtils {
     static private func setIPadAnchor(for actionSheet: UIAlertController,
                                       in rect: CGRect,
                                       at view: UIView) {
-
         actionSheet.popoverPresentationController?.sourceRect = rect
         actionSheet.popoverPresentationController?.sourceView = view
-        actionSheet.popoverPresentationController?.permittedArrowDirections
-            = UIPopoverArrowDirection.up
+        actionSheet.popoverPresentationController?.permittedArrowDirections = .up
     }
 }

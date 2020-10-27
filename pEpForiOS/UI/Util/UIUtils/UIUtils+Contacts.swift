@@ -12,7 +12,6 @@ import pEpIOSToolbox
 // MARK: - UIUtil+Contacts
 
 extension UIUtils {
-
     /// Modally presents a "Add to Contacts" view for a given contact.
     ///
     /// - Parameters:
@@ -23,9 +22,9 @@ extension UIUtils {
                                          appConfig: AppConfig) {
         let storyboard = UIStoryboard(name: Constants.addToContactsStoryboard, bundle: nil)
         guard let contactVc = storyboard.instantiateViewController(withIdentifier:
-            AddToContactsViewController.storyboardId) as? AddToContactsViewController else {
-                Log.shared.errorAndCrash("Missing required data")
-                return
+                                                                    AddToContactsViewController.storyboardId) as? AddToContactsViewController else {
+            Log.shared.errorAndCrash("Missing required data")
+            return
         }
         contactVc.appConfig = appConfig
         contactVc.emailAddress = contact.address
@@ -46,7 +45,7 @@ extension UIUtils {
     ///   - url: url to show custom actions for
     ///   - viewController: viewcontroller to present action view controllers on (if requiered)
     ///   - appConfig: AppConfig to forward to potentionally created viewControllers
-    static public func presentActionSheetWithContactOptions(forUrl url: URL,
+    static public func showActionSheetWithContactOptions(forUrl url: URL,
                                                             at rect: CGRect,
                                                             at view: UIView,
                                                             appConfig: AppConfig) {
@@ -58,7 +57,7 @@ extension UIUtils {
             Log.shared.errorAndCrash("No address")
             return
         }
-        presentActionSheetWithContactOptions(forContactWithEmailAddress: address,
+        showActionSheetWithContactOptions(forContactWithEmailAddress: address,
                                              at: rect,
                                              at: view,
                                              appConfig: appConfig)

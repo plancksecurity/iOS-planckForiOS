@@ -307,7 +307,7 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
     }
 
     @objc private func showSettingsViewController() {
-        UIUtils.presentSettings(appConfig: appConfig)
+        UIUtils.showSettings(appConfig: appConfig)
     }
 
     @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {

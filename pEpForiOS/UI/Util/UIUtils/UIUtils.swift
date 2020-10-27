@@ -45,4 +45,13 @@ class UIUtils {
             }
         }
     }
+
+    public static func show(navigationController: UINavigationController) {
+        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("No VC")
+            return
+        }
+        presenterVc.present(navigationController, animated: true)
+    }
+
 }
