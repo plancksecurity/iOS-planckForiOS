@@ -1,5 +1,5 @@
 //
-//  UIUtild+Alerts.swift
+//  UIUtils+Alerts.swift
 //  pEp
 //
 //  Created by Andreas Buff on 13.03.20.
@@ -8,7 +8,7 @@
 
 import pEpIOSToolbox
 
-// MARK: - UIUtild+Alerts
+// MARK: - UIUtils+Alerts
 
 extension UIUtils {
 
