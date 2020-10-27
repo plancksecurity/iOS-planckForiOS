@@ -111,11 +111,6 @@ extension UIUtils {
 // MARK: - UIUtils+ActionSheet
 
 extension UIUtils {
-    
-    private enum NumberOfButtons : Int {
-        case one
-        case two
-    }
 
     /// - Parameters:
     ///   - title: The title of the alert action
@@ -144,7 +139,11 @@ extension UIUtils {
 // MARK: - Private
 
 extension UIUtils {
-    
+    private enum NumberOfButtons : Int {
+        case one
+        case two
+    }
+
     /// Present the pep alert if possible.
     /// - Parameter alertController: The controller to present.
     private static func present(_ alertController: PEPAlertViewController) {
