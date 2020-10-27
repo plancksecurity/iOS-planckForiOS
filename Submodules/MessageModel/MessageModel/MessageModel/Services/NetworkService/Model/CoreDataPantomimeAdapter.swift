@@ -128,29 +128,6 @@ class CoreDataPantomimeAdapter: CWIMAPFolder {
         return result
     }
 
-    /**
-     This implementation assumes that the index is typically referred to by pantomime
-     as the messageNumber.
-     Relying on that is dangerous and should be avoided.
-     */
-    override func message(at theIndex: UInt) -> CWMessage? {
-        var result: CWMessage?
-        privateMOC.performAndWait{ [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            let isNotFake = CdMessage.PredicateFactory.isNotFakeMessage()
-            let msgAtIdx = NSPredicate(format: "parent = %@ and imap.messageNumber = %d",
-                                       me.cdFolder,
-                                       theIndex)
-            let p = NSCompoundPredicate(andPredicateWithSubpredicates: [isNotFake, msgAtIdx])
-            let msg = CdMessage.first(predicate: p, in: me.privateMOC)
-            result = msg?.pantomimeQuick(folder: me)
-        }
-        return result
-    }
-
     override func count() -> UInt {
         var count: Int = 0
         privateMOC.performAndWait { [weak self] in
