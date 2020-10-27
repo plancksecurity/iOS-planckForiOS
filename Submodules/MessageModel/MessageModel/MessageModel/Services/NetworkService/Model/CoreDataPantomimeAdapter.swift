@@ -1,5 +1,5 @@
 //
-//  CwImapFolderToCdFolderMapper.swift
+//  CoreDataPantomimeAdapter.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 18/04/16.
