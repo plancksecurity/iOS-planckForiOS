@@ -12,6 +12,28 @@ import pEpIOSToolbox
 // MARK: - UIUtils+ActionSheets
 
 extension UIUtils {
+    /// - Parameters:
+    ///   - title: The title of the alert action
+    ///   - style: The style of the alert action
+    ///   - closure: The closure to be executed for the action.
+    /// - Returns: An alert action.
+    public static func action(_ title: String,
+                       _ style: UIAlertAction.Style = .default,
+                       _ closure: (() -> ())? = nil) ->  UIAlertAction {
+        return UIAlertAction(title: title, style: style) { (action) in
+            closure?()
+        }
+    }
+
+    /// - Parameters:
+    ///   - title: The title of the action sheet.
+    ///   - message: The message of the action sheet
+    /// - Returns: An action sheet with pEp green tint color.
+    public static func actionSheet(title: String? = nil, message: String? = nil) -> UIAlertController {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        alertController.view.tintColor = .pEpGreen
+        return alertController
+    }
 
     /// Presents action sheet with all available custom actions for a given url.
     /// Currently the only URL scheme custom actions exist for is mailto:

@@ -18,6 +18,8 @@ protocol SettingsViewModelDelegate: class {
     func hideLoadingView()
     /// Shows an alert to indicate if the extra key is editable
     func showExtraKeyEditabilityStateChangeAlert(newValue: String)
+    /// Shows an alert to confirm the reset all identities.
+    func showResetAllWarning(callback: @escaping SettingsViewModel.ActionBlock)
 }
 
 /// Protocol that represents the basic data in a row.
@@ -127,14 +129,7 @@ final class SettingsViewModel {
     }
 
     public func handleResetAllIdentitiesPressed(action: @escaping ActionBlock) {
-        let title = NSLocalizedString("Reset All Identities", comment: "Settings confirm to reset all identity title alert")
-        let message = NSLocalizedString("This action will reset all your identities. \n Are you sure you want to reset?", comment: "Account settings confirm to reset identity title alert")
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
-        let resetTitle = NSLocalizedString("Reset All", comment: "Reset account identity button title")
-        UIUtils.showTwoButtonAlert(withTitle: title, message: message, cancelButtonText: cancelTitle, positiveButtonText: resetTitle, positiveButtonAction: {
-            action()
-        },
-        style: .warn)
+        delegate?.showResetAllWarning(callback: action)
     }
 
     public func accountSettingsViewModel(forAccountAt indexPath: IndexPath) -> AccountSettingsViewModel {

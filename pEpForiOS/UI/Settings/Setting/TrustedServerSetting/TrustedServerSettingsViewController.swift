@@ -94,7 +94,7 @@ extension TrustedServerSettingsViewController: TrustedServerSettingsViewModelDel
         let trustActionTitle = NSLocalizedString("Trust", comment: "Alert trust button title before trusting an account")
         let cancelAction = { [weak self] in
             guard let me = self else {
-                // Valid case. We might have been dismissed.
+                Log.shared.lostMySelf()
                 return
             }
             guard let trustCell = me.tableView.cellForRow(at: indexPath) as? TrustedServerSettingCell else {
@@ -102,14 +102,14 @@ extension TrustedServerSettingsViewController: TrustedServerSettingsViewModelDel
                 return
             }
             trustCell.onOfSwitch.setOn(false, animated: true)
-           }
+        }
         let positiveAction = { [weak self] in
             guard let me = self else {
-                // Valid case. We might have been dismissed.
+                Log.shared.lostMySelf()
                 return
             }
             me.viewModel.setStoreSecurely(indexPath: indexPath, toValue: false)
-           }
+        }
         UIUtils.showTwoButtonAlert(withTitle: title, message: message,
                                    cancelButtonText: cancelActionTitle,
                                    positiveButtonText: trustActionTitle,

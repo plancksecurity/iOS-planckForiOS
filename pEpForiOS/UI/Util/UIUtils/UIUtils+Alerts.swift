@@ -107,34 +107,6 @@ extension UIUtils {
     }
 }
 
-// MARK: - UIUtils+ActionSheet
-
-extension UIUtils {
-
-    /// - Parameters:
-    ///   - title: The title of the alert action
-    ///   - style: The style of the alert action
-    ///   - closure: The closure to be executed for the action.
-    /// - Returns: An alert action.
-    public static func action(_ title: String,
-                       _ style: UIAlertAction.Style = .default,
-                       _ closure: (() -> ())? = nil) ->  UIAlertAction {
-        return UIAlertAction(title: title, style: style) { (action) in
-            closure?()
-        }
-    }
-    
-    /// - Parameters:
-    ///   - title: The title of the action sheet.
-    ///   - message: The message of the action sheet
-    /// - Returns: An action sheet with pEp green tint color.
-    public static func actionSheet(title: String? = nil, message: String? = nil) -> UIAlertController {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        alertController.view.tintColor = .pEpGreen
-        return alertController
-    }
-}
-
 // MARK: - Private
 
 extension UIUtils {

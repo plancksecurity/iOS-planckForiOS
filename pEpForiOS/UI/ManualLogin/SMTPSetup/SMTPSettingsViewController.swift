@@ -79,7 +79,7 @@ extension SMTPSettingsViewController: UITextFieldDelegate {
         }
         if textField == setupView.fourthTextField {
             view.endEditing(true)
-            alertWithSecurityValues(textField)
+            presentActionSheetWithTransportSecurityValues(textField)
             return false
         }
         return true
@@ -324,7 +324,7 @@ extension SMTPSettingsViewController {
         setupView.fourthTextField.placeholder = TransportSecurityPlaceholder
     }
 
-    private func alertWithSecurityValues(_ sender: UITextField) {
+    private func presentActionSheetWithTransportSecurityValues(_ sender: UITextField) {
         let title = NSLocalizedString("Transport protocol",
                                  comment: "UI alert title for transport protocol")
         let message = NSLocalizedString("Choose a Security protocol for your accont",
@@ -344,11 +344,10 @@ extension SMTPSettingsViewController {
         alertController.setupActionFromConnectionTransport(.TLS, block: block)
         alertController.setupActionFromConnectionTransport(.startTLS, block: block)
 
-        let cancelAction = UIAlertAction(
-            title: NSLocalizedString("Cancel", comment: "Cancel for an alert view"),
-            style: .cancel) { (action) in}
+        let actionTitle = NSLocalizedString("Cancel", comment: "Cancel for an alert view")
+        let cancelAction = UIUtils.action(actionTitle, .cancel)
         alertController.addAction(cancelAction)
-        self.present(alertController, animated: true) {}
+        present(alertController, animated: true) {}
     }
 
     private func setUpContainerView() {

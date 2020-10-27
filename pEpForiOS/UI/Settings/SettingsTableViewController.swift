@@ -299,6 +299,17 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
         let title = NSLocalizedString("Extra Keys Editable", comment: "Extra Keys Editable")
         UIUtils.showAlertWithOnlyPositiveButton(title:title, message: newValue)
     }
+    
+    func showResetAllWarning(callback: @escaping SettingsViewModel.ActionBlock) {
+        let title = NSLocalizedString("Reset All Identities", comment: "Settings confirm to reset all identity title alert")
+        let message = NSLocalizedString("This action will reset all your identities. \n Are you sure you want to reset?", comment: "Account settings confirm to reset identity title alert")
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
+        let resetTitle = NSLocalizedString("Reset All", comment: "Reset account identity button title")
+        UIUtils.showTwoButtonAlert(withTitle: title, message: message, cancelButtonText: cancelTitle, positiveButtonText: resetTitle, positiveButtonAction: {
+            callback()
+        },
+        style: .warn)
+    }
 }
 
 // MARK: - Segue identifiers
