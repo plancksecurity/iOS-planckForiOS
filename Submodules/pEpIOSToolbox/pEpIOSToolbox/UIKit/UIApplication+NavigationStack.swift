@@ -14,7 +14,7 @@ extension UIApplication {
 
     /// - returns: The currently visible view controller if any, nil otherwize. Child ViewControllers are ignored.
     class public func currentlyVisibleViewController(inNavigationStackOf viewController: UIViewController? = nil) -> UIViewController? {
-        return topViewController(inNavigationStackOf:  viewController ?? UIApplication.shared.keyWindow?.rootViewController)
+        return topViewController(inNavigationStackOf: viewController ?? UIApplication.shared.keyWindow?.rootViewController)
     }
 
     /// - Parameter viewController: ViewController whichs navigation stack's top VC should be found

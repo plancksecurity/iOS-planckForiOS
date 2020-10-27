@@ -13,7 +13,7 @@ import pEpIOSToolbox
 extension UIUtils {
 
     @discardableResult
-    static public func presentKeySyncWizard(meFPR: String,
+    static public func showKeySyncWizard(meFPR: String,
                                             partnerFPR: String,
                                             isNewGroup: Bool,
                                             completion: @escaping (KeySyncWizardViewController.Action) -> Void )

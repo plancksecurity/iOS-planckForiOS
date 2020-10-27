@@ -77,11 +77,11 @@ class FolderTableViewController: BaseTableViewController {
     // MARK: - Action
 
     @objc private func showCompose() {
-        UIUtils.presentComposeView(appConfig: appConfig)
+        UIUtils.showComposeView(appConfig: appConfig)
     }
 
     @objc private func showSettingsViewController() {
-        UIUtils.presentSettings(appConfig: appConfig)
+        UIUtils.showSettings(appConfig: appConfig)
     }
 
     // MARK: - Cell Setup

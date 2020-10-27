@@ -49,8 +49,8 @@ protocol ComposeViewModelDelegate: class {
                             message: String,
                             cancelButtonText: String,
                             positiveButtonText: String ,
-                            cancelButtonAction: @escaping ()->Void,
-                            positiveButtonAction: @escaping ()->Void)
+                            cancelButtonAction: @escaping () -> Void,
+                            positiveButtonAction: @escaping () -> Void)
     func dismiss()
 }
 
@@ -321,8 +321,8 @@ extension ComposeViewModel {
                 // Forwarded mesasge is less secure than original message. Warn the user.
                 me.delegate?.showTwoButtonAlert(withTitle: title,
                                              message: message,
-                                             cancelButtonText: "NO",
-                                             positiveButtonText: "YES",
+                                             cancelButtonText: NSLocalizedString("NO", comment: "'No' button to confirm less secure email sent"),
+                                             positiveButtonText: NSLocalizedString("YES", comment: "'Yes' button to confirm less secure email sent"),
                                              cancelButtonAction: { completion(false) },
                                              positiveButtonAction: { completion(true) })
             } else {

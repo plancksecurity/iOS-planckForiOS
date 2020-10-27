@@ -271,21 +271,10 @@ extension AccountSettingsTableViewController {
         smtpUsernameTextField.text = smtpServer.credentials.loginName
     }
 
-    private func informUser(about error:Error) {
-        let alert = UIAlertController.pEpAlertController(
-            title: NSLocalizedString(
-                "Invalid Input",
-                comment: "Title of invalid accout settings user input alert"),
-            message: error.localizedDescription,
-            preferredStyle: .alert)
-
-        let cancelAction = UIAlertAction(
-            title: NSLocalizedString("OK",
-                                     comment: "OK button for invalid accout settings user input alert"),
-            style: .cancel, handler: nil)
-
-        alert.addAction(cancelAction)
-        present(alert, animated: true)
+    private func informUser(about error: Error) {
+        let title = NSLocalizedString("Invalid Input", comment: "Title of invalid accout settings user input alert")
+        let message = error.localizedDescription
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message)
     }
 
     private func popViewController() {
@@ -331,48 +320,25 @@ extension AccountSettingsTableViewController {
     private func handleResetIdentity() {
         let title = NSLocalizedString("Reset", comment: "Account settings confirm to reset identity title alert")
         let message = NSLocalizedString("This action will reset your identity. \n Are you sure you want to reset?", comment: "Account settings confirm to reset identity title alert")
-
-        guard let pepAlertViewController =
-            PEPAlertViewController.fromStoryboard(title: title,
-                                                  message: message,
-                                                  paintPEPInTitle: true) else {
-                                                    Log.shared.errorAndCrash("Fail to init PEPAlertViewController")
-                                                    return
-        }
-
-        let cancelTitle = NSLocalizedString("Cancel",
-                                            comment: "Cancel reset account identity button title")
-        let cancelAction = PEPUIAlertAction(title: cancelTitle,
-                                            style: .pEpGray,
-                                            handler: { _ in
-                                                pepAlertViewController.dismiss(animated: true,
-                                                                               completion: nil)
-        })
-        pepAlertViewController.add(action: cancelAction)
-
-        let resetTitle = NSLocalizedString("Reset",
-                                           comment: "Reset account identity button title")
-        let resetAction = PEPUIAlertAction(title: resetTitle,
-                                           style: .pEpRed,
-                                           handler: { [weak self] _ in
-                                            pepAlertViewController.dismiss(animated: true,
-                                                                           completion: nil)
-                                            guard let me = self else {
-                                                Log.shared.lostMySelf()
-                                                return
-                                            }
-                                            me.viewModel?.handleResetIdentity()
-        })
-        pepAlertViewController.add(action: resetAction)
-
-        pepAlertViewController.modalPresentationStyle = .overFullScreen
-        pepAlertViewController.modalTransitionStyle = .crossDissolve
-
-        DispatchQueue.main.async { [weak self] in
-            self?.present(pepAlertViewController, animated: true)
-        }
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
+        let resetTitle = NSLocalizedString("Reset", comment: "Reset account identity button title")
+        UIUtils.showTwoButtonAlert(withTitle: title, message: message, cancelButtonText: cancelTitle, positiveButtonText: resetTitle, cancelButtonAction: { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.dismiss(animated: true)
+        }, positiveButtonAction: { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.dismiss(animated: true)
+            me.viewModel?.handleResetIdentity()
+        },
+        style: .warn)
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.destination {
         case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
