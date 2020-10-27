@@ -638,24 +638,22 @@ extension ComposeTableViewController {
         if let popoverPresentationController = actionSheetController.popoverPresentationController {
             popoverPresentationController.barButtonItem = sender as? UIBarButtonItem
         }
-        actionSheetController.addAction(cancelAction(forAlertController: actionSheetController))
-        actionSheetController.addAction(deleteAction(forAlertController: actionSheetController))
-        actionSheetController.addAction(saveAction(forAlertController: actionSheetController))
+        actionSheetController.addAction(cancelAction())
+        actionSheetController.addAction(deleteAction())
+        actionSheetController.addAction(saveAction())
         if viewModel?.showKeepInOutbox ?? false {
             actionSheetController.addAction(
-                keepInOutboxAction(forAlertController: actionSheetController))
+                keepInOutboxAction())
         }
         present(actionSheetController, animated: true)
     }
 
-    private func deleteAction(forAlertController ac: UIAlertController) -> UIAlertAction {
+    private func deleteAction() -> UIAlertAction {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
-        let action: UIAlertAction
-        let text = vm.deleteActionTitle
-        action = ac.action(text, .destructive) { [weak self] in
+        let action = UIUtils.action(vm.deleteActionTitle, .destructive) { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost MySelf")
                 return
@@ -665,14 +663,12 @@ extension ComposeTableViewController {
         return action
     }
 
-    private func saveAction(forAlertController ac: UIAlertController) -> UIAlertAction {
+    private func saveAction() -> UIAlertAction {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
-        let action: UIAlertAction
-        let text = vm.saveActionTitle
-        action = ac.action(text, .default) { [weak self] in
+        let action = UIUtils.action(vm.saveActionTitle, .default) { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost MySelf")
                 return
@@ -683,14 +679,12 @@ extension ComposeTableViewController {
         return action
     }
 
-    private func keepInOutboxAction(forAlertController ac: UIAlertController) -> UIAlertAction {
+    private func keepInOutboxAction() -> UIAlertAction {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
-        let action: UIAlertAction
-        let text = vm.keepInOutboxActionTitle
-        action = ac.action(text, .default) { [weak self] in
+        let action = UIUtils.action(vm.keepInOutboxActionTitle, .default) { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost MySelf")
                 return
@@ -700,12 +694,12 @@ extension ComposeTableViewController {
         return action
     }
 
-    private func cancelAction(forAlertController ac: UIAlertController) -> UIAlertAction {
+    private func cancelAction() -> UIAlertAction {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
-        return ac.action(vm.cancelActionTitle, .cancel)
+        return UIUtils.action(vm.cancelActionTitle, .cancel)
     }
 }
 
