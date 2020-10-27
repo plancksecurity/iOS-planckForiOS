@@ -79,7 +79,7 @@ extension SMTPSettingsViewController: UITextFieldDelegate {
         }
         if textField == setupView.fourthTextField {
             view.endEditing(true)
-            alertWithSecurityValues(textField)
+            presentActionSheetWithTransportSecurityValues(textField)
             return false
         }
         return true
@@ -279,15 +279,7 @@ extension SMTPSettingsViewController {
     }
 
     private func informUser(about message: String, title: String) {
-        let alert = UIAlertController.pEpAlertController(
-            title: title,
-            message: message,
-            preferredStyle: UIAlertController.Style.alert)
-        let cancelAction = UIAlertAction(title:
-            NSLocalizedString("OK", comment: "OK button for invalid accout settings user input alert"),
-                                         style: .cancel, handler: nil)
-        alert.addAction(cancelAction)
-        present(alert, animated: true)
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message)
     }
 
     private func hideKeybord() {
@@ -332,13 +324,12 @@ extension SMTPSettingsViewController {
         setupView.fourthTextField.placeholder = TransportSecurityPlaceholder
     }
 
-    private func alertWithSecurityValues(_ sender: UITextField) {
-        let alertController = UIAlertController.pEpAlertController(
-            title: NSLocalizedString("Transport protocol",
-                                     comment: "UI alert title for transport protocol"),
-            message: NSLocalizedString("Choose a Security protocol for your accont",
-                                       comment: "UI alert message for transport protocol"),
-            preferredStyle: .actionSheet)
+    private func presentActionSheetWithTransportSecurityValues(_ sender: UITextField) {
+        let title = NSLocalizedString("Transport protocol",
+                                 comment: "UI alert title for transport protocol")
+        let message = NSLocalizedString("Choose a Security protocol for your accont",
+                                   comment: "UI alert message for transport protocol")
+        let alertController = UIUtils.actionSheet(title: title, message: message)
         let block: (ConnectionTransport) -> () = { transport in
             self.verifiableAccount?.transportSMTP = transport
             sender.text = transport.localizedString()
@@ -353,11 +344,10 @@ extension SMTPSettingsViewController {
         alertController.setupActionFromConnectionTransport(.TLS, block: block)
         alertController.setupActionFromConnectionTransport(.startTLS, block: block)
 
-        let cancelAction = UIAlertAction(
-            title: NSLocalizedString("Cancel", comment: "Cancel for an alert view"),
-            style: .cancel) { (action) in}
+        let actionTitle = NSLocalizedString("Cancel", comment: "Cancel for an alert view")
+        let cancelAction = UIUtils.action(actionTitle, .cancel)
         alertController.addAction(cancelAction)
-        self.present(alertController, animated: true) {}
+        present(alertController, animated: true) {}
     }
 
     private func setUpContainerView() {

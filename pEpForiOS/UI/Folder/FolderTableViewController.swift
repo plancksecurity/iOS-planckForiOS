@@ -99,11 +99,11 @@ final class FolderTableViewController: UITableViewController {
     }
 
     @objc private func showCompose() {
-        UIUtils.presentComposeView()
+        UIUtils.showComposeView(from: nil)
     }
     
     @objc private func showSettingsViewController() {
-        UIUtils.presentSettings()
+        UIUtils.showSettings()
     }
 
     @objc func draftsPreviewTapped(sender: UILongPressGestureRecognizer) {

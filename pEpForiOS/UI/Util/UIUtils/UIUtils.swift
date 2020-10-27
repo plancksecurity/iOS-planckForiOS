@@ -34,9 +34,7 @@ class UIUtils {
                 // Do nothing. The error type is not suitable to bother the user with.
                 return
             }
-
-            showAlertWithOnlyPositiveButton(title: displayError.title,
-                                            message: displayError.errorDescription)
+            showAlertWithOnlyPositiveButton(title: displayError.title, message: displayError.errorDescription, style: .warn)
         }
 
         if Thread.current == Thread.main {
@@ -47,4 +45,15 @@ class UIUtils {
             }
         }
     }
+
+    /// Shows the navigation controller passed by parameter
+    /// - Parameter navigationController: The Navigation Controller to present.
+    public static func show(navigationController: UINavigationController) {
+        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("No VC")
+            return
+        }
+        presenterVc.present(navigationController, animated: true)
+    }
+
 }
