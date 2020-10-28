@@ -41,7 +41,7 @@ extension UIUtils {
     ///   - isNewGroup: Indicates if it's a new group or it's joining an existing group
     ///   - error: The key sync error
     ///   - completion: The callback to be executed when the user interacts with the error alert view buttons.
-    public static func presentKeySyncErrorView(isNewGroup: Bool, error: Error?, completion: ((KeySyncErrorResponse) -> ())? = nil) {
+    public static func showKeySyncErrorView(isNewGroup: Bool, error: Error?, completion: ((KeySyncErrorResponse) -> ())? = nil) {
         let keySyncErrorViewController = PEPAlertViewController.getKeySyncErrorViewController(isNewGroup: isNewGroup) { (action) in
             switch action {
             case .tryAgain:
@@ -63,20 +63,50 @@ extension UIUtils {
 
 extension UIUtils {
 
-    /// The presenter for keysync views: the wizard or error alert views.
-    private static var presenter: UIViewController {
-        guard let visibleViewController = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.errorAndCrash("No visible VC")
-            return UIViewController()
+    /// Present an alert view if possible.
+    /// - Parameter keySyncErrorViewController: The view controller to present.
+    private static func present(_ keySyncErrorViewController: PEPAlertViewController) {
+        guard let presenter = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.error("Presenter is gone")
+            return
         }
-        return visibleViewController
+        /// If there is an error already
+        if let presentedViewController = presenter.presentedViewController {
+            presentedViewController.dismiss(animated: true) {
+                UIUtils.present(keySyncErrorViewController)
+            }
+            return
+        }
+        /// If there is a Keysync presented.
+        if presenter is KeySyncWizardViewController {
+            presenter.dismiss(animated: true) {
+                let newPresenter = UIApplication.currentlyVisibleViewController()
+                newPresenter?.present(keySyncErrorViewController, animated: true, completion: nil)
+            }
+            return
+        }
+        presenter.present(keySyncErrorViewController, animated: true, completion: nil)
     }
 
-    /// Evaluates if it's possible to present a view for keysync.
-    /// That means: there is not other KeySyncWizard or PEPAlerView already presented.
-    private static var canPresent: Bool {
-        let presenter = self.presenter // Avoid repeating the search of the presenter.
-        if let wizardController = presenter.navigationController, wizardController.child(ofType: PEPAlertViewController.self) != nil {
+    /// Present the keysync wizard if possible.
+    /// - Parameter wizardViewController: The wizard view controller
+    /// - Returns: The presented wizard View controller . Nil if it wasn't presented.
+    private static func present(_ wizardViewController: KeySyncWizardViewController) -> KeySyncWizardViewController? {
+        guard let presenter = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.error("Presenter is gone")
+            return nil
+        }
+        if canPresentWizard(presenter: presenter) {
+            DispatchQueue.main.async {
+                presenter.present(wizardViewController, animated: true, completion: nil)
+            }
+            return wizardViewController
+        }
+        return nil
+    }
+
+    private static func canPresentWizard(presenter: UIViewController) -> Bool {
+        if let wizardPresenter = presenter.navigationController, wizardPresenter.child(ofType: PEPAlertViewController.self) != nil {
             /// Valid case: there is a PEPAlerView already presented.
             return false
         }
@@ -85,40 +115,5 @@ extension UIUtils {
             return false
         }
         return true
-    }
-
-    /// Present an alert view if possible.
-    /// - Parameter keySyncErrorViewController: The view controller to present.
-    private static func present(_ keySyncErrorViewController: PEPAlertViewController) {
-        let presenter = self.presenter
-        /// If there is an error already
-        if let presentedViewController = presenter.presentedViewController {
-            presentedViewController.dismiss(animated: true) {
-                UIUtils.present(keySyncErrorViewController)
-            }
-            return
-        }
-
-        /// If there is a Keysync presented.
-        if presenter is KeySyncWizardViewController {
-            presenter.dismiss(animated: true) {
-                self.presenter.present(keySyncErrorViewController, animated: true, completion: nil)
-            }
-            return
-        }
-        self.presenter.present(keySyncErrorViewController, animated: true, completion: nil)
-    }
-
-    /// Present the keysync wizard if possible.
-    /// - Parameter wizardViewController: The wizard view controller
-    /// - Returns: The presented wizard View controller . Nil if it wasn't presented.
-    private static func present(_ wizardViewController: KeySyncWizardViewController) -> KeySyncWizardViewController? {
-        guard canPresent else {
-            return nil
-        }
-        DispatchQueue.main.async {
-            presenter.present(wizardViewController, animated: true, completion: nil)
-        }
-        return wizardViewController
     }
 }

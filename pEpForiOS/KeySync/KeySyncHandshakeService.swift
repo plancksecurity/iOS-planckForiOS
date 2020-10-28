@@ -25,7 +25,7 @@ class KeySyncHandshakeService {
 
 extension KeySyncHandshakeService {
 
-    func registerForKeySyncDeviceGroupStateChangeNotification() {
+    public func registerForKeySyncDeviceGroupStateChangeNotification() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handleDeviceGroupStateChangeNotification(_:)),
                                                name: Notification.Name.pEpDeviceGroupStateChange,
@@ -50,6 +50,14 @@ extension KeySyncHandshakeService {
 }
 
 extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
+
+    /// Show handshake wizard
+    ///
+    /// - Parameters:
+    ///   - meFingerprint: The fingerprints of the current user
+    ///   - partnerFingerprint: The fingerprints of the comunication partner of the current user
+    ///   - isNewGroup: Indicates if it is a new group creation
+    ///   - completion: callback that will be executed in case the user accepts, cancels or declines.
     public func showHandshake(meFingerprint: String?,
                               partnerFingerprint: String?,
                               isNewGroup: Bool,
@@ -94,6 +102,7 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
 
     public func showSuccessfullyGrouped() {
         guard let pEpSyncWizard = pEpSyncWizard else {
+            // Valid case. We might have been dismissed already.
             return
         }
         let completedViewIndex = pEpSyncWizard.views.count - 1
@@ -112,11 +121,11 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
         DispatchQueue.main.async { [weak self] in
             guard let me = self, let pEpSyncWizard = me.pEpSyncWizard else {
                 // Valid case. We might have been dismissed already.
-                UIUtils.presentKeySyncErrorView(isNewGroup: isNewGroup, error: error, completion: completion)
+                UIUtils.showKeySyncErrorView(isNewGroup: isNewGroup, error: error, completion: completion)
                 return
             }
             pEpSyncWizard.dismiss(animated: true) {
-                UIUtils.presentKeySyncErrorView(isNewGroup: isNewGroup, error: error, completion: completion)
+                UIUtils.showKeySyncErrorView(isNewGroup: isNewGroup, error: error, completion: completion)
             }
         }
     }
