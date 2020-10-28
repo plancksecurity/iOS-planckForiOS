@@ -70,22 +70,19 @@ extension UIUtils {
             Log.shared.error("Presenter is gone")
             return
         }
-        /// If there is an error already
-        if let presentedViewController = presenter.presentedViewController {
-            presentedViewController.dismiss(animated: true) {
-                UIUtils.present(keySyncErrorViewController)
-            }
-            return
-        }
-        /// If there is a Keysync presented.
-        if presenter is KeySyncWizardViewController {
+
+        /// If there is an error or a wizard already presented
+        if presenter is KeySyncWizardViewController || presenter is PEPAlertViewController {
+            /// dismiss it and show the new one
             presenter.dismiss(animated: true) {
-                let newPresenter = UIApplication.currentlyVisibleViewController()
-                newPresenter?.present(keySyncErrorViewController, animated: true, completion: nil)
+                if let newPresenter = UIApplication.currentlyVisibleViewController() {
+                    newPresenter.present(keySyncErrorViewController, animated: true)
+                }
             }
             return
         }
-        presenter.present(keySyncErrorViewController, animated: true, completion: nil)
+        /// If no wizard or error was there before, just present it [OK]
+        presenter.present(keySyncErrorViewController, animated: true)
     }
 
     /// Present the keysync wizard if possible.
@@ -98,14 +95,20 @@ extension UIUtils {
         }
         if canPresentWizard(presenter: presenter) {
             DispatchQueue.main.async {
-                presenter.present(wizardViewController, animated: true, completion: nil)
+                presenter.present(wizardViewController, animated: true)
             }
             return wizardViewController
         }
         return nil
     }
 
+    /// Indicates if the presenter can show the wizard
+    /// - Parameter presenter: The presenter to evaluate
+    /// - Returns: True if the presenter can present the wizard.
     private static func canPresentWizard(presenter: UIViewController) -> Bool {
+        if presenter is PEPAlertViewController {
+            return false
+        }
         if let wizardPresenter = presenter.navigationController, wizardPresenter.child(ofType: PEPAlertViewController.self) != nil {
             /// Valid case: there is a PEPAlerView already presented.
             return false

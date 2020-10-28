@@ -90,6 +90,7 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
         }
     }
 
+    /// Dismiss the wizard
     public func cancelHandshake() {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
