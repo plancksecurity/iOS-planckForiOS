@@ -33,7 +33,7 @@ extension UIUtils {
             Log.shared.errorAndCrash("Missing pEpSyncWizard")
             return nil
         }
-        return present(pEpSyncWizard)
+        return show(pEpSyncWizard)
     }
 
     /// Present the alert views, if possible
@@ -50,12 +50,11 @@ extension UIUtils {
                 completion?(.notNow)
             }
         }
-        
         guard let keySyncErrorView = keySyncErrorViewController else {
             Log.shared.errorAndCrash("KeySyncErrorView cant be instanciated")
             return
         }
-        UIUtils.present(keySyncErrorView)
+        UIUtils.show(keySyncErrorView)
     }
 }
 
@@ -65,57 +64,55 @@ extension UIUtils {
 
     /// Present an alert view if possible.
     /// - Parameter keySyncErrorViewController: The view controller to present.
-    private static func present(_ keySyncErrorViewController: PEPAlertViewController) {
-        guard let presenter = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.error("Presenter is gone")
-            return
-        }
-
-        /// If there is an error already presented
-        if presenter is PEPAlertViewController {
-            return
-        }
-
-        /// If there is an error or a wizard already presented
-        if presenter is KeySyncWizardViewController {
-            /// dismiss it and show the new one
-            DispatchQueue.main.async {
-                presenter.dismiss(animated: true) {
-                    if let newPresenter = UIApplication.currentlyVisibleViewController() {
-                        newPresenter.present(keySyncErrorViewController, animated: true)
-                    }
-                }
-            }
-            return
-        }
-        DispatchQueue.main.async {
-            /// If no wizard or error was there before, just present it [OK]
-            presenter.present(keySyncErrorViewController, animated: true)
-        }
+    @discardableResult
+    private static func show(_ keySyncErrorViewController: PEPAlertViewController) -> PEPAlertViewController? {
+        return UIUtils.show(keySyncErrorViewController, ofType: PEPAlertViewController.self)
     }
 
     /// Present the keysync wizard if possible.
     /// - Parameter wizardViewController: The wizard view controller
     /// - Returns: The presented wizard View controller . Nil if it wasn't presented.
-    private static func present(_ wizardViewController: KeySyncWizardViewController) -> KeySyncWizardViewController? {
+    @discardableResult
+    private static func show(_ wizardViewController: KeySyncWizardViewController) -> KeySyncWizardViewController? {
+        return UIUtils.show(wizardViewController, ofType: KeySyncWizardViewController.self)
+    }
+
+    @discardableResult
+    private static func show<T: UIViewController>(_ viewController: T, ofType type: T.Type) -> T? {
         guard let presenter = UIApplication.currentlyVisibleViewController() else {
             Log.shared.error("Presenter is gone")
             return nil
         }
         if presenter is PEPAlertViewController {
-            return nil
+            if viewController is PEPAlertViewController {
+                return nil
+            } else if viewController is KeySyncWizardViewController {
+                DispatchQueue.main.async {
+                    presenter.dismiss(animated: true) {
+                        if let newPresenter = UIApplication.currentlyVisibleViewController() {
+                            newPresenter.present(viewController, animated: true)
+                        }
+                    }
+                }
+                return viewController
+            }
         }
         if presenter is KeySyncWizardViewController {
             DispatchQueue.main.async {
                 presenter.dismiss(animated: true) {
-                    presenter.present(wizardViewController, animated: true)
+                    if let newPresenter = UIApplication.currentlyVisibleViewController() {
+                        newPresenter.present(viewController, animated: true)
+                    }
                 }
             }
-            return wizardViewController
+            return viewController
         }
         DispatchQueue.main.async {
-            presenter.present(wizardViewController, animated: true)
+            presenter.present(viewController, animated: true)
         }
-        return wizardViewController
+        return viewController
     }
 }
+
+
+
