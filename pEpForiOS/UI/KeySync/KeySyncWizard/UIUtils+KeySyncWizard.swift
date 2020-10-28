@@ -106,11 +106,8 @@ extension UIUtils {
     /// - Parameter presenter: The presenter to evaluate
     /// - Returns: True if the presenter can present the wizard.
     private static func canPresentWizard(presenter: UIViewController) -> Bool {
+        /// There is an error shown already
         if presenter is PEPAlertViewController {
-            return false
-        }
-        if let wizardPresenter = presenter.navigationController, wizardPresenter.child(ofType: PEPAlertViewController.self) != nil {
-            /// Valid case: there is a PEPAlerView already presented.
             return false
         }
         guard !(presenter is KeySyncWizardViewController) else {
