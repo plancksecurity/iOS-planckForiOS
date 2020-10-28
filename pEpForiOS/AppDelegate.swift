@@ -217,7 +217,7 @@ extension AppDelegate {
                 Log.shared.errorAndCrash("Mailto parsing failed")
                 return false
             }
-            UIUtils.presentComposeView(from: mailto)
+            UIUtils.showComposeView(from: mailto)
             return true
         }
         switch url.pathExtension {

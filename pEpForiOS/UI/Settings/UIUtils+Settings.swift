@@ -12,7 +12,7 @@ import pEpIOSToolbox
 
 extension UIUtils {
 
-    static public func presentSettings() {
+    static public func showSettings() {
         guard let vc = UIStoryboard.init(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: SettingsTableViewController.storyboardId) as? SettingsTableViewController else {
             Log.shared.errorAndCrash("No controller")
             return

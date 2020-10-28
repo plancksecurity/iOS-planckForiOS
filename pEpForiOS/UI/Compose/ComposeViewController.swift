@@ -164,7 +164,7 @@ extension ComposeViewController {
             return
         }
 
-        let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
+        let actionSheetController = UIUtils.actionSheet()
         actionSheetController.addAction(changeSecureStatusAction(pEpProtected: vm.state.pEpProtection))
         actionSheetController.addAction(disableAlertAction())
         actionSheetController.popoverPresentationController?.sourceView = titleView
@@ -346,7 +346,8 @@ extension ComposeViewController: ComposeViewModelDelegate {
                                    cancelButtonText: cancelButtonText,
                                    positiveButtonText: positiveButtonText,
                                    cancelButtonAction: cancelButtonAction,
-                                   positiveButtonAction: positiveButtonAction)
+                                   positiveButtonAction: positiveButtonAction,
+                                   style: .warn)
     }
 
    func dismiss() {
@@ -705,7 +706,7 @@ extension ComposeViewController {
 extension ComposeViewController {
 
     private func showAlertControllerWithOptionsForCanceling(sender: Any) {
-        let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
+        let actionSheetController = UIUtils.actionSheet()
         if let popoverPresentationController = actionSheetController.popoverPresentationController {
             popoverPresentationController.barButtonItem = sender as? UIBarButtonItem
         }
@@ -724,9 +725,8 @@ extension ComposeViewController {
             Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
-        let action: UIAlertAction
         let text = vm.deleteActionTitle
-        action = ac.action(text, .destructive) { [weak self] in
+        let action = UIUtils.action(text, .destructive) { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
@@ -741,9 +741,8 @@ extension ComposeViewController {
             Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
-        let action: UIAlertAction
         let text = vm.saveActionTitle
-        action = ac.action(text, .default) { [weak self] in
+        let action = UIUtils.action(text, .default) { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
@@ -759,9 +758,8 @@ extension ComposeViewController {
             Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
-        let action: UIAlertAction
         let text = vm.keepInOutboxActionTitle
-        action = ac.action(text, .default) { [weak self] in
+        let action = UIUtils.action(text, .default) { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
@@ -776,7 +774,7 @@ extension ComposeViewController {
             Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
-        return ac.action(vm.cancelActionTitle, .cancel)
+        return UIUtils.action(vm.cancelActionTitle, .cancel)
     }
 }
 

@@ -389,7 +389,7 @@ extension EmailDetailViewController {
     @objc
     private func showSettingsViewController() {
         splitViewController?.preferredDisplayMode = .allVisible
-        UIUtils.presentSettings()
+        UIUtils.showSettings()
     }
 
     private func setupEmailViewController(forRowAt indexPath: IndexPath) -> EmailViewController? {

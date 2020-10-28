@@ -26,7 +26,6 @@ extension UIUtils {
         }
         let view: UIView = presenterVc.view
         view.addSubview(activityIndicator)
-
         NSLayoutConstraint(item: activityIndicator,
                            attribute: .centerX,
                            relatedBy: .equal,

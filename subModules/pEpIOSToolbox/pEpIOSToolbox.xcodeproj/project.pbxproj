@@ -35,6 +35,7 @@
 		43EB61A6252DA4160066B45D /* LoggerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EB61A5252DA4160066B45D /* LoggerTest.swift */; };
 		5B2F7E5F240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E5E240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift */; };
 		5B2F7E61240D0EA8004DDFA2 /* RangeExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E60240D0EA8004DDFA2 /* RangeExpression+Extension.swift */; };
+		5B4161A92540371800C060B5 /* UIApplication+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4161A82540371800C060B5 /* UIApplication+Alert.swift */; };
 		5B87D79423F2C5CE009DACAA /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */; };
 		5BA2F5E924C997ED00F27099 /* UIDevice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA2F5E824C997ED00F27099 /* UIDevice+Extension.swift */; };
 		5BEC4D6F24B5F6E800EBF0E9 /* CGAffineTransform+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEC4D6E24B5F6E800EBF0E9 /* CGAffineTransform+Extension.swift */; };
@@ -69,7 +70,7 @@
 		B7DB7F522213120B003968DA /* SortedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7F512213120B003968DA /* SortedSet.swift */; };
 		B7DB7F5C221315BD003968DA /* pEpIOSToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7911EB421F7358500D7F66F /* pEpIOSToolbox.framework */; };
 		B7DB7F8422144E4E003968DA /* SortedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7F8322144E4E003968DA /* SortedSetTest.swift */; };
-		B7E9D25423561D370074F067 /* UiSplitViewController+DisplayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E9D25323561D360074F067 /* UiSplitViewController+DisplayMode.swift */; };
+		B7E9D25423561D370074F067 /* UISplitViewController+DisplayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E9D25323561D360074F067 /* UISplitViewController+DisplayMode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +112,7 @@
 		43EB61A5252DA4160066B45D /* LoggerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoggerTest.swift; path = ../../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/Other/Logging/LoggerTest.swift; sourceTree = "<group>"; };
 		5B2F7E5E240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "StringProtocol+NSRanges.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/StringProtocol+NSRanges.swift"; sourceTree = "<group>"; };
 		5B2F7E60240D0EA8004DDFA2 /* RangeExpression+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "RangeExpression+Extension.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/RangeExpression+Extension.swift"; sourceTree = "<group>"; };
+		5B4161A82540371800C060B5 /* UIApplication+Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Alert.swift"; sourceTree = "<group>"; };
 		5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		5BA2F5E824C997ED00F27099 /* UIDevice+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extension.swift"; sourceTree = "<group>"; };
 		5BEC4D6E24B5F6E800EBF0E9 /* CGAffineTransform+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGAffineTransform+Extension.swift"; sourceTree = "<group>"; };
@@ -148,7 +150,7 @@
 		B7DB7F57221315BD003968DA /* pEpIOSToolboxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pEpIOSToolboxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7DB7F5B221315BD003968DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7DB7F8322144E4E003968DA /* SortedSetTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedSetTest.swift; sourceTree = "<group>"; };
-		B7E9D25323561D360074F067 /* UiSplitViewController+DisplayMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UiSplitViewController+DisplayMode.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/UIKit/UiSplitViewController+DisplayMode.swift"; sourceTree = "<group>"; };
+		B7E9D25323561D360074F067 /* UISplitViewController+DisplayMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UISplitViewController+DisplayMode.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/UIKit/UISplitViewController+DisplayMode.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -301,10 +303,15 @@
 				B7465DE22211C890008A1708 /* CGImageSource+Extension.swift */,
 				B7465DE62211E969008A1708 /* CGRect+Util.swift */,
 				B753907D2212D6B500B1FCF9 /* CGSize+Extension.swift */,
+				5B4161A82540371800C060B5 /* UIApplication+Alert.swift */,
+				158A564C24004619003C0D7E /* UIApplication+NavigationStack.swift */,
+				1505C5142316771E0078A210 /* UIApplication+NetworkActivitySpinner.swift */,
 				B7911EC121F8694000D7F66F /* UIColor+Extension.swift */,
+				5BA2F5E824C997ED00F27099 /* UIDevice+Extension.swift */,
+				5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */,
 				B7911EC521F88AF800D7F66F /* UIImage+Extension.swift */,
 				B7465DE02211C6E9008A1708 /* UIImage+GIF.swift */,
-				B7E9D25323561D360074F067 /* UiSplitViewController+DisplayMode.swift */,
+				B7E9D25323561D360074F067 /* UISplitViewController+DisplayMode.swift */,
 				3A0CBAAA23F582B900AE200C /* UITextView+Font.swift */,
 				158A564C24004619003C0D7E /* UIApplication+NavigationStack.swift */,
 				B7CE922A24E3BD2100B5A874 /* UIButton+extension.swift */,
@@ -513,6 +520,7 @@
 				B7A46C58220DA6190027CCB5 /* String+Email.swift in Sources */,
 				37904565223FA486006DAB3B /* ReachabilityProtocol.swift in Sources */,
 				37954C6E227C90C10099B8D8 /* Log.swift in Sources */,
+				5B4161A92540371800C060B5 /* UIApplication+Alert.swift in Sources */,
 				B7A46C62220DCEA80027CCB5 /* NSAttributedString+Parsing.swift in Sources */,
 				1505C5152316771E0078A210 /* UIApplication+NetworkActivitySpinner.swift in Sources */,
 				B7465DE72211E969008A1708 /* CGRect+Util.swift in Sources */,
@@ -549,7 +557,7 @@
 				B7465DE32211C890008A1708 /* CGImageSource+Extension.swift in Sources */,
 				431E68AC246C00F200B3A977 /* DocumentsDirectoryBrowser.swift in Sources */,
 				3AE10BAD249A6EC60050BFB0 /* String+EmailHtml.swift in Sources */,
-				B7E9D25423561D370074F067 /* UiSplitViewController+DisplayMode.swift in Sources */,
+				B7E9D25423561D370074F067 /* UISplitViewController+DisplayMode.swift in Sources */,
 				B7465DE12211C6E9008A1708 /* UIImage+GIF.swift in Sources */,
 				B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */,
 				5BEC4D6F24B5F6E800EBF0E9 /* CGAffineTransform+Extension.swift in Sources */,
