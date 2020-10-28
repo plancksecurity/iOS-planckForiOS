@@ -93,13 +93,21 @@ extension UIUtils {
             Log.shared.error("Presenter is gone")
             return nil
         }
-        if canPresentWizard(presenter: presenter) {
+        if presenter is PEPAlertViewController {
+            return nil
+        }
+        if presenter is KeySyncWizardViewController {
             DispatchQueue.main.async {
-                presenter.present(wizardViewController, animated: true)
+                presenter.dismiss(animated: true) {
+                    presenter.present(wizardViewController, animated: true)
+                }
             }
             return wizardViewController
         }
-        return nil
+        DispatchQueue.main.async {
+            presenter.present(wizardViewController, animated: true)
+        }
+        return wizardViewController
     }
 
     /// Indicates if the presenter can show the wizard

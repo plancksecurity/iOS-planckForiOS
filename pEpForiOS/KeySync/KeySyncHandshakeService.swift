@@ -25,7 +25,7 @@ class KeySyncHandshakeService {
 
 extension KeySyncHandshakeService {
 
-    public func registerForKeySyncDeviceGroupStateChangeNotification() {
+    private func registerForKeySyncDeviceGroupStateChangeNotification() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handleDeviceGroupStateChangeNotification(_:)),
                                                name: Notification.Name.pEpDeviceGroupStateChange,
