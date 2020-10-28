@@ -67,9 +67,9 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            me.pEpSyncWizard = UIUtils.presentKeySyncWizard(meFPR: meFPR,
-                                                            partnerFPR: partnerFPR,
-                                                            isNewGroup: isNewGroup) { action in
+            me.pEpSyncWizard = UIUtils.showKeySyncWizard(meFPR: meFPR,
+                                                         partnerFPR: partnerFPR,
+                                                         isNewGroup: isNewGroup) { action in
                 switch action {
                 case .accept:
                     completion?(.accepted)

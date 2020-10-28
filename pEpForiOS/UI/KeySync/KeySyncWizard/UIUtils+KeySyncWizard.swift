@@ -22,7 +22,7 @@ extension UIUtils {
     ///   - completion: Callback to be executed when the user interacts with keysync wizard buttons.
     /// - Returns: the view controller of the key sync, if it's presented, nil otherwise.
     @discardableResult
-    static public func presentKeySyncWizard(meFPR: String,
+    static public func showKeySyncWizard(meFPR: String,
                                             partnerFPR: String,
                                             isNewGroup: Bool,
                                             completion: @escaping (KeySyncWizardViewController.Action) -> Void ) -> KeySyncWizardViewController? {

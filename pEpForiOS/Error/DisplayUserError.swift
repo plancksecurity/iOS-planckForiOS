@@ -318,7 +318,7 @@ struct DisplayUserError: LocalizedError {
 
     // MARK: - TITLE & MESSAGE
 
-    public var title: String? {
+    public var title: String {
         switch type {
         case .authenticationFailed:
             return NSLocalizedString("Login Failed",

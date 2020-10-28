@@ -233,7 +233,7 @@ extension AppDelegate {
                 Log.shared.errorAndCrash("AppConfig not found")
                 return false
             }
-            UIUtils.presentComposeView(from: mailto, appConfig: appConfig)
+            UIUtils.showComposeView(from: mailto, appConfig: appConfig)
             return true
         }
         switch url.pathExtension {
