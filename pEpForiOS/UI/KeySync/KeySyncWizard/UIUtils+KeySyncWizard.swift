@@ -71,18 +71,27 @@ extension UIUtils {
             return
         }
 
+        /// If there is an error already presented
+        if presenter is PEPAlertViewController {
+            return
+        }
+
         /// If there is an error or a wizard already presented
-        if presenter is KeySyncWizardViewController || presenter is PEPAlertViewController {
+        if presenter is KeySyncWizardViewController {
             /// dismiss it and show the new one
-            presenter.dismiss(animated: true) {
-                if let newPresenter = UIApplication.currentlyVisibleViewController() {
-                    newPresenter.present(keySyncErrorViewController, animated: true)
+            DispatchQueue.main.async {
+                presenter.dismiss(animated: true) {
+                    if let newPresenter = UIApplication.currentlyVisibleViewController() {
+                        newPresenter.present(keySyncErrorViewController, animated: true)
+                    }
                 }
             }
             return
         }
-        /// If no wizard or error was there before, just present it [OK]
-        presenter.present(keySyncErrorViewController, animated: true)
+        DispatchQueue.main.async {
+            /// If no wizard or error was there before, just present it [OK]
+            presenter.present(keySyncErrorViewController, animated: true)
+        }
     }
 
     /// Present the keysync wizard if possible.
@@ -108,20 +117,5 @@ extension UIUtils {
             presenter.present(wizardViewController, animated: true)
         }
         return wizardViewController
-    }
-
-    /// Indicates if the presenter can show the wizard
-    /// - Parameter presenter: The presenter to evaluate
-    /// - Returns: True if the presenter can present the wizard.
-    private static func canPresentWizard(presenter: UIViewController) -> Bool {
-        /// There is an error shown already
-        if presenter is PEPAlertViewController {
-            return false
-        }
-        guard !(presenter is KeySyncWizardViewController) else {
-            /// Valid case: there is a KeySyncWizard already presented.
-            return false
-        }
-        return true
     }
 }

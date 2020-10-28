@@ -119,15 +119,6 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
     // We must dismiss pEpSyncWizard before presenting pEpSyncWizard error view.
     public func showError(error: Error?, completion: ((KeySyncErrorResponse) -> ())? = nil) {
         let isNewGroup = pEpSyncWizard?.isNewGroup ?? true
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self, let pEpSyncWizard = me.pEpSyncWizard else {
-                // Valid case. We might have been dismissed already.
-                UIUtils.showKeySyncErrorView(isNewGroup: isNewGroup, error: error, completion: completion)
-                return
-            }
-            pEpSyncWizard.dismiss(animated: true) {
-                UIUtils.showKeySyncErrorView(isNewGroup: isNewGroup, error: error, completion: completion)
-            }
-        }
+        UIUtils.showKeySyncErrorView(isNewGroup: isNewGroup, error: error, completion: completion)
     }
 }
