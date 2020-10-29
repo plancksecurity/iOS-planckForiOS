@@ -14,6 +14,7 @@ import pEpIOSToolbox
 public enum AlertStyle : Int {
     case `default` = 0
     case warn = 1
+    case undo = 2
 }
 
 final class PEPAlertViewController: UIViewController {
@@ -68,7 +69,6 @@ final class PEPAlertViewController: UIViewController {
                     Log.shared.errorAndCrash("Fail to instantiateViewController PEPAlertViewController")
                     return nil
             }
-
             pEpAlertViewController.viewModel = viewModel
             pEpAlertViewController.viewModel.delegate = pEpAlertViewController
 

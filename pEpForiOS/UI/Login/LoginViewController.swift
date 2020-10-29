@@ -431,7 +431,7 @@ extension LoginViewController {
             title = displayError.title
             message = displayError.errorDescription
         }
-        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message, style: .warn) { [weak self] in
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
@@ -583,7 +583,6 @@ extension LoginViewController {
                                    cancelButtonText: NSLocalizedString("OK", comment: "OK (dismiss) button for iCloud instructions alert"),
                                    positiveButtonText: NSLocalizedString("Info", comment: "Info button for showing iCloud page"),
                                    cancelButtonAction: {},
-                                   positiveButtonAction: openiCloudInfoInBrowser,
-                                   style: .default)
+                                   positiveButtonAction: openiCloudInfoInBrowser)
     }
 }

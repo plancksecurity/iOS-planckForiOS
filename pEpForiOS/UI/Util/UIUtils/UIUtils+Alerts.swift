@@ -48,7 +48,7 @@ extension UIUtils {
                                           positiveButtonText: String = NSLocalizedString("OK", comment: "Default positive button text"),
                                           cancelButtonAction: (() -> Void)? = nil,
                                           positiveButtonAction: @escaping () -> Void,
-                                          style: AlertStyle) {
+                                          style: AlertStyle = .default) {
         guard let alertViewController = UIUtils.getAlert(withTitle: title,
                                                          message: message,
                                                          cancelButtonText: cancelButtonText,
@@ -172,10 +172,13 @@ extension UIUtils {
         switch style {
         case .default:
             primaryColor = .pEpGreen
-            secondaryColor = .pEpGreen
+            secondaryColor = .pEpBlack
         case .warn:
             primaryColor = .pEpRed
-            secondaryColor = .pEpGray
+            secondaryColor = .pEpBlack
+        case .undo:
+            primaryColor = .pEpBlack
+            secondaryColor = .pEpBlack
         }
         let positiveAction = PEPUIAlertAction(title: positiveButtonText, style: primaryColor) { _ in
             positiveButtonAction()

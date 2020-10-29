@@ -9,6 +9,7 @@
 import UIKit
 
 extension UIColor {
+    public static let pEpBlackHex = "#0A0A0A"
     public static let pEpGreenHex = "#03AA4B"
     public static let pEpDarkGreenHex = "#1AAA50"
     public static let pEpRedHex = "#FF3B30"
@@ -25,6 +26,7 @@ extension UIColor {
     public static let pEpGrayBackgroundResetHex = "#c8c7cc" 
     public static let pEpDarkTextHex = "#171717"
     public static let pEpGrayBorderHex = "#B2B2B2"
+    public static let pEpBlack = UIColor(hexString: pEpBlackHex)
     public static var pEpGreen = UIColor(hexString: pEpGreenHex)
     public static var pEpDarkGreen = UIColor(hexString: pEpDarkGreenHex)
     public static var pEpRed = UIColor(hexString: pEpRedHex)
