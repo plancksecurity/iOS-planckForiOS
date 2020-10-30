@@ -34,7 +34,7 @@ extension FolderType {
     // MARK: - Required IMAP folders
 
     /// FolderType`s that should be created if they don't yet exist.
-    public static let requiredTypes = [FolderType.drafts, .sent, .trash]
+    static let requiredTypes = [FolderType.drafts, .sent, .trash]
 
     // MARK: - Naming
 
@@ -79,7 +79,7 @@ extension FolderType {
 
     //After new Pantomime enum approach is implemented. It is ugly that MessageModel has to know int values of Pantomime enums
     ///Folder type for PantomimeSpecialUseMailboxType
-    public static func from(pantomimeSpecialUseMailboxType: Int) -> FolderType? {
+    static func from(pantomimeSpecialUseMailboxType: Int) -> FolderType? {
         switch pantomimeSpecialUseMailboxType {
         case 0:
             return .normal
