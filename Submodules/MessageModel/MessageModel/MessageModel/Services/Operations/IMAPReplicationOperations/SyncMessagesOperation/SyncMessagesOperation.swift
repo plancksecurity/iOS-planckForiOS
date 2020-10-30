@@ -26,7 +26,7 @@ class SyncMessagesOperation: ConcurrentBaseOperation {
                    errorContainer: errorContainer)
     }
 
-    override public func main() {
+    override func main() {
         scheduleOperations()
         waitForBackgroundTasksAndFinish()
     }
