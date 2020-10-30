@@ -11,12 +11,12 @@ template "/model/entity", "text" {
     extension «@name» {
 
         /// All attribute names as constant String
-        public struct AttributeName {
+        struct AttributeName {
             `` apply "attribute", mode="propertyNameConstants"
         }
 
         /// All relationship names as constant String
-        public struct RelationshipName {
+        struct RelationshipName {
             `` apply "relationship", mode="propertyNameConstants"
         }
     }
