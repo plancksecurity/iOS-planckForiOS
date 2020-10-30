@@ -12,7 +12,7 @@ import Foundation
  Wrappers over non-optional properties that crash if the property is really nil.
  */
 extension CdServerCredentials {
-    public var loginNameOrCrash: String {
+    var loginNameOrCrash: String {
         guard let theLoginName = loginName else {
             fatalError()
         }
