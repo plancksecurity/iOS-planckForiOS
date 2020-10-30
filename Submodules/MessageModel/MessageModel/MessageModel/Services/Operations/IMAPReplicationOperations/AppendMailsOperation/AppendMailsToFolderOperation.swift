@@ -243,7 +243,7 @@ extension AppendMailsToFolderOperation {
 }
 
 class AppendMailsToFolderSyncDelegate: DefaultImapConnectionDelegate {
-    public override func folderAppendCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func folderAppendCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         guard let op = (errorHandler as? AppendMailsToFolderOperation) else {
             Log.shared.errorAndCrash("No OP")
             return
