@@ -171,7 +171,7 @@ class SyncMessagesInImapFolderOperationDelegate: DefaultImapConnectionDelegate {
         op.handleFolderSyncCompleted(imapConnection)
     }
 
-    override public  func folderOpenCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func folderOpenCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         guard let op = (errorHandler as? SyncMessagesInImapFolderOperation) else {
             Log.shared.errorAndCrash("No OP")
             return
