@@ -251,7 +251,7 @@ class AppendMailsToFolderSyncDelegate: DefaultImapConnectionDelegate {
         op.handleFolderAppendCompleted()
     }
 
-    public override func folderAppendFailed(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func folderAppendFailed(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         guard let op = (errorHandler as? AppendMailsToFolderOperation) else {
             Log.shared.errorAndCrash("No OP")
             return
