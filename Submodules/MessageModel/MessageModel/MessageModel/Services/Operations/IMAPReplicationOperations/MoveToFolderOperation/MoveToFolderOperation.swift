@@ -30,7 +30,7 @@ class MoveToFolderOperation: ImapSyncOperation {
                    imapConnection: imapConnection)
     }
 
-    override public func main() {
+    override func main() {
         if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
