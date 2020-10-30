@@ -11,16 +11,16 @@ import pEpIOSToolbox
 /**
  Basic NSOperation that can gather errors.
  */
-open class BaseOperation: Operation {
-    open var comp = "BaseOperation"
+class BaseOperation: Operation {
+    var comp = "BaseOperation"
 
     let errorContainer: ErrorContainerProtocol
 
     static let moduleTitleRegex = try! NSRegularExpression(
         pattern: "<pEpForiOS\\.(\\w+):", options: [])
 
-    public init(parentName: String = #function,
-                errorContainer: ErrorContainerProtocol = ErrorPropagator()) {
+    init(parentName: String = #function,
+         errorContainer: ErrorContainerProtocol = ErrorPropagator()) {
         self.errorContainer = errorContainer
 
         super.init()
@@ -49,19 +49,19 @@ open class BaseOperation: Operation {
 
 extension BaseOperation: ErrorContainerProtocol {
 
-    open var error: Error? {
+    var error: Error? {
         return errorContainer.error
     }
 
-    open func addError(_ error: Error) {
+    func addError(_ error: Error) {
         errorContainer.addError(error)
     }
 
-    open var hasErrors: Bool {
+    var hasErrors: Bool {
         return errorContainer.hasErrors
     }
 
-    public func reset() {
+    func reset() {
         errorContainer.reset()
     }
 }
