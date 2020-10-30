@@ -33,7 +33,7 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
 
     // MARK: - Operation
 
-    override public func main() {
+    override func main() {
         if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
@@ -42,7 +42,7 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
         process()
     }
 
-    override public func cancel() {
+    override func cancel() {
         imapConnection.cancel()
         super.cancel()
     }
@@ -160,7 +160,7 @@ extension FetchNumberOfNewMailsOperation {
 // MARK: - ImapSyncDelegate
 
 class FetchNumberOfNewMailsSyncDelegate: DefaultImapConnectionDelegate {
-    public override func folderFetchCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func folderFetchCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         guard let op = (errorHandler as? FetchNumberOfNewMailsOperation) else {
             Log.shared.errorAndCrash("No OP")
             return
@@ -168,7 +168,7 @@ class FetchNumberOfNewMailsSyncDelegate: DefaultImapConnectionDelegate {
         op.handleResult(uids: notification?.userInfo?["Uids"] as? [UInt])
     }
 
-    public override func folderOpenCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func folderOpenCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         guard let op = (errorHandler as? FetchNumberOfNewMailsOperation) else {
             Log.shared.errorAndCrash("No OP")
             return
