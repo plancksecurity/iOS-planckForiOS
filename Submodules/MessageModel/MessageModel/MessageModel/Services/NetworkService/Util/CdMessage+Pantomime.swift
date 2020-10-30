@@ -12,9 +12,9 @@ import pEpIOSToolbox
 import PantomimeFramework
 import PEPObjCAdapterFramework
 
-public typealias ImapStoreCommand = (command: String, pantomimeDict:[AnyHashable: Any])
+typealias ImapStoreCommand = (command: String, pantomimeDict:[AnyHashable: Any])
 
-public enum UpdateFlagsMode: String {
+enum UpdateFlagsMode: String {
     case add = "+"
     case remove = "-"
 }
@@ -23,7 +23,7 @@ extension CdMessage {
     /**
      - Returns: A `CWFlags object` for the given `NSNumber`
      */
-    static public func pantomimeFlagsFromNumber(_ flags: Int16) -> CWFlags {
+    static func pantomimeFlagsFromNumber(_ flags: Int16) -> CWFlags {
         if let fl = PantomimeFlag(rawValue: UInt(flags)) {
             return CWFlags(flags: fl)
         }
@@ -41,7 +41,7 @@ extension CdMessage {
     /**
      - Returns: `flags` as `CWFlags`
      */
-    public func pantomimeFlags() -> CWFlags {
+    func pantomimeFlags() -> CWFlags {
         if let theFlags = imap?.localFlags {
             return theFlags.pantomimeFlags() ?? CWFlags()
         } else {
@@ -52,7 +52,7 @@ extension CdMessage {
     /**
      - Returns: `flagsFromServer` as `CWFlags`
      */
-    public func pantomimeflagsFromServer() -> CWFlags {
+    func pantomimeflagsFromServer() -> CWFlags {
         if let theFlags = imap?.serverFlags {
             return theFlags.pantomimeFlags() ?? CWFlags()
         } else {
@@ -63,7 +63,7 @@ extension CdMessage {
     /**
      - Returns: A `CWFlags object` for the given `Int16`
      */
-    static public func pantomimeFlags(flagsInt16: Int16) -> CWFlags {
+    static func pantomimeFlags(flagsInt16: Int16) -> CWFlags {
         if let fl = PantomimeFlag(rawValue: UInt(flagsInt16)) {
             return CWFlags(flags: fl)
         }
@@ -109,7 +109,7 @@ extension CdMessage {
     /// - Returns: tuple consisting of an IMAP command string for syncing flags and a dictionary
     ///    suitable for using pantomime
     /// for the actual execution
-    public func storeCommandForUpdateFlags(to mode: UpdateFlagsMode) -> ImapStoreCommand? {
+    func storeCommandForUpdateFlags(to mode: UpdateFlagsMode) -> ImapStoreCommand? {
         guard imap != nil else {
             return nil
         }
@@ -297,7 +297,7 @@ extension CdMessage {
         return msg
     }
 
-    public func pantomime() -> CWIMAPMessage {
+    func pantomime() -> CWIMAPMessage {
         return PEPUtils.pantomime(cdMessage: self)
     }
 
@@ -329,7 +329,7 @@ extension CdMessage {
      the local flags will then be set to the same value.
      * If there were local changes, then the local flags will not change.
      */
-    public func updateFromServer(cwFlags: CWFlags, context: NSManagedObjectContext) {
+    func updateFromServer(cwFlags: CWFlags, context: NSManagedObjectContext) {
         // Since we frequently sync the flags, don't modify anything
         // if the version from the server has already been known,
         // since this could overwrite changes just made by the user.
