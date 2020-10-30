@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 extension NSManagedObject {
-    public func allPropertyNames() -> [String] {
+    func allPropertyNames() -> [String] {
         let properties = entity.properties.map { return $0.name }
         return properties
     }
