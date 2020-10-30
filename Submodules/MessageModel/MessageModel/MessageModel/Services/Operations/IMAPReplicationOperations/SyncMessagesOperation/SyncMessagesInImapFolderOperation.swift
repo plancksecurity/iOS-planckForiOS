@@ -163,7 +163,7 @@ extension SyncMessagesInImapFolderOperation {
 // MARK: - ImapSyncDelegate (actual delegate)
 
 class SyncMessagesInImapFolderOperationDelegate: DefaultImapConnectionDelegate {
-    override public func folderSyncCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func folderSyncCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         guard let op = (errorHandler as? SyncMessagesInImapFolderOperation) else {
             Log.shared.errorAndCrash("No OP")
             return
