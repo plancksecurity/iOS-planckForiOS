@@ -399,10 +399,10 @@ extension CdMessage {
      correct (especially in terms of UIDs, messageNumbers etc.)
      - Returns: The message just created or updated, or nil.
      */
-    public static func quickInsertOrUpdate(pantomimeMessage message: CWIMAPMessage,
-                                           account: CdAccount,
-                                           messageUpdate: CWMessageUpdate,
-                                           context: NSManagedObjectContext) -> CdMessage? {
+    static func quickInsertOrUpdate(pantomimeMessage message: CWIMAPMessage,
+                                    account: CdAccount,
+                                    messageUpdate: CWMessageUpdate,
+                                    context: NSManagedObjectContext) -> CdMessage? {
         guard
             let folderName = message.folder()?.name(),
             let folder = account.folder(byName: folderName, context: context)
