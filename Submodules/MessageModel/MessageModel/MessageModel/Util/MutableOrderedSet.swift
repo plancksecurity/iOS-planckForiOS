@@ -9,7 +9,7 @@
 import Foundation
 
 class MutableOrderedSet<T>: Sequence {
-    public init() {}
+    init() {}
 
     init(array: [T]) {
         for e in array {
@@ -86,7 +86,7 @@ class MutableOrderedSet<T>: Sequence {
     // MARK: - Iterator
 
     struct MutableOrderedSetIterator<T>: IteratorProtocol {
-        public typealias Element = T
+        typealias Element = T
 
         private let elements: [T]
         private var index = 0
