@@ -6,7 +6,7 @@
 //  Copyright © 2017 pEp Security S.A. All rights reserved.
 //
 
-import MessageModel
+@testable import MessageModel
 
 extension CdImapFields {
     func flagsFromServerBoolsEqual(flagBits: ImapFlagsBits?) -> Bool {
