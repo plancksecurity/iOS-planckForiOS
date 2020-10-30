@@ -4,14 +4,14 @@ extension CdAccount {
 
     /// All attribute names as constant String
     struct AttributeName {
-        static public let includeFoldersInUnifiedFolders = "includeFoldersInUnifiedFolders"
+        static let includeFoldersInUnifiedFolders = "includeFoldersInUnifiedFolders"
     }
 
     /// All relationship names as constant String
     struct RelationshipName {
-        static public let folders = "folders"
-        static public let identity = "identity"
-        static public let servers = "servers"
+        static let folders = "folders"
+        static let identity = "identity"
+        static let servers = "servers"
     }
 }
 
@@ -19,16 +19,16 @@ extension CdAttachment {
 
     /// All attribute names as constant String
     struct AttributeName {
-        static public let assetUrl = "assetUrl"
-        static public let contentDispositionTypeRawValue = "contentDispositionTypeRawValue"
-        static public let data = "data"
-        static public let fileName = "fileName"
-        static public let mimeType = "mimeType"
+        static let assetUrl = "assetUrl"
+        static let contentDispositionTypeRawValue = "contentDispositionTypeRawValue"
+        static let data = "data"
+        static let fileName = "fileName"
+        static let mimeType = "mimeType"
     }
 
     /// All relationship names as constant String
     struct RelationshipName {
-        static public let message = "message"
+        static let message = "message"
     }
 }
 
@@ -36,14 +36,14 @@ extension CdClientCertificate {
 
     /// All attribute names as constant String
     struct AttributeName {
-        static public let importDate = "importDate"
-        static public let keychainUuid = "keychainUuid"
-        static public let label = "label"
+        static let importDate = "importDate"
+        static let keychainUuid = "keychainUuid"
+        static let label = "label"
     }
 
     /// All relationship names as constant String
     struct RelationshipName {
-        static public let serverCredential = "serverCredential"
+        static let serverCredential = "serverCredential"
     }
 }
 
@@ -62,24 +62,24 @@ extension CdFolder {
 
     /// All attribute names as constant String
     struct AttributeName {
-        static public let existsCount = "existsCount"
-        static public let folderSeparator = "folderSeparator"
-        static public let folderTypeRawValue = "folderTypeRawValue"
-        static public let lastLookedAt = "lastLookedAt"
-        static public let name = "name"
-        static public let selectable = "selectable"
-        static public let shouldDelete = "shouldDelete"
-        static public let uidNext = "uidNext"
-        static public let uidValidity = "uidValidity"
+        static let existsCount = "existsCount"
+        static let folderSeparator = "folderSeparator"
+        static let folderTypeRawValue = "folderTypeRawValue"
+        static let lastLookedAt = "lastLookedAt"
+        static let name = "name"
+        static let selectable = "selectable"
+        static let shouldDelete = "shouldDelete"
+        static let uidNext = "uidNext"
+        static let uidValidity = "uidValidity"
     }
 
     /// All relationship names as constant String
     struct RelationshipName {
-        static public let account = "account"
-        static public let hasToBeMovedHere = "hasToBeMovedHere"
-        static public let messages = "messages"
-        static public let parent = "parent"
-        static public let subFolders = "subFolders"
+        static let account = "account"
+        static let hasToBeMovedHere = "hasToBeMovedHere"
+        static let messages = "messages"
+        static let parent = "parent"
+        static let subFolders = "subFolders"
     }
 }
 
@@ -87,13 +87,13 @@ extension CdHeaderField {
 
     /// All attribute names as constant String
     struct AttributeName {
-        static public let name = "name"
-        static public let value = "value"
+        static let name = "name"
+        static let value = "value"
     }
 
     /// All relationship names as constant String
     struct RelationshipName {
-        static public let message = "message"
+        static let message = "message"
     }
 }
 
@@ -101,23 +101,23 @@ extension CdIdentity {
 
     /// All attribute names as constant String
     struct AttributeName {
-        static public let address = "address"
-        static public let addressBookID = "addressBookID"
-        static public let flags = "flags"
-        static public let language = "language"
-        static public let userID = "userID"
-        static public let userName = "userName"
+        static let address = "address"
+        static let addressBookID = "addressBookID"
+        static let flags = "flags"
+        static let language = "language"
+        static let userID = "userID"
+        static let userName = "userName"
     }
 
     /// All relationship names as constant String
     struct RelationshipName {
-        static public let accounts = "accounts"
-        static public let messageFrom = "messageFrom"
-        static public let messagesBcc = "messagesBcc"
-        static public let messagesCc = "messagesCc"
-        static public let messagesReceivedBy = "messagesReceivedBy"
-        static public let messagesReplyTo = "messagesReplyTo"
-        static public let messagesTo = "messagesTo"
+        static let accounts = "accounts"
+        static let messageFrom = "messageFrom"
+        static let messagesBcc = "messagesBcc"
+        static let messagesCc = "messagesCc"
+        static let messagesReceivedBy = "messagesReceivedBy"
+        static let messagesReplyTo = "messagesReplyTo"
+        static let messagesTo = "messagesTo"
     }
 }
 
@@ -125,16 +125,16 @@ extension CdImapFields {
 
     /// All attribute names as constant String
     struct AttributeName {
-        static public let contentType = "contentType"
-        static public let messageNumber = "messageNumber"
-        static public let mimeBoundary = "mimeBoundary"
+        static let contentType = "contentType"
+        static let messageNumber = "messageNumber"
+        static let mimeBoundary = "mimeBoundary"
     }
 
     /// All relationship names as constant String
     struct RelationshipName {
-        static public let localFlags = "localFlags"
-        static public let message = "message"
-        static public let serverFlags = "serverFlags"
+        static let localFlags = "localFlags"
+        static let message = "message"
+        static let serverFlags = "serverFlags"
     }
 }
 
@@ -142,18 +142,18 @@ extension CdImapFlags {
 
     /// All attribute names as constant String
     struct AttributeName {
-        static public let flagAnswered = "flagAnswered"
-        static public let flagDeleted = "flagDeleted"
-        static public let flagDraft = "flagDraft"
-        static public let flagFlagged = "flagFlagged"
-        static public let flagRecent = "flagRecent"
-        static public let flagSeen = "flagSeen"
+        static let flagAnswered = "flagAnswered"
+        static let flagDeleted = "flagDeleted"
+        static let flagDraft = "flagDraft"
+        static let flagFlagged = "flagFlagged"
+        static let flagRecent = "flagRecent"
+        static let flagSeen = "flagSeen"
     }
 
     /// All relationship names as constant String
     struct RelationshipName {
-        static public let imapLocalFields = "imapLocalFields"
-        static public let imapServerFields = "imapServerFields"
+        static let imapLocalFields = "imapLocalFields"
+        static let imapServerFields = "imapServerFields"
     }
 }
 
@@ -161,12 +161,12 @@ extension CdKey {
 
     /// All attribute names as constant String
     struct AttributeName {
-        static public let fingerprint = "fingerprint"
+        static let fingerprint = "fingerprint"
     }
 
     /// All relationship names as constant String
     struct RelationshipName {
-        static public let message = "message"
+        static let message = "message"
     }
 }
 
@@ -174,37 +174,37 @@ extension CdMessage {
 
     /// All attribute names as constant String
     struct AttributeName {
-        static public let comments = "comments"
-        static public let flagsFromDecryptionRawValue = "flagsFromDecryptionRawValue"
-        static public let longMessage = "longMessage"
-        static public let longMessageFormatted = "longMessageFormatted"
-        static public let needsDecrypt = "needsDecrypt"
-        static public let pEpProtected = "pEpProtected"
-        static public let pEpRating = "pEpRating"
-        static public let received = "received"
-        static public let sent = "sent"
-        static public let shortMessage = "shortMessage"
-        static public let uid = "uid"
-        static public let uuid = "uuid"
+        static let comments = "comments"
+        static let flagsFromDecryptionRawValue = "flagsFromDecryptionRawValue"
+        static let longMessage = "longMessage"
+        static let longMessageFormatted = "longMessageFormatted"
+        static let needsDecrypt = "needsDecrypt"
+        static let pEpProtected = "pEpProtected"
+        static let pEpRating = "pEpRating"
+        static let received = "received"
+        static let sent = "sent"
+        static let shortMessage = "shortMessage"
+        static let uid = "uid"
+        static let uuid = "uuid"
     }
 
     /// All relationship names as constant String
     struct RelationshipName {
-        static public let attachments = "attachments"
-        static public let bcc = "bcc"
-        static public let cc = "cc"
-        static public let from = "from"
-        static public let imap = "imap"
-        static public let inReplyTo = "inReplyTo"
-        static public let keysFromDecryption = "keysFromDecryption"
-        static public let keywords = "keywords"
-        static public let optionalFields = "optionalFields"
-        static public let parent = "parent"
-        static public let receivedBy = "receivedBy"
-        static public let references = "references"
-        static public let replyTo = "replyTo"
-        static public let targetFolder = "targetFolder"
-        static public let to = "to"
+        static let attachments = "attachments"
+        static let bcc = "bcc"
+        static let cc = "cc"
+        static let from = "from"
+        static let imap = "imap"
+        static let inReplyTo = "inReplyTo"
+        static let keysFromDecryption = "keysFromDecryption"
+        static let keywords = "keywords"
+        static let optionalFields = "optionalFields"
+        static let parent = "parent"
+        static let receivedBy = "receivedBy"
+        static let references = "references"
+        static let replyTo = "replyTo"
+        static let targetFolder = "targetFolder"
+        static let to = "to"
     }
 }
 
@@ -212,12 +212,12 @@ extension CdMessageKeyword {
 
     /// All attribute names as constant String
     struct AttributeName {
-        static public let keyword = "keyword"
+        static let keyword = "keyword"
     }
 
     /// All relationship names as constant String
     struct RelationshipName {
-        static public let messages = "messages"
+        static let messages = "messages"
     }
 }
 
@@ -225,13 +225,13 @@ extension CdMessageReference {
 
     /// All attribute names as constant String
     struct AttributeName {
-        static public let reference = "reference"
+        static let reference = "reference"
     }
 
     /// All relationship names as constant String
     struct RelationshipName {
-        static public let messagesInReplyTo = "messagesInReplyTo"
-        static public let messagesReferencing = "messagesReferencing"
+        static let messagesInReplyTo = "messagesInReplyTo"
+        static let messagesReferencing = "messagesReferencing"
     }
 }
 
@@ -239,21 +239,21 @@ extension CdServer {
 
     /// All attribute names as constant String
     struct AttributeName {
-        static public let address = "address"
-        static public let authMethod = "authMethod"
-        static public let automaticallyTrusted = "automaticallyTrusted"
-        static public let dateLastAuthenticationErrorShown = "dateLastAuthenticationErrorShown"
-        static public let imapFolderSeparator = "imapFolderSeparator"
-        static public let manuallyTrusted = "manuallyTrusted"
-        static public let port = "port"
-        static public let serverTypeRawValue = "serverTypeRawValue"
-        static public let transportRawValue = "transportRawValue"
+        static let address = "address"
+        static let authMethod = "authMethod"
+        static let automaticallyTrusted = "automaticallyTrusted"
+        static let dateLastAuthenticationErrorShown = "dateLastAuthenticationErrorShown"
+        static let imapFolderSeparator = "imapFolderSeparator"
+        static let manuallyTrusted = "manuallyTrusted"
+        static let port = "port"
+        static let serverTypeRawValue = "serverTypeRawValue"
+        static let transportRawValue = "transportRawValue"
     }
 
     /// All relationship names as constant String
     struct RelationshipName {
-        static public let account = "account"
-        static public let credentials = "credentials"
+        static let account = "account"
+        static let credentials = "credentials"
     }
 }
 
@@ -261,14 +261,14 @@ extension CdServerCredentials {
 
     /// All attribute names as constant String
     struct AttributeName {
-        static public let key = "key"
-        static public let loginName = "loginName"
+        static let key = "key"
+        static let loginName = "loginName"
     }
 
     /// All relationship names as constant String
     struct RelationshipName {
-        static public let clientCertificate = "clientCertificate"
-        static public let servers = "servers"
+        static let clientCertificate = "clientCertificate"
+        static let servers = "servers"
     }
 }
 

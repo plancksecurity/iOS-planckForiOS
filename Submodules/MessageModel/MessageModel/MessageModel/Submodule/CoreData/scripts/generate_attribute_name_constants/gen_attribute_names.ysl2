@@ -26,11 +26,11 @@ template "/model/entity", "text" {
 // NAME CONSTANTS FOR ATTRIBUTES AND RELATIONSHIPS
 
 template "attribute", mode="propertyNameConstants" {
-|> static public let «@name» = "«@name»"
+|> static let «@name» = "«@name»"
 }
 
 template "relationship", mode="propertyNameConstants" {
-|> static public let «@name» = "«@name»"
+|> static let «@name» = "«@name»"
 }
 
 template "text()";
