@@ -230,7 +230,7 @@ class MoveToFolderSyncDelegate: DefaultImapConnectionDelegate {
         handle(error: ImapSyncOperationError.actionFailed, on: errorHandler)
     }
 
-    public override func badResponse(_ imapConnection: ImapConnectionProtocol, response: String?) {
+    override func badResponse(_ imapConnection: ImapConnectionProtocol, response: String?) {
         handle(error: ImapSyncOperationError.badResponse(response) , on: errorHandler)
     }
 
