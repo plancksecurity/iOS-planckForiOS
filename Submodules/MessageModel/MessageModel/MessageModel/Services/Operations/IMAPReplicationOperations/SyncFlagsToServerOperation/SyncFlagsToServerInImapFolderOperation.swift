@@ -195,8 +195,8 @@ class SyncFlagsToServerInImapFolderOperation: ImapSyncOperation {
 
     // MARK: - Static
 
-    public static func messagesToBeSynced(folder: CdFolder,
-                                          context: NSManagedObjectContext) -> [CdMessage] {
+    static func messagesToBeSynced(folder: CdFolder,
+                                   context: NSManagedObjectContext) -> [CdMessage] {
         let pFlagsChanged = CdMessage.PredicateFactory.changedFlags(folder: folder)
         return CdMessage.all(predicate: pFlagsChanged, in: context) as? [CdMessage] ?? []
     }
