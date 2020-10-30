@@ -14,10 +14,10 @@ import pEpIOSToolbox
 //!!!: afaics this is used unly in one test. If so rm test and code
 
 extension NSMergeConflict {
-    public struct ConflictingKeyPath {
-        public let keyPath: String
-        public let o1: Any?
-        public let o2: Any?
+    struct ConflictingKeyPath {
+        let keyPath: String
+        let o1: Any?
+        let o2: Any?
     }
 
     /**
@@ -40,7 +40,7 @@ extension NSMergeConflict {
      Diffs the objects in conflict.
      - Returns: The keys that had conflicts.
      */
-    public func conflictingKeyPaths() -> [ConflictingKeyPath] {
+    func conflictingKeyPaths() -> [ConflictingKeyPath] {
         var keys = [String]()
         if let cached = cachedSnapshot {
             for k in cached.keys {
