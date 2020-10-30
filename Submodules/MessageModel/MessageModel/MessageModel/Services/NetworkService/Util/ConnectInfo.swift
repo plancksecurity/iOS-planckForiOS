@@ -9,7 +9,7 @@
 import CoreData
 import pEpIOSToolbox
 
-public class ConnectInfo: Hashable {
+class ConnectInfo: Hashable {
     let account: AccountInfoCache
 
     var accountObjectID: NSManagedObjectID {

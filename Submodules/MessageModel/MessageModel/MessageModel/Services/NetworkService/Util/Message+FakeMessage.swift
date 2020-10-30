@@ -23,7 +23,7 @@ extension Message { //!!!: does not belong to Network service. Move to MM Interf
         return CdMessage.uidFakeResponsivenes
     }
 
-    public var isFakeMessage: Bool {
+    var isFakeMessage: Bool {
         return cdObject.isFakeMessage
     }
 

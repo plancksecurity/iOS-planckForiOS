@@ -100,7 +100,7 @@ public enum EmailProtocol: String {
     }
 }
 
-public class EmailConnectInfo: ConnectInfo {
+class EmailConnectInfo: ConnectInfo {
     enum EmailConnectInfoError: Error {
         case cannotFindServerCredentials
     }
