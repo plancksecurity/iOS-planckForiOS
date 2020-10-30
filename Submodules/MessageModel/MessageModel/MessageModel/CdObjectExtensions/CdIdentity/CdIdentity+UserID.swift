@@ -14,7 +14,7 @@ extension CdIdentity {
 
     // MARK: - MySelf
 
-    public var isMySelf: Bool {
+    var isMySelf: Bool {
         return userID == CdIdentity.pEpOwnUserID
     }
 }
