@@ -33,7 +33,7 @@ class SyncMessagesInImapFolderOperation: ImapSyncOperation {
                    imapConnection: imapConnection)
     }
 
-    override public func main() {
+    override func main() {
         if firstUID == 0 || lastUID == 0 {
             waitForBackgroundTasksAndFinish()
             return
