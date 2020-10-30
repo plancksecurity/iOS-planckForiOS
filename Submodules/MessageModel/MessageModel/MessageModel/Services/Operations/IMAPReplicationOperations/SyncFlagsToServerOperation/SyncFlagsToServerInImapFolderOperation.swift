@@ -50,7 +50,7 @@ class SyncFlagsToServerInImapFolderOperation: ImapSyncOperation {
                    imapConnection: imapConnection)
     }
 
-    public override func main() {
+    override func main() {
         if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
