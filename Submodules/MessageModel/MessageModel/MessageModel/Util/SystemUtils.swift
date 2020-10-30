@@ -10,7 +10,7 @@ import Foundation
 
 /// Crashes when in debug configuration
 struct SystemUtils {
-    static public func crash(_ message: String) {
+    static func crash(_ message: String) {
         #if DEBUG
             preconditionFailure(message)
         #endif
