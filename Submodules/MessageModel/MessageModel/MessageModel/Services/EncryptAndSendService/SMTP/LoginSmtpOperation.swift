@@ -18,7 +18,7 @@ class LoginSmtpOperation: ConcurrentBaseOperation {
         super.init(parentName: parentName, errorContainer: errorContainer)
     }
 
-    override public func main() {
+    override func main() {
         if isCancelled {
             waitForBackgroundTasksAndFinish()
             return
@@ -29,29 +29,29 @@ class LoginSmtpOperation: ConcurrentBaseOperation {
 }
 
 extension LoginSmtpOperation: SmtpConnectionDelegate {
-    public func messageSent(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
-    public func messageNotSent(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
-    public func transactionInitiationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
-    public func transactionInitiationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
-    public func recipientIdentificationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
-    public func recipientIdentificationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
-    public func transactionResetCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
-    public func transactionResetFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
+    func messageSent(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
+    func messageNotSent(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
+    func transactionInitiationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
+    func transactionInitiationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
+    func recipientIdentificationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
+    func recipientIdentificationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
+    func transactionResetCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
+    func transactionResetFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 
-    public func authenticationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func authenticationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         self.waitForBackgroundTasksAndFinish()
     }
     
-    public func authenticationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func authenticationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         addError(SmtpSendError.authenticationFailed(
             #function,
             smtpConnection.accountAddress))
         waitForBackgroundTasksAndFinish()
     }
     
-    public func connectionEstablished(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
+    func connectionEstablished(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 
-    public func connectionLost(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func connectionLost(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         var setSpecializedError = false
 
         if let error = theNotification?.userInfo?[PantomimeErrorExtra] as? NSError {
@@ -78,12 +78,12 @@ extension LoginSmtpOperation: SmtpConnectionDelegate {
         waitForBackgroundTasksAndFinish()
     }
 
-    public func connectionTerminated(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func connectionTerminated(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         addError(SmtpSendError.connectionTerminated(#function))
         waitForBackgroundTasksAndFinish()
     }
 
-    public func connectionTimedOut(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func connectionTimedOut(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         if let error = theNotification?.userInfo?[PantomimeErrorExtra] as? NSError {
             addError(SmtpSendError.connectionTimedOut(#function, error.localizedDescription))
         } else {
@@ -92,12 +92,12 @@ extension LoginSmtpOperation: SmtpConnectionDelegate {
         waitForBackgroundTasksAndFinish()
     }
 
-    public func badResponse(_ smtpConnection: SmtpConnectionProtocol, response: String?) {
+    func badResponse(_ smtpConnection: SmtpConnectionProtocol, response: String?) {
         addError(SmtpSendError.badResponse(#function))
         waitForBackgroundTasksAndFinish()
     }
 
-    public func requestCancelled(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
-    public func serviceInitialized(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
-    public func serviceReconnected(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
+    func requestCancelled(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
+    func serviceInitialized(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
+    func serviceReconnected(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 }
