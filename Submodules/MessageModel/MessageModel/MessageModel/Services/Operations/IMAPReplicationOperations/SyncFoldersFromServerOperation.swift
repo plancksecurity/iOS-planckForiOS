@@ -35,7 +35,7 @@ class SyncFoldersFromServerOperation: ImapSyncOperation {
         backgroundQueue.maxConcurrentOperationCount = 1
     }
 
-    public override func main() {
+    override func main() {
         if !checkImapConnection() || isCancelled {
             waitForBackgroundTasksAndFinish()
             return
@@ -148,7 +148,7 @@ extension SyncFoldersFromServerOperation {
 
 class SyncFoldersFromServerSyncDelegate: DefaultImapConnectionDelegate {
 
-    public override func folderListCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func folderListCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         guard let op = (errorHandler as? SyncFoldersFromServerOperation) else {
             Log.shared.errorAndCrash("No OP")
             return
@@ -156,7 +156,7 @@ class SyncFoldersFromServerSyncDelegate: DefaultImapConnectionDelegate {
         op.handleFolderListCompleted(imapConnection)
     }
 
-    public override func folderNameParsed(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func folderNameParsed(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         guard let userInfo = (notification as NSNotification?)?.userInfo else {
             return
         }
