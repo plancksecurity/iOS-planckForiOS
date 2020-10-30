@@ -15,11 +15,11 @@ import pEpIOSToolbox
 class BaseImapFolderOperation: ImapSyncOperation {
     private var folderToOpen: String
 
-    public init(parentName: String = #function,
-                context: NSManagedObjectContext? = nil,
-                errorContainer: ErrorContainerProtocol = ErrorPropagator(),
-                imapConnection: ImapConnectionProtocol,
-                folderName: String = ImapConnection.defaultInboxName) {
+    init(parentName: String = #function,
+         context: NSManagedObjectContext? = nil,
+         errorContainer: ErrorContainerProtocol = ErrorPropagator(),
+         imapConnection: ImapConnectionProtocol,
+         folderName: String = ImapConnection.defaultInboxName) {
         self.folderToOpen = folderName
         super.init(parentName: parentName,
                    context: context,
