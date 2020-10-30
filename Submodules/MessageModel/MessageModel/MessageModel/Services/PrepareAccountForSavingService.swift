@@ -12,7 +12,7 @@ import CoreData
 import PEPObjCAdapterFramework
 import pEpIOSToolbox
 
-public class PrepareAccountForSavingService {
+class PrepareAccountForSavingService {
 
     let fetchService = FetchImapFoldersService()
 
