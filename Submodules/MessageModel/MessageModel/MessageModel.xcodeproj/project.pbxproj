@@ -220,7 +220,6 @@
 		4355E4D1233C9B63005772D5 /* CdMessageFromPantomimeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4355E4D0233C9B63005772D5 /* CdMessageFromPantomimeTest.swift */; };
 		4355E4D3233C9C4E005772D5 /* CdMessageIsAutoConsumeableTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4355E4D2233C9C4E005772D5 /* CdMessageIsAutoConsumeableTest.swift */; };
 		4358A06622A5011F00C49E43 /* MockNotifyHandshakeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4358A06522A5011F00C49E43 /* MockNotifyHandshakeDelegate.swift */; };
-		4358D1181DC5F6BF00385CC5 /* NSOrderedSet+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4358D1171DC5F6BF00385CC5 /* NSOrderedSet+Extension.swift */; };
 		435C0CC0222939A10025C6B5 /* PEPRating+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C0CBF222939A10025C6B5 /* PEPRating+Extension.swift */; };
 		435C0CCD222942DE0025C6B5 /* CdIdentity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C0CCC222942DE0025C6B5 /* CdIdentity+pEp.swift */; };
 		435F5120221FF750006EB11F /* PEPUtil+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435F511F221FF750006EB11F /* PEPUtil+Internal.swift */; };
@@ -707,7 +706,6 @@
 		4355E4D0233C9B63005772D5 /* CdMessageFromPantomimeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdMessageFromPantomimeTest.swift; sourceTree = "<group>"; };
 		4355E4D2233C9C4E005772D5 /* CdMessageIsAutoConsumeableTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdMessageIsAutoConsumeableTest.swift; sourceTree = "<group>"; };
 		4358A06522A5011F00C49E43 /* MockNotifyHandshakeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNotifyHandshakeDelegate.swift; sourceTree = "<group>"; };
-		4358D1171DC5F6BF00385CC5 /* NSOrderedSet+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOrderedSet+Extension.swift"; sourceTree = "<group>"; };
 		435C0CBF222939A10025C6B5 /* PEPRating+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPRating+Extension.swift"; sourceTree = "<group>"; };
 		435C0CCC222942DE0025C6B5 /* CdIdentity+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdIdentity+pEp.swift"; sourceTree = "<group>"; };
 		435F511F221FF750006EB11F /* PEPUtil+Internal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PEPUtil+Internal.swift"; sourceTree = "<group>"; };
@@ -997,7 +995,6 @@
 		15175E4E221D5A4500C91DB8 /* Submodule */ = {
 			isa = PBXGroup;
 			children = (
-				15175F21222583ED00C91DB8 /* MoveTo_pEPIOSToolbox */,
 				43598DF51DA7F74F00EAD0B7 /* CoreData */,
 			);
 			path = Submodule;
@@ -1097,14 +1094,6 @@
 				159AB56A23539CBA008AB1F3 /* CNContactsAccessPermissionProviderProtocol.swift */,
 			);
 			path = MessageModel;
-			sourceTree = "<group>";
-		};
-		15175F21222583ED00C91DB8 /* MoveTo_pEPIOSToolbox */ = {
-			isa = PBXGroup;
-			children = (
-				4358D1171DC5F6BF00385CC5 /* NSOrderedSet+Extension.swift */,
-			);
-			path = MoveTo_pEPIOSToolbox;
 			sourceTree = "<group>";
 		};
 		15175F3F2225A71A00C91DB8 /* gen */ = {
@@ -2911,7 +2900,6 @@
 				4396230D23FD41C2007E9364 /* ClientCertificateUtil.swift in Sources */,
 				1587E8D62474152D00F4630A /* Message+Internal.swift in Sources */,
 				5B0BEB3824F8E25900A00D57 /* FolderQueryResult.swift in Sources */,
-				4358D1181DC5F6BF00385CC5 /* NSOrderedSet+Extension.swift in Sources */,
 				15A3B4E4235877F800DB9135 /* ImapReplicationService.swift in Sources */,
 				1521051423562DDB00F30B51 /* ReplicationService.swift in Sources */,
 				15293836224E1C6D00CAE126 /* UnappendableArray.swift in Sources */,
