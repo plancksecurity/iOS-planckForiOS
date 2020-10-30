@@ -279,8 +279,6 @@
 		43AB6A112248D2E2008E40CC /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A102248D2E2008E40CC /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift */; };
 		43AB6A152248EDC5008E40CC /* FolderInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A142248EDC5008E40CC /* FolderInfoCache.swift */; };
 		43AD46D022705AE300047D75 /* ConnectionTransport+Transport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AD46CF22705AE300047D75 /* ConnectionTransport+Transport.swift */; };
-		43AE48E91EEFDD2100B92BB6 /* MergeConflictTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AE48E81EEFDD2100B92BB6 /* MergeConflictTests.swift */; };
-		43AE48F41EEFECD400B92BB6 /* NSMergeConflict+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AE48F31EEFECD400B92BB6 /* NSMergeConflict+Extension.swift */; };
 		43AE48F81EF01EE900B92BB6 /* NSManagedObject+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AE48F71EF01EE900B92BB6 /* NSManagedObject+Extension.swift */; };
 		43B1A39C22366D9700C387DE /* AppAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B1A39B22366D9700C387DE /* AppAuth.framework */; };
 		43B1B10C221ED15000DB26AB /* CoreDataPantomimeAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B1B10B221ED15000DB26AB /* CoreDataPantomimeAdapter.swift */; };
@@ -766,8 +764,6 @@
 		43AB6A102248D2E2008E40CC /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift"; sourceTree = "<group>"; };
 		43AB6A142248EDC5008E40CC /* FolderInfoCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderInfoCache.swift; sourceTree = "<group>"; };
 		43AD46CF22705AE300047D75 /* ConnectionTransport+Transport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ConnectionTransport+Transport.swift"; sourceTree = "<group>"; };
-		43AE48E81EEFDD2100B92BB6 /* MergeConflictTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MergeConflictTests.swift; sourceTree = "<group>"; };
-		43AE48F31EEFECD400B92BB6 /* NSMergeConflict+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMergeConflict+Extension.swift"; sourceTree = "<group>"; };
 		43AE48F71EF01EE900B92BB6 /* NSManagedObject+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extension.swift"; sourceTree = "<group>"; };
 		43B1A39B22366D9700C387DE /* AppAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43B1B10B221ED15000DB26AB /* CoreDataPantomimeAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataPantomimeAdapter.swift; sourceTree = "<group>"; };
@@ -2066,7 +2062,6 @@
 				43E74C6B1E38B38C00A2F7A6 /* ImapFlagsUtility.swift */,
 				493B6D041E70589800364D60 /* SystemUtils.swift */,
 				435C0CBF222939A10025C6B5 /* PEPRating+Extension.swift */,
-				43AE48F31EEFECD400B92BB6 /* NSMergeConflict+Extension.swift */,
 				43AE48F71EF01EE900B92BB6 /* NSManagedObject+Extension.swift */,
 				430CCC6A1F73AD9F004BDD17 /* NSDictionary+Extensions.swift */,
 				1587D166204DA3C2002C2157 /* KeyChain+Extensions.swift */,
@@ -2230,7 +2225,6 @@
 				490FF8121E79726300BC15F9 /* Extensions */,
 				434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */,
 				430CDA5A22952A5000AAC37F /* PEPMessageToCdMessageTest.swift */,
-				43AE48E81EEFDD2100B92BB6 /* MergeConflictTests.swift */,
 				4355E4D2233C9C4E005772D5 /* CdMessageIsAutoConsumeableTest.swift */,
 			);
 			path = CoreData;
@@ -2839,7 +2833,6 @@
 				152F09672126D27E001BCF20 /* CdServer+PredicateFactory.swift in Sources */,
 				151645B2223A9E9F009532BE /* Server+ServerType.swift in Sources */,
 				37855651229D305800AACFD2 /* KeyGeneratorService.swift in Sources */,
-				43AE48F41EEFECD400B92BB6 /* NSMergeConflict+Extension.swift in Sources */,
 				4367342F22F18462005FC567 /* CdMessagePredicateFactory+KeySync.swift in Sources */,
 				15F274FA233CAFAF0069C1E0 /* EncryptAndSMTPSendService.swift in Sources */,
 				158A5E4023526BA4002277A6 /* ImapMoveOperation.swift in Sources */,
@@ -2991,7 +2984,6 @@
 				43648283249246FF00DD44ED /* XCTestCase+IMAP.swift in Sources */,
 				4368309F22F9682A0005880D /* DeleteOldSyncMailsOperationTest.swift in Sources */,
 				430CDA892296BEFC00AAC37F /* CdMessageCreation.swift in Sources */,
-				43AE48E91EEFDD2100B92BB6 /* MergeConflictTests.swift in Sources */,
 				37BC7AF32220187E0047267A /* MessageQueryResultsTest.swift in Sources */,
 				3A798E0A2476754200510B02 /* CdMessage+PredicateFactory.swift in Sources */,
 				37BC7B00222D23460047267A /* MessageModelObjectUtilsTest.swift in Sources */,
