@@ -52,7 +52,7 @@ class FetchNumberOfNewMailsService {
     }
 
     /// Cancels all background tasks.
-    public func stop() {
+    func stop() {
         backgroundQueue.cancelAllOperations()
     }
 
