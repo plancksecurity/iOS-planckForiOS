@@ -75,7 +75,7 @@ class BaseImapFolderOperation: ImapSyncOperation {
 // MARK: - DefaultImapSyncDelegate
 
 class BaseImapFolderOperationDelegate: DefaultImapConnectionDelegate {
-    public override func folderOpenCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func folderOpenCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         (errorHandler as? BaseImapFolderOperation)?.folderOpenCompleted(imapConnection)
     }
 }
