@@ -246,7 +246,7 @@ class SyncFlagsToServerInImapFolderOperationDelegate: DefaultImapConnectionDeleg
         op.handleMessageStoreCompleted(notification: notification)
     }
 
-    public override func folderOpenCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func folderOpenCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         guard let op = (errorHandler as? SyncFlagsToServerInImapFolderOperation) else {
             Log.shared.errorAndCrash("lost active OP")
             return
