@@ -21,7 +21,7 @@ extension CdAttachment {
      message = nil in the system, which will trigger a NSValidationException.
      Therefore, call this function.
      */
-    public static func deleteOrphans(context: NSManagedObjectContext) {
+    static func deleteOrphans(context: NSManagedObjectContext) {
         let p = CdAttachment.PredicateFactory.itemsWithoutAnyRelationshipMessage()
         if let orphans = CdAttachment.all(predicate: p, in: context ) as? [CdAttachment] {
             for o in orphans {
