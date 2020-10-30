@@ -12,7 +12,7 @@ import PantomimeFramework
 import pEpIOSToolbox
 
 extension ConnectionTransport {
-    public init?(fromInt: Int?) {
+    init?(fromInt: Int?) {
         guard let i = fromInt else {
             return nil
         }
@@ -28,7 +28,7 @@ extension ConnectionTransport {
         }
     }
 
-    public static func fromInteger(_ i: Int) -> ConnectionTransport {
+    static func fromInteger(_ i: Int) -> ConnectionTransport {
         switch i {
         case ConnectionTransport.plain.rawValue:
             return ConnectionTransport.plain
@@ -57,7 +57,7 @@ extension ConnectionTransport {
     }
 
     // XXX: Here material from the Model area is used: to be avoided or code-shared.
-    public func toServerTransport() -> Server.Transport {
+    func toServerTransport() -> Server.Transport {
         switch self {
         case .plain:
             return Server.Transport.plain
@@ -72,11 +72,11 @@ extension ConnectionTransport {
     }
 }
 
-public enum EmailProtocol: String {
+enum EmailProtocol: String {
     case smtp = "SMTP"
     case imap = "IMAP"
 
-    public init?(emailProtocol: String) {
+    init?(emailProtocol: String) {
         switch emailProtocol {
         case EmailProtocol.smtp.rawValue:
             self = .smtp
@@ -87,7 +87,7 @@ public enum EmailProtocol: String {
         }
     }
 
-    public init?(serverType: Server.ServerType?) {
+    init?(serverType: Server.ServerType?) {
         guard let st = serverType else {
             return nil
         }
