@@ -27,7 +27,7 @@ class BaseImapFolderOperation: ImapSyncOperation {
                    imapConnection: imapConnection)
     }
 
-    override open func main() {
+    override func main() {
         if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
@@ -61,7 +61,7 @@ class BaseImapFolderOperation: ImapSyncOperation {
         imapConnection.openMailBox(name: folderToOpen, updateExistsCount: true)
     }
 
-    open override func cancel() {
+    override func cancel() {
         imapConnection.cancel()
         super.cancel()
     }

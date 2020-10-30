@@ -133,7 +133,7 @@ extension ConcurrentBaseOperation {
         }
     }
 
-    open override var isReady: Bool {
+    override var isReady: Bool {
         return state == .ready && super.isReady
     }
 

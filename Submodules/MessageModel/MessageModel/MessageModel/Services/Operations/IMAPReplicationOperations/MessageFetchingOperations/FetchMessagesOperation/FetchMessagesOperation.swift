@@ -26,7 +26,7 @@ class FetchMessagesOperation: ImapSyncOperation { //BUFF: extracts base class th
         backgroundQueue.maxConcurrentOperationCount = 1
     }
 
-    override open func main() {
+    override func main() {
         scheduleOperations()
         waitForBackgroundTasksAndFinish()
     }
