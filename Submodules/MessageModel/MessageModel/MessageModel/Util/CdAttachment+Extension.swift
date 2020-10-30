@@ -31,7 +31,7 @@ extension CdAttachment {
     }
 
     //!!!: move to app
-    override open var description: String {
+    public override var description: String {
         let s = NSMutableString()
         if let fn = fileName {
             s.append(", \(fn)")
@@ -42,7 +42,7 @@ extension CdAttachment {
         return String(s)
     }
 
-    override open var debugDescription: String {
+    public override var debugDescription: String {
         return description
     }
 }
