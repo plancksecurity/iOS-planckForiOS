@@ -181,7 +181,6 @@
 		43062BA424EE9CD400489258 /* MessageModelConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43062BA324EE9CD400489258 /* MessageModelConfig.swift */; };
 		430A2EF01E82758100878837 /* CdImapFields+TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A2EEF1E82758100878837 /* CdImapFields+TestHelper.swift */; };
 		430A2EF21E829C4600878837 /* AddressBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A2EF11E829C4600878837 /* AddressBook.swift */; };
-		430CCC6B1F73AD9F004BDD17 /* NSDictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CCC6A1F73AD9F004BDD17 /* NSDictionary+Extensions.swift */; };
 		430CDA4D2293FBB300AAC37F /* Attachment+ContentDispositionType+PEPContentDisposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CDA4C2293FBB300AAC37F /* Attachment+ContentDispositionType+PEPContentDisposition.swift */; };
 		430CDA4F2293FE6100AAC37F /* CdMessage+PEPMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CDA4E2293FE6100AAC37F /* CdMessage+PEPMessage.swift */; };
 		430CDA5B22952A5000AAC37F /* PEPMessageToCdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CDA5A22952A5000AAC37F /* PEPMessageToCdMessageTest.swift */; };
@@ -663,7 +662,6 @@
 		43062BA324EE9CD400489258 /* MessageModelConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModelConfig.swift; sourceTree = "<group>"; };
 		430A2EEF1E82758100878837 /* CdImapFields+TestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdImapFields+TestHelper.swift"; sourceTree = "<group>"; };
 		430A2EF11E829C4600878837 /* AddressBook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBook.swift; sourceTree = "<group>"; };
-		430CCC6A1F73AD9F004BDD17 /* NSDictionary+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSDictionary+Extensions.swift"; sourceTree = "<group>"; };
 		430CDA4C2293FBB300AAC37F /* Attachment+ContentDispositionType+PEPContentDisposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Attachment+ContentDispositionType+PEPContentDisposition.swift"; sourceTree = "<group>"; };
 		430CDA4E2293FE6100AAC37F /* CdMessage+PEPMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+PEPMessage.swift"; sourceTree = "<group>"; };
 		430CDA5A22952A5000AAC37F /* PEPMessageToCdMessageTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPMessageToCdMessageTest.swift; sourceTree = "<group>"; };
@@ -2060,7 +2058,6 @@
 				43E74C6B1E38B38C00A2F7A6 /* ImapFlagsUtility.swift */,
 				493B6D041E70589800364D60 /* SystemUtils.swift */,
 				435C0CBF222939A10025C6B5 /* PEPRating+Extension.swift */,
-				430CCC6A1F73AD9F004BDD17 /* NSDictionary+Extensions.swift */,
 				1587D166204DA3C2002C2157 /* KeyChain+Extensions.swift */,
 				430CDA4C2293FBB300AAC37F /* Attachment+ContentDispositionType+PEPContentDisposition.swift */,
 				43753CED222D3A3E002EE98B /* CdAttachment+Extension.swift */,
@@ -2916,7 +2913,6 @@
 				43EA486E221E9518006E8F83 /* Message+IMAP.swift in Sources */,
 				43C123E9223A7FCF00F6A9B2 /* QualifyServerIsLocalServiceProtocol.swift in Sources */,
 				43AABD4120EF5D2E00FBD5D0 /* CdMessage+Util.swift in Sources */,
-				430CCC6B1F73AD9F004BDD17 /* NSDictionary+Extensions.swift in Sources */,
 				15795C0722C60E9B00010938 /* SessionAware.swift in Sources */,
 				15795C2522CB6DFA00010938 /* PollingDelegate.swift in Sources */,
 				150C5EF024A38825005BA3C9 /* CreateIMAPPepFolderOperation.swift in Sources */,
