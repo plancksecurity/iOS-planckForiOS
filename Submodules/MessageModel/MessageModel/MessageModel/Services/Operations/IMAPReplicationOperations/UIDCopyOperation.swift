@@ -28,7 +28,7 @@ class UIDCopyOperation: ImapSyncOperation {
                    imapConnection: imapConnection)
     }
 
-    override public func main() {
+    override func main() {
         if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
@@ -101,7 +101,7 @@ class UIDCopyOperationSyncDelegate: DefaultImapConnectionDelegate {
         handle(error: ImapSyncOperationError.actionFailed, on: errorHandler)
     }
 
-    public override func badResponse(_ imapConnection: ImapConnectionProtocol, response: String?) {
+    override func badResponse(_ imapConnection: ImapConnectionProtocol, response: String?) {
         handle(error: ImapSyncOperationError.badResponse(response) , on: errorHandler)
     }
 
@@ -109,7 +109,7 @@ class UIDCopyOperationSyncDelegate: DefaultImapConnectionDelegate {
         handle(error: ImapSyncOperationError.actionFailed, on: errorHandler)
     }
     
-    public override func actionFailed(_ imapConnection: ImapConnectionProtocol, response: String?) {
+    override func actionFailed(_ imapConnection: ImapConnectionProtocol, response: String?) {
         handle(error: ImapSyncOperationError.actionFailed, on: errorHandler)
     }
 
