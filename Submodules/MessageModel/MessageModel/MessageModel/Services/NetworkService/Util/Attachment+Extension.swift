@@ -12,7 +12,7 @@ import pEpIOSToolbox
 
 extension Attachment {
     /// Is this attachment meant to show to the user?
-    public func isViewable() -> Bool {
+    func isViewable() -> Bool {
         guard let mime = mimeType else {
             // It happens that we are getting super malformed (spam) mails, so we need to handle
             // this, which we do by ignoring the attachment.
