@@ -126,7 +126,7 @@ extension SmtpConnection {
 // MARK: - TransportClient
 
 extension SmtpConnection: TransportClient {
-    @objc public func messageSent(_ theNotification: Notification?) {
+    @objc func messageSent(_ theNotification: Notification?) {
         delegate?.messageSent(self, theNotification: theNotification)
     }
 
