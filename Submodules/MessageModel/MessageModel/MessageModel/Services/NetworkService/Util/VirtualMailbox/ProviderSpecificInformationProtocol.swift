@@ -6,7 +6,7 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
-public protocol ProviderSpecificInformationProtocol {
+protocol ProviderSpecificInformationProtocol {
 
     /// Whether or not the given folder belongs to the provider.
     ///
