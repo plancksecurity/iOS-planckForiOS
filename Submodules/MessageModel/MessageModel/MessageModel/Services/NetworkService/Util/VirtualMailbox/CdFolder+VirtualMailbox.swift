@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: - VirtualMailbox
 
-public extension CdFolder {
+extension CdFolder {
     /// We currently only take Gmail into account.
     private var supportedProviders: [ProviderSpecificInformationProtocol] {
         return [GmailSpecificInformation(), OutlookO365SpecificInformation()]
