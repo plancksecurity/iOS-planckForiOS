@@ -166,40 +166,40 @@ extension SmtpConnection: SMTPClient {
 // MARK: - CWServiceClient
 
 extension SmtpConnection: CWServiceClient {
-    @objc public func badResponse(_ theNotification: Notification?) {
+    @objc func badResponse(_ theNotification: Notification?) {
         let errorMsg = theNotification?.parseErrorMessageBadResponse()
         delegate?.badResponse(self, response: errorMsg)
     }
 
-    @objc public func authenticationCompleted(_ theNotification: Notification?) {
+    @objc func authenticationCompleted(_ theNotification: Notification?) {
         delegate?.authenticationCompleted(self, theNotification: theNotification)
     }
 
-    @objc public func authenticationFailed(_ theNotification: Notification?) {
+    @objc func authenticationFailed(_ theNotification: Notification?) {
         delegate?.authenticationFailed(self, theNotification: theNotification)
     }
 
-    @objc public func connectionEstablished(_ theNotification: Notification?) {
+    @objc func connectionEstablished(_ theNotification: Notification?) {
         delegate?.connectionEstablished(self, theNotification: theNotification)
     }
 
-    @objc public func connectionLost(_ theNotification: Notification?) {
+    @objc func connectionLost(_ theNotification: Notification?) {
         delegate?.connectionLost(self, theNotification: theNotification)
     }
 
-    @objc public func connectionTerminated(_ theNotification: Notification?) {
+    @objc func connectionTerminated(_ theNotification: Notification?) {
         delegate?.connectionTerminated(self, theNotification: theNotification)
     }
 
-    @objc public func connectionTimedOut(_ theNotification: Notification?) {
+    @objc func connectionTimedOut(_ theNotification: Notification?) {
         delegate?.connectionTimedOut(self, theNotification: theNotification)
     }
 
-    @objc public func requestCancelled(_ theNotification: Notification?) {
+    @objc func requestCancelled(_ theNotification: Notification?) {
         delegate?.requestCancelled(self, theNotification: theNotification)
     }
 
-    @objc public func serviceInitialized(_ theNotification: Notification?) {
+    @objc func serviceInitialized(_ theNotification: Notification?) {
         delegate?.serviceInitialized(self, theNotification: theNotification)
         if connectInfo.connectionTransport == ConnectionTransport.startTLS &&
             !smtpStatus.haveStartedTLS {
