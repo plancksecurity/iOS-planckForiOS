@@ -10,9 +10,9 @@ import Foundation
 
 struct ContentTypeUtils {
     struct ContentType {
-        public static let multipartMixed = "multipart/mixed"
-        public static let multipartEncrypted = "multipart/encrypted"
-        public static let multipartRelated = "multipart/related"
-        public static let multipartAlternative = "multipart/alternative"
+        static let multipartMixed = "multipart/mixed"
+        static let multipartEncrypted = "multipart/encrypted"
+        static let multipartRelated = "multipart/related"
+        static let multipartAlternative = "multipart/alternative"
     }
 }
