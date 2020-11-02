@@ -343,7 +343,7 @@ extension ImapConnection {
 }
 
 extension ImapConnection: CWServiceClient {
-    public func badResponse(_ theNotification: Notification?) {
+    func badResponse(_ theNotification: Notification?) {
         let errorMsg = theNotification?.parseErrorMessageBadResponse()
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.badResponse(self, response: errorMsg)
