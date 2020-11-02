@@ -18,13 +18,13 @@ protocol VerifiableAccountIMAPDelegate: class {
 
 /// Helper for `VerifiableAccount` (verifies IMAP servers).
 class VerifiableAccountIMAP {
-    public weak var delegate: VerifiableAccountIMAPDelegate?
+    weak var delegate: VerifiableAccountIMAPDelegate?
 
     private var imapConnection: ImapConnection?
     private var syncDelegate: VerifiableAccountSyncDelegate?
 
     /// Tries to verify the given IMAP account.
-    public func verify(connectInfo: EmailConnectInfo) {
+    func verify(connectInfo: EmailConnectInfo) {
         let theSyncDelegate = VerifiableAccountSyncDelegate(errorHandler: self)
         syncDelegate = theSyncDelegate
 
@@ -45,7 +45,7 @@ class VerifiableAccountIMAP {
 // Mark: - ImapConnectionDelegateErrorHandlerProtocol
 
 extension VerifiableAccountIMAP: ImapConnectionDelegateErrorHandlerProtocol {
-    public func handle(error: Error) {
+    func handle(error: Error) {
         delegate?.verified(
             verifier: self,
             result: .failure(error))
