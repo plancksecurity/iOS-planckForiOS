@@ -142,23 +142,23 @@ extension SmtpConnection: SMTPClient {
         delegate?.transactionInitiationCompleted(self, theNotification: theNotification)
     }
 
-    @objc public func transactionInitiationFailed(_ theNotification: Notification?) {
+    @objc func transactionInitiationFailed(_ theNotification: Notification?) {
         delegate?.transactionInitiationFailed(self, theNotification: theNotification)
     }
 
-    @objc public func recipientIdentificationCompleted(_ theNotification: Notification?) {
+    @objc func recipientIdentificationCompleted(_ theNotification: Notification?) {
         delegate?.recipientIdentificationCompleted(self, theNotification: theNotification)
     }
 
-    @objc public func recipientIdentificationFailed(_ theNotification: Notification?) {
+    @objc func recipientIdentificationFailed(_ theNotification: Notification?) {
         delegate?.recipientIdentificationFailed(self, theNotification: theNotification)
     }
 
-    @objc public func transactionResetCompleted(_ theNotification: Notification?) {
+    @objc func transactionResetCompleted(_ theNotification: Notification?) {
         delegate?.transactionResetCompleted(self, theNotification: theNotification)
     }
 
-    @objc public func transactionResetFailed(_ theNotification: Notification?) {
+    @objc func transactionResetFailed(_ theNotification: Notification?) {
         delegate?.transactionResetFailed(self, theNotification: theNotification)
     }
 }
