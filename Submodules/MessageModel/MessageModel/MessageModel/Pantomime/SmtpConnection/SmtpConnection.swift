@@ -130,7 +130,7 @@ extension SmtpConnection: TransportClient {
         delegate?.messageSent(self, theNotification: theNotification)
     }
 
-    @objc public func messageNotSent(_ theNotification: Notification?) {
+    @objc func messageNotSent(_ theNotification: Notification?) {
         delegate?.messageNotSent(self, theNotification: theNotification)
     }
 }
@@ -138,7 +138,7 @@ extension SmtpConnection: TransportClient {
 // MARK: - SMTPClient
 
 extension SmtpConnection: SMTPClient {
-    @objc public func transactionInitiationCompleted(_ theNotification: Notification?) {
+    @objc func transactionInitiationCompleted(_ theNotification: Notification?) {
         delegate?.transactionInitiationCompleted(self, theNotification: theNotification)
     }
 
