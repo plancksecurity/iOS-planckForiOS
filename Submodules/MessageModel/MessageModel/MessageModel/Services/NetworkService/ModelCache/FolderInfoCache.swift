@@ -14,11 +14,11 @@ import CoreData
  access to data in a thread-safe way, and also without having to operate
  in a context.
  */
-public struct FolderInfoCache: Hashable {
-    public let objectID: NSManagedObjectID
-    public let name: String
-    public let folderType: FolderType
-    public let shouldNotAppendMessages: Bool
+struct FolderInfoCache: Hashable {
+    let objectID: NSManagedObjectID
+    let name: String
+    let folderType: FolderType
+    let shouldNotAppendMessages: Bool
 
     init(cdFolder: CdFolder) {
         self.objectID = cdFolder.objectID
@@ -27,11 +27,11 @@ public struct FolderInfoCache: Hashable {
         self.shouldNotAppendMessages = cdFolder.shouldNotAppendMessages
     }
 
-    public static func ==(l: FolderInfoCache, r: FolderInfoCache) -> Bool {
+    static func ==(l: FolderInfoCache, r: FolderInfoCache) -> Bool {
         return l.objectID == r.objectID
     }
 
-    public func hash(into hasher: inout Hasher) {
+    func hash(into hasher: inout Hasher) {
         hasher.combine(objectID)
     }
 }
