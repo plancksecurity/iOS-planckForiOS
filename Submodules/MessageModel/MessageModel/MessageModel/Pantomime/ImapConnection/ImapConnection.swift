@@ -393,43 +393,43 @@ extension ImapConnection: CWServiceClient {
         }
     }
 
-    public func folderSyncCompleted(_ notification: Notification?) {
+    func folderSyncCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderSyncCompleted(self, notification: notification)
         }
     }
 
-    public func folderSyncFailed(_ notification: Notification?) {
+    func folderSyncFailed(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderSyncFailed(self, notification: notification)
         }
     }
 
-    public func messagePrefetchCompleted(_ notification: Notification?) {
+    func messagePrefetchCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.messagePrefetchCompleted(self, notification: notification)
         }
     }
 
-    public func messageUidMoveCompleted(_ theNotification: Notification?) {
+    func messageUidMoveCompleted(_ theNotification: Notification?) {
         runOnDelegate() { theDelegate in
             theDelegate.messageUidMoveCompleted(self, notification: theNotification)
         }
     }
 
-    public func messageUidMoveFailed(_ theNotification: Notification?) {
+    func messageUidMoveFailed(_ theNotification: Notification?) {
         runOnDelegate() { theDelegate in
             theDelegate.messageUidMoveFailed(self, notification: theNotification)
         }
     }
 
-    public func messagesCopyCompleted(_ theNotification: Notification?) {
+    func messagesCopyCompleted(_ theNotification: Notification?) {
         runOnDelegate() { theDelegate in
             theDelegate.messagesCopyCompleted(self, notification: theNotification)
         }
     }
 
-    public func messagesCopyFailed(_ theNotification: Notification?) {
+    func messagesCopyFailed(_ theNotification: Notification?) {
         runOnDelegate() { theDelegate in
             theDelegate.messagesCopyFailed(self, notification: theNotification)
         }
