@@ -435,7 +435,7 @@ extension ImapConnection: CWServiceClient {
         }
     }
 
-    public func serviceInitialized(_ notification: Notification?) {
+    func serviceInitialized(_ notification: Notification?) {
         if connectInfo.connectionTransport == ConnectionTransport.startTLS
             && !state.hasStartedTLS {
             startTLS()
@@ -488,22 +488,22 @@ extension ImapConnection: CWServiceClient {
         }
     }
 
-    public func serviceReconnected(_ theNotification: Notification?) {
+    func serviceReconnected(_ theNotification: Notification?) {
     }
 
-    public func messageChanged(_ notification: Notification?) {
+    func messageChanged(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.messageChanged(self, notification: notification)
         }
     }
 
-    public func folderStatusCompleted(_ notification: Notification?) {
+    func folderStatusCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderStatusCompleted(self, notification: notification)
         }
     }
 
-    public func actionFailed(_ notification: Notification?) {
+    func actionFailed(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             guard
                 let userInfo = (notification as NSNotification?)?.userInfo,
@@ -517,56 +517,56 @@ extension ImapConnection: CWServiceClient {
         }
     }
 
-    public func messageStoreCompleted(_ notification: Notification?) {
+    func messageStoreCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.messageStoreCompleted(self, notification: notification)
         }
     }
 
-    public func messageStoreFailed(_ notification: Notification?) {
+    func messageStoreFailed(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.messageStoreFailed(self, notification: notification)
         }
     }
 
-    public func folderCreateCompleted(_ notification: Notification?) {
+    func folderCreateCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderCreateCompleted(self, notification: notification)
         }
     }
 
-    public func folderCreateFailed(_ notification: Notification?) {
+    func folderCreateFailed(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderCreateFailed(self, notification: notification)
         }
     }
 
-    public func folderDeleteCompleted(_ notification: Notification?) {
+    func folderDeleteCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderDeleteCompleted(self, notification: notification)
         }
     }
 
-    public func folderDeleteFailed(_ notification: Notification?) {
+    func folderDeleteFailed(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderDeleteFailed(self, notification: notification)
         }
     }
 
-    public func idleEntered(_ notification: Notification?) {
+    func idleEntered(_ notification: Notification?) {
         state.isIdling = true
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.idleEntered(self, notification: notification)
         }
     }
 
-    public func idleNewMessages(_ notification: Notification?) {
+    func idleNewMessages(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.idleNewMessages(self, notification: notification)
         }
     }
 
-    public func idleFinished(_ notification: Notification?) {
+    func idleFinished(_ notification: Notification?) {
         state.isIdling = false
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.idleFinished(self, notification: notification)
