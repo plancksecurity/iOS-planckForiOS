@@ -257,7 +257,7 @@ extension SmtpConnection: CWServiceClient {
         }
     }
 
-    @objc public func serviceReconnected(_ theNotification: Notification?) {
+    @objc func serviceReconnected(_ theNotification: Notification?) {
         delegate?.serviceReconnected(self, theNotification: theNotification)
    }
 }
