@@ -575,7 +575,7 @@ extension ImapConnection: CWServiceClient {
 }
 
 extension ImapConnection: PantomimeFolderDelegate {
-    public func folderOpenCompleted(_ notification: Notification?) {
+    func folderOpenCompleted(_ notification: Notification?) {
         if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
             as? CWFolder) {
             state.currentFolderName = folder.name()
@@ -587,37 +587,37 @@ extension ImapConnection: PantomimeFolderDelegate {
         }
     }
 
-    public func folderOpenFailed(_ notification: Notification?) {
+    func folderOpenFailed(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderOpenFailed(self, notification: notification)
         }
     }
 
-    public func folderListCompleted(_ notification: Notification?) {
+    func folderListCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderListCompleted(self, notification: notification)
         }
     }
 
-    public func folderNameParsed(_ notification: Notification?) {
+    func folderNameParsed(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderNameParsed(self, notification: notification)
         }
     }
 
-    public func folderAppendCompleted(_ notification: Notification?) {
+    func folderAppendCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderAppendCompleted(self, notification: notification)
         }
     }
 
-    public func folderAppendFailed(_ notification: Notification?) {
+    func folderAppendFailed(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderAppendFailed(self, notification: notification)
         }
     }
 
-    public func folderExpungeCompleted(_ notification: Notification?) {
+    func folderExpungeCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderExpungeCompleted(self, notification: notification)
         }
