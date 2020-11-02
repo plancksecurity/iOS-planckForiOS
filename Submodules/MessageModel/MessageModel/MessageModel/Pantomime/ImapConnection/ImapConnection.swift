@@ -350,44 +350,44 @@ extension ImapConnection: CWServiceClient {
         }
     }
 
-    public func authenticationCompleted(_ notification: Notification?) { //BUFF: change to forward without needless notification
+    func authenticationCompleted(_ notification: Notification?) { //BUFF: change to forward without needless notification
         state.authenticationCompleted = true
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.authenticationCompleted(self, notification: notification)
         }
     }
 
-    public func authenticationFailed(_ notification: Notification?) {
+    func authenticationFailed(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.authenticationFailed(self, notification: notification)
         }
     }
 
-    public func connectionEstablished(_ notification: Notification?) {
+    func connectionEstablished(_ notification: Notification?) {
     }
 
-    public func connectionLost(_ notification: Notification?) {
+    func connectionLost(_ notification: Notification?) {
         state.hasError = true
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.connectionLost(self, notification: notification)
         }
     }
 
-    public func connectionTerminated(_ notification: Notification?) {
+    func connectionTerminated(_ notification: Notification?) {
         state.hasError = true
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.connectionTerminated(self, notification: notification)
         }
     }
 
-    public func connectionTimedOut(_ notification: Notification?) {
+    func connectionTimedOut(_ notification: Notification?) {
         state.hasError = true
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.connectionTimedOut(self, notification: notification)
         }
     }
 
-    public func folderFetchCompleted(_ notification: Notification?) {
+    func folderFetchCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderFetchCompleted(self, notification: notification)
         }
