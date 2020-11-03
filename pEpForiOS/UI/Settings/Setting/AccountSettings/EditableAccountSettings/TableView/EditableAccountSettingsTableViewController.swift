@@ -35,14 +35,20 @@ final class EditableAccountSettingsTableViewController: BaseTableViewController 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGestureRecognizer)
         setUpView()
+    }
+
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
 
 // MARK: - UITextFieldDelegate
 
 extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
+
     func textFieldDidBeginEditing(_ textField: UITextField) {
         firstResponder = textField
         reloadPickerIfNeeded()
