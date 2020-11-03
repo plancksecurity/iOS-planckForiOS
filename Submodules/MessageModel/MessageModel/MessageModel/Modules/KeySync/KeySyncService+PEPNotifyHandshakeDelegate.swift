@@ -77,6 +77,10 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
                 try? PassphraseUtil().newPassphrase(pp)
             }
 
+        case .stop:
+            handshakeHandler?.cancelHandshake()
+            postKeySyncDisabledByEngineNotification()
+
         // Other
         case .undefined:
             handshakeHandler?.cancelHandshake()
