@@ -17,7 +17,7 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
     }
 
     func notifyHandshake(_ object: UnsafeMutableRawPointer?,
-                         me: PEPIdentity,
+                         me: PEPIdentity?,
                          partner: PEPIdentity?,
                          signal: PEPSyncHandshakeSignal) -> PEPStatus {
         switch signal {
@@ -29,20 +29,31 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
 
         // request show handshake dialog
         case .initAddOurDevice, .initAddOtherDevice:
+            guard let theMe = me else {
+                Log.shared.errorAndCrash(message: "Expected own identity")
+                return .illegalValue
+            }
+
             guard let thePartner = partner else {
                 Log.shared.errorAndCrash(message: "Expected partner identity")
                 return .illegalValue
             }
+
             fastPollingDelegate?.enableFastPolling()
-            showHandshakeAndHandleResult(inBetween: me, and: thePartner, isNewGroup: false)
+            showHandshakeAndHandleResult(inBetween: theMe, and: thePartner, isNewGroup: false)
 
         case .initFormGroup:
+            guard let theMe = me else {
+                Log.shared.errorAndCrash(message: "Expected own identity")
+                return .illegalValue
+            }
+
             guard let thePartner = partner else {
                 Log.shared.errorAndCrash(message: "Expected partner identity")
                 return .illegalValue
             }
             fastPollingDelegate?.enableFastPolling()
-            showHandshakeAndHandleResult(inBetween: me, and: thePartner, isNewGroup: true)
+            showHandshakeAndHandleResult(inBetween: theMe, and: thePartner, isNewGroup: true)
 
         case .timeout:
             fastPollingDelegate?.disableFastPolling()
