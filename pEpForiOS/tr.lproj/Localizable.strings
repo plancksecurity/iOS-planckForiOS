@@ -1,0 +1,1025 @@
+/* client certificate provider key */
+"\n            Client\n            Certificate\n            " = "\n            müşteri\n            sertifika\n            ";
+
+/* Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion. */
+"\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n%1$@\n\n%2$@\n\n%3$@\n\nEkler devre dışı.\n\n";
+
+/* No privacy status explanation
+   No privacy status suggestion */
+"-" = "-";
+
+/* Title for notification show on lock screen for new mails */
+"(numMails) new messages received" = "(numMails) yeni mesaj alındı";
+
+/* Reply to single contact, with date. Placeholders: Name, date. */
+"%1$@ wrote on %2$@:" = "%1$@ %2$@ 'da yazdı:";
+
+/* Reply to single contact, without date. Placeholder: Name. */
+"%1$@ wrote:" = "%1$@ şunu yazdı:";
+
+/* Number of filters instead of filter name */
+"%d filters" = "%d filtre";
+
+/* error message for .missingPassword */
+"A non-empty password is required" = "Şifre gereklidir";
+
+/* error message for .missingUsername */
+"A non-empty username is required" = "Kullanıcı adı gerekli";
+
+/* KeySyncWizard introduction message - two devices */
+"A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?";
+
+/* error message for .invalidEmail
+   error message for .missingEmail */
+"A valid email is required" = "Geçerli bir e-posta gerekli";
+
+/* Account settings
+   Title for manual account setup */
+"Account" = "hesap";
+
+/* Title for manual account setup */
+"ACCOUNT" = "HESAP";
+
+/* Error description detecting account settings */
+"Account detection timed out" = "Hesap algılama zaman aşımına uğradı";
+
+/* Empty account name message */
+"Account name must not be empty." = "Hesap adı boş olmamalıdır.";
+
+/* account type selector title */
+"Account Select" = "Hesap Seçimi";
+
+/* Tableview section  header */
+"Accounts" = "Hesaplar";
+
+/* UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts */
+"Add to Contacts" = "Rehbere ekle";
+
+/* setOwnKeyRowTitle row title */
+"ADVANCED" = "İLERİ";
+
+/* Name of unified inbox (showing messages of all accoounts */
+"All" = "Hepsi";
+
+/* Error message shown to the user in case an error in the app occured that is not caused or related to the server */
+"An internal error occured. Sorry, that should not happen." = "Dahili bir hata oluştu. Üzgünüm, bu olmamalıydı.";
+
+/* error message for .noConnectData */
+"An internal error occurred" = "Dahili bir hata oluştu";
+
+/* Tutorial Fourth text */
+"And in the top bar when you open or write an email:" = "Üst çubukta bir e-posta açtığınızda veya yazdığınızda:";
+
+/* KeySyncWizard introduction message - more than two devices */
+"Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?";
+
+/* Archive button in slide-left menu */
+"Archive" = "Arşiv";
+
+/* Account delete confirmation */
+"Are you sure you want to delete the account?" = "Hesabı silmek istediğinizden emin misiniz?";
+
+/* Leave device group confirmation */
+"Are you sure you want to leave your device group?" = "Cihaz grubunuzdan ayrılmak istediğinizden emin misiniz?";
+
+/* Insert document in message text context menu */
+"Attach file" = "Dosya eki";
+
+/* Attach photo/video (message text context menu) */
+"Attach media" = "Medya ekle";
+
+/* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
+"Attached Image %1$d (%2$@)" = "Ekli resim %1$d (%2$@)";
+
+/* title attachments filter cell */
+"Attachments" = "Ekler";
+
+/* Title of the view for choosing installed keys to import */
+"Available Keys" = "Kullanılabilir Tuşlar";
+
+/* Cancel button title for manual account IMAP setup
+   Cancel button title for manual account SMTP setup */
+"Back" = "Back";
+
+/* Compose field title */
+"BCC:" = "Gizli:";
+
+/* Privacy status title */
+"Broken" = "Bozuk";
+
+/* alert action 3
+   Cancel for an alert view
+   Cancel reset account identity button title
+   Cancel title button
+   compose email cancel
+   EmailList action title
+   keySyncWizard animation view cancel button title
+   Login NavigationBar canel button title
+   Message actions
+   MoveToFolderViewController NavigationBar canel button title
+   possible private status action
+   UIUtils.presentActionSheetWithContactOptions.button.title Cancel */
+"Cancel" = "Vazgeç";
+
+/* Privacy status title */
+"Cannot Decrypt" = "Deşifre edilemiyor";
+
+/* Compose field title */
+"CC:" = "Bilgi:";
+
+/* Compose field title */
+"Cc/Bcc:" = "Cc / Bcc:";
+
+/* UI alert message for transport protocol */
+"Choose a Security protocol for your accont" = "Hesabınız için bir Güvenlik protokolü seçin";
+
+/* Empty IMAP transport security method */
+"Choose IMAP transport security method." = "IMAP aktarım güvenliği yöntemini seçin.";
+
+/* Empty SMTP transport security method */
+"Choose SMTP transport security method." = "SMTP taşıma güvenliği yöntemini seçin";
+
+/* Header for client certificate password screen */
+"Client Certificate" = "İstemci Sertifikası";
+
+/* privacyStatusDescription yellow */
+"Communication with this contact will be completely Secure & Trusted by comparing the following Trustwords with your contact, for example by making a phone call." = "Bu kişiyle iletişim tamamen Güvenli & amp; Aşağıdaki Güvencelerin kişinizle karşılaştırılmasıyla güvenilir, örneğin bir telefon görüşmesi yaparak.";
+
+/* Privacy status suggestion */
+"Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "İletişim ortağınızla bir el sıkışma tamamlayın. Ortak başına bir el sıkışma gereklidir ve güvenli ve güvenilir iletişim sağlar.";
+
+/* accept hand shake sync button */
+"Confirm" = "Güvenlik kelimelerini Onayla";
+
+/* Confirm less secure answering message alert title */
+"Confirm Answer" = "Cevabı Onayla";
+
+/* Confirm correct fingerprint (PGP, long version) */
+"Confirm Fingerprint" = "Parmak İzini Onayla";
+
+/* Confirm less secure forwarding message alert title */
+"Confirm Forward" = "Yönlendirmeyi Onayla";
+
+/* Confirm correct trustwords (pEp, long version) */
+"Confirm Trustwords" = "Trustwords'ü onayla";
+
+/* ResetTrustView title
+   TableView section header */
+"Contacts" = "İletişim";
+
+/* UIUtils.presentActionSheetWithContactOptions.button.title Copy Email */
+"Copy Email" = "E-postayı Kopyala";
+
+/* Client certificate import: corrupted file error alert title */
+"Corrupted File" = "Bozuk dosya";
+
+/* Error description detecting account settings */
+"Could not find servers. Please enter manually" = "Sunucu bulunamadı. Lütfen manuel olarak girin.";
+
+/* Settings: Cell (button) title to view app credits */
+"Credits" = "Krediler";
+
+/* Incorrect trustwords/PGP fingerprint */
+"Decline" = "Decline";
+
+/* Default Account Setting Section Title
+   Settings: Cell (button) title to view default account setting */
+"Default Account" = "Varsayılan Hesap";
+
+/* Account delete
+   compose email delete
+   ComposeTableView: button to decide to delete a message from Outbox after making changes.
+   Delete account button title
+   swipe delete ExtraKey action title */
+"Delete" = "Sil";
+
+/* Account delete confirmation comment */
+"delete account message" = "hesap mesajını sil";
+
+/* keysync alert leave device group disable */
+"Disable" = "Kapat";
+
+/* Leave device group confirmation */
+"Disable p≡p Sync" = "P≡p Senkronizasyonunu devre dışı bırak";
+
+/* possible private status action */
+"Disable Protection" = "Korunmayı devre dışı bırak";
+
+/* ComposeTableView: button to decide to discharge changes made on a drafted mail. */
+"Discharge changes" = "Tahliye değişiklikleri";
+
+/* Display Name placeholder for manual account setup
+   Display Name TextField Placeholder in Login Screen */
+"Display Name" = "Ekran adı";
+
+/* Email */
+"Email" = "E-posta";
+
+/* Email address placeholder for manual account setup
+   Email TextField Placeholder in Login Screen */
+"Email Address" = "E-posta adresi";
+
+/* Title of alert: a required field is empty */
+"Empty Field" = "Boş alan";
+
+/* enable p≡p Sync with other devices in the group */
+"Enable p≡p Sync" = "Enable p≡p Sync";
+
+/* Passive mode title */
+"Enable passive mode" = "Pasif modu etkinleştir";
+
+/* title for subject protection */
+"Enable Protected Subject" = "Korumalı Konuyu Etkinleştir";
+
+/* possible private status action */
+"Enable Protection" = "Korumayı Etkinleştir";
+
+/* Tableview section header: Enterprise Features */
+"Enterprise Features" = "Kurumsal Özellikler";
+
+/* Fail to update pEpSync value alert title
+   Title of error alert shown to the user in case a message could not be sent
+   Title of error alert shown to the user in case an unknown error occured. */
+"Error" = "Hata";
+
+/* No comment provided by engineer. */
+"Error casting" = "Yayınlama hatası";
+
+/* Generic error message on trying to import a key */
+"Error occurred. No key imported." = "Error occured. No key imported.";
+
+/* spearator string bewtween name and date */
+"Exp. date:" = "Tecrübe. tarih:";
+
+/* Settings: Cell (button) title to view Extra Keys setting */
+"Extra Keys" = "Ekstra Tuşlar";
+
+/* Extra Keys Editable */
+"Extra Keys Editable" = "Ekstra Tuşlar Düzenlenebilir";
+
+/* 'Filter by' in formatted string, followed by the localized filter name */
+"Filter by: %@" = "Tarafından filtre: %@";
+
+/* Filter Title */
+"Filters" = "Filtreler";
+
+/* Finish button title for manual account SMTP setup
+   Start up tutorial finish button */
+"Finish" = "Finish";
+
+/* read button in slide-left menu */
+"Flag" = "bayrak";
+
+/* Title for Flagged filter
+   title unread filter cell */
+"Flagged" = "Bayraklı";
+
+/* FoldersView */
+"Folders" = "Klasörler";
+
+/* EmailList action title
+   Message actions */
+"Forward" = "İlet";
+
+/* Compose field title
+   Title of account picker when composing a message */
+"From:" = "Kimden:";
+
+/* The 'Fwd:' that gets appended to the subject line */
+"Fwd: " = "fwd:";
+
+/* Tableview section header */
+"Global Settings" = "Genel Ayarlar";
+
+/* possible privacy status action */
+"Handshake" = "Handshake";
+
+/* PGPKeyImportSettingViewModel - part of pgpKeyImportTitle that should link to support page (... click _here_ for info ...) */
+"here" = "buraya";
+
+/* Alert title for iCloud instructions */
+"iCloud" = "iCloud";
+
+/* Trusted Server Setting Section Footer */
+"If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!" = "Devre dışı bırakılırsa, her iletinin şifrelenmemiş bir kopyası sunucuda depolanır.\n\nNe yaptığınızdan emin değilseniz devre dışı bırakmayın!";
+
+/* Tableview section footer */
+"If enabled, message subjects are also protected." = "Etkinleştirilirse, mesaj konuları da korunur.";
+
+/* Secure & Trusted Description Label - Step 1 */
+"If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle." = "Trustwords doğru değilse, ortadaki bir adam tarafından saldırı olabilir.";
+
+/* Privacy status suggestion */
+"If this message was addressed to you, please inform the sender that you don't have the key." = "Bu mesaj size gönderildiyse. Lütfen göndereni anahtara sahip olmadığınızı bildirin.";
+
+/* Alert: Leave device group confirmation comment */
+"If you disable p≡p Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable p≡p Sync?" = "P≡p Sync özelliğini devre dışı bırakırsanız, cihazlarınızdaki hesaplarınız artık senkronize edilmeyecektir. P≡p Sync'i devre dışı bırakmak istediğinizden emin misiniz?";
+
+/* Manual account setup */
+"IMAP" = "IMAP";
+
+/* Empty IMAP port server message */
+"IMAP Port must not be empty." = "IMAP bağlantı noktası boş olmamalıdır.";
+
+/* Empty IMAP server message */
+"IMAP server must not be empty." = "IMAP sunucusu boş olmamalıdır.";
+
+/* Account settings title IMAP */
+"IMAP Settings" = "IMAP Ayarları";
+
+/* Empty username message */
+"Imap username must not be empty." = "Imap kullanıcı adı boş olmamalıdır.";
+
+/* Select certificate - import certificate date */
+"Import date" = "İçe aktarma tarihi";
+
+/* Privacy status explanation */
+"In order to make the communication with this communication partner Secure & Trusted, you will have to compare the Trustwords below with this communication partner and ensure they match yours." = "Bu iletişim ortağı ile iletişim kurmak için Secure & amp; Güvenilir, aşağıdaki Güven Kodlarını bu iletişim ortağıyla karşılaştırmanız ve kendinizinkilerle eşleştiğinden emin olmanız gerekir.";
+
+/* Privacy Status - Common Denominator Explanation */
+"In this case the Privacy Status of the message is Secure, because this is the lowest common denominator of the two communication partners." = "Bu durumda, iletinin Gizlilik Durumu Güvenli'dir, çünkü bu iki iletişim ortağının en düşük ortak paydasıdır.";
+
+/* Name of INBOX mailbox (of one account) */
+"Inbox" = "Gelen Kutusu";
+
+/* title for the accounts section */
+"INCLUDE MAIL FROM:" = "POSTA DAHİL:";
+
+/* title for the include section */
+"INCLUDE:" = "DAHİL ETMEK:";
+
+/* Info button for showing iCloud page */
+"Info" = "Bilgi";
+
+/* Title of error alert shown to the user in case an error in the app occured that is not caused or related to the server */
+"Internal Error" = "İç hata";
+
+/* Invalid input for account */
+"Invalid account name: %1$@" = "Geçersiz hesap adı: %1$@";
+
+/* Please enter a valid Gmail address.Fail to log in, email does not match account type */
+"Invalid Address" = "Geçersiz adres";
+
+/* Invalid input for email address */
+"Invalid email address: %1$@" = "Geçersiz e-posta adresi: %1$@";
+
+/* alert message. trying to add an invalid fingerprint
+   alert title. trying to add an invalid fingerprint */
+"Invalid FPR" = "Geçersiz FPR";
+
+/* Title of invalid accout settings user input alert */
+"Invalid Input" = "Geçersiz Giriş";
+
+/* Invalid input for por */
+"Invalid port: %1$@" = "Geçersiz bağlantı noktası: %1$@";
+
+/* Invalid input for server */
+"Invalid server: %1$@" = "Geçersiz sunucu: %1$@";
+
+/* Invalid input for transport security */
+"Invalid transport security: %1$@" = "Geçersiz taşıma güvenliği: %1$@";
+
+/* Invalid input for username */
+"Invalid username: %1$@" = "Geçersiz kullanıcı adı: %1$@";
+
+/* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
+"It was impossible to login to %1$@. Username or password is wrong." = "%1$@ oturumu açmak mümkün değildi. Kullanıcı ismi veya parola yanlış.";
+
+/* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
+"It was impossible to login to the server. Username or password is wrong." = "Sunucuda oturum açmak mümkün değildi. Kullanıcı ismi veya parola yanlış.";
+
+/* ComposeTableView: button to decide to Discharge changes made on a mail in outbox. */
+"Keep in Outbox" = "Giden Kutusunda sakla";
+
+/* keySyncWizard completion view leave button title
+   Leave device group button title */
+"Leave" = "Ayrıl";
+
+/* Settings: Cell (button) title for leaving device group */
+"Leave Device Group" = "Cihaz Grubundan Çık";
+
+/* Leave device group confirmation comment */
+"leaving device group" = "cihaz grubundan ayrılma";
+
+/* Log in button in Login View */
+"Log In" = "Oturum aç";
+
+/* Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed. */
+"Login Failed" = "Giriş başarısız";
+
+/* FoldersView navigationbar title */
+"Mailboxes" = "Posta kutuları";
+
+/* Privacy status suggestion */
+"Make sure the privacy status for each communication partner listed is at least secure" = "Listelenen her iletişim ortağı için gizlilik durumunun en azından güvenli olduğundan emin olun";
+
+/* privacyStatusDescription yellow */
+"Make this communication partner secure & trusted by comparing the trustwords below with your partner, for example by making a phone call" = "Aşağıdaki iletişim kelimelerini onlarla karşılaştırarak (örneğin bir telefon görüşmesi yaparak) bu iletişim ortağını güvenli ve güvenilir hale getirin";
+
+/* manual */
+"Manual configuration" = "Manuel yapılandırma";
+
+/* Manual Setup button in Login View */
+"Manual setup" = "El ile ayar";
+
+/* Email Detail View reply button menu - toggle seen state button text: read */
+"Mark as read" = "Okundu olarak işaretle";
+
+/* EmailList action title */
+"Mark as Read" = "Okundu olarak işaretle";
+
+/* EmailList action title */
+"Mark as unread" = "okunmamış olarak işaretle";
+
+/* TrustManagementView Back Button Title */
+"Message" = "İleti";
+
+/* Privacy status title
+   privacyStatusTitle red */
+"Mistrusted" = "Güvenilmez";
+
+/* more button in slide-left menu */
+"More" = "Daha";
+
+/* MoveToFolderViewController title */
+"Move To" = "Taşınmak";
+
+/* EmailList action title */
+"Move to Folder" = "Klasöre taşı";
+
+/* File name used for videos the user attaches. */
+"Movie" = "Taşı";
+
+/* username */
+"Name" = "Adı";
+
+/* UIUtils.presentActionSheetWithContactOptions.button.title New Mail Message */
+"New Mail Message" = "Yeni Posta Mesajı";
+
+/* Title for notification show on lock screen for *one* new mail */
+"New message received" = "Yeni mesaj alındı";
+
+/* keySyncWizard intro view Next button title */
+"Next" = "İleri";
+
+/* Alert button while client certificate is importing: Try again? No */
+"No" = "Hayır";
+
+/* Error when no account found for set_own_key UI */
+"No account found with the given email address." = "Belirtilen e-postayla hesap bulunamadı.";
+
+/* Error when no account found for set_own_key UI */
+"No account found with the given email." = "Belirtilen e-postayla hesap bulunamadı.";
+
+/* Privacy status suggestion */
+"No action needed!" = "Hiçbir eyleme gerek yok!";
+
+/* No client certificate exists alert title */
+"No Client Certificate" = "İstemci Sertifikası Yok";
+
+/* No client certificate exists alert message */
+"No client certificate exists. You have to import your client certificate before entering login data." = "İstemci sertifikası yok. Giriş verilerini girmeden önce istemci sertifikanızı içe aktarmanız gerekir.";
+
+/* Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions. */
+"No Permissions" = "İzin yokmu";
+
+/* empty mail filter (no filter at all) */
+"none" = "Yok";
+
+/* privacyStatusDescription no_color
+   privacyStatusTitle no_color */
+"None" = "Hiçbiri";
+
+/* keySyncWizard error view NotNow button title */
+"Not now" = "Şimdi değil";
+
+/* keySyncWizard intro view Not Now button title
+   not now button */
+"Not Now" = "Not Now";
+
+/* alert error title certificate delete */
+"Not possible to delete" = "Silinemez";
+
+/* Default message in detail view when nothing has been selected */
+"Nothing Selected" = "Hiçbir şey seçilmedi";
+
+/* Filter accept text
+   General alert positive button
+   keySyncWizard completion view OK button title
+   OK button for invalid accout settings user input alert
+   OK button for pEpSyncError alert
+   UIAlertAction ok after error */
+"OK" = "Tamam";
+
+/* Options */
+"Options" = "Seçenekler";
+
+/* Other provider key */
+"Other" = "Diğer";
+
+/* title for the attachment section */
+"OTHER:" = "DİĞER:";
+
+/* Name of outbox (showing messages to send */
+"Outbox" = "Giden Kutusu";
+
+/* Some trustwords */
+"OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER" = "OUTDISTANCE CORRINA ETİYOPYA OUTDRAW FLEECER";
+
+/* Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions. */
+"p≡p has no permissions to access \nthe Photo Gallery. You can grand permissions in Settings App." = "p≡p erişim iznine sahip değil\nFotoğraf Galerisi. Uygulama Ayarları'ndan izin verebilirsiniz.";
+
+/* Tableview section header */
+"p≡p sync" = "p≡p eşitleme";
+
+/* keySync handshake alert title
+   keySyncWizard animation view title */
+"p≡p Sync" = "p≡p Sync";
+
+/* Tutorial Second text */
+"p≡p uses a Privacy Status icon to indicate how secure your communication is." = "p≡p, iletişiminizin ne kadar güvenli olduğunu belirtmek için bir Gizlilik Durumu simgesi kullanır.";
+
+/* Passive mode title */
+"Passive mode" = "Pasif mod";
+
+/* password */
+"Password" = "Şifre";
+
+/* Account settings title pEp Sync */
+"pEp Sync" = "pEp Senkronizasyonu";
+
+/* TutorialWizard image 1 */
+"pEpForIOS-Tutorial-1" = "pEpForIOS-Uygulama-1";
+
+/* TutorialWizard image 1 horizontal */
+"pEpForIOS-Tutorial-1-horizontal" = "pEpForIOS-Uygulama-1 yatay";
+
+/* TutorialWizard image 2 */
+"pEpForIOS-Tutorial-2" = "pEpForIOS-Uygulama-2";
+
+/* TutorialWizard image 2 horizontal */
+"pEpForIOS-Tutorial-2-horizontal" = "pEpForIOS-Uygulama-2-yatay";
+
+/* TutorialWizard image 3 */
+"pEpForIOS-Tutorial-3" = "pEpForIOS-Uygulama-3";
+
+/* TutorialWizard image 3 horizontal */
+"pEpForIOS-Tutorial-3-horizontal" = "pEpForIOS-Uygulama-3-yatay";
+
+/* TutorialWizard image 4 */
+"pEpForIOS-Tutorial-4" = "pEpForIOS-Uygulama-4";
+
+/* TutorialWizard image 4 horizontal */
+"pEpForIOS-Tutorial-4-horizontal" = "pEpForIOS-Uygulama-4-yatay";
+
+/* TutorialWizard image 5 */
+"pEpForIOS-Tutorial-5" = "pEpForIOS-Uygulama-5";
+
+/* TutorialWizard image 5 horizontal */
+"pEpForIOS-Tutorial-5-horizontal" = "pEpForIOS-Uygulama-5-yatay";
+
+/* Settings accounts section, footer below Reset All cell */
+"Performs a reset of the privacy settings of your account(s)" = "Hesaplarınızın gizlilik ayarlarının sıfırlanmasını gerçekleştirir";
+
+/* TableView Contacts section footer */
+"Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages." = "Bir iletişim ortağı için kaydedilen gizlilik ayarlarını sıfırlar. Örneğin, iletişim ortağınız mesajlarınızı okuyamıyorsa gerekli olabilir.";
+
+/* Client certificate import: PermissionsDenied alert title */
+"Permissions Denied" = "İzinler Reddedildi";
+
+/* Tableview section header */
+"PGP Compatibility" = "PGP Uyumluluğu";
+
+/* PGPKeyImportSetting pgpKeyImportRowTitle
+   PGPKeyImportSettingViewController Navigationbar title
+   Settings: Cell (button) title for importing and using private PGP keys
+   Title for alert when trying to import a key */
+"PGP Key Import" = "PGP Anahtarını İçe Aktarma";
+
+/* Privacy status suggestion */
+"Please add the necessary information." = "Lütfen gerekli bilgileri ekleyin.";
+
+/* Privacy status suggestion */
+"Please ask your communication partner to use an encryption solution or install p≡p." = "Lütfen iletişim ortağınızdan bir şifreleme çözümü kullanmasını veya p≡p'yi yüklemesini isteyin.";
+
+/* No folder has been selected yet in the folders VC */
+"Please choose a folder" = "Lütfen bir klasör seçin";
+
+/* No messages has been selected for detail view */
+"Please choose a message" = "Lütfen bir mesaj seçin";
+
+/* No setting has been selected yet in the settings VC */
+"Please choose a setting" = "Lütfen bir ayar seçin";
+
+/* Fail to log in, email does not match account type */
+"Please enter a valid Gmail address." = "Lütfen geçerli bir Gmail adresi girin.";
+
+/* Description for client certificate password screen */
+"Please enter the password of the certificate to import it:" = "Lütfen içe aktarmak için sertifikanın şifresini girin:";
+
+/* keySyncWizard animation view message */
+"Please give us a moment while we sync your devices. This can take a minute or more." = "Lütfen aygıtlarınızı eşitlememiz için zaman tanıyın. Bu işlem bir dakika veya daha uzun sürebilir.";
+
+/* keySync handshake alert message - two devices */
+"Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?";
+
+/* keySync handshake alert message - more than two devices */
+"Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Cihazlardaki Güvencelerini karşılaştırabilmeniz için lütfen cihazların birlikte bulunduğundan emin olun. Aşağıdaki Güven Kodları diğer cihazdaki Güven Kodlarına eşit mi?";
+
+/* Validation error for set_own_key UI */
+"Please provide an email and a fingerprint. The email must match an existing account." = "Lütfen bir e-posta adresi ve bir parmak izi sağlayın. E-posta adresi mevcut bir hesapla eşleşmelidir.";
+
+/* Port placeholder for manual account IMAP setup
+   Port placeholder for manual account SMTP setup */
+"Port" = "Port";
+
+/* action sheet title 1 */
+"Privacy Status" = "Gizlilik Durumu";
+
+/* Success message when importing the key */
+"Private key successfully imported." = "Private key successfully imported.";
+
+/* title for subject protection */
+"Protect Message Subject" = "İleti Konusunu Koru";
+
+/* passive mode description */
+"Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p." = "Ortak anahtar malzemesi yalnızca p≡p alıcının da p≡p kullandığını algılarsa iletiye eklenir.";
+
+/* Privacy status suggestion */
+"Re-establish the connection with your communication partner and try to complete another handshake." = "İletişim ortağınızla bağlantıyı tekrar kurun ve başka bir el sıkışma tamamlamaya çalışın.";
+
+/* read button in slide-left menu */
+"Read" = "Okuma";
+
+/* decline hand shake sync button */
+"Reject" = "Reddet";
+
+/* ComposeTableView: Label of swipe left. Removing of attachment. */
+"Remove" = "Kaldır";
+
+/* EmailList action title
+   Message actions
+   read button in slide-left menu */
+"Reply" = "Yanıtla";
+
+/* EmailList action title
+   Message actions */
+"Reply All" = "Tümünü Yanıtla";
+
+/* Account settings confirm to reset identity title alert
+   Account settings reset identity
+   Reset account identity button title
+   Settings: cell (button) title to view the trust contacts option */
+"Reset" = "Reset";
+
+/* Reset account identity button title
+   Settings: Cell (button) title for reset all identities */
+"Reset All" = "Hepsini sıfırla";
+
+/* Settings confirm to reset all identity title alert */
+"Reset All Identities" = "Tüm Kimlikleri Sıfırla";
+
+/* Reset all p≡p data for this comunication partner: */
+"Reset all p≡p data for this comunication partner:" = "Bu iletişim ortağı için tüm p≡p verilerini sıfırla:";
+
+/* alert action 1 */
+"Reset This Identity" = "Bu Kimliği Sıfırla";
+
+/* alert action 2 */
+"Reset Trust For All Identities" = "Tüm Kimlikler İçin Güveni Sıfırla";
+
+/* alert action 1 */
+"Reset Trust For This Identity" = "Bu Kimlik için Güveni Sıfırla";
+
+/* ComposeTableView: button to decide to save changes made on a drafted mail. */
+"Save changes" = "Değişiklikleri Kaydet";
+
+/* compose email save */
+"Save Draft" = "Taslağı kaydet";
+
+/* No comment provided by engineer. */
+"scroll-to-caret-on-edit" = "Kaydırmayla to-şapka-on-edit";
+
+/* Privacy status title
+   privacyStatusTitle yellow */
+"Secure" = "Güvenli";
+
+/* Privacy status title
+   privacyStatusTitle green */
+"Secure & Trusted" = "Güvenli & amp; Güvenilir";
+
+/* Alert title before trusting an account */
+"Security Alert" = "Güvenlik uyarısı";
+
+/* Privacy status suggestion */
+"Separately verify the content of this message with your communication partner." = "Bu mesajın içeriğini iletişim ortağınızla ayrı olarak doğrulayın.";
+
+/* Server placeholder for manual account IMAP setup
+   Server placeholder for manual account SMTP setup */
+"Server" = "Sunucu";
+
+/* Title of error alert shown to the user in case we can not connect to the IMAP server
+   Title of error alert shown to the user in case we can not connect to the SMTP server */
+"Server Unreachable" = "Server a ulaşılamıyor";
+
+/* Settings: Cell (button) title for entering fingerprints that are made own keys */
+"Set Own Key" = "Kendi Anahtarını Ayarla";
+
+/* acction sheet title 2
+   Settings view title */
+"Settings" = "Ayarlar";
+
+/* Login */
+"Sign In" = "Oturum aç";
+
+/* Start up tutorial skip button */
+"Skip" = "Atla";
+
+/* Body for notifications show on lock screen for new mail(s) */
+"Slide for more" = "Daha fazlası için kaydırın";
+
+/* Manual account setup */
+"SMTP" = "SMTP";
+
+/* Empty SMTP port server message */
+"SMTP Port must not be empty." = "IMAP bağlantı noktası boş olmamalıdır.";
+
+/* Empty SMTP server message */
+"SMTP server must not be empty." = "SMTP sunucusu boş olmamalıdır.";
+
+/* Account settings title SMTP */
+"SMTP Settings" = "SMTP Ayarları";
+
+/* Empty username message */
+"Smtp username must not be empty." = "Smtp kullanıcı adı boş olmamalıdır.";
+
+/* Title for address filter */
+"some address" = "bazı adres";
+
+/* Message of alert: a required field is empty */
+"Some mandatory fields are empty" = "Bazı zorunlu alanlar boş";
+
+/* Reply to unknown sender with date */
+"Someone wrote on %1$@:" = "Birisi %1$@ üzerine yazdı:";
+
+/* Reply to unknown sender without date */
+"Someone wrote:" = "Birisi şunu yazdı:";
+
+/* keySyncWizard error view message */
+"Something went wrong with syncing the devices. Please try again." = "Aygıtlar eşitlenirken bir şeyler yolunda gitmedi. Lütfen tekrar deneyin.";
+
+/* AccountSettings viewModel no account error */
+"Something went wrong, please try again later" = "Bir şeyler yanlış gitti. Lütfen daha sonra tekrar deneyiniz";
+
+/* Stop/trust button in handshake overview */
+"Start Trusting" = "Güvenmeye Başla";
+
+/* Stop/trust button in handshake overview */
+"Stop Trusting" = "Güvenmeyi Durdur";
+
+/* Settings: Cell (button) title to view default account setting
+   Trusted Server Setting Section Title */
+"Store Messages Securely" = "İletileri Güvenli Bir Şekilde Depola";
+
+/* Compose field title */
+"Subject:" = "Konu:";
+
+/* Tableview section header: (p≡p) Sync */
+"Sync" = "Sync";
+
+/* error message for .accountExistence */
+"The account already exists" = "Bu hesap zaten mevcut";
+
+/* Error message shown to the user on problems with the client certificate */
+"The client certificate was rejected by the server" = "İstemci sertifikası sunucu tarafından reddedildi";
+
+/* KeySyncWizard complete message - more than two devices */
+"The device is now member of your device group. All your privacy is now synchronized." = "Aygıt artık aygıt grubunuzun bir üyesi. Gizliliğiniz artık tamamen işaretlendi.";
+
+/* Client certificate import: corrupted file error alert message */
+"The file could not be imported" = "Dosya içe aktarılamadı";
+
+/* Privacy Status Explanation */
+"The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:" = "Üst çubuktaki simge, o iletinin tüm iletişim ortaklarının en düşük ortak paydası olan iletinin Gizlilik Durumunu yansıtır, örneğin:";
+
+/* Error message shown to the user in case a message could not be sent. */
+"The message could not be sent. Please try again later." = "Mesaj gönderilemedi. Lütfen daha sonra tekrar deneyiniz.";
+
+/* error message for .minimumLengthUsername */
+"The username must contain more than 1 characters" = "Kullanıcı adı 1'den fazla karakter içermelidir";
+
+/* Account settings confirm to reset identity title alert */
+"This action will reset all your identities. \n Are you sure you want to reset?" = "Bu işlem tüm kimliklerinizi sıfırlayacaktır.\n Sıfırlamak istediğinizden emin misiniz?";
+
+/* Account settings confirm to reset identity title alert */
+"This action will reset your identity. \n Are you sure you want to reset?" = "Bu işlem kimliğinizi sıfırlar.\n Sıfırlamak istediğinizden emin misiniz?";
+
+/* privacyStatusDescription red */
+"This communication partner is mistrusted" = "Bu iletişim ortağına güvenilmiyor";
+
+/* privacyStatusDescription green */
+"This communication partner is secure and trusted" = "Bu iletişim ortağı güvenli ve güvenilir";
+
+/* Privacy status explanation */
+"This contact is completely trusted. All communication will be the maximum level of privacy." = "Bu kişi tamamen güvenilir. Tüm iletişim maksimum gizlilik düzeyi olacaktır.";
+
+/* privacyStatusDescription green */
+"This contact is completely trusted. All communication will be with the maximum level of privacy." = "Bu kişi tamamen güvenilir. Tüm iletişim maksimum gizlilik düzeyinde olacaktır.";
+
+/* privacyStatusDescription red */
+"This contact is mistrusted and might be an attack by a man-in-the-middle." = "Bu temas güvensizdir ve ortadaki bir adamın saldırısı olabilir.";
+
+/* Privacy status title */
+"This contact is mistrusted. If you rejected the Trustwords accidentally, you could reset the p≡p data." = "Bu temasa güvenilmiyor. Trustwords'ü yanlışlıkla reddettiyseniz, p≡p verilerini sıfırlayabilirsiniz.";
+
+/* Alert message before trusting an account */
+"This is a public cloud account. Your data will be exposed. Are you sure you want to configure this as trusted?" = "Bu herkese açık bir bulut hesabıdır. Verileriniz ifşa edilecektir. Bunu güvenilir olarak yapılandırmak istediğinizden emin misiniz?";
+
+/* Privacy status explanation */
+"This message cannot be decrypted because the key is not available." = "Bu mesaj deşifre edilememektedir çünkü anahtar bulunmamaktadır.";
+
+/* Privacy status explanation */
+"This message cannot be decrypted." = "Bu mesajın şifresi çözülemez.";
+
+/* content that is shown for undecryptable messages */
+"This message could not be decrypted." = "Bu iletinin şifresi çözülemedi.";
+
+/* Privacy status explanation */
+"This message does not contain enough information to determine if it is secure." = "Bu mesajın güvenli olup olmadığını belirlemek için yeterli bilgi bulunmamaktadır.";
+
+/* Privacy status explanation */
+"This message has a communication partner that has previously been marked as mistrusted." = "Bu ileti daha önce güvensiz olarak işaretlenmiş bir iletişim ortağı içerir.";
+
+/* Privacy status suggestion */
+"This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p." = "Bu iletinin güvenilir bir şifrelemesi veya imzası yok. İletişim partnerinizden şifreleme çözümlerini yükseltmelerini veya p≡p'yi yüklemelerini isteyin.";
+
+/* Privacy status explanation */
+"This message has unreliable protection" = "Bu iletinin güvenilmez bir koruması vardır.";
+
+/* Compose field title */
+"This message is from a mailing list." = "Bu mesaj bir posta listesinden.";
+
+/* Privacy status explanation */
+"This message is not secure and has been tampered with." = "Bu mesaj güvenli değildir ve kurcalanmıştır.";
+
+/* Privacy status explanation */
+"This message is secure and trusted." = "Bu mesaj güvenli ve güvenilirdir. ";
+
+/* Privacy status explanation */
+"This message is secure but you still need to verify the identity of your communication partner." = "Bu mesaj güvenlidir ancak iletişim ortağınız kimliğini yeniden doğrulamanız gereklidir.";
+
+/* Privacy status explanation */
+"This message is unsecure for some communication partners." = "Bu mesaj bazı iletişim ortakları için güvenli değildir.";
+
+/* Privacy status explanation */
+"This message is unsecure." = "Bu mesaj güvensizdir. ";
+
+/* Tutorial Third text */
+"This Privacy Status is shown as an icon the user´s avatars:" = "Bu Gizlilik Durumu, kullanıcının avatarlarının bir simgesi olarak gösterilir:";
+
+/* settings, enable thread view or not */
+"Thread Messages" = "Konu Mesajları";
+
+/* PGPKeyImportSetting row title */
+"To import an existing PGP private key, you first need to transfer it from your computer.\n\nClick here for more information. Once the private key has been transferred to the device, you can import it here." = "Mevcut bir PGP özel anahtarını içe aktarmak için önce bunu bilgisayarınızdan aktarmanız gerekir.\n\nDaha fazla bilgi için buraya tıklayın. Özel anahtar cihaza aktarıldıktan sonra, buraya aktarabilirsiniz.";
+
+/* Compose field title */
+"To:" = "Kime:";
+
+/* Compose field title */
+"To: " = "Kime:";
+
+/* UI alert title for transport protocol */
+"Transport protocol" = "Taşıma protokolü";
+
+/* TransportSecurity placeholder for manual account IMAP setup
+   TransportSecurity placeholder for manual account SMTP setup */
+"Transport Security" = "Taşımacılık Güvenliği";
+
+/* Trash button in slide-left menu */
+"Trash" = "Çöp";
+
+/* Alert trust button title before trusting an account */
+"Trust" = "Güven";
+
+/* keySyncWizard error view Try Again button title */
+"Try Again" = "Tekrar deneyin";
+
+/* show tutorial from compose view */
+"Tutorial" = "Eğitim";
+
+/* Privacy status title */
+"Under Attack" = "Saldırı altında";
+
+/* Undo trust change verification button title */
+"Undo" = "Geri alma";
+
+/* read button in slide-left menu */
+"Unflag" = "İşaretini Kaldır";
+
+/* Displayed attachment filename if unknown */
+"unknown" = "Bilinmeyen";
+
+/* Privacy status title */
+"Unknown" = "Bilinmeyen";
+
+/* Privacy status explanation
+   Privacy status suggestion */
+"Unknown." = "Bilinmeyen.";
+
+/* file name used for unnamed attachments */
+"unnamed" = "adsız";
+
+/* Title for unread filter
+   title unread filter cell */
+"Unread" = "Okunmamış";
+
+/* Privacy status title */
+"Unreliable Security" = "Güvenilmez Güvenlik";
+
+/* Privacy status title */
+"Unsecure" = "Güvensiz";
+
+/* Privacy status title */
+"Unsecure for Some" = "Bazıları için güvensiz";
+
+/* setting row title: Unsecure reply warning */
+"Unsecure reply warning" = "Yanıt uyarısı güvenliğini kaldır";
+
+/* User Name placeholder for manual account IMAP setup
+   User Name placeholder for manual account setup
+   User Name placeholder for manual account SMTP setup */
+"User Name" = "Kullanıcı Adı";
+
+/* Empty username message */
+"Username must not be empty." = "Kullanıcı adı boş olmamalıdır.";
+
+/* Error title for validation errors on login screen */
+"Validation Error" = "Doğrulama Hatası";
+
+/* AccountsView: Prefix for version. Shows up like this: \"Version: 2.0.1 build 234\" */
+"Version" = "versiyon";
+
+/* Error message shown to the user in case we can not connect to the IMAP server */
+"We could not connect to the IMAP server." = "IMAP sunucusuna bağlanamadık.";
+
+/* Error message shown to the user in case we can not connect to the SMTP server */
+"We could not connect to the SMTP server: %1@" = "SMTP sunucusuna bağlanamadık.";
+
+/* Error message shown to the user in case we can not connect to the SMTP server */
+"We could not connect to the SMTP server." = "SMTP sunucusuna bağlanamadık.";
+
+/* Client certificate import: wrong password alert message */
+"We could not import the certificate. The password is incorrect.\n\nTry again?" = "Sertifikayı içe aktaramadık. Şifre yanlış.\n\nTekrar deneyin?";
+
+/* Client certificate import: wrong password alert message */
+"We could not import the certificate. We do not have permissions to open this file.\n\nTry again?" = "Sertifikayı içe aktaramadık. Bu dosyayı açma iznimiz yok.\n\nTekrar deneyin?";
+
+/* KeySyncWizard complete message - two devices */
+"We successfully created a device group. All your privacy is now synchronized." = "Başarıyla bir aygıt grubu oluşturduk. Gizliliğiniz artık tamamen işaretlendi.";
+
+/* Welcome to the p≡p Tutorial - Step 0 */
+"Welcome to the p≡p Tutorial" = "Welcome to the p≡p Tutorial";
+
+/* Secure & Trusted Description Label - Step 1 */
+"When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted" = "Trustwords'un doğru olduğu ve El Sıkışma tamamlandığında, iletişim tamamen güvenli ve güvenilir olacaktır";
+
+/* Privacy status explanation Label */
+"When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication parner." = "Üst çubuktaki Gizlilik Durumu simgesini tıkladığınızda, iletişim çözümleyicinizi doğrulayabileceğiniz El Sıkışma sayfasına gidersiniz.";
+
+/* Confirm Trustwords explanation Label */
+"When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted." = "İletişim partnerinizin Güvencelerinin doğru olduğunu onayladığınızda, iletişiminiz tamamen Güvenli & amp; Güvenilir.";
+
+/* Title for attachments filter */
+"With attachments" = "Ataşmanlı";
+
+/* Secure Description Label - Step 1 */
+"With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact." = "Bu Gizlilik Durumu ile tüm iletişim güvenlidir, ancak kişinizin gerçekten tanıdığınız kişi olduğunu doğrulamak için, Trustwords'ü bu kişiyle karşılaştırmalısınız.";
+
+/* Incorrect fingerprint (PGP, long version) */
+"Wrong Fingerprint" = "Yanlış Parmak İzi";
+
+/* Client certificate import: wrong password alert title */
+"Wrong Password" = "Yanlış şifre";
+
+/* Incorrect trustwords (pEp, long version) */
+"Wrong Trustwords" = "Hatalı Trustwords";
+
+/* Alert button while client certificate is importing: Try again? Yes */
+"Yes" = "Evet";
+
+/* Confirm less secure answer message alert body */
+"You are about to answer a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Güvenli bir mesajı güvenli değil olarak cevaplamak üzeresiniz. Devam etmeyi seçerseniz, sizi ve iletişim ortaklarınızı riske atacak gizli bilgiler sızdırılabilir. Devam etmek istediğine emin misin?";
+
+/* Confirm less secure forwarding message alert body */
+"You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Güvenli bir mesajı güvenli olarak iletmek üzeresiniz. Devam etmeyi seçerseniz, sizi ve iletişim ortaklarınızı riske atacak gizli bilgiler sızdırılabilir. Devam etmek istediğine emin misin?";
+
+/* Tutorial First text */
+"You can close this tutorial anytime with the Skip button." = "Bu öğreticiyi Atla düğmesiyle istediğiniz zaman kapatabilirsiniz.";
+
+/* alert error message certificate delete */
+"You can only delete certificates that are not connected to an account. The certificate is currently used for the following account: (by)" = "Yalnızca bir hesaba bağlı olmayan sertifikaları silebilirsiniz. Sertifika şu anda aşağıdaki hesap için kullanılıyor: (tarafından)";
+
+/* iCloud instructions */
+"You need to create an app-specific password in your iCloud account." = "İCloud hesabınızda uygulamaya özel bir şifre oluşturmanız gerekir.";
+

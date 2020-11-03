@@ -1,5 +1,5 @@
 //
-//  DefaultAppSettings.swift
+//  AppSettings.swift
 //  pEp
 //
 //  Created by Dirk Zimmermann on 27.08.18.
@@ -9,12 +9,14 @@
 import Foundation
 
 import MessageModel
-import PEPObjCAdapterFramework
+import pEpIOSToolbox
+import pEp4iosIntern
 
 // MARK: - Keys
 
 extension AppSettings {
     static private let keyKeySyncEnabled = "keyStartpEpSync"
+    static private let keyUsePEPFolderEnabled = "keyUsePEPFolderEnabled"
     static private let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
     static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
     static private let keyThreadedViewEnabled = "keyThreadedViewEnabled"
@@ -23,12 +25,16 @@ extension AppSettings {
     static private let keyExtraKeysEditable = "keyExtraKeysEditable"
     static private let keyShouldShowTutorialWizard = "keyShouldShowTutorialWizard"
     static private let keyUserHasBeenAskedForContactAccessPermissions = "keyUserHasBeenAskedForContactAccessPermissions"
+    static private let keyUnsecureReplyWarningEnabled = "keyUnsecureReplyWarningEnabled"
+    static private var keyAccountSignature = "keyAccountSignature"
+    static private let keyVerboseLogginEnabled = "keyVerboseLogginEnabled"
 }
 
 // MARK: - AppSettings
 
 /// Signleton representing and managing the App's settings.
 public final class AppSettings: KeySyncStateProvider {
+
     // MARK: - Singleton
     
     static public let shared = AppSettings()
@@ -50,16 +56,14 @@ public final class AppSettings: KeySyncStateProvider {
     public var isKeySyncEnabled: Bool {
         return keySyncEnabled
     }
-
 }
 
 // MARK: - Private
 
 extension AppSettings {
 
-    static private let appGroupId = "group.security.pep.pep4ios"
     static private var userDefaults: UserDefaults = {
-        guard let appGroupDefaults = UserDefaults.init(suiteName: appGroupId) else {
+        guard let appGroupDefaults = UserDefaults.init(suiteName: appGroupIdentifier) else {
             Log.shared.errorAndCrash("Could not find app group defaults")
             return UserDefaults.standard
         }
@@ -74,13 +78,14 @@ extension AppSettings {
     }
 
     private func setupObjcAdapter() {
-        PEPObjCAdapter.setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled)
-        PEPObjCAdapter.setPassiveModeEnabled(passiveMode)
+        MessageModelConfig.setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled)
+        MessageModelConfig.setPassiveModeEnabled(passiveMode)
     }
 
     private func registerDefaults() {
         var defaults = [String: Any]()
         defaults[AppSettings.keyKeySyncEnabled] = true
+        defaults[AppSettings.keyUsePEPFolderEnabled] = true
         defaults[AppSettings.keyUnencryptedSubjectEnabled] = false
         defaults[AppSettings.keyThreadedViewEnabled] = true
         defaults[AppSettings.keyPassiveMode] = false
@@ -88,6 +93,9 @@ extension AppSettings {
         defaults[AppSettings.keyExtraKeysEditable] = false
         defaults[AppSettings.keyShouldShowTutorialWizard] = true
         defaults[AppSettings.keyUserHasBeenAskedForContactAccessPermissions] = false
+        defaults[AppSettings.keyUnsecureReplyWarningEnabled] = false
+        defaults[AppSettings.keyAccountSignature] = [String:String]()
+        defaults[AppSettings.keyVerboseLogginEnabled] = false
 
         AppSettings.userDefaults.register(defaults: defaults)
     }
@@ -127,6 +135,16 @@ extension AppSettings: AppSettingsProtocol {
         }
     }
 
+    public var usePEPFolderEnabled: Bool {
+        get {
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyUsePEPFolderEnabled)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue,
+                                         forKey: AppSettings.keyUsePEPFolderEnabled)
+        }
+    }
+
     public var extraKeysEditable: Bool {
         get {
             return AppSettings.userDefaults.bool(forKey: AppSettings.keyExtraKeysEditable)
@@ -143,7 +161,7 @@ extension AppSettings: AppSettingsProtocol {
         set {
             AppSettings.userDefaults.set(newValue,
                                          forKey: AppSettings.keyUnencryptedSubjectEnabled)
-            PEPObjCAdapter.setUnEncryptedSubjectEnabled(newValue)
+            MessageModelConfig.setUnEncryptedSubjectEnabled(newValue)
         }
     }
 
@@ -162,7 +180,7 @@ extension AppSettings: AppSettingsProtocol {
         }
         set {
             AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPassiveMode)
-            PEPObjCAdapter.setPassiveModeEnabled(newValue)
+            MessageModelConfig.setPassiveModeEnabled(newValue)
         }
     }
 
@@ -193,8 +211,7 @@ extension AppSettings: AppSettingsProtocol {
             return AppSettings.userDefaults.string(forKey: AppSettings.keyDefaultAccountAddress)
         }
         set {
-            AppSettings.userDefaults.set(newValue,
-                                         forKey: AppSettings.keyDefaultAccountAddress)
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyDefaultAccountAddress)
         }
     }
 
@@ -206,6 +223,54 @@ extension AppSettings: AppSettingsProtocol {
         set {
             AppSettings.userDefaults.set(newValue.rawValue,
                                          forKey: AppSettings.keyLastKnowDeviceGroupStateRawValue)
+        }
+    }
+
+    public var unsecureReplyWarningEnabled: Bool {
+        get {
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyUnsecureReplyWarningEnabled)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue,
+                                         forKey: AppSettings.keyUnsecureReplyWarningEnabled)
+        }
+    }
+    
+    private var signatureAddresDictionary: [String:String] {
+        get {
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.keyAccountSignature) as? [String:String] else {
+                Log.shared.errorAndCrash(message: "Signature dictionary not found")
+                return [String:String]()
+            }
+            return dictionary
+        }
+        set {
+            AppSettings.userDefaults.set(newValue,
+                                         forKey: AppSettings.keyAccountSignature)
+        }
+    }
+
+    public func setSignature(_ signature: String, forAddress address: String) {
+        var signaturesForAdresses = signatureAddresDictionary
+        signaturesForAdresses[address] = signature
+        signatureAddresDictionary = signaturesForAdresses
+    }
+    
+    public func signature(forAddress address: String?) -> String {
+        guard let safeAddress = address else {
+            return String.pepSignature
+        }
+        return signatureAddresDictionary[safeAddress] ?? String.pepSignature
+    }
+
+    public var verboseLogginEnabled: Bool {
+        get {
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyVerboseLogginEnabled)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue,
+                                         forKey: AppSettings.keyVerboseLogginEnabled)
+            Log.shared.verboseLoggingEnabled = newValue
         }
     }
 }

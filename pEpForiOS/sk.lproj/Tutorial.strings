@@ -1,0 +1,69 @@
+/* Class = "UILabel"; text = "Privacy Status"; ObjectID = "2dW-Vn-WjN"; */
+"2dW-Vn-WjN.text" = "Privacy Status";
+
+/* Class = "UIButton"; accessibilityLabel = "confirmButton"; ObjectID = "4fD-jL-4Gx"; */
+"4fD-jL-4Gx.accessibilityLabel" = "confirmButton";
+
+/* Class = "UIButton"; normalTitle = "Confirm"; ObjectID = "4fD-jL-4Gx"; */
+"4fD-jL-4Gx.normalTitle" = "Potvrdiť";
+
+/* Class = "UIButton"; accessibilityLabel = "wrongButton"; ObjectID = "8Xq-lc-6Jt"; */
+"8Xq-lc-6Jt.accessibilityLabel" = "wrongButton";
+
+/* Class = "UIButton"; normalTitle = "Decline"; ObjectID = "8Xq-lc-6Jt"; */
+"8Xq-lc-6Jt.normalTitle" = "Odmietnuť";
+
+/* Class = "UILabel"; text = "This Privacy Status Icon is shown as an Icon the user's avatar"; ObjectID = "B9p-Ah-ajI"; */
+"B9p-Ah-ajI.text" = "Táto ikona Stavu súkromia sa zobrazuje ako ikona avatara používateľa";
+
+/* Class = "UILabel"; text = "In this case the Privacy Status of the message is Secure, because this is the lowest common denominator of the two communication partners."; ObjectID = "E7G-lq-Zvz"; */
+"E7G-lq-Zvz.text" = "V takom prípade je stav ochrany súkromia správy bezpečný, pretože ide o najmenšieho spoločného menovateľa oboch komunikačných partnerov.";
+
+/* Class = "UILabel"; text = "OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER"; ObjectID = "EdT-Qp-2PC"; */
+"EdT-Qp-2PC.text" = "OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER";
+
+/* Class = "UILabel"; text = "When you click on the Privacy Status icon in the top bar, you will get to the Handshake, where you can verify your communication partner. "; ObjectID = "i1p-j1-tYp"; */
+"i1p-j1-tYp.text" = "Po kliknutí na ikonu stavu súkromia na hornom paneli sa dostanete na stránku Handshake, kde môžete overiť svojho komunikačného partnera. ";
+
+/* Class = "UILabel"; text = "Handshake"; ObjectID = "ICO-LI-a2E"; */
+"ICO-LI-a2E.text" = "Handshake";
+
+/* Class = "UILabel"; text = "When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted. "; ObjectID = "lMo-1v-V01"; */
+"lMo-1v-V01.text" = "Keď potvrdíte správnosť hesiel vášho komunikačného partnera, vaša komunikácia bude úplne Bezpečná a Dôveryhodná. ";
+
+/* Class = "UILabel"; text = "Secure"; ObjectID = "N7R-0r-VFh"; */
+"N7R-0r-VFh.text" = "Bezpečná";
+
+/* Class = "UILabel"; text = "Mistrusted"; ObjectID = "Ogr-uB-snW"; */
+"Ogr-uB-snW.text" = "Nedôveryhodne";
+
+/* Class = "UILabel"; text = "When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted"; ObjectID = "qWE-M6-upt"; */
+"qWE-M6-upt.text" = "Po potvrdení správnosti Trustwords a dokončení Handshake bude komunikácia úplne bezpečná a dôveryhodná";
+
+/* Class = "UILabel"; text = "You can close this tutorial anytime with the Skip button."; ObjectID = "RKC-QV-5yv"; */
+"RKC-QV-5yv.text" = "Túto príručku môžete kedykoľvek zavrieť pomocou tlačidla Preskočiť.";
+
+/* Class = "UILabel"; text = "The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:"; ObjectID = "rLc-J2-pmo"; */
+"rLc-J2-pmo.text" = "Ikona v hornom paneli odráža Stav súkromia správy, ktorá je najnižším najnižším spoločným menovateľom všetkých komunikačných partnerov tejto správy, napríklad:";
+
+/* Class = "UILabel"; text = "With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact."; ObjectID = "rM7-ay-vaT"; */
+"rM7-ay-vaT.text" = "S týmto Stavom súkromia je všetka komunikácia bezpečná, ale aby ste potvrdili, že váš kontakt je skutočne osobou, ktorú poznáte, mali by ste porovnať Trustwords s týmto kontaktom.";
+
+/* Class = "UILabel"; text = "Secure & Trusted"; ObjectID = "s5s-sx-Dv7"; */
+"s5s-sx-Dv7.text" = "Bezpečná a Dôveryhodná";
+
+/* Class = "UILabel"; text = "Secure"; ObjectID = "V9f-sY-x1Q"; */
+"V9f-sY-x1Q.text" = "Bezpečná";
+
+/* Class = "UILabel"; text = "p≡p uses a Privacy Status icon to indicate how secure your communication is"; ObjectID = "WAK-KE-bk0"; */
+"WAK-KE-bk0.text" = "p≡p používa ikonu stavu súkromia na označenie, ako je vaša komunikácia bezpečná";
+
+/* Class = "UILabel"; text = "If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle."; ObjectID = "wF1-W3-tf3"; */
+"wF1-W3-tf3.text" = "Ak Trustwords nie sú správne, môže dôjsť k útoku mužom uprostred.";
+
+/* Class = "UILabel"; text = "Welcome to the p≡p Tutorial"; ObjectID = "XKD-ea-9Kh"; */
+"XKD-ea-9Kh.text" = "Vitajte v tutoriále p≡p";
+
+/* Class = "UILabel"; text = "And in the top bar when you open or write an email:"; ObjectID = "ZDk-Zf-Xez"; */
+"ZDk-Zf-Xez.text" = "A pri otváraní alebo písaní e-mailu na hornom paneli:";
+

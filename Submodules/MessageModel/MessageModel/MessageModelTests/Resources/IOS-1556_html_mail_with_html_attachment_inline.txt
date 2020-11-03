@@ -1,0 +1,55 @@
+Return-Path: <iostest002@peptest.ch>
+X-Original-To: iostest001@peptest.ch
+Delivered-To: iostest001@peptest.ch
+Received: from macbookd.local (44.red-83-32-32.dynamicip.rima-tde.net [83.32.32.44])
+	by peptest.ch (Postfix) with ESMTPSA id CFE821A179F
+	for <iostest001@peptest.ch>; Mon, 27 May 2019 10:00:55 +0200 (CEST)
+Authentication-Results: plesk.peptest.ch;
+        spf=pass (sender IP is 83.32.32.44) smtp.mailfrom=iostest002@peptest.ch smtp.helo=macbookd.local
+Received-SPF: pass (plesk.peptest.ch: connection is authenticated)
+To: Rick Deckard <iostest001@peptest.ch>
+From: Harry Bryant <iostest002@peptest.ch>
+Subject: Real HTML mail, with HTML attachment.
+Message-ID: <3e2664d8-0436-bde9-486a-1ad20ca11324@peptest.ch>
+Date: Mon, 27 May 2019 10:00:55 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
+ Gecko/20100101 Thunderbird/60.7.0
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+ boundary="------------0BC6A45FB8DC86B4088F59E4"
+Content-Language: en-US
+
+This is a multi-part message in MIME format.
+--------------0BC6A45FB8DC86B4088F59E4
+Content-Type: multipart/alternative;
+ boundary="------------BE354AC29A18EE296743AB3A"
+
+
+--------------BE354AC29A18EE296743AB3A
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+
+  This is a real HTML mail.
+
+With a real paragraph, and *text in bold*.
+
+
+--------------BE354AC29A18EE296743AB3A
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+This is a real HTML mail
+
+--------------BE354AC29A18EE296743AB3A--
+
+--------------0BC6A45FB8DC86B4088F59E4
+Content-Type: text/html; x-mac-type="0"; x-mac-creator="0";
+ name="html_attachment.html"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+Lorem ipsum dolor sit amet
+
+--------------0BC6A45FB8DC86B4088F59E4--
+

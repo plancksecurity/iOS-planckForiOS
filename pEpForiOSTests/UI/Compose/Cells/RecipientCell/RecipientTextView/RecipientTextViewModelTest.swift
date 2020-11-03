@@ -11,7 +11,7 @@ import XCTest
 @testable import pEpForiOS
 import MessageModel
 
-class RecipientTextViewModelTest: CoreDataDrivenTestBase {
+class RecipientTextViewModelTest: AccountDrivenTestBase {
     var validId: Identity {
         return account.user
     }

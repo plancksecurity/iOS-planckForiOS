@@ -13,7 +13,8 @@ open class MessageSubjectCell: MessageCell {
     public override func updateCell(model: ComposeFieldModel, message: Message) {
         super.updateCell(model: model, message: message)
         titleLabel?.text = message.shortMessage
-        
+        titleLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
+        valueLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
         if let originationDate = message.sent {
             UIHelper.putString((originationDate as Date).fullString(), toLabel: valueLabel)
         } else {

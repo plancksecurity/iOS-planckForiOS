@@ -23,6 +23,7 @@ import MessageModel
 /// required.
 struct DisplayUserError: LocalizedError {
     enum ErrorType {
+
         /// We could not login for some reason
         case authenticationFailed
 
@@ -40,6 +41,10 @@ struct DisplayUserError: LocalizedError {
 
         /// Any verification error in the login view, like "invalid email"
         case loginValidationError
+
+        /// The server requested a client certificate, but none was provided or it did
+        /// match the server's expectation.
+        case clientCertificateError
 
         /// Use this only for errors that are not known to DisplayUserError yet and thus can not
         /// be categorized
@@ -59,6 +64,7 @@ struct DisplayUserError: LocalizedError {
                  .brokenServerConnectionSmtp,
                  .messageNotSent,
                  .loginValidationError,
+                 .clientCertificateError,
                  .unknownError:
                 return true
             }
@@ -73,6 +79,9 @@ struct DisplayUserError: LocalizedError {
 
     /// Some error types have extra info to be used
     var extraInfo: String?
+
+    /// Contains the underlying `NSError`'s `localizedDescription`, if available.
+    var errorString: String?
 
 
     /// Creates a user friendly error to present in an alert or such. I case the error type is not
@@ -92,13 +101,17 @@ struct DisplayUserError: LocalizedError {
                 extraInfo = account
             case .illegalState(_):
                 break
-            case .connectionLost(_):
+            case .connectionLost(_, let errorDescription):
+                errorString = errorDescription
                 break
             case .connectionTerminated(_):
                 break
-            case .connectionTimedOut(_):
+            case .connectionTimedOut(_, let errorDescription):
+                errorString = errorDescription
                 break
             case .badResponse(_):
+                break
+            case .clientCertificateNotAccepted:
                 break
             }
         } else if let imapError = error as? ImapSyncOperationError {
@@ -120,8 +133,10 @@ struct DisplayUserError: LocalizedError {
                 break
             case .actionFailed:
                 break
+            case .clientCertificateNotAccepted:
+                break
             }
-        } else if let oauthInternalError = error as? OAuth2AuthViewModelError {
+        } else if let oauthInternalError = error as? OAuthAuthorizerError {
             type = DisplayUserError.type(forError: oauthInternalError)
         } else if let oauthError = error as? OAuth2AuthorizationError {
             type = DisplayUserError.type(forError: oauthError)
@@ -142,13 +157,11 @@ struct DisplayUserError: LocalizedError {
         else if let err = error as? LoginViewController.LoginError {
             type = .loginValidationError
             foreignDescription = err.localizedDescription
-        }
+        } else {
             // Unknown
-        else {
             foreignDescription = error.localizedDescription
             type = .unknownError
         }
-
         if !type.shouldBeShownToUser {
             return nil
         }
@@ -172,6 +185,8 @@ struct DisplayUserError: LocalizedError {
             return .brokenServerConnectionSmtp
         case .badResponse:
             return .internalError
+        case .clientCertificateNotAccepted:
+            return .clientCertificateError
         }
     }
 
@@ -195,6 +210,8 @@ struct DisplayUserError: LocalizedError {
             return .internalError
         case .actionFailed:
             return .internalError
+        case .clientCertificateNotAccepted:
+            return .clientCertificateError
         }
     }
 
@@ -274,14 +291,14 @@ struct DisplayUserError: LocalizedError {
 
     static private func type(forError error: BackgroundError.PepError) -> ErrorType {
         switch error {
-        case .encryptionError:
+        case .passphraseRequired, .wrongPassphrase:
             return .internalError
         }
     }
 
     // MARK: OAuth2InternalError
 
-    static private func type(forError error: OAuth2AuthViewModelError) -> ErrorType {
+    static private func type(forError error: OAuthAuthorizerError) -> ErrorType {
         // All OAuth2InternalErrors are internal errors.
         switch error {
         default:
@@ -294,13 +311,13 @@ struct DisplayUserError: LocalizedError {
     static private func type(forError error: OAuth2AuthorizationError) -> ErrorType {
         switch error {
         case .inconsistentAuthorizationResult:
-            return .authenticationFailed
+            return .internalError
         }
     }
 
     // MARK: - TITLE & MESSAGE
 
-    public var title: String? {
+    public var title: String {
         switch type {
         case .authenticationFailed:
             return NSLocalizedString("Login Failed",
@@ -325,6 +342,10 @@ struct DisplayUserError: LocalizedError {
             return NSLocalizedString(
                 "Validation Error",
                 comment:"Error title for validation errors on login screen")
+
+        case .clientCertificateError:
+            return NSLocalizedString("Login Failed",
+                                     comment: "Title of error alert shown to the user for client certificate problems")
 
         case .unknownError:
             // We have an error that is not known to us.
@@ -362,10 +383,18 @@ struct DisplayUserError: LocalizedError {
                 comment:
                 "Error message shown to the user in case we can not connect to the IMAP server")
         case .brokenServerConnectionSmtp:
+            if let theErrorString = errorString {
+                return String(format:NSLocalizedString(
+                    "We could not connect to the SMTP server: %1@",
+                    comment:
+                    "Error message shown to the user in case we can not connect to the SMTP server"),
+                              theErrorString)
+            } else {
             return NSLocalizedString(
                 "We could not connect to the SMTP server.",
                 comment:
                 "Error message shown to the user in case we can not connect to the SMTP server")
+            }
         case .internalError:
             return NSLocalizedString(
                 "An internal error occured. Sorry, that should not happen.",
@@ -377,6 +406,9 @@ struct DisplayUserError: LocalizedError {
             // We have an error that is not known to us.
             // All we can do is pass its description.
             return foreignDescription
+        case .clientCertificateError:
+            return NSLocalizedString("The client certificate was rejected by the server",
+                                     comment: "Error message shown to the user on problems with the client certificate")
         }
     }
 }

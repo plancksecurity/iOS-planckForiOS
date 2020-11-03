@@ -7,18 +7,36 @@
 //
 
 import MessageModel
-import PEPObjCAdapterFramework
 
 class UIHelper {
+
+    /// Configures the table view to support dynamic cells, footer and header height based on its content.
+    /// - Parameter tableView: The table view to configure
+    static func variableContentHeight(_ tableView: UITableView) {
+        variableCellHeightsTableView(tableView)
+        variableSectionHeadersHeightTableView(tableView)
+        variableSectionFootersHeightTableView(tableView)
+    }
+
+    /// Configures the table view to support dynamic cells height based on its content.
+    /// - Parameter tableView: The table view to configure
     static func variableCellHeightsTableView(_ tableView: UITableView) {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
     }
-    
-    static func labelFromContact(_ contact: CdIdentity) -> UILabel {
-        let l = UILabel()
-        l.text = contact.address
-        return l
+
+    /// Configures the table view to support dynamic header height based on its content.
+    /// - Parameter tableView: The table view to configure
+    static func variableSectionHeadersHeightTableView(_ tableView: UITableView) {
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
+        tableView.estimatedSectionHeaderHeight = 25
+    }
+
+    /// Configures the table view to support dynamic footer height based on its content.
+    /// - Parameter tableView: The table view to configure
+    static func variableSectionFootersHeightTableView(_ tableView: UITableView) {
+        tableView.sectionFooterHeight = UITableView.automaticDimension
+        tableView.estimatedSectionFooterHeight = 25
     }
 
     /**
@@ -35,48 +53,18 @@ class UIHelper {
             label.isHidden = true
         }
     }
-    
-    static func cleanHtml(_ string: String?) -> String? {
-        guard let str = string else { return string }
-        return str.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
-    }
-
-    /**
-     Makes label bold, using the system font.
-     */
-    static func boldifyLabel(_ label: UILabel) {
-        let size = label.font.pointSize
-        let font = UIFont.boldSystemFont(ofSize: size)
-        label.font = font
-    }
 
     /**
      Gives the label a background color depending on the given privacy color.
      If the privacy color is `PrivacyColor.NoColor` the default color is used.
      */
     static func setBackgroundColor(
-        _ privacyColor: PEPColor, forLabel label: UILabel, defaultColor: UIColor?) {
-        if privacyColor != PEPColor.noColor {
+        _ privacyColor: Color, forLabel label: UILabel, defaultColor: UIColor?) {
+        if privacyColor != .noColor {
             let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(privacyColor)
             label.backgroundColor = uiColor
         } else {
             label.backgroundColor = defaultColor
         }
-    }
-
-    /**
-     Creates a 1x1 point size image filled with the given color. Useful for giving buttons
-     a background color.
-     */
-    static func imageFromColor(_ color: UIColor) -> UIImage {
-        let rect = CGRect(origin: CGPoint(x: 0, y: 0),
-                          size: CGSize(width: 1, height: 1))
-        UIGraphicsBeginImageContext(rect.size)
-        let context = UIGraphicsGetCurrentContext()
-        context!.setFillColor(color.cgColor)
-        context!.fill(rect)
-        let img = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return img!
     }
 }

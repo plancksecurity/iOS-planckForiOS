@@ -7,29 +7,37 @@
 //
 
 import MessageModel
-import PEPObjCAdapterFramework
+
+import pEpIOSToolbox
 
 protocol KeySyncUtilProtocol: class {
-    static var deviceGroupState: DeviceGroupState { get }
-    static func leaveDeviceGroup() throws
+    static func leaveDeviceGroup(completion: @escaping ()->Void)
     static var isInDeviceGroup: Bool { get }
     static var isKeySyncEnabled: Bool { get }
     static func enableKeySync()
     static func disableKeySync()
-
 }
 
-class KeySyncUtil: KeySyncUtilProtocol {
+class KeySyncUtil {
 
     /// Pure static API.
     private init() {}
 
-    static var deviceGroupState: DeviceGroupState {
+    static private var deviceGroupState: DeviceGroupState {
         return AppSettings.shared.lastKnownDeviceGroupState
     }
+}
 
-    static func leaveDeviceGroup() throws {
-        try PEPSession().leaveDeviceGroup()
+extension KeySyncUtil: KeySyncUtilProtocol {
+
+    static func leaveDeviceGroup(completion: @escaping ()->Void) {
+        LeaveDeviceGroupService.leaveDeviceGroup({ (error: Error) in
+            Log.shared.errorAndCrash(error: error)
+            completion()
+        }) {
+            completion()
+            // Since the UI is updated immediately (see below), ignore.
+        }
         // We do that here to update the UI imediatelly (fake responsivenes)
         AppSettings.shared.lastKnownDeviceGroupState = .sole
     }
@@ -47,6 +55,12 @@ class KeySyncUtil: KeySyncUtilProtocol {
     }
 
     static func disableKeySync() {
-        AppSettings.shared.keySyncEnabled = false
+        if isInDeviceGroup {
+            leaveDeviceGroup() {
+                AppSettings.shared.keySyncEnabled = false
+            }
+        } else {
+            AppSettings.shared.keySyncEnabled = false
+        }
     }
 }

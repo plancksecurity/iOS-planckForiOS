@@ -8,7 +8,6 @@
 
 import MessageModel
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
 
 /// Utils for composing a message. Helps finding out values depending on the original message
 /// (the correct recipients, cancle actions ...).
@@ -162,6 +161,12 @@ struct ComposeUtil {
                 Log.shared.errorAndCrash("Invalid state")
                 return nil
         }
+        //!!!: DIRTY ALARM!
+        //!!!: ADAM:
+        //BUFF: !!!
+        let body = state.bodyText.toHtml(inlinedAttachments: state.inlinedAttachments) //!!!: ADAM: Bad! method called toHtml returns plaintext
+        let bodyPlainText = body.plainText
+        let bodyHtml = body.html ?? ""
         let message = Message.newOutgoingMessage(session: session)
         message.parent = outbox
         message.from = from
@@ -169,17 +174,17 @@ struct ComposeUtil {
         message.replaceCc(with: state.ccRecipients)
         message.replaceBcc(with: state.bccRecipients)
         message.shortMessage = state.subject
-        message.longMessage = state.bodyPlaintext
-        message.longMessageFormatted = !state.bodyHtml.isEmpty ? state.bodyHtml : nil
+        message.longMessage = bodyPlainText
+        message.longMessageFormatted = !bodyHtml.isEmpty ? bodyHtml : nil
         message.replaceAttachments(with: state.inlinedAttachments + state.nonInlinedAttachments)
         message.pEpProtected = state.pEpProtection
         if !state.pEpProtection {
-            let unprotectedRating = PEPRating.unencrypted
+            let unprotectedRating = Rating.unencrypted
             message.setOriginalRatingHeader(rating: unprotectedRating)
-            message.pEpRatingInt = Int(unprotectedRating.rawValue)
+            message.pEpRatingInt = unprotectedRating.toInt()
         } else {
             message.setOriginalRatingHeader(rating: state.rating)
-            message.pEpRatingInt = Int(state.rating.rawValue)
+            message.pEpRatingInt = state.rating.toInt()
         }
 
         message.imapFlags.seen = imapSeenState(forMessageToSend: message)

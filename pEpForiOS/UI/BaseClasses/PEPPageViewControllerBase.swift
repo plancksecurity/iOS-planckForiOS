@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 /// Base class for PageViewControllers in pEp style.
 /// You MUST NOT use this class without subclassing
 class PEPPageViewControllerBase: UIPageViewController {
@@ -27,14 +29,14 @@ class PEPPageViewControllerBase: UIPageViewController {
         delegate = self
         doOnce = { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.dataSource = me.showDots ? self : nil //nil dataSource will hide dots and disable scrolling
             if !me.isScrollEnable {
                 me.disableScrolling()
             }
-            if let firstView = me.views.first { //!!!: //BUFF: is views.first == nil a valid case?
+            if let firstView = me.views.first { //!!!: is views.first == nil a valid case?
                 me.setViewControllers([firstView],
                                       direction: .forward,
                                       animated: true,
@@ -89,7 +91,7 @@ class PEPPageViewControllerBase: UIPageViewController {
         setViewControllers([previousView], direction: .reverse, animated: true) {
             [weak self] completed in
             guard let me = self else {
-                Log.shared.lostMySelf()
+                Log.shared.lostMySelf() 
                 return
             }
             me.delegate?.pageViewController?(me, didFinishAnimating: true,
@@ -157,14 +159,12 @@ extension PEPPageViewControllerBase {
     private func previousView(of viewController: UIViewController? = nil) -> UIViewController? {
         let currentPossition = currentIndex(of: viewController)
         guard currentPossition > 0 else { return nil }
-
         return views[currentPossition - 1]
     }
 
     private func nextView(of viewController: UIViewController? = nil) -> UIViewController? {
         let currentPossition = currentIndex(of: viewController)
         guard currentPossition < views.count - 1 else { return nil }
-
         return views[currentPossition + 1]
     }
 

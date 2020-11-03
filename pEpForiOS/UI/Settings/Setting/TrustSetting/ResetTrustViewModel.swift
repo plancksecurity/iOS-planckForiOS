@@ -7,9 +7,9 @@
 //
 
 import Foundation
-import MessageModel
-import PEPObjCAdapterFramework
 
+import MessageModel
+import pEpIOSToolbox
 
 /// delegate protocol to inform about incoming changes in the tableview
 protocol ResetTrustViewModelDelegate: class {
@@ -96,19 +96,11 @@ class ResetTrustViewModel {
         return identityQueryResult[index].name
     }
 
-    // workarround to change the first name index
-    // as first section name come from the fetch results with "U"
-    // due fetch results returns the first letter as a section index and its name which is "Undefined names"
-    // is needed to change it to "#" to make it more understandeble
     func indexTitles() -> [String] {
         guard identityQueryResult.count() > 0 else {
             return []
         }
-        var titles = identityQueryResult.indexTitles
-        if titleForSections(index: 0) == "Undefined names" {
-            titles[0] = "#"
-        }
-        return titles
+        return identityQueryResult.indexTitles
     }
 
     func numberOfRowsIn(section: Int) -> Int {
@@ -156,14 +148,14 @@ class ResetTrustViewModel {
         }
     }
 
-    func resetTrust(foridentityAt indexPath: IndexPath) {
+    func resetTrust(foridentityAt indexPath: IndexPath, completion: @escaping () -> ()) {
         let identity = identityQueryResult[indexPath.section].objects[indexPath.row]
-        identity.resetTrust()
+        identity.resetTrust(completion: completion)
     }
 
-    func resetTrustAll(foridentityAt indexPath: IndexPath) {
+    func resetTrustAll(foridentityAt indexPath: IndexPath, completion: @escaping () -> ()) {
         let identity = identityQueryResult[indexPath.section].objects[indexPath.row]
-        Identity.resetTrustAllIdentities(for: identity)
+        Identity.resetTrustAllIdentities(for: identity, completion: completion)
     }
 
     func multipleIdentitiesExist(forIdentityAt indexPath: IndexPath) -> Bool {

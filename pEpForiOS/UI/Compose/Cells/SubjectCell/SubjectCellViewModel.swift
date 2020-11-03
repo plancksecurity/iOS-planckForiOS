@@ -13,11 +13,12 @@ protocol SubjectCellViewModelResultDelegate: class {
 }
 
 class SubjectCellViewModel: CellViewModel {
-    public var content: String?
+    public var content: String
 
     public weak var resultDelegate: SubjectCellViewModelResultDelegate?
 
-    init(resultDelegate: SubjectCellViewModelResultDelegate?) {
+    init(content: String = "", resultDelegate: SubjectCellViewModelResultDelegate?) {
+        self.content = content
         self.resultDelegate = resultDelegate
     }
 

@@ -5,6 +5,7 @@
 //  Created by Andreas Buff on 13.11.18.
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
+
 import XCTest
 
 @testable import pEpForiOS
@@ -17,12 +18,14 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
     // MARK: - init & resultDelegate
 
     func testInitAndResultDelegate() {
+        let session = Session()
         let resultDelegate = TestResultDelegate(expDidSelectMediaAttachmentCalled: nil,
                                                 expectedMediaAttachment: nil,
-                                                expDidCancelCalled: nil)
+                                                expDidCancelCalled: nil,
+                                                session: session)
             as MediaAttachmentPickerProviderViewModelResultDelegate
         let testeeVM = MediaAttachmentPickerProviderViewModel(resultDelegate: resultDelegate,
-                                                              session: Session())
+                                                              session: session)
         XCTAssertNotNil(testeeVM)
         guard let testeeResultDelegate = testeeVM.resultDelegate else {
             XCTFail()
@@ -36,7 +39,8 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
     func testAssertHelperMethod() {
         assert(didSelectMediaAttachmentMustBeCalledCalled: nil,
                expectedMediaAttachment: nil,
-               didCancelMustBeCalled: nil)
+               didCancelMustBeCalled: nil,
+               session: Session())
         XCTAssertNotNil(vm)
         guard let testeeResultDelegate = vm?.resultDelegate else {
             XCTFail()
@@ -50,13 +54,14 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
     // MARK: Photo
 
     func testHandleDidFinishPickingMedia_photo() {
-        guard let (infoDict, forAttachment) = infoDict(mediaType: .image) else {
+        guard let (infoDict, forAttachment, session) = infoDict(mediaType: .image) else {
             XCTFail()
             return
         }
         assert(didSelectMediaAttachmentMustBeCalledCalled: true,
                expectedMediaAttachment: forAttachment,
-               didCancelMustBeCalled: false)
+               didCancelMustBeCalled: false,
+               session: session)
         vm?.handleDidFinishPickingMedia(info: infoDict)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
@@ -64,20 +69,22 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
     func testHandleDidFinishPickingMedia_photo_notCalled() {
         assert(didSelectMediaAttachmentMustBeCalledCalled: false,
                expectedMediaAttachment: nil,
-               didCancelMustBeCalled: false)
+               didCancelMustBeCalled: false,
+               session: Session())
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
     // MARK: Video
 
     func testHandleDidFinishPickingMedia_movie() {
-        guard let (infoDict, forAttachment) = infoDict(mediaType: .movie) else {
+        guard let (infoDict, forAttachment, session) = infoDict(mediaType: .movie) else {
             XCTFail()
             return
         }
         assert(didSelectMediaAttachmentMustBeCalledCalled: true,
                expectedMediaAttachment: forAttachment,
-               didCancelMustBeCalled: false)
+               didCancelMustBeCalled: false,
+               session: session)
         vm?.handleDidFinishPickingMedia(info: infoDict)
         waitForExpectations(timeout: 0.5) // Async file access
     }
@@ -87,7 +94,8 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
     func testHandleDidCancel() {
         assert(didSelectMediaAttachmentMustBeCalledCalled: false,
                expectedMediaAttachment: nil,
-               didCancelMustBeCalled: true)
+               didCancelMustBeCalled: true,
+               session: Session())
         vm?.handleDidCancel()
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
@@ -95,7 +103,8 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
     func testHandleDidCancel_notCalled() {
         assert(didSelectMediaAttachmentMustBeCalledCalled: false,
                expectedMediaAttachment: nil,
-               didCancelMustBeCalled: false)
+               didCancelMustBeCalled: false,
+               session: Session())
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
@@ -103,7 +112,8 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
 
     private func assert(didSelectMediaAttachmentMustBeCalledCalled: Bool?,
                         expectedMediaAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment?,
-                        didCancelMustBeCalled: Bool?) {
+                        didCancelMustBeCalled: Bool?,
+                        session: Session) {
         var expDidSelectMediaAttachmentCalled: XCTestExpectation? = nil
         if let mustBeCalled = didSelectMediaAttachmentMustBeCalledCalled {
             expDidSelectMediaAttachmentCalled =
@@ -121,13 +131,16 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
         resultDelegate =
             TestResultDelegate(expDidSelectMediaAttachmentCalled: expDidSelectMediaAttachmentCalled,
                                expectedMediaAttachment: expectedMediaAttachment,
-                               expDidCancelCalled: expDidCancelCalled)
+                               expDidCancelCalled: expDidCancelCalled,
+                               session: session)
         vm = MediaAttachmentPickerProviderViewModel(resultDelegate: resultDelegate,
-                                                    session: Session())
+                                                    session: session)
     }
 
     private func infoDict(mediaType: MediaAttachmentPickerProviderViewModel.MediaAttachment.MediaAttachmentType)
-        -> (infoDict: [UIImagePickerController.InfoKey: Any], forAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment)? {
+        -> (infoDict: [UIImagePickerController.InfoKey: Any],
+        forAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment,
+        session: Session)? {
             var createe = [UIImagePickerController.InfoKey:Any]()
             let testBundle = Bundle(for: type(of:self))
             let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
@@ -150,31 +163,46 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
                 createe[UIImagePickerController.InfoKey.referenceURL] = url
                 createe[UIImagePickerController.InfoKey.originalImage] = img
             }
-            let attachment = Attachment(data: data,
-                                        mimeType: "image/jpeg",
-                                        fileName:
-                "I have no idea what file name is actually expecdted, thus I ignore it in tests.",
-                                        image: img,
-                                        assetUrl: url,
-                                        contentDisposition: .inline)
-            let mediaAttachment =
-                MediaAttachmentPickerProviderViewModel.MediaAttachment(type: mediaType,
-                                                                       attachment: attachment)
-            return (createe, mediaAttachment)
+
+            var result: (infoDict: [UIImagePickerController.InfoKey: Any],
+                forAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment,
+                session: Session)? = nil
+
+            let session = Session()
+
+            session.performAndWait {
+                let attachment = Attachment(data: data,
+                                            mimeType: "image/jpeg",
+                                            fileName:
+                    "I have no idea what file name is actually expecdted, thus I ignore it in tests.",
+                                            image: img,
+                                            assetUrl: url,
+                                            contentDisposition: .inline,
+                                            session: session)
+                let mediaAttachment =
+                    MediaAttachmentPickerProviderViewModel.MediaAttachment(type: mediaType,
+                                                                           attachment: attachment)
+
+                result = (createe, mediaAttachment, session)
+            }
+
+            return result
     }
 
     private class TestResultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate {
         let expDidSelectMediaAttachmentCalled: XCTestExpectation?
         let expectedMediaAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment?
-
         let expDidCancelCalled: XCTestExpectation?
+        let session: Session
 
         init(expDidSelectMediaAttachmentCalled: XCTestExpectation?,
              expectedMediaAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment?,
-             expDidCancelCalled: XCTestExpectation?) {
+             expDidCancelCalled: XCTestExpectation?,
+             session: Session) {
             self.expDidSelectMediaAttachmentCalled  = expDidSelectMediaAttachmentCalled
             self.expectedMediaAttachment = expectedMediaAttachment
             self.expDidCancelCalled = expDidCancelCalled
+            self.session = session
         }
 
         func mediaAttachmentPickerProviderViewModel(_ vm: MediaAttachmentPickerProviderViewModel, didSelect mediaAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment) {
@@ -183,17 +211,19 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
                 return
             }
             exp.fulfill()
-            if let expected = expectedMediaAttachment{
-                if let _ = mediaAttachment.attachment.image {
-                    XCTAssertTrue(mediaAttachment.type == .image)
-                    XCTAssertEqual(mediaAttachment.attachment.image, expected.attachment.image)
-                } else {
-                    XCTAssertTrue(mediaAttachment.type == .movie)
-                    XCTAssertEqual(mediaAttachment.attachment.data, expected.attachment.data)
+            if let expected = expectedMediaAttachment {
+                session.performAndWait {
+                    if let _ = mediaAttachment.attachment.image {
+                        XCTAssertTrue(mediaAttachment.type == .image)
+                        XCTAssertEqual(mediaAttachment.attachment.image, expected.attachment.image)
+                    } else {
+                        XCTAssertTrue(mediaAttachment.type == .movie)
+                        XCTAssertEqual(mediaAttachment.attachment.data, expected.attachment.data)
+                    }
+                    XCTAssertEqual(mediaAttachment.attachment.mimeType, expected.attachment.mimeType)
+                    //"I have no idea what file name is actually expecdted, thus I ignore it in tests."
+                    XCTAssertEqual(mediaAttachment.type, expected.type)
                 }
-                XCTAssertEqual(mediaAttachment.attachment.mimeType, expected.attachment.mimeType)
-                //"I have no idea what file name is actually expecdted, thus I ignore it in tests."
-                XCTAssertEqual(mediaAttachment.type, expected.type)
             }
         }
 

@@ -7,10 +7,9 @@
 //
 
 import Foundation
-
 import MessageModel
+
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
 
 class MessageViewModel: CustomDebugStringConvertible {
     static fileprivate var maxBodyPreviewCharacters = 120
@@ -42,9 +41,6 @@ class MessageViewModel: CustomDebugStringConvertible {
     var isSeen: Bool = false
     var dateText: String
     var profilePictureComposer: ProfilePictureComposerProtocol
-    var body: NSAttributedString {
-            return getBodyMessage()
-    }
     var displayedUsername: String
     var internalBoddyPeek: String? = nil
     private var bodyPeek: String? {
@@ -172,7 +168,7 @@ class MessageViewModel: CustomDebugStringConvertible {
             let factorHtmlTags = 3
             let numChars = maxBodyPreviewCharacters * factorHtmlTags
             let truncatedHtml = html.prefix(ofLength: numChars)
-            body = truncatedHtml.extractTextFromHTML()
+            body = truncatedHtml.extractTextFromHTML(respectNewLines: false)
 
             //IOS-1347:
             // We might want to cleans when displaying instead of when saving.
@@ -225,35 +221,12 @@ class MessageViewModel: CustomDebugStringConvertible {
         queueForHeavyStuff.addOperation(operation)
     }
 
-    func getSecurityBadge() -> UIImage? {
-        return message.securityBadgeForContactPicture
-    }
-
-    func getBodyMessage() -> NSMutableAttributedString {
-        let finalText = NSMutableAttributedString()
-        if message.underAttack {
-            let status = String.pEpRatingTranslation(pEpRating: .underAttack)
-            let messageString = String.localizedStringWithFormat(
-                NSLocalizedString(
-                    "\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n",
-                    comment: "Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion."),
-                status.title, status.explanation, status.suggestion)
-            finalText.bold(messageString)
+    func getSecurityBadge(completion: @escaping (UIImage?)->Void) {
+        message.securityBadgeForContactPicture { (image) in
+            DispatchQueue.main.async {
+                completion(image)
+            }
         }
-
-        if let text = message.longMessage?.trimmed() {
-            finalText.normal(text)
-        } else if let text = message.longMessageFormatted?.attributedStringHtmlToMarkdown() {
-            finalText.normal(text)
-        } else if message.pEpRating().isUnDecryptable() {
-            finalText.normal(NSLocalizedString(
-                "This message could not be decrypted.",
-                comment: "content that is shown for undecryptable messages"))
-        } else {
-            // Empty body
-            finalText.normal("")
-        }
-        return finalText
     }
 
     func getTo()->NSMutableAttributedString {

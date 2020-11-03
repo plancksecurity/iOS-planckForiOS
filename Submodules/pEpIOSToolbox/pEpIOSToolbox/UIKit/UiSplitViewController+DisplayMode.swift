@@ -9,25 +9,6 @@
 import Foundation
 import UIKit
 
-public extension UIViewController {
-
-    /// Method to detect the actual status of the splitViewController
-    ///
-    /// - Returns: returns the value of the actual status of the split view controller using SplitViewDisplayMode
-    func currentSplitViewMode() -> UISplitViewController.SplitViewDisplayMode {
-        guard let splitview = splitViewController else {
-            return .onlyMaster
-        }
-        return splitview.currentDisplayMode
-    }
-
-    var onlySplitViewMasterIsShown: Bool {
-        get {
-            return currentSplitViewMode() == .onlyMaster
-        }
-    }
-}
-
 public extension UISplitViewController {
 
     /// Specify the current state of the splitviewcontroller
@@ -48,13 +29,17 @@ public extension UISplitViewController {
                 return .onlyMaster
             } else {
                 switch displayMode {
-                case .allVisible, .primaryOverlay:
-                    return .masterAndDetail
-                case .primaryHidden:
-                    return .onlyDetail
                 case .automatic:
                     //this case is never posible as splitviewcontroller.displaymode never will return that
                     return .onlyMaster
+                case .secondaryOnly:
+                    return .onlyDetail
+                case .oneOverSecondary,
+                     .oneBesideSecondary,
+                     .twoOverSecondary,
+                     .twoDisplaceSecondary,
+                     .twoBesideSecondary:
+                    return .masterAndDetail
                 @unknown default:
                     //this case is because apple do not assures other posible cases for displayMode.
                     return .onlyMaster

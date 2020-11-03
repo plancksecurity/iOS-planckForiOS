@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="wwj-Sj-78N">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="wwj-Sj-78N">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,9 +16,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nothing Selected" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rk5-l1-Vt8">
-                                <rect key="frame" x="121" y="434" width="172" height="28"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nothing Selected" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rk5-l1-Vt8">
+                                <rect key="frame" x="124.5" y="435" width="165" height="26.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                 <color key="textColor" red="0.48627450979999998" green="0.54901960780000003" blue="0.56078431370000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                                 <attributedString key="userComments">
@@ -26,17 +26,17 @@
                                 </attributedString>
                             </label>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="LDs-Yu-BHN"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Rk5-l1-Vt8" firstAttribute="centerY" secondItem="Z1H-wx-ONQ" secondAttribute="centerY" id="RP8-NC-Ztd"/>
                             <constraint firstItem="Rk5-l1-Vt8" firstAttribute="centerX" secondItem="Z1H-wx-ONQ" secondAttribute="centerX" id="Z7h-dY-jdK"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="LDs-Yu-BHN"/>
                     </view>
                     <navigationItem key="navigationItem" id="fHc-eo-Igr"/>
                     <connections>
                         <outlet property="labelMessage" destination="Rk5-l1-Vt8" id="e87-ec-BKy"/>
-                        <segue destination="gnv-QF-y1k" kind="showDetail" id="anx-J8-OKE"/>
+                        <segue destination="gnv-QF-y1k" kind="showDetail" identifier="EmailViewControllerSegue" id="anx-J8-OKE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="l31-uR-HtQ" userLabel="First Responder" sceneMemberID="firstResponder"/>

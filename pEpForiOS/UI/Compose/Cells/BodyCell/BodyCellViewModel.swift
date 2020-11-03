@@ -18,8 +18,7 @@ protocol BodyCellViewModelResultDelegate: class {
                            inlinedAttachmentsChanged inlinedAttachments: [Attachment])
 
     func bodyCellViewModel(_ vm: BodyCellViewModel,
-                           bodyChangedToPlaintext plain: String,
-                           html: String)
+                           bodyAttributedString: NSAttributedString)
 }
 
 protocol BodyCellViewModelDelegate: class {
@@ -32,6 +31,7 @@ class BodyCellViewModel: CellViewModel {
     public weak var delegate: BodyCellViewModelDelegate?
     private var plaintext = ""
     private var attributedText: NSAttributedString?
+    private var identity: Identity?
     private var inlinedAttachments = [Attachment]() {
         didSet {
             resultDelegate?.bodyCellViewModel(self, inlinedAttachmentsChanged: inlinedAttachments)
@@ -46,18 +46,21 @@ class BodyCellViewModel: CellViewModel {
     init(resultDelegate: BodyCellViewModelResultDelegate?,
          initialPlaintext: String? = nil,
          initialAttributedText: NSAttributedString? = nil,
-         inlinedAttachments: [Attachment]? = nil) {
+         inlinedAttachments: [Attachment]? = nil,
+         account: Identity?) {
         self.resultDelegate = resultDelegate
         self.plaintext = initialPlaintext ?? ""
         self.attributedText = initialAttributedText
         if let inlAtt = inlinedAttachments {
             self.inlinedAttachments = inlAtt
         }
+        self.identity = account
     }
 
     public func inititalText() -> (text: String?, attributedText: NSAttributedString?) {
         if plaintext.isEmpty {
-            plaintext.append(.pepSignature)
+            let signature = AppSettings.shared.signature(forAddress: identity?.address)
+            plaintext.append("\n\n\(signature)\n")
         }
         attributedText?.assureMaxTextAttachmentImageWidth(maxTextattachmentWidth)
         return (plaintext, attributedText)
@@ -79,13 +82,18 @@ class BodyCellViewModel: CellViewModel {
         return true
     }
 
+    /// Call necessary things when user finished text editing
+    public func handleDidEndEditing(attributedText: NSAttributedString) {
+        createHtmlVersionAndInformDelegate(newAttributedText: attributedText)
+    }
+
     // MARK: - Context Menu
 
-    public let contextMenuItemTitleAttachMedia =
-        NSLocalizedString("Attach media", comment: "Attach photo/video (message text context menu)")
+    public let contextMenuItemTitleAddPhotoOrVideo =
+        NSLocalizedString("Add Photo/Video", comment: "Attach photo/video (message text context menu)")
 
-    public let contextMenuItemTitleAttachFile =
-        NSLocalizedString("Attach file",   comment: "Insert document in message text context menu")
+    public let contextMenuItemTitleAddDocument =
+        NSLocalizedString("Add Document",  comment: "Insert document in message text context menu")
 
     public func handleUserClickedSelectMedia() {
         let potentialImage = 1
@@ -122,7 +130,7 @@ extension BodyCellViewModel {
         }
         attachment.session.performAndWait { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             attachment.contentDisposition = .inline
@@ -166,12 +174,7 @@ extension BodyCellViewModel {
 // MARK: - HTML
 
 extension BodyCellViewModel {
-
     private func createHtmlVersionAndInformDelegate(newAttributedText attrText: NSAttributedString) {
-        let (markdownText, _) = attrText.convertToMarkDown()
-        let plaintext = markdownText
-        let html = markdownText.markdownToHtml()
-        resultDelegate?.bodyCellViewModel(self, bodyChangedToPlaintext: plaintext,
-                                          html: html ?? "")
+        resultDelegate?.bodyCellViewModel(self, bodyAttributedString: attrText)
     }
 }

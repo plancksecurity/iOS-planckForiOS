@@ -16,13 +16,20 @@ public struct ReplyUtil {
     /**
      Gets the quoted message body for the given `Message`.
      */
-    public static func quotedMessageText(message: Message, replyAll: Bool) -> String {
-        guard let quotedText = quotedText(for: message) else {
-            return "\n\n\(footer())"
-        }
-        let citation = citationHeaderForMessage(message)
+    public static func quotedMessageText(message: Message, replyAll: Bool) -> NSAttributedString {
+        let footerPlainText = footer(for: message)
 
-        return "\n\n\(footer())\n\n\(citation)\n\n\(quotedText)"
+        guard let quotedText = quotedText(for: message) else {
+            return "\n\n\(footerPlainText)".attribString()
+        }
+        let citationPlainText = citationHeaderForMessage(message)
+
+        return "\n\n".attribString()
+            + footer(for: message).attribString()
+            + "\n\n"
+            + citationPlainText.attribString()
+            + "\n\n"
+            + quotedText
     }
 
     /// Adds citation header with data of a given message to a given text.
@@ -33,7 +40,27 @@ public struct ReplyUtil {
     /// - Returns: text with citation header and "send by pEp" footer
     static func citedMessageText(textToCite: String, fromMessage msg: Message) -> String {
         let citation = citationHeaderForMessage(msg)
-        return "\n\n\(footer())\n\n\(citation)\n\n\(textToCite)"
+        return "\n\n\(footer(for: msg))\n\n\(citation)\n\n\(citedTextWithNewLines(textToCite: textToCite))"
+    }
+
+    public static func citedTextWithNewLines(textToCite: String) -> String {
+        let quoteChar = ">"
+        var citedText = ""
+        for line in textToCite.components(separatedBy: "\n") {
+            citedText = citedText + quoteChar + " " + line + "\n"
+        }
+        return citedText.trimmingCharacters(in: .newlines)
+    }
+
+    /// Show vertical line for cited messages (only in presentation layer)
+    /// - Parameter html: html to inject vertical lines to
+    /// - returns: html with vertical lines injected.
+    public static func htmlWithVerticalLinesForBlockQuotesInjected(html: String) -> String {
+        let searchTerm = "<blockquote type=\"cite\""
+        let replace = "<blockquote type=\"cite\" style=\"border-left: 3px solid \(UIColor.pEpGreenHex); padding-left: 8px; margin-left:0px;\""
+        return html
+            .replacingOccurrences(of: searchTerm,
+                                  with: replace)
     }
 
     /// Adds citation header with data of a given message to a given text.
@@ -45,12 +72,11 @@ public struct ReplyUtil {
     public static func citedMessageText(textToCite: NSAttributedString,
                                         fromMessage msg: Message) -> NSAttributedString {
         let citation = citationHeaderForMessage(msg)
-
         let defaultFont = UIFont.preferredFont(forTextStyle: .body)
-        var result = NSAttributedString(string: "\n\n\(footer())\n\n\(citation)\n\n",
+        let result = NSAttributedString(string: "\n\n\(footer(for: msg))\n\n\(citation)\n\n",
             attributes: [NSAttributedString.Key(rawValue: "NSFont"): defaultFont])
-        result = result + textToCite
-        return result
+
+        return result + textToCite.toCitation(addCitationLevel: true)
     }
 
     /**
@@ -77,9 +103,8 @@ public struct ReplyUtil {
 
     public static func forwardSubject(message: Message) -> String {
         if let subject = message.shortMessage {
-            let fwd = NSLocalizedString(
-                "Fwd: ", comment: "The 'Fwd:' that gets appended to the subject line")
-            return "\(fwd) \(subject)"
+            let fwd = "Fwd: "
+            return String(fwd + subject.trimmed())
         } else {
             return ""
         }
@@ -92,11 +117,11 @@ public struct ReplyUtil {
     /// - Returns:  If longMessageFormatted exists: formatted message with HTML striped, in quoted form
     ///             else if longMessage exists: longMessage in quoted form
     ///             nil otherwize
-    static private func quotedText(for message: Message) -> String? {
+    static private func quotedText(for message: Message) -> NSAttributedString? {
         guard let text = extractMessageTextToQuote(from: message) else {
             return nil
         }
-        return quoteText(text)
+        return text.toCitation(addCitationLevel: true)
     }
 
     /// Extracts the text that should be used for quoting (in reply/forwarding) from a given message.
@@ -105,14 +130,13 @@ public struct ReplyUtil {
     /// - Returns:  If longMessageFormatted exists: formatted message with HTML tags are striped
     ///             else if longMessage exists: longMessage
     ///             nil otherwize
-    static private func extractMessageTextToQuote(from message: Message) -> String? {
-        var textToQuote = message.longMessage ?? nil
+    static private func extractMessageTextToQuote(from message: Message) -> NSAttributedString? {
+        let textToQuote = message.longMessage ?? nil
         guard let formatted = message.longMessageFormatted else {
-            return textToQuote
+            return NSAttributedString(string: textToQuote ?? "")
         }
-        textToQuote = formatted.extractTextFromHTML()
-
-        return textToQuote //message.longMessage
+        return formatted.htmlToAttributedString(deleteInlinePictures: true,
+                                                attachmentDelegate: nil)
     }
 
     static private func replyNameFromIdentity(_ identity: Identity) -> String {
@@ -122,17 +146,7 @@ public struct ReplyUtil {
         return identity.address
     }
 
-    static private func quoteText(_ text: String) -> String {
-        let newLineCS = CharacterSet.init(charactersIn: newline)
-        let lines = text.components(separatedBy: newLineCS)
-        let quoted = lines.map() {
-            return "> \($0)"
-        }
-        let quotedText = quoted.joined(separator: newline)
-        return quotedText
-    }
-
-    static private func citationHeaderForMessage(_ message: Message) -> String {
+    static public func citationHeaderForMessage(_ message: Message) -> String {
         let dateFormatter = DateFormatter.init()
         dateFormatter.dateStyle = DateFormatter.Style.long
         dateFormatter.timeStyle = DateFormatter.Style.long
@@ -171,7 +185,7 @@ public struct ReplyUtil {
         }
     }
 
-    static private func footer() -> String {
-        return String.pepSignature
+    static private func footer(for message: Message) -> String {
+        return message.parent.account.signature
     }
 }

@@ -6,6 +6,23 @@
 	<string>en_US</string>
 	<key>CFBundleDisplayName</key>
 	<string>p≡p</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array>
+				<string>pEpForiOS-icon</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>Client Certificates</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>security.pep.pEp12</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -22,6 +39,14 @@
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
 	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>mail</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>mailto</string>
+			</array>
+		</dict>
 		<dict>
 			<key>CFBundleURLName</key>
 			<string>gmail</string>
@@ -42,8 +67,12 @@
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
+	<true/>
+	<key>ITSEncryptionExportComplianceCode</key>
+	<string>d3ade549-86f9-45fb-b3b6-08d22a01c265</string>
 	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Use Camera</string>
@@ -72,15 +101,18 @@
 	<array>
 		<string>UniversLTStd.otf</string>
 		<string>UniversLTStd-Bold.otf</string>
+		<string>SFUIText-Regular.ttf</string>
+		<string>SFUIText-Medium.ttf</string>
+		<string>SFUIText-Semibold.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
 	</array>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
-	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -100,6 +132,30 @@
 	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Client Certificate</string>
+			<key>UTTypeIconFiles</key>
+			<array>
+				<string>pEpForiOS-icon</string>
+			</array>
+			<key>UTTypeIdentifier</key>
+			<string>security.pep.pEp12</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>pEp12</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
 	<key>security.pEp.apps.pEpForiOS.oauth2</key>
 	<string>Verify OAuth2 authorization requests</string>
 </dict>

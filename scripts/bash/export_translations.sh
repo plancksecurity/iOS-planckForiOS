@@ -1,8 +1,9 @@
 #!/bin/bash
 
+languages="en de fr es ca tr nl sk"
+
 translationdir=../pEp-Translate/
 
-languages=(de en)
 mytmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
 
 appdir=$mytmpdir/pEpForiOS
@@ -16,11 +17,7 @@ do
   xcodebuild -exportLocalizations -project pEpForiOS.xcodeproj -exportLanguage $lang -localizationPath $appdir
 
   cp "$appdir/$lang.xcloc/Localized Contents/$lang.xliff" $translationdir
-
-  xcodebuild -exportLocalizations -project ../MessageModel/MessageModel/MessageModel.xcodeproj -exportLanguage $lang -localizationPath $mmdir
-
-  cp "$mmdir/$lang.xcloc/Localized Contents/$lang.xliff" $translationdir/MessageModel
- done
+done
 
 rm -fr $mytmpdir
 

@@ -18,6 +18,10 @@ protocol EditableAccountSettingsViewModelDelegate: class {
     func popViewController()
 }
 
+protocol EditableAccountSettingsDelegate: class {
+    func didChange()
+}
+
 final class EditableAccountSettingsViewModel {
     typealias Inputs = (addrImap: String, portImap: String, transImap: String,
     addrSmpt: String, portSmtp: String, transSmtp: String, accountName: String,
@@ -43,6 +47,7 @@ final class EditableAccountSettingsViewModel {
 
     weak var delegate: EditableAccountSettingsViewModelDelegate?
     weak var tableViewModel: EditableAccountSettingsTableViewModel?
+    weak var editableAccountSettingsDelegate: EditableAccountSettingsDelegate?
 
     /// If there was OAUTH2 for this account, here is a current token.
     /// This trumps both the `originalPassword` and a password given by the user
@@ -52,8 +57,9 @@ final class EditableAccountSettingsViewModel {
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
 
-    init(account: Account) {
+    init(account: Account, editableAccountSettingsDelegate: EditableAccountSettingsDelegate? = nil) {
         self.account = account
+        self.editableAccountSettingsDelegate = editableAccountSettingsDelegate
 
         if isOAuth2 {
             if let payload = account.imapServer?.credentials.password ??
@@ -95,11 +101,14 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
             do {
                 try verifiableAccount?.save { [weak self] _ in
                     guard let me = self else {
-                        Log.shared.lostMySelf()
+                        //Valid case: the view might be dismissed. 
                         return
                     }
-                    me.delegate?.hideLoadingView()
-                    me.delegate?.popViewController()
+                    DispatchQueue.main.async {
+                        me.delegate?.hideLoadingView()
+                        me.editableAccountSettingsDelegate?.didChange()
+                        me.delegate?.popViewController()
+                    }
                 }
             } catch {
                 Log.shared.errorAndCrash(error: error)
@@ -138,7 +147,9 @@ extension EditableAccountSettingsViewModel {
                         password: String? = nil,
                         imap: ServerViewModel,
                         smtp: ServerViewModel) {
-        var theVerifier = verifiableAccount ?? VerifiableAccount()
+        var theVerifier =
+            verifiableAccount ??
+            VerifiableAccount.verifiableAccount(for: .other)
         theVerifier.verifiableAccountDelegate = self
         verifiableAccount = theVerifier
 

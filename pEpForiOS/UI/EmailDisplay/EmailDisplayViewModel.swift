@@ -7,9 +7,9 @@
 //
 
 import Foundation
+
 import pEpIOSToolbox
 import MessageModel
-import PEPObjCAdapterFramework
 
 protocol EmailDisplayViewModelDelegate: class {
     func emailListViewModel(viewModel: EmailDisplayViewModel,
@@ -25,8 +25,6 @@ protocol EmailDisplayViewModelDelegate: class {
     func allUpdatesReceived(viewModel: EmailDisplayViewModel)
     
     func reloadData(viewModel: EmailDisplayViewModel)
-
-    func select(itemAt indexPath: IndexPath)
 }
 
 /// Base class for MessageQueryResults driven email display view models.

@@ -1,0 +1,21 @@
+/* Bundle display name */
+"CFBundleDisplayName" = "p≡p";
+
+/* Bundle name */
+"CFBundleName" = "pEp";
+
+/* (No Comment) */
+"Client Certificate" = "Client Certificaat";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Gebruik Camera";
+
+/* Privacy - Contacts Usage Description */
+"NSContactsUsageDescription" = "- p≡p is een app voor versleutelde e-mails. Om e-mails naar\n     opgeslagen contactpersonen te kunnen verzenden, moet je p≡p\t\n     toestemming geven om deze te gebruiken.\n\n- Contactgegevens verlaten het mobiele apparaat nooit en worden\n \tevenmin verzonden naar p≡p of naar derden.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Hiermee kan je foto's opslaan in de Fotogalerij";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Hiermee kan je foto's uit de Fotogalerij kiezen";
+

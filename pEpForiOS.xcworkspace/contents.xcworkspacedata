@@ -8,10 +8,13 @@
       location = "group:pEpForiOS.xcodeproj">
    </FileRef>
    <FileRef
-      location = "container:../MessageModel/MessageModel/MessageModel.xcodeproj">
+      location = "group:Submodules/MessageModel/MessageModel/MessageModel.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:subModules/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../pEp_for_iOS_intern/pEp4iosIntern/pEp4iosIntern.xcodeproj">
    </FileRef>
    <FileRef
       location = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
@@ -30,5 +33,8 @@
    </FileRef>
    <FileRef
       location = "container:../AppAuth-iOS/AppAuth.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../CocoaLumberjack/Lumberjack.xcodeproj">
    </FileRef>
 </Workspace>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="03X-Fp-JsF">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="03X-Fp-JsF">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,7 +26,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="300" sectionHeaderHeight="6" sectionFooterHeight="6" translatesAutoresizingMaskIntoConstraints="NO" id="Yrb-DL-w8R">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="574"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="unexpandedCell" rowHeight="100" id="i6i-Xi-PQA" customClass="EmailListViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="100"/>
@@ -193,19 +193,19 @@
                                                                             <rect key="frame" x="72" y="8" width="222.5" height="100"/>
                                                                             <subviews>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Sender" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1c8-rl-2Ng">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="52" height="34"/>
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="52" height="33.5"/>
                                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TKT-iA-rq1">
-                                                                                    <rect key="frame" x="0.0" y="34" width="25" height="32"/>
-                                                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                                    <rect key="frame" x="0.0" y="33.5" width="26.5" height="33"/>
+                                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                     <nil key="textColor"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Subject" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ux9-Hj-FDE">
-                                                                                    <rect key="frame" x="0.0" y="66" width="55.5" height="34"/>
+                                                                                    <rect key="frame" x="0.0" y="66.5" width="55.5" height="33.5"/>
                                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                     <nil key="highlightedColor"/>
@@ -271,7 +271,7 @@
                                                                     <subviews>
                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S23-nW-bvP" userLabel="line">
                                                                             <rect key="frame" x="15" y="0.0" width="330" height="1"/>
-                                                                            <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                                            <color key="backgroundColor" systemColor="lightTextColor"/>
                                                                         </view>
                                                                     </subviews>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -301,7 +301,7 @@
                                                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="250" scrollEnabled="NO" editable="NO" text="Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do " textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="SlN-yR-Ifs">
                                                                             <rect key="frame" x="8" y="0.0" width="329" height="133"/>
                                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                                             <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES" shipmentTrackingNumber="YES"/>
                                                                         </textView>
@@ -322,7 +322,7 @@
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="See more" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lDs-MI-bIw">
                                                                             <rect key="frame" x="8" y="8" width="329" height="56"/>
-                                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
@@ -361,7 +361,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="u7a-uF-y9m" secondAttribute="trailing" constant="15" id="oeL-P0-cZI"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                        <color key="backgroundColor" systemColor="tableCellGroupedBackgroundColor"/>
                                         <connections>
                                             <outlet property="addressLabel" destination="1c8-rl-2Ng" id="Gn1-9X-Dzm"/>
                                             <outlet property="attachmentIcon" destination="SB2-4e-8TG" id="vEe-mV-ISq"/>
@@ -386,6 +386,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="nDU-oZ-8oS"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="nDU-oZ-8oS" firstAttribute="bottom" secondItem="Yrb-DL-w8R" secondAttribute="bottom" id="YXj-ra-hLO"/>
@@ -393,29 +394,28 @@
                             <constraint firstItem="Yrb-DL-w8R" firstAttribute="top" secondItem="nDU-oZ-8oS" secondAttribute="top" id="cMp-02-aLv"/>
                             <constraint firstItem="nDU-oZ-8oS" firstAttribute="trailing" secondItem="Yrb-DL-w8R" secondAttribute="trailing" id="g3s-9F-7o8"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="nDU-oZ-8oS"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <toolbarItems>
-                        <barButtonItem image="icon-unflagged" id="tQg-CY-2hQ" userLabel="Flag">
+                        <barButtonItem image="pEpForiOS-icon-unflagged" id="tQg-CY-2hQ" userLabel="Flag">
                             <connections>
                                 <action selector="flagButtonTapped:" destination="8tS-ie-Ovo" id="tIQ-gU-It0"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="u0K-nN-7MO"/>
-                        <barButtonItem image="folders-icon-folder" id="TYk-3G-tQU" userLabel="Move to Folder">
+                        <barButtonItem image="pEpForiOS-icon-movetofolder" id="TYk-3G-tQU" userLabel="Move to Folder">
                             <connections>
                                 <action selector="moveToFolderTapped:" destination="8tS-ie-Ovo" id="zZb-sV-I7Q"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="L6g-yz-7bz"/>
-                        <barButtonItem image="folders-icon-trash" id="zJi-bJ-ZIV" userLabel="Destructive Button">
+                        <barButtonItem image="pEpForiOS-icon-delete" id="zJi-bJ-ZIV" userLabel="Destructive Button">
                             <connections>
                                 <action selector="destructiveButtonTapped:" destination="8tS-ie-Ovo" id="b1f-ye-mQH"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="0OE-2V-PxY"/>
-                        <barButtonItem image="reply" id="wu8-Rw-KTi">
+                        <barButtonItem image="pEpForiOS-icon-reply" id="wu8-Rw-KTi">
                             <connections>
                                 <action selector="replyButtonTapped:" destination="8tS-ie-Ovo" id="6eg-Mm-ndp"/>
                             </connections>
@@ -482,16 +482,25 @@
             <point key="canvasLocation" x="6917.6000000000004" y="-9.4452773613193415"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="attachment-list-icon" width="14" height="15"/>
-        <image name="empty-avatar" width="150" height="150"/>
-        <image name="folders-icon-folder" width="25" height="25"/>
-        <image name="folders-icon-trash" width="25" height="25"/>
-        <image name="icon-unflagged" width="33" height="64"/>
-        <image name="reply" width="33" height="64"/>
-    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Dhz-Ep-xy2"/>
         <segue reference="Aed-9C-oac"/>
     </inferredMetricsTieBreakers>
+    <resources>
+        <image name="attachment-list-icon" width="14" height="15"/>
+        <image name="empty-avatar" width="150" height="150"/>
+        <image name="pEpForiOS-icon-delete" width="16" height="24"/>
+        <image name="pEpForiOS-icon-movetofolder" width="29" height="24"/>
+        <image name="pEpForiOS-icon-reply" width="31" height="24"/>
+        <image name="pEpForiOS-icon-unflagged" width="14" height="24"/>
+        <systemColor name="groupTableViewBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="lightTextColor">
+            <color white="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="tableCellGroupedBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

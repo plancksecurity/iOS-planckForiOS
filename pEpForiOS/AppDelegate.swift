@@ -6,48 +6,38 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import CoreData
-
 import pEpIOSToolbox
 import MessageModel
-import PEPObjCAdapterFramework
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
-    var appConfig: AppConfig?
-
     /** The model */
-    var messageModelService: MessageModelServiceProtocol?
+    private var messageModelService: MessageModelServiceProtocol?
 
+    private var errorSubscriber = ErrorSubscriber()
+    
     /// Error Handler bubble errors up to the UI
-    var errorPropagator = ErrorPropagator()
+    private lazy var errorPropagator: ErrorPropagator = {
+        let createe = ErrorPropagator(subscriber: errorSubscriber)
+        return createe
+    }()
 
-    let mySelfQueue = LimitedOperationQueue()
+    private let userInputProvider = UserInputProvider()
 
     /// This is used to handle OAuth2 requests.
-    let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
+    private let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
-    var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
-
-    /// Set to true whever the app goes into background, so the main PEPSession gets cleaned up.
-    var shouldDestroySession = false
+    private var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
 
     private func setupInitialViewController() -> Bool {
-        guard let appConfig = appConfig else {
-            Log.shared.errorAndCrash("No AppConfig")
-            return false
-        }
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
-        guard let initialNVC = mainStoryboard.instantiateViewController(withIdentifier: "main.initial.nvc") as? UISplitViewController,
-            let navController = initialNVC.viewControllers.first as? UINavigationController,
-            let rootVC = navController.rootViewController as? FolderTableViewController
+        let folderViews: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
+        guard let initialNVC = folderViews.instantiateViewController(withIdentifier: "main.initial.nvc") as? UISplitViewController
             else {
                 Log.shared.errorAndCrash("Problem initializing UI")
                 return false
         }
-        rootVC.appConfig = appConfig
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         window.rootViewController = initialNVC
@@ -56,25 +46,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    func cleanupPEPSessionIfNeeded() {
-        if shouldDestroySession {
-            PEPSession.cleanup()
-        }
-    }
-
     private func setupServices() {
-        let keySyncHandshakeService = KeySyncHandshakeService()
         messageModelService = MessageModelService(errorPropagator: errorPropagator,
                                                   cnContactsAccessPermissionProvider: AppSettings.shared,
-                                                  keySyncServiceHandshakeDelegate: keySyncHandshakeService,
-        keySyncStateProvider: AppSettings.shared)
-
-        appConfig = AppConfig(errorPropagator: errorPropagator,
-                              oauth2AuthorizationFactory: oauth2Provider,
-                              keySyncHandshakeService: keySyncHandshakeService)
-
-        // This is a very dirty hack!! See SecureWebViewController docs for details.
-        SecureWebViewController.appConfigDirtyHack = appConfig
+                                                  keySyncServiceHandshakeHandler: KeySyncHandshakeService(),
+                                                  keySyncStateProvider: AppSettings.shared,
+                                                  usePEPFolderProvider: AppSettings.shared,
+                                                  passphraseProvider: userInputProvider)
     }
 
     private func askUserForNotificationPermissions() {
@@ -82,10 +60,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UserNotificationTool.askForPermissions()
     }
 
-    // MARK: - UIApplicationDelegate
+    // MARK: - HELPER
+
+    private func cleanup(andCall completionHandler:(UIBackgroundFetchResult) -> Void,
+                                result:UIBackgroundFetchResult) {
+        completionHandler(result)
+    }
+}
+
+// MARK: - UIApplicationDelegate
+
+extension AppDelegate {
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        Log.shared.errorAndCrash("applicationDidReceiveMemoryWarning")
+        //Log.shared.errorAndCrash("applicationDidReceiveMemoryWarning")
     }
 
     func application(_ application: UIApplication,
@@ -95,16 +83,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // and pretty much don't do anything.
             return false
         }
+        Log.shared.verboseLoggingEnabled = AppSettings.shared.verboseLogginEnabled
+
+        Log.shared.logDebugInfo()
 
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
-
-        Appearance.pEp()
-
+        Appearance.setup()
         setupServices()
-
         askUserForNotificationPermissions()
+        var result = setupInitialViewController()
 
-        let result = setupInitialViewController()
+        if let openedToOpenFile = launchOptions?[UIApplication.LaunchOptionsKey.url] as? URL {
+            // We have been opened by the OS to handle a certain file.
+            result = handleUrlTheOSHasBroughtUsToForgroundFor(openedToOpenFile)
+        }
 
         return result
     }
@@ -133,7 +125,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         Log.shared.info("applicationDidEnterBackground")
         Session.main.commit()
-        shouldDestroySession = true
         messageModelService?.finish()
     }
 
@@ -153,22 +144,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Do nothing if unit tests are running
             return
         }
-        shouldDestroySession = false
         UserNotificationTool.resetApplicationIconBadgeNumber()
         messageModelService?.start()
     }
 
-    /// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    /// Called when the application is about to terminate. Save data if appropriate. See also
+    /// applicationDidEnterBackground:.
     /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
         messageModelService?.stop()
-        shouldDestroySession = true
-        cleanupPEPSessionIfNeeded()
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        
+
         guard let messageModelService = messageModelService else {
             Log.shared.error("no networkService")
             return
@@ -190,11 +179,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    func application(_ app: UIApplication, open url: URL,
+    func application(_ app: UIApplication,
+                     open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        // Unclear if this is needed, presumabley doesn't get invoked for OAuth2 because
-        // SFSafariViewController is involved there.
-        return oauth2Provider.processAuthorizationRedirect(url: url)
+        return handleUrlTheOSHasBroughtUsToForgroundFor(url)
     }
 
     func application(_ application: UIApplication, continue userActivity: NSUserActivity,
@@ -204,14 +192,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return oauth2Provider.processAuthorizationRedirect(url: theUrl)
         }
         return false
-    }
-
-    // MARK: - HELPER
-
-    private func cleanup(andCall completionHandler:(UIBackgroundFetchResult) -> Void,
-                                result:UIBackgroundFetchResult) {
-        PEPSession.cleanup()
-        completionHandler(result)
     }
 }
 
@@ -225,3 +205,51 @@ extension AppDelegate {
         }
     }
 }
+
+// MARK: - Client Certificate Import
+
+extension AppDelegate {
+
+    @discardableResult
+    private func handleUrlTheOSHasBroughtUsToForgroundFor(_ url: URL) -> Bool {
+        if url.isMailto {
+            guard let mailto = Mailto(url: url) else {
+                Log.shared.errorAndCrash("Mailto parsing failed")
+                return false
+            }
+            UIUtils.showComposeView(from: mailto)
+            return true
+        }
+        switch url.pathExtension {
+        case ClientCertificateImportViewController.pEpClientCertificateExtension:
+            return handleClientCertificateImport(forCertAt: url)
+        default:
+            Log.shared.errorAndCrash("Unexpected call. open for file with extention: %@",
+                                     url.pathExtension)
+        }
+        return false
+    }
+
+    private func handleClientCertificateImport(forCertAt url: URL) -> Bool {
+        guard url.pathExtension == ClientCertificateImportViewController.pEpClientCertificateExtension else {
+            Log.shared.errorAndCrash("This method is only for .pEp12 files.")
+            return false
+        }
+        guard let topVC = UIApplication.currentlyVisibleViewController() else {
+            Log.shared.errorAndCrash("We must have a VC at this point.")
+            return false
+        }
+        guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController else {
+            return false
+        }
+        vc.viewModel = ClientCertificateImportViewModel(certificateUrl: url, delegate: vc)
+        if let topDelegate = topVC as? ClientCertificateImportViewControllerDelegate {
+            vc.delegate = topDelegate
+        }
+        vc.modalPresentationStyle = .fullScreen
+        topVC.present(vc, animated: true)
+        return true
+    }
+}
+
+

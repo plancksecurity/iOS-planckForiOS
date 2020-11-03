@@ -1,0 +1,51 @@
+{
+  "images" : [
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-mistrusted-english-1.pdf"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-mistrusted-catalan.pdf",
+      "locale" : "ca"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-mistrusted-german.pdf",
+      "locale" : "de"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-mistrusted-english.pdf",
+      "locale" : "en"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-mistrusted-spanish.pdf",
+      "locale" : "es"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-mistrusted-french.pdf",
+      "locale" : "fr"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-mistrusted-dutch.pdf",
+      "locale" : "nl"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "pep-status-mistrusted-turkish.pdf",
+      "locale" : "tr"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  },
+  "properties" : {
+    "preserves-vector-representation" : true,
+    "localizable" : true
+  }
+}

@@ -15,18 +15,18 @@ open class MessageSenderCell: MessageCell {
         super.updateCell(model: model, message: message)
         titleLabel?.text = message.from?.displayString
         
-        let attributed = NSMutableAttributedString(
-            string: NSLocalizedString("To: ", comment: "Compose field title"))
-        let attributes = [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15.0),
-            NSAttributedString.Key.foregroundColor: UIColor.lightGray
-        ]
+        let font = UIFont.pepFont(style: .footnote, weight: .semibold)
+        titleLabel?.font = font
+
+        let attributes = [NSAttributedString.Key.font: font,
+                          NSAttributedString.Key.foregroundColor: UIColor.lightGray]
         var temp: [String] = []
         message.allRecipients.forEach { (recepient) in
             let recepient = recepient.address
             temp.append(recepient)
         }
-        attributed.append(NSAttributedString(string: temp.joined(separator: ", "), attributes: attributes))
-        valueLabel?.attributedText = attributed
+        let toDestinataries = NSLocalizedString("To:", comment: "Compose field title") + temp.joined(separator: ", ")
+        valueLabel?.attributedText = NSAttributedString(string: toDestinataries, attributes: attributes as [NSAttributedString.Key : Any])
+        valueLabel?.font = UIFont.pepFont(style: .caption1, weight: .regular)
     }
 }

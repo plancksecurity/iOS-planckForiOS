@@ -18,9 +18,14 @@ extension Data {
         if let cs = charset {
             let enc = stringEncodingFromIANACharset(cs)
             return String(data: self, encoding: enc)?.applyingDos2Unix()
-        } else {
-            return String(data: self, encoding: String.Encoding.utf8)?.applyingDos2Unix()
+        } else if let tryUtf8 = String(data: self,
+                                       encoding: String.Encoding.utf8)?.applyingDos2Unix() {
+            return tryUtf8
+        } else if let tryAscii = String(data: self,
+                                        encoding: String.Encoding.ascii)?.applyingDos2Unix() {
+            return tryAscii
         }
+        return nil
     }
 
     public func debugSave(basePath: String, fileName: String, ext: String = "data") {

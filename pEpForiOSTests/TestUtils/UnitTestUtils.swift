@@ -12,7 +12,7 @@ import Foundation
 struct UnitTestUtils {
 
     /// The maximum wait time for unit tests that are synchronous.
-    static let waitTime: TimeInterval = 0.001
+    static let waitTime: TimeInterval = 0.01
 
     /// The maximum wait time for unit tests that are asynchronous.
     //!!!: dirty!

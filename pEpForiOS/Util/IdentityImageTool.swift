@@ -89,7 +89,6 @@ class IdentityImageTool {
         return cache.image
     }
 
-
     func identityImage(for identityKey: IdentityKey,
                        imageSize: CGSize = CGSize.defaultAvatarSize,
                        textColor: UIColor = UIColor.white,
@@ -99,7 +98,7 @@ class IdentityImageTool {
             return cachedImage
         }
 
-        var image:UIImage?
+        var image: UIImage?
         var contactHasBeenCheckedForImage = false
         if let addressBookID = identityKey.addressBookId {
             // Get image from system AddressBook if any
@@ -111,24 +110,20 @@ class IdentityImageTool {
         }
 
         if image == nil {
-            // We cound not find an image anywhere. Let's create one with the initials
-            var initials = "?"
-            if let userName = identityKey.userName {
-                initials = userName.initials()
+            // We couldn't find an image, so we create one with the initials.
+            if let nameInitials = identityKey.userName?.initials() {
+                image = identityImageFromName(initials: nameInitials,
+                size: imageSize,
+                textColor: textColor,
+                imageBackgroundColor: backgroundColor)
             } else {
-                let namePart = identityKey.address.namePartOfEmail()
-                initials = namePart.initials()
+                image = UIImage(named: "pEpforiOS-avatar")
             }
-            image = identityImageFromName(initials: initials,
-                                          size: imageSize,
-                                          textColor: textColor,
-                                          imageBackgroundColor: backgroundColor)
         }
         if let safeImage = image {
             // save image to cache
             IdentityImageTool.imageCache[identityKey] =
-                IdentityImageTool.CacheObject(image: safeImage,
-                                              cnContactHasBeenTakenIntoAccount: contactHasBeenCheckedForImage)
+                IdentityImageTool.CacheObject(image: safeImage, cnContactHasBeenTakenIntoAccount: contactHasBeenCheckedForImage)
         }
         return image
     }

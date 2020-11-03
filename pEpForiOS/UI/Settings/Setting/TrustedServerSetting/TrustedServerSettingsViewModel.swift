@@ -51,7 +51,7 @@ struct TrustedServerSettingsViewModel {
             return
         }
 
-        if  shouldShowWaringnBeforeChangingTrustState(forAccount: account, newValue: newValue) {
+        if  shouldShowWaringnBeforeChangingTrustState(forAccount: account, storeSecurely: newValue) {
             delegate?.showAlertBeforeStoringSecurely(forIndexPath: indexPath)
         } else {
             updateRowData(indexPath: indexPath, toValue: newValue)
@@ -70,7 +70,7 @@ extension TrustedServerSettingsViewModel {
 
     private func setStoreSecurely(forAccount account: Account, toValue newValue: Bool) {
         account.imapServer?.manuallyTrusted = !newValue
-        account.save()
+        account.session.commit()
     }
 
     mutating private func updateRowData(indexPath: IndexPath, toValue newValue: Bool) {
@@ -79,8 +79,8 @@ extension TrustedServerSettingsViewModel {
     }
 
     private func shouldShowWaringnBeforeChangingTrustState(forAccount account: Account,
-                                                           newValue: Bool) -> Bool {
-        return  newValue && account.shouldShowWaringnBeforeTrusting
+                                                           storeSecurely: Bool) -> Bool {
+        return  !storeSecurely && account.shouldShowWaringnBeforeTrusting
     }
 
     mutating private func reset() {

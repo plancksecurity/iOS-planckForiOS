@@ -7,7 +7,9 @@
 //
 
 import Foundation
+
 import MessageModel
+import pEpIOSToolbox
 
 struct ReplyAlertCreator {
 
@@ -16,7 +18,7 @@ struct ReplyAlertCreator {
 
     public init(replyAllChecker: ReplyAllPossibleCheckerProtocol) {
         self.replyAllChecker = replyAllChecker
-        alert = UIAlertController.pEpAlertController()
+        alert = UIUtils.actionSheet()
     }
 
     public func withReplyOption(
@@ -46,6 +48,24 @@ struct ReplyAlertCreator {
                                                style: .default,
                                                handler: handler)
         alert.addAction(alertActionForward)
+        return self
+    }
+
+    public func withToggelMarkSeenOption(for message: Message?) -> ReplyAlertCreator {
+        guard let message = message else {
+            Log.shared.errorAndCrash("No Mesasge to toggel seen state for")
+            return self
+        }
+        let text = message.imapFlags.seen ?
+            NSLocalizedString("Mark as unread",
+                              comment: "Email Detail View reply button menu - toggle seen state button text: unread") :
+            NSLocalizedString("Mark as read",
+                              comment: "Email Detail View reply button menu - toggle seen state button text: read")
+        let toggleMarkSeenOption = UIAlertAction(title: text, style: .default) { (action) in
+            Message.setSeenValue(to: [message],
+                                 newValue: !message.imapFlags.seen)
+        }
+        alert.addAction(toggleMarkSeenOption)
         return self
     }
 

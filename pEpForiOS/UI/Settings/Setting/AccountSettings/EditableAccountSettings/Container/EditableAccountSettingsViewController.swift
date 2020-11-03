@@ -7,17 +7,19 @@
 //
 
 import UIKit
+
 import MessageModel
+import pEpIOSToolbox
 
-final class EditableAccountSettingsViewController: BaseViewController {
+final class EditableAccountSettingsViewController: UIViewController {
 
-    @IBOutlet weak var saveButton: UIBarButtonItem!
+    @IBOutlet private weak var saveButton: UIBarButtonItem!
 
     var viewModel: EditableAccountSettingsViewModel?
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setUp()
         viewModel?.delegate = self
     }
 
@@ -32,8 +34,8 @@ final class EditableAccountSettingsViewController: BaseViewController {
     }
 
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
-            view.endEditing(true)
-            viewModel?.handleSaveButton()
+        view.endEditing(true)
+        viewModel?.handleSaveButton()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -47,10 +49,21 @@ final class EditableAccountSettingsViewController: BaseViewController {
                 EditableAccountSettingsTableViewModel(account: account,
                                                       delegate: tableViewController)
             viewModel?.tableViewModel = tableViewController.viewModel
-            tableViewController.appConfig = appConfig
         default:
             break
         }
+    }
+}
+
+// MARK: - Private
+
+extension EditableAccountSettingsViewController {
+    private struct Localized {
+        static let navigationTitle = NSLocalizedString("Account",
+                                                       comment: "Account settings")
+    }
+    private func setUp() {
+        title = Localized.navigationTitle
     }
 }
 
@@ -58,7 +71,7 @@ final class EditableAccountSettingsViewController: BaseViewController {
 
 extension EditableAccountSettingsViewController: EditableAccountSettingsViewModelDelegate {
     func showErrorAlert(error: Error) {
-        UIUtils.show(error: error, inViewController: self)
+        UIUtils.show(error: error)
     }
 
     func showLoadingView() {

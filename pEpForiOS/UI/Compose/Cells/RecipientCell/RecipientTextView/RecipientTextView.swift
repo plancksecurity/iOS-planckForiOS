@@ -10,7 +10,7 @@ import UIKit
 import pEpIOSToolbox
 
 class RecipientTextView: UITextView {
-    public var viewModel: RecipientTextViewModel?{
+    public var viewModel: RecipientTextViewModel? {
         didSet {
             viewModel?.delegate = self
             delegate = self
@@ -23,7 +23,7 @@ class RecipientTextView: UITextView {
 
     public func setInitialText() {
         reportWidthChange()
-        if let attr = viewModel?.inititalText() {
+        if let attr = viewModel?.inititalText(), attr.string != "" {
             attributedText = attr
         } else {
             text = " "
@@ -73,7 +73,7 @@ extension RecipientTextView: UITextViewDelegate {
                 return false
             }
         } else if hasSelection {
-            // user deletes a selected attachment
+            // user deleted a selected attachment
             let attachments = attributedText.recipientTextAttachments(range: selectedRange)
             vm.handleReplaceSelectedAttachments(attachments)
             return true
@@ -93,6 +93,71 @@ extension RecipientTextView: UITextViewDelegate {
             return true
         }
         return vm.shouldInteract(with: textAttachment)
+    }
+
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+
+        // Sometimes Paste menu item doesn't appear. This is workaround for this.
+        if action == #selector(UIResponderStandardEditActions.paste(_:))
+            && UIPasteboard.general.hasStrings {
+            return true
+        }
+
+        guard let customItems: [UIMenuItem] = UIMenuController.shared.menuItems else {
+            return super.canPerformAction(action, withSender: sender)
+        }
+        let actions = customItems.map { $0.action }
+        if actions.contains(action) {
+            return true
+        }
+
+        return super.canPerformAction(action, withSender: sender)
+    }
+
+    override func cut(_ sender: Any?) {
+        addSelectedEmailsToClipboard()
+        let attributedStringSelectedTextToCut = NSMutableAttributedString(attributedString: attributedText)
+        attributedStringSelectedTextToCut.deleteCharacters(in: selectedRange)
+        attributedText = NSAttributedString(attributedString: attributedStringSelectedTextToCut)
+    }
+
+    override func copy(_ sender: Any?) {
+        addSelectedEmailsToClipboard()
+    }
+
+    override func paste(_ sender: Any?) {
+        guard UIPasteboard.general.hasStrings,
+            let items = UIPasteboard.general.strings else {
+            // Nothing to do in our case, no items, no more care about it
+            return
+        }
+        items.forEach { add(recipient: $0) }
+    }
+
+
+    /// Get text attachments from selected text and copy recipients email addresses to Pasteboard/Clipboard
+    private func addSelectedEmailsToClipboard() {
+        let selection = attributedText.recipientTextAttachments(range: selectedRange)
+        if selection.isEmpty {
+            // Text attachments with recipients not found. We should stop here. No more actions on Pasteboard is needed
+            return
+        }
+        UIPasteboard.general.strings = [String]()
+        selection
+            .filter { !$0.recipient.address.isEmpty }
+            .forEach { UIPasteboard.general.strings?.append($0.recipient.address) }
+    }
+
+    func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        /// iOS 14 introduced a bug: it's not possible to focus the textfield when there is an attachment.
+        /// Instead of calling the begin editing delegate of the textfield this method is called.
+        /// So we just trigger the focus manually.
+        /// For more information please go to https://pep.foundation/jira/browse/IOS-2472
+        if #available(iOS 14, *) {
+            textView.selectedRange = NSRange(location: viewModel?.numberOfRecipientAttachments ?? 1, length: 0)
+            textView.becomeFirstResponder()
+        }
+        return true
     }
 }
 

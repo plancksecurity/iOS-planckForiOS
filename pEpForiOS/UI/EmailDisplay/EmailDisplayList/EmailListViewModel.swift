@@ -7,15 +7,19 @@
 //
 
 import Foundation
+
 import pEpIOSToolbox
 import MessageModel
-import PEPObjCAdapterFramework
 
 
 protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
     func setToolbarItemsEnabledState(to newValue: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
+    func showEmail(forCellAt: IndexPath)
+    func showEditDraftInComposeView()
+    func select(itemAt indexPath: IndexPath)
+    func deselect(itemAt indexPath: IndexPath)
 }
 
 // MARK: - EmailListViewModel
@@ -68,6 +72,13 @@ class EmailListViewModel: EmailDisplayViewModel {
         return Folder.localizedName(realName: folderToShow.title)
     }
 
+    /// This is used to handle the selection row when it receives an update
+    /// and also when swipeCellAction is performed to store from which cell the action is done.
+    public var lastSelectedIndexPath: IndexPath?
+
+    public var isDraftsPreviewMode: Bool {
+        return folderToShow is UnifiedDraft
+    }
     /// - Parameter indexPath: indexPath to check editability for.
     /// - returns:  Whether or not to show compose view rather then the email for message
     ///             represented by row at given `indexPath`.
@@ -81,6 +92,18 @@ class EmailListViewModel: EmailDisplayViewModel {
     }
 
     public func isSelectable(messageAt indexPath: IndexPath) -> Bool {
+        // Validate that indexPath.row is valid, return false if not.
+        do {
+            let resultCount = try messageQueryResults.count()
+            if indexPath.row >= resultCount {
+                Log.shared.errorAndCrash(message: "indexPath.row (\(indexPath.row)) out of bounds (\(resultCount)")
+                return false
+            }
+        } catch {
+            Log.shared.errorAndCrash(error: error)
+            return false
+        }
+
         let message = messageQueryResults[indexPath.row]
         if message.parent.folderType == .outbox {
             return false
@@ -108,20 +131,6 @@ class EmailListViewModel: EmailDisplayViewModel {
         }
     }
 
-    /// Used for UI fine tuning: Do not instatiate a EmailDetailVC if there is one already to avoid
-    /// minor gliches while longer HTML body is loaded.
-    public var emailDetailViewIsAlreadyShown: Bool {
-        return emailDetailViewModel != nil
-    }
-
-    // Forwards selection to EmailDetailView. Can be used to avoid re-instantiating of
-    // EmailDetailView on every selection. Not sure if this is a good idea, smells like
-    // needless optimization. Remove if it causes trouble. In this case also remove
-    //`emailDetailViewIsAlreadyShown` and it's usage.
-    public func handleSelected(itemAt indexPath: IndexPath) {
-        emailDetailViewModel?.select(itemAt: indexPath)
-    }
-
     /// Whether or not to show the Tutorial
     public var shouldShowTutorialWizard: Bool {
         return AppSettings.shared.shouldShowTutorialWizard
@@ -132,19 +141,22 @@ class EmailListViewModel: EmailDisplayViewModel {
         AppSettings.shared.shouldShowTutorialWizard = false
     }
 
-    /// - returns: action to trigger if user clicks destructive button
-    public func getDestructiveAction(forMessageAt index: Int) -> SwipeActionDescriptor {
+    /// Returns the descriptor for the destructive action, it could be archive or trash
+    /// - Parameter index: The index of the row
+    /// - Returns: The descriptor to trigger the action if user taps a destructive button
+    public func getDestructiveDescriptor(forMessageAt index: Int) -> SwipeActionDescriptor {
         let parentFolder = getParentFolder(forMessageAt: index)
         let defaultDestructiveAction: SwipeActionDescriptor
             = parentFolder.defaultDestructiveActionIsArchive
                 ? .archive
                 : .trash
-
         return folderIsOutbox(parentFolder) ? .trash : defaultDestructiveAction
     }
 
-    /// - returns: action to trigger if user clicks "flag" button
-    public func getFlagAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
+    /// Returns the descriptor with the Flag status (May be flag or unflag)
+    /// - Parameter index: The index of the row
+    /// - Returns: The descriptor to trigger the action if user taps "flag" button
+    public func getFlagDescriptor(forMessageAt index: Int) -> SwipeActionDescriptor? {
         let parentFolder = getParentFolder(forMessageAt: index)
         if folderIsDraftsOrOutbox(parentFolder) {
             return nil
@@ -154,8 +166,22 @@ class EmailListViewModel: EmailDisplayViewModel {
         }
     }
 
-    /// - returns: action to trigger if user clicks "more" button
-    public func getMoreAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
+    /// Returns the descriptor with the Read status (May be read or unread)
+    /// - Parameter index: The index of the row
+    /// - Returns: The descriptor to trigger the action if user taps "read" button
+    public func getReadDescriptor(forMessageAt index: Int) -> SwipeActionDescriptor? {
+        let parentFolder = getParentFolder(forMessageAt: index)
+        if folderIsDraftsOrOutbox(parentFolder) {
+            return nil
+        }
+        let seen = messageQueryResults[index].imapFlags.seen
+        return seen ? .unread : .read
+    }
+    
+    /// Returns the descriptor for the option More
+    /// - Parameter index: The index of the row
+    /// - Returns: The descriptor to trigger the action if user taps "More" button
+    public func getMoreDescriptor(forMessageAt index: Int) -> SwipeActionDescriptor? {
         let parentFolder = getParentFolder(forMessageAt: index)
         if folderIsDraftsOrOutbox(parentFolder) {
             return nil
@@ -289,6 +315,26 @@ class EmailListViewModel: EmailDisplayViewModel {
             delegate.setToolbarItemsEnabledState(to: true)
         } else {
             delegate.setToolbarItemsEnabledState(to: false)
+        }
+    }
+
+    /// Handles did select row action and make a decision what to do next (show different view or something else)
+    public func handleDidSelectRow(indexPath: IndexPath) {
+        guard let del = delegate as? EmailListViewModelDelegate else {
+            Log.shared.errorAndCrash("Wrong Delegate")
+            return
+        }
+
+        if isSelectable(messageAt: indexPath) {
+            lastSelectedIndexPath = indexPath
+            del.select(itemAt: indexPath)
+            if isEditable(messageAt: indexPath) {
+                del.showEditDraftInComposeView()
+            } else {
+                del.showEmail(forCellAt: indexPath)
+            }
+        } else {
+            del.deselect(itemAt: indexPath)
         }
     }
 
@@ -448,7 +494,6 @@ extension EmailListViewModel {
 // MARK: - FilterViewDelegate
 
 extension EmailListViewModel: FilterViewDelegate {
-
     func filterChanged(newFilter: MessageQueryResultsFilter) {
         setNewFilterAndReload(filter: newFilter)
     }
@@ -501,6 +546,10 @@ extension EmailListViewModel: EmailDetailViewModelSelectionChangeDelegate {
 
     func emailDetailViewModel(emailDetailViewModel: EmailDetailViewModel,
                               didSelectItemAt indexPath: IndexPath) {
-        delegate?.select(itemAt: indexPath)
+        guard let del = delegate as? EmailListViewModelDelegate else {
+            Log.shared.errorAndCrash("Wrong Delegate")
+            return
+        }
+        del.select(itemAt: indexPath)
     }
 }

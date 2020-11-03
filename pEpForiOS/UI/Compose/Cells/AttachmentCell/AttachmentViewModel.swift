@@ -8,6 +8,8 @@
 
 import MessageModel
 
+import pEpIOSToolbox
+
 class AttachmentViewModel: CellViewModel {
     /// - note: Before crafting a message to send, this is a dangling Attachment! (message == nil).
     ///         Thus it MUST life on a private Session and MUST NOT be saved.
@@ -17,27 +19,23 @@ class AttachmentViewModel: CellViewModel {
     init(attachment: Attachment) {
         self.attachment = attachment
     }
-
-    static let defaultFileName = NSLocalizedString("unknown",
-                                                   comment:
-        "Displayed attachment filename if unknown")
     public var fileName: String {
         var result: String? = nil
         attachment.session.performAndWait { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             result = me.attachment.fileName
         }
-        return result ?? AttachmentViewModel.defaultFileName
+        return result ?? Attachment.defaultFileName
     }
 
     public var fileExtension: String {
         var result: String? = nil
         attachment.session.performAndWait { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             guard let mimeType = me.attachment.mimeType else {

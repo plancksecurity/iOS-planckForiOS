@@ -1,0 +1,78 @@
+/* Class = "UILabel"; text = "Hannibal Chew"; ObjectID = "0t8-um-E1E"; */
+"0t8-um-E1E.text" = "Hannibal Chew";
+
+/* Class = "UILabel"; accessibilityLabel = "trustWordsLabel"; ObjectID = "0uK-Ys-aO5"; */
+"0uK-Ys-aO5.accessibilityLabel" = "trustWordsLabel";
+
+/* Class = "UILabel"; text = "OUTDISTANCE BLAH BLAH2 BLAH3 BLAH4 BLAH5"; ObjectID = "0uK-Ys-aO5"; */
+"0uK-Ys-aO5.text" = "OUTDISTANCE BLAH BLAH2 BLAH3 BLAH4 BLAH5";
+
+/* Class = "UILabel"; text = "In order to make communication Secure & Trusted, you will have to compare the Trustwords bellow with your communication partner."; ObjectID = "5xj-yI-46H"; */
+"5xj-yI-46H.text" = "In order to make communication Secure & Trusted, you will have to compare the Trustwords bellow with your communication partner.";
+
+/* Class = "UIButton"; normalTitle = "Reset"; ObjectID = "6bf-Gd-X5g"; */
+"6bf-Gd-X5g.normalTitle" = "Reset";
+
+/* Class = "UILabel"; accessibilityLabel = "trustWordsLabel"; ObjectID = "82G-iU-EVg"; */
+"82G-iU-EVg.accessibilityLabel" = "trustWordsLabel";
+
+/* Class = "UILabel"; text = "OUTDISTANCE BLAH BLAH2 BLAH3 BLAH4 BLAH5"; ObjectID = "82G-iU-EVg"; */
+"82G-iU-EVg.text" = "OUTDISTANCE BLAH BLAH2 BLAH3 BLAH4 BLAH5";
+
+/* Class = "UILabel"; text = "Reset all p≡p data for this comunication partner:"; ObjectID = "aT5-52-Wck"; */
+"aT5-52-Wck.text" = "Bu iletişim ortağı için tüm p≡p verilerini sıfırla:";
+
+/* Class = "UIButton"; accessibilityLabel = "confirmButton"; ObjectID = "cAK-ZW-JLu"; */
+"cAK-ZW-JLu.accessibilityLabel" = "confirmButton";
+
+/* Class = "UIButton"; normalTitle = "Confirm"; ObjectID = "cAK-ZW-JLu"; */
+"cAK-ZW-JLu.normalTitle" = "Confirm";
+
+/* Class = "UIButton"; accessibilityLabel = "wrongButton"; ObjectID = "cLm-E4-Lx2"; */
+"cLm-E4-Lx2.accessibilityLabel" = "wrongButton";
+
+/* Class = "UIButton"; normalTitle = "Decline"; ObjectID = "cLm-E4-Lx2"; */
+"cLm-E4-Lx2.normalTitle" = "Decline";
+
+/* Class = "UILabel"; text = "Hannibal Chew"; ObjectID = "eOu-ky-MME"; */
+"eOu-ky-MME.text" = "Hannibal Chew";
+
+/* Class = "UIButton"; normalTitle = "Reset"; ObjectID = "ETf-Fn-foo"; */
+"ETf-Fn-foo.normalTitle" = "Reset";
+
+/* Class = "UILabel"; text = "Mistrusted"; ObjectID = "Gxz-4i-XBu"; */
+"Gxz-4i-XBu.text" = "Mistrusted";
+
+/* Class = "UILabel"; text = "Your communication partner is mistrusted."; ObjectID = "HIb-Ji-yfV"; */
+"HIb-Ji-yfV.text" = "Your communication partner is mistrusted.";
+
+/* Class = "UILabel"; text = "Reset all p≡p data for this comunication partner:"; ObjectID = "K85-bq-q6Q"; */
+"K85-bq-q6Q.text" = "Bu iletişim ortağı için tüm p≡p verilerini sıfırla:";
+
+/* Class = "UIButton"; normalTitle = "Reset"; ObjectID = "kDe-b5-usQ"; */
+"kDe-b5-usQ.normalTitle" = "Reset";
+
+/* Class = "UIButton"; accessibilityLabel = "confirmButton"; ObjectID = "Q7n-8c-O25"; */
+"Q7n-8c-O25.accessibilityLabel" = "confirmButton";
+
+/* Class = "UIButton"; normalTitle = "Confirm"; ObjectID = "Q7n-8c-O25"; */
+"Q7n-8c-O25.normalTitle" = "Confirm";
+
+/* Class = "UILabel"; text = "Hannibal Chew"; ObjectID = "S81-yN-lUE"; */
+"S81-yN-lUE.text" = "Hannibal Chew";
+
+/* Class = "UIButton"; accessibilityLabel = "wrongButton"; ObjectID = "sVr-xT-f8t"; */
+"sVr-xT-f8t.accessibilityLabel" = "wrongButton";
+
+/* Class = "UIButton"; normalTitle = "Decline"; ObjectID = "sVr-xT-f8t"; */
+"sVr-xT-f8t.normalTitle" = "Decline";
+
+/* Class = "UILabel"; text = "Reset all p≡p data for this comunication partner:"; ObjectID = "x6I-yN-Uyv"; */
+"x6I-yN-Uyv.text" = "Bu iletişim ortağı için tüm pEp verilerini sıfırla:";
+
+/* Class = "UILabel"; text = "Mistrusted"; ObjectID = "XAP-1X-nYK"; */
+"XAP-1X-nYK.text" = "Mistrusted";
+
+/* Class = "UIBarButtonItem"; title = "Options"; ObjectID = "zNZ-mq-ElZ"; */
+"zNZ-mq-ElZ.title" = "Options";
+

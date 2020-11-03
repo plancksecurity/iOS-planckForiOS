@@ -17,7 +17,7 @@ protocol AttachmentsViewHelperDelegate: class {
     func didCreate(attachmentsView: UIView?)
 }
 
-class AttachmentsViewHelper {
+final class AttachmentsViewHelper {
     weak var delegate: AttachmentsViewHelperDelegate?
     var attachmentsImageView: AttachmentsView?
 
@@ -46,12 +46,8 @@ class AttachmentsViewHelper {
     }
 
     func attachmentInfo(attachment: Attachment) -> AttachmentSummaryView.AttachmentInfo {
-        let (name, ext) =
-            attachment.fileName?.splitFileExtension() ?? (Constants.defaultFileName, nil)
-        var finalExt: String? = nil
-        if let mimeType = attachment.mimeType{
-            finalExt = ext ?? mimeTypes?.fileExtension(fromMimeType: mimeType)
-        }
+        let (name, finalExt) =
+            attachment.fileName?.splitFileExtension() ?? (Attachment.defaultFileName, nil)
 
         return AttachmentSummaryView.AttachmentInfo(
             filename: name.extractFileNameOrCid(),

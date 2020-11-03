@@ -15,19 +15,18 @@ extension String {
     static public let space = " "
 
     static let unquoteRegex = try! NSRegularExpression(pattern: "^\"(.*)\"$", options: [])
-
-    static let namePartOfEmailRegex = try! NSRegularExpression(pattern: "^([^@]+)@", options: [])
-
     static let endWhiteSpaceRegex = try! NSRegularExpression(pattern: "^(.*?)\\s*$", options: [])
+    static let newlineRegex = try! NSRegularExpression(pattern: "(\\n|\\r\\n)+", options: [])
+    static let threeOrMoreNewlinesRegex = try! NSRegularExpression(pattern: "(\\n|\\r\\n){3,}", options: [])
+    static let fileExtensionRegex = try! NSRegularExpression(pattern: "^(.+?)\\.([^.]+)$", options: [])
+    static let emailRegex = try! NSRegularExpression(pattern: "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}", options: [])
 
-    static let newlineRegex = try! NSRegularExpression(
-        pattern: "(\\n|\\r\\n)+", options: [])
-
-    static let threeOrMoreNewlinesRegex = try! NSRegularExpression(pattern: "(\\n|\\r\\n){3,}",
-                                                                   options: [])
-
-    static let fileExtensionRegex = try! NSRegularExpression(pattern: "^([^.]+)\\.([^.]+)$",
-                                                             options: [])
+    private var firstLetterCapitalized: String {
+        if count > 0 {
+            return prefix(ofLength: 1).capitalized
+        }
+        return ""
+    }
 
     /**
      Trims whitespace from back and front.
@@ -67,24 +66,6 @@ extension String {
         return trimmed().unquote().trimmed()
     }
 
-    /**
-     - Returns: The name part of an email, e.g. "test@blah.com" -> "test"
-     */
-    public func namePartOfEmail() -> String {
-            let matches = String.namePartOfEmailRegex.matches(
-                in: self, options: [], range: wholeRange())
-            if matches.count == 1 {
-                let m = matches[0]
-                let r = m.range(at: 1)
-                if r.location != NSNotFound {
-                    let s = self as NSString
-                    let result = s.substring(with: r)
-                    return result
-                }
-            }
-        return self.replacingOccurrences(of: "@", with: "_")
-    }
-
     public func containsString(_ substring: String, ignoreCase: Bool = true,
                                ignoreDiacritic: Bool = true) -> Bool {
 
@@ -119,7 +100,7 @@ extension String {
             let regex =
                 try NSRegularExpression(pattern: pattern,
                                         options: NSRegularExpression.Options.caseInsensitive)
-            let range = NSMakeRange(0, self.count)
+            let range = NSMakeRange(0, count)
             self = regex.stringByReplacingMatches(in: self,
                                                   options: [],
                                                   range: range,
@@ -164,6 +145,20 @@ extension String {
      */
     public func matches(pattern: String) -> Bool {
         return matchesPattern(pattern, reOptions: [])
+    }
+
+    /// Find substrings for given pattern
+    /// - Parameter pattern: regex pattern
+    public func find(pattern: String) -> [String] {
+        do {
+            let regex = try NSRegularExpression(pattern: pattern)
+            let string = NSString(string: self)
+            let results = regex.matches(in: self, range: NSMakeRange(0, string.length))
+            return results.map { string.substring(with: $0.range) }
+        } catch let error {
+            print("Error, maybe invalid regex: " + error.localizedDescription)
+        }
+        return []
     }
 
     /**
@@ -354,7 +349,7 @@ extension String {
 }
 
 extension NSAttributedString {
-    
+
     public func wholeRange() -> NSRange {
         return NSRange(location: 0, length: length)
     }
@@ -387,40 +382,46 @@ extension String {
      - Returns: The first part of a String, with a maximum length of `ofLength`.
      */
     public func prefix(ofLength: Int) -> String {
-        if self.count >= ofLength {
-            let start = self.startIndex
-            return String(prefix(upTo: self.index(start, offsetBy: ofLength)))
-        } else {
-            return self
+        if count >= ofLength {
+            let start = startIndex
+            return String(prefix(upTo: index(start, offsetBy: ofLength)))
         }
+        return self
     }
 
     /**
      - Returns: A list of words contained in that String. Primitively separates by
      delimiters like "-", or " ".
      */
-    func tokens() -> [String] {
-        return self.components(separatedBy: CharacterSet(charactersIn: "- ")).map {
+    fileprivate func tokens() -> [String] {
+        let pattern = "[^A-Za-z0-9]"
+        return components(separatedBy: CharacterSet(charactersIn: "- ")).map {
             return $0.trimmingCharacters(in: .whitespacesAndNewlines)
-        }
+        }.map { $0.replacingOccurrences(of: pattern, with: "", options: [.regularExpression]) }
     }
-
-    /**
-     - Returns: The initials of the String interpreted as a name,
-     that is ideally the first letters of the given name and the last name.
-     If that is not possible, improvisations are used.
-     */
-    public func initials() -> String {
-        let words = tokens()
+    
+    /// - Returns: the initials of the String interpreted as a name.
+    /// that is ideally the first letters of the given name and lastname.
+    /// If it only has one word (name or lastname) that will be taken to get the initial.
+    /// If not possible, returns nil.
+    public func initials() -> String? {
+        var words = tokens()
+        // Remove emails
+        words = words.filter { !String.emailRegex.matchesWhole(string: $0) }
+        //Non words, no initials
         if words.count == 0 {
-            return "?"
+            return nil
         }
-        if words.count == 1 {
-            return self.prefix(ofLength: 2)
-        }
+
+        //One word, take the first letter
         let word1 = words[0]
+        if words.count == 1 {
+            return word1.firstLetterCapitalized
+        }
+
+        //More than one word, take the initials of the first and the last words
         let word2 = words[words.count - 1]
-        return "\(word1.prefix(ofLength: 1).capitalized)\(word2.prefix(ofLength: 1).capitalized)"
+        return "\(word1.firstLetterCapitalized)\(word2.firstLetterCapitalized)"
     }
 
     /**

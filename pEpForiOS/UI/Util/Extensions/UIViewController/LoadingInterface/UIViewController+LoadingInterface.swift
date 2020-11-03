@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 final class LoadingInterface {
     static weak var loadingInterface: UIView?
 
@@ -15,15 +17,14 @@ final class LoadingInterface {
         if loadingInterface == nil {
             addLoadingInterfaceToKeyWindow()
         }
-
         UIView.animate(withDuration: 0.5,
                        delay: 0,
                        options: .beginFromCurrentState,
                        animations: {
                         loadingInterface?.alpha = 1
-            },
+        },
                        completion: { didFinishAnimation in
-                            completion?(didFinishAnimation)
+                        completion?(didFinishAnimation)
         })
     }
 
@@ -35,7 +36,7 @@ final class LoadingInterface {
                        options: .beginFromCurrentState,
                        animations: {
                         loadingInterface?.alpha = 0
-            },
+        },
                        completion: { didFinishAnimation in
                         guard didFinishAnimation else {
                             completion?(didFinishAnimation)

@@ -122,6 +122,11 @@ public class RecipientTextViewModel {
         return [String.returnKey, String.space]
     }
 
+    /// Returns the number of recipient attachments
+    public var numberOfRecipientAttachments: Int {
+        return recipientAttachments.count
+    }
+
     /// Parses a text for one new valid email address (and handles it if found).
     ///
     /// - Parameter text: Text thet might alread contain contact-image-text-attachments.
@@ -137,7 +142,7 @@ public class RecipientTextViewModel {
                 identity = existing
             } else {
                 identity = Identity(address: address)
-                identity.save()
+                identity.session.commit()
             }
             var (newText, attachment) = text.imageInserted(withAddressOf: identity,
                                                            in: range,

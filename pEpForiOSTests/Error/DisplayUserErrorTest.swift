@@ -14,9 +14,9 @@ import XCTest
 class DisplayUserErrorTest: XCTestCase {
     let smtpSentErrors: [SmtpSendError] = [.illegalState(#function),
                                            .authenticationFailed(#function, "unknown"),
-                                           .connectionLost(#function),
+                                           .connectionLost(#function, "Connection lost!"),
                                            .connectionTerminated(#function),
-                                           .connectionTimedOut(#function),
+                                           .connectionTimedOut(#function, "Connection timed out!"),
                                            .badResponse(#function)]
     let imapSyncErrors: [ImapSyncOperationError] = [.illegalState(#function),
                                            .authenticationFailed(#function, "unknown"),
@@ -55,7 +55,8 @@ class DisplayUserErrorTest: XCTestCase {
          .couldNotFindMessage(info: "couldNotFindMessage")]
 
     let backgroundPepErrors: [BackgroundError.PepError] =
-        [.encryptionError(info: "encryptionError")]
+        [.passphraseRequired(info: "passphraseRequired"),
+         .wrongPassphrase(info: "passphraseRequired")]
 
     func testSmtpSentErrors() {
         for error in smtpSentErrors {

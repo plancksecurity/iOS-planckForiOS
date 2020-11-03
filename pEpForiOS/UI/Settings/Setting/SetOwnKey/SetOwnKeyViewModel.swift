@@ -9,49 +9,67 @@
 import Foundation
 
 import MessageModel
-import PEPObjCAdapterFramework
 
 class SetOwnKeyViewModel {
-    public var userName: String?
     public var email: String?
     public var fingerprint: String?
 
-    public var rawErrorString: String?
+    private let keyImporter: KeyImportUtilProtocol
 
-    public func setOwnKey() {
+    public init(keyImporter: KeyImportUtilProtocol = KeyImportUtil()) {
+        self.keyImporter = keyImporter
+    }
+
+    /// Tries to set the own key based on member variables and
+    /// invokes `callback`.
+    /// - Parameter callback: After an attempt of invoking `setOwnKey`, will get called
+    /// with an error message in case of error, or nil, if the `setOwnKey` succeeded.
+    public func setOwnKey(callback: @escaping (String?) -> ()) {
         guard
             let theEmail = email,
             let theFingerprint = fingerprint,
             !theEmail.isEmpty,
             !theFingerprint.isEmpty
             else {
-                rawErrorString = NSLocalizedString(
+                callback(NSLocalizedString(
                     "Please provide an email and a fingerprint. The email must match an existing account.",
-                    comment: "Validation error for set_own_key UI")
+                    comment: "Validation error for set_own_key UI"))
                 return
         }
 
-        guard let theIdent = ownIdentityBy(email: theEmail) else {
-            rawErrorString = NSLocalizedString(
-                "No account found with the given email.",
-                comment: "Error when no account found for set_own_key UI")
+        let accountNotFoundTextError = NSLocalizedString("No account found with the given email address.", comment: "Error when no account found for set_own_key UI")
+        guard let identity = ownIdentityBy(email: theEmail) else {
+            callback(accountNotFoundTextError)
             return
         }
 
-        let someIdent = theIdent.pEpIdentity()
-        someIdent.fingerPrint = nil // just in case
+        guard let theUserName = identity.userName else {
+            let theAccountHasNoUserNameTextError = NSLocalizedString("The account with the given email address has no user name.", comment: "Error when account found for set_own_key UI, but has no user name")
+            callback(theAccountHasNoUserNameTextError)
+            return
+        }
 
-        do {
-            let session = PEPSession()
-            try session.setOwnKey(someIdent, fingerprint: theFingerprint.despaced())
-            rawErrorString = nil
-            // We got a new key. Try to derypt yet undecryptable messages.
-            Message.tryRedecryptYetUndecryptableMessages()
-        } catch {
-            rawErrorString = error.localizedDescription
+        keyImporter.setOwnKey(userName: theUserName,
+                              address: theEmail,
+                              fingerprint: theFingerprint,
+                              errorCallback: { err in
+                                if let setOwnKeyError = err as? KeyImportUtil.SetOwnKeyError {
+                                    switch(setOwnKeyError) {
+                                    case .noMatchingAccount:
+                                        callback(accountNotFoundTextError)
+                                    }
+                                } else {
+                                    callback(err.localizedDescription)
+                                }
+        }) {
+            callback(nil)
         }
     }
+}
 
+// MARK: - Private
+
+extension SetOwnKeyViewModel {
     private func ownIdentityBy(email: String) -> Identity? {
         return Account.by(address: email)?.user
     }

@@ -13,10 +13,7 @@ import MessageModel
 /// Note: Conforming classes have to inherit from NSObject. Conforming to UITextViewDelegate
 /// requires that for some reason.
 protocol UrlClickHandlerProtocol: SecureWebViewUrlClickHandlerProtocol, UITextViewDelegate {
-    /// - Parameters:
-    ///   - actor: View Controller to act on
-    ///   - appConfig: appConfig. Required to pass around
-    init(actor: UIViewController, appConfig: AppConfig)
+
 }
 
 class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
@@ -30,29 +27,16 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
             self = scheme
         }
     }
-    /// View controller to act on.
-    private weak var actor: UIViewController?
-    private let appConfig: AppConfig
-
-    required init(actor: UIViewController, appConfig: AppConfig) {
-        self.actor = actor
-        self.appConfig = appConfig
-    }
 
     private func presentComposeView(forRecipientInUrl url: URL) {
-        if let theActor = actor {
-            UIUtils.presentComposeView(forRecipientInUrl: url, on: theActor, appConfig: appConfig)
-        }
+        let mailto = Mailto(url: url)
+        UIUtils.showComposeView(from: mailto)
     }
-
+    
     private func presentAvailableMailtoUrlHandlingChoices(for url: URL, at rect: CGRect, at view: UIView) {
-        if let theActor = actor {
-            UIUtils.presentActionSheetWithContactOptions(forUrl: url,
-                                                         on: theActor,
-                                                         at: rect,
-                                                         at: view,
-                                                         appConfig: appConfig)
-        }
+        UIUtils.showActionSheetWithContactOptions(forUrl: url,
+                                                  at: rect,
+                                                  at: view)
     }
 
     // MARK: - UITextViewDelegate
@@ -98,8 +82,7 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
 
     // MARK: - SecureWebViewUrlClickHandlerProtocol
 
-    func secureWebViewController(_ webViewController: SecureWebViewController,
-                                 didClickMailToUrlLink url: URL) {
+    public func didClickOn(mailToUrlLink url: URL) {
         presentComposeView(forRecipientInUrl: url)
     }
 }

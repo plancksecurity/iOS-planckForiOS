@@ -7,7 +7,7 @@
 //
 
 import MessageModel
-import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 protocol EmailDetailViewModelDelegate: EmailDisplayViewModelDelegate {
 
@@ -35,6 +35,14 @@ class EmailDetailViewModel: EmailDisplayViewModel {
     /// Whether or not a message has been inserted or removed before the currently shown message.
     /// Used to figure out if we need to scroll to the currently viewed message after update.
     private var updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = false
+    /// Use in queryResultsDelegate to serialize calls to VC to guarantee correct order.
+    private let queryResultsDelegateHandlingQueue: OperationQueue = {
+        let createe = OperationQueue()
+        createe.name = "EmailDetailViewModel-queryResultsDelegateHandlingQueue)"
+        createe.qualityOfService = .userInteractive
+        createe.maxConcurrentOperationCount = 1
+        return createe
+    }()
 
     weak var selectionChangeDelegate: EmailDetailViewModelSelectionChangeDelegate?
 
@@ -42,6 +50,17 @@ class EmailDetailViewModel: EmailDisplayViewModel {
          delegate: EmailDisplayViewModelDelegate? = nil) {
         super.init(messageQueryResults: messageQueryResults)
         self.messageQueryResults.rowDelegate = self
+    }
+    
+    /// TrustManagementViewModel getter
+    var trustManagementViewModel: TrustManagementViewModel? {
+        get {
+            guard let message = lastShownMessage else {
+                Log.shared.error("Message not found")
+                return nil
+            }
+            return TrustManagementViewModel(message: message, pEpProtectionModifyable: false)
+        }
     }
 
     /// Replaces and uses the currently used message query with the given one. The displayed
@@ -53,13 +72,6 @@ class EmailDetailViewModel: EmailDisplayViewModel {
         try messageQueryResults.startMonitoring()
         reset()
         delegate?.reloadData(viewModel: self)
-    }
-
-    /// You can call this to show a specific, user selected message instead of instanziating a
-    /// new EmailDetailView.
-    /// - Parameter indexPath: indexPath to select
-    public func select(itemAt indexPath: IndexPath) {
-        delegate?.select(itemAt: indexPath)
     }
 
     /// Action handling
@@ -147,35 +159,41 @@ class EmailDetailViewModel: EmailDisplayViewModel {
                 Log.shared.info("Nothing shown")
                 return nil
         }
+        
         if msg.imapFlags.flagged {
-            return #imageLiteral(resourceName: "icon-flagged")
+            return UIImage(named: "pEpForiOS-icon-flagged")
         } else {
-            return #imageLiteral(resourceName: "icon-unflagged")
+            return UIImage(named: "pEpForiOS-icon-unflagged")
         }
     }
 
     /// - Parameter indexPath: indexPath of the cell to show the pEp rating for.
     /// - returns: pEp rating for cell at given indexPath
-    public func pEpRating(forItemAt indexPath: IndexPath) -> PEPRating {
+    public func pEpRating(forItemAt indexPath: IndexPath, completion: @escaping (Rating) -> Void) {
         guard let message = message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash("No msg")
-            return .undefined
+            completion(.undefined)
+            return
         }
-        return message.pEpRating()
+        return message.pEpRating { (rating) in
+            DispatchQueue.main.async {
+                completion(rating)
+            }
+        }
     }
 
     /// - Parameter indexPath: indexPath of the cell to compute result for.
     /// - returns:  Whether or not to show privacy icon for cell at given indexPath
-    public func shouldShowPrivacyStatus(forItemAt indexPath: IndexPath) -> Bool {
+    public func shouldShowPrivacyStatus(forItemAt indexPath: IndexPath,
+                                        completion: @escaping (Bool)->Void){
         guard let message = message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash("No msg")
-            return false
+            completion(false)
+            return
         }
-        let handshakeCombos = message.handshakeActionCombinations()
-        guard !handshakeCombos.isEmpty else {
-            return false
+        TrustManagementUtil().handshakeCombinations(message: message) { (handshakeCombos) in
+            completion(handshakeCombos.isEmpty ? false : true)
         }
-        return true
     }
 
     /// Destination VM Factory - Move To Folder VM
@@ -187,6 +205,35 @@ class EmailDetailViewModel: EmailDisplayViewModel {
             return nil
         }
         return MoveToAccountViewModel(messages: [msg])
+    }
+
+    /// The number of rows (not yet displayed to the user) before we want to fetch older messages.
+    /// A balance between good user experience (have data in time,
+    /// ideally before the user has scrolled to the last row) and memory usage has to be found.
+    private let numRowsBeforeLastToTriggerFetchOder = 1
+
+    /// Figures out whether or not fetching of older messages should be requested.
+    /// Takes numRowsBeforeLastToTriggerFetchOder into account,
+    ///
+    /// - Parameter row: number of displayed tableView row to base computation on
+    /// - Returns: true if fetch older messages should be requested, false otherwize
+    private func triggerFetchOlder(lastDisplayedRow row: Int) -> Bool {
+        return row >= rowCount - numRowsBeforeLastToTriggerFetchOder
+    }
+
+    // When the user has scrolled down (almost) to the end, we fetch older emails.
+    /// - Parameter indexPath: indexpath to pontetionally fetch older messages for
+    public func fetchOlderMessagesIfRequired(forIndexPath indexPath: IndexPath) {
+        if !triggerFetchOlder(lastDisplayedRow: indexPath.row) {
+            return
+        }
+
+        guard let msg = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("No message from which to get the folder")
+            return
+        }
+
+        msg.parent.fetchOlder(completion: nil)
     }
 }
 
@@ -206,9 +253,7 @@ extension EmailDetailViewModel {
             Log.shared.errorAndCrash("No msg")
             return
         }
-        if !message.imapFlags.seen {
-            message.markAsSeen()
-        }
+        message.markAsSeen()
     }
 
     private func markForRedecryptionIfNeeded(messageRepresentedBy indexPath: IndexPath) {
@@ -224,18 +269,6 @@ extension EmailDetailViewModel {
             pathsForMessagesMarkedForRedecrypt.append(indexPath)
         }
     }
-
-    private func isHandshakePossible(forItemAt indexPath: IndexPath) -> Bool {
-        guard let message = message(representedByRowAt: indexPath) else {
-            Log.shared.errorAndCrash("No msg")
-            return false
-        }
-        let handshakeCombos = message.handshakeActionCombinations()
-        guard !handshakeCombos.isEmpty else {
-            return false
-        }
-        return true
-    }
 }
 
 // MARK: - QueryResultsIndexPathRowDelegate
@@ -243,42 +276,130 @@ extension EmailDetailViewModel {
 extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
 
     func didInsertRow(indexPath: IndexPath) {
-        handleIndexPathIsBeforeCurrentlyShownMessage(insertedIndexPath: indexPath)
-        delegate?.emailListViewModel(viewModel: self, didInsertDataAt: [indexPath])
+        queryResultsDelegateHandlingQueue.addOperation { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed.
+                // Do nothing ...
+                return
+            }
+            let group = DispatchGroup()
+            group.enter()
+            DispatchQueue.main.async {
+                me.handleIndexPathIsBeforeCurrentlyShownMessage(insertedIndexPath: indexPath)
+                me.delegate?.emailListViewModel(viewModel: me, didInsertDataAt: [indexPath])
+                group.leave()
+            }
+            group.wait()
+        }
     }
 
     func didUpdateRow(indexPath: IndexPath) {
-        if pathsForMessagesMarkedForRedecrypt.contains(indexPath) {
-            if let message = message(representedByRowAt: indexPath),
-                !message.pEpRating().isUnDecryptable() {
-                guard let delegate = delegate as? EmailDetailViewModelDelegate else {
-                    Log.shared.errorAndCrash("Inbvalid state")
-                    return
-                }
-                // Previously undecryptable message has successfully been decrypted.
-                delegate.isNotUndecryptableAnyMore(indexPath: indexPath)
+        queryResultsDelegateHandlingQueue.addOperation { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed.
+                // Do nothing ...
+                return
             }
-            pathsForMessagesMarkedForRedecrypt = pathsForMessagesMarkedForRedecrypt.filter { $0 != indexPath }
+            let group = DispatchGroup()
+            group.enter()
+            DispatchQueue.main.async {
+                var messageRating: Rating? = nil
+                let innerGroup = DispatchGroup()
+                if let message = me.message(representedByRowAt: indexPath) {
+                    innerGroup.enter()
+                    message.pEpRating { (rating) in
+                        messageRating = rating
+                        innerGroup.leave()
+                    }
+                }
+                innerGroup.notify(queue: DispatchQueue.main) {
+                    defer { group.leave() }
+                    if me.pathsForMessagesMarkedForRedecrypt.contains(indexPath) {
+                        if let rating = messageRating, !rating.isUnDecryptable() {
+                            guard let delegate = me.delegate as? EmailDetailViewModelDelegate else {
+                                Log.shared.errorAndCrash("Inbvalid state")
+                                return
+                            }
+                            // Previously undecryptable message has successfully been decrypted.
+                            delegate.isNotUndecryptableAnyMore(indexPath: indexPath)
+                        }
+                        me.pathsForMessagesMarkedForRedecrypt = me.pathsForMessagesMarkedForRedecrypt.filter { $0 != indexPath }
+                    }
+                    me.delegate?.emailListViewModel(viewModel: me, didUpdateDataAt: [indexPath])
+                }
+            }
+            group.wait()
         }
-        delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: [indexPath])
     }
 
     func didDeleteRow(indexPath: IndexPath) {
-        handleIndexPathIsBeforeCurrentlyShownMessage(insertedIndexPath: indexPath)
-        delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: [indexPath])
+        queryResultsDelegateHandlingQueue.addOperation { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed.
+                // Do nothing ...
+                return
+            }
+            let group = DispatchGroup()
+            group.enter()
+            DispatchQueue.main.async {
+                defer { group.leave() }
+                me.handleIndexPathIsBeforeCurrentlyShownMessage(insertedIndexPath: indexPath)
+                me.delegate?.emailListViewModel(viewModel: me, didRemoveDataAt: [indexPath])
+            }
+            group.wait()
+        }
     }
 
     func didMoveRow(from: IndexPath, to: IndexPath) {
-        delegate?.emailListViewModel(viewModel: self, didMoveData: from, toIndexPath: to)
+        queryResultsDelegateHandlingQueue.addOperation { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed.
+                // Do nothing ...
+                return
+            }
+            let group = DispatchGroup()
+            group.enter()
+            DispatchQueue.main.async {
+                defer { group.leave() }
+                me.delegate?.emailListViewModel(viewModel: me, didMoveData: from, toIndexPath: to)
+            }
+            group.wait()
+        }
     }
 
     func willChangeResults() {
-        updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = false
-        delegate?.willReceiveUpdates(viewModel: self)
+        queryResultsDelegateHandlingQueue.addOperation { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed.
+                // Do nothing ...
+                return
+            }
+            let group = DispatchGroup()
+            group.enter()
+            DispatchQueue.main.async {
+                defer { group.leave() }
+                me.updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = false
+                me.delegate?.willReceiveUpdates(viewModel: me)
+            }
+            group.wait()
+        }
     }
 
     func didChangeResults() {
-        delegate?.allUpdatesReceived(viewModel: self)
+        queryResultsDelegateHandlingQueue.addOperation { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed.
+                // Do nothing ...
+                return
+            }
+            let group = DispatchGroup()
+            group.enter()
+            DispatchQueue.main.async {
+                defer { group.leave() }
+                me.delegate?.allUpdatesReceived(viewModel: me)
+            }
+            group.wait()
+        }
     }
 
     private func handleIndexPathIsBeforeCurrentlyShownMessage(insertedIndexPath: IndexPath) {

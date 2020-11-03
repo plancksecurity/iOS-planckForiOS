@@ -21,7 +21,7 @@ extension URL {
     ///
     /// - Returns: the first address of a mailto: URL if parseable, nil otherwize
     func firstRecipientAddress() -> String? {
-        let schemeStriped = self.absoluteString.replacingOccurrences(of: URL.schemeMailto, with: "")
+        let schemeStriped = absoluteString.replacingOccurrences(of: URL.schemeMailto, with: "")
         var result: String?
         if schemeStriped.contains(find: "?") {
             result = schemeStriped.components(separatedBy: "?").first
@@ -30,5 +30,18 @@ extension URL {
         }
         let isValid = result?.isProbablyValidEmail() ?? false
         return isValid ? result : nil
+    }
+
+    /// Indicates if it's a mailto: url.
+    public var isMailto: Bool {
+        return absoluteString.starts(with: "mailto:")
+    }
+
+    /// Retrives the mailto object if possible, otherwise nil.
+    public var mailto: Mailto? {
+        if isMailto {
+            return Mailto(url: self)
+        }
+        return nil
     }
 }

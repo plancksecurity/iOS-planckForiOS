@@ -8,8 +8,10 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 /// Enables the user to move an IMAP message to a folder of her choice
-class MoveToAccountViewController: BaseViewController {
+class MoveToAccountViewController: UIViewController {
     static let storyboardId = "MoveToAccountViewController"
     @IBOutlet var tableview: UITableView!
     var viewModel: MoveToAccountViewModel?
@@ -30,7 +32,7 @@ class MoveToAccountViewController: BaseViewController {
     }
 
     private func setupTableView() {
-        BaseTableViewController.setupCommonSettings(tableView: tableview)
+        tableview.hideSeperatorForEmptyCells()
     }
 
     private func setupNavigationBar() {
@@ -63,10 +65,13 @@ extension MoveToAccountViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        if let vm = viewModel?[indexPath.row] {
-            cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
-            cell.textLabel?.text = vm.title
+        guard let vm = viewModel?[indexPath.row] else {
+            Log.shared.errorAndCrash("VM not found.")
+            return UITableViewCell()
         }
+        cell.accessoryType = .disclosureIndicator
+        cell.textLabel?.text = vm.title
+        cell.textLabel?.font = UIFont.pepFont(style: .callout, weight: .regular)
         return cell
     }
 }
@@ -87,8 +92,7 @@ extension MoveToAccountViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showAccount" {
-            if let vc = segue.destination as? MoveToFolderTableViewController, let appCfg = self.appConfig, let vm = selectedViewModel {
-                vc.appConfig = appCfg
+            if let vc = segue.destination as? MoveToFolderTableViewController, let vm = selectedViewModel {
                 vc.viewModel = vm
             }
         }

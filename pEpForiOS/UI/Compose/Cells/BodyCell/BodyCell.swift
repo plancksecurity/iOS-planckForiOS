@@ -64,8 +64,9 @@ extension BodyCell: BodyCellViewModelDelegate {
         let selectedRange = textView.selectedRange
         let attrText = NSMutableAttributedString(attributedString: textView.attributedText)
         attrText.replaceCharacters(in: selectedRange, with: text)
+        let font = UIFont.pepFont(style: .body, weight: .regular)
         attrText.addAttribute(NSAttributedString.Key.font,
-                              value: UIFont.pEpInput,
+                              value: font,
                               range: NSRange(location: 0, length: attrText.length))
         textView.attributedText = attrText
         viewModel?.handleTextChange(newText: textView.text,
@@ -97,6 +98,11 @@ extension BodyCell {
         setupContextMenu()
     }
 
+    func textViewDidEndEditing(_ textView: UITextView) {
+        viewModel?.handleDidEndEditing(attributedText: textView.attributedText)
+        tearDownContextMenu()
+    }
+
     func textView(_ textView: UITextView,
                   shouldChangeTextIn range: NSRange,
                   replacementText text: String) -> Bool {
@@ -105,10 +111,6 @@ extension BodyCell {
             return true
         }
        return vm.shouldReplaceText(in: range, of: textView.attributedText, with: text)
-    }
-
-    func textViewDidEndEditing(_ textView: UITextView) {
-        tearDownContextMenu()
     }
 
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
@@ -128,9 +130,9 @@ extension BodyCell {
 
 extension BodyCell {
     private func setupContextMenu() {
-        let media = UIMenuItem(title: viewModel?.contextMenuItemTitleAttachMedia ?? "",
+        let media = UIMenuItem(title: viewModel?.contextMenuItemTitleAddPhotoOrVideo ?? "",
                                action: #selector(userClickedSelectMedia))
-        let attachment = UIMenuItem(title: viewModel?.contextMenuItemTitleAttachFile ?? "",
+        let attachment = UIMenuItem(title: viewModel?.contextMenuItemTitleAddDocument ?? "",
                                     action: #selector(userClickedSelectDocument))
         UIMenuController.shared.menuItems = [media, attachment]
     }

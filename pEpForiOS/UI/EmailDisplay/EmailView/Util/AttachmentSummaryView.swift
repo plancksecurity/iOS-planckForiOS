@@ -78,9 +78,9 @@ class AttachmentSummaryView: UIView {
         let (labelFilename, labelExtension) = createLabels()
         addSubview(labelFilename)
 
-        let guide = readableContentGuide
+        let guide = self
         labelFilename.centerXAnchor.constraint(equalTo: guide.centerXAnchor).isActive = true
-        labelFilename.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
+        labelFilename.topAnchor.constraint(equalTo: guide.topAnchor, constant: spaceVertical).isActive = true
 
         labelFilename.widthAnchor.constraint(
             lessThanOrEqualTo: guide.widthAnchor, multiplier: 1,

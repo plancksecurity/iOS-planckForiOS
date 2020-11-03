@@ -10,8 +10,11 @@ import UIKit
 import MessageModel
 import SwipeCellKit
 
-class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
-    public static let storyboardId = "EmailListViewCell"
+final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
+
+    static public let storyboardId = "EmailListViewCell"
+
+    @IBOutlet weak var firstLineStackView: UIStackView!
 
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var subjectLabel: UILabel!
@@ -24,18 +27,6 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
     @IBOutlet weak var attachmentIcon: UIImageView!
     @IBOutlet weak var contactImageView: UIImageView!
 
-    /**
-     Fake constraint for IB to be happy.
-     - Note: This gets deactivated on runtime.
-     */
-    @IBOutlet weak var fakeRatingImageToContactImageVertical: NSLayoutConstraint?
-
-    /**
-     Fake constraint for IB to be happy.
-     - Note: This gets deactivated on runtime.
-     */
-    @IBOutlet weak var fakeRatingImageToContactImageHorizontal: NSLayoutConstraint?
-
     private var viewModel: MessageViewModel?
 
     /**
@@ -47,7 +38,7 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
      */
     private var originalBackgroundSelectionColor: UIColor?
 
-    private var hasAttachment:Bool = false {
+    private var hasAttachment: Bool = false {
         didSet {
             if hasAttachment {
                 attachmentIcon.isHidden = false
@@ -57,7 +48,7 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
         }
     }
 
-    public var isFlagged:Bool = false {
+    public var isFlagged: Bool = false {
         didSet {
             if isFlagged {
                 setFlagged()
@@ -67,7 +58,7 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
         }
     }
 
-    public var isSeen:Bool = false {
+    public var isSeen: Bool = false {
         didSet {
             if isSeen {
                 setSeen()
@@ -92,22 +83,6 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
         resetToDefault()
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        if let constr = fakeRatingImageToContactImageVertical {
-            constr.isActive = false
-        }
-        if let constr = fakeRatingImageToContactImageHorizontal {
-            constr.isActive = false
-        }
-
-        ratingImage.centerXAnchor.constraint(
-            equalTo: contactImageView.rightAnchor).isActive = true
-        ratingImage.centerYAnchor.constraint(
-            equalTo: contactImageView.bottomAnchor).isActive = true
-    }
-
     public func configure(for viewModel: MessageViewModel) {
         self.viewModel = viewModel
 
@@ -115,8 +90,10 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
         // _after_ this function has ended and the cell has already been
         // layouted, leading to a smaller cell than usual.
         summaryLabel.text = " "
-
+        summaryLabel.font = UIFont.pepFont(style: .subheadline, weight: .regular)
+        addressLabel.font = UIFont.pepFont(style: .body, weight: .regular)
         addressLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.displayedUsername)
+        subjectLabel.font = UIFont.pepFont(style: .subheadline, weight: .regular)
         subjectLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.subject)
 
         viewModel.bodyPeekCompletion = { [weak self] bodyPeek in
@@ -128,6 +105,7 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
 
         hasAttachment = viewModel.showAttchmentIcon
         dateLabel.text = viewModel.dateText
+        dateLabel.font = UIFont.pepFont(style: .subheadline, weight: .regular)
 
         // Message threading is not supported. Let's keep it for now. It might be helpful for
         // reimplementing.
@@ -142,7 +120,14 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
                 }
             }
         }
-        setPepRatingImage(image: viewModel.getSecurityBadge())
+        viewModel.getSecurityBadge { [weak self] (badgeImage) in
+            guard let me = self else {
+                // Valid case. The view might have already been dismissed.
+                // Do nothing ...
+                return
+            }
+            me.setPepRatingImage(image: badgeImage)
+        }
     }
 
     public func clear() {
@@ -173,10 +158,8 @@ extension EmailListViewCell {
     //    }
 
     private func setPepRatingImage(image: UIImage?) {
-        if ratingImage.image != image {
-            self.ratingImage.image = image
-            self.ratingImage.isHidden = (image == nil)
-        }
+        ratingImage.image = image
+        ratingImage.isHidden = (image == nil)
     }
 
     private func setContactImage(image: UIImage?) {
@@ -187,8 +170,7 @@ extension EmailListViewCell {
     }
 
     private func resetToDefault() {
-        viewModel?.unsubscribeForUpdates()
-        viewModel = nil
+        clear()
         summaryLabel.text = nil
         ratingImage.isHidden = true
         ratingImage.image = nil
@@ -206,28 +188,26 @@ extension EmailListViewCell {
     }
 
     private func setSeen() {
-        if let font = addressLabel.font {
-            let seenFont = UIFont.systemFont(ofSize: font.pointSize)
-            if font != seenFont {
-                setupLabels(font: seenFont)
-            }
-        }
+        setupLabels(seen: true)
     }
 
     private func unsetSeen() {
-        if let font = addressLabel.font {
-            let font = UIFont.boldSystemFont(ofSize: font.pointSize)
-            setupLabels(font: font)
-        }
+        setupLabels(seen: false)
     }
 
-    private func setupLabels(font: UIFont) {
-        addressLabel.font = font
-        subjectLabel.font = font
-        summaryLabel.font = font
-        dateLabel.font = font
+    private func setupLabels(seen: Bool) {
+        let fontWeight: UIFont.Weight = seen
+            ? .regular
+            : .semibold
+        addressLabel.font = UIFont.pepFont(style: .body,
+                                           weight: fontWeight)
+        subjectLabel.font = UIFont.pepFont(style: .subheadline,
+                                           weight: fontWeight)
+        summaryLabel.font = UIFont.pepFont(style: .subheadline,
+                                           weight: fontWeight)
+        dateLabel.font = UIFont.pepFont(style: .subheadline,
+                                        weight: fontWeight)
     }
-
 
     /// This method highlights the cell that is being pressed.
     /// - Note: We only accept this if the cell is not in edit mode.
@@ -240,12 +220,8 @@ extension EmailListViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: false)
         let viewForHighlight = UIView()
-        self.selectedBackgroundView = viewForHighlight
-        if self.isEditing {
-            viewForHighlight.backgroundColor = UIColor.clear
-        } else {
-            viewForHighlight.backgroundColor = originalBackgroundSelectionColor
-        }
+        selectedBackgroundView = viewForHighlight
+        viewForHighlight.backgroundColor = isEditing ? .clear : originalBackgroundSelectionColor
     }
 
     /// - Returns: " " (a space) instead of an empty String, otherwise the original String

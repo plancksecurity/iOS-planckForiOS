@@ -10,13 +10,22 @@ import Foundation
 import pEpIOSToolbox
 
 /// Suggests a list of Identities that fit to a given sarch string
-class SuggestTableViewController: BaseTableViewController {
+class SuggestTableViewController: UITableViewController {
     static let storyboardId = "SuggestTableViewController"
 
     var viewModel: SuggestViewModel? {
         didSet {
             viewModel?.delegate = self
         }
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.title = title
+        tableView.hideSeperatorForEmptyCells()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        UIHelper.variableCellHeightsTableView(self.tableView)
     }
 }
 
@@ -56,17 +65,37 @@ extension SuggestTableViewController {
 
     public override func tableView(_ tableView: UITableView,
                                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard
-            let viewModel = viewModel,
-            let cell = tableView.dequeueReusableCell(withIdentifier: ContactCell.reuseId,
-                                                       for: indexPath)
-            as? ContactCell else {
-                Log.shared.errorAndCrash("Illegal state")
-                return UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactCell.reuseId,
+                                                     for: indexPath)
+                as? ContactCell else {
+                    Log.shared.errorAndCrash("Illegal state")
+                    return UITableViewCell()
         }
-        let row = viewModel[indexPath.row]
+        setup(cell: cell, withDataFor: indexPath)
+
+        return cell
+    }
+}
+
+// MARK: - Private
+
+extension SuggestTableViewController {
+
+    private func setup(cell: ContactCell, withDataFor indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        guard let row = vm[indexPath.row] else {
+            /// Valid case: the data source changed after the reload was triggered. 
+            return
+        }
         cell.nameLabel.text = row.name
         cell.emailLabel.text = row.email
-        return cell
+        vm.pEpRatingIcon(for: row) { (icon) in
+            DispatchQueue.main.async {
+                cell.pEpStatusImageView.image = icon
+            }
+        }
     }
 }

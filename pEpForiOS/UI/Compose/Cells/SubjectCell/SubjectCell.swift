@@ -8,15 +8,22 @@
 
 import UIKit
 
-class SubjectCell: TextViewContainingTableViewCell {
+final class SubjectCell: TextViewContainingTableViewCell {
     static let reuseId = "SubjectCell"
-    var viewModel: SubjectCellViewModel?
+
+    @IBOutlet weak var subjectLabel: UILabel!
+
+    private var viewModel: SubjectCellViewModel?
 
     public func setup(with viewModel: SubjectCellViewModel) {
         self.viewModel = viewModel
-        if viewModel.content != nil {
-            self.textView.text = viewModel.content
-        }
+        setStyle()
+        textView.text = viewModel.content
+    }
+
+    private func setStyle() {
+        textView.font = UIFont.pepFont(style: .footnote, weight: .regular)
+        subjectLabel.font = UIFont.pepFont(style: .footnote, weight: .regular)
     }
 }
 

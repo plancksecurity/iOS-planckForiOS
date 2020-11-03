@@ -113,9 +113,8 @@ extension NSAttributedString {
                 let attachString = NSAttributedString(attachment: at)
                 new.append(attachString)
             }
-
             new.addAttribute(NSAttributedString.Key.font,
-                             value: UIFont.pEpInput,
+                             value: UIFont.pepFont(style: .footnote, weight: .regular),
                              range: NSRange(location: 0, length: new.length)
             )
             new.addAttribute(NSAttributedString.Key.baselineOffset,
@@ -139,6 +138,19 @@ extension NSAttributedString {
         )
         return createe
     }
+
+    /// Concatenates two attributed strings.
+    ///
+    /// - Parameters:
+    ///   - lhs: first string
+    ///   - rhs: string to concatenate to first string
+    /// - Returns: lhs + rhs concatenated
+    static public func +(lhs: NSAttributedString, rhs: NSAttributedString) -> NSAttributedString {
+        let result = NSMutableAttributedString()
+        result.append(lhs)
+        result.append(rhs)
+        return result
+    }
 }
 
 extension NSMutableAttributedString {
@@ -152,9 +164,7 @@ extension NSMutableAttributedString {
     }
 
     @discardableResult public func normal(_ text: String) -> NSMutableAttributedString {
-        let attrs:[NSAttributedString.Key: Any] =
-            [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)]
-
+        let attrs:[NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .body)]
         let normal =  NSMutableAttributedString(string: text, attributes: attrs)
         self.append(normal)
         return self

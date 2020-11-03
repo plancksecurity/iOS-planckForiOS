@@ -2,7 +2,7 @@
 //  LoginViewController.swift
 //  pEp
 //
-//  Created by Miguel Berrocal Gómez on 13/07/2018.
+//  Created by Xavier Algarra on 13/07/2018.
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
@@ -15,45 +15,31 @@ protocol LoginViewControllerDelegate: class  {
     func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController)
 }
 
-final class LoginViewController: BaseViewController {
-    //Remove when account type is mgerge
-    //TODO: Xavia this enum is in Account selector view model, this is just a place holder. Remove it and use yours.
-    enum AccountType {
-        case gmail
-        case other
-
-        var isOauth: Bool {
-            return self != .other
-        }
-    }
+final class LoginViewController: UIViewController {
 
     weak var delegate: LoginViewControllerDelegate?
+    
+    @IBOutlet private weak var pepSyncLabel: UILabel!
+    @IBOutlet private weak var syncStackView: UIStackView!
+    @IBOutlet private weak var user: AnimatedPlaceholderTextfield!
+    @IBOutlet private weak var password: AnimatedPlaceholderTextfield!
+    @IBOutlet private weak var emailAddress: AnimatedPlaceholderTextfield!
+    @IBOutlet private weak var loginButton: UIButton!
+    @IBOutlet private weak var dismissButton: UIButton!
+    @IBOutlet private weak var dismissButtonLeft: UIButton!
+    @IBOutlet private weak var loginButtonIPadLandscape: UIButton!
+    @IBOutlet private weak var manualConfigButton: UIButton!
+    @IBOutlet private weak var mainContainerView: UIView!
+    @IBOutlet private weak var stackView: UIStackView!
+    @IBOutlet private weak var scrollView: DynamicHeightScrollView!
+    @IBOutlet private weak var scrollViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var loginButtonConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var pEpSyncSwitch: UISwitch!
 
-    @IBOutlet weak var user: AnimatedPlaceholderTextfield!
-    @IBOutlet weak var password: AnimatedPlaceholderTextfield!
-    @IBOutlet weak var emailAddress: AnimatedPlaceholderTextfield!
-    @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var dismissButton: UIButton!
-    @IBOutlet weak var dismissButtonLeft: UIButton!
-    @IBOutlet weak var loginButtonIPadLandscape: UIButton!
-    @IBOutlet weak var manualConfigButton: UIButton!
-    @IBOutlet weak var mainContainerView: UIView!
-    @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var scrollView: LoginScrollView!
-    @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
-    @IBOutlet weak var loginButtonConstraint: NSLayoutConstraint!
-    @IBOutlet weak var pEpSyncSwitch: UISwitch!
-
-    var loginViewModel: LoginViewModel?
+    var viewModel: LoginViewModel?
     var offerManualSetup = false
-    /// Use this property if is an oauth login. This will hide password TextFiled and show the Oauth screen.
-    var accountType: AccountType = .other {
-        didSet {
-            password.isHidden = accountType.isOauth
-            password.isEnabled = !accountType.isOauth
-        }
-    }
+
     var isCurrentlyVerifying = false {
         didSet {
             updateView()
@@ -62,19 +48,31 @@ final class LoginViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setupViewModel()
-        configureView()
-        configureAppearance()
-
-        setManualSetupButtonHidden(true)
+        setFonts()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setup()
         updateView()
+        setupPasswordField()
+
+        guard let accountType = viewModel?.verifiableAccount.accountType else {
+            Log.shared.errorAndCrash(message: "Lacking viewModel.verifiableAccount.accountType")
+            return
+        }
+        if accountType == .icloud {
+            showiCloudAlert()
+        }
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setManualSetupButtonHidden(manualConfigButton.isHidden)
+        syncStackView.axis = UIDevice.isSmall && isLandscape ? .vertical : .horizontal
+        syncStackView.superview?.layoutIfNeeded()
+    }
+    
     @IBAction func dismissButtonAction(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
@@ -99,7 +97,11 @@ final class LoginViewController: BaseViewController {
                              offerManualSetup: false)
             return
         }
-        guard !viewModelOrCrash().exist(address: email) else {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        guard !vm.exist(address: email) else {
             isCurrentlyVerifying = false
             handleLoginError(error: LoginViewController.LoginError.accountExistence,
                              offerManualSetup: false)
@@ -113,16 +115,17 @@ final class LoginViewController: BaseViewController {
             return
         }
 
-        viewModelOrCrash().accountVerificationResultDelegate = self
+        vm.accountVerificationResultDelegate = self
 
         // isOauthAccount is use to disable for ever the password field (when loading this view)
         // isOAuth2Possible is use to hide password field only if isOauthAccount is false and the
         // user type a possible ouath in the email textfield.
-        if viewModelOrCrash().isOAuth2Possible(email: email) || accountType.isOauth {
-            let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
-            viewModelOrCrash().loginWithOAuth2(
-                viewController: self, emailAddress: email, userName: userName,
-                oauth2Authorizer: oauth)
+        if vm.verifiableAccount.accountType.isOauth {
+            let oauth = OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer()
+            vm.loginWithOAuth2(viewController: self,
+                               emailAddress: email,
+                               userName: userName,
+                               oauth2Authorizer: oauth)
         } else {
             guard let pass = password.text, pass != "" else {
                 handleLoginError(error: LoginViewController.LoginError.missingPassword,
@@ -130,18 +133,18 @@ final class LoginViewController: BaseViewController {
                 return
             }
 
-            viewModelOrCrash().login(emailAddress: email,
-                                displayName: userName,
-                                     password: pass)
+            vm.login(emailAddress: email,
+                     displayName: userName,
+                     password: pass)
         }
     }
 
-    @IBAction func emailChanged(_ sender: UITextField) {
-        updatePasswordField(email: sender.text)
-    }
-
     @IBAction func pEpSyncStateChanged(_ sender: UISwitch) {
-        loginViewModel?.isAccountPEPSyncEnable = sender.isOn
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        vm.isAccountPEPSyncEnable = sender.isOn
     }
 
     func firstResponderTextField() -> UITextField? {
@@ -161,41 +164,14 @@ final class LoginViewController: BaseViewController {
 // MARK: - View model
 
 extension LoginViewController {
-    func createViewModel() -> LoginViewModel {
-        let theLoginViewModel = LoginViewModel(verifiableAccount: VerifiableAccount())
-        theLoginViewModel.loginViewModelLoginErrorDelegate = self
-        theLoginViewModel.loginViewModelOAuth2ErrorDelegate = self
-        return theLoginViewModel
-    }
 
     func setupViewModel() {
-        loginViewModel = createViewModel()
-    }
-
-    func viewModelOrCrash() -> LoginViewModel {
-        if let theVM = loginViewModel {
-            return theVM
-        } else {
-            Log.shared.errorAndCrash("No view model")
-            return createViewModel()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
         }
-    }
-}
-
-// MARK: - Util
-
-extension LoginViewController {
-    func updatePasswordField(email: String?) {
-        guard !accountType.isOauth else { return }
-
-        let oauth2Possible = viewModelOrCrash().isOAuth2Possible(email: email)
-        password.isEnabled = !oauth2Possible
-
-        if oauth2Possible {
-            hidePasswordTextField()
-        } else {
-            showPasswordTextField()
-        }
+        vm.loginViewModelLoginErrorDelegate = self
+        vm.loginViewModelOAuth2ErrorDelegate = self
     }
 }
 
@@ -219,13 +195,12 @@ extension LoginViewController: UITextFieldDelegate {
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        guard UIDevice.current.userInterfaceIdiom != .pad else { return }
-        //If is iOS13+ then this will be trigger in keyboard will appear
-        if !ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 13,
-                                                                          minorVersion: 0,
-                                                                          patchVersion: 0)) {
-            scrollView.scrollAndMakeVisible(textField)
-        }
+
+        let item = textField.inputAssistantItem
+        item.leadingBarButtonGroups = []
+        item.trailingBarButtonGroups = []
+
+        scrollView.scrollAndMakeVisible(textField)
     }
 
     func textField(_ textField: UITextField,
@@ -238,15 +213,19 @@ extension LoginViewController: UITextFieldDelegate {
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
         switch textField {
         case emailAddress:
-            viewModelOrCrash().verifiableAccount.address = textField.text
+            vm.verifiableAccount.address = textField.text
         case password:
-            viewModelOrCrash().verifiableAccount.password = textField.text
+            vm.verifiableAccount.password = textField.text
         case user:
-            viewModelOrCrash().verifiableAccount.userName = textField.text
+            vm.verifiableAccount.userName = textField.text
         default:
-            Log.shared.errorAndCrash("LoginViewController TextField Switch should be exhaustive")
+            Log.shared.errorAndCrash("Unhandled case")
         }
     }
 }
@@ -257,10 +236,15 @@ extension LoginViewController: SegueHandlerType {
     public enum SegueIdentifier: String {
         case noSegue
         case manualConfigSegue
+        case clientCertManagementSegue
     }
 
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
         switch segueIdentifier(for: segue) {
         case .manualConfigSegue:
             guard let navVC = segue.destination as? UINavigationController,
@@ -268,11 +252,11 @@ extension LoginViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("fail to cast to UserInfoViewController")
                     return
             }
-            vc.appConfig = appConfig
             // Give the next model all that we know.
-            vc.model = viewModelOrCrash().verifiableAccount
+            vc.verifiableAccount = vm.verifiableAccount
         default:
-            break
+            Log.shared.errorAndCrash("Unhandled segue type")
+            return
         }
     }
 }
@@ -283,7 +267,7 @@ extension LoginViewController: AccountVerificationResultDelegate {
     func didVerify(result: AccountVerificationResult) {
         GCD.onMain() { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             LoadingInterface.removeLoadingInterface()
@@ -334,12 +318,9 @@ extension LoginViewController {
 extension LoginViewController.LoginError: LocalizedError {
     var errorDescription: String? {
         switch self {
-        case .missingEmail:
-            return NSLocalizedString("A valid email is required",
-                                     comment: "error message for .missingEmail")
-        case .invalidEmail:
-            return NSLocalizedString("A valid email is required",
-                                     comment: "error message for .invalidEmail")
+        case .missingEmail, .invalidEmail:
+            return NSLocalizedString("A valid email address is required",
+                                     comment: "error message for .missingEmail or .invalidEmail")
         case .missingPassword:
             return NSLocalizedString("A non-empty password is required",
                                      comment: "error message for .missingPassword")
@@ -359,9 +340,9 @@ extension LoginViewController.LoginError: LocalizedError {
     }
 }
 
-// MARK: - LoginScrollViewDelegate
+// MARK: - DynamicHeightScrollViewDelegate
 
-extension LoginViewController: LoginScrollViewDelegate {
+extension LoginViewController: DynamicHeightScrollViewDelegate {
     var firstResponder: UIView? {
         get { firstResponderTextField() }
     }
@@ -374,6 +355,14 @@ extension LoginViewController: LoginScrollViewDelegate {
 // MARK: - Private
 
 extension LoginViewController {
+
+    private func setup() {
+        setupViewModel()
+        configureView()
+        configureAppearance()
+        setManualSetupButtonHidden(true)
+    }
+
     private func hidePasswordTextField() {
         UIView.animate(withDuration: 0.2,
                        delay: 0,
@@ -412,20 +401,27 @@ extension LoginViewController {
             navigationController?.navigationBar.isTranslucent = true
             navigationController?.navigationBar.backgroundColor = UIColor.clear
         }
+        navigationItem.leftBarButtonItem?.tintColor = UIColor.white
+        
     }
 
     private func handleLoginError(error: Error, offerManualSetup: Bool) {
-        Log.shared.error("%@", "\(error)")
+        Log.shared.log(error: error)
         isCurrentlyVerifying = false
 
-        var title: String?
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+
+        var title: String
         var message: String?
 
-        if let oauthError = error as? OAuth2AuthViewModelError,
+        if let oauthError = error as? OAuthAuthorizerError,
             oauthError == .noConfiguration {
             title = NSLocalizedString("Invalid Address",
                                       comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")
-            switch accountType {
+            switch vm.verifiableAccount.accountType {
             case .gmail:
                 message = NSLocalizedString("Please enter a valid Gmail address.",
                                             comment: "Fail to log in, email does not match account type")
@@ -433,49 +429,47 @@ extension LoginViewController {
                 Log.shared.errorAndCrash("Login should not do ouath with other email address")
             }
         } else {
-            guard let error = DisplayUserError(withError: error) else {
+            guard let displayError = DisplayUserError(withError: error) else {
                 // Do nothing. The error type is not suitable to bother the user with.
                 return
             }
-            title = error.title
-            message = error.localizedDescription
+            title = displayError.title
+            message = displayError.errorDescription
         }
-
-        let alertView = UIAlertController.pEpAlertController(title: title,
-                                                             message: message,
-                                                             preferredStyle: .alert)
-        alertView.addAction(UIAlertAction(
-            title: NSLocalizedString(
-                "OK",
-                comment: "UIAlertAction ok after error"),
-            style: .default, handler: { [weak self] action in
-                guard let me = self else {
-                    Log.shared.lostMySelf()
-                    return
-                }
-                me.setManualSetupButtonHidden(!offerManualSetup)
-        }))
-        present(alertView, animated: true, completion: nil)
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message, style: .warn) { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.setManualSetupButtonHidden(!offerManualSetup)
+        }
     }
 
     private func configureView() {
-        password.isHidden = accountType.isOauth
-        password.isEnabled = !accountType.isOauth
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
 
-        let isThereAnAccount = viewModelOrCrash().isThereAnAccount()
+        let isThereAnAccount = vm.isThereAnAccount()
         loginButtonConstraint.constant =
             isThereAnAccount ? stackView.bounds.midX - loginButton.bounds.midX : 0
 
         loginButton.convertToLoginButton(
-            placeholder: NSLocalizedString("Log In", comment: "Log in button in Login View"))
+            placeholder: NSLocalizedString("Log In",
+                                           comment: "Log in button in Login View"))
         loginButtonIPadLandscape.convertToLoginButton(
-            placeholder: NSLocalizedString("Log In", comment: "Log in button in Login View"))
+            placeholder: NSLocalizedString("Log In",
+                                           comment: "Log in button in Login View"))
         manualConfigButton.convertToLoginButton(
-            placeholder: NSLocalizedString("Manual setup", comment: "Manual Setup button in Login View"))
+            placeholder: NSLocalizedString("Manual setup",
+                                           comment: "Manual Setup button in Login View"))
         dismissButtonLeft.convertToLoginButton(
-            placeholder: NSLocalizedString("Cancel", comment: "Cancel in button in Login View"))
+            placeholder: NSLocalizedString("Cancel",
+                                           comment: "Cancel in button in Login View"))
         dismissButton.convertToLoginButton(
-            placeholder: NSLocalizedString("Cancel", comment: "Cancel in button in Login View"))
+            placeholder: NSLocalizedString("Cancel",
+                                           comment: "Cancel in button in Login View"))
 
         pEpSyncSwitch.onTintColor = UIColor(hexString: "#58FF75")
 
@@ -484,14 +478,11 @@ extension LoginViewController {
             target: self, action: #selector(LoginViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
 
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            scrollView.isScrollEnabled = false
-        }
         setManualSetupButtonHidden(true)
         hideSpecificDeviceButton()
         configureAnimatedTextFields()
 
-        scrollView.loginScrollViewDelegate = self
+        scrollView.dynamicHeightScrollViewDelegate = self
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(hideSpecificDeviceButton),
@@ -499,15 +490,28 @@ extension LoginViewController {
                                                object: nil)
     }
 
+    private func setupPasswordField() {
+           guard let vm = viewModel else {
+               Log.shared.errorAndCrash("No VM")
+               return
+           }
+           let shouldShow = vm.shouldShowPasswordField
+           password.isHidden = !shouldShow
+           password.isEnabled = shouldShow
+       }
+
     private func configureAnimatedTextFields() {
         user.textColorWithText = .pEpGreen
-        user.placeholder = NSLocalizedString("Display Name", comment: "Display Name TextField Placeholder in Login Screen")
+        user.placeholder = NSLocalizedString("Display Name",
+                                             comment: "Display Name TextField Placeholder in Login Screen")
 
         password.textColorWithText = .pEpGreen
-        password.placeholder = NSLocalizedString("Password", comment: "Password TextField Placeholder in Login Screen")
+        password.placeholder = NSLocalizedString("Password",
+                                                 comment: "Password TextField Placeholder in Login Screen")
 
         emailAddress.textColorWithText = .pEpGreen
-        emailAddress.placeholder = NSLocalizedString("E-mail Address", comment: "Email TextField Placeholder in Login Screen")
+        emailAddress.placeholder = NSLocalizedString("Email Address",
+                                                     comment: "Email TextField Placeholder in Login Screen")
     }
 
     @objc private func hideSpecificDeviceButton() {
@@ -515,7 +519,11 @@ extension LoginViewController {
         let isIPhone = UIDevice.current.userInterfaceIdiom == .phone
         let isIPhoneLandscape = isIPhone && isLandscape()
         let isIpadLandscape = isIpad && isLandscape()
-        let hideCancelButtons = !viewModelOrCrash().isThereAnAccount()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        let hideCancelButtons = !vm.isThereAnAccount()
 
         loginButton.isHidden = isIpadLandscape
         loginButtonIPadLandscape.isHidden = !isIpadLandscape
@@ -530,22 +538,7 @@ extension LoginViewController {
     }
 
     private func setManualSetupButtonHidden(_ hidden: Bool) {
-        guard manualConfigButton.isHidden != hidden else { return }
         manualConfigButton.isHidden = hidden
-        pEpSyncViewCenterHConstraint.constant = hidden ? 0 : -stackView.bounds.midX / 2
-        manualConfigButton.alpha = hidden ? 1 : 0
-
-        UIView.animate(withDuration: 0.25,
-                       delay: 0,
-                       options: .curveEaseInOut,
-                       animations: { [weak self] in
-                        guard let me = self else {
-                            Log.shared.lostMySelf()
-                            return
-                        }
-                        me.manualConfigButton.alpha = hidden ? 0 : 1
-                        me.mainContainerView.layoutIfNeeded()
-        })
     }
 
     private func updateView() {
@@ -555,13 +548,16 @@ extension LoginViewController {
             LoadingInterface.removeLoadingInterface()
         }
 
-        navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = false
+        navigationItem.hidesBackButton = false
 
         dismissButton.isEnabled = !isCurrentlyVerifying
         dismissButtonLeft.isEnabled = !isCurrentlyVerifying
 
         loginButton.isEnabled = !isCurrentlyVerifying
         manualConfigButton.isEnabled = !isCurrentlyVerifying
+
+        setupPasswordField()
     }
 
     private func isLandscape() -> Bool {
@@ -570,5 +566,54 @@ extension LoginViewController {
         } else {
             return UIDevice.current.orientation.isLandscape
         }
+    }
+}
+
+// MARK: - iCloud alert
+
+extension LoginViewController {
+    private func showiCloudAlert() {
+        func openiCloudInfoInBrowser() {
+            let urlString = "https://support.apple.com/en-jo/HT204397"
+            guard let url = URL(string: urlString) else {
+                Log.shared.errorAndCrash(message: "Not a URL? \(urlString)")
+                return
+            }
+            UIApplication.shared.open(url,
+                                      options: [:],
+                                      completionHandler: nil)
+        }
+        UIUtils.showTwoButtonAlert(withTitle: NSLocalizedString("iCloud", comment: "Alert title for iCloud instructions"),
+                                   message: NSLocalizedString("You need to create an app-specific password in your iCloud account.", comment: "iCloud instructions"),
+                                   cancelButtonText: NSLocalizedString("OK", comment: "OK (dismiss) button for iCloud instructions alert"),
+                                   positiveButtonText: NSLocalizedString("Info", comment: "Info button for showing iCloud page"),
+                                   cancelButtonAction: {},
+                                   positiveButtonAction: openiCloudInfoInBrowser,
+                                   style: .default)
+    }
+}
+// MARK: - Accessibility
+
+extension LoginViewController {
+
+    private func setFonts() {
+        emailAddress.font = UIFont.pepFont(style: .callout, weight: .regular)
+        emailAddress.adjustsFontForContentSizeCategory = true
+        password.font = UIFont.pepFont(style: .callout, weight: .regular)
+        password.adjustsFontForContentSizeCategory = true
+        user.font = UIFont.pepFont(style: .callout, weight: .regular)
+        user.adjustsFontForContentSizeCategory = true
+        loginButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        loginButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        dismissButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        dismissButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        manualConfigButton.titleLabel?.font = UIFont.pepFont(style: .callout, weight: .regular)
+        manualConfigButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        dismissButtonLeft.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        dismissButtonLeft.titleLabel?.adjustsFontForContentSizeCategory = true
+        loginButtonIPadLandscape.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        loginButtonIPadLandscape.titleLabel?.adjustsFontForContentSizeCategory = true
+        pepSyncLabel.font = UIFont.pepFont(style: .callout, weight: .regular)
+        pepSyncLabel.adjustsFontForContentSizeCategory = true
     }
 }

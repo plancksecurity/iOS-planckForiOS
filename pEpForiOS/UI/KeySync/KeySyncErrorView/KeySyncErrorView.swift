@@ -7,7 +7,9 @@
 //
 
 import UIKit
+
 import MessageModel
+import pEpIOSToolbox
 
 struct KeySyncErrorView {
     enum KeySyncErrorAlertAction {
@@ -17,9 +19,11 @@ struct KeySyncErrorView {
     private init() {}
 
     static func presentKeySyncError(viewController: UIViewController,
-                             error: Error?,
-                             completion: ((KeySyncErrorResponse) -> ())?) {
-        guard let keySyncErrorView = KeySyncErrorView.errorView(completion: {
+                                    isNewGroup: Bool,
+                                    error: Error?,
+                                    completion: ((KeySyncErrorResponse) -> ())?) {
+        guard let keySyncErrorView = KeySyncErrorView.errorView(isNewGroup: isNewGroup,
+                                                                completion: {
             action in
             switch action {
             case .tryAgain:
@@ -54,40 +58,43 @@ struct KeySyncErrorView {
 
 extension KeySyncErrorView {
 
-    static private func errorView(completion: ((KeySyncErrorAlertAction) -> ())?)
-        -> PEPAlertViewController? {
-            let errorTitle = NSLocalizedString("p≡p Sync", comment: "keySyncWizard animation view title")
-            let errorMessage = NSLocalizedString("Something went wrong with syncing the devices. Please try again.",
-                                                 comment: "keySyncWizard error view message")
+    static private func errorView(isNewGroup: Bool,
+                                  completion: ((KeySyncErrorAlertAction) -> ())?) -> PEPAlertViewController? {
+        let errorTitle = NSLocalizedString("p≡p Sync",
+                                           comment: "keySyncWizard animation view title")
+        let errorMessage = NSLocalizedString("Something went wrong with syncing the devices. Please try again.",
+                                             comment: "keySyncWizard error view message when syncing devices")
+        let errorImage = isNewGroup ? #imageLiteral(resourceName: "pEpForiOS-icon-sync-2nd-device") : #imageLiteral(resourceName: "pEpForiOS-icon-sync-3rd-device")
 
-            let pepAlertViewController =
-                PEPAlertViewController.fromStoryboard(title: errorTitle,
-                                                      message: errorMessage,
-                                                      paintPEPInTitle: true,
-                                                      image: [#imageLiteral(resourceName: "pEpForiOS-icon-device-detected")])
+        let pepAlertViewController =
+            PEPAlertViewController.fromStoryboard(title: errorTitle,
+                                                  message: errorMessage,
+                                                  paintPEPInTitle: true,
+                                                  image: [errorImage],
+                                                  viewModel: PEPAlertViewModel(alertType: .pEpSyncWizard))
 
-            let errorNotNowTitle = NSLocalizedString("Not now",
-                                                     comment: "keySyncWizard error view NotNow button title")
-            let errorNotNowAction = PEPUIAlertAction(title: errorNotNowTitle,
-                                                     style: .pEpGray,
-                                                     handler: { alert in
-                                                        completion?(.notNow)
-            })
+        let errorNotNowTitle = NSLocalizedString("Not now",
+                                                 comment: "keySyncWizard error view Not Now button title")
+        let errorNotNowAction = PEPUIAlertAction(title: errorNotNowTitle,
+                                                 style: .pEpGreyButtonLines,
+                                                 handler: { alert in
+                                                    completion?(.notNow)
+        })
 
-            let errorTryAaginTitle = NSLocalizedString("Try Again",
-                                                       comment: "keySyncWizard error view Try Again button title")
-            let errorTryAaginAction = PEPUIAlertAction(title: errorTryAaginTitle,
-                                                       style: .pEpBlue,
-                                                       handler: { alert in
-                                                        completion?(.tryAgain)
-            })
-            pepAlertViewController?.add(action: errorNotNowAction)
-            pepAlertViewController?.add(action: errorTryAaginAction)
+        let errorTryAaginTitle = NSLocalizedString("Try Again",
+                                                   comment: "keySyncWizard error view Try Again button title")
+        let errorTryAgainAction = PEPUIAlertAction(title: errorTryAaginTitle,
+                                                   style: .pEpTextDark,
+                                                   handler: { alert in
+                                                    completion?(.tryAgain)
+        })
+        pepAlertViewController?.add(action: errorNotNowAction)
+        pepAlertViewController?.add(action: errorTryAgainAction)
 
-            pepAlertViewController?.modalPresentationStyle = .overFullScreen
-            pepAlertViewController?.modalTransitionStyle = .crossDissolve
+        pepAlertViewController?.modalPresentationStyle = .overFullScreen
+        pepAlertViewController?.modalTransitionStyle = .crossDissolve
 
-            return pepAlertViewController
+        return pepAlertViewController
     }
 
     static func dismiss(from viewController: UIViewController) {

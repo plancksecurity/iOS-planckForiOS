@@ -1,0 +1,64 @@
+Return-Path: <iostest002@peptest.ch>
+X-Original-To: iostest001@peptest.ch
+Delivered-To: iostest001@peptest.ch
+Received: from macbookd.local (44.red-83-32-32.dynamicip.rima-tde.net [83.32.32.44])
+	by peptest.ch (Postfix) with ESMTPSA id 3AF2F1A145C
+	for <iostest001@peptest.ch>; Mon, 27 May 2019 12:36:09 +0200 (CEST)
+Authentication-Results: plesk.peptest.ch;
+        spf=pass (sender IP is 83.32.32.44) smtp.mailfrom=iostest002@peptest.ch smtp.helo=macbookd.local
+Received-SPF: pass (plesk.peptest.ch: connection is authenticated)
+From: Harry Bryant <iostest002@peptest.ch>
+Subject: Real HTML mail, with HTML attachment.
+To: Rick Deckard <iostest001@peptest.ch>
+Message-ID: <40408495-58d0-10ac-8fa9-67d8dbd581ac@peptest.ch>
+Date: Mon, 27 May 2019 12:36:08 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
+ Gecko/20100101 Thunderbird/60.7.0
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+ boundary="------------BBF156000E4FC4FB1E749DA4"
+Content-Language: en-US
+
+This is a multi-part message in MIME format.
+--------------BBF156000E4FC4FB1E749DA4
+Content-Type: multipart/alternative;
+ boundary="------------AED68BA8FB1833BFFFE0AEA9"
+
+
+--------------AED68BA8FB1833BFFFE0AEA9
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+
+  This is a real HTML mail.
+
+With a real paragraph, and *text in bold*.
+
+
+--------------AED68BA8FB1833BFFFE0AEA9
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+This is a real HTML mail
+
+--------------AED68BA8FB1833BFFFE0AEA9--
+
+--------------BBF156000E4FC4FB1E749DA4
+Content-Type: text/html; x-mac-type="0"; x-mac-creator="0";
+ name="html_attachment.html"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="html_attachment.html"
+
+Lorem ipsum dolor sit amet
+
+--------------BBF156000E4FC4FB1E749DA4
+Content-Type: text/html; x-mac-type="0"; x-mac-creator="0";
+ name="html_attachment_2.html"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+Lorem ipsum dolor sit amet
+
+--------------BBF156000E4FC4FB1E749DA4--
+

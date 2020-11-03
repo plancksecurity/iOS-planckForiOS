@@ -50,7 +50,12 @@ Restart your Console!
 ```
 sudo port install pkgconfig
 rustup update
-rustup target add aarch64-apple-ios x86_64-apple-ios armv7-apple-ios i386-apple-ios
+rustup target add aarch64-apple-ios x86_64-apple-ios
+sudo port pkgconfig
+rustup update nightly
+rustup default nightly
+rustup component add rust-src
+rustup default stable
 ```
 
 ### Set up Xcode
@@ -77,22 +82,28 @@ mkdir ~/src
 cd ~/src
 
 git clone https://pep-security.lu/gitlab/misc/libetpan.git
+pushd libetpan
+git checkout ios_1.1.200
+popd
 git clone https://pep-security.lu/gitlab/iOS/OpenSSL-for-iPhone.git
 git clone https://pep-security.lu/gitlab/iOS/SwipeCellKit.git/
+git clone https://pep-security.lu/gitlab/iOS/CocoaLumberjack
 git clone https://pep-security.lu/gitlab/iOS/AppAuth-iOS.git
 git clone https://pep-security.lu/gitlab/misc/ldns.git
+git clone https://pep-security.lu/gitlab/misc/sqlite.git
 
 hg clone https://pep.foundation/dev/repos/pantomime-iOS/
 hg clone https://pep.foundation/dev/repos/pEpEngine
 hg clone https://pep.foundation/dev/repos/pEpObjCAdapter
-hg clone https://pep.foundation/dev/repos/MessageModel/
 hg clone https://pep.foundation/dev/repos/libAccountSettings/
+hg up tag_for_1.1.300
 
 hg clone https://pep-security.ch/dev/repos/pEp_for_iOS/
 
 git clone http://pep-security.lu/gitlab/iOS/sequoia4ios.git
-cd sequoia4ios
+pushd sequoia4ios
 sh build.sh
+popd
 ```
 
 ### Build Project
@@ -101,14 +112,10 @@ Open pEpForiOS.xcworkspace and build schema "pEp".
 
 ### Unit Tests
 
-Out of the box, most tests expect a local test server:
+Out of the box, some tests expect a local test server:
 
 ```
-cd ~/Downloads
-wget http://central.maven.org/maven2/com/icegreen/greenmail-standalone/1.5.9/greenmail-standalone-1.5.9.jar
-shasum -a 256 greenmail-standalone-1.5.9.jar
-8301b89007e986e8d5e93e2504aad866a58b07b53ac06abb87e6e43eb7646261  greenmail-standalone-1.5.9.jar
-java -Dgreenmail.setup.test.all -Dgreenmail.users=test001:pwd@localhost,test002:pwd@localhost,test003:pwd@localhost -jar ~/Downloads/greenmail-standalone-1.5.9.jar
+java -Dgreenmail.setup.test.all -Dgreenmail.users=test001:pwd@localhost,test002:pwd@localhost,test003:pwd@localhost -jar ./testTools/greenmail/greenmail-standalone-1.5.9.jar
 ```
 
 Note: The following section concerning test data is solved for pEp-internal dev members by checking out a private repo, please ask your colleagues. If you don't have access to that repo, you have to create the needed files yourself.
