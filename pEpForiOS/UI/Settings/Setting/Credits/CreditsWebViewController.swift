@@ -61,6 +61,7 @@ class CreditsWebViewController: PEPWebViewController {
         <p>
         \(licenseLumberjack())
         </p>
+
         </blockquote>
         </body>
         </html>
@@ -152,10 +153,7 @@ class CreditsWebViewController: PEPWebViewController {
             <p style="margin-bottom: 0.14in; line-height: 100%;"><span style="color: #000000;"><span style="font-family: Times New Roman, serif;"><span style="font-size: x-large;"><span lang="en"><strong>13.6 Survival. </strong></span></span></span></span><span style="color: #000000;"><span style="font-family: Times New Roman, serif;"><span style="font-size: x-large;"><span lang="en">The following sections of this License and any other provisions of this License which by their express language or by their context are intended to survive the termination of this License shall survive such termination: 1, 2.2, 3, 4, 5, 7, 8, 9, 10, 12 and 13. </span></span></span></span></p>
             <p style="margin-bottom: 0.14in; line-height: 100%;"><span style="color: #000000;"><span style="font-family: Times New Roman, serif;"><span style="font-size: x-large;"><span lang="en"><strong>13.7 Assignment. </strong></span></span></span></span><span style="color: #000000;"><span style="font-family: Times New Roman, serif;"><span style="font-size: x-large;"><span lang="en">Except as permitted in Section 4, You shall not assign this License or any rights or obligations herein without the prior written consent of pEp Security SA and any attempted assignment in contravention of this provision shall be null and void and of no force or effect. </span></span></span></span></p>
             <p style="margin-bottom: 0.14in; line-height: 100%;"><span style="color: #000000;"><span style="font-family: Times New Roman, serif;"><span style="font-size: x-large;"><span lang="en"><strong>13.8 Entire Agreement. </strong></span></span></span></span><span style="color: #000000;"><span style="font-family: Times New Roman, serif;"><span style="font-size: x-large;"><span lang="en">This License including the documents incorporated herein by reference constitute the entire agreement with respect to the use of the p&equiv;p Application licensed hereunder and supersedes all prior or contemporaneous understandings regarding such subject matter</span></span></span></span></p>
-            <p lang="en" style="margin-bottom: 0.14in; line-height: 100%;"><br /><br /></p>
-            <p lang="en" style="margin-bottom: 0.14in; line-height: 100%;"><br /><br /></p>
-            <p style="margin-bottom: 0in; line-height: 100%;">&nbsp;</p>
-    """
+            """
         return eula
     }
 
@@ -173,8 +171,8 @@ class CreditsWebViewController: PEPWebViewController {
     private func p(_ text: String) -> String {
         return """
             <p style="margin-bottom: 0.14in; line-height: 100%;" align="center"><span style="color: #000000;"><span style="font-family: Times New Roman, serif;"><span style="font-size: x-large;"><span lang="en">
-\(text)
-</p>
-"""
+                \(text)
+            </p>
+        """
     }
 }
