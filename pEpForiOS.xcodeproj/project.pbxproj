@@ -240,6 +240,7 @@
 		43257C891F50683600DDC7F0 /* NSAttributedString+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43257C871F5067BE00DDC7F0 /* NSAttributedString+pEp.swift */; };
 		43269D202552AA04001E18C6 /* ConnectionTransport+LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43269D1F2552AA04001E18C6 /* ConnectionTransport+LocalizedString.swift */; };
 		43269D272552ABE9001E18C6 /* String+PEPSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43269D262552ABE9001E18C6 /* String+PEPSignature.swift */; };
+		43269D3E2552B2BA001E18C6 /* Attachment+DefaultFilename.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43269D3D2552B2BA001E18C6 /* Attachment+DefaultFilename.swift */; };
 		43293EFB1EB9DD6700EEE010 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43293EFA1EB9DD6700EEE010 /* UIViewController+Extension.swift */; };
 		432E80FD2191AF5100359879 /* UniversLTStd.otf in Resources */ = {isa = PBXBuildFile; fileRef = 432E80FB2191AF5100359879 /* UniversLTStd.otf */; };
 		432E80FE2191AF5100359879 /* UniversLTStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 432E80FC2191AF5100359879 /* UniversLTStd-Bold.otf */; };
@@ -765,6 +766,7 @@
 		43257C871F5067BE00DDC7F0 /* NSAttributedString+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+pEp.swift"; sourceTree = "<group>"; };
 		43269D1F2552AA04001E18C6 /* ConnectionTransport+LocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConnectionTransport+LocalizedString.swift"; sourceTree = "<group>"; };
 		43269D262552ABE9001E18C6 /* String+PEPSignature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+PEPSignature.swift"; sourceTree = "<group>"; };
+		43269D3D2552B2BA001E18C6 /* Attachment+DefaultFilename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Attachment+DefaultFilename.swift"; sourceTree = "<group>"; };
 		43293EFA1EB9DD6700EEE010 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		432E80FB2191AF5100359879 /* UniversLTStd.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = UniversLTStd.otf; sourceTree = "<group>"; };
 		432E80FC2191AF5100359879 /* UniversLTStd-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UniversLTStd-Bold.otf"; sourceTree = "<group>"; };
@@ -2655,6 +2657,7 @@
 				437E9BA8237AFB7F00E9A847 /* UIStoryboard+Constants.swift */,
 				43269D1F2552AA04001E18C6 /* ConnectionTransport+LocalizedString.swift */,
 				43269D262552ABE9001E18C6 /* String+PEPSignature.swift */,
+				43269D3D2552B2BA001E18C6 /* Attachment+DefaultFilename.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3010,6 +3013,7 @@
 				15FB60532437410600398391 /* HtmlOptimizerUtil.swift in Sources */,
 				43A9818C24E53BFF00830603 /* Color+PrivacyStatusDescription.swift in Sources */,
 				49228A5320D3D29900A51E9D /* ThreadViewController+SegueHandlerType.swift in Sources */,
+				43269D3E2552B2BA001E18C6 /* Attachment+DefaultFilename.swift in Sources */,
 				152A39C921905C3E00D9F8E4 /* Message+ComposeUtils.swift in Sources */,
 				1521B797241BE026000EAE57 /* UIUtils+ActivityIndecator.swift in Sources */,
 				438052891FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift in Sources */,
