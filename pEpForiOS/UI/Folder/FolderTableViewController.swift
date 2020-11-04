@@ -30,6 +30,7 @@ class FolderTableViewController: BaseTableViewController {
             message: NSLocalizedString(
                 "Please choose a folder",
                 comment: "No folder has been selected yet in the folders VC"))
+        updateRefreshControl()
     }
 
     // MARK: - Setup
@@ -272,4 +273,13 @@ extension FolderTableViewController: SegueHandlerType {
             dvc.hidesBottomBarWhenPushed = true
         }
     }
+
+    private func updateRefreshControl() {
+        /// Works around a layout issue that stucks refresh control.
+        if refreshControl?.isRefreshing ?? false {
+            refreshControl?.endRefreshing()
+            refreshControl?.beginRefreshing()
+        }
+    }
 }
+
