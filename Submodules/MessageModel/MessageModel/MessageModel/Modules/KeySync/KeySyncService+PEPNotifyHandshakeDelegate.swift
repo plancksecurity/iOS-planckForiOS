@@ -10,12 +10,6 @@ import PEPObjCAdapterFramework
 import pEpIOSToolbox
 
 extension KeySyncService: PEPNotifyHandshakeDelegate {
-
-    func engineShutdownKeySync() {
-        handshakeHandler?.cancelHandshake()
-        postKeySyncDisabledByEngineNotification()
-    }
-
     func notifyHandshake(_ object: UnsafeMutableRawPointer?,
                          me: PEPIdentity?,
                          partner: PEPIdentity?,

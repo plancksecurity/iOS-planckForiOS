@@ -14,11 +14,6 @@ class MockNotifyHandshakeDelegate: NSObject {
 }
 
 extension MockNotifyHandshakeDelegate: PEPNotifyHandshakeDelegate {
-
-    func engineShutdownKeySync() {
-        // Do nothing
-    }
-
     func notifyHandshake(_ object: UnsafeMutableRawPointer?,
                          me: PEPIdentity?,
                          partner: PEPIdentity?,
