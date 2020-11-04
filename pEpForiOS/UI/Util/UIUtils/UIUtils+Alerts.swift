@@ -72,8 +72,7 @@ extension UIUtils {
     ///   - negativeButtonText: text for negative button, defaults to Cancel""
     ///   - callback: A callback that takes the user input as parameter.
     ///   - cancelCallback: A callback that's executed when the user taps the cancel button.
-    public static func showAlertWithTextfield(identifier: IdentifiableAlertController.Identifier = .other,
-                                              title: String,
+    public static func showAlertWithTextfield(title: String,
                                               message: String,
                                               placeholder: String,
                                               positiveButtonText: String? = nil,
@@ -81,10 +80,7 @@ extension UIUtils {
                                               negativeButtonStyle: UIAlertAction.Style = .cancel,
                                               callback: @escaping(_ input: String) -> (),
                                               cancelCallback: (() -> Void)? = nil) {
-        let alertController = IdentifiableAlertController(identifier: identifier,
-                                                          title: title,
-                                                          message: message,
-                                                          preferredStyle: .alert)
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addTextField { (textField) in
             textField.placeholder = placeholder
             textField.isSecureTextEntry = true
