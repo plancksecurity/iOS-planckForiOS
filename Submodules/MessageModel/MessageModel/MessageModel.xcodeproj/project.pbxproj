@@ -146,7 +146,6 @@
 		15F7AEB9241258E900933F37 /* Attachment+LocalURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F7AEB8241258E800933F37 /* Attachment+LocalURL.swift */; };
 		15F835261F386DE400FCE887 /* CdServer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F835251F386DE400FCE887 /* CdServer+Extensions.swift */; };
 		3705098922DF279B00CB73D6 /* PEPUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705098822DF279B00CB73D6 /* PEPUtils.swift */; };
-		3705098E22DF2FB100CB73D6 /* String+PEPSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705098D22DF2FB100CB73D6 /* String+PEPSignature.swift */; };
 		3706B2FA23CDCEF2002BB1B9 /* Account+TrustedServers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706B2F923CDCEF2002BB1B9 /* Account+TrustedServers.swift */; };
 		370DB3D12281795000BC929A /* ContentTypeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370DB3D02281795000BC929A /* ContentTypeUtils.swift */; };
 		372904792252492D00B3B801 /* MessageModelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372904782252492D00B3B801 /* MessageModelService.swift */; };
@@ -632,7 +631,6 @@
 		15F7AEB8241258E800933F37 /* Attachment+LocalURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Attachment+LocalURL.swift"; sourceTree = "<group>"; };
 		15F835251F386DE400FCE887 /* CdServer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdServer+Extensions.swift"; sourceTree = "<group>"; };
 		3705098822DF279B00CB73D6 /* PEPUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPUtils.swift; sourceTree = "<group>"; };
-		3705098D22DF2FB100CB73D6 /* String+PEPSignature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+PEPSignature.swift"; sourceTree = "<group>"; };
 		3706B2F923CDCEF2002BB1B9 /* Account+TrustedServers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+TrustedServers.swift"; sourceTree = "<group>"; };
 		370DB3D02281795000BC929A /* ContentTypeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTypeUtils.swift; sourceTree = "<group>"; };
 		372904782252492D00B3B801 /* MessageModelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModelService.swift; sourceTree = "<group>"; };
@@ -1674,7 +1672,6 @@
 				152105032355FBE100F30B51 /* ErrorHandling */,
 				1532CE79231840F3005DBC39 /* RatingEvaluation */,
 				3705098822DF279B00CB73D6 /* PEPUtils.swift */,
-				3705098D22DF2FB100CB73D6 /* String+PEPSignature.swift */,
 				5B87D79923F3117D009DACAA /* String+Fingerprint.swift */,
 			);
 			path = PEPUtils;
@@ -2793,7 +2790,6 @@
 				B7BED3152254FAA700CCF638 /* Folder+DisplaybleFolder.swift in Sources */,
 				43EA4883221E9518006E8F83 /* LoginImapOperation.swift in Sources */,
 				37E61A602271B513000DF876 /* Account+Fetching.swift in Sources */,
-				3705098E22DF2FB100CB73D6 /* String+PEPSignature.swift in Sources */,
 				15E39FC822551E2D0016A1C4 /* Folder+SessionAware.swift in Sources */,
 				15F136EF24B6199C00A7F810 /* PassphraseProviderProtocol.swift in Sources */,
 				439B16AA22802B6B00201DE5 /* VerifiableAccount.swift in Sources */,
