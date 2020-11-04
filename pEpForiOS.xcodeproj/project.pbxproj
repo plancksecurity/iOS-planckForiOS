@@ -241,6 +241,7 @@
 		43269D202552AA04001E18C6 /* ConnectionTransport+LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43269D1F2552AA04001E18C6 /* ConnectionTransport+LocalizedString.swift */; };
 		43269D272552ABE9001E18C6 /* String+PEPSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43269D262552ABE9001E18C6 /* String+PEPSignature.swift */; };
 		43269D3E2552B2BA001E18C6 /* Attachment+DefaultFilename.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43269D3D2552B2BA001E18C6 /* Attachment+DefaultFilename.swift */; };
+		43269D6C2552B744001E18C6 /* VerifiableAccountValidationError+LocalizedError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43269D6B2552B744001E18C6 /* VerifiableAccountValidationError+LocalizedError.swift */; };
 		43293EFB1EB9DD6700EEE010 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43293EFA1EB9DD6700EEE010 /* UIViewController+Extension.swift */; };
 		432E80FD2191AF5100359879 /* UniversLTStd.otf in Resources */ = {isa = PBXBuildFile; fileRef = 432E80FB2191AF5100359879 /* UniversLTStd.otf */; };
 		432E80FE2191AF5100359879 /* UniversLTStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 432E80FC2191AF5100359879 /* UniversLTStd-Bold.otf */; };
@@ -767,6 +768,7 @@
 		43269D1F2552AA04001E18C6 /* ConnectionTransport+LocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConnectionTransport+LocalizedString.swift"; sourceTree = "<group>"; };
 		43269D262552ABE9001E18C6 /* String+PEPSignature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+PEPSignature.swift"; sourceTree = "<group>"; };
 		43269D3D2552B2BA001E18C6 /* Attachment+DefaultFilename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Attachment+DefaultFilename.swift"; sourceTree = "<group>"; };
+		43269D6B2552B744001E18C6 /* VerifiableAccountValidationError+LocalizedError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VerifiableAccountValidationError+LocalizedError.swift"; sourceTree = "<group>"; };
 		43293EFA1EB9DD6700EEE010 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		432E80FB2191AF5100359879 /* UniversLTStd.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = UniversLTStd.otf; sourceTree = "<group>"; };
 		432E80FC2191AF5100359879 /* UniversLTStd-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UniversLTStd-Bold.otf"; sourceTree = "<group>"; };
@@ -2658,6 +2660,7 @@
 				43269D1F2552AA04001E18C6 /* ConnectionTransport+LocalizedString.swift */,
 				43269D262552ABE9001E18C6 /* String+PEPSignature.swift */,
 				43269D3D2552B2BA001E18C6 /* Attachment+DefaultFilename.swift */,
+				43269D6B2552B744001E18C6 /* VerifiableAccountValidationError+LocalizedError.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2918,6 +2921,7 @@
 				1579348D246D495000E2D8D2 /* PGPKeyImportSettingViewController.swift in Sources */,
 				00D3CD3E20B58976009ABBC9 /* PEPSplitViewController.swift in Sources */,
 				1521B78D241BDAD3000EAE57 /* UIUtils+Settings.swift in Sources */,
+				43269D6C2552B744001E18C6 /* VerifiableAccountValidationError+LocalizedError.swift in Sources */,
 				B7DFEA56225397AB0080A2BA /* Folder+LocalizedName.swift in Sources */,
 				4351C2D51F4441190053381F /* latex.c in Sources */,
 				B74F37CD24ADD2B00083501B /* EmailViewController.swift in Sources */,
