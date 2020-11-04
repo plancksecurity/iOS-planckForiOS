@@ -266,9 +266,6 @@
 /* Generic error message on trying to import a key */
 "Error occurred. No key imported." = "Es ist ein Fehler aufgetreten und der Schlüssel konnte nicht importiert werden.";
 
-/* spearator string bewtween name and date */
-"Exp. date:" = "Ablaufdatum:";
-
 /* Settings: Cell (button) title to view Extra Keys setting */
 "Extra Keys" = "Extra Schlüssel";
 
@@ -663,7 +660,8 @@
 /* Validation error for set_own_key UI */
 "Please provide an email and a fingerprint. The email must match an existing account." = "Bitte geben Sie eine E-Mail-Adresse und einen Fingerabdruck an. Die E-Mail-Adresse muss mit einem vorhandenen Konto übereinstimmen.";
 
-/* Port placeholder for manual account IMAP setup
+/* \(type.rawValue) field
+   Port placeholder for manual account IMAP setup
    Port placeholder for manual account SMTP setup */
 "Port" = "Port";
 
@@ -700,8 +698,8 @@
    Message actions */
 "Reply All" = "Allen antworten";
 
-/* Account settings confirm to reset identity title alert
-   Account settings reset identity
+/* \(type.rawValue) field
+   Account settings confirm to reset identity title alert
    Reset account identity button title
    Settings: cell (button) title to view the trust contacts option */
 "Reset" = "Zurücksetzen";
@@ -748,7 +746,8 @@
 /* Privacy status suggestion */
 "Separately verify the content of this message with your communication partner." = "Überprüfen Sie den Inhalt dieser Nachricht separat mit Ihrem Kommunikationspartner.";
 
-/* Server placeholder for manual account IMAP setup
+/* \(type.rawValue) field
+   Server placeholder for manual account IMAP setup
    Server placeholder for manual account SMTP setup */
 "Server" = "Server";
 
@@ -938,7 +937,8 @@
 /* UI alert title for transport protocol */
 "Transport protocol" = "Transport-Protokoll";
 
-/* TransportSecurity placeholder for manual account IMAP setup
+/* \(type.rawValue) field
+   TransportSecurity placeholder for manual account IMAP setup
    TransportSecurity placeholder for manual account SMTP setup */
 "Transport Security" = "Transportsicherheit";
 
