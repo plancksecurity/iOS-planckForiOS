@@ -651,7 +651,7 @@
 /* Validation error for set_own_key UI */
 "Please provide an email and a fingerprint. The email must match an existing account." = "Uveďte e-mailovú adresu a odtlačok prsta. E-mailová adresa sa musí zhodovať s existujúcim účtom.";
 
-/* \(type.rawValue) field
+/* Port label in account settings
    Port placeholder for manual account IMAP setup
    Port placeholder for manual account SMTP setup */
 "Port" = "Port";
@@ -689,9 +689,9 @@
    Message actions */
 "Reply All" = "Odpovedať všetkým";
 
-/* \(type.rawValue) field
-   Account settings confirm to reset identity title alert
+/* Account settings confirm to reset identity title alert
    Reset account identity button title
+   Reset label in account settings
    Settings: cell (button) title to view the trust contacts option */
 "Reset" = "Resetovať";
 
@@ -737,7 +737,7 @@
 /* Privacy status suggestion */
 "Separately verify the content of this message with your communication partner." = "Obsah tejto správy si overte osobitne u svojho komunikačného partnera.";
 
-/* \(type.rawValue) field
+/* Server label in account settings
    Server placeholder for manual account IMAP setup
    Server placeholder for manual account SMTP setup */
 "Server" = "server";
@@ -922,7 +922,7 @@
 /* UI alert title for transport protocol */
 "Transport protocol" = "Zabezpečenie prenosu";
 
-/* \(type.rawValue) field
+/* Transport security label in account settings
    TransportSecurity placeholder for manual account IMAP setup
    TransportSecurity placeholder for manual account SMTP setup */
 "Transport Security" = "Zabezpečenie prenosu";

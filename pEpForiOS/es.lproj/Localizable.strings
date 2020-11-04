@@ -660,7 +660,7 @@
 /* Validation error for set_own_key UI */
 "Please provide an email and a fingerprint. The email must match an existing account." = "Por favor proporcione una dirección de correo electrónico y una huella digital. La dirección de correo electrónico debe coincidir con una cuenta existente.";
 
-/* \(type.rawValue) field
+/* Port label in account settings
    Port placeholder for manual account IMAP setup
    Port placeholder for manual account SMTP setup */
 "Port" = "Puerto";
@@ -698,9 +698,9 @@
    Message actions */
 "Reply All" = "Responder a todos";
 
-/* \(type.rawValue) field
-   Account settings confirm to reset identity title alert
+/* Account settings confirm to reset identity title alert
    Reset account identity button title
+   Reset label in account settings
    Settings: cell (button) title to view the trust contacts option */
 "Reset" = "Restablecer";
 
@@ -746,7 +746,7 @@
 /* Privacy status suggestion */
 "Separately verify the content of this message with your communication partner." = "Verifique el contenido de este mensaje con su interlocutor por separado.";
 
-/* \(type.rawValue) field
+/* Server label in account settings
    Server placeholder for manual account IMAP setup
    Server placeholder for manual account SMTP setup */
 "Server" = "Servidor";
@@ -937,7 +937,7 @@
 /* UI alert title for transport protocol */
 "Transport protocol" = "Protocolo de Transporte";
 
-/* \(type.rawValue) field
+/* Transport security label in account settings
    TransportSecurity placeholder for manual account IMAP setup
    TransportSecurity placeholder for manual account SMTP setup */
 "Transport Security" = "Seguridad de Transporte";

@@ -626,7 +626,7 @@
 /* Validation error for set_own_key UI */
 "Please provide an email and a fingerprint. The email must match an existing account." = "Lütfen bir e-posta adresi ve bir parmak izi sağlayın. E-posta adresi mevcut bir hesapla eşleşmelidir.";
 
-/* \(type.rawValue) field
+/* Port label in account settings
    Port placeholder for manual account IMAP setup
    Port placeholder for manual account SMTP setup */
 "Port" = "Port";
@@ -664,9 +664,9 @@
    Message actions */
 "Reply All" = "Tümünü Yanıtla";
 
-/* \(type.rawValue) field
-   Account settings confirm to reset identity title alert
+/* Account settings confirm to reset identity title alert
    Reset account identity button title
+   Reset label in account settings
    Settings: cell (button) title to view the trust contacts option */
 "Reset" = "Reset";
 
@@ -712,7 +712,7 @@
 /* Privacy status suggestion */
 "Separately verify the content of this message with your communication partner." = "Bu mesajın içeriğini iletişim ortağınızla ayrı olarak doğrulayın.";
 
-/* \(type.rawValue) field
+/* Server label in account settings
    Server placeholder for manual account IMAP setup
    Server placeholder for manual account SMTP setup */
 "Server" = "Sunucu";
@@ -891,7 +891,7 @@
 /* UI alert title for transport protocol */
 "Transport protocol" = "Taşıma protokolü";
 
-/* \(type.rawValue) field
+/* Transport security label in account settings
    TransportSecurity placeholder for manual account IMAP setup
    TransportSecurity placeholder for manual account SMTP setup */
 "Transport Security" = "Taşımacılık Güvenliği";
