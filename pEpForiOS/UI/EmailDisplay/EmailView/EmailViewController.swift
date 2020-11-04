@@ -242,7 +242,9 @@ extension EmailViewController: MessageAttachmentDelegate {
     
     func didTap(cell: MessageCell, attachment: Attachment, location: CGPoint, inView: UIView?) {
         let busyState = inView?.displayAsBusy()
-        attachment.saveToTmpDirectory { [weak self] url in
+        let defaultFilename = NSLocalizedString("unnamed",
+                                                comment: "file name used for unnamed attachments")
+        attachment.saveToTmpDirectory(defaultFilename: defaultFilename) { [weak self] url in
             guard let me = self else {
                 // Valid case. We might have been dismissed already.
                 return

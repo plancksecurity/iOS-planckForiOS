@@ -16,14 +16,12 @@ import pEpIOSToolbox
 // MARK: - Attachment+LocalURL
 
 extension Attachment {
-
-    static public let defaultFileName = NSLocalizedString("unnamed",
-                                                   comment: "file name used for unnamed attachments")
-
     /// Saves  the attachment to the /tmp dir and returns the file URL when done.
     /// Some iOS SDK calls require a URL (e.g. showing a PDF with QLPreviewController).
+    /// - Parameter defaultFilename: A localized default name for unnamed attachments
     /// - Parameter completion: called when done, passes the local URL if writing to /tmp dir succeded, passes `nil`otherwize
-    public func saveToTmpDirectory(completion: @escaping (URL?)->Void) {
+    public func saveToTmpDirectory(defaultFilename: String,
+                                   completion: @escaping (URL?)->Void) {
         let session = Session()
         let safeAttachment = safeForSession(session)
         DispatchQueue.global(qos: .userInitiated).async {
@@ -38,7 +36,7 @@ extension Attachment {
                 }
                 let tmpDir =  FileManager.default.temporaryDirectory
 
-                let fileName = ( safeAttachment.fileName ?? Attachment.defaultFileName).extractFileNameOrCid()
+                let fileName = ( safeAttachment.fileName ?? defaultFilename).extractFileNameOrCid()
                 var url = tmpDir.appendingPathComponent(fileName)
 
                 if let mimeType = safeAttachment.mimeType, mimeType == MimeTypeUtils.MimeType.pdf.rawValue {
