@@ -70,10 +70,6 @@ extension Attachment.ContentDispositionType {
             self = .inline
         case .other:
             self = .attachment // This is probably wrong. Semantic of other not clear
-        default:
-            Log.shared.errorAndCrash("Unknown case")
-            self = .attachment
-        }
     }
 
     init(with pantomimeContentDisposition: PantomimeContentDisposition) {
