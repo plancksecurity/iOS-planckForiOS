@@ -23,6 +23,7 @@ extension PEPContentDisposition {
             return PantomimeInlineDisposition
         case .other:
             return PantomimeAttachmentDisposition
+        }
     }
 
     init(with contentDisponitionType: Attachment.ContentDispositionType) {
