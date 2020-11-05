@@ -23,10 +23,6 @@ extension PEPContentDisposition {
             return PantomimeInlineDisposition
         case .other:
             return PantomimeAttachmentDisposition
-        default:
-            Log.shared.errorAndCrash("Unknown case")
-            return PantomimeAttachmentDisposition
-        }
     }
 
     init(with contentDisponitionType: Attachment.ContentDispositionType) {
