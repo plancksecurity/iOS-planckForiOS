@@ -13,17 +13,16 @@ import pEpIOSToolbox
 
 extension ConnectionTransport {
     public func localizedString() -> String {
-        let transport_security_text = "Transport security (ConnectionTransport)"
         switch self {
         case .plain:
-            return NSLocalizedString("None", comment: transport_security_text)
+            return NSLocalizedString("None", comment: "No SSL or TLS (ConnectionTransport)")
         case .TLS:
-            return NSLocalizedString("SSL/TLS", comment: transport_security_text)
+            return NSLocalizedString("SSL/TLS", comment: "SSL/TLS (ConnectionTransport)")
         case .startTLS:
-            return NSLocalizedString("StartTLS", comment: transport_security_text)
+            return NSLocalizedString("StartTLS", comment: "StartTLS (ConnectionTransport)")
         @unknown default:
             Log.shared.errorAndCrash("Unhandled case")
-            return NSLocalizedString("None", comment: transport_security_text)
+            return NSLocalizedString("None", comment: "No SSL or TLS (ConnectionTransport)")
         }
     }
 }
