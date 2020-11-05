@@ -15,7 +15,7 @@ public extension NSError {
     /// That means: if it is a passphraseRequired error or a wrong passphrase error.
     var isPassphraseError: Bool {
         if domain == PEPObjCAdapterEngineStatusErrorDomain {
-            switch code {
+            switch code { // TODO
             case Int(PEPStatus.passphraseRequired.rawValue),
                  Int(PEPStatus.wrongPassphrase.rawValue):
                 return true
