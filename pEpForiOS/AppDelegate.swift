@@ -6,8 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import CoreData
-
 import pEpIOSToolbox
 import MessageModel
 
@@ -219,8 +217,8 @@ extension AppDelegate {
                 Log.shared.errorAndCrash("Mailto parsing failed")
                 return false
             }
-            UIUtils.presentComposeView(from: mailto)
-            return false
+            UIUtils.showComposeView(from: mailto)
+            return true
         }
         switch url.pathExtension {
         case ClientCertificateImportViewController.pEpClientCertificateExtension:

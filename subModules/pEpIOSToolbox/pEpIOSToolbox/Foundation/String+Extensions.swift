@@ -18,7 +18,7 @@ extension String {
     static let endWhiteSpaceRegex = try! NSRegularExpression(pattern: "^(.*?)\\s*$", options: [])
     static let newlineRegex = try! NSRegularExpression(pattern: "(\\n|\\r\\n)+", options: [])
     static let threeOrMoreNewlinesRegex = try! NSRegularExpression(pattern: "(\\n|\\r\\n){3,}", options: [])
-    static let fileExtensionRegex = try! NSRegularExpression(pattern: "^([^.]+)\\.([^.]+)$", options: [])
+    static let fileExtensionRegex = try! NSRegularExpression(pattern: "^(.+?)\\.([^.]+)$", options: [])
     static let emailRegex = try! NSRegularExpression(pattern: "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}", options: [])
 
     private var firstLetterCapitalized: String {

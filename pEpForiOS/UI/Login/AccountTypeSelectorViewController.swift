@@ -63,19 +63,20 @@ final class AccountTypeSelectorViewController: UIViewController {
         //as we need a title for the back button of the next view
         //but this title is not show
         //the view in the title are is replaced for a blank view.
-        self.navigationItem.titleView = UIView()
+        navigationItem.titleView = UIView()
         title = NSLocalizedString("Account Select", comment: "account type selector title")
-        self.navigationController?.navigationBar.isHidden = !viewModel.isThereAnAccount()
+        navigationController?.navigationBar.isHidden = !viewModel.isThereAnAccount()
         let imagebutton = UIButton(type: .custom)
-        imagebutton.setImage(UIImage(named: "close-icon"), for: .normal)
+        let image = UIImage(named: "close-icon")
+        imagebutton.setImage(image, for: .normal)
         imagebutton.addTarget(self, action: #selector(backButton), for: .touchUpInside)
         imagebutton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
         let finalBarButton = UIBarButtonItem(customView: imagebutton)
-        self.navigationItem.leftBarButtonItem = finalBarButton
+        navigationItem.leftBarButtonItem = finalBarButton
     }
     
     @objc func backButton() {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 }
 

@@ -10,8 +10,13 @@ import UIKit
 
 import pEpIOSToolbox
 
-final class PEPAlertViewController: UIViewController {
 
+public enum AlertStyle : Int {
+    case `default` = 0
+    case warn = 1
+}
+
+final class PEPAlertViewController: UIViewController {
     @IBOutlet weak var alertTitle: UILabel!
     @IBOutlet weak var alertMessage: UILabel!
     @IBOutlet weak var alertImageView: UIImageView!
@@ -20,16 +25,15 @@ final class PEPAlertViewController: UIViewController {
 
     @IBOutlet weak private var alertImageViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak private var alertTitleTopViewHeightConstraint: NSLayoutConstraint!
-
+    
     private var viewModel: PEPAlertViewModelProtocol
     private var titleString: String?
     private var message: String?
     private var paintPEPInTitle = false
     private var images: [UIImage]?
     private var action = [PEPUIAlertAction]()
-
     static let storyboardId = "PEPAlertViewController"
-
+    public var style : AlertStyle = .default
     required init?(coder aDecoder: NSCoder) {
         viewModel = PEPAlertViewModel()
         super.init(coder: aDecoder)
@@ -83,7 +87,7 @@ final class PEPAlertViewController: UIViewController {
 
 extension PEPAlertViewController: PEPAlertViewModelDelegate {
     func dismiss() {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 }
 
@@ -159,4 +163,3 @@ extension PEPAlertViewController {
         }
     }
 }
-

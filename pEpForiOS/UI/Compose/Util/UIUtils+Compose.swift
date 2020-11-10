@@ -6,14 +6,13 @@
 //  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
-import MessageModel
 import pEpIOSToolbox
 
 // MARK: - UIUtils+Compose
 
 extension UIUtils {
 
-    static public func presentComposeView(from mailto: Mailto? = nil) {
+    static public func showComposeView(from mailto: Mailto?) {
         DispatchQueue.main.async {
             let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
             guard
@@ -26,7 +25,7 @@ extension UIUtils {
                     return
             }
             composeVc.viewModel = ComposeViewModel.from(mailTo: mailto)
-            present(composeNavigationController: composeNavigationController)
+            UIUtils.show(navigationController: composeNavigationController)
         }
     }
     
@@ -56,16 +55,7 @@ extension UIUtils {
                                height: toolbar.frame.height)
             vc.popoverPresentationController?.sourceRect = frame
         }
-        present(composeNavigationController: navigationController)
+        UIUtils.show(navigationController: navigationController)
     }
-    
-    // MARK: - Private - Present
 
-    private static func present(composeNavigationController: UINavigationController) {
-        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.errorAndCrash("No VC")
-            return
-        }
-        presenterVc.present(composeNavigationController, animated: true)
-    }
 }

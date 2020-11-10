@@ -326,9 +326,9 @@ extension UISplitViewController {
                 alertRect =  CGRect(x: 0, y: 0, width: 0, height: 0)
             }
 
-            UIUtils.presentActionSheetWithContactOptions(forContactWithEmailAddress: mailAddress,
-                                                         at: alertRect,
-                                                         at: self.view)
+            UIUtils.showActionSheetWithContactOptions(forContactWithEmailAddress: mailAddress,
+                                                      at: alertRect,
+                                                      at: self.view)
         } else if alertTitle.hasPrefix(UrlClickHandler.Scheme.mailto.rawValue) {
             // It *is* an Action Sheet shown due to long-press on mailto: URL, but we do not know
             // the clicked address.

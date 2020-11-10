@@ -360,7 +360,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     }
 
     @objc private func showSettingsViewController() {
-        UIUtils.presentSettings()
+        UIUtils.showSettings()
     }
 
     @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
@@ -471,7 +471,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
     @objc private func showCompose() {
         dismiss(animated: true) {
-            UIUtils.presentComposeView()
+            UIUtils.showComposeView(from: nil)
         }
     }
 
@@ -1006,8 +1006,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
 extension EmailListViewController {
     func showMoreActionSheet(forRowAt indexPath: IndexPath) {
         lastSelectedIndexPath = indexPath
-        let alertControler = UIAlertController.pEpAlertController(
-            title: nil, message: nil, preferredStyle: .actionSheet)
+        let alertController = UIUtils.actionSheet()
         let cancelAction = createCancelAction()
         let replyAction = createReplyAction()
 
@@ -1017,24 +1016,24 @@ extension EmailListViewController {
         let forwardAction = createForwardAction()
         let moveToFolderAction = createMoveToFolderAction()
 
-        alertControler.addAction(cancelAction)
-        alertControler.addAction(replyAction)
+        alertController.addAction(cancelAction)
+        alertController.addAction(replyAction)
 
         if let theReplyAllAction = replyAllAction {
-            alertControler.addAction(theReplyAllAction)
+            alertController.addAction(theReplyAllAction)
         }
 
-        alertControler.addAction(forwardAction)
-        alertControler.addAction(moveToFolderAction)
-        alertControler.addAction(readAction)
+        alertController.addAction(forwardAction)
+        alertController.addAction(moveToFolderAction)
+        alertController.addAction(readAction)
 
-        if let popoverPresentationController = alertControler.popoverPresentationController {
+        if let popoverPresentationController = alertController.popoverPresentationController {
             popoverPresentationController.sourceView = tableView
             let cellFrame = tableView.rectForRow(at: indexPath)
             let sourceRect = view.convert(cellFrame, from: tableView)
             popoverPresentationController.sourceRect = sourceRect
         }
-        present(alertControler, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
 
     // MARK: Action Sheet Actions

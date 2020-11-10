@@ -137,4 +137,8 @@ class SettingsViewModeldelegate: SettingsViewModelDelegate {
     func showExtraKeyEditabilityStateChangeAlert(newValue: String) {
         XCTFail()
     }
+
+    func showResetAllWarning(callback: @escaping SettingsViewModel.ActionBlock) {
+        XCTFail()
+    }
 }

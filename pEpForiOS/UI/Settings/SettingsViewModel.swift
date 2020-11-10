@@ -18,6 +18,8 @@ protocol SettingsViewModelDelegate: class {
     func hideLoadingView()
     /// Shows an alert to indicate if the extra key is editable
     func showExtraKeyEditabilityStateChangeAlert(newValue: String)
+    /// Shows an alert to confirm the reset all identities.
+    func showResetAllWarning(callback: @escaping SettingsViewModel.ActionBlock)
 }
 
 /// Protocol that represents the basic data in a row.
@@ -134,8 +136,11 @@ final class SettingsViewModel {
     public func handleExtraKeysEditabilityGestureTriggered() {
         let newValue = !AppSettings.shared.extraKeysEditable
         AppSettings.shared.extraKeysEditable = newValue
-
         delegate?.showExtraKeyEditabilityStateChangeAlert(newValue: newValue ? "ON" : "OFF")
+    }
+
+    public func handleResetAllIdentitiesPressed(action: @escaping ActionBlock) {
+        delegate?.showResetAllWarning(callback: action)
     }
 
     public func pgpKeyImportSettingViewModel() -> PGPKeyImportSettingViewModel {

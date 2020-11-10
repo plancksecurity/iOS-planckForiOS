@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import MessageModel
+@testable import MessageModel
 import CoreData
 import pEpIOSToolbox
 
