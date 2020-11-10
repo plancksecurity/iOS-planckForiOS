@@ -100,6 +100,18 @@ extension UIViewController {
     func showNavigationBar() {
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
+
+    /// Dismiss the presentedViewController if exists and perform the action.
+    /// - Parameter completion: The action to be performed.
+    func dismissAndPerform(completion: (() -> Void)? = nil) {
+        if let presentedViewController = presentedViewController {
+            presentedViewController.dismiss(animated: true) {
+                completion?()
+            }
+        } else {
+            completion?()
+        }
+    }
 }
 
 // MARK: - SplitViewControllerBehaviorProtocol
