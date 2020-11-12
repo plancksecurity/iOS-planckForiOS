@@ -14,8 +14,8 @@ import pEpIOSToolbox
 /// Delegate to comunicate with Email View.
 protocol EmailViewModelDelegate: class {
     /// Show the item
-    /// - Parameter item: The item to show. Could be the url of a document.
-    func show(item: QLPreviewItem)
+    /// - Parameter qlItem: The quick look item to show. Could be the url of a document.
+    func showQuickLookOfAttachment(qlItem: QLPreviewItem)
     /// Show Documents Editor
     func showDocumentsEditor()
     /// Show Certificates Import View.
@@ -141,7 +141,7 @@ struct EmailViewModel {
 
     /// Handle the user tap gesture over the mail attachment
     /// - Parameter index: The index of the attachment
-    public func handleDidTapAttachment(at index: Int) {
+    public func handleDidTapAttachment(at indexPath: IndexPath) {
         // If the message have an attachment
         // Show activity indicator.
         // Save the attachment temporarily in the directory

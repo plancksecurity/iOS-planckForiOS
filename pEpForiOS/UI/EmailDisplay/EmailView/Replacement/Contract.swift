@@ -1,8 +1,8 @@
 ///// Delegate to comunicate with Email View.
 //protocol EmailViewModelDelegate: class {
-//    /// Show the item
-//    /// - Parameter item: The item to show
-//    func show(item: QLPreviewItem)
+//    Show the item
+//    - Parameter qlItem: The quick look item to show. Could be the url of a document.
+//    func showQuickLookOfAttachment(qlItem: QLPreviewItem)
 //    /// Show Documents Editor
 //    func showDocumentsEditor()
 //    /// Show Certificates Import View.
@@ -72,4 +72,4 @@
 //
 //    Handle the user tap gesture over the mail attachment
 //    - Parameter index: The index of the attachment
-//    func handleDidTapAttachment(at index: Int)
+//    func handleDidTapAttachment(at indexPath: IndexPath)
