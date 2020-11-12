@@ -12,6 +12,7 @@ import pEpIOSToolbox
 extension KeySyncService: PEPNotifyHandshakeDelegate {
 
     func engineShutdownKeySync() {
+        handshakeHandler?.cancelHandshake()
         postKeySyncDisabledByEngineNotification()
     }
 
