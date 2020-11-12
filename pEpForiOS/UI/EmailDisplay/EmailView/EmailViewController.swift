@@ -211,6 +211,7 @@ extension EmailViewController: UITableViewDelegate, UITableViewDataSource {
                 else {
                     return UITableViewCell()
         }
+
         if let contentCell = cell as? MessageContentCell {
             setup(contentCell: contentCell, rowData: row)
         } else {

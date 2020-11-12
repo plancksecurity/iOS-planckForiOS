@@ -9,11 +9,12 @@
 import Foundation
 import QuickLook.QLPreviewItem
 import MessageModel
+import pEpIOSToolbox
 
 /// Delegate to comunicate with Email View.
 protocol EmailViewModelDelegate: class {
     /// Show the item
-    /// - Parameter item: The item to show
+    /// - Parameter item: The item to show. Could be the url of a document.
     func show(item: QLPreviewItem)
     /// Show Documents Editor
     func showDocumentsEditor()
@@ -26,12 +27,8 @@ protocol EmailViewModelDelegate: class {
     func hideLoadingView()
 }
 
-enum EmailRowType: String {
-    case to, cc, bcc, from, subject, body, mailingList, none, attachment, wraped
-}
-
-enum EmailRowVisibility: String {
-    case always, conditional
+enum EmailRowType {
+    case from, to, cc, bcc, subject, body, attachment
 }
 
 /// Protocol that represents the basic data in a row.
@@ -43,9 +40,7 @@ protocol EmailRowProtocol {
     /// Returns the cell identifier
     var cellIdentifier: String { get }
     /// The content of the row
-    var content: String { get }
-    /// Indicates if the row is always visible.
-    var visibility: EmailRowVisibility { get }
+    var content: String? { get }
 }
 
 struct EmailViewModel {
@@ -53,7 +48,6 @@ struct EmailViewModel {
     public weak var delegate: EmailViewModelDelegate?
     private var originalRows: [EmailRowProtocol]
     private var filteredRows: [EmailRowProtocol]
-
     private var message: Message
 
     /// Constructor
@@ -65,18 +59,16 @@ struct EmailViewModel {
     }
 
     public struct EmailRow: EmailRowProtocol {
-        var type: EmailRowType
-        var visibility: EmailRowVisibility
-        var content: String
-        var title: String?
-        var cellIdentifier: String
+        public private(set) var type: EmailRowType
+        public private(set) var content: String?
+        public private(set) var title: String?
+        public private(set) var height: CGFloat = 0.0
+        public private(set) var cellIdentifier: String
 
         /// Constructor
         /// - Parameter type: The type of the row
         init(type: EmailRowType) {
             let recipientCellIdentifier = "senderCell"
-            let wrappedCellIdentifier = "wrappedCell"
-            let accountCellIdentifier = "accountCell"
             let subjectCellIdentifier = "senderSubjectCell"
             let attachmentsCellIdentifier = "attachmentsCell"
             let senderBodyCellIdentifier = "senderBodyCell"
@@ -85,40 +77,30 @@ struct EmailViewModel {
             case .to:
                 self.title = NSLocalizedString("To:", comment: "Email field title")
                 self.cellIdentifier = recipientCellIdentifier
-                self.visibility = .always
+                self.height = 0.0
+            case .from:
+                self.title = NSLocalizedString("From:", comment: "Email field title")
+                self.cellIdentifier = recipientCellIdentifier
+                self.height = 0.0
             case .cc:
                 self.title = NSLocalizedString("CC:", comment: "Email field title")
                 self.cellIdentifier = recipientCellIdentifier
-                self.visibility = .conditional
+                self.height = 0.0
             case .bcc:
                 self.title = NSLocalizedString("BCC:", comment: "Email field title")
                 self.cellIdentifier = recipientCellIdentifier
-                self.visibility = .conditional
-            case .wraped:
-                self.title = NSLocalizedString("Cc/Bcc:", comment: "Email field title")
-                self.cellIdentifier = wrappedCellIdentifier
-                self.visibility = .conditional
-            case .from:
-                self.title = NSLocalizedString("From:", comment: "Email field title")
-                self.cellIdentifier = accountCellIdentifier
-                self.visibility = .conditional
+                self.height = 0.0
             case .subject:
                 self.title = NSLocalizedString("Subject:", comment: "Email field title")
                 self.cellIdentifier = subjectCellIdentifier
-                self.visibility = .always
-
-            case .mailingList:
-                self.title = NSLocalizedString("This message is from a mailing list.", comment: "Compose field title")
-                self.cellIdentifier = ""
+                self.height = 0.0
             case .body:
                 self.cellIdentifier = senderBodyCellIdentifier
-            case .none:
-                self.cellIdentifier = ""
+                self.height = 0.0
             case .attachment:
-                self.cellIdentifier = ""
+                self.cellIdentifier = attachmentsCellIdentifier
+                self.height = 0.0
             }
-            self.content = ""
-            self.visibility = .always
         }
     }
 
@@ -133,6 +115,11 @@ struct EmailViewModel {
         return nil
     }
 
+    /// Number of rows
+    public var numberOfRows: Int {
+        return filteredRows.count
+    }
+
     /// Retrieves the row
     subscript(index: Int) -> EmailRowProtocol {
         get {
@@ -140,27 +127,25 @@ struct EmailViewModel {
         }
     }
 
-    /// Number of rows
-    public var numberOfRows: Int {
-        return filteredRows.count
-    }
-
-    /// Handle the user tap gesture over the mail
-    /// If has an attachment, will be shown.
-    public func handleDidTapMessage() {
-        // If the message have an attachment
-        // Show activity indicator.
-        // Save the attachment temporarily in the directory
-        // Show it to the user
-    }
-
     /// Evaluates the pepRating to provide the body
+    /// Use it for non-html content.
     /// - Parameter completion: The callback with the body.
     public func body(completion: @escaping (NSMutableAttributedString) -> Void) {
         let finalText = NSMutableAttributedString()
         message.pEpRating { (rating) in
-            completion(finalText)
+            DispatchQueue.main.async {
+                completion(finalText)
+            }
         }
+    }
+
+    /// Handle the user tap gesture over the mail attachment
+    /// - Parameter index: The index of the attachment
+    public func handleDidTapAttachment(at index: Int) {
+        // If the message have an attachment
+        // Show activity indicator.
+        // Save the attachment temporarily in the directory
+        // Show it to the user
     }
 }
 
