@@ -17,7 +17,8 @@ protocol EmailViewModelDelegate: class {
     /// - Parameter qlItem: The quick look item to show. Could be the url of a document.
     func showQuickLookOfAttachment(qlItem: QLPreviewItem)
     /// Show Documents Editor
-    func showDocumentsEditor()
+    /// - Parameter url: The url of the document
+    func showDocumentsEditor(url: URL)
     /// Show Certificates Import View.
     /// - Parameter viewModel: The view model to setup the view.
     func showClientCertificateImport(viewModel: ClientCertificateImportViewModel)
@@ -49,12 +50,18 @@ struct EmailViewModel {
     private var originalRows: [EmailRowProtocol]
     private var filteredRows: [EmailRowProtocol]
     private var message: Message
+    private var attachments: [Attachment]
 
     /// Constructor
     /// - Parameter message: The message to display
-    init(message: Message) {
+    public init(message: Message) {
         self.message = message
-        self.originalRows = EmailViewModel.generateRows(message: message)
+        self.attachments = message.viewableAttachments()
+        var rowsTypes: [EmailRowType] = [.from, .subject, .body]
+        if attachments.count > 0 {
+            rowsTypes.append(.attachment)
+        }
+        self.originalRows = rowsTypes.map { EmailRow(type: $0) }
         self.filteredRows = originalRows
     }
 
@@ -142,31 +149,35 @@ struct EmailViewModel {
     /// Handle the user tap gesture over the mail attachment
     /// - Parameter index: The index of the attachment
     public func handleDidTapAttachment(at indexPath: IndexPath) {
-        // If the message have an attachment
-        // Show activity indicator.
-        // Save the attachment temporarily in the directory
-        // Show it to the user
+        func shouldShowClientCertificate(url : URL) -> Bool {
+            return url.pathExtension == "pEp12" || url.pathExtension == "pfx"
+        }
+
+        delegate?.showLoadingView()
+        guard attachments.count > indexPath.row else {
+            Log.shared.errorAndCrash("attachments Out of bounds")
+            return
+        }
+        let attachment = attachments[indexPath.row]
+        attachment.saveToTmpDirectory { (url) in
+            guard let url = url else {
+                Log.shared.errorAndCrash("No Local URL")
+                return
+            }
+            delegate?.hideLoadingView()
+            if shouldShowClientCertificate(url: url) {
+                let clientCertificate = ClientCertificateImportViewModel(certificateUrl: url)
+                delegate?.showClientCertificateImport(viewModel: clientCertificate)
+            } else if QLPreviewController.canPreview(url as QLPreviewItem) {
+                delegate?.showQuickLookOfAttachment(qlItem: url as QLPreviewItem)
+            } else {
+                delegate?.showDocumentsEditor(url: url)                
+            }
+            // If the message have an attachment
+            // Show activity indicator.
+            // Save the attachment temporarily in the directory
+            // Show it to the user
+        }
     }
 }
 
-// MARK: - Private
-
-extension EmailViewModel {
-
-    private static func generateRows(message: Message) -> [EmailRowProtocol] {
-        /// Fill al rows with its content, except for body.
-        return [EmailRowProtocol]()
-    }
-
-    /// Decide on the rows that should be visible, based on the message.
-    private func filterRows() -> [EmailRowProtocol] {
-//        if let viewableAttachments = message?.viewableAttachments(),
-//            viewableAttachments.count == 0 {
-//            filterRows(filter: { $0.type != .mailingList && $0.type != .attachment} )
-//        } else {
-//            filterRows(filter: { $0.type != .mailingList} )
-//        }
-//        Log.shared.info("filtering rows")
-        return [EmailRowProtocol]()
-    }
-}

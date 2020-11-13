@@ -313,18 +313,10 @@ extension EmailViewController: SecureWebViewControllerDelegate {
 
 // MARK: - UIPopoverPresentationControllerDelegate
 
-extension EmailViewController: UIPopoverPresentationControllerDelegate {
+extension EmailViewController: UIPopoverPresentationControllerDelegate, UIPopoverPresentationControllerProtocol {
     
     func popoverPresentationController(_ popoverPresentationController: UIPopoverPresentationController, willRepositionPopoverTo rect:
         UnsafeMutablePointer<CGRect>, in view: AutoreleasingUnsafeMutablePointer<UIView>) {
-        guard let titleView = navigationItem.titleView else {
-            return
-        }
-        
-        rect.initialize(to: CGRect(x:titleView.bounds.midY,
-                                   y: titleView.bounds.midX,
-                                   width:0,
-                                   height:0))
-        view.pointee = titleView
+        repositionPopoverTo(rect: rect, in: view)
     }
 }
