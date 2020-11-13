@@ -170,9 +170,9 @@ class CreditsWebViewController: PEPWebViewController {
 
     private func p(_ text: String) -> String {
         return """
-            <p style="margin-bottom: 0.14in; line-height: 100%;"><span style="color: #000000;"><span style="font-family: Times New Roman, serif;"><span style="font-size: x-large;"><span lang="en">
+            <p style="margin-bottom: 0.14in; line-height: 100%;"><span style="color: #000000; font-family: Times New Roman, serif; font-size: x-large;" lang="en">
                 \(text)
-            </p>
+            </span></p>
         """
     }
 }
