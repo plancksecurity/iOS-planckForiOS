@@ -79,38 +79,39 @@ extension UIUtils {
 
     @discardableResult
     private static func show<T: UIViewController>(_ viewController: T, ofType type: T.Type) -> T? {
-        guard let presenter = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.error("Presenter is gone")
-            return nil
-        }
+        // If the presenter is an alert view
+        // - Do not show another alert view.
+        // - Only dismiss and present a KeySync wizard if needed.
+        //
+        // If the presenter is a KeySync wizard, dismiss it and present whatever is received.
+        // If the presenter is not an alert view nor a KeySync wizard, just present whatever is received.
+        let presenter = UIApplication.currentlyVisibleViewController()
         if presenter is PEPAlertViewController {
             if viewController is PEPAlertViewController {
                 return nil
             } else if viewController is KeySyncWizardViewController {
-                DispatchQueue.main.async {
-                    presenter.dismiss(animated: true) {
-                        if let newPresenter = UIApplication.currentlyVisibleViewController() {
-                            newPresenter.present(viewController, animated: true)
-                        }
-                    }
-                }
+                dismissAndpresent(viewController: viewController, withPresenter: presenter)
                 return viewController
             }
-        }
-        if presenter is KeySyncWizardViewController {
+        } else if presenter is KeySyncWizardViewController {
+            dismissAndpresent(viewController: viewController, withPresenter: presenter)
+            return viewController
+        } else {
             DispatchQueue.main.async {
-                presenter.dismiss(animated: true) {
-                    if let newPresenter = UIApplication.currentlyVisibleViewController() {
-                        newPresenter.present(viewController, animated: true)
-                    }
-                }
+                presenter.present(viewController, animated: true)
             }
             return viewController
         }
+        return nil
+    }
+
+    private static func dismissAndpresent(viewController: UIViewController, withPresenter presenter: UIViewController) {
         DispatchQueue.main.async {
-            presenter.present(viewController, animated: true)
+            presenter.dismiss(animated: true) {
+                let newPresenter = UIApplication.currentlyVisibleViewController()
+                newPresenter.present(viewController, animated: true)
+            }
         }
-        return viewController
     }
 }
 

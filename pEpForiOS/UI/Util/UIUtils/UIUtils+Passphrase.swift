@@ -101,10 +101,7 @@ extension UIUtils {
     /// - note: Must be called on the main queue!
     static private var isCurrentlyShowingPassphraseInputAlert: Bool {
         var result = false
-        guard let topVC = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.errorAndCrash("No VC shown?")
-            return result
-        }
+        let topVC = UIApplication.currentlyVisibleViewController()
         if let shownIdentifiableAlertController = topVC as? IdentifiableAlertController {
             if shownIdentifiableAlertController.identifier == .passphraseAlert {
                 result = true

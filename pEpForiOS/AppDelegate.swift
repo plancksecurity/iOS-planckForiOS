@@ -251,10 +251,7 @@ extension AppDelegate {
             Log.shared.errorAndCrash("This method is only for .pEp12 files.")
             return false
         }
-        guard let topVC = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.errorAndCrash("We must have a VC at this point.")
-            return false
-        }
+        let topVC = UIApplication.currentlyVisibleViewController()
         guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController else {
             return false
         }

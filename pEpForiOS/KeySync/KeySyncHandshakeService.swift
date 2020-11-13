@@ -51,13 +51,6 @@ extension KeySyncHandshakeService {
 
 extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
 
-    /// Show handshake wizard
-    ///
-    /// - Parameters:
-    ///   - meFingerprint: The fingerprints of the current user
-    ///   - partnerFingerprint: The fingerprints of the comunication partner of the current user
-    ///   - isNewGroup: Indicates if it is a new group creation
-    ///   - completion: callback that will be executed in case the user accepts, cancels or declines.
     public func showHandshake(meFingerprint: String?,
                               partnerFingerprint: String?,
                               isNewGroup: Bool,
@@ -90,7 +83,6 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
         }
     }
 
-    /// Dismiss the wizard
     public func cancelHandshake() {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {

@@ -7,16 +7,18 @@
 //
 
 import UIKit
-
 import pEpIOSToolbox
 
-
-public enum AlertStyle : Int {
-    case `default` = 0
-    case warn = 1
-}
-
 final class PEPAlertViewController: UIViewController {
+    public enum KeySyncErrorAlertAction {
+        case notNow, tryAgain
+    }
+
+    public enum AlertStyle : Int {
+        case `default` = 0
+        case warn = 1
+    }
+
     @IBOutlet weak var alertTitle: UILabel!
     @IBOutlet weak var alertMessage: UILabel!
     @IBOutlet weak var alertImageView: UIImageView!

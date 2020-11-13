@@ -13,16 +13,16 @@ import UIKit
 extension UIApplication {
 
     /// - returns: The currently visible view controller if any, nil otherwize. Child ViewControllers are ignored.
-    class public func currentlyVisibleViewController(inNavigationStackOf viewController: UIViewController? = nil) -> UIViewController? {
+    class public func currentlyVisibleViewController(inNavigationStackOf viewController: UIViewController? = nil) -> UIViewController {
         return topViewController(inNavigationStackOf: viewController ?? UIApplication.shared.keyWindow?.rootViewController)
     }
 
     /// - Parameter viewController: ViewController whichs navigation stack's top VC should be found
     /// - returns: The view controller at the top of the navigation stack.
-    class private func topViewController(inNavigationStackOf viewController: UIViewController?) -> UIViewController? {
+    class private func topViewController(inNavigationStackOf viewController: UIViewController?) -> UIViewController {
         guard let vc = viewController else {
             Log.shared.errorAndCrash("No VC. Probably unexpected.")
-            return nil
+            return UIViewController()
         }
         if let nav = vc as? UINavigationController {
             return topViewController(inNavigationStackOf: nav.topViewController)
@@ -31,7 +31,7 @@ extension UIApplication {
         } else if let splitVC = vc as? UISplitViewController {
             guard let primaryVc = splitVC.viewControllers.first else {
                 Log.shared.errorAndCrash("Splitview without Primary VC?")
-                return nil
+                return UIViewController()
             }
             return topViewController(inNavigationStackOf: primaryVc)
         } else if let presented = vc.presentedViewController {
@@ -40,7 +40,11 @@ extension UIApplication {
             //this situation happens when searchBar is in focus.
             //it's needed to select the viewController that presents the searchbar
             //as a topViewController.
-            return searchVc.presentingViewController
+            guard let searchVCPresenter = searchVc.presentingViewController else {
+                Log.shared.errorAndCrash("searchVC not found")
+                return UIViewController()
+            }
+            return searchVCPresenter
         }
         return vc
     }

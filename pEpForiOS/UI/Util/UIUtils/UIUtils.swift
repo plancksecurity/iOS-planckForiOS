@@ -49,10 +49,7 @@ class UIUtils {
     /// Shows the navigation controller passed by parameter
     /// - Parameter navigationController: The Navigation Controller to present.
     public static func show(navigationController: UINavigationController) {
-        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.errorAndCrash("No VC")
-            return
-        }
+        let presenterVc = UIApplication.currentlyVisibleViewController()
         presenterVc.present(navigationController, animated: true)
     }
 

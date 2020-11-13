@@ -18,7 +18,7 @@ extension UIUtils {
     ///   - completion: called when "OK" has been pressed
     public static func showAlertWithOnlyPositiveButton(title: String,
                                                        message: String?,
-                                                       style: AlertStyle = .default,
+                                                       style: PEPAlertViewController.AlertStyle = .default,
                                                        completion: (()->Void)? = nil) {
         guard let alertViewController = UIUtils.getAlert(withTitle: title,
                                                          message: message,
@@ -48,7 +48,7 @@ extension UIUtils {
                                           positiveButtonText: String = NSLocalizedString("OK", comment: "Default positive button text"),
                                           cancelButtonAction: (() -> Void)? = nil,
                                           positiveButtonAction: @escaping () -> Void,
-                                          style: AlertStyle) {
+                                          style: PEPAlertViewController.AlertStyle) {
         guard let alertViewController = UIUtils.getAlert(withTitle: title,
                                                          message: message,
                                                          cancelButtonText: cancelButtonText,
@@ -122,10 +122,7 @@ extension UIUtils {
     /// Present the pep alert if possible.
     /// - Parameter alertController: The controller to present.
     private static func show(_ alertController: PEPAlertViewController) {
-        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.errorAndCrash("No VC")
-            return
-        }
+        let presenterVc = UIApplication.currentlyVisibleViewController()
         func shouldPresent() -> Bool {
             if let presenter = presenterVc as? PEPAlertViewController {
                 if presenter.style == .warn && alertController.style == .warn {
@@ -142,10 +139,7 @@ extension UIUtils {
     }
     
     private static func present(_ alertController: UIAlertController) {
-        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.errorAndCrash("No VC")
-            return
-        }
+        let presenterVc = UIApplication.currentlyVisibleViewController()
         guard !UIApplication.isCurrentlyShowingAlert else {
             /// Valid case: there is an alert already shown
             return
@@ -161,7 +155,7 @@ extension UIUtils {
                                  positiveButtonText: String = NSLocalizedString("OK", comment: "Default positive button text"),
                                  cancelButtonAction: (() -> Void)? = nil,
                                  positiveButtonAction: @escaping () -> Void,
-                                 style: AlertStyle,
+                                 style: PEPAlertViewController.AlertStyle,
                                  numberOfButtons: NumberOfButtons) -> PEPAlertViewController? {
         guard let pepAlertViewController = PEPAlertViewController.fromStoryboard(title: title, message: message, paintPEPInTitle: true) else {
             Log.shared.errorAndCrash("Fail to init PEPAlertViewController")
