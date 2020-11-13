@@ -978,7 +978,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mWn-9q-m8m" customClass="NonEditMenuUITextField" customModule="pEpForiOS" customModuleProvider="target">
+                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mWn-9q-m8m" customClass="NonEditMenuUiTextField" customModule="pEpForiOS" customModuleProvider="target">
                                                     <rect key="frame" x="216.66666666666663" y="5" width="177.33333333333337" height="34"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -994,7 +994,7 @@
                                                 <constraint firstItem="vzX-eS-BYY" firstAttribute="top" secondItem="e81-s5-2Gp" secondAttribute="topMargin" constant="1" id="QHz-p1-R1N"/>
                                                 <constraint firstAttribute="bottom" secondItem="mWn-9q-m8m" secondAttribute="bottom" constant="5" id="RWH-8e-Pxx"/>
                                                 <constraint firstItem="vzX-eS-BYY" firstAttribute="leading" secondItem="e81-s5-2Gp" secondAttribute="leading" constant="20" symbolic="YES" id="SCw-Vw-wj0"/>
-                                                <constraint firstItem="mWn-9q-m8m" firstAttribute="width" secondItem="e81-s5-2Gp" secondAttribute="width" multiplier="3:7" priority="750" id="TSa-7D-Zf1"/>
+                                                <constraint firstItem="mWn-9q-m8m" firstAttribute="width" secondItem="e81-s5-2Gp" secondAttribute="width" multiplier="3:7" id="TSa-7D-Zf1"/>
                                                 <constraint firstItem="mWn-9q-m8m" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vzX-eS-BYY" secondAttribute="trailing" constant="8" id="VQM-Qr-61O"/>
                                                 <constraint firstItem="vzX-eS-BYY" firstAttribute="centerY" secondItem="e81-s5-2Gp" secondAttribute="centerY" id="WZW-ra-5U2"/>
                                             </constraints>
@@ -1084,7 +1084,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JLc-di-cx2" customClass="NonEditMenuUITextField" customModule="pEpForiOS" customModuleProvider="target">
+                                                <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JLc-di-cx2" customClass="NonEditMenuUiTextField" customModule="pEpForiOS" customModuleProvider="target">
                                                     <rect key="frame" x="216.66666666666663" y="5" width="177.33333333333337" height="34"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -1094,7 +1094,7 @@
                                                 <constraint firstItem="JLc-di-cx2" firstAttribute="top" secondItem="Cae-Xt-xQe" secondAttribute="top" constant="5" id="9ht-R2-QV6"/>
                                                 <constraint firstItem="hAL-c1-ngD" firstAttribute="leading" secondItem="Cae-Xt-xQe" secondAttribute="leading" constant="20" symbolic="YES" id="D2G-Gr-Y86"/>
                                                 <constraint firstItem="hAL-c1-ngD" firstAttribute="top" secondItem="Cae-Xt-xQe" secondAttribute="topMargin" constant="1" id="NN6-sk-poK"/>
-                                                <constraint firstItem="JLc-di-cx2" firstAttribute="width" secondItem="Cae-Xt-xQe" secondAttribute="width" multiplier="3:7" priority="750" id="S1Z-G8-OLX"/>
+                                                <constraint firstItem="JLc-di-cx2" firstAttribute="width" secondItem="Cae-Xt-xQe" secondAttribute="width" multiplier="3:7" id="S1Z-G8-OLX"/>
                                                 <constraint firstAttribute="trailing" secondItem="JLc-di-cx2" secondAttribute="trailing" constant="20" symbolic="YES" id="S6y-1D-Pks"/>
                                                 <constraint firstItem="JLc-di-cx2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hAL-c1-ngD" secondAttribute="trailing" constant="8" id="bOE-du-YcY"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="hAL-c1-ngD" secondAttribute="bottom" constant="1" id="qhU-Xj-uMR"/>
@@ -1117,8 +1117,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wBU-1F-ni5" customClass="NonEditMenuUITextField" customModule="pEpForiOS" customModuleProvider="target">
-                                                    <rect key="frame" x="194.33333333333337" y="5" width="160.66666666666663" height="34"/>
+                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wBU-1F-ni5" customClass="NonEditMenuUiTextField" customModule="pEpForiOS" customModuleProvider="target">
+                                                    <rect key="frame" x="216.66666666666663" y="5" width="177.33333333333337" height="34"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
@@ -1135,7 +1135,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="wBU-1F-ni5" secondAttribute="trailing" constant="20" symbolic="YES" id="OQY-N3-h5N"/>
                                                 <constraint firstItem="azH-be-f3A" firstAttribute="top" secondItem="axg-1J-Kpy" secondAttribute="topMargin" constant="1" id="kRC-h1-xfV"/>
                                                 <constraint firstItem="azH-be-f3A" firstAttribute="leading" secondItem="axg-1J-Kpy" secondAttribute="leading" constant="20" symbolic="YES" id="pTF-ZU-3pg"/>
-                                                <constraint firstItem="wBU-1F-ni5" firstAttribute="width" secondItem="axg-1J-Kpy" secondAttribute="width" multiplier="3:7" priority="750" id="tDE-MN-xJF"/>
+                                                <constraint firstItem="wBU-1F-ni5" firstAttribute="width" secondItem="axg-1J-Kpy" secondAttribute="width" multiplier="3:7" id="tDE-MN-xJF"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
