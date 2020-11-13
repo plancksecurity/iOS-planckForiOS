@@ -47,14 +47,14 @@ class TutorialStep3ViewController: TutorialStepViewController {
     }
     
     private func adjustConstraintsIfNeeded() {
-        guard let superView = view.superview, isIpad else {
+        guard let superView = view.superview, UIDevice.isIpad else {
             Log.shared.info("Superview is missing or is not needed to adjust constraints here")
             return
         }
         
         imageWidth.constant = 334
-        trustedAssetCenterX.constant = isLandscape ? 100 : 50
-        secureAssetCenterX.constant = isLandscape ? -100 : -50
+        trustedAssetCenterX.constant = UIDevice.isLandscape ? 100 : 50
+        secureAssetCenterX.constant = UIDevice.isLandscape ? -100 : -50
         superView.layoutIfNeeded()
     }
 }

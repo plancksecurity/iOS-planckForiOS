@@ -40,7 +40,6 @@
 		5B87D79423F2C5CE009DACAA /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */; };
 		5BA2F5E924C997ED00F27099 /* UIDevice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA2F5E824C997ED00F27099 /* UIDevice+Extension.swift */; };
 		5BD917EE252E17D20092B30F /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD917ED252E17D20092B30F /* String+Extension.swift */; };
-		5BFDC9312550119E0008A520 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFDC9302550119E0008A520 /* UIViewController+Extension.swift */; };
 		B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5422005BD400EDCE61 /* Date+Extension.swift */; };
 		B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */; };
 		B70A3A7322006B9F00EDCE61 /* SystemUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */; };
@@ -115,7 +114,6 @@
 		5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		5BA2F5E824C997ED00F27099 /* UIDevice+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extension.swift"; sourceTree = "<group>"; };
 		5BD917ED252E17D20092B30F /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
-		5BFDC9302550119E0008A520 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIViewController+Extension.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/UIKit/UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A5422005BD400EDCE61 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemUtils.swift; sourceTree = "<group>"; };
@@ -304,7 +302,6 @@
 				B7465DE02211C6E9008A1708 /* UIImage+GIF.swift */,
 				3AC1987C23F56B7300E71D43 /* UILabel+Font.swift */,
 				B7E9D25323561D360074F067 /* UISplitViewController+DisplayMode.swift */,
-				5BFDC9302550119E0008A520 /* UIViewController+Extension.swift */,
 				3A0CBAAA23F582B900AE200C /* UITextView+Font.swift */,
 				155528C323A797DC008486DF /* UIView+Autolayout.swift */,
 			);
@@ -539,7 +536,6 @@
 				B7A46C5E220DBAF00027CCB5 /* OperationQueue+Extension.swift in Sources */,
 				370DB3CF22804A3600BC929A /* NSSecureCoding+Extension.swift in Sources */,
 				B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */,
-				5BFDC9312550119E0008A520 /* UIViewController+Extension.swift in Sources */,
 				B7465DBE22119D3A008A1708 /* Thread+Extension.swift in Sources */,
 				5BD917EE252E17D20092B30F /* String+Extension.swift in Sources */,
 				37904564223FA486006DAB3B /* NetworkReachability.swift in Sources */,

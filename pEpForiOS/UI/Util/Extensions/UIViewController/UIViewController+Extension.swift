@@ -21,7 +21,7 @@ extension UIViewController {
     func adjustTitleViewPositionIfNeeded() {
         //reset previous transformations if any
         navigationItem.titleView?.transform = .identity
-        if isIpad && isLandscape {
+        if UIDevice.isIpad && UIDevice.isLandscape {
             let oldCenterX = view.center.x
             let newCenterX = UIScreen.main.bounds.size.width / 2
             let deltaX = oldCenterX - newCenterX
