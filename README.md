@@ -77,9 +77,11 @@ popd
 
 ## Setup instructions
 
+In a directory of your choice, do:
+
 ```
-mkdir ~/src
-cd ~/src
+mkdir src_pEp4iOS
+cd src_pEp4iOS
 
 git clone https://pep-security.lu/gitlab/misc/libetpan.git
 pushd libetpan
