@@ -167,25 +167,12 @@ extension UIUtils {
             Log.shared.errorAndCrash("Fail to init PEPAlertViewController")
             return nil
         }
-        var primaryColor: UIColor
-        var secondaryColor: UIColor
-        switch style {
-        case .default:
-            primaryColor = .pEpGreen
-            secondaryColor = .pEpBlack
-        case .warn:
-            primaryColor = .pEpRed
-            secondaryColor = .pEpBlack
-        case .undo:
-            primaryColor = .pEpBlack
-            secondaryColor = .pEpBlack
-        }
-        let positiveAction = PEPUIAlertAction(title: positiveButtonText, style: primaryColor) { _ in
+        let positiveAction = PEPUIAlertAction(title: positiveButtonText, style: style.primaryColor) { _ in
             positiveButtonAction()
             pepAlertViewController.dismiss()
         }
         if numberOfButtons == .two {
-            let cancelAction = PEPUIAlertAction(title: cancelButtonText, style: secondaryColor) { _ in
+            let cancelAction = PEPUIAlertAction(title: cancelButtonText, style: style.secondaryColor) { _ in
                 cancelButtonAction?()
                 pepAlertViewController.dismiss()
             }

@@ -11,6 +11,26 @@ import UIKit
 import pEpIOSToolbox
 
 
+extension AlertStyle {
+    public var primaryColor: UIColor {
+        switch self {
+        case .default:
+            return .pEpGreen
+        case .warn:
+            return .pEpRed
+        case .undo:
+            return .pEpBlack
+        }
+    }
+
+    public var secondaryColor: UIColor {
+        switch self {
+        case .default, .warn, .undo:
+            return .pEpBlack
+        }
+    }
+}
+
 public enum AlertStyle : Int {
     case `default` = 0
     case warn = 1
