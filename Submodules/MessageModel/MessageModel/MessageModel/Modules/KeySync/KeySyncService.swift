@@ -11,14 +11,6 @@ import CoreData
 import PEPObjCAdapterFramework
 import pEpIOSToolbox
 
-/// Provides pEp Sync [en|dis]abled state and state changes.
-public protocol KeySyncStateProvider: class {
-    typealias NewState = Bool
-    /// Closure called in case the pEp Sync [en|dis]abled state changed.
-    var stateChangeHandler: ((NewState)->Void)? { get set }
-    var isKeySyncEnabled: Bool { get }
-}
-
 class KeySyncService: NSObject, KeySyncServiceProtocol {
     /// The Adapter's pEp Sync service.
     private let pEpSync: PEPSync
