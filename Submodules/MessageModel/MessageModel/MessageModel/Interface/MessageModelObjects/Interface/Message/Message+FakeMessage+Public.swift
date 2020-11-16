@@ -8,7 +8,7 @@
 
 import CoreData
 
-/// Code related to fake messages.
+/// Public code related to fake messages.
 ///
 /// We are saving fake messages locally for messages that take time to sync with server (e.g.
 /// when moving a message to another folder). Fake messages are marked with a special UID.
@@ -23,10 +23,6 @@ extension Message {
         return CdMessage.uidFakeResponsivenes
     }
 
-    var isFakeMessage: Bool {
-        return cdObject.isFakeMessage
-    }
-
     static public func saveForAppend(msg: Message) {
         let moc: NSManagedObjectContext = msg.session.moc
 
@@ -39,20 +35,5 @@ extension Message {
         let _ = msg.cdObject.createFakeMessage(context: moc)
 
         moc.saveAndLogErrors()
-    }
-
-    /// Does not save!!
-    @discardableResult
-    func createFakeMessage(in targetFolder: Folder) -> Message {
-        let cdFakeMsg =  cdObject.createFakeMessage(context: moc)
-        cdFakeMsg.parent = targetFolder.cdObject
-        cdFakeMsg.targetFolder = nil
-        let fakeMsg = Message(cdObject: cdFakeMsg, context: moc)
-        return fakeMsg
-    }
-
-    private convenience init(uid: Int, message: Message, parentFolder: Folder) {
-        self.init(uid: uid, message: message)
-        self.parent = parentFolder
     }
 }
