@@ -23,7 +23,7 @@
 "aYO-l7-9iG.text" = "Wachtwoord";
 
 /* Class = "UILabel"; text = "Username"; ObjectID = "azH-be-f3A"; */
-"azH-be-f3A.text" = "Gebruikersnaam";
+"azH-be-f3A.text" = "Gebruikersnaam:";
 
 /* Class = "UILabel"; text = "Certificate"; ObjectID = "cmM-dq-fKg"; */
 "cmM-dq-fKg.text" = "Certificaat";
@@ -86,7 +86,7 @@
 "QcW-va-Qh4.text" = "Naam:";
 
 /* Class = "UILabel"; text = "Username"; ObjectID = "RYB-AT-TSB"; */
-"RYB-AT-TSB.text" = "Gebruikersnaam";
+"RYB-AT-TSB.text" = "Gebruikersnaam:";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "s9I-CU-fSE"; */
 "s9I-CU-fSE.text" = "Naam";
@@ -95,7 +95,7 @@
 "Tjb-uM-eUF.text" = "p≡p Sync";
 
 /* Class = "UILabel"; text = "Username"; ObjectID = "tt1-bn-s7P"; */
-"tt1-bn-s7P.text" = "Gebruikersnaam";
+"tt1-bn-s7P.text" = "Gebruikersnaam:";
 
 /* Class = "UILabel"; text = "Transport Security"; ObjectID = "Tul-XU-PSw"; */
 "Tul-XU-PSw.text" = "Transport Beveiliging";
@@ -113,7 +113,7 @@
 "vjp-2e-dTM.text" = "Titel";
 
 /* Class = "UILabel"; text = "Username"; ObjectID = "vzX-eS-BYY"; */
-"vzX-eS-BYY.text" = "Gebruikersnaam";
+"vzX-eS-BYY.text" = "Gebruikersnaam:";
 
 /* Class = "UILabel"; text = "Server"; ObjectID = "weI-Bw-0PK"; */
 "weI-Bw-0PK.text" = "Server:";
