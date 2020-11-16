@@ -7,37 +7,10 @@
 //
 
 import UIKit
-
 import pEpIOSToolbox
 
-
-extension AlertStyle {
-    public var primaryColor: UIColor {
-        switch self {
-        case .default:
-            return .pEpGreen
-        case .warn:
-            return .pEpRed
-        case .undo:
-            return .pEpBlack
-        }
-    }
-
-    public var secondaryColor: UIColor {
-        switch self {
-        case .default, .warn, .undo:
-            return .pEpBlack
-        }
-    }
-}
-
-public enum AlertStyle : Int {
-    case `default` = 0
-    case warn = 1
-    case undo = 2
-}
-
 final class PEPAlertViewController: UIViewController {
+    public var alertStyle: AlertStyle = .default
     @IBOutlet weak var alertTitle: UILabel!
     @IBOutlet weak var alertMessage: UILabel!
     @IBOutlet weak var alertImageView: UIImageView!
@@ -113,6 +86,35 @@ final class PEPAlertViewController: UIViewController {
 extension PEPAlertViewController: PEPAlertViewModelDelegate {
     func dismiss() {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - AlertStyle
+
+extension PEPAlertViewController {
+
+    public enum AlertStyle : Int {
+        case `default` = 0
+        case warn = 1
+        case undo = 2
+    }
+
+    public var primaryColor: UIColor {
+        switch alertStyle {
+        case .default:
+            return .pEpGreen
+        case .warn:
+            return .pEpRed
+        case .undo:
+            return .pEpBlack
+        }
+    }
+
+    public var secondaryColor: UIColor {
+        switch alertStyle {
+        case .default, .warn, .undo:
+            return .pEpBlack
+        }
     }
 }
 

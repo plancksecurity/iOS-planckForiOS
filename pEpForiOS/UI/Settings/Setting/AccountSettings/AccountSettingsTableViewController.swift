@@ -336,7 +336,7 @@ extension AccountSettingsTableViewController {
             me.dismiss(animated: true)
             me.viewModel?.handleResetIdentity()
         },
-        style: .warn)
+        style: PEPAlertViewController.AlertStyle.warn)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
