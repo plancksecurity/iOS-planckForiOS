@@ -28,7 +28,7 @@ class AttachmentViewModel: CellViewModel {
             }
             result = me.attachment.fileName
         }
-        return result ?? Attachment.defaultFileName
+        return result ?? Attachment.defaultFilename
     }
 
     public var fileExtension: String {

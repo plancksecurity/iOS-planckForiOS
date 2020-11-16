@@ -30,6 +30,7 @@ final class FolderTableViewController: UITableViewController {
         setup()
         showNextViewIfNeeded()
         showEmptyDetailViewIfNeeded()
+        updateRefreshControl()
     }
 
     // MARK: - Setup
@@ -223,6 +224,17 @@ extension FolderTableViewController: SegueHandlerType {
                 return
             }
             dvc.hidesBottomBarWhenPushed = true
+        }
+    }
+
+    private func updateRefreshControl() {
+        /// This fixes a UI glitch.
+        /// The refresh control gets stucked when a view controller is pushed over the current one and dismissed.
+        /// This works around that issue. If the refresh control is refreshing, make it spin again.
+        /// If not, it is already hidden, so nothing to do.
+        if refreshControl?.isRefreshing ?? false {
+            refreshControl?.endRefreshing()
+            refreshControl?.beginRefreshing()
         }
     }
 
