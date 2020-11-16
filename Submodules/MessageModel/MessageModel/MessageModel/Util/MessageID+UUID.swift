@@ -8,10 +8,7 @@
 
 import UIKit
 
-public typealias MessageID = String
-
 extension MessageID {
-
     static func generateUUID(localPart: String = "@pretty.Easy.privacy") -> String {
         return "\(UUID().uuidString)\(localPart)"
     }
