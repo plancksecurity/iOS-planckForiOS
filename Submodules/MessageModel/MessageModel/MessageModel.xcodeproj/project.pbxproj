@@ -273,6 +273,7 @@
 		439CACDB2562CA7A0043077E /* Message+FakeMessage+Public.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CACDA2562CA7A0043077E /* Message+FakeMessage+Public.swift */; };
 		439CACE32562CB1B0043077E /* Message+FakeMessage+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CACE22562CB1B0043077E /* Message+FakeMessage+Internal.swift */; };
 		439CACE82562CCD50043077E /* Attachment+ContentID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CACE72562CCD50043077E /* Attachment+ContentID.swift */; };
+		439CACED2562CEB10043077E /* FolderType+FolderName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CACEC2562CEB10043077E /* FolderType+FolderName.swift */; };
 		43A2923722C5039D00ED42B6 /* NSManagedObjectContext+FromObjectID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A2923622C5039D00ED42B6 /* NSManagedObjectContext+FromObjectID.swift */; };
 		43A536E623E4626E0040715D /* SmtpConnectionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A536E523E4626E0040715D /* SmtpConnectionProtocol.swift */; };
 		43A536EA23E474EA0040715D /* ImapConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A536E923E474EA0040715D /* ImapConnectionDelegate.swift */; };
@@ -731,6 +732,7 @@
 		439CACDA2562CA7A0043077E /* Message+FakeMessage+Public.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+FakeMessage+Public.swift"; sourceTree = "<group>"; };
 		439CACE22562CB1B0043077E /* Message+FakeMessage+Internal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+FakeMessage+Internal.swift"; sourceTree = "<group>"; };
 		439CACE72562CCD50043077E /* Attachment+ContentID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Attachment+ContentID.swift"; sourceTree = "<group>"; };
+		439CACEC2562CEB10043077E /* FolderType+FolderName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderType+FolderName.swift"; sourceTree = "<group>"; };
 		43A2923622C5039D00ED42B6 /* NSManagedObjectContext+FromObjectID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+FromObjectID.swift"; sourceTree = "<group>"; };
 		43A536E523E4626E0040715D /* SmtpConnectionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmtpConnectionProtocol.swift; sourceTree = "<group>"; };
 		43A536E923E474EA0040715D /* ImapConnectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImapConnectionDelegate.swift; sourceTree = "<group>"; };
@@ -1157,6 +1159,7 @@
 				B7BED3142254FAA700CCF638 /* Folder+DisplaybleFolder.swift */,
 				43CB609E1DA4EBB60015281E /* Folder.swift */,
 				1522953A230057A800204FD3 /* Folder+Fetching.swift */,
+				439CACEC2562CEB10043077E /* FolderType+FolderName.swift */,
 			);
 			path = Folder;
 			sourceTree = "<group>";
@@ -2867,6 +2870,7 @@
 				431BAE34246D4F330043490F /* KeyImportUtil.swift in Sources */,
 				B747A7E2234E4B7800508565 /* CdIdentity+SectionTitle.swift in Sources */,
 				15A3B4DB235862B700DB9135 /* CdAccount+SendServiceProvider.swift in Sources */,
+				439CACED2562CEB10043077E /* FolderType+FolderName.swift in Sources */,
 				439CACDB2562CA7A0043077E /* Message+FakeMessage+Public.swift in Sources */,
 				15466135233B9A64008D2137 /* OperationBasedService.swift in Sources */,
 				1535D075223AB4BF008F0ACC /* ImapFlags.swift in Sources */,
