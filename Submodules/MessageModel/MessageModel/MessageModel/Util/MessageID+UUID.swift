@@ -1,5 +1,5 @@
 //
-//  MessageID.swift
+//  MessageID+UUID.swift
 //  MailModel
 //
 //  Created by Dirk Zimmermann on 26/09/16.

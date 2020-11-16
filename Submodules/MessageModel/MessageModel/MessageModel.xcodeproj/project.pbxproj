@@ -200,7 +200,7 @@
 		4331CE85229BDF0F00DDDC65 /* IOS-1556_html_mail_with_html_attachment.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4331CE84229BDF0F00DDDC65 /* IOS-1556_html_mail_with_html_attachment.txt */; };
 		4331CE87229BEABF00DDDC65 /* IOS-1556_html_mail_with_html_attachment_inline.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4331CE86229BEABE00DDDC65 /* IOS-1556_html_mail_with_html_attachment_inline.txt */; };
 		4331CE89229BEB7A00DDDC65 /* IOS-1556_html_mail_with_html_attachments_mixed.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4331CE88229BEB7900DDDC65 /* IOS-1556_html_mail_with_html_attachments_mixed.txt */; };
-		433C51D51E6828AE00272E19 /* MessageID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433C51D41E6828AE00272E19 /* MessageID.swift */; };
+		433C51D51E6828AE00272E19 /* MessageID+UUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433C51D41E6828AE00272E19 /* MessageID+UUID.swift */; };
 		433E743A225B76E000B84CD9 /* CdServer+NonOptionalConvenienceAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433E7439225B76E000B84CD9 /* CdServer+NonOptionalConvenienceAccessors.swift */; };
 		433E743F225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433E743E225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift */; };
 		43495984239E509300CF1E12 /* CdFolder+SyncFolderMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43495983239E509300CF1E12 /* CdFolder+SyncFolderMode.swift */; };
@@ -653,7 +653,7 @@
 		4331CE84229BDF0F00DDDC65 /* IOS-1556_html_mail_with_html_attachment.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-1556_html_mail_with_html_attachment.txt"; sourceTree = "<group>"; };
 		4331CE86229BEABE00DDDC65 /* IOS-1556_html_mail_with_html_attachment_inline.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-1556_html_mail_with_html_attachment_inline.txt"; sourceTree = "<group>"; };
 		4331CE88229BEB7900DDDC65 /* IOS-1556_html_mail_with_html_attachments_mixed.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-1556_html_mail_with_html_attachments_mixed.txt"; sourceTree = "<group>"; };
-		433C51D41E6828AE00272E19 /* MessageID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageID.swift; sourceTree = "<group>"; };
+		433C51D41E6828AE00272E19 /* MessageID+UUID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MessageID+UUID.swift"; sourceTree = "<group>"; };
 		433E7439225B76E000B84CD9 /* CdServer+NonOptionalConvenienceAccessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdServer+NonOptionalConvenienceAccessors.swift"; sourceTree = "<group>"; };
 		433E743E225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift"; sourceTree = "<group>"; };
 		43495983239E509300CF1E12 /* CdFolder+SyncFolderMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+SyncFolderMode.swift"; sourceTree = "<group>"; };
@@ -2024,7 +2024,7 @@
 				4352FA261DC7A1C20081161A /* KeyChain.swift */,
 				434DC0E51DAE8BE7007C98B8 /* MutableOrderedSet.swift */,
 				37BC7AFA22283E2D0047267A /* MessageModelObjectUtils.swift */,
-				433C51D41E6828AE00272E19 /* MessageID.swift */,
+				433C51D41E6828AE00272E19 /* MessageID+UUID.swift */,
 				43E74C6B1E38B38C00A2F7A6 /* ImapFlagsUtility.swift */,
 				493B6D041E70589800364D60 /* SystemUtils.swift */,
 				435C0CBF222939A10025C6B5 /* PEPRating+Extension.swift */,
@@ -2776,7 +2776,7 @@
 				15E01F9F24AB420B00DFADA3 /* PassphraseUtil.swift in Sources */,
 				43C123F1223A7FCF00F6A9B2 /* FetchImapFoldersService.swift in Sources */,
 				43607DF6240031FE00FA66B8 /* CdClientCertificate+Extension.swift in Sources */,
-				433C51D51E6828AE00272E19 /* MessageID.swift in Sources */,
+				433C51D51E6828AE00272E19 /* MessageID+UUID.swift in Sources */,
 				37BC7AFB22283E2D0047267A /* MessageModelObjectUtils.swift in Sources */,
 				15B854E4232D3D9400DB8FB1 /* Identity+AddessBook.swift in Sources */,
 				43A676A2246D3A81004639FE /* KeyImportUtilProtocol.swift in Sources */,
