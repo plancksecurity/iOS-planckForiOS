@@ -19,6 +19,7 @@ extension CdMessage {
 extension CdMessage {
 
     //!!!: If we go for seperating incoming and outgoing message, only createOutgoingMessage() is allowed to set a MessageId.
+    /// Is not meant to be public, but must be, since the xcode-generated base class is
     public override func validateForInsert() throws {
         if uuid == nil {
             uuid = MessageID.generateUUID()

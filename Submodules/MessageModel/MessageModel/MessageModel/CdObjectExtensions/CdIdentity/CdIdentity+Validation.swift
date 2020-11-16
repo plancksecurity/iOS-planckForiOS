@@ -9,7 +9,7 @@
 import CoreData
 
 extension CdIdentity {
-
+    /// Is not meant to be public, but must be, since the xcode-generated base class is
     public override func validateForInsert() throws {
         // Every Identity MUST have a user_id!
         if userID == nil {

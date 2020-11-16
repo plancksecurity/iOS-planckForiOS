@@ -9,7 +9,7 @@
 import CoreData
 
 extension CdAttachment {
-
+    /// Is not meant to be public, but must be, since the xcode-generated base class is
     public override func validateForInsert() throws {
         if mimeType == nil {
             mimeType = MimeTypeUtils.MimeType.defaultMimeType.rawValue
@@ -30,7 +30,7 @@ extension CdAttachment {
         }
     }
 
-    //!!!: move to app
+    /// Is not meant to be public, but must be, since the xcode-generated base class is
     public override var description: String {
         let s = NSMutableString()
         if let fn = fileName {
@@ -42,6 +42,7 @@ extension CdAttachment {
         return String(s)
     }
 
+    /// Is not meant to be public, but must be, since the xcode-generated base class is
     public override var debugDescription: String {
         return description
     }
