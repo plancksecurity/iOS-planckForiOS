@@ -43,9 +43,4 @@ extension Attachment {
         }
         return fn.extractCid()
     }
-
-    /// Wheter or not the attachment is inlined in a HTML mail body.
-    public var isInlined: Bool {
-        return contentDisposition == .inline
-    }
 }

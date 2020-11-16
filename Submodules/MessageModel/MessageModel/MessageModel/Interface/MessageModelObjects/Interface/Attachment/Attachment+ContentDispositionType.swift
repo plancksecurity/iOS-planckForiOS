@@ -19,4 +19,9 @@ extension Attachment {
             return lhs.rawValue == rhs.rawValue
         }
     }
+
+    /// Wheter or not the attachment is inlined in a HTML mail body.
+    public var isInlined: Bool {
+        return contentDisposition == .inline
+    }
 }
