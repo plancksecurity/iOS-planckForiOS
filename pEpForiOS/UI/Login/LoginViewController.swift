@@ -574,7 +574,7 @@ extension LoginViewController {
 extension LoginViewController {
     private func showiCloudAlert() {
         func openiCloudInfoInBrowser() {
-            let urlString = "https://support.apple.com/en-jo/HT204397"
+            let urlString = "https://support.apple.com/en-us/HT204174"
             guard let url = URL(string: urlString) else {
                 Log.shared.errorAndCrash(message: "Not a URL? \(urlString)")
                 return
