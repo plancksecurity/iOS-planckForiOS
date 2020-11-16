@@ -237,6 +237,10 @@
 		43257C841F50629700DDC7F0 /* HtmlToAttributedTextSaxParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43257C831F50629700DDC7F0 /* HtmlToAttributedTextSaxParser.swift */; };
 		43257C861F50659200DDC7F0 /* StringHTMLExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43257C851F50659200DDC7F0 /* StringHTMLExtensionTests.swift */; };
 		43257C891F50683600DDC7F0 /* NSAttributedString+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43257C871F5067BE00DDC7F0 /* NSAttributedString+pEp.swift */; };
+		43269D202552AA04001E18C6 /* ConnectionTransport+LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43269D1F2552AA04001E18C6 /* ConnectionTransport+LocalizedString.swift */; };
+		43269D272552ABE9001E18C6 /* String+PEPSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43269D262552ABE9001E18C6 /* String+PEPSignature.swift */; };
+		43269D3E2552B2BA001E18C6 /* Attachment+DefaultFilename.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43269D3D2552B2BA001E18C6 /* Attachment+DefaultFilename.swift */; };
+		43269D6C2552B744001E18C6 /* VerifiableAccountValidationError+LocalizedError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43269D6B2552B744001E18C6 /* VerifiableAccountValidationError+LocalizedError.swift */; };
 		43293EFB1EB9DD6700EEE010 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43293EFA1EB9DD6700EEE010 /* UIViewController+Extension.swift */; };
 		432E80FD2191AF5100359879 /* UniversLTStd.otf in Resources */ = {isa = PBXBuildFile; fileRef = 432E80FB2191AF5100359879 /* UniversLTStd.otf */; };
 		432E80FE2191AF5100359879 /* UniversLTStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 432E80FC2191AF5100359879 /* UniversLTStd-Bold.otf */; };
@@ -760,6 +764,10 @@
 		43257C831F50629700DDC7F0 /* HtmlToAttributedTextSaxParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlToAttributedTextSaxParser.swift; sourceTree = "<group>"; };
 		43257C851F50659200DDC7F0 /* StringHTMLExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringHTMLExtensionTests.swift; sourceTree = "<group>"; };
 		43257C871F5067BE00DDC7F0 /* NSAttributedString+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+pEp.swift"; sourceTree = "<group>"; };
+		43269D1F2552AA04001E18C6 /* ConnectionTransport+LocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConnectionTransport+LocalizedString.swift"; sourceTree = "<group>"; };
+		43269D262552ABE9001E18C6 /* String+PEPSignature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+PEPSignature.swift"; sourceTree = "<group>"; };
+		43269D3D2552B2BA001E18C6 /* Attachment+DefaultFilename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Attachment+DefaultFilename.swift"; sourceTree = "<group>"; };
+		43269D6B2552B744001E18C6 /* VerifiableAccountValidationError+LocalizedError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VerifiableAccountValidationError+LocalizedError.swift"; sourceTree = "<group>"; };
 		43293EFA1EB9DD6700EEE010 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		432E80FB2191AF5100359879 /* UniversLTStd.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = UniversLTStd.otf; sourceTree = "<group>"; };
 		432E80FC2191AF5100359879 /* UniversLTStd-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UniversLTStd-Bold.otf"; sourceTree = "<group>"; };
@@ -2646,6 +2654,10 @@
 				B7DB7FC32215C4FF003968DA /* UINavigationController+Extensions.swift */,
 				37156E52234DD4CC00845A28 /* UIViewController */,
 				437E9BA8237AFB7F00E9A847 /* UIStoryboard+Constants.swift */,
+				43269D1F2552AA04001E18C6 /* ConnectionTransport+LocalizedString.swift */,
+				43269D262552ABE9001E18C6 /* String+PEPSignature.swift */,
+				43269D3D2552B2BA001E18C6 /* Attachment+DefaultFilename.swift */,
+				43269D6B2552B744001E18C6 /* VerifiableAccountValidationError+LocalizedError.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2907,6 +2919,7 @@
 				1579348D246D495000E2D8D2 /* PGPKeyImportSettingViewController.swift in Sources */,
 				00D3CD3E20B58976009ABBC9 /* PEPSplitViewController.swift in Sources */,
 				1521B78D241BDAD3000EAE57 /* UIUtils+Settings.swift in Sources */,
+				43269D6C2552B744001E18C6 /* VerifiableAccountValidationError+LocalizedError.swift in Sources */,
 				B7DFEA56225397AB0080A2BA /* Folder+LocalizedName.swift in Sources */,
 				4351C2D51F4441190053381F /* latex.c in Sources */,
 				B74F37CD24ADD2B00083501B /* EmailViewController.swift in Sources */,
@@ -2971,6 +2984,7 @@
 				3A2119E1241251A80030C3E4 /* ClientCertificateManagementTableViewCell.swift in Sources */,
 				B716056020D3ECC900A733D6 /* MoveToFolderTableViewController.swift in Sources */,
 				5BCFE663252470F4001323C3 /* ComposeViewController.swift in Sources */,
+				43269D202552AA04001E18C6 /* ConnectionTransport+LocalizedString.swift in Sources */,
 				1543B6B022ABF53C002B59AB /* KeySyncDeviceGroupUtil.swift in Sources */,
 				15874BCB2127493E00A3A4A6 /* AccountVerificationResultDelegate.swift in Sources */,
 				43E657E71F3CAB310014CBEC /* HtmlToMarkdownSaxParser.swift in Sources */,
@@ -3000,6 +3014,7 @@
 				15FB60532437410600398391 /* HtmlOptimizerUtil.swift in Sources */,
 				43A9818C24E53BFF00830603 /* Color+PrivacyStatusDescription.swift in Sources */,
 				49228A5320D3D29900A51E9D /* ThreadViewController+SegueHandlerType.swift in Sources */,
+				43269D3E2552B2BA001E18C6 /* Attachment+DefaultFilename.swift in Sources */,
 				152A39C921905C3E00D9F8E4 /* Message+ComposeUtils.swift in Sources */,
 				1521B797241BE026000EAE57 /* UIUtils+ActivityIndecator.swift in Sources */,
 				438052891FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift in Sources */,
@@ -3184,6 +3199,7 @@
 				152A39E621905C3E00D9F8E4 /* RecipientTextViewModel+TextAttachment.swift in Sources */,
 				5BEAECB525370C3E0082AAC6 /* String+Mailto.swift in Sources */,
 				B7D1EEC81E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift in Sources */,
+				43269D272552ABE9001E18C6 /* String+PEPSignature.swift in Sources */,
 				433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */,
 				43038EA2246D897F008FC36E /* KeyImportViewController.swift in Sources */,
 				4351C2DA1F4441190053381F /* scanners.c in Sources */,
