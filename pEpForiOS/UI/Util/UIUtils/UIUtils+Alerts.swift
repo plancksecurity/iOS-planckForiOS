@@ -167,7 +167,7 @@ extension UIUtils {
             Log.shared.errorAndCrash("Fail to init PEPAlertViewController")
             return nil
         }
-        pepAlertViewController.style = style
+        pepAlertViewController.alertStyle = style
         let positiveAction = PEPUIAlertAction(title: positiveButtonText, style: pepAlertViewController.primaryColor) { _ in
             positiveButtonAction()
             pepAlertViewController.dismiss()
