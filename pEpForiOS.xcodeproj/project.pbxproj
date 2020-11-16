@@ -467,7 +467,6 @@
 		B7A50746224CD27A007B988F /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A50745224CD27A007B988F /* FilterViewModel.swift */; };
 		B7B0E8F324094BB1003A34DC /* SplitViewHandlingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B0E8F224094BB1003A34DC /* SplitViewHandlingProtocol.swift */; };
 		B7B2912524FF8EB700428CA6 /* ResetTrustViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B2912424FF8EB700428CA6 /* ResetTrustViewModelTest.swift */; };
-		B7C487A122E0B7DE0005304B /* nonPasteableUiTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C487A022E0B7DE0005304B /* nonPasteableUiTextField.swift */; };
 		B7C7E3122334E054009ABFFE /* ResetTrustViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E3112334E054009ABFFE /* ResetTrustViewController.swift */; };
 		B7C7E3142334E7A1009ABFFE /* ResetTrustViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E3132334E7A1009ABFFE /* ResetTrustViewModel.swift */; };
 		B7D1EEC81E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D1EEC71E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift */; };
@@ -1114,7 +1113,6 @@
 		B7A50745224CD27A007B988F /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FilterViewModel.swift; path = Filter/ViewModel/FilterViewModel.swift; sourceTree = "<group>"; };
 		B7B0E8F224094BB1003A34DC /* SplitViewHandlingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewHandlingProtocol.swift; sourceTree = "<group>"; };
 		B7B2912424FF8EB700428CA6 /* ResetTrustViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetTrustViewModelTest.swift; sourceTree = "<group>"; };
-		B7C487A022E0B7DE0005304B /* nonPasteableUiTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nonPasteableUiTextField.swift; sourceTree = "<group>"; };
 		B7C7E3112334E054009ABFFE /* ResetTrustViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetTrustViewController.swift; sourceTree = "<group>"; };
 		B7C7E3132334E7A1009ABFFE /* ResetTrustViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetTrustViewModel.swift; sourceTree = "<group>"; };
 		B7D1EEC71E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollapsibleTableViewHeader.swift; path = Folder/CollapsibleTableViewHeader.swift; sourceTree = "<group>"; };
@@ -2834,7 +2832,6 @@
 				B7DB7FC62215C57F003968DA /* UIView+Util.swift */,
 				B7DB7FC32215C4FF003968DA /* UINavigationController+Extensions.swift */,
 				37156E52234DD4CC00845A28 /* UIViewController */,
-				B7C487A022E0B7DE0005304B /* nonPasteableUiTextField.swift */,
 				437E9BA8237AFB7F00E9A847 /* UIStoryboard+Constants.swift */,
 			);
 			path = Extensions;
@@ -3388,7 +3385,6 @@
 				1579348F246D499600E2D8D2 /* PGPKeyImportSettingViewModel.swift in Sources */,
 				43F9D99A1E92725700F78A1C /* AttachmentsViewHelper.swift in Sources */,
 				43B10C801EC2EE7F003E849F /* CppDummy.cpp in Sources */,
-				B7C487A122E0B7DE0005304B /* nonPasteableUiTextField.swift in Sources */,
 				5BF9B3D723FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift in Sources */,
 				37156E46234CD49F00845A28 /* EditableAccountSettingsViewModel.swift in Sources */,
 				15B220501FBF5D6E00CA52BA /* InfoPlist.swift in Sources */,
