@@ -12,7 +12,7 @@ import CoreData
 ///
 /// We are saving fake messages locally for messages that take time to sync with server (e.g.
 /// when moving a message to another folder). Fake messages are marked with a special UID.
-extension Message { //!!!: does not belong to Network service. Move to MM Interface.
+extension Message {
 
     /// uid for Fake messages, that are created to show to the user until the actual, real message
     /// is fetched from server.
