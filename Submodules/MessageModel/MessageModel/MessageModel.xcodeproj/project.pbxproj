@@ -267,6 +267,7 @@
 		439CAC902562AEA70043077E /* ServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CAC8F2562AEA70043077E /* ServiceProtocol.swift */; };
 		439CAC962562AF450043077E /* FetchImapFoldersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CAC952562AF450043077E /* FetchImapFoldersService.swift */; };
 		439CAC9B2562AFA30043077E /* FetchOlderImapMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CAC9A2562AFA30043077E /* FetchOlderImapMessagesService.swift */; };
+		439CACA02562B0ED0043077E /* FetchMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CAC9F2562B0ED0043077E /* FetchMessagesService.swift */; };
 		43A2923722C5039D00ED42B6 /* NSManagedObjectContext+FromObjectID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A2923622C5039D00ED42B6 /* NSManagedObjectContext+FromObjectID.swift */; };
 		43A536E623E4626E0040715D /* SmtpConnectionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A536E523E4626E0040715D /* SmtpConnectionProtocol.swift */; };
 		43A536EA23E474EA0040715D /* ImapConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A536E923E474EA0040715D /* ImapConnectionDelegate.swift */; };
@@ -413,7 +414,6 @@
 		B751B99F22D4D5110018DE0D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B751B99D22D4D5110018DE0D /* LaunchScreen.storyboard */; };
 		B7789CCA22243DC800AB08F4 /* MessageQueryResultsFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7789CC922243DC800AB08F4 /* MessageQueryResultsFilter.swift */; };
 		B7789CCC222446EC00AB08F4 /* MessageQueryResultsSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7789CCB222446EC00AB08F4 /* MessageQueryResultsSearch.swift */; };
-		B78ACA622304584800F8A396 /* FetchMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78ACA612304584800F8A396 /* FetchMessagesService.swift */; };
 		B78ACA73230D408500F8A396 /* FetchServiceBaseClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78ACA72230D408500F8A396 /* FetchServiceBaseClass.swift */; };
 		B7A1152322C3CA3F00FB6E91 /* PrepareAccountForSavingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A1152222C3CA3F00FB6E91 /* PrepareAccountForSavingService.swift */; };
 		B7A1152522C4B55E00FB6E91 /* PrepareAccountForSavingServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A1152422C4B55E00FB6E91 /* PrepareAccountForSavingServiceTest.swift */; };
@@ -723,6 +723,7 @@
 		439CAC8F2562AEA70043077E /* ServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceProtocol.swift; sourceTree = "<group>"; };
 		439CAC952562AF450043077E /* FetchImapFoldersService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchImapFoldersService.swift; sourceTree = "<group>"; };
 		439CAC9A2562AFA30043077E /* FetchOlderImapMessagesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchOlderImapMessagesService.swift; sourceTree = "<group>"; };
+		439CAC9F2562B0ED0043077E /* FetchMessagesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchMessagesService.swift; sourceTree = "<group>"; };
 		43A2923622C5039D00ED42B6 /* NSManagedObjectContext+FromObjectID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+FromObjectID.swift"; sourceTree = "<group>"; };
 		43A536E523E4626E0040715D /* SmtpConnectionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmtpConnectionProtocol.swift; sourceTree = "<group>"; };
 		43A536E923E474EA0040715D /* ImapConnectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImapConnectionDelegate.swift; sourceTree = "<group>"; };
@@ -874,7 +875,6 @@
 		B751B9A622D4D56C0018DE0D /* MessageModelTestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MessageModelTestApp.entitlements; sourceTree = "<group>"; };
 		B7789CC922243DC800AB08F4 /* MessageQueryResultsFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageQueryResultsFilter.swift; sourceTree = "<group>"; };
 		B7789CCB222446EC00AB08F4 /* MessageQueryResultsSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageQueryResultsSearch.swift; sourceTree = "<group>"; };
-		B78ACA612304584800F8A396 /* FetchMessagesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchMessagesService.swift; sourceTree = "<group>"; };
 		B78ACA72230D408500F8A396 /* FetchServiceBaseClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchServiceBaseClass.swift; sourceTree = "<group>"; };
 		B7A1152222C3CA3F00FB6E91 /* PrepareAccountForSavingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareAccountForSavingService.swift; sourceTree = "<group>"; };
 		B7A1152422C4B55E00FB6E91 /* PrepareAccountForSavingServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareAccountForSavingServiceTest.swift; sourceTree = "<group>"; };
@@ -1358,7 +1358,6 @@
 				154660DE23391FBA008D2137 /* DecryptService */,
 				15F274F6233CAE8F0069C1E0 /* EncryptAndSendService */,
 				1521050B23562B5100F30B51 /* ReplicationService */,
-				B78ACA612304584800F8A396 /* FetchMessagesService.swift */,
 				B78ACA72230D408500F8A396 /* FetchServiceBaseClass.swift */,
 				43EA483A221E9518006E8F83 /* FetchNumberOfNewMailsService.swift */,
 				B7A1152222C3CA3F00FB6E91 /* PrepareAccountForSavingService.swift */,
@@ -1915,6 +1914,7 @@
 		439CAC942562AF020043077E /* FetchImap */ = {
 			isa = PBXGroup;
 			children = (
+				439CAC9F2562B0ED0043077E /* FetchMessagesService.swift */,
 				439CAC9A2562AFA30043077E /* FetchOlderImapMessagesService.swift */,
 				439CAC952562AF450043077E /* FetchImapFoldersService.swift */,
 			);
@@ -2781,6 +2781,7 @@
 				43B2271424237131007EB91E /* OutlookO365SpecificInformation.swift in Sources */,
 				158A5E4423532685002277A6 /* SyncMessagesOperation.swift in Sources */,
 				3AECFB772462B93C004842D6 /* CdAccount+PredicateFactory.swift in Sources */,
+				439CACA02562B0ED0043077E /* FetchMessagesService.swift in Sources */,
 				43753CEC222D39B3002EE98B /* ImapFlags+Pantomime.swift in Sources */,
 				8BE460771DB7B1D2008D63C6 /* CdAccount.swift in Sources */,
 				15F27501233D133D0069C1E0 /* PEPMessage+OriginalHeaders.swift in Sources */,
@@ -2853,7 +2854,6 @@
 				15466135233B9A64008D2137 /* OperationBasedService.swift in Sources */,
 				1535D075223AB4BF008F0ACC /* ImapFlags.swift in Sources */,
 				B7F6F47C234CDB4A003DF84A /* QueryResultsDelegate.swift in Sources */,
-				B78ACA622304584800F8A396 /* FetchMessagesService.swift in Sources */,
 				43A536EA23E474EA0040715D /* ImapConnectionDelegate.swift in Sources */,
 				15175EC6221D88B900C91DB8 /* QueryResultsController.swift in Sources */,
 				43E3A244224E2BED004CAC84 /* CdMessage+Clone.swift in Sources */,
