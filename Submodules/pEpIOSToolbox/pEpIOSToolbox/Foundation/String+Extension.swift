@@ -9,6 +9,22 @@
 import Foundation
 
 extension String {
+    /// Tries to match the given string as regular expression.
+    public func firstMatch(pattern: String, rangeNumber: Int = 1) -> String? {
+        do {
+            let regex = try NSRegularExpression(
+                pattern: pattern, options: [])
+            if let match = regex.firstMatch(in: self, options: [], range: wholeRange()) {
+                let r = match.range(at: rangeNumber)
+                let s = (self as NSString).substring(with: r)
+                return s
+            }
+            return nil
+        } catch {
+            Log.shared.errorAndCrash(error: error)
+            return nil
+        }
+    }
 
     /// Replace only the first occureance of the pattern with the replacement.
     /// For example:
