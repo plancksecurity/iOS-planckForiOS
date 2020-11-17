@@ -8,9 +8,9 @@
 
 import pEpIOSToolbox
 
-extension Message {
-    // MARK: - Deletion
+// MARK: - Deletion
 
+extension Message {
     /// Only for internal use, does not save!
     func imapDelete() {
         if self.isDeleted {
@@ -48,9 +48,11 @@ extension Message {
             imapMarkDeleted()
         }
     }
+}
 
-    // MARK: - Move to Folder
+// MARK: - Move to Folder
 
+extension Message {
     /// Does not save!
     func move(to targetFolder: Folder) {
         guard parent != targetFolder else {
