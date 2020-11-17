@@ -10,7 +10,7 @@
 
 /// Due to the underspecified RFC6154 there is no way to know whether or not a Special-Use-Mailbox
 /// is virtual. It all depends on the servers/providers implementation.
-public extension Folder {
+extension Folder {
 
     /// We currently only take Gmail into account.
     // TODO: This is duplicated between MM and Cd.
@@ -29,7 +29,7 @@ public extension Folder {
     }
 
     /// Whether or not the default destructive action is "archive" instead of "delete".
-    var defaultDestructiveActionIsArchive: Bool {
+    public var defaultDestructiveActionIsArchive: Bool {
         let defaultValue = false
         guard let providerInfo = providerSpecificInfo else {
             return defaultValue
