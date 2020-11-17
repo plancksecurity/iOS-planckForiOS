@@ -43,3 +43,27 @@ extension Message {
         Stack.shared.mainContext.saveAndLogErrors()
     }
 }
+
+// MARK: - IMAP Flags
+
+extension Message {
+    public static func setFlaggedValue(to messages: [Message], newValue flagged: Bool) {
+        messages.forEach {
+            // this logic is to trigger the FRC
+            let imap =  $0.imapFlags
+            imap.flagged = flagged
+            $0.imapFlags = imap
+        }
+        Stack.shared.mainContext.saveAndLogErrors()
+    }
+
+    public static func setSeenValue(to messages: [Message], newValue seen: Bool) {
+        messages.forEach {
+            // this logic is to trigger the FRC
+            let imap = $0.imapFlags
+            imap.seen = seen
+            $0.imapFlags = imap
+        }
+        Stack.shared.mainContext.saveAndLogErrors()
+    }
+}
