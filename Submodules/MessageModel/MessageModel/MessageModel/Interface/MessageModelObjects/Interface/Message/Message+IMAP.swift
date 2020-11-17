@@ -26,3 +26,20 @@ extension Message {
         Stack.shared.mainContext.saveAndLogErrors()
     }
 }
+
+// MARK: - Move
+
+extension Message {
+    /// Marks the message for moving to the given folder.
+    ///
+    /// Does not actually move the message but set it's target folder.
+    /// The Backgound layer has to take care of the actual move.
+    ///
+    /// Returns immediately in case the message is in the target folder already.
+    ///
+    /// - Parameter targetFolder: folder to move the message to
+    public static func move(messages: [Message], to targetFolder: Folder) {
+        messages.forEach { $0.move(to: targetFolder) }
+        Stack.shared.mainContext.saveAndLogErrors()
+    }
+}
