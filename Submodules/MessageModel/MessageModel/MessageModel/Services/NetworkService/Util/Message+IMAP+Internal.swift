@@ -12,7 +12,7 @@ extension Message {
     // MARK: - Deletion
 
     /// Only for internal use, does not save!
-    private func imapDelete() {
+    func imapDelete() {
         if self.isDeleted {
             // Do not bother messages that have been deleted from the DB alreadyby some background
             // action (e.g. deleted in other MUA)
@@ -24,14 +24,6 @@ extension Message {
             Stack.shared.mainContext.delete(cdObject)
         }
         moc.saveAndLogErrors()
-    }
-
-    /// Triggers trashing of messages, taking everithing in account (parent is local or remote,
-    /// provider specific constrains ...).
-    /// Always use this method to handle "user has choosen to delete e-mails".
-    public static func imapDelete(messages: [Message]) {
-        messages.forEach { $0.imapDelete() }
-        Stack.shared.mainContext.saveAndLogErrors()
     }
 
     /// Triggers trashing of the message, taking everithing in account (provider specific constrains

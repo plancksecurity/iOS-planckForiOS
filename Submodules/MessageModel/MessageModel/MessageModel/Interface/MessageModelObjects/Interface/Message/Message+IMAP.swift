@@ -17,4 +17,12 @@ extension Message {
         cdObject.imapMarkDeleted()
         moc.saveAndLogErrors()
     }
+
+    /// Triggers trashing of messages, taking everithing in account (parent is local or remote,
+    /// provider specific constrains ...).
+    /// Always use this method to handle "user has choosen to delete e-mails".
+    public static func imapDelete(messages: [Message]) {
+        messages.forEach { $0.imapDelete() }
+        Stack.shared.mainContext.saveAndLogErrors()
+    }
 }
