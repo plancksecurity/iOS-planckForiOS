@@ -33,7 +33,7 @@ function import_in_place() {
 
 for lang in $languages
 do
-    import $lang pEpForiOS.xcodeproj $translationdir
+    import_in_place $lang pEpForiOS.xcodeproj $translationdir
 done
 
 echo
