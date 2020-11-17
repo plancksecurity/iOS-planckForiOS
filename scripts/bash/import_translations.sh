@@ -13,7 +13,7 @@ function import() {
     echo \*\*\* import $1 $2 $3
     mytmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
 
-    cp $3/*.xliff $mytmpdir
+    cp $3/$1.xliff $mytmpdir
 
     import_in_place $1 $2 $mytmpdir
 
