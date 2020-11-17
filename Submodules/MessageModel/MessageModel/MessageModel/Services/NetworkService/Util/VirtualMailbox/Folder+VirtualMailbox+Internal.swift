@@ -1,5 +1,5 @@
 //
-//  Folder+VirtualMailbox.swift
+//  Folder+VirtualMailbox+Internal.swift
 //  pEp
 //
 //  Created by Andreas Buff on 07.02.18.
