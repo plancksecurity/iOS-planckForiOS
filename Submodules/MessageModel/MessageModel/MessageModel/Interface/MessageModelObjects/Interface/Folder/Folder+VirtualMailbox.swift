@@ -9,4 +9,12 @@
 import Foundation
 
 extension Folder {
+    /// Whether or not the default destructive action is "archive" instead of "delete".
+    public var defaultDestructiveActionIsArchive: Bool {
+        let defaultValue = false
+        guard let providerInfo = providerSpecificInfo else {
+            return defaultValue
+        }
+        return providerInfo.defaultDestructiveActionIsArchive(forFolder: self)
+    }
 }

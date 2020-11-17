@@ -19,22 +19,13 @@ extension Folder {
     }
 
     // TODO: This is duplicated between MM and Cd.
-    private var providerSpecificInfo: ProviderSpecificInformationProtocol? {
+    var providerSpecificInfo: ProviderSpecificInformationProtocol? {
         for providerInfo in supportedProviders {
             if providerInfo.belongsToProvider(self) {
                 return providerInfo
             }
         }
         return nil
-    }
-
-    /// Whether or not the default destructive action is "archive" instead of "delete".
-    public var defaultDestructiveActionIsArchive: Bool {
-        let defaultValue = false
-        guard let providerInfo = providerSpecificInfo else {
-            return defaultValue
-        }
-        return providerInfo.defaultDestructiveActionIsArchive(forFolder: self)
     }
 
     var shouldUidMoveDeletedMessagesToTrash: Bool {
