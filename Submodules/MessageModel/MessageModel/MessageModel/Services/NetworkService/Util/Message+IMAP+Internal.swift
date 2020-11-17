@@ -1,5 +1,5 @@
 //
-//  Message+IMAP.swift
+//  Message+IMAP+Internal.swift
 //  pEp
 //
 //  Created by Andreas Buff on 04.12.17.
