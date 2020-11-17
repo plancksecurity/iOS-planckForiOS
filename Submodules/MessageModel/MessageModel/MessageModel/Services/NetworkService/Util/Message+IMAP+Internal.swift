@@ -11,13 +11,6 @@ import pEpIOSToolbox
 extension Message {
     // MARK: - Deletion
 
-    /// Use this method if you do not want the message to be moved to trash folder.
-    /// Takes into account if parent folder is remote or local.
-    public func imapMarkDeleted() {
-        cdObject.imapMarkDeleted()
-        moc.saveAndLogErrors()
-    }
-
     /// Only for internal use, does not save!
     private func imapDelete() {
         if self.isDeleted {
