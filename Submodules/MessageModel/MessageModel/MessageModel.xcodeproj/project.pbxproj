@@ -270,7 +270,7 @@
 		439CACA02562B0ED0043077E /* FetchMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CAC9F2562B0ED0043077E /* FetchMessagesService.swift */; };
 		439CACA52562B1340043077E /* FetchServiceBaseClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CACA42562B1340043077E /* FetchServiceBaseClass.swift */; };
 		439CACD62562C9890043077E /* ConnectionTransport+Transport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CACD52562C9890043077E /* ConnectionTransport+Transport.swift */; };
-		439CACDB2562CA7A0043077E /* Message+FakeMessage+Public.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CACDA2562CA7A0043077E /* Message+FakeMessage+Public.swift */; };
+		439CACDB2562CA7A0043077E /* Message+FakeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CACDA2562CA7A0043077E /* Message+FakeMessage.swift */; };
 		439CACE32562CB1B0043077E /* Message+FakeMessage+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CACE22562CB1B0043077E /* Message+FakeMessage+Internal.swift */; };
 		439CACE82562CCD50043077E /* Attachment+ContentID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CACE72562CCD50043077E /* Attachment+ContentID.swift */; };
 		439CACED2562CEB10043077E /* FolderType+FolderName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CACEC2562CEB10043077E /* FolderType+FolderName.swift */; };
@@ -729,7 +729,7 @@
 		439CAC9F2562B0ED0043077E /* FetchMessagesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchMessagesService.swift; sourceTree = "<group>"; };
 		439CACA42562B1340043077E /* FetchServiceBaseClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchServiceBaseClass.swift; sourceTree = "<group>"; };
 		439CACD52562C9890043077E /* ConnectionTransport+Transport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ConnectionTransport+Transport.swift"; sourceTree = "<group>"; };
-		439CACDA2562CA7A0043077E /* Message+FakeMessage+Public.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+FakeMessage+Public.swift"; sourceTree = "<group>"; };
+		439CACDA2562CA7A0043077E /* Message+FakeMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+FakeMessage.swift"; sourceTree = "<group>"; };
 		439CACE22562CB1B0043077E /* Message+FakeMessage+Internal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+FakeMessage+Internal.swift"; sourceTree = "<group>"; };
 		439CACE72562CCD50043077E /* Attachment+ContentID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Attachment+ContentID.swift"; sourceTree = "<group>"; };
 		439CACEC2562CEB10043077E /* FolderType+FolderName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderType+FolderName.swift"; sourceTree = "<group>"; };
@@ -1647,7 +1647,7 @@
 				1546612B233A77F2008D2137 /* Message+ReDecrypt.swift */,
 				1517B8D0236AFA8B00A42F52 /* Message+Factory.swift */,
 				439CAC8A2562ADF40043077E /* MessageID.swift */,
-				439CACDA2562CA7A0043077E /* Message+FakeMessage+Public.swift */,
+				439CACDA2562CA7A0043077E /* Message+FakeMessage.swift */,
 			);
 			path = Message;
 			sourceTree = "<group>";
@@ -2870,7 +2870,7 @@
 				B747A7E2234E4B7800508565 /* CdIdentity+SectionTitle.swift in Sources */,
 				15A3B4DB235862B700DB9135 /* CdAccount+SendServiceProvider.swift in Sources */,
 				439CACED2562CEB10043077E /* FolderType+FolderName.swift in Sources */,
-				439CACDB2562CA7A0043077E /* Message+FakeMessage+Public.swift in Sources */,
+				439CACDB2562CA7A0043077E /* Message+FakeMessage.swift in Sources */,
 				15466135233B9A64008D2137 /* OperationBasedService.swift in Sources */,
 				1535D075223AB4BF008F0ACC /* ImapFlags.swift in Sources */,
 				B7F6F47C234CDB4A003DF84A /* QueryResultsDelegate.swift in Sources */,

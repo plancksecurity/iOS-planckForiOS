@@ -1,5 +1,5 @@
 //
-//  Message+FakeMessage+Public.swift
+//  Message+FakeMessage.swift
 //  pEp
 //
 //  Created by Andreas Buff on 10.12.18.
