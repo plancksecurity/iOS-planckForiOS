@@ -8,6 +8,8 @@
 
 import CoreData
 
+import pEpIOSToolbox
+
 public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
 
     // MARK: - ManagedObjectWrapperProtocol
@@ -71,10 +73,10 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
     public var automaticallyTrusted: Bool {
         get{
             // Only IMAP servers can be trusted.
-            return cdObject.manuallyTrusted
+            return cdObject.automaticallyTrusted
         }
         set{
-            cdObject.manuallyTrusted = newValue
+            cdObject.automaticallyTrusted = newValue
         }
     }
 
@@ -91,6 +93,16 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
     public  var credentials: ServerCredentials {
         get {
             return ServerCredentials(cdObject: cdObject.credentials!, context: moc)
+        }
+    }
+    
+    public var dateLastAuthenticationErrorShown: Date? {
+        get {
+            return cdObject.dateLastAuthenticationErrorShown    
+        }
+        
+        set {
+            cdObject.dateLastAuthenticationErrorShown = newValue
         }
     }
 
@@ -144,7 +156,7 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
                                  manuallyTrusted: manuallyTrusted,
                                  credentials: credentials)
         if toPersist {
-            server.save() //!!!: needs rethink. Topic: probaly Verifyable Account
+            server.session.commit() //!!!: needs rethink. Topic: probaly Verifyable Account
         } else {
             // OAuth depends on having the accessToken saved in the Keychain.
             let key = credentials.cdObject.key ?? UUID().uuidString
@@ -190,5 +202,14 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
                   automaticallyTrusted: server.automaticallyTrusted,
                   manuallyTrusted: server.manuallyTrusted,
                   credentials: ServerCredentials(withDataFrom: server.credentials))
+    }
+    
+    public static func by(account: Account, serverType: ServerType) -> Server? {
+        let cdAccount = account.cdObject
+        guard let cdServer = cdAccount.server(type: serverType) else {
+            Log.shared.errorAndCrash("Server not found")
+            return nil
+        }
+        return MessageModelObjectUtils.getServer(fromCdObject: cdServer)
     }
 }

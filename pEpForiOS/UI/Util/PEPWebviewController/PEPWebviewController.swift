@@ -11,7 +11,7 @@ import WebKit
 
 import pEpIOSToolbox
 
-class PEPWebViewController: BaseViewController {
+class PEPWebViewController: UIViewController {
 
     override var collapsedBehavior: CollapsedSplitViewBehavior {
         return .needed
@@ -27,9 +27,7 @@ class PEPWebViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         showNavigationBar()
-        //DIRTY: introduced as app config does not exist any more in default. REMOVE WHEN MERGING TO DEFAULT
-        let appConfig = (UIApplication.shared.delegate as! AppDelegate).appConfig!
-        urlClickHandler = UrlClickHandler(appConfig: appConfig)
+        urlClickHandler = UrlClickHandler()
     }
 
     override func loadView() {

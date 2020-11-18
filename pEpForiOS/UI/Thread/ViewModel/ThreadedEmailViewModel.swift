@@ -133,7 +133,7 @@
 //
 //    func setFlag(to status: Bool, for message: Message){
 //        message.imapFlags.flagged = status
-//        message.save()
+//        message.session.commit()
 //        notifyFlag(status, message: message)
 //        delegate?.emailViewModeldidChangeFlag(viewModel: self)
 //    }
@@ -202,7 +202,7 @@
 //        if !currentSeen {
 //            message?.imapFlags.seen = true
 //            MessageModelUtil.performAndWait {
-//                message?.save()
+//                message?.session.commit()
 //            }
 //        }
 //    }

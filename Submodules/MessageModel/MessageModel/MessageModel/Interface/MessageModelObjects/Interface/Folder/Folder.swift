@@ -44,7 +44,11 @@ public class Folder: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
     lazy var fetchOlderService = FetchOlderImapMessagesService()
     lazy var fetchMessagesService = FetchMessagesService()
     
-    public var parent: Folder?
+    public var parent: Folder? {
+        get {
+            return cdObject.parent?.folder()
+        }
+    }
     public var name: String {
         get {
             guard let result = cdObject.name else {
@@ -131,34 +135,11 @@ public class Folder: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
     public var folderType: FolderType {
         return cdObject.folderType
     }
-    
+
     public func subFolders () -> [Folder]{
         let cdSubFolders = cdObject.subFolders?.array as? [CdFolder] ?? []
         let cdDisplayableSubfolders = cdSubFolders.filter { !$0.folderType.neverShowToUser }
         return cdDisplayableSubfolders.map { return $0.folder() }
-    }
-
-    public func contains(message: Message, deletedMessagesAreContained: Bool = false,
-                         markedForMoveToFolderAreContained: Bool = false) -> Bool {
-        let cdFolder = cdObject
-        var ps = [NSPredicate]()
-        ps.append(CdFolder.PredicateFactory.containedMessages(cdFolder: cdFolder))
-        if deletedMessagesAreContained {
-            ps.append(NSPredicate(format: "uuid = %@", message.uuid))
-            let account = message.parent.account.cdAccount()
-            ps.append(NSPredicate(format: "parent.account = %@", account))
-            ps.append(NSPredicate(format: RelationshipKeyPath.cdFolder_parent_account
-                + " = %@", account))
-        }
-        if !markedForMoveToFolderAreContained {
-            ps.append(CdMessage.PredicateFactory.notMarkedForMoveToFolder())
-        }
-        let p = NSCompoundPredicate(andPredicateWithSubpredicates: ps)
-        let d = defaultSortDescriptors()
-        if let _ = CdMessage.first(predicate: p, orderedBy: d, in: session.moc) {
-            return true
-        }
-        return false
     }
 
     public static func by(account: Account, folderType: FolderType) -> Folder? {
@@ -169,6 +150,22 @@ public class Folder: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         cdFolders = cdFolders.filter { $0.folderType == folderType }
 
         return cdFolders.first?.folder()
+    }
+
+    /// Number of unread mails in this folder
+    public var countUnread: Int {
+        guard let parent = cdFolder() else {
+            Log.shared.errorAndCrash("Folder not found.")
+            return 0
+        }
+        var predicates = [NSPredicate]()
+        predicates.append(CdMessage.PredicateFactory.allMessages(parentFolder: parent))
+        predicates.append(CdMessage.PredicateFactory.existingMessages())
+        predicates.append(CdMessage.PredicateFactory.processed())
+        predicates.append(CdMessage.PredicateFactory.isNotAutoConsumable())
+        predicates.append(CdMessage.PredicateFactory.unread(value: true))
+        let compound = NSCompoundPredicate(type: .and, subpredicates: predicates)
+        return CdMessage.count(predicate: compound, in: session.moc)
     }
 }
 

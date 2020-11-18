@@ -28,6 +28,8 @@ final class DynamicHeightScrollView: UIScrollView {
     /// Use this delegate to give the scrollView information to be able to center the firstResponder
     public weak var dynamicHeightScrollViewDelegate: DynamicHeightScrollViewDelegate?
 
+    private var isKeyboardShown = false
+
     override func awakeFromNib() {
         configureKeyboardAwareness()
     }
@@ -37,19 +39,25 @@ final class DynamicHeightScrollView: UIScrollView {
         super.scrollRectToVisible(rect, animated: animated)
     }
 
-    /// Use this funtion to center a first responder subview of the ScrollView
+    /// Use this function to center a first responder subview of the ScrollView when software keyboard is presented.
     /// - Parameters:
     ///   - sender: current first responder
     ///   - animated: enable/disable animating scrolling to center first responder
     func scrollAndMakeVisible(_ sender: UIView,
                               animated: Bool = true) {
+        guard isKeyboardShown == true else {
+            // Software keyboard is disabled (external keyboard connected?) so
+            // we don't have to do anything with scrollView.
+            // The scrollView size will be the same.
+            return
+        }
         let scrollViewHeight = frame.maxY
         let senderFrames = sender.convert(sender.bounds, to: self)
         var newContentOffSet = senderFrames.midY - scrollViewHeight / 2
         let contetOffSetDistanceToSafeArea =
             contentSize.height - newContentOffSet - scrollViewHeight
 
-        //Add padding if can not scroll enough
+        // Add padding if can not scroll enough
         if newContentOffSet < 0 {
             contentInset.top = abs(newContentOffSet)
         } else if contetOffSetDistanceToSafeArea < 0 {
@@ -68,7 +76,7 @@ final class DynamicHeightScrollView: UIScrollView {
 extension DynamicHeightScrollView {
     private func configureKeyboardAwareness() {
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(updateScrollViewToHideyboard),
+                                               selector: #selector(updateScrollViewToHideKeyboard),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
         NotificationCenter.default.addObserver(self,
@@ -77,13 +85,15 @@ extension DynamicHeightScrollView {
                                                object: nil)
     }
 
-    @objc private func updateScrollViewToHideyboard(notification: NSNotification) {
+    @objc private func updateScrollViewToHideKeyboard(notification: NSNotification) {
+        isKeyboardShown = false
         contentInset.bottom = 0
         contentInset.top = 0
         adjustScrollViewHeight(notification: notification)
     }
 
     @objc private func updateScrollViewToShowKeyboard(notification: NSNotification) {
+        isKeyboardShown = true
         adjustScrollViewHeight(notification: notification)
         centerFirstResponder(notification: notification)
     }
@@ -91,7 +101,7 @@ extension DynamicHeightScrollView {
     private func keyBoardHeight(notification: NSNotification) -> CGFloat {
         guard notification.name == UIResponder.keyboardWillShowNotification,
             let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
-                //Keyboard is hidding, move view to original center
+                // Keyboard is hidding, move view to original center
                 return 0
         }
 
@@ -137,7 +147,7 @@ extension DynamicHeightScrollView {
 
     private func centerFirstResponder(notification: NSNotification) {
         guard let firstResponder = dynamicHeightScrollViewDelegate?.firstResponder else {
-            //If no firstReponder, then just center the stack view
+            // If no firstReponder, then just center the stack view
             scrollToCenterStackView()
             return
         }

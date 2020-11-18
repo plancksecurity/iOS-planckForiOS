@@ -8,7 +8,7 @@
 
 extension CdMessage {
     
-    public var isFakeMessage: Bool {
+    var isFakeMessage: Bool {
         return uid == CdMessage.uidFakeResponsivenes
     }
 }

@@ -43,9 +43,12 @@ extension UIUtils {
     ///   - appConfig: AppConfig to forward to potentionally created viewControllers
     static public func showActionSheetWithContactOptions(forContactWithEmailAddress address: String,
                                                             at rect: CGRect,
-                                                            at view: UIView,
-                                                            appConfig: AppConfig) {
-        let alertSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                                                            at view: UIView) {
+        let contact = Identity(address: address)
+        let alertSheet = UIAlertController.init(title: nil,
+                                                message: nil,
+                                                preferredStyle: .actionSheet)
+
         setIPadAnchor(for: alertSheet, in: rect, at: view)
         alertSheet.view.tintColor = UIColor.pEpDarkGreen
         let newMailtitle = NSLocalizedString("New Mail Message", comment:
@@ -57,12 +60,12 @@ extension UIUtils {
                 return
             }
             let mailto = Mailto(url: url)
-            showComposeView(from: mailto, appConfig: appConfig)
+            showComposeView(from: mailto)
         })
         let addTitle = NSLocalizedString("Add to Contacts", comment: "UIUtils.showActionSheetWithContactOptions.button.title Add to Contacts")
-        let contact = Identity(address: address)
+
         alertSheet.addAction(UIAlertAction(title: addTitle, style: .default) { (action) in
-            presentAddToContactsView(for: contact, appConfig: appConfig)
+            presentAddToContactsView(for: contact)
         })
         let copyTitle = NSLocalizedString("Copy Email", comment:
                                             "UIUtils.showActionSheetWithContactOptions.button.title Copy Email")

@@ -18,15 +18,13 @@ extension UIUtils {
     ///   - contact: contact to show "Add to Contacts" view for
     ///   - viewController:  presenting view controller
     ///   - appConfig: AppConfig to forward
-    static func presentAddToContactsView(for contact: Identity,
-                                         appConfig: AppConfig) {
+    static func presentAddToContactsView(for contact: Identity) {
         let storyboard = UIStoryboard(name: Constants.addToContactsStoryboard, bundle: nil)
         guard let contactVc = storyboard.instantiateViewController(withIdentifier:
                                                                     AddToContactsViewController.storyboardId) as? AddToContactsViewController else {
             Log.shared.errorAndCrash("Missing required data")
             return
         }
-        contactVc.appConfig = appConfig
         contactVc.emailAddress = contact.address
         let navigationController = UINavigationController(rootViewController: contactVc)
         guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
@@ -47,8 +45,7 @@ extension UIUtils {
     ///   - appConfig: AppConfig to forward to potentionally created viewControllers
     static public func showActionSheetWithContactOptions(forUrl url: URL,
                                                             at rect: CGRect,
-                                                            at view: UIView,
-                                                            appConfig: AppConfig) {
+                                                            at view: UIView) {
         guard let _ = UrlClickHandler.Scheme(for: url) else {
             Log.shared.errorAndCrash("Unsupported scheme")
             return
@@ -59,8 +56,7 @@ extension UIUtils {
         }
         showActionSheetWithContactOptions(forContactWithEmailAddress: address,
                                              at: rect,
-                                             at: view,
-                                             appConfig: appConfig)
+                                             at: view)
     }
 }
 

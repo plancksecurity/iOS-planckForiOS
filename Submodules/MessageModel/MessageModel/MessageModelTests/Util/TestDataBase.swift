@@ -15,9 +15,7 @@ import PantomimeFramework
 
 /// Base class for test data.
 /// - Note:
-///   1. This class is used both in MessageModel and the app,
-///      so it's _duplicated code_ for the testing targets.
-///   2. Make sure that, in your SecretTestData, you override:
+///   1. Make sure that, in your SecretTestData, you override:
 ///      * `populateAccounts` if you don't use the greenmail local server for testing,
 ///        or you want to test against other servers for various reasons.
 ///      * `populateVerifiableAccounts` in order to provide verifiable servers, to test
@@ -73,7 +71,8 @@ class TestDataBase {
             let id = CdIdentity(context: context)
             id.address = idAddress
             id.userName = idUserName
-            id.userID = UUID().uuidString
+            // The identity of an account is mySelf by definion.
+            id.userID = CdIdentity.pEpOwnUserID
 
             let acc = CdAccount(context: context)
             acc.identity = id
@@ -90,9 +89,6 @@ class TestDataBase {
             let credSmtp = CdServerCredentials(context: context)
             credSmtp.loginName = smtpLoginName ?? id.address
             credSmtp.key = keySmtp
-            smtp.credentials = credSmtp
-
-            acc.addToServers(smtp)
 
             //IMAP
             let imap = CdServer(context: context)
@@ -106,9 +102,12 @@ class TestDataBase {
             let credImap = CdServerCredentials(context: context)
             credImap.loginName = imapLoginName ?? id.address
             credImap.key = keyImap
-            imap.credentials = credImap
+
+            credImap.addToServers(imap)
+            credSmtp.addToServers(smtp)
 
             acc.addToServers(imap)
+            acc.addToServers(smtp)
 
             return acc
         }
@@ -118,7 +117,8 @@ class TestDataBase {
             id.address = idAddress
             id.userName = idUserName
             if isMyself {
-                id.userID = UUID().uuidString
+                // Note that it's probably meaningless to have an own identity without an account
+                id.userID = CdIdentity.pEpOwnUserID
             } else {
                 id.userID = UUID().uuidString
             }
@@ -142,8 +142,8 @@ class TestDataBase {
         func populate(verifiableAccount: inout VerifiableAccountProtocol) {
             verifiableAccount.userName = accountName
             verifiableAccount.address = idAddress
-            verifiableAccount.loginNameIMAP = imapLoginName
-            verifiableAccount.loginNameSMTP = smtpLoginName
+            verifiableAccount.loginNameIMAP = imapLoginName ?? idAddress
+            verifiableAccount.loginNameSMTP = smtpLoginName ?? idAddress
             verifiableAccount.accessToken = nil
             verifiableAccount.password = password
 
@@ -238,10 +238,7 @@ class TestDataBase {
      - Returns: A valid `CdAccount`.
      */
     func createWorkingCdAccount(context: NSManagedObjectContext = Stack.shared.mainContext, number: Int = 0) -> CdAccount {
-        let result = createWorkingAccountSettings(number: number).cdAccount(context: context)
-        // The identity of an account is mySelf by definion.
-        result.identity?.userID = UUID().uuidString
-        return result
+        return createWorkingAccountSettings(number: number).cdAccount(context: context)
     }
 
     /**

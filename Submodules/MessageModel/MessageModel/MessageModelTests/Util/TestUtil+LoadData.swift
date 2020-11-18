@@ -29,19 +29,6 @@ extension TestUtil {
         return data
     }
 
-    static func loadString(testClass: AnyClass, fileName: String) -> String? {
-        if let data = loadData(testClass: testClass, fileName: fileName) {
-            guard let content = NSString(data: data, encoding: String.Encoding.ascii.rawValue)
-                else {
-                    XCTAssertTrue(
-                        false, "Could not convert key with file name \(fileName) into data")
-                    return nil
-            }
-            return content as String
-        }
-        return nil
-    }
-
     /**
      Loads the given file by name and parses it into a pantomime message.
      */

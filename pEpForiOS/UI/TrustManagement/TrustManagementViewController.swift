@@ -11,7 +11,7 @@ import UIKit
 import pEpIOSToolbox
 
 /// View Controller to handle the HandshakeView.
-class TrustManagementViewController: BaseViewController {
+class TrustManagementViewController: UIViewController {
     private let onlyMasterCellIdentifier = "TrustManagementTableViewCell_OnlyMaster"
     private let masterAndDetailCellIdentifier = "TrustManagementTableViewCell_Detailed"
     private let resetCellIdentifier = "TrustManagementTableViewResetCell"
@@ -175,7 +175,7 @@ extension TrustManagementViewController {
         vm.languages { [weak self] langs in
             DispatchQueue.main.async {
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost myself")
+                    // Valid case. We might have been dismissed already.
                     return
                 }
 
@@ -355,7 +355,7 @@ extension TrustManagementViewController {
         row.color { [weak self] (rowColor) in
             defer { updateSizeGroup.leave() }
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             //Yellow means secure but not trusted.
@@ -386,7 +386,7 @@ extension TrustManagementViewController {
         }
         updateSizeGroup.notify(queue: DispatchQueue.main) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.tableView.updateSize()
@@ -410,7 +410,7 @@ extension TrustManagementViewController {
         }
         updateSizeGroup.notify(queue: DispatchQueue.main) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.tableView.updateSize()

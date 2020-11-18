@@ -13,7 +13,7 @@ import MessageModel
 public protocol VirtualFolderProtocol: DisplayableFolderProtocol {
 
     var agregatedFolderType : FolderType? { get }
-
+    var countUnread : Int { get }
 }
 
 public extension VirtualFolderProtocol {

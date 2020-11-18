@@ -47,8 +47,7 @@ class Appearance {
 
         setAlertControllerTintColor(.pEpGreen)
 
-        Appearance.configureSelectedBackgroundViewForPep(
-            tableViewCell: UITableViewCell.appearance())
+        Appearance.configureSelectedBackgroundViewForPep(tableViewCell: UITableViewCell.appearance())
     }
 
     public static func configureSelectedBackgroundViewForPep(tableViewCell: UITableViewCell) {
@@ -65,9 +64,7 @@ class Appearance {
 
     /// Return custom pEp titleTextAttributes
     static private func titleTextAttributes() -> [NSAttributedString.Key : Any] {
-        return [.foregroundColor: UIColor.black,
-                .font: UIFont.pepFont(style: .body,
-                                      weight: .regular)]
+        return [.foregroundColor: UIColor.black]
     }
 
     // MARK: - iOS 13

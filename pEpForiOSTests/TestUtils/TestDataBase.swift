@@ -7,18 +7,14 @@
 //
 
 import UIKit
-import CoreData
 
 @testable import MessageModel
-import PEPObjCAdapterFramework
 import PantomimeFramework
 import pEpIOSToolbox
 
 /// Base class for test data.
 /// - Note:
-///   1. This class is used both in MessageModel and the app,
-///      so it's _duplicated code_ for the testing targets.
-///   2. Make sure that, in your SecretTestData, you override:
+///   1. Make sure that, in your TestData, you override:
 ///      * `populateAccounts` if you don't use the greenmail local server for testing,
 ///        or you want to test against other servers for various reasons.
 ///      * `populateVerifiableAccounts` in order to provide verifiable servers, to test
@@ -70,68 +66,23 @@ class TestDataBase {
             self.password = password
         }
 
-        func cdAccount(context: NSManagedObjectContext) -> CdAccount {
-            let id = CdIdentity(context: context)
-            id.address = idAddress
-            id.userName = idUserName
-            id.userID = UUID().uuidString
-
-            let acc = CdAccount(context: context)
-            acc.identity = id
-
-            //SMTP
-            let smtp = CdServer(context: context)
-            smtp.serverType = smtpServerType
-            smtp.port = Int16(smtpServerPort)
-            smtp.address = smtpServerAddress
-            smtp.transport = smtpServerTransport
-
-            let keySmtp = UUID().uuidString
-            CdServerCredentials.add(password: password, forKey: keySmtp)
-            let credSmtp = CdServerCredentials(context: context)
-            credSmtp.loginName = smtpLoginName ?? id.address
-            credSmtp.key = keySmtp
-            smtp.credentials = credSmtp
-
-            acc.addToServers(smtp)
-
-            //IMAP
-            let imap = CdServer(context: context)
-            imap.serverType = imapServerType
-            imap.port = Int16(imapServerPort)
-            imap.address = imapServerAddress
-            imap.transport = imapServerTransport
-
-            let keyImap = UUID().uuidString
-            CdServerCredentials.add(password: password, forKey: keyImap)
-            let credImap = CdServerCredentials(context: context)
-            credImap.loginName = imapLoginName ?? id.address
-            credImap.key = keyImap
-            imap.credentials = credImap
-
-            acc.addToServers(imap)
-
-            return acc
-        }
-
-        func cdIdentityWithoutAccount(isMyself: Bool = false, context: NSManagedObjectContext) -> CdIdentity {
-            let id = CdIdentity(context: context)
-            id.address = idAddress
-            id.userName = idUserName
-
-            if isMyself {
-                id.userID = CdIdentity.pEpOwnUserID
-            } else {
-                id.userID = UUID().uuidString
-            }
+        /// Creates a partner identity, that is, a non-myself identity without an
+        /// associated account, thereby ignoring the account data.
+        /// - Returns: A partner identity
+        func partnerIdentity() -> Identity {
+            let id = Identity(address: idAddress,
+                              userID: "partner_\(idAddress)",
+                addressBookID: nil,
+                userName: idUserName,
+                session: nil)
             return id
         }
 
-        //!!!: very wrong. MMO + MOC
-        func account(context: NSManagedObjectContext) -> Account {
+        func account() -> Account {
             let id = Identity(address: idAddress,
+                              userID: CdIdentity.pEpOwnUserID,
                               userName: idUserName,
-                              session: Session(context: context))
+                              session: Session.main)
 
             let credSmtp = ServerCredentials(loginName: id.address,
                                              key: nil,
@@ -154,14 +105,9 @@ class TestDataBase {
                                      credentials:credImap)
             
             let acc = Account(user: id, servers: [smtp, imap])
+            acc.session.commit()
 
             return acc
-        }
-
-        func pEpIdentity() -> PEPIdentity {
-            let ident = PEPIdentity(address: idAddress)
-            ident.userName = accountName
-            return ident
         }
 
         /// Transfers the account data into a `VerifiableAccountProtocol`
@@ -262,26 +208,10 @@ class TestDataBase {
     }
 
     /**
-     - Returns: A valid `CdAccount`.
+     - Returns: A partner identity, that is one without an associated account.
      */
-    @discardableResult
-    func createWorkingCdAccount(number: Int = 0, context: NSManagedObjectContext) -> CdAccount {
-        let result = createWorkingAccountSettings(number: number).cdAccount(context: context)
-        // The identity of an account is mySelf by definion.
-        result.identity?.userID = CdIdentity.pEpOwnUserID
-        return result
-    }
-
-    /**
-     - Returns: A valid `CdIdentity` without parent account.
-     */
-    func createWorkingCdIdentity(number: Int = 0,
-                                 isMyself: Bool = false,
-                                 context: NSManagedObjectContext) -> CdIdentity {
-        let result =
-            createWorkingAccountSettings(number: number).cdIdentityWithoutAccount(isMyself: isMyself,
-                                                                                  context: context)
-        return result
+    func createPartnerIdentity(number: Int = 0) -> Identity {
+        return createWorkingAccountSettings(number: number).partnerIdentity()
     }
 
     func createWorkingAccountSettings(number: Int = 0) -> AccountSettings {
@@ -297,36 +227,8 @@ class TestDataBase {
     /**
      - Returns: A valid `Account`.
      */
-    func createWorkingAccount(number: Int = 0, context: NSManagedObjectContext) -> Account {
-        return createWorkingAccountSettings(number: number).account(context: context)
-    }
-
-    /**
-     - Returns: A valid `Account`.
-     */
-    func createWorkingAccount(number: Int = 0, session: Session? = Session.main) -> Account? {
-        guard let nonOptionalSession = session else {
-            Log.shared.errorAndCrash(message: "session was nil")
-            return nil
-        }
-        return createWorkingAccountSettings(number: number).account(context: nonOptionalSession.moc)
-    }
-    /**
-     - Returns: A valid `Account`.
-     */
-    func createVerifiableAccount(number: Int = 0, context: NSManagedObjectContext) -> Account {
-        return createVerifiableAccountSettings(number: number).account(context: context)
-    }
-
-    /**
-     - Returns: A valid `PEPIdentity`.
-     */
-    func createWorkingIdentity(number: Int = 0,
-                               isMyself: Bool = false,
-                               context: NSManagedObjectContext) -> PEPIdentity {
-        populateAccounts()
-        return createWorkingCdIdentity(number: number, isMyself: isMyself, context: context)
-            .pEpIdentity()
+    func createWorkingAccount(number: Int = 0) -> Account {
+        return createWorkingAccountSettings(number: number).account()
     }
 
     /**
@@ -352,24 +254,17 @@ class TestDataBase {
     }
 
     /**
-     - Returns: A `CdAccount` around `createSmtpTimeOutAccountSettings`.
-     */
-    func createSmtpTimeOutCdAccount(context: NSManagedObjectContext) -> CdAccount {
-        return createSmtpTimeOutAccountSettings().cdAccount(context: context)
-    }
-
-    /**
      - Returns: An `Account` around `createSmtpTimeOutAccountSettings`.
      */
-    func createSmtpTimeOutAccount(context: NSManagedObjectContext) -> Account {
-        return createSmtpTimeOutAccountSettings().account(context: context)
+    func createSmtpTimeOutAccount() -> Account {
+        return createSmtpTimeOutAccountSettings().account()
     }
 
     /**
      - Returns: An `Account` around `createImapTimeOutAccountSettings`.
      */
-    func createImapTimeOutAccount(context: NSManagedObjectContext) -> Account {
-        return createImapTimeOutAccountSettings().account(context: context)
+    func createImapTimeOutAccount() -> Account {
+        return createImapTimeOutAccountSettings().account()
     }
 
     func populateVerifiableAccount(number: Int = 0,

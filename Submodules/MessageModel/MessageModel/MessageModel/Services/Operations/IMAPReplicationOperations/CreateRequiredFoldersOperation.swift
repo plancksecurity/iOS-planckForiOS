@@ -35,9 +35,6 @@ class CreateRequiredFoldersOperation: ImapSyncOperation {
     /// Whether or not the client or this operation is responsible for saving the context
     private var saveContextWhenDone: Bool
 
-    /// Used in tests only
-    var numberOfFoldersCreated = 0
-
     init(parentName: String = #function,
          context: NSManagedObjectContext? = nil,
          errorContainer: ErrorContainerProtocol = ErrorPropagator(),
@@ -50,7 +47,7 @@ class CreateRequiredFoldersOperation: ImapSyncOperation {
     }
 
     public override func main() {
-        if !checkImapSync() {
+        if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
         }
@@ -191,12 +188,11 @@ class CreateRequiredFoldersOperation: ImapSyncOperation {
             me.currentAttempt.folderToCreate = folderToCreate
             me.startFolderCreation(folderToCreate: folderToCreate)
             me.foldersToCreate.removeFirst()
-
         }
     }
 
     private func startFolderCreation(folderToCreate: FolderToCreate) {
-        imapConnection.createFolderWithName(folderToCreate.folderName)
+        imapConnection.createFolderNamed(folderToCreate.folderName)
     }
 
     private func createLocal(folderToCreate: FolderToCreate) {
@@ -245,9 +241,7 @@ class CreateRequiredFoldersOperation: ImapSyncOperation {
 // MARK: - Callback Handler
 
 extension CreateRequiredFoldersOperation {
-
     fileprivate func handleFolderCreateCompleted() {
-        numberOfFoldersCreated += 1
         createNextFolder()
     }
 

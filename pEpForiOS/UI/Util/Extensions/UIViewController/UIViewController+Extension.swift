@@ -20,6 +20,9 @@ extension UIViewController {
     var isModalViewCurrentlyShown: Bool {
         return presentedViewController != nil
     }
+    var usesAccessibilityFont : Bool {
+        return traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    }
 
     // As this screen might be rendered in a split view, the title view is not centered to the device
     // width but the view controller's width. That's why we need to adjust the title view position
@@ -127,5 +130,44 @@ extension UIViewController: SplitViewControllerBehaviorProtocol {
     
     var separatedBehavior: SeparatedSplitViewBehavior {
         return .master
+    }
+    
+    /// If applicable, shows the "empty selection" view controller in the details view.
+    /// - Parameter message: The message to show in the view.
+    func showEmptyDetailViewIfApplicable(message: String) {
+        guard let spvc = splitViewController else {
+            return
+        }
+        
+        /// Inner function for doing the actual work.
+        func showEmptyDetail() {
+            let detailIndex = 1 // The index of the detail view controller
+            
+            if let emptyVC = spvc.viewControllers[safe: detailIndex] as? NothingSelectedViewController {
+                emptyVC.message = message
+                emptyVC.updateView()
+            } else {
+                let storyboard: UIStoryboard = UIStoryboard(
+                    name: UIStoryboard.noSelectionStoryBoard,
+                    bundle: nil)
+                guard let detailVC = storyboard.instantiateViewController(
+                    withIdentifier: UIStoryboard.nothingSelectedViewController) as? NothingSelectedViewController else {
+                        return
+                }
+                detailVC.message = message
+                spvc.showDetailViewController(detailVC, sender: self)
+            }
+        }
+        
+        switch spvc.currentDisplayMode {
+        case .masterAndDetail:
+            showEmptyDetail()
+        case .onlyDetail:
+            // nothing to do
+            break
+        case .onlyMaster:
+            // nothing to do
+            break
+        }
     }
 }

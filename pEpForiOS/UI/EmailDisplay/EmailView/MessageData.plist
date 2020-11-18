@@ -6,20 +6,6 @@
 	<array>
 		<dict>
 			<key>identifier</key>
-			<string>mailingListCell</string>
-			<key>value</key>
-			<string></string>
-			<key>type</key>
-			<string>mailingList</string>
-			<key>visible</key>
-			<string>conditional</string>
-			<key>height</key>
-			<string>0</string>
-			<key>expanded</key>
-			<string>44.0</string>
-		</dict>
-		<dict>
-			<key>identifier</key>
 			<string>senderCell</string>
 			<key>type</key>
 			<string>from</string>

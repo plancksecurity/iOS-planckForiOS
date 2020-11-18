@@ -93,11 +93,11 @@ extension Rating {
                                              cc: [Identity],
                                              bcc: [Identity],
                                              completion: @escaping (Rating) -> Void) {
-        PEPAsyncSession().outgoingMessageRating(from: from,
-                                                to: to,
-                                                cc: cc,
-                                                bcc: bcc) { pEpRating in
-                                                    completion(Rating(pEpRating: pEpRating))
+        PEPSession().outgoingMessageRating(from: from,
+                                           to: to,
+                                           cc: cc,
+                                           bcc: bcc) { pEpRating in
+                                            completion(Rating(pEpRating: pEpRating))
         }
     }
 }

@@ -28,7 +28,7 @@ class BaseImapFolderOperation: ImapSyncOperation {
     }
 
     override open func main() {
-        if !checkImapSync() {
+        if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
         }

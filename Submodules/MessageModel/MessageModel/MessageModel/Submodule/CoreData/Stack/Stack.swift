@@ -6,7 +6,9 @@
 //
 
 import CoreData
+
 import pEpIOSToolbox
+import pEp4iosIntern
 
 /// Our Core Data Stack
 class Stack {
@@ -76,15 +78,13 @@ class Stack {
 
 extension Stack {
 
-    static private let appGroupId = "group.security.pep.pep4ios"
-
     /// Returns the final URL for the store with given name.
     ///
     /// - Parameter name: Filename for the .sqlite store.
     /// - Returns: File URL for the store with given name
     static private func storeURL(for name: String) -> URL {
         guard let directoryURL =
-            FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupId)
+            FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier)
             else {
                 fatalError("No DB, no app, sorry.")
         }
@@ -153,7 +153,7 @@ extension Stack {
 
         changePropagatorContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         changePropagatorContext.persistentStoreCoordinator = coordinator
-        changePropagatorContext.name = "backgroundContext"
+        changePropagatorContext.name = "changePropagatorContext"
         changePropagatorContext.automaticallyMergesChangesFromParent = true
         changePropagatorContext.undoManager = nil
         changePropagatorContext.mergePolicy = Stack.objectWinsMergePolicy
@@ -183,10 +183,22 @@ extension Stack {
         objc_sync_enter(Stack.unitTestLock)
         defer { objc_sync_exit(Stack.unitTestLock) }
         guard MiscUtil.isUnitTest() else { fatalError("Not permited to use in production code.") }
+
+        // A `reset(context:)` can involve a merge, which can crash a test.
+        // Not wanted.
+        stopReceivingContextNotifications()
+
+        mainContext.hasBeenReset = true
+        changePropagatorContext.hasBeenReset = true
+
         reset(context: mainContext)
         reset(context: changePropagatorContext)
-        Stack.shared = Stack() //BUFF: MUST GO AWAY!
 
+        do {
+            try loadCoreDataStack(storeType: NSInMemoryStoreType)
+        } catch {
+            fatalError("No Stack, no running app, sorry.")
+        }
     }
 
     private func reset(context: NSManagedObjectContext) {
@@ -217,7 +229,9 @@ extension Stack {
         if MiscUtil.isUnitTest() {
             objc_sync_enter(Stack.unitTestLock)
             context.perform {
-                context.mergeChanges(fromContextDidSave: notification)
+                if !context.hasBeenReset {
+                    context.mergeChanges(fromContextDidSave: notification)
+                }
             }
             objc_sync_exit(Stack.unitTestLock)
         } else {

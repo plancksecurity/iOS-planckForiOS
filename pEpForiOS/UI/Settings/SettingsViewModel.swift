@@ -25,7 +25,7 @@ protocol SettingsViewModelDelegate: class {
 /// Protocol that represents the basic data in a row.
 protocol SettingsRowProtocol {
     // Identifier of the row
-    var identifier : SettingsViewModel.Row { get }
+    var identifier : SettingsViewModel.RowIdentifier { get }
     /// Title of the row.
     var title: String { get }
     /// boolean that indicates if the row action is dangerous.
@@ -48,12 +48,6 @@ final class SettingsViewModel {
         get {
             return items.count
         }
-    }
-
-    /// Constructor for SettingsViewModel
-    public init(delegate: SettingsViewModelDelegate) {
-        self.delegate = delegate
-        setup()
     }
 
     /// Access method to get the sections
@@ -79,7 +73,8 @@ final class SettingsViewModel {
              .credits,
              .extraKeys,
              .trustedServer,
-             .resetTrust:
+             .resetTrust, 
+             .tutorial:
             return "SettingsCell"
         case .resetAccounts:
             return "SettingsActionCell"
@@ -92,6 +87,12 @@ final class SettingsViewModel {
         }
     }
 
+    /// Constructor for SettingsViewModel
+    public init(delegate: SettingsViewModelDelegate) {
+        self.delegate = delegate
+        setup()
+    }
+    
     /// Wrapper method to know if there is no accounts associated.
     /// Returns: True if there are no accounts.
     public func noAccounts() -> Bool {
@@ -106,13 +107,23 @@ final class SettingsViewModel {
 
     /// Returns the color of the title for the row passed. Red if the action is dangerous, nil otherwise.
     /// - Parameter rowIdentifier: The identifier of the row type.
-    public func titleColor(rowIdentifier: Row) -> UIColor? {
+    public func titleColor(rowIdentifier: RowIdentifier) -> UIColor? {
         switch rowIdentifier {
         case .resetAccounts, .resetTrust:
             return .pEpRed
         default:
             return nil
         }
+    }
+
+    /// Returns the account setted at the the row of the provided indexPath
+    /// - Parameter indexPath: The index path to get the account
+    public func account(at indexPath : IndexPath) -> Account? {
+        let accounts = Account.all()
+        if accounts.count > indexPath.row {
+            return accounts[indexPath.row]
+        }
+        return nil
     }
 
     /// Deletes the row at the passed index Path
@@ -130,10 +141,6 @@ final class SettingsViewModel {
 
     public func handleResetAllIdentitiesPressed(action: @escaping ActionBlock) {
         delegate?.showResetAllWarning(callback: action)
-    }
-
-    public func accountSettingsViewModel(forAccountAt indexPath: IndexPath) -> AccountSettingsViewModel {
-        return AccountSettingsViewModel(account: account(at: indexPath))
     }
 
     public func pgpKeyImportSettingViewModel() -> PGPKeyImportSettingViewModel {
@@ -191,7 +198,7 @@ extension SettingsViewModel {
                                            isDangerous: false)
                 accountRow.action = { [weak self] in
                     guard let me = self else {
-                        Log.shared.errorAndCrash(message: "Lost myself")
+                        Log.shared.lostMySelf()
                         return
                     }
                     me.delete(account: acc)
@@ -209,7 +216,7 @@ extension SettingsViewModel {
             }
             rows.append(generateActionRow(type: .resetAccounts, isDangerous: true) { [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(message: "Lost myself")
+                    Log.shared.lostMySelf()
                     return
                 }
                 
@@ -264,7 +271,7 @@ extension SettingsViewModel {
     /// - Parameters:
     ///   - type: The type of row to generate
     ///   - isDangerous: If the action that performs this row is dangerous.
-    private func generateNavigationRow(type: Row, isDangerous: Bool) -> NavigationRow {
+    private func generateNavigationRow(type: RowIdentifier, isDangerous: Bool) -> NavigationRow {
         guard let rowTitle = rowTitle(type: type) else {
             Log.shared.errorAndCrash(message: "Row title not found")
             return NavigationRow(identifier: type, title: "")
@@ -279,7 +286,7 @@ extension SettingsViewModel {
     ///   - isDangerous: If the action that performs this row is dangerous.
     ///   - isOn: The default status of the switch
     ///   - action: The action to be performed.
-    private func generateSwitchRow(type: Row, isDangerous: Bool, isOn: Bool,
+    private func generateSwitchRow(type: RowIdentifier, isDangerous: Bool, isOn: Bool,
                                    action: @escaping SwitchBlock) -> SwitchRow {
         guard let rowTitle = rowTitle(type: type) else {
             Log.shared.errorAndCrash(message: "Row title not found")
@@ -293,7 +300,7 @@ extension SettingsViewModel {
     ///   - type: The type of row that needs to generate
     ///   - isDangerous: If the action that performs this row is dangerous. (E. g. Reset identities)
     ///   - action: The action to be performed
-    private func generateActionRow(type: Row, isDangerous: Bool,
+    private func generateActionRow(type: RowIdentifier, isDangerous: Bool,
                                    action: @escaping ActionBlock) -> ActionRow {
         guard let rowTitle = rowTitle(type: type) else {
             Log.shared.errorAndCrash(message: "Row title not found")
@@ -344,10 +351,10 @@ extension SettingsViewModel {
         }
     }
 
-    /// Thie method provides the title for each cell, regarding its type.
+    /// This method provides the title for each cell, regarding its type.
     /// - Parameter type: The row type to get the proper title
     /// - Returns: The title of the row. If it's an account row, it will be nil and the name of the account should be used.
-    private func rowTitle(type : Row) -> String? {
+    private func rowTitle(type : RowIdentifier) -> String? {
         switch type {
         case .account:
             return nil
@@ -387,13 +394,15 @@ extension SettingsViewModel {
         case .unsecureReplyWarningEnabled:
             return NSLocalizedString("Unsecure reply warning",
                                      comment: "setting row title: Unsecure reply warning")
+        case .tutorial:
+            return NSLocalizedString("Tutorial", comment: "setting row title: Tutorial")
         }
     }
 
-    /// Thie method provides the subtitle if needed.
+    /// This method provides the subtitle if needed.
     /// - Parameter type: The row type to get the proper title
     /// - Returns: The subtitle of the row.
-    private func rowSubtitle(type : Row) -> String? {
+    private func rowSubtitle(type : RowIdentifier) -> String? {
         switch type {
         case .defaultAccount:
             return AppSettings.shared.defaultAccount
@@ -408,7 +417,7 @@ extension SettingsViewModel {
              .resetTrust,
              .pgpKeyImport,
              .trustedServer,
-             .unsecureReplyWarningEnabled:
+             .unsecureReplyWarningEnabled, .tutorial:
             return nil
         }
     }
@@ -470,13 +479,6 @@ extension SettingsViewModel {
             }
         }
     }
-
-    /// Returns the account setted at the the row of the provided indexPath
-    /// - Parameter indexPath: The index path to get the account
-    private func account(at indexPath : IndexPath) -> Account {
-        let accounts = Account.all()
-        return accounts[indexPath.row]
-    }
 }
 
 // MARK: - Public enums & structs
@@ -492,7 +494,7 @@ extension SettingsViewModel {
     }
 
     /// Identifies semantically the type of row.
-    public enum Row {
+    public enum RowIdentifier {
         case account
         case resetAccounts
         case defaultAccount
@@ -506,6 +508,7 @@ extension SettingsViewModel {
         case usePEPFolder
         case resetTrust
         case extraKeys
+        case tutorial
     }
 
     /// Struct that represents a section in SettingsTableViewController
@@ -545,7 +548,7 @@ extension SettingsViewModel {
     /// Struct that is used to perform an action. represents a ActionRow in settingsTableViewController
     public struct ActionRow: SettingsRowProtocol {
         /// The type of the row.
-        var identifier: SettingsViewModel.Row
+        var identifier: SettingsViewModel.RowIdentifier
         /// Title of the action row
         var title: String
         /// Indicates if the action to be performed is dangerous.
@@ -557,7 +560,7 @@ extension SettingsViewModel {
     /// Struct that is used to perform a show detail action. represents a NavicationRow in SettingsTableViewController
     public struct NavigationRow: SettingsRowProtocol {
         /// The type of the row.
-        var identifier: SettingsViewModel.Row
+        var identifier: SettingsViewModel.RowIdentifier
         /// Title of the action row
         var title: String
         /// subtitle for a navigation row
@@ -569,7 +572,7 @@ extension SettingsViewModel {
     /// Struct that is used to show and interact with a switch. represents a SwitchRow in settingsTableViewController
     public struct SwitchRow: SettingsRowProtocol {
         //The row type
-        var identifier: SettingsViewModel.Row
+        var identifier: SettingsViewModel.RowIdentifier
         //The title of the swith row
         var title: String
         //Indicates if the action to be performed is dangerous

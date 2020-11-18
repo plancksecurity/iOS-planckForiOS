@@ -10,7 +10,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class FolderSectionViewModelTests: CoreDataDrivenTestBase {
+class FolderSectionViewModelTests: AccountDrivenTestBase {
     
     var viewModel: FolderSectionViewModel!
     var folder: Folder!
@@ -18,17 +18,12 @@ class FolderSectionViewModelTests: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
         self.folder = Folder(name: "Escafoides", parent: nil, account: account, folderType: .inbox)
-        self.folder.save()
+        self.folder.session.commit()
     }
     
     func testHiddenWhenUnifiedInbox() {
         givenThereIsAViewModelWithAccount(withUnifiedInbox: true)
         XCTAssertTrue(viewModel.hidden)
-    }
-    
-    func testCountIsOneWhenUnifiedInbox() {
-        givenThereIsAViewModelWithoutAccount(withUnifiedInbox: true)
-        XCTAssertEqual(viewModel.count, 1)
     }
     
     func testNotHiddenWithoutUnifiedInbox() {
@@ -37,7 +32,7 @@ class FolderSectionViewModelTests: CoreDataDrivenTestBase {
     }
     
     func testUserNameWithAccount() {
-        let account = SecretTestData().createWorkingAccount(context: moc)
+        let account = TestData().createWorkingAccount()
         givenThereIsAViewModel(withUnifiedInbox: true, and: account)
         let userName = viewModel.userName
         guard let accountUserName = account.user.userName else {
@@ -48,15 +43,13 @@ class FolderSectionViewModelTests: CoreDataDrivenTestBase {
     }
     
     func testUserAddressWithAccount() {
-        let account = SecretTestData().createWorkingAccount(context: moc)
+        let account = TestData().createWorkingAccount()
         givenThereIsAViewModel(withUnifiedInbox: true, and: account)
         let userAddress = viewModel.userAddress
         let accountUserAddress = account.user.address
         XCTAssertEqual(userAddress, accountUserAddress)
     }
-    
 
-    
     func testUserNameIsEmptyWithoutAccount() {
         givenThereIsAViewModelWithoutAccount(withUnifiedInbox: true)
         let userName = viewModel.userName
@@ -91,9 +84,79 @@ class FolderSectionViewModelTests: CoreDataDrivenTestBase {
     }
     
     func givenThereIsAViewModel(withUnifiedInbox: Bool, and account: Account?){
-        //viewModel = FolderSe
-        viewModel = FolderSectionViewModel(account: account, Unified: withUnifiedInbox)
+        viewModel = FolderSectionViewModel(account: account, unified: withUnifiedInbox)
     }
-    
-    
+
+
+    func testNoChildrenOf() {
+        viewModel = FolderSectionViewModel(account: account, unified: true)
+        let fcvm = FolderCellViewModel(folder: folder, level: 0)
+
+        let numberOfChildren = viewModel.children(of: fcvm).count
+        XCTAssert(numberOfChildren == 0)
+    }
+
+    func testChildrenOf() {
+        let parentFolder = Folder(name: "Parent", parent: nil, account: account, folderType: .inbox)
+        self.folder = Folder(name: "Escafoides", parent: parentFolder, account: account, folderType: .normal)
+        self.folder.session.commit()
+
+        viewModel = FolderSectionViewModel(account: account, unified: true)
+
+        //Parent
+        let parentFCVM = FolderCellViewModel(folder: parentFolder, level: 0)
+
+        let numberOfChildren = viewModel.children(of: parentFCVM).count
+        XCTAssert(numberOfChildren == 1)
+    }
+
+    func testVisibleChildrenOf() {
+        let parentFolder = Folder(name: "Parent", parent: nil, account: account, folderType: .inbox)
+        self.folder = Folder(name: "Escafoides", parent: parentFolder, account: account, folderType: .normal)
+        self.folder.session.commit()
+
+        viewModel = FolderSectionViewModel(account: account, unified: true)
+
+        //Parent
+        let parentFCVM = FolderCellViewModel(folder: parentFolder, level: 0)
+
+        let numberOfChildren = viewModel.visibleChildren(of: parentFCVM).count
+        XCTAssert(numberOfChildren == 1)
+    }
+
+    func testHiddenChildrenOf() {
+        let parentFolder = Folder(name: "Parent", parent: nil, account: account, folderType: .inbox)
+        self.folder = Folder(name: "Escafoides", parent: parentFolder, account: account, folderType: .normal)
+        self.folder.session.commit()
+
+        viewModel = FolderSectionViewModel(account: account, unified: true)
+
+        //Parent
+        let parentFCVM = FolderCellViewModel(folder: parentFolder, level: 0)
+        viewModel.visibleChildren(of: parentFCVM).forEach({$0.isHidden = true})
+        let numberOfChildren = viewModel.visibleChildren(of: parentFCVM).count
+        XCTAssert(numberOfChildren == 0)
+    }
+
+    func testIndexOf() {
+        let parentFolder = Folder(name: "Parent", parent: nil, account: account, folderType: .inbox)
+        self.folder = Folder(name: "Escafoides", parent: parentFolder, account: account, folderType: .normal)
+        self.folder.session.commit()
+
+        let account = TestData().createWorkingAccount()
+        viewModel = FolderSectionViewModel(account: account, unified: true)
+
+        //Parent
+        let parentFCVM = FolderCellViewModel(folder: parentFolder, level: 0)
+
+        //Son
+        let sonFCVM = FolderCellViewModel(folder: self.folder, level: 1)
+
+        let index = viewModel.index(of: parentFCVM)
+        let sonIndex = viewModel.index(of: sonFCVM)
+
+        XCTAssert(index != NSNotFound)
+        XCTAssert(sonIndex != NSNotFound)
+        XCTAssert(sonIndex! > index!)
+    }
 }

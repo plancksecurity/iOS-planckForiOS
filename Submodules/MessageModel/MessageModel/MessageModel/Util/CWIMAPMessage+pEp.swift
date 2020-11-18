@@ -69,6 +69,8 @@ extension CWIMAPMessage {
             }
         }
 
+        setContentDisposition(PantomimeInlineDisposition)
+
         let attachmentDicts = pEpMessage.attachments ?? []
         if !attachmentDicts.isEmpty {
             let isEncrypted = pEpMessage.isProbablyPGPMime()

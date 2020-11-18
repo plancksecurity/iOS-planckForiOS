@@ -40,7 +40,7 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
     var font : UIFont {
         if isIpad {
             return UIFont.systemFont(ofSize: 25.0, weight: .regular)
-        } else if Device.isIphone5 {
+        } else if DeviceUtils.isIphone5 {
             return UIFont.systemFont(ofSize: 11.0, weight: .regular)
         }
         return UIFont.systemFont(ofSize: 14.0, weight: .regular)
@@ -49,7 +49,7 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
     var smallFont : UIFont {
         if isIpad {
             return UIFont.systemFont(ofSize: 13.0, weight: .regular)
-        } else if Device.isIphone5 {
+        } else if DeviceUtils.isIphone5 {
             return UIFont.systemFont(ofSize: 9.0, weight: .regular)
         }
         return UIFont.systemFont(ofSize: 10.0, weight: .regular)
@@ -59,7 +59,7 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
     var titleFont : UIFont {
         if isIpad {
             return UIFont.systemFont(ofSize: 45.0, weight: .regular)
-        } else if Device.isIphone5 {
+        } else if DeviceUtils.isIphone5 {
             return UIFont.systemFont(ofSize: 18.0, weight: .regular)
         }
         return UIFont.systemFont(ofSize: 28.0, weight: .regular)
@@ -93,15 +93,4 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
     public func configureView() {
         Log.shared.errorAndCrash("This method must be overriden")
     }
-
-    /// Util class to detect if the device is an iPhone 5
-    private struct Device {
-        private static let isIphone = UIDevice.current.userInterfaceIdiom == .phone
-        private static let screenWidth = Int(UIScreen.main.bounds.size.width)
-        private static let screenHeight = Int(UIScreen.main.bounds.size.height)
-        private static let screenMaxLength = Int(max(screenWidth, screenHeight))
-        private static let SCREEN_MIN_LENGTH = Int(min(screenWidth, screenHeight))
-        static let isIphone5 = isIphone && screenMaxLength == 568 // 5, 5S, 5C, SE
-    }
-    
 }

@@ -11,7 +11,7 @@ import PantomimeFramework
 @testable import pEpForiOS
 @testable import MessageModel
 
-final class EditableAccountSettingsViewModelTest: CoreDataDrivenTestBase {
+final class EditableAccountSettingsViewModelTest: AccountDrivenTestBase {
 
     var viewModel: EditableAccountSettingsViewModel?
 
@@ -42,22 +42,6 @@ final class EditableAccountSettingsViewModelTest: CoreDataDrivenTestBase {
         viewModel?.delegate = nil
         viewModel?.verifiableAccount = nil
         super.tearDown()
-    }
-
-    func testHandleSaveButtonSucceed() {
-        // GIVEN
-        expected = State(didCallShowLoadingView: true,
-                         didCallHideLoadingView: true,
-                         didCallPopViewController: true,
-                         didSaveVerifiableAccount: true)
-        expectations = TestExpectations(testCase: self, expected: expected)
-
-        // WHEN
-        viewModel?.handleSaveButton()
-        waitForExpectations(timeout: TestUtil.waitTime)
-
-        //THEN
-        assertExpectations()
     }
 
     func testHandleSaveButtonInputsFail() {

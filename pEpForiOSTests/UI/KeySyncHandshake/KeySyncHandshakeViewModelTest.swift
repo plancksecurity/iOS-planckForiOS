@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import PEPObjCAdapterFramework
+
 @testable import pEpForiOS
 
 final class KeySyncHandshakeViewModelTest: XCTestCase {
@@ -39,21 +39,6 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
         super.tearDown()
     }
 
-    func testDidSelectLanguageToOtherOrSame() {
-        // GIVEN
-        guard let keySyncHandshakeVM = keySyncHandshakeVM else {
-            XCTFail()
-            return
-        }
-        expected = State(didCallClosePicker: true, didCallToUpdateTrustedWords: true)
-
-        // WHEN
-        keySyncHandshakeVM.didSelect(languageRow: 0)
-
-        // THEN
-        assertExpectations()
-    }
-
     func testDidPressActionAccept() {
         // GIVEN
         guard let keySyncHandshakeVM = keySyncHandshakeVM else {
@@ -64,27 +49,6 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
 
         // WHEN
         keySyncHandshakeVM.handle(action: .accept)
-
-        // THEN
-        assertExpectations()
-    }
-
-    func testDidPressActionChangeLanguage() {
-        // GIVEN
-        guard let keySyncHandshakeVM = keySyncHandshakeVM else {
-            XCTFail()
-            return
-        }
-        let languages = pEpSessionMocLanaguages()
-        let languagesToShow = languages.map { $0.name }
-        let selectedLanguageIndex =
-            languages.map { $0.code }.firstIndex(of: Locale.current.languageCode)
-        expected = State(didCallShowPicker: true,
-                         languagesToShow: languagesToShow,
-                         selectedLanguageIndex: selectedLanguageIndex)
-
-        // WHEN
-        keySyncHandshakeVM.handle(action: .changeLanguage)
 
         // THEN
         assertExpectations()
@@ -115,21 +79,6 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
 
         // WHEN
         keySyncHandshakeVM.handle(action: .cancel)
-
-        // THEN
-        assertExpectations()
-    }
-
-    func testDidLongPressWords() {
-        // GIVEN
-        guard let keySyncHandshakeVM = keySyncHandshakeVM else {
-            XCTFail()
-            return
-        }
-        expected = State(didCallToUpdateTrustedWords: true, fullWordsVersion: true)
-
-        // WHEN
-        keySyncHandshakeVM.didLongPressWords()
 
         // THEN
         assertExpectations()
@@ -183,22 +132,6 @@ extension KeySyncHandshakeViewModelTest {
 
         //In case some if missing or added but not checked
         XCTAssertEqual(expected, actual)
-    }
-
-    private func pEpSessionMocLanaguages() -> [PEPLanguage] {
-        var languages = [PEPLanguage]()
-
-        let expHaveLanguages = expectation(description: "expHaveLanguages")
-        PEPAsyncSession().languageList({ error in
-            XCTFail()
-            expHaveLanguages.fulfill()
-        }) { langs in
-            languages = langs
-            expHaveLanguages.fulfill()
-        }
-        wait(for: [expHaveLanguages], timeout: TestUtil.waitTime)
-
-        return languages
     }
 }
 

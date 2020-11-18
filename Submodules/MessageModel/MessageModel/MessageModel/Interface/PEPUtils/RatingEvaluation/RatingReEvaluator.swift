@@ -30,8 +30,12 @@ extension RatingReEvaluator: RatingReEvaluatorProtocol {
     static public func reevaluate(message: Message, completion:  @escaping ()->Void) {
         let pEpMessage = message.cdObject.pEpMessage()
         if pEpMessage.direction == .outgoing {
-            PEPAsyncSession().outgoingRating(for: pEpMessage, errorCallback: { (error) in
-                Log.shared.errorAndCrash("%@", error.localizedDescription)
+            PEPSession().outgoingRating(for: pEpMessage, errorCallback: { (error) in
+                if error.isPassphraseError {
+                    Log.shared.log(error: error)
+                } else {
+                    Log.shared.errorAndCrash(error: error)
+                }
                 completion()
             }) { (rating) in
                 storeNewRating(pEpRating: rating, to: message.cdObject, completion: completion)
@@ -42,8 +46,12 @@ extension RatingReEvaluator: RatingReEvaluatorProtocol {
             if let originalRatingString = message.optionalFields[Headers.originalRating.rawValue] {
                 originaRating = PEPRating.fromString(str: originalRatingString)
             }
-            PEPAsyncSession().reEvaluateMessage(pEpMessage, xKeyList: keys, originalRating: originaRating, errorCallback: { (error) in
-                Log.shared.errorAndCrash("%@", error.localizedDescription)
+            PEPSession().reEvaluateMessage(pEpMessage, xKeyList: keys, originalRating: originaRating, errorCallback: { (error) in
+                if error.isPassphraseError {
+                    Log.shared.log(error: error)
+                } else {
+                    Log.shared.errorAndCrash(error: error)
+                }
                 completion()
             }) { (newRating) in
                 storeNewRating(pEpRating: newRating, to: message.cdObject, completion: completion)

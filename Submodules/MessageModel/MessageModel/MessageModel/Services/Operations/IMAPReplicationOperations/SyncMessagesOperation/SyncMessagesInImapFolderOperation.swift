@@ -43,7 +43,7 @@ class SyncMessagesInImapFolderOperation: ImapSyncOperation {
                         message: "firstUID should be <= lastUID?")
             return
         }
-        if !checkImapSync() {
+        if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
         }
@@ -81,6 +81,11 @@ extension SyncMessagesInImapFolderOperation {
 
         resetUidCache()
 
+        guard let _ = folderID else {
+            Log.shared.errorAndCrash("No ID")
+            waitForBackgroundTasksAndFinish()
+            return
+        }
         if !imapConnection.openMailBox(name: folderToOpen, updateExistsCount: true) {
             syncMessages()
         }
@@ -103,16 +108,14 @@ extension SyncMessagesInImapFolderOperation {
 
     private func deleteDeletedMails(context: NSManagedObjectContext,
                                     existingUIDs: Set<AnyHashable>) {
-        guard
-            let theFolderID = folderID,
+        guard let theFolderID = folderID,
             let folder = context.object(with: theFolderID) as? CdFolder else {
                 handle(error: BackgroundError.CoreDataError.couldNotFindFolder(info: nil))
                 return
         }
-        let p1 = NSPredicate(format: "%K >= %d and %K <= %d",
-                             CdMessage.AttributeName.uid, firstUID,
-                             CdMessage.AttributeName.uid, lastUID)
-        let p2 = NSPredicate(format: "%K = %@", CdMessage.RelationshipName.parent, folder)
+        let p1 = CdMessage.PredicateFactory.allMessagesBetweenUids(firstUid: firstUID,
+                                                                   lastUid: lastUID)
+        let p2 = CdMessage.PredicateFactory.belongingToParentFolder(parentFolder: folder)
         // Do not wipe fake messages that are not on the server (because they are never on the
         // server by definition)
         let p3 = CdMessage.PredicateFactory.isNotFakeMessage()

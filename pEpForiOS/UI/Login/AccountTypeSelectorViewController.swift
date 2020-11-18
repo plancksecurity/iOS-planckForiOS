@@ -10,19 +10,27 @@ import UIKit
 
 import pEpIOSToolbox
 
-final class AccountTypeSelectorViewController: BaseViewController {
+final class AccountTypeSelectorViewController: UIViewController {
 
     var viewModel = AccountTypeSelectorViewModel()
     var delegate: AccountTypeSelectorViewModelDelegate?
     var loginDelegate: LoginViewControllerDelegate?
 
-    @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet private weak var selectAccountTypeLabel: UILabel!
+    @IBOutlet private weak var welcomeToPepLabel: UILabel!
+    @IBOutlet private var collectionView: UICollectionView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.delegate = self
         collectionView.dataSource = self
         viewModel.delegate = self
+
+        welcomeToPepLabel.font = UIFont.pepFont(style: .largeTitle, weight: .regular)
+        welcomeToPepLabel.adjustsFontForContentSizeCategory = true
+
+        selectAccountTypeLabel.font = UIFont.pepFont(style: .callout, weight: .regular)
+        selectAccountTypeLabel.adjustsFontForContentSizeCategory = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -30,6 +38,11 @@ final class AccountTypeSelectorViewController: BaseViewController {
         configureAppearance()
         configureView()
         viewModel.refreshAccountTypes()
+        collectionView.reloadData()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         collectionView.reloadData()
     }
 
@@ -122,7 +135,7 @@ extension AccountTypeSelectorViewController: AccountTypeSelectorViewModelDelegat
                                         comment: "No client certificate exists alert message")
         UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.navigationController?.popViewController(animated: true)
@@ -157,7 +170,6 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("accountType is invalid")
                 return
             }
-            vc.appConfig = appConfig
             vc.viewModel = viewModel.loginViewModel()
             vc.delegate = loginDelegate
         case .clientCertManagementSegue:
@@ -165,7 +177,6 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("Invalid state")
                 return
             }
-            dvc.appConfig = appConfig
             dvc.viewModel = viewModel.clientCertificateManagementViewModel()
         }
     }
@@ -178,4 +189,3 @@ extension AccountTypeSelectorViewController: ClientCertificateImportViewControll
         collectionView.reloadData()
     }
 }
-

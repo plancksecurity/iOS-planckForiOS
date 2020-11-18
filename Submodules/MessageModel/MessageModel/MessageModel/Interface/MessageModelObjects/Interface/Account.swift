@@ -141,6 +141,15 @@ public class Account: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         let cdAccount = cdObject
         return cdAccount.folders?.count ?? 0
     }
+
+    public var isIncludedInUnifiedFolders: Bool {
+        get {
+            return cdObject.includeFoldersInUnifiedFolders
+        }
+        set {
+            cdObject.includeFoldersInUnifiedFolders = newValue
+        }
+    }
 }
 
 extension Account {
@@ -150,6 +159,16 @@ extension Account {
             return nil
         }
         return Server(cdObject: cdServer, context: moc)
+    }
+}
+
+// - MARK: Count
+
+extension Account {
+
+    public static func countAllForUnified() -> Int {
+        let isInUnifiedPredicate = CdAccount.PredicateFactory.isInUnified()
+        return CdAccount.count(predicate: isInUnifiedPredicate)
     }
 }
 

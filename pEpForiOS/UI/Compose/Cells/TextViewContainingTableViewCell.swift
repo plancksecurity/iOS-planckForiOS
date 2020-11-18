@@ -20,10 +20,13 @@ class TextViewContainingTableViewCell: UITableViewCell, TextViewContainingTableV
     override func awakeFromNib() {
         super.awakeFromNib()
         textView.delegate = self
+        textView.adjustsFontForContentSizeCategory = true
     }
 
     func setFocus() {
-        textView.selectedRange = NSRange(location: 0, length: 0)
+        let rangeAtTheEnd = textView.textRange(from: textView.endOfDocument,
+                                               to: textView.endOfDocument)
+        textView.selectedTextRange = rangeAtTheEnd
         textView.becomeFirstResponder()
     }
 }

@@ -4,6 +4,7 @@ extension CdAccount {
 
     /// All attribute names as constant String
     struct AttributeName {
+        static let includeFoldersInUnifiedFolders = "includeFoldersInUnifiedFolders"
     }
 
     /// All relationship names as constant String
@@ -241,6 +242,7 @@ extension CdServer {
         static let address = "address"
         static let authMethod = "authMethod"
         static let automaticallyTrusted = "automaticallyTrusted"
+        static let dateLastAuthenticationErrorShown = "dateLastAuthenticationErrorShown"
         static let imapFolderSeparator = "imapFolderSeparator"
         static let manuallyTrusted = "manuallyTrusted"
         static let port = "port"
