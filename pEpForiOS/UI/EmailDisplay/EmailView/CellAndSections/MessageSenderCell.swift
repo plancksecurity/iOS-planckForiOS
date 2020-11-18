@@ -10,7 +10,8 @@ import UIKit
 import MessageModel
 
 open class MessageSenderCell: MessageCell {
-    
+
+    //MB:- Remove this method.
     public override func updateCell(model: ComposeFieldModel, message: Message) {
         super.updateCell(model: model, message: message)
         titleLabel?.text = message.from?.displayString

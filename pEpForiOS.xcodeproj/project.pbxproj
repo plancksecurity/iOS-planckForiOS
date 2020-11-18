@@ -383,7 +383,6 @@
 		5BEAECB525370C3E0082AAC6 /* String+Mailto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEAECB425370C3E0082AAC6 /* String+Mailto.swift */; };
 		5BEBF900255D85910006B262 /* UIPopoverPresentationControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEBF8FF255D85910006B262 /* UIPopoverPresentationControllerProtocol.swift */; };
 		5BED3E7B253EDECE0080CCEA /* ReceivedEmailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BED3E7A253EDECE0080CCEA /* ReceivedEmailTableViewCell.swift */; };
-		5BED3E7F253EDEF40080CCEA /* ReceivedEmailAttachmentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BED3E7E253EDEF40080CCEA /* ReceivedEmailAttachmentsCell.swift */; };
 		5BF449F4240827F500B23E50 /* TutorialStep0ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF449F3240827F500B23E50 /* TutorialStep0ViewController.swift */; };
 		5BF505FE253EFBA50051FBD3 /* MailtoTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD917E1252DD64D0092B30F /* MailtoTest.swift */; };
 		5BF9B3D723FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF9B3D623FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift */; };
@@ -982,7 +981,6 @@
 		5BEAECB425370C3E0082AAC6 /* String+Mailto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Mailto.swift"; sourceTree = "<group>"; };
 		5BEBF8FF255D85910006B262 /* UIPopoverPresentationControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPopoverPresentationControllerProtocol.swift; sourceTree = "<group>"; };
 		5BED3E7A253EDECE0080CCEA /* ReceivedEmailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedEmailTableViewCell.swift; sourceTree = "<group>"; };
-		5BED3E7E253EDEF40080CCEA /* ReceivedEmailAttachmentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedEmailAttachmentsCell.swift; sourceTree = "<group>"; };
 		5BF449F3240827F500B23E50 /* TutorialStep0ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep0ViewController.swift; sourceTree = "<group>"; };
 		5BF9B3D623FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementResetTableViewCell.swift; sourceTree = "<group>"; };
 		8B69E3981E30F80E0022959E /* Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
@@ -2480,7 +2478,6 @@
 			isa = PBXGroup;
 			children = (
 				5BED3E7A253EDECE0080CCEA /* ReceivedEmailTableViewCell.swift */,
-				5BED3E7E253EDEF40080CCEA /* ReceivedEmailAttachmentsCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3248,7 +3245,6 @@
 				43269D272552ABE9001E18C6 /* String+PEPSignature.swift in Sources */,
 				433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */,
 				43038EA2246D897F008FC36E /* KeyImportViewController.swift in Sources */,
-				5BED3E7F253EDEF40080CCEA /* ReceivedEmailAttachmentsCell.swift in Sources */,
 				4351C2DA1F4441190053381F /* scanners.c in Sources */,
 				B7DB7FD7221AD3BB003968DA /* UIButton+Extension.swift in Sources */,
 				4351C2D91F4441190053381F /* render.c in Sources */,

@@ -47,6 +47,23 @@ class EmailViewModelTest: XCTestCase {
         XCTAssert(vm.numberOfRows == types.count)
     }
 
+    func testSubscriptRowOfMessageWithTwoAttachments() {
+        vm = nil
+        setupVMWithMessageWith(numberOfAttachments: 2)
+        XCTAssert(vm[0].type == .from)
+        XCTAssert(vm[1].type == .subject)
+        XCTAssert(vm[2].type == .body)
+        XCTAssert(vm[3].type == .attachment)
+    }
+
+    func testBody() {
+        vm = nil
+        setupVMWithMessageWith(numberOfAttachments: 1)
+        vm.body { (result) in
+            XCTAssert(result.string == "Long")
+        }
+    }
+
     // MARK: - Delegate
 
     func testShowLoadingView() {
@@ -78,7 +95,11 @@ class EmailViewModelTest: XCTestCase {
         let showDocumentsEditorExpectation = XCTestExpectation(description: "showDocumentsEditor was called")
         let delegate = MockEmailViewModelDelegate(showDocumentsEditorExpectation: showDocumentsEditorExpectation)
         vm.delegate = delegate
-        vm.delegate?.showDocumentsEditor()
+        guard let url = URL(string: "http://www.google.com") else {
+            XCTFail()
+            return
+        }
+        vm.delegate?.showDocumentsEditor(url: url)
     }
 
     func testShowClientCertificateImport() {
@@ -133,7 +154,6 @@ extension EmailViewModelTest {
 }
 
 class MockEmailViewModelDelegate: EmailViewModelDelegate {
-
     private var showQuickLookOfAttachmentExpectation: XCTestExpectation?
     private var showLoadingViewExpectation: XCTestExpectation?
     private var hideLoadingViewExpectation: XCTestExpectation?
@@ -154,8 +174,7 @@ class MockEmailViewModelDelegate: EmailViewModelDelegate {
     func showQuickLookOfAttachment(qlItem: QLPreviewItem) {
         fulfillIfNotNil(expectation: showQuickLookOfAttachmentExpectation)
     }
-
-    func showDocumentsEditor() {
+    func showDocumentsEditor(url: URL) {
         fulfillIfNotNil(expectation: showDocumentsEditorExpectation)
     }
 
