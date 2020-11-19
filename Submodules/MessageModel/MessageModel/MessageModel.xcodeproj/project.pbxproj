@@ -372,6 +372,7 @@
 		43EA4897221E9518006E8F83 /* BackgroundError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4843221E9518006E8F83 /* BackgroundError.swift */; };
 		43EA4898221E9518006E8F83 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4844221E9518006E8F83 /* NetworkError.swift */; };
 		43EA489D221E95E3006E8F83 /* PantomimeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43EA489C221E95E3006E8F83 /* PantomimeFramework.framework */; };
+		43F185FE25669C6200953119 /* libpEpObjCAdapterTypes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F185FD25669C6200953119 /* libpEpObjCAdapterTypes.a */; };
 		43F484441E8130180028BC1A /* CdImapFlags+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F484431E8130180028BC1A /* CdImapFlags+Extension.swift */; };
 		43F484461E8130A80028BC1A /* CdImapFields+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F484451E8130A80028BC1A /* CdImapFields+Extension.swift */; };
 		43F609802248BCBD0008B900 /* CdFolder+VirtualMailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6097F2248BCBD0008B900 /* CdFolder+VirtualMailbox.swift */; };
@@ -835,6 +836,7 @@
 		43EA4843221E9518006E8F83 /* BackgroundError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundError.swift; sourceTree = "<group>"; };
 		43EA4844221E9518006E8F83 /* NetworkError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		43EA489C221E95E3006E8F83 /* PantomimeFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43F185FD25669C6200953119 /* libpEpObjCAdapterTypes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libpEpObjCAdapterTypes.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43F484431E8130180028BC1A /* CdImapFlags+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdImapFlags+Extension.swift"; sourceTree = "<group>"; };
 		43F484451E8130A80028BC1A /* CdImapFields+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdImapFields+Extension.swift"; sourceTree = "<group>"; };
 		43F6097F2248BCBD0008B900 /* CdFolder+VirtualMailbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+VirtualMailbox.swift"; sourceTree = "<group>"; };
@@ -906,6 +908,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43F185FE25669C6200953119 /* libpEpObjCAdapterTypes.a in Frameworks */,
 				3AB50D2A2500F3B1005E2170 /* pEp4iosIntern.framework in Frameworks */,
 				43B1A39C22366D9700C387DE /* AppAuth.framework in Frameworks */,
 				435F518122204731006EB11F /* PEPObjCAdapterFramework.framework in Frameworks */,
@@ -2334,6 +2337,7 @@
 		B7DB7FA322147000003968DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43F185FD25669C6200953119 /* libpEpObjCAdapterTypes.a */,
 				4350A6AC250259FE00809A18 /* CocoaLumberjackSwift.framework */,
 				4331CE79229BDD0900DDDC65 /* PantomimeFramework.framework */,
 				436981B42282F8D40006FA2D /* PEPObjCAdapterFramework.framework */,
