@@ -22,7 +22,7 @@ class EmailDetailViewController: UIViewController {
     private var emailSubViewControllers = [EmailViewController]()
     private var emailSubViewControllers2 = [EmailViewController2]()
 
-    //Remember to change Main.storyboard
+    //MB:- Remember to change Main.storyboard
     var v1 = false
 
     /// Stuff that must be done once only in viewWillAppear
@@ -415,7 +415,7 @@ extension EmailDetailViewController {
             Log.shared.errorAndCrash("Message not found")
             return nil
         }
-        createe.viewModel = EmailViewModel(message: message)
+        createe.viewModel = EmailViewModel(message: message, delegate: createe)
         createe.delegate = self
         emailSubViewControllers2.append(createe)
         return createe

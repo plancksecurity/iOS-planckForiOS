@@ -13,4 +13,8 @@ extension Collection {
     public subscript(safe index: Index) -> Iterator.Element? {
         return index >= startIndex && index < endIndex ? self[index] : nil
     }
+
+    public func count(where test: (Element) throws -> Bool) rethrows -> Int {
+        return try self.filter(test).count
+    }
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -609,27 +609,86 @@
                                                     <outlet property="contentText" destination="I5j-7y-WhQ" id="Xc8-dK-tM2"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="attachmentsCell" id="Cj2-v8-Ej7" customClass="MessageAttachmentsCell" customModule="pEpForiOS" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="409.5" width="375" height="43.5"/>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="attachmentsCell" rowHeight="100" id="Cj2-v8-Ej7" customClass="MessageAttachmentsCell" customModule="pEpForiOS" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="409.5" width="375" height="100"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Cj2-v8-Ej7" id="Djh-XY-Ttc">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ln3-0f-mDW" customClass="AttachmentsView" customModule="pEpForiOS" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ihv-Qa-6O0">
+                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+                                                            <subviews>
+                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vgq-8X-NSJ" userLabel="Container" customClass="AttachmentView" customModule="pEpForiOS" customModuleProvider="target">
+                                                                    <rect key="frame" x="8" y="7.5" width="359" height="84"/>
+                                                                    <subviews>
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="doc" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="5OF-TL-qiA" userLabel="FileIcon">
+                                                                            <rect key="frame" x="159.5" y="22" width="40" height="40"/>
+                                                                            <color key="tintColor" red="0.01176470588" green="0.66666666669999997" blue="0.29411764709999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="width" constant="40" id="Faf-av-u9v"/>
+                                                                                <constraint firstAttribute="width" secondItem="5OF-TL-qiA" secondAttribute="height" multiplier="1:1" id="Vz5-2j-Eza"/>
+                                                                            </constraints>
+                                                                        </imageView>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="_The file has a name very super hiper extremely long.txt" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rwl-dh-q5V">
+                                                                            <rect key="frame" x="16" y="4" width="327" height="16"/>
+                                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                                            <nil key="textColor"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TXT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K74-3B-WUJ">
+                                                                            <rect key="frame" x="167" y="64" width="25.5" height="16"/>
+                                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                                            <nil key="textColor"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                    </subviews>
+                                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                    <constraints>
+                                                                        <constraint firstItem="K74-3B-WUJ" firstAttribute="centerX" secondItem="Vgq-8X-NSJ" secondAttribute="centerX" id="8fL-yd-adc"/>
+                                                                        <constraint firstItem="rwl-dh-q5V" firstAttribute="centerX" secondItem="Vgq-8X-NSJ" secondAttribute="centerX" id="9Si-2N-E3g"/>
+                                                                        <constraint firstItem="5OF-TL-qiA" firstAttribute="centerX" secondItem="Vgq-8X-NSJ" secondAttribute="centerX" id="B3J-v9-7nQ"/>
+                                                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="rwl-dh-q5V" secondAttribute="trailing" constant="16" id="CW6-rt-lmu"/>
+                                                                        <constraint firstAttribute="bottom" secondItem="K74-3B-WUJ" secondAttribute="bottom" constant="4" id="TiV-XQ-VJn"/>
+                                                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="K74-3B-WUJ" secondAttribute="trailing" constant="16" id="XTu-Sm-V2H"/>
+                                                                        <constraint firstItem="rwl-dh-q5V" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Vgq-8X-NSJ" secondAttribute="leading" constant="16" id="YHI-RW-GMv"/>
+                                                                        <constraint firstItem="K74-3B-WUJ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Vgq-8X-NSJ" secondAttribute="leading" constant="16" id="exU-Ih-40q"/>
+                                                                        <constraint firstItem="5OF-TL-qiA" firstAttribute="centerY" secondItem="Vgq-8X-NSJ" secondAttribute="centerY" id="gk9-WD-nGY"/>
+                                                                        <constraint firstItem="rwl-dh-q5V" firstAttribute="top" secondItem="Vgq-8X-NSJ" secondAttribute="top" constant="4" id="jiA-9g-5pe"/>
+                                                                    </constraints>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                                            <real key="value" value="1.5"/>
+                                                                        </userDefinedRuntimeAttribute>
+                                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                                            <color key="value" red="0.011764705882352941" green="0.66666666666666663" blue="0.29411764705882354" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                        </userDefinedRuntimeAttribute>
+                                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                            <real key="value" value="30"/>
+                                                                        </userDefinedRuntimeAttribute>
+                                                                    </userDefinedRuntimeAttributes>
+                                                                </view>
+                                                            </subviews>
+                                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="bottom" secondItem="Vgq-8X-NSJ" secondAttribute="bottom" constant="8.5" id="GoK-y2-Cyh"/>
+                                                                <constraint firstItem="Vgq-8X-NSJ" firstAttribute="leading" secondItem="Ihv-Qa-6O0" secondAttribute="leading" constant="8" id="Pqh-ds-G9w"/>
+                                                                <constraint firstItem="Vgq-8X-NSJ" firstAttribute="top" secondItem="Ihv-Qa-6O0" secondAttribute="top" constant="7.5" id="oAv-1J-WQW"/>
+                                                                <constraint firstAttribute="trailing" secondItem="Vgq-8X-NSJ" secondAttribute="trailing" constant="8" id="sek-rB-oFa"/>
+                                                            </constraints>
                                                         </view>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstAttribute="bottom" secondItem="ln3-0f-mDW" secondAttribute="bottom" id="Jth-ZE-o5Z"/>
-                                                        <constraint firstAttribute="trailing" secondItem="ln3-0f-mDW" secondAttribute="trailing" id="jWg-Pa-6vT"/>
-                                                        <constraint firstItem="ln3-0f-mDW" firstAttribute="top" secondItem="Djh-XY-Ttc" secondAttribute="top" id="kPo-DI-D83"/>
-                                                        <constraint firstItem="ln3-0f-mDW" firstAttribute="leading" secondItem="Djh-XY-Ttc" secondAttribute="leading" id="yAu-8I-7vx"/>
+                                                        <constraint firstItem="Ihv-Qa-6O0" firstAttribute="leading" secondItem="Djh-XY-Ttc" secondAttribute="leading" id="14E-VO-kEE"/>
+                                                        <constraint firstAttribute="bottom" secondItem="Ihv-Qa-6O0" secondAttribute="bottom" id="CKi-VU-5Lb"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Ihv-Qa-6O0" secondAttribute="trailing" id="WyF-iK-kQB"/>
+                                                        <constraint firstItem="Ihv-Qa-6O0" firstAttribute="top" secondItem="Djh-XY-Ttc" secondAttribute="top" id="rMU-vR-eca"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
-                                                    <outlet property="attachmentsImageView" destination="ln3-0f-mDW" id="fVU-WQ-0TS"/>
+                                                    <outlet property="extensionLabel" destination="K74-3B-WUJ" id="zgw-Oe-w1P"/>
+                                                    <outlet property="iconImageView" destination="5OF-TL-qiA" id="G04-DW-0mK"/>
+                                                    <outlet property="nameLabel" destination="rwl-dh-q5V" id="WSQ-ga-aB5"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
@@ -1010,6 +1069,7 @@
         <image name="chevron-icon-left" width="10" height="18"/>
         <image name="chevron-icon-right" width="10" height="18"/>
         <image name="compose" width="28" height="28"/>
+        <image name="doc" catalog="system" width="115" height="128"/>
         <image name="empty-avatar" width="150" height="150"/>
         <image name="pEp-status-yellow_white-border" width="21" height="21"/>
         <image name="pEpForiOS-icon-delete" width="16" height="24"/>

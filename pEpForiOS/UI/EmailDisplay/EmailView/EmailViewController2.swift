@@ -99,9 +99,32 @@ extension EmailViewController2: UITableViewDataSource {
         } else if row.type == .subject, let subjectCell = cell as? MessageSubjectCell {
             setup(cell: subjectCell, with: row)
         } else if row.type == .attachment, let attachmentsCell = cell as? MessageAttachmentsCell {
-            setup(cell: attachmentsCell, with: vm)
+            attachmentsCell.titleLabel?.text = ""
+            attachmentsCell.nameLabel.text = ""
+            attachmentsCell.iconImageView.image = nil
+            attachmentsCell.extensionLabel.text = ""
+            vm.retrieveAttachments()
         }
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if isLastRow(indexPath: indexPath) {
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("No VM")
+                return
+            }
+            vm.retrieveAttachments()
+        }
+    }
+
+    private func isLastRow(indexPath: IndexPath) -> Bool {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return false
+        }
+
+        return indexPath.row == vm.numberOfRows - 1
     }
 }
 
@@ -110,9 +133,15 @@ extension EmailViewController2: UITableViewDataSource {
 extension EmailViewController2: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let row = viewModel?[indexPath.row] else {
-            Log.shared.errorAndCrash("Missing row")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("Missing vm")
             return tableView.estimatedRowHeight
+        }
+        let row = vm[indexPath.row]
+
+        //MB:- change this.
+        if row.type == .attachment {
+            return 150 // CGFloat(vm.numberOfAttachments) * 150.0
         }
         if row.type == .body, viewModel?.htmlBody != nil {
             return htmlViewerViewController.contentSize.height
@@ -143,6 +172,7 @@ extension EmailViewController2: UIPopoverPresentationControllerDelegate, UIPopov
 // MARK: - EmailViewModelDelegate
 
 extension EmailViewController2: EmailViewModelDelegate {
+
     func showQuickLookOfAttachment(qlItem: QLPreviewItem) {
         guard let url = qlItem.previewItemURL else {
             Log.shared.errorAndCrash("QL item is not an URL")
@@ -181,6 +211,10 @@ extension EmailViewController2: EmailViewModelDelegate {
             return
         }
         view.stopDisplayingAsBusy(viewBusyState: busyState)
+    }
+
+    func setAttachments(data: [EmailViewModel.Attachment]) {
+        print(data)
     }
 }
 
@@ -252,23 +286,19 @@ extension EmailViewController2 {
         }
     }
 
-    private func setup(cell: MessageAttachmentsCell, with vm: EmailViewModel) {
-        // Work around auto-layout problems
-        cell.contentView.heightAnchor.constraint(equalToConstant: 0).isActive = !vm.hasAttachments
-        cell.contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 44).isActive = vm.hasAttachments
-        var attachmentViewContainers = [AttachmentViewContainer2]()
-        let attachmentView = AttachmentsView()
-        vm.attachmentInformation { (informations) in
-            informations?.forEach { (info) in
-                if info.image != .none {
-                    let imageView = UIImageView(image: info.image)
-                    let container = AttachmentViewContainer2(view: imageView, info: info)
-                    attachmentViewContainers.append(container)
-                }
+    func setAttachments(attchmentsAtIndexPaths: [(EmailViewModel.Attachment, IndexPath)]) {
+        attchmentsAtIndexPaths.forEach { (attachmentAtIndexPath) in
+            let attachment = attachmentAtIndexPath.0
+            let indexPath = attachmentAtIndexPath.1
+            guard let cell = tableView.cellForRow(at: indexPath) as? MessageAttachmentsCell else {
+                // Valid case. We might have been dismissed already.
+                return
             }
-            attachmentView.attachmentViewContainers2 = attachmentViewContainers
-            cell.attachmentsImageView = attachmentView
-            self.tableView.updateSize()
+            cell.extensionLabel.text = attachment.´extension´
+            cell.nameLabel.text = attachment.filename
+            cell.iconImageView.image = attachment.image
         }
+//        tableView.updateSize()
     }
 }
+

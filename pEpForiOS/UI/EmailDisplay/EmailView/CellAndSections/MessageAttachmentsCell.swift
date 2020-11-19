@@ -11,15 +11,18 @@ import Foundation
 import MessageModel
 
 class MessageAttachmentsCell: MessageCell {
-    @IBOutlet weak var attachmentsImageView: AttachmentsView!
+
+    @IBOutlet weak var extensionLabel: UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var iconImageView: UIImageView!
 
     var attachmentsViewHelper = AttachmentsViewHelper()
     var lastMessage: Message?
 
     override func awakeFromNib() {
-        attachmentsViewHelper.attachmentsImageView = attachmentsImageView
+//        attachmentsViewHelper.attachmentsImageView = attachmentsImageView
         attachmentsViewHelper.delegate = self
-        attachmentsImageView.delegate = self
+//        attachmentsImageView.delegate = self
         selectionStyle = .none
     }
 

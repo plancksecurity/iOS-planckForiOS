@@ -26,6 +26,8 @@ protocol EmailViewModelDelegate: class {
     func showLoadingView()
     /// Hides the loading
     func hideLoadingView()
+    // Set the Attachments
+    func setAttachments(attchmentsAtIndexPaths: [(EmailViewModel.Attachment, IndexPath)])
 }
 
 enum EmailRowType {
@@ -48,22 +50,17 @@ protocol EmailRowProtocol {
 }
 
 struct EmailViewModel {
-    public struct AttachmentInformation2 {
-        var filename: String
-        var theExtension: String?
-        var image: UIImage?
-    }
+
 
     /// Delegate to comunicate with Email View.
     public weak var delegate: EmailViewModelDelegate?
 
-    private var originalRows: [EmailRowProtocol]
-    private var filteredRows: [EmailRowProtocol]
+    private var rows: [EmailRowProtocol]
     private var message: Message
 
     // MARK: - Attachments
-
-    private var attachments: [Attachment]
+    public var tuples = [(Attachment, IndexPath)]()
+    private var attachments: [MessageModel.Attachment]
     private var viewContainers : [AttachmentViewContainer]?
     private let mimeTypes = MimeTypeUtils()
     private var buildOp: AttachmentsViewOperation?
@@ -80,16 +77,15 @@ struct EmailViewModel {
 
     /// Constructor
     /// - Parameter message: The message to display
-    public init(message: Message) {
+    public init(message: Message, delegate: EmailViewModelDelegate) {
         self.message = message
-
+        self.delegate = delegate
         self.attachments = message.viewableAttachments()
         var rowsTypes: [EmailRowType] = [.sender, .subject, .body]
-        if attachments.count > 0 {
+        self.attachments.forEach { (attachment) in
             rowsTypes.append(.attachment)
         }
-        self.originalRows = rowsTypes.map { EmailRow(type: $0, message: message) }
-        self.filteredRows = originalRows
+        self.rows = rowsTypes.map { Row(type: $0, message: message) }
     }
 
     // var showExternalContent = false
@@ -135,19 +131,39 @@ struct EmailViewModel {
 
     /// Number of rows
     public var numberOfRows: Int {
-        return filteredRows.count
+        return rows.count
     }
 
     /// Retrieves the row
     subscript(index: Int) -> EmailRowProtocol {
         get {
-            return filteredRows[index]
+            return rows[index]
         }
     }
 
-    public func attachmentInformation(completion: @escaping ([AttachmentInformation2]?) -> Void) {
-        self.updateQuickMetaData(message: message) { (attachmentInformations) in
-            completion(attachmentInformations)
+    public func retrieveAttachments() {
+        if !tuples.isEmpty {
+            delegate?.setAttachments(attchmentsAtIndexPaths: tuples)
+        } else {
+            updateQuickMetaData(message: message) { (data) in
+                var indexPaths = [IndexPath]()
+                var tuples = [(Attachment, IndexPath)]()
+                let fromValue = rows.count(where: { $0.type != .attachment })
+                for rowIndex in fromValue..<rows.count {
+                    let indexPath = IndexPath(row: rowIndex, section: 0)
+                    indexPaths.append(indexPath)
+                }
+                for n in 0..<data.count {
+                    tuples.append((data[n], indexPaths[n]))
+                }
+                delegate?.setAttachments(attchmentsAtIndexPaths: tuples)
+            }
+        }
+    }
+
+    public func attachmentData(completion: @escaping ([EmailViewModel.Attachment]?) -> Void) {
+        updateQuickMetaData(message: message) { (data) in
+            completion(data)
         }
     }
 
@@ -197,8 +213,10 @@ struct EmailViewModel {
             Log.shared.errorAndCrash("attachments Out of bounds")
             return
         }
+
         let attachment = attachments[indexPath.row]
-        attachment.saveToTmpDirectory(defaultFilename: Attachment.defaultFilename) { (url) in
+        let defaultFileName = MessageModel.Attachment.defaultFilename
+        attachment.saveToTmpDirectory(defaultFilename: defaultFileName) { (url) in
             guard let url = url else {
                 Log.shared.errorAndCrash("No Local URL")
                 return
@@ -219,7 +237,16 @@ struct EmailViewModel {
         }
     }
 
-    public struct EmailRow: EmailRowProtocol {
+    /// Attachment, in the context of EmailViewModel.
+    /// Do not confuse with MMO.
+    public struct Attachment {
+        var filename: String = ""
+        var ´extension´: String? // extension is a keyword, we need quotation marks
+        var image: UIImage?
+    }
+
+    /// Attachment inherits from Row
+    public class Row: EmailRowProtocol {
         public private(set) var type: EmailRowType
         public private(set) var firstValue: String?
         public private(set) var secondValue: String?
@@ -276,7 +303,7 @@ struct EmailViewModel {
 
 extension EmailViewModel {
 
-    private func updateQuickMetaData(message: Message, completion: @escaping ([AttachmentInformation2]) -> ()) {
+    private func updateQuickMetaData(message: Message, completion: @escaping ([EmailViewModel.Attachment]) -> ()) {
         operationQueue.cancelAllOperations()
         let theBuildOp = AttachmentsViewOperation(mimeTypes: mimeTypes, message: message)
         theBuildOp.completionBlock = {
@@ -287,25 +314,26 @@ extension EmailViewModel {
         operationQueue.addOperation(theBuildOp)
     }
 
-    private func opFinished(theBuildOp: AttachmentsViewOperation, completion: @escaping ([AttachmentInformation2]) -> ()) {
-        var information: [AttachmentInformation2] = [AttachmentInformation2]()
+    private func opFinished(theBuildOp: AttachmentsViewOperation, completion: @escaping ([EmailViewModel.Attachment]) -> ()) {
+        let defaultFileName = MessageModel.Attachment.defaultFilename
+        var information: [EmailViewModel.Attachment] = [EmailViewModel.Attachment]()
         theBuildOp.attachmentContainers.forEach { (container) in
             switch container {
             case .imageAttachment(let attachment, let image):
                 let safeAttachment = attachment.safeForSession(Session.main)
                 Session.main.performAndWait {
-                    let fileName = safeAttachment.fileName ?? Attachment.defaultFilename
-                    let attachmentInformation2 = AttachmentInformation2(filename: fileName,
-                                                                        theExtension: safeAttachment.mimeType,
-                                                                        image: image)
-                    information.append(attachmentInformation2)
+                    let fileName = safeAttachment.fileName ?? defaultFileName
+                    let attachmentRow = EmailViewModel.Attachment(filename: fileName, ´extension´: safeAttachment.mimeType, image: image)
+                    information.append(attachmentRow)
                 }
             case .docAttachment(let attachment):
                 let safeAttachment = attachment.safeForSession(.main)
                 Session.main.performAndWait {
-                    let (name, finalExt) = safeAttachment.fileName?.splitFileExtension() ?? (Attachment.defaultFilename, nil)
-                    let attachmentInformation2 = AttachmentInformation2(filename: name, theExtension: finalExt, image: UIDocumentInteractionController().icons.first)
-                    information.append(attachmentInformation2)
+                    let (name, finalExt) = safeAttachment.fileName?.splitFileExtension() ?? (defaultFileName, nil)
+                    let dic = UIDocumentInteractionController()
+                    dic.name = safeAttachment.fileName
+                    let row = EmailViewModel.Attachment(filename: name, ´extension´: finalExt, image: dic.icons.first)
+                    information.append(row)
                 }
             }
         }

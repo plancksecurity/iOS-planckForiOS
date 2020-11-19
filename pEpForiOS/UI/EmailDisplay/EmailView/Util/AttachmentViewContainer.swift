@@ -14,8 +14,3 @@ struct AttachmentViewContainer {
     let view: UIView
     let attachment: Attachment
 }
-
-struct AttachmentViewContainer2 {
-    let view: UIView
-    let info: EmailViewModel.AttachmentInformation2
-}
