@@ -3159,6 +3159,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../../../pEpObjCAdapter/Submodules/pEpObjCAdapterTypes/pEpObjCAdapterTypes/Public/";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -3218,6 +3219,7 @@
 				OTHER_SWIFT_FLAGS = " ";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../../../pEpObjCAdapter/Submodules/pEpObjCAdapterTypes/pEpObjCAdapterTypes/Public/";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "$(inherited)";
