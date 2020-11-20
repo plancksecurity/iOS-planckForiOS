@@ -33,7 +33,7 @@ protocol EmailViewModelDelegate: class {
 
 enum EmailRowType {
     //Sender includes 'from' and 'to'
-    case sender, cc, bcc, subject, body, attachment
+    case sender, subject, body, attachment
 }
 
 //MB:- split into different RowProtocols as Settings.
@@ -304,25 +304,17 @@ extension EmailViewModel {
                 let toDestinataries = NSLocalizedString("To:", comment: "Compose field title") + temp.joined(separator: ", ")
                 self.secondValue = toDestinataries
                 self.height = 64.0
-            case .cc:
-                //MB:- not tested yet
-                self.firstValue = NSLocalizedString("CC:", comment: "Email field title")
-                self.cellIdentifier = recipientCellIdentifier
-                self.height = 0.0
-            case .bcc:
-                //MB:- not tested yet
-                self.firstValue = NSLocalizedString("BCC:", comment: "Email field title")
-                self.cellIdentifier = recipientCellIdentifier
-                self.height = 0.0
             case .subject:
                 self.firstValue = message.shortMessage
                 if let originationDate = message.sent {
                     self.secondValue = (originationDate as Date).fullString()
                 }
                 self.cellIdentifier = subjectCellIdentifier
+                // MB:- Set height or remove
                 self.height = 0.0
             case .body:
                 self.cellIdentifier = senderBodyCellIdentifier
+                // MB:- Set height or remove
                 self.height = 0.0
             case .attachment:
                 self.cellIdentifier = attachmentsCellIdentifier
