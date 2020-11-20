@@ -26,8 +26,7 @@ protocol EmailViewModelDelegate: class {
     func showLoadingView()
     /// Hides the loading
     func hideLoadingView()
-
-    /// Inform the attachments have been set.
+    /// Informs the attachments have been set.
     /// - Parameter indexPaths: The indexPath of the attachments
     func didSetAttachments(forRowsAt indexPaths: [IndexPath])
 }
@@ -262,7 +261,7 @@ class EmailViewModel {
     }
 }
 
-// MARK: - Models
+// MARK: - Public structs to use EmailViewModel
 
 extension EmailViewModel {
 
@@ -306,10 +305,12 @@ extension EmailViewModel {
                 self.secondValue = toDestinataries
                 self.height = 64.0
             case .cc:
+                //MB:- not tested yet
                 self.firstValue = NSLocalizedString("CC:", comment: "Email field title")
                 self.cellIdentifier = recipientCellIdentifier
                 self.height = 0.0
             case .bcc:
+                //MB:- not tested yet
                 self.firstValue = NSLocalizedString("BCC:", comment: "Email field title")
                 self.cellIdentifier = recipientCellIdentifier
                 self.height = 0.0
