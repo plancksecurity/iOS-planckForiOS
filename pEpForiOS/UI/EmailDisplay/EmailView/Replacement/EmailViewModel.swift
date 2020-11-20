@@ -26,8 +26,10 @@ protocol EmailViewModelDelegate: class {
     func showLoadingView()
     /// Hides the loading
     func hideLoadingView()
-    // Set the Attachments
-    func setAttachments(attchmentsAtIndexPaths: [(EmailViewModel.Attachment, IndexPath)])
+
+    /// Inform the attachments have been set.
+    /// - Parameter indexPaths: The indexPath of the attachments
+    func didSetAttachments(forRowsAt indexPaths: [IndexPath])
 }
 
 enum EmailRowType {
@@ -40,18 +42,18 @@ protocol EmailRowProtocol {
     /// The type of the row
     var type: EmailRowType { get }
     /// The first value of the row.
-    var firstValue: String? { get }
+    var firstValue: String? { get set }
     /// Returns the cell identifier
     var cellIdentifier: String { get }
     /// The second value of the row
-    var secondValue: String? { get }
+    var secondValue: String? { get set }
     /// The height of the row
     var height: CGFloat { get }
+    /// The image of the row
+    var image: UIImage? { get set }
 }
 
-struct EmailViewModel {
-
-
+class EmailViewModel {
     /// Delegate to comunicate with Email View.
     public weak var delegate: EmailViewModelDelegate?
 
@@ -59,7 +61,8 @@ struct EmailViewModel {
     private var message: Message
 
     // MARK: - Attachments
-    public var tuples = [(Attachment, IndexPath)]()
+    public var didRetrieveAttachments: Bool = false
+    public var isRetrievingAttachments: Bool = false
     private var attachments: [MessageModel.Attachment]
     private var viewContainers : [AttachmentViewContainer]?
     private let mimeTypes = MimeTypeUtils()
@@ -142,29 +145,63 @@ struct EmailViewModel {
     }
 
     public func retrieveAttachments() {
-        if !tuples.isEmpty {
-            delegate?.setAttachments(attchmentsAtIndexPaths: tuples)
+        if isRetrievingAttachments {
+            Log.shared.info("Already getting attachments. Nothing to do.")
+            return
+        }
+        var indexPaths = [IndexPath]()
+        var dataIndex = 0
+        if !didRetrieveAttachments {
+            isRetrievingAttachments = true
+            updateQuickMetaData(message: message) { [weak self] (data) in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                for i in 0..<me.rows.count {
+                    if me.rows[i].type == .attachment {
+                        me.rows[i].firstValue = data[dataIndex].filename
+                        me.rows[i].secondValue = data[dataIndex].´extension´
+                        me.rows[i].image = data[dataIndex].image
+                        dataIndex += 1
+                        let indexPath = IndexPath(row: i, section: 0)
+                        indexPaths.append(indexPath)
+                    }
+                }
+                me.didRetrieveAttachments = true
+                me.delegate?.didSetAttachments(forRowsAt: indexPaths)
+                me.isRetrievingAttachments = false
+            }
         } else {
-            updateQuickMetaData(message: message) { (data) in
-                var indexPaths = [IndexPath]()
-                var tuples = [(Attachment, IndexPath)]()
-                let fromValue = rows.count(where: { $0.type != .attachment })
-                for rowIndex in fromValue..<rows.count {
-                    let indexPath = IndexPath(row: rowIndex, section: 0)
+            for i in 0..<rows.count {
+                if rows[i].type == .attachment {
+                    let indexPath = IndexPath(row: i, section: 0)
                     indexPaths.append(indexPath)
                 }
-                for n in 0..<data.count {
-                    tuples.append((data[n], indexPaths[n]))
-                }
-                delegate?.setAttachments(attchmentsAtIndexPaths: tuples)
             }
+            delegate?.didSetAttachments(forRowsAt: indexPaths)
         }
     }
 
-    public func attachmentData(completion: @escaping ([EmailViewModel.Attachment]?) -> Void) {
-        updateQuickMetaData(message: message) { (data) in
-            completion(data)
+    private func getIndexPathsOfAttachments(with data: [EmailViewModel.Attachment]? = nil) -> [IndexPath] {
+        var indexPaths = [IndexPath]()
+        var dataIndex = 0
+
+        for i in 0..<rows.count {
+            if rows[i].type == .attachment {
+
+                if let data = data {
+                    rows[i].firstValue = data[dataIndex].filename
+                    rows[i].secondValue = data[dataIndex].´extension´
+                    rows[i].image = data[dataIndex].image
+                    dataIndex += 1
+                }
+
+                let indexPath = IndexPath(row: i, section: 0)
+                indexPaths.append(indexPath)
+            }
         }
+        return indexPaths
     }
 
     /// Evaluates the pepRating to provide the body
@@ -172,7 +209,13 @@ struct EmailViewModel {
     /// - Parameter completion: The callback with the body.
     public func body(completion: @escaping (NSMutableAttributedString) -> Void) {
         let finalText = NSMutableAttributedString()
-        message.pEpRating { (rating) in
+        message.pEpRating { [weak self] (rating) in
+            guard let message = self?.message else {
+                let cantDecryptMessage = NSLocalizedString("This message could not be decrypted.",
+                                                           comment: "content that is shown for undecryptable messages")
+                finalText.normal(cantDecryptMessage)
+                return
+            }
             if message.underAttack {
                 let status = String.pEpRatingTranslation(pEpRating: .underAttack)
                 let messageString = String.localizedStringWithFormat(
@@ -216,24 +259,24 @@ struct EmailViewModel {
 
         let attachment = attachments[indexPath.row]
         let defaultFileName = MessageModel.Attachment.defaultFilename
-        attachment.saveToTmpDirectory(defaultFilename: defaultFileName) { (url) in
+        attachment.saveToTmpDirectory(defaultFilename: defaultFileName) { [weak self] (url) in
             guard let url = url else {
                 Log.shared.errorAndCrash("No Local URL")
                 return
             }
-            delegate?.hideLoadingView()
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.delegate?.hideLoadingView()
             if shouldShowClientCertificate(url: url) {
                 let clientCertificate = ClientCertificateImportViewModel(certificateUrl: url)
-                delegate?.showClientCertificateImport(viewModel: clientCertificate)
+                me.delegate?.showClientCertificateImport(viewModel: clientCertificate)
             } else if QLPreviewController.canPreview(url as QLPreviewItem) {
-                delegate?.showQuickLookOfAttachment(qlItem: url as QLPreviewItem)
+                me.delegate?.showQuickLookOfAttachment(qlItem: url as QLPreviewItem)
             } else {
-                delegate?.showDocumentsEditor(url: url)                
+                me.delegate?.showDocumentsEditor(url: url)
             }
-            // If the message have an attachment
-            // Show activity indicator.
-            // Save the attachment temporarily in the directory
-            // Show it to the user
         }
     }
 
@@ -246,12 +289,14 @@ struct EmailViewModel {
     }
 
     /// Attachment inherits from Row
-    public class Row: EmailRowProtocol {
+    public struct Row: EmailRowProtocol {
+
         public private(set) var type: EmailRowType
-        public private(set) var firstValue: String?
-        public private(set) var secondValue: String?
         public private(set) var height: CGFloat = 0.0
         public private(set) var cellIdentifier: String
+        public var firstValue: String?
+        public var secondValue: String?
+        public var image: UIImage?
 
         /// Constructor
         /// - Parameters:
@@ -340,4 +385,3 @@ extension EmailViewModel {
         completion(information)
     }
 }
-

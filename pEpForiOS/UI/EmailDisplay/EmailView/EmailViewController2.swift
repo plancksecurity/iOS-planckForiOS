@@ -99,11 +99,13 @@ extension EmailViewController2: UITableViewDataSource {
         } else if row.type == .subject, let subjectCell = cell as? MessageSubjectCell {
             setup(cell: subjectCell, with: row)
         } else if row.type == .attachment, let attachmentsCell = cell as? MessageAttachmentsCell {
-            attachmentsCell.titleLabel?.text = ""
-            attachmentsCell.nameLabel.text = ""
-            attachmentsCell.iconImageView.image = nil
-            attachmentsCell.extensionLabel.text = ""
-            vm.retrieveAttachments()
+            if vm.didRetrieveAttachments {
+                attachmentsCell.nameLabel.text = row.firstValue ?? ""
+                attachmentsCell.iconImageView.image = row.image
+                attachmentsCell.extensionLabel.text = row.secondValue ?? ""
+            } else {
+                vm.retrieveAttachments()
+            }
         }
         return cell
     }
@@ -138,10 +140,8 @@ extension EmailViewController2: UITableViewDelegate {
             return tableView.estimatedRowHeight
         }
         let row = vm[indexPath.row]
-
-        //MB:- change this.
         if row.type == .attachment {
-            return 150 // CGFloat(vm.numberOfAttachments) * 150.0
+            return row.height
         }
         if row.type == .body, viewModel?.htmlBody != nil {
             return htmlViewerViewController.contentSize.height
@@ -286,19 +286,36 @@ extension EmailViewController2 {
         }
     }
 
-    func setAttachments(attchmentsAtIndexPaths: [(EmailViewModel.Attachment, IndexPath)]) {
-        attchmentsAtIndexPaths.forEach { (attachmentAtIndexPath) in
-            let attachment = attachmentAtIndexPath.0
-            let indexPath = attachmentAtIndexPath.1
+//    func setAttachments(attchmentsAtIndexPaths: [(EmailViewModel.Attachment, IndexPath)]) {
+//        attchmentsAtIndexPaths.forEach { (attachmentAtIndexPath) in
+//            let attachment = attachmentAtIndexPath.0
+//            let indexPath = attachmentAtIndexPath.1
+//            guard let cell = tableView.cellForRow(at: indexPath) as? MessageAttachmentsCell else {
+//                // Valid case. We might have been dismissed already.
+//                return
+//            }
+//            cell.extensionLabel.text = attachment.´extension´
+//            cell.nameLabel.text = attachment.filename
+//            cell.iconImageView.image = attachment.image
+//        }
+//    }
+
+    func didSetAttachments(forRowsAt indexPaths: [IndexPath]) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("Missing vm")
+            return
+        }
+        indexPaths.forEach { (indexPath) in
             guard let cell = tableView.cellForRow(at: indexPath) as? MessageAttachmentsCell else {
                 // Valid case. We might have been dismissed already.
                 return
             }
-            cell.extensionLabel.text = attachment.´extension´
-            cell.nameLabel.text = attachment.filename
-            cell.iconImageView.image = attachment.image
+            let row = vm[indexPath.row]
+            cell.nameLabel.text = row.firstValue
+            cell.extensionLabel.text = row.secondValue
+            cell.iconImageView.image = row.image
         }
-//        tableView.updateSize()
+        vm.didRetrieveAttachments = true
     }
 }
 

@@ -22,9 +22,6 @@ class EmailDetailViewController: UIViewController {
     private var emailSubViewControllers = [EmailViewController]()
     private var emailSubViewControllers2 = [EmailViewController2]()
 
-    //MB:- Remember to change Main.storyboard
-    var v1 = false
-
     /// Stuff that must be done once only in viewWillAppear
     private var doOnce: (()-> Void)?
     private var pdfPreviewUrl: URL?
@@ -355,11 +352,7 @@ extension EmailDetailViewController {
     
     // Removes all EmailViewController that are not connected to a cell any more.
     private func releaseUnusedSubViewControllers() {
-        if v1 {
-            emailSubViewControllers = emailSubViewControllers.filter { $0.view.superview != nil }
-        } else {
-            emailSubViewControllers2 = emailSubViewControllers2.filter { $0.view.superview != nil }
-        }
+        emailSubViewControllers2 = emailSubViewControllers2.filter { $0.view.superview != nil }
     }
 
     private func showSettingsAction() -> UIAlertAction {
@@ -401,7 +394,6 @@ extension EmailDetailViewController {
         UIUtils.showSettings()
     }
 
-    //MB:- V2
     private func setupEmailViewController2(forRowAt indexPath: IndexPath) -> EmailViewController2? {
         guard
             let vm = viewModel,
@@ -418,22 +410,6 @@ extension EmailDetailViewController {
         createe.viewModel = EmailViewModel(message: message, delegate: createe)
         createe.delegate = self
         emailSubViewControllers2.append(createe)
-        return createe
-    }
-
-    //MB:- V1
-    private func setupEmailViewController(forRowAt indexPath: IndexPath) -> EmailViewController? {
-        guard
-            let vm = viewModel,
-            let createe = storyboard?.instantiateViewController(withIdentifier: EmailViewController.storyboardId) as? EmailViewController
-        else {
-            Log.shared.errorAndCrash("No V[M|C]")
-            return nil
-        }
-        createe.message = vm.message(representedByRowAt: indexPath) //!!!: EmailVC should have a VM which should be created in our VM. This VC should not be aware of `Message`s!
-        createe.delegate = self
-        emailSubViewControllers.append(createe)
-
         return createe
     }
 }
@@ -485,26 +461,23 @@ extension EmailDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         releaseUnusedSubViewControllers()
-
+        
         guard
             let cell =
-            collectionView.dequeueReusableCell(withReuseIdentifier: EmailDetailViewController.cellId,
-                                               for: indexPath) as? EmailDetailCollectionViewCell
-            else {
-                Log.shared.errorAndCrash("Error setting up cell")
-                return collectionView.dequeueReusableCell(withReuseIdentifier: EmailDetailViewController.cellId,
-                                                          for: indexPath)
+                collectionView.dequeueReusableCell(withReuseIdentifier: EmailDetailViewController.cellId,
+                                                   for: indexPath) as? EmailDetailCollectionViewCell
+        else {
+            Log.shared.errorAndCrash("Error setting up cell")
+            return collectionView.dequeueReusableCell(withReuseIdentifier: EmailDetailViewController.cellId,
+                                                      for: indexPath)
         }
-
-            var emailViewController: UIViewController?
-            if v1 {
-                emailViewController = setupEmailViewController(forRowAt: indexPath)
-            } else {
-                emailViewController = setupEmailViewController2(forRowAt: indexPath)
-            }
-
+        
+        var emailViewController: UIViewController?
+        emailViewController = setupEmailViewController2(forRowAt: indexPath)
+        
+        
         cell.setContainedView(containedView: emailViewController!.view)
-
+        
         return cell
     }
 }
