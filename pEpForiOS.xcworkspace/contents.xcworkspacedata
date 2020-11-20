@@ -34,7 +34,4 @@
    <FileRef
       location = "group:../CocoaLumberjack/Lumberjack.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:../pEpObjCAdapter/Submodules/pEpObjCAdapterTypesHeaders/pEpObjCAdapterTypesHeaders.xcodeproj">
-   </FileRef>
 </Workspace>
