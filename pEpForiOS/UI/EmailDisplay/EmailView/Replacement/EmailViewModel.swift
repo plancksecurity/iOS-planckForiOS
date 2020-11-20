@@ -37,6 +37,8 @@ enum EmailRowType {
     case sender, cc, bcc, subject, body, attachment
 }
 
+//MB:- split into different RowProtocols as Settings.
+
 /// Protocol that represents the basic data in a row.
 protocol EmailRowProtocol {
     /// The type of the row
@@ -63,20 +65,15 @@ class EmailViewModel {
     // MARK: - Attachments
     public var didRetrieveAttachments: Bool = false
     public var isRetrievingAttachments: Bool = false
+
     private var attachments: [MessageModel.Attachment]
     private var viewContainers : [AttachmentViewContainer]?
-    private let mimeTypes = MimeTypeUtils()
     private var buildOp: AttachmentsViewOperation?
     private let operationQueue: OperationQueue = {
         let createe = OperationQueue()
         createe.qualityOfService = .userInitiated
         return createe
     }()
-
-    /// Indicates if the message has attachments.
-    public var hasAttachments: Bool {
-        return !message.viewableAttachments().isEmpty
-    }
 
     /// Constructor
     /// - Parameter message: The message to display
@@ -95,6 +92,7 @@ class EmailViewModel {
     /// Indicates if the show external content button should be shown.
     public var shouldShowExternalContent: Bool = false
 
+    //MB:- rm doc.
     // var showViewExternalContent = true
     /// Indicates if the html viewer should be shown.
     public var shouldShowHtmlViewer: Bool = true
@@ -144,13 +142,31 @@ class EmailViewModel {
         }
     }
 
+    /// Retrieve the attachments.
+    /// When done -or if they were already retrieved-, the delegate will inform it.
     public func retrieveAttachments() {
+        func getIndexPathsOfAttachments(with data: [EmailViewModel.Attachment]? = nil) -> [IndexPath] {
+            var indexPaths = [IndexPath]()
+            var dataIndex = 0
+            for i in 0..<rows.count {
+                if rows[i].type == .attachment {
+                    if let data = data {
+                        rows[i].firstValue = data[dataIndex].filename
+                        rows[i].secondValue = data[dataIndex].´extension´
+                        rows[i].image = data[dataIndex].image
+                        dataIndex += 1
+                    }
+                    let indexPath = IndexPath(row: i, section: 0)
+                    indexPaths.append(indexPath)
+                }
+            }
+            return indexPaths
+        }
+
         if isRetrievingAttachments {
             Log.shared.info("Already getting attachments. Nothing to do.")
             return
         }
-        var indexPaths = [IndexPath]()
-        var dataIndex = 0
         if !didRetrieveAttachments {
             isRetrievingAttachments = true
             updateQuickMetaData(message: message) { [weak self] (data) in
@@ -158,50 +174,15 @@ class EmailViewModel {
                     Log.shared.errorAndCrash("Lost myself")
                     return
                 }
-                for i in 0..<me.rows.count {
-                    if me.rows[i].type == .attachment {
-                        me.rows[i].firstValue = data[dataIndex].filename
-                        me.rows[i].secondValue = data[dataIndex].´extension´
-                        me.rows[i].image = data[dataIndex].image
-                        dataIndex += 1
-                        let indexPath = IndexPath(row: i, section: 0)
-                        indexPaths.append(indexPath)
-                    }
-                }
+                let indexPaths = getIndexPathsOfAttachments(with: data)
                 me.didRetrieveAttachments = true
                 me.delegate?.didSetAttachments(forRowsAt: indexPaths)
                 me.isRetrievingAttachments = false
             }
         } else {
-            for i in 0..<rows.count {
-                if rows[i].type == .attachment {
-                    let indexPath = IndexPath(row: i, section: 0)
-                    indexPaths.append(indexPath)
-                }
-            }
+            let indexPaths = getIndexPathsOfAttachments()
             delegate?.didSetAttachments(forRowsAt: indexPaths)
         }
-    }
-
-    private func getIndexPathsOfAttachments(with data: [EmailViewModel.Attachment]? = nil) -> [IndexPath] {
-        var indexPaths = [IndexPath]()
-        var dataIndex = 0
-
-        for i in 0..<rows.count {
-            if rows[i].type == .attachment {
-
-                if let data = data {
-                    rows[i].firstValue = data[dataIndex].filename
-                    rows[i].secondValue = data[dataIndex].´extension´
-                    rows[i].image = data[dataIndex].image
-                    dataIndex += 1
-                }
-
-                let indexPath = IndexPath(row: i, section: 0)
-                indexPaths.append(indexPath)
-            }
-        }
-        return indexPaths
     }
 
     /// Evaluates the pepRating to provide the body
@@ -279,9 +260,14 @@ class EmailViewModel {
             }
         }
     }
+}
+
+// MARK: - Models
+
+extension EmailViewModel {
 
     /// Attachment, in the context of EmailViewModel.
-    /// Do not confuse with MMO.
+    /// Do not confuse with MMO's Attachment.
     public struct Attachment {
         var filename: String = ""
         var ´extension´: String? // extension is a keyword, we need quotation marks
@@ -290,7 +276,6 @@ class EmailViewModel {
 
     /// Attachment inherits from Row
     public struct Row: EmailRowProtocol {
-
         public private(set) var type: EmailRowType
         public private(set) var height: CGFloat = 0.0
         public private(set) var cellIdentifier: String
@@ -340,15 +325,18 @@ class EmailViewModel {
                 self.height = 0.0
             case .attachment:
                 self.cellIdentifier = attachmentsCellIdentifier
-                self.height = 0.0
+                self.height = 120.0
             }
         }
     }
 }
 
+// MARK: - Private
+
 extension EmailViewModel {
 
     private func updateQuickMetaData(message: Message, completion: @escaping ([EmailViewModel.Attachment]) -> ()) {
+        let mimeTypes = MimeTypeUtils()
         operationQueue.cancelAllOperations()
         let theBuildOp = AttachmentsViewOperation(mimeTypes: mimeTypes, message: message)
         theBuildOp.completionBlock = {
