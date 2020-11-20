@@ -528,7 +528,7 @@
                                                     <outlet property="valueLabel" destination="ss8-ZR-hIs" id="unJ-cp-w6a"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderSubjectCell" rowHeight="66" id="8OD-rC-L2A" customClass="MessageSubjectCell" customModule="pEpForiOS" customModuleProvider="target">
+                                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderSubjectCell" rowHeight="66" id="8OD-rC-L2A" userLabel="subjectCell" customClass="MessageSubjectCell" customModule="pEpForiOS" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="143.5" width="375" height="66"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8OD-rC-L2A" id="ptr-fn-rqR">
@@ -575,7 +575,7 @@
                                                     <outlet property="valueLabel" destination="Ozt-zL-XpS" id="GMI-0R-H2l"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderBodyCell" rowHeight="200" id="uge-ck-ZyH" customClass="MessageContentCell" customModule="pEpForiOS" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderBodyCell" rowHeight="200" id="uge-ck-ZyH" userLabel="bodyCell" customClass="MessageContentCell" customModule="pEpForiOS" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="209.5" width="375" height="200"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uge-ck-ZyH" id="IpQ-09-lGk">
@@ -609,7 +609,7 @@
                                                     <outlet property="contentText" destination="I5j-7y-WhQ" id="Xc8-dK-tM2"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="attachmentsCell" rowHeight="100" id="Cj2-v8-Ej7" customClass="MessageAttachmentsCell" customModule="pEpForiOS" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="attachmentsCell" rowHeight="100" id="Cj2-v8-Ej7" userLabel="attachmentCell" customClass="MessageAttachmentCell" customModule="pEpForiOS" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="409.5" width="375" height="100"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Cj2-v8-Ej7" id="Djh-XY-Ttc">

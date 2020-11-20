@@ -31,12 +31,9 @@ protocol EmailViewModelDelegate: class {
     func didSetAttachments(forRowsAt indexPaths: [IndexPath])
 }
 
-enum EmailRowType {
-    //Sender includes 'from' and 'to'
+enum EmailRowType: String {
     case sender, subject, body, attachment
 }
-
-//MB:- split into different RowProtocols as Settings.
 
 /// Protocol that represents the basic data in a row.
 protocol EmailRowProtocol {
@@ -44,8 +41,6 @@ protocol EmailRowProtocol {
     var type: EmailRowType { get }
     /// The first value of the row.
     var firstValue: String? { get set }
-    /// Returns the cell identifier
-    var cellIdentifier: String { get }
     /// The second value of the row
     var secondValue: String? { get set }
     /// The height of the row
@@ -55,9 +50,11 @@ protocol EmailRowProtocol {
 }
 
 class EmailViewModel {
+
     /// Delegate to comunicate with Email View.
     public weak var delegate: EmailViewModelDelegate?
 
+    private var data: [Attachment]?
     private var rows: [EmailRowProtocol]
     private var message: Message
 
@@ -141,21 +138,38 @@ class EmailViewModel {
         }
     }
 
+    /// - Parameter indexPath: indexPath of the Cell.
+    public func cellIdentifier(for indexPath: IndexPath) -> String {
+        let row = rows[indexPath.row]
+        switch row.type {
+        case .sender:
+            return "senderCell"
+        case .subject:
+            return "senderSubjectCell"
+        case .body:
+            return "senderBodyCell"
+        case .attachment:
+            return "attachmentsCell"
+        }
+    }
+
     /// Retrieve the attachments.
     /// When done -or if they were already retrieved-, the delegate will inform it.
     public func retrieveAttachments() {
-        func getIndexPathsOfAttachments(with data: [EmailViewModel.Attachment]? = nil) -> [IndexPath] {
+
+        /// Retrieves the IndexPaths of the rows with attachments.
+        /// - Parameter attachments: The attachments
+        /// - Returns: The indexPaths of the attachments
+        func getIndexPathsOfRows(with attachments: [EmailViewModel.Attachment]) -> [IndexPath] {
             var indexPaths = [IndexPath]()
             var dataIndex = 0
-            for i in 0..<rows.count {
-                if rows[i].type == .attachment {
-                    if let data = data {
-                        rows[i].firstValue = data[dataIndex].filename
-                        rows[i].secondValue = data[dataIndex].´extension´
-                        rows[i].image = data[dataIndex].image
-                        dataIndex += 1
-                    }
-                    let indexPath = IndexPath(row: i, section: 0)
+            for index in 0..<rows.count {
+                if rows[index].type == .attachment {
+                    rows[index].firstValue = attachments[dataIndex].filename
+                    rows[index].secondValue = attachments[dataIndex].´extension´
+                    rows[index].image = attachments[dataIndex].image
+                    dataIndex += 1
+                    let indexPath = IndexPath(row: index, section: 0)
                     indexPaths.append(indexPath)
                 }
             }
@@ -168,19 +182,24 @@ class EmailViewModel {
         }
         if !didRetrieveAttachments {
             isRetrievingAttachments = true
-            updateQuickMetaData(message: message) { [weak self] (data) in
+            updateQuickMetaData(message: message) { [weak self] (retrievedAttachments) in
                 guard let me = self else {
                     Log.shared.errorAndCrash("Lost myself")
                     return
                 }
-                let indexPaths = getIndexPathsOfAttachments(with: data)
+                me.data = retrievedAttachments
+                let indexPaths = getIndexPathsOfRows(with: retrievedAttachments)
                 me.didRetrieveAttachments = true
-                me.delegate?.didSetAttachments(forRowsAt: indexPaths)
+                DispatchQueue.main.async {
+                    me.delegate?.didSetAttachments(forRowsAt: indexPaths)
+                }
                 me.isRetrievingAttachments = false
             }
-        } else {
-            let indexPaths = getIndexPathsOfAttachments()
-            delegate?.didSetAttachments(forRowsAt: indexPaths)
+        } else if let retrievedAttachments = data {
+            let indexPaths = getIndexPathsOfRows(with: retrievedAttachments)
+            DispatchQueue.main.async {
+                self.delegate?.didSetAttachments(forRowsAt: indexPaths)
+            }
         }
     }
 
@@ -232,12 +251,13 @@ class EmailViewModel {
         }
 
         delegate?.showLoadingView()
-        guard attachments.count > indexPath.row else {
+        guard rows.count > indexPath.row else {
             Log.shared.errorAndCrash("attachments Out of bounds")
             return
         }
 
-        let attachment = attachments[indexPath.row]
+        let index = indexPath.row - rows.count(where: {$0.type != .attachment})
+        let attachment = attachments[index]
         let defaultFileName = MessageModel.Attachment.defaultFilename
         attachment.saveToTmpDirectory(defaultFilename: defaultFileName) { [weak self] (url) in
             guard let url = url else {
@@ -248,14 +268,16 @@ class EmailViewModel {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            me.delegate?.hideLoadingView()
-            if shouldShowClientCertificate(url: url) {
-                let clientCertificate = ClientCertificateImportViewModel(certificateUrl: url)
-                me.delegate?.showClientCertificateImport(viewModel: clientCertificate)
-            } else if QLPreviewController.canPreview(url as QLPreviewItem) {
-                me.delegate?.showQuickLookOfAttachment(qlItem: url as QLPreviewItem)
-            } else {
-                me.delegate?.showDocumentsEditor(url: url)
+            DispatchQueue.main.async {
+                me.delegate?.hideLoadingView()
+                if shouldShowClientCertificate(url: url) {
+                    let clientCertificate = ClientCertificateImportViewModel(certificateUrl: url)
+                    me.delegate?.showClientCertificateImport(viewModel: clientCertificate)
+                } else if QLPreviewController.canPreview(url as QLPreviewItem) {
+                    me.delegate?.showQuickLookOfAttachment(qlItem: url as QLPreviewItem)
+                } else {
+                    me.delegate?.showDocumentsEditor(url: url)
+                }
             }
         }
     }
@@ -277,7 +299,6 @@ extension EmailViewModel {
     public struct Row: EmailRowProtocol {
         public private(set) var type: EmailRowType
         public private(set) var height: CGFloat = 0.0
-        public private(set) var cellIdentifier: String
         public var firstValue: String?
         public var secondValue: String?
         public var image: UIImage?
@@ -287,14 +308,9 @@ extension EmailViewModel {
         ///   - type: The type of the row
         ///   - message: The message to setup the row
         init(type: EmailRowType, message: Message) {
-            let recipientCellIdentifier = "senderCell"
-            let subjectCellIdentifier = "senderSubjectCell"
-            let attachmentsCellIdentifier = "attachmentsCell"
-            let senderBodyCellIdentifier = "senderBodyCell"
             self.type = type
             switch type {
             case .sender:
-                self.cellIdentifier = recipientCellIdentifier
                 self.firstValue = message.from?.displayString
                 var temp: [String] = []
                 message.allRecipients.forEach { (recepient) in
@@ -309,15 +325,9 @@ extension EmailViewModel {
                 if let originationDate = message.sent {
                     self.secondValue = (originationDate as Date).fullString()
                 }
-                self.cellIdentifier = subjectCellIdentifier
-                // MB:- Set height or remove
-                self.height = 0.0
             case .body:
-                self.cellIdentifier = senderBodyCellIdentifier
-                // MB:- Set height or remove
-                self.height = 0.0
+                Log.shared.info("Nothing to do here.")
             case .attachment:
-                self.cellIdentifier = attachmentsCellIdentifier
                 self.height = 120.0
             }
         }

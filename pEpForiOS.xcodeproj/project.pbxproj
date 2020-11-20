@@ -227,7 +227,7 @@
 		431C2B191F38888B00D87FFD /* ConnectionTransport+AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431C2B181F38888B00D87FFD /* ConnectionTransport+AccountSettings.swift */; };
 		431C6E041FE7A85200E23BE0 /* OAuth2ConfigurationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431C6E031FE7A85200E23BE0 /* OAuth2ConfigurationProtocol.swift */; };
 		431D60DB1E93BB2D001266D7 /* AttachmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431D60DA1E93BB2D001266D7 /* AttachmentsView.swift */; };
-		431D60DD1E93D580001266D7 /* MessageAttachmentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431D60DC1E93D580001266D7 /* MessageAttachmentsCell.swift */; };
+		431D60DD1E93D580001266D7 /* MessageAttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431D60DC1E93D580001266D7 /* MessageAttachmentCell.swift */; };
 		431E68B3246C267A00B3A977 /* KeyImportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E68B2246C267A00B3A977 /* KeyImportViewModel.swift */; };
 		4320294C252C8E4E00986C44 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4320294B252C8E4E00986C44 /* CocoaLumberjack.framework */; };
 		4320294D252C8E4E00986C44 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4320294B252C8E4E00986C44 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -761,7 +761,7 @@
 		431C2B181F38888B00D87FFD /* ConnectionTransport+AccountSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ConnectionTransport+AccountSettings.swift"; sourceTree = "<group>"; };
 		431C6E031FE7A85200E23BE0 /* OAuth2ConfigurationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2ConfigurationProtocol.swift; sourceTree = "<group>"; };
 		431D60DA1E93BB2D001266D7 /* AttachmentsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsView.swift; sourceTree = "<group>"; };
-		431D60DC1E93D580001266D7 /* MessageAttachmentsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageAttachmentsCell.swift; sourceTree = "<group>"; };
+		431D60DC1E93D580001266D7 /* MessageAttachmentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageAttachmentCell.swift; sourceTree = "<group>"; };
 		431E68B2246C267A00B3A977 /* KeyImportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportViewModel.swift; sourceTree = "<group>"; };
 		4320294B252C8E4E00986C44 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43236E642459891B00D8318D /* OAuth2Type+VerifiableAccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OAuth2Type+VerifiableAccountType.swift"; sourceTree = "<group>"; };
@@ -2585,7 +2585,7 @@
 				220DCE2C1E0AB544002FE716 /* MessageCell.swift */,
 				220DCE321E0AB5CC002FE716 /* MessageSenderCell.swift */,
 				220DCE331E0AB5CC002FE716 /* MessageSubjectCell.swift */,
-				431D60DC1E93D580001266D7 /* MessageAttachmentsCell.swift */,
+				431D60DC1E93D580001266D7 /* MessageAttachmentCell.swift */,
 			);
 			path = CellAndSections;
 			sourceTree = "<group>";
@@ -3082,7 +3082,7 @@
 				43B7154D1CECAADA0027861A /* ViewWidthsAligner.swift in Sources */,
 				1521B78F241BDC27000EAE57 /* UIUtils+KeySyncWizard.swift in Sources */,
 				002375D620DD185100663961 /* TreadedEmailViewModel+DisplayedMessage.swift in Sources */,
-				431D60DD1E93D580001266D7 /* MessageAttachmentsCell.swift in Sources */,
+				431D60DD1E93D580001266D7 /* MessageAttachmentCell.swift in Sources */,
 				00AEB2F620DBA7DA00DA185A /* NeedsRefreshDelegate.swift in Sources */,
 				1526597821623637006A78DF /* SuggestTableViewController.swift in Sources */,
 				1554755F2137F6F8005A52D0 /* SwipeActionDescriptor.swift in Sources */,

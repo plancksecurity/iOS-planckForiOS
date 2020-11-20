@@ -88,28 +88,55 @@ extension EmailViewController2: UITableViewDataSource {
             Log.shared.errorAndCrash("VM not found")
             return UITableViewCell()
         }
+        let cellId = vm.cellIdentifier(for: indexPath)
         let row = vm[indexPath.row]
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier, for: indexPath) as? MessageCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? MessageCell else {
             return UITableViewCell()
         }
-        if let contentCell = cell as? MessageContentCell {
-            setup(cell: contentCell, with: vm)
-        } else if row.type == .sender, let senderCell = cell as? MessageSenderCell {
-            setup(cell: senderCell, with: row)
-        } else if row.type == .subject, let subjectCell = cell as? MessageSubjectCell {
-            setup(cell: subjectCell, with: row)
-        } else if row.type == .attachment, let attachmentsCell = cell as? MessageAttachmentsCell {
-            if vm.didRetrieveAttachments {
-                attachmentsCell.nameLabel.text = row.firstValue ?? ""
-                attachmentsCell.iconImageView.image = row.image
-                attachmentsCell.extensionLabel.text = row.secondValue ?? ""
-            } else {
-                vm.retrieveAttachments()
+        switch row.type {
+        case .sender:
+            guard let dequeued = cell as? MessageSenderCell else {
+                Log.shared.errorAndCrash("Invalid state.")
+                return UITableViewCell()
             }
+            setup(cell: dequeued, with: row)
+            return dequeued
+        case .subject:
+            guard let dequeued = cell as? MessageSubjectCell else {
+                Log.shared.errorAndCrash("Invalid state.")
+                return UITableViewCell()
+            }
+            setup(cell: dequeued, with: row)
+            return dequeued
+        case .body:
+            guard let dequeued = cell as? MessageContentCell else {
+                Log.shared.errorAndCrash("Invalid state.")
+                return UITableViewCell()
+            }
+            setup(cell: dequeued, with: vm)
+            return dequeued
+        case .attachment:
+            guard let dequeued = cell as? MessageAttachmentCell else {
+                Log.shared.errorAndCrash("Invalid state.")
+                return UITableViewCell()
+            }
+            setup(cell: dequeued, with: row)
+            return dequeued
         }
-        return cell
     }
 
+    private func isLastRow(indexPath: IndexPath) -> Bool {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return false
+        }
+        return indexPath.row == vm.numberOfRows - 1
+    }
+}
+
+//MARK: - UITableViewDelegate
+
+extension EmailViewController2: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if isLastRow(indexPath: indexPath) {
             guard let vm = viewModel else {
@@ -119,20 +146,6 @@ extension EmailViewController2: UITableViewDataSource {
             vm.retrieveAttachments()
         }
     }
-
-    private func isLastRow(indexPath: IndexPath) -> Bool {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return false
-        }
-
-        return indexPath.row == vm.numberOfRows - 1
-    }
-}
-
-//MARK: - UITableViewDelegate
-
-extension EmailViewController2: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let vm = viewModel else {
@@ -147,6 +160,17 @@ extension EmailViewController2: UITableViewDelegate {
             return htmlViewerViewController.contentSize.height
         } else {
             return tableView.rowHeight
+        }
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("Missing vm")
+            return
+        }
+        let row = vm[indexPath.row]
+        if row.type == .attachment {
+            vm.handleDidTapAttachment(at: indexPath)
         }
     }
 }
@@ -182,7 +206,7 @@ extension EmailViewController2: EmailViewModelDelegate {
     }
 
     func showDocumentsEditor(url: URL) {
-        //TODO: test this on iPad
+        //MB:- test this on iPad
         documentInteractionController.url = url
         let dim: CGFloat = 40
         let rect = CGRect.rectAround(center: view.center, width: dim, height: dim)
@@ -213,8 +237,22 @@ extension EmailViewController2: EmailViewModelDelegate {
         view.stopDisplayingAsBusy(viewBusyState: busyState)
     }
 
-    func setAttachments(data: [EmailViewModel.Attachment]) {
-        print(data)
+    func didSetAttachments(forRowsAt indexPaths: [IndexPath]) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("Missing vm")
+            return
+        }
+        indexPaths.forEach { (indexPath) in
+            guard let cell = tableView.cellForRow(at: indexPath) as? MessageAttachmentCell else {
+                // Valid case. We might have been dismissed already.
+                return
+            }
+            let row = vm[indexPath.row]
+            cell.nameLabel.text = row.firstValue
+            cell.extensionLabel.text = row.secondValue
+            cell.iconImageView.image = row.image
+        }
+        vm.didRetrieveAttachments = true
     }
 }
 
@@ -276,7 +314,7 @@ extension EmailViewController2 {
     private func setup(cell: MessageSubjectCell, with row: EmailRowProtocol) {
         cell.titleLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
         cell.titleLabel?.text = row.firstValue
-        if let value =  row.secondValue {
+        if let value = row.secondValue {
             cell.valueLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
             cell.valueLabel?.text = value
             cell.valueLabel?.isHidden = false
@@ -286,36 +324,9 @@ extension EmailViewController2 {
         }
     }
 
-//    func setAttachments(attchmentsAtIndexPaths: [(EmailViewModel.Attachment, IndexPath)]) {
-//        attchmentsAtIndexPaths.forEach { (attachmentAtIndexPath) in
-//            let attachment = attachmentAtIndexPath.0
-//            let indexPath = attachmentAtIndexPath.1
-//            guard let cell = tableView.cellForRow(at: indexPath) as? MessageAttachmentsCell else {
-//                // Valid case. We might have been dismissed already.
-//                return
-//            }
-//            cell.extensionLabel.text = attachment.´extension´
-//            cell.nameLabel.text = attachment.filename
-//            cell.iconImageView.image = attachment.image
-//        }
-//    }
-
-    func didSetAttachments(forRowsAt indexPaths: [IndexPath]) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("Missing vm")
-            return
-        }
-        indexPaths.forEach { (indexPath) in
-            guard let cell = tableView.cellForRow(at: indexPath) as? MessageAttachmentsCell else {
-                // Valid case. We might have been dismissed already.
-                return
-            }
-            let row = vm[indexPath.row]
-            cell.nameLabel.text = row.firstValue
-            cell.extensionLabel.text = row.secondValue
-            cell.iconImageView.image = row.image
-        }
-        vm.didRetrieveAttachments = true
+    private func setup(cell: MessageAttachmentCell, with row: EmailRowProtocol) {
+        cell.nameLabel.text = row.firstValue ?? ""
+        cell.iconImageView.image = row.image ?? nil
+        cell.extensionLabel.text = row.secondValue ?? ""
     }
 }
-
