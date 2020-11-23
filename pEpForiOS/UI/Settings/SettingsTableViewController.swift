@@ -247,6 +247,7 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
 
                 me.showAlertBeforeDelete(indexPath: indexPath, action: action)
             }
+            deleteAction.hidesWhenSelected = true
             return (orientation == .right ? [deleteAction] : nil)
         }
         return nil
