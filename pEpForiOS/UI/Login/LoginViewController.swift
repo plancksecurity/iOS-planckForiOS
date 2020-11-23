@@ -69,7 +69,7 @@ final class LoginViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setManualSetupButtonHidden(manualConfigButton.isHidden)
-        syncStackView.axis = UIDevice.isSmall && isLandscape ? .vertical : .horizontal
+        syncStackView.axis = UIDevice.isSmall && UIDevice.isLandscape ? .vertical : .horizontal
         syncStackView.superview?.layoutIfNeeded()
     }
     

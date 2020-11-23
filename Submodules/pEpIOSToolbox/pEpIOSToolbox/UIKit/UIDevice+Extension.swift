@@ -233,3 +233,26 @@ public extension UIDevice {
         return Model.unrecognized
     }
 }
+
+public extension UIDevice {
+
+    /// Indicates if the device is an iPad
+    static var isIpad : Bool {
+        return UIDevice.current.userInterfaceIdiom == .pad
+    }
+
+    /// Indicates if the device is an iPhone
+    static var isIphone : Bool {
+        return UIDevice.current.userInterfaceIdiom == .phone
+    }
+
+    /// Indicates if the device is in Landscape
+    static var isLandscape: Bool {
+        return UIDevice.current.orientation.isLandscape
+    }
+
+    /// Indicates if the device is in Portrait
+    static var isPortrait: Bool {
+        return UIDevice.current.orientation.isPortrait
+    }
+}
