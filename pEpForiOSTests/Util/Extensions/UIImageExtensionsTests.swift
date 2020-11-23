@@ -7,8 +7,8 @@
 //
 
 import XCTest
-import pEpIOSToolbox
 
+import pEpIOSToolbox
 @testable import pEpForiOS
 
 class UIImageExtensionsTests: XCTestCase {
@@ -47,7 +47,8 @@ class UIImageExtensionsTests: XCTestCase {
 extension UIImageExtensionsTests {
     private func getAnimatedLargeGifData() -> Data {
         let imageFileName = "large-animated-gif.gif"
-        guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
+        guard let imageData = MiscUtil.loadData(bundleClass: UIImageExtensionsTests.self,
+                                                fileName: imageFileName) else {
             XCTFail("imageData is nil!")
             return Data()
         }
@@ -55,7 +56,8 @@ extension UIImageExtensionsTests {
     }
     private func getAnimatedSmallGifData() -> Data {
         let imageFileName = "small-animated-gif.gif"
-        guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
+        guard let imageData = MiscUtil.loadData(bundleClass: UIImageExtensionsTests.self,
+                                                fileName: imageFileName) else {
             XCTFail("imageData is nil!")
             return Data()
         }
@@ -63,7 +65,8 @@ extension UIImageExtensionsTests {
     }
     private func getStandardGifData() -> Data {
         let imageFileName = "icon_001.gif"
-        guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
+        guard let imageData = MiscUtil.loadData(bundleClass: UIImageExtensionsTests.self,
+                                                fileName: imageFileName) else {
             XCTFail("imageData is nil!")
             return Data()
         }

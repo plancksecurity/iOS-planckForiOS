@@ -25,7 +25,7 @@ class MergeConflictTests: PersistentStoreDrivenTestBase {
         super.setUp()
         backgroundMOC = Stack.shared.newPrivateConcurrentContext
 
-        let messageBuilder = Message.fakeMessage(uuid: msgUUID, uid: 0)
+        let messageBuilder = Message.createTestMessage(uuid: msgUUID, uid: 0)
         messageBuilder.imapFlags.seen = true
         cdMsg = messageBuilder.cdObject
         cdAccount = messageBuilder.parent.account.cdObject
@@ -33,7 +33,7 @@ class MergeConflictTests: PersistentStoreDrivenTestBase {
         cdMsg.uid = Int32(msgUID)
         cdMsg.uuid = msgUUID
 
-        messageBuilder.save()
+        messageBuilder.session.commit()
     }
 
     func testPotentialMergeConflict() {

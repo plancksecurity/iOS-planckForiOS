@@ -77,15 +77,16 @@ extension ImapConnection {
 class ImapConnection: ImapConnectionProtocol {
     static let defaultInboxName = "INBOX"
 
-    var maxFetchCount: UInt = 50
-
     private var imapStore: CWIMAPStore
-
     private let connectInfo: EmailConnectInfo
-
     private var state = State()
-
     private let fallBackAuthMethod = AuthMethod.simple
+    /// The access token, if authMethod is .saslXoauth2.
+    /// - Note: Must be calculated once and stored, because its creation can lead to a login,
+    ///   which may lead to multiple ones if calculated each time it's used.
+    private let accessToken: OAuth2AccessTokenProtocol?
+
+    var maxFetchCount: UInt = 50
 
     weak var delegate: ImapConnectionDelegate? {
         didSet {
@@ -99,10 +100,9 @@ class ImapConnection: ImapConnectionProtocol {
         return connectInfo.clientCertificate != nil
     }
 
-    /// The access token, if authMethod is .saslXoauth2.
-    /// - Note: Must be calculated once and stored, because its creation can lead to a login,
-    ///   which may lead to multiple ones if calculated each time it's used.
-    private let accessToken: OAuth2AccessTokenProtocol?
+    var supportsIdle: Bool {
+        return imapStore.capabilities().contains("IDLE") || imapStore.capabilities().contains("idle")
+    }
 
     init(connectInfo: EmailConnectInfo) {
         self.connectInfo = connectInfo
@@ -214,7 +214,7 @@ class ImapConnection: ImapConnectionProtocol {
 
     // MARK: - FOLDERS
 
-    func createFolderWithName(_ folderName: String) {
+    func createFolderNamed(_ folderName: String) {
         // The only relevant parameter here is folderName, all others are
         // ignored by pantomime.
         imapStore.createFolder(withName: folderName, type: PantomimeFormatFolder,
@@ -232,7 +232,7 @@ class ImapConnection: ImapConnectionProtocol {
             state.currentFolder == nil {
             return
         }
-        imapStore.send(IMAP_IDLE, info: nil, string: "IDLE")
+        imapStore.sendIdle()
     }
 
     func exitIdle() {

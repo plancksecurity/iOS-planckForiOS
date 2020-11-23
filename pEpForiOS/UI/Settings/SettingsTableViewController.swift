@@ -10,7 +10,7 @@ import UIKit
 import SwipeCellKit
 import pEpIOSToolbox
 
-final class SettingsTableViewController: BaseTableViewController {
+final class SettingsTableViewController: UITableViewController {
 
     static let storyboardId = "SettingsTableViewController"
     private weak var activityIndicatorView: UIActivityIndicatorView?
@@ -22,11 +22,14 @@ final class SettingsTableViewController: BaseTableViewController {
         setUp()
         viewModel.delegate = self
         UIHelper.variableCellHeightsTableView(tableView)
+        UIHelper.variableSectionHeadersHeightTableView(tableView)
         addExtraKeysEditabilityToggleGesture()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.title = title
+        tableView.hideSeperatorForEmptyCells()
         navigationController?.setToolbarHidden(true, animated: false)
         showEmptyDetailViewIfApplicable(message: NSLocalizedString("Please choose a setting",
                                                                    comment: "No setting has been selected yet in the settings VC"))
@@ -68,9 +71,10 @@ extension SettingsTableViewController {
             Log.shared.errorAndCrash("Invalid state.")
             return SwipeTableViewCell()
         }
-        cell.backgroundColor = UIColor.pEpCellBackground
         cell.textLabel?.text = row.title
         cell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
+        cell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        cell.backgroundColor = UIColor.pEpCellBackground
         cell.detailTextLabel?.text = nil
         cell.delegate = self
         return cell
@@ -83,8 +87,10 @@ extension SettingsTableViewController {
     private func prepareActionCell(_ dequeuedCell: UITableViewCell, for row: SettingsRowProtocol) -> UITableViewCell {
         dequeuedCell.backgroundColor = UIColor.pEpCellBackground
         dequeuedCell.textLabel?.text = row.title
+        dequeuedCell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
         dequeuedCell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
         dequeuedCell.detailTextLabel?.text = nil
+        Appearance.configureSelectedBackgroundViewForPep(tableViewCell: dequeuedCell)
         return dequeuedCell
     }
 
@@ -98,8 +104,8 @@ extension SettingsTableViewController {
             Log.shared.errorAndCrash("Invalid state.")
             return SettingSwitchTableViewCell()
         }
-        cell.backgroundColor = UIColor.pEpCellBackground
         cell.switchDescription.text = row.title
+        cell.switchDescription.font = UIFont.pepFont(style: .body, weight: .regular)
         cell.switchDescription.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
         cell.delegate = self
         cell.selectionStyle = .none
@@ -112,9 +118,11 @@ extension SettingsTableViewController {
     ///   - tableView: The table view to dequeue the cell
     ///   - indexPath: The indexPath to identify the cell. 55
     private func dequeueCell(for tableView: UITableView, for indexPath: IndexPath) -> UITableViewCell {
+
         let cellId = viewModel.cellIdentifier(for: indexPath)
         let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         dequeuedCell.backgroundColor = UIColor.pEpCellBackground
+        Appearance.configureSelectedBackgroundViewForPep(tableViewCell: dequeuedCell)
         let row : SettingsRowProtocol = viewModel.section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
         case .account:
@@ -126,14 +134,18 @@ extension SettingsTableViewController {
              .pgpKeyImport,
              .credits,
              .trustedServer,
-             .extraKeys:
+             .extraKeys,
+             .tutorial:
             guard let row = row as? SettingsViewModel.NavigationRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
             }
             dequeuedCell.textLabel?.text = row.title
             dequeuedCell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
+            dequeuedCell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+
             dequeuedCell.detailTextLabel?.text = row.subtitle
+            dequeuedCell.detailTextLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
             return dequeuedCell
         case .passiveMode,
              .protectMessageSubject,
@@ -200,7 +212,7 @@ extension SettingsTableViewController {
         headerView.title = viewModel.section(for: section).title.uppercased()
         return headerView
     }
-
+    
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return viewModel.section(for: section).footer
     }
@@ -243,6 +255,10 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let row = viewModel.section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
+        case .tutorial:
+            TutorialWizardViewController.presentTutorialWizard(viewController: self)
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
         case .account,
              .extraKeys,
              .resetTrust,
@@ -316,9 +332,9 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
 
 extension SettingsTableViewController {
 
-    /// Identifier of the segues.
+     /// Identifier of the segues.
     enum SegueIdentifier: String {
-        case segueAddNewAccount
+        case segueAddNewAccount //???: how can you add a new account in setting? Please check if obsolete and remove if so.
         case segueEditAccount
         case segueShowSettingDefaultAccount
         case sequeShowCredits
@@ -326,12 +342,13 @@ extension SettingsTableViewController {
         case segueExtraKeys
         case seguePgpKeyImport
         case noAccounts
-        case ResetTrust
+        case resetTrust
+        case tutorial
         /// Use for cells that do not segue, like switch cells
         case none
     }
 
-    private func sequeIdentifier(forRowWithIdentifier identifier: SettingsViewModel.Row) -> SegueIdentifier {
+    private func sequeIdentifier(forRowWithIdentifier identifier: SettingsViewModel.RowIdentifier) -> SegueIdentifier {
         switch identifier {
         case .account:
             return .segueEditAccount
@@ -344,9 +361,11 @@ extension SettingsTableViewController {
         case .pgpKeyImport:
             return .seguePgpKeyImport
         case .resetTrust:
-            return .ResetTrust
+            return .resetTrust
         case .extraKeys:
             return .segueExtraKeys
+        case .tutorial:
+            return .tutorial
         case .passiveMode, .usePEPFolder, .pEpSync, .unsecureReplyWarningEnabled, .protectMessageSubject, .resetAccounts:
             return .none
         }
@@ -364,35 +383,35 @@ extension SettingsTableViewController {
 
         switch segueIdentifyer {
         case .segueEditAccount:
-            guard
-                let destination = segue.destination as? AccountSettingsTableViewController,
-                let indexPath = sender as? IndexPath
-                else {
-                    Log.shared.errorAndCrash("Requirements not met.")
+            guard let destination = segue.destination as? AccountSettingsViewController,
+                let indexPath = sender as? IndexPath,
+                let account = viewModel.account(at: indexPath) else {
+                    Log.shared.error("SegueIdentifier: segueEditAccount - Early quit! Requirements not met.")
                     return
             }
-            destination.appConfig = appConfig
-            destination.viewModel = viewModel.accountSettingsViewModel(forAccountAt: indexPath)
+            destination.viewModel = AccountSettingsViewModel(account: account)
+
         case .segueShowSettingDefaultAccount,
-             .segueShowSettingTrustedServers:
-            guard let destination = segue.destination as? BaseTableViewController else { return }
-            destination.appConfig = self.appConfig
-        case .noAccounts,
+             .noAccounts,
              .segueAddNewAccount,
              .sequeShowCredits,
-             .ResetTrust,
-             .segueExtraKeys:
-            guard let destination = segue.destination as? BaseViewController else { return }
-            destination.appConfig = self.appConfig
+             .resetTrust,
+             .segueExtraKeys,
+             .segueShowSettingTrustedServers,
+             .tutorial:
+            // Nothing to prepare for those seques
+            // We do not use ´default´ in switch because it is less error prone.
+            // So if the destination vc doesn't need anything we just let it in this case.
+            break
         case .seguePgpKeyImport:
             guard let destination = segue.destination as? PGPKeyImportSettingViewController else {
                 Log.shared.errorAndCrash("No DVC")
                 return
             }
-            destination.appConfig = appConfig
             destination.viewModel = viewModel.pgpKeyImportSettingViewModel()
         case .none:
-            // It's all rows that never segue anywhere (e.g. SwitchRow).
+            // It's all rows that never segue anywhere (e.g. SwitchRow). Thus this should never be called.
+            Log.shared.errorAndCrash("Must not be called (prepares for segue for rows that are not supposed to segue anywhere).")
             break
         }
     }
@@ -466,7 +485,7 @@ extension SettingsTableViewController: SwitchCellDelegate {
             return
         }
 
-        if row.identifier == SettingsViewModel.Row.pEpSync {
+        if row.identifier == SettingsViewModel.RowIdentifier.pEpSync {
             if viewModel.isGrouped() {
                 guard let alertToShow = showpEpSyncLeaveGroupAlert(action: row.action,
                                                                    newValue: newValue) else {

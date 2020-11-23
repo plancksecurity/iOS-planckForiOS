@@ -12,6 +12,7 @@ import CoreData
 import PantomimeFramework
 import PEPObjCAdapterFramework
 @testable import MessageModel
+import pEpIOSToolbox
 
 class UseFirstHTMLPartAsBodyTest: PersistentStoreDrivenTestBase {
     let onlyContainedInBody = "This is a real HTML mail"
@@ -90,16 +91,7 @@ extension UseFirstHTMLPartAsBodyTest {
 
 extension UseFirstHTMLPartAsBodyTest {
     static func loadData(fileName: String) -> Data? {
-        let testBundle = Bundle(for: UseFirstHTMLPartAsBodyTest.self)
-        guard let keyPath = testBundle.path(forResource: fileName, ofType: nil) else {
-            XCTFail("Could not find file named \(fileName)")
-            return nil
-        }
-        guard let data = try? Data(contentsOf: URL(fileURLWithPath: keyPath)) else {
-            XCTFail("Could not load file named \(fileName)")
-            return nil
-        }
-        return data
+        return MiscUtil.loadData(bundleClass: self, fileName: fileName)
     }
 
     static func loadString(fileName: String) -> String? {

@@ -152,7 +152,7 @@ extension ComposeViewModel {
         }
 
         public func validate() {
-            calculatePepRating()
+            updatePepRating()
             validateForSending()
         }
 
@@ -207,7 +207,30 @@ extension ComposeViewModel.ComposeViewModelState {
         return bccRecipients.count > 0
     }
 
-    private func calculatePepRating() {
+//    private func calculatePepRating(from: Identity, //BUFF: unused
+//                                    to: [Identity],
+//                                    cc: [Identity],
+//                                    bcc: [Identity]) -> PEPRating {
+//
+//        guard !isForceUnprotectedDueToBccSet else {
+//            return .unencrypted
+//        }
+//
+//        let session = Session.main
+//        let safeFrom = from.safeForSession(session)
+//        let safeTo = Identity.makeSafe(to, forSession: session)
+//        let safeCc = Identity.makeSafe(cc, forSession: session)
+//        let safeBcc = Identity.makeSafe(bcc, forSession: session)
+//        let pEpsession = PEPSession()
+//        let rating = pEpsession.outgoingMessageRating(from: safeFrom,
+//                                                      to: safeTo,
+//                                                      cc: safeCc,
+//                                                      bcc: safeBcc)
+//
+//        return rating
+//    }
+
+    private func updatePepRating() {
         guard !isForceUnprotectedDueToBccSet else {
             rating = .unencrypted
             return
@@ -236,6 +259,8 @@ extension ComposeViewModel.ComposeViewModelState {
             }
         }
     }
+
+
 }
 
 // MARK: - Handshake

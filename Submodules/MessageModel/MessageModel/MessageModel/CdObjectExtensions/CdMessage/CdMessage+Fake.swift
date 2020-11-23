@@ -23,7 +23,7 @@ extension CdMessage {
 
     /// Creates a clone with fake message UID.
     /// Does not save the context.
-    @discardableResult public func createFakeMessage(context: NSManagedObjectContext) -> CdMessage {
+    @discardableResult func createFakeMessage(context: NSManagedObjectContext) -> CdMessage {
         let fakeMsg = cloneWithZeroUID(context: context)
         fakeMsg.uid = Int32(CdMessage.uidFakeResponsivenes)
         fakeMsg.pEpRating = pEpRating

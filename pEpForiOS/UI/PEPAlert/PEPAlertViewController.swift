@@ -15,11 +15,7 @@ final class PEPAlertViewController: UIViewController {
     @IBOutlet weak var alertMessage: UILabel!
     @IBOutlet weak var alertImageView: UIImageView!
     @IBOutlet weak var buttonsStackView: UIStackView!
-    @IBOutlet weak var buttonsView: UIView! {
-        didSet {
-            buttonsView.backgroundColor = .pEpGreyButtonLines
-        }
-    }
+    
 
     @IBOutlet weak private var alertImageViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak private var alertTitleTopViewHeightConstraint: NSLayoutConstraint!
@@ -39,7 +35,6 @@ final class PEPAlertViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setUp(title: titleString,
               paintPEPInTitle: paintPEPInTitle,
               message: message)
@@ -133,7 +128,8 @@ extension PEPAlertViewController {
 
     private func setUp(title: String?, paintPEPInTitle: Bool, message: String?) {
         alertMessage.text = message
-
+        alertMessage.font = UIFont.pepFont(style: .footnote, weight: .regular)
+        alertTitle.font = UIFont.pepFont(style: .body, weight: .semibold)
         if paintPEPInTitle {
             alertTitle.attributedText = title?.paintPEPToPEPColour()
         } else {
@@ -168,7 +164,8 @@ extension PEPAlertViewController {
         case .pEpSyncWizard:
             alertButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .semibold)
         case .pEpDefault:
-            alertButton.titleLabel?.font = UIFont.pepFont(style: .callout, weight: .bold)
+            alertButton.titleLabel?.font = UIFont.pepFont(style: .callout, weight: .semibold)
+            break
         }
     }
 
@@ -183,8 +180,8 @@ extension PEPAlertViewController {
             button.tag = viewModel.alertActionsCount
             button.addTarget(self, action: #selector(didPress(sender:)), for: .touchUpInside)
             viewModel.add(action: action)
-
             buttonsStackView.addArrangedSubview(button)
+
         }
     }
 }

@@ -6,7 +6,7 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import MessageModel
+@testable import MessageModel
 import CoreData
 @testable import MessageModel
 

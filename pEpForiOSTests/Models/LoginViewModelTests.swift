@@ -11,7 +11,6 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 import PantomimeFramework
-import PEPObjCAdapterFramework
 
 class ErrorHandler: LoginViewModelLoginErrorDelegate {
     func handle(loginError: Error) {
@@ -19,7 +18,7 @@ class ErrorHandler: LoginViewModelLoginErrorDelegate {
     }
 }
 
-class LoginViewModelTests: CoreDataDrivenTestBase {
+class LoginViewModelTests: AccountDrivenTestBase {
     class TestVerifiableAccount: VerifiableAccountProtocol {
         var accountType: VerifiableAccount.AccountType = VerifiableAccount.AccountType.other
         var loginNameIMAP: String?
@@ -82,7 +81,7 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
     /// in TestData.createWorkingAccountSettings == Accountsettingsadapter recommended server settings.
     /// Otherwize the test always succeeds.
     func testBasic() {
-        let td = SecretTestData()
+        let td = TestData()
         let accountSettings = td.createVerifiableAccountSettings()
         guard let passw = accountSettings.password else {
             XCTFail("expecting password for account")
@@ -95,23 +94,6 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         if accountSettings.idAddress.contains("yahoo") {
             return
         }
-        // Accountsettingsadapter recommended server settings
-//        let adapterRecomendations = ASAccountSettings(accountName: accountSettings.idAddress,
-//                                                      provider: passw,
-//                                                      flags: AS_FLAG_USE_ANY,
-//                                                      credentials: nil)
-//        // If Imap or SMTP server settings differ, this test makes no sense and we succeed and return.
-//        guard accountSettings.imapServerPort == UInt16(adapterRecomendations.incoming.port),
-//            accountSettings.imapServerTransport== Int16(ConnectionTransport(
-//                accountSettingsTransport: adapterRecomendations.incoming.transport).rawValue),
-//            accountSettings.imapServerAddress == adapterRecomendations.incoming.hostname,
-//
-//        accountSettings.smtpServerPort == UInt16(adapterRecomendations.outgoing.port),
-//        accountSettings.smtpServerTransport.rawValue == Int16(ConnectionTransport(
-//        accountSettingsTransport: adapterRecomendations.outgoing.transport).rawValue),
-//            accountSettings.smtpServerAddress == adapterRecomendations.outgoing.hostname else {
-//                return
-//        }
 
         let expLookedUp = expectation(description: "expLookedUp")
         let verifiableAccount =

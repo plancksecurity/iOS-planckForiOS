@@ -10,27 +10,20 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 import PantomimeFramework
-import PEPObjCAdapterFramework
 
-
-class AccountTypeSelectorTest: CoreDataDrivenTestBase {
+class AccountTypeSelectorTest: AccountDrivenTestBase {
     
     func testNoPreviousAccount() {
         let vm = AccountTypeSelectorViewModel()
         Account.all().forEach { (acc) in
             acc.delete()
         }
-        do {
-            try moc.save()
-        } catch {
-            XCTFail()
-        }
         XCTAssertFalse(vm.isThereAnAccount())
     }
     
     func testThereIsAPreviousAccount() {
-        let account = SecretTestData().createWorkingAccount()
-        account?.save()
+        let account = TestData().createWorkingAccount()
+        account.session.commit()
         let vm = AccountTypeSelectorViewModel()
         XCTAssertTrue(vm.isThereAnAccount())
     }
@@ -57,8 +50,8 @@ class AccountTypeSelectorTest: CoreDataDrivenTestBase {
     }
     
     func testAccountTypeSelectorNames() {
-        let account = SecretTestData().createWorkingAccount()
-        account?.save()
+        let account = TestData().createWorkingAccount()
+        account.session.commit()
         let vm = AccountTypeSelectorViewModel()
         XCTAssertEqual(vm.fileNameOrText(provider: .clientCertificate), """
  Client
@@ -67,13 +60,6 @@ class AccountTypeSelectorTest: CoreDataDrivenTestBase {
         XCTAssertEqual(vm.fileNameOrText(provider: .gmail), "asset-Google")
         XCTAssertEqual(vm.fileNameOrText(provider: .other), "Other")
     }
-    
-    func testNumberOfSections() {
-        let expectedSections = 6
-        let vm = AccountTypeSelectorViewModel()
-        XCTAssertEqual(expectedSections, vm.count)
-    }
-    
 }
 
 class AccountTypeDelegateMockTest: AccountTypeSelectorViewModelDelegate {

@@ -91,8 +91,8 @@ public class TrustManagementUtil {
                                      language: String,
                                      full: Bool,
                                      completion: @escaping (String?)->Void) {
-        PEPAsyncSession().getTrustwordsIdentity1(identitySelf, identity2: identityPartner, language: language, full: full, errorCallback: { (error) in
-            Log.shared.error("%@", "\(error)")
+        PEPSession().getTrustwordsIdentity1(identitySelf, identity2: identityPartner, language: language, full: full, errorCallback: { (error) in
+            Log.shared.log(error: error)
             completion(nil)
         }) { (trustwords) in
             completion(trustwords)
@@ -104,7 +104,7 @@ public class TrustManagementUtil {
 
 extension TrustManagementUtil : TrustManagementUtilProtocol {
     public func languagesList(completion: @escaping ([String]) -> ()) {
-        PEPAsyncSession().languageList({ error in
+        PEPSession().languageList({ error in
             Log.shared.error("Missing lenguage list")
             completion([])
         }) { langs in
@@ -117,7 +117,7 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
                               language: String,
                               full: Bool,
                               completion: @escaping (String?)->Void) {
-        PEPAsyncSession().getTrustwordsFpr1(fpr1, fpr2: fpr2, language: language, full: full, errorCallback: { (error) in
+        PEPSession().getTrustwordsFpr1(fpr1, fpr2: fpr2, language: language, full: full, errorCallback: { (error) in
             Log.shared.error("%@", error.localizedDescription)
             completion(nil)
         }) { (trustwords) in
@@ -137,20 +137,24 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         var success = true
 
         group.enter()
-        PEPAsyncSession().mySelf(selfPEPIdentity, errorCallback: { (error) in
-            Log.shared.errorAndCrash(error: error)
+        PEPSession().mySelf(selfPEPIdentity, errorCallback: { (error) in
+            if error.isPassphraseError {
+                Log.shared.log(error: error)
+            } else {
+                Log.shared.errorAndCrash(error: error)
+            }
             success = false
             group.leave()
         }) { (updatedOwnIdentity) in
             selfPEPIdentity = updatedOwnIdentity
-            PEPAsyncSession().update(partnerPEPIdentity,
+            PEPSession().update(partnerPEPIdentity,
                                      errorCallback: { _ in
                                         Log.shared.error("unable to get the fingerprints")
                                         success = false
                                         group.leave()
             }) { updatedPartnerIdentity in
                 partnerPEPIdentity = updatedPartnerIdentity
-                PEPAsyncSession().isPEPUser(updatedPartnerIdentity,
+                PEPSession().isPEPUser(updatedPartnerIdentity,
                                             errorCallback: { _ in
                                                 success = false
                                                 group.leave()
@@ -195,12 +199,12 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
             Log.shared.error("Not posible to perform confirm trust action")
         }
 
-        PEPAsyncSession().update(partnerPEPIdentity,
+        PEPSession().update(partnerPEPIdentity,
                                  errorCallback: { error in
                                     logError()
                                     completion(error)
         }) { identity in
-            PEPAsyncSession().trustPersonalKey(identity,
+            PEPSession().trustPersonalKey(identity,
                                                errorCallback: { error in
                                                 logError()
                                                 completion(error)
@@ -218,12 +222,12 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
             Log.shared.error("not posible to perform deny trust action")
         }
 
-        PEPAsyncSession().update(partnerPEPIdentity,
+        PEPSession().update(partnerPEPIdentity,
                                  errorCallback: { error in
                                     logError()
                                     completion(error)
         }) { identity in
-            PEPAsyncSession().keyMistrusted(identity,
+            PEPSession().keyMistrusted(identity,
                                             errorCallback: { error in
                                                 completion(error)
             }) {
@@ -241,7 +245,7 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
             Log.shared.error("Not posible to perform reset trust action")
         }
 
-        PEPAsyncSession().update(partnerPEPIdentity,
+        PEPSession().update(partnerPEPIdentity,
                                  errorCallback: { error in
                                     logError()
                                     completion(error)
@@ -249,7 +253,7 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
             if let fps = fingerprint {
                 identity.fingerPrint = fps
             }
-            PEPAsyncSession().keyResetTrust(identity,
+            PEPSession().keyResetTrust(identity,
                                             errorCallback: { error in
                                                 logError()
                                                 completion(error)
@@ -266,7 +270,7 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
     public func getFingerprint(for identity: Identity,
                                completion: @escaping (String?) -> ()) {
         let pepIdentity = identity.pEpIdentity()
-        PEPAsyncSession().update(pepIdentity,
+        PEPSession().update(pepIdentity,
                                  errorCallback: { _ in
                                     Log.shared.error("some went wrong getting the fingerprint for one identity")
                                     completion(nil)

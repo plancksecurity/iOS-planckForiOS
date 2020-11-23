@@ -31,7 +31,7 @@ class Acount_FetchingTest: PersistentStoreDrivenTestBase {
                                               moc: moc)
         let account3 = cdAccount3.account()
         account3.imapServer!.automaticallyTrusted = true
-        account3.save()
+        account3.session.commit()
 
         moc.saveAndLogErrors()
     }
@@ -71,7 +71,6 @@ class Acount_FetchingTest: PersistentStoreDrivenTestBase {
         // Then
         XCTAssertEqual(cdAccount1.account(), account1)
         XCTAssertEqual(cdAccount2.account(), account2)
-        XCTAssertEqual(cdAccount3.account(), account3)
-        XCTAssertNotEqual(cdAccount3.account(), account1)
+        XCTAssertNil(account3) // automatically trusted already, cannot trust manually
     }
 }

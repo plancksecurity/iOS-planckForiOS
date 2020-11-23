@@ -32,7 +32,7 @@ class CreateIMAPPepFolderOperation: ImapSyncOperation {
     }
 
     public override func main() {
-        if !checkImapSync() {
+        if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
         }
@@ -75,12 +75,12 @@ class CreateIMAPPepFolderOperation: ImapSyncOperation {
         }
     }
 
-    fileprivate func createPEPFolder(for cdAccount: CdAccount) {
+    private func createPEPFolder(for cdAccount: CdAccount) {
         guard let pEpFolderName = createPepFolderName(for: cdAccount) else {
                 handle(error: BackgroundError.ImapError.invalidAccount)
                 return
         }
-        imapConnection.createFolderWithName(pEpFolderName)
+        imapConnection.createFolderNamed(pEpFolderName)
     }
 
     private func createPepFolderName(for cdAccount: CdAccount) -> String? {

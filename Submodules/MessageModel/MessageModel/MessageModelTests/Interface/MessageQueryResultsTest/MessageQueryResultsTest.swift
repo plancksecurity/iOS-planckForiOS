@@ -7,10 +7,13 @@
 //
 
 import XCTest
-import CoreData
-@testable import MessageModel
 
-class MessageQueryResultTest: PersistentStoreDrivenTestBase {
+import CoreData
+
+@testable import MessageModel
+import PEPObjCAdapterFramework
+
+class MessageQueryResultsTest: PersistentStoreDrivenTestBase {
     var messageQueryResults: MessageQueryResults?
     var account1: CdAccount!
     var account2: CdAccount!
@@ -62,42 +65,6 @@ class MessageQueryResultTest: PersistentStoreDrivenTestBase {
         XCTAssertNotNil(messageQueryResults)
     }
 
-    func testMessage2FilesAreNotShownAsAttachment() {
-        // Given
-        guard let cdFolder1 = account1.folders?.firstObject as? CdFolder else {
-            XCTFail()
-            return
-        }
-        let msg = createCdMessages(numMessages: 2, cdFolder: cdFolder1, context: moc)
-        //let msg = TestUtil.createCdMessage(cdFolder: cdFolder1, moc: moc)
-        let mimeType = MimeTypeUtils.mimeType(fromFileExtension: ".asc")
-        let attachment = Attachment(data: Data(base64Encoded: "just some data"), mimeType: mimeType, fileName: "msg.asc").cdObject
-        let pdfAttachment = Attachment(data: Data(base64Encoded: "just some data"), mimeType: mimeType, fileName: "text.pdf").cdObject
-        let messageWithNonShowableAttachent = msg[0]
-        messageWithNonShowableAttachent.addToAttachments([attachment])
-        let messageWithShowableAttachent = msg[1]
-        messageWithShowableAttachent.addToAttachments([pdfAttachment])
-        moc.saveAndLogErrors()
-
-        // When
-        let filter = MessageQueryResultsFilter(mustContainAttachments: true, accounts: [account1.account()])
-        let messageQueryResults = MessageQueryResults(withFolder: cdFolder1.folder(), filter: filter)
-        guard let _ = try? messageQueryResults.startMonitoring() else {
-            XCTFail()
-            return
-        }
-        // Then
-        let numberOfExpectedMessages = 1
-        XCTAssertNotNil(messageQueryResults)
-        XCTAssertEqual(numberOfExpectedMessages, try? messageQueryResults.count())
-        XCTAssertNotEqual(messageQueryResults[0],
-                          MessageModelObjectUtils.getMessage(fromCdMessage:
-                            messageWithNonShowableAttachent))
-        XCTAssertEqual(messageQueryResults[0],
-                       MessageModelObjectUtils.getMessage(fromCdMessage:
-                        messageWithShowableAttachent))
-    }
-
     func testStartMonitoringWithOutElements() {
         // Given
         guard let messageQueryResults = messageQueryResults else {
@@ -116,6 +83,7 @@ class MessageQueryResultTest: PersistentStoreDrivenTestBase {
         XCTAssertEqual(try? messageQueryResults.count(), expectedMessagesCount)
     }
 
+    /*
     func testStartMonitoringWithElements() {
         // Given
         guard let messageQueryResults = messageQueryResults else {
@@ -158,21 +126,6 @@ class MessageQueryResultTest: PersistentStoreDrivenTestBase {
         // Then
 
         XCTAssertEqual(try? messageQueryResults.count(), expectedMessagesCount)
-    }
-
-    func testCountWithoutStartMonitoring() {
-        // Given
-        guard let messageQueryResults = messageQueryResults else {
-            XCTFail()
-            return
-        }
-
-        // When
-        createCdMessages(numMessages: 20, cdFolder: cdFolder1, context: moc)
-
-        // Then
-        XCTAssertThrowsError(try messageQueryResults.count(),
-                    QueryResultsController.InvalidStateError.notMonitoring.localizedDescription)
     }
 
     func testSubscript() {
@@ -366,7 +319,7 @@ class MessageQueryResultTest: PersistentStoreDrivenTestBase {
         XCTAssertEqual(delegateTest.indexPath, IndexPath(item: 0, section: 0))
         XCTAssertEqual(delegateTest.newIndexPath, IndexPath(item: 19, section: 0))
     }
-    
+
     func testDelegateDidMoveToOtherFolderSoDelete() {
         // Given
         guard let messageQueryResults = messageQueryResults else {
@@ -376,7 +329,7 @@ class MessageQueryResultTest: PersistentStoreDrivenTestBase {
         let messages = createCdMessages(numMessages: 20, cdFolder: cdFolder1, context: moc)
 
         let newFolder = Folder(name: "Spam", parent: nil, account: cdFolder1.account!.account(), folderType: FolderType.spam)
-        newFolder.save()
+        newFolder.session.commit()
 
         let exp = expectation(description: "delegate called for didDelete")
         let delegateTest = MessageQueryResultsTestDelegate(withExp: exp,
@@ -404,11 +357,12 @@ class MessageQueryResultTest: PersistentStoreDrivenTestBase {
         XCTAssertEqual(delegateTest.indexPath, IndexPath(item: 0,
                                                          section: 0))
     }
+     */
 }
 
 // MARK: - Helper
 
-extension MessageQueryResultTest {
+extension MessageQueryResultsTest {
 
     @discardableResult
     private func createCdMessages(numMessages: Int = 1,
@@ -419,13 +373,13 @@ extension MessageQueryResultTest {
         createes.forEach {
             uid += 1
             $0.uid = Int32(uid)
-            $0.pEpRating = Int16(0)
+            $0.pEpRating = Int16(PEPRating.unencrypted.rawValue)
         }
         return createes
     }
 }
 
-// MARK: - Delegate test class
+/// MARK: - Delegate test class
 
 class MessageQueryResultsTestDelegate {
     let exp: XCTestExpectation

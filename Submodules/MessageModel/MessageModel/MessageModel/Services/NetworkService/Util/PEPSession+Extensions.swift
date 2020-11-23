@@ -11,7 +11,7 @@ import pEpIOSToolbox
 
 // MARK: - Useful extensions for PEPSession
 
-extension PEPAsyncSession {
+extension PEPSession {
     func outgoingMessageRating(from: Identity,
                                to: [Identity],
                                cc: [Identity],
@@ -30,7 +30,7 @@ extension PEPAsyncSession {
 
 // MARK: - Private
 
-extension PEPAsyncSession {
+extension PEPSession {
 
 
     private func outgoingMessageRating(from: CdIdentity,

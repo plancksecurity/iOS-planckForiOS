@@ -23,7 +23,7 @@ extension UIColor {
     public static let pEpCellBackgroundHex = "#FFFFFF"
     public static let pEpNavigationBarColor = "#f7f7f7"
     public static let pEpBlueHex = "#007AFF"
-    public static let pEpGrayBackgroundResetHex = "#c8c7cc" 
+    public static let pEpGrayBackgroundResetHex = "#c8c7cc"
     public static let pEpDarkTextHex = "#171717"
     public static let pEpGrayBorderHex = "#B2B2B2"
     public static let pEpBlack = UIColor(hexString: pEpBlackHex)

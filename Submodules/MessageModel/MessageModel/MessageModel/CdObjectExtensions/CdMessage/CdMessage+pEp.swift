@@ -193,7 +193,7 @@ extension CdMessage {
             return
         }
         
-        PEPAsyncSession().outgoingRating(for: pEpMessage(), errorCallback: { (_) in
+        PEPSession().outgoingRating(for: pEpMessage(), errorCallback: { (_) in
             completion(.undefined)
         }) { (rating) in
             completion(rating)

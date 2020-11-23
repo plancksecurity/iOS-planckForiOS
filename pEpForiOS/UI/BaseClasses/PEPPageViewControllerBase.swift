@@ -29,7 +29,7 @@ class PEPPageViewControllerBase: UIPageViewController {
         delegate = self
         doOnce = { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.dataSource = me.showDots ? self : nil //nil dataSource will hide dots and disable scrolling
@@ -91,7 +91,7 @@ class PEPPageViewControllerBase: UIPageViewController {
         setViewControllers([previousView], direction: .reverse, animated: true) {
             [weak self] completed in
             guard let me = self else {
-                Log.shared.lostMySelf()
+                Log.shared.lostMySelf() 
                 return
             }
             me.delegate?.pageViewController?(me, didFinishAnimating: true,

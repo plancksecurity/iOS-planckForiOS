@@ -14,11 +14,10 @@ final class WrappedCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-
         setStyle()
     }
 
     private func setStyle() {
-        ccBccLabel.pEpSetFontFace(weight: .regular)
+        ccBccLabel.font = UIFont.pepFont(style: .footnote, weight: .regular)
     }
 }

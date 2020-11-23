@@ -23,6 +23,7 @@ import MessageModel
 /// required.
 struct DisplayUserError: LocalizedError {
     enum ErrorType {
+
         /// We could not login for some reason
         case authenticationFailed
 
@@ -156,13 +157,11 @@ struct DisplayUserError: LocalizedError {
         else if let err = error as? LoginViewController.LoginError {
             type = .loginValidationError
             foreignDescription = err.localizedDescription
-        }
+        } else {
             // Unknown
-        else {
             foreignDescription = error.localizedDescription
             type = .unknownError
         }
-
         if !type.shouldBeShownToUser {
             return nil
         }
@@ -312,7 +311,7 @@ struct DisplayUserError: LocalizedError {
     static private func type(forError error: OAuth2AuthorizationError) -> ErrorType {
         switch error {
         case .inconsistentAuthorizationResult:
-            return .authenticationFailed
+            return .internalError
         }
     }
 

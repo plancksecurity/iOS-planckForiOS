@@ -11,9 +11,8 @@ import XCTest
 
 @testable import pEpForiOS
 @testable import MessageModel
-import PEPObjCAdapterFramework
 
-class ComposeViewModelStateTest: CoreDataDrivenTestBase {
+class ComposeViewModelStateTest: AccountDrivenTestBase {
     private var testDelegate: TestDelegate?
     var testee: ComposeViewModel.ComposeViewModelState?
     var draftedMessageAllButBccSet: Message?
@@ -25,7 +24,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         super.setUp()
         someone = Identity(address: "someone@someone.someone")
         let drafts = Folder(name: "Inbox", parent: nil, account: account, folderType: .drafts)
-        drafts.save()
+        drafts.session.commit()
         let msg = Message(uuid: UUID().uuidString, parentFolder: drafts)
         msg.from = account.user
         msg.replaceTo(with: [account.user, someone])
@@ -39,7 +38,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         msg.appendToAttachments(Attachment(data: Data(),
                                            mimeType: "image/jpg",
                                            contentDisposition: .inline))
-        msg.save()
+        msg.session.commit()
         draftedMessageAllButBccSet = msg
 
         setupSimpleTestee()
@@ -57,100 +56,6 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         super.tearDown()
         //!!!:
         print("DEBUG: did tearDown")
-    }
-
-    // MARK: - initData
-
-    func testInitData() {
-        let initData = ComposeViewModel.InitData(composeMode: .normal)
-        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
-        guard let testeeInitData = testee?.initData else {
-            XCTFail("No testee")
-            return
-        }
-        XCTAssertNotNil(testeeInitData)
-    }
-
-    // MARK: - delegate
-
-    func testInitialDelegateIsSet() {
-        let initData = ComposeViewModel.InitData()
-        let delegate = TestDelegate()
-        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: delegate)
-        XCTAssertNotNil(testee?.delegate)
-    }
-
-    // MARK: - bccWrapped
-
-    func testBccWrapped_initial() {
-        guard let wrapped = testee?.bccWrapped else {
-            XCTFail()
-            return
-        }
-        XCTAssertTrue(wrapped)
-    }
-
-    func testBccWrapped_unwrapped() {
-        testee?.setBccUnwrapped()
-        guard let wrapped = testee?.bccWrapped else {
-            XCTFail()
-            return
-        }
-        XCTAssertFalse(wrapped)
-    }
-
-    // MARK: - Validation ( recipient changes )
-
-    func testValidate() {
-        let expectedStateIsValid = false
-        assert(ignoreDelegateCallsWhileInitializing: false,
-               didChangeValidationStateMustBeCalled: true,
-               expectedStateIsValid: expectedStateIsValid,
-               didChangePEPRatingMustBeCalled: false,
-               expectedNewRating: nil,
-               didChangeProtectionMustBeCalled: false,
-               expectedNewProtection: nil)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-    }
-
-    func testValidate_changeTos_noRecipients() {
-        let recipients = [Identity]()
-        assertValidatation(expectedStateIsValid: false,
-                           expectedNewRating: nil)
-        testee?.toRecipients = recipients
-        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
-    }
-
-    func testValidate_changeTos_grey() {
-        let recipients: [Identity] = [someone, account.user]
-        assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: .unencrypted)
-        testee?.toRecipients = recipients
-        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
-    }
-
-    func testValidate_changeTos_green() {
-        let recipients: [Identity] = [account.user]
-        assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: .trustedAndAnonymized)
-        testee?.toRecipients = recipients
-        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
-    }
-
-    func testValidate_changeCcs_grey() {
-        let recipients: [Identity] = [someone, account.user]
-        assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: .unencrypted)
-        testee?.ccRecipients = recipients
-        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
-    }
-
-    func testValidate_changeCCs_green() {
-        let recipients = [account.user]
-        assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: .trustedAndAnonymized)
-        testee?.ccRecipients = recipients
-        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
     }
 
     // MARK: - edited
@@ -242,62 +147,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         XCTAssertFalse(canToggleProtection)
     }
 
-    func testUserCanToggleProtection_green() {
-        // Setup green state ...
-        let recipients = [account.user]
-        assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: .trustedAndAnonymized)
-        testee?.toRecipients = recipients
-        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
-        // ... and assert can toggle works correctly
-        guard let canToggleProtection = testee?.userCanToggleProtection() else {
-            XCTFail()
-            return
-        }
-        XCTAssertTrue(canToggleProtection)
-    }
-
-    // testUserCanToggleProtection: state yellow is untested. To expensive.
-
-    func testUserCanToggleProtection_green_bccSet() {
-        // Setup green state ...
-        let recipients = [account.user]
-        assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: .trustedAndAnonymized)
-        testee?.toRecipients = recipients
-        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
-        // ... set BCC ...
-        testDelegate?.ignoreAll = true
-        testee?.bccRecipients = recipients
-        // ... and assert can toggle works correctly
-        guard let canToggleProtection = testee?.userCanToggleProtection() else {
-            XCTFail()
-            return
-        }
-        XCTAssertFalse(canToggleProtection)
-    }
-
     // MARK: - HELPER
-
-    private func assertValidatation(didChangeValidationStateMustBeCalled: Bool = true,
-                                    expectedStateIsValid: Bool,
-                                    expectedNewRating: Rating? = nil) {
-        let exp = expectation(description: "exp")
-
-        PEPAsyncSession().mySelf(account.user.pEpIdentity(), errorCallback: { (_) in
-            XCTFail()
-            exp.fulfill()
-        }) { (_) in
-            exp.fulfill()
-        }
-        waitForExpectations(timeout: TestUtil.waitTime)
-        assert(ignoreDelegateCallsWhileInitializing: true,
-               didChangeValidationStateMustBeCalled: true,
-               expectedStateIsValid: expectedStateIsValid,
-               didChangePEPRatingMustBeCalled: expectedNewRating != nil,
-               expectedNewRating: expectedNewRating,
-               didChangeProtectionMustBeCalled: false)
-    }
 
     private func assert(ignoreDelegateCallsWhileInitializing: Bool = true,
                         didChangeValidationStateMustBeCalled: Bool? = nil,

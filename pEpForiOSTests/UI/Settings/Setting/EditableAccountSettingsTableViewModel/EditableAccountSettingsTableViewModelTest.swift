@@ -9,7 +9,7 @@
 import XCTest
 @testable import pEpForiOS
 
-final class EditableAccountSettingsTableViewModelTest: CoreDataDrivenTestBase {
+final class EditableAccountSettingsTableViewModelTest: AccountDrivenTestBase {
 
     var viewModel: EditableAccountSettingsTableViewModel?
 

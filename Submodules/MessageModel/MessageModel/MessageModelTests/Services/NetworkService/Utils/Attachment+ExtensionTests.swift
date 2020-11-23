@@ -12,6 +12,10 @@ import XCTest
 import pEpIOSToolbox
 
 class Attachment_ExtensionTests: PersistentStoreDrivenTestBase {
+    struct ContentType {
+        static let plainText = "text/plain"
+        static let pgpKeys = "application/pgp-keys"
+    }
 
     func testIsViewableWithInlinePlainText() {
         // GIVEN

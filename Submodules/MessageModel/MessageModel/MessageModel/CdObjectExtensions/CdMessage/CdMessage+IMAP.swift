@@ -17,7 +17,7 @@ extension CdMessage {
     /// Takes into account if parent folder is remote or local.
     /// Note: Use only for messages synced with an IMAP server.
     /// The caller is responsible for saving.
-    public func imapMarkDeleted() {
+    func imapMarkDeleted() {
         if parentOrCrash.folderType.isSyncedWithServer {
             internalImapMarkDeleted()
         } else {

@@ -12,7 +12,7 @@ import MessageModel
 
 /// Lets the user choose the mail account used as default,
 /// e.g. when composing a mail in unified inbox, the default account is used as "From".
-class SettingDefaultAccountTableViewController: BaseTableViewController {
+class SettingDefaultAccountTableViewController: UITableViewController {
     let storyboardID = "SettingDefaultAccountTableViewController"
     let cellID = "SettingDefaultAccountCell"
     var allAccounts: [Account] {
@@ -23,6 +23,7 @@ class SettingDefaultAccountTableViewController: BaseTableViewController {
         super.viewWillAppear(animated)
         showNavigationBar()
         title = NSLocalizedString("Default Account", comment: "Default account view title")
+        navigationController?.title = title
     }
 
     override var collapsedBehavior: CollapsedSplitViewBehavior {
@@ -42,6 +43,7 @@ class SettingDefaultAccountTableViewController: BaseTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
         let address = allAccounts[indexPath.row].user.address
+        cell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
         cell.textLabel?.text = address
         cell.tintColor = UIColor.pEpGreen
         if let defaultAccountAddress = AppSettings.shared.defaultAccount,

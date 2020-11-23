@@ -44,7 +44,7 @@ class OAuth2Authorization: OAuth2AuthorizationProtocol {
             } else {
                 self?.authState = nil
                 self?.delegate?.authorizationRequestFinished(
-                    error: error ?? OAuth2AuthorizationError.inconsistentAuthorizationResult,
+                    error: OAuth2AuthorizationError.inconsistentAuthorizationResult,
                     accessToken: nil)
             }
         }

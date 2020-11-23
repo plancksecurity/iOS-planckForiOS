@@ -11,6 +11,7 @@ import UIKit
 
 @testable import pEpForiOS
 @testable import MessageModel
+import pEpIOSToolbox
 
 // StringHTMLExtensionTests all tests are green on date 20200313
 
@@ -54,7 +55,8 @@ class StringHTMLExtensionTests: XCTestCase {
     func testToMarkdown() {
         let imgDelegate = TestMarkdownImageDelegate()
 
-        guard let data = TestUtil.loadData(fileName: "NSHTML_2017-08-09 15_40_53 +0000.html") else {
+        guard let data = MiscUtil.loadData(bundleClass: StringHTMLExtensionTests.self,
+                                           fileName: "NSHTML_2017-08-09 15_40_53 +0000.html") else {
             XCTFail()
             return
         }
@@ -139,55 +141,6 @@ class StringHTMLExtensionTests: XCTestCase {
             numberOfAttachmentsUsed += 1
             return attch
         }
-    }
-
-    /**
-     Proves that we can convert primitive HTML with inline image references into an
-     `NSAttributedString`, and that into markdown, while keeping the attachment's
-     data and mime type intact.
-     */
-    func testRoundTrip() {
-        let cid1 = "attached-inline-image-1-jpg-3A18D4C9-FA39-486F-AE80-65374C7E5880@pretty.Easy.privacy"
-        let alt1 = "Attached Image 1 (jpg)"
-
-        let theData = "Not an image".data(using: .utf8)
-        let theMimeType = MimeTypeUtils.MimeType.jpeg
-        let attachment = Attachment(data: theData,
-                                    mimeType: theMimeType.rawValue,
-                                    fileName: "cid:\(cid1)",
-            contentDisposition: .attachment)
-
-        let attachmentHtml = "<p><img src=\"cid:\(cid1)\" alt=\"\(alt1)\" /></p>"
-        let input = "\(attachmentHtml)\n<p>\(String.pEpSignatureHtml)</p>\n<p>Test 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:</p>\n<cite>\n<p>Just some mind the gap text.</p>\n<p>Blah!</p>\n</cite>\n"
-        let inputWithoutAttachmentCiteTag = "<p>\(String.pEpSignatureHtml)</p>\n<p>Test 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:</p>\n<cite>\n<p>Just some mind the gap text.</p>\n<p>Blah!</p>\n</cite>\n"
-        let inputWithoutAttachmentBlockquoteTag = "<p>\(String.pEpSignatureHtml)</p>\n<p>Test 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:</p>\n<blockquote>\n<p>Just some mind the gap text.</p>\n<p>Blah!</p>\n</blockquote>\n"
-
-        let attachmentDelegate = AttachmentDelegate(attachments: [attachment])
-        let attributedString = input.htmlToAttributedString(deleteInlinePictures: false, attachmentDelegate: attachmentDelegate)
-        let sthWithCiteTag = inputWithoutAttachmentCiteTag.htmlToAttributedString(deleteInlinePictures: false, attachmentDelegate: nil).string
-        let sthWithBlockquoteTag = inputWithoutAttachmentBlockquoteTag.htmlToAttributedString(deleteInlinePictures: false, attachmentDelegate: nil).string
-        let exp = "\(pepSignatureTrimmed)\n\nTest 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:\n\n> Just some mind the gap text.\n> Blah!\n\n"
-        XCTAssertEqual(sthWithCiteTag, exp)
-        XCTAssertEqual(sthWithBlockquoteTag, exp)
-        XCTAssertEqual(attachmentDelegate.numberOfAttachmentsUsed, 1)
-        XCTAssertEqual(attachmentDelegate.attachments[0].mimeType, theMimeType.rawValue)
-
-        let (markdown, attachments) = attributedString.convertToMarkDown()
-        XCTAssertEqual(attachments.count, 1)
-
-        let patternImage = "!\\[[^]]+]\\([^)]+\\)"
-        let patternRest1 = "\n\n\(pepSignatureTrimmed)\n\n"
-        let patternRest2 = "Test 001 wrote on August 25, 2017 at 3:34:17 PM GMT\\+2:\n\n"
-        let patternRest3 = "> Just some mind the gap text.\n> Blah!"
-        XCTAssertTrue(markdown.matches(
-            pattern: "^\(patternImage)\(patternRest1)\(patternRest2)\(patternRest3)$"))
-
-        guard let attachmentNew = attachments.first else {
-            XCTFail()
-            return
-        }
-        XCTAssertEqual(attachmentNew.data, attachment.data)
-        XCTAssertEqual(attachmentNew.mimeType, attachment.mimeType)
     }
 }
 

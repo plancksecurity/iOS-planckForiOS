@@ -9,7 +9,6 @@
 import CoreData
 
 extension CdAttachment {
-
     func attachment() -> Attachment? {
         return MessageModelObjectUtils.getAttachment(fromCdAttachment: self)
     }
@@ -19,8 +18,7 @@ extension CdAttachment {
 
 extension CdAttachment {
     static func by(filename: String, context: NSManagedObjectContext) -> CdAttachment? {
-        return CdAttachment.first(predicate: NSPredicate(format: "%K = %@",
-                                                         CdAttachment.AttributeName.fileName,
-                                                         filename), in: context)
+        return CdAttachment.first(predicate: CdAttachment.PredicateFactory.with(filename: filename),
+                                  in: context)
     }
 }

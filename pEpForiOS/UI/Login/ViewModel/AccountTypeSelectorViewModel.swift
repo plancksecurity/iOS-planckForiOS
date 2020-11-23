@@ -57,10 +57,10 @@ class AccountTypeSelectorViewModel {
         }
     }
 
-    public func accountType(row: Int) -> VerifiableAccount.AccountType? {
+    public func accountType(row: Int) -> VerifiableAccount.AccountType {
         guard row < accountTypes.count else {
             Log.shared.errorAndCrash("Index out of range")
-            return nil
+            return .other
         }
         return accountTypes[row]
     }

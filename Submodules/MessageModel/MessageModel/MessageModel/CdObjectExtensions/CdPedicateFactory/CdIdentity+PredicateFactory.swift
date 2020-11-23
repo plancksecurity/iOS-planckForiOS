@@ -22,7 +22,7 @@ extension CdIdentity {
         /// Predicate to fetch CdIdentities that represents the user
         ///
         /// - Returns: predicate for not own identities
-        static public func isNotMySelf() -> NSPredicate {
+        static func isNotMySelf() -> NSPredicate {
             return NSPredicate(format: "%K != %@", CdIdentity.AttributeName.userID, CdIdentity.pEpOwnUserID)
         }
 
@@ -63,12 +63,21 @@ extension CdIdentity {
             return NSCompoundPredicate(orPredicateWithSubpredicates: orPredicates)
         }
 
+
+        /// Predicate to search over identities
+        ///
+        /// - Parameter address: string to search
+        /// - Returns: Predicate for identities that contains the given search term in the address
+        static func addressLike(address: String) -> NSPredicate {
+            return NSPredicate(format: "address like[c] %@", address)
+        }
+
         /// predicate to search all identities with the same userID
         ///
-        /// - Parameter value: usearID to search
+        /// - Parameter value: userID to search
         /// - Returns: Predicate for identities with the same userID in the given parameter
-        static func sameUserID(value: String) -> NSPredicate {
-            return NSPredicate(format: "%K == %@", CdIdentity.AttributeName.userID, value)
+        static func with(userId: String) -> NSPredicate {
+            return NSPredicate(format: "%K == %@", CdIdentity.AttributeName.userID, userId)
         }
     }
 

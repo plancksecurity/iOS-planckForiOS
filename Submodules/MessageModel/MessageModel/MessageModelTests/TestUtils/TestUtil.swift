@@ -25,7 +25,7 @@ class TestUtil {
 
     static public func createMessage(stringData: String = "test",
                                      numAttachments num: Int) -> Message {
-        let createe = Message.fakeMessage(uuid: "\(stringData)")
+        let createe = Message.createTestMessage(uuid: "\(stringData)")
         createe.shortMessage = "s\(stringData)"
         createe.longMessage = "l\(stringData)"
         let attachments = createAttachments(numAttachments: num)
@@ -57,22 +57,6 @@ class TestUtil {
 // MARK: - MUST NOT use MM's Interface. MAY use Secret test data after moving
 
 extension TestUtil {
-
-    static public func createMessages(numMessages numM: Int,
-                                      outgoing: Bool = false,
-                                      moc: NSManagedObjectContext) -> [CdMessage] {
-        var createes = [CdMessage]()
-        if numM <= 0 {
-            return createes
-        }
-        for i in 1...numM {
-            let createe = createMessage(stringData: "stringData \(i)", outgoing: outgoing, moc: moc)
-            createes.append(createe)
-        }
-
-        return createes
-    }
-
     static public func createMessage(stringData: String = "test",
                                      sentDate: Date? = nil,
                                      outgoing: Bool = false,
@@ -310,141 +294,6 @@ extension TestUtil {
 
     // MARK: - Moved from App target. Needs love, review, ideally remove
 
-    static func makeFolderInteresting(folderType: FolderType,
-                                      cdAccount: CdAccount,
-                                      context: NSManagedObjectContext? = nil) {
-        let folder = cdFolder(ofType: folderType, in: cdAccount, context: context)
-        folder.lastLookedAt = Date(timeInterval: -1, since: Date())
-        guard let context = cdAccount.managedObjectContext else {
-            Log.shared.errorAndCrash("The account we are using has been deleted from moc!")
-            return
-        }
-        context.saveAndLogErrors()
-    }
-
-    static func cdFolder(ofType type: FolderType,
-                         in cdAccount: CdAccount,
-                         context: NSManagedObjectContext? = nil) -> CdFolder {
-        guard let folder = CdFolder.by(folderType: type, account: cdAccount, context: context)
-            else {
-                fatalError()
-        }
-        return folder
-    }
-
-    /// Creates outgoing messages
-    ///
-    /// - Parameters:
-    ///   - cdAccount: account to send from. Is ignored if fromIdentity is not nil
-    ///   - fromIdentity: identity used as sender
-    ///   - toIdentity: identity used as recipient
-    ///   - setSentTimeOffsetForManualOrdering: Add some time difference to date sent tp be
-    ///                                         recognised by Date().sort. That makes it easier to
-    ///                                         misuse thoses mails for manual debugging.
-    //
-    ///   - testCase: the one to make fail
-    ///   - numberOfMails: num mails to create
-    ///   - withAttachments: Whether or not messages should contain attachments
-    ///   - attachmentsInlined: Whether or not the attachments should be inlined
-    ///   - encrypt: Whether or not to import a key for the receipient. Is ignored if `toIdentity`
-    ///              is not nil
-    ///   - forceUnencrypted: mark mails force unencrypted
-    ///   - context: context to create messages in. If no context is given, main context is used
-    /// - Returns: created mails
-    /// - Throws: error importing key
-    static func createOutgoingMails(cdAccount: CdAccount,
-                                    toIdentity: CdIdentity? = nil,
-                                    setSentTimeOffsetForManualOrdering: Bool = false,
-                                    testCase: XCTestCase,
-                                    numberOfMails: Int,
-                                    withAttachments: Bool = true,
-                                    attachmentsInlined: Bool = false,
-                                    encrypt: Bool = true,
-                                    forceUnencrypted: Bool = false,
-                                    context: NSManagedObjectContext) throws -> [CdMessage] {
-        testCase.continueAfterFailure = false
-
-        if numberOfMails == 0 {
-            return []
-        }
-
-        let existingSentFolder = CdFolder.by(folderType: .sent,
-                                             account: cdAccount,
-                                             context: context)
-
-        if existingSentFolder == nil {
-            // Make sure folders are synced
-            syncAndWait(testCase: testCase)
-        }
-
-        guard let outbox = CdFolder.by(folderType: .outbox,
-                                       account: cdAccount,
-                                       context: context) else {
-                                        XCTFail()
-                                        return []
-        }
-
-        let from = cdAccount.identity
-
-        let to: CdIdentity
-        if let toIdentity = toIdentity {
-            to = toIdentity
-        } else {
-            if encrypt {
-                let session = PEPSession()
-                try TestUtil.importKeyByFileName(
-                    session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
-            }
-            let toWithKey = CdIdentity(context: context)
-            toWithKey.userName = "Unit 001"
-            toWithKey.address = "unittest.ios.1@peptest.ch"
-            to = toWithKey
-        }
-
-        // Build emails
-        var messagesInTheQueue = [CdMessage]()
-        for i in 1...numberOfMails {
-            let message = CdMessage(context: context)
-            message.from = from
-            message.parent = outbox
-            message.shortMessage = "Some subject \(i)"
-            message.longMessage = "Long message \(i)"
-            message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            message.pEpProtected = !forceUnencrypted
-            if setSentTimeOffsetForManualOrdering {
-                // Add some time difference recognised by Date().sort.
-                // That makes it easier to misuse thoses mails for manual debugging.
-                let sentTimeOffset = Double(i) - 1
-                message.sent = Date().addingTimeInterval(sentTimeOffset)
-            } else {
-                message.sent = Date()
-            }
-            message.addToTo(to)
-
-            // add attachments
-            if withAttachments {
-                message.addToAttachments(createCdAttachment(inlined: attachmentsInlined))
-            }
-
-            messagesInTheQueue.append(message)
-        }
-        context.saveAndLogErrors()
-
-        if let cdOutgoingMsgs = outbox.messages?.sortedArray(
-            using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] {
-            let unsent = cdOutgoingMsgs.filter { $0.uid == 0 }
-            XCTAssertEqual(unsent.count, numberOfMails)
-            for m in unsent {
-                XCTAssertEqual(m.parent?.folderType, FolderType.outbox)
-                XCTAssertEqual(m.uid, Int32(0))
-            }
-        } else {
-            XCTFail()
-        }
-
-        return messagesInTheQueue
-    }
-
     static func checkForExistanceAndUniqueness(uuids: [MessageID],
                                                context: NSManagedObjectContext) {
         for uuid in uuids {
@@ -499,55 +348,7 @@ extension TestUtil {
             return (identity, receiver1, receiver2, receiver3, receiver4)
     }
 
-    static func importKeyByFileName(_ session: PEPSession = PEPSession(), fileName: String)
-        throws {
-            if let content = loadString(fileName: fileName) {
-                try session.importKey(content as String)
-            }
-    }
-
-    static func loadString(fileName: String) -> String? {
-        if let data = loadData(fileName: fileName) {
-            guard let content = NSString(data: data, encoding: String.Encoding.ascii.rawValue)
-                else {
-                    XCTAssertTrue(
-                        false, "Could not convert key with file name \(fileName) into data")
-                    return nil
-            }
-            return content as String
-        }
-        return nil
-    }
-
-    static func loadData(fileName: String) -> Data? {
-        let testBundle = Bundle(for: PEPSessionTest.self)
-        guard let keyPath = testBundle.path(forResource: fileName, ofType: nil) else {
-            XCTFail("Could not find file named \(fileName)")
-            return nil
-        }
-        guard let data = try? Data(contentsOf: URL(fileURLWithPath: keyPath)) else {
-            XCTFail("Could not load file named \(fileName)")
-            return nil
-        }
-        return data
-    }
-
-    static func createCdAttachment(inlined: Bool = true) -> CdAttachment {
-        let attachment = createAttachment(inlined: inlined)
-        return attachment.cdObject
-    }
-
-    static func createAttachments(number: Int) -> [Attachment] {
-        var attachments: [Attachment] = []
-
-        for _ in 0..<number {
-            attachments.append(createAttachment())
-        }
-        return attachments
-    }
-
     static func createAttachment(inlined: Bool = true) -> Attachment {
-
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
         guard let imageData = TestUtil.loadData(testClass: self, fileName: imageFileName) else {
             XCTAssertTrue(false)
@@ -560,93 +361,5 @@ extension TestUtil {
                           mimeType: MimeTypeUtils.MimeType.jpeg.rawValue,
                           fileName: imageFileName,
                           contentDisposition: contentDisposition)
-    }
-}
-
-//BUFF: move to own file
-
-extension XCTestCase {
-    public func loginIMAP(imapConnection: ImapConnectionProtocol,
-                          errorContainer: ErrorContainerProtocol,
-                          queue: OperationQueue,
-                          context: NSManagedObjectContext? = nil) {
-        let expImapLoggedIn = expectation(description: "expImapLoggedIn")
-
-        let imapLogin = LoginImapOperation(parentName: #function,
-                                           context: context,
-                                           errorContainer: errorContainer,
-                                           imapConnection: imapConnection)
-        imapLogin.completionBlock = {
-            imapLogin.completionBlock = nil
-            expImapLoggedIn.fulfill()
-        }
-        queue.addOperation(imapLogin)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(imapLogin.hasErrors)
-        })
-    }
-
-    public func fetchFoldersIMAP(imapConnection: ImapConnectionProtocol,
-                                 queue: OperationQueue) {
-        let expFoldersFetched = expectation(description: "expFoldersFetched")
-        let syncFoldersOp = SyncFoldersFromServerOperation(parentName: #function,
-                                                           imapConnection: imapConnection)
-        syncFoldersOp.completionBlock = {
-            syncFoldersOp.completionBlock = nil
-            expFoldersFetched.fulfill()
-        }
-
-        queue.addOperation(syncFoldersOp)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(syncFoldersOp.hasErrors)
-        })
-    }
-
-    //!!!: used in tests only! move to test target
-    func appendMailsIMAP(folder: CdFolder,
-                         imapConnection: ImapConnectionProtocol,
-                         errorContainer: ErrorContainerProtocol,
-                         queue: OperationQueue) {
-        let expSentAppended = expectation(description: "expSentAppended")
-        let appendOp = AppendMailsToFolderOperation(parentName: #function,
-                                                    folder: folder,
-                                                    errorContainer: errorContainer,
-                                                    imapConnection: imapConnection)
-        appendOp.completionBlock = {
-            appendOp.completionBlock = nil
-            expSentAppended.fulfill()
-        }
-
-        queue.addOperation(appendOp)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(appendOp.hasErrors)
-        })
-    }
-
-    public func fetchNumberOfNewMails(errorContainer: ErrorContainerProtocol,
-                                      context: NSManagedObjectContext) -> Int? {
-        let expNumMails = expectation(description: "expNumMails")
-        var numMails: Int?
-        let fetchNumMailsOp = FetchNumberOfNewMailsService(imapConnectionDataCache: nil,
-                                                           context: context,
-                                                           errorContainer: errorContainer)
-        fetchNumMailsOp.start() { theNumMails in
-            numMails = theNumMails
-            expNumMails.fulfill()
-        }
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertNotNil(numMails)
-            XCTAssertNil(errorContainer.error)
-        })
-
-        return numMails
     }
 }

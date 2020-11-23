@@ -1,9 +1,9 @@
 //
 //  EmailViewController.swift
-//  pEpForiOS
+//  pEp
 //
-//  Created by Dirk Zimmermann on 31/05/16.
-//  Copyright © 2016 p≡p Security S.A. All rights reserved.
+//  Created by Xavier Algarra on 02/07/2020.
+//  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
 import Foundation
@@ -17,37 +17,62 @@ protocol EmailViewControllerDelegate: class {
     func openQLPreviewController(toShowDocumentWithUrl url: URL)
 }
 
-class EmailViewController: BaseTableViewController {
+class EmailViewController: UIViewController {
     private var tableData: ComposeDataSource?
     lazy private var documentInteractionController = UIDocumentInteractionController()
     private var clientCertificateImportViewController: ClientCertificateImportViewController?
-
+    
     static public let storyboard = "Main"
     static let storyboardId = "EmailViewController"
     weak var delegate: EmailViewControllerDelegate?
     var message: Message?
+    
     lazy var clickHandler: UrlClickHandler = {
-        return UrlClickHandler(appConfig: appConfig)
+        return UrlClickHandler()
     }()
-
-    // MARK: - LIFE CYCLE
-
+    
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet var showExternalContentView: UIView!
+    @IBOutlet weak var showExternalContentButton: UIButton!
+    @IBOutlet weak var showExternalContentLabel: UILabel!
+    var showExternalContent = false
+    var showViewExternalContent = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadDatasource("MessageData")
         tableView.estimatedRowHeight = 72.0
         tableView.rowHeight = UITableView.automaticDimension
+        showExternalContentButton.backgroundColor = UIColor.pEpGreen
+        showExternalContentButton.tintColor = UIColor.white
+        showExternalContentLabel.text = NSLocalizedString("""
+ By showing external content, your privacy may be invaded.
+ This may affect the privacy status of the message.
+""", comment: "external content label text")
     }
-
+    
+    @IBAction func showExternalContent(_ sender: Any) {
+        showViewExternalContent = false
+        showExternalContent = true
+        tableView.reloadData()
+    }
+    
+    fileprivate func removeExternalContentView() {
+        showExternalContentView.isHidden = true
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.title = title
+        tableView.hideSeperatorForEmptyCells()
         configureTableRows()
+        removeExternalContentView()
     }
-
+    
     private func configureTableRows() {
         tableData?.filterRows(message: message)
     }
-
+    
     private final func loadDatasource(_ file: String) {
         if let path = Bundle.main.path(forResource: file, ofType: "plist") {
             if let dict = NSDictionary(contentsOfFile: path) as? [String: Any] {
@@ -55,15 +80,15 @@ class EmailViewController: BaseTableViewController {
             }
         }
     }
-
+    
     // MARK: - EMAIL BODY
-
+    
     /**
      Indicate that the htmlViewerViewController already exists, to avoid
      instantiation just to check if it has been instantiated.
      */
     var htmlViewerViewControllerExists = false
-
+    
     lazy private var htmlViewerViewController: SecureWebViewController = {
         let storyboard = UIStoryboard(name: "Reusable", bundle: nil)
         guard let vc =
@@ -77,10 +102,9 @@ class EmailViewController: BaseTableViewController {
         vc.delegate = self
         vc.urlClickHandler = clickHandler
         htmlViewerViewControllerExists = true
-
         return vc
     }()
-
+    
     /**
      Yields the HTML message body if:
      * we can show it in a secure way
@@ -96,7 +120,7 @@ class EmailViewController: BaseTableViewController {
         }
         return htmlBody
     }
-
+    
     private func setup(contentCell: MessageContentCell, rowData: ComposeFieldModel) {
         guard let m = message else {
             Log.shared.errorAndCrash("No msg.")
@@ -107,7 +131,12 @@ class EmailViewController: BaseTableViewController {
             contentCell.contentView.addSubview(htmlViewerViewController.view)
             htmlViewerViewController.view.fullSizeInSuperView()
             let displayHtml = appendInlinedPlainText(fromAttachmentsIn: m, to: htmlBody)
-            htmlViewerViewController.display(html: displayHtml)
+            if displayHtml.containsExternalContent() && showViewExternalContent {
+                showExternalContentView.isHidden = false
+            } else if !showViewExternalContent {
+                removeExternalContentView()
+            }
+            htmlViewerViewController.display(html: displayHtml, showExternalContent: showExternalContent)
         } else {
             // We do not have HTML content.
             // Remove the HTML view if we just stepped from an HTML mail to one without
@@ -118,7 +147,7 @@ class EmailViewController: BaseTableViewController {
             contentCell.updateCell(model: rowData, message: m, clickHandler: clickHandler)
         }
     }
-
+    
     private func appendInlinedPlainText(fromAttachmentsIn message: Message, to text: String) -> String {
         var result = text
         let inlinedText = message.inlinedTextAttachments()
@@ -132,7 +161,7 @@ class EmailViewController: BaseTableViewController {
         }
         return result
     }
-
+    
     private func append(appendText: String, to body: String) -> String {
         var result = body
         let replacee = result.contains(find: "</body>") ? "</body>" : "</html>"
@@ -145,22 +174,44 @@ class EmailViewController: BaseTableViewController {
     }
 }
 
-// MARK: - UITableViewDataSource
+// MARK: - MessageContentCellDelegate
+
+extension EmailViewController: MessageContentCellDelegate {    
+    func heightChanged() {
+        tableView.updateSize()
+    }
+}
 
 extension EmailViewController {
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableData?.numberOfRows() ?? 0
+    
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
+        if UI_USER_INTERFACE_IDIOM() == .pad {
+            documentInteractionController.dismissMenu(animated: false)
+        }
+        
+        splitViewController?.preferredDisplayMode = .allVisible
+        
+        coordinator.animate(alongsideTransition: nil)
     }
+}
+    
+// MARK: - UITableViewDataSource
 
-    override func tableView(
+extension EmailViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            return tableData?.numberOfRows() ?? 0
+    }
+    
+    func tableView(
         _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard
-            let row = tableData?.getRow(at: indexPath.row),
-            let cell = tableView.dequeueReusableCell(withIdentifier: row.identifier,
-                                                     for: indexPath) as? MessageCell,
-            let m = message
-            else {
-                return UITableViewCell()
+            guard
+                let row = tableData?.getRow(at: indexPath.row),
+                let cell = tableView.dequeueReusableCell(withIdentifier: row.identifier,
+                                                         for: indexPath) as? MessageCell,
+                let m = message
+                else {
+                    return UITableViewCell()
         }
         if let contentCell = cell as? MessageContentCell {
             setup(contentCell: contentCell, rowData: row)
@@ -170,14 +221,13 @@ extension EmailViewController {
         cell.delegate = self
         return cell
     }
-
-    override func tableView(_ tableView: UITableView,
+    
+    func tableView(_ tableView: UITableView,
                             heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let row = tableData?.getRow(at: indexPath.row) else {
             Log.shared.errorAndCrash("Missing data")
             return tableView.estimatedRowHeight
         }
-
         if row.type == .content, htmlBody(message: message) != nil {
             return htmlViewerViewController.contentSize.height
         } else {
@@ -186,37 +236,15 @@ extension EmailViewController {
     }
 }
 
-// MARK: - MessageContentCellDelegate
-
-extension EmailViewController: MessageContentCellDelegate {
-    func heightChanged() {
-        tableView.updateSize()
-    }
-}
-
-extension EmailViewController {
-
-    override func viewWillTransition(to size: CGSize,
-                                     with coordinator: UIViewControllerTransitionCoordinator) {
-        if UI_USER_INTERFACE_IDIOM() == .pad {
-            documentInteractionController.dismissMenu(animated: false)
-        }
-
-        splitViewController?.preferredDisplayMode = .allVisible
-
-        coordinator.animate(alongsideTransition: nil)
-    }
-}
-
 // MARK: - MessageAttachmentDelegate
 
 extension EmailViewController: MessageAttachmentDelegate {
-
+    
     func didTap(cell: MessageCell, attachment: Attachment, location: CGPoint, inView: UIView?) {
         let busyState = inView?.displayAsBusy()
-        attachment.saveToTmpDirectory { [weak self] url in
+        attachment.saveToTmpDirectory(defaultFilename: Attachment.defaultFilename) { [weak self] url in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             guard let url = url else {
@@ -238,7 +266,7 @@ extension EmailViewController: MessageAttachmentDelegate {
             }
         }
     }
-
+    
     private func showToUser(documentAt url: URL,
                             givenMimeType: String?,
                             representedBy cell: MessageCell,
@@ -263,7 +291,7 @@ extension EmailViewController: MessageAttachmentDelegate {
                                                              animated: true)
         }
     }
-
+    
     private func setupClientCertificateImportViewController(forClientCertificateAt url: URL) {
         guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil)
             .instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController else {
@@ -287,14 +315,14 @@ extension EmailViewController: SecureWebViewControllerDelegate {
 // MARK: - UIPopoverPresentationControllerDelegate
 
 extension EmailViewController: UIPopoverPresentationControllerDelegate {
-
+    
     func popoverPresentationController(_ popoverPresentationController: UIPopoverPresentationController, willRepositionPopoverTo rect:
         UnsafeMutablePointer<CGRect>, in view: AutoreleasingUnsafeMutablePointer<UIView>) {
-
+        
         guard let titleView = navigationItem.titleView else {
             return
         }
-
+        
         rect.initialize(to: CGRect(x:titleView.bounds.midY,
                                    y: titleView.bounds.midX,
                                    width:0,

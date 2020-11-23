@@ -11,7 +11,7 @@ import CoreData
 import pEpIOSToolbox
 
 extension CdImapFields {
-    public func imapFlags() -> ImapFlags {
+    func imapFlags() -> ImapFlags {
         if managedObjectContext == nil {
             Log.shared.errorAndCrash("Our object has been deleted")
         }

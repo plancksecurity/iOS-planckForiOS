@@ -41,14 +41,14 @@ extension LoginSmtpOperation: SmtpConnectionDelegate {
     public func authenticationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         self.waitForBackgroundTasksAndFinish()
     }
-
+    
     public func authenticationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         addError(SmtpSendError.authenticationFailed(
             #function,
             smtpConnection.accountAddress))
         waitForBackgroundTasksAndFinish()
     }
-
+    
     public func connectionEstablished(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 
     public func connectionLost(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {

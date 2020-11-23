@@ -7,8 +7,8 @@ translationdir=../pEp-Translate/
 # Imports translations, using a temporary directory in order to not change
 # original files.
 # Param 1: The language to import
-# Param 2: The project (pEpForiOS.xcodeproj or MessageModel/MessageModel.xcodeproj)
-# Param 3: The source directory ($translationdir or $translationdir/MessageModel)
+# Param 2: The project (pEpForiOS.xcodeproj)
+# Param 3: The source directory ($translationdir)
 function import() {
     echo \*\*\* import $1 $2 $3
     mytmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
@@ -22,8 +22,8 @@ function import() {
 
 # Imports translations directly from a given directory, maybe changing the originals.
 # Param 1: The language to import
-# Param 2: The project (pEpForiOS.xcodeproj or MessageModel/MessageModel.xcodeproj)
-# Param 3: The source directory
+# Param 2: The project (pEpForiOS.xcodeproj)
+# Param 3: The source directory ($translationdir)
 function import_in_place() {
     filename=$3/$1.xliff
     sed -i '' 's/<target\/>//' $filename

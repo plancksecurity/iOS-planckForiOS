@@ -1,15 +1,16 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
-      "filename" : "splash-logo.pdf"
+      "filename" : "splash-logo.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   },
   "properties" : {
-    "compression-type" : "lossless"
+    "compression-type" : "lossless",
+    "preserves-vector-representation" : true
   }
 }

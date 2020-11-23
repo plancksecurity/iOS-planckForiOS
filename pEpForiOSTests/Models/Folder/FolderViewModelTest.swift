@@ -10,7 +10,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class FolderViewModelTest: CoreDataDrivenTestBase {
+class FolderViewModelTest: AccountDrivenTestBase {
 
     var viewmodel: FolderViewModel!
     var folder: Folder!
@@ -22,19 +22,7 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
         folder = Folder(name: Input.folderName, parent: nil, account: account, folderType: .inbox)
-        folder.save()
-    }
-
-    func testAccountSectionsWithUnifiedFolderShouldBeOnePlusAccountNumber() {
-        for accountNumber in 0...Input.maxNumberOfTestAccounts {
-            let accounts = givenThereIs(numberOfAccounts: accountNumber)
-            givenThereIsAViewModel(withUniFiedInBox: true, and: accounts )
-
-            let viewmodelSections = viewmodel.count
-
-            //If is unified inbox it should have accounts.count + 1 section
-            XCTAssertEqual(viewmodelSections, accounts.count + 1)
-        }
+        folder.session.commit()
     }
 
     func testFoldersAppearInTheCorrectOrder() {
@@ -48,7 +36,6 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
         let inbox = acc.rootFolders.first
         let _ = Folder(name: "InsideInbox", parent: inbox, account: acc, folderType: .normal)
         let _ = Folder(name: "InsiDrafts", parent: drafts, account: acc, folderType: .normal)
-        moc.saveAndLogErrors()
         let expectedOrder : [FolderType] = [.inbox, .normal, .drafts, .normal, .sent, .spam, .trash, .outbox]
 
         //the test
@@ -66,19 +53,6 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
         }
     }
 
-    func testAccountSectionsWithoutUnifiedFolderShouldBeAccountNumber() {
-        for accountNumber in 0...Input.maxNumberOfTestAccounts {
-
-            let accounts = givenThereIs(numberOfAccounts: accountNumber)
-            givenThereIsAViewModel(withUniFiedInBox: false, and: accounts )
-
-            let viewmodelSections = viewmodel.count
-
-            //If it is not unified inbox it should have accounts.count section
-            XCTAssertEqual(viewmodelSections, accounts.count)
-        }
-    }
-    
     func testNoAccountExistTrueAfterDeleteAccounts() {
         givenThereIsNotAccounts(withUnifiedInbox: false)
         let noAccountsExist = viewmodel.noAccountsExist()
@@ -101,7 +75,7 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
         var accounts = [Account]()
 
         for i in 0..<numberOfAccounts {
-            let account = SecretTestData().createWorkingAccount(number: i, context: moc)
+            let account = TestData().createWorkingAccount(number: i)
             accounts.append(account)
         }
 
@@ -113,11 +87,11 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
     }
 
     func givenThereIsAViewModel(withUniFiedInBox: Bool, and accounts: [Account]){
-        viewmodel = FolderViewModel(withFoldersIn: accounts, includeUnifiedInbox: withUniFiedInBox)
+        viewmodel = FolderViewModel(withFoldersIn: accounts)
     }
 
     func givenThereIsNotAccounts(withUnifiedInbox: Bool) {
         Account.all().forEach { $0.delete() }
-        viewmodel = FolderViewModel(withFoldersIn: nil, includeUnifiedInbox: withUnifiedInbox)
+        viewmodel = FolderViewModel(withFoldersIn: nil)
     }
 }

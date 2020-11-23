@@ -13,6 +13,10 @@ extension CdMessage {
 
     struct PredicateFactory {
 
+        static func inUnifiedFolder() -> NSPredicate {
+            return NSPredicate(format: "%K = true", RelationshipKeyPath.cdMessage_parent_account_isUnifiable)
+        }
+
         /// - Returns: Predicate to fetch all messages that need to be IMAP appended (uploaded to server).
         static func notWaitingForImapAppend() -> NSPredicate {
             return NSPredicate(format: "%K != 0", CdMessage.AttributeName.uid)
@@ -80,6 +84,31 @@ extension CdMessage {
             return NSPredicate(format: "%K = %@", CdFolder.RelationshipName.parent, parentFolder)
         }
 
+        static func allMessagesBetweenUids(firstUid: UInt,
+                                           lastUid: UInt) -> NSPredicate {
+            return NSPredicate(format: "%K >= %d and %K <= %d",
+                               CdMessage.AttributeName.uid, firstUid,
+                               CdMessage.AttributeName.uid, lastUid)
+        }
+
+        static func parentFolder(_ parent: CdFolder,
+                                 uid: UInt) -> NSPredicate {
+            return NSPredicate(format: "parent = %@ and uid = %d",
+                               parent,
+                               uid)
+        }
+
+        static func belongingToUidAndUuidAndParentFolderAndAccount(uid: Int32,
+                                                             uuid: MessageID,
+                                                             folderName: String,
+                                                             account: CdAccount) -> NSPredicate {
+            return NSPredicate(format: "uid = %d AND uuid = %@ AND parent.name = %@ AND parent.account = %@",
+                               uid,
+                               uuid,
+                               folderName,
+                               account)
+        }
+
         static func flagged(value: Bool) -> NSPredicate {
             return NSPredicate(format: "%K = %d",
                                     RelationshipKeyPath.cdMessage_imap_localFlags + "." +
@@ -114,6 +143,15 @@ extension CdMessage {
             predicates.append(notImapFlagDeleted())
             predicates.append(notMarkedForMoveToFolder())
             return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        }
+
+        /// Returns a Predicate to filter based on the folder type passed by parameter.
+        /// - Parameter folderType: The folder type to filter
+        /// - Returns: The predicate to query.
+        static func isIn(folderOfType: FolderType) -> NSPredicate {
+            return NSPredicate(format: "%K = %d",
+                               RelationshipKeyPath.cdMessage_parent_typeRawValue,
+                               folderOfType.rawValue)
         }
 
         static func isInInbox() -> NSPredicate {
@@ -214,6 +252,46 @@ extension CdMessage {
             predicates.append(isNotFakeMessage())
 
             return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        }
+
+        /**
+         - Returns: The predicate (for CdMessage) to get all messages contained in that folder,
+         even the deleted ones, so we don't fetch them again from the server.
+         */
+        static func allMessagesIncludingDeleted(parentFolder: CdFolder,
+                                                fakeMessagesIncluded: Bool = false) -> NSPredicate {
+
+            let inParentFolder = NSPredicate(format: "%K = %@",
+                                             CdMessage.RelationshipName.parent,
+                                             parentFolder)
+            var p = [inParentFolder]
+            if !fakeMessagesIncluded {
+                let isNotFakeMessage = CdMessage.PredicateFactory.isNotFakeMessage()
+                p.append(isNotFakeMessage)
+            }
+
+            return NSCompoundPredicate(andPredicateWithSubpredicates: p)
+        }
+
+        /**
+         - Returns: The predicate (for CdMessage) to get all (undeleted, not marked to move to another folder, valid)
+         messages contained in that folder.
+         */
+        static func allMessages(parentFolder: CdFolder) -> NSPredicate {
+            let p1 = CdMessage.PredicateFactory
+                .allMessagesIncludingDeleted(parentFolder: parentFolder,
+                                             fakeMessagesIncluded: true)
+            let p2 = CdMessage.PredicateFactory.notImapFlagDeleted()
+            let p3 = CdMessage.PredicateFactory.notMarkedForMoveToFolder()
+            return NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2, p3])
+        }
+
+        static func allMessagesExistingOnServer(parentFolder: CdFolder) -> NSPredicate {
+            let p1 = CdMessage.PredicateFactory.allMessagesIncludingDeleted(parentFolder: parentFolder)
+            let p2 = NSPredicate(format: "%K != %d",
+                                 CdMessage.AttributeName.uid,
+                                 CdMessage.uidNeedsAppend)
+            return NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2])
         }
     }
 }

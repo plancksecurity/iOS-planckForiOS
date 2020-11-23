@@ -251,7 +251,7 @@ private class InitDataHtmlToAttributedTextSaxParserAttachmentDelegate: HtmlToAtt
         var result: Attachment? = nil
         session.performAndWait { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             for attachment in me.inlinedAttachments {
