@@ -27,6 +27,14 @@ class EmailViewController2: UIViewController {
     @IBOutlet private weak var showExternalContentButton: UIButton!
     @IBOutlet private weak var showExternalContentLabel: UILabel!
 
+    @IBAction func showExternalContentButtonPressed() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleDidTapShowExternalContentButton()
+    }
+
     private lazy var htmlViewerViewController: SecureWebViewController = {
         let storyboard = UIStoryboard(name: "Reusable", bundle: nil)
         guard let vc =
@@ -254,16 +262,16 @@ extension EmailViewController2: EmailViewModelDelegate {
         }
         vm.didRetrieveAttachments = true
     }
+
+    func didHandleShowExternalContentButtonPressed() {
+        removeExternalContentView()
+        tableView.reloadData()
+    }
 }
 
 //MARK: - Private
 
 extension EmailViewController2 {
-
-    @IBAction private func showExternalContent() {
-        viewModel?.shouldShowExternalContent = false
-        tableView.reloadData()
-    }
 
     private func removeExternalContentView() {
         showExternalContentView.isHidden = true
@@ -273,9 +281,9 @@ extension EmailViewController2 {
         if let htmlBody = viewModel?.htmlBody {
             cell.contentView.addSubview(htmlViewerViewController.view)
             htmlViewerViewController.view.fullSizeInSuperView()
-            if htmlBody.containsExternalContent() && vm.shouldShowHtmlViewer {
+            if htmlBody.containsExternalContent() && vm.showViewExternalContent {
                 showExternalContentView.isHidden = false
-            } else if !vm.shouldShowHtmlViewer {
+            } else if !vm.showViewExternalContent {
                 removeExternalContentView()
             }
             htmlViewerViewController.display(html: htmlBody, showExternalContent: vm.shouldShowExternalContent)

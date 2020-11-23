@@ -29,6 +29,8 @@ protocol EmailViewModelDelegate: class {
     /// Informs the attachments have been set.
     /// - Parameter indexPaths: The indexPath of the attachments
     func didSetAttachments(forRowsAt indexPaths: [IndexPath])
+    /// Informs the viewModel is ready to provide external content.
+    func didHandleShowExternalContentButtonPressed()
 }
 
 enum EmailRowType: String {
@@ -54,13 +56,15 @@ class EmailViewModel {
     /// Delegate to comunicate with Email View.
     public weak var delegate: EmailViewModelDelegate?
 
-    private var data: [Attachment]?
     private var rows: [EmailRowProtocol]
     private var message: Message
 
     // MARK: - Attachments
     public var didRetrieveAttachments: Bool = false
     public var isRetrievingAttachments: Bool = false
+
+    //MB: rename this. 
+    private var data: [Attachment]?
 
     private var attachments: [MessageModel.Attachment]
     private var viewContainers : [AttachmentViewContainer]?
@@ -88,10 +92,9 @@ class EmailViewModel {
     /// Indicates if the show external content button should be shown.
     public var shouldShowExternalContent: Bool = false
 
-    //MB:- rm doc.
-    // var showViewExternalContent = true
+    //MB:- rm doc. rename to shouldShowHtmlViewer
     /// Indicates if the html viewer should be shown.
-    public var shouldShowHtmlViewer: Bool = true
+    public var showViewExternalContent: Bool = true
 
     /// Yields the HTML message body if we can show it in a secure way or we have non-empty HTML content at all
     public var htmlBody: String? {
@@ -151,6 +154,12 @@ class EmailViewModel {
         case .attachment:
             return "attachmentsCell"
         }
+    }
+
+    func handleDidTapShowExternalContentButton() {
+        showViewExternalContent = false
+        shouldShowExternalContent = true
+        delegate?.didHandleShowExternalContentButtonPressed()
     }
 
     /// Retrieve the attachments.

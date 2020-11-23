@@ -710,7 +710,7 @@
                                                 <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                                 <state key="normal" title="Show External Content"/>
                                                 <connections>
-                                                    <action selector="showExternalContent:" destination="HVL-Ow-yrU" eventType="touchUpInside" id="Tpe-Dt-uWY"/>
+                                                    <action selector="showExternalContentButtonPressed" destination="HVL-Ow-yrU" eventType="touchUpInside" id="Lv9-ul-VI3"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="just some placeholder text for storyboard" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j6J-vb-VLn">
