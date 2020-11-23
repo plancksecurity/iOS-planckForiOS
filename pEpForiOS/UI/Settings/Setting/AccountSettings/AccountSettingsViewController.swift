@@ -252,41 +252,22 @@ extension AccountSettingsViewController {
     private func handleResetIdentity() {
         let title = NSLocalizedString("Reset", comment: "Account settings confirm to reset identity title alert")
         let message = NSLocalizedString("This action will reset your identity. \n Are you sure you want to reset?", comment: "Account settings confirm to reset identity title alert")
-
-        guard let pepAlertViewController =
-            PEPAlertViewController.fromStoryboard(title: title,
-                                                  message: message,
-                                                  paintPEPInTitle: true) else {
-                                                    Log.shared.errorAndCrash("Fail to init PEPAlertViewController")
-                                                    return
-        }
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
-        let cancelAction = PEPUIAlertAction(title: cancelTitle,
-                                            style: .pEpGray,
-                                            handler: { _ in
-                                                pepAlertViewController.dismiss(animated: true,
-                                                                               completion: nil)
-        })
-        pepAlertViewController.add(action: cancelAction)
         let resetTitle = NSLocalizedString("Reset", comment: "Reset account identity button title")
-        let resetAction = PEPUIAlertAction(title: resetTitle,
-                                           style: .pEpRed,
-                                           handler: { [weak self] _ in
-                                            pepAlertViewController.dismiss(animated: true, completion: nil)
-                                            guard let me = self else {
-                                                Log.shared.lostMySelf()
-                                                return
-                                            }
-                                            guard let vm = me.viewModel else {
-                                                Log.shared.errorAndCrash(message: "A view model is required")
-                                                return
-                                            }
-                                            vm.handleResetIdentity()
-        })
-        pepAlertViewController.add(action: resetAction)
-        pepAlertViewController.modalPresentationStyle = .overFullScreen
-        pepAlertViewController.modalTransitionStyle = .crossDissolve
-        present(pepAlertViewController, animated: true)
+        UIUtils.showTwoButtonAlert(withTitle: title, message: message, cancelButtonText: cancelTitle, positiveButtonText: resetTitle, cancelButtonAction: { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.dismiss(animated: true)
+        }, positiveButtonAction: { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.dismiss(animated: true)
+            me.viewModel?.handleResetIdentity()
+        }, style: PEPAlertViewController.AlertStyle.warn)
     }
 }
 
