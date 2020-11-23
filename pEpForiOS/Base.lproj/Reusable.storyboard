@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -15,8 +16,8 @@
                     <view key="view" contentMode="scaleToFill" id="shU-fE-sbz">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="zmK-TD-BLC"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6nX-dT-dIm" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -104,8 +105,8 @@
                     <view key="view" contentMode="scaleToFill" id="6XV-yY-DIJ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="exg-sf-cHu"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="Add to Contacts" id="Jan-ZA-zMd">
@@ -130,16 +131,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fiE-pm-mWd" customClass="KeyInputView" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="24" y="59" width="272" height="450"/>
+                                <rect key="frame" x="30" y="59" width="260" height="450"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="YMa-Kc-JoR">
-                                        <rect key="frame" x="0.0" y="10" width="272" height="440"/>
+                                        <rect key="frame" x="0.0" y="10" width="260" height="440"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="htI-ge-ZQj">
                                                 <rect key="frame" x="12" y="0.0" width="248" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ckp-rp-1Pd">
-                                                        <rect key="frame" x="102.5" y="5" width="43.5" height="20.5"/>
+                                                        <rect key="frame" x="96.5" y="5" width="43.5" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -173,10 +174,10 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lPc-Pm-3dz">
-                                                <rect key="frame" x="12" y="67" width="248" height="317"/>
+                                                <rect key="frame" x="12" y="67" width="236" height="317"/>
                                                 <subviews>
                                                     <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="GC3-wG-GHD">
-                                                        <rect key="frame" x="8" y="8" width="232" height="284.5"/>
+                                                        <rect key="frame" x="8" y="8" width="220" height="301"/>
                                                         <gestureRecognizers/>
                                                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
@@ -187,7 +188,7 @@
                                                         </connections>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstItem="GC3-wG-GHD" firstAttribute="leading" secondItem="lPc-Pm-3dz" secondAttribute="leading" constant="8" id="Df7-Tf-iiZ"/>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="128" id="VE1-uB-34b"/>
@@ -198,29 +199,29 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FhS-sc-rLm">
-                                                <rect key="frame" x="0.0" y="394" width="272" height="46"/>
+                                                <rect key="frame" x="0.0" y="394" width="260" height="46"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="H3i-qp-hfc">
                                                         <rect key="frame" x="0.0" y="1" width="272" height="45"/>
                                                         <subviews>
-                                                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="emU-WV-Kap">
-                                                                <rect key="frame" x="0.0" y="0.0" width="90" height="45"/>
-                                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="emU-WV-Kap">
+                                                                <rect key="frame" x="0.0" y="0.0" width="86" height="45"/>
+                                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                                                 <state key="normal" title="Button"/>
                                                                 <connections>
                                                                     <action selector="didPress:" destination="GZS-2u-rXb" eventType="touchUpInside" id="Qh9-Xn-6Jk"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rgh-E1-f1w">
-                                                                <rect key="frame" x="91" y="0.0" width="90" height="45"/>
+                                                            <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rgh-E1-f1w">
+                                                                <rect key="frame" x="87" y="0.0" width="86" height="45"/>
                                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                                                 <state key="normal" title="Button"/>
                                                                 <connections>
                                                                     <action selector="didPress:" destination="GZS-2u-rXb" eventType="touchUpInside" id="7oe-KK-94F"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w5A-sP-MB2">
-                                                                <rect key="frame" x="182" y="0.0" width="90" height="45"/>
+                                                            <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w5A-sP-MB2">
+                                                                <rect key="frame" x="174" y="0.0" width="86" height="45"/>
                                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                                                 <state key="normal" title="Button"/>
                                                                 <connections>
@@ -269,6 +270,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="O4B-B0-4XF"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="fiE-pm-mWd" firstAttribute="centerX" secondItem="O4B-B0-4XF" secondAttribute="centerX" id="48M-KR-Nr8"/>
@@ -276,7 +278,6 @@
                             <constraint firstItem="O4B-B0-4XF" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="fiE-pm-mWd" secondAttribute="bottom" constant="35" id="Qq0-YL-fDN"/>
                             <constraint firstItem="fiE-pm-mWd" firstAttribute="width" secondItem="IdW-oi-ZvZ" secondAttribute="width" multiplier="0.85" id="tvp-EQ-XW9"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="O4B-B0-4XF"/>
                     </view>
                     <connections>
                         <outlet property="accept" destination="w5A-sP-MB2" id="Lcb-sF-aRM"/>
@@ -297,7 +298,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-847.20000000000005" y="356.67166416791605"/>
+            <point key="canvasLocation" x="-278" y="-353"/>
         </scene>
         <!--Alert View Controller-->
         <scene sceneID="Xge-Qw-SEe">
@@ -400,13 +401,13 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="93N-jY-xaV"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="93N-jY-xaV" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="cFd-dO-xyH" secondAttribute="bottom" constant="35" id="Xae-3c-nmf"/>
                             <constraint firstItem="cFd-dO-xyH" firstAttribute="centerY" secondItem="93N-jY-xaV" secondAttribute="centerY" id="lMS-p1-w63"/>
                             <constraint firstItem="cFd-dO-xyH" firstAttribute="centerX" secondItem="93N-jY-xaV" secondAttribute="centerX" id="qDr-ez-6VZ"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="93N-jY-xaV"/>
                     </view>
                     <connections>
                         <outlet property="alertImageView" destination="tFF-uc-upe" id="eBz-ke-eZc"/>
@@ -420,7 +421,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W8j-ep-qHS" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="mgg-Oe-QNz"/>
             </objects>
-            <point key="canvasLocation" x="-127.2" y="356.67166416791605"/>
+            <point key="canvasLocation" x="443" y="-353"/>
         </scene>
         <!--Key Sync Wizard View Controller-->
         <scene sceneID="3xa-QV-des">
@@ -429,17 +430,19 @@
                     <view key="view" contentMode="scaleToFill" id="88d-5G-bdY">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="iQt-NK-qAI"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dg0-We-n2Y" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1309" y="357"/>
+            <point key="canvasLocation" x="1247" y="-353"/>
         </scene>
     </scenes>
     <resources>
-        <image name="pEp-status-green_white-border" width="21" height="21"/>
         <image name="pEpForiOS-icon-languagechange" width="100" height="100"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
