@@ -188,7 +188,6 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
                 // Loosing self is a valid case here. The view might have been dismissed.
                 return
             }
-            // Loosing self is a valid use case here. We might have been dismissed.
             DispatchQueue.main.async {
                 // We intentionally do NOT use me.tableView.refreshControl?.endRefreshing() here.
                 // See comments in `setupRefreshControl` for details.
@@ -642,7 +641,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         // (tap on status bar) is broken in this view. It ands up with a content offset > (0.0),
         // showing the inactive pull-to-refresh spinner. This is probably caused by our workaround
         // for adding a pull-to-refresh spinner without gliches.
-        //To work around the wron content offset, we intersept the default implementation here and
+        //To work around the wrong content offset, we intersept the default implementation here and
         // trigger scoll to top ourselfs.
         guard tableView.numberOfRows(inSection: 0) > 0 else {
             // No cells, no scroll to cell. Else we crash.

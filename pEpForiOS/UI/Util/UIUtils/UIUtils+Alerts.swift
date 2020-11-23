@@ -18,7 +18,7 @@ extension UIUtils {
     ///   - completion: called when "OK" has been pressed
     public static func showAlertWithOnlyPositiveButton(title: String,
                                                        message: String?,
-                                                       style: AlertStyle = .default,
+                                                       style: PEPAlertViewController.AlertStyle = .default,
                                                        completion: (()->Void)? = nil) {
         guard let alertViewController = UIUtils.getAlert(withTitle: title,
                                                          message: message,
@@ -48,7 +48,7 @@ extension UIUtils {
                                           positiveButtonText: String = NSLocalizedString("OK", comment: "Default positive button text"),
                                           cancelButtonAction: (() -> Void)? = nil,
                                           positiveButtonAction: @escaping () -> Void,
-                                          style: AlertStyle) {
+                                          style: PEPAlertViewController.AlertStyle = .default) {
         guard let alertViewController = UIUtils.getAlert(withTitle: title,
                                                          message: message,
                                                          cancelButtonText: cancelButtonText,
@@ -157,28 +157,19 @@ extension UIUtils {
                                  positiveButtonText: String = NSLocalizedString("OK", comment: "Default positive button text"),
                                  cancelButtonAction: (() -> Void)? = nil,
                                  positiveButtonAction: @escaping () -> Void,
-                                 style: AlertStyle,
+                                 style: PEPAlertViewController.AlertStyle,
                                  numberOfButtons: NumberOfButtons) -> PEPAlertViewController? {
         guard let pepAlertViewController = PEPAlertViewController.fromStoryboard(title: title, message: message, paintPEPInTitle: true) else {
             Log.shared.errorAndCrash("Fail to init PEPAlertViewController")
             return nil
         }
-        var primaryColor: UIColor
-        var secondaryColor: UIColor
-        switch style {
-        case .default:
-            primaryColor = .pEpGreen
-            secondaryColor = .pEpGreen
-        case .warn:
-            primaryColor = .pEpRed
-            secondaryColor = .pEpGray
-        }
-        let positiveAction = PEPUIAlertAction(title: positiveButtonText, style: primaryColor) { _ in
+        pepAlertViewController.alertStyle = style
+        let positiveAction = PEPUIAlertAction(title: positiveButtonText, style: pepAlertViewController.primaryColor) { _ in
             positiveButtonAction()
             pepAlertViewController.dismiss()
         }
         if numberOfButtons == .two {
-            let cancelAction = PEPUIAlertAction(title: cancelButtonText, style: secondaryColor) { _ in
+            let cancelAction = PEPUIAlertAction(title: cancelButtonText, style: pepAlertViewController.secondaryColor) { _ in
                 cancelButtonAction?()
                 pepAlertViewController.dismiss()
             }

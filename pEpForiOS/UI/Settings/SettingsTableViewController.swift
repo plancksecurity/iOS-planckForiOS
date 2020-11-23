@@ -308,7 +308,7 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
         UIUtils.showTwoButtonAlert(withTitle: title, message: message, cancelButtonText: cancelTitle, positiveButtonText: resetTitle, positiveButtonAction: {
             callback()
         },
-        style: .warn)
+        style: PEPAlertViewController.AlertStyle.warn)
     }
 }
 
