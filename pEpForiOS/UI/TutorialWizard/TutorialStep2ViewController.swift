@@ -92,11 +92,11 @@ extension TutorialStep2ViewController {
 extension TutorialStep2ViewController {
 
     func adjustConstraintsIfNeeded() {
-        guard let superView = view.superview, isIpad else {
+        guard let superView = view.superview, UIDevice.isIpad else {
             Log.shared.info("Superview is missing or is not needed to adjust constraints here")
             return
         }
-        containerLeadingConstraint.constant = isLandscape ? Constants.Landscape.containerLeading : Constants.Portrait.containerLeading
+        containerLeadingConstraint.constant = UIDevice.isLandscape ? Constants.Landscape.containerLeading : Constants.Portrait.containerLeading
         distanceBetweenLabels.constant = 50
         secureCenterX.constant = -6
         superView.layoutIfNeeded()

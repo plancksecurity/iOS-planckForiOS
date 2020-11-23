@@ -301,29 +301,32 @@ extension AccountSettingsViewModel {
     private func rowTitle(for type : RowType) -> String {
         switch type {
         case .name:
-            return NSLocalizedString("Name", comment: "\(type.rawValue) field")
+            return NSLocalizedString("Name", comment: "Name label in account settings")
         case .email:
-            return NSLocalizedString("Email", comment: "\(type.rawValue) field")
+            return NSLocalizedString("Email", comment: "Email label in account settings")
         case .password:
-            return NSLocalizedString("Password", comment: "\(type.rawValue) field")
+            return NSLocalizedString("Password", comment: "Password label in account settings")
         case .pepSync:
-            return NSLocalizedString("p≡p Sync", comment: "\(type.rawValue) field")
+            return NSLocalizedString("p≡p Sync", comment: "pEp sync label in account settings")
         case .reset:
-            return NSLocalizedString("Reset", comment: "\(type.rawValue) field")
+            return NSLocalizedString("Reset", comment: "Reset label in account settings")
         case .server:
-            return NSLocalizedString("Server", comment: "\(type.rawValue) field")
+            return NSLocalizedString("Server", comment: "Server label in account settings")
         case .port:
-            return NSLocalizedString("Port", comment: "\(type.rawValue) field")
+            return NSLocalizedString("Port", comment: "Port label in account settings")
         case .tranportSecurity:
-            return NSLocalizedString("Transport Security", comment: "\(type.rawValue) field")
+            return NSLocalizedString("Transport Security",
+                                     comment: "Transport security label in account settings")
         case .username:
-            return NSLocalizedString("Username", comment: "\(type.rawValue) field")
+            return NSLocalizedString("Username", comment: "User name label in account settings")
         case .oauth2Reauth:
-            return NSLocalizedString("OAuth2 Reauthorization", comment: "\(type.rawValue) field")
+            return NSLocalizedString("OAuth2 Reauthorization",
+                                     comment: "OAuth2 Reauthorization label in account settings")
         case .includeInUnified:
-            return NSLocalizedString("Include in Unified Folders", comment: "\(type.rawValue) field")
+            return NSLocalizedString("Include in Unified Folders",
+                                     comment: "Include in Unified Folders label in account settings")
         case .signature:
-            return NSLocalizedString("Signature",comment: "\(type.rawValue)")
+            return NSLocalizedString("Signature", comment: "Signature label in account settings")
         }
     }
 

@@ -7,10 +7,8 @@ translationdir=../pEp-Translate/
 mytmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
 
 appdir=$mytmpdir/pEpForiOS
-mmdir=$mytmpdir/MessageModel
 
 mkdir $appdir
-mkdir $mmdir
 
 for lang in $languages
 do
