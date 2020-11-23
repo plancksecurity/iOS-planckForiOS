@@ -281,9 +281,9 @@ extension EmailViewController2 {
         if let htmlBody = viewModel?.htmlBody {
             cell.contentView.addSubview(htmlViewerViewController.view)
             htmlViewerViewController.view.fullSizeInSuperView()
-            if htmlBody.containsExternalContent() && vm.showViewExternalContent {
+            if htmlBody.containsExternalContent() && vm.shouldShowExternalContentView {
                 showExternalContentView.isHidden = false
-            } else if !vm.showViewExternalContent {
+            } else if !vm.shouldShowExternalContentView {
                 removeExternalContentView()
             }
             htmlViewerViewController.display(html: htmlBody, showExternalContent: vm.shouldShowExternalContent)

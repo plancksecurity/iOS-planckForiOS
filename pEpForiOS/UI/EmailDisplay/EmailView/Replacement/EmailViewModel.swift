@@ -88,13 +88,11 @@ class EmailViewModel {
         self.rows = rowsTypes.map { Row(type: $0, message: message) }
     }
 
-    // var showExternalContent = false
     /// Indicates if the show external content button should be shown.
     public var shouldShowExternalContent: Bool = false
 
-    //MB:- rm doc. rename to shouldShowHtmlViewer
     /// Indicates if the html viewer should be shown.
-    public var showViewExternalContent: Bool = true
+    public var shouldShowExternalContentView: Bool = true
 
     /// Yields the HTML message body if we can show it in a secure way or we have non-empty HTML content at all
     public var htmlBody: String? {
@@ -157,7 +155,7 @@ class EmailViewModel {
     }
 
     func handleDidTapShowExternalContentButton() {
-        showViewExternalContent = false
+        shouldShowExternalContentView = false
         shouldShowExternalContent = true
         delegate?.didHandleShowExternalContentButtonPressed()
     }
