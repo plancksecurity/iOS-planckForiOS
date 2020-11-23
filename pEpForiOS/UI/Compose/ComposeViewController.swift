@@ -346,8 +346,7 @@ extension ComposeViewController: ComposeViewModelDelegate {
                                    cancelButtonText: cancelButtonText,
                                    positiveButtonText: positiveButtonText,
                                    cancelButtonAction: cancelButtonAction,
-                                   positiveButtonAction: positiveButtonAction,
-                                   style: .warn)
+                                   positiveButtonAction: positiveButtonAction)
     }
 
    func dismiss() {

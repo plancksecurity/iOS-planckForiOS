@@ -115,9 +115,7 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
             setContactImage(image: viewModel.senderContactImage)
         } else {
             viewModel.getProfilePicture { [weak self] image in
-                DispatchQueue.main.async {
-                    self?.setContactImage(image: image)
-                }
+                self?.setContactImage(image: image)
             }
         }
         viewModel.getSecurityBadge { [weak self] (badgeImage) in

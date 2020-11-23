@@ -8,6 +8,7 @@
 
 @testable import MessageModel
 import CoreData
+@testable import MessageModel
 
 extension CdMessage {
     func isValidMessage() -> Bool {

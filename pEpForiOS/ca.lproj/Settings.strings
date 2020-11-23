@@ -4,9 +4,6 @@
 /* Class = "UIViewController"; title = "Extra Keys"; ObjectID = "4fP-ku-UtU"; */
 "4fP-ku-UtU.title" = "Claus addicionals";
 
-/* Class = "UILabel"; text = "Reset"; ObjectID = "4L6-wx-Ghl"; */
-"4L6-wx-Ghl.text" = "Reset";
-
 /* Class = "UILabel"; text = "Detail"; ObjectID = "4Ql-jN-Oal"; */
 "4Ql-jN-Oal.text" = "Detall";
 
@@ -22,32 +19,14 @@
 /* Class = "UILabel"; text = "Password"; ObjectID = "aYO-l7-9iG"; */
 "aYO-l7-9iG.text" = "Contrasenya";
 
-/* Class = "UILabel"; text = "Username"; ObjectID = "azH-be-f3A"; */
-"azH-be-f3A.text" = "Nom d'usuari";
-
-/* Class = "UILabel"; text = "Certificate"; ObjectID = "cmM-dq-fKg"; */
-"cmM-dq-fKg.text" = "Certificat";
-
 /* Class = "UILabel"; text = "Title"; ObjectID = "D99-2G-2i2"; */
 "D99-2G-2i2.text" = "Títol";
-
-/* Class = "UILabel"; text = "Transport Security"; ObjectID = "daw-LF-EZF"; */
-"daw-LF-EZF.text" = "Seguretat del transport:";
 
 /* Class = "UILabel"; text = "Transport Security"; ObjectID = "dpq-4F-9sG"; */
 "dpq-4F-9sG.text" = "Seguretat del transport";
 
-/* Class = "UILabel"; text = "Server"; ObjectID = "DQ0-sB-CRx"; */
-"DQ0-sB-CRx.text" = "Servidor:";
-
-/* Class = "UILabel"; text = "Password"; ObjectID = "En6-h6-xZD"; */
-"En6-h6-xZD.text" = "Contrasenya:";
-
 /* Class = "UILabel"; text = "Title"; ObjectID = "GAd-Jm-sFz"; */
 "GAd-Jm-sFz.text" = "Títol";
-
-/* Class = "UILabel"; text = "Transport Security"; ObjectID = "hAL-c1-ngD"; */
-"hAL-c1-ngD.text" = "Seguretat del transport:";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "hHr-Jq-PRg"; */
 "hHr-Jq-PRg.text" = "Títol";
@@ -57,9 +36,6 @@
 
 /* Class = "UIButton"; normalTitle = "Set Own Key"; ObjectID = "lzc-xZ-iKm"; */
 "lzc-xZ-iKm.normalTitle" = "Definiu la clau pròpia";
-
-/* Class = "UILabel"; text = "Email"; ObjectID = "Ne5-6o-O4F"; */
-"Ne5-6o-O4F.text" = "Correu electrònic:";
 
 /* Class = "UILabel"; text = "Email"; ObjectID = "o8M-bM-KZX"; */
 "o8M-bM-KZX.text" = "Correu electrònic";
@@ -76,17 +52,11 @@
 /* Class = "UILabel"; text = "Title"; ObjectID = "Pgw-uY-8FO"; */
 "Pgw-uY-8FO.text" = "Títol";
 
-/* Class = "UILabel"; text = "Name"; ObjectID = "QcW-va-Qh4"; */
-"QcW-va-Qh4.text" = "Nom:";
-
 /* Class = "UILabel"; text = "Username"; ObjectID = "RYB-AT-TSB"; */
 "RYB-AT-TSB.text" = "Nom d'usuari";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "s9I-CU-fSE"; */
 "s9I-CU-fSE.text" = "Nom";
-
-/* Class = "UILabel"; text = "p≡p Sync"; ObjectID = "Tjb-uM-eUF"; */
-"Tjb-uM-eUF.text" = "p≡p Sync";
 
 /* Class = "UILabel"; text = "Username"; ObjectID = "tt1-bn-s7P"; */
 "tt1-bn-s7P.text" = "Nom d'usuari";
@@ -100,30 +70,12 @@
 /* Class = "UILabel"; text = "set_own_key Error"; ObjectID = "ujL-Pa-uXD"; Note = "Don't localize this"; */
 "ujL-Pa-uXD.text" = "Error set_own_key";
 
-/* Class = "UILabel"; text = "Port"; ObjectID = "Vdb-LS-4JH"; */
-"Vdb-LS-4JH.text" = "Port:";
-
 /* Class = "UILabel"; text = "Title"; ObjectID = "vjp-2e-dTM"; */
 "vjp-2e-dTM.text" = "Títol";
-
-/* Class = "UILabel"; text = "Username"; ObjectID = "vzX-eS-BYY"; */
-"vzX-eS-BYY.text" = "Nom d'usuari";
-
-/* Class = "UILabel"; text = "Server"; ObjectID = "weI-Bw-0PK"; */
-"weI-Bw-0PK.text" = "Servidor:";
-
-/* Class = "UILabel"; text = "OAuth2 Reauthorization"; ObjectID = "wxK-W7-y8D"; */
-"wxK-W7-y8D.text" = "Reautorització OAuth2";
-
-/* Class = "UILabel"; text = "Label"; ObjectID = "X0Z-Ju-XOO"; */
-"X0Z-Ju-XOO.text" = "Etiqueta";
 
 /* Class = "UILabel"; text = "Server"; ObjectID = "x85-ha-uBw"; */
 "x85-ha-uBw.text" = "Servidor";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "xiv-OD-YNL"; */
 "xiv-OD-YNL.text" = "Títol";
-
-/* Class = "UILabel"; text = "Port"; ObjectID = "zDb-ax-ng4"; */
-"zDb-ax-ng4.text" = "Port:";
 

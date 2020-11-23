@@ -152,7 +152,6 @@ extension TrustedServerSettingsViewController: TrustedServerSettingsViewModelDel
                                    cancelButtonText: cancelActionTitle,
                                    positiveButtonText: trustActionTitle,
                                    cancelButtonAction: cancelAction,
-                                   positiveButtonAction: positiveAction,
-                                   style: .warn)
+                                   positiveButtonAction: positiveAction)
     }
 }

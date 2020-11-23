@@ -16,16 +16,6 @@ public enum VerifiableAccountValidationError: Error {
     case invalidUserData
 }
 
-extension VerifiableAccountValidationError: LocalizedError {
-    public var errorDescription: String? {
-        switch self {
-        case .invalidUserData:
-            return NSLocalizedString("Some fields seems not to be valid. Please check all input fields.",
-                                     comment: "Error description when failing to validate account fields")
-        }
-    }
-}
-
 /// The delegate used for the `VerifiableAccountProtocol`.
 public protocol VerifiableAccountDelegate: class {
     /// Gets called once the verification has finished, successfully or not.
