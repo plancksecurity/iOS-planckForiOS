@@ -322,8 +322,7 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
                                    cancelButtonText: cancelButtonText,
                                    positiveButtonText: positiveButtonText,
                                    cancelButtonAction: cancelButtonAction,
-                                   positiveButtonAction: positiveButtonAction,
-                                   style: .default)
+                                   positiveButtonAction: positiveButtonAction)
 
     }
 
