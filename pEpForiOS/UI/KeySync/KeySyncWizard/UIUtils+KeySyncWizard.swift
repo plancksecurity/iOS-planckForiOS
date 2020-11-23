@@ -23,9 +23,9 @@ extension UIUtils {
     /// - Returns: the view controller of the key sync, if it's presented, nil otherwise.
     @discardableResult
     static public func showKeySyncWizard(meFPR: String,
-                                            partnerFPR: String,
-                                            isNewGroup: Bool,
-                                            completion: @escaping (KeySyncWizardViewController.Action) -> Void ) -> KeySyncWizardViewController? {
+                                         partnerFPR: String,
+                                         isNewGroup: Bool,
+                                         completion: @escaping (KeySyncWizardViewController.Action) -> Void ) -> KeySyncWizardViewController? {
         guard let pEpSyncWizard = KeySyncWizardViewController.fromStoryboard(meFPR: meFPR,
                                                                              partnerFPR: partnerFPR,
                                                                              isNewGroup: isNewGroup,
@@ -62,34 +62,22 @@ extension UIUtils {
 
 extension UIUtils {
 
-    /// Present an alert view if possible.
-    /// - Parameter keySyncErrorViewController: The view controller to present.
     @discardableResult
-    private static func show(_ keySyncErrorViewController: PEPAlertViewController) -> PEPAlertViewController? {
-        return UIUtils.show(keySyncErrorViewController, ofType: PEPAlertViewController.self)
-    }
-
-    /// Present the keysync wizard if possible.
-    /// - Parameter wizardViewController: The wizard view controller
-    /// - Returns: The presented wizard View controller . Nil if it wasn't presented.
-    @discardableResult
-    private static func show(_ wizardViewController: KeySyncWizardViewController) -> KeySyncWizardViewController? {
-        return UIUtils.show(wizardViewController, ofType: KeySyncWizardViewController.self)
-    }
-
-    @discardableResult
-    private static func show<T: UIViewController>(_ viewController: T, ofType type: T.Type) -> T? {
-        // If the presenter is an alert view
-        // - Do not show another alert view.
-        // - Only dismiss and present a KeySync wizard if needed.
+    private static func show<T: UIViewController>(_ viewController: T) -> T? {
+        // If the presenter is an pEp Sync Error alert view
+        //  - Do not show another pEp Sync Error alert view.
+        //  - Dismiss and present a KeySync wizard if needed.
         //
-        // If the presenter is a KeySync wizard, dismiss it and present whatever is received.
+        // If the presenter is a KeySync wizard
+        //  - Dismiss it and present whatever is received.
+        //
         // If the presenter is not an alert view nor a KeySync wizard, just present whatever is received.
         let presenter = UIApplication.currentlyVisibleViewController()
         if presenter is PEPAlertViewController {
             if viewController is PEPAlertViewController {
                 return nil
             } else if viewController is KeySyncWizardViewController {
+                // dismiss pEp Sync Errror alert in case pEp Sync Wizard is about to start again
                 dismissAndpresent(viewController: viewController, withPresenter: presenter)
                 return viewController
             }
@@ -114,6 +102,3 @@ extension UIUtils {
         }
     }
 }
-
-
-
