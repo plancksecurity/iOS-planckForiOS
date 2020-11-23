@@ -1,35 +1,8 @@
-/* Class = "UILabel"; text = "If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle."; ObjectID = "5Cq-ai-hYf"; */
-"5Cq-ai-hYf.text" = "Si las Trustwords no son correctas, podría ser un ataque de intermediario.";
-
-/* Class = "UILabel"; text = "p≡p uses a Privacy Status icon to indicate how secure your communication is"; ObjectID = "6p7-rU-UIJ"; */
-"6p7-rU-UIJ.text" = "p≡p usa un ícono de Estado de Privacidad para indicar qué tan segura es su comunicación";
-
-/* Class = "UILabel"; text = "When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted. "; ObjectID = "7SL-dj-Z7j"; */
-"7SL-dj-Z7j.text" = "Cuando confirme que las Trustwords de su interlocutor son correctas, su comunicación será completamente Segura & De confianza. ";
-
-/* Class = "UILabel"; text = "This Privacy Status Icon is shown as an Icon the user's avatar"; ObjectID = "9zn-gN-7aV"; */
-"9zn-gN-7aV.text" = "Este icono de Estado de Privacidad se muestra como un icono del avatar del usuario";
-
-/* Class = "UILabel"; text = "And in the top bar when you open or write an email:"; ObjectID = "26J-Qa-GAl"; */
-"26J-Qa-GAl.text" = "Y en la barra superior cuando abres o escribes un correo electrónico:";
-
 /* Class = "UILabel"; text = "Name"; ObjectID = "aAW-1y-cXc"; */
 "aAW-1y-cXc.text" = "Nombre";
 
-/* Class = "UILabel"; text = "You can close this tutorial anytime with the Skip button."; ObjectID = "B2w-Dk-0sO"; */
-"B2w-Dk-0sO.text" = "Puede cerrar este tutorial en cualquier momento con el botón Saltar.";
-
 /* Class = "UILabel"; text = "Label"; ObjectID = "ckp-rp-1Pd"; */
 "ckp-rp-1Pd.text" = "Etiqueta";
-
-/* Class = "UILabel"; text = "Secure & Trusted"; ObjectID = "DFW-OW-8OC"; */
-"DFW-OW-8OC.text" = "Seguro & Trusted";
-
-/* Class = "UILabel"; text = "Handshake"; ObjectID = "E4b-mc-IYT"; */
-"E4b-mc-IYT.text" = "Handshake";
-
-/* Class = "UILabel"; text = "Mistrusted"; ObjectID = "eK9-eY-X1L"; */
-"eK9-eY-X1L.text" = "Desconfiado";
 
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "emU-WV-Kap"; */
 "emU-WV-Kap.normalTitle" = "Botón";
@@ -37,14 +10,8 @@
 /* Class = "UILabel"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."; ObjectID = "GC3-wG-GHD"; */
 "GC3-wG-GHD.text" = "Miissing English";
 
-/* Class = "UILabel"; text = "Secure"; ObjectID = "I8H-Tq-jkV"; */
-"I8H-Tq-jkV.text" = "Seguro";
-
 /* Class = "UINavigationItem"; title = "Add to Contacts"; ObjectID = "Jan-ZA-zMd"; */
 "Jan-ZA-zMd.title" = "Añadir contactos";
-
-/* Class = "UILabel"; text = "When you click on the Privacy Status icon in the top bar, you will get to the Handshake, where you can verify your communication partner. "; ObjectID = "Jbi-yG-9Il"; */
-"Jbi-yG-9Il.text" = "Al hacer clic en el ícono Estado de Privacidad en la barra superior, accederá al Handshake, donde podrá verificar a su interlocutor. ";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "kNd-Jx-X9l"; */
 "kNd-Jx-X9l.text" = "Etiqueta";
@@ -52,42 +19,12 @@
 /* Class = "UILabel"; text = "Label"; ObjectID = "KYt-Qv-FPp"; */
 "KYt-Qv-FPp.text" = "Etiqueta";
 
-/* Class = "UILabel"; text = "Email"; ObjectID = "Lcu-U0-qEs"; */
-"Lcu-U0-qEs.text" = "Correo electrónico";
-
-/* Class = "UILabel"; text = "Secure"; ObjectID = "orZ-GB-OGi"; */
-"orZ-GB-OGi.text" = "Seguro";
-
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Rgh-E1-f1w"; */
 "Rgh-E1-f1w.normalTitle" = "Botón";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "rPi-Px-Pyp"; */
 "rPi-Px-Pyp.text" = "Etiqueta";
 
-/* Class = "UIButton"; accessibilityLabel = "confirmButton"; ObjectID = "SR8-6c-hDL"; */
-"SR8-6c-hDL.accessibilityLabel" = "Botónconfirmar";
-
-/* Class = "UIButton"; normalTitle = "Confirm"; ObjectID = "SR8-6c-hDL"; */
-"SR8-6c-hDL.normalTitle" = "Confirmar";
-
-/* Class = "UIButton"; accessibilityLabel = "wrongButton"; ObjectID = "SUa-gz-P97"; */
-"SUa-gz-P97.accessibilityLabel" = "Botónequivocado";
-
-/* Class = "UIButton"; normalTitle = "Decline"; ObjectID = "SUa-gz-P97"; */
-"SUa-gz-P97.normalTitle" = "Rechazar";
-
-/* Class = "UILabel"; text = "With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact."; ObjectID = "uqG-OB-ggb"; */
-"uqG-OB-ggb.text" = "Con este Estado de Privacidad, toda la comunicación es segura, pero para confirmar que su contacto es realmente la persona que conoce, debe comparar las Trustwords con este contacto.";
-
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "w5A-sP-MB2"; */
 "w5A-sP-MB2.normalTitle" = "Botón";
-
-/* Class = "UILabel"; text = "Welcome to the p≡p Tutorial"; ObjectID = "ynz-KT-KJl"; */
-"ynz-KT-KJl.text" = "Bienvenido al Tutorial p≡p";
-
-/* Class = "UILabel"; text = "OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER"; ObjectID = "zd3-Y1-16M"; */
-"zd3-Y1-16M.text" = "DISYUNTIVO   ESTALINIANO   POSTOPERATORIO   IRRÍTAME   CALIMA";
-
-/* Class = "UILabel"; text = "When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted"; ObjectID = "Zhc-gu-hRF"; */
-"Zhc-gu-hRF.text" = "Cuando se confirme que las Trustwords son correctas y se realiza el Handshake, la comunicación será completamente segura y confiable";
 
