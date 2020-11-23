@@ -7,7 +7,6 @@
 //
 
 import UIKit
-
 import pEpIOSToolbox
 
 final class EditableAccountSettingsTableViewController: UITableViewController {
@@ -50,15 +49,22 @@ final class EditableAccountSettingsTableViewController: UITableViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGestureRecognizer)
         setUpView()
         configureView(for: traitCollection)
         setFonts()
+    }
+
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
 
 // MARK: - UITextFieldDelegate
 
 extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
+
     func textFieldDidBeginEditing(_ textField: UITextField) {
         firstResponder = textField
         reloadPickerIfNeeded()
@@ -205,7 +211,6 @@ extension EditableAccountSettingsTableViewController {
     }
 }
 
-
 // MARK: - Accessibility
 
 extension EditableAccountSettingsTableViewController {
@@ -252,10 +257,10 @@ extension EditableAccountSettingsTableViewController {
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-      super.traitCollectionDidChange(previousTraitCollection)
-      if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-        configureView(for: traitCollection)
-      }
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            configureView(for: traitCollection)
+        }
     }
 
     private func configureView(for traitCollection: UITraitCollection) {

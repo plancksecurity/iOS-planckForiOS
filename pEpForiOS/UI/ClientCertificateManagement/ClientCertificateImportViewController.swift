@@ -174,8 +174,7 @@ extension ClientCertificateImportViewController {
                                     me.dismiss(animated: true, completion: nil)
                                    }, positiveButtonAction: {
                                     // We don't need to do something here. Our expectation is close this alert
-                                   },
-                                   style: .warn)
+                                   })
     }
 }
 
