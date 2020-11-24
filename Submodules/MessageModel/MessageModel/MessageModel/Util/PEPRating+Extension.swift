@@ -64,10 +64,6 @@ extension PEPRating {
              .mistrust,
              .underAttack:
             return true
-        default:
-            Log.shared.errorAndCrash(
-                "cannot decide isUnderAttack() for %@", self.rawValue)
-            return false
         }
     }
 }

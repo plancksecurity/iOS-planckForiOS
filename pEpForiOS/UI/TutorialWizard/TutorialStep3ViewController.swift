@@ -43,7 +43,7 @@ class TutorialStep3ViewController: TutorialStepViewController {
     }
     
     private func adjustConstraintsIfNeeded() {
-        guard let superView = view.superview, isIpad else {
+        guard let superView = view.superview, UIDevice.isIpad else {
             Log.shared.info("Superview is missing or is not needed to adjust constraints here")
             return
         }

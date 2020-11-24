@@ -54,34 +54,6 @@ class MessageViewModelTests: AccountDrivenTestBase {
         folder.session.commit()
     }
 
-    //PRAGMA - MARK: TESTS
-
-    func testToFieldOneRecipientFormat() {
-        givenViewModelRepresentsOneRecipientMessage()
-        let toString = viewModel.getTo().string
-        XCTAssertEqual(toString, Defaults.Outputs.toField)
-    }
-
-    func testToFieldContainsAllRecipients() {
-        givenViewModelRepresentsMultipleRecipientMessage()
-        let toString = viewModel.getTo().string
-        var addressesArePresent = true
-        for address in Defaults.Inputs.toAddresses {
-            if !toString.contains(find: address) {
-                addressesArePresent = false
-                break
-            }
-        }
-        XCTAssertTrue(addressesArePresent)
-    }
-
-    func testFromField() {
-        givenViewModelRepresentsOneRecipientMessage()
-        let from = viewModel.from
-        XCTAssertEqual(from, Defaults.Inputs.fromAddress)
-
-    }
-
     func testSubjectField() {
         givenViewModelRepresentsASubjectAndBodyMessage()
         let subject = viewModel.subject
@@ -133,18 +105,6 @@ class MessageViewModelTests: AccountDrivenTestBase {
         wait(for: [expectation], timeout: specificWaitTime)
     }
 
-    func testFormattedBody() {
-        givenViewModelRepresentsMessageWithFormattedBody()
-        let formattedMessage = viewModel.longMessageFormatted
-        XCTAssertEqual(formattedMessage, Defaults.Inputs.longMessageFormated)
-    }
-
-    func testDateSent() {
-        givenViewModelRepresentsMessageWithDate()
-        let dateSent = viewModel.dateSent
-        XCTAssertEqual(dateSent, Defaults.Inputs.sentDate)
-    }
-
     func testDateSentText() {
         givenViewModelRepresentsMessageWithDate()
         let dateSentText = viewModel.dateText
@@ -162,51 +122,6 @@ class MessageViewModelTests: AccountDrivenTestBase {
         let shouldShowAttachmentIcon = viewModel.showAttchmentIcon
         XCTAssertFalse(shouldShowAttachmentIcon)
     }
-
-    func testProfilePictureIsCalled() {
-        givenViewModelHasAProfilePictureComposer()
-        viewModel.getProfilePicture { _ in
-            //do nothing
-        }
-        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
-    }
-
-    //PRAGMA - MARK: BUSINESS
-
-    func testFlagsDiffer() {
-        givenViewModelRepresentsOneFlaggedAndSeenMessage()
-        let otherViewModel = givenAViewModelRepresentingUnflaggedMessage()
-        let flagsDiffer = viewModel.flagsDiffer(from: otherViewModel)
-        XCTAssertTrue(flagsDiffer)
-    }
-
-    func testFlagsAreTheSame() {
-        let message = givenThereIsAFlaggedAndSeenMessage()
-        viewModel = MessageViewModel(with: message)
-        let otherViewModel = MessageViewModel(with: message)
-        let flagsAreTheSame = !viewModel.flagsDiffer(from: otherViewModel)
-        XCTAssertTrue(flagsAreTheSame)
-    }
-
-    func testMessageIsTheSame() {
-        let message = givenThereIsAOneRecipientMessage()
-        viewModel = MessageViewModel(with: message)
-        let retrievedMessage = viewModel.message
-        XCTAssertEqual(message, retrievedMessage)
-    }
-
-    func testFromIdentity() {
-        let message = givenThereIsAOneRecipientMessage()
-        viewModel = MessageViewModel(with: message)
-        guard let identity = message.from else {
-            XCTFail("No identity")
-            return
-        }
-        let retrievedIdentity = viewModel.identity
-        XCTAssertEqual(identity, retrievedIdentity)
-    }
-
-    //PRAGMA - MARK: GIVEN
 
     //PRAGMA MARK: ViewModels
 
@@ -252,12 +167,6 @@ class MessageViewModelTests: AccountDrivenTestBase {
     private func givenViewModelRepresentsMessageWithAttachments() {
         let message = givenThereIsAMessageWithAttachments()
         viewModel = MessageViewModel(with: message)
-    }
-
-    private func givenViewModelHasAProfilePictureComposer() {
-        viewModel = givenAViewModelRepresentingUnflaggedMessage()
-        let profilePictureExpectation = expectation(description: PepProfilePictureComposerSpy.PROFILE_PICTURE_EXPECTATION_DESCRIPTION)
-        viewModel.profilePictureComposer = PepProfilePictureComposerSpy(profilePictureExpectation: profilePictureExpectation)
     }
 
     private func givenAViewModelRepresentingUnflaggedMessage() -> MessageViewModel {
