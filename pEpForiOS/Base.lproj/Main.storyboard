@@ -493,7 +493,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </tableViewCellContentView>
                                             </tableViewCell>
-                                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderCell" rowHeight="72" id="UbJ-bi-ipM" customClass="MessageSenderCell" customModule="pEpForiOS" customModuleProvider="target">
+                                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderCell" rowHeight="72" id="UbJ-bi-ipM" customClass="MessageCell" customModule="pEpForiOS" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="71.5" width="375" height="72"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UbJ-bi-ipM" id="A3p-YR-SiY">
@@ -686,6 +686,7 @@
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
+                                                    <outlet property="attachmentView" destination="Vgq-8X-NSJ" id="ny1-9k-aKM"/>
                                                     <outlet property="extensionLabel" destination="K74-3B-WUJ" id="zgw-Oe-w1P"/>
                                                     <outlet property="iconImageView" destination="5OF-TL-qiA" id="G04-DW-0mK"/>
                                                     <outlet property="nameLabel" destination="rwl-dh-q5V" id="WSQ-ga-aB5"/>

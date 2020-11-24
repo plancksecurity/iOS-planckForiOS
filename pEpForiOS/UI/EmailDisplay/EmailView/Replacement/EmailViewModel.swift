@@ -94,6 +94,14 @@ class EmailViewModel {
     /// Indicates if the html viewer should be shown.
     public var shouldShowExternalContentView: Bool = true
 
+
+    public var shouldShowExternalContentView2: Bool {
+        guard let body = htmlBody else {
+            return false
+        }
+        return body.containsExternalContent() && shouldShowExternalContentView
+    }
+
     /// Yields the HTML message body if we can show it in a secure way or we have non-empty HTML content at all
     public var htmlBody: String? {
         guard let htmlBody = message.longMessageFormatted,
@@ -170,6 +178,10 @@ class EmailViewModel {
         func getIndexPathsOfRows(with attachments: [EmailViewModel.Attachment]) -> [IndexPath] {
             var indexPaths = [IndexPath]()
             var dataIndex = 0
+            guard attachments.count != 0 else {
+//                Log.shared.errorAndCrash("inline image?")
+                return indexPaths
+            }
             for index in 0..<rows.count {
                 if rows[index].type == .attachment {
                     rows[index].firstValue = attachments[dataIndex].filename

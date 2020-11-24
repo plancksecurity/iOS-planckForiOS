@@ -71,7 +71,7 @@ class EmailViewController2: UIViewController {
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        if isIpad {
+        if UIDevice.isIpad {
             documentInteractionController.dismissMenu(animated: false)
         }
         splitViewController?.preferredDisplayMode = .allVisible
@@ -103,18 +103,14 @@ extension EmailViewController2: UITableViewDataSource {
         }
         switch row.type {
         case .sender:
-            guard let dequeued = cell as? MessageSenderCell else {
-                Log.shared.errorAndCrash("Invalid state.")
-                return UITableViewCell()
-            }
-            setup(cell: dequeued, with: row)
-            return dequeued
+            setupSender(cell: cell, with: row)
+            return cell
         case .subject:
             guard let dequeued = cell as? MessageSubjectCell else {
                 Log.shared.errorAndCrash("Invalid state.")
                 return UITableViewCell()
             }
-            setup(cell: dequeued, with: row)
+            setupSubject(cell: dequeued, with: row)
             return dequeued
         case .body:
             guard let dequeued = cell as? MessageContentCell else {
@@ -281,6 +277,7 @@ extension EmailViewController2 {
         if let htmlBody = viewModel?.htmlBody {
             cell.contentView.addSubview(htmlViewerViewController.view)
             htmlViewerViewController.view.fullSizeInSuperView()
+            /// MB:- Re check this.
             if htmlBody.containsExternalContent() && vm.shouldShowExternalContentView {
                 showExternalContentView.isHidden = false
             } else if !vm.shouldShowExternalContentView {
@@ -308,7 +305,7 @@ extension EmailViewController2 {
         }
     }
 
-    private func setup(cell: MessageSenderCell, with row: EmailRowProtocol) {
+    private func setupSender(cell: MessageCell, with row: EmailRowProtocol) {
         let font = UIFont.pepFont(style: .footnote, weight: .semibold)
         cell.titleLabel?.font = font
         cell.titleLabel?.text = row.firstValue
@@ -319,7 +316,7 @@ extension EmailViewController2 {
         }
     }
 
-    private func setup(cell: MessageSubjectCell, with row: EmailRowProtocol) {
+    private func setupSubject(cell: MessageSubjectCell, with row: EmailRowProtocol) {
         cell.titleLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
         cell.titleLabel?.text = row.firstValue
         if let value = row.secondValue {
@@ -336,5 +333,6 @@ extension EmailViewController2 {
         cell.nameLabel.text = row.firstValue ?? ""
         cell.iconImageView.image = row.image ?? nil
         cell.extensionLabel.text = row.secondValue ?? ""
+        cell.attachmentView.isHidden = row.firstValue == .none && row.secondValue == .none
     }
 }

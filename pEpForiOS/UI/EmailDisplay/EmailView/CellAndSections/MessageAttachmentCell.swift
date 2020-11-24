@@ -10,7 +10,7 @@ import Foundation
 import MessageModel
 
 class MessageAttachmentCell: MessageCell {
-
+    @IBOutlet weak var attachmentView: AttachmentView!
     @IBOutlet weak var extensionLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var iconImageView: UIImageView!
