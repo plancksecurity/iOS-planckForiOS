@@ -42,13 +42,8 @@ struct KeySyncErrorView {
                 Log.shared.errorAndCrash("Lost viewController, to present KeySyncError view")
                 return
             }
-
-            if let presentedViewController = viewController.presentedViewController {
-                presentedViewController.dismiss(animated: true) {
-                    viewController.present(keySyncErrorView, animated: true, completion: nil)
-                }
-            } else {
-                viewController.present(keySyncErrorView, animated: true, completion: nil)
+            viewController.dismissAndPerform {
+                viewController.present(keySyncErrorView, animated: true)
             }
         }
     }
