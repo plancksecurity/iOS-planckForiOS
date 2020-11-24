@@ -19,7 +19,6 @@ class EmailDetailViewController: UIViewController {
     /// batchUpdate.
     private var collectionViewUpdateTasks: [()->Void] = []
     /// EmailViewControllers of currently used cells
-    private var emailSubViewControllers = [EmailViewController]()
     private var emailSubViewControllers2 = [EmailViewController2]()
 
     /// Stuff that must be done once only in viewWillAppear

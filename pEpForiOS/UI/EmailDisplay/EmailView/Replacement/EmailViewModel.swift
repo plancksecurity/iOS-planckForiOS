@@ -67,7 +67,6 @@ class EmailViewModel {
     private var data: [Attachment]?
 
     private var attachments: [MessageModel.Attachment]
-    private var viewContainers : [AttachmentViewContainer]?
     private var buildOp: AttachmentsViewOperation?
     private let operationQueue: OperationQueue = {
         let createe = OperationQueue()
@@ -178,15 +177,14 @@ class EmailViewModel {
         func getIndexPathsOfRows(with attachments: [EmailViewModel.Attachment]) -> [IndexPath] {
             var indexPaths = [IndexPath]()
             var dataIndex = 0
-            guard attachments.count != 0 else {
-//                Log.shared.errorAndCrash("inline image?")
-                return indexPaths
-            }
             for index in 0..<rows.count {
                 if rows[index].type == .attachment {
+                    guard !attachments[dataIndex].isImage else {
+                        continue
+                    }
                     rows[index].firstValue = attachments[dataIndex].filename
                     rows[index].secondValue = attachments[dataIndex].´extension´
-                    rows[index].image = attachments[dataIndex].image
+                    rows[index].image = attachments[dataIndex].icon
                     dataIndex += 1
                     let indexPath = IndexPath(row: index, section: 0)
                     indexPaths.append(indexPath)
@@ -206,6 +204,12 @@ class EmailViewModel {
                     Log.shared.errorAndCrash("Lost myself")
                     return
                 }
+                guard retrievedAttachments.count > 0 else {
+                    // Valid case: there is no attachments
+                    // MB:- suspicius.
+                    return
+                }
+
                 me.data = retrievedAttachments
                 let indexPaths = getIndexPathsOfRows(with: retrievedAttachments)
                 me.didRetrieveAttachments = true
@@ -311,7 +315,8 @@ extension EmailViewModel {
     public struct Attachment {
         var filename: String = ""
         var ´extension´: String? // extension is a keyword, we need quotation marks
-        var image: UIImage?
+        var icon: UIImage?
+        var isImage: Bool = false
     }
 
     /// Attachment inherits from Row
@@ -371,15 +376,15 @@ extension EmailViewModel {
 
     private func opFinished(theBuildOp: AttachmentsViewOperation, completion: @escaping ([EmailViewModel.Attachment]) -> ()) {
         let defaultFileName = MessageModel.Attachment.defaultFilename
-        var information: [EmailViewModel.Attachment] = [EmailViewModel.Attachment]()
+        var attachmentRows: [EmailViewModel.Attachment] = [EmailViewModel.Attachment]()
         theBuildOp.attachmentContainers.forEach { (container) in
             switch container {
             case .imageAttachment(let attachment, let image):
                 let safeAttachment = attachment.safeForSession(Session.main)
                 Session.main.performAndWait {
                     let fileName = safeAttachment.fileName ?? defaultFileName
-                    let attachmentRow = EmailViewModel.Attachment(filename: fileName, ´extension´: safeAttachment.mimeType, image: image)
-                    information.append(attachmentRow)
+                    let attachmentRow = EmailViewModel.Attachment(filename: fileName, ´extension´: safeAttachment.mimeType, icon: image, isImage: true)
+                    attachmentRows.append(attachmentRow)
                 }
             case .docAttachment(let attachment):
                 let safeAttachment = attachment.safeForSession(.main)
@@ -387,11 +392,11 @@ extension EmailViewModel {
                     let (name, finalExt) = safeAttachment.fileName?.splitFileExtension() ?? (defaultFileName, nil)
                     let dic = UIDocumentInteractionController()
                     dic.name = safeAttachment.fileName
-                    let row = EmailViewModel.Attachment(filename: name, ´extension´: finalExt, image: dic.icons.first)
-                    information.append(row)
+                    let row = EmailViewModel.Attachment(filename: name, ´extension´: finalExt, icon: dic.icons.first, isImage: false)
+                    attachmentRows.append(row)
                 }
             }
         }
-        completion(information)
+        completion(attachmentRows)
     }
 }

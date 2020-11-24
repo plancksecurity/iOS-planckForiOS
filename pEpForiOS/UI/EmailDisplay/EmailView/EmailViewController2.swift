@@ -9,6 +9,10 @@
 import pEpIOSToolbox
 import QuickLook
 
+protocol EmailViewControllerDelegate: class {
+    func openQLPreviewController(toShowDocumentWithUrl url: URL)
+}
+
 class EmailViewController2: UIViewController {
     public static let storyboard = "Main"
     public static let storyboardId = "EmailViewController"
@@ -277,7 +281,7 @@ extension EmailViewController2 {
         if let htmlBody = viewModel?.htmlBody {
             cell.contentView.addSubview(htmlViewerViewController.view)
             htmlViewerViewController.view.fullSizeInSuperView()
-            /// MB:- Re check this.
+            /// MB:- Re check this.: why so many flags to show or not external content.
             if htmlBody.containsExternalContent() && vm.shouldShowExternalContentView {
                 showExternalContentView.isHidden = false
             } else if !vm.shouldShowExternalContentView {
@@ -333,6 +337,5 @@ extension EmailViewController2 {
         cell.nameLabel.text = row.firstValue ?? ""
         cell.iconImageView.image = row.image ?? nil
         cell.extensionLabel.text = row.secondValue ?? ""
-        cell.attachmentView.isHidden = row.firstValue == .none && row.secondValue == .none
     }
 }
