@@ -66,7 +66,7 @@ class EmailViewModel {
     //MB: rename this. 
     private var data: [Attachment]?
 
-    private var attachments: [MessageModel.Attachment]
+    private var attachments = [MessageModel.Attachment]()
     private var buildOp: AttachmentsViewOperation?
     private let operationQueue: OperationQueue = {
         let createe = OperationQueue()
@@ -79,7 +79,7 @@ class EmailViewModel {
     public init(message: Message, delegate: EmailViewModelDelegate) {
         self.message = message
         self.delegate = delegate
-        self.attachments = message.viewableAttachments()
+        self.attachments = message.viewableAttachments().filter({!$0.isInlined})
         var rowsTypes: [EmailRowType] = [.sender, .subject, .body]
         self.attachments.forEach { (attachment) in
             rowsTypes.append(.attachment)
