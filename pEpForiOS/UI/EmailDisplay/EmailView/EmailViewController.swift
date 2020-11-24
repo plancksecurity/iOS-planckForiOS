@@ -110,12 +110,8 @@ extension EmailViewController: UITableViewDataSource {
             setupSender(cell: cell, with: row)
             return cell
         case .subject:
-            guard let dequeued = cell as? MessageSubjectCell else {
-                Log.shared.errorAndCrash("Invalid state.")
-                return UITableViewCell()
-            }
-            setupSubject(cell: dequeued, with: row)
-            return dequeued
+            setupSubject(cell: cell, with: row)
+            return cell
         case .body:
             guard let dequeued = cell as? MessageContentCell else {
                 Log.shared.errorAndCrash("Invalid state.")
@@ -314,7 +310,7 @@ extension EmailViewController {
         }
     }
 
-    private func setupSubject(cell: MessageSubjectCell, with row: EmailRowProtocol) {
+    private func setupSubject(cell: MessageCell, with row: EmailRowProtocol) {
         cell.titleLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
         cell.titleLabel?.text = row.firstValue
         if let value = row.secondValue {

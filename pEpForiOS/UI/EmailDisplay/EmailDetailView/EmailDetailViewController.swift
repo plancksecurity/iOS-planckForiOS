@@ -465,9 +465,11 @@ extension EmailDetailViewController: UICollectionViewDataSource {
             return collectionView.dequeueReusableCell(withReuseIdentifier: EmailDetailViewController.cellId,
                                                       for: indexPath)
         }
-        var emailViewController: UIViewController?
-        emailViewController = setupEmailViewController(forRowAt: indexPath)
-        cell.setContainedView(containedView: emailViewController!.view)
+        guard let emailVC = setupEmailViewController(forRowAt: indexPath) else {
+            Log.shared.errorAndCrash("Email VC missing. Should not happen.")
+            return cell
+        }
+        cell.setContainedView(containedView: emailVC.view)
         return cell
     }
 }
