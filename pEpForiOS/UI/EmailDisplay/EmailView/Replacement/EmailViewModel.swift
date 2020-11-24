@@ -63,8 +63,7 @@ class EmailViewModel {
     public var didRetrieveAttachments: Bool = false
     public var isRetrievingAttachments: Bool = false
 
-    //MB: rename this. 
-    private var data: [Attachment]?
+    private var retrievedAttachments: [Attachment]?
 
     private var attachments = [MessageModel.Attachment]()
     private var buildOp: AttachmentsViewOperation?
@@ -204,7 +203,7 @@ class EmailViewModel {
                     return
                 }
 
-                me.data = retrievedAttachments
+                me.retrievedAttachments = retrievedAttachments
                 let indexPaths = getIndexPathsOfRows(with: retrievedAttachments)
                 me.didRetrieveAttachments = true
                 DispatchQueue.main.async {
@@ -212,7 +211,7 @@ class EmailViewModel {
                 }
                 me.isRetrievingAttachments = false
             }
-        } else if let retrievedAttachments = data {
+        } else if let retrievedAttachments = retrievedAttachments {
             let indexPaths = getIndexPathsOfRows(with: retrievedAttachments)
             DispatchQueue.main.async {
                 self.delegate?.didSetAttachments(forRowsAt: indexPaths)

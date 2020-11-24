@@ -27,7 +27,7 @@ class EmailViewModelTest: XCTestCase {
 
     func testNumberOfRows() {
         /// As the message doesn't have attachments, it has only from, subject and body.
-        let types : [EmailRowType] = [.from, .subject, .body]
+        let types : [EmailRowType] = [.sender, .subject, .body]
         XCTAssert(vm.numberOfRows == types.count)
     }
 
@@ -35,7 +35,7 @@ class EmailViewModelTest: XCTestCase {
         vm = nil
         setupVMWithMessageWith(numberOfAttachments: 1)
         /// As the message has an attachment, it has from, subject and body and attachments.
-        let types : [EmailRowType] = [.from, .subject, .body, .attachment]
+        let types : [EmailRowType] = [.sender, .subject, .body, .attachment]
         XCTAssert(vm.numberOfRows == types.count)
     }
 
@@ -43,14 +43,14 @@ class EmailViewModelTest: XCTestCase {
         vm = nil
         setupVMWithMessageWith(numberOfAttachments: 2)
         /// As the message has an attachment, it has from, subject and body and attachments.
-        let types : [EmailRowType] = [.from, .subject, .body, .attachment]
+        let types : [EmailRowType] = [.sender, .subject, .body, .attachment]
         XCTAssert(vm.numberOfRows == types.count)
     }
 
     func testSubscriptRowOfMessageWithTwoAttachments() {
         vm = nil
         setupVMWithMessageWith(numberOfAttachments: 2)
-        XCTAssert(vm[0].type == .from)
+        XCTAssert(vm[0].type == .sender)
         XCTAssert(vm[1].type == .subject)
         XCTAssert(vm[2].type == .body)
         XCTAssert(vm[3].type == .attachment)
@@ -119,8 +119,8 @@ extension EmailViewModelTest {
             let account = TestData().createWorkingAccount()
             let inbox = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
             let identity = Identity(address: "mail@mail.com")
-            let message = TestUtil.createMessage(inFolder: inbox, from: identity)
-            vm = EmailViewModel(message: message)
+            let message = TestUtil.createMessage(inFolder: inbox, from: identity, dispositionType: .attachment)
+            vm = EmailViewModel(message: message, delegate: MockEmailViewModelDelegate())
         }
     }
 
@@ -144,31 +144,39 @@ extension EmailViewModelTest {
                                                  engineProccesed: false,
                                                  shortMessage: "Short",
                                                  longMessage: "Long",
-                                                 longMessageFormatted: "",
+                                                 longMessageFormatted: "longMessageFormatted",
                                                  dateSent: Date(),
                                                  attachments: 1,
+                                                 dispositionType: .attachment,
                                                  uid: 0)
-            vm = EmailViewModel(message: message)
+            vm = EmailViewModel(message: message, delegate: MockEmailViewModelDelegate())
         }
     }
 }
 
 class MockEmailViewModelDelegate: EmailViewModelDelegate {
+
     private var showQuickLookOfAttachmentExpectation: XCTestExpectation?
     private var showLoadingViewExpectation: XCTestExpectation?
     private var hideLoadingViewExpectation: XCTestExpectation?
     private var showDocumentsEditorExpectation: XCTestExpectation?
     private var showClientCertificateImportExpectation: XCTestExpectation?
+    private var didSetAttachmentsExpectation: XCTestExpectation?
+    private var showExternalContentExpectation: XCTestExpectation?
 
     init(showLoadingViewExpectation: XCTestExpectation? = nil,
          hideLoadingViewExpectation: XCTestExpectation? = nil,
         showQuickLookOfAttachmentExpectation: XCTestExpectation? = nil,
         showDocumentsEditorExpectation: XCTestExpectation? = nil,
-        showClientCertificateImportExpectation: XCTestExpectation? = nil) {
+        showClientCertificateImportExpectation: XCTestExpectation? = nil,
+        didSetAttachmentsExpectation: XCTestExpectation? = nil,
+        showExternalContentExpectation: XCTestExpectation? = nil) {
         self.showQuickLookOfAttachmentExpectation = showQuickLookOfAttachmentExpectation
         self.showLoadingViewExpectation = showLoadingViewExpectation
         self.hideLoadingViewExpectation = hideLoadingViewExpectation
         self.showDocumentsEditorExpectation = showDocumentsEditorExpectation
+        self.didSetAttachmentsExpectation = didSetAttachmentsExpectation
+        self.showExternalContentExpectation = showExternalContentExpectation
     }
 
     func showQuickLookOfAttachment(qlItem: QLPreviewItem) {
@@ -189,6 +197,15 @@ class MockEmailViewModelDelegate: EmailViewModelDelegate {
     func hideLoadingView() {
         fulfillIfNotNil(expectation: hideLoadingViewExpectation)
     }
+
+    func didSetAttachments(forRowsAt indexPaths: [IndexPath]) {
+        fulfillIfNotNil(expectation: didSetAttachmentsExpectation)
+    }
+
+    func showExternalContent() {
+        fulfillIfNotNil(expectation: showExternalContentExpectation)
+    }
+
 
     private func fulfillIfNotNil(expectation: XCTestExpectation?) {
         if expectation != nil {
