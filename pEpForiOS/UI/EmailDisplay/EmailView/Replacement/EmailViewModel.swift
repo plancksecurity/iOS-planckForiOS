@@ -30,7 +30,7 @@ protocol EmailViewModelDelegate: class {
     /// - Parameter indexPaths: The indexPath of the attachments
     func didSetAttachments(forRowsAt indexPaths: [IndexPath])
     /// Informs the viewModel is ready to provide external content.
-    func didHandleShowExternalContentButtonPressed()
+    func showExternalContent()
 }
 
 enum EmailRowType: String {
@@ -87,19 +87,14 @@ class EmailViewModel {
         self.rows = rowsTypes.map { Row(type: $0, message: message) }
     }
 
-    /// Indicates if the show external content button should be shown.
-    public var shouldShowExternalContent: Bool = false
+    private var shouldHideExternalContent: Bool = true
 
-    /// Indicates if the html viewer should be shown.
-    public var shouldShowExternalContentView: Bool = true
-
-
-    //MB:-
-    public var shouldShowExternalContentView2: Bool {
+    // Indicates if the External Content View has to be shown.
+    public var shouldShowExternalContentView: Bool {
         guard let body = htmlBody else {
             return false
         }
-        return body.containsExternalContent() && shouldShowExternalContentView
+        return body.containsExternalContent() && shouldHideExternalContent
     }
 
     /// Yields the HTML message body if we can show it in a secure way or we have non-empty HTML content at all
@@ -163,9 +158,8 @@ class EmailViewModel {
     }
 
     func handleDidTapShowExternalContentButton() {
-        shouldShowExternalContentView = false
-        shouldShowExternalContent = true
-        delegate?.didHandleShowExternalContentButtonPressed()
+        shouldHideExternalContent = false
+        delegate?.showExternalContent()
     }
 
     /// Retrieve the attachments.

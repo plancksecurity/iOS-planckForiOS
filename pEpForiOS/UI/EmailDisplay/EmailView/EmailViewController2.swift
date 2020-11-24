@@ -263,7 +263,7 @@ extension EmailViewController2: EmailViewModelDelegate {
         vm.didRetrieveAttachments = true
     }
 
-    func didHandleShowExternalContentButtonPressed() {
+    func showExternalContent() {
         removeExternalContentView()
         tableView.reloadData()
     }
@@ -281,13 +281,8 @@ extension EmailViewController2 {
         if let htmlBody = viewModel?.htmlBody {
             cell.contentView.addSubview(htmlViewerViewController.view)
             htmlViewerViewController.view.fullSizeInSuperView()
-            /// MB:- Re check this.: why so many flags to show or not external content.
-            if htmlBody.containsExternalContent() && vm.shouldShowExternalContentView {
-                showExternalContentView.isHidden = false
-            } else if !vm.shouldShowExternalContentView {
-                removeExternalContentView()
-            }
-            htmlViewerViewController.display(html: htmlBody, showExternalContent: vm.shouldShowExternalContent)
+            showExternalContentView.isHidden = !vm.shouldShowExternalContentView
+            htmlViewerViewController.display(html: htmlBody, showExternalContent: !vm.shouldShowExternalContentView)
         } else {
             // We do not have HTML content.
             // Remove the HTML view if we just stepped from an HTML mail to one without
