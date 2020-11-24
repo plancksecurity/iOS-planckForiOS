@@ -19,7 +19,7 @@ class EmailDetailViewController: UIViewController {
     /// batchUpdate.
     private var collectionViewUpdateTasks: [()->Void] = []
     /// EmailViewControllers of currently used cells
-    private var emailSubViewControllers2 = [EmailViewController2]()
+    private var emailSubViewControllers = [EmailViewController]()
 
     /// Stuff that must be done once only in viewWillAppear
     private var doOnce: (()-> Void)?
@@ -351,7 +351,7 @@ extension EmailDetailViewController {
     
     // Removes all EmailViewController that are not connected to a cell any more.
     private func releaseUnusedSubViewControllers() {
-        emailSubViewControllers2 = emailSubViewControllers2.filter { $0.view.superview != nil }
+        emailSubViewControllers = emailSubViewControllers.filter { $0.view.superview != nil }
     }
 
     private func showSettingsAction() -> UIAlertAction {
@@ -393,22 +393,17 @@ extension EmailDetailViewController {
         UIUtils.showSettings()
     }
 
-    private func setupEmailViewController2(forRowAt indexPath: IndexPath) -> EmailViewController2? {
+    private func setupEmailViewController(forRowAt indexPath: IndexPath) -> EmailViewController? {
         guard
             let vm = viewModel,
-            let createe = storyboard?.instantiateViewController(withIdentifier: EmailViewController2.storyboardId) as? EmailViewController2
+            let createe = storyboard?.instantiateViewController(withIdentifier: EmailViewController.storyboardId) as? EmailViewController
             else {
                 Log.shared.errorAndCrash("No V[M|C]")
                 return nil
         }
-        //!!!: EmailVC should have a VM which should be created in our VM. This VC should not be aware of `Message`s!
-        guard let message = vm.message(representedByRowAt: indexPath) else {
-            Log.shared.errorAndCrash("Message not found")
-            return nil
-        }
-        createe.viewModel = EmailViewModel(message: message, delegate: createe)
+        createe.viewModel = vm.emailViewModel(fromMessageRepresentedByRowAt: indexPath, with: createe)
         createe.delegate = self
-        emailSubViewControllers2.append(createe)
+        emailSubViewControllers.append(createe)
         return createe
     }
 }
@@ -472,7 +467,7 @@ extension EmailDetailViewController: UICollectionViewDataSource {
         }
         
         var emailViewController: UIViewController?
-        emailViewController = setupEmailViewController2(forRowAt: indexPath)
+        emailViewController = setupEmailViewController(forRowAt: indexPath)
         
         
         cell.setContainedView(containedView: emailViewController!.view)

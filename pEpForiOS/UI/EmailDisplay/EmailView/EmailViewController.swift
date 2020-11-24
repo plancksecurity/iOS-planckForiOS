@@ -1,5 +1,5 @@
 //
-//  EmailViewController2.swift
+//  EmailViewController.swift
 //  pEp
 //
 //  Created by Martín Brude on 19/10/2020.
@@ -13,7 +13,7 @@ protocol EmailViewControllerDelegate: class {
     func openQLPreviewController(toShowDocumentWithUrl url: URL)
 }
 
-class EmailViewController2: UIViewController {
+class EmailViewController: UIViewController {
     public static let storyboard = "Main"
     public static let storyboardId = "EmailViewController"
     public var viewModel: EmailViewModel?
@@ -85,7 +85,7 @@ class EmailViewController2: UIViewController {
 
 //MARK: - UITableViewDataSource
 
-extension EmailViewController2: UITableViewDataSource {
+extension EmailViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let vm = viewModel else {
@@ -144,7 +144,7 @@ extension EmailViewController2: UITableViewDataSource {
 
 //MARK: - UITableViewDelegate
 
-extension EmailViewController2: UITableViewDelegate {
+extension EmailViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if isLastRow(indexPath: indexPath) {
             guard let vm = viewModel else {
@@ -185,7 +185,7 @@ extension EmailViewController2: UITableViewDelegate {
 
 // MARK: - SecureWebViewControllerDelegate
 
-extension EmailViewController2: SecureWebViewControllerDelegate {
+extension EmailViewController: SecureWebViewControllerDelegate {
     func didFinishLoading() {
         tableView.updateSize()
     }
@@ -193,7 +193,7 @@ extension EmailViewController2: SecureWebViewControllerDelegate {
 
 // MARK: - UIPopoverPresentationControllerDelegate
 
-extension EmailViewController2: UIPopoverPresentationControllerDelegate, UIPopoverPresentationControllerProtocol {
+extension EmailViewController: UIPopoverPresentationControllerDelegate, UIPopoverPresentationControllerProtocol {
 
     func popoverPresentationController(_ popoverPresentationController: UIPopoverPresentationController, willRepositionPopoverTo rect:
         UnsafeMutablePointer<CGRect>, in view: AutoreleasingUnsafeMutablePointer<UIView>) {
@@ -203,7 +203,7 @@ extension EmailViewController2: UIPopoverPresentationControllerDelegate, UIPopov
 
 // MARK: - EmailViewModelDelegate
 
-extension EmailViewController2: EmailViewModelDelegate {
+extension EmailViewController: EmailViewModelDelegate {
 
     func showQuickLookOfAttachment(qlItem: QLPreviewItem) {
         guard let url = qlItem.previewItemURL else {
@@ -214,7 +214,6 @@ extension EmailViewController2: EmailViewModelDelegate {
     }
 
     func showDocumentsEditor(url: URL) {
-        //MB:- test this on iPad
         documentInteractionController.url = url
         let dim: CGFloat = 40
         let rect = CGRect.rectAround(center: view.center, width: dim, height: dim)
@@ -271,7 +270,7 @@ extension EmailViewController2: EmailViewModelDelegate {
 
 //MARK: - Private
 
-extension EmailViewController2 {
+extension EmailViewController {
 
     private func removeExternalContentView() {
         showExternalContentView.isHidden = true
