@@ -401,7 +401,7 @@ extension EmailDetailViewController {
                 Log.shared.errorAndCrash("No V[M|C]")
                 return nil
         }
-        createe.viewModel = vm.emailViewModel(fromMessageRepresentedByRowAt: indexPath, with: createe)
+        createe.viewModel = vm.emailViewModel(withMessageRepresentedByRowAt: indexPath, with: createe)
         createe.delegate = self
         emailSubViewControllers.append(createe)
         return createe
@@ -465,13 +465,9 @@ extension EmailDetailViewController: UICollectionViewDataSource {
             return collectionView.dequeueReusableCell(withReuseIdentifier: EmailDetailViewController.cellId,
                                                       for: indexPath)
         }
-        
         var emailViewController: UIViewController?
         emailViewController = setupEmailViewController(forRowAt: indexPath)
-        
-        
         cell.setContainedView(containedView: emailViewController!.view)
-        
         return cell
     }
 }
