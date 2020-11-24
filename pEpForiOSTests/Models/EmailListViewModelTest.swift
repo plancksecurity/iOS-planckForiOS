@@ -174,16 +174,16 @@ class EmailListViewModelTest: AccountDrivenTestBase {
 
     // MARK: - cell for row
 
-    func testViewModel() {
-        let msg = TestUtil.createMessage(inFolder: inbox, from: inbox.account.user, uid: 1)
-        msg.session.commit()
-        setupViewModel()
-        emailListVM.startMonitoring()
-        let indexOfTheOneAndOnlyMsg = 0
-        let vm = emailListVM.viewModel(for: indexOfTheOneAndOnlyMsg)
-        XCTAssertEqual(vm?.message, msg)
-        XCTAssertEqual(vm?.subject, msg.shortMessage)
-    }
+//    func testViewModel() {
+//        let msg = TestUtil.createMessage(inFolder: inbox, from: inbox.account.user, uid: 1)
+//        msg.session.commit()
+//        setupViewModel()
+//        emailListVM.startMonitoring()
+//        let indexOfTheOneAndOnlyMsg = 0
+//        let vm = emailListVM.viewModel(for: indexOfTheOneAndOnlyMsg)
+//        XCTAssertEqual(vm?.message, msg)
+//        XCTAssertEqual(vm?.subject, msg.shortMessage)
+//    }
 
     func testgetMoveToFolderViewModel() {
         TestUtil.createMessages(number: 4, inFolder: inbox)

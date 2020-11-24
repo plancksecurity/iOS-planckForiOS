@@ -69,7 +69,7 @@ final class LoginViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setManualSetupButtonHidden(manualConfigButton.isHidden)
-        syncStackView.axis = UIDevice.isSmall && isLandscape ? .vertical : .horizontal
+        syncStackView.axis = UIDevice.isSmall && UIDevice.isLandscape ? .vertical : .horizontal
         syncStackView.superview?.layoutIfNeeded()
     }
     
@@ -436,7 +436,7 @@ extension LoginViewController {
             title = displayError.title
             message = displayError.errorDescription
         }
-        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message, style: .warn) { [weak self] in
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
@@ -588,8 +588,7 @@ extension LoginViewController {
                                    cancelButtonText: NSLocalizedString("OK", comment: "OK (dismiss) button for iCloud instructions alert"),
                                    positiveButtonText: NSLocalizedString("Info", comment: "Info button for showing iCloud page"),
                                    cancelButtonAction: {},
-                                   positiveButtonAction: openiCloudInfoInBrowser,
-                                   style: .default)
+                                   positiveButtonAction: openiCloudInfoInBrowser)
     }
 }
 // MARK: - Accessibility
