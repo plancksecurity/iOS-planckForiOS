@@ -27,7 +27,7 @@ class AttachmentViewModelTest: XCTestCase {
         let attachment = TestUtil.createAttachment(inlined: false)
         attachment.fileName = nil
         let vm = AttachmentViewModel(attachment: attachment)
-        let expected = Attachment.defaultFileName
+        let expected = Attachment.defaultFilename
         let testee = vm.fileName
         XCTAssertFalse(testee.isEmpty)
         XCTAssertEqual(testee, expected)

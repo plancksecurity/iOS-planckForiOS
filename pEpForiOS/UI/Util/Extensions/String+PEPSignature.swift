@@ -1,6 +1,6 @@
 //
 //  String+PEPSignature.swift
-//  MessageModel
+//  pEp
 //
 //  Created by Alejandro Gelos on 17/07/2019.
 //  Copyright © 2019 pEp Security S.A. All rights reserved.
