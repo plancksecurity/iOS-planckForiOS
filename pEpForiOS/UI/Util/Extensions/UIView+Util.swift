@@ -46,7 +46,11 @@ extension UIView {
      */
     public func stopDisplayingAsBusy(viewBusyState: ViewBusyState) {
         for v in viewBusyState.views {
-            v.removeFromSuperview()
+            UIView.animate(withDuration: 0.5) {
+                v.alpha = 0
+            } completion: { (complete) in
+                v.removeFromSuperview()
+            }
         }
     }
 }

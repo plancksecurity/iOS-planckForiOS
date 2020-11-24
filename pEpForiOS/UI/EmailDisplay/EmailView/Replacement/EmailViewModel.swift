@@ -94,6 +94,7 @@ class EmailViewModel {
     public var shouldShowExternalContentView: Bool = true
 
 
+    //MB:-
     public var shouldShowExternalContentView2: Bool {
         guard let body = htmlBody else {
             return false
@@ -206,7 +207,6 @@ class EmailViewModel {
                 }
                 guard retrievedAttachments.count > 0 else {
                     // Valid case: there is no attachments
-                    // MB:- suspicius.
                     return
                 }
 
