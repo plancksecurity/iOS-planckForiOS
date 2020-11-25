@@ -11,7 +11,6 @@ import QuickLook
 @testable import pEpForiOS
 @testable import MessageModel
 import pEpIOSToolbox
-import MessageModelTests
 
 class EmailViewModelTest: XCTestCase {
     private var vm : EmailViewModel!
@@ -296,27 +295,5 @@ class MockEmailViewModelDelegate: EmailViewModelDelegate {
         if expectation != nil {
             expectation?.fulfill()
         }
-    }
-}
-
-extension XCTestCase {
-
-    /// Loads the file and retrive its data.
-    /// - Parameters:
-    ///   - name: The name of the file
-    ///   - fileExtension: The file extension
-    /// - Returns: The data if doesnt fail. In case it does, check the target of the file.
-    func loadFile(withName name: String, withExtension fileExtension: String) -> Data? {
-        let testBundle = Bundle(for: type(of: self))
-        guard let url = testBundle.url(forResource: name, withExtension: fileExtension) else {
-            Log.shared.error("File not found.")
-            return nil
-        }
-
-        guard let data = try? Data(contentsOf: url) else {
-            Log.shared.error("Data not found.")
-            return nil
-        }
-        return data
     }
 }
