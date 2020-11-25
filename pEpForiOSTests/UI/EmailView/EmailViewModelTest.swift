@@ -116,7 +116,6 @@ class EmailViewModelTest: XCTestCase {
         wait(for: [showQuickLookOfAttachmentExpectation], timeout: TestUtil.waitTime)
     }
 
-    /// XXXX
     func testShowClientCertificateImport() throws {
         let showClientCertificateImportExpectation = XCTestExpectation(description: "showClientCertificateImport")
         let delegate = MockEmailViewModelDelegate(showClientCertificateImportExpectation:showClientCertificateImportExpectation)
@@ -231,7 +230,7 @@ extension EmailViewModelTest {
                                                  attachments: 1,
                                                  dispositionType: .attachment,
                                                  uid: 0)
-            let attachment = Attachment(data: fileData, mimeType: fileExtension, fileName: fileName, contentDisposition: .attachment)
+            let attachment = Attachment(data: fileData, mimeType: fileExtension, fileName: fileName + ".pEp12", contentDisposition: .attachment)
             message.replaceAttachments(with: [attachment])
             Session.main.commit()
             vm = EmailViewModel(message: message, delegate: delegate)
@@ -256,6 +255,7 @@ class MockEmailViewModelDelegate: EmailViewModelDelegate {
         showClientCertificateImportExpectation: XCTestExpectation? = nil,
         didSetAttachmentsExpectation: XCTestExpectation? = nil,
         showExternalContentExpectation: XCTestExpectation? = nil) {
+        self.showClientCertificateImportExpectation = showClientCertificateImportExpectation
         self.showQuickLookOfAttachmentExpectation = showQuickLookOfAttachmentExpectation
         self.showLoadingViewExpectation = showLoadingViewExpectation
         self.hideLoadingViewExpectation = hideLoadingViewExpectation

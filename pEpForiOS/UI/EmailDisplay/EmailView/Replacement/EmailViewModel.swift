@@ -273,6 +273,7 @@ class EmailViewModel {
         let index = indexPath.row - rows.count(where: {$0.type != .attachment})
         let attachment = attachments[index]
         let defaultFileName = MessageModel.Attachment.defaultFilename
+
         attachment.saveToTmpDirectory(defaultFilename: attachment.fileName ?? defaultFileName) { [weak self] (url) in
             guard let url = url else {
                 Log.shared.errorAndCrash("No Local URL")

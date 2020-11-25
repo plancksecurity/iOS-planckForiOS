@@ -21,6 +21,7 @@ extension Attachment {
     /// - Parameter defaultFilename: A localized default name for unnamed attachments
     /// - Parameter completion: called when done, passes the local URL if writing to /tmp dir succeded, passes `nil`otherwize
     public func saveToTmpDirectory(defaultFilename: String,
+                                   fileExtension: String? = nil,
                                    completion: @escaping (URL?)->Void) {
         let session = Session()
         let safeAttachment = safeForSession(session)
