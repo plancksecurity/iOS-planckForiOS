@@ -242,18 +242,3 @@ class MockEmailViewModelDelegate: EmailViewModelDelegate {
         }
     }
 }
-
-extension EmailViewModelTest {
-    func createCert() {
-        guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            XCTFail()
-            return
-        }
-        let newUrl = url.appendingPathComponent("certificate", isDirectory: false).appendingPathExtension("pEp12")
-        do {
-            try Data(base64Encoded: "somedata")?.write(to: newUrl)
-        } catch {
-            XCTFail(error.localizedDescription)
-        }
-    }
-}
