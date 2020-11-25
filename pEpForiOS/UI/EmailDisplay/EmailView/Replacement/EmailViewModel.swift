@@ -187,7 +187,7 @@ class EmailViewModel {
             return indexPaths
         }
 
-        if isRetrievingAttachments {
+        guard !isRetrievingAttachments else {
             Log.shared.info("Already getting attachments. Nothing to do.")
             return
         }
@@ -198,11 +198,11 @@ class EmailViewModel {
                     Log.shared.errorAndCrash("Lost myself")
                     return
                 }
+
                 guard retrievedAttachments.count > 0 else {
                     // Valid case: there is no attachments
                     return
                 }
-
                 me.retrievedAttachments = retrievedAttachments
                 let indexPaths = getIndexPathsOfRows(with: retrievedAttachments)
                 me.didRetrieveAttachments = true
@@ -265,13 +265,11 @@ class EmailViewModel {
         func shouldShowClientCertificate(url : URL) -> Bool {
             return url.pathExtension == "pEp12" || url.pathExtension == "pfx"
         }
-
         delegate?.showLoadingView()
         guard rows.count > indexPath.row else {
             Log.shared.errorAndCrash("attachments Out of bounds")
             return
         }
-
         let index = indexPath.row - rows.count(where: {$0.type != .attachment})
         let attachment = attachments[index]
         let defaultFileName = MessageModel.Attachment.defaultFilename

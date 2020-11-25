@@ -10,58 +10,71 @@ import XCTest
 import QuickLook
 @testable import pEpForiOS
 @testable import MessageModel
+import pEpIOSToolbox
 
 class EmailViewModelTest: XCTestCase {
     private var vm : EmailViewModel!
 
-    override func setUp() {
-        super.setUp()
-        setupVMWithMessageWithoutAttachment()
-    }
-
     func testInitialization()  {
+        setupVMWithMessageWithoutAttachment()
         XCTAssertNotNil(vm)
     }
 
     // MARK: - Rows
 
     func testNumberOfRows() {
+        setupVMWithMessageWithoutAttachment()
         /// As the message doesn't have attachments, it has only from, subject and body.
         let types : [EmailRowType] = [.sender, .subject, .body]
         XCTAssert(vm.numberOfRows == types.count)
     }
 
     func testNumberOfRowsOfMessageWithOneAttachment() {
-        vm = nil
         setupVMWithMessageWith(numberOfAttachments: 1)
-        /// As the message has an attachment, it has from, subject and body and attachments.
         let types : [EmailRowType] = [.sender, .subject, .body, .attachment]
         XCTAssert(vm.numberOfRows == types.count)
     }
 
+    // xxxx
     func testNumberOfRowsOfMessageWithTwoAttachments() {
-        vm = nil
         setupVMWithMessageWith(numberOfAttachments: 2)
-        /// As the message has an attachment, it has from, subject and body and attachments.
-        let types : [EmailRowType] = [.sender, .subject, .body, .attachment]
+        let types: [EmailRowType] = [.sender, .subject, .body, .attachment, .attachment]
+        vm.retrieveAttachments()
         XCTAssert(vm.numberOfRows == types.count)
     }
 
+    // xxxx
     func testSubscriptRowOfMessageWithTwoAttachments() {
-        vm = nil
         setupVMWithMessageWith(numberOfAttachments: 2)
         XCTAssert(vm[0].type == .sender)
         XCTAssert(vm[1].type == .subject)
         XCTAssert(vm[2].type == .body)
         XCTAssert(vm[3].type == .attachment)
+        XCTAssert(vm[4].type == .attachment)
     }
 
     func testBody() {
-        vm = nil
         setupVMWithMessageWith(numberOfAttachments: 1)
         vm.body { (result) in
             XCTAssert(result.string == "Long")
         }
+    }
+
+    func testCellIdentifier() {
+        setupVMWithMessageWith(numberOfAttachments: 1)
+        XCTAssertEqual("senderCell", vm.cellIdentifier(for: IndexPath(row: 0, section: 0)))
+        XCTAssertEqual("senderSubjectCell", vm.cellIdentifier(for: IndexPath(row: 1, section: 0)))
+        XCTAssertEqual("senderBodyCell", vm.cellIdentifier(for: IndexPath(row: 2, section: 0)))
+        XCTAssertEqual("attachmentsCell", vm.cellIdentifier(for: IndexPath(row: 3, section: 0)))
+    }
+
+    func testRetrieveAttachments() {
+        setupVMWithMessageWith(numberOfAttachments: 4)
+        let didSetAttachmentsExpectation = XCTestExpectation(description: "didSetAttachmentsExpectation")
+        let delegate = MockEmailViewModelDelegate(didSetAttachmentsExpectation: didSetAttachmentsExpectation)
+        vm.delegate = delegate
+        vm.retrieveAttachments()
+        wait(for: [didSetAttachmentsExpectation], timeout: TestUtil.waitTime)
     }
 
     // MARK: - Delegate
@@ -71,14 +84,16 @@ class EmailViewModelTest: XCTestCase {
         let delegate = MockEmailViewModelDelegate(showLoadingViewExpectation: showLoadingViewExpectation)
         vm.delegate = delegate
         vm.delegate?.showLoadingView()
+        wait(for: [showLoadingViewExpectation], timeout: TestUtil.waitTime)
     }
 
-
     func testHideLoadingView() {
+        setupVMWithMessageWithoutAttachment()
         let hideLoadingViewExpectation = XCTestExpectation(description: "hideLoadingView was called")
         let delegate = MockEmailViewModelDelegate(hideLoadingViewExpectation: hideLoadingViewExpectation)
         vm.delegate = delegate
-        vm.delegate?.showLoadingView()
+        vm.delegate?.hideLoadingView()
+        wait(for: [hideLoadingViewExpectation], timeout: TestUtil.waitTime)
     }
 
     func testShowQuickLookOfAttachment() {
@@ -88,6 +103,7 @@ class EmailViewModelTest: XCTestCase {
         if let url = URL(string: "http://www.google.com") {
             let item = url as QLPreviewItem
             vm.delegate?.showQuickLookOfAttachment(qlItem: item)
+            wait(for: [showQuickLookOfAttachmentExpectation], timeout: TestUtil.waitTime)
         }
     }
 
@@ -100,16 +116,19 @@ class EmailViewModelTest: XCTestCase {
             return
         }
         vm.delegate?.showDocumentsEditor(url: url)
+        wait(for: [showDocumentsEditorExpectation], timeout: TestUtil.waitTime)
     }
 
-    func testShowClientCertificateImport() {
-        let showClientCertificateImportExpectation = XCTestExpectation(description: "showClientCertificateImport was called")
+    func testShowClientCertificateImport() throws {
+        //MB:- TODO: change this to create a certificate.pEp12.
+        setupVMWithMessageWithCertificateAttachment()
+        let showClientCertificateImportExpectation = XCTestExpectation(description: "showClientCertificateImport")
         let delegate = MockEmailViewModelDelegate(showClientCertificateImportExpectation: showClientCertificateImportExpectation)
         vm.delegate = delegate
-        if let url = URL(string: "http://www.google.com") {
-            let clientCertificate = ClientCertificateImportViewModel(certificateUrl: url)
-            vm.delegate?.showClientCertificateImport(viewModel: clientCertificate)
-        }
+
+        let indexPathOfTheAttachment = IndexPath(row: 3, section: 0)
+        vm.handleDidTapAttachment(at: indexPathOfTheAttachment)
+        wait(for: [showClientCertificateImportExpectation], timeout: TestUtil.waitTime)
     }
 }
 
@@ -146,11 +165,21 @@ extension EmailViewModelTest {
                                                  longMessage: "Long",
                                                  longMessageFormatted: "longMessageFormatted",
                                                  dateSent: Date(),
-                                                 attachments: 1,
+                                                 attachments: attachments,
                                                  dispositionType: .attachment,
                                                  uid: 0)
             vm = EmailViewModel(message: message, delegate: MockEmailViewModelDelegate())
         }
+    }
+
+    private func setupVMWithMessageWithCertificateAttachment() {
+        if vm == nil {
+            let account = TestData().createWorkingAccount()
+            let inbox = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
+            let message = TestUtil.createMessageWithCertificateAttached(inFolder: inbox)
+            vm = EmailViewModel(message: message, delegate: MockEmailViewModelDelegate())
+        }
+
     }
 }
 
@@ -210,6 +239,21 @@ class MockEmailViewModelDelegate: EmailViewModelDelegate {
     private func fulfillIfNotNil(expectation: XCTestExpectation?) {
         if expectation != nil {
             expectation?.fulfill()
+        }
+    }
+}
+
+extension EmailViewModelTest {
+    func createCert() {
+        guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            XCTFail()
+            return
+        }
+        let newUrl = url.appendingPathComponent("certificate", isDirectory: false).appendingPathExtension("pEp12")
+        do {
+            try Data(base64Encoded: "somedata")?.write(to: newUrl)
+        } catch {
+            XCTFail(error.localizedDescription)
         }
     }
 }
