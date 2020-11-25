@@ -128,10 +128,11 @@ class TestUtil {
         return msg
     }
 
-    static func createMessageWithCertificateAttached(inFolder folder: Folder) -> Message {
-        let msg = Message(uuid: "\(1)", uid: 1, parentFolder: folder)
-        let certificateAttachment = createCertificateAttachment()
-        msg.replaceAttachments(with: [certificateAttachment])
+    static func createMessage(with attachment: Attachment) -> Message {
+        let account = TestData().createWorkingAccount()
+        let inbox = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
+        let msg = Message(uuid: "\(1)", uid: 1, parentFolder: inbox)
+        msg.replaceAttachments(with: [attachment])
         return msg
     }
 
@@ -168,27 +169,6 @@ class TestUtil {
                           fileName: imageFileName,
                           contentDisposition: contentDisposition)
     }
-
-
-    static func createCertificateAttachment() -> Attachment {
-        var certData: Data?
-        guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            XCTFail()
-            return Attachment(data: Data(), mimeType: MimeTypeUtils.MimeType.jpeg.rawValue, fileName: "Failed", contentDisposition: .attachment)
-        }
-        let newUrl = url.appendingPathComponent("certificate", isDirectory: false).appendingPathExtension("pEp12")
-        do {
-            certData = Data(base64Encoded: "somedata")
-            try certData?.write(to: newUrl)
-        } catch {
-            XCTFail(error.localizedDescription)
-        }
-        return Attachment(data: certData,
-                          mimeType: "pEp12",
-                          fileName: "certificate",
-                          contentDisposition: .attachment)
-    }
-
 
     /// Creates one of 3 special messages that form a thread that caused some problems.
     static func createSpecialMessage(number: Int, folder: Folder, receiver: Identity) -> Message {

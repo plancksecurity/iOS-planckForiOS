@@ -333,6 +333,8 @@
 		5B0B339D24AC85E800CABD0B /* UIUtils+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */; };
 		5B0B339F24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0B339E24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift */; };
 		5B1C0E1823FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */; };
+		5B2DA708256EA11E006DA570 /* test01_internal_cert.pEp12 in Resources */ = {isa = PBXBuildFile; fileRef = 5B2DA707256EA11E006DA570 /* test01_internal_cert.pEp12 */; };
+		5B2DA714256EA906006DA570 /* random.docx in Resources */ = {isa = PBXBuildFile; fileRef = 5B2DA713256EA906006DA570 /* random.docx */; };
 		5B2F7E63240D25CF004DDFA2 /* TutorialStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */; };
 		5B3336A02566B74800693049 /* AttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B33369F2566B74800693049 /* AttachmentView.swift */; };
 		5B394E1323ED5673006A1FC0 /* TrustManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */; };
@@ -921,6 +923,8 @@
 		5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+Passphrase.swift"; sourceTree = "<group>"; };
 		5B0B339E24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGPKeyImportSettingSwitchTableViewCell.swift; sourceTree = "<group>"; };
 		5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCellProtocols.swift; sourceTree = "<group>"; };
+		5B2DA707256EA11E006DA570 /* test01_internal_cert.pEp12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = test01_internal_cert.pEp12; sourceTree = "<group>"; };
+		5B2DA713256EA906006DA570 /* random.docx */ = {isa = PBXFileReference; lastKnownFileType = file; path = random.docx; sourceTree = "<group>"; };
 		5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepViewController.swift; sourceTree = "<group>"; };
 		5B33369F2566B74800693049 /* AttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentView.swift; sourceTree = "<group>"; };
 		5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCell.swift; sourceTree = "<group>"; };
@@ -2380,6 +2384,15 @@
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
+		5B2DA70E256EA7D1006DA570 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5B2DA707256EA11E006DA570 /* test01_internal_cert.pEp12 */,
+				5B2DA713256EA906006DA570 /* random.docx */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		5B5A2DF8253D916A005EBF8C /* Replacement */ = {
 			isa = PBXGroup;
 			children = (
@@ -2433,6 +2446,7 @@
 		5BEBF903255D87BC0006B262 /* EmailView */ = {
 			isa = PBXGroup;
 			children = (
+				5B2DA70E256EA7D1006DA570 /* Resources */,
 				5B53B1D4255D9940006DEFD1 /* EmailViewModelTest.swift */,
 			);
 			path = EmailView;
@@ -2814,8 +2828,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B2DA708256EA11E006DA570 /* test01_internal_cert.pEp12 in Resources */,
 				431BB9451E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */,
 				4395CDF020AAD0D7003FC5F1 /* icon_001.gif in Resources */,
+				5B2DA714256EA906006DA570 /* random.docx in Resources */,
 				1512132824166AD9009B7C88 /* large-animated-gif.gif in Resources */,
 				43FC02121F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html in Resources */,
 				1512132724166AD9009B7C88 /* small-animated-gif.gif in Resources */,

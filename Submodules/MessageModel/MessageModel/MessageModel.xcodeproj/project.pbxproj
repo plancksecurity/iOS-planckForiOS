@@ -388,6 +388,8 @@
 		493B6D051E70589800364D60 /* SystemUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493B6D041E70589800364D60 /* SystemUtils.swift */; };
 		49E6CE3B1E72F70B004EE2AD /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43CB60821DA4EB4E0015281E /* MessageModel.framework */; };
 		5B0BEB3824F8E25900A00D57 /* FolderQueryResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0BEB3724F8E25900A00D57 /* FolderQueryResult.swift */; };
+		5B2DA6EE256E78B0006DA570 /* APDF.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5B2DA6ED256E78AF006DA570 /* APDF.pdf */; };
+		5B2DA6F6256E7B73006DA570 /* PorpoiseGalaxy_HubbleFraile_960.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5B2DA6F5256E7B73006DA570 /* PorpoiseGalaxy_HubbleFraile_960.pdf */; };
 		5B4A715C252B5B6F00436FCF /* NSError+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A715A252B5B6F00436FCF /* NSError+Passphrase.swift */; };
 		5B4A715D252B5B6F00436FCF /* Error+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A715B252B5B6F00436FCF /* Error+Passphrase.swift */; };
 		5B87D79A23F3117D009DACAA /* String+Fingerprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D79923F3117D009DACAA /* String+Fingerprint.swift */; };
@@ -850,6 +852,8 @@
 		490FF8151E79942500BC15F9 /* CdImapFlags+TestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdImapFlags+TestHelper.swift"; sourceTree = "<group>"; };
 		493B6D041E70589800364D60 /* SystemUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemUtils.swift; sourceTree = "<group>"; };
 		5B0BEB3724F8E25900A00D57 /* FolderQueryResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderQueryResult.swift; sourceTree = "<group>"; };
+		5B2DA6ED256E78AF006DA570 /* APDF.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = APDF.pdf; sourceTree = "<group>"; };
+		5B2DA6F5256E7B73006DA570 /* PorpoiseGalaxy_HubbleFraile_960.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = PorpoiseGalaxy_HubbleFraile_960.pdf; sourceTree = "<group>"; };
 		5B3BFC6324DAF07200B99FA6 /* 1.1.205.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.1.205.xcdatamodel; sourceTree = "<group>"; };
 		5B4A715A252B5B6F00436FCF /* NSError+Passphrase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSError+Passphrase.swift"; sourceTree = "<group>"; };
 		5B4A715B252B5B6F00436FCF /* Error+Passphrase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Error+Passphrase.swift"; sourceTree = "<group>"; };
@@ -1792,6 +1796,8 @@
 			children = (
 				4383344523FD7E58004CC422 /* ClientCertificateUtilTest */,
 				15C7A88C2385C08100C47364 /* PorpoiseGalaxy_HubbleFraile_960.jpg */,
+				5B2DA6F5256E7B73006DA570 /* PorpoiseGalaxy_HubbleFraile_960.pdf */,
+				5B2DA6ED256E78AF006DA570 /* APDF.pdf */,
 				43517243229FD8EF00D92026 /* IOS-1432_keypair.asc */,
 				43517242229FD8EF00D92026 /* IOS-1432_message_from_outlook.txt */,
 				4331CE84229BDF0F00DDDC65 /* IOS-1556_html_mail_with_html_attachment.txt */,
@@ -2513,6 +2519,7 @@
 				43517244229FD8EF00D92026 /* IOS-1432_message_from_outlook.txt in Resources */,
 				43607DDF23FE81D300FA66B8 /* Certificate_003.p12 in Resources */,
 				15C7A88D2385C08100C47364 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */,
+				5B2DA6F6256E7B73006DA570 /* PorpoiseGalaxy_HubbleFraile_960.pdf in Resources */,
 				43648287249A3F6900DD44ED /* IOS-211-duplicated-attachments.txt in Resources */,
 				4331CE87229BEABF00DDDC65 /* IOS-1556_html_mail_with_html_attachment_inline.txt in Resources */,
 				43BBB49D24486A4300A88B39 /* Undisplayable_HTML_Message.txt in Resources */,
@@ -2524,6 +2531,7 @@
 				43BBB49F24486A8900A88B39 /* 1364_Mail_missing_attached_image.txt in Resources */,
 				43607DD923FD84EE00FA66B8 /* Certificate_001.p12 in Resources */,
 				43F86BA624504B95008961DA /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc in Resources */,
+				5B2DA6EE256E78B0006DA570 /* APDF.pdf in Resources */,
 				4331CE85229BDF0F00DDDC65 /* IOS-1556_html_mail_with_html_attachment.txt in Resources */,
 				4331CE89229BEB7A00DDDC65 /* IOS-1556_html_mail_with_html_attachments_mixed.txt in Resources */,
 				4384D3FA243F2FD6006CCBA2 /* UnencryptedHTMLMail.txt in Resources */,
