@@ -6,8 +6,6 @@
 //  Copyright © 2019 pEp Security S.A. All rights reserved.
 //
 
-import PEPObjCAdapterFramework
-
 // MARK: - PEPDecryptFlags+ReUpload.swift
 
 extension PEPDecryptFlags {
