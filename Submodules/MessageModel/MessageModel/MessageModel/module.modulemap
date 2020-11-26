@@ -1,0 +1,6 @@
+framework module MessageModel {
+    umbrella header "MessageModel.h"
+    // Load a C header to be used in Swift - here /usr/include/sys/stat.h:
+    export *
+    module * { export * }
+}
