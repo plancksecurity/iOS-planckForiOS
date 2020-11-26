@@ -22,7 +22,7 @@ extension String {
     /// This function only changes the font size between <style> </style> tags.
     /// The rest of HTML is ignored.
     /// - Returns: HTML string with fixed `font-size:` values replaced by relative values
-    public func fixedFontSizeRemoved() -> String {
+    public func fixedFontSizeReplaced() -> String {
 
         guard let startIndex = self.range(of: "<style"),
             let endIndex = self.range(of: "</style>"),
