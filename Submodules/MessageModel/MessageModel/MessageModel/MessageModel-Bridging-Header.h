@@ -9,5 +9,8 @@
 #ifndef MessageModel_Bridging_Header_h
 #define MessageModel_Bridging_Header_h
 
+#pragma mark - PEP ObjC Adapter
+
+#import "PEPSession.h"
 
 #endif /* MessageModel_Bridging_Header_h */
