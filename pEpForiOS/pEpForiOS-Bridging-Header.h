@@ -28,8 +28,4 @@
 
 #import <asl.h>
 
-#pragma mark - pEp ObjC Adapter
-
-#import "PEPSession.h"
-
 #endif /* pEpForiOS_Bridging_Header_h */
