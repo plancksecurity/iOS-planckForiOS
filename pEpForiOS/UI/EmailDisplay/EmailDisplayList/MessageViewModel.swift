@@ -226,7 +226,9 @@ extension MessageViewModel {
                 return
             }
             let profileImage = me.profilePictureComposer.profilePicture(for: identitykey)
-            completion(profileImage)
+            DispatchQueue.main.async {
+                completion(profileImage)
+            }
         }
         return profilePictureOperation
     }
