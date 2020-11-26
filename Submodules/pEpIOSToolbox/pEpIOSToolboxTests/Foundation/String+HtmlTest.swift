@@ -11,7 +11,7 @@ import XCTest
 
 class String_HtmlTest: XCTestCase {
     func testHtmlFixedFontSizeResolver() {
-        XCTAssertEqual(Constant.htmlFixedFontSize.fixedFontSizeRemover(),
+        XCTAssertEqual(Constant.htmlFixedFontSize.fixedFontSizeRemoved(),
                        Constant.htmlExpected)
     }
 }
