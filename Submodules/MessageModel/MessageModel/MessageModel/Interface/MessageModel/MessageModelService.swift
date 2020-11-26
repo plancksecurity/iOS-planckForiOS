@@ -8,7 +8,6 @@
 
 import Foundation
 
-import PEPObjCAdapterFramework
 import pEpIOSToolbox
 
 public protocol MessageModelServiceProtocol: ServiceProtocol {
