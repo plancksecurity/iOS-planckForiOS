@@ -226,7 +226,6 @@
 		435F5122221FF80F006EB11F /* SmtpSendError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435F5121221FF80F006EB11F /* SmtpSendError.swift */; };
 		435F5134221FFF3A006EB11F /* CdFolder+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435F5133221FFF3A006EB11F /* CdFolder+Pantomime.swift */; };
 		435F514C222017E8006EB11F /* CdAttachment+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435F514B222017E8006EB11F /* CdAttachment+Pantomime.swift */; };
-		435F518122204731006EB11F /* PEPObjCAdapterFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 435F518022204731006EB11F /* PEPObjCAdapterFramework.framework */; };
 		43607DD923FD84EE00FA66B8 /* Certificate_001.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 4383344623FD806D004CC422 /* Certificate_001.p12 */; };
 		43607DDD23FE814900FA66B8 /* Certificate_002.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 43607DDC23FE814900FA66B8 /* Certificate_002.p12 */; };
 		43607DDF23FE81D300FA66B8 /* Certificate_003.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 43607DDE23FE81D300FA66B8 /* Certificate_003.p12 */; };
@@ -908,7 +907,6 @@
 			files = (
 				3AB50D2A2500F3B1005E2170 /* pEp4iosIntern.framework in Frameworks */,
 				43B1A39C22366D9700C387DE /* AppAuth.framework in Frameworks */,
-				435F518122204731006EB11F /* PEPObjCAdapterFramework.framework in Frameworks */,
 				43EA489D221E95E3006E8F83 /* PantomimeFramework.framework in Frameworks */,
 				B7DB7FA522147000003968DA /* pEpIOSToolbox.framework in Frameworks */,
 			);
