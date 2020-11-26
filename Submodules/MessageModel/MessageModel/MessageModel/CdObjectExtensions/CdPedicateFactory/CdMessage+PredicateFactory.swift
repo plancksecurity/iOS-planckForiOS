@@ -7,7 +7,6 @@
 //
 
 import CoreData
-import PEPObjCAdapterFramework
 
 extension CdMessage {
 
