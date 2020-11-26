@@ -6,7 +6,6 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
-import PEPObjCAdapterFramework
 import PantomimeFramework
 import pEpIOSToolbox
 
