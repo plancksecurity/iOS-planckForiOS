@@ -8,8 +8,6 @@
 
 import Foundation
 
-import PEPObjCAdapterFramework
-
 extension Rating {
     init(pEpRating: PEPRating) {
         switch pEpRating {
