@@ -9,7 +9,6 @@
 import Foundation
 
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
 
 extension PEPRating {
     public func pEpColor() -> PEPColor {
