@@ -15,5 +15,3 @@ FOUNDATION_EXPORT double MessageModelVersionNumber;
 FOUNDATION_EXPORT const unsigned char MessageModelVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <MessageModel/PublicHeader.h>
-
-#import "PEPSession.h"
