@@ -9,8 +9,6 @@
 import Foundation
 import CoreData
 
-import PEPObjCAdapterFramework
-
 extension CdMessage {
     enum MessageReferenceType {
         case reference
