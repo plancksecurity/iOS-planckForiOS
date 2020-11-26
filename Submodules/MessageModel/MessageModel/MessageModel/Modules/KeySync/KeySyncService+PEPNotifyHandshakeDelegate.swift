@@ -6,7 +6,6 @@
 //  Copyright © 2019 pEp Security S.A. All rights reserved.
 //
 
-import PEPObjCAdapterFramework
 import pEpIOSToolbox
 
 extension KeySyncService: PEPNotifyHandshakeDelegate {
