@@ -3149,8 +3149,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../pEpObjCAdapter/pEpObjCAdapter/Public",
-					"$(SRCROOT)/../pEpObjCAdapter/Submodules/pEpObjCAdapterTypes/pEpObjCAdapterTypes/Public/",
+					"$(PROJECT_DIR)/../pEpObjCAdapter/pEpObjCAdapter/Public",
+					"$(PROJECT_DIR)/../pEpObjCAdapter/Submodules/pEpObjCAdapterTypes/pEpObjCAdapterTypes/Public/",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MODULEMAP_FILE = "";
@@ -3215,8 +3215,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../pEpObjCAdapter/pEpObjCAdapter/Public",
-					"$(SRCROOT)/../pEpObjCAdapter/Submodules/pEpObjCAdapterTypes/pEpObjCAdapterTypes/Public/",
+					"$(PROJECT_DIR)/../pEpObjCAdapter/pEpObjCAdapter/Public",
+					"$(PROJECT_DIR)/../pEpObjCAdapter/Submodules/pEpObjCAdapterTypes/pEpObjCAdapterTypes/Public/",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MODULEMAP_FILE = "";
