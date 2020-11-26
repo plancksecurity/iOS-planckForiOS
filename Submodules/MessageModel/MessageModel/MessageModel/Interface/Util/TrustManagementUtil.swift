@@ -6,7 +6,6 @@
 //  Copyright © 2020 pEp Security S.A. All rights reserved.
 //
 
-import PEPObjCAdapterFramework
 import pEpIOSToolbox
 
 /// Util that contains all handshake related actions.
