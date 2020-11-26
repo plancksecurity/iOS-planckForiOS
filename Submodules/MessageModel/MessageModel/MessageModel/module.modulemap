@@ -1,5 +1,0 @@
-framework module MessageModel {
-    umbrella header "MessageModel.h"
-    export *
-    module * { export * }
-}
