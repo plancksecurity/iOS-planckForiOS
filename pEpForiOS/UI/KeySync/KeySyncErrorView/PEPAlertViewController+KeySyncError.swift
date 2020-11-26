@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import pEpIOSToolbox
 import MessageModel
 
 extension PEPAlertViewController {
