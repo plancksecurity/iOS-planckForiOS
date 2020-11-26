@@ -56,7 +56,7 @@ class TrustManagementViewController: BaseViewController {
                                    positiveButtonAction: { [weak vm] in
                                     vm?.handleShakeMotionDidEnd()
                                    },
-                                   style: .warn)
+                                   style: PEPAlertViewController.AlertStyle.undo)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

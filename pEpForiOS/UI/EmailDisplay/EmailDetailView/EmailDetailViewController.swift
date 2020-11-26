@@ -366,7 +366,7 @@ extension EmailDetailViewController {
         return action
     }
 
-    private func tutorialAction() -> UIAlertAction{
+    private func tutorialAction() -> UIAlertAction {
         return UIAlertAction(
             title: NSLocalizedString("Tutorial", comment: "show tutorial from compose view"),
             style: .default) { _ in

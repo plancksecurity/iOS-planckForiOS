@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import pEpIOSToolbox
+import MessageModel
 
 extension PEPAlertViewController {
 
@@ -15,7 +17,7 @@ extension PEPAlertViewController {
     ///   - isNewGroup: is it a new group creation or it's joining an existing group
     ///   - completion: The callback to be executed when the user interacts with the error alert view buttons.
     /// - Returns: The configured view controller.
-    public static func getKeySyncErrorViewController(isNewGroup: Bool, completion: ((PEPAlertViewController.KeySyncErrorAlertAction) -> ())?) -> PEPAlertViewController? {
+    public static func getKeySyncErrorViewController(isNewGroup: Bool, completion: ((KeySyncErrorResponse) -> ())?) -> PEPAlertViewController? {
         let errorTitle = NSLocalizedString("p≡p Sync", comment: "keySyncWizard animation view title")
         let errorMessage = NSLocalizedString("Something went wrong with syncing the devices. Please try again.",
                                              comment: "keySyncWizard error view message when syncing devices")

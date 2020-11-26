@@ -10,15 +10,7 @@ import UIKit
 import pEpIOSToolbox
 
 final class PEPAlertViewController: UIViewController {
-    public enum KeySyncErrorAlertAction {
-        case notNow, tryAgain
-    }
-
-    public enum AlertStyle : Int {
-        case `default` = 0
-        case warn = 1
-    }
-
+    public var alertStyle: AlertStyle = .default
     @IBOutlet weak var alertTitle: UILabel!
     @IBOutlet weak var alertMessage: UILabel!
     @IBOutlet weak var alertImageView: UIImageView!
@@ -69,7 +61,6 @@ final class PEPAlertViewController: UIViewController {
                     Log.shared.errorAndCrash("Fail to instantiateViewController PEPAlertViewController")
                     return nil
             }
-
             pEpAlertViewController.viewModel = viewModel
             pEpAlertViewController.viewModel.delegate = pEpAlertViewController
 
@@ -94,6 +85,35 @@ final class PEPAlertViewController: UIViewController {
 extension PEPAlertViewController: PEPAlertViewModelDelegate {
     func dismiss() {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - AlertStyle
+
+extension PEPAlertViewController {
+
+    public enum AlertStyle : Int {
+        case `default` = 0
+        case warn = 1
+        case undo = 2
+    }
+
+    public var primaryColor: UIColor {
+        switch alertStyle {
+        case .default:
+            return .pEpGreen
+        case .warn:
+            return .pEpRed
+        case .undo:
+            return .pEpBlack
+        }
+    }
+
+    public var secondaryColor: UIColor {
+        switch alertStyle {
+        case .default, .warn, .undo:
+            return .pEpBlack
+        }
     }
 }
 

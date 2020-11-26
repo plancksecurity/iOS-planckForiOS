@@ -34,6 +34,8 @@
 		43BE66D2246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BE66D1246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift */; };
 		43E1A866252B6A1300307A7D /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43E1A865252B6A1300307A7D /* CocoaLumberjack.framework */; };
 		43EB61A6252DA4160066B45D /* LoggerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EB61A5252DA4160066B45D /* LoggerTest.swift */; };
+		5B2EDC642551954300DA18A7 /* NonPasteableUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2EDC632551954300DA18A7 /* NonPasteableUITextField.swift */; };
+		5B2EDC682551956600DA18A7 /* TextFieldWithoutCaret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2EDC672551956600DA18A7 /* TextFieldWithoutCaret.swift */; };
 		5B2F7E5F240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E5E240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift */; };
 		5B2F7E61240D0EA8004DDFA2 /* RangeExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E60240D0EA8004DDFA2 /* RangeExpression+Extension.swift */; };
 		5B4161A92540371800C060B5 /* UIApplication+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4161A82540371800C060B5 /* UIApplication+Alert.swift */; };
@@ -108,6 +110,8 @@
 		43BE66D1246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsDirectoryBrowserProtocol.swift; sourceTree = "<group>"; };
 		43E1A865252B6A1300307A7D /* CocoaLumberjack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43EB61A5252DA4160066B45D /* LoggerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoggerTest.swift; path = ../../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/Other/Logging/LoggerTest.swift; sourceTree = "<group>"; };
+		5B2EDC632551954300DA18A7 /* NonPasteableUITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonPasteableUITextField.swift; sourceTree = "<group>"; };
+		5B2EDC672551956600DA18A7 /* TextFieldWithoutCaret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TextFieldWithoutCaret.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/UIKit/TextFieldWithoutCaret.swift; sourceTree = "<group>"; };
 		5B2F7E5E240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "StringProtocol+NSRanges.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/StringProtocol+NSRanges.swift"; sourceTree = "<group>"; };
 		5B2F7E60240D0EA8004DDFA2 /* RangeExpression+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "RangeExpression+Extension.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/RangeExpression+Extension.swift"; sourceTree = "<group>"; };
 		5B4161A82540371800C060B5 /* UIApplication+Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Alert.swift"; sourceTree = "<group>"; };
@@ -304,6 +308,8 @@
 				B7E9D25323561D360074F067 /* UISplitViewController+DisplayMode.swift */,
 				3A0CBAAA23F582B900AE200C /* UITextView+Font.swift */,
 				155528C323A797DC008486DF /* UIView+Autolayout.swift */,
+				5B2EDC632551954300DA18A7 /* NonPasteableUITextField.swift */,
+				5B2EDC672551956600DA18A7 /* TextFieldWithoutCaret.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -528,6 +534,7 @@
 				3AC1987D23F56B7300E71D43 /* UILabel+Font.swift in Sources */,
 				5B2F7E5F240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift in Sources */,
 				B7911EC621F88AF800D7F66F /* UIImage+Extension.swift in Sources */,
+				5B2EDC682551956600DA18A7 /* TextFieldWithoutCaret.swift in Sources */,
 				B70A3A77220091D400EDCE61 /* Logger.swift in Sources */,
 				5BA2F5E924C997ED00F27099 /* UIDevice+Extension.swift in Sources */,
 				B7A46C56220DA5EB0027CCB5 /* Substring+Email.swift in Sources */,
@@ -539,6 +546,7 @@
 				B7465DBE22119D3A008A1708 /* Thread+Extension.swift in Sources */,
 				5BD917EE252E17D20092B30F /* String+Extension.swift in Sources */,
 				37904564223FA486006DAB3B /* NetworkReachability.swift in Sources */,
+				5B2EDC642551954300DA18A7 /* NonPasteableUITextField.swift in Sources */,
 				B7A46C52220C732E0027CCB5 /* Data+Extensions.swift in Sources */,
 				154944CF229A97AA00CC6431 /* SelfReferencingOperation.swift in Sources */,
 				B7465DE32211C890008A1708 /* CGImageSource+Extension.swift in Sources */,
