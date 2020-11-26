@@ -8,8 +8,6 @@
 
 import Foundation
 
-import PEPObjCAdapterFramework
-
 // MARK: - KeySync
 
 extension Account {
