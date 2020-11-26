@@ -8,8 +8,6 @@
 
 import Foundation
 
-import PEPObjCAdapterFramework
-
 extension TrustwordsLanguage {
     init(pEpLanguage: PEPLanguage) {
         self.code = pEpLanguage.code
