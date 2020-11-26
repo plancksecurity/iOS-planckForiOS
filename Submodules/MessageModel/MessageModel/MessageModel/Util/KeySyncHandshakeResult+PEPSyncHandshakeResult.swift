@@ -8,8 +8,6 @@
 
 import Foundation
 
-import PEPObjCAdapterFramework
-
 extension KeySyncHandshakeResult {
     func pEpSyncHandshakeResult() -> PEPSyncHandshakeResult {
         switch self {
