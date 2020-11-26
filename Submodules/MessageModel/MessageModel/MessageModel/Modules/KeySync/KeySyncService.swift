@@ -8,7 +8,6 @@
 
 import CoreData
 
-import PEPObjCAdapterFramework
 import pEpIOSToolbox
 
 /// Provides pEp Sync [en|dis]abled state and state changes.
