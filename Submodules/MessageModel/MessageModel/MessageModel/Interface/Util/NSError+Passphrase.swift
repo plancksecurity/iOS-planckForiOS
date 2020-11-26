@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import PEPObjCAdapterFramework
 
 public extension NSError {
 
