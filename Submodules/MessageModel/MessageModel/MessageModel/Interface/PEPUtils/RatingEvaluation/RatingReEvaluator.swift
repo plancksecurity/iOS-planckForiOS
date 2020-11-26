@@ -8,7 +8,6 @@
 
 import CoreData
 
-import PEPObjCAdapterFramework
 import pEpIOSToolbox
 
 protocol RatingReEvaluatorProtocol {
