@@ -8,7 +8,6 @@
 
 import CoreData
 
-import PEPObjCAdapterFramework
 import pEpIOSToolbox
 
 extension KeySyncService: PEPSendMessageDelegate {
