@@ -78,11 +78,11 @@ extension UIUtils {
                 return nil
             } else if viewController is KeySyncWizardViewController {
                 // dismiss pEp Sync Errror alert in case pEp Sync Wizard is about to start again
-                dismissAndpresent(viewController: viewController, withPresenter: presenter)
+                dismiss(presenter: presenter, andPresent: viewController)
                 return viewController
             }
         } else if presenter is KeySyncWizardViewController {
-            dismissAndpresent(viewController: viewController, withPresenter: presenter)
+            dismiss(presenter: presenter, andPresent: viewController)
             return viewController
         } else {
             DispatchQueue.main.async {
@@ -93,7 +93,7 @@ extension UIUtils {
         return nil
     }
 
-    private static func dismissAndpresent(viewController: UIViewController, withPresenter presenter: UIViewController) {
+    private static func dismiss(presenter: UIViewController, andPresent viewController: UIViewController) {
         DispatchQueue.main.async {
             presenter.dismiss(animated: true) {
                 let newPresenter = UIApplication.currentlyVisibleViewController()
