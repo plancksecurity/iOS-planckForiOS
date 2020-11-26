@@ -10,7 +10,6 @@ import Foundation
 import CoreData
 
 import PantomimeFramework
-import PEPObjCAdapterFramework
 import pEpIOSToolbox
 
 //!!!: Clean up! 1) Loads of topics mixed here. 2) Loads of public methods that expose CoreData.
