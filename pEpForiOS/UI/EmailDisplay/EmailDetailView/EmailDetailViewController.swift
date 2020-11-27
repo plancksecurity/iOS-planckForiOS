@@ -928,7 +928,7 @@ extension EmailDetailViewController {
     }
 }
 
-//MARK:- QLPreviewControllerDelegate
+// MARK:- QLPreviewControllerDelegate
 
 extension EmailDetailViewController: QLPreviewControllerDelegate {
     func previewController(_ controller: QLPreviewController, shouldOpen url: URL, for item: QLPreviewItem) -> Bool {
