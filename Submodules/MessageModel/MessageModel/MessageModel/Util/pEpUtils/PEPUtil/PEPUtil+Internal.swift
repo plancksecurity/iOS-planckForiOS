@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 
 import PantomimeFramework
+import PEPObjCAdapterFramework
 import pEpIOSToolbox
 
 // MARK: - Internal

@@ -8,7 +8,7 @@
 
 import Foundation
 
-import PEPObjCAdapterMain
+import PEPObjCAdapterFramework
 
 // MARK: - KeySync
 

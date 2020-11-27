@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import PEPObjCAdapterFramework
 
 // MARK: - CdAttachment+PEPAttachment.swift
 

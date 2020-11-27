@@ -8,6 +8,8 @@
 
 import Foundation
 
+import PEPObjCAdapterFramework
+
 /// Derived from the adapter's `PEPRating`, which in turn is derived from
 /// the engine's `PEP_rating`.
 public enum Rating {

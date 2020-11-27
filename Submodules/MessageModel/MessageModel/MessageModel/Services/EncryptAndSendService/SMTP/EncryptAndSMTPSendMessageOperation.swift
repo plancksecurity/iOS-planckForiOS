@@ -9,6 +9,7 @@
 import CoreData
 
 import pEpIOSToolbox
+import PEPObjCAdapterFramework
 
 /// Encrypts and SMTPs a given messages.
 class EncryptAndSMTPSendMessageOperation: ConcurrentBaseOperation {

@@ -6,6 +6,8 @@
 //  Copyright © 2019 pEp Security S.A. All rights reserved.
 //
 
+import PEPObjCAdapterFramework
+
 /// Responsible for handling all KeySync related tasks
 protocol KeySyncServiceProtocol: ServiceProtocol {
 

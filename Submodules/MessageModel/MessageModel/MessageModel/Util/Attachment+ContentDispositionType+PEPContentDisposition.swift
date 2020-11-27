@@ -8,6 +8,8 @@
 
 import Foundation
 
+import PEPObjCAdapterFramework
+
 extension Attachment.ContentDispositionType {
     static func from(
         contentDisposition: PEPContentDisposition) -> Attachment.ContentDispositionType {

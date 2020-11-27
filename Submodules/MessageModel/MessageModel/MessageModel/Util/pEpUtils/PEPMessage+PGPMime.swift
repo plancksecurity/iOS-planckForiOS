@@ -8,6 +8,8 @@
 
 import Foundation
 
+import PEPObjCAdapterFramework
+
 extension PEPMessage {
     /// Checks whether this PEPMessage is probably PGP/MIME encrypted.
     func isProbablyPGPMime() -> Bool {

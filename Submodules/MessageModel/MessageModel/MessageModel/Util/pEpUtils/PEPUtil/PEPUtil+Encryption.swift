@@ -8,6 +8,8 @@
 
 /// Encryption related pEp utils collection
 
+import PEPObjCAdapterFramework
+
 extension  PEPUtils {
     
     static func encrypt(pEpMessage: PEPMessage,

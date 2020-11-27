@@ -6,10 +6,10 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import CoreData
-
+import PEPObjCAdapterFramework
 import PantomimeFramework
 import pEpIOSToolbox
+import CoreData
 
 // MARK: - ImapState
 

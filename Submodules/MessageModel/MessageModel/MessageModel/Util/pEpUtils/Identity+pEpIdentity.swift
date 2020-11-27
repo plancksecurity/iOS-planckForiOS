@@ -8,6 +8,8 @@
 
 import Foundation
 
+import PEPObjCAdapterFramework
+
 extension Identity {
     func pEpIdentity() -> PEPIdentity {
         return cdObject.pEpIdentity()

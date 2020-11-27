@@ -7,6 +7,7 @@
 //
 
 import PantomimeFramework
+import PEPObjCAdapterFramework
 import pEpIOSToolbox
 
 extension CWIMAPMessage {

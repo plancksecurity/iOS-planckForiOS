@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+import PEPObjCAdapterFramework
+
 extension CdMessage {
     /// The value of the "in-reply-to" header used by pEp to tunnel
     /// an auto-consume tag through mail servers that eliminates

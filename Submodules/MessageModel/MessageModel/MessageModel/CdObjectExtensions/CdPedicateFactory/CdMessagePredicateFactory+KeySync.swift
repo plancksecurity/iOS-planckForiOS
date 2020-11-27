@@ -8,6 +8,8 @@
 
 import Foundation
 
+import PEPObjCAdapterFramework
+
 /// KeySync specific predicates (message-model internal).
 extension CdMessage.PredicateFactory {
     /// Messages with a sent date older than now minus the given time interval.

@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 
+import PEPObjCAdapterFramework
 import pEpIOSToolbox
 
 public class PrepareAccountForSavingService {

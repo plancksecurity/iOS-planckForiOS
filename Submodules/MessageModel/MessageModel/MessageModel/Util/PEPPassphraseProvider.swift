@@ -6,6 +6,8 @@
 //  Copyright © 2020 pEp Security S.A. All rights reserved.
 //
 
+import PEPObjCAdapterFramework
+
 import pEpIOSToolbox
 
 /// Pass to adapter PEPObjCAdapter.setPassphraseProvider(PEPPassphraseProviderProtocol).

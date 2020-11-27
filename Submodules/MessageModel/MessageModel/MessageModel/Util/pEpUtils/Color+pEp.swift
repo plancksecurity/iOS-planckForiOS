@@ -8,6 +8,8 @@
 
 import Foundation
 
+import PEPObjCAdapterFramework
+
 extension Color {
     init(pEpColor: PEPColor) {
         switch pEpColor {

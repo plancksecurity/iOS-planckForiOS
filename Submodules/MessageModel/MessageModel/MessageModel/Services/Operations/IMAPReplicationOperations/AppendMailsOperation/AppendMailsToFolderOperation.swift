@@ -9,6 +9,7 @@
 import CoreData
 
 import PantomimeFramework
+import PEPObjCAdapterFramework
 import pEpIOSToolbox
 
 /// Operation for storing mails in any type of IMAP folder.
