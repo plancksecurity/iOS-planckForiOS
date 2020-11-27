@@ -3555,7 +3555,7 @@
 					"$(SDKROOT)/usr/include/libxml2",
 					"$(SRCROOT)/../libAccountSettings/include",
 					"$(SRCROOT)/../pEpObjCAdapter/",
-					"$(SRCROOT)/../pEpEngine/src",
+					"$(SRCROOT)/../pEpEngine/src\n$(SRCROOT)/../pEpEngine/src\n$(SRCROOT)/../pEpEngine/src\n$(SRCROOT)/../pEpEngine/src\n$(SRCROOT)/../pEpEngine/src",
 					"$(SRCROOT)/pEpForiOS/Markdown/include",
 					"$(PROJECT_DIR)/../pEpObjCAdapter/Submodules/pEpObjCAdapterTypes/pEpObjCAdapterTypes/Public",
 				);
@@ -3625,7 +3625,7 @@
 					"$(SDKROOT)/usr/include/libxml2",
 					"$(SRCROOT)/../libAccountSettings/include",
 					"$(SRCROOT)/../pEpObjCAdapter/",
-					"$(SRCROOT)/../pEpEngine/src",
+					"$(SRCROOT)/../pEpEngine/src\n$(SRCROOT)/../pEpEngine/src\n$(SRCROOT)/../pEpEngine/src\n$(SRCROOT)/../pEpEngine/src\n$(SRCROOT)/../pEpEngine/src",
 					"$(SRCROOT)/pEpForiOS/Markdown/include",
 					"$(PROJECT_DIR)/../pEpObjCAdapter/Submodules/pEpObjCAdapterTypes/pEpObjCAdapterTypes/Public",
 				);
