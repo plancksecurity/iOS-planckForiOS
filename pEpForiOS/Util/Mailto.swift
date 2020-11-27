@@ -32,31 +32,30 @@ public struct Mailto {
     public var body: String?
 
     /// Optional initializer. Returns nil if the url is not mailto.
+    /// MUST be called from Main Queue.
     ///
     /// - Parameter url: The mailto url.
     init?(url : URL) {
         guard url.isMailto else {
             return nil
         }
+        func identityForEmailAddress(_ address: String) -> Identity {
+            var identity: Identity
+            if let existing = Identity.by(address: address) {
+                identity = existing
+            } else {
+                identity = Identity(address: address)
+            }
+            return identity
+        }
         let content = url.absoluteString.removeFirstOccurrence(of: Pattern.scheme.rawValue)
         let parts = content.split {$0 == "&" || $0 == "?"}
         parts.forEach { (part) in
             if !part.contains("=") {
                 let components = part.components(separatedBy: ",")
-                var toz = [Identity]()
-                Session.main.performAndWait {
-                    toz = components.map {
-                        var identity: Identity
-                        if let existing = Identity.by(address: $0) {
-                            identity = existing
-                        } else {
-                            identity = Identity(address: $0)
-                            identity.save()
-                        }
-                        return identity
-                    }
+                self.tos = components.map {
+                    return identityForEmailAddress($0)
                 }
-                tos = toz
             } else if let ccs = parseRecipientField(with: part, and: Pattern.cc.rawValue) {
                 self.ccs = ccs
             } else if let bccs = parseRecipientField(with: part, and: Pattern.bcc.rawValue) {
@@ -66,7 +65,10 @@ public struct Mailto {
             } else if let subject = parseTextField(with: part, and: Pattern.subject.rawValue) {
                 self.subject = subject.removingPercentEncoding
             }
+
+            Session.main.commit()
         }
+
 
         /// Parse the recipient fields (tos, ccs, bccs)
         /// - Parameters:
@@ -75,7 +77,9 @@ public struct Mailto {
         /// - Returns: the email addresses for the field
         func parseRecipientField(with part: String.SubSequence, and pattern: String) -> [Identity]? {
             if part.starts(with:pattern) {
-                return part.removeFirst(pattern: pattern).components(separatedBy: ",").map { return Identity(address: $0) }
+                return part.removeFirst(pattern: pattern).components(separatedBy: ",").map {
+                    return identityForEmailAddress($0)
+                }
             }
             return nil
         }

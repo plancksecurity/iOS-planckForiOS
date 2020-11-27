@@ -932,18 +932,24 @@ extension EmailDetailViewController {
 
 extension EmailDetailViewController: QLPreviewControllerDelegate {
     func previewController(_ controller: QLPreviewController, shouldOpen url: URL, for item: QLPreviewItem) -> Bool {
-        if url.isMailto {
-            guard let mailto = Mailto(url: url) else {
-                Log.shared.errorAndCrash("Mailto parsing failed")
-                return false
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                /// Lost myself
+                return
             }
-            guard let appConfig = appConfig else {
-                Log.shared.errorAndCrash("AppConfig not found")
-                return false
+            if url.isMailto {
+                guard let mailto = Mailto(url: url) else {
+                    Log.shared.errorAndCrash("Mailto parsing failed")
+                    return
+                }
+                guard let appConfig = me.appConfig else {
+                    Log.shared.errorAndCrash("AppConfig not found")
+                    return
+                }
+                UIUtils.showComposeView(from: mailto, appConfig: appConfig)
+                return
             }
-            UIUtils.showComposeView(from: mailto, appConfig: appConfig)
-            return false
         }
-        return true
+        return !url.isMailto
     }
 }
