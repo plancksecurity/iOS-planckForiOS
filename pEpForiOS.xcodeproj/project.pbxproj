@@ -3557,6 +3557,7 @@
 					"$(SRCROOT)/../pEpObjCAdapter/",
 					"$(SRCROOT)/../pEpEngine/src",
 					"$(SRCROOT)/pEpForiOS/Markdown/include",
+					"$(PROJECT_DIR)/../pEpObjCAdapter/Submodules/pEpObjCAdapterTypes/pEpObjCAdapterTypes/Public",
 				);
 				IBSC_OTHER_FLAGS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -3626,6 +3627,7 @@
 					"$(SRCROOT)/../pEpObjCAdapter/",
 					"$(SRCROOT)/../pEpEngine/src",
 					"$(SRCROOT)/pEpForiOS/Markdown/include",
+					"$(PROJECT_DIR)/../pEpObjCAdapter/Submodules/pEpObjCAdapterTypes/pEpObjCAdapterTypes/Public",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
