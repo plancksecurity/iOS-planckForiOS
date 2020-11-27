@@ -934,7 +934,7 @@ extension EmailDetailViewController: QLPreviewControllerDelegate {
     func previewController(_ controller: QLPreviewController, shouldOpen url: URL, for item: QLPreviewItem) -> Bool {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                /// Lost myself
+                // Valid case. We might have been dismissed.
                 return
             }
             if url.isMailto {
