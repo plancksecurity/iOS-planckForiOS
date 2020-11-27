@@ -3550,12 +3550,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework",
-					"$(SRCROOT)/../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter",
 					"$(SDKROOT)/usr/include/libxml2",
-					"$(SRCROOT)/../libAccountSettings/include",
-					"$(SRCROOT)/../pEpObjCAdapter/",
-					"$(SRCROOT)/../pEpEngine/src\n$(SRCROOT)/../pEpEngine/src\n$(SRCROOT)/../pEpEngine/src\n$(SRCROOT)/../pEpEngine/src\n$(SRCROOT)/../pEpEngine/src",
 					"$(SRCROOT)/pEpForiOS/Markdown/include",
 					"$(PROJECT_DIR)/../pEpObjCAdapter/Submodules/pEpObjCAdapterTypes/pEpObjCAdapterTypes/Public",
 				);
@@ -3620,12 +3615,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework",
-					"$(SRCROOT)/../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter",
 					"$(SDKROOT)/usr/include/libxml2",
-					"$(SRCROOT)/../libAccountSettings/include",
-					"$(SRCROOT)/../pEpObjCAdapter/",
-					"$(SRCROOT)/../pEpEngine/src\n$(SRCROOT)/../pEpEngine/src\n$(SRCROOT)/../pEpEngine/src\n$(SRCROOT)/../pEpEngine/src\n$(SRCROOT)/../pEpEngine/src",
 					"$(SRCROOT)/pEpForiOS/Markdown/include",
 					"$(PROJECT_DIR)/../pEpObjCAdapter/Submodules/pEpObjCAdapterTypes/pEpObjCAdapterTypes/Public",
 				);
