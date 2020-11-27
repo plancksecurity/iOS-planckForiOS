@@ -3635,16 +3635,7 @@
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter",
-					"$(SDKROOT)/usr/include/libxml2",
-					"$(SRCROOT)/../libAccountSettings/include",
-					"$(SRCROOT)/../pEpObjCAdapter/",
-					"$(SRCROOT)/../pEpEngine/src",
-					"$(SRCROOT)/pEpForiOS/Markdown/include",
-					"$(SRCROOT)/../AppAuth-iOS/Source",
-					"$(SRCROOT)/../AppAuth-iOS/Source/iOS",
-				);
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -3674,16 +3665,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				FRAMEWORK_SEARCH_PATHS = "";
-				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter",
-					"$(SDKROOT)/usr/include/libxml2",
-					"$(SRCROOT)/../libAccountSettings/include",
-					"$(SRCROOT)/../pEpObjCAdapter/",
-					"$(SRCROOT)/../pEpEngine/src",
-					"$(SRCROOT)/pEpForiOS/Markdown/include",
-					"$(SRCROOT)/../AppAuth-iOS/Source",
-					"$(SRCROOT)/../AppAuth-iOS/Source/iOS",
-				);
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
