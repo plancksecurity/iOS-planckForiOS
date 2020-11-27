@@ -18,6 +18,10 @@
 #import "AccountSettings.h"
 #import "AccountSettingsServer.h"
 
+#pragma mark - AppAuth
+
+#import "AppAuth/AppAuth.h"
+
 #pragma mark - HTML/Markdown
 
 #import "Axt.h"
