@@ -8,6 +8,7 @@
 
 import Foundation
 import MessageModel
+import PEPObjCAdapterFramework
 
 public struct Mailto {
 
@@ -41,7 +42,21 @@ public struct Mailto {
         let parts = content.split {$0 == "&" || $0 == "?"}
         parts.forEach { (part) in
             if !part.contains("=") {
-                tos = part.components(separatedBy: ",").map { return Identity(address: $0) } 
+                let components = part.components(separatedBy: ",")
+                var toz = [Identity]()
+                Session.main.performAndWait {
+                    toz = components.map {
+                        var identity: Identity
+                        if let existing = Identity.by(address: $0) {
+                            identity = existing
+                        } else {
+                            identity = Identity(address: $0)
+                            identity.save()
+                        }
+                        return identity
+                    }
+                }
+                tos = toz
             } else if let ccs = parseRecipientField(with: part, and: Pattern.cc.rawValue) {
                 self.ccs = ccs
             } else if let bccs = parseRecipientField(with: part, and: Pattern.bcc.rawValue) {
