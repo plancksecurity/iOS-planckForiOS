@@ -9,6 +9,11 @@
 #ifndef pEpForiOS_Bridging_Header_h
 #define pEpForiOS_Bridging_Header_h
 
+#pragma mark - pEp AccountSettings Headers
+
+#import "AccountSettings.h"
+#import "AccountSettingsServer.h"
+
 #pragma mark - HTML/Markdown
 
 #import "Axt.h"
