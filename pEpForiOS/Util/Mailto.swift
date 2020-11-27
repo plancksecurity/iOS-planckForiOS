@@ -64,10 +64,8 @@ public struct Mailto {
             } else if let subject = parseTextField(with: part, and: Pattern.subject.rawValue) {
                 self.subject = subject.removingPercentEncoding
             }
-
             Session.main.commit()
         }
-
 
         /// Parse the recipient fields (tos, ccs, bccs)
         /// - Parameters:
