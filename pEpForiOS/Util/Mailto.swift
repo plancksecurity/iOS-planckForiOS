@@ -8,7 +8,6 @@
 
 import Foundation
 import MessageModel
-import PEPObjCAdapterFramework
 
 public struct Mailto {
 
