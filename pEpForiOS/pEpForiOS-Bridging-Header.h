@@ -9,6 +9,10 @@
 #ifndef pEpForiOS_Bridging_Header_h
 #define pEpForiOS_Bridging_Header_h
 
+#pragma mark - Only temporary
+
+#import <UIKit/UIKit.h>
+
 #pragma mark - pEp AccountSettings Headers
 
 #import "AccountSettings.h"
