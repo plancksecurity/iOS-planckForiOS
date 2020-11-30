@@ -1376,7 +1376,6 @@
 				B78ACA72230D408500F8A396 /* FetchServiceBaseClass.swift */,
 				43EA483A221E9518006E8F83 /* FetchNumberOfNewMailsService.swift */,
 				B7A1152222C3CA3F00FB6E91 /* PrepareAccountForSavingService.swift */,
-				43EA483C221E9518006E8F83 /* Error */,
 				43EA4819221E9518006E8F83 /* Operations */,
 				43EA47E6221E9518006E8F83 /* NetworkService */,
 				4396230E23FD4FEA007E9364 /* Certificates */,
@@ -2149,13 +2148,6 @@
 				43B1B10B221ED15000DB26AB /* CoreDataPantomimeAdapter.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		43EA483C221E9518006E8F83 /* Error */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Error;
 			sourceTree = "<group>";
 		};
 		43F9E30B23AB8089003B8A54 /* ExpungeOperation */ = {
