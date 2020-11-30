@@ -743,6 +743,7 @@ extension EmailDetailViewController: EmailViewControllerDelegate {
         pdfPreviewUrl = url
         let previewController = QLPreviewController()
         previewController.dataSource = self
+        previewController.delegate = self
         present(previewController, animated: true, completion: nil)
     }
 }
@@ -918,6 +919,33 @@ extension EmailDetailViewController {
                                                   deleteButtonBarButtonItem]
         } else {
             navigationItem.leftBarButtonItems = []
+        }
+    }
+}
+
+// MARK:- QLPreviewControllerDelegate
+
+extension EmailDetailViewController: QLPreviewControllerDelegate {
+    func previewController(_ controller: QLPreviewController, shouldOpen url: URL, for item: QLPreviewItem) -> Bool {
+        if url.isMailto {
+            handleAttachmentWithMailto(url: url)
+            return false
+        }
+
+        return true
+    }
+
+    /// Present compose view if needed.
+    /// - Parameters:
+    ///   - url: The url of the attachment item.
+    ///   - appCofig: The appConfig
+    private func handleAttachmentWithMailto(url: URL) {
+        DispatchQueue.main.async {
+            guard let mailto = Mailto(url: url) else {
+                Log.shared.errorAndCrash("Mailto parsing failed")
+                return
+            }
+            UIUtils.showComposeView(from: mailto)
         }
     }
 }
