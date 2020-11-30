@@ -151,10 +151,18 @@ extension ClientCertificateImportViewController {
     }
 
     private func showCorruptedFileError() {
-        dismiss(animated: true) {
-            let title = NSLocalizedString("Corrupted File", comment: "Client certificate import: corrupted file error alert title")
-            let message = NSLocalizedString("The file could not be imported", comment: "Client certificate import: corrupted file error alert message")
-            UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message)
+        let title = NSLocalizedString("Corrupted File", comment: "Client certificate import: corrupted file error alert title")
+        let message = NSLocalizedString("The file could not be imported", comment: "Client certificate import: corrupted file error alert message")
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.dismiss(animated: true) {
+                if let currentViewController = UIApplication.currentlyVisibleViewController() {
+                    currentViewController.dismiss(animated: true)
+                }
+            }
         }
     }
 
