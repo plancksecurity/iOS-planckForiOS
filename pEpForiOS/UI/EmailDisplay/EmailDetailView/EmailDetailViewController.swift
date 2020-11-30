@@ -932,24 +932,33 @@ extension EmailDetailViewController {
 
 extension EmailDetailViewController: QLPreviewControllerDelegate {
     func previewController(_ controller: QLPreviewController, shouldOpen url: URL, for item: QLPreviewItem) -> Bool {
+        if url.isMailto {
+            handleAttachmentWithMailto(url: url)
+            return false
+        }
+
+        return true
+    }
+
+    /// Present compose view if needed.
+    /// - Parameters:
+    ///   - url: The url of the attachment item.
+    ///   - appCofig: The appConfig
+    private func handleAttachmentWithMailto(url: URL) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 // Valid case. We might have been dismissed.
                 return
             }
-            if url.isMailto {
-                guard let mailto = Mailto(url: url) else {
-                    Log.shared.errorAndCrash("Mailto parsing failed")
-                    return
-                }
-                guard let appConfig = me.appConfig else {
-                    Log.shared.errorAndCrash("AppConfig not found")
-                    return
-                }
-                UIUtils.showComposeView(from: mailto, appConfig: appConfig)
+            guard let mailto = Mailto(url: url) else {
+                Log.shared.errorAndCrash("Mailto parsing failed")
                 return
             }
+            guard let appConfig = me.appConfig else {
+                Log.shared.errorAndCrash("AppConfig not found")
+                return
+            }
+            UIUtils.showComposeView(from: mailto, appConfig: appConfig)
         }
-        return !url.isMailto
     }
 }
