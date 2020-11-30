@@ -174,17 +174,8 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
 // MARK: - ClientCertificateImport Delegate
 extension AccountTypeSelectorViewController: ClientCertificateImportViewControllerDelegate {
 
-    func showCorruptedFileError() {
-        dismiss(animated: true) {
-            let title = NSLocalizedString("Corrupted File", comment: "Client certificate import: corrupted file error alert title")
-            let message = NSLocalizedString("The file could not be imported", comment: "Client certificate import: corrupted file error alert message")
-            UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message)
-        }
-    }
-
     func certificateCouldImported() {
         viewModel.refreshAccountTypes()
         collectionView.reloadData()
     }
 }
-

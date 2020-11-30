@@ -84,7 +84,6 @@ public class ClientCertificateUtil {
 // MARK: - ClientCertificateUtilProtocol
 
 extension ClientCertificateUtil: ClientCertificateUtilProtocol {
-
     public func listCertificates(session: Session? = nil) -> [ClientCertificate] {
         let moc: NSManagedObjectContext = session?.moc ?? Session.main.moc
         let existingCdCerts = CdClientCertificate.all(in: moc) as? [CdClientCertificate] ?? []
