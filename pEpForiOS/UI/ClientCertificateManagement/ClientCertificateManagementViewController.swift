@@ -255,6 +255,14 @@ extension ClientCertificateManagementViewController: ClientCertificateManagement
 
 // MARK: - ClientCertificateImport Delegate
 extension ClientCertificateManagementViewController: ClientCertificateImportViewControllerDelegate {
+    func showCorruptedFileError() {
+        dismiss(animated: true) {
+            let title = NSLocalizedString("Corrupted File", comment: "Client certificate import: corrupted file error alert title")
+            let message = NSLocalizedString("The file could not be imported", comment: "Client certificate import: corrupted file error alert message")
+            UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message)
+        }
+    }
+
     func certificateCouldImported() {
         viewModel?.handleNewCertificateImported()
         tableView.reloadData()

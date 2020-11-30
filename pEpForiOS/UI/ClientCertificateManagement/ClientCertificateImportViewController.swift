@@ -19,6 +19,7 @@ extension ClientCertificateImportViewController {
 
 protocol ClientCertificateImportViewControllerDelegate: class {
     func certificateCouldImported()
+    func showCorruptedFileError()
 }
 
 final class ClientCertificateImportViewController: UIViewController {
@@ -104,10 +105,14 @@ extension ClientCertificateImportViewController: ClientCertificateImportViewMode
             showPermissionsDeniedError()
         }
     }
-    
+
     func dismiss() {
         delegate?.certificateCouldImported()
         dismiss(animated: true, completion: nil)
+    }
+
+    func showCorruptedFileError() {
+        delegate?.showCorruptedFileError()
     }
 }
 
@@ -149,18 +154,7 @@ extension ClientCertificateImportViewController {
                                                     me.dismiss(animated: true, completion: nil)
         }
     }
-    
-    private func showCorruptedFileError() {
-        UIUtils.showAlertWithOnlyPositiveButton(title: Localized.CorruptedFileError.title,
-                                                message: Localized.CorruptedFileError.message) { [weak self] in
-                                                    guard let me = self else {
-                                                        Log.shared.lostMySelf()
-                                                        return
-                                                    }
-                                                    me.dismiss(animated: true, completion: nil)
-        }
-    }
-    
+
     private func showWrongPasswordError() {
         UIUtils.showTwoButtonAlert(withTitle: Localized.WrongPasswordError.title,
                                    message: Localized.WrongPasswordError.message,
