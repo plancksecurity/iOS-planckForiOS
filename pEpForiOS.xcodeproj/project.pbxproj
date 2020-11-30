@@ -3548,7 +3548,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../pEpObjCAdapter/Submodules/pEpObjCAdapterTypes/pEpObjCAdapterTypes/Public",
 					"$(SRCROOT)/../libAccountSettings/include",
 					"$(SRCROOT)/../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter",
 				);
@@ -3614,7 +3613,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../pEpObjCAdapter/Submodules/pEpObjCAdapterTypes/pEpObjCAdapterTypes/Public",
 					"$(SRCROOT)/../libAccountSettings/include",
 					"$(SRCROOT)/../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter",
 				);
