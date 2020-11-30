@@ -109,14 +109,6 @@ extension ClientCertificateImportViewController: ClientCertificateImportViewMode
         delegate?.certificateCouldImported()
         dismiss(animated: true, completion: nil)
     }
-
-    func showCorruptedFileError() {
-        dismiss(animated: true) {
-            let title = NSLocalizedString("Corrupted File", comment: "Client certificate import: corrupted file error alert title")
-            let message = NSLocalizedString("The file could not be imported", comment: "Client certificate import: corrupted file error alert message")
-            UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message)
-        }
-    }
 }
 
 // MARK: - DynamicHeightScrollViewDelegate
@@ -146,6 +138,14 @@ extension ClientCertificateImportViewController: UITextFieldDelegate {
 // MARK: - Showing Error
 
 extension ClientCertificateImportViewController {
+
+    private func showCorruptedFileError() {
+        dismiss(animated: true) {
+            let title = NSLocalizedString("Corrupted File", comment: "Client certificate import: corrupted file error alert title")
+            let message = NSLocalizedString("The file could not be imported", comment: "Client certificate import: corrupted file error alert message")
+            UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message)
+        }
+    }
 
     private func showPermissionsDeniedError() {
         UIUtils.showAlertWithOnlyPositiveButton(title: Localized.PermissionsDeniedError.title,
