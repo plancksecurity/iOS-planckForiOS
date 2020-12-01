@@ -12,12 +12,19 @@ import pEpIOSToolbox
 class BodyCell: TextViewContainingTableViewCell {
     static let reuseId = "BodyCell"
 
+    private let defaultFontSize: CGFloat = 17.0
+
     var viewModel: BodyCellViewModel? {
         didSet {
             viewModel?.delegate = self
             viewModel?.maxTextattachmentWidth = textView.contentSize.width
             setupInitialText()
         }
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        textView.font = UIFont.systemFont(ofSize: defaultFontSize)
     }
 
     public func setup(with viewModel: BodyCellViewModel) {

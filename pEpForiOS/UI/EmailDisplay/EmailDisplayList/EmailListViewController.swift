@@ -469,7 +469,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     }
 
     @objc private func showCompose() {
-        dismiss(animated: true) {
+        dismissAndPerform {
             UIUtils.showComposeView(from: nil)
         }
     }

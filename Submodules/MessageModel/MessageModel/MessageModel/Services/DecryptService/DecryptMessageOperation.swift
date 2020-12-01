@@ -53,6 +53,10 @@ extension DecryptMessageOperation {
             return
         }
 
+        guard !cdMessageToDecrypt.isDeleted else {
+            /// Valid case, the message or the account is already deleted.
+            return
+        }
         var inOutFlags = cdMessageToDecrypt.isOnTrustedServer ? PEPDecryptFlags.none : .untrustedServer
         var inOutMessage = cdMessageToDecrypt.pEpMessage()
         var fprsOfExtraKeys = CdExtraKey.fprsOfAllExtraKeys(in: moc)

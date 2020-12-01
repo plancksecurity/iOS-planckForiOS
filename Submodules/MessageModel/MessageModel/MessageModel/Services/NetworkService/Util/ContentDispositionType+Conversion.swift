@@ -23,9 +23,6 @@ extension PEPContentDisposition {
             return PantomimeInlineDisposition
         case .other:
             return PantomimeAttachmentDisposition
-        default:
-            Log.shared.errorAndCrash("Unknown case")
-            return PantomimeAttachmentDisposition
         }
     }
 
@@ -74,9 +71,6 @@ extension Attachment.ContentDispositionType {
             self = .inline
         case .other:
             self = .attachment // This is probably wrong. Semantic of other not clear
-        default:
-            Log.shared.errorAndCrash("Unknown case")
-            self = .attachment
         }
     }
 

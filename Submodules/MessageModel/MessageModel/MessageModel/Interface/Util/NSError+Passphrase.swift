@@ -14,15 +14,12 @@ public extension NSError {
     /// Indicates if the error is PASSPHRASE related.
     /// That means: if it is a passphraseRequired error or a wrong passphrase error.
     var isPassphraseError: Bool {
-        if domain == PEPObjCAdapterEngineStatusErrorDomain {
-            switch code {
-            case Int(PEPStatus.passphraseRequired.rawValue),
-                 Int(PEPStatus.wrongPassphrase.rawValue):
-                return true
-            default:
-                return false
-            }
+        if domain == PEPObjCAdapterEngineStatusErrorDomain &&
+            code == Int(PEPStatus.passphraseRequired.rawValue) ||
+            code == Int(PEPStatus.wrongPassphrase.rawValue) {
+            return true
+        } else {
+            return false
         }
-        return false
     }
 }

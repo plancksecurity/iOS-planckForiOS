@@ -100,8 +100,7 @@ extension KeyImportViewController: KeyImportViewModelDelegate {
                                    cancelButtonText: noMessage,
                                    positiveButtonText: yesMessage,
                                    cancelButtonAction: userCanceled,
-                                   positiveButtonAction: userAccepted,
-                                   style: .default)
+                                   positiveButtonAction: userAccepted)
     }
 
     func showError(message: String) {
