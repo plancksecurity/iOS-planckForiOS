@@ -126,11 +126,11 @@ extension SmtpConnection {
 // MARK: - TransportClient
 
 extension SmtpConnection: TransportClient {
-    @objc public func messageSent(_ theNotification: Notification?) {
+    @objc func messageSent(_ theNotification: Notification?) {
         delegate?.messageSent(self, theNotification: theNotification)
     }
 
-    @objc public func messageNotSent(_ theNotification: Notification?) {
+    @objc func messageNotSent(_ theNotification: Notification?) {
         delegate?.messageNotSent(self, theNotification: theNotification)
     }
 }
@@ -138,27 +138,27 @@ extension SmtpConnection: TransportClient {
 // MARK: - SMTPClient
 
 extension SmtpConnection: SMTPClient {
-    @objc public func transactionInitiationCompleted(_ theNotification: Notification?) {
+    @objc func transactionInitiationCompleted(_ theNotification: Notification?) {
         delegate?.transactionInitiationCompleted(self, theNotification: theNotification)
     }
 
-    @objc public func transactionInitiationFailed(_ theNotification: Notification?) {
+    @objc func transactionInitiationFailed(_ theNotification: Notification?) {
         delegate?.transactionInitiationFailed(self, theNotification: theNotification)
     }
 
-    @objc public func recipientIdentificationCompleted(_ theNotification: Notification?) {
+    @objc func recipientIdentificationCompleted(_ theNotification: Notification?) {
         delegate?.recipientIdentificationCompleted(self, theNotification: theNotification)
     }
 
-    @objc public func recipientIdentificationFailed(_ theNotification: Notification?) {
+    @objc func recipientIdentificationFailed(_ theNotification: Notification?) {
         delegate?.recipientIdentificationFailed(self, theNotification: theNotification)
     }
 
-    @objc public func transactionResetCompleted(_ theNotification: Notification?) {
+    @objc func transactionResetCompleted(_ theNotification: Notification?) {
         delegate?.transactionResetCompleted(self, theNotification: theNotification)
     }
 
-    @objc public func transactionResetFailed(_ theNotification: Notification?) {
+    @objc func transactionResetFailed(_ theNotification: Notification?) {
         delegate?.transactionResetFailed(self, theNotification: theNotification)
     }
 }
@@ -166,40 +166,40 @@ extension SmtpConnection: SMTPClient {
 // MARK: - CWServiceClient
 
 extension SmtpConnection: CWServiceClient {
-    @objc public func badResponse(_ theNotification: Notification?) {
+    @objc func badResponse(_ theNotification: Notification?) {
         let errorMsg = theNotification?.parseErrorMessageBadResponse()
         delegate?.badResponse(self, response: errorMsg)
     }
 
-    @objc public func authenticationCompleted(_ theNotification: Notification?) {
+    @objc func authenticationCompleted(_ theNotification: Notification?) {
         delegate?.authenticationCompleted(self, theNotification: theNotification)
     }
 
-    @objc public func authenticationFailed(_ theNotification: Notification?) {
+    @objc func authenticationFailed(_ theNotification: Notification?) {
         delegate?.authenticationFailed(self, theNotification: theNotification)
     }
 
-    @objc public func connectionEstablished(_ theNotification: Notification?) {
+    @objc func connectionEstablished(_ theNotification: Notification?) {
         delegate?.connectionEstablished(self, theNotification: theNotification)
     }
 
-    @objc public func connectionLost(_ theNotification: Notification?) {
+    @objc func connectionLost(_ theNotification: Notification?) {
         delegate?.connectionLost(self, theNotification: theNotification)
     }
 
-    @objc public func connectionTerminated(_ theNotification: Notification?) {
+    @objc func connectionTerminated(_ theNotification: Notification?) {
         delegate?.connectionTerminated(self, theNotification: theNotification)
     }
 
-    @objc public func connectionTimedOut(_ theNotification: Notification?) {
+    @objc func connectionTimedOut(_ theNotification: Notification?) {
         delegate?.connectionTimedOut(self, theNotification: theNotification)
     }
 
-    @objc public func requestCancelled(_ theNotification: Notification?) {
+    @objc func requestCancelled(_ theNotification: Notification?) {
         delegate?.requestCancelled(self, theNotification: theNotification)
     }
 
-    @objc public func serviceInitialized(_ theNotification: Notification?) {
+    @objc func serviceInitialized(_ theNotification: Notification?) {
         delegate?.serviceInitialized(self, theNotification: theNotification)
         if connectInfo.connectionTransport == ConnectionTransport.startTLS &&
             !smtpStatus.haveStartedTLS {
@@ -257,7 +257,7 @@ extension SmtpConnection: CWServiceClient {
         }
     }
 
-    @objc public func serviceReconnected(_ theNotification: Notification?) {
+    @objc func serviceReconnected(_ theNotification: Notification?) {
         delegate?.serviceReconnected(self, theNotification: theNotification)
    }
 }

@@ -10,14 +10,14 @@ import pEpIOSToolbox
 
 import PantomimeFramework
 
-public protocol ImapConnectionDelegateErrorHandlerProtocol: class {
+protocol ImapConnectionDelegateErrorHandlerProtocol: class {
     func handle(error: Error)
 }
 
 /// Default implementation of `ImapConnectionDelegate` for `ImapSyncOperation`s
 /// that considers everything to be an error ('illegal state').
 class DefaultImapConnectionDelegate: ImapConnectionDelegate {
-    public weak var errorHandler: ImapConnectionDelegateErrorHandlerProtocol?
+    weak var errorHandler: ImapConnectionDelegateErrorHandlerProtocol?
 
     class CrashingErrorHandler: ImapConnectionDelegateErrorHandlerProtocol {
         func handle(error: Error) {
@@ -27,7 +27,7 @@ class DefaultImapConnectionDelegate: ImapConnectionDelegate {
         }
     }
 
-    public init(errorHandler: ImapConnectionDelegateErrorHandlerProtocol) {
+    init(errorHandler: ImapConnectionDelegateErrorHandlerProtocol) {
         self.errorHandler = errorHandler
     }
 

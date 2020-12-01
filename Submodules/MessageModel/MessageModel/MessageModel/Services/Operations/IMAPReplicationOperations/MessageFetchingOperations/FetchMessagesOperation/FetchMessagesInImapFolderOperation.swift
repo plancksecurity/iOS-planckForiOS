@@ -33,11 +33,11 @@ class FetchMessagesInImapFolderOperation: BaseImapFolderOperation {
 // MARK: - DefaultImapSyncDelegate
 
 class FetchMessagesInImapFolderOperationSyncDelegate: DefaultImapConnectionDelegate {
-    public override func folderFetchCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func folderFetchCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         (errorHandler as? FetchMessagesInImapFolderOperation)?.handleFolderFetchCompleted()
     }
 
-    public override func messagePrefetchCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func messagePrefetchCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         // do nothing //???: why is that called? Looks wrong. If you know why, please leave explanation here.
     }
 }

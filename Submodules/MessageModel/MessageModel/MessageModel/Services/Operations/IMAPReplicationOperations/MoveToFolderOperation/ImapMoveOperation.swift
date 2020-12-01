@@ -28,7 +28,7 @@ class ImapMoveOperation: ConcurrentBaseOperation {
         backgroundQueue.maxConcurrentOperationCount = 1
     }
 
-    override public func main() {
+    override func main() {
         scheduleOperations()
         waitForBackgroundTasksAndFinish()
     }

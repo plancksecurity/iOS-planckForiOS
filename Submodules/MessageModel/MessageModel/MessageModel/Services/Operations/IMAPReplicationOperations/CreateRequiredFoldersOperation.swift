@@ -46,7 +46,7 @@ class CreateRequiredFoldersOperation: ImapSyncOperation {
                    imapConnection: imapConnection)
     }
 
-    public override func main() {
+    override func main() {
         if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
@@ -253,7 +253,7 @@ extension CreateRequiredFoldersOperation {
 // MARK: - DefaultImapSyncDelegate
 
 class CreateRequiredFoldersSyncDelegate: DefaultImapConnectionDelegate {
-    public override func folderCreateCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func folderCreateCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         guard let op = errorHandler as? CreateRequiredFoldersOperation else {
             Log.shared.errorAndCrash("Sorry, wrong number.")
             return
@@ -261,7 +261,7 @@ class CreateRequiredFoldersSyncDelegate: DefaultImapConnectionDelegate {
         op.handleFolderCreateCompleted()
     }
 
-    public override func folderCreateFailed(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func folderCreateFailed(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         guard let op = errorHandler as? CreateRequiredFoldersOperation else {
             Log.shared.errorAndCrash("Sorry, wrong number.")
             return

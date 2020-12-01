@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum FilterType {
+enum FilterType {
     case include
     case account
     case other

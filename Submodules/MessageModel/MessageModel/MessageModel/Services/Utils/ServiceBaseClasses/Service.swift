@@ -161,7 +161,7 @@ class Service: ServiceProtocol {
 
     // MARK: ServiceProtocol (Public API) (can not be in extension as it has to be override-able)
 
-    public func start() {
+    func start() {
         guard startBlock != nil, stopBlock != nil else {
             Log.shared.errorAndCrash("Invalid state")
             return
@@ -170,12 +170,12 @@ class Service: ServiceProtocol {
         next()
     }
 
-    public func stop() {
+    func stop() {
         lastCommand = .stop
         next()
     }
 
-    public func finish() {
+    func finish() {
         lastCommand = .finish
         next()
     }

@@ -12,17 +12,17 @@ import CoreData
 import PEPObjCAdapterFramework
 import pEpIOSToolbox
 
-public class PrepareAccountForSavingService {
+class PrepareAccountForSavingService {
 
     let fetchService = FetchImapFoldersService()
 
-    public typealias Success = Bool
+    typealias Success = Bool
 
-    public func prepareAccount(cdAccount: CdAccount,
-                               pEpSyncEnable: Bool,
-                               alsoCreatePEPFolder: Bool,
-                               context: NSManagedObjectContext,
-                               completion: @escaping (Success)->()) {
+    func prepareAccount(cdAccount: CdAccount,
+                        pEpSyncEnable: Bool,
+                        alsoCreatePEPFolder: Bool,
+                        context: NSManagedObjectContext,
+                        completion: @escaping (Success)->()) {
         // Generate Key
         guard let cdIdentity = cdAccount.identity else {
             Log.shared.errorAndCrash(message: "Impossible to get the identity")

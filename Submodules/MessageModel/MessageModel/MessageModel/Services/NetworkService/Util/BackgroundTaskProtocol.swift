@@ -8,13 +8,13 @@
 
 import UIKit
 
-public typealias BackgroundTaskID = UIBackgroundTaskIdentifier
+typealias BackgroundTaskID = UIBackgroundTaskIdentifier
 
 /**
  Abstract away the iOS way of doing things in the background, so this can be mocked
  independently of UIApplication.
  */
-public protocol BackgroundTaskProtocol {
+protocol BackgroundTaskProtocol {
     func beginBackgroundTask(taskName: String?) -> BackgroundTaskID
     func beginBackgroundTask() -> BackgroundTaskID
     func beginBackgroundTask(expirationHandler: (() -> Void)?) -> BackgroundTaskID
@@ -23,7 +23,7 @@ public protocol BackgroundTaskProtocol {
     func endBackgroundTask(_ taskID: BackgroundTaskID?)
 }
 
-public extension BackgroundTaskProtocol {
+extension BackgroundTaskProtocol {
     func beginBackgroundTask(taskName: String?) -> BackgroundTaskID {
         return beginBackgroundTask(taskName: taskName, expirationHandler: nil)
     }

@@ -18,12 +18,12 @@ protocol VerifiableAccountSMTPDelegate: class {
 
 /// Helper for `VerifiableAccount` (verifies SMTP servers).
 class VerifiableAccountSMTP {
-    public weak var delegate: VerifiableAccountSMTPDelegate?
+    weak var delegate: VerifiableAccountSMTPDelegate?
 
     private var smtpConnection: SmtpConnection?
 
     /// Tries to verify the given IMAP account.
-    public func verify(connectInfo: EmailConnectInfo) {
+    func verify(connectInfo: EmailConnectInfo) {
         smtpConnection = SmtpConnection(connectInfo: connectInfo)
         smtpConnection?.delegate = self
         smtpConnection?.start()
@@ -42,50 +42,50 @@ extension VerifiableAccountSMTP: SmtpConnectionDelegate {
         delegate?.verified(verifier: self, result: .failure(error))
     }
 
-    public func messageSent(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func messageSent(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         notifyUnexpectedCallback(name: #function)
     }
 
-    public func messageNotSent(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func messageNotSent(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         notifyUnexpectedCallback(name: #function)
     }
 
-    public func transactionInitiationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func transactionInitiationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         notifyUnexpectedCallback(name: #function)
     }
 
-    public func transactionInitiationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func transactionInitiationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         notifyUnexpectedCallback(name: #function)
     }
 
-    public func recipientIdentificationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func recipientIdentificationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         notifyUnexpectedCallback(name: #function)
     }
 
-    public func recipientIdentificationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func recipientIdentificationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         notifyUnexpectedCallback(name: #function)
     }
 
-    public func transactionResetCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func transactionResetCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         notifyUnexpectedCallback(name: #function)
     }
 
-    public func transactionResetFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func transactionResetFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         notifyUnexpectedCallback(name: #function)
     }
 
-    public func authenticationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func authenticationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
     }
 
-    public func authenticationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func authenticationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         notify(error: SmtpSendError.authenticationFailed(
             #function,
             smtpConnection.accountAddress))
     }
 
-    public func connectionEstablished(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
+    func connectionEstablished(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 
-    public func connectionLost(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func connectionLost(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         if let error = theNotification?.userInfo?[PantomimeErrorExtra] as? NSError {
             notify(error: SmtpSendError.connectionLost(#function, error.localizedDescription))
         } else {
@@ -93,11 +93,11 @@ extension VerifiableAccountSMTP: SmtpConnectionDelegate {
         }
     }
 
-    public func connectionTerminated(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func connectionTerminated(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         notify(error: SmtpSendError.connectionTerminated(#function))
     }
 
-    public func connectionTimedOut(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func connectionTimedOut(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         if let error = theNotification?.userInfo?[PantomimeErrorExtra] as? NSError {
             notify(error: SmtpSendError.connectionTimedOut(#function, error.localizedDescription))
         } else {
@@ -105,19 +105,19 @@ extension VerifiableAccountSMTP: SmtpConnectionDelegate {
         }
     }
 
-    public func badResponse(_ smtpConnection: SmtpConnectionProtocol, response: String?) {
+    func badResponse(_ smtpConnection: SmtpConnectionProtocol, response: String?) {
         notify(error: SmtpSendError.badResponse(#function))
     }
 
-    public func requestCancelled(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func requestCancelled(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         notifyUnexpectedCallback(name: #function)
     }
 
-    public func serviceInitialized(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func serviceInitialized(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         delegate?.verified(verifier: self, result: .success(()))
     }
 
-    public func serviceReconnected(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func serviceReconnected(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         notifyUnexpectedCallback(name: #function)
     }
 }

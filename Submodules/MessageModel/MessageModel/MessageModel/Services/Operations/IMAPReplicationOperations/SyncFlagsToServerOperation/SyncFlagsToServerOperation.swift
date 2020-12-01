@@ -30,7 +30,7 @@ class SyncFlagsToServerOperation: ConcurrentBaseOperation {
         backgroundQueue.maxConcurrentOperationCount = 1
     }
     
-    public override func main() {
+    override func main() {
         scheduleOperations()
         waitForBackgroundTasksAndFinish()
     }

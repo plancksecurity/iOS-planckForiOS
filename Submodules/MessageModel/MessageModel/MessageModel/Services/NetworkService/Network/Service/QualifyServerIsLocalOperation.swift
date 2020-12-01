@@ -14,11 +14,11 @@ import pEpIOSToolbox
 /// network-local or not.
 class QualifyServerIsLocalOperation: BaseOperation {
     /// The server name to be probed for "localness".
-    public let serverName: String
+    let serverName: String
 
     /// Flag indicating whether the server is local, or not.
     /// - Note: The value is only valid after running the operation.
-    public var isLocal: Bool?
+    var isLocal: Bool?
 
     init(parentName: String = #function,
          errorContainer: ErrorContainerProtocol = ErrorPropagator(),

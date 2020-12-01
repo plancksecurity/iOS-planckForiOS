@@ -31,6 +31,7 @@ extension CdServerCredentials {
         }
     }
 
+    /// Is not meant to be public, but must be, since the xcode-generated base class is
     public override func validateForDelete() throws {
         guard let key = key else {
             // No key is set yet, nothing to do.

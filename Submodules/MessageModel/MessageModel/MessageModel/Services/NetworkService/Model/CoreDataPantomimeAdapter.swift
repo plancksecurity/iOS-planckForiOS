@@ -346,9 +346,9 @@ extension CoreDataPantomimeAdapter: CWIMAPCache {
         }
     }
 
-    public func write(_ theRecord: CWCacheRecord?,
-                      message: CWIMAPMessage,
-                      messageUpdate: CWMessageUpdate) {
+    func write(_ theRecord: CWCacheRecord?,
+               message: CWIMAPMessage,
+               messageUpdate: CWMessageUpdate) {
         privateMOC.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")

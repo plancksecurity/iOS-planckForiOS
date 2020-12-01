@@ -14,14 +14,14 @@ import pEpIOSToolbox
  Wrappers over non-optional properties that crash if the property is really nil.
  */
 extension CdFolder {
-    public var nameOrCrash: String {
+    var nameOrCrash: String {
         guard let theName = name else {
             fatalError()
         }
         return theName
     }
 
-    public var accountOrCrash: CdAccount {
+    var accountOrCrash: CdAccount {
         guard let theAccount = account else {
             fatalError()
         }

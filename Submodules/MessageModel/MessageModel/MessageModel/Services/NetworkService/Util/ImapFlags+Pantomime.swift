@@ -9,7 +9,7 @@
 import PantomimeFramework
 
 extension ImapFlags {
-    open func pantomimeFlags() -> CWFlags? {
+    func pantomimeFlags() -> CWFlags? {
         let n = Int(rawFlagsAsShort())
         let cwFlags = CWFlags(int: n)
         return cwFlags

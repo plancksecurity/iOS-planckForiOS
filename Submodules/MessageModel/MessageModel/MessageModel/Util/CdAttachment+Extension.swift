@@ -9,7 +9,7 @@
 import CoreData
 
 extension CdAttachment {
-
+    /// Is not meant to be public, but must be, since the xcode-generated base class is
     public override func validateForInsert() throws {
         if mimeType == nil {
             mimeType = MimeTypeUtils.MimeType.defaultMimeType.rawValue
@@ -21,7 +21,7 @@ extension CdAttachment {
      message = nil in the system, which will trigger a NSValidationException.
      Therefore, call this function.
      */
-    public static func deleteOrphans(context: NSManagedObjectContext) {
+    static func deleteOrphans(context: NSManagedObjectContext) {
         let p = CdAttachment.PredicateFactory.itemsWithoutAnyRelationshipMessage()
         if let orphans = CdAttachment.all(predicate: p, in: context ) as? [CdAttachment] {
             for o in orphans {
@@ -30,8 +30,8 @@ extension CdAttachment {
         }
     }
 
-    //!!!: move to app
-    override open var description: String {
+    /// Is not meant to be public, but must be, since the xcode-generated base class is
+    public override var description: String {
         let s = NSMutableString()
         if let fn = fileName {
             s.append(", \(fn)")
@@ -42,7 +42,8 @@ extension CdAttachment {
         return String(s)
     }
 
-    override open var debugDescription: String {
+    /// Is not meant to be public, but must be, since the xcode-generated base class is
+    public override var debugDescription: String {
         return description
     }
 }

@@ -33,7 +33,7 @@ class SyncMessagesInImapFolderOperation: ImapSyncOperation {
                    imapConnection: imapConnection)
     }
 
-    override public func main() {
+    override func main() {
         if firstUID == 0 || lastUID == 0 {
             waitForBackgroundTasksAndFinish()
             return
@@ -163,7 +163,7 @@ extension SyncMessagesInImapFolderOperation {
 // MARK: - ImapSyncDelegate (actual delegate)
 
 class SyncMessagesInImapFolderOperationDelegate: DefaultImapConnectionDelegate {
-    override public func folderSyncCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func folderSyncCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         guard let op = (errorHandler as? SyncMessagesInImapFolderOperation) else {
             Log.shared.errorAndCrash("No OP")
             return
@@ -171,7 +171,7 @@ class SyncMessagesInImapFolderOperationDelegate: DefaultImapConnectionDelegate {
         op.handleFolderSyncCompleted(imapConnection)
     }
 
-    override public  func folderOpenCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func folderOpenCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         guard let op = (errorHandler as? SyncMessagesInImapFolderOperation) else {
             Log.shared.errorAndCrash("No OP")
             return

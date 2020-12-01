@@ -12,14 +12,14 @@ import Foundation
  Wrappers over non-optional properties that crash if the property is really nil.
  */
 extension CdServer {
-    public var credentialsOrCrash: CdServerCredentials {
+    var credentialsOrCrash: CdServerCredentials {
         guard let theCredentials = credentials else {
             fatalError()
         }
         return theCredentials
     }
 
-    public var addressOrCrash: String {
+    var addressOrCrash: String {
         guard let theAddress = address else {
             fatalError()
         }

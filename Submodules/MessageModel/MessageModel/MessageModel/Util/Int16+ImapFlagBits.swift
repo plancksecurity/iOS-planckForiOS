@@ -6,9 +6,9 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-public typealias ImapFlagsBits = Int16
+typealias ImapFlagsBits = Int16
 
-public enum ImapFlagBit: ImapFlagsBits {
+enum ImapFlagBit: ImapFlagsBits {
     case none = 0
     case answered = 1
     case draft = 2
@@ -19,7 +19,7 @@ public enum ImapFlagBit: ImapFlagsBits {
 }
 
 extension ImapFlagsBits {
-    public func isEmpty() -> Bool {
+    func isEmpty() -> Bool {
         return self == .none
     }
 
@@ -27,7 +27,7 @@ extension ImapFlagsBits {
     ///
     /// - Parameter flagbit: flag bit to check state for
     /// - Returns: true if the flag bit is, no otherwize
-    public func imapFlagBitIsSet(flagbit:ImapFlagBit) -> Bool {
+    func imapFlagBitIsSet(flagbit:ImapFlagBit) -> Bool {
         var isFlagBitSet = false
         if (self & flagbit.rawValue) > 0 {
             isFlagBitSet = true
@@ -39,7 +39,7 @@ extension ImapFlagsBits {
     /// Sets a certain flag-bit.
     ///
     /// - Parameter flagbit: flag to set
-    public mutating func imapSetFlagBit(_ flagbit:ImapFlagBit) {
+    mutating func imapSetFlagBit(_ flagbit:ImapFlagBit) {
         if !imapFlagBitIsSet(flagbit: flagbit) {
             self = self ^ flagbit.rawValue
         }
@@ -48,7 +48,7 @@ extension ImapFlagsBits {
     /// Un-sets a certain flag-bit.
     ///
     /// - Parameter flagbit: flag to un-set
-    public mutating func imapUnSetFlagBit(_ flagbit:ImapFlagBit) {
+    mutating func imapUnSetFlagBit(_ flagbit:ImapFlagBit) {
         if imapFlagBitIsSet(flagbit: flagbit) {
             self = self ^ flagbit.rawValue
         }
@@ -57,7 +57,7 @@ extension ImapFlagsBits {
     /// Sets a certain flag-bit.
     ///
     /// - Parameter flagbit: flag to set
-    public mutating func imapToggelFlagBit(_ flagbit:ImapFlagBit) {
+    mutating func imapToggelFlagBit(_ flagbit:ImapFlagBit) {
         if imapFlagBitIsSet(flagbit: flagbit) {
             imapUnSetFlagBit(flagbit)
         } else {
@@ -68,14 +68,14 @@ extension ImapFlagsBits {
     /// Returns whether or not any flag is set.
     ///
     /// - Returns: true if any flag is set, false otherwize
-    public func imapAnyFlagIsSet() -> Bool {
+    func imapAnyFlagIsSet() -> Bool {
         return !imapNoFlagSet()
     }
 
     /// Returns whether or not any flag is set.
     ///
     /// - Returns: true if no flag is set, false otherwize
-    public func imapNoFlagSet() -> Bool {
+    func imapNoFlagSet() -> Bool {
         return self == ImapFlagsBits.imapNoFlagsSet()
     }
 
@@ -86,11 +86,11 @@ extension ImapFlagsBits {
     /// - seealso: `imapRelevantFlagBits()`
     ///
     /// - Returns: true if no relevant flag is set, false otherwize
-    public func imapNoRelevantFlagSet() -> Bool {
+    func imapNoRelevantFlagSet() -> Bool {
         return !imapAnyRelevantFlagSet()
     }
 
-    static public func imapAllFlagsSet() -> ImapFlagsBits {
+    static func imapAllFlagsSet() -> ImapFlagsBits {
         return ImapFlagsBits.imapNoFlagsSet() + ImapFlagBit.answered.rawValue
             + ImapFlagBit.deleted.rawValue
             + ImapFlagBit.draft.rawValue
@@ -99,7 +99,7 @@ extension ImapFlagsBits {
             + ImapFlagBit.seen.rawValue
     }
 
-    static public func imapNoFlagsSet() -> Int16 {
+    static func imapNoFlagsSet() -> Int16 {
         return Int16(0)
     }
 
@@ -109,7 +109,7 @@ extension ImapFlagsBits {
     //        PantomimeFlagRecent = 8,
     //        PantomimeFlagSeen = 16,
     //        PantomimeFlagDeleted = 32
-    public func debugString() -> String {
+    func debugString() -> String {
         let str = "1 answered: \(imapFlagBitIsSet(flagbit: .answered)) " +
             "2 draft: \(imapFlagBitIsSet(flagbit: .draft)) " +
             "4 flagged: \(imapFlagBitIsSet(flagbit: .flagged)) " +
@@ -124,7 +124,7 @@ extension ImapFlagsBits {
     ///
     /// - Parameter flag: flag to check if ot is the only set flag
     /// - Returns: true, if given flag is set AND no other flag is set. false otherwize
-    public func imapOnlyFlagBitSet(is flag:ImapFlagBit) -> Bool {
+    func imapOnlyFlagBitSet(is flag:ImapFlagBit) -> Bool {
         if !self.imapFlagBitIsSet(flagbit: flag) {
             return false
         }
@@ -143,7 +143,7 @@ extension ImapFlagsBits {
     /// - seealso: `imapRelevantFlagBits()`
     ///
     /// - Returns: true if any relevant flag is set, false otherwize
-    public func imapAnyRelevantFlagSet() -> Bool {
+    func imapAnyRelevantFlagSet() -> Bool {
         var anyRelevantFlagSet = false
         for flag in imapRelevantFlagBits() {
             if self.imapFlagBitIsSet(flagbit: flag) {

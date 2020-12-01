@@ -12,7 +12,7 @@ import pEpIOSToolbox
 
  /// Abstracts KeyChain ralted issues
 class KeyChain {
-    public typealias Success = Bool
+    typealias Success = Bool
     static private let defaultServerType = "Server"
 }
 

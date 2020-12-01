@@ -12,7 +12,7 @@ import pEpIOSToolbox
 import PEPObjCAdapterFramework
 
 extension PEPRating {
-    public func pEpColor() -> PEPColor {
+    func pEpColor() -> PEPColor {
         return PEPUtils.pEpColor(pEpRating: self)
     }
 }

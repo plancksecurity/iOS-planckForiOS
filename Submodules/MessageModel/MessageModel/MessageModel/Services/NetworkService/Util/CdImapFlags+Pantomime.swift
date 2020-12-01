@@ -11,11 +11,11 @@ import UIKit
 import PantomimeFramework
 
 extension CdImapFlags {
-    open func update(cwFlags: CWFlags) {
+    func update(cwFlags: CWFlags) {
         update(rawValue16: cwFlags.rawFlagsAsShort())
     }
 
-    open func pantomimeFlags() -> CWFlags? {
+    func pantomimeFlags() -> CWFlags? {
         let n = Int(rawFlagsAsShort())
         let cwFlags = CWFlags(int: n)
         return cwFlags

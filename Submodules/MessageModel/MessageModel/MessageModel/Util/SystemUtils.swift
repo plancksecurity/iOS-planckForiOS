@@ -9,8 +9,8 @@
 import Foundation
 
 /// Crashes when in debug configuration
-public struct SystemUtils {
-    static public func crash(_ message: String) {
+struct SystemUtils {
+    static func crash(_ message: String) {
         #if DEBUG
             preconditionFailure(message)
         #endif

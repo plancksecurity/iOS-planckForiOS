@@ -8,19 +8,17 @@
 
 import CoreData
 
-///!!!: fix visibility (max internal)
-
 import pEpIOSToolbox
 
 /// This is the base for concurrent `NSOperation`s, that is operations that handle asynchronicity
 /// themselves, and are typically not finished when `main()` ends. Instead, they spawn their own
 /// threads or use other forms of asynchronicity.
-open class ConcurrentBaseOperation: BaseOperation {
+class ConcurrentBaseOperation: BaseOperation {
     /// If you need to spawn child operations (that is, subtasks that should be waited upon),
     /// schedule them on this queue.
     let backgroundQueue: OperationQueue = OperationQueue()
 
-    public private(set) var privateMOC: NSManagedObjectContext = Stack.shared.newPrivateConcurrentContext
+    private(set) var privateMOC: NSManagedObjectContext = Stack.shared.newPrivateConcurrentContext
 
     /// Schedule potentially long running tasks triggered by the client on this queue to not
     /// block the client.
@@ -35,10 +33,10 @@ open class ConcurrentBaseOperation: BaseOperation {
 
     // MARK: - LIFE CYCLE
 
-    public init(parentName: String = #function,
-                useSerialBackgroundQueue: Bool = true,
-                context: NSManagedObjectContext? = nil,
-                errorContainer: ErrorContainerProtocol = ErrorPropagator()) {
+    init(parentName: String = #function,
+         useSerialBackgroundQueue: Bool = true,
+         context: NSManagedObjectContext? = nil,
+         errorContainer: ErrorContainerProtocol = ErrorPropagator()) {
         backgroundQueue.name = "\(parentName) - background queue of ConcurrentBaseOperation"
         if useSerialBackgroundQueue {
             backgroundQueue.maxConcurrentOperationCount = 1
@@ -52,7 +50,7 @@ open class ConcurrentBaseOperation: BaseOperation {
 
     // MARK: - OPERATION
 
-    public final override func start() {
+    final override func start() {
         Log.shared.info("starting: %@", type(of: self).debugDescription())
         if isCancelled {
             markAsFinished()
@@ -68,14 +66,14 @@ open class ConcurrentBaseOperation: BaseOperation {
         main()
     }
 
-    open override func cancel() {
+    override func cancel() {
         Log.shared.info("cancel: %@", type(of: self).debugDescription())
         backgroundQueue.cancelAllOperations()
         super.cancel()
         waitForBackgroundTasksAndFinish()
     }
 
-    public func markAsFinished() {
+    func markAsFinished() {
         Log.shared.info("markAsFinished: %@", type(of: self).debugDescription())
         if isExecuting {
             state = .finished
@@ -84,7 +82,7 @@ open class ConcurrentBaseOperation: BaseOperation {
 
     /// If you scheduled operations on `backgroundQueue`, use this to 'wait' for them to finish and
     /// then signal `finished`. Although this method has 'wait' in the name, it does not block.
-    public func waitForBackgroundTasksAndFinish(completion: (()->())? = nil) {
+    func waitForBackgroundTasksAndFinish(completion: (()->())? = nil) {
         internalQueue.async { [weak self] in
             guard let me = self else {
                 return
@@ -101,7 +99,7 @@ open class ConcurrentBaseOperation: BaseOperation {
         handle(error:BackgroundError.GeneralError.illegalState(info: component + " - " + (hint ?? "")))
     }
 
-    public func handle(error: Error, message: String? = nil) {
+    func handle(error: Error, message: String? = nil) {
         addError(error)
         if let theMessage = message {
             Log.shared.error("%@ %@", "\(error)", theMessage)
@@ -135,24 +133,24 @@ extension ConcurrentBaseOperation {
         }
     }
 
-    open override var isReady: Bool {
+    override var isReady: Bool {
         return state == .ready && super.isReady
     }
 
-    public final override var isExecuting: Bool {
+    final override var isExecuting: Bool {
         return state == .executing
     }
 
-    public final override var isFinished: Bool {
+    final override var isFinished: Bool {
         return state == .finished ||
             (state != .executing && state != .finished && isCancelled) // Has been canceled before starting the OP.
     }
 
-    public final override var isAsynchronous: Bool {
+    final override var isAsynchronous: Bool {
         return true
     }
 
-    open override class func keyPathsForValuesAffectingValue(forKey key: String) -> Set<String> {
+    override class func keyPathsForValuesAffectingValue(forKey key: String) -> Set<String> {
         if ["isReady", "isFinished", "isExecuting"].contains(key) {
             return [#keyPath(state)]
         }

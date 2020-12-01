@@ -1,5 +1,5 @@
 //
-//  MessageID.swift
+//  MessageID+UUID.swift
 //  MailModel
 //
 //  Created by Dirk Zimmermann on 26/09/16.
@@ -8,10 +8,7 @@
 
 import UIKit
 
-public typealias MessageID = String
-
 extension MessageID {
-
     static func generateUUID(localPart: String = "@pretty.Easy.privacy") -> String {
         return "\(UUID().uuidString)\(localPart)"
     }

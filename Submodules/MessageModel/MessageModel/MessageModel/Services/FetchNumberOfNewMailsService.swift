@@ -34,7 +34,7 @@ class FetchNumberOfNewMailsService {
     /// - Parameter completionBlock: called when the service has finished.
     ///                              Passes nil if we could not figure out whether or not
     ///                              there are new emails.
-    public func start(completionBlock: @escaping (_ numNewMails: Int?) -> ()) {
+    func start(completionBlock: @escaping (_ numNewMails: Int?) -> ()) {
         workerQueue.async { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -52,7 +52,7 @@ class FetchNumberOfNewMailsService {
     }
 
     /// Cancels all background tasks.
-    public func stop() {
+    func stop() {
         backgroundQueue.cancelAllOperations()
     }
 

@@ -12,7 +12,7 @@ import pEpIOSToolbox
 
 extension Attachment {
     /// Is this attachment meant to show to the user?
-    public func isViewable() -> Bool {
+    func isViewable() -> Bool {
         guard let mime = mimeType else {
             // It happens that we are getting super malformed (spam) mails, so we need to handle
             // this, which we do by ignoring the attachment.
@@ -32,20 +32,5 @@ extension Attachment {
 
     var isInlinedPlainText: Bool {
         return mimeType == "text/plain" && isInlined
-    }
-
-    /// Trys to extract the contentID of the attachment from the `filename` field.
-    /// Returns the CID (without `cid:` or `cid://`) if `filename` contains it.
-    /// Otherwize `nil` is returned.
-    public var contentID: String? {
-        guard let fn = fileName else {
-            return nil
-        }
-        return fn.extractCid()
-    }
-
-    /// Wheter or not the attachment is inlined in a HTML mail body.
-    public var isInlined: Bool {
-        return contentDisposition == .inline
     }
 }
