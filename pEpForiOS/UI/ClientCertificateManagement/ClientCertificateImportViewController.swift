@@ -155,7 +155,7 @@ extension ClientCertificateImportViewController {
         let message = Localized.CorruptedFileError.message
         UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.dismiss(animated: true) {
