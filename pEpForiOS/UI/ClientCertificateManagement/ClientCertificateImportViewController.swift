@@ -159,9 +159,7 @@ extension ClientCertificateImportViewController {
                 return
             }
             me.dismiss(animated: true) {
-                if let currentViewController = UIApplication.currentlyVisibleViewController() {
-                    currentViewController.dismiss(animated: true)
-                }
+                me.dismiss(animated: true)
             }
         }
     }
