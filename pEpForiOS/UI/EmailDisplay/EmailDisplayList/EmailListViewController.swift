@@ -841,7 +841,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 
 extension EmailListViewController: EmailListViewModelDelegate {
     public func showEditDraftInComposeView() {
-        dismiss(animated: true) { [weak self] in
+        dismissAndPerform { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
