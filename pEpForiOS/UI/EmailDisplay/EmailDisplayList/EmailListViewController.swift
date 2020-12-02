@@ -1224,7 +1224,7 @@ extension EmailListViewController: SegueHandlerType {
              .segueCompose:
             setupComposeViewController(for: segue)
         case .segueShowEmail:
-            let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
+            let storyboard = UIStoryboard(name: Constants.mainStoryboard, bundle: nil)
             guard
                 let emailDetailVC = segue.destination as? EmailDetailViewController,
                 let indexPath = sender as? IndexPath
@@ -1428,7 +1428,7 @@ extension EmailListViewController {
 extension EmailListViewController {
 
     private func presentComposeViewToEditDraft(composeVM: ComposeViewModel) {
-        let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
+        let storyboard = UIStoryboard(name: Constants.mainStoryboard, bundle: nil)
         guard
             let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
                 Constants.composeSceneStoryboardId) as? UINavigationController,

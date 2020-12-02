@@ -14,7 +14,7 @@ extension UIUtils {
 
     static public func showComposeView(from mailto: Mailto?) {
         DispatchQueue.main.async {
-            let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
+            let storyboard = UIStoryboard(name: Constants.mainStoryboard, bundle: nil)
             guard
                 let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
                     Constants.composeSceneStoryboardId) as? UINavigationController,
@@ -31,7 +31,7 @@ extension UIUtils {
     
     /// Modally presents a "Drafts Preview"
     static public func presentDraftsPreview() {
-        let sb = UIStoryboard(name: EmailViewController.storyboard, bundle: nil)
+        let sb = UIStoryboard(name: Constants.mainStoryboard, bundle: nil)
         guard let vc = sb.instantiateViewController(withIdentifier: EmailListViewController.storyboardId) as? EmailListViewController else {
             Log.shared.errorAndCrash("EmailListViewController needed to presentDraftsPreview is not available!")
                 return

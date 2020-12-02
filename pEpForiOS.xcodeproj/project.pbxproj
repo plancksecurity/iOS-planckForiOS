@@ -337,7 +337,7 @@
 		5B2DA714256EA906006DA570 /* random.docx in Resources */ = {isa = PBXBuildFile; fileRef = 5B2DA713256EA906006DA570 /* random.docx */; };
 		5B2DA718256EB883006DA570 /* XCTest+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2DA717256EB883006DA570 /* XCTest+Extension.swift */; };
 		5B2F7E63240D25CF004DDFA2 /* TutorialStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */; };
-		5B3336A02566B74800693049 /* AttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B33369F2566B74800693049 /* AttachmentView.swift */; };
+		5B3336A02566B74800693049 /* AttachmentCellBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B33369F2566B74800693049 /* AttachmentCellBackgroundView.swift */; };
 		5B394E1323ED5673006A1FC0 /* TrustManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */; };
 		5B3B019124B46CFC00FBB4B5 /* UILayout+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3B019024B46CFC00FBB4B5 /* UILayout+Extension.swift */; };
 		5B3B019324B46DA600FBB4B5 /* DeviceUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3B019224B46DA600FBB4B5 /* DeviceUtils.swift */; };
@@ -927,7 +927,7 @@
 		5B2DA713256EA906006DA570 /* random.docx */ = {isa = PBXFileReference; lastKnownFileType = file; path = random.docx; sourceTree = "<group>"; };
 		5B2DA717256EB883006DA570 /* XCTest+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTest+Extension.swift"; sourceTree = "<group>"; };
 		5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepViewController.swift; sourceTree = "<group>"; };
-		5B33369F2566B74800693049 /* AttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentView.swift; sourceTree = "<group>"; };
+		5B33369F2566B74800693049 /* AttachmentCellBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentCellBackgroundView.swift; sourceTree = "<group>"; };
 		5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCell.swift; sourceTree = "<group>"; };
 		5B3B019024B46CFC00FBB4B5 /* UILayout+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILayout+Extension.swift"; sourceTree = "<group>"; };
 		5B3B019224B46DA600FBB4B5 /* DeviceUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceUtils.swift; sourceTree = "<group>"; };
@@ -1595,7 +1595,7 @@
 			children = (
 				5B5A2DF8253D916A005EBF8C /* Replacement */,
 				5B5A2DF1253D90DC005EBF8C /* EmailViewController.swift */,
-				5B33369F2566B74800693049 /* AttachmentView.swift */,
+				5B33369F2566B74800693049 /* AttachmentCellBackgroundView.swift */,
 				006BE6BB20F4B63C00DDE8C9 /* EmailDetailType.swift */,
 				B70D32B1205BD3E80094A92A /* CellAndSections */,
 				430D73601E9CBD0600EA6FA9 /* Background */,
@@ -3175,7 +3175,7 @@
 				3705096622CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift in Sources */,
 				49C34AF620E4F649009D11CC /* CellDetailTransition.swift in Sources */,
 				5B394E1323ED5673006A1FC0 /* TrustManagementTableViewCell.swift in Sources */,
-				5B3336A02566B74800693049 /* AttachmentView.swift in Sources */,
+				5B3336A02566B74800693049 /* AttachmentCellBackgroundView.swift in Sources */,
 				49228A5520D4035100A51E9D /* DetailCellSegue.swift in Sources */,
 				15D3D48B239FC14700F2EBFB /* EmailDetailCollectionViewCell.swift in Sources */,
 				152A39E821905C3E00D9F8E4 /* RecipientCellViewModel.swift in Sources */,

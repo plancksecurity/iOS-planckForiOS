@@ -396,15 +396,15 @@ extension EmailDetailViewController {
     private func setupEmailViewController(forRowAt indexPath: IndexPath) -> EmailViewController? {
         guard
             let vm = viewModel,
-            let createe = storyboard?.instantiateViewController(withIdentifier: EmailViewController.storyboardId) as? EmailViewController
+            let emailViewController = storyboard?.instantiateViewController(withIdentifier: Constants.emailViewControllerStoryboardId) as? EmailViewController
             else {
                 Log.shared.errorAndCrash("No V[M|C]")
                 return nil
         }
-        createe.viewModel = vm.emailViewModel(withMessageRepresentedByRowAt: indexPath, with: createe)
-        createe.delegate = self
-        emailSubViewControllers.append(createe)
-        return createe
+        emailViewController.viewModel = vm.emailViewModel(withMessageRepresentedByRowAt: indexPath, delegate: emailViewController)
+        emailViewController.delegate = self
+        emailSubViewControllers.append(emailViewController)
+        return emailViewController
     }
 }
 

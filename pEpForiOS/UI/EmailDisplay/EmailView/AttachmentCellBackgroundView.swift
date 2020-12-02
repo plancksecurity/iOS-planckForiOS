@@ -9,7 +9,7 @@
 import Foundation
 
 @IBDesignable
-class AttachmentView : UIView {
+class AttachmentCellBackgroundView : UIView {
 
     @IBInspectable var cornerRadius: CGFloat = 0 {
        didSet {

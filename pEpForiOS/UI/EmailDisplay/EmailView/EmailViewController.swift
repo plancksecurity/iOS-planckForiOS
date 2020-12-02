@@ -14,8 +14,6 @@ protocol EmailViewControllerDelegate: class {
 }
 
 class EmailViewController: UIViewController {
-    public static let storyboard = "Main"
-    public static let storyboardId = "EmailViewController"
     public var viewModel: EmailViewModel?
     public weak var delegate: EmailViewControllerDelegate?
 
@@ -30,14 +28,6 @@ class EmailViewController: UIViewController {
     @IBOutlet private weak var showExternalContentView: UIView!
     @IBOutlet private weak var showExternalContentButton: UIButton!
     @IBOutlet private weak var showExternalContentLabel: UILabel!
-
-    @IBAction func showExternalContentButtonPressed() {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return
-        }
-        vm.handleDidTapShowExternalContentButton()
-    }
 
     private lazy var htmlViewerViewController: SecureWebViewController = {
         let storyboard = UIStoryboard(name: "Reusable", bundle: nil)
@@ -80,6 +70,16 @@ class EmailViewController: UIViewController {
         }
         splitViewController?.preferredDisplayMode = .allVisible
         coordinator.animate(alongsideTransition: nil)
+    }
+
+    // MARK: - IBActions
+
+    @IBAction func showExternalContentButtonPressed() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleDidTapShowExternalContentButton()
     }
 }
 

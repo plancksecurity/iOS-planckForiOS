@@ -241,7 +241,7 @@ class EmailDetailViewModel: EmailDisplayViewModel {
     ///   - indexPath: The indexPath of the message
     ///   - delegate: The email view model delegate.
     /// - Returns: The Email View Model
-    public func emailViewModel(withMessageRepresentedByRowAt indexPath: IndexPath, with delegate: EmailViewModelDelegate) -> EmailViewModel? {
+    public func emailViewModel(withMessageRepresentedByRowAt indexPath: IndexPath, delegate: EmailViewModelDelegate) -> EmailViewModel? {
         guard let m = message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash("Message not found")
             return nil
