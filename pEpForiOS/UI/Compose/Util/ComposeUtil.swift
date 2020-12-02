@@ -34,9 +34,12 @@ struct ComposeUtil {
             if om.parent.folderType == .sent || om.parent.folderType == .drafts  {
                 result = om.to.allObjects
             } else if om.parent.folderType != .sent, let omFrom = om.from {
-                let identMe = initialFrom(composeMode: composeMode, originalMessage: om)
+                guard let me = initialFrom(composeMode: composeMode, originalMessage: om) else {
+                    Log.shared.errorAndCrash("No from")
+                    return result
+                }
                 let origTos = om.to
-                let originalTosWithoutMe = origTos.filter { $0 != identMe}
+                let originalTosWithoutMe = origTos.filter { $0 != me}
                 result = originalTosWithoutMe + [omFrom]
             }
         case .normal:
@@ -58,9 +61,12 @@ struct ComposeUtil {
             if om.parent.folderType == .sent || om.parent.folderType == .drafts {
                 result = om.cc.allObjects
             } else {
-                let identMe = initialFrom(composeMode: composeMode, originalMessage: om)
+                guard let me = initialFrom(composeMode: composeMode, originalMessage: om) else {
+                    Log.shared.errorAndCrash("No from")
+                    return result
+                }
                 let origCcs = om.cc
-                result = origCcs.filter { $0 != identMe }
+                result = origCcs.filter { $0 != me}
             }
         case .replyFrom, .forward:
             break
@@ -89,22 +95,18 @@ struct ComposeUtil {
         return result
     }
 
-    static func initialFrom(composeMode: ComposeMode, originalMessage om: Message?) -> Identity {
-        guard let defaultFromIdentity = Account.defaultAccount()?.user else {
-            Log.shared.errorAndCrash(message: "Can't write emails without a default account")
-            return Identity(address: "shouldneverhappen@example.com")
-        }
+    static func initialFrom(composeMode: ComposeMode, originalMessage om: Message?) -> Identity? {
         switch composeMode {
         case .replyFrom, .replyAll, .forward:
-            return om?.parent.account.user ?? defaultFromIdentity
+            return om?.parent.account.user
         case .normal:
             if let om = om,
                 om.parent.folderType == .sent ||
                     om.parent.folderType == .drafts ||
                     om.parent.folderType == .outbox  {
-                return om.from ?? defaultFromIdentity
+                return om.from
             }
-            return defaultFromIdentity
+            return Account.defaultAccount()?.user
         }
     }
 
