@@ -106,9 +106,9 @@ extension ComposeViewModel {
             }
         }
 
-        // TODO: Must that really be set to " " for the UI to function properly?
         var subject: String {
             get {
+                // TODO: Must that really be set to " " for the UI to function properly?
                 return backingMessage.shortMessage ?? ""
             }
             set {
