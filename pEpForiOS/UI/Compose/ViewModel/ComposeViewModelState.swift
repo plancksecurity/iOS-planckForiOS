@@ -115,9 +115,13 @@ extension ComposeViewModel {
             }
         }
 
+        /// The message that contains all the data
+        let backingMessage: Message
+
         init(initData: InitData? = nil, delegate: ComposeViewModelStateDelegate? = nil) {
             self.initData = initData
             self.delegate = delegate
+            backingMessage = Message.newOutgoingMessage()
             setup()
             edited = false
         }
@@ -164,14 +168,15 @@ extension ComposeViewModel {
                 Log.shared.errorAndCrash("No data")
                 return
             }
-            toRecipients = initData.toRecipients
-            ccRecipients = initData.ccRecipients
-            bccRecipients = initData.bccRecipients
-            bccWrapped = ccRecipients.isEmpty && bccRecipients.isEmpty
-            from = initData.from
-            subject = initData.subject ?? " "
 
-            pEpProtection = initData.pEpProtection
+            backingMessage.replaceTo(with: initData.toRecipients)
+            backingMessage.replaceCc(with: initData.ccRecipients)
+            backingMessage.replaceBcc(with: initData.bccRecipients)
+            bccWrapped = ccRecipients.isEmpty && bccRecipients.isEmpty
+            backingMessage.from = initData.from
+            backingMessage.shortMessage = initData.subject ?? " "
+
+            backingMessage.pEpProtected = initData.pEpProtection
 
             inlinedAttachments = initData.inlinedAttachments
             nonInlinedAttachments = initData.nonInlinedAttachments
