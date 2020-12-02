@@ -251,12 +251,29 @@ extension ComposeViewModel {
                     Log.shared.errorAndCrash("Cast error")
                     return false
                 }
+
                 if recipientVM.isDirty {
                     return true
                 }
             }
         }
         return false
+    }
+
+    private func parseDirtyText() {
+        for section in sections where section.type == .recipients {
+            for row  in section.rows where row is RecipientCellViewModel {
+                guard let recipientVM = row as? RecipientCellViewModel else {
+                    Log.shared.errorAndCrash("Cast error")
+                    return
+                }
+                let recipientTextViewModel = recipientVM.recipientTextViewModel()
+                let dirtyText = recipientTextViewModel.dirtyText.appending(" ")
+                let range = NSRange(location: 0, length: dirtyText.count - 1)
+                let text = NSAttributedString(string: dirtyText)
+                recipientTextViewModel.parseAndHandleValidEmailAddresses(inRange: range, of: text, informDelegate: true)
+            }
+        }
     }
 
     typealias Accepted = Bool
@@ -684,6 +701,7 @@ extension ComposeViewModel {
     }
 
     public func handleSaveActionTriggered() {
+        parseDirtyText()
         guard let data = state.initData else {
             Log.shared.errorAndCrash("No data")
             return

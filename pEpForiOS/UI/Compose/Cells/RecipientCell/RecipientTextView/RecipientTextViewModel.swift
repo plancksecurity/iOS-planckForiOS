@@ -31,7 +31,9 @@ public class RecipientTextViewModel {
     var maxTextattachmentWidth: CGFloat = 0.0
     private var initialRecipients = [Identity]()
     private var attributedText: NSAttributedString?
+    ///Dirty means: not processed yet, not parsed. Thus no identity was extracted from there.
     public private(set) var isDirty = false
+    public private(set) var dirtyText: String = ""
     private var recipientAttachments = [TextAttachment]() {
         didSet {
             let recipients = recipientAttachments.map { $0.recipient }
@@ -84,6 +86,7 @@ public class RecipientTextViewModel {
         attributedText = newAttributedText
         let textOnly = newText.trimObjectReplacementCharacters().trimmed()
         isDirty = !textOnly.isEmpty
+        dirtyText = textOnly
         resultDelegate?.recipientTextViewModel(self, textChanged: textOnly)
     }
 
@@ -108,11 +111,11 @@ public class RecipientTextViewModel {
             .filter { $0.recipient.address != attachment.recipient.address }
     }
 
-     @discardableResult private func tryGenerateValidAddressAndUpdateStatus(range: NSRange,
-                                                                            of text: NSAttributedString) -> Bool {
+    @discardableResult private func tryGenerateValidAddressAndUpdateStatus(range: NSRange,
+                                                                           of text: NSAttributedString) -> Bool {
         let containsNothingButAttachments =
             text.plainTextRemoved().length == text.length ||
-                text.plainTextRemoved().string.trimObjectReplacementCharacters().isEmpty
+            text.plainTextRemoved().string.trimObjectReplacementCharacters().isEmpty
         let validEmailaddressHandled = parseAndHandleValidEmailAddresses(inRange: range, of: text)
         isDirty = !validEmailaddressHandled && !containsNothingButAttachments
         return validEmailaddressHandled
@@ -131,7 +134,7 @@ public class RecipientTextViewModel {
     ///
     /// - Parameter text: Text thet might alread contain contact-image-text-attachments.
     /// - Returns: true if a valid address has been found, false otherwize
-    @discardableResult private func parseAndHandleValidEmailAddresses(
+    @discardableResult public func parseAndHandleValidEmailAddresses(
         inRange range: NSRange, of text: NSAttributedString, informDelegate: Bool = true) -> Bool {
         var identityGenerated = false
         let stringWithoutTextAttachments = text.string.cleanAttachments
