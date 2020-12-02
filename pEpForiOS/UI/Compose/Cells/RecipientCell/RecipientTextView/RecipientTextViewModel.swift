@@ -31,7 +31,7 @@ public class RecipientTextViewModel {
     var maxTextattachmentWidth: CGFloat = 0.0
     private var initialRecipients = [Identity]()
     private var attributedText: NSAttributedString?
-    ///Dirty means: not processed yet, not parsed. Thus no identity was extracted from there.
+    ///Dirty means: not processed yet, not parsed. Thus no identity was extracted from here.
     public private(set) var isDirty = false
     public private(set) var dirtyText: String = ""
     private var recipientAttachments = [TextAttachment]() {
