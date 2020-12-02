@@ -13,7 +13,7 @@ public struct UnappendableArray<T> {
     public typealias UnappendableArrayType = [T]
     let array: [T]
 
-    init(array: [T]? = nil) {
+    public init(array: [T]? = nil) {
         self.array = array ?? [T]()
     }
 
