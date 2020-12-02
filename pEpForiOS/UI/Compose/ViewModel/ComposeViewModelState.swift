@@ -62,12 +62,17 @@ extension ComposeViewModel {
         weak var delegate: ComposeViewModelStateDelegate?
 
         //Recipients
-        var toRecipients = [Identity]() {
-            didSet {
+        var toRecipients: [Identity] {
+            get {
+                return backingMessage.to.allObjects
+            }
+            set {
+                backingMessage.replaceTo(with: newValue)
                 edited = true
                 validate()
             }
         }
+
         var ccRecipients = [Identity]() {
             didSet {
                 edited = true
