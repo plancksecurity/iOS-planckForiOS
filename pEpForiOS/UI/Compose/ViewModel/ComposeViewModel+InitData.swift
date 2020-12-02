@@ -68,7 +68,7 @@ extension ComposeViewModel {
             return originalMessage?.pEpProtected ?? true
         }
 
-        public var from: Identity? {
+        public var from: Identity {
             return prefilledFrom ?? ComposeUtil.initialFrom(composeMode: composeMode,
                                            originalMessage: originalMessage)
         }
