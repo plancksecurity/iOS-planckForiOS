@@ -29,7 +29,7 @@ class EncryptAndSMTPSendMessageOperation: ConcurrentBaseOperation {
         super.init(parentName: parentName, errorContainer: errorContainer)
     }
 
-    override public func main() {
+    override func main() {
         if isCancelled {
             waitForBackgroundTasksAndFinish()
             return
@@ -199,74 +199,74 @@ extension EncryptAndSMTPSendMessageOperation {
 // MARK: - SmtpSendDelegate
 
 extension EncryptAndSMTPSendMessageOperation: SmtpConnectionDelegate {
-    public func badResponse(_ smtpConnection: SmtpConnectionProtocol, response: String?) {
+    func badResponse(_ smtpConnection: SmtpConnectionProtocol, response: String?) {
         let error = BackgroundError.SmtpError.badResponse(info: comp)
         handle(error: error, message: "badResponse")
     }
 
-    public func messageSent(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func messageSent(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         handleMessageSent()
     }
 
-    public func messageNotSent(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func messageNotSent(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         let error = BackgroundError.SmtpError.messageNotSent(info: comp)
         handle(error: error, message: "messageNotSent")
     }
 
-    public func transactionInitiationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
+    func transactionInitiationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 
-    public func transactionInitiationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func transactionInitiationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         let error = BackgroundError.SmtpError.transactionInitiationFailed(info: comp)
         handle(error: error, message: "transactionInitiationFailed")
     }
 
-    public func recipientIdentificationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
+    func recipientIdentificationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 
-    public func recipientIdentificationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func recipientIdentificationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         let error = BackgroundError.SmtpError.recipientIdentificationFailed(info: comp)
         handle(error: error, message: "recipientIdentificationFailed")
     }
 
-    public func transactionResetCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
+    func transactionResetCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 
-    public func transactionResetFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func transactionResetFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         let error = BackgroundError.SmtpError.transactionResetFailed(info: comp)
         handle(error: error, message: "transactionResetFailed")
     }
 
-    public func authenticationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func authenticationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         addError(BackgroundError.GeneralError.illegalState(info: #function))
         waitForBackgroundTasksAndFinish()
     }
 
-    public func authenticationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func authenticationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         let error = BackgroundError.SmtpError.authenticationFailed(info: comp)
         handle(error: error, message: "authenticationFailed")
     }
 
-    public func connectionEstablished(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
+    func connectionEstablished(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 
-    public func connectionLost(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func connectionLost(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         let error = BackgroundError.SmtpError.connectionLost(info: comp)
         handle(error: error, message: "connectionLost")
     }
 
-    public func connectionTerminated(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func connectionTerminated(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         let error = BackgroundError.SmtpError.connectionTerminated(info: comp)
         handle(error: error, message: "connectionTerminated")
     }
 
-    public func connectionTimedOut(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func connectionTimedOut(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         let error = BackgroundError.SmtpError.connectionTimedOut(info: comp)
         handle(error: error, message: "connectionTimedOut")
     }
 
-    public func requestCancelled(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+    func requestCancelled(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         let error = BackgroundError.SmtpError.requestCancelled(info: comp)
         handle(error: error, message: "requestCancelled")
     }
 
-    public func serviceInitialized(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
+    func serviceInitialized(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 
-    public func serviceReconnected(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
+    func serviceReconnected(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 }

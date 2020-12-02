@@ -15,11 +15,11 @@ import pEpIOSToolbox
 class BaseImapFolderOperation: ImapSyncOperation {
     private var folderToOpen: String
 
-    public init(parentName: String = #function,
-                context: NSManagedObjectContext? = nil,
-                errorContainer: ErrorContainerProtocol = ErrorPropagator(),
-                imapConnection: ImapConnectionProtocol,
-                folderName: String = ImapConnection.defaultInboxName) {
+    init(parentName: String = #function,
+         context: NSManagedObjectContext? = nil,
+         errorContainer: ErrorContainerProtocol = ErrorPropagator(),
+         imapConnection: ImapConnectionProtocol,
+         folderName: String = ImapConnection.defaultInboxName) {
         self.folderToOpen = folderName
         super.init(parentName: parentName,
                    context: context,
@@ -27,7 +27,7 @@ class BaseImapFolderOperation: ImapSyncOperation {
                    imapConnection: imapConnection)
     }
 
-    override open func main() {
+    override func main() {
         if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
@@ -61,7 +61,7 @@ class BaseImapFolderOperation: ImapSyncOperation {
         imapConnection.openMailBox(name: folderToOpen, updateExistsCount: true)
     }
 
-    open override func cancel() {
+    override func cancel() {
         imapConnection.cancel()
         super.cancel()
     }
@@ -75,7 +75,7 @@ class BaseImapFolderOperation: ImapSyncOperation {
 // MARK: - DefaultImapSyncDelegate
 
 class BaseImapFolderOperationDelegate: DefaultImapConnectionDelegate {
-    public override func folderOpenCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func folderOpenCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         (errorHandler as? BaseImapFolderOperation)?.folderOpenCompleted(imapConnection)
     }
 }

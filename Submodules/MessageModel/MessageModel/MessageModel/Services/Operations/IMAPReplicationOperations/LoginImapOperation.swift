@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 class LoginImapOperation: ImapSyncOperation {
-    override public func main() {
+    override func main() {
         if isCancelled {
             waitForBackgroundTasksAndFinish()
             return

@@ -10,7 +10,7 @@ import Foundation
 
 /// Wrappers over non-optional properties that crash if the property is really nil.
 extension CdAccount {
-    public var identityOrCrash: CdIdentity {
+    var identityOrCrash: CdIdentity {
         guard let theIdentity = identity else {
             fatalError()
         }

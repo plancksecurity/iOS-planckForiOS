@@ -18,7 +18,7 @@ import pEpIOSToolbox
 /// * in the inbox OR pEpFolder
 /// * contain certain headers that mark them as "auto-consumable"
 class DeleteOldSyncMailsOperation: ConcurrentBaseOperation {
-    open override func main() {
+    override func main() {
         privateMOC.perform { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()

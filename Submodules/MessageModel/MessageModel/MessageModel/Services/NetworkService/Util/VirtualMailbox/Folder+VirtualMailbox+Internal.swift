@@ -1,5 +1,5 @@
 //
-//  Folder+VirtualMailbox.swift
+//  Folder+VirtualMailbox+Internal.swift
 //  pEp
 //
 //  Created by Andreas Buff on 07.02.18.
@@ -10,7 +10,7 @@
 
 /// Due to the underspecified RFC6154 there is no way to know whether or not a Special-Use-Mailbox
 /// is virtual. It all depends on the servers/providers implementation.
-public extension Folder {
+extension Folder {
 
     /// We currently only take Gmail into account.
     // TODO: This is duplicated between MM and Cd.
@@ -19,22 +19,13 @@ public extension Folder {
     }
 
     // TODO: This is duplicated between MM and Cd.
-    private var providerSpecificInfo: ProviderSpecificInformationProtocol? {
+    var providerSpecificInfo: ProviderSpecificInformationProtocol? {
         for providerInfo in supportedProviders {
             if providerInfo.belongsToProvider(self) {
                 return providerInfo
             }
         }
         return nil
-    }
-
-    /// Whether or not the default destructive action is "archive" instead of "delete".
-    var defaultDestructiveActionIsArchive: Bool {
-        let defaultValue = false
-        guard let providerInfo = providerSpecificInfo else {
-            return defaultValue
-        }
-        return providerInfo.defaultDestructiveActionIsArchive(forFolder: self)
     }
 
     var shouldUidMoveDeletedMessagesToTrash: Bool {

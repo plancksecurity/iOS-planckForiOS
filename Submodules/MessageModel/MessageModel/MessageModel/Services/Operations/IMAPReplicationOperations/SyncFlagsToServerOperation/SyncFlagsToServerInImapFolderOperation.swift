@@ -50,7 +50,7 @@ class SyncFlagsToServerInImapFolderOperation: ImapSyncOperation {
                    imapConnection: imapConnection)
     }
 
-    public override func main() {
+    override func main() {
         if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
@@ -195,8 +195,8 @@ class SyncFlagsToServerInImapFolderOperation: ImapSyncOperation {
 
     // MARK: - Static
 
-    public static func messagesToBeSynced(folder: CdFolder,
-                                          context: NSManagedObjectContext) -> [CdMessage] {
+    static func messagesToBeSynced(folder: CdFolder,
+                                   context: NSManagedObjectContext) -> [CdMessage] {
         let pFlagsChanged = CdMessage.PredicateFactory.changedFlags(folder: folder)
         return CdMessage.all(predicate: pFlagsChanged, in: context) as? [CdMessage] ?? []
     }
@@ -246,7 +246,7 @@ class SyncFlagsToServerInImapFolderOperationDelegate: DefaultImapConnectionDeleg
         op.handleMessageStoreCompleted(notification: notification)
     }
 
-    public override func folderOpenCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func folderOpenCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         guard let op = (errorHandler as? SyncFlagsToServerInImapFolderOperation) else {
             Log.shared.errorAndCrash("lost active OP")
             return

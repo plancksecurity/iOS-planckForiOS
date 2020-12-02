@@ -9,7 +9,7 @@
 import Foundation
 
 extension KeyChain {
-    static public func serverPassword(forKey key: String) -> String? {
+    static func serverPassword(forKey key: String) -> String? {
         return KeyChain.password(key: key)
     }
 }

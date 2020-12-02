@@ -14,20 +14,20 @@ import CoreData
  access to data in a thread-safe way, and also without having to operate
  in a context.
  */
-public struct ServerInfoCache: Hashable {
-    public let objectID: NSManagedObjectID
-    public let hash: Int
+struct ServerInfoCache: Hashable {
+    let objectID: NSManagedObjectID
+    let hash: Int
 
     init(cdServer: CdServer) {
         self.objectID = cdServer.objectID
         self.hash = cdServer.hash
     }
 
-    public static func ==(l: ServerInfoCache, r: ServerInfoCache) -> Bool {
+    static func ==(l: ServerInfoCache, r: ServerInfoCache) -> Bool {
         return l.objectID == r.objectID
     }
 
-    public func hash(into hasher: inout Hasher) {
+    func hash(into hasher: inout Hasher) {
         hasher.combine(objectID)
     }
 }

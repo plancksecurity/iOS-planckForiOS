@@ -39,7 +39,7 @@ class ImapSyncOperation: ConcurrentBaseOperation {
         imapConnection.hasError = true
     }
 
-    override public func waitForBackgroundTasksAndFinish(completion: (()->())? = nil) {
+    override func waitForBackgroundTasksAndFinish(completion: (()->())? = nil) {
         super.waitForBackgroundTasksAndFinish() { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -58,7 +58,7 @@ class ImapSyncOperation: ConcurrentBaseOperation {
 
 extension ImapSyncOperation: ImapConnectionDelegateErrorHandlerProtocol {
 
-    public func handle(error: Error) {
+    func handle(error: Error) {
         Log.shared.error("ImapSyncOperation error: %@ delegate: %@",
                          "\(error)", type(of: self).debugDescription())
         addIMAPError(error)

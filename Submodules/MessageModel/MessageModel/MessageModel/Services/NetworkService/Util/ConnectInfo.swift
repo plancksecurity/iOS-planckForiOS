@@ -9,7 +9,7 @@
 import CoreData
 import pEpIOSToolbox
 
-public class ConnectInfo: Hashable {
+class ConnectInfo: Hashable {
     let account: AccountInfoCache
 
     var accountObjectID: NSManagedObjectID {
@@ -45,11 +45,11 @@ public class ConnectInfo: Hashable {
 
     // MARK: Hashable/Equatable
 
-    public static func ==(l: ConnectInfo, r: ConnectInfo) -> Bool {
+    static func ==(l: ConnectInfo, r: ConnectInfo) -> Bool {
         return l.account == r.account  && l.credentials == r.credentials
     }
 
-    public func hash(into hasher: inout Hasher) {
+    func hash(into hasher: inout Hasher) {
         hasher.combine(account)
         hasher.combine(credentials)
     }

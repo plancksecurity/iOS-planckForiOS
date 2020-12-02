@@ -343,99 +343,99 @@ extension ImapConnection {
 }
 
 extension ImapConnection: CWServiceClient {
-    public func badResponse(_ theNotification: Notification?) {
+    func badResponse(_ theNotification: Notification?) {
         let errorMsg = theNotification?.parseErrorMessageBadResponse()
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.badResponse(self, response: errorMsg)
         }
     }
 
-    public func authenticationCompleted(_ notification: Notification?) { //BUFF: change to forward without needless notification
+    func authenticationCompleted(_ notification: Notification?) { //BUFF: change to forward without needless notification
         state.authenticationCompleted = true
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.authenticationCompleted(self, notification: notification)
         }
     }
 
-    public func authenticationFailed(_ notification: Notification?) {
+    func authenticationFailed(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.authenticationFailed(self, notification: notification)
         }
     }
 
-    public func connectionEstablished(_ notification: Notification?) {
+    func connectionEstablished(_ notification: Notification?) {
     }
 
-    public func connectionLost(_ notification: Notification?) {
+    func connectionLost(_ notification: Notification?) {
         state.hasError = true
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.connectionLost(self, notification: notification)
         }
     }
 
-    public func connectionTerminated(_ notification: Notification?) {
+    func connectionTerminated(_ notification: Notification?) {
         state.hasError = true
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.connectionTerminated(self, notification: notification)
         }
     }
 
-    public func connectionTimedOut(_ notification: Notification?) {
+    func connectionTimedOut(_ notification: Notification?) {
         state.hasError = true
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.connectionTimedOut(self, notification: notification)
         }
     }
 
-    public func folderFetchCompleted(_ notification: Notification?) {
+    func folderFetchCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderFetchCompleted(self, notification: notification)
         }
     }
 
-    public func folderSyncCompleted(_ notification: Notification?) {
+    func folderSyncCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderSyncCompleted(self, notification: notification)
         }
     }
 
-    public func folderSyncFailed(_ notification: Notification?) {
+    func folderSyncFailed(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderSyncFailed(self, notification: notification)
         }
     }
 
-    public func messagePrefetchCompleted(_ notification: Notification?) {
+    func messagePrefetchCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.messagePrefetchCompleted(self, notification: notification)
         }
     }
 
-    public func messageUidMoveCompleted(_ theNotification: Notification?) {
+    func messageUidMoveCompleted(_ theNotification: Notification?) {
         runOnDelegate() { theDelegate in
             theDelegate.messageUidMoveCompleted(self, notification: theNotification)
         }
     }
 
-    public func messageUidMoveFailed(_ theNotification: Notification?) {
+    func messageUidMoveFailed(_ theNotification: Notification?) {
         runOnDelegate() { theDelegate in
             theDelegate.messageUidMoveFailed(self, notification: theNotification)
         }
     }
 
-    public func messagesCopyCompleted(_ theNotification: Notification?) {
+    func messagesCopyCompleted(_ theNotification: Notification?) {
         runOnDelegate() { theDelegate in
             theDelegate.messagesCopyCompleted(self, notification: theNotification)
         }
     }
 
-    public func messagesCopyFailed(_ theNotification: Notification?) {
+    func messagesCopyFailed(_ theNotification: Notification?) {
         runOnDelegate() { theDelegate in
             theDelegate.messagesCopyFailed(self, notification: theNotification)
         }
     }
 
-    public func serviceInitialized(_ notification: Notification?) {
+    func serviceInitialized(_ notification: Notification?) {
         if connectInfo.connectionTransport == ConnectionTransport.startTLS
             && !state.hasStartedTLS {
             startTLS()
@@ -488,22 +488,22 @@ extension ImapConnection: CWServiceClient {
         }
     }
 
-    public func serviceReconnected(_ theNotification: Notification?) {
+    func serviceReconnected(_ theNotification: Notification?) {
     }
 
-    public func messageChanged(_ notification: Notification?) {
+    func messageChanged(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.messageChanged(self, notification: notification)
         }
     }
 
-    public func folderStatusCompleted(_ notification: Notification?) {
+    func folderStatusCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderStatusCompleted(self, notification: notification)
         }
     }
 
-    public func actionFailed(_ notification: Notification?) {
+    func actionFailed(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             guard
                 let userInfo = (notification as NSNotification?)?.userInfo,
@@ -517,56 +517,56 @@ extension ImapConnection: CWServiceClient {
         }
     }
 
-    public func messageStoreCompleted(_ notification: Notification?) {
+    func messageStoreCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.messageStoreCompleted(self, notification: notification)
         }
     }
 
-    public func messageStoreFailed(_ notification: Notification?) {
+    func messageStoreFailed(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.messageStoreFailed(self, notification: notification)
         }
     }
 
-    public func folderCreateCompleted(_ notification: Notification?) {
+    func folderCreateCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderCreateCompleted(self, notification: notification)
         }
     }
 
-    public func folderCreateFailed(_ notification: Notification?) {
+    func folderCreateFailed(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderCreateFailed(self, notification: notification)
         }
     }
 
-    public func folderDeleteCompleted(_ notification: Notification?) {
+    func folderDeleteCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderDeleteCompleted(self, notification: notification)
         }
     }
 
-    public func folderDeleteFailed(_ notification: Notification?) {
+    func folderDeleteFailed(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderDeleteFailed(self, notification: notification)
         }
     }
 
-    public func idleEntered(_ notification: Notification?) {
+    func idleEntered(_ notification: Notification?) {
         state.isIdling = true
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.idleEntered(self, notification: notification)
         }
     }
 
-    public func idleNewMessages(_ notification: Notification?) {
+    func idleNewMessages(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.idleNewMessages(self, notification: notification)
         }
     }
 
-    public func idleFinished(_ notification: Notification?) {
+    func idleFinished(_ notification: Notification?) {
         state.isIdling = false
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.idleFinished(self, notification: notification)
@@ -575,7 +575,7 @@ extension ImapConnection: CWServiceClient {
 }
 
 extension ImapConnection: PantomimeFolderDelegate {
-    public func folderOpenCompleted(_ notification: Notification?) {
+    func folderOpenCompleted(_ notification: Notification?) {
         if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
             as? CWFolder) {
             state.currentFolderName = folder.name()
@@ -587,37 +587,37 @@ extension ImapConnection: PantomimeFolderDelegate {
         }
     }
 
-    public func folderOpenFailed(_ notification: Notification?) {
+    func folderOpenFailed(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderOpenFailed(self, notification: notification)
         }
     }
 
-    public func folderListCompleted(_ notification: Notification?) {
+    func folderListCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderListCompleted(self, notification: notification)
         }
     }
 
-    public func folderNameParsed(_ notification: Notification?) {
+    func folderNameParsed(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderNameParsed(self, notification: notification)
         }
     }
 
-    public func folderAppendCompleted(_ notification: Notification?) {
+    func folderAppendCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderAppendCompleted(self, notification: notification)
         }
     }
 
-    public func folderAppendFailed(_ notification: Notification?) {
+    func folderAppendFailed(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderAppendFailed(self, notification: notification)
         }
     }
 
-    public func folderExpungeCompleted(_ notification: Notification?) {
+    func folderExpungeCompleted(_ notification: Notification?) {
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderExpungeCompleted(self, notification: notification)
         }

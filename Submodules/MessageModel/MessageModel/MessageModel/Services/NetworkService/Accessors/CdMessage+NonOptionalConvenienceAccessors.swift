@@ -12,7 +12,7 @@ import Foundation
  Wrappers over non-optional properties that crash if the property is really nil.
  */
 extension CdMessage {
-    public var parentOrCrash: CdFolder {
+    var parentOrCrash: CdFolder {
         guard let theParent = parent else {
             fatalError()
         }

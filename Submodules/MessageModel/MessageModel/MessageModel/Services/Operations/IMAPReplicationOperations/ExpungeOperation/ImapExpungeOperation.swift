@@ -28,7 +28,7 @@ class ImapExpungeOperation: ConcurrentBaseOperation {
                    errorContainer: errorContainer)
     }
 
-    public override func main() {
+    override func main() {
         scheduleOperations()
         waitForBackgroundTasksAndFinish()
     }

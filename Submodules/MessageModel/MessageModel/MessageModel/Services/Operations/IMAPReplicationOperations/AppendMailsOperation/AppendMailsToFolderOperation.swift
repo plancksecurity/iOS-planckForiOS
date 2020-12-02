@@ -41,7 +41,7 @@ class AppendMailsToFolderOperation: ImapSyncOperation {
                    imapConnection: imapConnection)
     }
 
-    override public func main() {
+    override func main() {
         if !checkImapConnection() {
             waitForBackgroundTasksAndFinish()
             return
@@ -243,7 +243,7 @@ extension AppendMailsToFolderOperation {
 }
 
 class AppendMailsToFolderSyncDelegate: DefaultImapConnectionDelegate {
-    public override func folderAppendCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func folderAppendCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         guard let op = (errorHandler as? AppendMailsToFolderOperation) else {
             Log.shared.errorAndCrash("No OP")
             return
@@ -251,7 +251,7 @@ class AppendMailsToFolderSyncDelegate: DefaultImapConnectionDelegate {
         op.handleFolderAppendCompleted()
     }
 
-    public override func folderAppendFailed(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+    override func folderAppendFailed(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
         guard let op = (errorHandler as? AppendMailsToFolderOperation) else {
             Log.shared.errorAndCrash("No OP")
             return
