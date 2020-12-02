@@ -84,22 +84,35 @@ extension ComposeViewModel {
             }
         }
 
-        var bccRecipients = [Identity]() {
-            didSet {
+        var bccRecipients: [Identity] {
+            get {
+                return backingMessage.bcc.allObjects
+            }
+            set {
+                backingMessage.replaceBcc(with: newValue)
                 edited = true
                 validate()
             }
         }
 
         var from: Identity? {
-            didSet {
+            get {
+                return backingMessage.from
+            }
+            set {
+                backingMessage.from = newValue
                 edited = true
                 validate()
             }
         }
 
-        var subject = " " {
-            didSet {
+        // TODO: Must that really be set to " " for the UI to function properly?
+        var subject: String {
+            get {
+                return backingMessage.shortMessage ?? ""
+            }
+            set {
+                backingMessage.shortMessage = newValue
                 edited = true
             }
         }
