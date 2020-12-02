@@ -14,7 +14,7 @@ import MessageModel
 extension UIUtils {
 
     /// Presents the KeySync wizard, if possible.
-    ///
+    /// - note: This is an async task. The `KeySyncWizardViewController` is NOT presented yet after this method returned!
     /// - Parameters:
     ///   - meFPR: The fingerprints of the user.
     ///   - partnerFPR: The fingerprints of his communication partner.
@@ -62,8 +62,12 @@ extension UIUtils {
 
 extension UIUtils {
 
+    /// Shows a View Controller, probably a KeySync Wizard or a KeySync error
+    ///
+    /// - Parameter viewControllerToPresent: The ViewController to present
+    /// - Returns: The viewControllerToPresent
     @discardableResult
-    private static func show<T: UIViewController>(_ viewController: T) -> T? {
+    private static func show<T: UIViewController>(_ viewControllerToPresent: T) -> T? {
         // If the presenter is an pEp Sync Error alert view
         //  - Do not show another pEp Sync Error alert view.
         //  - Dismiss and present a KeySync wizard if needed.
@@ -72,32 +76,33 @@ extension UIUtils {
         //  - Dismiss it and present whatever is received.
         //
         // If the presenter is not an alert view nor a KeySync wizard, just present whatever is received.
-        let presenter = UIApplication.currentlyVisibleViewController()
-        if presenter is PEPAlertViewController {
-            if viewController is PEPAlertViewController {
+        let currentlyShownViewController = UIApplication.currentlyVisibleViewController()
+        if currentlyShownViewController is PEPAlertViewController {
+            if viewControllerToPresent is PEPAlertViewController {
                 return nil
-            } else if viewController is KeySyncWizardViewController {
+            } else if viewControllerToPresent is KeySyncWizardViewController {
                 // dismiss pEp Sync Errror alert in case pEp Sync Wizard is about to start again
-                dismiss(presenter: presenter, andPresent: viewController)
-                return viewController
+                dismissCurrentlyVisibleViewController(andPresent: viewControllerToPresent)
+                return viewControllerToPresent
             }
-        } else if presenter is KeySyncWizardViewController {
-            dismiss(presenter: presenter, andPresent: viewController)
-            return viewController
+        } else if currentlyShownViewController is KeySyncWizardViewController {
+            dismissCurrentlyVisibleViewController(andPresent: viewControllerToPresent)
+            return viewControllerToPresent
         } else {
             DispatchQueue.main.async {
-                presenter.present(viewController, animated: true)
+                currentlyShownViewController.present(viewControllerToPresent, animated: true)
             }
-            return viewController
+            return viewControllerToPresent
         }
         return nil
     }
 
-    private static func dismiss(presenter: UIViewController, andPresent viewController: UIViewController) {
+    private static func dismissCurrentlyVisibleViewController(andPresent viewController: UIViewController) {
         DispatchQueue.main.async {
-            presenter.dismiss(animated: true) {
-                let newPresenter = UIApplication.currentlyVisibleViewController()
-                newPresenter.present(viewController, animated: true)
+            let currentlyShownViewController = UIApplication.currentlyVisibleViewController()
+            currentlyShownViewController.dismiss(animated: true) {
+                let newCurrentlyShownViewController = UIApplication.currentlyVisibleViewController()
+                newCurrentlyShownViewController.present(viewController, animated: true)
             }
         }
     }
