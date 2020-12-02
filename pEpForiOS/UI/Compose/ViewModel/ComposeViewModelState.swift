@@ -26,13 +26,16 @@ extension ComposeViewModel {
     /// Wraps bookholding properties
     class ComposeViewModelState {
         private(set) var initData: InitData?
+
         private var isValidatedForSending = false {
             didSet {
                 delegate?.composeViewModelState(self,
                                                 didChangeValidationStateTo: isValidatedForSending)
             }
         }
+
         public private(set) var edited = false
+
         public private(set) var rating = Rating.undefined {
             didSet {
                 if rating != oldValue {
