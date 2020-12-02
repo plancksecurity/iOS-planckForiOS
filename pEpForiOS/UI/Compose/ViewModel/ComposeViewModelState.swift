@@ -44,17 +44,16 @@ extension ComposeViewModel {
             }
         }
 
-        private var _pEpProtection = true
         public var pEpProtection: Bool {
             set {
-                let oldValue = _pEpProtection
-                _pEpProtection = (isForceUnprotectedDueToBccSet) ? false : newValue
-                if _pEpProtection != oldValue {
+                let oldValue = backingMessage.pEpProtected
+                backingMessage.pEpProtected = (isForceUnprotectedDueToBccSet) ? false : newValue
+                if backingMessage.pEpProtected != oldValue {
                     delegate?.composeViewModelState(self, didChangeProtection: pEpProtection)
                 }
             }
             get {
-                return _pEpProtection
+                return backingMessage.pEpProtected
             }
         }
 
