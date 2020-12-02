@@ -245,36 +245,37 @@ extension ComposeViewModel {
     }
 
     private func existsDirtyCell() -> Bool {
-        for section in sections where section.type == .recipients {
-            for row  in section.rows where row is RecipientCellViewModel {
-                guard let recipientVM = row as? RecipientCellViewModel else {
-                    Log.shared.errorAndCrash("Cast error")
-                    return false
-                }
-
-                if recipientVM.isDirty {
-                    return true
-                }
+        var isDirty = false
+        onEachRecipientCellViewModel { (vm) in
+            if vm.isDirty {
+                isDirty = true
             }
         }
-        return false
+        return isDirty
     }
 
     private func parseDirtyText() {
+        onEachRecipientCellViewModel { (vm) in
+            let recipientTextViewModel = vm.recipientTextViewModel()
+            let dirtyText = recipientTextViewModel.dirtyText
+            let range = NSRange(location: 0, length: dirtyText.count - 1)
+            let text = NSAttributedString(string: dirtyText)
+            recipientTextViewModel.parseAndHandleValidEmailAddresses(inRange: range, of: text, informDelegate: true)
+        }
+    }
+
+    private func onEachRecipientCellViewModel(block: @escaping (RecipientCellViewModel)->()) {
         for section in sections where section.type == .recipients {
             for row  in section.rows where row is RecipientCellViewModel {
                 guard let recipientVM = row as? RecipientCellViewModel else {
                     Log.shared.errorAndCrash("Cast error")
                     return
                 }
-                let recipientTextViewModel = recipientVM.recipientTextViewModel()
-                let dirtyText = recipientTextViewModel.dirtyText.appending(" ")
-                let range = NSRange(location: 0, length: dirtyText.count - 1)
-                let text = NSAttributedString(string: dirtyText)
-                recipientTextViewModel.parseAndHandleValidEmailAddresses(inRange: range, of: text, informDelegate: true)
+                block(recipientVM)
             }
         }
     }
+
 
     typealias Accepted = Bool
     /// When forwarding/answering a previously decrypted message and the pEpRating is considered as
