@@ -73,12 +73,17 @@ extension ComposeViewModel {
             }
         }
 
-        var ccRecipients = [Identity]() {
-            didSet {
+        var ccRecipients: [Identity] {
+            get {
+                return backingMessage.cc.allObjects
+            }
+            set {
+                backingMessage.replaceCc(with: newValue)
                 edited = true
                 validate()
             }
         }
+
         var bccRecipients = [Identity]() {
             didSet {
                 edited = true
