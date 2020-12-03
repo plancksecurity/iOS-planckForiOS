@@ -204,21 +204,29 @@ extension ComposeViewModel {
 
         // MARK: - Save Message
 
-        /// Provides the backing message with an account so saving is safe.
-        private func saveMessageSetInitialAccount() {
+        private func saveMessageAccount() -> Account? {
             if let fromId = initData?.from {
                 guard let account = Account.by(address: fromId.address) else {
                     Log.shared.errorAndCrash(message: "Compose from email without matching account")
-                    return
+                    return nil
                 }
-                saveMessageSetup(withAccount: account)
+                return account
             } else {
                 guard let account = Account.defaultAccount() else {
                     Log.shared.errorAndCrash(message: "Compose without defined default account")
-                    return
+                    return nil
                 }
-                saveMessageSetup(withAccount: account)
+                return account
             }
+        }
+
+        /// Provides the backing message with an account so saving is safe.
+        private func saveMessageSetInitialAccount() {
+            guard let account = saveMessageAccount() else {
+                Log.shared.errorAndCrash(message: "Compose without account")
+                return
+            }
+            saveMessageSetup(withAccount: account)
         }
 
         /// Sets the backing message up with the given account, that is, sets `from`, the parent folder, among others.
