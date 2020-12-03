@@ -204,6 +204,23 @@ extension ComposeViewModel {
 
         // MARK: - Save Message
 
+        /// - Returns: A suitable account for saving a draft message
+        private func saveMessageAccount() -> Account? {
+            if let fromId = initData?.from {
+                guard let account = Account.by(address: fromId.address) else {
+                    Log.shared.errorAndCrash(message: "Compose from email without matching account")
+                    return nil
+                }
+                return account
+            } else {
+                guard let account = Account.defaultAccount() else {
+                    Log.shared.errorAndCrash(message: "Compose without defined default account")
+                    return nil
+                }
+                return account
+            }
+        }
+
         /// Saves the save message.
         private func saveMessageSave() {
         }
