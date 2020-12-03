@@ -127,8 +127,13 @@ extension ComposeViewModel {
             }
         }
 
-        var bodyText = NSAttributedString(string: "") {
-            didSet {
+        var _bodyText = NSAttributedString(string: "")
+        var bodyText: NSAttributedString {
+            get {
+                return _bodyText
+            }
+            set {
+                _bodyText = newValue
                 edited = true
             }
         }
