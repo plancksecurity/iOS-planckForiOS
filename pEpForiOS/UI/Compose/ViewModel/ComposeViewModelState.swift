@@ -204,7 +204,7 @@ extension ComposeViewModel {
 
         // MARK: - Save Message
 
-        /// - Returns: A suitable account for saving a draft message
+        /// - Returns: A suitable account for saving a draft message, on the main session.
         private func draftMessageAccount() -> Account? {
             if let fromId = initData?.from {
                 guard let account = Account.by(address: fromId.address) else {
