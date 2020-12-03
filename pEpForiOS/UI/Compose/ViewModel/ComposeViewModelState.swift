@@ -193,6 +193,8 @@ extension ComposeViewModel {
             isValidatedForSending = atLeastOneRecipientIsSet && fromIsSet
         }
 
+        // MARK: - Save Message
+
         /// Provides the backing message with an account so saving is safe.
         private func saveMessageSetInitialAccount() {
             if let fromId = initData?.from {
