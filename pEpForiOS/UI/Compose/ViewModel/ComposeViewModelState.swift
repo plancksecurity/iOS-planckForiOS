@@ -235,14 +235,25 @@ extension ComposeViewModel {
                     Log.shared.errorAndCrash(message: "Compose from email without matching account")
                     return
                 }
-                setParentOfBackingMessage(toAccount: account)
+                setupBackingMessage(withAccount: account)
             } else {
                 guard let account = Account.defaultAccount() else {
                     Log.shared.errorAndCrash(message: "Compose without defined default account")
                     return
                 }
-                setParentOfBackingMessage(toAccount: account)
+                setupBackingMessage(withAccount: account)
             }
+        }
+
+        /// Sets the backing message up with the given account, that is, sets `from`, the parent folder, among others.
+        private func setupBackingMessage(withAccount: Account) {
+            setFromOfBackingMessage(toAccount: withAccount)
+            setParentOfBackingMessage(toAccount: withAccount)
+        }
+
+        /// Sets the `from` of the backing message to the given account's identity.
+        private func setFromOfBackingMessage(toAccount: Account) {
+            backingMessage.from = toAccount.user
         }
 
         /// Sets the parent folder of the backing message to a folder from the given account.
