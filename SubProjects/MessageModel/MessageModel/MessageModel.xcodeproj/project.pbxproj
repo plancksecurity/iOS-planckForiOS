@@ -63,6 +63,7 @@
 		1543B69E22AAC325002B59AB /* KeySyncServiceHandshakeUIHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B69D22AAC325002B59AB /* KeySyncServiceHandshakeUIHandlerProtocol.swift */; };
 		1543B6A622ABDA3A002B59AB /* Identity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6A522ABDA3A002B59AB /* Identity+pEp.swift */; };
 		1543B6AE22ABF368002B59AB /* DeviceGroupState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6AD22ABF368002B59AB /* DeviceGroupState.swift */; };
+		1543DCD92579455B0041EFB5 /* libPEPObjCAdapter_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1543DCD82579455B0041EFB5 /* libPEPObjCAdapter_iOS.a */; };
 		154660C22333927B008D2137 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154660BF2333927B008D2137 /* Service.swift */; };
 		154660C42333927B008D2137 /* BackgroundTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154660C12333927B008D2137 /* BackgroundTaskManager.swift */; };
 		154660C82333B703008D2137 /* QueryBasedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154660C72333B703008D2137 /* QueryBasedService.swift */; };
@@ -235,7 +236,6 @@
 		435F5122221FF80F006EB11F /* SmtpSendError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435F5121221FF80F006EB11F /* SmtpSendError.swift */; };
 		435F5134221FFF3A006EB11F /* CdFolder+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435F5133221FFF3A006EB11F /* CdFolder+Pantomime.swift */; };
 		435F514C222017E8006EB11F /* CdAttachment+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435F514B222017E8006EB11F /* CdAttachment+Pantomime.swift */; };
-		435F518122204731006EB11F /* PEPObjCAdapterFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 435F518022204731006EB11F /* PEPObjCAdapterFramework.framework */; };
 		43607DD923FD84EE00FA66B8 /* Certificate_001.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 4383344623FD806D004CC422 /* Certificate_001.p12 */; };
 		43607DDD23FE814900FA66B8 /* Certificate_002.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 43607DDC23FE814900FA66B8 /* Certificate_002.p12 */; };
 		43607DDF23FE81D300FA66B8 /* Certificate_003.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 43607DDE23FE81D300FA66B8 /* Certificate_003.p12 */; };
@@ -514,6 +514,7 @@
 		1543B69D22AAC325002B59AB /* KeySyncServiceHandshakeUIHandlerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncServiceHandshakeUIHandlerProtocol.swift; sourceTree = "<group>"; };
 		1543B6A522ABDA3A002B59AB /* Identity+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Identity+pEp.swift"; sourceTree = "<group>"; };
 		1543B6AD22ABF368002B59AB /* DeviceGroupState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceGroupState.swift; sourceTree = "<group>"; };
+		1543DCD82579455B0041EFB5 /* libPEPObjCAdapter_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libPEPObjCAdapter_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		154660BF2333927B008D2137 /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		154660C12333927B008D2137 /* BackgroundTaskManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundTaskManager.swift; sourceTree = "<group>"; };
 		154660C72333B703008D2137 /* QueryBasedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryBasedService.swift; sourceTree = "<group>"; };
@@ -915,7 +916,7 @@
 			files = (
 				3AB50D2A2500F3B1005E2170 /* pEp4iosIntern.framework in Frameworks */,
 				43B1A39C22366D9700C387DE /* AppAuth.framework in Frameworks */,
-				435F518122204731006EB11F /* PEPObjCAdapterFramework.framework in Frameworks */,
+				1543DCD92579455B0041EFB5 /* libPEPObjCAdapter_iOS.a in Frameworks */,
 				43EA489D221E95E3006E8F83 /* PantomimeFramework.framework in Frameworks */,
 				B7DB7FA522147000003968DA /* pEpIOSToolbox.framework in Frameworks */,
 			);
@@ -2343,6 +2344,7 @@
 		B7DB7FA322147000003968DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1543DCD82579455B0041EFB5 /* libPEPObjCAdapter_iOS.a */,
 				4350A6AC250259FE00809A18 /* CocoaLumberjackSwift.framework */,
 				4331CE79229BDD0900DDDC65 /* PantomimeFramework.framework */,
 				436981B42282F8D40006FA2D /* PEPObjCAdapterFramework.framework */,
