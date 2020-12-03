@@ -238,6 +238,11 @@ extension ComposeViewModel {
 
         /// Sets the parent folder of the backing message to a folder from the given account.
         private func setParentOfBackingMessage(toAccount: Account) {
+            guard let outbox = Folder.by(account: toAccount, folderType: .outbox) else {
+                Log.shared.errorAndCrash(message: "Account without outbox")
+                return
+            }
+            backingMessage.parent = outbox
         }
     }
 }
