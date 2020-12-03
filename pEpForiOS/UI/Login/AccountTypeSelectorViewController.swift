@@ -184,6 +184,7 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
 
 // MARK: - ClientCertificateImport Delegate
 extension AccountTypeSelectorViewController: ClientCertificateImportViewControllerDelegate {
+
     func certificateCouldImported() {
         viewModel.refreshAccountTypes()
         collectionView.reloadData()

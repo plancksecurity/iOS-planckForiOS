@@ -115,6 +115,15 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         updateEditButton()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        tableView.visibleCells.forEach {
+            if let cell = $0 as? SwipeTableViewCell {
+                cell.hideSwipe(animated: true)
+            }
+        }
+    }
+
     deinit {
         unsubscribeAll()
     }
@@ -832,7 +841,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 
 extension EmailListViewController: EmailListViewModelDelegate {
     public func showEditDraftInComposeView() {
-        dismiss(animated: true) { [weak self] in
+        dismissAndPerform { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
