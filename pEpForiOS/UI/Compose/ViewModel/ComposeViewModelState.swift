@@ -189,7 +189,7 @@ extension ComposeViewModel {
             inlinedAttachments = initData.inlinedAttachments
             nonInlinedAttachments = initData.nonInlinedAttachments
 
-            saveMessageSetAccount()
+            saveMessageSave()
         }
 
         private func validateForSending() {
@@ -204,54 +204,8 @@ extension ComposeViewModel {
 
         // MARK: - Save Message
 
-        private func saveMessageAccount() -> Account? {
-            if let fromId = initData?.from {
-                guard let account = Account.by(address: fromId.address) else {
-                    Log.shared.errorAndCrash(message: "Compose from email without matching account")
-                    return nil
-                }
-                return account
-            } else {
-                guard let account = Account.defaultAccount() else {
-                    Log.shared.errorAndCrash(message: "Compose without defined default account")
-                    return nil
-                }
-                return account
-            }
-        }
-
-        /// Provides the backing message with an account so saving is safe.
-        private func saveMessageSetAccount() {
-            guard let account = saveMessageAccount() else {
-                Log.shared.errorAndCrash(message: "Compose without account")
-                return
-            }
-            saveMessageSetup(withAccount: account)
-        }
-
-        /// Sets the backing message up with the given account, that is, sets `from`, the parent folder, among others.
-        private func saveMessageSetup(withAccount: Account) {
-            saveMessagesetFrom(toAccount: withAccount)
-            saveMessageSetParent(toAccount: withAccount)
-        }
-
-        /// Sets the `from` of the backing message to the given account's identity.
-        private func saveMessagesetFrom(toAccount: Account) {
-            saveMessage.from = toAccount.user
-        }
-
-        /// Sets the parent folder of the backing message to a folder from the given account.
-        private func saveMessageSetParent(toAccount: Account) {
-            guard let draftsFolder = Folder.by(account: toAccount, folderType: .drafts) else {
-                Log.shared.errorAndCrash(message: "Account without drafts folder")
-                return
-            }
-            saveMessage.parent = draftsFolder
-        }
-
         /// Saves the save message.
         private func saveMessageSave() {
-            saveMessage.session.commit()
         }
     }
 }
