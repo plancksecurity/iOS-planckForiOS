@@ -188,8 +188,6 @@ extension ComposeViewModel {
 
             inlinedAttachments = initData.inlinedAttachments
             nonInlinedAttachments = initData.nonInlinedAttachments
-
-            draftMessageSave()
         }
 
         private func validateForSending() {
@@ -236,23 +234,25 @@ extension ComposeViewModel {
                 return
             }
 
-            let body = bodyText.toHtml(inlinedAttachments: inlinedAttachments)
+            let safeState = makeSafe(forSession: session)
+
+            let body = safeState.bodyText.toHtml(inlinedAttachments: inlinedAttachments)
             let bodyPlainText = body.plainText
             let bodyHtml = body.html ?? ""
 
             // TODO: Can that be switched without problems in case the account changes?
             draftMessage.parent = draftsFolder
 
-            draftMessage.from = from
-            draftMessage.replaceTo(with: toRecipients)
-            draftMessage.replaceCc(with: ccRecipients)
-            draftMessage.replaceBcc(with: bccRecipients)
-            draftMessage.shortMessage = subject
+            draftMessage.from = safeState.from
+            draftMessage.replaceTo(with: safeState.toRecipients)
+            draftMessage.replaceCc(with: safeState.ccRecipients)
+            draftMessage.replaceBcc(with: safeState.bccRecipients)
+            draftMessage.shortMessage = safeState.subject
             draftMessage.longMessage = bodyPlainText
             draftMessage.longMessageFormatted = !bodyHtml.isEmpty ? bodyHtml : nil
-            draftMessage.replaceAttachments(with: inlinedAttachments + nonInlinedAttachments)
-            draftMessage.pEpProtected = pEpProtection
-            if !pEpProtection {
+            draftMessage.replaceAttachments(with: safeState.inlinedAttachments + safeState.nonInlinedAttachments)
+            draftMessage.pEpProtected = safeState.pEpProtection
+            if !safeState.pEpProtection {
                 let unprotectedRating = Rating.unencrypted
                 draftMessage.setOriginalRatingHeader(rating: unprotectedRating)
                 draftMessage.pEpRatingInt = unprotectedRating.toInt()
