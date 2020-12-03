@@ -149,8 +149,13 @@ extension ComposeViewModel {
             }
         }
 
-        var nonInlinedAttachments = [Attachment]() {
-            didSet {
+        var _nonInlinedAttachments = [Attachment]()
+        var nonInlinedAttachments: [Attachment] {
+            get {
+                return _nonInlinedAttachments
+            }
+            set {
+                _nonInlinedAttachments = newValue
                 edited = true
             }
         }
