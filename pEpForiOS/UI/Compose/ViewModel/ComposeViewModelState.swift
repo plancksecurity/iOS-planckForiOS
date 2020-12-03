@@ -100,6 +100,7 @@ extension ComposeViewModel {
                 return backingMessage.from
             }
             set {
+                // TODO: Move the backing message to another folder
                 backingMessage.from = newValue
                 edited = true
                 validate()
