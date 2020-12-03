@@ -226,6 +226,7 @@ extension ComposeViewModel {
 
             backingMessage.pEpProtected = initData.pEpProtection
 
+            // TODO: Make consistent with the above
             inlinedAttachments = initData.inlinedAttachments
             nonInlinedAttachments = initData.nonInlinedAttachments
 
