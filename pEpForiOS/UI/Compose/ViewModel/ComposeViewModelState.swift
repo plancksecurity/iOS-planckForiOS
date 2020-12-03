@@ -117,8 +117,12 @@ extension ComposeViewModel {
             }
         }
 
-        var bodyPlaintext = "" {
-            didSet {
+        var bodyPlaintext: String {
+            get {
+                return backingMessage.longMessage ?? ""
+            }
+            set {
+                backingMessage.longMessage = newValue
                 edited = true
             }
         }
