@@ -122,13 +122,13 @@ extension ComposeViewModel {
         }
 
         /// The message that gets saved periodically with current data
-        let saveMessage: Message
+        let draftMessage: Message
 
         init(initData: InitData? = nil, delegate: ComposeViewModelStateDelegate? = nil) {
             self.initData = initData
             self.delegate = delegate
 
-            saveMessage = Message.newOutgoingMessage()
+            draftMessage = Message.newOutgoingMessage()
 
             setup()
 
