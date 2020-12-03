@@ -143,8 +143,11 @@ extension ComposeViewModel {
         init(initData: InitData? = nil, delegate: ComposeViewModelStateDelegate? = nil) {
             self.initData = initData
             self.delegate = delegate
+
             backingMessage = Message.newOutgoingMessage()
+
             setup()
+
             edited = false
         }
 
@@ -202,6 +205,8 @@ extension ComposeViewModel {
 
             inlinedAttachments = initData.inlinedAttachments
             nonInlinedAttachments = initData.nonInlinedAttachments
+
+            setInitialAccount()
         }
 
         private func validateForSending() {
@@ -212,6 +217,27 @@ extension ComposeViewModel {
             let fromIsSet = from != nil
 
             isValidatedForSending = atLeastOneRecipientIsSet && fromIsSet
+        }
+
+        /// Provides the backing message with an account so saving is safe.
+        private func setInitialAccount() {
+            if let fromId = initData?.from {
+                guard let account = Account.by(address: fromId.address) else {
+                    Log.shared.errorAndCrash(message: "Compose from email without matching account")
+                    return
+                }
+                setParentOfBackingMessage(toAccount: account)
+            } else {
+                guard let account = Account.defaultAccount() else {
+                    Log.shared.errorAndCrash(message: "Compose without defined default account")
+                    return
+                }
+                setParentOfBackingMessage(toAccount: account)
+            }
+        }
+
+        /// Sets the parent folder of the backing message to a folder from the given account.
+        private func setParentOfBackingMessage(toAccount: Account) {
         }
     }
 }
