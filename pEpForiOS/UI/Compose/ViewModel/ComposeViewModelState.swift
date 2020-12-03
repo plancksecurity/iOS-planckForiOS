@@ -48,6 +48,7 @@ extension ComposeViewModel {
                 _pEpProtection = (isForceUnprotectedDueToBccSet) ? false : newValue
                 if _pEpProtection != oldValue {
                     delegate?.composeViewModelState(self, didChangeProtection: pEpProtection)
+                    saveMessageSave()
                 }
             }
             get {
@@ -64,18 +65,21 @@ extension ComposeViewModel {
             didSet {
                 edited = true
                 validate()
+                saveMessageSave()
             }
         }
         var ccRecipients = [Identity]() {
             didSet {
                 edited = true
                 validate()
+                saveMessageSave()
             }
         }
         var bccRecipients = [Identity]() {
             didSet {
                 edited = true
                 validate()
+                saveMessageSave()
             }
         }
 
@@ -83,24 +87,28 @@ extension ComposeViewModel {
             didSet {
                 edited = true
                 validate()
+                saveMessageSave()
             }
         }
 
         var subject = " " {
             didSet {
                 edited = true
+                saveMessageSave()
             }
         }
 
         var bodyPlaintext = "" {
             didSet {
                 edited = true
+                saveMessageSave()
             }
         }
 
         var bodyText = NSAttributedString(string: "") {
             didSet {
                 edited = true
+                saveMessageSave()
             }
         }
 
@@ -109,6 +117,7 @@ extension ComposeViewModel {
         var nonInlinedAttachments = [Attachment]() {
             didSet {
                 edited = true
+                saveMessageSave()
             }
         }
 
