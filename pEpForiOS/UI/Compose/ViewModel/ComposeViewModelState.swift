@@ -262,6 +262,8 @@ extension ComposeViewModel {
             }
 
             draftMessage.imapFlags.seen = true
+
+            session.commit()
         }
     }
 }
