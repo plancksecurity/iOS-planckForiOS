@@ -189,7 +189,7 @@ extension ComposeViewModel {
             inlinedAttachments = initData.inlinedAttachments
             nonInlinedAttachments = initData.nonInlinedAttachments
 
-            saveMessageSetInitialAccount()
+            saveMessageSetAccount()
         }
 
         private func validateForSending() {
@@ -221,7 +221,7 @@ extension ComposeViewModel {
         }
 
         /// Provides the backing message with an account so saving is safe.
-        private func saveMessageSetInitialAccount() {
+        private func saveMessageSetAccount() {
             guard let account = saveMessageAccount() else {
                 Log.shared.errorAndCrash(message: "Compose without account")
                 return
