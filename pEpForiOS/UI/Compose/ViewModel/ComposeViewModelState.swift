@@ -231,6 +231,11 @@ extension ComposeViewModel {
             }
             saveMessage.parent = draftsFolder
         }
+
+        /// Saves the save message.
+        private func saveMessageSave() {
+            saveMessage.session.commit()
+        }
     }
 }
 
