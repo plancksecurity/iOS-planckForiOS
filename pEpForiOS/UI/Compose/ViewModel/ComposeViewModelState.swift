@@ -223,6 +223,45 @@ extension ComposeViewModel {
 
         /// Saves the save message.
         private func draftMessageSave() {
+            guard let account = draftMessageAccount() else {
+                Log.shared.errorAndCrash("No account for saving a draft message")
+                return
+            }
+
+            let session = account.session
+
+            guard let draftsFolder = Folder.by(account: account,
+                                               folderType: .drafts)?.safeForSession(session) else {
+                Log.shared.errorAndCrash("No drafts folder")
+                return
+            }
+
+            let body = bodyText.toHtml(inlinedAttachments: inlinedAttachments)
+            let bodyPlainText = body.plainText
+            let bodyHtml = body.html ?? ""
+
+            // TODO: Can that be switched without problems in case the account changes?
+            draftMessage.parent = draftsFolder
+
+            draftMessage.from = from
+            draftMessage.replaceTo(with: toRecipients)
+            draftMessage.replaceCc(with: ccRecipients)
+            draftMessage.replaceBcc(with: bccRecipients)
+            draftMessage.shortMessage = subject
+            draftMessage.longMessage = bodyPlainText
+            draftMessage.longMessageFormatted = !bodyHtml.isEmpty ? bodyHtml : nil
+            draftMessage.replaceAttachments(with: inlinedAttachments + nonInlinedAttachments)
+            draftMessage.pEpProtected = pEpProtection
+            if !pEpProtection {
+                let unprotectedRating = Rating.unencrypted
+                draftMessage.setOriginalRatingHeader(rating: unprotectedRating)
+                draftMessage.pEpRatingInt = unprotectedRating.toInt()
+            } else {
+                draftMessage.setOriginalRatingHeader(rating: rating)
+                draftMessage.pEpRatingInt = rating.toInt()
+            }
+
+            draftMessage.imapFlags.seen = true
         }
     }
 }
