@@ -48,7 +48,7 @@ extension ComposeViewModel {
                 _pEpProtection = (isForceUnprotectedDueToBccSet) ? false : newValue
                 if _pEpProtection != oldValue {
                     delegate?.composeViewModelState(self, didChangeProtection: pEpProtection)
-                    saveMessageSave()
+                    draftMessageSave()
                 }
             }
             get {
@@ -65,21 +65,21 @@ extension ComposeViewModel {
             didSet {
                 edited = true
                 validate()
-                saveMessageSave()
+                draftMessageSave()
             }
         }
         var ccRecipients = [Identity]() {
             didSet {
                 edited = true
                 validate()
-                saveMessageSave()
+                draftMessageSave()
             }
         }
         var bccRecipients = [Identity]() {
             didSet {
                 edited = true
                 validate()
-                saveMessageSave()
+                draftMessageSave()
             }
         }
 
@@ -87,28 +87,28 @@ extension ComposeViewModel {
             didSet {
                 edited = true
                 validate()
-                saveMessageSave()
+                draftMessageSave()
             }
         }
 
         var subject = " " {
             didSet {
                 edited = true
-                saveMessageSave()
+                draftMessageSave()
             }
         }
 
         var bodyPlaintext = "" {
             didSet {
                 edited = true
-                saveMessageSave()
+                draftMessageSave()
             }
         }
 
         var bodyText = NSAttributedString(string: "") {
             didSet {
                 edited = true
-                saveMessageSave()
+                draftMessageSave()
             }
         }
 
@@ -117,7 +117,7 @@ extension ComposeViewModel {
         var nonInlinedAttachments = [Attachment]() {
             didSet {
                 edited = true
-                saveMessageSave()
+                draftMessageSave()
             }
         }
 
@@ -189,7 +189,7 @@ extension ComposeViewModel {
             inlinedAttachments = initData.inlinedAttachments
             nonInlinedAttachments = initData.nonInlinedAttachments
 
-            saveMessageSave()
+            draftMessageSave()
         }
 
         private func validateForSending() {
@@ -205,7 +205,7 @@ extension ComposeViewModel {
         // MARK: - Save Message
 
         /// - Returns: A suitable account for saving a draft message
-        private func saveMessageAccount() -> Account? {
+        private func draftMessageAccount() -> Account? {
             if let fromId = initData?.from {
                 guard let account = Account.by(address: fromId.address) else {
                     Log.shared.errorAndCrash(message: "Compose from email without matching account")
@@ -222,7 +222,7 @@ extension ComposeViewModel {
         }
 
         /// Saves the save message.
-        private func saveMessageSave() {
+        private func draftMessageSave() {
         }
     }
 }
