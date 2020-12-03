@@ -112,10 +112,17 @@ extension ComposeViewModel {
             }
         }
 
+        /// The message that gets saved periodically with current data
+        let saveMessage: Message
+
         init(initData: InitData? = nil, delegate: ComposeViewModelStateDelegate? = nil) {
             self.initData = initData
             self.delegate = delegate
+
+            saveMessage = Message.newOutgoingMessage()
+
             setup()
+
             edited = false
         }
 
@@ -172,6 +179,8 @@ extension ComposeViewModel {
 
             inlinedAttachments = initData.inlinedAttachments
             nonInlinedAttachments = initData.nonInlinedAttachments
+
+            saveMessageSetInitialAccount()
         }
 
         private func validateForSending() {
@@ -182,6 +191,43 @@ extension ComposeViewModel {
             let fromIsSet = from != nil
 
             isValidatedForSending = atLeastOneRecipientIsSet && fromIsSet
+        }
+
+        /// Provides the backing message with an account so saving is safe.
+        private func saveMessageSetInitialAccount() {
+            if let fromId = initData?.from {
+                guard let account = Account.by(address: fromId.address) else {
+                    Log.shared.errorAndCrash(message: "Compose from email without matching account")
+                    return
+                }
+                setupBackingMessage(withAccount: account)
+            } else {
+                guard let account = Account.defaultAccount() else {
+                    Log.shared.errorAndCrash(message: "Compose without defined default account")
+                    return
+                }
+                setupBackingMessage(withAccount: account)
+            }
+        }
+
+        /// Sets the backing message up with the given account, that is, sets `from`, the parent folder, among others.
+        private func setupBackingMessage(withAccount: Account) {
+            setFromOfBackingMessage(toAccount: withAccount)
+            setParentOfBackingMessage(toAccount: withAccount)
+        }
+
+        /// Sets the `from` of the backing message to the given account's identity.
+        private func setFromOfBackingMessage(toAccount: Account) {
+            saveMessage.from = toAccount.user
+        }
+
+        /// Sets the parent folder of the backing message to a folder from the given account.
+        private func setParentOfBackingMessage(toAccount: Account) {
+            guard let draftsFolder = Folder.by(account: toAccount, folderType: .drafts) else {
+                Log.shared.errorAndCrash(message: "Account without drafts folder")
+                return
+            }
+            saveMessage.parent = draftsFolder
         }
     }
 }
