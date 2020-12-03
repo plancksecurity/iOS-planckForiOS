@@ -26,16 +26,13 @@ extension ComposeViewModel {
     /// Wraps bookholding properties
     class ComposeViewModelState {
         private(set) var initData: InitData?
-
         private var isValidatedForSending = false {
             didSet {
                 delegate?.composeViewModelState(self,
                                                 didChangeValidationStateTo: isValidatedForSending)
             }
         }
-
         public private(set) var edited = false
-
         public private(set) var rating = Rating.undefined {
             didSet {
                 if rating != oldValue {
@@ -44,16 +41,17 @@ extension ComposeViewModel {
             }
         }
 
+        private var _pEpProtection = true
         public var pEpProtection: Bool {
             set {
-                let oldValue = backingMessage.pEpProtected
-                backingMessage.pEpProtected = (isForceUnprotectedDueToBccSet) ? false : newValue
-                if backingMessage.pEpProtected != oldValue {
+                let oldValue = _pEpProtection
+                _pEpProtection = (isForceUnprotectedDueToBccSet) ? false : newValue
+                if _pEpProtection != oldValue {
                     delegate?.composeViewModelState(self, didChangeProtection: pEpProtection)
                 }
             }
             get {
-                return backingMessage.pEpProtected
+                return _pEpProtection
             }
         }
 
@@ -62,115 +60,62 @@ extension ComposeViewModel {
         weak var delegate: ComposeViewModelStateDelegate?
 
         //Recipients
-        var toRecipients: [Identity] {
-            get {
-                return backingMessage.to.allObjects
-            }
-            set {
-                backingMessage.replaceTo(with: newValue)
+        var toRecipients = [Identity]() {
+            didSet {
                 edited = true
                 validate()
             }
         }
-
-        var ccRecipients: [Identity] {
-            get {
-                return backingMessage.cc.allObjects
-            }
-            set {
-                backingMessage.replaceCc(with: newValue)
+        var ccRecipients = [Identity]() {
+            didSet {
                 edited = true
                 validate()
             }
         }
-
-        var bccRecipients: [Identity] {
-            get {
-                return backingMessage.bcc.allObjects
-            }
-            set {
-                backingMessage.replaceBcc(with: newValue)
+        var bccRecipients = [Identity]() {
+            didSet {
                 edited = true
                 validate()
             }
         }
 
         var from: Identity? {
-            get {
-                return backingMessage.from
-            }
-            set {
-                // TODO: Move the backing message to another folder
-                backingMessage.from = newValue
+            didSet {
                 edited = true
                 validate()
             }
         }
 
-        var subject: String {
-            get {
-                // TODO: Must that really be set to " " for the UI to function properly?
-                return backingMessage.shortMessage ?? ""
-            }
-            set {
-                backingMessage.shortMessage = newValue
+        var subject = " " {
+            didSet {
                 edited = true
             }
         }
 
-        var bodyPlaintext: String {
-            get {
-                return backingMessage.longMessage ?? ""
-            }
-            set {
-                backingMessage.longMessage = newValue
+        var bodyPlaintext = "" {
+            didSet {
                 edited = true
             }
         }
 
-        var _bodyText = NSAttributedString(string: "")
-        var bodyText: NSAttributedString {
-            get {
-                return _bodyText
-            }
-            set {
-                _bodyText = newValue
+        var bodyText = NSAttributedString(string: "") {
+            didSet {
                 edited = true
             }
         }
 
-        var _inlinedAttachments = [Attachment]()
-        var inlinedAttachments: [Attachment] {
-            get {
-                return _inlinedAttachments
-            }
-            set {
-                _inlinedAttachments = newValue
-            }
-        }
+        var inlinedAttachments = [Attachment]()
 
-        var _nonInlinedAttachments = [Attachment]()
-        var nonInlinedAttachments: [Attachment] {
-            get {
-                return _nonInlinedAttachments
-            }
-            set {
-                _nonInlinedAttachments = newValue
+        var nonInlinedAttachments = [Attachment]() {
+            didSet {
                 edited = true
             }
         }
-
-        /// The message that contains all the data
-        let backingMessage: Message
 
         init(initData: InitData? = nil, delegate: ComposeViewModelStateDelegate? = nil) {
             self.initData = initData
             self.delegate = delegate
-
-            backingMessage = Message.newOutgoingMessage()
-
             setup()
-
             edited = false
         }
 
@@ -216,21 +161,17 @@ extension ComposeViewModel {
                 Log.shared.errorAndCrash("No data")
                 return
             }
-
-            backingMessage.replaceTo(with: initData.toRecipients)
-            backingMessage.replaceCc(with: initData.ccRecipients)
-            backingMessage.replaceBcc(with: initData.bccRecipients)
+            toRecipients = initData.toRecipients
+            ccRecipients = initData.ccRecipients
+            bccRecipients = initData.bccRecipients
             bccWrapped = ccRecipients.isEmpty && bccRecipients.isEmpty
-            backingMessage.from = initData.from
-            backingMessage.shortMessage = initData.subject ?? " "
+            from = initData.from
+            subject = initData.subject ?? " "
 
-            backingMessage.pEpProtected = initData.pEpProtection
+            pEpProtection = initData.pEpProtection
 
-            // TODO: Make consistent with the above
             inlinedAttachments = initData.inlinedAttachments
             nonInlinedAttachments = initData.nonInlinedAttachments
-
-            setInitialAccount()
         }
 
         private func validateForSending() {
@@ -241,43 +182,6 @@ extension ComposeViewModel {
             let fromIsSet = from != nil
 
             isValidatedForSending = atLeastOneRecipientIsSet && fromIsSet
-        }
-
-        /// Provides the backing message with an account so saving is safe.
-        private func setInitialAccount() {
-            if let fromId = initData?.from {
-                guard let account = Account.by(address: fromId.address) else {
-                    Log.shared.errorAndCrash(message: "Compose from email without matching account")
-                    return
-                }
-                setupBackingMessage(withAccount: account)
-            } else {
-                guard let account = Account.defaultAccount() else {
-                    Log.shared.errorAndCrash(message: "Compose without defined default account")
-                    return
-                }
-                setupBackingMessage(withAccount: account)
-            }
-        }
-
-        /// Sets the backing message up with the given account, that is, sets `from`, the parent folder, among others.
-        private func setupBackingMessage(withAccount: Account) {
-            setFromOfBackingMessage(toAccount: withAccount)
-            setParentOfBackingMessage(toAccount: withAccount)
-        }
-
-        /// Sets the `from` of the backing message to the given account's identity.
-        private func setFromOfBackingMessage(toAccount: Account) {
-            backingMessage.from = toAccount.user
-        }
-
-        /// Sets the parent folder of the backing message to a folder from the given account.
-        private func setParentOfBackingMessage(toAccount: Account) {
-            guard let draftsFolder = Folder.by(account: toAccount, folderType: .drafts) else {
-                Log.shared.errorAndCrash(message: "Account without drafts folder")
-                return
-            }
-            backingMessage.parent = draftsFolder
         }
     }
 }
