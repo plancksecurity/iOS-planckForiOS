@@ -8,7 +8,7 @@
 
 public protocol KeySyncServiceHandshakeHandlerProtocol: class {
 
-    /// Show pEp Sync Wizzard
+    /// Show pEp Sync Wizard
     ///
     /// - Parameters:
     ///   - me: my trust words
