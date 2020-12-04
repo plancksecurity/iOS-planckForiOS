@@ -108,7 +108,7 @@ class ComposeViewModel {
          prefilledFrom: Identity? = nil,
          originalMessage: Message? = nil) {
         let initData = InitData(prefilledTo: prefilledTo, prefilledFrom: prefilledFrom, originalMessage: originalMessage, composeMode: composeMode)
-        self.state = ComposeViewModelState(initData: initData)
+        self.state = ComposeViewModelState(initData: initData, isBackedByDraftMessage: true)
         self.state.delegate = self
         setup()
     }
@@ -116,7 +116,7 @@ class ComposeViewModel {
     
     init(mailTo: Mailto) {
         let initData = InitData(mailto: mailTo)
-        self.state = ComposeViewModelState(initData: initData)
+        self.state = ComposeViewModelState(initData: initData, isBackedByDraftMessage: true)
         self.state.delegate = self
         setup()
     }

@@ -121,19 +121,29 @@ extension ComposeViewModel {
             }
         }
 
+        /// If true, the state gets saved to a drafts message periodically.
+        /// Set to false for states that are just used to pass around data.
+        let isBackedByDraftMessage: Bool
+
         /// The message that gets saved periodically with current data
         var draftMessage: Message?
 
-        init(initData: InitData? = nil, delegate: ComposeViewModelStateDelegate? = nil) {
+        init(initData: InitData? = nil,
+             delegate: ComposeViewModelStateDelegate? = nil,
+             isBackedByDraftMessage: Bool) {
             self.initData = initData
             self.delegate = delegate
+            self.isBackedByDraftMessage = isBackedByDraftMessage
+
             setup()
             edited = false
         }
 
         public func makeSafe(forSession session: Session,
                              cloneAttachments: Bool = false) -> ComposeViewModelState {
-            let newValue = ComposeViewModelState(initData: initData, delegate: nil)
+            let newValue = ComposeViewModelState(initData: initData,
+                                                 delegate: nil,
+                                                 isBackedByDraftMessage: false)
 
             newValue.toRecipients = Identity.makeSafe(toRecipients, forSession: session)
             newValue.ccRecipients = Identity.makeSafe(ccRecipients, forSession: session)

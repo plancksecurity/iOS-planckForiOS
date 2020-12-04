@@ -25,7 +25,7 @@ extension ComposeViewModel {
             initData.bodyPlaintext = "\n\n\(deviceField): \(UIDevice().type.rawValue)" + "\n" + "OS: \(UIDevice.current.systemVersion)"
             initData.subject = NSLocalizedString("Help", comment: "Contact Support - Mail subject")
         }
-        let state = ComposeViewModelState(initData: initData)
+        let state = ComposeViewModelState(initData: initData, isBackedByDraftMessage: true)
         return ComposeViewModel(state: state)
     }
 }
