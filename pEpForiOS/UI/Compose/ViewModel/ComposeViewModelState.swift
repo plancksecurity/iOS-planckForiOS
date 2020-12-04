@@ -122,16 +122,12 @@ extension ComposeViewModel {
         }
 
         /// The message that gets saved periodically with current data
-        let draftMessage: Message
+        var draftMessage: Message?
 
         init(initData: InitData? = nil, delegate: ComposeViewModelStateDelegate? = nil) {
             self.initData = initData
             self.delegate = delegate
-
-            draftMessage = Message.newOutgoingMessage()
-
             setup()
-
             edited = false
         }
 
@@ -240,28 +236,37 @@ extension ComposeViewModel {
             let bodyPlainText = body.plainText
             let bodyHtml = body.html ?? ""
 
-            // TODO: Can that be switched without problems in case the account changes?
-            draftMessage.parent = draftsFolder
-
-            draftMessage.from = safeState.from
-            draftMessage.replaceTo(with: safeState.toRecipients)
-            draftMessage.replaceCc(with: safeState.ccRecipients)
-            draftMessage.replaceBcc(with: safeState.bccRecipients)
-            draftMessage.shortMessage = safeState.subject
-            draftMessage.longMessage = bodyPlainText
-            draftMessage.longMessageFormatted = !bodyHtml.isEmpty ? bodyHtml : nil
-            draftMessage.replaceAttachments(with: safeState.inlinedAttachments + safeState.nonInlinedAttachments)
-            draftMessage.pEpProtected = safeState.pEpProtection
-            if !safeState.pEpProtection {
-                let unprotectedRating = Rating.unencrypted
-                draftMessage.setOriginalRatingHeader(rating: unprotectedRating)
-                draftMessage.pEpRatingInt = unprotectedRating.toInt()
-            } else {
-                draftMessage.setOriginalRatingHeader(rating: rating)
-                draftMessage.pEpRatingInt = rating.toInt()
+            if draftMessage == nil {
+                draftMessage = Message.newOutgoingMessage()
             }
 
-            draftMessage.imapFlags.seen = true
+            guard let theDraftMessage = draftMessage else {
+                Log.shared.errorAndCrash("No way this is nil")
+                return
+            }
+
+            // TODO: Can that be switched without problems in case the account changes?
+            theDraftMessage.parent = draftsFolder
+
+            theDraftMessage.from = safeState.from
+            theDraftMessage.replaceTo(with: safeState.toRecipients)
+            theDraftMessage.replaceCc(with: safeState.ccRecipients)
+            theDraftMessage.replaceBcc(with: safeState.bccRecipients)
+            theDraftMessage.shortMessage = safeState.subject
+            theDraftMessage.longMessage = bodyPlainText
+            theDraftMessage.longMessageFormatted = !bodyHtml.isEmpty ? bodyHtml : nil
+            theDraftMessage.replaceAttachments(with: safeState.inlinedAttachments + safeState.nonInlinedAttachments)
+            theDraftMessage.pEpProtected = safeState.pEpProtection
+            if !safeState.pEpProtection {
+                let unprotectedRating = Rating.unencrypted
+                theDraftMessage.setOriginalRatingHeader(rating: unprotectedRating)
+                theDraftMessage.pEpRatingInt = unprotectedRating.toInt()
+            } else {
+                theDraftMessage.setOriginalRatingHeader(rating: rating)
+                theDraftMessage.pEpRatingInt = rating.toInt()
+            }
+
+            theDraftMessage.imapFlags.seen = true
 
             session.commit()
         }
