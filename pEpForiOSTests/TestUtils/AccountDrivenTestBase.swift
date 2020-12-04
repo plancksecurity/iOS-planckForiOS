@@ -10,7 +10,8 @@ import XCTest
 
 @testable import pEpForiOS
 @testable import MessageModel //FIXME:
-import PEPObjCAdapterFramework // Only for the tear down
+import PEPObjCAdapterTypes_iOS
+import PEPObjCAdapter_iOS // Only for the tear down
 
 /// Base class for tests that need an account set up.
 open class AccountDrivenTestBase: XCTestCase {

@@ -13,6 +13,10 @@
 		15160A63257A53A700DD42E0 /* libPEPObjCAdapterTypes_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15160A62257A53A700DD42E0 /* libPEPObjCAdapterTypes_iOS.a */; platformFilter = ios; };
 		15160B41257A599C00DD42E0 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 15160B3C257A597B00DD42E0 /* libz.tbd */; platformFilter = ios; };
 		15160B45257A59A500DD42E0 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 15160B3D257A598100DD42E0 /* libiconv.tbd */; platformFilter = ios; };
+		15160D3A257A950700DD42E0 /* libPEPObjCAdapter_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15160D39257A950700DD42E0 /* libPEPObjCAdapter_iOS.a */; };
+		15160D3C257A951C00DD42E0 /* libPEPObjCAdapterTypes_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15160D3B257A951C00DD42E0 /* libPEPObjCAdapterTypes_iOS.a */; };
+		15160D40257A96D600DD42E0 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 15160B3C257A597B00DD42E0 /* libz.tbd */; };
+		15160D44257A96DE00DD42E0 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 15160B3D257A598100DD42E0 /* libiconv.tbd */; };
 		151645A62239183B009532BE /* MessageModelObjectProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645A52239183B009532BE /* MessageModelObjectProtocol.swift */; };
 		151645A822391871009532BE /* ManagedObjectWrapperProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645A722391871009532BE /* ManagedObjectWrapperProtocol.swift */; };
 		151645B0223A783C009532BE /* Identity+IdentityImageUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645AF223A783C009532BE /* Identity+IdentityImageUtils.swift */; };
@@ -238,7 +242,6 @@
 		43648287249A3F6900DD44ED /* IOS-211-duplicated-attachments.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43648286249A3F6900DD44ED /* IOS-211-duplicated-attachments.txt */; };
 		4367342F22F18462005FC567 /* CdMessagePredicateFactory+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4367342E22F18462005FC567 /* CdMessagePredicateFactory+KeySync.swift */; };
 		4368309F22F9682A0005880D /* DeleteOldSyncMailsOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4368309E22F9682A0005880D /* DeleteOldSyncMailsOperationTest.swift */; };
-		436981B52282F8D40006FA2D /* PEPObjCAdapterFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436981B42282F8D40006FA2D /* PEPObjCAdapterFramework.framework */; };
 		436C9A4824E3FC9700007A3D /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C9A4724E3FC9700007A3D /* Rating.swift */; };
 		436C9A4A24E3FE0B00007A3D /* Rating+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C9A4924E3FE0B00007A3D /* Rating+pEp.swift */; };
 		43753CC2222D247D002EE98B /* CdMessage+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CC1222D247D002EE98B /* CdMessage+pEp.swift */; };
@@ -467,6 +470,8 @@
 		15160A62257A53A700DD42E0 /* libPEPObjCAdapterTypes_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libPEPObjCAdapterTypes_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		15160B3C257A597B00DD42E0 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.0.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		15160B3D257A598100DD42E0 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.0.sdk/usr/lib/libiconv.tbd; sourceTree = DEVELOPER_DIR; };
+		15160D39257A950700DD42E0 /* libPEPObjCAdapter_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libPEPObjCAdapter_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		15160D3B257A951C00DD42E0 /* libPEPObjCAdapterTypes_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libPEPObjCAdapterTypes_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		151645A52239183B009532BE /* MessageModelObjectProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModelObjectProtocol.swift; sourceTree = "<group>"; };
 		151645A722391871009532BE /* ManagedObjectWrapperProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedObjectWrapperProtocol.swift; sourceTree = "<group>"; };
 		151645AF223A783C009532BE /* Identity+IdentityImageUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Identity+IdentityImageUtils.swift"; sourceTree = "<group>"; };
@@ -934,8 +939,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15160D44257A96DE00DD42E0 /* libiconv.tbd in Frameworks */,
+				15160D40257A96D600DD42E0 /* libz.tbd in Frameworks */,
 				4331CE7A229BDD0900DDDC65 /* PantomimeFramework.framework in Frameworks */,
-				436981B52282F8D40006FA2D /* PEPObjCAdapterFramework.framework in Frameworks */,
+				15160D3C257A951C00DD42E0 /* libPEPObjCAdapterTypes_iOS.a in Frameworks */,
+				15160D3A257A950700DD42E0 /* libPEPObjCAdapter_iOS.a in Frameworks */,
 				49E6CE3B1E72F70B004EE2AD /* MessageModel.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2354,6 +2362,8 @@
 			children = (
 				15160B3D257A598100DD42E0 /* libiconv.tbd */,
 				15160B3C257A597B00DD42E0 /* libz.tbd */,
+				15160D39257A950700DD42E0 /* libPEPObjCAdapter_iOS.a */,
+				15160D3B257A951C00DD42E0 /* libPEPObjCAdapterTypes_iOS.a */,
 				1543DCD82579455B0041EFB5 /* libPEPObjCAdapter_iOS.a */,
 				4350A6AC250259FE00809A18 /* CocoaLumberjackSwift.framework */,
 				15160A62257A53A700DD42E0 /* libPEPObjCAdapterTypes_iOS.a */,
