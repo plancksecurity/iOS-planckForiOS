@@ -70,6 +70,7 @@ extension EditableAccountSettingsTableViewController: UITextFieldDelegate {
         reloadPickerIfNeeded()
     }
 
+    ///MB:- refactor this.
     func textFieldDidEndEditing(_ textField: UITextField) {
         switch textField {
         case imapSecurityTextfield:
