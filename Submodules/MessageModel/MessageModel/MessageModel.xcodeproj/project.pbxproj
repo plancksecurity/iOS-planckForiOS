@@ -3,13 +3,16 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		00B06B3F2142871A00EFE569 /* FilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B06B3E2142871A00EFE569 /* FilterType.swift */; };
 		15078BB323883D280075C7B4 /* DefaultImapConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15078BB223883D280075C7B4 /* DefaultImapConnectionDelegate.swift */; };
 		150C5EF024A38825005BA3C9 /* CreateIMAPPepFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150C5EEF24A38825005BA3C9 /* CreateIMAPPepFolderOperation.swift */; };
+		15160A63257A53A700DD42E0 /* libPEPObjCAdapterTypes_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15160A62257A53A700DD42E0 /* libPEPObjCAdapterTypes_iOS.a */; platformFilter = ios; };
+		15160B41257A599C00DD42E0 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 15160B3C257A597B00DD42E0 /* libz.tbd */; platformFilter = ios; };
+		15160B45257A59A500DD42E0 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 15160B3D257A598100DD42E0 /* libiconv.tbd */; platformFilter = ios; };
 		151645A62239183B009532BE /* MessageModelObjectProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645A52239183B009532BE /* MessageModelObjectProtocol.swift */; };
 		151645A822391871009532BE /* ManagedObjectWrapperProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645A722391871009532BE /* ManagedObjectWrapperProtocol.swift */; };
 		151645B0223A783C009532BE /* Identity+IdentityImageUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645AF223A783C009532BE /* Identity+IdentityImageUtils.swift */; };
@@ -51,7 +54,7 @@
 		1543B69E22AAC325002B59AB /* KeySyncServiceHandshakeUIHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B69D22AAC325002B59AB /* KeySyncServiceHandshakeUIHandlerProtocol.swift */; };
 		1543B6A622ABDA3A002B59AB /* Identity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6A522ABDA3A002B59AB /* Identity+pEp.swift */; };
 		1543B6AE22ABF368002B59AB /* DeviceGroupState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6AD22ABF368002B59AB /* DeviceGroupState.swift */; };
-		1543DCD92579455B0041EFB5 /* libPEPObjCAdapter_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1543DCD82579455B0041EFB5 /* libPEPObjCAdapter_iOS.a */; };
+		1543DCD92579455B0041EFB5 /* libPEPObjCAdapter_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1543DCD82579455B0041EFB5 /* libPEPObjCAdapter_iOS.a */; platformFilter = ios; };
 		154660C22333927B008D2137 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154660BF2333927B008D2137 /* Service.swift */; };
 		154660C42333927B008D2137 /* BackgroundTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154660C12333927B008D2137 /* BackgroundTaskManager.swift */; };
 		154660C82333B703008D2137 /* QueryBasedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154660C72333B703008D2137 /* QueryBasedService.swift */; };
@@ -460,6 +463,10 @@
 		15078BB223883D280075C7B4 /* DefaultImapConnectionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultImapConnectionDelegate.swift; sourceTree = "<group>"; };
 		150B84C220A35DF800D8B288 /* 0.0.33.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 0.0.33.xcdatamodel; sourceTree = "<group>"; };
 		150C5EEF24A38825005BA3C9 /* CreateIMAPPepFolderOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateIMAPPepFolderOperation.swift; sourceTree = "<group>"; };
+		151606F0257A3F9E00DD42E0 /* libPEPObjCAdapterTypes_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libPEPObjCAdapterTypes_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		15160A62257A53A700DD42E0 /* libPEPObjCAdapterTypes_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libPEPObjCAdapterTypes_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		15160B3C257A597B00DD42E0 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.0.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
+		15160B3D257A598100DD42E0 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.0.sdk/usr/lib/libiconv.tbd; sourceTree = DEVELOPER_DIR; };
 		151645A52239183B009532BE /* MessageModelObjectProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModelObjectProtocol.swift; sourceTree = "<group>"; };
 		151645A722391871009532BE /* ManagedObjectWrapperProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedObjectWrapperProtocol.swift; sourceTree = "<group>"; };
 		151645AF223A783C009532BE /* Identity+IdentityImageUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Identity+IdentityImageUtils.swift"; sourceTree = "<group>"; };
@@ -503,6 +510,7 @@
 		1543B6A522ABDA3A002B59AB /* Identity+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Identity+pEp.swift"; sourceTree = "<group>"; };
 		1543B6AD22ABF368002B59AB /* DeviceGroupState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceGroupState.swift; sourceTree = "<group>"; };
 		1543DCD82579455B0041EFB5 /* libPEPObjCAdapter_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libPEPObjCAdapter_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		1543DD87257A3C1A0041EFB5 /* libPEPObjCAdapter_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libPEPObjCAdapter_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		154660BF2333927B008D2137 /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		154660C12333927B008D2137 /* BackgroundTaskManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundTaskManager.swift; sourceTree = "<group>"; };
 		154660C72333B703008D2137 /* QueryBasedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryBasedService.swift; sourceTree = "<group>"; };
@@ -913,7 +921,10 @@
 			files = (
 				3AB50D2A2500F3B1005E2170 /* pEp4iosIntern.framework in Frameworks */,
 				43B1A39C22366D9700C387DE /* AppAuth.framework in Frameworks */,
+				15160B45257A59A500DD42E0 /* libiconv.tbd in Frameworks */,
+				15160B41257A599C00DD42E0 /* libz.tbd in Frameworks */,
 				1543DCD92579455B0041EFB5 /* libPEPObjCAdapter_iOS.a in Frameworks */,
+				15160A63257A53A700DD42E0 /* libPEPObjCAdapterTypes_iOS.a in Frameworks */,
 				43EA489D221E95E3006E8F83 /* PantomimeFramework.framework in Frameworks */,
 				B7DB7FA522147000003968DA /* pEpIOSToolbox.framework in Frameworks */,
 			);
@@ -2341,11 +2352,16 @@
 		B7DB7FA322147000003968DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				15160B3D257A598100DD42E0 /* libiconv.tbd */,
+				15160B3C257A597B00DD42E0 /* libz.tbd */,
 				1543DCD82579455B0041EFB5 /* libPEPObjCAdapter_iOS.a */,
 				4350A6AC250259FE00809A18 /* CocoaLumberjackSwift.framework */,
+				15160A62257A53A700DD42E0 /* libPEPObjCAdapterTypes_iOS.a */,
+				151606F0257A3F9E00DD42E0 /* libPEPObjCAdapterTypes_iOS.a */,
 				4331CE79229BDD0900DDDC65 /* PantomimeFramework.framework */,
 				436981B42282F8D40006FA2D /* PEPObjCAdapterFramework.framework */,
 				43B1A39B22366D9700C387DE /* AppAuth.framework */,
+				1543DD87257A3C1A0041EFB5 /* libPEPObjCAdapter_iOS.a */,
 				435F518022204731006EB11F /* PEPObjCAdapterFramework.framework */,
 				43EA489C221E95E3006E8F83 /* PantomimeFramework.framework */,
 				B7DB7FA422147000003968DA /* pEpIOSToolbox.framework */,
@@ -3158,6 +3174,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/../../../../pEpObjCAdapter/build/include";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3218,12 +3235,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/../../../../pEpObjCAdapter/build/include";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_SWIFT_FLAGS = " ";
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "$(inherited)";
@@ -3245,7 +3264,11 @@
 				INFOPLIST_FILE = MessageModel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = security.pep.MessageModel;
@@ -3267,7 +3290,11 @@
 				INFOPLIST_FILE = MessageModel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = security.pep.MessageModel;
@@ -3283,7 +3310,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				INFOPLIST_FILE = MessageModelTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.MessageModelTests";
@@ -3300,7 +3331,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				INFOPLIST_FILE = MessageModelTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.MessageModelTests";
@@ -3326,7 +3361,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = MessageModelTestApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = security.MessageModelTestApp;
@@ -3351,7 +3389,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = MessageModelTestApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = security.MessageModelTestApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
