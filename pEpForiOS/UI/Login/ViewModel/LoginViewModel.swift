@@ -308,6 +308,12 @@ extension LoginViewModel: VerifiableAccountDelegate {
                         Log.shared.errorAndCrash("Lost MySelf")
                         return
                     }
+                    guard success else {
+                        /// For more information, please read https://pep.foundation/jira/browse/IOS-2401
+                        let error = ImapSyncOperationError.badResponse(#function)
+                        me.informAccountVerificationResultDelegate(error: error)
+                        return
+                    }
                     me.informAccountVerificationResultDelegate(error: nil)
                 }
             } catch {
