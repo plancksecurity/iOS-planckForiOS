@@ -270,10 +270,10 @@
 "Exp. date:" = "Exp. fecha:";
 
 /* Settings: Cell (button) title to view Extra Keys setting */
-"Extra Keys" = "Claves Extra";
+"Extra Keys" = "Claves Adicionales";
 
 /* Extra Keys Editable */
-"Extra Keys Editable" = "Claves Extra Editable";
+"Extra Keys Editable" = "Claves Adicionales Editable";
 
 /* 'Filter by' in formatted string, followed by the localized filter name */
 "Filter by: %@" = "Filtrado por: %@";
@@ -509,7 +509,7 @@
 
 /* privacyStatusDescription no_color
    privacyStatusTitle no_color */
-"None" = "Test_LexiaPark_2";
+"None" = "Ninguna";
 
 /* keySyncWizard error view NotNow button title */
 "Not now" = "Ahora no";
@@ -764,7 +764,7 @@
 "Settings" = "Configuración";
 
 /* Enter passphrase alert - Negative button text - shown while pEp sync is running */
-"Shutdown p≡p Sync" = "Shutdown p≡p Sync";
+"Shutdown p≡p Sync" = "Apagado p≡p Sync";
 
 /* Login */
 "Sign In" = "Iniciar Sesión";
