@@ -98,6 +98,14 @@ final class EmailListViewController: BaseViewController, SwipeTableViewCellDeleg
         updateFilterText()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        tableView.visibleCells.forEach {
+            if let cell = $0 as? SwipeTableViewCell {
+                cell.hideSwipe(animated: true)
+            }
+        }
+    }
 
     deinit {
         unsubscribeAll()

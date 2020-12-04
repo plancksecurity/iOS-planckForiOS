@@ -8,7 +8,7 @@
 
 import pEpIOSToolbox
 
-// MARK: - UIUtils+ActivityIndecator
+// MARK: - UIUtils+ActivityIndicator
 
 extension UIUtils {
 
@@ -27,7 +27,8 @@ extension UIUtils {
                            attribute: .centerX,
                            relatedBy: .equal,
                            toItem: view,
-                           attribute: .centerX, multiplier: 1,
+                           attribute: .centerX,
+                           multiplier: 1,
                            constant: 0).isActive = true
         NSLayoutConstraint(item: activityIndicator,
                            attribute: .centerY,

@@ -85,8 +85,7 @@ extension UIUtils {
                 cancelCallback()
                 return
             }
-            showAlertWithTextfield(identifier: .passphraseAlert,
-                                   title: title,
+            showAlertWithTextfield(title: title,
                                    message: message,
                                    placeholder: placeholder,
                                    positiveButtonText: positiveButtonText,
@@ -100,14 +99,7 @@ extension UIUtils {
     /// Whether or not a passphrase related alert is currently shown.
     /// - note: Must be called on the main queue!
     static private var isCurrentlyShowingPassphraseInputAlert: Bool {
-        var result = false
-        let topVC = UIApplication.currentlyVisibleViewController()
-        if let shownIdentifiableAlertController = topVC as? IdentifiableAlertController {
-            if shownIdentifiableAlertController.identifier == .passphraseAlert {
-                result = true
-            }
-        }
-        return result
+        return UIApplication.currentlyVisibleViewController() is UIAlertController
     }
 }
 
@@ -132,8 +124,7 @@ extension UIUtils {
                 Log.shared.errorAndCrash("Something went wrong - It should not happen")
             }
         }
-        showAlertWithTextfield(identifier: .passphraseAlert,
-                               title: title,
+        showAlertWithTextfield(title: title,
                                message: message,
                                placeholder: placeholder,
                                callback: task,
@@ -173,8 +164,7 @@ extension UIUtils {
         let title = NSLocalizedString("Passphrase too long", comment: "Passphrase too long - title")
         let message = NSLocalizedString("Please enter one shorter", comment: "Please enter one shorter - message")
         let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
-        showAlertWithTextfield(identifier: .passphraseAlert,
-                               title: title,
+        showAlertWithTextfield(title: title,
                                message: message,
                                placeholder: placeholder,
                                callback: handleInputBlock,
