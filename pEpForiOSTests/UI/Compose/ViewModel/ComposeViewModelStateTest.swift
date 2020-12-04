@@ -189,17 +189,22 @@ class ComposeViewModelStateTest: AccountDrivenTestBase {
                          expectedNewProtection: expectedNewProtection)
         let initData = ComposeViewModel.InitData(composeMode: .normal)
         if ignoreDelegateCallsWhileInitializing {
-            testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
+            testee = ComposeViewModel.ComposeViewModelState(initData: initData,
+                                                            delegate: nil,
+                                                            isBackedByDraftMessage: false)
             testee?.delegate = testDelegate
         } else {
             testee = ComposeViewModel.ComposeViewModelState(initData: initData,
-                                                            delegate: testDelegate)
+                                                            delegate: testDelegate,
+                                                            isBackedByDraftMessage: false)
         }
     }
 
     private func setupSimpleTestee() {
         let initData = ComposeViewModel.InitData()
-        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
+        testee = ComposeViewModel.ComposeViewModelState(initData: initData,
+                                                        delegate: nil,
+                                                        isBackedByDraftMessage: false)
     }
 
     class TestDelegate: ComposeViewModelStateDelegate {
