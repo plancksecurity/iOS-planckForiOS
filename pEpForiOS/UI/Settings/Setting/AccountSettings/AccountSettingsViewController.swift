@@ -58,6 +58,10 @@ final class AccountSettingsViewController: UIViewController {
                 Log.shared.errorAndCrash("No VM")
                 return
             }
+
+            /// MB:- Test
+            let vm2 = EditableAccountSettingsViewModel2(account: account, editableAccountSettingsDelegate: editableAccountSettingsViewController)
+
             editableAccountSettingsViewController.viewModel = EditableAccountSettingsViewModel(account: account, editableAccountSettingsDelegate: self)
         case let signatureEditor as EditSignatureViewController:
             guard let account = viewModel?.account else {

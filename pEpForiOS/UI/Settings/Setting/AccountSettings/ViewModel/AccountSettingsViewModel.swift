@@ -246,12 +246,14 @@ extension AccountSettingsViewModel {
 
 extension AccountSettingsViewModel {
 
-    private struct CellsIdentifiers {
+    //MB: - To the helper.
+    public struct CellsIdentifiers {
         static let oAuthCell = "oAuthTableViewCell"
         static let displayCell = "KeyValueTableViewCell"
         static let switchCell = "SwitchTableViewCell"
         static let dangerousCell = "DangerousTableViewCell"
         static let settingsCell = "settingsCell"
+        static let settingsDisplayCell = "settingsDisplayCell"
     }
 
     private enum AccountSettingsError: Error, LocalizedError {

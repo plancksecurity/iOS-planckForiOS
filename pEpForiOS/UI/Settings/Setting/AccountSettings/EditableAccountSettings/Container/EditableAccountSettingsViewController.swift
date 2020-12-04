@@ -90,3 +90,23 @@ extension EditableAccountSettingsViewController: EditableAccountSettingsViewMode
         navigationController?.popViewController(animated: true)
     }
 }
+
+
+// MB:- Version 2
+extension EditableAccountSettingsViewController: EditableAccountSettingsDelegate2 {
+    func setLoadingView(visible: Bool) {
+        if visible {
+            LoadingInterface.showLoadingInterface()
+        } else {
+            LoadingInterface.removeLoadingInterface()
+        }
+    }
+
+    func showAlert(error: Error) {
+        UIUtils.show(error: error)
+    }
+
+    func dismissYourself() {
+        dismiss(animated: true)
+    }
+}

@@ -128,7 +128,6 @@
 		155475642137FD96005A52D0 /* FolderType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155475632137FD96005A52D0 /* FolderType+Extensions.swift */; };
 		155F2D9E20530798001B4B1C /* Reusable.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 155F2DA020530798001B4B1C /* Reusable.storyboard */; };
 		15679F0D2292F4090051DCC3 /* FilterViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15679F0C2292F4090051DCC3 /* FilterViewDelegate.swift */; };
-		1568FEA11FACDCC600993EA3 /* IOS-211_hi_there.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1568FEA01FACDCC500993EA3 /* IOS-211_hi_there.txt */; };
 		1574D078211356E000FEDC93 /* UrlClickHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D077211356E000FEDC93 /* UrlClickHandlerProtocol.swift */; };
 		1574D07A211464CC00FEDC93 /* URL+MailTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D079211464CC00FEDC93 /* URL+MailTo.swift */; };
 		1574D07D2114696B00FEDC93 /* URL+MailToTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D07C2114696B00FEDC93 /* URL+MailToTest.swift */; };
@@ -378,6 +377,8 @@
 		5BE35A9A249139DD00AC605C /* AccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */; };
 		5BE35AA424913B4700AC605C /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35AA324913B4700AC605C /* SettingsViewModel.swift */; };
 		5BEAECB525370C3E0082AAC6 /* String+Mailto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEAECB425370C3E0082AAC6 /* String+Mailto.swift */; };
+		5BF39DA4257A71AC00A00A96 /* EditableAccountSettingsViewModel2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF39DA2257A71AC00A00A96 /* EditableAccountSettingsViewModel2.swift */; };
+		5BF39DA8257A737A00A00A96 /* AccountSettingsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF39DA7257A737A00A00A96 /* AccountSettingsHelper.swift */; };
 		5BF449F4240827F500B23E50 /* TutorialStep0ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF449F3240827F500B23E50 /* TutorialStep0ViewController.swift */; };
 		5BF505FE253EFBA50051FBD3 /* MailtoTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD917E1252DD64D0092B30F /* MailtoTest.swift */; };
 		5BF9B3D723FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF9B3D623FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift */; };
@@ -590,7 +591,6 @@
 		155475632137FD96005A52D0 /* FolderType+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FolderType+Extensions.swift"; sourceTree = "<group>"; };
 		155F2D9F20530798001B4B1C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Reusable.storyboard; sourceTree = "<group>"; };
 		15679F0C2292F4090051DCC3 /* FilterViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterViewDelegate.swift; path = Filter/ViewModel/FilterViewDelegate.swift; sourceTree = "<group>"; };
-		1568FEA01FACDCC500993EA3 /* IOS-211_hi_there.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211_hi_there.txt"; sourceTree = "<group>"; };
 		1574D077211356E000FEDC93 /* UrlClickHandlerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlClickHandlerProtocol.swift; sourceTree = "<group>"; };
 		1574D079211464CC00FEDC93 /* URL+MailTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MailTo.swift"; sourceTree = "<group>"; };
 		1574D07C2114696B00FEDC93 /* URL+MailToTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MailToTest.swift"; sourceTree = "<group>"; };
@@ -971,6 +971,8 @@
 		5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewController.swift; sourceTree = "<group>"; };
 		5BE35AA324913B4700AC605C /* SettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		5BEAECB425370C3E0082AAC6 /* String+Mailto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Mailto.swift"; sourceTree = "<group>"; };
+		5BF39DA2257A71AC00A00A96 /* EditableAccountSettingsViewModel2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModel2.swift; sourceTree = "<group>"; };
+		5BF39DA7257A737A00A00A96 /* AccountSettingsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsHelper.swift; sourceTree = "<group>"; };
 		5BF449F3240827F500B23E50 /* TutorialStep0ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep0ViewController.swift; sourceTree = "<group>"; };
 		5BF9B3D623FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementResetTableViewCell.swift; sourceTree = "<group>"; };
 		8B69E3981E30F80E0022959E /* Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
@@ -1727,6 +1729,8 @@
 		37156E42234CD43600845A28 /* EditableAccountSettings */ = {
 			isa = PBXGroup;
 			children = (
+				5BF39DA2257A71AC00A00A96 /* EditableAccountSettingsViewModel2.swift */,
+				5BF39DA7257A737A00A00A96 /* AccountSettingsHelper.swift */,
 				37156E49234CDD5700845A28 /* Container */,
 				37156E4A234CDDB700845A28 /* TableView */,
 			);
@@ -3142,8 +3146,10 @@
 				15FE1F761FE122D900CC2D97 /* CreditsViewController.swift in Sources */,
 				152A39942190587200D9F8E4 /* TextViewInTableViewScrollUtil.swift in Sources */,
 				1521B791241BDCD9000EAE57 /* UIUtils+Alerts.swift in Sources */,
+				5BF39DA8257A737A00A00A96 /* AccountSettingsHelper.swift in Sources */,
 				1579348F246D499600E2D8D2 /* PGPKeyImportSettingViewModel.swift in Sources */,
 				43F9D99A1E92725700F78A1C /* AttachmentsViewHelper.swift in Sources */,
+				5BF39DA4257A71AC00A00A96 /* EditableAccountSettingsViewModel2.swift in Sources */,
 				43B10C801EC2EE7F003E849F /* CppDummy.cpp in Sources */,
 				5BF9B3D723FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift in Sources */,
 				37156E46234CD49F00845A28 /* EditableAccountSettingsViewModel.swift in Sources */,
@@ -3764,15 +3770,6 @@
 			buildConfigurations = (
 				43980E521CBD0BCA00A7FC3C /* Debug */,
 				43980E531CBD0BCA00A7FC3C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		43980E541CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "pEpForiOSUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				43980E551CBD0BCA00A7FC3C /* Debug */,
-				43980E561CBD0BCA00A7FC3C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
