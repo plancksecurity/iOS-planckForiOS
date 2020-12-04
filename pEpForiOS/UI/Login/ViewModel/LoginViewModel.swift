@@ -309,6 +309,7 @@ extension LoginViewModel: VerifiableAccountDelegate {
                         return
                     }
                     guard success else {
+                        /// We have to consider the success flag.
                         /// For more information, please read https://pep.foundation/jira/browse/IOS-2401
                         let error = ImapSyncOperationError.badResponse(#function)
                         me.informAccountVerificationResultDelegate(error: error)
