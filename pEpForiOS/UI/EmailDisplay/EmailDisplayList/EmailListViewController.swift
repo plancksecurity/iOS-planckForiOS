@@ -1448,11 +1448,7 @@ extension EmailListViewController {
                 return
         }
         composeVc.viewModel = composeVM
-
-        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.errorAndCrash("No VC")
-            return
-        }
+        let presenterVc = UIApplication.currentlyVisibleViewController()
         presenterVc.present(composeNavigationController, animated: true)
     }
 }

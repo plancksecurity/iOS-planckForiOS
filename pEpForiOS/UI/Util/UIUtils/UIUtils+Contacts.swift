@@ -27,10 +27,7 @@ extension UIUtils {
         }
         contactVc.emailAddress = contact.address
         let navigationController = UINavigationController(rootViewController: contactVc)
-        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.errorAndCrash("No VC")
-            return
-        }
+        let presenterVc = UIApplication.currentlyVisibleViewController()
         presenterVc.present(navigationController, animated: true, completion: nil)
     }
 

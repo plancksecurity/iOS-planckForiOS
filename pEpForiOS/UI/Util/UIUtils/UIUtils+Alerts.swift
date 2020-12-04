@@ -118,10 +118,7 @@ extension UIUtils {
     /// Present the pep alert if possible.
     /// - Parameter alertController: The controller to present.
     private static func show(_ alertController: PEPAlertViewController) {
-        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.errorAndCrash("No VC")
-            return
-        }
+        let presenterVc = UIApplication.currentlyVisibleViewController()
         func shouldPresent() -> Bool {
             if let presenter = presenterVc as? PEPAlertViewController {
                 if presenter.style == .warn && alertController.style == .warn {
@@ -138,10 +135,7 @@ extension UIUtils {
     }
     
     private static func present(_ alertController: UIAlertController) {
-        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.errorAndCrash("No VC")
-            return
-        }
+        let presenterVc = UIApplication.currentlyVisibleViewController()
         guard !UIApplication.isCurrentlyShowingAlert else {
             /// Valid case: there is an alert already shown
             return

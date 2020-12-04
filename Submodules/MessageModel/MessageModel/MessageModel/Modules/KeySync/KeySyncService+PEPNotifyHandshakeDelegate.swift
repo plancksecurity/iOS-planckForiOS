@@ -51,7 +51,7 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
 
         case .timeout:
             fastPollingDelegate?.disableFastPolling()
-            showHandShakeErrorAndHandleResult(error: KeySyncError.timeOut)
+            showHandshakeErrorAndHandleResult(error: KeySyncError.timeOut)
 
         case .acceptedDeviceAdded, .acceptedGroupCreated, .acceptedDeviceAccepted:
             fastPollingDelegate?.disableFastPolling()
@@ -136,7 +136,7 @@ extension KeySyncService {
         }
     }
 
-    private func showHandShakeErrorAndHandleResult(error: Error) {
+    private func showHandshakeErrorAndHandleResult(error: Error) {
         handshakeHandler?.showError(error: error) {
             [weak self] keySyncErrorResponse in
             switch keySyncErrorResponse {

@@ -72,17 +72,16 @@ extension UIUtils {
                                                  negativeButtonText: String? = nil,
                                                  negativeButtonStyle: UIAlertAction.Style = .cancel,
                                                  completion: ((String?)->Void)?) {
-        let callback: (String) -> Void = { input in
+        let callback:(String)->Void = { input in
             completion?(input)
         }
-        let cancelCallback: () -> Void = {
+        let cancelCallback:()->Void = {
             completion?(nil)
         }
         DispatchQueue.main.async {
-            guard !UIApplication.isCurrentlyShowingAlert else {
-                /// Valid case: there is an alert already shown
-                /// Do not display onother one on top of it.
-                /// Do nothing instead ...
+            guard !isCurrentlyShowingPassphraseInputAlert else {
+                // A passphrase alert is already shown. Do not display onother one on top of it.
+                // Do nothing instead ...
                 cancelCallback()
                 return
             }
@@ -95,6 +94,12 @@ extension UIUtils {
                                    callback: callback,
                                    cancelCallback: cancelCallback)
         }
+    }
+
+    /// Whether or not a passphrase related alert is currently shown.
+    /// - note: Must be called on the main queue!
+    static private var isCurrentlyShowingPassphraseInputAlert: Bool {
+        return UIApplication.currentlyVisibleViewController() is UIAlertController
     }
 }
 
@@ -155,7 +160,7 @@ extension UIUtils {
     ///   - handleInputBlock: called when the user typed in a new password, passing the PW as `input` param.
     ///   - cancelBlock: The callback to be executed when the user cancels the action
     private static func showTooLongForNewKeysAlertView(withInputHandler handleInputBlock: @escaping(_ input: String) -> (),
-                                                       cancelBlock: (() -> Void)? = nil) {
+                                                          cancelBlock: (() -> Void)? = nil) {
         let title = NSLocalizedString("Passphrase too long", comment: "Passphrase too long - title")
         let message = NSLocalizedString("Please enter one shorter", comment: "Please enter one shorter - message")
         let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")

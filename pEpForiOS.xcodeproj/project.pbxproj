@@ -177,7 +177,6 @@
 		220DCE371E0AB5CC002FE716 /* MessageSubjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE331E0AB5CC002FE716 /* MessageSubjectCell.swift */; };
 		222B35581DF96389007A1F82 /* Capability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35571DF96389007A1F82 /* Capability.swift */; };
 		228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */; };
-		37033E9B231AD8FE008DD6F0 /* KeySyncErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37033E9A231AD8FE008DD6F0 /* KeySyncErrorView.swift */; };
 		3705095D22CF4AC900CB73D6 /* KeySyncHandshakeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705095C22CF4AC900CB73D6 /* KeySyncHandshakeViewModelTest.swift */; };
 		3705096622CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705096522CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift */; };
 		3705096822CF6AD100CB73D6 /* KeySyncHandshakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705096722CF6AD100CB73D6 /* KeySyncHandshakeViewController.swift */; };
@@ -351,6 +350,7 @@
 		5B3C13BF23D8AF2E00FC0A53 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */; };
 		5B41C6082418F15100C268CE /* TutorialStep3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41C6072418F15100C268CE /* TutorialStep3ViewController.swift */; };
 		5B4A718A252CC4A500436FCF /* Mailto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A7189252CC4A500436FCF /* Mailto.swift */; };
+		5BA946232542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA946222542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift */; };
 		5B70B1F724507B8A0010AED7 /* pEpFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */; };
 		5B71016E243619CF00BAE405 /* TrustedServerSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B71016D243619CF00BAE405 /* TrustedServerSettingsViewController.swift */; };
 		5B74C00D249B7EA300802704 /* FolderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B74C00C249B7EA300802704 /* FolderTableViewCell.swift */; };
@@ -690,7 +690,6 @@
 		220DCE331E0AB5CC002FE716 /* MessageSubjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSubjectCell.swift; sourceTree = "<group>"; };
 		222B35571DF96389007A1F82 /* Capability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Capability.swift; sourceTree = "<group>"; };
 		228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextfieldResponder.swift; sourceTree = "<group>"; };
-		37033E9A231AD8FE008DD6F0 /* KeySyncErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncErrorView.swift; sourceTree = "<group>"; };
 		3705095C22CF4AC900CB73D6 /* KeySyncHandshakeViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncHandshakeViewModelTest.swift; sourceTree = "<group>"; };
 		3705096522CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncHandshakeViewModel.swift; sourceTree = "<group>"; };
 		3705096722CF6AD100CB73D6 /* KeySyncHandshakeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncHandshakeViewController.swift; sourceTree = "<group>"; };
@@ -944,6 +943,7 @@
 		5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		5B41C6072418F15100C268CE /* TutorialStep3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep3ViewController.swift; sourceTree = "<group>"; };
 		5B4A7189252CC4A500436FCF /* Mailto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mailto.swift; sourceTree = "<group>"; };
+		5BA946222542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPAlertViewController+KeySyncError.swift"; sourceTree = "<group>"; };
 		5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpFooterView.swift; sourceTree = "<group>"; };
 		5B71016D243619CF00BAE405 /* TrustedServerSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustedServerSettingsViewController.swift; sourceTree = "<group>"; };
 		5B74C00C249B7EA300802704 /* FolderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FolderTableViewCell.swift; path = Folder/FolderTableViewCell.swift; sourceTree = "<group>"; };
@@ -1088,7 +1088,7 @@
 		15033C7223473CD20060A1A2 /* KeySync */ = {
 			isa = PBXGroup;
 			children = (
-				3781653A230EC51100B967E3 /* KeySyncWizzard */,
+				3781653A230EC51100B967E3 /* KeySyncWizard */,
 				3705096422CF686C00CB73D6 /* KeySyncHandshake */,
 				37033E99231AD8D7008DD6F0 /* KeySyncErrorView */,
 			);
@@ -1702,7 +1702,7 @@
 		37033E99231AD8D7008DD6F0 /* KeySyncErrorView */ = {
 			isa = PBXGroup;
 			children = (
-				37033E9A231AD8FE008DD6F0 /* KeySyncErrorView.swift */,
+				5BA946222542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift */,
 			);
 			path = KeySyncErrorView;
 			sourceTree = "<group>";
@@ -1792,13 +1792,13 @@
 			path = TutorialWizard;
 			sourceTree = "<group>";
 		};
-		3781653A230EC51100B967E3 /* KeySyncWizzard */ = {
+		3781653A230EC51100B967E3 /* KeySyncWizard */ = {
 			isa = PBXGroup;
 			children = (
 				15146C8B237F006F00D69495 /* KeySyncWizardViewController.swift */,
 				1521B78E241BDC27000EAE57 /* UIUtils+KeySyncWizard.swift */,
 			);
-			path = KeySyncWizzard;
+			path = KeySyncWizard;
 			sourceTree = "<group>";
 		};
 		37816540230EC66F00B967E3 /* PEPAlert */ = {
@@ -2929,7 +2929,6 @@
 				4334CF302020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift in Sources */,
 				B745049B24ED6C8300293B8C /* SignatureTableViewCell.swift in Sources */,
 				371D641D231D17390036AE62 /* StartUpTutorial.swift in Sources */,
-				37033E9B231AD8FE008DD6F0 /* KeySyncErrorView.swift in Sources */,
 				00A12CAE20D3D9AC00B82BE3 /* FullMessageCell.swift in Sources */,
 				43A9818E24E53CF800830603 /* Color+UI.swift in Sources */,
 				006BE6BC20F4B63C00DDE8C9 /* EmailDetailType.swift in Sources */,
@@ -3111,6 +3110,7 @@
 				15F136F624B62A4900A7F810 /* UserInputProvider+PassphraseProviderProtocol.swift in Sources */,
 				152A39DD21905C3E00D9F8E4 /* AccountCell.swift in Sources */,
 				152295572302F7E200204FD3 /* ExtraKeysSettingViewModel.swift in Sources */,
+				5BA946232542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift in Sources */,
 				B7DB7FDC221ADDBD003968DA /* UIImageView+Extension.swift in Sources */,
 				5BB7C74724D85A3B00D5F328 /* PEPWebviewController.swift in Sources */,
 				43306EC21FE129840045DD00 /* OAuth2Type.swift in Sources */,
