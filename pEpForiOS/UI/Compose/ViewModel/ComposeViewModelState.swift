@@ -181,7 +181,8 @@ extension ComposeViewModel {
         /// Delete the drafts backup message, if it was created
         public func deleteDraftMessage() {
             if let theDraftMessage = draftMessage {
-                theDraftMessage.imapMarkDeleted()
+                let theDraft = Message.makeSafe(theDraftMessage, forSession: Session.main)
+                theDraft.imapMarkDeleted()
             }
         }
 
