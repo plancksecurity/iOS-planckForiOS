@@ -70,6 +70,34 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B7911EB321F7358500D7F66F"
+               BuildableName = "pEpIOSToolbox.framework"
+               BlueprintName = "pEpIOSToolbox"
+               ReferencedContainer = "container:subModules/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "3AE6870024FFA5ED00B416ED"
+               BuildableName = "pEp4iosIntern.framework"
+               BlueprintName = "pEp4iosIntern"
+               ReferencedContainer = "container:../pEp_for_iOS_intern/pEp4iosIntern/pEp4iosIntern.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "64796A3E1B455AA5004B1C24"
                BuildableName = "libpEpEngine.a"
                BlueprintName = "pEpEngine"
@@ -116,34 +144,6 @@
                BuildableName = "libAccountSettingsAdapter.a"
                BlueprintName = "AccountSettingsAdapter"
                ReferencedContainer = "container:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3AE6870024FFA5ED00B416ED"
-               BuildableName = "pEp4iosIntern.framework"
-               BlueprintName = "pEp4iosIntern"
-               ReferencedContainer = "container:../pEp_for_iOS_intern/pEp4iosIntern/pEp4iosIntern.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B7911EB321F7358500D7F66F"
-               BuildableName = "pEpIOSToolbox.framework"
-               BlueprintName = "pEpIOSToolbox"
-               ReferencedContainer = "container:subModules/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
