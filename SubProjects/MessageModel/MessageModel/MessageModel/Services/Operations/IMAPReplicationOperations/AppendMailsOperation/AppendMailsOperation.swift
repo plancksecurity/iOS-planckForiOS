@@ -8,7 +8,8 @@
 
 import CoreData
 
-import PEPObjCAdapterFramework
+import PEPObjCAdapterTypes_iOS
+import PEPObjCAdapter_iOS
 import pEpIOSToolbox
 
 /// IMAP Appends all mails that need append for one account.
