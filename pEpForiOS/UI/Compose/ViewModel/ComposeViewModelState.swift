@@ -227,6 +227,11 @@ extension ComposeViewModel {
 
         /// Saves the save message.
         private func draftMessageSave() {
+            // Ignore the auto-save if not explicitly configured
+            guard isBackedByDraftMessage else {
+                return
+            }
+
             guard let account = draftMessageAccount() else {
                 Log.shared.errorAndCrash("No account for saving a draft message")
                 return
