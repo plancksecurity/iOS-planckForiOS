@@ -188,6 +188,9 @@ class ComposeViewModel {
             msg.sent = Date()
             msg.session.commit()
 
+            // Delete the backup message
+            me.state.deleteDraftMessage()
+
             guard let data = me.state.initData else {
                 Log.shared.errorAndCrash("No data")
                 return
