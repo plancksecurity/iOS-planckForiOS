@@ -88,10 +88,17 @@ final class EditableAccountSettingsViewModel2 {
     }
 
     public func handleRowDidChange(at indexPath: IndexPath, value: String) {
-        guard let row = sections[indexPath.section].rows[indexPath.row] as? AccountSettingsViewModel.DisplayRow else {
+        let rows = sections[indexPath.section].rows
+        guard let row = rows[indexPath.row]
+                as? AccountSettingsViewModel.DisplayRow else {
             Log.shared.errorAndCrash("Can't cast row")
             return
         }
+        let rowToReplace = AccountSettingsViewModel.DisplayRow(type: row.type,
+                                                               title: row.title,
+                                                               text: value,
+                                                               cellIdentifier: row.cellIdentifier)
+        sections[indexPath.section].rows[indexPath.row] = rowToReplace
     }
 
     private func isInputValid() -> Bool {
