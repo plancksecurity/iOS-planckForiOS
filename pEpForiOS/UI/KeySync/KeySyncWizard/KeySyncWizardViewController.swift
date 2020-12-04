@@ -57,7 +57,7 @@ final class KeySyncWizardViewController: PEPPageViewControllerBase {
                                isNewGroup: Bool,
                                completion: @escaping (Action) -> Void) -> KeySyncWizardViewController? {
         guard let createe = fromStoryboard() else {
-            Log.shared.errorAndCrash("Missing wizzard")
+            Log.shared.errorAndCrash("Missing wizard")
             return nil
         }
         createe.setup(pageCompletion: completion,
@@ -66,7 +66,6 @@ final class KeySyncWizardViewController: PEPPageViewControllerBase {
                       isNewGroup: isNewGroup)
         createe.modalTransitionStyle = .crossDissolve
         createe.modalPresentationStyle = .overFullScreen
-
         return createe
     }
 }
@@ -78,18 +77,17 @@ extension KeySyncWizardViewController {
     static private func fromStoryboard() -> KeySyncWizardViewController? {
         let storyboard = UIStoryboard(name: Constants.keySyncWizardStoryboard, bundle: .main)
         guard
-            let wizzardVC = storyboard.instantiateViewController(
+            let wizardVC = storyboard.instantiateViewController(
                 withIdentifier: storyboardId) as? KeySyncWizardViewController else {
                     Log.shared.errorAndCrash("Fail to instantiateViewController PEPAlertViewController")
                     return nil
         }
-        wizzardVC.isScrollEnable = false
-        wizzardVC.pageControlTint = nil
-        wizzardVC.pageControlPageIndicatorColor = nil
-        wizzardVC.showDots = false
-        wizzardVC.pageControlBackgroundColor = nil
-
-        return wizzardVC
+        wizardVC.isScrollEnable = false
+        wizardVC.pageControlTint = nil
+        wizardVC.pageControlPageIndicatorColor = nil
+        wizardVC.showDots = false
+        wizardVC.pageControlBackgroundColor = nil
+        return wizardVC
     }
 
     private func setup(pageCompletion: @escaping (Action) -> Void,
