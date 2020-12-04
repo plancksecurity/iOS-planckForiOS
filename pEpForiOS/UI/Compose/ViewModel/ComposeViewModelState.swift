@@ -178,6 +178,13 @@ extension ComposeViewModel {
             validateForSending()
         }
 
+        /// Delete the drafts backup message, if it was created
+        public func deleteDraftMessage() {
+            if let theDraftMessage = draftMessage {
+                theDraftMessage.imapMarkDeleted()
+            }
+        }
+
         private func setup() {
             guard let initData = initData else {
                 Log.shared.errorAndCrash("No data")
