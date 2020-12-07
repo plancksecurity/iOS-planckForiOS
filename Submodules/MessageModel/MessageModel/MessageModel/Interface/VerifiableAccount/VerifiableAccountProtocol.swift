@@ -14,6 +14,7 @@ import PantomimeFramework
 /// when input data is incomplete or inconsistent.
 public enum VerifiableAccountValidationError: Error {
     case invalidUserData
+    case unknown
 }
 
 extension VerifiableAccountValidationError: LocalizedError {
@@ -22,6 +23,9 @@ extension VerifiableAccountValidationError: LocalizedError {
         case .invalidUserData:
             return NSLocalizedString("Some fields seems not to be valid. Please check all input fields.",
                                      comment: "Error description when failing to validate account fields")
+        case .unknown:
+            return NSLocalizedString("Oops. Something went wrong.",
+                                     comment: "Error description when failing for an unknown reason")
         }
     }
 }
@@ -133,7 +137,10 @@ public protocol VerifiableAccountProtocol {
     /// On success calls `completion` with `true`, otherwise calls it with `false`.
     /// - Note: Throws for missing data (i.e., all cases when `verify()` would throw).
     /// - Throws: VerifiableAccountValidationError
-    func save(completion: ((Success)->())? ) throws
+//    func save(completion: ((Success)->())? ) throws
+
+    //MB:-
+    func save(completion: @escaping ((Result<Void, Error>) -> ()))
 
     // MARK: - VerifiableAccountProtocol (UI support)
 

@@ -122,38 +122,43 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         try startSmtpVerification()
     }
 
-    public func save(completion: ((Success)->())? = nil) throws {
-        guard let (moc, cdAccount, _, _) = try createAccount() else {
-            Log.shared.errorAndCrash("Could not create the account")
-            return
-        }
-
-        moc.performAndWait { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+    /// Saves the account if possible.
+    /// - Parameter completion: The completion block to be executed.
+    public func save(completion: @escaping ((Result<Void, Error>) -> ())) {
+        do {
+            guard let (moc, cdAccount, _, _) = try createAccount() else {
+                completion(.failure(VerifiableAccountValidationError.invalidUserData))
                 return
             }
-            let alsoCreatePEPFolder = me.keySyncEnable && (me.usePEPFolderProvider?.usePepFolder ?? false)
-            me.prepareAccountForSavingService.prepareAccount(cdAccount: cdAccount,
-                                                      pEpSyncEnable: me.keySyncEnable,
-                                                      alsoCreatePEPFolder: alsoCreatePEPFolder,
-                                                      context: moc) { success in
-                DispatchQueue.main.async {
-                    if success {
-                        // The account has been successfully verified and prepared. We are gonna
-                        // save it.
-                        moc.performAndWait {
-                            moc.saveAndLogErrors()
+            moc.performAndWait { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost MySelf")
+                    return
+                }
+                let alsoCreatePEPFolder = me.keySyncEnable && (me.usePEPFolderProvider?.usePepFolder ?? false)
+                me.prepareAccountForSavingService.prepareAccount(cdAccount: cdAccount,
+                                                          pEpSyncEnable: me.keySyncEnable,
+                                                          alsoCreatePEPFolder: alsoCreatePEPFolder,
+                                                          context: moc) { success in
+                    DispatchQueue.main.async {
+                        if success {
+                            // The account has been successfully verified and prepared.
+                            // We are gonna save it.
+                            moc.performAndWait {
+                                moc.saveAndLogErrors()
+                            }
+                            completion(.success(()))
+                        } else {
+                            moc.performAndWait {
+                                moc.rollback()
+                            }
+                            completion(.failure(VerifiableAccountValidationError.unknown))
                         }
-                        completion?(true)
-                    } else {
-                        moc.performAndWait {
-                            moc.rollback()
-                        }
-                        completion?(false)
                     }
                 }
             }
+        } catch {
+            completion(.failure(VerifiableAccountValidationError.unknown))
         }
     }
 

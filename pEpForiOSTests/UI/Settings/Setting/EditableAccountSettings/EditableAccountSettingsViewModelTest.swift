@@ -183,9 +183,14 @@ extension EditableAccountSettingsViewModelTest {
         weak var delegate: VerifiableAccountMockDelegate?
 
         override func save(completion: ((Success) -> ())? = nil) throws {
-            try super.save { [weak self] success in
+//            try super.save { [weak self] success in
+//                self?.delegate?.didSaveVerifiableAccount()
+//                completion?(success)
+//            }
+//
+            super.save { [weak self] (result) in
                 self?.delegate?.didSaveVerifiableAccount()
-                completion?(success)
+//                completion(.success())
             }
         }
     }
