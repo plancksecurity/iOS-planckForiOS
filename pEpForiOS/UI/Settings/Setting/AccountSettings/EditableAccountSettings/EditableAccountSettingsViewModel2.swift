@@ -25,7 +25,7 @@ final class EditableAccountSettingsViewModel2 {
 
     public var isOAuth2: Bool = false
     public weak var delegate: EditableAccountSettingsDelegate2?
-    public let securityViewModel = SecurityViewModel2()
+    private let securityViewModel = SecurityViewModel2()
     public private(set) var sections = [AccountSettingsViewModel.Section]()
 
     /// If there was OAUTH2 for this account, here is a current token.
@@ -194,15 +194,15 @@ extension EditableAccountSettingsViewModel2 {
         case startTls
     }
 
-    public struct SecurityViewModel2 {
-        var options = Server.Transport.toArray()
-        var size : Int {
+    private struct SecurityViewModel2 {
+        private var options = Server.Transport.toArray()
+        private var size : Int {
             get {
                 return options.count
             }
         }
 
-        subscript(option: Int) -> String {
+        private subscript(option: Int) -> String {
             get {
                 return options[option].asString()
             }
@@ -251,6 +251,3 @@ extension EditableAccountSettingsViewModel2 {
         rows.append(usernameRow)
     }
 }
-//15:12 <andreas> I think dismissYourself is understandable, ideally delegate.dismissYourself is called from a private func accountSettingsSuccessfullyVerifiedAndSaved()
-//15:12 <mbrude> dismissYourself is nice
-//15:12 <mbrude> delegate?.dismissYourself()
