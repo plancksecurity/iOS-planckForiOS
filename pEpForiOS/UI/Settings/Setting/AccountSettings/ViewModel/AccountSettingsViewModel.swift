@@ -86,7 +86,7 @@ extension AccountSettingsViewModel {
     public typealias AlertActionBlock = (() -> ())
 
     /// Identifies semantically the type of row.
-    public enum RowType : String {
+    public enum RowType : String, CaseIterable {
         case name
         case email
         case password

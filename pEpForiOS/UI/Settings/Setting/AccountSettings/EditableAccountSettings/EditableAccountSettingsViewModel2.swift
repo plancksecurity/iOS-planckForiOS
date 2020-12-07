@@ -23,7 +23,7 @@ final class EditableAccountSettingsViewModel2 {
 
     private var account: Account
 
-    public var isOAuth2: Bool = false
+    public private(set) var isOAuth2: Bool = false
     public weak var delegate: EditableAccountSettingsDelegate2?
     private let securityViewModel = SecurityViewModel2()
     public private(set) var sections = [AccountSettingsViewModel.Section]()
@@ -148,7 +148,6 @@ final class EditableAccountSettingsViewModel2 {
         return rows
     }
 }
-
 
 extension EditableAccountSettingsViewModel2: VerifiableAccountDelegate {
     public func didEndVerification(result: Result<Void, Error>) {

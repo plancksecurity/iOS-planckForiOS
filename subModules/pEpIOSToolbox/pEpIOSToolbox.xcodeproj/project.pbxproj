@@ -34,6 +34,7 @@
 		43C5C03A254C179300F6DDD3 /* NSOrderedSet+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C5C039254C179300F6DDD3 /* NSOrderedSet+Extension.swift */; };
 		43E1A866252B6A1300307A7D /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43E1A865252B6A1300307A7D /* CocoaLumberjack.framework */; };
 		43EB61A6252DA4160066B45D /* LoggerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EB61A5252DA4160066B45D /* LoggerTest.swift */; };
+		5B1EA1FD257E67E10072AA5A /* CaseIterable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EA1FC257E67E10072AA5A /* CaseIterable+Extension.swift */; };
 		5B2EDC642551954300DA18A7 /* NonPasteableUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2EDC632551954300DA18A7 /* NonPasteableUITextField.swift */; };
 		5B2EDC682551956600DA18A7 /* TextFieldWithoutCaret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2EDC672551956600DA18A7 /* TextFieldWithoutCaret.swift */; };
 		5B2F7E5F240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E5E240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift */; };
@@ -113,6 +114,7 @@
 		43C5C039254C179300F6DDD3 /* NSOrderedSet+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSOrderedSet+Extension.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/NSOrderedSet+Extension.swift"; sourceTree = "<group>"; };
 		43E1A865252B6A1300307A7D /* CocoaLumberjack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43EB61A5252DA4160066B45D /* LoggerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoggerTest.swift; path = ../../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/Other/Logging/LoggerTest.swift; sourceTree = "<group>"; };
+		5B1EA1FC257E67E10072AA5A /* CaseIterable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CaseIterable+Extension.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Other/CaseIterable+Extension.swift"; sourceTree = "<group>"; };
 		5B2EDC632551954300DA18A7 /* NonPasteableUITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonPasteableUITextField.swift; sourceTree = "<group>"; };
 		5B2EDC672551956600DA18A7 /* TextFieldWithoutCaret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TextFieldWithoutCaret.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/UIKit/TextFieldWithoutCaret.swift; sourceTree = "<group>"; };
 		5B2F7E5E240D0E8D004DDFA2 /* StringProtocol+NSRanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "StringProtocol+NSRanges.swift"; path = "../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Foundation/StringProtocol+NSRanges.swift"; sourceTree = "<group>"; };
@@ -372,6 +374,7 @@
 				3790455D223FA486006DAB3B /* Reachability */,
 				433805B22527443C006DE126 /* Logging */,
 				B75390852212E20500B1FCF9 /* Collection+Extensions.swift */,
+				5B1EA1FC257E67E10072AA5A /* CaseIterable+Extension.swift */,
 				B7465DCB2211BEE9008A1708 /* Tuple.swift */,
 				B7A46C4F220C1F0C0027CCB5 /* MiscUtil.swift */,
 				154944CE229A97AA00CC6431 /* SelfReferencingOperation.swift */,
@@ -514,6 +517,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A0CBAAB23F582B900AE200C /* UITextView+Font.swift in Sources */,
+				5B1EA1FD257E67E10072AA5A /* CaseIterable+Extension.swift in Sources */,
 				B7465DC622119EB1008A1708 /* Array+SortingAndSearching.swift in Sources */,
 				37904563223FA486006DAB3B /* Reachability.swift in Sources */,
 				B7911ECC21F8B46600D7F66F /* GCD.swift in Sources */,
