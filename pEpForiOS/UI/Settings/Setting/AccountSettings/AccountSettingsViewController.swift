@@ -49,6 +49,7 @@ final class AccountSettingsViewController: UIViewController {
     
     enum SegueIdentifier: String {
         case EditSignatureSegue
+        case EditAccountSegue
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

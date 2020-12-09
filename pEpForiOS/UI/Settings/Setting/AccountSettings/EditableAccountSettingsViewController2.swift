@@ -11,17 +11,9 @@ import pEpIOSToolbox
 
 class EditableAccountSettingsViewController2: UIViewController {
 
-
-    override var collapsedBehavior: CollapsedSplitViewBehavior {
-        return .needed
-    }
-
-    override var separatedBehavior: SeparatedSplitViewBehavior {
-        return .detail
-    }
-
     var viewModel : EditableAccountSettingsViewModel2?
     @IBOutlet private var tableView: UITableView!
+    private var firstResponder: UITextField?
 
     private lazy var pickerView: UIPickerView = {
         let picker = UIPickerView()
@@ -36,6 +28,9 @@ class EditableAccountSettingsViewController2: UIViewController {
         UIHelper.variableContentHeight(tableView)
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
 
     @IBAction func saveButtonTapped() {
@@ -146,6 +141,10 @@ extension EditableAccountSettingsViewController2 {
 
 extension EditableAccountSettingsViewController2: UITextFieldDelegate {
 
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        firstResponder = textField
+    }
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
@@ -191,12 +190,6 @@ extension EditableAccountSettingsViewController2: UIPickerViewDelegate {
             return nil
         }
         return vm.transportSecurityViewModel[row]
-//
-//        let title = viewModel.securityViewModelvm[row]
-//        if title == firstResponder?.text, isTransportSecurityField() {
-//            pickerView.selectRow(row, inComponent: 0, animated: true)
-//        }
-//        return title
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -204,29 +197,24 @@ extension EditableAccountSettingsViewController2: UIPickerViewDelegate {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-
-//        guard let firstResponder = firstResponder else { return }
-//        firstResponder.text = viewModel.securityViewModelvm[row]
-        view.endEditing(true)
+        firstResponder?.text = vm.transportSecurityViewModel[row]
+        dismissKeyboard()
     }
 
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
-}
 
-extension UIView {
-    func superviewOfClass<T>(ofClass: T.Type) -> T? {
-        var currentView: UIView? = self
-
-        while currentView != nil {
-            if currentView is T {
-                break
-            } else {
-                currentView = currentView?.superview
-            }
+    @objc func adjustForKeyboard(notification: Notification) {
+        guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let keyboardScreenEndFrame = keyboardValue.cgRectValue
+        let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+        if notification.name == UIResponder.keyboardWillHideNotification {
+            tableView.contentInset = .zero
+        } else {
+            let bottomPadding: CGFloat = 50.0
+            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom + bottomPadding, right: 0)
         }
-
-        return currentView as? T
+        tableView.scrollIndicatorInsets = tableView.contentInset
     }
 }
