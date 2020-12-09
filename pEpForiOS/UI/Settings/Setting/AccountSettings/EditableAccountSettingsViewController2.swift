@@ -12,6 +12,7 @@ import pEpIOSToolbox
 class EditableAccountSettingsViewController2: UIViewController {
 
     var viewModel : EditableAccountSettingsViewModel2?
+
     @IBOutlet private var tableView: UITableView!
     private var firstResponder: UITextField?
 

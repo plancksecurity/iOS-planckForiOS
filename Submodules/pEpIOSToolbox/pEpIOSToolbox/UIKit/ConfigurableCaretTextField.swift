@@ -1,5 +1,5 @@
 //
-//  TextFieldWithoutCaret.swift
+//  ConfigurableCaretTextField.swift
 //  pEpIOSToolbox
 //
 //  Created by Martín Brude on 03/11/2020.

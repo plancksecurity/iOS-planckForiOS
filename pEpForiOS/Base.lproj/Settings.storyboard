@@ -1460,12 +1460,17 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="sBH-OY-V1w">
-                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="3we-9c-6Uj"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="3we-9c-6Uj">
+                            <connections>
+                                <segue destination="tRS-Ln-kcC" kind="show" id="Qsd-tE-ckn"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="8RY-1m-iPg" id="6j5-my-u0h"/>
                         <segue destination="9xa-gb-As9" kind="showDetail" identifier="EditSignatureSegue" id="zu9-rf-a0j"/>
+                        <segue destination="tRS-Ln-kcC" kind="show" id="C9d-ZD-pgS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LS6-yP-8JC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1536,17 +1541,17 @@
         <!--Editable Account Settings View Controller2-->
         <scene sceneID="99Q-d2-hCz">
             <objects>
-                <viewController id="tRS-Ln-kcC" customClass="EditableAccountSettingsViewController2" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EditableAccountSettingsViewController2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="tRS-Ln-kcC" customClass="EditableAccountSettingsViewController2" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1DS-qt-KYw"/>
                         <viewControllerLayoutGuide type="bottom" id="mYV-15-CvV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="hQJ-xK-C6S">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Aty-hJ-7dP">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="687"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="667"/>
                                 <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="KeyValueTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="KeyValueTableViewCell" id="Lga-pZ-bg4" userLabel="Key Value Table View Cell" customClass="AccountSettingsTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
@@ -1591,6 +1596,10 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="tRS-Ln-kcC" id="gq9-ay-ajH"/>
+                                    <outlet property="delegate" destination="tRS-Ln-kcC" id="Rs7-LY-MGB"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1602,10 +1611,21 @@
                         </constraints>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="7L5-9V-aJ2"/>
+                    <navigationItem key="navigationItem" id="6Be-qy-qKC">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="pAr-Hy-tbs">
+                            <connections>
+                                <action selector="cancelButtonTapped" destination="tRS-Ln-kcC" id="GPu-XC-liM"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="Sa9-TZ-ACA">
+                            <connections>
+                                <action selector="saveButtonTapped" destination="tRS-Ln-kcC" id="lRy-w6-pjP"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="tableView" destination="Aty-hJ-7dP" id="eMv-eq-b6n"/>
+                        <outlet property="tableView" destination="Aty-hJ-7dP" id="Adq-5N-vgv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f7A-KH-fED" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1614,6 +1634,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="Qsd-tE-ckn"/>
         <segue reference="voI-Bz-LUT"/>
     </inferredMetricsTieBreakers>
     <resources>
@@ -1621,16 +1642,16 @@
             <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="groupTableViewBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="groupTableViewBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="groupTableViewBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="groupTableViewBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
