@@ -24,7 +24,6 @@ class EditableAccountSettingsViewController2: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         tableView.register(PEPHeaderView.self, forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
         tableView.hideSeperatorForEmptyCells()
         UIHelper.variableContentHeight(tableView)
@@ -32,7 +31,7 @@ class EditableAccountSettingsViewController2: UIViewController {
     }
 
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
-
+        print("Save button tapped")
     }
 
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {

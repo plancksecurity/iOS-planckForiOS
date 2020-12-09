@@ -36,6 +36,12 @@ final class EditableAccountSettingsViewModel2 {
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
 
+    /// Holding both the data of the current account in verification,
+    /// and also the implementation of the verification.
+    private var verifiableAccount: VerifiableAccountProtocol?
+
+    public weak var editableAccountSettingsDelegate: EditableAccountSettingsDelegate?
+
     /// Constructor
     /// - Parameters:
     ///   - account: The account to configure the editable account settings view model.
@@ -151,37 +157,38 @@ final class EditableAccountSettingsViewModel2 {
 
 extension EditableAccountSettingsViewModel2: VerifiableAccountDelegate {
     public func didEndVerification(result: Result<Void, Error>) {
-//        switch result {
-//        case .success(()):
-//            do {
-//                try verifiableAccount?.save { [weak self] _ in
-//                    guard let me = self else {
-//                        //Valid case: the view might be dismissed.
-//                        return
-//                    }
-//                    DispatchQueue.main.async {
-//                        me.delegate?.hideLoadingView()
-//                        me.editableAccountSettingsDelegate?.didChange()
-//                        me.delegate?.popViewController()
-//                    }
-//                }
-//            } catch {
-//                Log.shared.errorAndCrash(error: error)
-//                delegate?.hideLoadingView()
-//                delegate?.popViewController()
-//            }
-//        case .failure(let error):
-//            delegate?.hideLoadingView()
-//            if let imapError = error as? ImapSyncOperationError {
-//                delegate?.showErrorAlert(error: imapError)
-//            } else if let smtpError = error as? SmtpSendError {
-//                delegate?.showErrorAlert(error: smtpError)
-//            } else {
-//                Log.shared.errorAndCrash(error: error)
-//            }
-//        }
+        switch result {
+        case .success(()):
+            do {
+                try verifiableAccount?.save { [weak self] _ in
+                    guard let me = self else {
+                        //Valid case: the view might be dismissed.
+                        return
+                    }
+                    DispatchQueue.main.async {
+                        me.delegate?.setLoadingView(visible: false)
+                        me.editableAccountSettingsDelegate?.didChange()
+                        me.delegate?.dismissYourself()
+                    }
+                }
+            } catch {
+                Log.shared.errorAndCrash(error: error)
+                delegate?.setLoadingView(visible: false)
+                delegate?.dismissYourself()
+            }
+        case .failure(let error):
+            delegate?.setLoadingView(visible: false)
+            if let imapError = error as? ImapSyncOperationError {
+                delegate?.showAlert(error: imapError)
+            } else if let smtpError = error as? SmtpSendError {
+                delegate?.showAlert(error: smtpError)
+            } else {
+                Log.shared.errorAndCrash(error: error)
+            }
+        }
     }
 }
+
 
 // MARK: -  enums & structs
 
