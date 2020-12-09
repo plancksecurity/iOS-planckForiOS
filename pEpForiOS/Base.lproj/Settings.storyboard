@@ -1287,47 +1287,76 @@
             </objects>
             <point key="canvasLocation" x="-388" y="-391"/>
         </scene>
-        <!--Editable Account Settings View Controller-->
+        <!--Editable Account Settings View Controller2-->
         <scene sceneID="GDI-yq-B0C">
             <objects>
-                <viewController id="r1W-BL-sFX" customClass="EditableAccountSettingsViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Kto-7f-CT9"/>
-                        <viewControllerLayoutGuide type="bottom" id="0vp-az-Ica"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="i60-v8-zoo">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EC5-YV-DuZ">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="667"/>
+                <viewController id="r1W-BL-sFX" customClass="EditableAccountSettingsViewController2" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="1" id="hjh-G1-Wq3">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="KeyValueTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="KeyValueTableViewCell" id="F4F-js-zpc" userLabel="Key Value Table View Cell" customClass="AccountSettingsTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="414" height="36.333332061767578"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="F4F-js-zpc" id="UCq-d6-siN">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="36.333332061767578"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yPU-XI-39n">
+                                            <rect key="frame" x="20" y="1" width="374" height="34.333333333333336"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3YD-SJ-5mq" userLabel="Key Label">
+                                                    <rect key="frame" x="0.0" y="0.0" width="187" height="34.333333333333336"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="John Appleseed" textAlignment="natural" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0qd-D1-abG" userLabel="Value TextField">
+                                                    <rect key="frame" x="187" y="0.0" width="187" height="34.333333333333336"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="HNF-Lr-wgf"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="yPU-XI-39n" secondAttribute="bottom" constant="1" id="6PD-Hi-Nyf"/>
+                                        <constraint firstItem="yPU-XI-39n" firstAttribute="top" secondItem="UCq-d6-siN" secondAttribute="top" constant="1" id="PeF-Op-lde"/>
+                                        <constraint firstItem="yPU-XI-39n" firstAttribute="leading" secondItem="UCq-d6-siN" secondAttribute="leading" constant="20" symbolic="YES" id="oY2-Sp-Ose"/>
+                                        <constraint firstAttribute="trailing" secondItem="yPU-XI-39n" secondAttribute="trailing" constant="20" symbolic="YES" id="t1x-9Y-FcD"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
-                                    <segue destination="a1y-j3-omP" kind="embed" identifier="EditableAccountTableViewControllerEmbed" id="oMT-qb-PGX"/>
+                                    <outlet property="keyLabel" destination="3YD-SJ-5mq" id="17J-2Y-yUv"/>
+                                    <outlet property="stackView" destination="yPU-XI-39n" id="uMg-tw-lgO"/>
+                                    <outlet property="valueTextfield" destination="0qd-D1-abG" id="5Wj-ke-k8S"/>
                                 </connections>
-                            </containerView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="EC5-YV-DuZ" firstAttribute="leading" secondItem="i60-v8-zoo" secondAttribute="leading" id="54f-ka-EgW"/>
-                            <constraint firstItem="EC5-YV-DuZ" firstAttribute="top" secondItem="Kto-7f-CT9" secondAttribute="bottom" id="El9-lc-3Ov"/>
-                            <constraint firstAttribute="trailing" secondItem="EC5-YV-DuZ" secondAttribute="trailing" id="v6g-Ye-c4q"/>
-                            <constraint firstItem="0vp-az-Ica" firstAttribute="top" secondItem="EC5-YV-DuZ" secondAttribute="bottom" id="vvh-jt-8UC"/>
-                        </constraints>
-                    </view>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="r1W-BL-sFX" id="AH0-7T-y1O"/>
+                            <outlet property="delegate" destination="r1W-BL-sFX" id="TcD-1k-5tT"/>
+                        </connections>
+                    </tableView>
                     <navigationItem key="navigationItem" id="QH1-bT-Kek">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="qix-FN-iaC">
                             <connections>
-                                <action selector="cancelButtonTapped:" destination="r1W-BL-sFX" id="kXD-vE-8EP"/>
+                                <action selector="cancelButtonTapped:" destination="r1W-BL-sFX" id="dYR-2E-TRs"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="YEF-pQ-yxL">
                             <connections>
-                                <action selector="saveButtonTapped:" destination="r1W-BL-sFX" id="B6s-Zn-C7m"/>
+                                <action selector="saveButtonTapped:" destination="r1W-BL-sFX" id="XCt-Eh-FPC"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="saveButton" destination="YEF-pQ-yxL" id="Vwa-h3-AAR"/>
+                        <outlet property="tableView" destination="hjh-G1-Wq3" id="uXY-3x-erl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VYD-1J-s8m" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1339,7 +1368,7 @@
             <objects>
                 <tableViewController id="a1y-j3-omP" customClass="EditableAccountSettingsTableViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="50" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="1" id="ACY-84-B35">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -2150,7 +2179,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="ybN-lJ-Sba"/>
+        <segue reference="7xR-BQ-yxm"/>
         <segue reference="voI-Bz-LUT"/>
     </inferredMetricsTieBreakers>
     <resources>
