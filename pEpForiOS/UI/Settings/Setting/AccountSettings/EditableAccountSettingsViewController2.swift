@@ -11,6 +11,7 @@ import pEpIOSToolbox
 
 class EditableAccountSettingsViewController2: UIViewController {
 
+
     override var collapsedBehavior: CollapsedSplitViewBehavior {
         return .needed
     }
@@ -22,19 +23,28 @@ class EditableAccountSettingsViewController2: UIViewController {
     var viewModel : EditableAccountSettingsViewModel2?
     @IBOutlet private var tableView: UITableView!
 
+    private lazy var pickerView: UIPickerView = {
+        let picker = UIPickerView()
+        picker.delegate = self
+        return picker
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(PEPHeaderView.self, forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
         tableView.hideSeperatorForEmptyCells()
         UIHelper.variableContentHeight(tableView)
-
     }
 
-    @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
-        print("Save button tapped")
+    @IBAction func saveButtonTapped() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleSaveButtonPressed()
     }
 
-    @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
+    @IBAction func cancelButtonTapped() {
         dismissYourself()
     }
 }
@@ -66,13 +76,26 @@ extension EditableAccountSettingsViewController2: UITableViewDataSource {
             return UITableViewCell()
         }
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AccountSettingsTableViewCell.identifier) as? AccountSettingsTableViewCell else {
+            Log.shared.errorAndCrash("Can't dequeue cell")
             return UITableViewCell()
         }
         guard let row = vm.sections[indexPath.section].rows[indexPath.row] as? AccountSettingsViewModel.DisplayRow else {
-            Log.shared.errorAndCrash("Can't dequeue row")
+            Log.shared.errorAndCrash("Can't get row")
             return cell
         }
         cell.configure(with: row, for: traitCollection)
+        cell.valueTextfield.delegate = self
+        switch row.type {
+        case .email:
+            cell.valueTextfield.isEnabled = false
+        case .tranportSecurity:
+            cell.valueTextfield.inputView = pickerView
+        case .port:
+            cell.valueTextfield.keyboardType = .numberPad
+
+        default:
+            break;
+        }
         return cell
     }
 }
@@ -103,11 +126,7 @@ extension EditableAccountSettingsViewController2: UITableViewDelegate {
 
 extension EditableAccountSettingsViewController2: EditableAccountSettingsDelegate2 {
     func setLoadingView(visible: Bool) {
-        if visible {
-            LoadingInterface.showLoadingInterface()
-        } else {
-            LoadingInterface.removeLoadingInterface()
-        }
+        LoadingInterface.setLoadingView(visible: visible)
     }
 
     func showAlert(error: Error) {
@@ -128,5 +147,57 @@ extension EditableAccountSettingsViewController2 {
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
             tableView.reloadData()
         }
+    }
+}
+
+extension EditableAccountSettingsViewController2: UITextFieldDelegate {
+
+}
+
+// MARK: - UIPickerViewDataSource
+
+extension EditableAccountSettingsViewController2: UIPickerViewDataSource {
+
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return 0
+        }
+
+        return vm.transportSecurityViewModel.numberOfOptions
+    }
+}
+
+// MARK: - UIPickerViewDelegate
+
+extension EditableAccountSettingsViewController2: UIPickerViewDelegate {
+
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return nil
+        }
+        return vm.transportSecurityViewModel[row]
+//
+//        let title = viewModel.securityViewModelvm[row]
+//        if title == firstResponder?.text, isTransportSecurityField() {
+//            pickerView.selectRow(row, inComponent: 0, animated: true)
+//        }
+//        return title
+    }
+
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+
+//        guard let firstResponder = firstResponder else { return }
+//        firstResponder.text = viewModel.securityViewModelvm[row]
+        view.endEditing(true)
     }
 }

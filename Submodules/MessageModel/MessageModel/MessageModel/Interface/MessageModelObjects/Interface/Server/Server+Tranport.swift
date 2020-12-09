@@ -9,11 +9,12 @@
 import Foundation
 
 extension Server {
-    public enum Transport: Int16 {
+    public enum Transport: Int16, CaseIterable {
         case plain
         case tls
         case startTls
 
+        //MB: Rm this
         public init?(fromString: String?) {
             guard let s = fromString else {
                 return nil
@@ -41,20 +42,21 @@ extension Server {
             }
         }
 
-        public static var size: Int {
+        public static var numberOfOptions: Int {
             get {
-                return 3
+                return Transport.allCases.count
             }
         }
 
+        //MB:- RM this
         public static func toArray() -> [Transport] {
-            var array = [Transport]()
-            for index in 0...Transport.size {
+            var transportOptions = [Transport]()
+            for index in 0...Transport.numberOfOptions {
                 if let transport = Transport(rawValue: Int16(index)) {
-                    array.append(transport)
+                    transportOptions.append(transport)
                 }
             }
-            return array
+            return transportOptions
         }
     }
 }

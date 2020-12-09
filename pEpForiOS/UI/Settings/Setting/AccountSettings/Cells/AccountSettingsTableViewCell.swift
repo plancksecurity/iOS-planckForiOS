@@ -6,17 +6,14 @@
 //  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
-
 import pEpIOSToolbox
+import UIKit
 
 /// Cell that displays a title and a value.
 final class AccountSettingsTableViewCell: UITableViewCell {
-
     static let identifier = "KeyValueTableViewCell"
     @IBOutlet weak var keyLabel: UILabel!
-    @IBOutlet weak var valueTextfield: UITextField!
-
+    @IBOutlet weak var valueTextfield: ConfigurableCaretTextField!
     @IBOutlet private weak var stackView: UIStackView!
 
     /// Configure the cell according to the current trait collection
@@ -34,8 +31,10 @@ final class AccountSettingsTableViewCell: UITableViewCell {
             return
         }
         keyLabel.text = row.title
+        valueTextfield.autocorrectionType = .no
         valueTextfield.text = row.text
         valueTextfield.isSecureTextEntry = row.type == .password
+        valueTextfield.shouldShowCaret = row.shouldShowCaret
     }
 
     override func awakeFromNib() {
@@ -45,3 +44,4 @@ final class AccountSettingsTableViewCell: UITableViewCell {
         valueTextfield.font = UIFont.pepFont(style: .body, weight: .regular)
     }
 }
+

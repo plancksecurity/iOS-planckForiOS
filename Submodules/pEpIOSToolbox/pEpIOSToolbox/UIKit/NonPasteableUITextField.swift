@@ -9,9 +9,9 @@
 import Foundation
 import UIKit
 
-class NonEditMenuUITextField: UITextField {
+public class NonEditMenuUITextField: UITextField {
 
-    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+    public override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         return false
     }
 }

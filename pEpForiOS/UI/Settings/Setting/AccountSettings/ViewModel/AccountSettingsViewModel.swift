@@ -147,6 +147,8 @@ extension AccountSettingsViewModel {
         var isDangerous: Bool = false
         /// The cell identifier
         var cellIdentifier: String
+        /// Indicates if the caret should be shown
+        var shouldShowCaret: Bool = true
     }
 
     /// Struct that is used to perform an action.
@@ -447,15 +449,15 @@ extension AccountSettingsViewModel {
         return DisplayRow(type: type,
                           title: rowTitle(for: type),
                           text: value,
-                          cellIdentifier: CellsIdentifiers.displayCell)
+                          cellIdentifier: CellsIdentifiers.displayCell,
+                          shouldShowCaret: type != .tranportSecurity)
     }
-
 }
 
 // MARK: - Key Sync
 
 extension AccountSettingsViewModel {
-
+    
     /// Request if key sync is enabled for the current account
     /// The callbacks will be executed in the main thread.
     /// - Parameters:

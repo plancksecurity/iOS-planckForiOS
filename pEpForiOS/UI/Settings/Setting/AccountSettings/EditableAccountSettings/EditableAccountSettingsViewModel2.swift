@@ -25,7 +25,6 @@ final class EditableAccountSettingsViewModel2 {
 
     public private(set) var isOAuth2: Bool = false
     public weak var delegate: EditableAccountSettingsDelegate2?
-    private let securityViewModel = SecurityViewModel2()
     public private(set) var sections = [AccountSettingsViewModel.Section]()
 
     /// If there was OAUTH2 for this account, here is a current token.
@@ -41,6 +40,8 @@ final class EditableAccountSettingsViewModel2 {
     private var verifiableAccount: VerifiableAccountProtocol?
 
     public weak var editableAccountSettingsDelegate: EditableAccountSettingsDelegate?
+
+    public var transportSecurityViewModel = TransportSecurityViewModel()
 
     /// Constructor
     /// - Parameters:
@@ -200,15 +201,14 @@ extension EditableAccountSettingsViewModel2 {
         case startTls
     }
 
-    private struct SecurityViewModel2 {
-        private var options = Server.Transport.toArray()
-        private var size : Int {
-            get {
-                return options.count
-            }
+    public struct TransportSecurityViewModel {
+        private var options = Server.Transport.allCases
+
+        public var numberOfOptions: Int {
+            return Server.Transport.numberOfOptions
         }
 
-        private subscript(option: Int) -> String {
+        public subscript(option: Int) -> String {
             get {
                 return options[option].asString()
             }
@@ -236,7 +236,7 @@ extension EditableAccountSettingsViewModel2 {
     private func getDisplayRow(type : AccountSettingsViewModel.RowType, value : String) -> AccountSettingsViewModel.DisplayRow {
         let title = AccountSettingsHelper.rowTitle(for: type)
         let cellIdentifier = AccountSettingsViewModel.CellsIdentifiers.settingsDisplayCell
-        return AccountSettingsViewModel.DisplayRow(type: type, title: title, text: value, cellIdentifier: cellIdentifier)
+        return AccountSettingsViewModel.DisplayRow(type: type, title: title, text: value, cellIdentifier: cellIdentifier, shouldShowCaret: type != .tranportSecurity)
     }
 
     /// Setup the server fields.
