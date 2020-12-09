@@ -58,7 +58,7 @@ final class AccountSettingsViewController: UIViewController {
                 Log.shared.errorAndCrash("No VM")
                 return
             }
-            let viewModel = EditableAccountSettingsViewModel2(account: account, editableAccountSettingsDelegate: editableAccountSettingsViewController2)
+            let viewModel = EditableAccountSettingsViewModel2(account: account, delegate: editableAccountSettingsViewController2)
             editableAccountSettingsViewController2.viewModel = viewModel
 
         case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
