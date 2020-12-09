@@ -11,15 +11,14 @@ import pEpIOSToolbox
 @testable import pEpForiOS
 @testable import MessageModel
 
-
 class EditableAccountSettingsViewModelTest2: AccountDrivenTestBase {
 
     var viewModel: EditableAccountSettingsViewModel2?
 
-
     override func setUp() {
         super.setUp()
-        viewModel = EditableAccountSettingsViewModel2(account: account)
+        let mockViewController = MockEditableViewController()
+        viewModel = EditableAccountSettingsViewModel2(account: account, delegate: mockViewController)
     }
 
     func testViewModelNotNil() {
@@ -79,6 +78,21 @@ class EditableAccountSettingsViewModelTest2: AccountDrivenTestBase {
         testChangeValue(sectionType: .imap, rowType: .tranportSecurity)
         testChangeValue(sectionType: .imap, rowType: .username)
     }
+
+    func testHandleSaveButtonPressed() {
+        let setLoadingViewExpectation = XCTestExpectation(description: "setLoadingViewExpectation was called")
+        let mockViewController = MockEditableViewController(setLoadingViewExpectation: setLoadingViewExpectation)
+        viewModel = EditableAccountSettingsViewModel2(account: account, delegate: mockViewController)
+        viewModel?.handleSaveButtonPressed()
+        //TODO: continue this.
+//        dismissyourself, show alert, etc
+    }
+
+//    MB:-
+//    TODO:
+//    - complete testHandleSaveButtonPressed.
+//    - make a test for didEndVerification
+
 }
 
 //MARK:- Helpers
@@ -147,5 +161,38 @@ extension EditableAccountSettingsViewModelTest2 {
         }
         XCTAssertTrue(rowModified.text == newValue)
         XCTAssertTrue(originalRow.text != newValue)
+    }
+}
+
+class MockEditableViewController: EditableAccountSettingsDelegate2 {
+
+    private var setLoadingViewExpectation: XCTestExpectation?
+    private var showAlertExpectation: XCTestExpectation?
+    private var dismissYourselfExpectation: XCTestExpectation?
+
+    init(setLoadingViewExpectation: XCTestExpectation? = nil,
+         showAlertExpectation: XCTestExpectation? = nil,
+         dismissYourselfExpectation: XCTestExpectation? = nil) {
+        self.setLoadingViewExpectation = setLoadingViewExpectation
+        self.showAlertExpectation = showAlertExpectation
+        self.dismissYourselfExpectation = dismissYourselfExpectation
+    }
+
+    func setLoadingView(visible: Bool) {
+        fulfillIfNotNil(expectation: setLoadingViewExpectation)
+    }
+
+    func showAlert(error: Error) {
+        fulfillIfNotNil(expectation: showAlertExpectation)
+    }
+
+    func dismissYourself() {
+        fulfillIfNotNil(expectation: dismissYourselfExpectation)
+    }
+
+    private func fulfillIfNotNil(expectation: XCTestExpectation?) {
+        if expectation != nil {
+            expectation?.fulfill()
+        }
     }
 }
