@@ -35,6 +35,15 @@ final class AccountSettingsTableViewCell: UITableViewCell {
         valueTextfield.text = row.text
         valueTextfield.isSecureTextEntry = row.type == .password
         valueTextfield.shouldShowCaret = row.shouldShowCaret
+        switch row.type {
+        case .email:
+            valueTextfield.isEnabled = false
+        case .port:
+            valueTextfield.keyboardType = .numberPad
+        default:
+            // Nothing to do.
+            break;
+        }
     }
 
     override func awakeFromNib() {

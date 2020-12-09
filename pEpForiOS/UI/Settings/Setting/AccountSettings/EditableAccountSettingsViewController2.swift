@@ -34,6 +34,8 @@ class EditableAccountSettingsViewController2: UIViewController {
         tableView.register(PEPHeaderView.self, forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
         tableView.hideSeperatorForEmptyCells()
         UIHelper.variableContentHeight(tableView)
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
     }
 
     @IBAction func saveButtonTapped() {
@@ -84,18 +86,10 @@ extension EditableAccountSettingsViewController2: UITableViewDataSource {
             return cell
         }
         cell.configure(with: row, for: traitCollection)
-        cell.valueTextfield.delegate = self
-        switch row.type {
-        case .email:
-            cell.valueTextfield.isEnabled = false
-        case .tranportSecurity:
+        if row.type == .tranportSecurity {
             cell.valueTextfield.inputView = pickerView
-        case .port:
-            cell.valueTextfield.keyboardType = .numberPad
-
-        default:
-            break;
         }
+        cell.valueTextfield.delegate = self
         return cell
     }
 }
@@ -152,6 +146,21 @@ extension EditableAccountSettingsViewController2 {
 
 extension EditableAccountSettingsViewController2: UITextFieldDelegate {
 
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        guard let cell = textField.superviewOfClass(ofClass: AccountSettingsTableViewCell.self) else {
+            Log.shared.errorAndCrash("Cell not found")
+            return
+        }
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            Log.shared.errorAndCrash("indexPath not found")
+            return
+        }
+        vm.handleRowDidChange(at:indexPath, value: textField.text ?? "")
+    }
 }
 
 // MARK: - UIPickerViewDataSource
@@ -199,5 +208,25 @@ extension EditableAccountSettingsViewController2: UIPickerViewDelegate {
 //        guard let firstResponder = firstResponder else { return }
 //        firstResponder.text = viewModel.securityViewModelvm[row]
         view.endEditing(true)
+    }
+
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
+
+extension UIView {
+    func superviewOfClass<T>(ofClass: T.Type) -> T? {
+        var currentView: UIView? = self
+
+        while currentView != nil {
+            if currentView is T {
+                break
+            } else {
+                currentView = currentView?.superview
+            }
+        }
+
+        return currentView as? T
     }
 }

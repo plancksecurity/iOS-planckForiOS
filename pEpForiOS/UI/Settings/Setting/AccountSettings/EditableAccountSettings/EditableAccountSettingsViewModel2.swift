@@ -84,14 +84,10 @@ final class EditableAccountSettingsViewModel2 {
     /// Upload the changes if everything is OK, else informs the user
     public func handleSaveButtonPressed() {
         delegate?.setLoadingView(visible: true)
-//        do {
-//            let validated = isInputValid()
 
 
-//        } catch {
-//            delegate?.setLoadingView(visible: false)
-//            delegate?.showErrorAlert(error: error)
-//        }
+
+        delegate?.setLoadingView(visible: false)
     }
 
     public func handleRowDidChange(at indexPath: IndexPath, value: String) {
@@ -190,27 +186,18 @@ extension EditableAccountSettingsViewModel2: VerifiableAccountDelegate {
     }
 }
 
-
 // MARK: -  enums & structs
 
 extension EditableAccountSettingsViewModel2 {
 
-    private enum Transport {
-        case plain
-        case tls
-        case startTls
-    }
-
     public struct TransportSecurityViewModel {
-        private var options = Server.Transport.allCases
-
         public var numberOfOptions: Int {
             return Server.Transport.numberOfOptions
         }
 
         public subscript(option: Int) -> String {
             get {
-                return options[option].asString()
+                return Server.Transport.allCases[option].asString()
             }
         }
     }
@@ -236,7 +223,11 @@ extension EditableAccountSettingsViewModel2 {
     private func getDisplayRow(type : AccountSettingsViewModel.RowType, value : String) -> AccountSettingsViewModel.DisplayRow {
         let title = AccountSettingsHelper.rowTitle(for: type)
         let cellIdentifier = AccountSettingsViewModel.CellsIdentifiers.settingsDisplayCell
-        return AccountSettingsViewModel.DisplayRow(type: type, title: title, text: value, cellIdentifier: cellIdentifier, shouldShowCaret: type != .tranportSecurity)
+        return AccountSettingsViewModel.DisplayRow(type: type,
+                                                   title: title,
+                                                   text: value,
+                                                   cellIdentifier: cellIdentifier,
+                                                   shouldShowCaret: type != .tranportSecurity)
     }
 
     /// Setup the server fields.
