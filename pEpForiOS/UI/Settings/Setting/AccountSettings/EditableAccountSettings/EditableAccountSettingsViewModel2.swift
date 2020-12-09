@@ -40,9 +40,9 @@ final class EditableAccountSettingsViewModel2 {
     /// - Parameters:
     ///   - account: The account to configure the editable account settings view model.
     ///   - delegate: The delegate to communicate to the View Controller.
-    init(account: Account, editableAccountSettingsDelegate: EditableAccountSettingsDelegate2? = nil) {
+    init(account: Account, delegate: EditableAccountSettingsDelegate2? = nil) {
         self.account = account
-        self.delegate = editableAccountSettingsDelegate
+        self.delegate = delegate
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         if isOAuth2 {
             if let payload = account.imapServer?.credentials.password ??
