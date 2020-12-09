@@ -24,7 +24,7 @@ extension VerifiableAccountValidationError: LocalizedError {
             return NSLocalizedString("Some fields seems not to be valid. Please check all input fields.",
                                      comment: "Error description when failing to validate account fields")
         case .unknown:
-            return NSLocalizedString("Oops. Something went wrong.",
+            return NSLocalizedString("Something went wrong.",
                                      comment: "Error description when failing for an unknown reason")
         }
     }

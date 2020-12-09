@@ -127,7 +127,7 @@ extension SMTPSettingsViewController: ManualAccountSetupViewDelegate {
                 case .invalidUserData:
                     errorMessage = NSLocalizedString("Some mandatory fields are empty",
                                                      comment: "Message of alert: a required field is empty")
-                case .unknown:
+                case .unknown, .cantSave:
                 errorMessage = NSLocalizedString("Oops. Something went wrong.",
                                                  comment: "Message of alert: something went wrong.")
                 }

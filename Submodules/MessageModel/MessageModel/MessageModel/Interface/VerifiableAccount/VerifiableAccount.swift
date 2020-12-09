@@ -124,7 +124,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 
     /// Saves the account if possible.
     /// - Parameter completion: The completion block to be executed.
-    public func save(completion: @escaping ((Result<Void, Error>) -> ())) {
+    public func save(completion: @escaping (Result<Void, Error>) -> ()) {
         do {
             guard let (moc, cdAccount, _, _) = try createAccount() else {
                 completion(.failure(VerifiableAccountValidationError.invalidUserData))
@@ -132,7 +132,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
             }
             moc.performAndWait { [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                    Log.shared.lostMySelf()
                     return
                 }
                 let alsoCreatePEPFolder = me.keySyncEnable && (me.usePEPFolderProvider?.usePepFolder ?? false)
@@ -152,12 +152,19 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                             moc.performAndWait {
                                 moc.rollback()
                             }
+                            // Several reasons can end with this error:
+                            // - Impossible to get the identity
+                            // - Error generating key
+                            // - Login operation has errors.
+                            // - SyncFoldersFromServerOperation has errors
+                            // - CreateIMAPPepFolderOperation has errors
                             completion(.failure(VerifiableAccountValidationError.unknown))
                         }
                     }
                 }
             }
         } catch {
+            Log.shared.errorAndCrash("Errors thrown should be handled already")
             completion(.failure(VerifiableAccountValidationError.unknown))
         }
     }
