@@ -49,7 +49,8 @@ public class MimeTypeUtils {
         return Set([MimeType.pgpKeys.rawValue,
                     MimeType.pgp.rawValue,
                     MimeType.pEpSync.rawValue,
-                    MimeType.pEpSign.rawValue])
+                    MimeType.pEpSign.rawValue,
+                    MimeType.pEpDistribution.rawValue])
     }
 
     /**
