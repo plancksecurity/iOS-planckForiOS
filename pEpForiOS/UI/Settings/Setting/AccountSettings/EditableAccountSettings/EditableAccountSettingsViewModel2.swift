@@ -9,23 +9,63 @@
 import Foundation
 import MessageModel
 import pEpIOSToolbox
+import PantomimeFramework
 
 protocol EditableAccountSettingsDelegate2: class {
     /// Changes loading view visibility
+    /// - Parameter visible: Indicates if it should be visible or not.
     func setLoadingView(visible: Bool)
-    /// Shows an alert
+    /// Shows an alert to inform an error.
+    /// - Parameter error: The error to show
     func showAlert(error: Error)
     /// Informs the VC that has to dismiss
     func dismissYourself()
 }
 
+
 final class EditableAccountSettingsViewModel2 {
 
-    private var account: Account
+    // Helper to carry the user input ot its validation.
+    private typealias Input = (accountName: String,
+                               emailAddress: String,
+                               password: String?,
+                               imapServer: String,
+                               imapPort: String,
+                               imapTranportSecurity: String,
+                               imapUsername: String,
+                               smtpServer: String,
+                               smtpPort: String,
+                               smtpTranportSecurity: String,
+                               smtpUsername: String)
 
+    /// Indicates if the account is OAuth2
     public private(set) var isOAuth2: Bool = false
+
+    /// Delegate to trigger actions to the VC.
     public weak var delegate: EditableAccountSettingsDelegate2?
+
+    /// The sections of Editable Account Settings view.
     public private(set) var sections = [AccountSettingsViewModel.Section]()
+
+    /// Delegate to inform the account settings had changed
+    public weak var editableAccountSettingsDelegate: EditableAccountSettingsDelegate?
+
+    /// Indicates the number ot transport security options.
+    public var numberOfTransportSecurityOptions : Int {
+        return transportSecurityViewModel.numberOfOptions
+    }
+
+    private var passwordChanged: Bool = false
+    private var originalPassword: String?
+
+    /// Retrieves the name of an transport security option.
+    /// - Parameter index: The index of the option.
+    /// - Returns: The name of that option. It could be  Plain, TLS or StartTLS
+    public func transportSecurityOption(atIndex index: Int) -> String {
+        return transportSecurityViewModel[index]
+    }
+
+    private var account: Account
 
     /// If there was OAUTH2 for this account, here is a current token.
     /// This trumps both the `originalPassword` and a password given by the user
@@ -39,29 +79,28 @@ final class EditableAccountSettingsViewModel2 {
     /// and also the implementation of the verification.
     private var verifiableAccount: VerifiableAccountProtocol?
 
-    public weak var editableAccountSettingsDelegate: EditableAccountSettingsDelegate?
-
-    public var transportSecurityViewModel = TransportSecurityViewModel()
+    private let transportSecurityViewModel = TransportSecurityViewModel()
 
     /// Constructor
     /// - Parameters:
     ///   - account: The account to configure the editable account settings view model.
     ///   - delegate: The delegate to communicate to the View Controller.
-    init(account: Account, delegate: EditableAccountSettingsDelegate2? = nil) {
+    public init(account: Account, delegate: EditableAccountSettingsDelegate2? = nil) {
         self.account = account
         self.delegate = delegate
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         if isOAuth2 {
             if let payload = account.imapServer?.credentials.password ??
                 account.smtpServer?.credentials.password,
-                let token = OAuth2AccessToken.from(base64Encoded: payload)
-                    as? OAuth2AccessTokenProtocol {
+               let token = OAuth2AccessToken.from(base64Encoded: payload)
+                as? OAuth2AccessTokenProtocol {
                 accessToken = token
             } else {
                 Log.shared.errorAndCrash("Supposed to do OAUTH2, but no existing token")
             }
+        } else {
+            originalPassword = account.imapServer?.credentials.password
         }
-
         self.generateSections()
     }
 
@@ -84,12 +123,20 @@ final class EditableAccountSettingsViewModel2 {
     /// Upload the changes if everything is OK, else informs the user
     public func handleSaveButtonPressed() {
         delegate?.setLoadingView(visible: true)
-
-
-
-        delegate?.setLoadingView(visible: false)
+        do {
+            let validated = try validateInput()
+            update(input: validated)
+            delegate?.setLoadingView(visible: false)
+        } catch {
+            delegate?.setLoadingView(visible: false)
+            delegate?.showAlert(error: error)
+        }
     }
 
+    /// Handles the change of values in the settings.
+    /// - Parameters:
+    ///   - indexPath: The indexPath of the row that has changed.
+    ///   - value: The new value of that row.
     public func handleRowDidChange(at indexPath: IndexPath, value: String) {
         let rows = sections[indexPath.section].rows
         guard let row = rows[indexPath.row]
@@ -102,10 +149,9 @@ final class EditableAccountSettingsViewModel2 {
                                                                text: value,
                                                                cellIdentifier: row.cellIdentifier)
         sections[indexPath.section].rows[indexPath.row] = rowToReplace
-    }
-
-    private func isInputValid() -> Bool {
-        return true
+        if row.type == .password {
+            passwordChanged = true
+        }
     }
 
     /// This method generates all the rows for the section type passed
@@ -145,14 +191,16 @@ final class EditableAccountSettingsViewModel2 {
                 Log.shared.errorAndCrash("Account without SMTP server")
                 return rows
             }
-
             setupServerFields(smtpServer, &rows)
         }
         return rows
     }
 }
 
+// MARK: -  VerifiableAccountDelegate
+
 extension EditableAccountSettingsViewModel2: VerifiableAccountDelegate {
+
     public func didEndVerification(result: Result<Void, Error>) {
         switch result {
         case .success(()):
@@ -186,11 +234,11 @@ extension EditableAccountSettingsViewModel2: VerifiableAccountDelegate {
     }
 }
 
-// MARK: -  enums & structs
+// MARK: -  TransportSecurityViewModel
 
 extension EditableAccountSettingsViewModel2 {
 
-    public struct TransportSecurityViewModel {
+    private struct TransportSecurityViewModel {
         public var numberOfOptions: Int {
             return Server.Transport.numberOfOptions
         }
@@ -203,17 +251,9 @@ extension EditableAccountSettingsViewModel2 {
     }
 }
 
-extension EditableAccountSettingsViewModel2 {
+// MARK: -  Private
 
-    public func setLoadingView(visible: Bool) {
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                //Valid case: the view might be dismissed
-                return
-            }
-            me.delegate?.setLoadingView(visible: visible)
-        }
-    }
+extension EditableAccountSettingsViewModel2 {
 
     /// Generate and return the display row.
     /// - Parameters:
@@ -246,5 +286,144 @@ extension EditableAccountSettingsViewModel2 {
 
         let usernameRow = getDisplayRow(type : .username, value: server.credentials.loginName)
         rows.append(usernameRow)
+    }
+}
+
+// MARK: -  Validate input
+
+extension EditableAccountSettingsViewModel2 {
+
+    private func validateInput() throws -> Input {
+        // IMAP
+        guard let imapServer = rowValue(sectionType: .imap, rowType: .server) else {
+            let msg = NSLocalizedString("IMAP server must not be empty.", comment: "Empty IMAP server message")
+            throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
+        }
+        guard let imapPort = rowValue(sectionType: .imap, rowType: .port) else {
+            let msg = NSLocalizedString("IMAP Port must not be empty.", comment: "Empty IMAP port server message")
+            throw AccountSettingsUserInputError.invalidInputPort(localizedMessage: msg)
+        }
+        guard let imapTransportSecurity = rowValue(sectionType: .imap, rowType: .tranportSecurity) else {
+            let msg = NSLocalizedString("Choose IMAP transport security method.", comment: "Empty IMAP transport security method")
+            throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
+        }
+        guard let imapUsername = rowValue(sectionType: .imap, rowType: .username) else {
+            let msg = NSLocalizedString("Choose IMAP username.", comment: "Empty IMAP username")
+            throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
+        }
+
+        // SMTP
+        guard let smtpServer = rowValue(sectionType: .smtp, rowType: .server) else {
+            let msg = NSLocalizedString("SMTP server must not be empty.", comment: "Empty SMTP server message")
+            throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
+        }
+        guard let smtpPort = rowValue(sectionType: .smtp, rowType: .port) else {
+            let msg = NSLocalizedString("SMTP Port must not be empty.", comment: "Empty SMTP port server message")
+            throw AccountSettingsUserInputError.invalidInputPort(localizedMessage: msg)
+        }
+        guard let smtpTransportSecurity = rowValue(sectionType: .smtp, rowType: .tranportSecurity) else {
+            let msg = NSLocalizedString("Choose SMTP transport security method.", comment: "Empty SMTP transport security method")
+            throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
+        }
+        guard let smtpUsername = rowValue(sectionType: .smtp, rowType: .username) else {
+            let msg = NSLocalizedString("Choose SMTP username.", comment: "Empty IMAP transport security method")
+            throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
+        }
+
+        // Account
+        guard let accountName = rowValue(sectionType: .account, rowType: .name) else {
+            let msg = NSLocalizedString("Account name must not be empty.", comment: "Empty account name message")
+            throw AccountSettingsUserInputError.invalidInputAccountName(localizedMessage: msg)
+        }
+
+        guard let emailAddress = rowValue(sectionType: .account, rowType: .email) else {
+            Log.shared.errorAndCrash("Email address not found. Is not editable.")
+            let msg = NSLocalizedString("Email address must not be empty.", comment: "Email address missing message")
+            throw AccountSettingsUserInputError.invalidInputEmailAddress(localizedMessage: msg)
+        }
+
+        let newPassword = rowValue(sectionType: .account, rowType: .password)
+
+        return (accountName: accountName,
+                emailAddress: emailAddress,
+                password: newPassword,
+                imapServer: imapServer,
+                imapPort: imapPort,
+                imapTranportSecurity: imapTransportSecurity,
+                imapUsername: imapUsername,
+                smtpServer: smtpServer,
+                smtpPort: smtpPort,
+                smtpTranportSecurity: smtpTransportSecurity,
+                smtpUsername: smtpUsername
+        )
+    }
+
+    private func rowValue(sectionType: AccountSettingsViewModel.SectionType, rowType : AccountSettingsViewModel.RowType) -> String? {
+        guard let sectionIndex = sectionType.index else {
+            Log.shared.errorAndCrash("Section not found")
+            return nil
+        }
+        guard let displayRow = sections[sectionIndex].rows.filter({$0.type == rowType}).first as? AccountSettingsViewModel.DisplayRow,
+              !displayRow.text.isEmpty else {
+            return nil
+        }
+        return displayRow.text
+    }
+
+    private func update(input: Input, password: String? = nil) {
+        var theVerifier = verifiableAccount ??
+            VerifiableAccount.verifiableAccount(for: .other)
+        theVerifier.verifiableAccountDelegate = self
+        verifiableAccount = theVerifier
+
+        theVerifier.userName = input.accountName
+        theVerifier.address = input.emailAddress
+
+        theVerifier.loginNameIMAP = input.imapUsername
+        theVerifier.loginNameSMTP = input.smtpUsername
+
+        if isOAuth2 {
+            if self.accessToken == nil {
+                Log.shared.errorAndCrash("Have to do OAUTH2, but lacking current token")
+            }
+            theVerifier.authMethod = .saslXoauth2
+            theVerifier.accessToken = accessToken
+            // OAUTH2 trumps any password
+            theVerifier.password = nil
+        } else {
+            if passwordChanged {
+                theVerifier.password = input.password
+            } else if originalPassword != nil {
+                theVerifier.password = originalPassword
+            } else {
+                Log.shared.errorAndCrash("Is not OAuth2, hasn't got a new password, nor original password")
+                return
+            }
+        }
+
+        theVerifier.serverIMAP = input.imapServer
+        let imapPort = input.imapPort
+        if let port = UInt16(imapPort) {
+            theVerifier.portIMAP = port
+        }
+        theVerifier.serverSMTP = input.smtpServer
+        let smtpPort = input.smtpPort
+        if let port = UInt16(smtpPort) {
+            theVerifier.portSMTP = port
+        }
+
+        if let transport = Server.Transport(fromString: input.imapTranportSecurity) {
+            theVerifier.transportIMAP = ConnectionTransport(transport: transport)
+        }
+
+        if let transport = Server.Transport(fromString: input.smtpTranportSecurity) {
+            theVerifier.transportSMTP = ConnectionTransport(transport: transport)
+        }
+        do {
+            try theVerifier.verify()
+        } catch {
+            delegate?.setLoadingView(visible: false)
+            delegate?.showAlert(error: LoginViewController.LoginError.noConnectData)
+        }
     }
 }

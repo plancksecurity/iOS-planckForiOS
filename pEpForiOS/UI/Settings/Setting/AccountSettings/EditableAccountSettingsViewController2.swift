@@ -15,7 +15,6 @@ class EditableAccountSettingsViewController2: UIViewController {
 
     @IBOutlet private var tableView: UITableView!
     private var firstResponder: UITextField?
-
     private lazy var pickerView: UIPickerView = {
         let picker = UIPickerView()
         picker.delegate = self
@@ -24,14 +23,11 @@ class EditableAccountSettingsViewController2: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = NSLocalizedString("Account", comment: "Editable Account Settings view title")
         tableView.register(PEPHeaderView.self, forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
         tableView.hideSeperatorForEmptyCells()
         UIHelper.variableContentHeight(tableView)
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        view.addGestureRecognizer(tap)
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        setKeyboardHandling()
     }
 
     @IBAction func saveButtonTapped() {
@@ -39,6 +35,7 @@ class EditableAccountSettingsViewController2: UIViewController {
             Log.shared.errorAndCrash("VM not found")
             return
         }
+        firstResponder?.resignFirstResponder()
         vm.handleSaveButtonPressed()
     }
 
@@ -128,17 +125,8 @@ extension EditableAccountSettingsViewController2: EditableAccountSettingsDelegat
     }
 }
 
-// MARK: - Accessibility
 
-extension EditableAccountSettingsViewController2 {
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            tableView.reloadData()
-        }
-    }
-}
+// MARK: - UITextFieldDelegate
 
 extension EditableAccountSettingsViewController2: UITextFieldDelegate {
 
@@ -177,7 +165,7 @@ extension EditableAccountSettingsViewController2: UIPickerViewDataSource {
             return 0
         }
 
-        return vm.transportSecurityViewModel.numberOfOptions
+        return vm.numberOfTransportSecurityOptions
     }
 }
 
@@ -190,7 +178,7 @@ extension EditableAccountSettingsViewController2: UIPickerViewDelegate {
             Log.shared.errorAndCrash("VM not found")
             return nil
         }
-        return vm.transportSecurityViewModel[row]
+        return vm.transportSecurityOption(atIndex: row)
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -198,15 +186,40 @@ extension EditableAccountSettingsViewController2: UIPickerViewDelegate {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-        firstResponder?.text = vm.transportSecurityViewModel[row]
+        firstResponder?.text = vm.transportSecurityOption(atIndex: row)
         dismissKeyboard()
     }
+}
 
-    @objc func dismissKeyboard() {
+// MARK: - Accessibility
+
+extension EditableAccountSettingsViewController2 {
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            tableView.reloadData()
+        }
+    }
+}
+
+// MARK: - Keyboard Handling
+
+extension EditableAccountSettingsViewController2 {
+
+    private func setKeyboardHandling() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    }
+
+    @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
 
-    @objc func adjustForKeyboard(notification: Notification) {
+    @objc private func adjustForKeyboard(notification: Notification) {
         guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         let keyboardScreenEndFrame = keyboardValue.cgRectValue
         let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
