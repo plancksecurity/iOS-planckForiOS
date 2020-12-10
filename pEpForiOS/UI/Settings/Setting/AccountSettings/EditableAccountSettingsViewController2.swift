@@ -132,6 +132,22 @@ extension EditableAccountSettingsViewController2: UITextFieldDelegate {
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         firstResponder = textField
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+
+        guard let cell = textField.superviewOfClass(ofClass: AccountSettingsTableViewCell.self) else {
+            Log.shared.errorAndCrash("Cell not found")
+            return
+        }
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            Log.shared.errorAndCrash("indexPath not found")
+            return
+        }
+        if vm.sections[indexPath.section].rows[indexPath.row].type == .tranportSecurity {
+            
+        }
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
