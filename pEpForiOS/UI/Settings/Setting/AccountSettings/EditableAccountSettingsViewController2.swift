@@ -35,6 +35,7 @@ class EditableAccountSettingsViewController2: UIViewController {
             Log.shared.errorAndCrash("VM not found")
             return
         }
+        // Triggers didEndEditing, which is needed to validate the input.
         firstResponder?.resignFirstResponder()
         vm.handleSaveButtonPressed()
     }
@@ -125,7 +126,6 @@ extension EditableAccountSettingsViewController2: EditableAccountSettingsDelegat
     }
 }
 
-
 // MARK: - UITextFieldDelegate
 
 extension EditableAccountSettingsViewController2: UITextFieldDelegate {
@@ -148,15 +148,17 @@ extension EditableAccountSettingsViewController2: UITextFieldDelegate {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-        if let indexPath = indexPathOfCellWith(textField: textField) {
-            guard let row = vm.sections[indexPath.section].rows[indexPath.row] as? AccountSettingsViewModel.DisplayRow else {
-                Log.shared.errorAndCrash("Row not found")
-                return
-            }
-            if row.type == .tranportSecurity {
-                let index = vm.transportSecurityIndex(for: row.text)
-                pickerView.selectRow(index, inComponent: 0, animated: true)
-            }
+        guard let indexPath = indexPathOfCellWith(textField: textField) else {
+            Log.shared.errorAndCrash("Textfield begins editing doesn't belong to any row")
+            return
+        }
+        guard let row = vm.sections[indexPath.section].rows[indexPath.row] as? AccountSettingsViewModel.DisplayRow else {
+            Log.shared.errorAndCrash("Row not found")
+            return
+        }
+        if row.type == .tranportSecurity {
+            let index = vm.transportSecurityIndex(for: row.text)
+            pickerView.selectRow(index, inComponent: 0, animated: true)
         }
     }
 
@@ -190,7 +192,6 @@ extension EditableAccountSettingsViewController2: UIPickerViewDataSource {
             Log.shared.errorAndCrash("VM not found")
             return 0
         }
-
         return vm.numberOfTransportSecurityOptions
     }
 }
