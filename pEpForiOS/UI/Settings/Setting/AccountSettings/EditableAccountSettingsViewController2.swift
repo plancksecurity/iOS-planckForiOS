@@ -130,23 +130,33 @@ extension EditableAccountSettingsViewController2: EditableAccountSettingsDelegat
 
 extension EditableAccountSettingsViewController2: UITextFieldDelegate {
 
+    private func indexPathOfCellWith(textField: UITextField) -> IndexPath? {
+        guard let cell = textField.superviewOfClass(ofClass: AccountSettingsTableViewCell.self) else {
+            Log.shared.errorAndCrash("Cell not found")
+            return nil
+        }
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            Log.shared.errorAndCrash("indexPath not found")
+            return nil
+        }
+        return indexPath
+    }
+
     func textFieldDidBeginEditing(_ textField: UITextField) {
         firstResponder = textField
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-
-        guard let cell = textField.superviewOfClass(ofClass: AccountSettingsTableViewCell.self) else {
-            Log.shared.errorAndCrash("Cell not found")
-            return
-        }
-        guard let indexPath = tableView.indexPath(for: cell) else {
-            Log.shared.errorAndCrash("indexPath not found")
-            return
-        }
-        if vm.sections[indexPath.section].rows[indexPath.row].type == .tranportSecurity {
-            
+        if let indexPath = indexPathOfCellWith(textField: textField) {
+            guard let row = vm.sections[indexPath.section].rows[indexPath.row] as? AccountSettingsViewModel.DisplayRow else {
+                Log.shared.errorAndCrash("Row not found")
+                return
+            }
+            if row.type == .tranportSecurity {
+                let index = vm.transportSecurityIndex(for: row.text)
+                pickerView.selectRow(index, inComponent: 0, animated: true)
+            }
         }
     }
 

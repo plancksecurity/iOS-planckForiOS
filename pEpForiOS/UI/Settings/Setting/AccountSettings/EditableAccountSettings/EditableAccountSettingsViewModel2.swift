@@ -65,6 +65,13 @@ final class EditableAccountSettingsViewModel2 {
         return transportSecurityViewModel[index]
     }
 
+    /// Retrieves the index of the transtion security option.
+    /// - Parameter option: The option to look for its index
+    /// - Returns: The index of the option.
+    public func transportSecurityIndex(for option: String) -> Int {
+        return Int(Server.Transport(fromString: option)?.rawValue ?? 1)
+    }
+
     private var account: Account
 
     /// If there was OAUTH2 for this account, here is a current token.
