@@ -26,7 +26,7 @@ protocol EditableAccountSettingsDelegate2: class {
 final class EditableAccountSettingsViewModel2 {
 
     // Helper to carry the user input ot its validation.
-    private typealias Input = (accountName: String,
+    private typealias Input = (userName: String,
                                emailAddress: String,
                                password: String?,
                                imapServer: String,
@@ -331,7 +331,7 @@ extension EditableAccountSettingsViewModel2 {
         }
 
         // Account
-        guard let accountName = rowValue(sectionType: .account, rowType: .name) else {
+        guard let userName = rowValue(sectionType: .account, rowType: .name) else {
             let msg = NSLocalizedString("Account name must not be empty.", comment: "Empty account name message")
             throw AccountSettingsUserInputError.invalidInputAccountName(localizedMessage: msg)
         }
@@ -344,7 +344,7 @@ extension EditableAccountSettingsViewModel2 {
 
         let newPassword = rowValue(sectionType: .account, rowType: .password)
 
-        return (accountName: accountName,
+        return (userName: userName,
                 emailAddress: emailAddress,
                 password: newPassword,
                 imapServer: imapServer,
@@ -376,7 +376,7 @@ extension EditableAccountSettingsViewModel2 {
         theVerifier.verifiableAccountDelegate = self
         verifiableAccount = theVerifier
 
-        theVerifier.userName = input.accountName
+        theVerifier.userName = input.userName
         theVerifier.address = input.emailAddress
 
         theVerifier.loginNameIMAP = input.imapUsername
@@ -391,6 +391,11 @@ extension EditableAccountSettingsViewModel2 {
             // OAUTH2 trumps any password
             theVerifier.password = nil
         } else {
+
+            theVerifier.password = originalPassword
+            if input.password != nil {
+                theVerifier.password = password
+            }
             if passwordChanged {
                 theVerifier.password = input.password
             } else if originalPassword != nil {
