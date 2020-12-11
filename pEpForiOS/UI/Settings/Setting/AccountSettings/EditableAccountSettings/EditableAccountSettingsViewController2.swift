@@ -1,5 +1,5 @@
 //
-//  EditableAccountSettingsViewController2.swift
+//  EditableAccountSettingsViewController.swift
 //  pEp
 //
 //  Created by Martín Brude on 04/12/2020.
@@ -9,9 +9,9 @@
 import UIKit
 import pEpIOSToolbox
 
-class EditableAccountSettingsViewController2: UIViewController {
+class EditableAccountSettingsViewController: UIViewController {
 
-    var viewModel : EditableAccountSettingsViewModel2?
+    var viewModel : EditableAccountSettingsViewModel?
 
     @IBOutlet private var tableView: UITableView!
     private var firstResponder: UITextField?
@@ -47,7 +47,7 @@ class EditableAccountSettingsViewController2: UIViewController {
 
 // MARK: - UITableViewDataSource
 
-extension EditableAccountSettingsViewController2: UITableViewDataSource {
+extension EditableAccountSettingsViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let vm = viewModel else {
@@ -90,7 +90,7 @@ extension EditableAccountSettingsViewController2: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 
-extension EditableAccountSettingsViewController2: UITableViewDelegate {
+extension EditableAccountSettingsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: PEPHeaderView.reuseIdentifier) as? PEPHeaderView else {
@@ -112,7 +112,7 @@ extension EditableAccountSettingsViewController2: UITableViewDelegate {
 
 // MARK: - EditableAccountSettingsDelegate2
 
-extension EditableAccountSettingsViewController2: EditableAccountSettingsDelegate2 {
+extension EditableAccountSettingsViewController: EditableAccountSettingsDelegate2 {
     func setLoadingView(visible: Bool) {
         LoadingInterface.setLoadingView(visible: visible)
     }
@@ -128,7 +128,7 @@ extension EditableAccountSettingsViewController2: EditableAccountSettingsDelegat
 
 // MARK: - UITextFieldDelegate
 
-extension EditableAccountSettingsViewController2: UITextFieldDelegate {
+extension EditableAccountSettingsViewController: UITextFieldDelegate {
 
     private func indexPathOfCellWith(textField: UITextField) -> IndexPath? {
         guard let cell = textField.superviewOfClass(ofClass: AccountSettingsTableViewCell.self) else {
@@ -181,7 +181,7 @@ extension EditableAccountSettingsViewController2: UITextFieldDelegate {
 
 // MARK: - UIPickerViewDataSource
 
-extension EditableAccountSettingsViewController2: UIPickerViewDataSource {
+extension EditableAccountSettingsViewController: UIPickerViewDataSource {
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -198,7 +198,7 @@ extension EditableAccountSettingsViewController2: UIPickerViewDataSource {
 
 // MARK: - UIPickerViewDelegate
 
-extension EditableAccountSettingsViewController2: UIPickerViewDelegate {
+extension EditableAccountSettingsViewController: UIPickerViewDelegate {
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         guard let vm = viewModel else {
@@ -220,7 +220,7 @@ extension EditableAccountSettingsViewController2: UIPickerViewDelegate {
 
 // MARK: - Accessibility
 
-extension EditableAccountSettingsViewController2 {
+extension EditableAccountSettingsViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
@@ -232,7 +232,7 @@ extension EditableAccountSettingsViewController2 {
 
 // MARK: - Keyboard Handling
 
-extension EditableAccountSettingsViewController2 {
+extension EditableAccountSettingsViewController {
 
     private func setKeyboardHandling() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))

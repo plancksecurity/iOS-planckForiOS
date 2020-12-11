@@ -14,7 +14,6 @@ extension Server {
         case tls
         case startTls
 
-        //MB: Rm this
         public init?(fromString: String?) {
             guard let s = fromString else {
                 return nil
@@ -46,17 +45,6 @@ extension Server {
             get {
                 return Transport.allCases.count
             }
-        }
-
-        //MB:- RM this
-        public static func toArray() -> [Transport] {
-            var transportOptions = [Transport]()
-            for index in 0...Transport.numberOfOptions {
-                if let transport = Transport(rawValue: Int16(index)) {
-                    transportOptions.append(transport)
-                }
-            }
-            return transportOptions
         }
     }
 }

@@ -53,29 +53,20 @@ final class AccountSettingsViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let account = viewModel?.account else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
         switch segue.destination {
-        case let editableAccountSettingsViewController2 as EditableAccountSettingsViewController2:
-            guard let account = viewModel?.account else {
-                Log.shared.errorAndCrash("No VM")
-                return
-            }
-            let viewModel = EditableAccountSettingsViewModel2(account: account, delegate: editableAccountSettingsViewController2)
-            editableAccountSettingsViewController2.viewModel = viewModel
-
         case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
-            guard let account = viewModel?.account else {
-                Log.shared.errorAndCrash("No VM")
-                return
-            }
-            editableAccountSettingsViewController.viewModel = EditableAccountSettingsViewModel(account: account, editableAccountSettingsDelegate: self)
+            let viewModel = EditableAccountSettingsViewModel(account: account, delegate: editableAccountSettingsViewController)
+            viewModel.accountSettingsDelegate = self
+            editableAccountSettingsViewController.viewModel = viewModel
         case let signatureEditor as EditSignatureViewController:
-            guard let account = viewModel?.account else {
-                Log.shared.errorAndCrash("No VM")
-                return
-            }
             let vm = EditSignatureViewModel(account: account, delegate: self)
             signatureEditor.viewModel = vm
         default:
+            Log.shared.errorAndCrash("Segue destination not handled")
             break
         }
     }
@@ -324,7 +315,7 @@ extension AccountSettingsViewController: OAuthAuthorizerDelegate {
 
 // MARK: - EditableAccountSettingsDelegate
 
-extension AccountSettingsViewController: EditableAccountSettingsDelegate {
+extension AccountSettingsViewController: AccountSettingsDelegate {
     func didChange() {
         /// As the data source of this table view provides the rows generated at the vm initialization,
         /// we re-init the view model in order re-generate those rows.

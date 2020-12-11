@@ -13,12 +13,12 @@ import pEpIOSToolbox
 
 class EditableAccountSettingsViewModelTest2: AccountDrivenTestBase {
 
-    var viewModel: EditableAccountSettingsViewModel2?
+    var viewModel: EditableAccountSettingsViewModel?
 
     override func setUp() {
         super.setUp()
         let mockViewController = MockEditableViewController()
-        viewModel = EditableAccountSettingsViewModel2(account: account, delegate: mockViewController)
+        viewModel = EditableAccountSettingsViewModel(account: account, delegate: mockViewController)
     }
 
     func testViewModelNotNil() {
@@ -57,7 +57,7 @@ class EditableAccountSettingsViewModelTest2: AccountDrivenTestBase {
     func testRowsInAccountSecctionForOAuthAccount() {
         account.imapServer?.authMethod = AuthMethod.saslXoauth2.rawValue
         account.imapServer?.credentials.password = getPayload()
-        viewModel = EditableAccountSettingsViewModel2(account: account)
+        viewModel = EditableAccountSettingsViewModel(account: account)
         evaluateRowsInAccountSection(isOauth: true)
     }
 
@@ -82,7 +82,7 @@ class EditableAccountSettingsViewModelTest2: AccountDrivenTestBase {
     func testHandleSaveButtonPressed() {
         let setLoadingViewExpectation = XCTestExpectation(description: "setLoadingViewExpectation was called")
         let mockViewController = MockEditableViewController(setLoadingViewExpectation: setLoadingViewExpectation)
-        viewModel = EditableAccountSettingsViewModel2(account: account, delegate: mockViewController)
+        viewModel = EditableAccountSettingsViewModel(account: account, delegate: mockViewController)
         viewModel?.handleSaveButtonPressed()
         //TODO: continue this.
 //        dismissyourself, show alert, etc

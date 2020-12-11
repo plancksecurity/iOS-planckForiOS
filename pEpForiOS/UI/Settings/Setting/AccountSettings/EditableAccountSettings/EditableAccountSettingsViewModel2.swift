@@ -1,5 +1,5 @@
 //
-//  EditableAccountSettingsViewModel2.swift
+//  EditableAccountSettingsViewModel.swift
 //  pEp
 //
 //  Created by Martín Brude on 03/12/2020.
@@ -22,8 +22,7 @@ protocol EditableAccountSettingsDelegate2: class {
     func dismissYourself()
 }
 
-
-final class EditableAccountSettingsViewModel2 {
+final class EditableAccountSettingsViewModel {
 
     // Helper to carry the user input ot its validation.
     private typealias Input = (userName: String,
@@ -48,7 +47,7 @@ final class EditableAccountSettingsViewModel2 {
     public private(set) var sections = [AccountSettingsViewModel.Section]()
 
     /// Delegate to inform the account settings had changed
-    public weak var editableAccountSettingsDelegate: EditableAccountSettingsDelegate?
+    public weak var accountSettingsDelegate: AccountSettingsDelegate?
 
     /// Indicates the number ot transport security options.
     public var numberOfTransportSecurityOptions : Int {
@@ -206,7 +205,7 @@ final class EditableAccountSettingsViewModel2 {
 
 // MARK: -  VerifiableAccountDelegate
 
-extension EditableAccountSettingsViewModel2: VerifiableAccountDelegate {
+extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
 
     public func didEndVerification(result: Result<Void, Error>) {
         switch result {
@@ -219,7 +218,7 @@ extension EditableAccountSettingsViewModel2: VerifiableAccountDelegate {
                     }
                     DispatchQueue.main.async {
                         me.delegate?.setLoadingView(visible: false)
-                        me.editableAccountSettingsDelegate?.didChange()
+                        me.accountSettingsDelegate?.didChange()
                         me.delegate?.dismissYourself()
                     }
                 }
@@ -243,7 +242,7 @@ extension EditableAccountSettingsViewModel2: VerifiableAccountDelegate {
 
 // MARK: -  TransportSecurityViewModel
 
-extension EditableAccountSettingsViewModel2 {
+extension EditableAccountSettingsViewModel {
 
     private struct TransportSecurityViewModel {
         public var numberOfOptions: Int {
@@ -260,7 +259,7 @@ extension EditableAccountSettingsViewModel2 {
 
 // MARK: -  Private
 
-extension EditableAccountSettingsViewModel2 {
+extension EditableAccountSettingsViewModel {
 
     /// Generate and return the display row.
     /// - Parameters:
@@ -298,7 +297,7 @@ extension EditableAccountSettingsViewModel2 {
 
 // MARK: -  Validate input
 
-extension EditableAccountSettingsViewModel2 {
+extension EditableAccountSettingsViewModel {
 
     private func validateInput() throws -> Input {
         // IMAP
@@ -398,7 +397,6 @@ extension EditableAccountSettingsViewModel2 {
             // OAUTH2 trumps any password
             theVerifier.password = nil
         } else {
-
             theVerifier.password = originalPassword
             if input.password != nil {
                 theVerifier.password = password

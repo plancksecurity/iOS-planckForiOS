@@ -9,24 +9,30 @@
 import Foundation
 import MessageModel
 
+
+protocol AccountSettingsDelegate: class {
+    /// Informs Account Settings that something had changed.
+    func didChange()
+}
+
 class EditSignatureViewModel {
     
     private let account: Account
     
-    private weak var editableAccountSettingsdelegate: EditableAccountSettingsDelegate?
+    private weak var accountSettingsdelegate: AccountSettingsDelegate?
     
     public var numberOfRows: Int {
         return 1
     }
     
-    init(account: Account, delegate: EditableAccountSettingsDelegate? = nil) {
+    init(account: Account, delegate: AccountSettingsDelegate? = nil) {
         self.account = account
-        self.editableAccountSettingsdelegate = delegate
+        self.accountSettingsdelegate = delegate
     }
     
     public func updateSignature(newSignature: String) {
         account.signature = newSignature
-        editableAccountSettingsdelegate?.didChange()
+        accountSettingsdelegate?.didChange()
     }
     
     public func signature() -> String {
