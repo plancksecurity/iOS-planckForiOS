@@ -268,7 +268,7 @@ extension EditableAccountSettingsViewModel {
     /// - Returns: The configured row.
     private func getDisplayRow(type : AccountSettingsViewModel.RowType, value : String) -> AccountSettingsViewModel.DisplayRow {
         let title = AccountSettingsHelper.rowTitle(for: type)
-        let cellIdentifier = AccountSettingsViewModel.CellsIdentifiers.settingsDisplayCell
+        let cellIdentifier = AccountSettingsHelper.CellsIdentifiers.settingsDisplayCell
         return AccountSettingsViewModel.DisplayRow(type: type,
                                                    title: title,
                                                    text: value,

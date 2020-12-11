@@ -248,16 +248,6 @@ extension AccountSettingsViewModel {
 
 extension AccountSettingsViewModel {
 
-    //MB: - To the helper.
-    public struct CellsIdentifiers {
-        static let oAuthCell = "oAuthTableViewCell"
-        static let displayCell = "KeyValueTableViewCell"
-        static let switchCell = "SwitchTableViewCell"
-        static let dangerousCell = "DangerousTableViewCell"
-        static let settingsCell = "settingsCell"
-        static let settingsDisplayCell = "settingsDisplayCell"
-    }
-
     private enum AccountSettingsError: Error, LocalizedError {
         case accountNotFound, failToModifyAccountPEPSync
         var errorDescription: String? {
@@ -347,7 +337,7 @@ extension AccountSettingsViewModel {
                 return rows
             }
             let nameTitle = NSLocalizedString("Name", comment: "Name field")
-            let nameRow = DisplayRow(type: .name, title: nameTitle, text: name, cellIdentifier: CellsIdentifiers.displayCell)
+            let nameRow = DisplayRow(type: .name, title: nameTitle, text: name, cellIdentifier:  AccountSettingsHelper.CellsIdentifiers.displayCell)
             rows.append(nameRow)
 
             // email
@@ -359,7 +349,7 @@ extension AccountSettingsViewModel {
                 let oAuthRow = DisplayRow(type: .oauth2Reauth,
                                           title: rowTitle(for: .oauth2Reauth),
                                           text: "",
-                                          cellIdentifier: CellsIdentifiers.oAuthCell)
+                                          cellIdentifier: AccountSettingsHelper.CellsIdentifiers.oAuthCell)
                 rows.append(oAuthRow)
 
             } else {
@@ -384,7 +374,7 @@ extension AccountSettingsViewModel {
                                                             return
                                                         }
                                                         me.handleSwitchChanged(isIncludedInUnifiedFolders: isIncludedInUnifiedFolders)
-                }, cellIdentifier: CellsIdentifiers.switchCell)
+                                                      }, cellIdentifier: AccountSettingsHelper.CellsIdentifiers.switchCell)
             rows.append(includeInUnifiedFolderRow)
 
             // pepSync
@@ -397,11 +387,11 @@ extension AccountSettingsViewModel {
                         return
                     }
                     me.pEpSync(enable: enable)
-                }, cellIdentifier: CellsIdentifiers.switchCell)
+                }, cellIdentifier: AccountSettingsHelper.CellsIdentifiers.switchCell)
             rows.append(pepSyncRow)
 
             // reset
-            let resetRow = ActionRow(type: .reset, title: rowTitle(for: .reset), cellIdentifier: CellsIdentifiers.dangerousCell)
+            let resetRow = ActionRow(type: .reset, title: rowTitle(for: .reset), cellIdentifier: AccountSettingsHelper.CellsIdentifiers.dangerousCell)
             rows.append(resetRow)
 
         case .imap:
@@ -449,7 +439,7 @@ extension AccountSettingsViewModel {
         return DisplayRow(type: type,
                           title: rowTitle(for: type),
                           text: value,
-                          cellIdentifier: CellsIdentifiers.displayCell,
+                          cellIdentifier: AccountSettingsHelper.CellsIdentifiers.displayCell,
                           shouldShowCaret: type != .tranportSecurity)
     }
 }
