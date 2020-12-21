@@ -1,35 +1,8 @@
-/* Class = "UILabel"; text = "If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle."; ObjectID = "5Cq-ai-hYf"; */
-"5Cq-ai-hYf.text" = "Ak Trustwords nie sú správne, môže dôjsť k útoku mužom uprostred.";
-
-/* Class = "UILabel"; text = "p≡p uses a Privacy Status icon to indicate how secure your communication is"; ObjectID = "6p7-rU-UIJ"; */
-"6p7-rU-UIJ.text" = "p≡p používa ikonu stavu súkromia na označenie, ako je vaša komunikácia bezpečná";
-
-/* Class = "UILabel"; text = "When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted. "; ObjectID = "7SL-dj-Z7j"; */
-"7SL-dj-Z7j.text" = "Keď potvrdíte správnosť hesiel vášho komunikačného partnera, vaša komunikácia bude úplne Bezpečná a Dôveryhodná. ";
-
-/* Class = "UILabel"; text = "This Privacy Status Icon is shown as an Icon the user's avatar"; ObjectID = "9zn-gN-7aV"; */
-"9zn-gN-7aV.text" = "Táto ikona Stavu súkromia sa zobrazuje ako ikona avatara používateľa";
-
-/* Class = "UILabel"; text = "And in the top bar when you open or write an email:"; ObjectID = "26J-Qa-GAl"; */
-"26J-Qa-GAl.text" = "A pri otváraní alebo písaní e-mailu na hornom paneli:";
-
 /* Class = "UILabel"; text = "Name"; ObjectID = "aAW-1y-cXc"; */
 "aAW-1y-cXc.text" = "Meno";
 
-/* Class = "UILabel"; text = "You can close this tutorial anytime with the Skip button."; ObjectID = "B2w-Dk-0sO"; */
-"B2w-Dk-0sO.text" = "Túto príručku môžete kedykoľvek zavrieť pomocou tlačidla Preskočiť.";
-
 /* Class = "UILabel"; text = "Label"; ObjectID = "ckp-rp-1Pd"; */
 "ckp-rp-1Pd.text" = "Label";
-
-/* Class = "UILabel"; text = "Secure & Trusted"; ObjectID = "DFW-OW-8OC"; */
-"DFW-OW-8OC.text" = "Bezpečná a Dôveryhodná";
-
-/* Class = "UILabel"; text = "Handshake"; ObjectID = "E4b-mc-IYT"; */
-"E4b-mc-IYT.text" = "Handshake";
-
-/* Class = "UILabel"; text = "Mistrusted"; ObjectID = "eK9-eY-X1L"; */
-"eK9-eY-X1L.text" = "Nedôveryhodne";
 
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "emU-WV-Kap"; */
 "emU-WV-Kap.normalTitle" = "Tlačidlo";
@@ -37,14 +10,8 @@
 /* Class = "UILabel"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."; ObjectID = "GC3-wG-GHD"; */
 "GC3-wG-GHD.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.";
 
-/* Class = "UILabel"; text = "Secure"; ObjectID = "I8H-Tq-jkV"; */
-"I8H-Tq-jkV.text" = "Bezpečná";
-
 /* Class = "UINavigationItem"; title = "Add to Contacts"; ObjectID = "Jan-ZA-zMd"; */
 "Jan-ZA-zMd.title" = "Pridať z kontaktov";
-
-/* Class = "UILabel"; text = "When you click on the Privacy Status icon in the top bar, you will get to the Handshake, where you can verify your communication partner. "; ObjectID = "Jbi-yG-9Il"; */
-"Jbi-yG-9Il.text" = "Po kliknutí na ikonu stavu súkromia na hornom paneli sa dostanete na stránku Handshake, kde môžete overiť svojho komunikačného partnera. ";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "kNd-Jx-X9l"; */
 "kNd-Jx-X9l.text" = "Label";
@@ -55,39 +22,12 @@
 /* Class = "UILabel"; text = "Email"; ObjectID = "Lcu-U0-qEs"; */
 "Lcu-U0-qEs.text" = "E-mail";
 
-/* Class = "UILabel"; text = "Secure"; ObjectID = "orZ-GB-OGi"; */
-"orZ-GB-OGi.text" = "Bezpečná";
-
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Rgh-E1-f1w"; */
 "Rgh-E1-f1w.normalTitle" = "Tlačidlo";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "rPi-Px-Pyp"; */
 "rPi-Px-Pyp.text" = "Label";
 
-/* Class = "UIButton"; accessibilityLabel = "confirmButton"; ObjectID = "SR8-6c-hDL"; */
-"SR8-6c-hDL.accessibilityLabel" = "confirmButton";
-
-/* Class = "UIButton"; normalTitle = "Confirm"; ObjectID = "SR8-6c-hDL"; */
-"SR8-6c-hDL.normalTitle" = "Súhlasíť";
-
-/* Class = "UIButton"; accessibilityLabel = "wrongButton"; ObjectID = "SUa-gz-P97"; */
-"SUa-gz-P97.accessibilityLabel" = "wrongButton";
-
-/* Class = "UIButton"; normalTitle = "Decline"; ObjectID = "SUa-gz-P97"; */
-"SUa-gz-P97.normalTitle" = "Odmietnuť";
-
-/* Class = "UILabel"; text = "With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact."; ObjectID = "uqG-OB-ggb"; */
-"uqG-OB-ggb.text" = "S týmto Stavom súkromia je všetka komunikácia bezpečná, ale aby ste potvrdili, že váš kontakt je skutočne osobou, ktorú poznáte, mali by ste porovnať Trustwords s týmto kontaktom.";
-
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "w5A-sP-MB2"; */
 "w5A-sP-MB2.normalTitle" = "Tlačidlo";
-
-/* Class = "UILabel"; text = "Welcome to the p≡p Tutorial"; ObjectID = "ynz-KT-KJl"; */
-"ynz-KT-KJl.text" = "Vitajte v tutoriále p≡p";
-
-/* Class = "UILabel"; text = "OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER"; ObjectID = "zd3-Y1-16M"; */
-"zd3-Y1-16M.text" = "OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER";
-
-/* Class = "UILabel"; text = "When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted"; ObjectID = "Zhc-gu-hRF"; */
-"Zhc-gu-hRF.text" = "Po potvrdení správnosti Trustwords a dokončení Handshake bude komunikácia úplne bezpečná a dôveryhodná";
 

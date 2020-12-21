@@ -764,7 +764,7 @@
 "Settings" = "Paramètres";
 
 /* Enter passphrase alert - Negative button text - shown while pEp sync is running */
-"Shutdown p≡p Sync" = "Shutdown p≡p Sync";
+"Shutdown p≡p Sync" = "Arrêter p≡p Sync";
 
 /* Login */
 "Sign In" = "Se connecter";

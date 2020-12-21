@@ -1017,6 +1017,9 @@
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Podeu tancar aquest tutorial en qualsevol moment amb el botó Saltar.";
 
+/* PGPKeyImportSetting row title when grouped */
+"You can not import keys while the device is in a device group." = "You can not import keys while the device is in a device group.";
+
 /* alert error message certificate delete */
 "You can only delete certificates that are not connected to an account. The certificate is currently used for the following account: (by)" = "Només podeu suprimir certificats que no estan connectats a un compte. Actualment el certificat s’utilitza per al següent compte: (per)";
 
