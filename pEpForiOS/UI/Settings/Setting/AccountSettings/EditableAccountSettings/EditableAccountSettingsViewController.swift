@@ -112,7 +112,7 @@ extension EditableAccountSettingsViewController: UITableViewDelegate {
 
 // MARK: - EditableAccountSettingsDelegate2
 
-extension EditableAccountSettingsViewController: EditableAccountSettingsDelegate2 {
+extension EditableAccountSettingsViewController: EditableAccountSettingsDelegate {
     func setLoadingView(visible: Bool) {
         LoadingInterface.setLoadingView(visible: visible)
     }

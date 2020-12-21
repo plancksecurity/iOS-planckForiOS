@@ -11,7 +11,7 @@ import MessageModel
 import pEpIOSToolbox
 import PantomimeFramework
 
-protocol EditableAccountSettingsDelegate2: class {
+protocol EditableAccountSettingsDelegate: class {
     /// Changes loading view visibility
     /// - Parameter visible: Indicates if it should be visible or not.
     func setLoadingView(visible: Bool)
@@ -41,7 +41,7 @@ final class EditableAccountSettingsViewModel {
     public private(set) var isOAuth2: Bool = false
 
     /// Delegate to trigger actions to the VC.
-    public weak var delegate: EditableAccountSettingsDelegate2?
+    public weak var delegate: EditableAccountSettingsDelegate?
 
     /// The sections of Editable Account Settings view.
     public private(set) var sections = [AccountSettingsViewModel.Section]()
@@ -91,7 +91,7 @@ final class EditableAccountSettingsViewModel {
     /// - Parameters:
     ///   - account: The account to configure the editable account settings view model.
     ///   - delegate: The delegate to communicate to the View Controller.
-    public init(account: Account, delegate: EditableAccountSettingsDelegate2? = nil) {
+    public init(account: Account, delegate: EditableAccountSettingsDelegate? = nil) {
         self.account = account
         self.delegate = delegate
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue

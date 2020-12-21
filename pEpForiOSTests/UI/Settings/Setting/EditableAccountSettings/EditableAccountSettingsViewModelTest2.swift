@@ -11,7 +11,7 @@ import pEpIOSToolbox
 @testable import pEpForiOS
 @testable import MessageModel
 
-class EditableAccountSettingsViewModelTest2: AccountDrivenTestBase {
+class EditableAccountSettingsViewModelTest: AccountDrivenTestBase {
 
     var viewModel: EditableAccountSettingsViewModel?
 
@@ -81,23 +81,21 @@ class EditableAccountSettingsViewModelTest2: AccountDrivenTestBase {
 
     func testHandleSaveButtonPressed() {
         let setLoadingViewExpectation = XCTestExpectation(description: "setLoadingViewExpectation was called")
-        let mockViewController = MockEditableViewController(setLoadingViewExpectation: setLoadingViewExpectation)
+        let dismissYourselfExpectation = XCTestExpectation(description: "dismissYourselfExpectation was called")
+        let didChangeExpectation = XCTestExpectation(description: "didChangeExpectation was called")
+
+        let mockViewController = MockEditableViewController(setLoadingViewExpectation: setLoadingViewExpectation,
+                                                            dismissYourselfExpectation: dismissYourselfExpectation)
         viewModel = EditableAccountSettingsViewModel(account: account, delegate: mockViewController)
+        let accountSettingsDelegate = MockAccountSettingsViewController(didChangeExpectation: didChangeExpectation)
+        viewModel?.accountSettingsDelegate = accountSettingsDelegate
         viewModel?.handleSaveButtonPressed()
-        //TODO: continue this.
-//        dismissyourself, show alert, etc
     }
-
-//    MB:-
-//    TODO:
-//    - complete testHandleSaveButtonPressed.
-//    - make a test for didEndVerification
-
 }
 
 //MARK:- Helpers
 
-extension EditableAccountSettingsViewModelTest2 {
+extension EditableAccountSettingsViewModelTest {
 
     private func evaluateRowsInServerSection(sectionIndex: Int) {
         let serverRowTypes: [AccountSettingsViewModel.RowType] = [.server, .port, .tranportSecurity, .username]
@@ -164,7 +162,7 @@ extension EditableAccountSettingsViewModelTest2 {
     }
 }
 
-class MockEditableViewController: EditableAccountSettingsDelegate2 {
+class MockEditableViewController: EditableAccountSettingsDelegate {
 
     private var setLoadingViewExpectation: XCTestExpectation?
     private var showAlertExpectation: XCTestExpectation?
@@ -188,6 +186,25 @@ class MockEditableViewController: EditableAccountSettingsDelegate2 {
 
     func dismissYourself() {
         fulfillIfNotNil(expectation: dismissYourselfExpectation)
+    }
+
+    private func fulfillIfNotNil(expectation: XCTestExpectation?) {
+        if expectation != nil {
+            expectation?.fulfill()
+        }
+    }
+}
+
+class MockAccountSettingsViewController: AccountSettingsDelegate {
+
+    private var didChangeExpectation: XCTestExpectation?
+
+    init(didChangeExpectation: XCTestExpectation? = nil) {
+        self.didChangeExpectation = didChangeExpectation
+    }
+
+    func didChange() {
+        fulfillIfNotNil(expectation: didChangeExpectation)
     }
 
     private func fulfillIfNotNil(expectation: XCTestExpectation?) {
