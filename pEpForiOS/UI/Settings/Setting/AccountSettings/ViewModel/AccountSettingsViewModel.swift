@@ -149,6 +149,8 @@ extension AccountSettingsViewModel {
         var cellIdentifier: String
         /// Indicates if the caret should be shown
         var shouldShowCaret: Bool = true
+        /// Indicates if the caret should be shown
+        var shouldSelect: Bool = true
     }
 
     /// Struct that is used to perform an action.

@@ -269,11 +269,13 @@ extension EditableAccountSettingsViewModel {
     private func getDisplayRow(type : AccountSettingsViewModel.RowType, value : String) -> AccountSettingsViewModel.DisplayRow {
         let title = AccountSettingsHelper.rowTitle(for: type)
         let cellIdentifier = AccountSettingsHelper.CellsIdentifiers.settingsDisplayCell
+        let shouldShowCaretOrSelect = type != .tranportSecurity
         return AccountSettingsViewModel.DisplayRow(type: type,
                                                    title: title,
                                                    text: value,
                                                    cellIdentifier: cellIdentifier,
-                                                   shouldShowCaret: type != .tranportSecurity)
+                                                   shouldShowCaret: shouldShowCaretOrSelect,
+                                                   shouldSelect: shouldShowCaretOrSelect)
     }
 
     /// Setup the server fields.

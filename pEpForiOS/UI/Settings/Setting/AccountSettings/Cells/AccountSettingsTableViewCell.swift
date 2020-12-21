@@ -35,6 +35,7 @@ final class AccountSettingsTableViewCell: UITableViewCell {
         valueTextfield.text = row.text
         valueTextfield.isSecureTextEntry = row.type == .password
         valueTextfield.shouldShowCaret = row.shouldShowCaret
+        valueTextfield.shouldSelect = row.shouldSelect
         switch row.type {
         case .email:
             valueTextfield.isEnabled = false

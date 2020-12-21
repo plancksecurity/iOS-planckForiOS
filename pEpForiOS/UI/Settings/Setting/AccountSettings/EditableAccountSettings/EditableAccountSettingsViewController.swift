@@ -159,6 +159,7 @@ extension EditableAccountSettingsViewController: UITextFieldDelegate {
         if row.type == .tranportSecurity {
             let index = vm.transportSecurityIndex(for: row.text)
             pickerView.selectRow(index, inComponent: 0, animated: true)
+            textField.tintColor = .clear
         }
     }
 
