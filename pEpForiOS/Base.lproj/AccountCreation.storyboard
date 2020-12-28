@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="n6h-PU-h88">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="n6h-PU-h88">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -48,7 +48,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="73" translatesAutoresizingMaskIntoConstraints="NO" id="8nk-hU-BvN">
                                                 <rect key="frame" x="57" y="282" width="300" height="254"/>
                                                 <subviews>
-                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Nx2-xq-Km8" customClass="AnimatedPlaceholderTextfield" customModule="pEpForiOS" customModuleProvider="target">
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Nx2-xq-Km8" customClass="AnimatedPlaceholderTextfield" customModule="pEpForiOS" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="300" height="36"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="email"/>
@@ -76,7 +76,7 @@
                                                             <outlet property="delegate" destination="clh-8B-z2B" id="wfT-nP-T86"/>
                                                         </connections>
                                                     </textField>
-                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="e3d-56-GP8" customClass="AnimatedPlaceholderTextfield" customModule="pEpForiOS">
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="e3d-56-GP8" customClass="AnimatedPlaceholderTextfield" customModule="pEpForiOS">
                                                         <rect key="frame" x="0.0" y="109" width="300" height="36"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="password"/>
@@ -104,7 +104,7 @@
                                                             <outlet property="delegate" destination="clh-8B-z2B" id="wbY-q7-Tw7"/>
                                                         </connections>
                                                     </textField>
-                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pqA-KX-peU" customClass="AnimatedPlaceholderTextfield" customModule="pEpForiOS">
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pqA-KX-peU" customClass="AnimatedPlaceholderTextfield" customModule="pEpForiOS">
                                                         <rect key="frame" x="0.0" y="218" width="300" height="36"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="username"/>
@@ -237,10 +237,6 @@
                                                         <exclude reference="ffm-RC-hsU"/>
                                                         <exclude reference="Lrs-na-E4z"/>
                                                         <exclude reference="m0g-pS-2jx"/>
-                                                        <exclude reference="88a-wW-ARz"/>
-                                                        <exclude reference="ZbO-0c-3dY"/>
-                                                        <exclude reference="pyt-nn-P8S"/>
-                                                        <exclude reference="rIl-Z0-FFv"/>
                                                         <exclude reference="2nN-cq-k1r"/>
                                                         <exclude reference="A1z-ZF-Oud"/>
                                                         <exclude reference="UM3-1o-nc6"/>
@@ -248,6 +244,10 @@
                                                         <exclude reference="m83-IL-ein"/>
                                                         <exclude reference="nhb-lJ-cSW"/>
                                                         <exclude reference="vkY-dl-N9H"/>
+                                                        <exclude reference="88a-wW-ARz"/>
+                                                        <exclude reference="ZbO-0c-3dY"/>
+                                                        <exclude reference="pyt-nn-P8S"/>
+                                                        <exclude reference="rIl-Z0-FFv"/>
                                                         <exclude reference="2QJ-46-7hU"/>
                                                         <exclude reference="4m8-Sq-LOv"/>
                                                         <exclude reference="JEJ-Cy-LII"/>
@@ -260,11 +260,11 @@
                                                 <variation key="heightClass=compact">
                                                     <mask key="constraints">
                                                         <include reference="5uB-dW-SXj"/>
-                                                        <include reference="ZbO-0c-3dY"/>
-                                                        <include reference="pyt-nn-P8S"/>
                                                         <include reference="UM3-1o-nc6"/>
                                                         <include reference="a6a-3J-tBh"/>
                                                         <include reference="m83-IL-ein"/>
+                                                        <include reference="ZbO-0c-3dY"/>
+                                                        <include reference="pyt-nn-P8S"/>
                                                         <include reference="4m8-Sq-LOv"/>
                                                         <include reference="POP-in-VWm"/>
                                                         <include reference="rMC-LK-qvO"/>
@@ -278,10 +278,10 @@
                                                         <include reference="ffm-RC-hsU"/>
                                                         <include reference="Lrs-na-E4z"/>
                                                         <include reference="m0g-pS-2jx"/>
-                                                        <include reference="88a-wW-ARz"/>
-                                                        <include reference="rIl-Z0-FFv"/>
                                                         <include reference="nhb-lJ-cSW"/>
                                                         <include reference="vkY-dl-N9H"/>
+                                                        <include reference="88a-wW-ARz"/>
+                                                        <include reference="rIl-Z0-FFv"/>
                                                         <include reference="JEJ-Cy-LII"/>
                                                         <include reference="V7N-wS-UD5"/>
                                                         <include reference="gEw-K5-789"/>
@@ -305,8 +305,8 @@
                                                 <variation key="heightClass=regular-widthClass=regular">
                                                     <mask key="constraints">
                                                         <exclude reference="Nnr-tR-Kv6"/>
-                                                        <exclude reference="88a-wW-ARz"/>
                                                         <exclude reference="A1z-ZF-Oud"/>
+                                                        <exclude reference="88a-wW-ARz"/>
                                                     </mask>
                                                 </variation>
                                             </view>
@@ -694,16 +694,16 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YyD-mC-c9i">
-                                <rect key="frame" x="0.0" y="44" width="414" height="145"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="98"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Certificate" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fd1-jY-GRg">
-                                        <rect key="frame" x="103.5" y="32" width="207.5" height="33.5"/>
+                                        <rect key="frame" x="103.5" y="10" width="207.5" height="33.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please select which certificate you would like to use:" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="piS-rX-R34">
-                                        <rect key="frame" x="48.5" y="90.5" width="317" height="42.5"/>
+                                        <rect key="frame" x="34" y="51.5" width="346.5" height="42.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -733,10 +733,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ztt-aa-W7u">
-                                <rect key="frame" x="0.0" y="197" width="414" height="665"/>
+                                <rect key="frame" x="0.0" y="150" width="414" height="712"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="AZr-4K-O4u">
-                                        <rect key="frame" x="57" y="72" width="300" height="521"/>
+                                        <rect key="frame" x="57" y="57" width="300" height="598"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="500" id="0RW-XB-Bxv">
@@ -796,7 +796,7 @@
                                         </prototypes>
                                     </tableView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tm4-05-7M1">
-                                        <rect key="frame" x="135.5" y="613" width="143" height="22"/>
+                                        <rect key="frame" x="135.5" y="675" width="143" height="22"/>
                                         <inset key="imageEdgeInsets" minX="-15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Add Certificate" image="button-add"/>
                                         <connections>

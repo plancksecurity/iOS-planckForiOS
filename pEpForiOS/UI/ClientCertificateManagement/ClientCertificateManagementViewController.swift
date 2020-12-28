@@ -64,14 +64,9 @@ extension ClientCertificateManagementViewController: UIDocumentPickerDelegate {
 
 extension ClientCertificateManagementViewController {
     private func configureAppearance() {
-        selectCertificateTitleLabel.font = UIFont.pepFont(style: .title2, weight: .regular)
-        selectCertificateTitleLabel.adjustsFontForContentSizeCategory = true
-        selectCertificateSubtitleLabel.font = UIFont.pepFont(style: .title3, weight: .regular)
-        selectCertificateSubtitleLabel.adjustsFontForContentSizeCategory = true
-
-        addCertButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
-        addCertButton.titleLabel?.adjustsFontForContentSizeCategory = true
-
+        selectCertificateTitleLabel.setPEPFont(style: .title2, weight: .regular)
+        selectCertificateSubtitleLabel.setPEPFont(style: .title3, weight: .regular)
+        addCertButton.setPEPFont(style: .body, weight: .regular)
         if #available(iOS 13, *) {
             Appearance.customiseForLogin(viewController: self)
         } else {

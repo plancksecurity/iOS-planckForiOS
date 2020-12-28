@@ -58,4 +58,30 @@ extension UIButton {
         buttonLeft.setTitleColor(UIColor.pEpGreen, for: .normal)
         return buttonLeft
     }
+
+    /// Sets the system font used in p≡p configured with the text style and the weight,
+    /// scaled for accessibility if needed at max 30 point size.
+    /// Also enables adjustsFontForContentSizeCategory.
+    ///
+    /// - Parameters:
+    ///   - style: The preferred font style.
+    ///   - weight: The preferred font weight.
+    public func setPEPFont(style: UIFont.TextStyle, weight: UIFont.Weight) {
+        titleLabel?.setPEPFont(style: style, weight: weight)
+    }
+}
+
+extension UILabel {
+
+    /// Sets the system font used in p≡p configured with the text style and the weight,
+    /// scaled for accessibility if needed at max 30 point size.
+    /// Also enables adjustsFontForContentSizeCategory.
+    ///
+    /// - Parameters:
+    ///   - style: The preferred font style.
+    ///   - weight: The preferred font weight.
+    public func setPEPFont(style: UIFont.TextStyle, weight: UIFont.Weight) {
+        font = UIFont.pepFont(style: style, weight: weight)
+        adjustsFontForContentSizeCategory = true
+    }
 }
