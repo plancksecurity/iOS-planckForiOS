@@ -122,14 +122,9 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
             if row.isEnabled {
                 if let fontColor = row.titleFontColor {
                     cell.textLabel?.textColor = fontColor
-
                 }
             } else {
                 cell.textLabel?.textColor = .gray
-            }
-
-            if row.type == .setOwnKey && row.isEnabled {
-                cell.accessoryType = .disclosureIndicator
             }
             return cell
         }
@@ -170,13 +165,25 @@ extension PGPKeyImportSettingViewController {
 // MARK: - PGPKeyImportSettingViewModelDelegate
 
 extension PGPKeyImportSettingViewController: PGPKeyImportSettingViewModelDelegate {
-    func showSetPgpKeyImportScene() {
-        performSegue(withIdentifier: SegueIdentifier.segueImportKeyFromDocuments.rawValue,
-                     sender: nil)
+    func showSetOwnKeyAlert() {
+        UIUtils.showSetOwnKeyAlertView { (fingerprint) in
+            let viewModel = SetOwnKeyViewModel()
+            viewModel.fingerprint = fingerprint
+            viewModel.email = "" //MB:-
+            viewModel.setOwnKey { errorString in
+                // Weak self because the VC can out of scope by user's decision
+                DispatchQueue.main.async {
+                    if let errorText = errorString {
+                        let title = NSLocalizedString("Set Own Key", comment: "Set Own Key - Alert view title")
+                        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: errorText)
+                    }
+                }
+            }
+        }
     }
 
-    func showSetOwnKeyScene() {
-        performSegue(withIdentifier: SegueIdentifier.segueSetOwnKey.rawValue,
+    func showSetPgpKeyImportScene() {
+        performSegue(withIdentifier: SegueIdentifier.segueImportKeyFromDocuments.rawValue,
                      sender: nil)
     }
 }

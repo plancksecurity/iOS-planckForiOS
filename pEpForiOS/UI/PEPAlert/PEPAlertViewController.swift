@@ -11,23 +11,22 @@ import pEpIOSToolbox
 
 final class PEPAlertViewController: UIViewController {
     public var alertStyle: AlertStyle = .default
-    @IBOutlet weak var alertTitle: UILabel!
-    @IBOutlet weak var alertMessage: UILabel!
-    @IBOutlet weak var alertImageView: UIImageView!
-    @IBOutlet weak var buttonsStackView: UIStackView!
-    
 
-    @IBOutlet weak private var alertImageViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak private var alertTitleTopViewHeightConstraint: NSLayoutConstraint!
-    
+    @IBOutlet private weak var alertTitle: UILabel!
+    @IBOutlet private weak var alertMessage: UILabel!
+    @IBOutlet private weak var alertImageView: UIImageView!
+    @IBOutlet private weak var buttonsStackView: UIStackView!
+    @IBOutlet private weak var alertImageViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var alertTitleTopViewHeightConstraint: NSLayoutConstraint!
+
     private var viewModel: PEPAlertViewModelProtocol
     private var titleString: String?
     private var message: String?
     private var paintPEPInTitle = false
     private var images: [UIImage]?
     private var action = [PEPUIAlertAction]()
-    static let storyboardId = "PEPAlertViewController"
-    public var style : AlertStyle = .default
+    private static let storyboardId = "PEPAlertViewController"
+
     required init?(coder aDecoder: NSCoder) {
         viewModel = PEPAlertViewModel()
         super.init(coder: aDecoder)
@@ -45,29 +44,31 @@ final class PEPAlertViewController: UIViewController {
     }
 
     static func fromStoryboard(title: String? = nil,
-                     message: String? = nil,
-                     paintPEPInTitle: Bool = false,
-                     image: [UIImage]? = nil,
-                     viewModel: PEPAlertViewModelProtocol = PEPAlertViewModel())
-        -> PEPAlertViewController? {
-            let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
-            guard let pEpAlertViewController = storyboard.instantiateViewController(
+                               message: String? = nil,
+                               paintPEPInTitle: Bool = false,
+                               image: [UIImage]? = nil,
+                               viewModel: PEPAlertViewModelProtocol = PEPAlertViewModel())
+    -> PEPAlertViewController? {
+        let storyboard = UIStoryboard(name: Constants.reusableStoryboard, bundle: .main)
+        guard let pEpAlertViewController = storyboard.instantiateViewController(
                 withIdentifier: PEPAlertViewController.storyboardId) as? PEPAlertViewController else {
-                    Log.shared.errorAndCrash("Fail to instantiateViewController PEPAlertViewController")
-                    return nil
-            }
-            pEpAlertViewController.viewModel = viewModel
-            pEpAlertViewController.viewModel.delegate = pEpAlertViewController
+            Log.shared.errorAndCrash("Fail to instantiateViewController PEPAlertViewController")
+            return nil
+        }
+        pEpAlertViewController.viewModel = viewModel
+        pEpAlertViewController.viewModel.delegate = pEpAlertViewController
 
-            pEpAlertViewController.titleString = title
-            pEpAlertViewController.paintPEPInTitle = paintPEPInTitle
-            pEpAlertViewController.message = message
-            pEpAlertViewController.images = image
-
+        pEpAlertViewController.titleString = title
+        pEpAlertViewController.paintPEPInTitle = paintPEPInTitle
+        pEpAlertViewController.message = message
+        pEpAlertViewController.images = image
+        DispatchQueue.main.async {
             pEpAlertViewController.modalPresentationStyle = .overFullScreen
             pEpAlertViewController.modalTransitionStyle = .crossDissolve
+        }
 
-            return pEpAlertViewController
+
+        return pEpAlertViewController
     }
 
     func add(action: PEPUIAlertAction) {

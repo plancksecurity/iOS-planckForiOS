@@ -13,7 +13,7 @@ import pEpIOSToolbox
 
 protocol PGPKeyImportSettingViewModelDelegate: class {
     func showSetPgpKeyImportScene()
-    func showSetOwnKeyScene()
+    func showSetOwnKeyAlert()
 }
 
 extension PGPKeyImportSettingViewModel {
@@ -66,7 +66,7 @@ class PGPKeyImportSettingViewModel {
             }
         case 1: // SetOwnKey
             if !isGrouped() {
-                delegate?.showSetOwnKeyScene()
+                delegate?.showSetOwnKeyAlert()
             }
         default:
             Log.shared.errorAndCrash("Unhandled case")

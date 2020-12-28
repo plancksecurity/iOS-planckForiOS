@@ -44,9 +44,10 @@ extension PEPAlertViewController {
         })
         pepAlertViewController?.add(action: errorNotNowAction)
         pepAlertViewController?.add(action: errorTryAgainAction)
-        pepAlertViewController?.modalPresentationStyle = .overFullScreen
-        pepAlertViewController?.modalTransitionStyle = .crossDissolve
-
+        DispatchQueue.main.async {
+            pepAlertViewController?.modalPresentationStyle = .overFullScreen
+            pepAlertViewController?.modalTransitionStyle = .crossDissolve
+        }
         return pepAlertViewController
     }
 }

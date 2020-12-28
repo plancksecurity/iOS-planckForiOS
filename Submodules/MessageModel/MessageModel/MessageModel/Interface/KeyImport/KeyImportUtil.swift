@@ -19,7 +19,6 @@ extension KeyImportUtil {
     public enum ImportError: Error {
         /// The key could not even be loaded
         case cannotLoadKey
-
         /// The key could be loadad, but not processed
         case malformedKey
     }
@@ -48,6 +47,7 @@ extension KeyImportUtil {
 }
 
 extension KeyImportUtil: KeyImportUtilProtocol {
+
     public func importKey(url: URL,
                           errorCallback: @escaping (Error) -> (),
                           completion: @escaping ([KeyData]) -> ()) {
@@ -57,9 +57,9 @@ extension KeyImportUtil: KeyImportUtilProtocol {
         }
 
         PEPSession().importKey(dataString,
-                                    errorCallback: { error in
-                                        errorCallback(ImportError.malformedKey)
-        }) { identities in
+                               errorCallback: { error in
+                                errorCallback(ImportError.malformedKey)
+                               }) { identities in
             guard !identities.isEmpty else {
                 // Importing a key with 0 identities doesn't make sense, signal an error
                 errorCallback(ImportError.malformedKey)
@@ -93,7 +93,6 @@ extension KeyImportUtil: KeyImportUtilProtocol {
                 errorCallback(ImportError.malformedKey)
                 return
             }
-
             completion(keyDatas)
         }
     }
@@ -108,25 +107,25 @@ extension KeyImportUtil: KeyImportUtilProtocol {
                                 userName: userName,
                                 isOwn: true)
         PEPSession().setOwnKey(pEpId,
-                                    fingerprint: fingerprint,
-                                    errorCallback: errorCallback) {
-                                        let moc = Stack.shared.newPrivateConcurrentContext
-                                        moc.performAndWait {
-                                            //BUFF: commented out as I understood volker we must not do that. The imported key could be too short and it will not be used for instance. In this case we would have an own identity without key. IOS-2405
-//                                            CdIdentity.updateOrCreate(withAddress: address,
-//                                                                      userID: CdIdentity.pEpOwnUserID,
-//                                                                      addressBookID: nil,
-//                                                                      userName: userName,
-//                                                                      context: moc)
-//                                            moc.saveAndLogErrors()
-                                            if let existingCdIdentity = CdIdentity.search(address: address, context: moc),
-                                                let belongingAccount = existingCdIdentity.accounts?.allObjects.first as? CdAccount {
-                                                // A new key has been set for an existing account. Try to re-decrypt all yet undecryptable messages.
-                                                CdMessage.markAllUndecryptableMessagesForRetryDecrypt(for: belongingAccount, context: moc)
-                                                moc.saveAndLogErrors()
-                                            }
-                                            callback()
-                                        }
+                               fingerprint: fingerprint,
+                               errorCallback: errorCallback) {
+            let moc = Stack.shared.newPrivateConcurrentContext
+            moc.performAndWait {
+                //BUFF: commented out as I understood volker we must not do that. The imported key could be too short and it will not be used for instance. In this case we would have an own identity without key. IOS-2405
+                //                                            CdIdentity.updateOrCreate(withAddress: address,
+                //                                                                      userID: CdIdentity.pEpOwnUserID,
+                //                                                                      addressBookID: nil,
+                //                                                                      userName: userName,
+                //                                                                      context: moc)
+                //                                            moc.saveAndLogErrors()
+                if let existingCdIdentity = CdIdentity.search(address: address, context: moc),
+                   let belongingAccount = existingCdIdentity.accounts?.allObjects.first as? CdAccount {
+                    // A new key has been set for an existing account. Try to re-decrypt all yet undecryptable messages.
+                    CdMessage.markAllUndecryptableMessagesForRetryDecrypt(for: belongingAccount, context: moc)
+                    moc.saveAndLogErrors()
+                }
+                callback()
+            }
         }
     }
 }
@@ -151,7 +150,7 @@ extension KeyImportUtil {
                                fingerprint: fingerprint.despaced(),
                                errorCallback: { (error) in
                                 errorCallback(error)
-        }) {
+                               }) {
             identity.session.perform {
                 // We got a new key. Try to derypt yet undecryptable messages.
                 let cdAccount = CdAccount.searchAccount(withAddress: identity.address,
