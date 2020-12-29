@@ -17,7 +17,7 @@ extension UIUtils {
     ///   - message: alert message
     ///   - completion: called when "OK" has been pressed
     public static func showAlertWithOnlyPositiveButton(title: String,
-                                                       message: String?,
+                                                       message: String? = nil,
                                                        style: PEPAlertViewController.AlertStyle = .default,
                                                        completion: (()->Void)? = nil) {
         guard let alertViewController = UIUtils.getAlert(withTitle: title,

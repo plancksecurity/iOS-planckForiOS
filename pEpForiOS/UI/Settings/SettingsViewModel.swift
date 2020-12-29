@@ -20,6 +20,10 @@ protocol SettingsViewModelDelegate: class {
     func showExtraKeyEditabilityStateChangeAlert(newValue: String)
     /// Shows an alert to confirm the reset all identities.
     func showResetAllWarning(callback: @escaping SettingsViewModel.ActionBlock)
+    /// Inform the user the account can't be deleted
+    func showCantDeleteAccountAlert()
+    /// Shows no accounts view
+    func showNoAccountsView()
 }
 
 /// Protocol that represents the basic data in a row.
@@ -449,18 +453,44 @@ extension SettingsViewModel {
     /// It also updates the default account if necessary.
     /// - Parameter account: The account to be deleted
     private func delete(account: Account) {
-        let oldAddress = account.user.address
-        account.delete()
-        Session.main.commit()
-
-        if AppSettings.shared.defaultAccount == nil ||
-            AppSettings.shared.defaultAccount == oldAddress {
-            let newDefaultAccount = Account.all().first
-            guard let newDefaultAddress = newDefaultAccount?.user.address else {
+        account.setKeySyncEnabled(enable: false) { [weak self] (error) in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
                 return
-                //no more accounts, no default account
             }
-            AppSettings.shared.defaultAccount = newDefaultAddress
+            DispatchQueue.main.async {
+                me.delegate?.showCantDeleteAccountAlert()
+            }
+        } successCallback: { [weak account] in
+            guard let acc = account else {
+                Log.shared.errorAndCrash("Account is not found")
+                return
+            }
+            deleteAccount(account: acc)
+        }
+
+        func deleteAccount(account: Account) {
+            let main = Session.main
+            let safeAccount = account.safeForSession(main)
+            main.performAndWait { [weak self] in
+                let oldAddress = safeAccount.user.address
+                safeAccount.delete()
+                main.commit()
+                if AppSettings.shared.defaultAccount == nil ||
+                    AppSettings.shared.defaultAccount == oldAddress {
+                    let newDefaultAccount = Account.all().first
+                    guard let newDefaultAddress = newDefaultAccount?.user.address else {
+                        //no more accounts, no default account
+                        guard let me = self else {
+                            Log.shared.errorAndCrash("Lost myself")
+                            return
+                        }
+                        me.delegate?.showNoAccountsView()
+                        return
+                    }
+                    AppSettings.shared.defaultAccount = newDefaultAddress
+                }
+            }
         }
     }
 

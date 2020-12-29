@@ -172,7 +172,6 @@ extension SettingsTableViewController {
             me.tableView.beginUpdates()
             me.tableView.deleteRows(at: [indexPath], with: .fade)
             me.tableView.endUpdates()
-            me.checkAccounts()
         })
         if let popoverPresentationController = alertController.popoverPresentationController {
             let cellFrame = tableView.rectForRow(at: indexPath)
@@ -289,7 +288,16 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
 // MARK: - Loading views & Editability State Change Alert
 
 extension SettingsTableViewController : SettingsViewModelDelegate {
-    
+
+    func showNoAccountsView() {
+        performSegue(withIdentifier: "noAccounts", sender: nil)
+    }
+
+    func showCantDeleteAccountAlert() {
+        let title = NSLocalizedString("Can't delete the account", comment:"Can't delete account - Alert view title")
+        UIUtils.showAlertWithOnlyPositiveButton(title:title, style: .warn)
+    }
+
     /// Displays a loading view
     func showLoadingView() {
         DispatchQueue.main.async { [weak self] in
