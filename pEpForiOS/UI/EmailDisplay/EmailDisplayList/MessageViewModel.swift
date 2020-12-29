@@ -252,7 +252,7 @@ extension MessageViewModel {
 
     private static func getDisplayedUsername(for message: Message) -> String {
         if (message.parent.folderType == .sent || message.parent.folderType == .drafts) {
-            return message.allRecipients.map { $0.userNameOrAddress }.joined(separator: ", ")
+            return message.allRecipientsOrdered.map { $0.userNameOrAddress }.joined(separator: ", ")
         }
         return message.from?.userNameOrAddress ?? ""
     }
