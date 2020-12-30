@@ -2397,7 +2397,6 @@
 		5B5A2DF8253D916A005EBF8C /* Replacement */ = {
 			isa = PBXGroup;
 			children = (
-				5BED3E7D253EDEDE0080CCEA /* Cells */,
 				5B5A2DF5253D915C005EBF8C /* EmailViewModel.swift */,
 			);
 			path = Replacement;
@@ -2451,13 +2450,6 @@
 				5B53B1D4255D9940006DEFD1 /* EmailViewModelTest.swift */,
 			);
 			path = EmailView;
-			sourceTree = "<group>";
-		};
-		5BED3E7D253EDEDE0080CCEA /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Cells;
 			sourceTree = "<group>";
 		};
 		B706C0EF1EA8C378006B2F6C /* StoryboardFiles */ = {

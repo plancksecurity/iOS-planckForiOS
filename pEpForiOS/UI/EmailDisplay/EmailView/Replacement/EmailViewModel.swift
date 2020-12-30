@@ -34,7 +34,7 @@ protocol EmailViewModelDelegate: class {
 }
 
 enum EmailRowType: String {
-    case sender, subject, body, attachment
+    case to, cc, bcc, subject, body, attachment
 }
 
 /// Protocol that represents the basic data in a row.
@@ -52,7 +52,6 @@ protocol EmailRowProtocol {
 }
 
 class EmailViewModel {
-
     /// Delegate to comunicate with Email View.
     public weak var delegate: EmailViewModelDelegate?
 
@@ -78,12 +77,19 @@ class EmailViewModel {
     public init(message: Message, delegate: EmailViewModelDelegate) {
         self.message = message
         self.delegate = delegate
-        self.attachments = message.viewableAttachments().filter({!$0.isInlined})
-        var rowsTypes: [EmailRowType] = [.sender, .subject, .body]
-        self.attachments.forEach { (attachment) in
+        attachments = message.viewableAttachments().filter{!$0.isInlined}
+        var rowsTypes: [EmailRowType] = [.to]
+        if message.cc.count > 0 {
+            rowsTypes.append(.cc)
+        }
+        if message.bcc.count > 0 {
+            rowsTypes.append(.bcc)
+        }
+        rowsTypes.append(contentsOf: [.subject, .body])
+        attachments.forEach { (attachment) in
             rowsTypes.append(.attachment)
         }
-        self.rows = rowsTypes.map { Row(type: $0, message: message) }
+        rows = rowsTypes.map { Row(type: $0, message: message) }
     }
 
     private var shouldHideExternalContent: Bool = true
@@ -145,8 +151,10 @@ class EmailViewModel {
     public func cellIdentifier(for indexPath: IndexPath) -> String {
         let row = rows[indexPath.row]
         switch row.type {
-        case .sender:
+        case .to:
             return "senderCell"
+        case .cc, .bcc:
+            return "ccCell"
         case .subject:
             return "senderSubjectCell"
         case .body:
@@ -318,6 +326,7 @@ extension EmailViewModel {
         public var firstValue: String?
         public var secondValue: String?
         public var image: UIImage?
+        private var message: Message?
 
         /// Constructor
         /// - Parameters:
@@ -325,27 +334,49 @@ extension EmailViewModel {
         ///   - message: The message to setup the row
         init(type: EmailRowType, message: Message) {
             self.type = type
+            self.message = message
             switch type {
-            case .sender:
+            case .to:
                 self.firstValue = message.from?.displayString
-                var temp: [String] = []
-                message.allRecipients.forEach { (recepient) in
-                    let recepient = recepient.address
-                    temp.append(recepient)
-                }
-                let toDestinataries = NSLocalizedString("To:", comment: "Compose field title") + temp.joined(separator: ", ")
-                self.secondValue = toDestinataries
+                self.secondValue = getRecipientsTextForRowOf(type: type)
                 self.height = 64.0
+            case .cc:
+                self.secondValue = getRecipientsTextForRowOf(type: type)
+                self.height = 30.0
+            case .bcc:
+                self.secondValue = getRecipientsTextForRowOf(type: type)
+                self.height = 30.0
             case .subject:
                 self.firstValue = message.shortMessage
                 if let originationDate = message.sent {
                     self.secondValue = (originationDate as Date).fullString()
                 }
             case .body:
-                Log.shared.info("Nothing to do here.")
+                // Nothing to do here
+                break
             case .attachment:
                 self.height = 120.0
             }
+        }
+
+        private func getRecipientsTextForRowOf(type: EmailRowType) -> String {
+            var value: String = ""
+            switch type {
+            case .to:
+                value = NSLocalizedString("To:", comment: "Compose field title")
+            case .cc:
+                value = NSLocalizedString("Cc:", comment: "Compose field title")
+            case .bcc:
+                value = NSLocalizedString("Bcc:", comment: "Compose field title")
+            default:
+                Log.shared.errorAndCrash("Recipient Type not supported")
+            }
+            var temp: [String] = []
+            message?.to.forEach { (recepient) in
+                let recepient = recepient.address
+                temp.append(recepient)
+            }
+            return value + temp.joined(separator: ", ")
         }
     }
 }

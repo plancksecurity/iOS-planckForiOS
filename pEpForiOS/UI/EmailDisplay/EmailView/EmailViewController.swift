@@ -106,9 +106,6 @@ extension EmailViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         switch row.type {
-        case .sender:
-            setupSender(cell: cell, with: row)
-            return cell
         case .subject:
             setupSubject(cell: cell, with: row)
             return cell
@@ -126,6 +123,15 @@ extension EmailViewController: UITableViewDataSource {
             }
             setup(cell: dequeued, with: row)
             return dequeued
+        case .to:
+            setupSender(cell: cell, with: row)
+            return cell
+        case .cc:
+            setupSender(cell: cell, with: row)
+            return cell
+        case .bcc:
+            setupSender(cell: cell, with: row)
+            return cell
         }
     }
 
