@@ -25,19 +25,19 @@ class EmailViewModelTest: XCTestCase {
     func testNumberOfRows() {
         setupVMWithMessageWithoutAttachment()
         /// As the message doesn't have attachments, it has only from, subject and body.
-        let types : [EmailRowType] = [.sender, .subject, .body]
+        let types : [EmailRowType] = [.to, .subject, .body]
         XCTAssert(vm.numberOfRows == types.count)
     }
 
     func testNumberOfRowsOfMessageWithOneAttachment() {
         setupVMWithMessageWith(numberOfAttachments: 1)
-        let types : [EmailRowType] = [.sender, .subject, .body, .attachment]
+        let types : [EmailRowType] = [.to, .subject, .body, .attachment]
         XCTAssert(vm.numberOfRows == types.count)
     }
 
     func testNumberOfRowsOfMessageWithTwoAttachments() {
         setupVMWithMessageWith(numberOfAttachments: 2)
-        let types: [EmailRowType] = [.sender, .subject, .body, .attachment, .attachment]
+        let types: [EmailRowType] = [.to, .subject, .body, .attachment, .attachment]
         vm.retrieveAttachments()
         XCTAssert(vm.numberOfRows == types.count)
     }
@@ -46,7 +46,7 @@ class EmailViewModelTest: XCTestCase {
         setupVMWithMessageWith(numberOfAttachments: 2)
         /// We expect to see the rows in the following order:
         /// Sender, subject, body, attachments.
-        XCTAssert(vm[0].type == .sender)
+        XCTAssert(vm[0].type == .to)
         XCTAssert(vm[1].type == .subject)
         XCTAssert(vm[2].type == .body)
         XCTAssert(vm[3].type == .attachment)
