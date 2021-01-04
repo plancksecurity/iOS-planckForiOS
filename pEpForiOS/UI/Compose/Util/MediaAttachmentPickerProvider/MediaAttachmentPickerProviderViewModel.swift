@@ -55,10 +55,57 @@ class MediaAttachmentPickerProviderViewModel {
         }
     }
 
+    public func handleDidFinishPickingImage(info: (URL, Any)) {
+        let url = info.0
+        if let image = info.1 as? UIImage {
+            createImageAttchmentAndInformResultDelegateiOS14(url: url, image: image)
+        }
+    }
+
+    public func handleDidFinishPickingVideoAt(url: URL) {
+        // We got something from picker that is not an image. Probalby video/movie.
+        createMovieAttchmentAndInformResultDelegateiOS14(url: url)
+    }
+
     public func handleDidCancel() {
         resultDelegate?.mediaAttachmentPickerProviderViewModelDidCancel(self)
     }
 
+    private func createImageAttchmentAndInformResultDelegateiOS14(url: URL, image: UIImage) {
+        var attachment: Attachment!
+        session.performAndWait {[weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                return
+            }
+            attachment = me.createAttachment(forAssetWithUrl: url, image: image, session: me.session)
+            if attachment.data == nil {
+                do {
+                    attachment.data = try Data(contentsOf: url)
+                } catch let err {
+                    Log.shared.error("%@", "\(err)")
+                }
+            }
+            let group = DispatchGroup()
+            let data = attachment.data
+            group.notify(queue: .main) { [weak self] in
+                guard let me = self else {
+                    // Valid case. We might have been dismissed.
+                    return
+                }
+                me.session.performAndWait {
+                    attachment.data = data
+                }
+                let result = MediaAttachment(type: .image, attachment: attachment)
+                DispatchQueue.main.async {
+                    me.resultDelegate?.mediaAttachmentPickerProviderViewModel(me, didSelect: result)
+                }
+            }
+        }
+    }
+
+    // TODO: Deleted this method when ios 13 is deprecated.
+    // For further information go to: https://pep.foundation/jira/browse/IOS-2437
     private func createImageAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) {
         guard
             let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage,
@@ -67,15 +114,12 @@ class MediaAttachmentPickerProviderViewModel {
                 return
         }
         var attachment: Attachment!
-        session.performAndWait {[weak self] in
+        session.performAndWait { [weak self] in
             guard let me = self else {
                 // Valid case. We might have been dismissed already.
                 return
             }
-            attachment = me.createAttachment(forAssetWithUrl: url,
-                                             image: image,
-                                             session: me.session)
-
+            attachment = me.createAttachment(forAssetWithUrl: url, image: image, session: me.session)
             if attachment.data == nil {
                 do {
                     attachment.data = try Data(contentsOf: url)
@@ -104,12 +148,30 @@ class MediaAttachmentPickerProviderViewModel {
                 me.session.performAndWait {
                     attachment.data = data
                 }
-
                 let result = MediaAttachment(type: .image, attachment: attachment)
                 me.resultDelegate?.mediaAttachmentPickerProviderViewModel(me, didSelect: result)
             }
         }
     }
+
+
+    private func createMovieAttchmentAndInformResultDelegateiOS14(url: URL) {
+        createAttachment(forResource: url, session: session) {[weak self] (attachment)  in
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                return
+            }
+            guard let att = attachment else {
+                Log.shared.errorAndCrash("No Attachment")
+                return
+            }
+            let result = MediaAttachment(type: .movie, attachment: att)
+            DispatchQueue.main.async {
+                me.resultDelegate?.mediaAttachmentPickerProviderViewModel(me, didSelect: result)
+            }
+        }
+    }
+
 
     private func createMovieAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) { 
         guard let url = info[UIImagePickerController.InfoKey.mediaURL] as? URL else {

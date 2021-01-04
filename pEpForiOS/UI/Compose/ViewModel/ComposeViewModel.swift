@@ -607,6 +607,7 @@ extension ComposeViewModel: DocumentAttachmentPickerViewModelResultDelegate {
 // MARK: - MediaAttachmentPickerProviderViewModel[ResultDelegate]
 
 extension ComposeViewModel {
+    //MB:-
     func mediaAttachmentPickerProviderViewModel() -> MediaAttachmentPickerProviderViewModel {
         return MediaAttachmentPickerProviderViewModel(resultDelegate: self, session: session)
     }

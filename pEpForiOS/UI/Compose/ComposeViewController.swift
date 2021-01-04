@@ -12,6 +12,7 @@ import SwipeCellKit
 import Photos
 import pEpIOSToolbox
 import ContactsUI
+import PhotosUI
 
 class ComposeViewController: UIViewController {
     @IBOutlet var sendButton: UIBarButtonItem!
@@ -19,6 +20,7 @@ class ComposeViewController: UIViewController {
 
     private var suggestionsChildViewController: SuggestTableViewController?
     lazy private var mediaAttachmentPickerProvider: MediaAttachmentPickerProvider? = {
+        //MB:-
         guard let pickerVm = viewModel?.mediaAttachmentPickerProviderViewModel() else {
             Log.shared.errorAndCrash("Invalid state")
             return nil
@@ -401,18 +403,28 @@ extension ComposeViewController {
 extension ComposeViewController {
 
     private func presentMediaAttachmentPickerProvider() {
-        let media = Capability.media
-        media.requestAndInformUserInErrorCase(viewController: self)  {
-            [weak self] (permissionsGranted: Bool, error: Capability.AccessError?) in
-            guard permissionsGranted else {
-                return
+        // iOS14+ uses PHPickerViewController.
+        // Earlier versions UIImagePickerController
+        if #available(iOS 14, *) {
+            var configuration = PHPickerConfiguration()
+            configuration.selectionLimit = 0
+            let picker = PHPickerViewController(configuration: configuration)
+            picker.delegate = mediaAttachmentPickerProvider
+            present(picker, animated: true)
+        } else {
+            let media = Capability.media
+            media.requestAndInformUserInErrorCase(viewController: self)  {
+                [weak self] (permissionsGranted: Bool, error: Capability.AccessError?) in
+                guard permissionsGranted else {
+                    return
+                }
+                guard let me = self,
+                      let picker = me.mediaAttachmentPickerProvider?.imagePicker else {
+                    // Valid case. We might have been dismissed already.
+                    return
+                }
+                me.present(picker, animated: true)
             }
-            guard let me = self,
-            let picker = me.mediaAttachmentPickerProvider?.imagePicker else {
-                // Valid case. We might have been dismissed already.
-                return
-            }
-            me.present(picker, animated: true)
         }
     }
 }

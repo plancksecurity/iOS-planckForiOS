@@ -92,6 +92,9 @@ public extension UIDevice {
         return Model.smallDevices.contains(UIDevice().type)
     }
 
+    static var isSimulator: Bool {
+        return Model.simulator == UIDevice().type
+    }
     /// returns the device model: e.g: "iPhone 11 Pro Max".
     var type: Model {
         var systemInfo = utsname()
