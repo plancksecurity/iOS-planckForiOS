@@ -125,7 +125,14 @@ extension SettingsViewModelTest {
 // MARK: - delegate mocks
 
 class SettingsViewModeldelegate: SettingsViewModelDelegate {
-    
+    func showCantDeleteAccountAlert() {
+        XCTFail()
+    }
+
+    func showNoAccountsView() {
+        XCTFail()
+    }
+
     func showLoadingView() {
         XCTFail()
     }
