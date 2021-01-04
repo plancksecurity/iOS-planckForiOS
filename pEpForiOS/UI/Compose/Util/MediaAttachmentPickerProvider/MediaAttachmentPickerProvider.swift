@@ -94,7 +94,6 @@ extension MediaAttachmentPickerProvider: PHPickerViewControllerDelegate {
                 }
                 return
             }
-
             if let videoIdentifier = result.videoIdentifier() {
                 provider.loadFileRepresentation(forTypeIdentifier: videoIdentifier) { [weak self] (url, error) in
                     if let error = error {
