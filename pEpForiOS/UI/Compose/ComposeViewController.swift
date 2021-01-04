@@ -411,6 +411,7 @@ extension ComposeViewController {
             picker.delegate = mediaAttachmentPickerProvider
             present(picker, animated: true)
         } else {
+            // TODO: Remove this when iOS 13 is deprecated.
             let media = Capability.media
             media.requestAndInformUserInErrorCase(viewController: self)  {
                 [weak self] (permissionsGranted: Bool, error: Capability.AccessError?) in

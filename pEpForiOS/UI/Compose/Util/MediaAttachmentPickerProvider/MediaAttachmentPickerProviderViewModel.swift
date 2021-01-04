@@ -44,6 +44,7 @@ class MediaAttachmentPickerProviderViewModel {
         self.session = session
     }
 
+    // TODO: Remove this when iOS 13 is deprecated.
     public func handleDidFinishPickingMedia(info: [UIImagePickerController.InfoKey: Any]) {
         let isImage = (info[UIImagePickerController.InfoKey.originalImage] as? UIImage) != nil
         if isImage {
@@ -55,23 +56,26 @@ class MediaAttachmentPickerProviderViewModel {
         }
     }
 
-    public func handleDidFinishPickingImage(info: (URL, Any)) {
-        let url = info.0
-        if let image = info.1 as? UIImage {
-            createImageAttchmentAndInformResultDelegateiOS14(url: url, image: image)
-        }
+    /// Handle the image selection.
+    /// - Parameters:
+    ///   - url: The url of the image
+    ///   - image: The image itself
+    public func handleDidFinishPickingImage(url: URL, image: UIImage) {
+        createImageAttchmentAndInformResultDelegate(url: url, image: image)
     }
 
+    /// Handle the video selection .
+    /// - Parameter url: The url of the resource
     public func handleDidFinishPickingVideoAt(url: URL) {
         // We got something from picker that is not an image. Probalby video/movie.
-        createMovieAttchmentAndInformResultDelegateiOS14(url: url)
+        createMovieAttchmentAndInformResultDelegate(url: url)
     }
 
     public func handleDidCancel() {
         resultDelegate?.mediaAttachmentPickerProviderViewModelDidCancel(self)
     }
 
-    private func createImageAttchmentAndInformResultDelegateiOS14(url: URL, image: UIImage) {
+    private func createImageAttchmentAndInformResultDelegate(url: URL, image: UIImage) {
         var attachment: Attachment!
         session.performAndWait {[weak self] in
             guard let me = self else {
@@ -154,8 +158,7 @@ class MediaAttachmentPickerProviderViewModel {
         }
     }
 
-
-    private func createMovieAttchmentAndInformResultDelegateiOS14(url: URL) {
+    private func createMovieAttchmentAndInformResultDelegate(url: URL) {
         createAttachment(forResource: url, session: session) {[weak self] (attachment)  in
             guard let me = self else {
                 // Valid case. We might have been dismissed already.
@@ -172,8 +175,7 @@ class MediaAttachmentPickerProviderViewModel {
         }
     }
 
-
-    private func createMovieAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) { 
+    private func createMovieAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) {
         guard let url = info[UIImagePickerController.InfoKey.mediaURL] as? URL else {
             Log.shared.errorAndCrash("No URL")
             return

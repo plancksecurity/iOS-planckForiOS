@@ -88,7 +88,7 @@ extension MediaAttachmentPickerProvider: PHPickerViewControllerDelegate {
                             return
                         }
                         if let url = url {
-                            me.viewModel?.handleDidFinishPickingImage(info: (url, image))
+                            me.viewModel?.handleDidFinishPickingImage(url: url, image: image)
                         }
                     }
                 }
