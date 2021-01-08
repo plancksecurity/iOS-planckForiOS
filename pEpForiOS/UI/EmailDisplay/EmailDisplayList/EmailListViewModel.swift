@@ -27,11 +27,8 @@ protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
 class EmailListViewModel: EmailDisplayViewModel {
 
     public func getFilterButtonTitle() -> String {
-
-        //MB:- To VM.
         var txt = currentFilter.getFilterText()
-
-        if(txt.count > filterMaxChars){
+        if txt.count > filterMaxChars {
             let prefix = txt.prefix(ofLength: filterMaxChars)
             txt = String(prefix)
             txt += "..."
@@ -39,8 +36,9 @@ class EmailListViewModel: EmailDisplayViewModel {
         if txt.isEmpty {
             txt = NSLocalizedString("none", comment: "empty mail filter (no filter at all)")
         }
-        let title = String(format: NSLocalizedString("Filter by: %@",
-                                                     comment: "'Filter by' in formatted string, followed by the localized filter name"), txt)
+        let format = NSLocalizedString("Filter by: %@",
+                                       comment: "'Filter by' in formatted string, followed by the localized filter name")
+        let title = String(format: format, txt)
         return title
     }
     private var emailDetailViewModel: EmailDetailViewModel?

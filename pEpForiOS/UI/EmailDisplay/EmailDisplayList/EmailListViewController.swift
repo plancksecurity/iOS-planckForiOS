@@ -25,8 +25,6 @@ final class EmailListViewController: UIViewController {
     }()
 
     public static let storyboardId = "EmailListViewController"
-    //MB:- To the VM
-//    static let FILTER_TITLE_MAX_XAR = 20
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
@@ -236,14 +234,9 @@ final class EmailListViewController: UIViewController {
             Log.shared.errorAndCrash(message: "editButton in navigation is not initialized!")
             return
         }
-        //MB:- vm.shouldShowEditButton
-        if vm.rowCount == 0 {
-            editButton.isEnabled = false
-            editButton.tintColor = .clear
-        } else {
-            editButton.isEnabled = true
-            editButton.tintColor = .pEpGreen
-        }
+        let editButtonDisabled = vm.rowCount == 0
+        editButton.isEnabled = editButtonDisabled ? false : true
+        editButton.tintColor = editButtonDisabled ? .clear: .pEpGreen
     }
 
     /// Called on pull-to-refresh triggered
@@ -301,72 +294,30 @@ final class EmailListViewController: UIViewController {
     // MARK: - Action Edit Button
 
     private func showEditToolbar() {
-
+        func getButtonItem(img: UIImage?, action: Selector) -> UIBarButtonItem {
+            let button = UIBarButtonItem(image: img, style: .plain, target: self, action: action)
+            button.isEnabled = false
+            return UIBarButtonItem(image: img, style: .plain, target: self, action: action)
+        }
         tempToolbarItems = toolbarItems
-
         // Flexible Space separation between the buttons
         let flexibleSpace = createFlexibleBarButtonItem()
-
-        //MB:- func getButtonItem(img: UIImage, action: Selector)
-        var img = UIImage(named: "icon-flagged")
-
-        flagToolbarButton = UIBarButtonItem(image: img,
-                                            style: .plain,
-                                            target: self,
-                                            action: #selector(flagToolbar))
-        flagToolbarButton?.isEnabled = false
-
-        img = UIImage(named: "icon-unflagged")
-
-        unflagToolbarButton = UIBarButtonItem(image: img,
-                                              style: .plain,
-                                              target: self,
-                                              action: #selector(unflagToolbar))
-        unflagToolbarButton?.isEnabled = false
-
-        img = UIImage(named: "icon-read")
-
-        readToolbarButton = UIBarButtonItem(image: img,
-                                            style: .plain,
-                                            target: self,
-                                            action: #selector(readToolbar))
-        readToolbarButton?.isEnabled = false
-
-        img = UIImage(named: "icon-unread")
-
-        unreadToolbarButton = UIBarButtonItem(image: img,
-                                              style: .plain,
-                                              target: self,
-                                              action: #selector(unreadToolbar))
-        unreadToolbarButton?.isEnabled = false
-
-        img = UIImage(named: "folders-icon-trash")
-
-        deleteToolbarButton = UIBarButtonItem(image: img,
-                                              style: .plain,
-                                              target: self,
-                                              action: #selector(deleteToolbar))
-
-        deleteToolbarButton?.isEnabled = false
-
-        img = UIImage(named: "swipe-archive")
-
-        moveToolbarButton = UIBarButtonItem(image: img,
-                                            style: UIBarButtonItem.Style.plain,
-                                            target: self,
-                                            action: #selector(moveToolbar))
-
-        moveToolbarButton?.isEnabled = false
-
-        let newToolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
-                               flexibleSpace, deleteToolbarButton, flexibleSpace,
-                               moveToolbarButton, flexibleSpace, settingsBarButton] as? [UIBarButtonItem]
-        toolbarItems = newToolbarItems
+        flagToolbarButton = getButtonItem(img: UIImage(named: "icon-flagged"), action: #selector(flagToolbar))
+        unflagToolbarButton = getButtonItem(img: UIImage(named: "icon-unflagged"), action: #selector(unflagToolbar))
+        readToolbarButton = getButtonItem(img: UIImage(named: "icon-read"), action: #selector(readToolbar))
+        unreadToolbarButton = getButtonItem(img: UIImage(named: "icon-unread"), action: #selector(unreadToolbar))
+        deleteToolbarButton = getButtonItem(img: UIImage(named: "folders-icon-trash"), action: #selector(deleteToolbar))
+        moveToolbarButton = getButtonItem(img: UIImage(named: "swipe-archive"), action: #selector(moveToolbar))
+        toolbarItems = [flagToolbarButton, flexibleSpace,
+                        readToolbarButton, flexibleSpace,
+                        deleteToolbarButton, flexibleSpace,
+                        moveToolbarButton, flexibleSpace,
+                        settingsBarButton] as? [UIBarButtonItem]
 
         //right navigation button to ensure the logic
-        let cancel = UIBarButtonItem(title: NSLocalizedString("Cancel",
-                                                              comment: "EmailList: Cancel edit mode button title"),
-                                     style: UIBarButtonItem.Style.plain,
+        let cancelTitle = NSLocalizedString("Cancel", comment: "EmailList: Cancel edit mode button title")
+        let cancel = UIBarButtonItem(title: cancelTitle,
+                                     style: .plain,
                                      target: self,
                                      action: #selector(cancelToolbar))
         navigationItem.rightBarButtonItem = cancel
@@ -882,12 +833,10 @@ extension EmailListViewController: EmailListViewModelDelegate {
 
     public func showUnflagButton(enabled: Bool) {
         if enabled {
-
             if let button = unflagToolbarButton {
                 toolbarItems?.remove(at: 0)
                 toolbarItems?.insert(button, at: 0)
             }
-
         } else {
             if let button = flagToolbarButton {
                 toolbarItems?.remove(at: 0)
@@ -938,7 +887,6 @@ extension EmailListViewController: EmailListViewModelDelegate {
             Log.shared.errorAndCrash("No visible rows")
             return
         }
-        //        let visibleIndexPaths = tableView.indexPathsForVisibleRows
         let cellIsAlreadyVisible = visibleIndexPaths.contains(indexPath)
         let scrollPosition: UITableView.ScrollPosition
         if cellIsAlreadyVisible {
@@ -967,7 +915,6 @@ extension EmailListViewController: EmailListViewModelDelegate {
 
     public func emailListViewModel(viewModel: EmailDisplayViewModel, didRemoveDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow ?? lastSelectedIndexPath
-
         if let swipeDelete = self.swipeDelete {
             swipeDelete.fulfill(with: .delete)
             self.swipeDelete = nil
@@ -994,7 +941,6 @@ extension EmailListViewController: EmailListViewModelDelegate {
                 cell?.isSelected = true
             }
         }
-
     }
 
     public func emailListViewModel(viewModel: EmailDisplayViewModel,
@@ -1007,7 +953,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
 }
 
 // MARK: - ActionSheet & ActionSheet Actions
-// MB:- to different file
+
 extension EmailListViewController {
     private func showMoreActionSheet(forRowAt indexPath: IndexPath) {
         lastSelectedIndexPath = indexPath
