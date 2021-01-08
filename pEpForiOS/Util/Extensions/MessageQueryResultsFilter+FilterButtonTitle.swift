@@ -10,6 +10,7 @@ import Foundation
 import MessageModel
 
 extension MessageQueryResultsFilter {
+
     public func getFilterText() -> String{
         var finalString = ""
 

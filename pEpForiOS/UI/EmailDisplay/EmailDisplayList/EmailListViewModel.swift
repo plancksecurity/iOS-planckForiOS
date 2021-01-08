@@ -25,12 +25,31 @@ protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
 // MARK: - EmailListViewModel
 
 class EmailListViewModel: EmailDisplayViewModel {
+
+    public func getFilterButtonTitle() -> String {
+
+        //MB:- To VM.
+        var txt = currentFilter.getFilterText()
+
+        if(txt.count > filterMaxChars){
+            let prefix = txt.prefix(ofLength: filterMaxChars)
+            txt = String(prefix)
+            txt += "..."
+        }
+        if txt.isEmpty {
+            txt = NSLocalizedString("none", comment: "empty mail filter (no filter at all)")
+        }
+        let title = String(format: NSLocalizedString("Filter by: %@",
+                                                     comment: "'Filter by' in formatted string, followed by the localized filter name"), txt)
+        return title
+    }
     private var emailDetailViewModel: EmailDetailViewModel?
     private let contactImageTool = IdentityImageTool()
 
     private var lastSearchTerm = ""
     private var updatesEnabled = true
 
+    public let filterMaxChars = 20
     // MARK: - Life Cycle
 
     init(delegate: EmailListViewModelDelegate? = nil, folderToShow: DisplayableFolderProtocol) {

@@ -11,16 +11,22 @@ import UIKit
 import SwipeCellKit
 import pEpIOSToolbox
 
-final class EmailListViewController: UIViewController, SwipeTableViewCellDelegate {
+final class EmailListViewController: UIViewController {
     /// Stuff that must be done once only in viewWillAppear
     private var doOnce: (()-> Void)?
     /// With this tag we recognize our own created flexible space buttons, for easy removal later.
     private let flexibleSpaceButtonItemTag = 77
-    /// True if the pEp button on the left/master side should be shown.
-    private var shouldShowPepButtonInMasterToolbar = true
+    /// Our own factory method for creating pEp bar button items,
+    /// tagged so we recognize them later, for easy removal.
+    private lazy var settingsBarButton: UIBarButtonItem = {
+        return UIBarButtonItem.getPEPButton(
+            action: #selector(showSettingsViewController),
+            target: self)
+    }()
 
     public static let storyboardId = "EmailListViewController"
-    static let FILTER_TITLE_MAX_XAR = 20
+    //MB:- To the VM
+//    static let FILTER_TITLE_MAX_XAR = 20
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
@@ -37,7 +43,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     private var moveToolbarButton: UIBarButtonItem?
     private var enableFilterButton: UIBarButtonItem!
 
-    var viewModel: EmailListViewModel? {
+    public var viewModel: EmailListViewModel? {
         didSet {
             viewModel?.delegate = self
         }
@@ -55,14 +61,14 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     private let searchController = UISearchController(searchResultsController: nil)
 
     // swipe actions types
-    var buttonDisplayMode: ButtonDisplayMode = .titleAndImage
-    var buttonStyle: ButtonStyle = .backgroundColor
+    private let buttonDisplayMode: ButtonDisplayMode = .titleAndImage
+    private let buttonStyle: ButtonStyle = .backgroundColor
 
     private var swipeDelete: SwipeAction? = nil
 
     private let refreshController = UIRefreshControl()
 
-    var textFilterButton: UIBarButtonItem = UIBarButtonItem(title: "",
+    private let textFilterButton: UIBarButtonItem = UIBarButtonItem(title: "",
                                                             style: .plain,
                                                             target: nil,
                                                             action: nil)
@@ -86,6 +92,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
             me.showNoMessageSelected()
 
             me.updateFilterButtonView()
+            //MB:- ?
             vm.startMonitoring() //!!!: UI should not know about startMonitoring
             me.tableView.reloadData()
             me.doOnce = nil
@@ -178,7 +185,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
     private func setUpTextFilter() {
         textFilterButton.isEnabled = false
-        textFilterButton.action = #selector(showFilterOptions(_:))
+        textFilterButton.action = #selector(showFilterOptions)
         textFilterButton.target = self
 
         let fontSize:CGFloat = 10
@@ -197,7 +204,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
                                                                    comment: "Edit - Right bar button item in Email List"),
                                           style: .plain,
                                           target: self,
-                                          action: #selector(editButtonPressed(_:)))
+                                          action: #selector(editButtonPressed))
 
         dismissButton = UIBarButtonItem(title: NSLocalizedString("Cancel",
                                                                       comment: "Cancel - right bar button item in Email List to dismiss a view for Drafts Preview mode"),
@@ -213,7 +220,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     private func setupSearchBar() {
         searchController.isActive = false
         searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = false
         searchController.delegate = self
         definesPresentationContext = true
         navigationItem.searchController = searchController
@@ -229,6 +236,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
             Log.shared.errorAndCrash(message: "editButton in navigation is not initialized!")
             return
         }
+        //MB:- vm.shouldShowEditButton
         if vm.rowCount == 0 {
             editButton.isEnabled = false
             editButton.tintColor = .clear
@@ -245,6 +253,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
                 // Loosing self is a valid case here. The view might have been dismissed.
                 return
             }
+            //MB:- VC should not know about Queues. Move this to VM.
             DispatchQueue.main.async {
                 // We intentionally do NOT use me.tableView.refreshControl?.endRefreshing() here.
                 // See comments in `setupRefreshControl` for details.
@@ -285,7 +294,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
     // MARK: - Action Dismiss for Cancel Button in Drafts Preview mode
 
-    @IBAction func dismissButtonPressed(_ sender: UIBarButtonItem) {
+    @IBAction private func dismissButtonPressed(_ sender: UIBarButtonItem) {
         dismiss(animated: true)
     }
 
@@ -298,44 +307,45 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         // Flexible Space separation between the buttons
         let flexibleSpace = createFlexibleBarButtonItem()
 
+        //MB:- func getButtonItem(img: UIImage, action: Selector)
         var img = UIImage(named: "icon-flagged")
 
         flagToolbarButton = UIBarButtonItem(image: img,
-                                            style: UIBarButtonItem.Style.plain,
+                                            style: .plain,
                                             target: self,
-                                            action: #selector(flagToolbar(_:)))
+                                            action: #selector(flagToolbar))
         flagToolbarButton?.isEnabled = false
 
         img = UIImage(named: "icon-unflagged")
 
         unflagToolbarButton = UIBarButtonItem(image: img,
-                                              style: UIBarButtonItem.Style.plain,
+                                              style: .plain,
                                               target: self,
-                                              action: #selector(unflagToolbar(_:)))
+                                              action: #selector(unflagToolbar))
         unflagToolbarButton?.isEnabled = false
 
         img = UIImage(named: "icon-read")
 
         readToolbarButton = UIBarButtonItem(image: img,
-                                            style: UIBarButtonItem.Style.plain,
+                                            style: .plain,
                                             target: self,
-                                            action: #selector(readToolbar(_:)))
+                                            action: #selector(readToolbar))
         readToolbarButton?.isEnabled = false
 
         img = UIImage(named: "icon-unread")
 
         unreadToolbarButton = UIBarButtonItem(image: img,
-                                              style: UIBarButtonItem.Style.plain,
+                                              style: .plain,
                                               target: self,
-                                              action: #selector(unreadToolbar(_:)))
+                                              action: #selector(unreadToolbar))
         unreadToolbarButton?.isEnabled = false
 
         img = UIImage(named: "folders-icon-trash")
 
         deleteToolbarButton = UIBarButtonItem(image: img,
-                                              style: UIBarButtonItem.Style.plain,
+                                              style: .plain,
                                               target: self,
-                                              action: #selector(deleteToolbar(_:)))
+                                              action: #selector(deleteToolbar))
 
         deleteToolbarButton?.isEnabled = false
 
@@ -344,26 +354,21 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         moveToolbarButton = UIBarButtonItem(image: img,
                                             style: UIBarButtonItem.Style.plain,
                                             target: self,
-                                            action: #selector(moveToolbar(_:)))
+                                            action: #selector(moveToolbar))
 
         moveToolbarButton?.isEnabled = false
 
-        if var newToolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
-                                  flexibleSpace, deleteToolbarButton, flexibleSpace,
-                                  moveToolbarButton, flexibleSpace] as? [UIBarButtonItem] {
-            if shouldShowPepButtonInMasterToolbar {
-                newToolbarItems.append(createPepBarButtonItem())
-            }
-            toolbarItems = newToolbarItems
-        }
-
+        let newToolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
+                               flexibleSpace, deleteToolbarButton, flexibleSpace,
+                               moveToolbarButton, flexibleSpace, settingsBarButton] as? [UIBarButtonItem]
+        toolbarItems = newToolbarItems
 
         //right navigation button to ensure the logic
         let cancel = UIBarButtonItem(title: NSLocalizedString("Cancel",
                                                               comment: "EmailList: Cancel edit mode button title"),
                                      style: UIBarButtonItem.Style.plain,
                                      target: self,
-                                     action: #selector(cancelToolbar(_:)))
+                                     action: #selector(cancelToolbar))
         navigationItem.rightBarButtonItem = cancel
     }
 
@@ -371,61 +376,65 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         UIUtils.showSettings()
     }
 
-    @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
+    @IBAction private func editButtonPressed() {
         showEditToolbar()
         tableView.setEditing(true, animated: true)
         updateBackButton(isTableViewEditing: tableView.isEditing)
     }
 
-
-    @IBAction func showFilterOptions(_ sender: UIBarButtonItem!) {
+    @IBAction private func showFilterOptions() {
         performSegue(withIdentifier: .segueShowFilter, sender: self)
     }
 
-    @IBAction func cancelToolbar(_ sender:UIBarButtonItem!) {
+    @IBAction private func cancelToolbar() {
         showStandardToolbar()
         lastSelectedIndexPath = nil
         tableView.setEditing(false, animated: true)
         updateBackButton(isTableViewEditing: tableView.isEditing)
     }
 
-    @IBAction func flagToolbar(_ sender:UIBarButtonItem!) {
+    @IBAction private func flagToolbar() {
         if let selectedItems = tableView.indexPathsForSelectedRows {
             viewModel?.markAsFlagged(indexPaths: selectedItems)
+            //MB:- Move to delegate.
             selectedItems.forEach { (ip) in
                 if let cell = self.tableView.cellForRow(at: ip) as? EmailListViewCell {
                     cell.isFlagged = true
                 }
             }
         }
-        cancelToolbar(sender)
+        cancelToolbar()
     }
 
-    @IBAction func unflagToolbar(_ sender:UIBarButtonItem!) {
+    @IBAction private func unflagToolbar() {
         if let selectedItems = tableView.indexPathsForSelectedRows {
             viewModel?.markAsUnFlagged(indexPaths: selectedItems)
+            //MB:- Move to delegate.
             selectedItems.forEach { (ip) in
                 if let cell = self.tableView.cellForRow(at: ip) as? EmailListViewCell {
                     cell.isFlagged = false
                 }
             }
         }
-        cancelToolbar(sender)
+        cancelToolbar()
     }
 
-    @IBAction func readToolbar(_ sender:UIBarButtonItem!) {
+    @IBAction private func readToolbar() {
+        //MB:- Move to delegate.
         if let selectedItems = tableView.indexPathsForSelectedRows {
             selectedItems.forEach { (ip) in
                 if let cell = self.tableView.cellForRow(at: ip) as? EmailListViewCell {
                     cell.isSeen = true
                 }
             }
+
             viewModel?.markAsRead(indexPaths: selectedItems)
         }
-        cancelToolbar(sender)
+        cancelToolbar()
     }
 
-    @IBAction func unreadToolbar(_ sender:UIBarButtonItem!) {
+    @IBAction private func unreadToolbar() {
+        //MB:- Move to delegate.
         if let selectedItems = tableView.indexPathsForSelectedRows {
             viewModel?.markAsUnread(indexPaths: selectedItems)
             selectedItems.forEach { (ip) in
@@ -434,26 +443,26 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
                 }
             }
         }
-        cancelToolbar(sender)
+        cancelToolbar()
     }
 
-    @IBAction func moveToolbar(_ sender:UIBarButtonItem!) {
+    @IBAction private func moveToolbar() {
         performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
-        cancelToolbar(sender)
+        cancelToolbar()
     }
 
-    @IBAction func deleteToolbar(_ sender:UIBarButtonItem!) {
+    @IBAction private func deleteToolbar() {
         if let vm = viewModel,
             let selectedIndexPaths = tableView.indexPathsForSelectedRows {
             vm.handleUserClickedDestruktiveButton(forRowsAt: selectedIndexPaths)
         }
-        cancelToolbar(sender)
+        cancelToolbar()
     }
 
     //recover the original toolbar and right button
     private func showStandardToolbar() {
         let flexibleSpace = createFlexibleBarButtonItem()
-        let settingsBtn = createPepBarButtonItem()
+
         enableFilterButton = UIBarButtonItem.getFilterOnOffButton(action: #selector(filterButtonHasBeenPressed),
                                                                   target: self)
         guard let vm = viewModel else {
@@ -472,7 +481,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
             let composeBtn = UIBarButtonItem.getComposeButton(tapAction: #selector(showCompose),
                                                               longPressAction: #selector(draftsPreviewTapped),
                                                               target: self)
-            toolbarItems = [enableFilterButton, flexibleSpace, composeBtn, flexibleSpace, settingsBtn]
+            toolbarItems = [enableFilterButton, flexibleSpace, composeBtn, flexibleSpace, settingsBarButton]
             navigationItem.rightBarButtonItem = editButton
         }
     }
@@ -506,7 +515,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
 
     // MARK: - Action Filter Button
     
-    @IBAction func filterButtonHasBeenPressed(_ sender: UIBarButtonItem) {
+    @IBAction private func filterButtonHasBeenPressed(_ sender: UIBarButtonItem) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("We should have a model here")
             return
@@ -540,23 +549,15 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     }
     
     private func updateFilterText() {
-        if let vm = viewModel {
-            var txt = vm.currentFilter.getFilterText()
-            if(txt.count > EmailListViewController.FILTER_TITLE_MAX_XAR){
-                let prefix = txt.prefix(ofLength: EmailListViewController.FILTER_TITLE_MAX_XAR)
-                txt = String(prefix)
-                txt += "..."
-            }
-            if txt.isEmpty {
-                txt = NSLocalizedString("none", comment: "empty mail filter (no filter at all)")
-            }
-            textFilterButton.title = String(format: NSLocalizedString("Filter by: %@",
-                                                                      comment: "'Filter by' in formatted string, followed by the localized filter name"),
-                                            txt)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
         }
+
+        textFilterButton.title = vm.getFilterButtonTitle()
     }
 
-    // MARK: -
+    // MARK: - Memory Warning
 
     override func didReceiveMemoryWarning() {
         viewModel?.freeMemory()
@@ -602,6 +603,107 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
 
         return cell
     }
+
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? EmailListViewCell else {
+            return
+        }
+        cell.clear()
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+
+        if tableView.isEditing {
+            guard let selectedIndexPaths = tableView.indexPathsForSelectedRows else {
+                // Nothing selected ...
+                // ... nothing to do.
+                return
+            }
+            vm.handleEditModeSelectionChange(selectedIndexPaths: selectedIndexPaths)
+        } else {
+            vm.handleDidSelectRow(indexPath: indexPath)
+        }
+        updateBackButton(isTableViewEditing: tableView.isEditing)
+    }
+
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if tableView.isEditing, let vm = viewModel {
+            if let selectedIndexPaths = tableView.indexPathsForSelectedRows {
+                vm.handleEditModeSelectionChange(selectedIndexPaths: selectedIndexPaths)
+            } else {
+                vm.handleEditModeSelectionChange(selectedIndexPaths: [])
+            }
+        }
+        updateBackButton(isTableViewEditing: tableView.isEditing)
+    }
+
+    // Implemented to get informed about the scrolling position.
+    // If the user has scrolled down (almost) to the end, we need to get older emails to display.
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
+                   forRowAt indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No model.")
+            return
+        }
+        vm.fetchOlderMessagesIfRequired(forIndexPath: indexPath)
+    }
+
+    func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
+        // Using a UITableView (not UITableViewController), the default scroll-to-top gesture
+        // (tap on status bar) is broken in this view. It ands up with a content offset > (0.0),
+        // showing the inactive pull-to-refresh spinner. This is probably caused by our workaround
+        // for adding a pull-to-refresh spinner without gliches.
+        //To work around the wrong content offset, we intersept the default implementation here and
+        // trigger scoll to top ourselfs.
+        guard tableView.numberOfRows(inSection: 0) > 0 else {
+            // No cells, no scroll to cell. Else we crash.
+            // Do nothing.
+            return false
+        }
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        return false
+    }
+
+    // MARK: - Manipulating the (master) bottom toolbar
+
+    /// Our own factory method for creating flexible space bar button items,
+    /// tagged so we recognize them later, for easy removal.
+    private func createFlexibleBarButtonItem() -> UIBarButtonItem {
+        let item = UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
+            target: nil,
+            action: nil)
+        item.tag = flexibleSpaceButtonItemTag
+        return item
+    }
+
+    /// - Returns: A new array of `UIBarButtonItem`s with trailing flexible whitespace
+    /// removed (at least the ones created by our own factory method).
+    /// - Parameter barButtonItems: The bar button items to remove from.
+    private func trailingFlexibleSpaceRemoved(barButtonItems: [UIBarButtonItem]) -> [UIBarButtonItem] {
+        var theItems = barButtonItems
+        while true {
+            if let lastItem = theItems.last {
+                if lastItem.tag == flexibleSpaceButtonItemTag {
+                    theItems.removeLast()
+                } else {
+                    break
+                }
+            } else {
+                break
+            }
+        }
+        return theItems
+    }
+}
+
+// MARK: - SwipeTableViewCellDelegate
+
+extension EmailListViewController: SwipeTableViewCellDelegate {
 
     func tableView(_ tableView: UITableView,
                    editActionsForRowAt indexPath: IndexPath,
@@ -691,72 +793,6 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         return options
     }
 
-    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard let cell = cell as? EmailListViewCell else {
-            return
-        }
-        cell.clear()
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
-        }
-
-        if tableView.isEditing {
-            guard let selectedIndexPaths = tableView.indexPathsForSelectedRows else {
-                // Nothing selected ...
-                // ... nothing to do.
-                return
-            }
-            vm.handleEditModeSelectionChange(selectedIndexPaths: selectedIndexPaths)
-        } else {
-            vm.handleDidSelectRow(indexPath: indexPath)
-        }
-        updateBackButton(isTableViewEditing: tableView.isEditing)
-    }
-
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        if tableView.isEditing, let vm = viewModel {
-            if let selectedIndexPaths = tableView.indexPathsForSelectedRows {
-                vm.handleEditModeSelectionChange(selectedIndexPaths: selectedIndexPaths)
-            } else {
-                vm.handleEditModeSelectionChange(selectedIndexPaths: [])
-            }
-        }
-        updateBackButton(isTableViewEditing: tableView.isEditing)
-    }
-
-    // Implemented to get informed about the scrolling position.
-    // If the user has scrolled down (almost) to the end, we need to get older emails to display.
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
-                   forRowAt indexPath: IndexPath) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No model.")
-            return
-        }
-        vm.fetchOlderMessagesIfRequired(forIndexPath: indexPath)
-    }
-
-    func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
-        // Using a UITableView (not UITableViewController), the default scroll-to-top gesture
-        // (tap on status bar) is broken in this view. It ands up with a content offset > (0.0),
-        // showing the inactive pull-to-refresh spinner. This is probably caused by our workaround
-        // for adding a pull-to-refresh spinner without gliches.
-        //To work around the wrong content offset, we intersept the default implementation here and
-        // trigger scoll to top ourselfs.
-        guard tableView.numberOfRows(inSection: 0) > 0 else {
-            // No cells, no scroll to cell. Else we crash.
-            // Do nothing.
-            return false
-        }
-        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-        return false
-    }
-
-    // MARK: - SwipeTableViewCellDelegate
-
     func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {
         action.title = descriptor.title(forDisplayMode: buttonDisplayMode)
         action.image = descriptor.image(forStyle: buttonStyle, displayMode: buttonDisplayMode)
@@ -772,46 +808,6 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
 
-    // MARK: - Manipulating the (master) bottom toolbar
-
-    /// Our own factory method for creating pEp bar button items,
-    /// tagged so we recognize them later, for easy removal.
-    private func createPepBarButtonItem() -> UIBarButtonItem {
-        let item = UIBarButtonItem.getPEPButton(
-            action: #selector(showSettingsViewController),
-            target: self)
-        return item
-    }
-
-    /// Our own factory method for creating flexible space bar button items,
-    /// tagged so we recognize them later, for easy removal.
-    private func createFlexibleBarButtonItem() -> UIBarButtonItem {
-        let item = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
-            target: nil,
-            action: nil)
-        item.tag = flexibleSpaceButtonItemTag
-        return item
-    }
-
-    /// - Returns: A new array of `UIBarButtonItem`s with trailing flexible whitespace
-    /// removed (at least the ones created by our own factory method).
-    /// - Parameter barButtonItems: The bar button items to remove from.
-    private func trailingFlexibleSpaceRemoved(barButtonItems: [UIBarButtonItem]) -> [UIBarButtonItem] {
-        var theItems = barButtonItems
-        while true {
-            if let lastItem = theItems.last {
-                if lastItem.tag == flexibleSpaceButtonItemTag {
-                    theItems.removeLast()
-                } else {
-                    break
-                }
-            } else {
-                break
-            }
-        }
-        return theItems
-    }
 }
 
 // MARK: - UISearchResultsUpdating, UISearchControllerDelegate
@@ -823,12 +819,13 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
             let vm = viewModel,
             let searchText = searchController.searchBar.text
             else {
+                //MB:- Valid case?
                 return
         }
         vm.handleSearchTermChange(newSearchTerm: searchText)
     }
 
-    func didDismissSearchController(_ searchController: UISearchController) {
+    public func didDismissSearchController(_ searchController: UISearchController) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No chance to remove filter, sorry.")
             return
@@ -1010,9 +1007,9 @@ extension EmailListViewController: EmailListViewModelDelegate {
 }
 
 // MARK: - ActionSheet & ActionSheet Actions
-
+// MB:- to different file
 extension EmailListViewController {
-    func showMoreActionSheet(forRowAt indexPath: IndexPath) {
+    private func showMoreActionSheet(forRowAt indexPath: IndexPath) {
         lastSelectedIndexPath = indexPath
         let alertController = UIUtils.actionSheet()
         let cancelAction = createCancelAction()
@@ -1085,12 +1082,12 @@ extension EmailListViewController {
         }
     }
 
-    func createCancelAction() -> UIAlertAction {
+    private func createCancelAction() -> UIAlertAction {
         let title = NSLocalizedString("Cancel", comment: "EmailList action title")
         return  UIAlertAction(title: title, style: .cancel)
     }
 
-    func createReplyAction() ->  UIAlertAction {
+    private func createReplyAction() ->  UIAlertAction {
         let title = NSLocalizedString("Reply", comment: "EmailList action title")
         return UIAlertAction(title: title, style: .default) {
             [weak self] action in
@@ -1102,7 +1099,7 @@ extension EmailListViewController {
         }
     }
 
-    func createReplyAllAction(forRowAt indexPath: IndexPath) ->  UIAlertAction? {
+    private func createReplyAllAction(forRowAt indexPath: IndexPath) ->  UIAlertAction? {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return nil
@@ -1122,7 +1119,7 @@ extension EmailListViewController {
         }
     }
 
-    func createForwardAction() -> UIAlertAction {
+    private func createForwardAction() -> UIAlertAction {
         let title = NSLocalizedString("Forward", comment: "EmailList action title")
         return UIAlertAction(title: title, style: .default) {
             [weak self] action in
@@ -1149,7 +1146,7 @@ extension EmailListViewController {
         return rowAction
     }
     
-    func readAction(forCellAt indexPath: IndexPath) {
+    private func readAction(forCellAt indexPath: IndexPath) {
         guard let row = viewModel?.viewModel(for: indexPath.row) else {
             Log.shared.errorAndCrash("No data for indexPath!")
             return
@@ -1167,7 +1164,7 @@ extension EmailListViewController {
         }
     }
 
-    func flagAction(forCellAt indexPath: IndexPath) {
+    private func flagAction(forCellAt indexPath: IndexPath) {
         guard let row = viewModel?.viewModel(for: indexPath.row) else {
             Log.shared.errorAndCrash("No data for indexPath!")
             return
@@ -1185,12 +1182,12 @@ extension EmailListViewController {
         }
     }
 
-    func deleteAction(forCellAt indexPath: IndexPath) {
+    private func deleteAction(forCellAt indexPath: IndexPath) {
         viewModel?.delete(forIndexPath: indexPath)
         updateEditButton()
     }
 
-    func moreAction(forCellAt indexPath: IndexPath) {
+    private func moreAction(forCellAt indexPath: IndexPath) {
         showMoreActionSheet(forRowAt: indexPath)
     }
 }
@@ -1201,6 +1198,7 @@ extension EmailListViewController {
     /**
      Enables manual account setup to unwind to the unified inbox.
      */
+    //MB:- is this executed?
     @IBAction func segueUnwindAfterAccountCreation(segue:UIStoryboardSegue) {
         setup()
     }
