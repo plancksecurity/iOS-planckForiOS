@@ -86,11 +86,11 @@ final class LoginViewController: BaseViewController {
                              offerManualSetup: false)
             return
         }
-        guard email.isProbablyValidEmail() else {
-            handleLoginError(error: LoginViewController.LoginError.invalidEmail,
-                             offerManualSetup: false)
-            return
-        }
+
+        // Allow _any_ email address, don't check anythig
+        // (was calling `email.isProbablyValidEmail` and reporting
+        // `LoginViewController.LoginError.invalidEmail` in case).
+
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
