@@ -38,7 +38,11 @@ final class EmailListViewController: UIViewController {
     private var unreadToolbarButton: UIBarButtonItem?
     private var deleteToolbarButton: UIBarButtonItem?
     private var moveToolbarButton: UIBarButtonItem?
-    private var enableFilterButton: UIBarButtonItem!
+    private var enableFilterButton: UIBarButtonItem?
+    private let textFilterButton = UIBarButtonItem(title: "",
+                                                   style: .plain,
+                                                   target: nil,
+                                                   action: nil)
 
     public var viewModel: EmailListViewModel? {
         didSet {
@@ -65,11 +69,6 @@ final class EmailListViewController: UIViewController {
 
     private let refreshController = UIRefreshControl()
 
-    private let textFilterButton: UIBarButtonItem = UIBarButtonItem(title: "",
-                                                            style: .plain,
-                                                            target: nil,
-                                                            action: nil)
-
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -88,13 +87,13 @@ final class EmailListViewController: UIViewController {
             }
             me.showNoMessageSelected()
 
-            me.updateFilterButtonView()
+            me.updateFilterButton()
             vm.viewDidLoad()
             me.tableView.reloadData()
             me.doOnce = nil
         }
         setup()
-        setUpTextFilter()
+        setupTextFilter()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -179,17 +178,16 @@ final class EmailListViewController: UIViewController {
          tableView.addSubview(refreshController)
     }
 
-    private func setUpTextFilter() {
+    private func setupTextFilter() {
         textFilterButton.isEnabled = false
         textFilterButton.action = #selector(showFilterOptions)
         textFilterButton.target = self
 
-        let fontSize: CGFloat = 10
-        let font:UIFont = UIFont.boldSystemFont(ofSize: fontSize)
+        let fontSize = CGFloat(10.0)
+        let font = UIFont.boldSystemFont(ofSize: fontSize)
         let attributes = [NSAttributedString.Key.font: font]
-
-        textFilterButton.setTitleTextAttributes(attributes, for: UIControl.State.normal)
-        textFilterButton.setTitleTextAttributes(attributes, for: UIControl.State.selected)
+        textFilterButton.setTitleTextAttributes(attributes, for: .normal)
+        textFilterButton.setTitleTextAttributes(attributes, for: .selected)
     }
 
     private func setupNavigationBar() {
@@ -221,20 +219,6 @@ final class EmailListViewController: UIViewController {
         definesPresentationContext = true
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true
-    }
-
-    private func updateEditButton() {
-        guard let vm = viewModel else  {
-            //Valid case: might be dismissed.
-            return
-        }
-        guard let editButton = editButton else {
-            Log.shared.errorAndCrash(message: "editButton in navigation is not initialized!")
-            return
-        }
-        let editButtonDisabled = vm.rowCount == 0
-        editButton.isEnabled = editButtonDisabled ? false : true
-        editButton.tintColor = editButtonDisabled ? .clear: .pEpGreen
     }
 
     /// Called on pull-to-refresh triggered
@@ -288,6 +272,20 @@ final class EmailListViewController: UIViewController {
 
     // MARK: - Action Edit Button
 
+    private func updateEditButton() {
+        guard let vm = viewModel else  {
+            //Valid case: might be dismissed.
+            return
+        }
+        guard let editButton = editButton else {
+            Log.shared.errorAndCrash(message: "editButton in navigation is not initialized!")
+            return
+        }
+        let editButtonDisabled = vm.rowCount == 0
+        editButton.isEnabled = editButtonDisabled ? false : true
+        editButton.tintColor = editButtonDisabled ? .clear: .pEpGreen
+    }
+
     private func showEditToolbar() {
         func getButtonItem(img: UIImage?, action: Selector) -> UIBarButtonItem {
             let button = UIBarButtonItem(image: img, style: .plain, target: self, action: action)
@@ -338,7 +336,7 @@ final class EmailListViewController: UIViewController {
         updateBackButton(isTableViewEditing: tableView.isEditing)
     }
 
-    private func didChange(rows: [Int], callback: (EmailListViewCell) -> ()) {
+    private func change(_ rows: [Int], callback: (EmailListViewCell) -> ()) {
         rows.forEach { (row) in
             let ip = IndexPath(row: row, section: 0)
             if let cell = tableView.cellForRow(at: ip) as? EmailListViewCell {
@@ -355,7 +353,7 @@ final class EmailListViewController: UIViewController {
     }
 
     public func didMarkAsFlagged(rows: [Int]) {
-        didChange(rows: rows) { (cell) in
+        change(rows) { (cell) in
             cell.isFlagged = true
         }
     }
@@ -367,7 +365,7 @@ final class EmailListViewController: UIViewController {
     }
 
     public func didMarkAsUnflagged(rows : [Int]) {
-        didChange(rows: rows) { (cell) in
+        change(rows) { (cell) in
             cell.isFlagged = false
         }
     }
@@ -379,7 +377,7 @@ final class EmailListViewController: UIViewController {
     }
 
     public func didMarkAsRead(rows: [Int]) {
-        didChange(rows: rows) { (cell) in
+        change(rows) { (cell) in
             cell.isSeen = true
         }
     }
@@ -391,7 +389,7 @@ final class EmailListViewController: UIViewController {
     }
 
     public func didMarkAsUnread(rows: [Int]) {
-        didChange(rows: rows) { (cell) in
+        change(rows) { (cell) in
             cell.isSeen = false
         }
     }
@@ -413,9 +411,9 @@ final class EmailListViewController: UIViewController {
     private func showStandardToolbar() {
         let flexibleSpace = createFlexibleBarButtonItem()
 
-        enableFilterButton = UIBarButtonItem.getFilterOnOffButton(action: #selector(filterButtonHasBeenPressed),
+        enableFilterButton = UIBarButtonItem.getFilterOnOffButton(action: #selector(filterButtonPressed),
                                                                   target: self)
-        guard let vm = viewModel else {
+        guard let vm = viewModel, let enableFilterButton = enableFilterButton else {
             Log.shared.errorAndCrash(message: "No VM!")
             return
         }
@@ -465,7 +463,7 @@ final class EmailListViewController: UIViewController {
 
     // MARK: - Action Filter Button
     
-    @IBAction private func filterButtonHasBeenPressed(_ sender: UIBarButtonItem) {
+    @IBAction private func filterButtonPressed(_ sender: UIBarButtonItem) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("We should have a model here")
             return
@@ -479,10 +477,10 @@ final class EmailListViewController: UIViewController {
             toolbarItems?.remove(at: 1)
             toolbarItems?.remove(at: 1)
         }
-        updateFilterButtonView()
+        updateFilterButton()
     }
 
-    private func updateFilterButtonView() {
+    private func updateFilterButton() {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("We should have a model here")
             return
@@ -490,11 +488,11 @@ final class EmailListViewController: UIViewController {
 
         textFilterButton.isEnabled = vm.isFilterEnabled
         if textFilterButton.isEnabled {
-            enableFilterButton.image = UIImage(named: "unread-icon-active")
+            enableFilterButton?.image = UIImage(named: "unread-icon-active")
             updateFilterText()
         } else {
             textFilterButton.title = ""
-            enableFilterButton.image = UIImage(named: "unread-icon")
+            enableFilterButton?.image = UIImage(named: "unread-icon")
         }
     }
     
@@ -738,7 +736,6 @@ extension EmailListViewController: SwipeTableViewCellDelegate {
             action.transitionDelegate = ScaleTransition.default
         }
     }
-
 }
 
 // MARK: - UISearchResultsUpdating, UISearchControllerDelegate
@@ -768,6 +765,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 // MARK: - EmailListViewModelDelegate
 
 extension EmailListViewController: EmailListViewModelDelegate {
+
     public func showEditDraftInComposeView() {
         dismissAndPerform { [weak self] in
             guard let me = self else {
@@ -936,7 +934,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
     }
 }
 
-// MARK: - ActionSheet & ActionSheet Actions
+// MARK: - ActionSheet
 
 extension EmailListViewController {
     private func showMoreActionSheet(forRowAt indexPath: IndexPath) {
@@ -970,8 +968,6 @@ extension EmailListViewController {
         }
         present(alertController, animated: true, completion: nil)
     }
-
-    // MARK: Action Sheet Actions
 
     private func createMoveToFolderAction() -> UIAlertAction {
         let title = NSLocalizedString("Move to Folder", comment: "EmailList action title")
@@ -1287,12 +1283,13 @@ extension EmailListViewController {
 
 extension EmailListViewController {
 
-    private var selectAllBarButton : UIBarButtonItem {
+    private var selectAllBarButton: UIBarButtonItem {
         let selectAllTitle = NSLocalizedString("Select all", comment: "Select all emails")
         let selectAllCellsSelector = #selector(selectAllCells)
         return UIBarButtonItem(title: selectAllTitle, style: .plain, target: self, action: selectAllCellsSelector)
     }
-    private var deselectAllBarButton : UIBarButtonItem {
+
+    private var deselectAllBarButton: UIBarButtonItem {
         let deselectAllTitle = NSLocalizedString("Deselect all", comment: "Deselect all emails")
         let deselectAllCellsSelector = #selector(deselectAllCells)
         return UIBarButtonItem(title: deselectAllTitle, style: .plain, target: self, action: deselectAllCellsSelector)
