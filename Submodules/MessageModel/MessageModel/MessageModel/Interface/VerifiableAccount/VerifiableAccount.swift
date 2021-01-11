@@ -45,11 +45,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
     // MARK: - VerifiableAccountProtocol (data)
 
     public var accountType = AccountType.other
-    public var address: String? {
-        didSet {
-            print("***")
-        }
-    }
+    public var address: String?
     public var userName: String?
     public var authMethod: AuthMethod?
     public var password: String?
