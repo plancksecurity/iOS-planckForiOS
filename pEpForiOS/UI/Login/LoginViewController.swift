@@ -301,7 +301,6 @@ extension LoginViewController: LoginViewModelOAuth2ErrorDelegate {
 extension LoginViewController {
     enum LoginError: Error {
         case missingEmail
-        case invalidEmail
         case missingPassword
         case noConnectData
         case missingUsername
@@ -313,9 +312,9 @@ extension LoginViewController {
 extension LoginViewController.LoginError: LocalizedError {
     var errorDescription: String? {
         switch self {
-        case .missingEmail, .invalidEmail:
+        case .missingEmail:
             return NSLocalizedString("A valid email address is required",
-                                     comment: "error message for .missingEmail or .invalidEmail")
+                                     comment: "error message for .missingEmail")
         case .missingPassword:
             return NSLocalizedString("A non-empty password is required",
                                      comment: "error message for .missingPassword")
