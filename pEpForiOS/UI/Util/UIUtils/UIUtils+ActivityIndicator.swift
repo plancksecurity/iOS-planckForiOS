@@ -20,10 +20,7 @@ extension UIUtils {
         let activityIndicator = UIActivityIndicatorView(style: .gray)
         activityIndicator.startAnimating()
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.errorAndCrash("No VC")
-            return activityIndicator
-        }
+        let presenterVc = UIApplication.currentlyVisibleViewController()
         let view: UIView = presenterVc.view
         view.addSubview(activityIndicator)
         NSLayoutConstraint(item: activityIndicator,

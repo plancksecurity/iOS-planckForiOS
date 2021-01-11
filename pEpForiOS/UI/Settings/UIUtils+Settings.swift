@@ -17,10 +17,7 @@ extension UIUtils {
             Log.shared.errorAndCrash("No controller")
             return
         }
-        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.errorAndCrash("No VC")
-            return
-        }
+        let presenterVc = UIApplication.currentlyVisibleViewController()
         presenterVc.navigationController?.pushViewController(vc, animated: true)
     }
 }

@@ -1057,6 +1057,9 @@
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Túto príručku môžete kedykoľvek zavrieť pomocou tlačidla Preskočiť.";
 
+/* PGPKeyImportSetting row title when grouped */
+"You can not import keys while the device is in a device group." = "You can not import keys while the device is in a device group.";
+
 /* alert error message certificate delete */
 "You can only delete certificates that are not connected to an account. The certificate is currently used for the following account: (by)" = "Môžete odstrániť iba certifikáty, ktoré nie sú pripojené k účtu. Certifikát sa momentálne používa pre tento účet: (podľa)";
 

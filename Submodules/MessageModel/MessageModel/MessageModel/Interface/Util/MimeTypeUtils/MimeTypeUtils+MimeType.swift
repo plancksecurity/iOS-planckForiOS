@@ -18,16 +18,19 @@ extension MimeTypeUtils {
         case defaultMimeType = "application/octet-stream"
 
         case pgpKeys = "application/pgp-keys"
+        
         case html = "text/html"
-
         case jpeg = "image/jpeg"
         case pgp =  "application/pgp-signature"
         case pdf  = "application/pdf"
         case pgpEncrypted = "application/pgp-encrypted"
         case attachedEmail = "message/rfc822"
         case plainText = "text/plain"
+
         case pEpSync = "application/pep.sync"
         case pEpSign = "application/pep.sign"
+        case pEpDistribution = "application/pep.distribution"
+
         case xml = "text/xml"
         case csv = "text/csv"
         case rtf = "text/rtf"

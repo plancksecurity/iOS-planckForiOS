@@ -76,10 +76,7 @@ extension UIUtils {
                                                 "UIUtils.showActionSheetWithContactOptions.button.title Cancel")
         let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { (action) in }
         alertSheet.addAction(cancelAction)
-        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.errorAndCrash("No VC")
-            return
-        }
+        let presenterVc = UIApplication.currentlyVisibleViewController()
         presenterVc.present(alertSheet, animated: true, completion: nil)
     }
 

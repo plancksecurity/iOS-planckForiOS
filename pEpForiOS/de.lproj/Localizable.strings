@@ -30,7 +30,7 @@
 "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "Es wurde ein zweites Gerät gefunden, mit dem Sie Ihre Datenschutzeinstellungen synchronisieren können. Möchten Sie mit der Synchronisierung beginnen?";
 
 /* error message for .missingEmail or .invalidEmail */
-"A valid email address is required" = "Eine gültige E-Mail-Adresse ist erforderlich.";
+"A valid email address is required" = "Eine gültige E-Mail-Adresse ist erforderlich";
 
 /* error message for .invalidEmail
    error message for .missingEmail */
@@ -1043,7 +1043,7 @@
 "Welcome to the p≡p Tutorial" = "Willkommen zum p≡p Tutorial";
 
 /* Secure & Trusted Description Label - Step 1 */
-"When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted" = "Wenn bestätigt wird, dass die Trustwords korrekt sind und der Handshake abgeschlossen ist, ist die Kommunikation vollständig sicher und vertrauenswürdig";
+"When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted" = "Wenn bestätigt wird, dass die Trustwords korrekt sind und der Handshake abgeschlossen wird, ist die Kommunikation vollständig sicher und vertrauenswürdig";
 
 /* Privacy status explanation Label */
 "When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication parner." = "Wenn Sie in der Leiste oben auf das Datenschutzstatus-Symbol klicken, gelangen Sie zum Handshake, wo Sie Ihren Kommunikationspartner überprüfen können.";

@@ -50,7 +50,6 @@ final class PEPAlertViewController: UIViewController {
                      image: [UIImage]? = nil,
                      viewModel: PEPAlertViewModelProtocol = PEPAlertViewModel())
         -> PEPAlertViewController? {
-
             let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
             guard let pEpAlertViewController = storyboard.instantiateViewController(
                 withIdentifier: PEPAlertViewController.storyboardId) as? PEPAlertViewController else {
