@@ -26,16 +26,24 @@ extension Substring {
 
         let lastIndex = theCount - 1
 
+        var haveSeenAlpha = false
+
         for ch in self {
             if ch == "-" {
                 if currentIndex == 0 || currentIndex == lastIndex {
                     return false
                 }
+            } else if String.rangeLatinLetter.contains(ch) ||
+                String.rangeCapitalLatinLetter.contains(ch) {
+                haveSeenAlpha = true
+            } else if !String.rangeNumerical.contains(ch) {
+                return false
             }
+
             currentIndex += 1
         }
 
-        return true
+        return haveSeenAlpha
     }
 
     /**
