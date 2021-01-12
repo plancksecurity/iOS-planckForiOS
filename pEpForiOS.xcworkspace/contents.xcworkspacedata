@@ -14,7 +14,7 @@
       location = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
    </FileRef>
    <FileRef
-      location = "container:../pantomime-iOS/PantomimeFramework/PantomimeFramework.xcodeproj">
+      location = "container:../Pantomime/PantomimeFramework/PantomimeFramework.xcodeproj">
    </FileRef>
    <FileRef
       location = "container:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
