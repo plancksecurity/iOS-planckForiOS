@@ -146,6 +146,30 @@ class KeyImportViewModelTest: XCTestCase {
 
         wait(for: [showSetOwnKeySuccessExpectation], timeout: TestUtil.waitTimeLocal)
     }
+
+    func testUserPresentableFingerprint() {
+        let vm = fakeKeyImportViewModel()
+
+        let keyDetail = KeyImportViewModel.KeyDetails(address: "",
+                                                      fingerprint: "",
+                                                      userName: "")
+        let _ = vm.userPresentableNames(keyDetails: [keyDetail])
+    }
+}
+
+extension KeyImportViewModelTest {
+    func fakeKeyImportViewModel() -> KeyImportViewModel {
+        let keyData = KeyImportUtil.KeyData(address: "address",
+                                            fingerprint: "fpr",
+                                            userName: "username")
+        let keyImporter = KeyImporterMock(importKeyErrorToThrow: nil,
+                                          importKeyDatas: [keyData])
+
+        let documentsBrowser = DocumentsDirectoryBrowserMock(urls: [URL(fileURLWithPath: "file:///someFake")])
+        return KeyImportViewModel(documentsBrowser: documentsBrowser,
+                                  keyImporter: keyImporter)
+
+    }
 }
 
 // MARK: - DocumentsDirectoryBrowserMock
