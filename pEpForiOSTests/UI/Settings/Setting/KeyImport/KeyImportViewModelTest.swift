@@ -142,6 +142,7 @@ class KeyImportViewModelTest: XCTestCase {
 }
 
 extension KeyImportViewModelTest {
+    /// Create a `KeyImportViewModel` for simple tests that don't care much about the underlying data.
     func setupKeyImportViewModel() -> KeyImportViewModel {
         let keyData = KeyImportUtil.KeyData(address: "address",
                                             fingerprint: "fpr",
