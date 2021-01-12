@@ -416,6 +416,7 @@
 		5B3C13BF23D8AF2E00FC0A53 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */; };
 		5B41C6082418F15100C268CE /* TutorialStep3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41C6072418F15100C268CE /* TutorialStep3ViewController.swift */; };
 		5B4A718A252CC4A500436FCF /* Mailto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A7189252CC4A500436FCF /* Mailto.swift */; };
+		5B5FAE0A25ADEB2200CACF9F /* TextFieldWithoutSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5FAE0925ADEB2200CACF9F /* TextFieldWithoutSelection.swift */; };
 		5BA946232542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA946222542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift */; };
 		5BB7C74524D82B6300D5F328 /* Constants+Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C74424D82B6300D5F328 /* Constants+Support.swift */; };
 		5BB7C74724D85A3B00D5F328 /* PEPWebviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C74624D85A3A00D5F328 /* PEPWebviewController.swift */; };
@@ -1066,6 +1067,7 @@
 		5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		5B41C6072418F15100C268CE /* TutorialStep3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep3ViewController.swift; sourceTree = "<group>"; };
 		5B4A7189252CC4A500436FCF /* Mailto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mailto.swift; sourceTree = "<group>"; };
+		5B5FAE0925ADEB2200CACF9F /* TextFieldWithoutSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithoutSelection.swift; sourceTree = "<group>"; };
 		5BA946222542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPAlertViewController+KeySyncError.swift"; sourceTree = "<group>"; };
 		5BB7C74424D82B6300D5F328 /* Constants+Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constants+Support.swift"; sourceTree = "<group>"; };
 		5BB7C74624D85A3A00D5F328 /* PEPWebviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPWebviewController.swift; sourceTree = "<group>"; };
@@ -2318,6 +2320,7 @@
 		43AA82511E9B925000ABD5A8 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				5B5FAE0925ADEB2200CACF9F /* TextFieldWithoutSelection.swift */,
 				5BB7C74824D85BD600D5F328 /* PEPWebviewController */,
 				1521B78B241BDA66000EAE57 /* UIUtils */,
 				B7DB7FC22215C484003968DA /* Extensions */,
@@ -3221,6 +3224,7 @@
 				15146C8C237F006F00D69495 /* KeySyncWizardViewController.swift in Sources */,
 				431E68B3246C267A00B3A977 /* KeyImportViewModel.swift in Sources */,
 				B70A3A63220065F600EDCE61 /* String+pEp.swift in Sources */,
+				5B5FAE0A25ADEB2200CACF9F /* TextFieldWithoutSelection.swift in Sources */,
 				5B1C0E1823FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift in Sources */,
 				15874BC12127493E00A3A4A6 /* SettingSwitchTableViewCell.swift in Sources */,
 				152A39E721905C3E00D9F8E4 /* RecipientTextViewModel.swift in Sources */,
