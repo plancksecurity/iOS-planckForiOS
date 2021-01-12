@@ -140,11 +140,15 @@ class KeyImportViewModelTest: XCTestCase {
             var fprExpected = "" // the expected value, formatted with spaces
 
             // Build a fingerprint, both the input, as the expected one
-            for _ in  1...10 {
+            for i in  1...10 {
                 let randomQuadruple = randomCapitalizedString(length: 4)
                 fprIn += randomQuadruple
-                if !fprExpected.isEmpty {
-                    fprExpected += " "
+                if i > 1 {
+                    if i == 6 {
+                        fprExpected += "\n"
+                    } else {
+                        fprExpected += " "
+                    }
                 }
                 fprExpected += randomQuadruple
             }
