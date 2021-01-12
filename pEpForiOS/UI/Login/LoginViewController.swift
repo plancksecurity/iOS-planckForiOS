@@ -69,6 +69,7 @@ final class LoginViewController: BaseViewController {
         setManualSetupButtonHidden(manualConfigButton.isHidden)
         syncStackView.axis = UIDevice.isSmall && UIDevice.isLandscape ? .vertical : .horizontal
         syncStackView.superview?.layoutIfNeeded()
+        manualConfigButton.contentHorizontalAlignment = UIDevice.isPortrait ? .right : .left
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
@@ -536,14 +537,19 @@ extension LoginViewController {
     }
 
     private func setManualSetupButtonHidden(_ hidden: Bool) {
+        let hasChanged = manualConfigButton.isHidden != hidden
         manualConfigButton.isHidden = hidden
         if UIDevice.isPortrait {
-            pEpSyncViewCenterHConstraint.isActive = hidden
-            leadingZero.isActive = !hidden
-            pepSyncLeadingBiggerThan.isActive = hidden
-            manualSetupWidth.isActive = hidden
+            self.pEpSyncViewCenterHConstraint.isActive = hidden
+            self.leadingZero.isActive = !hidden
+            self.pepSyncLeadingBiggerThan.isActive = hidden
+            self.manualSetupWidth.isActive = hidden
 
-            view.layoutIfNeeded()
+            UIView.animate(withDuration: 0.5) {
+                if hasChanged {
+                    self.view.layoutIfNeeded()
+                }
+            }
         }
     }
 
