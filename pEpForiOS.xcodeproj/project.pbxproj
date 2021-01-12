@@ -3768,15 +3768,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		43980E541CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "pEpForiOSUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				43980E551CBD0BCA00A7FC3C /* Debug */,
-				43980E561CBD0BCA00A7FC3C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
 /* End XCConfigurationList section */
 	};
 	rootObject = 43980E1B1CBD0BC900A7FC3C /* Project object */;
