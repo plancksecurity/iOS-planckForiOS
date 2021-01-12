@@ -69,7 +69,7 @@ class KeyImportViewModelTest: XCTestCase {
     }
 
     func testImportKey() {
-        let vm = fakeKeyImportViewModel()
+        let vm = setupKeyImportViewModel()
 
         let showConfirmSetOwnKeyExpectation = expectation(description: "showConfirmSetOwnKeyExpectation")
 
@@ -115,7 +115,7 @@ class KeyImportViewModelTest: XCTestCase {
     }
 
     func testSetOwnKeySuccess() {
-        let vm = fakeKeyImportViewModel()
+        let vm = setupKeyImportViewModel()
 
         let showSetOwnKeySuccessExpectation = expectation(description: "showSetOwnKeySuccessExpectation")
         let delegate = KeyImportViewModelDelegateMock(rowsLoadedExpectation: nil,
@@ -132,7 +132,7 @@ class KeyImportViewModelTest: XCTestCase {
     }
 
     func testUserPresentableFingerprint() {
-        let vm = fakeKeyImportViewModel()
+        let vm = setupKeyImportViewModel()
 
         let keyDetail = KeyImportViewModel.KeyDetails(address: "",
                                                       fingerprint: "",
@@ -142,7 +142,7 @@ class KeyImportViewModelTest: XCTestCase {
 }
 
 extension KeyImportViewModelTest {
-    func fakeKeyImportViewModel() -> KeyImportViewModel {
+    func setupKeyImportViewModel() -> KeyImportViewModel {
         let keyData = KeyImportUtil.KeyData(address: "address",
                                             fingerprint: "fpr",
                                             userName: "username")
