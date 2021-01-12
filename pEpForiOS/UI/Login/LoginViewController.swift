@@ -20,23 +20,24 @@ final class LoginViewController: BaseViewController {
     @IBOutlet weak var manualSetupWidth: NSLayoutConstraint!
     @IBOutlet weak var leadingZero: NSLayoutConstraint!
     weak var delegate: LoginViewControllerDelegate?
-
-    @IBOutlet weak var syncStackView: UIStackView!
-    @IBOutlet weak var user: AnimatedPlaceholderTextfield!
-    @IBOutlet weak var password: AnimatedPlaceholderTextfield!
-    @IBOutlet weak var emailAddress: AnimatedPlaceholderTextfield!
-    @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var dismissButton: UIButton!
-    @IBOutlet weak var dismissButtonLeft: UIButton!
-    @IBOutlet weak var loginButtonIPadLandscape: UIButton!
-    @IBOutlet weak var manualConfigButton: UIButton!
-    @IBOutlet weak var mainContainerView: UIView!
-    @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var scrollView: DynamicHeightScrollView!
-    @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
-    @IBOutlet weak var loginButtonConstraint: NSLayoutConstraint!
-    @IBOutlet weak var pEpSyncSwitch: UISwitch!
+    
+    @IBOutlet private weak var pepSyncLabel: UILabel!
+    @IBOutlet private weak var syncStackView: UIStackView!
+    @IBOutlet private weak var user: AnimatedPlaceholderTextfield!
+    @IBOutlet private weak var password: AnimatedPlaceholderTextfield!
+    @IBOutlet private weak var emailAddress: AnimatedPlaceholderTextfield!
+    @IBOutlet private weak var loginButton: UIButton!
+    @IBOutlet private weak var dismissButton: UIButton!
+    @IBOutlet private weak var dismissButtonLeft: UIButton!
+    @IBOutlet private weak var loginButtonIPadLandscape: UIButton!
+    @IBOutlet private weak var manualConfigButton: TwoLinesButton!
+    @IBOutlet private weak var mainContainerView: UIView!
+    @IBOutlet private weak var stackView: UIStackView!
+    @IBOutlet private weak var scrollView: DynamicHeightScrollView!
+    @IBOutlet private weak var scrollViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var loginButtonConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var pEpSyncSwitch: UISwitch!
 
     var viewModel: LoginViewModel?
     var offerManualSetup = false
@@ -536,12 +537,12 @@ extension LoginViewController {
 
     private func setManualSetupButtonHidden(_ hidden: Bool) {
         manualConfigButton.isHidden = hidden
-
         if UIDevice.isPortrait {
             pEpSyncViewCenterHConstraint.isActive = hidden
             leadingZero.isActive = !hidden
             pepSyncLeadingBiggerThan.isActive = hidden
             manualSetupWidth.isActive = hidden
+
             view.layoutIfNeeded()
         }
     }

@@ -189,7 +189,7 @@
                                                             <constraint firstItem="CXx-UR-lxg" firstAttribute="leading" secondItem="zg6-3H-SnV" secondAttribute="leading" id="hwJ-vD-GMP"/>
                                                         </constraints>
                                                     </view>
-                                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="JT1-ND-6bH">
+                                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="JT1-ND-6bH" customClass="TwoLinesButton" customModule="pEpForiOS" customModuleProvider="target">
                                                         <rect key="frame" x="216.5" y="93" width="83.5" height="32"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                         <state key="normal" title="Manual Setup">
