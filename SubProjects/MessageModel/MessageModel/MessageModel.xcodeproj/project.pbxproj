@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		00B06B3F2142871A00EFE569 /* FilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B06B3E2142871A00EFE569 /* FilterType.swift */; };
+		1506E8DA25ADEE5C00909821 /* QualifyServerIsLocalServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1506E8D925ADEE5C00909821 /* QualifyServerIsLocalServiceTest.swift */; };
+		1506E8EB25ADF00500909821 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1506E8E725ADF00500909821 /* LaunchScreen.storyboard */; };
+		1506E8EC25ADF00500909821 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1506E8E925ADF00500909821 /* Main.storyboard */; };
 		15078BB323883D280075C7B4 /* DefaultImapConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15078BB223883D280075C7B4 /* DefaultImapConnectionDelegate.swift */; };
 		150C5EF024A38825005BA3C9 /* CreateIMAPPepFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150C5EEF24A38825005BA3C9 /* CreateIMAPPepFolderOperation.swift */; };
 		151645A62239183B009532BE /* MessageModelObjectProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645A52239183B009532BE /* MessageModelObjectProtocol.swift */; };
@@ -253,7 +256,6 @@
 		43753CEE222D3A3E002EE98B /* CdAttachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CED222D3A3E002EE98B /* CdAttachment+Extension.swift */; };
 		437AA507224507A200B5C7A4 /* CdFolder+NonOptionalConvenienceAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437AA506224507A200B5C7A4 /* CdFolder+NonOptionalConvenienceAccessors.swift */; };
 		4383344423FD78BB004CC422 /* ClientCertificateUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4383344323FD78BB004CC422 /* ClientCertificateUtilTest.swift */; };
-		4384D3F4243F2B82006CCBA2 /* QualifyServerIsLocalServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384D3F3243F2B82006CCBA2 /* QualifyServerIsLocalServiceTest.swift */; };
 		4384D3F8243F2DAE006CCBA2 /* CdMessage+PantomimeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384D3F7243F2DAE006CCBA2 /* CdMessage+PantomimeTest.swift */; };
 		4384D3FA243F2FD6006CCBA2 /* UnencryptedHTMLMail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4384D3F9243F2FD6006CCBA2 /* UnencryptedHTMLMail.txt */; };
 		4384D3FC243F3061006CCBA2 /* IOS-211_hi_there.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4384D3FB243F3061006CCBA2 /* IOS-211_hi_there.txt */; };
@@ -415,9 +417,7 @@
 		B747A7E2234E4B7800508565 /* CdIdentity+SectionTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B747A7E1234E4B7800508565 /* CdIdentity+SectionTitle.swift */; };
 		B751B99522D4D5100018DE0D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B751B99422D4D5100018DE0D /* AppDelegate.swift */; };
 		B751B99722D4D5100018DE0D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B751B99622D4D5100018DE0D /* ViewController.swift */; };
-		B751B99A22D4D5100018DE0D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B751B99822D4D5100018DE0D /* Main.storyboard */; };
 		B751B99C22D4D5110018DE0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B751B99B22D4D5110018DE0D /* Assets.xcassets */; };
-		B751B99F22D4D5110018DE0D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B751B99D22D4D5110018DE0D /* LaunchScreen.storyboard */; };
 		B7789CCA22243DC800AB08F4 /* MessageQueryResultsFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7789CC922243DC800AB08F4 /* MessageQueryResultsFilter.swift */; };
 		B7789CCC222446EC00AB08F4 /* MessageQueryResultsSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7789CCB222446EC00AB08F4 /* MessageQueryResultsSearch.swift */; };
 		B7A1152322C3CA3F00FB6E91 /* PrepareAccountForSavingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A1152222C3CA3F00FB6E91 /* PrepareAccountForSavingService.swift */; };
@@ -457,6 +457,9 @@
 
 /* Begin PBXFileReference section */
 		00B06B3E2142871A00EFE569 /* FilterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterType.swift; sourceTree = "<group>"; };
+		1506E8D925ADEE5C00909821 /* QualifyServerIsLocalServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalServiceTest.swift; sourceTree = "<group>"; };
+		1506E8E825ADF00500909821 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		1506E8EA25ADF00500909821 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
 		15078BB223883D280075C7B4 /* DefaultImapConnectionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultImapConnectionDelegate.swift; sourceTree = "<group>"; };
 		150B84C220A35DF800D8B288 /* 0.0.33.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 0.0.33.xcdatamodel; sourceTree = "<group>"; };
 		150C5EEF24A38825005BA3C9 /* CreateIMAPPepFolderOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateIMAPPepFolderOperation.swift; sourceTree = "<group>"; };
@@ -660,8 +663,6 @@
 		431BAE38246D5BEF0043490F /* KeyImportUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportUtilTest.swift; sourceTree = "<group>"; };
 		431FD70422EEF1A30001FF37 /* Message+PredicateFactory+KeySync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+PredicateFactory+KeySync.swift"; sourceTree = "<group>"; };
 		43236E6724598F4C00D8318D /* Account+AccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+AccountType.swift"; sourceTree = "<group>"; };
-		43269F242552E7AA001E18C6 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		43269F252552E7AA001E18C6 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4331CE74229BD7E100DDDC65 /* UseFirstHTMLPartAsBodyTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseFirstHTMLPartAsBodyTest.swift; sourceTree = "<group>"; };
 		4331CE79229BDD0900DDDC65 /* PantomimeFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4331CE84229BDF0F00DDDC65 /* IOS-1556_html_mail_with_html_attachment.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-1556_html_mail_with_html_attachment.txt"; sourceTree = "<group>"; };
@@ -714,7 +715,6 @@
 		437AA506224507A200B5C7A4 /* CdFolder+NonOptionalConvenienceAccessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+NonOptionalConvenienceAccessors.swift"; sourceTree = "<group>"; };
 		4383344323FD78BB004CC422 /* ClientCertificateUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateUtilTest.swift; sourceTree = "<group>"; };
 		4383344623FD806D004CC422 /* Certificate_001.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Certificate_001.p12; sourceTree = "<group>"; };
-		4384D3F3243F2B82006CCBA2 /* QualifyServerIsLocalServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalServiceTest.swift; sourceTree = "<group>"; };
 		4384D3F7243F2DAE006CCBA2 /* CdMessage+PantomimeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+PantomimeTest.swift"; sourceTree = "<group>"; };
 		4384D3F9243F2FD6006CCBA2 /* UnencryptedHTMLMail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UnencryptedHTMLMail.txt; sourceTree = "<group>"; };
 		4384D3FB243F3061006CCBA2 /* IOS-211_hi_there.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211_hi_there.txt"; sourceTree = "<group>"; };
@@ -938,6 +938,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1506E8D825ADEE5C00909821 /* QualifyLocalServer */ = {
+			isa = PBXGroup;
+			children = (
+				1506E8D925ADEE5C00909821 /* QualifyServerIsLocalServiceTest.swift */,
+			);
+			path = QualifyLocalServer;
+			sourceTree = "<group>";
+		};
 		15175E4C221D59DD00C91DB8 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
@@ -1891,14 +1899,6 @@
 			path = QualifyLocalServer;
 			sourceTree = "<group>";
 		};
-		4384D3F0243F2B04006CCBA2 /* QualifyLocalServer */ = {
-			isa = PBXGroup;
-			children = (
-				4384D3F3243F2B82006CCBA2 /* QualifyServerIsLocalServiceTest.swift */,
-			);
-			path = QualifyLocalServer;
-			sourceTree = "<group>";
-		};
 		4396230B23FD419B007E9364 /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
@@ -2292,13 +2292,13 @@
 		B751B99322D4D5100018DE0D /* MessageModelTestApp */ = {
 			isa = PBXGroup;
 			children = (
+				1506E8E725ADF00500909821 /* LaunchScreen.storyboard */,
+				1506E8E925ADF00500909821 /* Main.storyboard */,
 				1533492423E4604700CB8C0B /* README.md */,
 				B751B9A622D4D56C0018DE0D /* MessageModelTestApp.entitlements */,
 				B751B99422D4D5100018DE0D /* AppDelegate.swift */,
 				B751B99622D4D5100018DE0D /* ViewController.swift */,
-				B751B99822D4D5100018DE0D /* Main.storyboard */,
 				B751B99B22D4D5110018DE0D /* Assets.xcassets */,
-				B751B99D22D4D5110018DE0D /* LaunchScreen.storyboard */,
 				B751B9A022D4D5110018DE0D /* Info.plist */,
 				43BC0E63235764D800125E01 /* InfoPlist.strings */,
 			);
@@ -2312,8 +2312,8 @@
 				15679F032292CB2C0051DCC3 /* MessageModelObjects */,
 				37BC7AF72226DB540047267A /* MessageQueryResultsTest */,
 				4383344223FD7891004CC422 /* Certificates */,
-				4384D3F0243F2B04006CCBA2 /* QualifyLocalServer */,
 				431BAE37246D5BD10043490F /* KeyImport */,
+				1506E8D825ADEE5C00909821 /* QualifyLocalServer */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -2515,6 +2515,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1506E8EC25ADF00500909821 /* Main.storyboard in Resources */,
 				43607DDD23FE814900FA66B8 /* Certificate_002.p12 in Resources */,
 				43517244229FD8EF00D92026 /* IOS-1432_message_from_outlook.txt in Resources */,
 				43607DDF23FE81D300FA66B8 /* Certificate_003.p12 in Resources */,
@@ -2528,6 +2529,7 @@
 				4384D3FC243F3061006CCBA2 /* IOS-211_hi_there.txt in Resources */,
 				43F86BA824504C00008961DA /* MessageHeapBufferOverflow.txt in Resources */,
 				43BBB49F24486A8900A88B39 /* 1364_Mail_missing_attached_image.txt in Resources */,
+				1506E8EB25ADF00500909821 /* LaunchScreen.storyboard in Resources */,
 				43607DD923FD84EE00FA66B8 /* Certificate_001.p12 in Resources */,
 				43F86BA624504B95008961DA /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc in Resources */,
 				4331CE85229BDF0F00DDDC65 /* IOS-1556_html_mail_with_html_attachment.txt in Resources */,
@@ -2541,10 +2543,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B751B99F22D4D5110018DE0D /* LaunchScreen.storyboard in Resources */,
 				43BC0E65235764D800125E01 /* InfoPlist.strings in Resources */,
 				B751B99C22D4D5110018DE0D /* Assets.xcassets in Resources */,
-				B751B99A22D4D5100018DE0D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3022,7 +3022,6 @@
 				4331CE75229BD7E100DDDC65 /* UseFirstHTMLPartAsBodyTest.swift in Sources */,
 				158A6E042305C2F5006A9ECE /* PEPUtil+EncryptionTest.swift in Sources */,
 				154D173B237331FE001FDF78 /* ImapFlagsTests.swift in Sources */,
-				4384D3F4243F2B82006CCBA2 /* QualifyServerIsLocalServiceTest.swift in Sources */,
 				43607DE123FE870C00FA66B8 /* ClientCertificates+TestUtils.swift in Sources */,
 				4384D402243F3626006CCBA2 /* MimeTests.swift in Sources */,
 				37FED96E228328ED004C7804 /* MimeTypeUtilsTest.swift in Sources */,
@@ -3031,6 +3030,7 @@
 				152E3C9F231BE34100C1420B /* BackgroundTaskManagerTest.swift in Sources */,
 				B7E02ABF2227F49600741157 /* MessageQueryResultsSearchTest.swift in Sources */,
 				159BCEB024C6DD2E000E4ED1 /* XCTest+SyncAdapter.swift in Sources */,
+				1506E8DA25ADEE5C00909821 /* QualifyServerIsLocalServiceTest.swift in Sources */,
 				4358A06622A5011F00C49E43 /* MockNotifyHandshakeDelegate.swift in Sources */,
 				4384D400243F3456006CCBA2 /* PantomimeFolderAttribute+ExtensionsTest.swift in Sources */,
 			);
@@ -3061,6 +3061,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		1506E8E725ADF00500909821 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1506E8E825ADF00500909821 /* en */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		1506E8E925ADF00500909821 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1506E8EA25ADF00500909821 /* en */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		43BC0E63235764D800125E01 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -3083,22 +3099,6 @@
 				43BC0E6A235764D800125E01 /* en */,
 			);
 			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-		B751B99822D4D5100018DE0D /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				43269F252552E7AA001E18C6 /* en */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		B751B99D22D4D5110018DE0D /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				43269F242552E7AA001E18C6 /* en */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
