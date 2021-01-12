@@ -17,6 +17,8 @@ protocol LoginViewControllerDelegate: class  {
 
 final class LoginViewController: BaseViewController {
 
+    @IBOutlet weak var manualSetupWidth: NSLayoutConstraint!
+    @IBOutlet weak var leadingZero: NSLayoutConstraint!
     weak var delegate: LoginViewControllerDelegate?
 
     @IBOutlet weak var syncStackView: UIStackView!
@@ -39,6 +41,7 @@ final class LoginViewController: BaseViewController {
     var viewModel: LoginViewModel?
     var offerManualSetup = false
 
+    @IBOutlet weak var pepSyncLeadingBiggerThan: NSLayoutConstraint!
     var isCurrentlyVerifying = false {
         didSet {
             updateView()
@@ -533,6 +536,14 @@ extension LoginViewController {
 
     private func setManualSetupButtonHidden(_ hidden: Bool) {
         manualConfigButton.isHidden = hidden
+
+        if UIDevice.isPortrait {
+            pEpSyncViewCenterHConstraint.isActive = hidden
+            leadingZero.isActive = !hidden
+            pepSyncLeadingBiggerThan.isActive = hidden
+            manualSetupWidth.isActive = hidden
+            view.layoutIfNeeded()
+        }
     }
 
     private func updateView() {
