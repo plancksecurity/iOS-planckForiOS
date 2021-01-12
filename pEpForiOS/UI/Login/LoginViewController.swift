@@ -17,6 +17,7 @@ protocol LoginViewControllerDelegate: class  {
 
 final class LoginViewController: BaseViewController {
 
+    @IBOutlet weak var centerX: NSLayoutConstraint!
     @IBOutlet weak var manualSetupWidth: NSLayoutConstraint!
     @IBOutlet weak var leadingZero: NSLayoutConstraint!
     weak var delegate: LoginViewControllerDelegate?
@@ -541,6 +542,7 @@ extension LoginViewController {
         manualConfigButton.isHidden = hidden
         if UIDevice.isPortrait {
             self.pEpSyncViewCenterHConstraint.isActive = hidden
+            self.centerX.isActive = hidden
             self.leadingZero.isActive = !hidden
             self.pepSyncLeadingBiggerThan.isActive = hidden
             self.manualSetupWidth.isActive = hidden
