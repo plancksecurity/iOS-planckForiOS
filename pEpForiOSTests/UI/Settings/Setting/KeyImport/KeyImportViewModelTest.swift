@@ -137,7 +137,25 @@ class KeyImportViewModelTest: XCTestCase {
         let keyDetail = KeyImportViewModel.KeyDetails(address: "",
                                                       fingerprint: "",
                                                       userName: "")
-        let _ = vm.userPresentableNames(keyDetails: [keyDetail])
+        // Repeat with random values a couple of times
+        for _ in 0 ... 100 {
+            var fprIn = "" // the original value without spaces
+            var fprExpected = "" // the expected value, formatted with spaces
+
+            // Build a fingerprint, both the input, as the expected one
+            for _ in  1...16 {
+                let randomQuadruple = randomCapitalizedString(length: 4)
+                fprIn += randomQuadruple
+                if !fprExpected.isEmpty {
+                    fprExpected += " "
+                }
+                fprExpected += randomQuadruple
+            }
+
+            // Test the result
+            let fprValue = vm.userPresentableNames(keyDetails: [keyDetail])
+            XCTAssertEqual(fprValue, fprExpected)
+        }
     }
 }
 
