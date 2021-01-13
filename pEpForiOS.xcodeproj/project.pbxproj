@@ -626,7 +626,7 @@
 		1541D7EF1FC81ED900D52A5D /* URL+ExtensionsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+ExtensionsTest.swift"; sourceTree = "<group>"; };
 		1541D7F41FC82A4900D52A5D /* URL+MIME.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MIME.swift"; sourceTree = "<group>"; };
 		1543B6A122AACA4E002B59AB /* KeySyncHandshakeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncHandshakeService.swift; sourceTree = "<group>"; };
-		1543B6A322AACD69002B59AB /* secret.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = secret.xcconfig; path = ../../../pEp_for_iOS_intern/secret.xcconfig; sourceTree = "<group>"; };
+		1543B6A322AACD69002B59AB /* secret.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = secret.xcconfig; path = ../../../pep_for_ios_intern/secret.xcconfig; sourceTree = "<group>"; };
 		1543B6A722ABDAAE002B59AB /* Identity+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Identity+pEp.swift"; sourceTree = "<group>"; };
 		1543B6AF22ABF53C002B59AB /* KeySyncDeviceGroupUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncDeviceGroupUtil.swift; sourceTree = "<group>"; };
 		154660D32334E2FC008D2137 /* Message+SecurityBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+SecurityBadge.swift"; sourceTree = "<group>"; };
