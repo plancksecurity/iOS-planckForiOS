@@ -138,7 +138,6 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
 
 extension EmailListViewCell {
 
-    private static var flaggedImage: UIImage? = nil
     private static var emptyContactImage = UIImage(named: "empty-avatar")
 
     // Message threading is not supported. Let's keep it for now. It might be helpful for

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00B06B3F2142871A00EFE569 /* FilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B06B3E2142871A00EFE569 /* FilterType.swift */; };
 		1506E8DA25ADEE5C00909821 /* QualifyServerIsLocalServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1506E8D925ADEE5C00909821 /* QualifyServerIsLocalServiceTest.swift */; };
 		1506E9BE25AF0BCB00909821 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1506E8E925ADF00500909821 /* Main.storyboard */; };
 		1506E9C525AF0BD100909821 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1506E8E725ADF00500909821 /* LaunchScreen.storyboard */; };
@@ -176,7 +175,6 @@
 		37FED96E228328ED004C7804 /* MimeTypeUtilsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FED96D228328ED004C7804 /* MimeTypeUtilsTest.swift */; };
 		37FED9712283354B004C7804 /* jsonMimeType.txt in Resources */ = {isa = PBXBuildFile; fileRef = 37FED9702283354A004C7804 /* jsonMimeType.txt */; };
 		3A318597246C308A00EE3D4D /* CdClientCertificate+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A318596246C308A00EE3D4D /* CdClientCertificate+PredicateFactory.swift */; };
-		3A3FAC892451CB1000239FFC /* Query+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FAC882451CB1000239FFC /* Query+PredicateFactory.swift */; };
 		3A7400BE2492235F00AE6A79 /* CdMessageReference+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7400BD2492235F00AE6A79 /* CdMessageReference+PredicateFactory.swift */; };
 		3A798E0A2476754200510B02 /* CdMessage+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A798E092476754200510B02 /* CdMessage+PredicateFactory.swift */; };
 		3AB50D2A2500F3B1005E2170 /* pEp4iosIntern.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB50D292500F3B1005E2170 /* pEp4iosIntern.framework */; };
@@ -456,7 +454,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00B06B3E2142871A00EFE569 /* FilterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterType.swift; sourceTree = "<group>"; };
 		1506E8D925ADEE5C00909821 /* QualifyServerIsLocalServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalServiceTest.swift; sourceTree = "<group>"; };
 		1506E8E825ADF00500909821 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1506E8EA25ADF00500909821 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -633,7 +630,6 @@
 		37FED96D228328ED004C7804 /* MimeTypeUtilsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MimeTypeUtilsTest.swift; sourceTree = "<group>"; };
 		37FED9702283354A004C7804 /* jsonMimeType.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jsonMimeType.txt; sourceTree = "<group>"; };
 		3A318596246C308A00EE3D4D /* CdClientCertificate+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdClientCertificate+PredicateFactory.swift"; sourceTree = "<group>"; };
-		3A3FAC882451CB1000239FFC /* Query+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Query+PredicateFactory.swift"; sourceTree = "<group>"; };
 		3A7400BD2492235F00AE6A79 /* CdMessageReference+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessageReference+PredicateFactory.swift"; sourceTree = "<group>"; };
 		3A798E092476754200510B02 /* CdMessage+PredicateFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+PredicateFactory.swift"; sourceTree = "<group>"; };
 		3AB50D292500F3B1005E2170 /* pEp4iosIntern.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = pEp4iosIntern.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1330,7 +1326,6 @@
 			isa = PBXGroup;
 			children = (
 				15466132233B41FB008D2137 /* Message+PredicateFactory.swift */,
-				3A3FAC882451CB1000239FFC /* Query+PredicateFactory.swift */,
 			);
 			path = PredicateFactory;
 			sourceTree = "<group>";
@@ -2276,7 +2271,6 @@
 		B718EF291F866FF6000CFB71 /* Filter */ = {
 			isa = PBXGroup;
 			children = (
-				00B06B3E2142871A00EFE569 /* FilterType.swift */,
 			);
 			path = Filter;
 			sourceTree = "<group>";
@@ -2832,7 +2826,6 @@
 				435F5134221FFF3A006EB11F /* CdFolder+Pantomime.swift in Sources */,
 				15078BB323883D280075C7B4 /* DefaultImapConnectionDelegate.swift in Sources */,
 				43753CEE222D3A3E002EE98B /* CdAttachment+Extension.swift in Sources */,
-				3A3FAC892451CB1000239FFC /* Query+PredicateFactory.swift in Sources */,
 				1587D167204DA3C3002C2157 /* KeyChain+Extensions.swift in Sources */,
 				1522953B230057A800204FD3 /* Folder+Fetching.swift in Sources */,
 				155FE561228B4FBE003D3E68 /* CdImapFlags.swift in Sources */,
@@ -2925,7 +2918,6 @@
 				43EA485A221E9518006E8F83 /* BackgroundTaskProtocol.swift in Sources */,
 				15A3B4DD2358710A00DB9135 /* CdAccount+ReplicationServiceProvider.swift in Sources */,
 				8B8D228F1DBA0A26000BDE79 /* CdServerCredentials.swift in Sources */,
-				00B06B3F2142871A00EFE569 /* FilterType.swift in Sources */,
 				15EA8E011FA8A45E00D4084A /* CdIdentity+PredicateFactory.swift in Sources */,
 				153DDF3E25ADD43D008F645F /* FetchServiceBaseClass.swift in Sources */,
 				43123FB7225368170038D72C /* MessageInfoCache.swift in Sources */,

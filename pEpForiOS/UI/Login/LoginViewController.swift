@@ -363,34 +363,6 @@ extension LoginViewController {
         setManualSetupButtonHidden(true)
     }
 
-    private func hidePasswordTextField() {
-        UIView.animate(withDuration: 0.2,
-                       delay: 0,
-                       options: [.curveEaseInOut, .beginFromCurrentState],
-                       animations: { [weak self] in
-                        self?.password.alpha = 0
-            }, completion: { [weak self] completed in
-                guard completed else { return }
-                UIView.animate(withDuration: 0.2) {
-                    self?.password.isHidden = true
-                }
-        })
-    }
-
-    private func showPasswordTextField() {
-        UIView.animate(withDuration: 0.2, animations: { [weak self] in
-            self?.password.isHidden = false
-            }, completion: { [weak self] completed in
-                guard completed else { return }
-                UIView.animate(withDuration: 0.2,
-                               delay: 0,
-                               options: [.curveEaseInOut, .beginFromCurrentState],
-                               animations: { [weak self] in
-                                self?.password.alpha = 1.0
-                    }, completion: nil)
-        })
-    }
-
     private func configureAppearance() {
         if #available(iOS 13, *) {
             Appearance.customiseForLogin(viewController: self)

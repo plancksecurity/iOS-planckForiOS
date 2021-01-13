@@ -296,11 +296,7 @@ class EmailListViewModel: EmailDisplayViewModel {
         }
     }
 
-    // MARK: - multiple message selection handler
-
-    private var unreadMessages = false
-    private var flaggedMessages = false
-
+    // MARK: - Multiple message selection handler
 
     /// Handles changes of the selected messages in edit mode.
     /// Updates toolbar buttons (maybe more)  accoring to selection.

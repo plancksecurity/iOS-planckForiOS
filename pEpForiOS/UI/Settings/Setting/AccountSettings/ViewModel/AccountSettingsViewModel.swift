@@ -49,7 +49,6 @@ final class AccountSettingsViewModel {
     /// Items to be displayed in a Account Settings View Controller
     private(set) var sections: [Section] = [Section]()
     private let oauthViewModel = OAuthAuthorizer()
-    private lazy var folderSyncService = FetchImapFoldersService()
 
     /// Constructor
     /// - Parameters:

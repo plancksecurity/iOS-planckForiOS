@@ -9,17 +9,12 @@
 import Foundation
 import UIKit
 
-protocol CollapsibleTableViewHeaderDelegate {
-    func toggleSection(header: CollapsibleTableViewHeader, section: Int)
-}
-
 class SectionButton : UIButton {
     var section: Int = -1 // Invalid default value
 }
 
 class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
     var section: Int = 0
-    let topStackView = UIStackView()
     let labelStackView = UIStackView()
     let profileImage = UIImageView()
     let accountType = UILabel()

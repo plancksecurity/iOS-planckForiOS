@@ -365,13 +365,6 @@ public class Message: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         cdObject.cc = result
     }
 
-    public func removeFromCc(_ element: Identity) {
-        let result =
-            (cdObject.cc?.mutableCopy() as? NSMutableOrderedSet) ?? NSMutableOrderedSet()
-        result.remove(element.cdObject)
-        cdObject.cc = result
-    }
-
     // MARK: - BCC
 
     public var bcc: UnappendableArray<Identity> {
