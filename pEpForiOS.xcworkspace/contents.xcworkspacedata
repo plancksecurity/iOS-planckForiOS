@@ -11,7 +11,7 @@
       location = "group:SubProjects/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../pEp_for_iOS_intern/pEp4iosIntern/pEp4iosIntern.xcodeproj">
+      location = "group:../pep_for_ios_intern/pEp4iosIntern/pEp4iosIntern.xcodeproj">
    </FileRef>
    <FileRef
       location = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">

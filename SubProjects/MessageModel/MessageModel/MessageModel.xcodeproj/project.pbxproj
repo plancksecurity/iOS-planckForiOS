@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		00B06B3F2142871A00EFE569 /* FilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B06B3E2142871A00EFE569 /* FilterType.swift */; };
 		1506E8DA25ADEE5C00909821 /* QualifyServerIsLocalServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1506E8D925ADEE5C00909821 /* QualifyServerIsLocalServiceTest.swift */; };
-		1506E8EB25ADF00500909821 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1506E8E725ADF00500909821 /* LaunchScreen.storyboard */; };
-		1506E8EC25ADF00500909821 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1506E8E925ADF00500909821 /* Main.storyboard */; };
+		1506E9BE25AF0BCB00909821 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1506E8E925ADF00500909821 /* Main.storyboard */; };
+		1506E9C525AF0BD100909821 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1506E8E725ADF00500909821 /* LaunchScreen.storyboard */; };
 		15078BB323883D280075C7B4 /* DefaultImapConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15078BB223883D280075C7B4 /* DefaultImapConnectionDelegate.swift */; };
 		150C5EF024A38825005BA3C9 /* CreateIMAPPepFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150C5EEF24A38825005BA3C9 /* CreateIMAPPepFolderOperation.swift */; };
 		151645A62239183B009532BE /* MessageModelObjectProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645A52239183B009532BE /* MessageModelObjectProtocol.swift */; };
@@ -2515,7 +2515,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1506E8EC25ADF00500909821 /* Main.storyboard in Resources */,
 				43607DDD23FE814900FA66B8 /* Certificate_002.p12 in Resources */,
 				43517244229FD8EF00D92026 /* IOS-1432_message_from_outlook.txt in Resources */,
 				43607DDF23FE81D300FA66B8 /* Certificate_003.p12 in Resources */,
@@ -2529,7 +2528,6 @@
 				4384D3FC243F3061006CCBA2 /* IOS-211_hi_there.txt in Resources */,
 				43F86BA824504C00008961DA /* MessageHeapBufferOverflow.txt in Resources */,
 				43BBB49F24486A8900A88B39 /* 1364_Mail_missing_attached_image.txt in Resources */,
-				1506E8EB25ADF00500909821 /* LaunchScreen.storyboard in Resources */,
 				43607DD923FD84EE00FA66B8 /* Certificate_001.p12 in Resources */,
 				43F86BA624504B95008961DA /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc in Resources */,
 				4331CE85229BDF0F00DDDC65 /* IOS-1556_html_mail_with_html_attachment.txt in Resources */,
@@ -2543,6 +2541,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1506E9BE25AF0BCB00909821 /* Main.storyboard in Resources */,
+				1506E9C525AF0BD100909821 /* LaunchScreen.storyboard in Resources */,
 				43BC0E65235764D800125E01 /* InfoPlist.strings in Resources */,
 				B751B99C22D4D5110018DE0D /* Assets.xcassets in Resources */,
 			);
