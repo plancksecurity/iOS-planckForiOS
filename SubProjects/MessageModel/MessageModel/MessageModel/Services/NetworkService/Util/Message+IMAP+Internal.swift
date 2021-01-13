@@ -11,11 +11,10 @@ import pEpIOSToolbox
 // MARK: - Deletion
 
 extension Message {
-
-    /// - Note: This method does NOT save context. It MUST be saved afterwards.
+    /// Only for internal use, does not save!
     func imapDelete() {
-        if isDeleted {
-            // Do not bother messages that have been deleted from the DB already by some background
+        if self.isDeleted {
+            // Do not bother messages that have been deleted from the DB alreadyby some background
             // action (e.g. deleted in other MUA)
             return
         }
@@ -24,6 +23,7 @@ extension Message {
         } else {
             Stack.shared.mainContext.delete(cdObject)
         }
+        moc.saveAndLogErrors()
     }
 
     /// Triggers trashing of the message, taking everithing in account (provider specific constrains
