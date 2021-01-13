@@ -58,26 +58,6 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
         searchController.delegate = self
     }
 
-    /// Add the search bar when running on iOS 10 or earlier.
-    private func addSearchBar10() {
-        tableView.tableHeaderView = searchController.searchBar
-        tableView.setContentOffset(CGPoint(x: 0.0,
-                                           y: searchController.searchBar.frame.size.height),
-                                   animated: false)
-    }
-
-    /// Showing the search controller in versions iOS 10 and earlier.
-    @objc func didBecomeActiveInstallSearchBar10() {
-        if tableView.tableHeaderView == nil {
-            tableView.tableHeaderView = searchController.searchBar
-        }
-    }
-
-    /// Hide/remove the search controller in versions iOS 10 and earlier.
-    @objc func didBecomeInactiveUninstallSearchbar10() {
-        tableView.tableHeaderView = nil
-    }
-
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text else {
                 return
