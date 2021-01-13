@@ -104,6 +104,7 @@ class ComposeTableViewController: BaseTableViewController {
     // MARK: - IBActions
 
     @IBAction func cancel(_ sender: Any) {
+        updateBodyState()
         if viewModel?.showCancelActions ?? false {
             showAlertControllerWithOptionsForCanceling(sender: sender)
         } else {
@@ -112,7 +113,16 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     @IBAction func send() {
+        updateBodyState()
         viewModel?.handleUserClickedSendButton()
+    }
+
+    private func updateBodyState() {
+        /// The body textview's autocorrection doesn't call the textview's delegate.
+        /// To guarantee the message is sent exactly as it's in the textview we trigger the endEditing callback before sending.
+        if let cell = tableView.visibleCells.filter({$0 is BodyCell}).first as? BodyCell {
+            cell.textViewDidEndEditing(cell.textView)
+        }
     }
 }
 
