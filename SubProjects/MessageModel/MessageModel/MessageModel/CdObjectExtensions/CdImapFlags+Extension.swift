@@ -20,10 +20,6 @@ extension CdImapFlags {
             seen: flagSeen, deleted: flagDeleted)
     }
 
-    func imapFlagsBits() -> ImapFlagsBits {
-        return rawFlagsAsShort()
-    }
-
     func update(cdImapFlags: CdImapFlags) {
         flagAnswered = cdImapFlags.flagAnswered
         flagDraft = cdImapFlags.flagDraft

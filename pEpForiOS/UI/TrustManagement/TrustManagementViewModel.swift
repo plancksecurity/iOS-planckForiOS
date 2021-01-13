@@ -103,8 +103,6 @@ extension TrustManagementViewModel {
         }
         /// Indicates if the long (or the short) version of the trustwords should be shown
         var showLongTrustwordVersion: Bool = false
-        /// The privacy status in between the current user and the partner
-        var privacyStatus: String?
         /// Status indicator
         func color(completion: @escaping (Color) -> Void){
             if forceRed {

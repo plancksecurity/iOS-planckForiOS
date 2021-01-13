@@ -348,21 +348,9 @@ extension Stack {
         return storeURL(for: defaultName)
     }
 
-    static private var defaultDirectory: FileManager.SearchPathDirectory {
-        #if os(tvOS)
-        return .cachesDirectory
-        #else
-        return .documentDirectory
-        #endif
-    }
-
     static private var defaultOptions: [String:Bool] {
         return [NSMigratePersistentStoresAutomaticallyOption: true,
                 NSInferMappingModelAutomaticallyOption: true]
-    }
-
-    static private var storeWinsMergePolicy: NSMergePolicy {
-        return NSMergePolicy(merge: NSMergePolicyType.mergeByPropertyObjectTrumpMergePolicyType)
     }
 
     static private var objectWinsMergePolicy: NSMergePolicy {

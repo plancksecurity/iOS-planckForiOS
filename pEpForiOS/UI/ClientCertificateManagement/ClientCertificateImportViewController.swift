@@ -34,9 +34,6 @@ final class ClientCertificateImportViewController: UIViewController {
 
     @IBOutlet weak private var scrollViewBottomConstraint: NSLayoutConstraint!
 
-    private var portraitConstraints: [NSLayoutConstraint] = []
-    private var landscapeConstraints: [NSLayoutConstraint] = []
-
 // MARK: - ViewModel
 
     public var viewModel: ClientCertificateImportViewModel?
