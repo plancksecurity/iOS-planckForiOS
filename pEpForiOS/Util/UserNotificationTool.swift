@@ -46,8 +46,4 @@ struct UserNotificationTool {
     static public func resetApplicationIconBadgeNumber() {
         UIApplication.shared.applicationIconBadgeNumber = 0
     }
-
-    static public func setApplicationIconBadgeNumber(_ num: Int) {
-        UIApplication.shared.applicationIconBadgeNumber = num
-    }
 }

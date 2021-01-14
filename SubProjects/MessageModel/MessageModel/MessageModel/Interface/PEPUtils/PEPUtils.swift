@@ -17,9 +17,6 @@ import pEpIOSToolbox
 
 public class PEPUtils {
 
-    /// Content type for MIME multipart/alternative.
-    public static let kMimeTypeMultipartAlternative = "multipart/alternative"
-
     ///Delete pEp working data.
     //!!!: MUST go to test utils
     public static func pEpClean() -> Bool {

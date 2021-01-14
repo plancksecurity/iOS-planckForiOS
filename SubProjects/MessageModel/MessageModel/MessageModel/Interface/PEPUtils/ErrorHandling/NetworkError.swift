@@ -7,6 +7,3 @@
 //
 
 public typealias FunctionName = String
-
-enum NetworkError: Error {
-}

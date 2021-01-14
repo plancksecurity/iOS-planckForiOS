@@ -15,7 +15,6 @@ extension String {
     static public let space = " "
 
     static let unquoteRegex = try! NSRegularExpression(pattern: "^\"(.*)\"$", options: [])
-    static let endWhiteSpaceRegex = try! NSRegularExpression(pattern: "^(.*?)\\s*$", options: [])
     static let newlineRegex = try! NSRegularExpression(pattern: "(\\n|\\r\\n)+", options: [])
     static let threeOrMoreNewlinesRegex = try! NSRegularExpression(pattern: "(\\n|\\r\\n){3,}", options: [])
     static let fileExtensionRegex = try! NSRegularExpression(pattern: "^(.+?)\\.([^.]+)$", options: [])
@@ -79,15 +78,6 @@ extension String {
         if ignoreDiacritic { options.formUnion(.diacriticInsensitive) }
 
         return self.range(of: substring, options: options) != nil
-    }
-
-    /**
-     Mimicks the `NSString` version.
-     */
-    public func stringByReplacingCharactersInRange(_ range: NSRange,
-                                                   withString replacement: String) -> String {
-        let s = self as NSString
-        return s.replacingCharacters(in: range, with: replacement)
     }
 
     /// Replaces all matches of the given regex pattern with a given string.
@@ -187,81 +177,10 @@ extension String {
     }
 
     /**
-     Removes a matching pattern from the end of the String. Note that the '$' will be added
-     by this method.
-     */
-    public func removeTrailingPattern(_ pattern: String) -> String {
-        do {
-            let regex = try NSRegularExpression(pattern: "(.*?)\(pattern)$", options: [])
-            let matches = regex.matches(in: self, options: [], range: wholeRange())
-            if matches.count == 1 {
-                let m = matches[0]
-                let r = m.range(at: 1)
-                if r.location != NSNotFound {
-                    let s = self as NSString
-                    let result = s.substring(with: r)
-                    return result
-                }
-            }
-        } catch {
-            Log.shared.errorAndCrash(error: error)
-        }
-        return self
-    }
-
-    /**
-     Removes a matching pattern from the beginning of the String. Note that the '^' will be added
-     by this method.
-     */
-    public func removeLeadingPattern(_ pattern: String) -> String {
-        do {
-            let regex = try NSRegularExpression(pattern: "^\(pattern)(.*?)$", options: [])
-            let matches = regex.matches(in: self, options: [], range: wholeRange())
-            if matches.count == 1 {
-                let m = matches[0]
-                let r = m.range(at: 1)
-                if r.location != NSNotFound {
-                    let s = self as NSString
-                    let result = s.substring(with: r)
-                    return result
-                }
-            }
-        } catch {
-            Log.shared.errorAndCrash(error: error)
-        }
-        return self
-    }
-
-    /**
-    - Returns: The given string or "" (the empty `String`) if that `String` is nil.
-     */
-    public static func orEmpty(_ string: String?) -> String {
-        if let s = string {
-            return s
-        }
-        return ""
-    }
-
-    /**
      - Returns: True if the given string starts with the given prefix.
      */
     public func startsWith(_ prefix: String) -> Bool {
         return matches(pattern: "^\(prefix)")
-    }
-
-    public func hasExtension(_ ext: String) -> Bool {
-        let suffix = ext.startsWith(".") ? ext : ".\(ext)"
-        return endsWith(suffix)
-    }
-
-    public func endsWith(_ suffix: String) -> Bool {
-        let suffixCount = suffix.count
-        if self.count < suffixCount {
-            return false
-        }
-        let fromWhere = index(endIndex, offsetBy: -suffixCount)
-        let end = self[fromWhere...]
-        return end == suffix
     }
 
     public func replaceNewLinesWith(_ delimiter: String) -> String {
@@ -445,5 +364,4 @@ extension String {
     public func wholeRange() -> NSRange {
         return NSRange(location: 0, length: count)
     }
-
 }

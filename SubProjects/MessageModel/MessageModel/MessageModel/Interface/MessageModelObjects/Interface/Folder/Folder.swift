@@ -29,18 +29,6 @@ public class Folder: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         return cdObject
     }
 
-    public struct ImapFlagsCriteria {
-        /**
-         If this is set to a value, consider only messages that have that flag.
-         */
-        let seen: Bool?
-
-        /**
-         If this is set to a value, consider only messages that have that flag.
-         */
-        let flagged: Bool?
-    }
-
     lazy var fetchOlderService = FetchOlderImapMessagesService()
     lazy var fetchMessagesService = FetchMessagesService()
     

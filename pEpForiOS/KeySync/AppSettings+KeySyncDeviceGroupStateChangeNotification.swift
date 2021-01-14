@@ -10,10 +10,6 @@ import MessageModel
 
 import pEpIOSToolbox
 
-protocol KeySyncDeviceGroupStateChangeNotificationHandlerProtocol {
-    func handleDeviceGroupStateChangeNotification(userInfo: [String:Any])
-}
-
 // MARK: - AppSettings+KeySyncDeviceGroupStateChangeNotification
 
 extension AppSettings {

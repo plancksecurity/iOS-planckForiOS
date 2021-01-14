@@ -70,10 +70,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
 
-    func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        //Log.shared.errorAndCrash("applicationDidReceiveMemoryWarning")
-    }
-
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         if MiscUtil.isUnitTest() {

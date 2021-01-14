@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1505C5152316771E0078A210 /* UIApplication+NetworkActivitySpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1505C5142316771E0078A210 /* UIApplication+NetworkActivitySpinner.swift */; };
 		1506E89F25ADE91600909821 /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1506E89E25ADE91600909821 /* TestUtils.swift */; };
 		1506E8B125ADE97800909821 /* DocumentsDirectoryBrowserTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1506E8B025ADE97800909821 /* DocumentsDirectoryBrowserTest.swift */; };
 		1506E8BE25ADE98C00909821 /* LoggerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1506E8BD25ADE98C00909821 /* LoggerTest.swift */; };
@@ -85,7 +84,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1505C5142316771E0078A210 /* UIApplication+NetworkActivitySpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+NetworkActivitySpinner.swift"; sourceTree = "<group>"; };
 		1506E89E25ADE91600909821 /* TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
 		1506E8B025ADE97800909821 /* DocumentsDirectoryBrowserTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentsDirectoryBrowserTest.swift; sourceTree = "<group>"; };
 		1506E8BD25ADE98C00909821 /* LoggerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerTest.swift; sourceTree = "<group>"; };
@@ -304,7 +302,6 @@
 				B7465DE62211E969008A1708 /* CGRect+Util.swift */,
 				B753907D2212D6B500B1FCF9 /* CGSize+Extension.swift */,
 				5B4161A82540371800C060B5 /* UIApplication+Alert.swift */,
-				1505C5142316771E0078A210 /* UIApplication+NetworkActivitySpinner.swift */,
 				B7911EC121F8694000D7F66F /* UIColor+Extension.swift */,
 				5B87D79323F2C5CE009DACAA /* UIFont+Extension.swift */,
 				B7911EC521F88AF800D7F66F /* UIImage+Extension.swift */,
@@ -522,7 +519,6 @@
 				37954C6E227C90C10099B8D8 /* Log.swift in Sources */,
 				5B4161A92540371800C060B5 /* UIApplication+Alert.swift in Sources */,
 				B7A46C62220DCEA80027CCB5 /* NSAttributedString+Parsing.swift in Sources */,
-				1505C5152316771E0078A210 /* UIApplication+NetworkActivitySpinner.swift in Sources */,
 				B7465DE72211E969008A1708 /* CGRect+Util.swift in Sources */,
 				B7465DCC2211BEEA008A1708 /* Tuple.swift in Sources */,
 				158A564D24004619003C0D7E /* UIApplication+NavigationStack.swift in Sources */,
