@@ -96,10 +96,10 @@ git clone https://pep-security.lu/gitlab/misc/sqlite.git
 
 git clone https://gitea.pep.foundation/buff/Pantomime.git
 hg clone https://pep.foundation/dev/repos/pEpEngine
-hg clone https://pep.foundation/dev/repos/pEpObjCAdapter
+git clone https://gitea.pep.foundation/buff/pEpObjCAdapter.git
 hg clone https://pep.foundation/dev/repos/libAccountSettings/
 
-hg clone https://pep-security.ch/dev/repos/pEp_for_iOS/
+git clone https://pep-security.lu/gitlab/iOS/pep4ios.git
 
 git clone http://pep-security.lu/gitlab/iOS/sequoia4ios.git
 pushd sequoia4ios
