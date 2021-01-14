@@ -1,0 +1,815 @@
+/* client certificate provider key */
+"\n            Client\n            Certificate\n            " = "\n            Client\n            Certificat\n            ";
+
+/* Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion. */
+"\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n%1$@\n\n%2$@\n\n%3$@\n\nEls fitxers adjunts estan desactivats.\n\n";
+
+/* No privacy status explanation
+   No privacy status suggestion */
+"-" = "-";
+
+/* Title for notification show on lock screen for new mails */
+"(numMails) new messages received" = "(numMails) missatges nous rebuts";
+
+/* Reply to single contact, with date. Placeholders: Name, date. */
+"%1$@ wrote on %2$@:" = "%1$@ ha escrit el %2$@:";
+
+/* Reply to single contact, without date. Placeholder: Name. */
+"%1$@ wrote:" = "%1$@ ha escrit:";
+
+/* Number of filters instead of filter name */
+"%d filters" = "%d filtres";
+
+/* KeySyncWizard introduction message */
+"A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?";
+
+/* Account settings
+   Account view title */
+"Account" = "Compte";
+
+/* Title for manual account setup */
+"ACCOUNT" = "COMPTE";
+
+/* Error description detecting account settings */
+"Account detection timed out" = "El temps de detecció del compte es va acabar";
+
+/* Empty account name message */
+"Account name must not be empty." = "El nom del compte no ha d'estar buit.";
+
+/* account type selector title */
+"Account Select" = "Seleccioneu el compte";
+
+/* Tableview section  header: Accounts */
+"Accounts" = "Comptes";
+
+/* UIUtils.showActionSheetWithContactOptions.button.title Add to Contacts */
+"Add to Contacts" = "Afegir a contactes";
+
+/* setOwnKeyRowTitle row title */
+"ADVANCED" = "AVANÇAT";
+
+/* Name of Googles All folder (showing messages in Googles All  of one account)
+   Name of unified inbox (showing messages of all accoounts */
+"All" = "Tots";
+
+/* error message for .noConnectData */
+"An internal error occurred" = "S'ha produït un error intern";
+
+/* Tutorial Fourth text */
+"And in the top bar when you open or write an email:" = "I a la barra superior quan obriu o escriviu un correu electrònic:";
+
+/* KeySyncWizard introduction message */
+"Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?";
+
+/* Archive button in slide-left menu
+   Name of Archive folder (showing archived messages, of one account) */
+"Archive" = "Arxiu";
+
+/* Account delete confirmation */
+"Are you sure you want to delete the account?" = "Esteu segur que voleu suprimir el compte?";
+
+/* title attachments filter cell */
+"Attachments" = "Adjunts";
+
+/* Title of the view for choosing installed keys to import */
+"Available Keys" = "Claus disponibles";
+
+/* Cancel button title for manual account IMAP setup
+   Cancel button title for manual account SMTP setup */
+"Back" = "Back";
+
+/* Privacy status title */
+"Broken" = "Error";
+
+/* alert action 3
+   Alert cancel button title before trusting an account
+   Back button for client cert managment
+   Cancel
+   Cancel button for client certificate password screen
+   Cancel button title for manual account setup
+   Cancel button title of pEp protection toggle action sheet
+   Cancel for an alert view
+   Cancel in button in Login View
+   Cancel reset account identity button title
+   Cancel title button
+   Cancel trust change to be undone
+   compose email cancel
+   Default cancel button text
+   EmailList action title
+   EmailList: Cancel edit mode button title
+   keysync alert leave device group cancel
+   keySyncWizard animation view cancel button title
+   Message actions
+   MoveToFolderViewController NavigationBar canel button title
+   OK button title
+   Title for no button (cancel) when trying to import a key
+   TrustManagementView: trustword language selector cancel button label
+   UIUtils.showActionSheetWithContactOptions.button.title Cancel */
+"Cancel" = "Cancel·lar";
+
+/* Privacy status title */
+"Cannot Decrypt" = "No es pot desxifrar";
+
+/* Compose field title */
+"Cc/Bcc:" = "Cc / Bcc:";
+
+/* Empty IMAP transport security method */
+"Choose IMAP transport security method." = "Trieu el mètode de seguretat de transport IMAP.";
+
+/* Header for client certificate password screen */
+"Client Certificate" = "Certificat de client";
+
+/* privacyStatusDescription yellow */
+"Communication with this contact will be completely Secure & Trusted by comparing the following Trustwords with your contact, for example by making a phone call." = "La comunicació amb aquest contacte serà completament segura & amp; Confieu si compareu les paraules clau següents amb el vostre contacte, per exemple, fent una trucada telefònica.";
+
+/* Privacy status suggestion */
+"Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Completa un cop de mà amb el teu company de comunicació. Un cop de mà només es necessita una vegada per part i s’assegura una comunicació segura i de confiança.";
+
+/* accept hand shake confirm button
+   Confirm correct trustwords/PGP fingerprint */
+"Confirm" = "Acceptar";
+
+/* Confirm less secure answering message alert title */
+"Confirm Answer" = "Confirmeu la resposta";
+
+/* Confirm less secure forwarding message alert title */
+"Confirm Forward" = "Confirmeu el reenviament";
+
+/* ResetTrustView title
+   TableView section header: Contacts */
+"Contacts" = "Contactes";
+
+/* UIUtils.showActionSheetWithContactOptions.button.title Copy Email */
+"Copy Email" = "Copia el correu electrònic";
+
+/* Client certificate import: corrupted file error alert title */
+"Corrupted File" = "Arxiu danyat";
+
+/* Credits view title
+   Settings: Cell (button) title to view app credits */
+"Credits" = "Crèdits";
+
+/* Default Account Setting Section Title
+   Default account view title
+   Settings: Cell (button) title to view default account setting */
+"Default Account" = "Compte per defecte";
+
+/* Account delete
+   compose email delete
+   ComposeTableView: button to decide to delete a message from Outbox after making changes.
+   Delete account button title
+   swipe delete ExtraKey action title */
+"Delete" = "Esborra";
+
+/* keysync alert leave device group disable */
+"Disable" = "Desactivar";
+
+/* Leave device group confirmation */
+"Disable p≡p Sync" = "Desactiva la sincronització p≡p";
+
+/* Display Name placeholder for manual account setup
+   Display Name TextField Placeholder in Login Screen */
+"Display Name" = "Nom de visualització";
+
+/* Email address placeholder for manual account setup
+   Email TextField Placeholder in Login Screen */
+"Email Address" = "Adreça de correu";
+
+/* Title of alert: a required field is empty */
+"Empty Field" = "Camp buit";
+
+/* Enable Protection
+   Enable Protection button title of pEp protection toggle action sheet */
+"Enable Protection" = "Activa la protecció";
+
+/* Tableview section header: Enterprise Features */
+"Enterprise Features" = "Funcions empresarials";
+
+/* Title of error alert shown to the user in case a message could not be sent
+   Title of error alert shown to the user in case an unknown error occured. */
+"Error" = "Error";
+
+/* No comment provided by engineer. */
+"Error casting" = "S'ha produït un error en emetre";
+
+/* Generic error message on trying to import a key */
+"Error occurred. No key imported." = "S'ha produït un error. No s’ha importat cap clau.";
+
+/* spearator string bewtween name and date */
+"Exp. date:" = "Exp. data:";
+
+/* Settings: Cell (button) title to view Extra Keys setting */
+"Extra Keys" = "Claus addicionals";
+
+/* Extra Keys Editable */
+"Extra Keys Editable" = "Claus addicionals editables";
+
+/* 'Filter by' in formatted string, followed by the localized filter name */
+"Filter by: %@" = "Filtra per: %@";
+
+/* Filter Title */
+"Filters" = "Filtres";
+
+/* Finish button title for manual account SMTP setup
+   Start up tutorial finish button */
+"Finish" = "Finish";
+
+/* read button in slide-left menu */
+"Flag" = "Bandera";
+
+/* Name of Flagged folder (showing messages marked as flagged by the user, of one account)
+   Title for Flagged filter
+   title unread filter cell */
+"Flagged" = "Marcada";
+
+/* EmailList action title
+   Message actions */
+"Forward" = "Reenviar";
+
+/* Compose field title
+   Title of account picker when composing a message */
+"From:" = "De:";
+
+/* Tableview section header: Global Settings */
+"Global Settings" = "Configuració global";
+
+/* Title of the view */
+"Handshake" = "Handshake";
+
+/* PGPKeyImportSettingViewModel - part of pgpKeyImportTitle that should link to support page (... click _here_ for info ...) */
+"here" = "aquí";
+
+/* Alert title for iCloud instructions */
+"iCloud" = "iCloud";
+
+/* Trusted Server Setting Section Footer */
+"If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!" = "Si està desactivat, es manté una copia no xifrada de cada missatge al servidor.\n\nNo desactiveu si no esteu segurs del que feu.";
+
+/* Secure & Trusted Description Label - Step 1 */
+"If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle." = "Si les paraules clau de confiança no són correctes, pot haver-hi un atac d'un home a la mitja part.";
+
+/* Alert: Leave device group confirmation comment */
+"If you disable p≡p Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable p≡p Sync?" = "Si desactiveu p≡p Sync, ja no se sincronitzaran els vostres comptes als vostres dispositius. Esteu segur que voleu desactivar la sincronització p≡p?";
+
+/* Title for manual account IMAP setup */
+"IMAP" = "IMAP";
+
+/* Empty IMAP server message */
+"IMAP server must not be empty." = "El servidor IMAP no ha d'estar buit.";
+
+/* Account settings title IMAP */
+"IMAP Settings" = "Configuració IMAP";
+
+/* Empty username message */
+"Imap username must not be empty." = "El nom d’usuari de Imap no ha d’estar buit.";
+
+/* Select certificate - import certificate date */
+"Import date" = "Data d'importació";
+
+/* Privacy status explanation */
+"In order to make the communication with this communication partner Secure & Trusted, you will have to compare the Trustwords below with this communication partner and ensure they match yours." = "Per tal de fer que la comunicació amb aquest soci de comunicació sigui segura & amp; De confiança, haureu de comparar les paraules de confiança que apareixen a continuació amb aquest soci de comunicació i assegureu-vos que coincideixin amb les vostres.";
+
+/* Privacy Status - Common Denominator Explanation */
+"In this case the Privacy Status of the message is Secure, because this is the lowest common denominator of the two communication partners." = "En aquest cas, l’estat de privadesa del missatge és segur, perquè aquest és el denominador més baix comú dels dos socis de comunicació.";
+
+/* Name of INBOX mailbox (of one account) */
+"Inbox" = "Bústia d'entrada";
+
+/* title for the accounts section */
+"INCLUDE MAIL FROM:" = "INCLOU EL CORREU DE:";
+
+/* title for the include section */
+"INCLUDE:" = "INCLOURE:";
+
+/* Info button for showing iCloud page */
+"Info" = "Informació";
+
+/* Title of error alert shown to the user in case an error in the app occured that is not caused or related to the server */
+"Internal Error" = "Error intern";
+
+/* Invalid input for account */
+"Invalid account name: %1$@" = "Nom del compte no vàlid: %1$@";
+
+/* Please enter a valid Gmail address.Fail to log in, email does not match account type */
+"Invalid Address" = "Adreça no vàlida";
+
+/* Invalid input for email address */
+"Invalid email address: %1$@" = "Adreça de correu electrònic no vàlida: %1$@";
+
+/* alert message. trying to add an invalid fingerprint
+   alert title. trying to add an invalid fingerprint */
+"Invalid FPR" = "FPR no vàlid";
+
+/* Title of invalid accout settings user input alert */
+"Invalid Input" = "Entrada incorrecta";
+
+/* Invalid input for por */
+"Invalid port: %1$@" = "Port no vàlid: %1$@";
+
+/* Invalid input for server */
+"Invalid server: %1$@" = "Servidor no vàlid: %1$@";
+
+/* Invalid input for transport security */
+"Invalid transport security: %1$@" = "Seguretat de transport no vàlida: %1$@";
+
+/* Invalid input for username */
+"Invalid username: %1$@" = "Nom d'usuari no vàlid: %1$@";
+
+/* ComposeTableView: button to decide to Discharge changes made on a mail in outbox. */
+"Keep in Outbox" = "Guardeu-lo a la bústia de sortida";
+
+/* keySyncWizard completion view leave button title */
+"Leave" = "Surt";
+
+/* Log in button in Login View */
+"Log In" = "Iniciar Sessió";
+
+/* Title of error alert shown to the user for client certificate problems
+   Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed. */
+"Login Failed" = "Error a l'iniciar sessió";
+
+/* FoldersView navigationbar title */
+"Mailboxes" = "Bústies";
+
+/* Manual Setup button in Login View */
+"Manual setup" = "Configuració manual";
+
+/* Email Detail View reply button menu - toggle seen state button text: read */
+"Mark as read" = "Marca com a llegit";
+
+/* Email Detail View reply button menu - toggle seen state button text: unread
+   EmailList action title */
+"Mark as unread" = "marcar com no llegit";
+
+/* TrustManagementView Back Button Title */
+"Message" = "Missatge";
+
+/* Mistrusted - Step 1
+   Privacy status title */
+"Mistrusted" = "No confiable";
+
+/* more button in slide-left menu */
+"More" = "Més";
+
+/* EmailList action title */
+"Move to Folder" = "Desplaceu-vos a la carpeta";
+
+/* UIUtils.showActionSheetWithContactOptions.button.title New Mail Message */
+"New Mail Message" = "Missatge de correu nou";
+
+/* Title for notification show on lock screen for *one* new mail */
+"New message received" = "S'ha rebut un missatge nou";
+
+/* keySyncWizard intro view Next button title
+   Next button title for manual account IMAP setup
+   Next button title for manual account setup */
+"Next" = "Següent";
+
+/* Alert button while client certificate is importing: Try again? No */
+"No" = "No";
+
+/* Error when no account found for set_own_key UI */
+"No account found with the given email address." = "No s'ha trobat cap compte amb el correu electrònic indicat.";
+
+/* Privacy status suggestion */
+"No action needed!" = "No cal fer cap acció!";
+
+/* No client certificate exists alert title */
+"No Client Certificate" = "Sense certificat de client";
+
+/* No client certificate exists alert message */
+"No client certificate exists. You have to import your client certificate before entering login data." = "No existeix cap certificat de client. Heu d’importar el certificat de client abans d’introduir les dades d’inici de sessió.";
+
+/* Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions. */
+"No Permissions" = "No hi ha permisos";
+
+/* empty mail filter (no filter at all) */
+"none" = "cap";
+
+/* keySyncWizard error view Not Now button title */
+"Not now" = "Ara no";
+
+/* keySyncWizard intro view Not Now button title
+   not now button */
+"Not Now" = "Not Now";
+
+/* alert error title certificate delete */
+"Not possible to delete" = "No és possible suprimir";
+
+/* Default message in detail view when nothing has been selected */
+"Nothing Selected" = "Res seleccionat";
+
+/* Default positive button text
+   Filter accept text
+   keySyncWizard completion view OK button title
+   OK (dismiss) button for iCloud instructions alert
+   OK button for client certificate password screen
+   OK button title
+   Title for yes button when trying to import a key */
+"OK" = "D’acord";
+
+/* Options */
+"Options" = "Opcions";
+
+/* Other provider key */
+"Other" = "Un altre";
+
+/* title for the attachment section */
+"OTHER:" = "ALTRES:";
+
+/* Name of outbox (showing messages to send */
+"Outbox" = "Bústia de sortida";
+
+/* Some trustwords */
+"OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER" = "EXTENDÈNCIA CORRINA ETHIOPIA EXTRAPLE FLEECER";
+
+/* keySync handshake alert title
+   keySyncWizard animation view title
+   Settings: enable/disable p≡p Sync feature */
+"p≡p Sync" = "p≡p Sync";
+
+/* Tutorial Second text */
+"p≡p uses a Privacy Status icon to indicate how secure your communication is." = "p≡p utilitza una icona Estat de privadesa per indicar la seguretat de la vostra comunicació.";
+
+/* Passive mode title */
+"Passive mode" = "Mode passiu";
+
+/* Password placeholder for manual account setup
+   Password TextField Placeholder in Login Screen */
+"Password" = "Contrasenya";
+
+/* Settings accounts section, footer below Reset All cell */
+"Performs a reset of the privacy settings of your account(s)" = "Realitza un restabliment de la configuració de privadesa dels vostres comptes";
+
+/* TableView Contacts section footer */
+"Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages." = "Realitza un restabliment de la configuració de privadesa desada per a un soci de comunicació. Es pot necessitar, per exemple, si el vostre soci de comunicació no pot llegir els seus missatges.";
+
+/* Client certificate import: PermissionsDenied alert title */
+"Permissions Denied" = "Permisos denegats";
+
+/* PGPKeyImportSetting pgpKeyImportRowTitle
+   PGPKeyImportSettingViewController Navigationbar title
+   Settings: Cell (button) title for importing and using private PGP keys
+   Title for alert when trying to import a key */
+"PGP Key Import" = "Importació de clau PGP";
+
+/* Privacy status suggestion */
+"Please add the necessary information." = "Afegiu la informació necessària.";
+
+/* Privacy status suggestion */
+"Please ask your communication partner to use an encryption solution or install p≡p." = "Sol·liciteu al vostre soci de comunicació que utilitzi una solució de xifrat o que instal·li p≡p.";
+
+/* No folder has been selected yet in the folders VC */
+"Please choose a folder" = "Seleccioneu una carpeta";
+
+/* No messages has been selected for detail view */
+"Please choose a message" = "Seleccioneu un missatge";
+
+/* No setting has been selected yet in the settings VC */
+"Please choose a setting" = "Tria una configuració";
+
+/* Fail to log in, email does not match account type */
+"Please enter a valid Gmail address." = "Introduïu una adreça de Gmail vàlida.";
+
+/* Description for client certificate password screen */
+"Please enter the password of the certificate to import it:" = "Introduïu la contrasenya del certificat per importar-la:";
+
+/* keySyncWizard animation view message while we sync your devices */
+"Please give us a moment while we sync your devices. This can take a minute or more." = "Espera un moment mentre sincronitzem els teus dispositius. Aquest procés pot tardar un minut o més.";
+
+/* keySync handshake alert message for two devices in group */
+"Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?";
+
+/* keySync handshake alert message for more than two devices in group */
+"Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Assegureu-vos que teniu els dispositius junts de manera que pugueu comparar els mots de confiança dels dispositius. Les paraules clau de confiança que apareixen a continuació són iguals a les de confiança de l’altre dispositiu?";
+
+/* Port placeholder for manual account IMAP setup
+   Port placeholder for manual account SMTP setup */
+"Port" = "Port";
+
+/* action sheet title 1
+   Privacy Status Label */
+"Privacy Status" = "Grau de privadesa";
+
+/* Success message when importing the key */
+"Private key successfully imported." = "La clau privada s'ha importat correctament.";
+
+/* title for subject protection */
+"Protect Message Subject" = "Protegir l'assumpte del missatge";
+
+/* passive mode description */
+"Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p." = "El material de clau pública només s’adjuntarà a un missatge si p≡p detecta que el destinatari també està fent servir p≡p.";
+
+/* Privacy status suggestion */
+"Re-establish the connection with your communication partner and try to complete another handshake." = "Torneu a establir la connexió amb el company de comunicació i proveu de completar un altre cop de mà.";
+
+/* read button in slide-left menu */
+"Read" = "Llegiu";
+
+/* reject hand shake button */
+"Reject" = "Denegar";
+
+/* ComposeTableView: Label of swipe left. Removing of attachment. */
+"Remove" = "Treu";
+
+/* EmailList action title
+   Message actions
+   read button in slide-left menu */
+"Reply" = "Respondre";
+
+/* EmailList action title
+   Message actions */
+"Reply All" = "Respondre a tots";
+
+/* Account settings confirm to reset identity title alert
+   Account settings reset identity
+   Reset account identity button title
+   Settings: cell (button) title to view the trust contacts option */
+"Reset" = "Reset";
+
+/* Reset account identity button title
+   Settings: Cell (button) title for reset all identities */
+"Reset All" = "Restableix tot";
+
+/* Settings confirm to reset all identity title alert */
+"Reset All Identities" = "Restablir totes les identitats";
+
+/* Reset all p≡p data for this comunication partner: */
+"Reset all p≡p data for this comunication partner:" = "Restableix totes les dades del p≡p per a aquest soci de comunicació:";
+
+/* alert action 1 */
+"Reset This Identity" = "Restablir aquesta identitat";
+
+/* compose email save */
+"Save Draft" = "Guardar l'esborrany";
+
+/* No comment provided by engineer. */
+"scroll-to-caret-on-edit" = "desplaçar-se-a-cuidar-en-editar";
+
+/* Privacy status title
+   Secure Label - Step 1 */
+"Secure" = "Segur";
+
+/* Privacy status title
+   Secure & Trusted Label - Step 1 */
+"Secure & Trusted" = "Segura & amp; De confiança";
+
+/* Alert title before trusting an account */
+"Security Alert" = "Alerta de seguretat";
+
+/* Server placeholder for manual account IMAP setup
+   Server placeholder for manual account SMTP setup */
+"Server" = "Servidor";
+
+/* Title of error alert shown to the user in case we can not connect to the IMAP server
+   Title of error alert shown to the user in case we can not connect to the SMTP server */
+"Server Unreachable" = "Servidor que no es pot accedir";
+
+/* PGPKeyImportSetting setOwnKeyRowTitle
+   Set Own Key title */
+"Set Own Key" = "Definiu la clau pròpia";
+
+/* acction sheet title 2
+   Settings view title */
+"Settings" = "Configuració";
+
+/* Start up tutorial skip button */
+"Skip" = "Ometre";
+
+/* Body for notifications show on lock screen for new mail(s) */
+"Slide for more" = "Feu lliscar per obtenir més";
+
+/* Title manual account SMTP setup */
+"SMTP" = "SMTP";
+
+/* Empty SMTP server message */
+"SMTP server must not be empty." = "El servidor SMTP no ha d'estar buit.";
+
+/* Account settings title SMTP */
+"SMTP Settings" = "Configuració SMTP";
+
+/* Empty username message */
+"Smtp username must not be empty." = "El nom d'usuari de smtp no ha d'estar buit.";
+
+/* Title for address filter */
+"some address" = "alguna adreça";
+
+/* Message of alert: a required field is empty */
+"Some mandatory fields are empty" = "Alguns camps obligatoris estan buits";
+
+/* Reply to unknown sender with date */
+"Someone wrote on %1$@:" = "Algú va escriure el %1$@:";
+
+/* Reply to unknown sender without date */
+"Someone wrote:" = "Algú va escriure:";
+
+/* keySyncWizard error view message when syncing devices */
+"Something went wrong with syncing the devices. Please try again." = "Hi ha hagut un problema amb la sincronització dels dispositius. Torna-ho a provar.";
+
+/* Settings: Cell (button) title to view default account setting
+   Store Messages Securely Title
+   Trusted Server Setting Section Title */
+"Store Messages Securely" = "Emmagatzema missatges de forma segura";
+
+/* Compose field title */
+"Subject:" = "Assumpte:";
+
+/* Tableview section header: (p≡p) Sync */
+"Sync" = "Sync";
+
+/* Error message shown to the user on problems with the client certificate */
+"The client certificate was rejected by the server" = "El servidor ha rebutjat el certificat de client";
+
+/* KeySyncWizard complete message - more than two devices */
+"The device is now member of your device group. All your privacy is now synchronized." = "El dispositiu és ara membre del teu grup de dispositius. Tota la teva privacitat s'ha sincronitzat.";
+
+/* Client certificate import: corrupted file error alert message */
+"The file could not be imported" = "El fitxer no s'ha pogut importar";
+
+/* Privacy Status Explanation */
+"The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:" = "La icona de la barra superior reflecteix l'estat de privadesa del missatge, que és el denominador comú més baix més baix de tots els socis de comunicació d'aquest missatge, per exemple:";
+
+/* Error message shown to the user in case a message could not be sent. */
+"The message could not be sent. Please try again later." = "No s'ha pogut enviar el missatge. Siusplau, intenta-ho més tard.";
+
+/* Account settings confirm to reset identity title alert */
+"This action will reset all your identities. \n Are you sure you want to reset?" = "Aquesta acció restablirà totes les vostres identitats.\n Esteu segur que voleu reiniciar-lo?";
+
+/* Account settings confirm to reset identity title alert */
+"This action will reset your identity. \n Are you sure you want to reset?" = "Aquesta acció restablirà la vostra identitat.\n Esteu segur que voleu reiniciar-lo?";
+
+/* Privacy status explanation */
+"This contact is completely trusted. All communication will be the maximum level of privacy." = "Aquest contacte és completament de confiança. Tota comunicació serà el màxim nivell de privacitat.";
+
+/* privacyStatusDescription green */
+"This contact is completely trusted. All communication will be with the maximum level of privacy." = "Aquest contacte és completament de confiança. Tota comunicació serà amb el màxim nivell de privacitat.";
+
+/* privacyStatusDescription red */
+"This contact is mistrusted and might be an attack by a man-in-the-middle." = "Aquest contacte no té cap confiança i pot ser un atac d'un home al centre.";
+
+/* Privacy status title */
+"This contact is mistrusted. If you rejected the Trustwords accidentally, you could reset the p≡p data." = "Aquest contacte no té cap confiança. Si rebutgeu les paraules de confiança de forma accidental, podríeu restablir les dades de p≡p.";
+
+/* Alert message before trusting an account */
+"This is a public cloud account. Your data will be exposed. Are you sure you want to configure this as trusted?" = "Aquest és un compte públic al núvol. Les vostres dades estaran exposades. Esteu segur que voleu configurar-ho com a de confiança?";
+
+/* Privacy status explanation */
+"This message cannot be decrypted because the key is not available." = "No s’ha pogut desxifrar el missatge perquè la clau no està disponible.";
+
+/* Privacy status explanation */
+"This message cannot be decrypted." = "Aquest missatge no es pot desxifrar.";
+
+/* content that is shown for undecryptable messages */
+"This message could not be decrypted." = "Aquest missatge no s'ha pogut desxifrar.";
+
+/* Privacy status explanation */
+"This message does not contain enough information to determine if it is secure." = "No es disposa d’informació suficient per determinar si la comunicació és segura.";
+
+/* Privacy status suggestion */
+"This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p." = "Aquest missatge no té encriptació fiable ni signatura. Sol·liciteu al vostre soci de comunicació que actualitzi la seva solució de xifrat o que instal·li p≡p.";
+
+/* Compose field title */
+"This message is from a mailing list." = "Aquest missatge prové d’una llista de correu.";
+
+/* Privacy status explanation */
+"This message is not secure and has been tampered with." = "Aquest missatge no és segur i ha sigut manipulat.";
+
+/* Privacy status explanation */
+"This message is secure and trusted." = "El missatge és segur i s'hi pot confiar.";
+
+/* Privacy status explanation */
+"This message is secure but you still need to verify the identity of your communication partner." = "El missatge és segur però encara és necessari verificar la identitat del contacte.";
+
+/* Privacy status explanation */
+"This message is unsecure." = "Aquest missatge no és segur.";
+
+/* Tutorial Third text */
+"This Privacy Status is shown as an icon the user´s avatars:" = "Aquest estat de privadesa es mostra com a icona dels avatars de l'usuari:";
+
+/* PGPKeyImportSetting row title */
+"To import an existing PGP private key, you first need to transfer it from your computer.\n\nClick here for more information. Once the private key has been transferred to the device, you can import it here." = "Per importar una clau privada PGP existent, primer cal transferir-la des del vostre ordinador.\n\nFeu clic aquí per obtenir més informació. Un cop transferida la clau privada al dispositiu, podeu importar-la aquí.";
+
+/* Compose field title */
+"To:" = "A:";
+
+/* UI alert title for transport protocol */
+"Transport protocol" = "Protocol de transport";
+
+/* TransportSecurity placeholder for manual account IMAP setup
+   TransportSecurity placeholder for manual account SMTP setup */
+"Transport Security" = "Seguretat del transport";
+
+/* Name of Trash folder (showing deleted messages, of one account)
+   Trash button in slide-left menu */
+"Trash" = "Paperera";
+
+/* Alert trust button title before trusting an account */
+"Trust" = "Confia";
+
+/* keySyncWizard error view Try Again button title */
+"Try Again" = "Proveu de nou";
+
+/* show tutorial from compose view */
+"Tutorial" = "Tutorial";
+
+/* Privacy status title */
+"Under Attack" = "Atacat";
+
+/* Undo trust change verification button title */
+"Undo" = "Desfer";
+
+/* read button in slide-left menu */
+"Unflag" = "Unflag";
+
+/* Privacy status title
+   privacyStatusDescription no_color */
+"Unknown" = "Desconegut";
+
+/* Privacy status explanation
+   Privacy status suggestion */
+"Unknown." = "Desconegut.";
+
+/* Title for unread filter
+   title unread filter cell */
+"Unread" = "Sense llegir";
+
+/* Privacy status title */
+"Unreliable Security" = "Seguretat no confiable";
+
+/* Privacy status title */
+"Unsecure" = "No segur";
+
+/* setting row title: Unsecure reply warning */
+"Unsecure reply warning" = "Avís de reenviament insegur";
+
+/* User Name placeholder for manual account IMAP setup
+   User Name placeholder for manual account setup
+   User Name placeholder for manual account SMTP setup */
+"User Name" = "Usuari";
+
+/* Error title for validation errors on login screen */
+"Validation Error" = "Error de validació";
+
+/* AccountsView: Prefix for version. Shows up like this: \"Version: 2.0.1 build 234\" */
+"Version" = "Versió";
+
+/* Error message shown to the user in case we can not connect to the IMAP server */
+"We could not connect to the IMAP server." = "No hem pogut connectar-nos al servidor IMAP.";
+
+/* Error message shown to the user in case we can not connect to the SMTP server */
+"We could not connect to the SMTP server: %1@" = "No hem pogut connectar-nos al servidor SMTP.";
+
+/* Error message shown to the user in case we can not connect to the SMTP server */
+"We could not connect to the SMTP server." = "No hem pogut connectar-nos al servidor SMTP.";
+
+/* Client certificate import: wrong password alert message */
+"We could not import the certificate. The password is incorrect.\n\nTry again?" = "No hem pogut importar el certificat. La contrasenya és incorrecta.\n\nTorna-ho a provar?";
+
+/* Client certificate import: wrong password alert message */
+"We could not import the certificate. We do not have permissions to open this file.\n\nTry again?" = "No hem pogut importar el certificat. No tenim permisos per obrir aquest fitxer.\n\nTorna-ho a provar?";
+
+/* KeySyncWizard complete message - two devices */
+"We successfully created a device group. All your privacy is now synchronized." = "Hem creat un grup de dispositius correctament. Tota la teva privacitat s'ha sincronitzat.";
+
+/* Welcome to the p≡p Tutorial - Step 0 */
+"Welcome to the p≡p Tutorial" = "Benvingut al tutorial de p≡p";
+
+/* Secure & Trusted Description Label - Step 1 */
+"When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted" = "Quan es confirmi que les paraules de confiança són correctes i es fa el cop de mà, la comunicació serà completament segura i de confiança";
+
+/* Privacy status explanation Label */
+"When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication parner." = "Quan feu clic a la icona de l'estat de privadesa de la barra superior, arribareu a Handshake, on podreu verificar el vostre pare de comunicació.";
+
+/* Confirm Trustwords explanation Label */
+"When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted." = "Quan confirmeu que les paraules de confiança del vostre soci de comunicació són correctes, la vostra comunicació serà completament segura & amp; De confiança.";
+
+/* Title for attachments filter */
+"With attachments" = "Amb fitxers adjunts";
+
+/* Secure Description Label - Step 1 */
+"With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact." = "Amb aquest estat de privacitat, tota comunicació és segura, però per confirmar que el vostre contacte és realment la persona que coneixeu, haureu de comparar les paraules de confiança amb aquest contacte.";
+
+/* Client certificate import: wrong password alert title */
+"Wrong Password" = "Contrasenya incorrecta";
+
+/* Alert button while client certificate is importing: Try again? Yes */
+"Yes" = "Sí";
+
+/* Confirm less secure answer message alert body */
+"You are about to answer a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Esteu a punt de respondre a un missatge segur com no segur. Si decidiu continuar, es podria filtrar informació confidencial, posant en risc vosaltres i els vostres col·laboradors de comunicació. Estàs segur que vols continuar?";
+
+/* Confirm less secure forwarding message alert body */
+"You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Esteu a punt de reenviar un missatge segur com no segur. Si decidiu continuar, es podria filtrar informació confidencial, posant en risc vosaltres i els vostres col·laboradors de comunicació. Estàs segur que vols continuar?";
+
+/* Tutorial First text */
+"You can close this tutorial anytime with the Skip button." = "Podeu tancar aquest tutorial en qualsevol moment amb el botó Saltar.";
+
+/* PGPKeyImportSetting row title when grouped */
+"You can not import keys while the device is in a device group." = "You can not import keys while the device is in a device group.";
+
+/* alert error message certificate delete */
+"You can only delete certificates that are not connected to an account. The certificate is currently used for the following account: (by)" = "Només podeu suprimir certificats que no estan connectats a un compte. Actualment el certificat s’utilitza per al següent compte: (per)";
+
+/* iCloud instructions */
+"You need to create an app-specific password in your iCloud account." = "Heu de crear una contrasenya específica per a l'aplicació al vostre compte iCloud.";
+
