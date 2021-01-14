@@ -20,14 +20,24 @@
 /* Number of filters instead of filter name */
 "%d filters" = "%d filtres";
 
-/* KeySyncWizard introduction message */
+/* error message for .missingPassword */
+"A non-empty password is required" = "Mot de passe requis";
+
+/* error message for .missingUsername */
+"A non-empty username is required" = "Nom d'utilisateur est nécessaire";
+
+/* KeySyncWizard introduction message - two devices */
 "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "Un deuxième appareil a été détecté. Nous pouvons former un groupe d'appareils pour synchroniser toute votre confidentialité sur les deux appareils. Pouvons-nous commencer la synchronisation ?";
 
 /* error message for .missingEmail or .invalidEmail */
 "A valid email address is required" = "Une adresse électronique valide est requise";
 
+/* error message for .invalidEmail
+   error message for .missingEmail */
+"A valid email is required" = "Une adresse courriel valide est requise";
+
 /* Account settings
-   Account view title */
+   Title for manual account setup */
 "Account" = "Compte";
 
 /* Title for manual account setup */
@@ -42,7 +52,7 @@
 /* account type selector title */
 "Account Select" = "Sélection du compte";
 
-/* Tableview section  header: Accounts */
+/* Tableview section  header */
 "Accounts" = "Comptes";
 
 /* Insert document in message text context menu */
@@ -51,15 +61,17 @@
 /* Attach photo/video (message text context menu) */
 "Add Photo/Video" = "Ajouter une photo/vidéo";
 
-/* UIUtils.showActionSheetWithContactOptions.button.title Add to Contacts */
+/* UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts */
 "Add to Contacts" = "Ajouter aux contacts";
 
 /* setOwnKeyRowTitle row title */
 "ADVANCED" = "AVANCÉE";
 
-/* Name of Googles All folder (showing messages in Googles All  of one account)
-   Name of unified inbox (showing messages of all accoounts */
+/* Name of unified inbox (showing messages of all accoounts */
 "All" = "Tout";
+
+/* Error message shown to the user in case an error in the app occured that is not caused or related to the server */
+"An internal error occured. Sorry, that should not happen." = "Une erreur interne est survenue. Désolé, cela n'aurait pas dû arriver.";
 
 /* error message for .noConnectData */
 "An internal error occurred" = "Une erreur interne est survenue";
@@ -67,15 +79,26 @@
 /* Tutorial Fourth text */
 "And in the top bar when you open or write an email:" = "Et dans la barre supérieure lorsque vous ouvrez ou écrivez un courriel :";
 
-/* KeySyncWizard introduction message */
+/* KeySyncWizard introduction message - more than two devices */
 "Another device was detected. We can add it to your device group to sync all your privacy on all devices. Shall we start synchronizing?" = "Un autre appareil a été détecté. Nous pouvons l'ajouter à votre groupe d'appareils pour synchroniser toute votre confidentialité sur tous les appareils. Pouvons-nous commencer la synchronisation ?";
 
-/* Archive button in slide-left menu
-   Name of Archive folder (showing archived messages, of one account) */
+/* Archive button in slide-left menu */
 "Archive" = "archive";
 
 /* Account delete confirmation */
 "Are you sure you want to delete the account?" = "Voulez-vous vraiment supprimer le compte ?";
+
+/* Leave device group confirmation */
+"Are you sure you want to leave your device group?" = "Voulez-vous vraiment quitter votre groupe d'appareils ?";
+
+/* Insert document in message text context menu */
+"Attach file" = "Ajouter une pièce jointe";
+
+/* Attach photo/video (message text context menu) */
+"Attach media" = "Attacher un média";
+
+/* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
+"Attached Image %1$d (%2$@)" = "Image jointe %1$d (%2$@)";
 
 /* title attachments filter cell */
 "Attachments" = "Pièces jointes";
@@ -87,43 +110,43 @@
    Cancel button title for manual account SMTP setup */
 "Back" = "Retour";
 
+/* Compose field title */
+"BCC:" = "Cci :";
+
 /* Privacy status title */
 "Broken" = "Cassé";
 
 /* alert action 3
-   Alert cancel button title before trusting an account
-   Back button for client cert managment
-   Cancel
-   Cancel button for client certificate password screen
-   Cancel button title for manual account setup
-   Cancel button title of pEp protection toggle action sheet
    Cancel for an alert view
-   Cancel in button in Login View
    Cancel reset account identity button title
    Cancel title button
-   Cancel trust change to be undone
    compose email cancel
-   Default cancel button text
    EmailList action title
-   EmailList: Cancel edit mode button title
-   keysync alert leave device group cancel
    keySyncWizard animation view cancel button title
+   Login NavigationBar canel button title
    Message actions
    MoveToFolderViewController NavigationBar canel button title
-   OK button title
-   Title for no button (cancel) when trying to import a key
-   TrustManagementView: trustword language selector cancel button label
-   UIUtils.showActionSheetWithContactOptions.button.title Cancel */
+   possible private status action
+   UIUtils.presentActionSheetWithContactOptions.button.title Cancel */
 "Cancel" = "Annuler";
 
 /* Privacy status title */
 "Cannot Decrypt" = "Impossible de déchiffrer";
 
 /* Compose field title */
+"CC:" = "Cc :";
+
+/* Compose field title */
 "Cc/Bcc:" = "Cc/Cci :";
+
+/* UI alert message for transport protocol */
+"Choose a Security protocol for your accont" = "Choisissez un protocole de sécurité pour votre compte";
 
 /* Empty IMAP transport security method */
 "Choose IMAP transport security method." = "Choisissez la méthode de sécurité de transport IMAP.";
+
+/* Empty SMTP transport security method */
+"Choose SMTP transport security method." = "Choisissez la méthode de sécurité de transport SMTP";
 
 /* Header for client certificate password screen */
 "Client Certificate" = "Certificat client";
@@ -134,32 +157,41 @@
 /* Privacy status suggestion */
 "Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Réaliser un handshake avec votre partenaire de communication. Le handshake n’est nécessaire qu’une seule fois par partenaire et assure une communication de confiance et sécurisée.";
 
-/* accept hand shake confirm button
-   Confirm correct trustwords/PGP fingerprint */
+/* accept hand shake sync button */
 "Confirm" = "Accepter";
 
 /* Confirm less secure answering message alert title */
 "Confirm Answer" = "Confirmer la réponse";
 
+/* Confirm correct fingerprint (PGP, long version) */
+"Confirm Fingerprint" = "Confirmer empreinte";
+
 /* Confirm less secure forwarding message alert title */
 "Confirm Forward" = "Confirmer le transfert";
 
+/* Confirm correct trustwords (pEp, long version) */
+"Confirm Trustwords" = "Confirmer les Trustwords";
+
 /* ResetTrustView title
-   TableView section header: Contacts */
+   TableView section header */
 "Contacts" = "Contacts";
 
-/* UIUtils.showActionSheetWithContactOptions.button.title Copy Email */
+/* UIUtils.presentActionSheetWithContactOptions.button.title Copy Email */
 "Copy Email" = "Copier le courriel";
 
 /* Client certificate import: corrupted file error alert title */
 "Corrupted File" = "Fichier corrompu";
 
-/* Credits view title
-   Settings: Cell (button) title to view app credits */
+/* Error description detecting account settings */
+"Could not find servers. Please enter manually" = "Impossible de trouver les serveurs. Veuillez saisir manuellement.";
+
+/* Settings: Cell (button) title to view app credits */
 "Credits" = "Crédits";
 
+/* Incorrect trustwords/PGP fingerprint */
+"Decline" = "Rejeter";
+
 /* Default Account Setting Section Title
-   Default account view title
    Settings: Cell (button) title to view default account setting */
 "Default Account" = "Compte par défaut";
 
@@ -169,6 +201,9 @@
    Delete account button title
    swipe delete ExtraKey action title */
 "Delete" = "Supprimer";
+
+/* Account delete confirmation comment */
+"delete account message" = "supprimer le message du compte";
 
 /* ComposeTableView: button to decide to delete changes made on a drafted mail. */
 "Delete Changes" = "Supprimer les modifications";
@@ -182,9 +217,18 @@
 /* Leave device group confirmation */
 "Disable p≡p Sync" = "Désactiver la synchronisation p≡p";
 
+/* possible private status action */
+"Disable Protection" = "Désactivez la protection";
+
+/* ComposeTableView: button to decide to discharge changes made on a drafted mail. */
+"Discharge changes" = "ignorer les modifications";
+
 /* Display Name placeholder for manual account setup
    Display Name TextField Placeholder in Login Screen */
 "Display Name" = "nom d'affichage";
+
+/* Email */
+"Email" = "Courriel";
 
 /* Email address placeholder for manual account setup
    Email TextField Placeholder in Login Screen */
@@ -193,8 +237,16 @@
 /* Title of alert: a required field is empty */
 "Empty Field" = "Champ vide";
 
-/* Enable Protection
-   Enable Protection button title of pEp protection toggle action sheet */
+/* enable p≡p Sync with other devices in the group */
+"Enable p≡p Sync" = "Activer la synchronisation p≡p";
+
+/* Passive mode title */
+"Enable passive mode" = "Activer le mode passif";
+
+/* title for subject protection */
+"Enable Protected Subject" = "Activer la protection du sujet";
+
+/* possible private status action */
 "Enable Protection" = "Activer la protection";
 
 /* Enter passphrase alert - message - shown while pEp sync is running */
@@ -203,7 +255,8 @@
 /* Tableview section header: Enterprise Features */
 "Enterprise Features" = "Fonctionnalités d'entreprise";
 
-/* Title of error alert shown to the user in case a message could not be sent
+/* Fail to update pEpSync value alert title
+   Title of error alert shown to the user in case a message could not be sent
    Title of error alert shown to the user in case an unknown error occured. */
 "Error" = "Erreur";
 
@@ -235,10 +288,12 @@
 /* read button in slide-left menu */
 "Flag" = "drapeau";
 
-/* Name of Flagged folder (showing messages marked as flagged by the user, of one account)
-   Title for Flagged filter
+/* Title for Flagged filter
    title unread filter cell */
 "Flagged" = "Signalé";
+
+/* FoldersView */
+"Folders" = "Dossiers";
 
 /* EmailList action title
    Message actions */
@@ -248,10 +303,13 @@
    Title of account picker when composing a message */
 "From:" = "De :";
 
-/* Tableview section header: Global Settings */
+/* The 'Fwd:' that gets appended to the subject line */
+"Fwd: " = "Transf : ";
+
+/* Tableview section header */
 "Global Settings" = "Paramètres globaux";
 
-/* Title of the view */
+/* possible privacy status action */
 "Handshake" = "Handshake";
 
 /* Contact Support - Mail subject */
@@ -266,14 +324,23 @@
 /* Trusted Server Setting Section Footer */
 "If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!" = "S'il est désactivé, une copie non cryptée de chaque message est stockée sur le serveur.\n\nNe désactivez pas si vous n'êtes pas sûr de ce que vous faites !";
 
+/* Tableview section footer */
+"If enabled, message subjects are also protected." = "Si cette option est activée, les sujets des messages sont également protégés.";
+
 /* Secure & Trusted Description Label - Step 1 */
 "If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle." = "Si les Trustwords ne sont pas corrects, il pourrait y avoir une attaque de l'homme du milieu.";
+
+/* Privacy status suggestion */
+"If this message was addressed to you, please inform the sender that you don't have the key." = "Si ce message vous était adressé. Veuillez informer l'expéditeur que vous n'avez pas la clé.";
 
 /* Alert: Leave device group confirmation comment */
 "If you disable p≡p Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable p≡p Sync?" = "Si vous désactivez p≡p Sync, vos comptes sur vos appareils ne seront plus synchronisés. Voulez-vous vraiment désactiver la synchronisation p≡p ?";
 
-/* Title for manual account IMAP setup */
+/* Manual account setup */
 "IMAP" = "IMAP";
+
+/* Empty IMAP port server message */
+"IMAP Port must not be empty." = "Le port IMAP ne doit pas être vide.";
 
 /* Empty IMAP server message */
 "IMAP server must not be empty." = "Le serveur IMAP ne doit pas être vide.";
@@ -336,21 +403,42 @@
 /* Invalid input for username */
 "Invalid username: %1$@" = "Nom d'utilisateur non valide : %1$@";
 
+/* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
+"It was impossible to login to %1$@. Username or password is wrong." = "Il n'a pas été possible de se connecter à %1$@. Le nom d'utilisateur ou le mot de passe est incorrect.";
+
+/* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
+"It was impossible to login to the server. Username or password is wrong." = "Il n'a pas été possible de se connecter au serveur. Le nom d'utilisateur ou le mot de passe est incorrect.";
+
 /* ComposeTableView: button to decide to Discharge changes made on a mail in outbox. */
 "Keep in Outbox" = "Conserver dans la boîte d'envoi";
 
-/* keySyncWizard completion view leave button title */
+/* keySyncWizard completion view leave button title
+   Leave device group button title */
 "Leave" = "Quitter";
+
+/* Settings: Cell (button) title for leaving device group */
+"Leave Device Group" = "Quitter le groupe de périphériques";
+
+/* Leave device group confirmation comment */
+"leaving device group" = "quitter le groupe d'appareils";
 
 /* Log in button in Login View */
 "Log In" = "Connexion";
 
-/* Title of error alert shown to the user for client certificate problems
-   Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed. */
+/* Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed. */
 "Login Failed" = "Échec de la connexion";
 
 /* FoldersView navigationbar title */
 "Mailboxes" = "Boîtes aux lettres";
+
+/* Privacy status suggestion */
+"Make sure the privacy status for each communication partner listed is at least secure" = "Assurez-vous que l'état de confidentialité de chaque partenaire de communication répertorié est au moins sécurisé";
+
+/* privacyStatusDescription yellow */
+"Make this communication partner secure & trusted by comparing the trustwords below with your partner, for example by making a phone call" = "Rendez ce partenaire de communication sécurisé et fiable en comparant les Trustwords ci-dessous avec eux, par exemple en passant un appel téléphonique";
+
+/* manual */
+"Manual configuration" = "Configuration manuelle";
 
 /* Manual Setup button in Login View */
 "Manual setup" = "Configuration manuelle";
@@ -358,32 +446,41 @@
 /* Email Detail View reply button menu - toggle seen state button text: read */
 "Mark as read" = "Marquer comme lu";
 
-/* Email Detail View reply button menu - toggle seen state button text: unread
-   EmailList action title */
+/* EmailList action title */
+"Mark as Read" = "Marquer comme lu";
+
+/* EmailList action title */
 "Mark as unread" = "marquer comme non lu";
 
 /* TrustManagementView Back Button Title */
 "Message" = "Message";
 
-/* Mistrusted - Step 1
-   Privacy status title */
+/* Privacy status title
+   privacyStatusTitle red */
 "Mistrusted" = "Suspect";
 
 /* more button in slide-left menu */
 "More" = "Plus";
 
+/* MoveToFolderViewController title */
+"Move To" = "Déplacer vers";
+
 /* EmailList action title */
 "Move to Folder" = "Déplacer vers un dossier";
 
-/* UIUtils.showActionSheetWithContactOptions.button.title New Mail Message */
+/* File name used for videos the user attaches. */
+"Movie" = "Déplacer";
+
+/* username */
+"Name" = "Nom";
+
+/* UIUtils.presentActionSheetWithContactOptions.button.title New Mail Message */
 "New Mail Message" = "Nouveau message électronique";
 
 /* Title for notification show on lock screen for *one* new mail */
 "New message received" = "Nouveau message reçu";
 
-/* keySyncWizard intro view Next button title
-   Next button title for manual account IMAP setup
-   Next button title for manual account setup */
+/* keySyncWizard intro view Next button title */
 "Next" = "Suivant";
 
 /* Alert button while client certificate is importing: Try again? No */
@@ -391,6 +488,9 @@
 
 /* Error when no account found for set_own_key UI */
 "No account found with the given email address." = "Aucun compte trouvé avec l'adresse électronique donnée.";
+
+/* Error when no account found for set_own_key UI */
+"No account found with the given email." = "Aucun compte trouvé avec l'e-mail donné.";
 
 /* Privacy status suggestion */
 "No action needed!" = "Pas d'action requise !";
@@ -407,7 +507,11 @@
 /* empty mail filter (no filter at all) */
 "none" = "aucun";
 
-/* keySyncWizard error view Not Now button title */
+/* privacyStatusDescription no_color
+   privacyStatusTitle no_color */
+"None" = "Aucun";
+
+/* keySyncWizard error view NotNow button title */
 "Not now" = "Pas maintenant";
 
 /* keySyncWizard intro view Not Now button title
@@ -420,13 +524,12 @@
 /* Default message in detail view when nothing has been selected */
 "Nothing Selected" = "Rien de sélectionné";
 
-/* Default positive button text
-   Filter accept text
+/* Filter accept text
+   General alert positive button
    keySyncWizard completion view OK button title
-   OK (dismiss) button for iCloud instructions alert
-   OK button for client certificate password screen
-   OK button title
-   Title for yes button when trying to import a key */
+   OK button for invalid accout settings user input alert
+   OK button for pEpSyncError alert
+   UIAlertAction ok after error */
 "OK" = "Ok";
 
 /* Options */
@@ -444,9 +547,14 @@
 /* Some trustwords */
 "OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER" = "OUTDISTANCE CORRINA ETHIOPIA OUTDRAW FLEECER";
 
+/* Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions. */
+"p≡p has no permissions to access \nthe Photo Gallery. You can grand permissions in Settings App." = "p≡p n'est pas autorisé à accéder\nla galerie de photos. Vous pouvez accorder une autorisation dans les paramètres de l'application.";
+
+/* Tableview section header */
+"p≡p sync" = "Sync p≡p";
+
 /* keySync handshake alert title
-   keySyncWizard animation view title
-   Settings: enable/disable p≡p Sync feature */
+   keySyncWizard animation view title */
 "p≡p Sync" = "p≡p Sync";
 
 /* Tutorial Second text */
@@ -462,9 +570,41 @@
 /* Passphrase too long - title */
 "Passphrase too long" = "Phrase secrète trop longue";
 
-/* Password placeholder for manual account setup
-   Password TextField Placeholder in Login Screen */
+/* password */
 "Password" = "Mot de passe";
+
+/* Account settings title pEp Sync */
+"pEp Sync" = "Sync p≡p";
+
+/* TutorialWizard image 1 */
+"pEpForIOS-Tutorial-1" = "pEpForIOS-Tutorial-1";
+
+/* TutorialWizard image 1 horizontal */
+"pEpForIOS-Tutorial-1-horizontal" = "pEpForIOS-Tutorial-1-horizontal";
+
+/* TutorialWizard image 2 */
+"pEpForIOS-Tutorial-2" = "pEpForIOS-Tutorial-2";
+
+/* TutorialWizard image 2 horizontal */
+"pEpForIOS-Tutorial-2-horizontal" = "pEpForIOS-Tutorial-2-horizontal";
+
+/* TutorialWizard image 3 */
+"pEpForIOS-Tutorial-3" = "pEpForIOS-Tutorial-3";
+
+/* TutorialWizard image 3 horizontal */
+"pEpForIOS-Tutorial-3-horizontal" = "pEpForIOS-Tutorial-3-horizontal";
+
+/* TutorialWizard image 4 */
+"pEpForIOS-Tutorial-4" = "pEpForIOS-Tutorial-4";
+
+/* TutorialWizard image 4 horizontal */
+"pEpForIOS-Tutorial-4-horizontal" = "pEpForIOS-Tutorial-4-horizontal";
+
+/* TutorialWizard image 5 */
+"pEpForIOS-Tutorial-5" = "pEpForIOS-Tutorial-5";
+
+/* TutorialWizard image 5 horizontal */
+"pEpForIOS-Tutorial-5-horizontal" = "pEpForIOS-Tutorial-5-horizontal";
 
 /* Settings accounts section, footer below Reset All cell */
 "Performs a reset of the privacy settings of your account(s)" = "Effectue une réinitialisation des paramètres de confidentialité de vos comptes";
@@ -474,6 +614,9 @@
 
 /* Client certificate import: PermissionsDenied alert title */
 "Permissions Denied" = "Autorisations refusées";
+
+/* Tableview section header */
+"PGP Compatibility" = "Compatibilité OpenPGP";
 
 /* PGPKeyImportSetting pgpKeyImportRowTitle
    PGPKeyImportSettingViewController Navigationbar title
@@ -508,21 +651,23 @@
 /* Description for client certificate password screen */
 "Please enter the password of the certificate to import it:" = "Veuillez saisir le mot de passe du certificat pour l'importer :";
 
-/* keySyncWizard animation view message while we sync your devices */
+/* keySyncWizard animation view message */
 "Please give us a moment while we sync your devices. This can take a minute or more." = "Merci de patienter pendant la synchronisation vos dispositifs. Cela peut prendre quelques minutes.";
 
-/* keySync handshake alert message for two devices in group */
+/* keySync handshake alert message - two devices */
 "Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Veuillez vous assurer d'avoir les deux appareils ensemble afin de pouvoir comparer les Trustwords sur les deux appareils. Les Trustwords ci-dessous sont-ils égaux aux Trustwords sur l'autre appareil ?";
 
-/* keySync handshake alert message for more than two devices in group */
+/* keySync handshake alert message - more than two devices */
 "Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Veuillez vous assurer d'avoir les appareils avec vous afin de pouvoir comparer les Trustwords sur les appareils. Les Trustwords ci-dessous sont-ils égaux aux Trustwords sur l'autre appareil ?";
+
+/* Validation error for set_own_key UI */
+"Please provide an email and a fingerprint. The email must match an existing account." = "Veuillez fournir une adresse électronique et une empreinte digitale. L'adresse électronique doit correspondre à un compte existant.";
 
 /* Port placeholder for manual account IMAP setup
    Port placeholder for manual account SMTP setup */
 "Port" = "Port";
 
-/* action sheet title 1
-   Privacy Status Label */
+/* action sheet title 1 */
 "Privacy Status" = "Protection de la vie privée";
 
 /* Success message when importing the key */
@@ -540,7 +685,7 @@
 /* read button in slide-left menu */
 "Read" = "Lire";
 
-/* reject hand shake button */
+/* decline hand shake sync button */
 "Reject" = "Rejeter";
 
 /* ComposeTableView: Label of swipe left. Removing of attachment. */
@@ -574,6 +719,15 @@
 /* alert action 1 */
 "Reset This Identity" = "Réinitialiser cette identité";
 
+/* alert action 2 */
+"Reset Trust For All Identities" = "Réinitialiser la confiance pour toutes les identités";
+
+/* alert action 1 */
+"Reset Trust For This Identity" = "Réinitialiser la confiance pour cette identité";
+
+/* ComposeTableView: button to decide to save changes made on a drafted mail. */
+"Save changes" = "Sauvegarder les modifications";
+
 /* compose email save */
 "Save Draft" = "Enregistrer le brouillon";
 
@@ -581,15 +735,18 @@
 "scroll-to-caret-on-edit" = "faire défiler le curseur sur l'édition";
 
 /* Privacy status title
-   Secure Label - Step 1 */
+   privacyStatusTitle yellow */
 "Secure" = "Sécurisé";
 
 /* Privacy status title
-   Secure & Trusted Label - Step 1 */
+   privacyStatusTitle green */
 "Secure & Trusted" = "Sécurisé & Authentique";
 
 /* Alert title before trusting an account */
 "Security Alert" = "Alerte de sécurité";
+
+/* Privacy status suggestion */
+"Separately verify the content of this message with your communication partner." = "Vérifiez séparément le contenu de ce message avec votre partenaire de communication.";
 
 /* Server placeholder for manual account IMAP setup
    Server placeholder for manual account SMTP setup */
@@ -599,8 +756,7 @@
    Title of error alert shown to the user in case we can not connect to the SMTP server */
 "Server Unreachable" = "Serveur inaccessible";
 
-/* PGPKeyImportSetting setOwnKeyRowTitle
-   Set Own Key title */
+/* Settings: Cell (button) title for entering fingerprints that are made own keys */
 "Set Own Key" = "Définir sa propre clé";
 
 /* acction sheet title 2
@@ -610,14 +766,20 @@
 /* Enter passphrase alert - Negative button text - shown while pEp sync is running */
 "Shutdown p≡p Sync" = "Arrêter p≡p Sync";
 
+/* Login */
+"Sign In" = "Se connecter";
+
 /* Start up tutorial skip button */
 "Skip" = "ignorer";
 
 /* Body for notifications show on lock screen for new mail(s) */
 "Slide for more" = "Faites glisser pour plus";
 
-/* Title manual account SMTP setup */
+/* Manual account setup */
 "SMTP" = "SMTP";
+
+/* Empty SMTP port server message */
+"SMTP Port must not be empty." = "Le port IMAP ne doit pas être vide.";
 
 /* Empty SMTP server message */
 "SMTP server must not be empty." = "Le serveur SMTP ne doit pas être vide.";
@@ -640,11 +802,19 @@
 /* Reply to unknown sender without date */
 "Someone wrote:" = "Quelqu'un a écrit :";
 
-/* keySyncWizard error view message when syncing devices */
+/* keySyncWizard error view message */
 "Something went wrong with syncing the devices. Please try again." = "Une erreur s'est produite durant la synchronisation des dispositifs. Veuillez réessayer.";
 
+/* AccountSettings viewModel no account error */
+"Something went wrong, please try again later" = "Un problème est survenu. Veuillez réessayer plus tard";
+
+/* Stop/trust button in handshake overview */
+"Start Trusting" = "Commencez à faire confiance";
+
+/* Stop/trust button in handshake overview */
+"Stop Trusting" = "Arrêtez de faire confiance";
+
 /* Settings: Cell (button) title to view default account setting
-   Store Messages Securely Title
    Trusted Server Setting Section Title */
 "Store Messages Securely" = "Enregistrer les messages de façon sécurisée";
 
@@ -653,6 +823,9 @@
 
 /* Tableview section header: (p≡p) Sync */
 "Sync" = "Sync";
+
+/* error message for .accountExistence */
+"The account already exists" = "Ce compte existe déjà";
 
 /* Error when account found for set_own_key UI, but has no user name */
 "The account with the given email address has no user name." = "Le compte avec l'adresse électronique donnée n'a pas de nom d'utilisateur.";
@@ -678,11 +851,20 @@
 /* Passphrase message */
 "The passphrase you entered is wrong. Please enter it again to continue" = "La phrase secrète que vous avez saisie est incorrecte. Veuillez le saisir à nouveau pour continuer";
 
+/* error message for .minimumLengthUsername */
+"The username must contain more than 1 characters" = "Le nom d'utilisateur doit contenir plus d'un caractère";
+
 /* Account settings confirm to reset identity title alert */
 "This action will reset all your identities. \n Are you sure you want to reset?" = "Cette action réinitialisera toutes vos identités.\n Voulez-vous vraiment réinitialiser ?";
 
 /* Account settings confirm to reset identity title alert */
 "This action will reset your identity. \n Are you sure you want to reset?" = "Cette action réinitialisera votre identité.\n Voulez-vous vraiment réinitialiser ?";
+
+/* privacyStatusDescription red */
+"This communication partner is mistrusted" = "Ce partenaire de communication n'est plus de confiance";
+
+/* privacyStatusDescription green */
+"This communication partner is secure and trusted" = "Ce partenaire de communication est sécurisé et fiable";
 
 /* Privacy status explanation */
 "This contact is completely trusted. All communication will be the maximum level of privacy." = "Ce contact est totalement fiable. Toute communication aura le niveau maximum de confidentialité.";
@@ -711,8 +893,14 @@
 /* Privacy status explanation */
 "This message does not contain enough information to determine if it is secure." = "Les données de sécurité sont insuffisantes pour garantir la confidentialité ou l'authenticité du message.";
 
+/* Privacy status explanation */
+"This message has a communication partner that has previously been marked as mistrusted." = "Un des correspondants de ce message a été précédemment reconnu comme suspect.";
+
 /* Privacy status suggestion */
 "This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p." = "Ce message n'a ni cryptage fiable ni signature. Demandez à votre partenaire de communication de mettre à niveau sa solution de chiffrement ou d'installer p≡p.";
+
+/* Privacy status explanation */
+"This message has unreliable protection" = "Ce message n'a pas de protection fiable.";
 
 /* Compose field title */
 "This message is from a mailing list." = "Ce message provient d'une liste de distribution.";
@@ -727,16 +915,25 @@
 "This message is secure but you still need to verify the identity of your communication partner." = "Le message est chiffré mais vous devez encore vérifier l'identité de votre correspondant pour l'authentifier.";
 
 /* Privacy status explanation */
+"This message is unsecure for some communication partners." = "Cette correspondance n'est pas sécurisée pour tous ses destinataires.";
+
+/* Privacy status explanation */
 "This message is unsecure." = "Cette correspondance n'est pas sécurisée.";
 
 /* Tutorial Third text */
 "This Privacy Status is shown as an icon the user´s avatars:" = "Ce statut de confidentialité est affiché sous forme d'icône des avatars de l'utilisateur :";
+
+/* settings, enable thread view or not */
+"Thread Messages" = "Messages de discussion";
 
 /* PGPKeyImportSetting row title */
 "To import an existing PGP private key, you first need to transfer it from your computer.\n\nClick here for more information. Once the private key has been transferred to the device, you can import it here." = "Pour importer une clé privée PGP existante, vous devez d'abord la transférer depuis votre ordinateur.\n\nCliquez ici pour plus d'informations. Une fois la clé privée transférée sur l'appareil, vous pouvez l'importer ici.";
 
 /* Compose field title */
 "To:" = "À :";
+
+/* Compose field title */
+"To: " = "À :";
 
 /* UI alert title for transport protocol */
 "Transport protocol" = "Protocole de transport";
@@ -745,8 +942,7 @@
    TransportSecurity placeholder for manual account SMTP setup */
 "Transport Security" = "Sécurité du moyen de transport";
 
-/* Name of Trash folder (showing deleted messages, of one account)
-   Trash button in slide-left menu */
+/* Trash button in slide-left menu */
 "Trash" = "Corbeille";
 
 /* Alert trust button title before trusting an account */
@@ -773,13 +969,18 @@
 /* read button in slide-left menu */
 "Unflag" = "Désignaler";
 
-/* Privacy status title
-   privacyStatusDescription no_color */
+/* Displayed attachment filename if unknown */
+"unknown" = "Indéterminé";
+
+/* Privacy status title */
 "Unknown" = "Indéterminé";
 
 /* Privacy status explanation
    Privacy status suggestion */
 "Unknown." = "Inconnue.";
+
+/* file name used for unnamed attachments */
+"unnamed" = "anonyme";
 
 /* Title for unread filter
    title unread filter cell */
@@ -790,6 +991,9 @@
 
 /* Privacy status title */
 "Unsecure" = "Non-sécurisé";
+
+/* Privacy status title */
+"Unsecure for Some" = "Non-sécurisé pour certains";
 
 /* setting row title: Unsecure reply warning */
 "Unsecure reply warning" = "Avertissement de réponse non sécurisée";
@@ -804,6 +1008,9 @@
    User Name placeholder for manual account setup
    User Name placeholder for manual account SMTP setup */
 "User Name" = "Nom de l'utilisateur";
+
+/* Empty username message */
+"Username must not be empty." = "Le nom d'utilisateur ne doit pas être vide.";
 
 /* Error title for validation errors on login screen */
 "Validation Error" = "Erreur de validation";
@@ -850,8 +1057,14 @@
 /* Secure Description Label - Step 1 */
 "With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact." = "Avec ce statut de confidentialité, toutes les communications sont sécurisées, mais pour confirmer que votre contact est vraiment la personne que vous connaissez, vous devez comparer Trustwords avec ce contact.";
 
+/* Incorrect fingerprint (PGP, long version) */
+"Wrong Fingerprint" = "Empreinte fausse";
+
 /* Client certificate import: wrong password alert title */
 "Wrong Password" = "Mot de passe incorrect";
+
+/* Incorrect trustwords (pEp, long version) */
+"Wrong Trustwords" = "Trustwords incorrects";
 
 /* Alert button while client certificate is importing: Try again? Yes */
 "Yes" = "Oui";
