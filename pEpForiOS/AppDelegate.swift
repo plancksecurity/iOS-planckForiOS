@@ -11,7 +11,6 @@ import CoreData
 import pEpIOSToolbox
 import MessageModel
 
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
