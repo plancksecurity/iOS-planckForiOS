@@ -28,7 +28,13 @@ function import() {
 # Param 3: The source directory
 function import_in_place() {
     filename=$3/$1.xliff
+
+    # Eliminate empty translations Part 1
     sed -i '' 's/<target\/>//' $filename
+
+    # Eliminate empty translations Part 2
+    sed -i '' 's/<target><\/target>//' $filename
+
     echo \*\*\* xcodebuild -importLocalizations -project $2 -localizationPath $filename
     xcodebuild -importLocalizations -project $2 -localizationPath $filename
 }
