@@ -7,12 +7,12 @@
 		<key>MessageModel.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>13</integer>
+			<integer>14</integer>
 		</dict>
 		<key>OfferCapabilitiesToUnitTests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>30</integer>
+			<integer>28</integer>
 		</dict>
 	</dict>
 </dict>
