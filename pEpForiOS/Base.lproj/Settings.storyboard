@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="cPx-YX-3ty">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="cPx-YX-3ty">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -2099,45 +2099,49 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="RSp-qK-Tzq">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="100" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="RSp-qK-Tzq">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SignatureCell" id="wdm-AT-m5z" customClass="SignatureTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.333332061767578" width="414" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SelfSizingSignatureTableViewCell" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SignatureTableViewCell" id="F0M-Mk-ZEz" userLabel="Signature" customClass="SignatureTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="55.333332061767578" width="414" height="38"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wdm-AT-m5z" id="A3d-Jj-WZG">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="F0M-Mk-ZEz" id="VG6-Ar-tnJ">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="38"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="signature" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="0Ht-YN-GKS">
-                                                    <rect key="frame" x="15" y="0.0" width="384" height="44"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits"/>
-                                                </textField>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="Signature" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="xYO-T2-bDx">
+                                                    <rect key="frame" x="20" y="0.0" width="374" height="38"/>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                    <color key="textColor" systemColor="labelColor"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="9xa-gb-As9" id="VI0-zC-dyt"/>
+                                                    </connections>
+                                                </textView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="0Ht-YN-GKS" firstAttribute="leading" secondItem="A3d-Jj-WZG" secondAttribute="leading" constant="15" id="9EN-kw-CA5"/>
-                                                <constraint firstItem="0Ht-YN-GKS" firstAttribute="top" secondItem="A3d-Jj-WZG" secondAttribute="top" id="Zbr-8y-tji"/>
-                                                <constraint firstAttribute="trailing" secondItem="0Ht-YN-GKS" secondAttribute="trailing" constant="15" id="kJh-Ye-1fR"/>
-                                                <constraint firstAttribute="bottom" secondItem="0Ht-YN-GKS" secondAttribute="bottom" id="zZZ-nJ-Q2m"/>
+                                                <constraint firstAttribute="trailing" secondItem="xYO-T2-bDx" secondAttribute="trailing" constant="20" symbolic="YES" id="HTY-GS-tom"/>
+                                                <constraint firstItem="xYO-T2-bDx" firstAttribute="top" secondItem="VG6-Ar-tnJ" secondAttribute="top" id="oqN-Bs-dPZ"/>
+                                                <constraint firstItem="xYO-T2-bDx" firstAttribute="leading" secondItem="VG6-Ar-tnJ" secondAttribute="leading" constant="20" symbolic="YES" id="yFD-Ux-Pmg"/>
+                                                <constraint firstAttribute="bottom" secondItem="xYO-T2-bDx" secondAttribute="bottom" id="zKf-qO-2tO"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
-                                            <outlet property="editableSignature" destination="0Ht-YN-GKS" id="tZO-YI-RTA"/>
+                                            <outlet property="textView" destination="xYO-T2-bDx" id="cxa-Lj-X2x"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="9xa-gb-As9" id="dml-jX-S7v"/>
+                                    <outlet property="delegate" destination="9xa-gb-As9" id="6R8-SA-qAg"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="upk-91-vYb" firstAttribute="top" secondItem="RSp-qK-Tzq" secondAttribute="bottom" id="InB-Wl-KdU"/>
-                            <constraint firstAttribute="trailing" secondItem="RSp-qK-Tzq" secondAttribute="trailing" id="KJp-Nb-Jhp"/>
-                            <constraint firstItem="RSp-qK-Tzq" firstAttribute="leading" secondItem="lwm-G1-qLZ" secondAttribute="leading" id="wFr-pz-mmh"/>
-                            <constraint firstItem="RSp-qK-Tzq" firstAttribute="top" secondItem="96G-dd-Z7U" secondAttribute="bottom" id="yha-n0-bDF"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="dtZ-bH-CeW"/>
                     <connections>
@@ -2146,7 +2150,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6u7-Q7-Rpz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2220" y="385"/>
+            <point key="canvasLocation" x="-2220.289855072464" y="384.78260869565219"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
@@ -2154,21 +2158,6 @@
         <segue reference="voI-Bz-LUT"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <systemColor name="groupTableViewBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="groupTableViewBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="groupTableViewBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="groupTableViewBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="groupTableViewBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
         <systemColor name="groupTableViewBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

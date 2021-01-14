@@ -18,18 +18,20 @@ class EditSignatureViewModel {
     public var numberOfRows: Int {
         return 1
     }
+
+    public var signatureInProgress: String?
     
     init(account: Account, delegate: EditableAccountSettingsDelegate? = nil) {
         self.account = account
         self.editableAccountSettingsdelegate = delegate
     }
-    
-    public func updateSignature(newSignature: String) {
-        account.signature = newSignature
-        editableAccountSettingsdelegate?.didChange()
-    }
-    
+
     public func signature() -> String {
         return account.signature
+    }
+
+    public func updateSignature() {
+        account.signature = signatureInProgress ?? signature()
+        editableAccountSettingsdelegate?.didChange()
     }
 }
