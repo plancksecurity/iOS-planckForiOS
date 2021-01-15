@@ -42,20 +42,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3AE6870024FFA5ED00B416ED"
-               BuildableName = "pEp4iosIntern.framework"
-               BlueprintName = "pEp4iosIntern"
-               ReferencedContainer = "container:../pEp_for_iOS_intern/pEp4iosIntern/pEp4iosIntern.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "343AAA531E83463400F9D36E"
                BuildableName = "AppAuth.framework"
                BlueprintName = "AppAuth_iOS"
@@ -84,6 +70,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "3AE6870024FFA5ED00B416ED"
+               BuildableName = "pEp4iosIntern.framework"
+               BlueprintName = "pEp4iosIntern"
+               ReferencedContainer = "container:../pEp_for_iOS_intern/pEp4iosIntern/pEp4iosIntern.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "43E3985A221D7E56008E7983"
                BuildableName = "PEPObjCAdapterFramework.framework"
                BlueprintName = "PEPObjCAdapterFramework"
@@ -98,38 +98,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B7911EB321F7358500D7F66F"
-               BuildableName = "pEpIOSToolbox.framework"
-               BlueprintName = "pEpIOSToolbox"
-               ReferencedContainer = "container:subModules/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4329CA572238FCBF007D377E"
-               BuildableName = "PantomimeFramework.framework"
-               BlueprintName = "PantomimeFramework"
-               ReferencedContainer = "container:../pantomime-iOS/PantomimeFramework/PantomimeFramework.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "43CB60811DA4EB4E0015281E"
                BuildableName = "MessageModel.framework"
                BlueprintName = "MessageModel"
-               ReferencedContainer = "container:Submodules/MessageModel/MessageModel/MessageModel.xcodeproj">
+               ReferencedContainer = "container:SubProjects/MessageModel/MessageModel/MessageModel.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -162,30 +134,16 @@
          </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43980E441CBD0BCA00A7FC3C"
-               BuildableName = "pEpForiOSUITests.xctest"
-               BlueprintName = "pEpForiOSUITests"
-               ReferencedContainer = "container:pEpForiOS.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43CB608A1DA4EB4E0015281E"
-               BuildableName = "MessageModelTests.xctest"
-               BlueprintName = "MessageModelTests"
-               ReferencedContainer = "container:Submodules/MessageModel/MessageModel/MessageModel.xcodeproj">
+               BlueprintIdentifier = "3AE6870924FFA5ED00B416ED"
+               BuildableName = "pEp4iosInternTests.xctest"
+               BlueprintName = "pEp4iosInternTests"
+               ReferencedContainer = "container:../pEp_for_iOS_intern/pEp4iosIntern/pEp4iosIntern.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -254,40 +212,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B7DB7F56221315BD003968DA"
-               BuildableName = "pEpIOSToolboxTests.xctest"
-               BlueprintName = "pEpIOSToolboxTests"
-               ReferencedContainer = "container:subModules/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4329CB8622391DBD007D377E"
-               BuildableName = "PantomimeFrameworkTests.xctest"
-               BlueprintName = "PantomimeFrameworkTests"
-               ReferencedContainer = "container:../pantomime-iOS/PantomimeFramework/PantomimeFramework.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "43CB608A1DA4EB4E0015281E"
                BuildableName = "MessageModelTests.xctest"
                BlueprintName = "MessageModelTests"
-               ReferencedContainer = "container:Submodules/MessageModel/MessageModel/MessageModel.xcodeproj">
+               ReferencedContainer = "container:SubProjects/MessageModel/MessageModel/MessageModel.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3AE6870924FFA5ED00B416ED"
-               BuildableName = "pEp4iosInternTests.xctest"
-               BlueprintName = "pEp4iosInternTests"
-               ReferencedContainer = "container:../pEp_for_iOS_intern/pEp4iosIntern/pEp4iosIntern.xcodeproj">
+               BlueprintIdentifier = "B7DB7F56221315BD003968DA"
+               BuildableName = "pEpIOSToolboxTests.xctest"
+               BlueprintName = "pEpIOSToolboxTests"
+               ReferencedContainer = "container:SubProjects/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
