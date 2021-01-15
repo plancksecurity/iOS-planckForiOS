@@ -5,16 +5,16 @@
       location = "group:pEpForiOS.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Submodules/MessageModel/MessageModel/MessageModel.xcodeproj">
+      location = "group:SubProjects/MessageModel/MessageModel/MessageModel.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:subModules/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
+      location = "group:SubProjects/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
    </FileRef>
    <FileRef
       location = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
    </FileRef>
    <FileRef
-      location = "container:../pantomime-iOS/PantomimeFramework/PantomimeFramework.xcodeproj">
+      location = "container:../Pantomime/PantomimeFramework/PantomimeFramework.xcodeproj">
    </FileRef>
    <FileRef
       location = "container:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
