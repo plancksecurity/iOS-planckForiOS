@@ -540,7 +540,7 @@ extension LoginViewController {
     private func setManualSetupButtonHidden(_ hidden: Bool) {
         let hasChanged = manualConfigButton.isHidden != hidden
         manualConfigButton.isHidden = hidden
-        if UIDevice.isPortrait {
+        if UIDevice.isPortrait || (UIDevice.isIpad && UIDevice.isLandscape) {
             self.pEpSyncViewCenterHConstraint.isActive = hidden
             self.centerX.isActive = hidden
             self.leadingZero.isActive = !hidden
