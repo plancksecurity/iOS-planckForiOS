@@ -67,7 +67,7 @@ extension KeyImportViewModel {
             let p7 = fingerprint.dropFirst(24).prefix(4)
             let p8 = fingerprint.dropFirst(28).prefix(4)
             let p9 = fingerprint.dropFirst(32).prefix(4)
-            let p10 = fingerprint.dropFirst(34).prefix(4)
+            let p10 = fingerprint.dropFirst(36).prefix(4)
 
             return "\(p1) \(p2) \(p3) \(p4) \(p5)\n\(p6) \(p7) \(p8) \(p9) \(p10)"
         }
