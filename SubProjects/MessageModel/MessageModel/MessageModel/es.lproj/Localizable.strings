@@ -1,0 +1,15 @@
+/* pEp mail signature. Newlines will be added by app */
+"sent with p≡p" = "enviado con p≡p";
+
+/* Error description when failing to validate account fields */
+"Some fields seems not to be valid. Please check all input fields." = "Algunos campos parecen no ser válidos. Por favor verifique todos los campos de entrada.";
+
+/* No comment provided by engineer. */
+"SSL/TLS" = "SSL/TLS";
+
+/* No comment provided by engineer. */
+"StartTLS" = "IniciarTLS";
+
+/* file name used for unnamed attachments */
+"unnamed" = "sin nombre";
+
