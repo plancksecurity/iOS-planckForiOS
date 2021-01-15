@@ -69,15 +69,7 @@ class KeyImportViewModelTest: XCTestCase {
     }
 
     func testImportKey() {
-        let keyData = KeyImportUtil.KeyData(address: "address",
-                                            fingerprint: "fpr",
-                                            userName: "username")
-        let keyImporter = KeyImporterMock(importKeyErrorToThrow: nil,
-                                          importKeyDatas: [keyData])
-
-        let documentsBrowser = DocumentsDirectoryBrowserMock(urls: [URL(fileURLWithPath: "file:///someFake")])
-        let vm = KeyImportViewModel(documentsBrowser: documentsBrowser,
-                                    keyImporter: keyImporter)
+        let vm = setupKeyImportViewModel()
 
         let showConfirmSetOwnKeyExpectation = expectation(description: "showConfirmSetOwnKeyExpectation")
 
@@ -123,15 +115,7 @@ class KeyImportViewModelTest: XCTestCase {
     }
 
     func testSetOwnKeySuccess() {
-        let keyData = KeyImportUtil.KeyData(address: "address",
-                                            fingerprint: "fpr",
-                                            userName: "username")
-        let keyImporter = KeyImporterMock(importKeyErrorToThrow: nil,
-                                          importKeyDatas: [keyData])
-
-        let documentsBrowser = DocumentsDirectoryBrowserMock(urls: [URL(fileURLWithPath: "file:///someFake")])
-        let vm = KeyImportViewModel(documentsBrowser: documentsBrowser,
-                                    keyImporter: keyImporter)
+        let vm = setupKeyImportViewModel()
 
         let showSetOwnKeySuccessExpectation = expectation(description: "showSetOwnKeySuccessExpectation")
         let delegate = KeyImportViewModelDelegateMock(rowsLoadedExpectation: nil,
@@ -145,6 +129,69 @@ class KeyImportViewModelTest: XCTestCase {
                                                            userName: "username")])
 
         wait(for: [showSetOwnKeySuccessExpectation], timeout: TestUtil.waitTimeLocal)
+    }
+
+    func testUserPresentableFingerprint() {
+        let vm = setupKeyImportViewModel()
+
+        // Repeat with random values a couple of times
+        for _ in 0 ... 100 {
+            var fprIn = "" // the original value without spaces
+            var fprExpected = "" // the expected value, formatted with spaces
+
+            // Build a fingerprint, both the input, as the expected one
+            for i in  1...10 {
+                let randomQuadruple = randomCapitalizedString(length: 4)
+                fprIn += randomQuadruple
+                if i > 1 {
+                    if i == 6 {
+                        fprExpected += "\n"
+                    } else {
+                        fprExpected += " "
+                    }
+                }
+                fprExpected += randomQuadruple
+            }
+
+            let keyDetail = KeyImportViewModel.KeyDetails(address: "address",
+                                                          fingerprint: fprIn,
+                                                          userName: "username")
+
+            // Test the result
+            let fprValue = vm.userPresentableFingerprint(keyDetails: [keyDetail])
+            XCTAssertEqual(fprValue, fprExpected)
+        }
+    }
+}
+
+extension KeyImportViewModelTest {
+    /// Create a `KeyImportViewModel` for simple tests that don't care much about the underlying data.
+    func setupKeyImportViewModel() -> KeyImportViewModel {
+        let keyData = KeyImportUtil.KeyData(address: "address",
+                                            fingerprint: "fpr",
+                                            userName: "username")
+        let keyImporter = KeyImporterMock(importKeyErrorToThrow: nil,
+                                          importKeyDatas: [keyData])
+
+        let documentsBrowser = DocumentsDirectoryBrowserMock(urls: [URL(fileURLWithPath: "file:///someFake")])
+        return KeyImportViewModel(documentsBrowser: documentsBrowser,
+                                  keyImporter: keyImporter)
+
+    }
+
+    func randomCapitalizedString(length: Int) -> String {
+        let letters : NSString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        let len = UInt32(letters.length)
+
+        var randomString = ""
+
+        for _ in 0 ..< length {
+            let rand = arc4random_uniform(len)
+            var nextChar = letters.character(at: Int(rand))
+            randomString += NSString(characters: &nextChar, length: 1) as String
+        }
+
+        return randomString
     }
 }
 

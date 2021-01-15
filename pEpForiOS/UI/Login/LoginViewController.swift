@@ -17,28 +17,33 @@ protocol LoginViewControllerDelegate: class  {
 
 final class LoginViewController: BaseViewController {
 
+    @IBOutlet weak var centerX: NSLayoutConstraint!
+    @IBOutlet weak var manualSetupWidth: NSLayoutConstraint!
+    @IBOutlet weak var leadingZero: NSLayoutConstraint!
     weak var delegate: LoginViewControllerDelegate?
-
-    @IBOutlet weak var syncStackView: UIStackView!
-    @IBOutlet weak var user: AnimatedPlaceholderTextfield!
-    @IBOutlet weak var password: AnimatedPlaceholderTextfield!
-    @IBOutlet weak var emailAddress: AnimatedPlaceholderTextfield!
-    @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var dismissButton: UIButton!
-    @IBOutlet weak var dismissButtonLeft: UIButton!
-    @IBOutlet weak var loginButtonIPadLandscape: UIButton!
-    @IBOutlet weak var manualConfigButton: UIButton!
-    @IBOutlet weak var mainContainerView: UIView!
-    @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var scrollView: DynamicHeightScrollView!
-    @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
-    @IBOutlet weak var loginButtonConstraint: NSLayoutConstraint!
-    @IBOutlet weak var pEpSyncSwitch: UISwitch!
+    
+    @IBOutlet private weak var pepSyncLabel: UILabel!
+    @IBOutlet private weak var syncStackView: UIStackView!
+    @IBOutlet private weak var user: AnimatedPlaceholderTextfield!
+    @IBOutlet private weak var password: AnimatedPlaceholderTextfield!
+    @IBOutlet private weak var emailAddress: AnimatedPlaceholderTextfield!
+    @IBOutlet private weak var loginButton: UIButton!
+    @IBOutlet private weak var dismissButton: UIButton!
+    @IBOutlet private weak var dismissButtonLeft: UIButton!
+    @IBOutlet private weak var loginButtonIPadLandscape: UIButton!
+    @IBOutlet private weak var manualConfigButton: TwoLinesButton!
+    @IBOutlet private weak var mainContainerView: UIView!
+    @IBOutlet private weak var stackView: UIStackView!
+    @IBOutlet private weak var scrollView: DynamicHeightScrollView!
+    @IBOutlet private weak var scrollViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var loginButtonConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var pEpSyncSwitch: UISwitch!
 
     var viewModel: LoginViewModel?
     var offerManualSetup = false
 
+    @IBOutlet weak var pepSyncLeadingBiggerThan: NSLayoutConstraint!
     var isCurrentlyVerifying = false {
         didSet {
             updateView()
@@ -65,6 +70,7 @@ final class LoginViewController: BaseViewController {
         setManualSetupButtonHidden(manualConfigButton.isHidden)
         syncStackView.axis = UIDevice.isSmall && UIDevice.isLandscape ? .vertical : .horizontal
         syncStackView.superview?.layoutIfNeeded()
+        manualConfigButton.contentHorizontalAlignment = UIDevice.isPortrait ? .right : .left
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
@@ -86,11 +92,11 @@ final class LoginViewController: BaseViewController {
                              offerManualSetup: false)
             return
         }
-        guard email.isProbablyValidEmail() else {
-            handleLoginError(error: LoginViewController.LoginError.invalidEmail,
-                             offerManualSetup: false)
-            return
-        }
+
+        // Allow _any_ email address, don't check anythig
+        // (was calling `email.isProbablyValidEmail` and reporting
+        // `LoginViewController.LoginError.invalidEmail` in case).
+
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
@@ -301,7 +307,6 @@ extension LoginViewController: LoginViewModelOAuth2ErrorDelegate {
 extension LoginViewController {
     enum LoginError: Error {
         case missingEmail
-        case invalidEmail
         case missingPassword
         case noConnectData
         case missingUsername
@@ -313,9 +318,9 @@ extension LoginViewController {
 extension LoginViewController.LoginError: LocalizedError {
     var errorDescription: String? {
         switch self {
-        case .missingEmail, .invalidEmail:
+        case .missingEmail:
             return NSLocalizedString("A valid email address is required",
-                                     comment: "error message for .missingEmail or .invalidEmail")
+                                     comment: "error message for .missingEmail")
         case .missingPassword:
             return NSLocalizedString("A non-empty password is required",
                                      comment: "error message for .missingPassword")
@@ -533,7 +538,25 @@ extension LoginViewController {
     }
 
     private func setManualSetupButtonHidden(_ hidden: Bool) {
+        let hasChanged = manualConfigButton.isHidden != hidden
         manualConfigButton.isHidden = hidden
+        if UIDevice.isPortrait || (UIDevice.isIpad && UIDevice.isLandscape) {
+            pEpSyncViewCenterHConstraint.isActive = hidden
+            centerX.isActive = hidden
+            leadingZero.isActive = !hidden
+            pepSyncLeadingBiggerThan.isActive = hidden
+            manualSetupWidth.isActive = hidden
+
+            UIView.animate(withDuration: 0.5) { [weak self] in
+                guard let me = self else {
+                    //Valid case: might be dismmissed already
+                    return
+                }
+                if hasChanged {
+                    me.view.layoutIfNeeded()
+                }
+            }
+        }
     }
 
     private func updateView() {
