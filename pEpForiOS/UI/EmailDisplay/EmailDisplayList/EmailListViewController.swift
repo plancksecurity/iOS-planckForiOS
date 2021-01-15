@@ -1108,7 +1108,7 @@ extension EmailListViewController {
 }
 
 // MARK: - Segue handling
-//MB:- EmailListViewController+Segue
+
 extension EmailListViewController {
     /**
      Enables manual account setup to unwind to the unified inbox.
@@ -1118,7 +1118,6 @@ extension EmailListViewController {
     }
 }
 
-//MB:- EmailListViewController+Segue
 // MARK: - SegueHandlerType
 
 extension EmailListViewController: SegueHandlerType {
@@ -1336,7 +1335,7 @@ extension EmailListViewController {
 }
 
 // MARK: - Present Modal View
-//MB:- EmailListViewController+Segue
+
 extension EmailListViewController {
 
     private func presentComposeViewToEditDraft(composeVM: ComposeViewModel) {
