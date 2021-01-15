@@ -683,9 +683,6 @@
 		4358A06522A5011F00C49E43 /* MockNotifyHandshakeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNotifyHandshakeDelegate.swift; sourceTree = "<group>"; };
 		435C0CBF222939A10025C6B5 /* PEPRating+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPRating+Extension.swift"; sourceTree = "<group>"; };
 		435C0CCC222942DE0025C6B5 /* CdIdentity+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdIdentity+pEp.swift"; sourceTree = "<group>"; };
-		435C1CAE25B063DB000A9715 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		435C1CAF25B063DB000A9715 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		435C1CB025B063DB000A9715 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		435F511F221FF750006EB11F /* PEPUtil+Internal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PEPUtil+Internal.swift"; sourceTree = "<group>"; };
 		435F5121221FF80F006EB11F /* SmtpSendError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtpSendError.swift; sourceTree = "<group>"; };
 		435F5133221FFF3A006EB11F /* CdFolder+Pantomime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdFolder+Pantomime.swift"; sourceTree = "<group>"; };
@@ -2026,7 +2023,6 @@
 				15175EB9221D74C200C91DB8 /* Modules */,
 				155FE575228B5368003D3E68 /* CdObjectExtensions */,
 				15175E4E221D5A4500C91DB8 /* Submodule */,
-				B718EF291F866FF6000CFB71 /* Filter */,
 				43CB60AB1DA4EBBF0015281E /* Util */,
 				1574390E229EA4D100E1C337 /* Services */,
 				15C7A88E2387EF6500C47364 /* Pantomime */,
@@ -2266,13 +2262,6 @@
 				8BE4608D1DB7B5FC008D63C6 /* Query.swift */,
 			);
 			path = Record;
-			sourceTree = "<group>";
-		};
-		B718EF291F866FF6000CFB71 /* Filter */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Filter;
 			sourceTree = "<group>";
 		};
 		B747A7E0234E4B5B00508565 /* Internal */ = {
