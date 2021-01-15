@@ -702,6 +702,9 @@
 		4358D1171DC5F6BF00385CC5 /* NSOrderedSet+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOrderedSet+Extension.swift"; sourceTree = "<group>"; };
 		435C0CBF222939A10025C6B5 /* PEPRating+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPRating+Extension.swift"; sourceTree = "<group>"; };
 		435C0CCC222942DE0025C6B5 /* CdIdentity+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdIdentity+pEp.swift"; sourceTree = "<group>"; };
+		435C1CAE25B063DB000A9715 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		435C1CAF25B063DB000A9715 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		435C1CB025B063DB000A9715 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		435F511F221FF750006EB11F /* PEPUtil+Internal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PEPUtil+Internal.swift"; sourceTree = "<group>"; };
 		435F5121221FF80F006EB11F /* SmtpSendError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtpSendError.swift; sourceTree = "<group>"; };
 		435F5133221FFF3A006EB11F /* CdFolder+Pantomime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdFolder+Pantomime.swift"; sourceTree = "<group>"; };
@@ -2440,6 +2443,7 @@
 				ca,
 				es,
 				de,
+				sk,
 			);
 			mainGroup = 43CB60781DA4EB4E0015281E;
 			productRefGroup = 43CB60831DA4EB4E0015281E /* Products */;
@@ -3002,6 +3006,7 @@
 				158A568724052430003C0D7E /* ca */,
 				158A568C2405244A003C0D7E /* es */,
 				158A56962405617E003C0D7E /* de */,
+				435C1CAE25B063DB000A9715 /* sk */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -3016,6 +3021,7 @@
 				158A568624052430003C0D7E /* ca */,
 				158A568B2405244A003C0D7E /* es */,
 				158A56952405617D003C0D7E /* de */,
+				435C1CAF25B063DB000A9715 /* sk */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -3030,6 +3036,7 @@
 				158A568524052430003C0D7E /* ca */,
 				158A568A2405244A003C0D7E /* es */,
 				158A56942405617D003C0D7E /* de */,
+				435C1CB025B063DB000A9715 /* sk */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
