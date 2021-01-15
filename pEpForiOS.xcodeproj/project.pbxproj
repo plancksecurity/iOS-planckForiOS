@@ -318,6 +318,7 @@
 		436796021EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt in Resources */ = {isa = PBXBuildFile; fileRef = 436796011EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt */; };
 		436D0066215B5F3800966CC2 /* Undisplayable_HTML_Message.txt in Resources */ = {isa = PBXBuildFile; fileRef = 436D0065215B5F3800966CC2 /* Undisplayable_HTML_Message.txt */; };
 		436F1BA425028B8A004426DC /* CocoaLumberjackSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 436F1BA225028B7D004426DC /* CocoaLumberjackSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E131D36706A007E9829 /* StringExtensionsTest.swift */; };
 		437795C82154D6FD00CC62C2 /* PEPMessage+TestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437795C72154D6FD00CC62C2 /* PEPMessage+TestExtension.swift */; };
 		437E9BA9237AFB7F00E9A847 /* UIStoryboard+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437E9BA8237AFB7F00E9A847 /* UIStoryboard+Constants.swift */; };
 		438052871FE3E1B100ACF729 /* OAuth2AuthorizationFactoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438052861FE3E1B100ACF729 /* OAuth2AuthorizationFactoryProtocol.swift */; };
@@ -919,6 +920,7 @@
 		436C5A8D1CFEDF59006A195F /* UIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
 		436D0065215B5F3800966CC2 /* Undisplayable_HTML_Message.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Undisplayable_HTML_Message.txt; sourceTree = "<group>"; };
 		436F1BA225028B7D004426DC /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjackSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		436F8E131D36706A007E9829 /* StringExtensionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTest.swift; sourceTree = "<group>"; };
 		4372ECD5219C436D00F84099 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/FolderViews.strings; sourceTree = "<group>"; };
 		4372ECD6219C436D00F84099 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Reusable.strings; sourceTree = "<group>"; };
 		4372ECD7219C436D00F84099 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Thread.strings; sourceTree = "<group>"; };
@@ -2245,6 +2247,7 @@
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
 				438D253B1D4B9E7500BFF7AA /* MimeTests.swift */,
 				43C7B9D01CEC4DDF007A612F /* MiscTests.swift */,
+				436F8E131D36706A007E9829 /* StringExtensionsTest.swift */,
 				43257C851F50659200DDC7F0 /* StringHTMLExtensionTests.swift */,
 				432A24D61DE714A200DAAC5C /* MessagePantomimeTests.swift */,
 				438281821E891B7E00087343 /* DateTests.swift */,
@@ -3468,6 +3471,7 @@
 				15410D222199D83200BBF65F /* AccountCellViewModelTest.swift in Sources */,
 				3705704122B8EB27002E3AAD /* KeySyncDeviceGroupUtilMoc.swift in Sources */,
 				15BBBC6B1FD0527200B9DCC8 /* DisplayUserErrorTest.swift in Sources */,
+				436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */,
 				15D7D997219C374600A1A2B9 /* ComposeViewModelStateTest.swift in Sources */,
 				F73E4F7A2180744700CCFFED /* FolderCellViewModelTests.swift in Sources */,
 				B7F4A793212DDFC500507B76 /* EmailListViewModelTest.swift in Sources */,
