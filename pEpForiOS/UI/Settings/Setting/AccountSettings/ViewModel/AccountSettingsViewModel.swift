@@ -149,7 +149,7 @@ extension AccountSettingsViewModel {
         var cellIdentifier: String
         /// Indicates if the caret should be shown
         var shouldShowCaret: Bool = true
-        /// Indicates if the caret should be shown
+        /// Indicates if the text should be selectable
         var shouldSelect: Bool = true
     }
 
