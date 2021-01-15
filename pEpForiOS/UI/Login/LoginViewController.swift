@@ -86,11 +86,11 @@ final class LoginViewController: BaseViewController {
                              offerManualSetup: false)
             return
         }
-        guard email.isProbablyValidEmail() else {
-            handleLoginError(error: LoginViewController.LoginError.invalidEmail,
-                             offerManualSetup: false)
-            return
-        }
+
+        // Allow _any_ email address, don't check anythig
+        // (was calling `email.isProbablyValidEmail` and reporting
+        // `LoginViewController.LoginError.invalidEmail` in case).
+
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
@@ -301,7 +301,6 @@ extension LoginViewController: LoginViewModelOAuth2ErrorDelegate {
 extension LoginViewController {
     enum LoginError: Error {
         case missingEmail
-        case invalidEmail
         case missingPassword
         case noConnectData
         case missingUsername
@@ -313,9 +312,9 @@ extension LoginViewController {
 extension LoginViewController.LoginError: LocalizedError {
     var errorDescription: String? {
         switch self {
-        case .missingEmail, .invalidEmail:
+        case .missingEmail:
             return NSLocalizedString("A valid email address is required",
-                                     comment: "error message for .missingEmail or .invalidEmail")
+                                     comment: "error message for .missingEmail")
         case .missingPassword:
             return NSLocalizedString("A non-empty password is required",
                                      comment: "error message for .missingPassword")
