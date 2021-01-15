@@ -541,15 +541,19 @@ extension LoginViewController {
         let hasChanged = manualConfigButton.isHidden != hidden
         manualConfigButton.isHidden = hidden
         if UIDevice.isPortrait || (UIDevice.isIpad && UIDevice.isLandscape) {
-            self.pEpSyncViewCenterHConstraint.isActive = hidden
-            self.centerX.isActive = hidden
-            self.leadingZero.isActive = !hidden
-            self.pepSyncLeadingBiggerThan.isActive = hidden
-            self.manualSetupWidth.isActive = hidden
+            pEpSyncViewCenterHConstraint.isActive = hidden
+            centerX.isActive = hidden
+            leadingZero.isActive = !hidden
+            pepSyncLeadingBiggerThan.isActive = hidden
+            manualSetupWidth.isActive = hidden
 
-            UIView.animate(withDuration: 0.5) {
+            UIView.animate(withDuration: 0.5) { [weak self] in
+                guard let me = self else {
+                    //Valid case: might be dismmissed already
+                    return
+                }
                 if hasChanged {
-                    self.view.layoutIfNeeded()
+                    me.view.layoutIfNeeded()
                 }
             }
         }
