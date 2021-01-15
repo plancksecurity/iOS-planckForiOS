@@ -20,5 +20,5 @@ extension Array where Element == Folder {
             return idx1 < idx2
         }
     }
-
 }
+
