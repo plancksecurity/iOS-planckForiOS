@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 extension PEPHeaderView {
     private struct Constants {
         struct Margin {
@@ -20,14 +21,15 @@ extension PEPHeaderView {
 final class PEPHeaderView: UITableViewHeaderFooterView {
     static let reuseIdentifier = "pEp Section Header"
 
-    private let titleTextView: UITextView = {
-        let createe = UITextView()
+    private let titleTextView: TextFieldWithoutSelection = {
+        let createe = TextFieldWithoutSelection()
         createe.translatesAutoresizingMaskIntoConstraints = false
         createe.isScrollEnabled = false
         createe.isUserInteractionEnabled = false
         createe.isEditable = false
         return createe
     }()
+
 
     override var isUserInteractionEnabled: Bool {
         set {
