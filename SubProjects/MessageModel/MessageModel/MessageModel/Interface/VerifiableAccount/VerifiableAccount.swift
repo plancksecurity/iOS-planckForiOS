@@ -163,6 +163,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         return (loginNameSMTP?.count ?? 0) >= 1 && (loginNameIMAP?.count ?? 0) >= 1
     }
 
+    /// - Note: Does not take the email into account at all for this.
     public var isValidUser: Bool {
         return loginNameIsValid && isValidPassword
     }
