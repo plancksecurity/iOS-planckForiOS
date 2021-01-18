@@ -34,10 +34,12 @@ final class SendMailHelper {
     }
 
     public func sendMessage() {
+        /*
         let cwMsg = CWIMAPMessage(pEpMessage: testMessage(),
                                   mailboxName: "OUTBOX")
         smtpConnection.setMessage(cwMsg)
         smtpConnection.start()
+         */
     }
 
     private func testMessage() -> PEPMessage {
