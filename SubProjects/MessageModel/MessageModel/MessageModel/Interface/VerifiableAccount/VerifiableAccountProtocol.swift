@@ -131,6 +131,8 @@ public protocol VerifiableAccountProtocol {
     var loginNameIsValid: Bool { get }
 
     /// The UI might want to know this, i.e. to decide which element is first responder.
+    /// - Note: At least one implementation, `VerifiableAccount`, does not take the email into
+    /// account at all for this.
     var isValidUser: Bool { get }
 
     /// Is the server information sufficient to connect the servers?
