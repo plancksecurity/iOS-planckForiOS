@@ -98,7 +98,7 @@ final class LoginViewController: UIViewController {
             return
         }
 
-        // Allow _any_ email address, don't check anythig
+        // Allow _any_ email address, don't check anything
         // (was calling `email.isProbablyValidEmail` and reporting
         // `LoginViewController.LoginError.invalidEmail` in case).
 

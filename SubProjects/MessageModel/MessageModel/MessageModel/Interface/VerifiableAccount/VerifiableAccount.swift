@@ -162,8 +162,9 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         return (loginNameSMTP?.count ?? 0) >= 1 && (loginNameIMAP?.count ?? 0) >= 1
     }
 
+    /// - Note: Does not take the email into account at all for this.
     public var isValidUser: Bool {
-        return loginNameIsValid && isValidEmail && isValidPassword
+        return loginNameIsValid && isValidPassword
     }
 }
 
@@ -195,11 +196,6 @@ extension VerifiableAccount {
 // MARK: - Private Validation Helpers
 
 extension VerifiableAccount {
-
-    private var isValidEmail: Bool {
-        return address?.isProbablyValidEmail() ?? false
-    }
-
     private var isValidPassword: Bool {
         if let pass = password {
             return pass.count > 0
