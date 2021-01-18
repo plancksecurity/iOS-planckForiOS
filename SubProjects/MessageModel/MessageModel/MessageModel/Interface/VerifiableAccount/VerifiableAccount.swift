@@ -164,7 +164,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
     }
 
     public var isValidUser: Bool {
-        return loginNameIsValid && isValidEmail && isValidPassword
+        return loginNameIsValid && isValidPassword
     }
 }
 
@@ -196,11 +196,6 @@ extension VerifiableAccount {
 // MARK: - Private Validation Helpers
 
 extension VerifiableAccount {
-
-    private var isValidEmail: Bool {
-        return address?.isProbablyValidEmail() ?? false
-    }
-
     private var isValidPassword: Bool {
         if let pass = password {
             return pass.count > 0
