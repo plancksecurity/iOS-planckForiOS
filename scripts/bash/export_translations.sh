@@ -6,7 +6,8 @@ translationdir=../pEp-Translate/
 
 mytmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
 
-appdir=$mytmpdir/pEpForiOS
+# This is a tmp dir, it does not have to match any real project path at the end.
+appdir=$mytmpdir/pep4ios
 
 mkdir $appdir
 
@@ -15,10 +16,6 @@ do
   xcodebuild -exportLocalizations -project pEpForiOS.xcodeproj -exportLanguage $lang -localizationPath $appdir
 
   cp "$appdir/$lang.xcloc/Localized Contents/$lang.xliff" $translationdir
-
-  xcodebuild -exportLocalizations -project ./SubProjects/MessageModel/MessageModel/MessageModel.xcodeproj -exportLanguage $lang -localizationPath $mmdir
-
-  cp "$mmdir/$lang.xcloc/Localized Contents/$lang.xliff" $translationdir/MessageModel
 done
 
 rm -fr $mytmpdir
