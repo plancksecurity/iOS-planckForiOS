@@ -17,6 +17,9 @@ protocol LoginViewControllerDelegate: class  {
 
 final class LoginViewController: UIViewController {
 
+    @IBOutlet weak var centerX: NSLayoutConstraint!
+    @IBOutlet weak var manualSetupWidth: NSLayoutConstraint!
+    @IBOutlet weak var leadingZero: NSLayoutConstraint!
     weak var delegate: LoginViewControllerDelegate?
     
     @IBOutlet private weak var pepSyncLabel: UILabel!
@@ -28,7 +31,7 @@ final class LoginViewController: UIViewController {
     @IBOutlet private weak var dismissButton: UIButton!
     @IBOutlet private weak var dismissButtonLeft: UIButton!
     @IBOutlet private weak var loginButtonIPadLandscape: UIButton!
-    @IBOutlet private weak var manualConfigButton: UIButton!
+    @IBOutlet private weak var manualConfigButton: TwoLinesButton!
     @IBOutlet private weak var mainContainerView: UIView!
     @IBOutlet private weak var stackView: UIStackView!
     @IBOutlet private weak var scrollView: DynamicHeightScrollView!
@@ -40,6 +43,7 @@ final class LoginViewController: UIViewController {
     var viewModel: LoginViewModel?
     var offerManualSetup = false
 
+    @IBOutlet weak var pepSyncLeadingBiggerThan: NSLayoutConstraint!
     var isCurrentlyVerifying = false {
         didSet {
             updateView()
@@ -71,6 +75,7 @@ final class LoginViewController: UIViewController {
         setManualSetupButtonHidden(manualConfigButton.isHidden)
         syncStackView.axis = UIDevice.isSmall && UIDevice.isLandscape ? .vertical : .horizontal
         syncStackView.superview?.layoutIfNeeded()
+        manualConfigButton.contentHorizontalAlignment = UIDevice.isPortrait ? .right : .left
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
@@ -93,7 +98,7 @@ final class LoginViewController: UIViewController {
             return
         }
 
-        // Allow _any_ email address, don't check anythig
+        // Allow _any_ email address, don't check anything
         // (was calling `email.isProbablyValidEmail` and reporting
         // `LoginViewController.LoginError.invalidEmail` in case).
 
@@ -537,7 +542,25 @@ extension LoginViewController {
     }
 
     private func setManualSetupButtonHidden(_ hidden: Bool) {
+        let hasChanged = manualConfigButton.isHidden != hidden
         manualConfigButton.isHidden = hidden
+        if UIDevice.isPortrait || (UIDevice.isIpad && UIDevice.isLandscape) {
+            pEpSyncViewCenterHConstraint.isActive = hidden
+            centerX.isActive = hidden
+            leadingZero.isActive = !hidden
+            pepSyncLeadingBiggerThan.isActive = hidden
+            manualSetupWidth.isActive = hidden
+
+            UIView.animate(withDuration: 0.5) { [weak self] in
+                guard let me = self else {
+                    //Valid case: might be dismmissed already
+                    return
+                }
+                if hasChanged {
+                    me.view.layoutIfNeeded()
+                }
+            }
+        }
     }
 
     private func updateView() {
