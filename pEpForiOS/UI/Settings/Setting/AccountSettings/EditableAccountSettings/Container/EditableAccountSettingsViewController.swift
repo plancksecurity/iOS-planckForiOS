@@ -34,8 +34,8 @@ final class EditableAccountSettingsViewController: UIViewController {
     }
 
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
-            view.endEditing(true)
-            viewModel?.handleSaveButton()
+        view.endEditing(true)
+        viewModel?.handleSaveButton()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

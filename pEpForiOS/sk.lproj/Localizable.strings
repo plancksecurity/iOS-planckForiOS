@@ -221,6 +221,10 @@
 /* Email */
 "Email" = "E-mail";
 
+/* Email address placeholder for manual account setup
+   Email TextField Placeholder in Login Screen */
+"Email Address" = "E-mailová adresa";
+
 /* Title of alert: a required field is empty */
 "Empty Field" = "Prázdne pole";
 
@@ -252,9 +256,6 @@
 
 /* Generic error message on trying to import a key */
 "Error occurred. No key imported." = "Vyskytla sa chyba. Nebol importovaný žiadny kľúč.";
-
-/* spearator string bewtween name and date */
-"Exp. date:" = "Exp. dátum:";
 
 /* Settings: Cell (button) title to view Extra Keys setting */
 "Extra Keys" = "Extra kľúče";
@@ -474,6 +475,9 @@
 "No" = "Nie";
 
 /* Error when no account found for set_own_key UI */
+"No account found with the given email address." = "S daným e-mailom sa nenašiel žiadny účet.";
+
+/* Error when no account found for set_own_key UI */
 "No account found with the given email." = "S daným e-mailom sa nenašiel žiadny účet.";
 
 /* Privacy status suggestion */
@@ -647,7 +651,8 @@
 /* Validation error for set_own_key UI */
 "Please provide an email and a fingerprint. The email must match an existing account." = "Uveďte e-mailovú adresu a odtlačok prsta. E-mailová adresa sa musí zhodovať s existujúcim účtom.";
 
-/* Port placeholder for manual account IMAP setup
+/* Port label in account settings
+   Port placeholder for manual account IMAP setup
    Port placeholder for manual account SMTP setup */
 "Port" = "Port";
 
@@ -685,8 +690,8 @@
 "Reply All" = "Odpovedať všetkým";
 
 /* Account settings confirm to reset identity title alert
-   Account settings reset identity
    Reset account identity button title
+   Reset label in account settings
    Settings: cell (button) title to view the trust contacts option */
 "Reset" = "Resetovať";
 
@@ -732,7 +737,8 @@
 /* Privacy status suggestion */
 "Separately verify the content of this message with your communication partner." = "Obsah tejto správy si overte osobitne u svojho komunikačného partnera.";
 
-/* Server placeholder for manual account IMAP setup
+/* Server label in account settings
+   Server placeholder for manual account IMAP setup
    Server placeholder for manual account SMTP setup */
 "Server" = "server";
 
@@ -916,7 +922,8 @@
 /* UI alert title for transport protocol */
 "Transport protocol" = "Zabezpečenie prenosu";
 
-/* TransportSecurity placeholder for manual account IMAP setup
+/* Transport security label in account settings
+   TransportSecurity placeholder for manual account IMAP setup
    TransportSecurity placeholder for manual account SMTP setup */
 "Transport Security" = "Zabezpečenie prenosu";
 
@@ -994,6 +1001,9 @@
 "We could not connect to the IMAP server." = "Nepodarilo sa pripojiť k serveru IMAP.";
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
+"We could not connect to the SMTP server: %1@" = "K serveru SMTP sa nepodarilo pripojiť.";
+
+/* Error message shown to the user in case we can not connect to the SMTP server */
 "We could not connect to the SMTP server." = "K serveru SMTP sa nepodarilo pripojiť.";
 
 /* Client certificate import: wrong password alert message */
@@ -1046,6 +1056,9 @@
 
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Túto príručku môžete kedykoľvek zavrieť pomocou tlačidla Preskočiť.";
+
+/* PGPKeyImportSetting row title when grouped */
+"You can not import keys while the device is in a device group." = "You can not import keys while the device is in a device group.";
 
 /* alert error message certificate delete */
 "You can only delete certificates that are not connected to an account. The certificate is currently used for the following account: (by)" = "Môžete odstrániť iba certifikáty, ktoré nie sú pripojené k účtu. Certifikát sa momentálne používa pre tento účet: (podľa)";

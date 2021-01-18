@@ -215,6 +215,10 @@
 /* Email */
 "Email" = "Correu electrònic";
 
+/* Email address placeholder for manual account setup
+   Email TextField Placeholder in Login Screen */
+"Email Address" = "Adreça de correu";
+
 /* Title of alert: a required field is empty */
 "Empty Field" = "Camp buit";
 
@@ -243,9 +247,6 @@
 
 /* Generic error message on trying to import a key */
 "Error occurred. No key imported." = "S'ha produït un error. No s’ha importat cap clau.";
-
-/* spearator string bewtween name and date */
-"Exp. date:" = "Exp. data:";
 
 /* Settings: Cell (button) title to view Extra Keys setting */
 "Extra Keys" = "Claus addicionals";
@@ -462,6 +463,9 @@
 "No" = "No";
 
 /* Error when no account found for set_own_key UI */
+"No account found with the given email address." = "No s'ha trobat cap compte amb el correu electrònic indicat.";
+
+/* Error when no account found for set_own_key UI */
 "No account found with the given email." = "No s'ha trobat cap compte amb el correu electrònic indicat.";
 
 /* Privacy status suggestion */
@@ -622,7 +626,8 @@
 /* Validation error for set_own_key UI */
 "Please provide an email and a fingerprint. The email must match an existing account." = "Proporcioneu una adreça de correu electrònic i una empremta digital. L’adreça de correu electrònic ha de coincidir amb un compte existent.";
 
-/* Port placeholder for manual account IMAP setup
+/* Port label in account settings
+   Port placeholder for manual account IMAP setup
    Port placeholder for manual account SMTP setup */
 "Port" = "Port";
 
@@ -660,8 +665,8 @@
 "Reply All" = "Respondre a tots";
 
 /* Account settings confirm to reset identity title alert
-   Account settings reset identity
    Reset account identity button title
+   Reset label in account settings
    Settings: cell (button) title to view the trust contacts option */
 "Reset" = "Reset";
 
@@ -707,7 +712,8 @@
 /* Privacy status suggestion */
 "Separately verify the content of this message with your communication partner." = "Verifiqueu el contingut d’aquest missatge amb el vostre soci de comunicació per separat.";
 
-/* Server placeholder for manual account IMAP setup
+/* Server label in account settings
+   Server placeholder for manual account IMAP setup
    Server placeholder for manual account SMTP setup */
 "Server" = "Servidor";
 
@@ -885,7 +891,8 @@
 /* UI alert title for transport protocol */
 "Transport protocol" = "Protocol de transport";
 
-/* TransportSecurity placeholder for manual account IMAP setup
+/* Transport security label in account settings
+   TransportSecurity placeholder for manual account IMAP setup
    TransportSecurity placeholder for manual account SMTP setup */
 "Transport Security" = "Seguretat del transport";
 
@@ -957,6 +964,9 @@
 "We could not connect to the IMAP server." = "No hem pogut connectar-nos al servidor IMAP.";
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
+"We could not connect to the SMTP server: %1@" = "No hem pogut connectar-nos al servidor SMTP.";
+
+/* Error message shown to the user in case we can not connect to the SMTP server */
 "We could not connect to the SMTP server." = "No hem pogut connectar-nos al servidor SMTP.";
 
 /* Client certificate import: wrong password alert message */
@@ -1006,6 +1016,9 @@
 
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Podeu tancar aquest tutorial en qualsevol moment amb el botó Saltar.";
+
+/* PGPKeyImportSetting row title when grouped */
+"You can not import keys while the device is in a device group." = "You can not import keys while the device is in a device group.";
 
 /* alert error message certificate delete */
 "You can only delete certificates that are not connected to an account. The certificate is currently used for the following account: (by)" = "Només podeu suprimir certificats que no estan connectats a un compte. Actualment el certificat s’utilitza per al següent compte: (per)";

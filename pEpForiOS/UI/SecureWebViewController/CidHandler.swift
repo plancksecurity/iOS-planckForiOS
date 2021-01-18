@@ -10,8 +10,6 @@ import WebKit
 import MessageModel
 import pEpIOSToolbox
 
-@available(iOS, introduced: 11.0)
-
 /// WKURLSchemeHandler subclass to handle cid: URLs (images inlined in mails).
 /// Provides content from the store for a content IDs requested by a WKWebview instance.
 class CidHandler : NSObject {
@@ -27,7 +25,6 @@ class CidHandler : NSObject {
 
 // MARK: - WKURLSchemeHandler
 
-@available(iOS, introduced: 11.0)
 extension CidHandler: WKURLSchemeHandler {
 
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {

@@ -1,0 +1,18 @@
+/* No comment provided by engineer. */
+"None" = "Hiçbiri";
+
+/* pEp mail signature. Newlines will be added by app */
+"sent with p≡p" = "p≡p ile gönderildi";
+
+/* Error description when failing to validate account fields */
+"Some fields seems not to be valid. Please check all input fields." = "Bazı alanlar geçerli görünmüyor. Lütfen tüm giriş alanlarını kontrol edin.";
+
+/* No comment provided by engineer. */
+"SSL/TLS" = "SSL/TLS";
+
+/* No comment provided by engineer. */
+"StartTLS" = "StartTLS";
+
+/* file name used for unnamed attachments */
+"unnamed" = "adsız";
+

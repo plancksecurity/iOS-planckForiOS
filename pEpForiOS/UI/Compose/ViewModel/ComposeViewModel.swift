@@ -51,8 +51,8 @@ protocol ComposeViewModelDelegate: class {
                             message: String,
                             cancelButtonText: String,
                             positiveButtonText: String ,
-                            cancelButtonAction: @escaping ()->Void,
-                            positiveButtonAction: @escaping ()->Void)
+                            cancelButtonAction: @escaping () -> Void,
+                            positiveButtonAction: @escaping () -> Void)
     func dismiss()
 }
 
@@ -107,15 +107,20 @@ class ComposeViewModel {
          prefilledTo: Identity? = nil,
          prefilledFrom: Identity? = nil,
          originalMessage: Message? = nil) {
-        let initData = InitData(withPrefilledToRecipient: prefilledTo,
-                                prefilledFromSender: prefilledFrom,
-                                orForOriginalMessage: originalMessage,
-                                composeMode: composeMode)
+        let initData = InitData(prefilledTo: prefilledTo, prefilledFrom: prefilledFrom, originalMessage: originalMessage, composeMode: composeMode)
         self.state = ComposeViewModelState(initData: initData)
         self.state.delegate = self
         setup()
     }
 
+    
+    init(mailTo: Mailto) {
+        let initData = InitData(mailto: mailTo)
+        self.state = ComposeViewModelState(initData: initData)
+        self.state.delegate = self
+        setup()
+    }
+    
     init(state : ComposeViewModelState) {
         self.state = state
         self.state.delegate = self
@@ -322,8 +327,8 @@ extension ComposeViewModel {
                 // Forwarded mesasge is less secure than original message. Warn the user.
                 me.delegate?.showTwoButtonAlert(withTitle: title,
                                              message: message,
-                                             cancelButtonText: "NO",
-                                             positiveButtonText: "YES",
+                                             cancelButtonText: NSLocalizedString("NO", comment: "'No' button to confirm less secure email sent"),
+                                             positiveButtonText: NSLocalizedString("YES", comment: "'Yes' button to confirm less secure email sent"),
                                              cancelButtonAction: { completion(false) },
                                              positiveButtonAction: { completion(true) })
             } else {

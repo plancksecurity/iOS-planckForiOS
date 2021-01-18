@@ -17,9 +17,13 @@ protocol LoginViewControllerDelegate: class  {
 
 final class LoginViewController: UIViewController {
 
+    @IBOutlet weak var centerX: NSLayoutConstraint!
+    @IBOutlet weak var manualSetupWidth: NSLayoutConstraint!
+    @IBOutlet weak var leadingZero: NSLayoutConstraint!
     weak var delegate: LoginViewControllerDelegate?
-
+    
     @IBOutlet private weak var pepSyncLabel: UILabel!
+    @IBOutlet private weak var syncStackView: UIStackView!
     @IBOutlet private weak var user: AnimatedPlaceholderTextfield!
     @IBOutlet private weak var password: AnimatedPlaceholderTextfield!
     @IBOutlet private weak var emailAddress: AnimatedPlaceholderTextfield!
@@ -27,7 +31,7 @@ final class LoginViewController: UIViewController {
     @IBOutlet private weak var dismissButton: UIButton!
     @IBOutlet private weak var dismissButtonLeft: UIButton!
     @IBOutlet private weak var loginButtonIPadLandscape: UIButton!
-    @IBOutlet private weak var manualConfigButton: UIButton!
+    @IBOutlet private weak var manualConfigButton: TwoLinesButton!
     @IBOutlet private weak var mainContainerView: UIView!
     @IBOutlet private weak var stackView: UIStackView!
     @IBOutlet private weak var scrollView: DynamicHeightScrollView!
@@ -39,6 +43,7 @@ final class LoginViewController: UIViewController {
     var viewModel: LoginViewModel?
     var offerManualSetup = false
 
+    @IBOutlet weak var pepSyncLeadingBiggerThan: NSLayoutConstraint!
     var isCurrentlyVerifying = false {
         didSet {
             updateView()
@@ -63,12 +68,14 @@ final class LoginViewController: UIViewController {
         if accountType == .icloud {
             showiCloudAlert()
         }
-
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setManualSetupButtonHidden(manualConfigButton.isHidden)
+        syncStackView.axis = UIDevice.isSmall && UIDevice.isLandscape ? .vertical : .horizontal
+        syncStackView.superview?.layoutIfNeeded()
+        manualConfigButton.contentHorizontalAlignment = UIDevice.isPortrait ? .right : .left
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
@@ -90,11 +97,11 @@ final class LoginViewController: UIViewController {
                              offerManualSetup: false)
             return
         }
-        guard email.isProbablyValidEmail() else {
-            handleLoginError(error: LoginViewController.LoginError.invalidEmail,
-                             offerManualSetup: false)
-            return
-        }
+
+        // Allow _any_ email address, don't check anything
+        // (was calling `email.isProbablyValidEmail` and reporting
+        // `LoginViewController.LoginError.invalidEmail` in case).
+
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
@@ -304,7 +311,6 @@ extension LoginViewController: LoginViewModelOAuth2ErrorDelegate {
 extension LoginViewController {
     enum LoginError: Error {
         case missingEmail
-        case invalidEmail
         case missingPassword
         case noConnectData
         case missingUsername
@@ -316,9 +322,9 @@ extension LoginViewController {
 extension LoginViewController.LoginError: LocalizedError {
     var errorDescription: String? {
         switch self {
-        case .missingEmail, .invalidEmail:
+        case .missingEmail:
             return NSLocalizedString("A valid email address is required",
-                                     comment: "error message for .missingEmail or .invalidEmail")
+                                     comment: "error message for .missingEmail")
         case .missingPassword:
             return NSLocalizedString("A non-empty password is required",
                                      comment: "error message for .missingPassword")
@@ -412,7 +418,7 @@ extension LoginViewController {
             return
         }
 
-        var title: String?
+        var title: String
         var message: String?
 
         if let oauthError = error as? OAuthAuthorizerError,
@@ -434,22 +440,13 @@ extension LoginViewController {
             title = displayError.title
             message = displayError.errorDescription
         }
-
-        let alertView = UIAlertController.pEpAlertController(title: title,
-                                                             message: message,
-                                                             preferredStyle: .alert)
-        alertView.addAction(UIAlertAction(
-            title: NSLocalizedString(
-                "OK",
-                comment: "UIAlertAction ok after error"),
-            style: .default, handler: { [weak self] action in
-                guard let me = self else {
-                    Log.shared.lostMySelf()
-                    return
-                }
-                me.setManualSetupButtonHidden(!offerManualSetup)
-        }))
-        present(alertView, animated: true, completion: nil)
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.setManualSetupButtonHidden(!offerManualSetup)
+        }
     }
 
     private func configureView() {
@@ -545,18 +542,25 @@ extension LoginViewController {
     }
 
     private func setManualSetupButtonHidden(_ hidden: Bool) {
+        let hasChanged = manualConfigButton.isHidden != hidden
         manualConfigButton.isHidden = hidden
-        pEpSyncViewCenterHConstraint.isActive = hidden
-        UIView.animate(withDuration: 0.25,
-                       delay: 0,
-                       options: .curveEaseInOut,
-                       animations: { [weak self] in
-                        guard let me = self else {
-                            Log.shared.lostMySelf()
-                            return
-                        }
-                        me.mainContainerView.layoutIfNeeded()
-        })
+        if UIDevice.isPortrait || (UIDevice.isIpad && UIDevice.isLandscape) {
+            pEpSyncViewCenterHConstraint.isActive = hidden
+            centerX.isActive = hidden
+            leadingZero.isActive = !hidden
+            pepSyncLeadingBiggerThan.isActive = hidden
+            manualSetupWidth.isActive = hidden
+
+            UIView.animate(withDuration: 0.5) { [weak self] in
+                guard let me = self else {
+                    //Valid case: might be dismmissed already
+                    return
+                }
+                if hasChanged {
+                    me.view.layoutIfNeeded()
+                }
+            }
+        }
     }
 
     private func updateView() {
@@ -592,7 +596,7 @@ extension LoginViewController {
 extension LoginViewController {
     private func showiCloudAlert() {
         func openiCloudInfoInBrowser() {
-            let urlString = "https://support.apple.com/en-jo/HT204397"
+            let urlString = "https://support.apple.com/en-us/HT204174"
             guard let url = URL(string: urlString) else {
                 Log.shared.errorAndCrash(message: "Not a URL? \(urlString)")
                 return
@@ -601,15 +605,10 @@ extension LoginViewController {
                                       options: [:],
                                       completionHandler: nil)
         }
-
-        UIUtils.showTwoButtonAlert(withTitle: NSLocalizedString("iCloud",
-                                                                comment: "Alert title for iCloud instructions"),
-                                   message: NSLocalizedString("You need to create an app-specific password in your iCloud account.",
-                                                              comment: "iCloud instructions"),
-                                   cancelButtonText: NSLocalizedString("OK",
-                                                                       comment: "OK (dismiss) button for iCloud instructions alert"),
-                                   positiveButtonText: NSLocalizedString("Info",
-                                                                         comment: "Info button for showing iCloud page"),
+        UIUtils.showTwoButtonAlert(withTitle: NSLocalizedString("iCloud", comment: "Alert title for iCloud instructions"),
+                                   message: NSLocalizedString("You need to create an app-specific password in your iCloud account.", comment: "iCloud instructions"),
+                                   cancelButtonText: NSLocalizedString("OK", comment: "OK (dismiss) button for iCloud instructions alert"),
+                                   positiveButtonText: NSLocalizedString("Info", comment: "Info button for showing iCloud page"),
                                    cancelButtonAction: {},
                                    positiveButtonAction: openiCloudInfoInBrowser)
     }

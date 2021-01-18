@@ -160,15 +160,6 @@ extension SettingsTableViewController {
         }
     }
 
-    /// Presents an alert controller if the user taps the reset all identity cell.
-    private func handleResetAllIdentity(action : @escaping SettingsViewModel.ActionBlock) {
-        if let pepAlertViewController = getResetAllIdentityAlertController(action: action) {
-            DispatchQueue.main.async { [weak self] in
-                self?.present(pepAlertViewController, animated: true)
-            }
-        }
-    }
-
     /// Shows the alert controller before deleting an account
     /// - Parameter indexPath: The index to delete the row in case of acceptance.
     private func showAlertBeforeDelete(indexPath : IndexPath, action : @escaping SettingsViewModel.ActionBlock) {
@@ -256,6 +247,7 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
 
                 me.showAlertBeforeDelete(indexPath: indexPath, action: action)
             }
+            deleteAction.hidesWhenSelected = true
             return (orientation == .right ? [deleteAction] : nil)
         }
         return nil
@@ -278,12 +270,10 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
             performSegue(withIdentifier: sequeIdentifier(forRowWithIdentifier: row.identifier).rawValue,
                          sender: indexPath)
         case .resetAccounts:
-            guard let row = viewModel.section(for: indexPath).rows[indexPath.row] as? SettingsViewModel.ActionRow, let action = row.action,
-                let alert = getResetAllIdentityAlertController(action: action) else {
-                    return
+            guard let row = viewModel.section(for: indexPath).rows[indexPath.row] as? SettingsViewModel.ActionRow, let action = row.action else {
+                return
             }
-
-            present(alert, animated: true)
+            viewModel.handleResetAllIdentitiesPressed(action:action)
             tableView.deselectRow(at: indexPath, animated: true)
         case .passiveMode,
              .pEpSync,
@@ -325,6 +315,17 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
     func showExtraKeyEditabilityStateChangeAlert(newValue: String) {
         let title = NSLocalizedString("Extra Keys Editable", comment: "Extra Keys Editable")
         UIUtils.showAlertWithOnlyPositiveButton(title:title, message: newValue)
+    }
+    
+    func showResetAllWarning(callback: @escaping SettingsViewModel.ActionBlock) {
+        let title = NSLocalizedString("Reset All Identities", comment: "Settings confirm to reset all identity title alert")
+        let message = NSLocalizedString("This action will reset all your identities. \n Are you sure you want to reset?", comment: "Account settings confirm to reset identity title alert")
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
+        let resetTitle = NSLocalizedString("Reset All", comment: "Reset account identity button title")
+        UIUtils.showTwoButtonAlert(withTitle: title, message: message, cancelButtonText: cancelTitle, positiveButtonText: resetTitle, positiveButtonAction: {
+            callback()
+        },
+        style: PEPAlertViewController.AlertStyle.warn)
     }
 }
 
@@ -421,45 +422,11 @@ extension SettingsTableViewController {
 
 extension SettingsTableViewController {
 
-    private func getResetAllIdentityAlertController(action: @escaping SettingsViewModel.ActionBlock) -> PEPAlertViewController? {
-        let title = NSLocalizedString("Reset All Identities", comment: "Settings confirm to reset all identity title alert")
-        let message = NSLocalizedString("This action will reset all your identities. \n Are you sure you want to reset?", comment: "Account settings confirm to reset identity title alert")
-
-        guard let pepAlertViewController =
-            PEPAlertViewController.fromStoryboard(title: title, message: message, paintPEPInTitle: true) else {
-                Log.shared.errorAndCrash("Fail to init PEPAlertViewController")
-                return nil
-        }
-
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
-        let cancelAction = PEPUIAlertAction(title: cancelTitle,
-                                            style: .pEpGray) { _ in
-                                                pepAlertViewController.dismiss(animated: true,
-                                                                               completion: nil)
-        }
-        pepAlertViewController.add(action: cancelAction)
-
-        let resetTitle = NSLocalizedString("Reset All", comment: "Reset account identity button title")
-
-        let resetAction = PEPUIAlertAction(title: resetTitle, style: .pEpRed) { _ in
-            action()
-            pepAlertViewController.dismiss()
-        }
-
-        pepAlertViewController.add(action: resetAction)
-
-        pepAlertViewController.modalPresentationStyle = .overFullScreen
-        pepAlertViewController.modalTransitionStyle = .crossDissolve
-        return pepAlertViewController
-    }
-
     private func getBeforeDeleteAlert(deleteCallback: @escaping SettingsViewModel.AlertActionBlock) -> UIAlertController {
         let title = NSLocalizedString("Are you sure you want to delete the account?", comment: "Account delete confirmation")
-        let comment = NSLocalizedString("delete account message", comment: "Account delete confirmation comment")
         let deleteButtonTitle = NSLocalizedString("Delete", comment: "Delete account button title")
         let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel title button")
-
-        let alert = UIAlertController.pEpAlertController(title: title, message: comment, preferredStyle: .actionSheet)
+        let alert = UIUtils.actionSheet(title: title)
         let deleteAction = UIAlertAction(title: deleteButtonTitle, style: .destructive) { _ in
             deleteCallback()
         }
@@ -469,7 +436,7 @@ extension SettingsTableViewController {
         return alert
     }
 
-    func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PEPAlertViewController? {
+    private func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PEPAlertViewController? {
         let title = NSLocalizedString("Disable p≡p Sync",
                                       comment: "Leave device group confirmation")
         let comment = NSLocalizedString("If you disable p≡p Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable p≡p Sync?",

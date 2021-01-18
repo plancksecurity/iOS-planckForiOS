@@ -1,35 +1,8 @@
-/* Class = "UILabel"; text = "If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle."; ObjectID = "5Cq-ai-hYf"; */
-"5Cq-ai-hYf.text" = "Wenn die Trustwords nicht korrekt sind, kann es zu einer man-in-the-middle Attacke kommen.";
-
-/* Class = "UILabel"; text = "p≡p uses a Privacy Status icon to indicate how secure your communication is"; ObjectID = "6p7-rU-UIJ"; */
-"6p7-rU-UIJ.text" = "p≡p verwendet ein Datenschutzstatus-Symbol, um anzuzeigen, wie sicher Ihre Kommunikation ist";
-
-/* Class = "UILabel"; text = "When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted. "; ObjectID = "7SL-dj-Z7j"; */
-"7SL-dj-Z7j.text" = "Wenn Sie bestätigen, dass die Trustwords Ihres Kommunikationspartners korrekt sind, ist Ihre Kommunikation vollständig Sicher & amp; Vertrauenswürdig. ";
-
-/* Class = "UILabel"; text = "This Privacy Status Icon is shown as an Icon the user's avatar"; ObjectID = "9zn-gN-7aV"; */
-"9zn-gN-7aV.text" = "Dieses Datenschutzstatus-Symbol wird als Symbol für den Avatar des Benutzers angezeigt";
-
-/* Class = "UILabel"; text = "And in the top bar when you open or write an email:"; ObjectID = "26J-Qa-GAl"; */
-"26J-Qa-GAl.text" = "Und in der oberen Leiste, wenn Sie eine E-Mail öffnen oder schreiben:";
-
 /* Class = "UILabel"; text = "Name"; ObjectID = "aAW-1y-cXc"; */
 "aAW-1y-cXc.text" = "Name";
 
-/* Class = "UILabel"; text = "You can close this tutorial anytime with the Skip button."; ObjectID = "B2w-Dk-0sO"; */
-"B2w-Dk-0sO.text" = "Sie können dieses Tutorial jederzeit mit der Schaltfläche Überspringen schließen.";
-
 /* Class = "UILabel"; text = "Label"; ObjectID = "ckp-rp-1Pd"; */
 "ckp-rp-1Pd.text" = "Beschriftung";
-
-/* Class = "UILabel"; text = "Secure & Trusted"; ObjectID = "DFW-OW-8OC"; */
-"DFW-OW-8OC.text" = "Sicher & Vertrauenswürdig";
-
-/* Class = "UILabel"; text = "Handshake"; ObjectID = "E4b-mc-IYT"; */
-"E4b-mc-IYT.text" = "Handshake";
-
-/* Class = "UILabel"; text = "Mistrusted"; ObjectID = "eK9-eY-X1L"; */
-"eK9-eY-X1L.text" = "Nicht vertrauenswürdig";
 
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "emU-WV-Kap"; */
 "emU-WV-Kap.normalTitle" = "Schaltfläche";
@@ -37,14 +10,8 @@
 /* Class = "UILabel"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."; ObjectID = "GC3-wG-GHD"; */
 "GC3-wG-GHD.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Nam liber te conscient to factor tum poen legum odioque civiuda.";
 
-/* Class = "UILabel"; text = "Secure"; ObjectID = "I8H-Tq-jkV"; */
-"I8H-Tq-jkV.text" = "Sicher";
-
 /* Class = "UINavigationItem"; title = "Add to Contacts"; ObjectID = "Jan-ZA-zMd"; */
 "Jan-ZA-zMd.title" = "Zu Kontakten hinzufügen";
-
-/* Class = "UILabel"; text = "When you click on the Privacy Status icon in the top bar, you will get to the Handshake, where you can verify your communication partner. "; ObjectID = "Jbi-yG-9Il"; */
-"Jbi-yG-9Il.text" = "Wenn Sie in der oberen Leiste auf das Datenschutzstatus-Symbol klicken, gelangen Sie zum Handshake, in dem Sie Ihren Kommunikationspartner überprüfen können. ";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "kNd-Jx-X9l"; */
 "kNd-Jx-X9l.text" = "Beschriftung";
@@ -55,39 +22,12 @@
 /* Class = "UILabel"; text = "Email"; ObjectID = "Lcu-U0-qEs"; */
 "Lcu-U0-qEs.text" = "E-Mail";
 
-/* Class = "UILabel"; text = "Secure"; ObjectID = "orZ-GB-OGi"; */
-"orZ-GB-OGi.text" = "Sicher";
-
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Rgh-E1-f1w"; */
 "Rgh-E1-f1w.normalTitle" = "Schaltfläche";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "rPi-Px-Pyp"; */
 "rPi-Px-Pyp.text" = "Beschriftung";
 
-/* Class = "UIButton"; accessibilityLabel = "confirmButton"; ObjectID = "SR8-6c-hDL"; */
-"SR8-6c-hDL.accessibilityLabel" = "confirmButton";
-
-/* Class = "UIButton"; normalTitle = "Confirm"; ObjectID = "SR8-6c-hDL"; */
-"SR8-6c-hDL.normalTitle" = "Bestätigen";
-
-/* Class = "UIButton"; accessibilityLabel = "wrongButton"; ObjectID = "SUa-gz-P97"; */
-"SUa-gz-P97.accessibilityLabel" = "wrongButton";
-
-/* Class = "UIButton"; normalTitle = "Decline"; ObjectID = "SUa-gz-P97"; */
-"SUa-gz-P97.normalTitle" = "Ablehnen";
-
-/* Class = "UILabel"; text = "With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact."; ObjectID = "uqG-OB-ggb"; */
-"uqG-OB-ggb.text" = "Mit diesem Datenschutzstatus ist die gesamte Kommunikation sicher. Um jedoch zu bestätigen, dass Ihr Kontakt wirklich die Person ist, die Sie kennen, sollten Sie Trustwords mit diesem Kontakt vergleichen.";
-
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "w5A-sP-MB2"; */
 "w5A-sP-MB2.normalTitle" = "Schaltfläche";
-
-/* Class = "UILabel"; text = "Welcome to the p≡p Tutorial"; ObjectID = "ynz-KT-KJl"; */
-"ynz-KT-KJl.text" = "Willkommen zum p≡p Tutorial";
-
-/* Class = "UILabel"; text = "OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER"; ObjectID = "zd3-Y1-16M"; */
-"zd3-Y1-16M.text" = "GÄRTNER   KNURREN   WAHLHEIMAT   QUIRL   HEIZEN";
-
-/* Class = "UILabel"; text = "When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted"; ObjectID = "Zhc-gu-hRF"; */
-"Zhc-gu-hRF.text" = "Wenn bestätigt wird, dass die Trustwords korrekt sind und der Handshake abgeschlossen ist, ist die Kommunikation vollständig Sicher und Vertrauenswürdig";
 

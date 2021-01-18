@@ -57,6 +57,11 @@ class CreditsWebViewController: PEPWebViewController {
         \(eula())
         </p>
 
+        <p>&nbsp;</p>
+        <p>
+        \(licenseLumberjack())
+        </p>
+
         </blockquote>
         </body>
         </html>
@@ -74,6 +79,7 @@ class CreditsWebViewController: PEPWebViewController {
                      "Pantomime",
                      "OpenSSL-for-iPhone",
                      "SwipeCellKit",
+                     "Lumberjack",
                      "AppAuth-iOS",
                      "Sequoia-PGP"]
         let links = ["https://pep.foundation/dev/repos/pEpEngine/",
@@ -85,6 +91,7 @@ class CreditsWebViewController: PEPWebViewController {
                      "http://wiki.gnustep.org/index.php/Pantomime  https://github.com/timburks/Pantomime",
                      "https://github.com/x2on/OpenSSL-for-iPhone",
                      "https://github.com/SwipeCellKit/SwipeCellKit",
+                     "https://github.com/CocoaLumberjack/CocoaLumberjack",
                      "https://github.com/openid/AppAuth-iOS",
                      "https://sequoia-pgp.org/"]
 
@@ -146,12 +153,26 @@ class CreditsWebViewController: PEPWebViewController {
             <p style="margin-bottom: 0.14in; line-height: 100%;"><span style="color: #000000;"><span style="font-family: Times New Roman, serif;"><span style="font-size: x-large;"><span lang="en"><strong>13.6 Survival. </strong></span></span></span></span><span style="color: #000000;"><span style="font-family: Times New Roman, serif;"><span style="font-size: x-large;"><span lang="en">The following sections of this License and any other provisions of this License which by their express language or by their context are intended to survive the termination of this License shall survive such termination: 1, 2.2, 3, 4, 5, 7, 8, 9, 10, 12 and 13. </span></span></span></span></p>
             <p style="margin-bottom: 0.14in; line-height: 100%;"><span style="color: #000000;"><span style="font-family: Times New Roman, serif;"><span style="font-size: x-large;"><span lang="en"><strong>13.7 Assignment. </strong></span></span></span></span><span style="color: #000000;"><span style="font-family: Times New Roman, serif;"><span style="font-size: x-large;"><span lang="en">Except as permitted in Section 4, You shall not assign this License or any rights or obligations herein without the prior written consent of pEp Security SA and any attempted assignment in contravention of this provision shall be null and void and of no force or effect. </span></span></span></span></p>
             <p style="margin-bottom: 0.14in; line-height: 100%;"><span style="color: #000000;"><span style="font-family: Times New Roman, serif;"><span style="font-size: x-large;"><span lang="en"><strong>13.8 Entire Agreement. </strong></span></span></span></span><span style="color: #000000;"><span style="font-family: Times New Roman, serif;"><span style="font-size: x-large;"><span lang="en">This License including the documents incorporated herein by reference constitute the entire agreement with respect to the use of the p&equiv;p Application licensed hereunder and supersedes all prior or contemporaneous understandings regarding such subject matter</span></span></span></span></p>
-            <p lang="en" style="margin-bottom: 0.14in; line-height: 100%;"><br /><br /></p>
-            <p lang="en" style="margin-bottom: 0.14in; line-height: 100%;"><br /><br /></p>
-            <p style="margin-bottom: 0in; line-height: 100%;">&nbsp;</p>
-    """
+            """
         return eula
     }
+
+    private func licenseLumberjack() -> String {
+        let license = p("BSD 3-Clause License") +
+            p("Copyright (c) 2010-2020, Deusty, LLC<br>All rights reserved.") +
+            p("Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:") +
+            p("1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.") +
+            p("2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.") +
+            p("3. Neither the name of Deusty nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission of Deusty, LLC.") +
+            p("THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.")
+        return license
+    }
+
+    private func p(_ text: String) -> String {
+        return """
+            <p style="margin-bottom: 0.14in; line-height: 100%;"><span style="color: #000000; font-family: Times New Roman, serif; font-size: x-large;" lang="en">
+                \(text)
+            </span></p>
+        """
+    }
 }
-
-

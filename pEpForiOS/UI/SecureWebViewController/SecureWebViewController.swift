@@ -20,14 +20,9 @@ protocol SecureWebViewUrlClickHandlerProtocol: class {
     func didClickOn(mailToUrlLink url: URL)
 }
 
-// WKContentRuleList is not available below iOS11, thus remote content would be loaded
-// which is considered as inaceptable for a secure web view.
-@available(iOS 11.0, *)
 /// Webview that does not:
 /// - excecute JS
 /// - load any remote content
-/// Note: It is insecure to use this class on iOS < 11. Thus it will intentionally take the
-/// emergency exit and crash when trying to use it running iOS < 11.
 class SecureWebViewController: UIViewController {
     static public let storyboardId = "SecureWebViewController"
 
@@ -127,7 +122,6 @@ extension SecureWebViewController {
 
     // MARK: - WKContentRuleList (block loading of all remote content)
 
-    @available(iOS, introduced: 11.0)
     private func setupBlocklist(completion: @escaping () -> Void) {
         let listID = "pep.security.SecureWebViewController.block_all_external_content"
         var compiledBlockList: WKContentRuleList?
@@ -326,9 +320,9 @@ extension UISplitViewController {
                 alertRect =  CGRect(x: 0, y: 0, width: 0, height: 0)
             }
 
-            UIUtils.presentActionSheetWithContactOptions(forContactWithEmailAddress: mailAddress,
-                                                         at: alertRect,
-                                                         at: self.view)
+            UIUtils.showActionSheetWithContactOptions(forContactWithEmailAddress: mailAddress,
+                                                      at: alertRect,
+                                                      at: self.view)
         } else if alertTitle.hasPrefix(UrlClickHandler.Scheme.mailto.rawValue) {
             // It *is* an Action Sheet shown due to long-press on mailto: URL, but we do not know
             // the clicked address.

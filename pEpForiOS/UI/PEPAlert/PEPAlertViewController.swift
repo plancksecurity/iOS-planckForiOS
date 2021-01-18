@@ -7,11 +7,10 @@
 //
 
 import UIKit
-
 import pEpIOSToolbox
 
 final class PEPAlertViewController: UIViewController {
-
+    public var alertStyle: AlertStyle = .default
     @IBOutlet weak var alertTitle: UILabel!
     @IBOutlet weak var alertMessage: UILabel!
     @IBOutlet weak var alertImageView: UIImageView!
@@ -20,16 +19,15 @@ final class PEPAlertViewController: UIViewController {
 
     @IBOutlet weak private var alertImageViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak private var alertTitleTopViewHeightConstraint: NSLayoutConstraint!
-
+    
     private var viewModel: PEPAlertViewModelProtocol
     private var titleString: String?
     private var message: String?
     private var paintPEPInTitle = false
     private var images: [UIImage]?
     private var action = [PEPUIAlertAction]()
-
     static let storyboardId = "PEPAlertViewController"
-
+    public var style : AlertStyle = .default
     required init?(coder aDecoder: NSCoder) {
         viewModel = PEPAlertViewModel()
         super.init(coder: aDecoder)
@@ -52,14 +50,12 @@ final class PEPAlertViewController: UIViewController {
                      image: [UIImage]? = nil,
                      viewModel: PEPAlertViewModelProtocol = PEPAlertViewModel())
         -> PEPAlertViewController? {
-
             let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
             guard let pEpAlertViewController = storyboard.instantiateViewController(
                 withIdentifier: PEPAlertViewController.storyboardId) as? PEPAlertViewController else {
                     Log.shared.errorAndCrash("Fail to instantiateViewController PEPAlertViewController")
                     return nil
             }
-
             pEpAlertViewController.viewModel = viewModel
             pEpAlertViewController.viewModel.delegate = pEpAlertViewController
 
@@ -83,7 +79,36 @@ final class PEPAlertViewController: UIViewController {
 
 extension PEPAlertViewController: PEPAlertViewModelDelegate {
     func dismiss() {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - AlertStyle
+
+extension PEPAlertViewController {
+
+    public enum AlertStyle : Int {
+        case `default` = 0
+        case warn = 1
+        case undo = 2
+    }
+
+    public var primaryColor: UIColor {
+        switch alertStyle {
+        case .default:
+            return .pEpGreen
+        case .warn:
+            return .pEpRed
+        case .undo:
+            return .pEpBlack
+        }
+    }
+
+    public var secondaryColor: UIColor {
+        switch alertStyle {
+        case .default, .warn, .undo:
+            return .pEpBlack
+        }
     }
 }
 
@@ -159,4 +184,3 @@ extension PEPAlertViewController {
         }
     }
 }
-

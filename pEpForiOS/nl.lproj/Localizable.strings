@@ -29,6 +29,9 @@
 /* KeySyncWizard introduction message - two devices */
 "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "Er is een tweede apparaat gedetecteerd. We kunnen een apparaatgroep vormen om al je privacy op beide apparaten te synchroniseren. Zullen we beginnen met synchroniseren?";
 
+/* error message for .missingEmail or .invalidEmail */
+"A valid email address is required" = "Een geldig e-mailadres is vereist";
+
 /* error message for .invalidEmail
    error message for .missingEmail */
 "A valid email is required" = "Een geldig e-mailadres is vereist";
@@ -51,6 +54,12 @@
 
 /* Tableview section  header */
 "Accounts" = "Accounts";
+
+/* Insert document in message text context menu */
+"Add Document" = "Document toevoegen";
+
+/* Attach photo/video (message text context menu) */
+"Add Photo/Video" = "Foto/video toevoegen";
 
 /* UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts */
 "Add to Contacts" = "Toevoegen aan Contacten";
@@ -196,6 +205,12 @@
 /* Account delete confirmation comment */
 "delete account message" = "accountbericht verwijderen";
 
+/* ComposeTableView: button to decide to delete changes made on a drafted mail. */
+"Delete Changes" = "Veranderingen verwijderen";
+
+/* Device field, reporting issue */
+"Device" = "Apparaat";
+
 /* keysync alert leave device group disable */
 "Disable" = "Uitzetten";
 
@@ -215,6 +230,10 @@
 /* Email */
 "Email" = "E-mail";
 
+/* Email address placeholder for manual account setup
+   Email TextField Placeholder in Login Screen */
+"Email Address" = "E-mailadres";
+
 /* Title of alert: a required field is empty */
 "Empty Field" = "Leeg Veld";
 
@@ -230,6 +249,9 @@
 /* possible private status action */
 "Enable Protection" = "Beveiliging Inschakelen";
 
+/* Enter passphrase alert - message - shown while pEp sync is running */
+"Enter passphrase for p≡p Sync:" = "Voer passphrase in voor p≡p Sync:";
+
 /* Tableview section header: Enterprise Features */
 "Enterprise Features" = "Enterprise Functies";
 
@@ -243,9 +265,6 @@
 
 /* Generic error message on trying to import a key */
 "Error occurred. No key imported." = "Fout opgetreden. Geen sleutel geïmporteerd.";
-
-/* spearator string bewtween name and date */
-"Exp. date:" = "Vervaldatum:";
 
 /* Settings: Cell (button) title to view Extra Keys setting */
 "Extra Keys" = "Extra Sleutels";
@@ -289,6 +308,9 @@
 
 /* possible privacy status action */
 "Handshake" = "Handdruk";
+
+/* Contact Support - Mail subject */
+"Help" = "Help";
 
 /* PGPKeyImportSettingViewModel - part of pgpKeyImportTitle that should link to support page (... click _here_ for info ...) */
 "here" = "hier";
@@ -460,6 +482,9 @@
 
 /* Alert button while client certificate is importing: Try again? No */
 "No" = "Nee";
+
+/* Error when no account found for set_own_key UI */
+"No account found with the given email address." = "Geen account gevonden met het opgegeven e-mailadres.";
 
 /* Error when no account found for set_own_key UI */
 "No account found with the given email." = "Geen account gevonden met de opgegeven e-mail.";
@@ -635,7 +660,8 @@
 /* Validation error for set_own_key UI */
 "Please provide an email and a fingerprint. The email must match an existing account." = "Geef een e-mailadres en een vingerafdruk op. Het e-mailadres moet overeenkomen met een bestaand account.";
 
-/* Port placeholder for manual account IMAP setup
+/* Port label in account settings
+   Port placeholder for manual account IMAP setup
    Port placeholder for manual account SMTP setup */
 "Port" = "Port";
 
@@ -673,8 +699,8 @@
 "Reply All" = "Allen beantwoorden";
 
 /* Account settings confirm to reset identity title alert
-   Account settings reset identity
    Reset account identity button title
+   Reset label in account settings
    Settings: cell (button) title to view the trust contacts option */
 "Reset" = "Reset";
 
@@ -720,7 +746,8 @@
 /* Privacy status suggestion */
 "Separately verify the content of this message with your communication partner." = "Controleer de inhoud van dit bericht afzonderlijk bij je communicatiepartner.";
 
-/* Server placeholder for manual account IMAP setup
+/* Server label in account settings
+   Server placeholder for manual account IMAP setup
    Server placeholder for manual account SMTP setup */
 "Server" = "Server";
 
@@ -734,6 +761,9 @@
 /* acction sheet title 2
    Settings view title */
 "Settings" = "Instellingen";
+
+/* Enter passphrase alert - Negative button text - shown while pEp sync is running */
+"Shutdown p≡p Sync" = "Uitschakeling p≡p Sync";
 
 /* Login */
 "Sign In" = "Inloggen";
@@ -796,6 +826,9 @@
 /* error message for .accountExistence */
 "The account already exists" = "Dit account bestaat al";
 
+/* Error when account found for set_own_key UI, but has no user name */
+"The account with the given email address has no user name." = "Het account met het opgegeven e-mailadres heeft geen gebruikersnaam.";
+
 /* Error message shown to the user on problems with the client certificate */
 "The client certificate was rejected by the server" = "Het client certificaat is door de server afgewezen";
 
@@ -804,6 +837,9 @@
 
 /* Client certificate import: corrupted file error alert message */
 "The file could not be imported" = "Het bestand kan niet worden geïmporteerd";
+
+/* Message when asking user for confirmation about importing keys */
+"The fingerprint of the selected key is:\n%1$@\n%2$@\n\nImport and use this key?" = "De vingerafdruk van de geselecteerde toets is:\n%1$@\n%2$@\n\nImporteer en gebruik deze sleutel?";
 
 /* Privacy Status Explanation */
 "The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:" = "Het icoon in de bovenste balk geeft de privacy status van het bericht weer, wat de laagste gemene deler is van alle communicatiepartners van dat bericht, bijvoorbeeld:";
@@ -901,7 +937,8 @@
 /* UI alert title for transport protocol */
 "Transport protocol" = "Transport protocool";
 
-/* TransportSecurity placeholder for manual account IMAP setup
+/* Transport security label in account settings
+   TransportSecurity placeholder for manual account IMAP setup
    TransportSecurity placeholder for manual account SMTP setup */
 "Transport Security" = "Transport Beveiliging";
 
@@ -922,6 +959,12 @@
 
 /* Undo trust change verification button title */
 "Undo" = "Ongedaan Maken";
+
+/* Action name to be suggested at the moment of revert */
+"Undo Trust Confirmation" = "Bevestiging van het vertrouwen ongedaan maken";
+
+/* Action name to be suggested at the moment of revert */
+"Undo Trust Rejection" = "Ongedaan maken van het vertrouwen Afwijzing";
 
 /* read button in slide-left menu */
 "Unflag" = "Demarkeren";
@@ -979,6 +1022,9 @@
 "We could not connect to the IMAP server." = "We konden geen verbinding maken met de IMAP server.";
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
+"We could not connect to the SMTP server: %1@" = "We konden geen verbinding maken met de SMTP-server: %1@";
+
+/* Error message shown to the user in case we can not connect to the SMTP server */
 "We could not connect to the SMTP server." = "We konden geen verbinding maken met de SMTP server.";
 
 /* Client certificate import: wrong password alert message */
@@ -1031,6 +1077,9 @@
 
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Je kunt deze tutorial op elk moment sluiten met de Skip knop.";
+
+/* PGPKeyImportSetting row title when grouped */
+"You can not import keys while the device is in a device group." = "U kunt geen toetsen importeren terwijl het apparaat zich in een apparaatgroep bevindt.";
 
 /* alert error message certificate delete */
 "You can only delete certificates that are not connected to an account. The certificate is currently used for the following account: (by)" = "Je kan alleen certificaten verwijderen die niet zijn verbonden met een account. Het certificaat wordt momenteel gebruikt voor het volgende account: (door)";

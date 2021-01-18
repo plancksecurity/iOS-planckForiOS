@@ -29,6 +29,9 @@
 /* KeySyncWizard introduction message - two devices */
 "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "Es wurde ein zweites Gerät gefunden, mit dem Sie Ihre Datenschutzeinstellungen synchronisieren können. Möchten Sie mit der Synchronisierung beginnen?";
 
+/* error message for .missingEmail or .invalidEmail */
+"A valid email address is required" = "Eine gültige E-Mail-Adresse ist erforderlich";
+
 /* error message for .invalidEmail
    error message for .missingEmail */
 "A valid email is required" = "Eine gültige E-Mail Adresse wird benötigt";
@@ -51,6 +54,12 @@
 
 /* Tableview section  header */
 "Accounts" = "Konten";
+
+/* Insert document in message text context menu */
+"Add Document" = "Dokument hinzufügen";
+
+/* Attach photo/video (message text context menu) */
+"Add Photo/Video" = "Foto/Video hinzufügen";
 
 /* UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts */
 "Add to Contacts" = "Zu Kontakten hinzufügen";
@@ -196,6 +205,9 @@
 /* Account delete confirmation comment */
 "delete account message" = "Kontonachricht löschen";
 
+/* ComposeTableView: button to decide to delete changes made on a drafted mail. */
+"Delete Changes" = "Änderungen löschen";
+
 /* Device field, reporting issue */
 "Device" = "Gerät";
 
@@ -217,6 +229,10 @@
 
 /* Email */
 "Email" = "E-Mail";
+
+/* Email address placeholder for manual account setup
+   Email TextField Placeholder in Login Screen */
+"Email Address" = "E-Mail-Adresse";
 
 /* Title of alert: a required field is empty */
 "Empty Field" = "Fehlende Eingabe";
@@ -249,9 +265,6 @@
 
 /* Generic error message on trying to import a key */
 "Error occurred. No key imported." = "Es ist ein Fehler aufgetreten und der Schlüssel konnte nicht importiert werden.";
-
-/* spearator string bewtween name and date */
-"Exp. date:" = "Ablaufdatum:";
 
 /* Settings: Cell (button) title to view Extra Keys setting */
 "Extra Keys" = "Extra Schlüssel";
@@ -471,6 +484,9 @@
 "No" = "Nein";
 
 /* Error when no account found for set_own_key UI */
+"No account found with the given email address." = "Kein Konto mit der angegebenen E-Mail-Adresse gefunden.";
+
+/* Error when no account found for set_own_key UI */
 "No account found with the given email." = "Kein Konto für die E-Mail vorhanden.";
 
 /* Privacy status suggestion */
@@ -644,7 +660,8 @@
 /* Validation error for set_own_key UI */
 "Please provide an email and a fingerprint. The email must match an existing account." = "Bitte geben Sie eine E-Mail-Adresse und einen Fingerabdruck an. Die E-Mail-Adresse muss mit einem vorhandenen Konto übereinstimmen.";
 
-/* Port placeholder for manual account IMAP setup
+/* Port label in account settings
+   Port placeholder for manual account IMAP setup
    Port placeholder for manual account SMTP setup */
 "Port" = "Port";
 
@@ -682,8 +699,8 @@
 "Reply All" = "Allen antworten";
 
 /* Account settings confirm to reset identity title alert
-   Account settings reset identity
    Reset account identity button title
+   Reset label in account settings
    Settings: cell (button) title to view the trust contacts option */
 "Reset" = "Zurücksetzen";
 
@@ -729,7 +746,8 @@
 /* Privacy status suggestion */
 "Separately verify the content of this message with your communication partner." = "Überprüfen Sie den Inhalt dieser Nachricht separat mit Ihrem Kommunikationspartner.";
 
-/* Server placeholder for manual account IMAP setup
+/* Server label in account settings
+   Server placeholder for manual account IMAP setup
    Server placeholder for manual account SMTP setup */
 "Server" = "Server";
 
@@ -807,6 +825,9 @@
 
 /* error message for .accountExistence */
 "The account already exists" = "Dieser Account existiert bereits";
+
+/* Error when account found for set_own_key UI, but has no user name */
+"The account with the given email address has no user name." = "Das Konto mit der angegebenen E-Mail-Adresse hat keinen Benutzernamen.";
 
 /* Error message shown to the user on problems with the client certificate */
 "The client certificate was rejected by the server" = "Das Client-Zertifikat wurde vom Server abgelehnt";
@@ -916,7 +937,8 @@
 /* UI alert title for transport protocol */
 "Transport protocol" = "Transport-Protokoll";
 
-/* TransportSecurity placeholder for manual account IMAP setup
+/* Transport security label in account settings
+   TransportSecurity placeholder for manual account IMAP setup
    TransportSecurity placeholder for manual account SMTP setup */
 "Transport Security" = "Transportsicherheit";
 
@@ -937,6 +959,12 @@
 
 /* Undo trust change verification button title */
 "Undo" = "Rückgängig machen";
+
+/* Action name to be suggested at the moment of revert */
+"Undo Trust Confirmation" = "Vertrauensbestätigung rückgängig machen";
+
+/* Action name to be suggested at the moment of revert */
+"Undo Trust Rejection" = "Vertrauens-Ablehnung rückgängig machen";
 
 /* read button in slide-left menu */
 "Unflag" = "Markierung entfernen";
@@ -994,6 +1022,9 @@
 "We could not connect to the IMAP server." = "Der IMAP-Server konnte nicht erreicht werden.";
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
+"We could not connect to the SMTP server: %1@" = "Wir konnten keine Verbindung mit dem SMTP-Server herstellen: %1@";
+
+/* Error message shown to the user in case we can not connect to the SMTP server */
 "We could not connect to the SMTP server." = "Der SMTP_Server konnte nicht erreicht werden.";
 
 /* Client certificate import: wrong password alert message */
@@ -1012,7 +1043,7 @@
 "Welcome to the p≡p Tutorial" = "Willkommen zum p≡p Tutorial";
 
 /* Secure & Trusted Description Label - Step 1 */
-"When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted" = "Wenn bestätigt wird, dass die Trustwords korrekt sind und der Handshake abgeschlossen ist, ist die Kommunikation vollständig sicher und vertrauenswürdig";
+"When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted" = "Wenn bestätigt wird, dass die Trustwords korrekt sind und der Handshake abgeschlossen wird, ist die Kommunikation vollständig sicher und vertrauenswürdig";
 
 /* Privacy status explanation Label */
 "When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication parner." = "Wenn Sie in der Leiste oben auf das Datenschutzstatus-Symbol klicken, gelangen Sie zum Handshake, wo Sie Ihren Kommunikationspartner überprüfen können.";

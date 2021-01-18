@@ -104,7 +104,7 @@ extension ClientCertificateImportViewController: ClientCertificateImportViewMode
             showPermissionsDeniedError()
         }
     }
-    
+
     func dismiss() {
         delegate?.certificateCouldImported()
         dismiss(animated: true, completion: nil)
@@ -141,8 +141,7 @@ extension ClientCertificateImportViewController {
 
     private func showPermissionsDeniedError() {
         UIUtils.showAlertWithOnlyPositiveButton(title: Localized.PermissionsDeniedError.title,
-                                                message: Localized.PermissionsDeniedError.message,
-                                                inNavigationStackOf: self) { [weak self] in
+                                                message: Localized.PermissionsDeniedError.message) { [weak self] in
                                                     guard let me = self else {
                                                         Log.shared.lostMySelf()
                                                         return
@@ -150,33 +149,35 @@ extension ClientCertificateImportViewController {
                                                     me.dismiss(animated: true, completion: nil)
         }
     }
-    
+
     private func showCorruptedFileError() {
-        UIUtils.showAlertWithOnlyPositiveButton(title: Localized.CorruptedFileError.title,
-                                                message: Localized.CorruptedFileError.message,
-                                                inNavigationStackOf: self) { [weak self] in
-                                                    guard let me = self else {
-                                                        Log.shared.lostMySelf()
-                                                        return
-                                                    }
-                                                    me.dismiss(animated: true, completion: nil)
+        let title = Localized.CorruptedFileError.title
+        let message = Localized.CorruptedFileError.message
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.dismiss(animated: true) {
+                me.dismiss(animated: true)
+            }
         }
     }
-    
+
     private func showWrongPasswordError() {
         UIUtils.showTwoButtonAlert(withTitle: Localized.WrongPasswordError.title,
                                    message: Localized.WrongPasswordError.message,
-                                       cancelButtonText: Localized.no,
-                                       positiveButtonText: Localized.yes,
-                                       cancelButtonAction: { [weak self] in
-                                        guard let me = self else {
-                                            Log.shared.lostMySelf()
-                                            return
-                                        }
-                                        me.dismiss(animated: true, completion: nil)
-            }, positiveButtonAction: {
-                // We don't need to do something here. Our expectation is close this alert
-        }, inNavigationStackOf: self)
+                                   cancelButtonText: Localized.no,
+                                   positiveButtonText: Localized.yes,
+                                   cancelButtonAction: { [weak self] in
+                                    guard let me = self else {
+                                        Log.shared.lostMySelf()
+                                        return
+                                    }
+                                    me.dismiss(animated: true, completion: nil)
+                                   }, positiveButtonAction: {
+                                    // We don't need to do something here. Our expectation is close this alert
+                                   })
     }
 }
 

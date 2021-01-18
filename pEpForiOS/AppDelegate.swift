@@ -6,8 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import CoreData
-
 import pEpIOSToolbox
 import MessageModel
 
@@ -214,6 +212,14 @@ extension AppDelegate {
 
     @discardableResult
     private func handleUrlTheOSHasBroughtUsToForgroundFor(_ url: URL) -> Bool {
+        if url.isMailto {
+            guard let mailto = Mailto(url: url) else {
+                Log.shared.errorAndCrash("Mailto parsing failed")
+                return false
+            }
+            UIUtils.showComposeView(from: mailto)
+            return true
+        }
         switch url.pathExtension {
         case ClientCertificateImportViewController.pEpClientCertificateExtension:
             return handleClientCertificateImport(forCertAt: url)
@@ -229,10 +235,7 @@ extension AppDelegate {
             Log.shared.errorAndCrash("This method is only for .pEp12 files.")
             return false
         }
-        guard let topVC = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.errorAndCrash("We must have a VC at this point.")
-            return false
-        }
+        let topVC = UIApplication.currentlyVisibleViewController()
         guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController else {
             return false
         }
@@ -245,3 +248,5 @@ extension AppDelegate {
         return true
     }
 }
+
+

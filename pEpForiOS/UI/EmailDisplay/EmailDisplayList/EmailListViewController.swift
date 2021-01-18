@@ -115,6 +115,15 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         updateEditButton()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        tableView.visibleCells.forEach {
+            if let cell = $0 as? SwipeTableViewCell {
+                cell.hideSwipe(animated: true)
+            }
+        }
+    }
+
     deinit {
         unsubscribeAll()
     }
@@ -236,7 +245,6 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
                 // Loosing self is a valid case here. The view might have been dismissed.
                 return
             }
-            // Loosing self is a valid use case here. We might have been dismissed.
             DispatchQueue.main.async {
                 // We intentionally do NOT use me.tableView.refreshControl?.endRefreshing() here.
                 // See comments in `setupRefreshControl` for details.
@@ -360,7 +368,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     }
 
     @objc private func showSettingsViewController() {
-        UIUtils.presentSettings()
+        UIUtils.showSettings()
     }
 
     @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
@@ -470,8 +478,8 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
     }
 
     @objc private func showCompose() {
-        dismiss(animated: true) {
-            UIUtils.presentComposeView()
+        dismissAndPerform {
+            UIUtils.showComposeView(from: nil)
         }
     }
 
@@ -736,7 +744,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         // (tap on status bar) is broken in this view. It ands up with a content offset > (0.0),
         // showing the inactive pull-to-refresh spinner. This is probably caused by our workaround
         // for adding a pull-to-refresh spinner without gliches.
-        //To work around the wron content offset, we intersept the default implementation here and
+        //To work around the wrong content offset, we intersept the default implementation here and
         // trigger scoll to top ourselfs.
         guard tableView.numberOfRows(inSection: 0) > 0 else {
             // No cells, no scroll to cell. Else we crash.
@@ -833,7 +841,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 
 extension EmailListViewController: EmailListViewModelDelegate {
     public func showEditDraftInComposeView() {
-        dismiss(animated: true) { [weak self] in
+        dismissAndPerform { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
@@ -1006,8 +1014,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
 extension EmailListViewController {
     func showMoreActionSheet(forRowAt indexPath: IndexPath) {
         lastSelectedIndexPath = indexPath
-        let alertControler = UIAlertController.pEpAlertController(
-            title: nil, message: nil, preferredStyle: .actionSheet)
+        let alertController = UIUtils.actionSheet()
         let cancelAction = createCancelAction()
         let replyAction = createReplyAction()
 
@@ -1017,24 +1024,24 @@ extension EmailListViewController {
         let forwardAction = createForwardAction()
         let moveToFolderAction = createMoveToFolderAction()
 
-        alertControler.addAction(cancelAction)
-        alertControler.addAction(replyAction)
+        alertController.addAction(cancelAction)
+        alertController.addAction(replyAction)
 
         if let theReplyAllAction = replyAllAction {
-            alertControler.addAction(theReplyAllAction)
+            alertController.addAction(theReplyAllAction)
         }
 
-        alertControler.addAction(forwardAction)
-        alertControler.addAction(moveToFolderAction)
-        alertControler.addAction(readAction)
+        alertController.addAction(forwardAction)
+        alertController.addAction(moveToFolderAction)
+        alertController.addAction(readAction)
 
-        if let popoverPresentationController = alertControler.popoverPresentationController {
+        if let popoverPresentationController = alertController.popoverPresentationController {
             popoverPresentationController.sourceView = tableView
             let cellFrame = tableView.rectForRow(at: indexPath)
             let sourceRect = view.convert(cellFrame, from: tableView)
             popoverPresentationController.sourceRect = sourceRect
         }
-        present(alertControler, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
 
     // MARK: Action Sheet Actions
@@ -1441,11 +1448,7 @@ extension EmailListViewController {
                 return
         }
         composeVc.viewModel = composeVM
-
-        guard let presenterVc = UIApplication.currentlyVisibleViewController() else {
-            Log.shared.errorAndCrash("No VC")
-            return
-        }
+        let presenterVc = UIApplication.currentlyVisibleViewController()
         presenterVc.present(composeNavigationController, animated: true)
     }
 }

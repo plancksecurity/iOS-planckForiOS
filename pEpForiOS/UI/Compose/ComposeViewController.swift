@@ -107,6 +107,7 @@ class ComposeViewController: UIViewController {
     // MARK: - IBActions
 
     @IBAction func cancel(_ sender: Any) {
+        updateBodyState()
         if viewModel?.showCancelActions ?? false {
             showAlertControllerWithOptionsForCanceling(sender: sender)
         } else {
@@ -115,7 +116,16 @@ class ComposeViewController: UIViewController {
     }
 
     @IBAction func send() {
+        updateBodyState()
         viewModel?.handleUserClickedSendButton()
+    }
+
+    private func updateBodyState() {
+        /// The body textview's autocorrection doesn't call the textview's delegate.
+        /// To guarantee the message is sent exactly as it's in the textview we trigger the endEditing callback before sending.
+        if let cell = tableView.visibleCells.filter({$0 is BodyCell}).first as? BodyCell {
+            cell.textViewDidEndEditing(cell.textView)
+        }
     }
 }
 
@@ -164,7 +174,7 @@ extension ComposeViewController {
             return
         }
 
-        let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
+        let actionSheetController = UIUtils.actionSheet()
         actionSheetController.addAction(changeSecureStatusAction(pEpProtected: vm.state.pEpProtection))
         actionSheetController.addAction(disableAlertAction())
         actionSheetController.popoverPresentationController?.sourceView = titleView
@@ -705,7 +715,7 @@ extension ComposeViewController {
 extension ComposeViewController {
 
     private func showAlertControllerWithOptionsForCanceling(sender: Any) {
-        let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
+        let actionSheetController = UIUtils.actionSheet()
         if let popoverPresentationController = actionSheetController.popoverPresentationController {
             popoverPresentationController.barButtonItem = sender as? UIBarButtonItem
         }
@@ -724,9 +734,8 @@ extension ComposeViewController {
             Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
-        let action: UIAlertAction
         let text = vm.deleteActionTitle
-        action = ac.action(text, .destructive) { [weak self] in
+        let action = UIUtils.action(text, .destructive) { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
@@ -741,9 +750,8 @@ extension ComposeViewController {
             Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
-        let action: UIAlertAction
         let text = vm.saveActionTitle
-        action = ac.action(text, .default) { [weak self] in
+        let action = UIUtils.action(text, .default) { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
@@ -759,9 +767,8 @@ extension ComposeViewController {
             Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
-        let action: UIAlertAction
         let text = vm.keepInOutboxActionTitle
-        action = ac.action(text, .default) { [weak self] in
+        let action = UIUtils.action(text, .default) { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
@@ -776,7 +783,7 @@ extension ComposeViewController {
             Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
-        return ac.action(vm.cancelActionTitle, .cancel)
+        return UIUtils.action(vm.cancelActionTitle, .cancel)
     }
 }
 

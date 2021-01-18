@@ -29,13 +29,14 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
     }
 
     private func presentComposeView(forRecipientInUrl url: URL) {
-        UIUtils.presentComposeView(forRecipientInUrl: url)
+        let mailto = Mailto(url: url)
+        UIUtils.showComposeView(from: mailto)
     }
     
     private func presentAvailableMailtoUrlHandlingChoices(for url: URL, at rect: CGRect, at view: UIView) {
-        UIUtils.presentActionSheetWithContactOptions(forUrl: url,
-                                                     at: rect,
-                                                     at: view)
+        UIUtils.showActionSheetWithContactOptions(forUrl: url,
+                                                  at: rect,
+                                                  at: view)
     }
 
     // MARK: - UITextViewDelegate

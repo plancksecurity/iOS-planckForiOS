@@ -166,7 +166,7 @@ extension ComposeViewModel {
             bccRecipients = initData.bccRecipients
             bccWrapped = ccRecipients.isEmpty && bccRecipients.isEmpty
             from = initData.from
-            subject = initData.subject
+            subject = initData.subject ?? " "
 
             pEpProtection = initData.pEpProtection
 

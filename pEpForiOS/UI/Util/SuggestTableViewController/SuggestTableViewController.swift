@@ -86,7 +86,10 @@ extension SuggestTableViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
-         let row = vm[indexPath.row]
+        guard let row = vm[indexPath.row] else {
+            /// Valid case: the data source changed after the reload was triggered. 
+            return
+        }
         cell.nameLabel.text = row.name
         cell.emailLabel.text = row.email
         vm.pEpRatingIcon(for: row) { (icon) in
