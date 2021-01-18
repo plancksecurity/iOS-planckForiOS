@@ -104,8 +104,6 @@ extension ClientCertificateUtil: ClientCertificateUtilProtocol {
             default:
                 throw ImportError.invalidFormat
             }
-//            Log.shared.info("Client certificate import failed: %@",
-//                            String(SecCopyErrorMessageString(status, nil) ?? "??"))
         }
 
         guard let theItemsCF = itemsCF else {
@@ -258,7 +256,6 @@ extension ClientCertificateUtil {
     }
 
     /// - Returns: A human-readable identifier (label) for a given identity
-    /// - Note: Falls back to the debug description for versions prior to iOS 10.3
     /// - Parameter secIdentity: The identity to return a label for
     private func label(for secIdentity: SecIdentity) -> String? {
         var certificate: SecCertificate?
@@ -270,35 +267,27 @@ extension ClientCertificateUtil {
         guard let theCertificate = certificate else {
             return nil
         }
+        var commonName: String?
+        var emailAddresses = Set<String>()
 
-        if #available(iOS 10.3, *) {
-            // SecCertificateCopyCommonName, SecCertificateCopyEmailAddresses
-            // only exist from 10.3 upwards
-            var commonName: String?
-            var emailAddresses = Set<String>()
+        var commonNameCF: CFString?
+        let commonNameStatus = SecCertificateCopyCommonName(theCertificate, &commonNameCF)
+        if commonNameStatus == errSecSuccess {
+            commonName = commonNameCF as String?
+        }
 
-            var commonNameCF: CFString?
-            let commonNameStatus = SecCertificateCopyCommonName(theCertificate, &commonNameCF)
-            if commonNameStatus == errSecSuccess {
-                commonName = commonNameCF as String?
-            }
-
-            var emailAddressesCF: CFArray?
-            let emailAddressStatus = SecCertificateCopyEmailAddresses(theCertificate, &emailAddressesCF)
-            if emailAddressStatus == errSecSuccess,
-                let emailObjects = emailAddressesCF as [AnyObject]? {
-                for obj in emailObjects {
-                    if let emailStr = obj as? String {
-                        emailAddresses.insert(emailStr)
-                    }
+        var emailAddressesCF: CFArray?
+        let emailAddressStatus = SecCertificateCopyEmailAddresses(theCertificate, &emailAddressesCF)
+        if emailAddressStatus == errSecSuccess,
+           let emailObjects = emailAddressesCF as [AnyObject]? {
+            for obj in emailObjects {
+                if let emailStr = obj as? String {
+                    emailAddresses.insert(emailStr)
                 }
             }
-
-            return userReadableName(commonName: commonName, emailAddresses: Array(emailAddresses))
-        } else {
-            // Use the debug description as label
-            return "\(theCertificate)"
         }
+
+        return userReadableName(commonName: commonName, emailAddresses: Array(emailAddresses))
     }
 
     /// Stores the given identity dictionary into the keychain.
