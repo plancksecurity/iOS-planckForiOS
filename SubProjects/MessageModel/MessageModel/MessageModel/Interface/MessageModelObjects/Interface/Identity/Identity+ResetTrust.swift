@@ -27,7 +27,7 @@ extension Identity {
     /// Reset trust for the identity
     public func resetTrust(completion: @escaping () -> ()) {
         func logError() {
-            Log.shared.info("User has choosen to rest trust for an identity we have no key for. Valid case, just for the record. The identity is: %@", self.debugDescription)
+            Log.shared.info("User has choosen to rest trust for an identity we have no key for. Valid case, just for the record.")
         }
 
         let pEpIdent = pEpIdentity()
