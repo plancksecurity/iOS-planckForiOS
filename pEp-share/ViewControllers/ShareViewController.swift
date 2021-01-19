@@ -8,8 +8,10 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 final class ShareViewController: UIViewController {
-    // TODO: MM
+    // TODO: Use MM
     //private var messageModelService: MessageModelServiceProtocol?
 
     var composeTableVC: ComposeTableViewController?
@@ -42,8 +44,7 @@ extension ShareViewController {
         //sendMail.sendMessage()
 
         guard let context = extensionContext else {
-            // TODO: Toolbox
-            //Log.shared.errorAndCrash(message: "Lost extension context!")
+            Log.shared.errorAndCrash(message: "Lost extension context!")
             return
         }
 
