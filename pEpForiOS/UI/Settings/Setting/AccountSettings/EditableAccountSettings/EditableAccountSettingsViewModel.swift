@@ -40,10 +40,10 @@ class EditableAccountSettingsViewModel {
     /// Indicates if the account is OAuth2
     public private(set) var isOAuth2: Bool = false
     /// Delegate to trigger actions to the VC.
-    public weak var editableAccountSettingsDelegate: EditableAccountSettingsDelegate?
+    public weak var delegate: EditableAccountSettingsDelegate?
     /// The sections of Editable Account Settings view.
     /// Delegate to inform the account settings had changed
-    public weak var accountSettingsDelegate: AccountSettingsDelegate?
+    public weak var changeDelegate: SettingChangeDelegate?
 
     public private(set) var sections = [AccountSettingsViewModel.Section]()
     /// Indicates the number ot transport security options.
@@ -93,7 +93,7 @@ class EditableAccountSettingsViewModel {
     ///   - delegate: The delegate to communicate to the View Controller.
     public init(account: Account, delegate: EditableAccountSettingsDelegate? = nil) {
         self.account = account
-        self.editableAccountSettingsDelegate = delegate
+        self.delegate = delegate
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         if isOAuth2 {
             if let payload = account.imapServer?.credentials.password ??
@@ -113,14 +113,14 @@ class EditableAccountSettingsViewModel {
     /// Validates the user input
     /// Upload the changes if everything is OK, else informs the user
     public func handleSaveButtonPressed() {
-        editableAccountSettingsDelegate?.setLoadingView(visible: true)
+        delegate?.setLoadingView(visible: true)
         do {
             let validated = try validateInput()
             update(input: validated)
-            editableAccountSettingsDelegate?.setLoadingView(visible: false)
+            delegate?.setLoadingView(visible: false)
         } catch {
-            editableAccountSettingsDelegate?.setLoadingView(visible: false)
-            editableAccountSettingsDelegate?.showAlert(error: error)
+            delegate?.setLoadingView(visible: false)
+            delegate?.showAlert(error: error)
         }
     }
 
@@ -160,22 +160,22 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
                         return
                     }
                     DispatchQueue.main.async {
-                        me.editableAccountSettingsDelegate?.setLoadingView(visible: false)
-                        me.accountSettingsDelegate?.didChange()
-                        me.editableAccountSettingsDelegate?.dismissYourself()
+                        me.delegate?.setLoadingView(visible: false)
+                        me.changeDelegate?.didChange()
+                        me.delegate?.dismissYourself()
                     }
                 }
             } catch {
                 Log.shared.errorAndCrash(error: error)
-                editableAccountSettingsDelegate?.setLoadingView(visible: false)
-                editableAccountSettingsDelegate?.dismissYourself()
+                delegate?.setLoadingView(visible: false)
+                delegate?.dismissYourself()
             }
         case .failure(let error):
-            editableAccountSettingsDelegate?.setLoadingView(visible: false)
+            delegate?.setLoadingView(visible: false)
             if let imapError = error as? ImapSyncOperationError {
-                editableAccountSettingsDelegate?.showAlert(error: imapError)
+                delegate?.showAlert(error: imapError)
             } else if let smtpError = error as? SmtpSendError {
-                editableAccountSettingsDelegate?.showAlert(error: smtpError)
+                delegate?.showAlert(error: smtpError)
             } else {
                 Log.shared.errorAndCrash(error: error)
             }
@@ -417,8 +417,8 @@ extension EditableAccountSettingsViewModel {
         do {
             try theVerifier.verify()
         } catch {
-            editableAccountSettingsDelegate?.setLoadingView(visible: false)
-            editableAccountSettingsDelegate?.showAlert(error: LoginViewController.LoginError.noConnectData)
+            delegate?.setLoadingView(visible: false)
+            delegate?.showAlert(error: LoginViewController.LoginError.noConnectData)
         }
     }
 

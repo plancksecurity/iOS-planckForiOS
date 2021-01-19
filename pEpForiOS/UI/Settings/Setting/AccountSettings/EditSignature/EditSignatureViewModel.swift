@@ -13,13 +13,13 @@ class EditSignatureViewModel {
     
     private let account: Account
     
-    private weak var accountSettingsdelegate: AccountSettingsDelegate?
+    private weak var accountSettingsdelegate: SettingChangeDelegate?
     
     public var numberOfRows: Int {
         return 1
     }
     
-    init(account: Account, delegate: AccountSettingsDelegate? = nil) {
+    init(account: Account, delegate: SettingChangeDelegate? = nil) {
         self.account = account
         self.accountSettingsdelegate = delegate
     }

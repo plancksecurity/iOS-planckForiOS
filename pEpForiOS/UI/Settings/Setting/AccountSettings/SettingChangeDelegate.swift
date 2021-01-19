@@ -1,5 +1,5 @@
 //
-//  AccountSettingsDelegate.swift
+//  SettingChangeDelegate.swift
 //  pEp
 //
 //  Created by Martín Brude on 19/1/21.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol AccountSettingsDelegate: class {
+public protocol SettingChangeDelegate: class {
     /// Informs Account Settings that something had changed.
     func didChange()
 }
