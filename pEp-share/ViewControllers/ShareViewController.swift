@@ -8,6 +8,7 @@
 
 import UIKit
 
+import MessageModel
 import pEpIOSToolbox
 
 final class ShareViewController: UIViewController {
