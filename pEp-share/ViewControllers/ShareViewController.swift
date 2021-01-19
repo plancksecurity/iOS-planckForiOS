@@ -7,6 +7,7 @@
 //
 
 import UIKit
+
 import MessageModel
 import pEpIOSToolbox
 
@@ -39,8 +40,9 @@ final class ShareViewController: UIViewController {
 extension ShareViewController {
     private func checkInputItems() {
 
-        let sendMail = SendMailHelper.shared
-        sendMail.sendMessage()
+        // TODO: Send the mail
+        //let sendMail = SendMailHelper.shared
+        //sendMail.sendMessage()
 
         guard let context = extensionContext else {
             Log.shared.errorAndCrash(message: "Lost extension context!")
