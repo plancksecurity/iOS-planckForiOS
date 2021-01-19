@@ -87,11 +87,14 @@ class EditableAccountSettingsViewModel {
 
     private let transportSecurityViewModel = TransportSecurityViewModel()
 
+    private var accountSettingsHelper: AccountSettingsHelper?
     /// Constructor
     /// - Parameters:
     ///   - account: The account to configure the editable account settings view model.
     ///   - delegate: The delegate to communicate to the View Controller.
     public init(account: Account, delegate: EditableAccountSettingsDelegate? = nil) {
+         accountSettingsHelper = AccountSettingsHelper(account: account)
+
         self.account = account
         self.delegate = delegate
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
@@ -192,8 +195,12 @@ extension EditableAccountSettingsViewModel {
     /// - Parameter type: The type of the section to generate.
     /// - Returns: The generated section.
     private func generateSection(type: AccountSettingsViewModel.SectionType) -> AccountSettingsViewModel.Section {
+        guard let accountSettingsHelper = accountSettingsHelper else {
+            Log.shared.errorAndCrash("AccountSettingsHelper not found")
+            return AccountSettingsViewModel.Section.init(title: "", rows: [], type: .account)
+        }
         let rows = generateRows(type: type)
-        let title = AccountSettingsHelper.sectionTitle(type: type)
+        let title = accountSettingsHelper.sectionTitle(type: type)
         return AccountSettingsViewModel.Section(title: title, rows: rows, type: type)
     }
 
@@ -211,7 +218,11 @@ extension EditableAccountSettingsViewModel {
     ///   - value: The value of the row.
     /// - Returns: The configured row.
     private func getDisplayRow(type: AccountSettingsViewModel.RowType, value: String) -> AccountSettingsViewModel.DisplayRow {
-        let title = AccountSettingsHelper.rowTitle(for: type)
+        guard let accountSettingsHelper = accountSettingsHelper else {
+            Log.shared.errorAndCrash("AccountSettingsHelper not found")
+            return AccountSettingsViewModel.DisplayRow(type: .email, title: "", text: "", cellIdentifier: "")
+        }
+        let title = accountSettingsHelper.rowTitle(for: type)
         let cellIdentifier = AccountSettingsHelper.CellsIdentifiers.settingsDisplayCell
         let shouldShowCaretOrSelect = type != .tranportSecurity
         return AccountSettingsViewModel.DisplayRow(type: type,
@@ -264,6 +275,13 @@ extension EditableAccountSettingsViewModel {
                 let fakePassword = "JustAPassword"
                 let passwordRow = getDisplayRow(type : .password, value: fakePassword)
                 rows.append(passwordRow)
+            }
+            guard let accountSettingsHelper = accountSettingsHelper else {
+                Log.shared.errorAndCrash("AccountSettingsHelper not found")
+                return []
+            }
+            if accountSettingsHelper.hasClientCertificate {
+                rows.append(getDisplayRow(type : .certificate, value: ""))
             }
         case .imap:
             guard let imapServer = account.imapServer else {

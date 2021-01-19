@@ -109,6 +109,7 @@ extension AccountSettingsViewModel {
         case server
         case port
         case tranportSecurity
+        case certificate
         case username
         case oauth2Reauth
     }
@@ -335,6 +336,9 @@ extension AccountSettingsViewModel {
                                      comment: "Include in Unified Folders label in account settings")
         case .signature:
             return NSLocalizedString("Signature", comment: "Signature label in account settings")
+        case .certificate:
+            Log.shared.errorAndCrash("Invalid row type for AccountSettings")
+            return ""
         }
     }
 
