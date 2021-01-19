@@ -180,7 +180,7 @@ extension TrustManagementViewController {
                 }
 
                 for language in langs {
-                    guard let languageName = NSLocale.current.localizedString(forLanguageCode: language)
+                    guard let languageName = NSLocale.current.localizedString(forLanguageCode: language)?.capitalized
                         else {
                             Log.shared.debug("Language name not found")
                             break
