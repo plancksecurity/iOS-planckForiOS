@@ -11,7 +11,11 @@ import pEpIOSToolbox
 
 class EditableAccountSettingsViewController: UIViewController {
 
-    var viewModel : EditableAccountSettingsViewModel?
+    var viewModel : EditableAccountSettingsViewModel? {
+        didSet {
+            viewModel?.delegate = self
+        }
+    }
 
     @IBOutlet private var tableView: UITableView!
     private var firstResponder: UITextField?

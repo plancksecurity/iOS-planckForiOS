@@ -83,9 +83,8 @@ final class AccountSettingsViewModel {
     ///   - account: The account to edit.
     ///   - delegate: The EditableAccountSettings delegate
     /// - Returns: The EditableAccountSettingsViewModel
-    public func getEditableAccountSettingsViewModel(account: Account,
-                                                    delegate: EditableAccountSettingsDelegate) -> EditableAccountSettingsViewModel {
-        let editableAccountSettingsViewModel = EditableAccountSettingsViewModel(account: account, delegate: delegate)
+    public func getEditableAccountSettingsViewModel(account: Account) -> EditableAccountSettingsViewModel {
+        let editableAccountSettingsViewModel = EditableAccountSettingsViewModel(account: account)
         editableAccountSettingsViewModel.accountSettingsDelegate = self
         return editableAccountSettingsViewModel
     }
