@@ -18,6 +18,8 @@ protocol AccountSettingsViewModelDelegate: class {
     func showAlert(error: Error)
     /// Undo the last Pep Sync Change
     func undoPEPSyncToggle()
+    ///Informs changes in account Settings
+    func didChange()
 }
 
 /// Protocol that represents the basic data in a row.
@@ -77,6 +79,16 @@ final class AccountSettingsViewModel {
             }
         }
     }
+
+    /// Retrieves the EditableAccountSettingsViewModel
+    /// - Parameters:
+    ///   - delegate: The EditableAccountSettings delegate
+    /// - Returns: The EditableAccountSettingsViewModel
+    public func getEditableAccountSettingsViewModel() -> EditableAccountSettingsViewModel {
+        let editableAccountSettingsViewModel = EditableAccountSettingsViewModel(account: account)
+        editableAccountSettingsViewModel.changeDelegate = self
+        return editableAccountSettingsViewModel
+    }
 }
 
 // MARK: -  enums & structs
@@ -86,7 +98,7 @@ extension AccountSettingsViewModel {
     public typealias AlertActionBlock = (() -> ())
 
     /// Identifies semantically the type of row.
-    public enum RowType : String {
+    public enum RowType : String, CaseIterable {
         case name
         case email
         case password
@@ -147,6 +159,10 @@ extension AccountSettingsViewModel {
         var isDangerous: Bool = false
         /// The cell identifier
         var cellIdentifier: String
+        /// Indicates if the caret should be shown
+        var shouldShowCaret: Bool = true
+        /// Indicates if the text should be selectable
+        var shouldSelect: Bool = true
     }
 
     /// Struct that is used to perform an action.
@@ -200,9 +216,9 @@ extension AccountSettingsViewModel {
         }
     }
 
-    public func handleSwitchChanged(isIncludedInUnifiedFolders: Bool) {
-        includeInUnifiedFolders = isIncludedInUnifiedFolders
-        account.isIncludedInUnifiedFolders = isIncludedInUnifiedFolders
+    public func handleUnifiedFolderSwitchChanged(to newValue: Bool) {
+        includeInUnifiedFolders = newValue
+        account.isIncludedInUnifiedFolders = newValue
         account.session.commit()
     }
 
@@ -245,14 +261,6 @@ extension AccountSettingsViewModel {
 // MARK: - Private
 
 extension AccountSettingsViewModel {
-
-    private struct CellsIdentifiers {
-        static let oAuthCell = "oAuthTableViewCell"
-        static let displayCell = "KeyValueTableViewCell"
-        static let switchCell = "SwitchTableViewCell"
-        static let dangerousCell = "DangerousTableViewCell"
-        static let settingsCell = "settingsCell"
-    }
 
     private enum AccountSettingsError: Error, LocalizedError {
         case accountNotFound, failToModifyAccountPEPSync
@@ -343,7 +351,7 @@ extension AccountSettingsViewModel {
                 return rows
             }
             let nameTitle = NSLocalizedString("Name", comment: "Name field")
-            let nameRow = DisplayRow(type: .name, title: nameTitle, text: name, cellIdentifier: CellsIdentifiers.displayCell)
+            let nameRow = DisplayRow(type: .name, title: nameTitle, text: name, cellIdentifier:  AccountSettingsHelper.CellsIdentifiers.displayCell)
             rows.append(nameRow)
 
             // email
@@ -355,7 +363,7 @@ extension AccountSettingsViewModel {
                 let oAuthRow = DisplayRow(type: .oauth2Reauth,
                                           title: rowTitle(for: .oauth2Reauth),
                                           text: "",
-                                          cellIdentifier: CellsIdentifiers.oAuthCell)
+                                          cellIdentifier: AccountSettingsHelper.CellsIdentifiers.oAuthCell)
                 rows.append(oAuthRow)
 
             } else {
@@ -379,8 +387,8 @@ extension AccountSettingsViewModel {
                                                             Log.shared.lostMySelf()
                                                             return
                                                         }
-                                                        me.handleSwitchChanged(isIncludedInUnifiedFolders: isIncludedInUnifiedFolders)
-                }, cellIdentifier: CellsIdentifiers.switchCell)
+                                                        me.handleUnifiedFolderSwitchChanged(to: isIncludedInUnifiedFolders)
+                                                      }, cellIdentifier: AccountSettingsHelper.CellsIdentifiers.switchCell)
             rows.append(includeInUnifiedFolderRow)
 
             // pepSync
@@ -393,11 +401,11 @@ extension AccountSettingsViewModel {
                         return
                     }
                     me.pEpSync(enable: enable)
-                }, cellIdentifier: CellsIdentifiers.switchCell)
+                }, cellIdentifier: AccountSettingsHelper.CellsIdentifiers.switchCell)
             rows.append(pepSyncRow)
 
             // reset
-            let resetRow = ActionRow(type: .reset, title: rowTitle(for: .reset), cellIdentifier: CellsIdentifiers.dangerousCell)
+            let resetRow = ActionRow(type: .reset, title: rowTitle(for: .reset), cellIdentifier: AccountSettingsHelper.CellsIdentifiers.dangerousCell)
             rows.append(resetRow)
 
         case .imap:
@@ -445,15 +453,15 @@ extension AccountSettingsViewModel {
         return DisplayRow(type: type,
                           title: rowTitle(for: type),
                           text: value,
-                          cellIdentifier: CellsIdentifiers.displayCell)
+                          cellIdentifier: AccountSettingsHelper.CellsIdentifiers.displayCell,
+                          shouldShowCaret: type != .tranportSecurity)
     }
-
 }
 
 // MARK: - Key Sync
 
 extension AccountSettingsViewModel {
-
+    
     /// Request if key sync is enabled for the current account
     /// The callbacks will be executed in the main thread.
     /// - Parameters:
@@ -472,6 +480,8 @@ extension AccountSettingsViewModel {
     }
 }
 
+// MARK: - Loading
+
 extension AccountSettingsViewModel {
     public func setLoadingView(visible: Bool) {
         DispatchQueue.main.async { [weak self] in
@@ -481,5 +491,13 @@ extension AccountSettingsViewModel {
             }
             me.delegate?.setLoadingView(visible: visible)
         }
+    }
+}
+
+// MARK: - AccountSettingsDelegate
+
+extension AccountSettingsViewModel: SettingChangeDelegate {
+    func didChange() {
+        delegate?.didChange()
     }
 }
