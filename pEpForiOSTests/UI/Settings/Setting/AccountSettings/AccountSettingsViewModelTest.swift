@@ -104,7 +104,7 @@ extension MockedAccountSettingsViewController: OAuthAuthorizerDelegate {
     }
 }
 
-class MockedAccountSettingsViewModelDelegate : AccountSettingsViewModelDelegate, AccountSettingsDelegate {
+class MockedAccountSettingsViewModelDelegate : AccountSettingsViewModelDelegate, SettingChangeDelegate {
 
     var showErrorAlertExpectation: XCTestExpectation?
     var showLoadingViewExpectation: XCTestExpectation?

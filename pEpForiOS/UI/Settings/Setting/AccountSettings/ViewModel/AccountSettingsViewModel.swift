@@ -86,7 +86,7 @@ final class AccountSettingsViewModel {
     /// - Returns: The EditableAccountSettingsViewModel
     public func getEditableAccountSettingsViewModel() -> EditableAccountSettingsViewModel {
         let editableAccountSettingsViewModel = EditableAccountSettingsViewModel(account: account)
-        editableAccountSettingsViewModel.accountSettingsDelegate = self
+        editableAccountSettingsViewModel.changeDelegate = self
         return editableAccountSettingsViewModel
     }
 }
@@ -496,7 +496,7 @@ extension AccountSettingsViewModel {
 
 // MARK: - AccountSettingsDelegate
 
-extension AccountSettingsViewModel: AccountSettingsDelegate {
+extension AccountSettingsViewModel: SettingChangeDelegate {
     func didChange() {
         delegate?.didChange()
     }

@@ -315,7 +315,7 @@ extension AccountSettingsViewController: OAuthAuthorizerDelegate {
 
 // MARK: - EditableAccountSettingsDelegate
 
-extension AccountSettingsViewController: AccountSettingsDelegate {
+extension AccountSettingsViewController: SettingChangeDelegate {
     func didChange() {
         /// As the data source of this table view provides the rows generated at the vm initialization,
         /// we re-init the view model in order re-generate those rows.

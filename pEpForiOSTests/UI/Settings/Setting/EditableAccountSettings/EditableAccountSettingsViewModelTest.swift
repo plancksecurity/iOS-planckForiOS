@@ -88,7 +88,7 @@ class EditableAccountSettingsViewModelTest: AccountDrivenTestBase {
                                                             dismissYourselfExpectation: dismissYourselfExpectation)
         viewModel = EditableAccountSettingsViewModel(account: account, delegate: mockViewController)
         let accountSettingsDelegate = MockAccountSettingsViewController(didChangeExpectation: didChangeExpectation)
-        viewModel?.accountSettingsDelegate = accountSettingsDelegate
+        viewModel?.changeDelegate = accountSettingsDelegate
         viewModel?.handleSaveButtonPressed()
     }
 
@@ -216,7 +216,7 @@ class MockEditableViewController: EditableAccountSettingsDelegate {
     }
 }
 
-class MockAccountSettingsViewController: AccountSettingsDelegate {
+class MockAccountSettingsViewController: SettingChangeDelegate {
 
     private var didChangeExpectation: XCTestExpectation?
 
