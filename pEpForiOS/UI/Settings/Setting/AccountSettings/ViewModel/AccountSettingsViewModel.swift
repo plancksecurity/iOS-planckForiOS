@@ -82,10 +82,9 @@ final class AccountSettingsViewModel {
 
     /// Retrieves the EditableAccountSettingsViewModel
     /// - Parameters:
-    ///   - account: The account to edit.
     ///   - delegate: The EditableAccountSettings delegate
     /// - Returns: The EditableAccountSettingsViewModel
-    public func getEditableAccountSettingsViewModel(account: Account) -> EditableAccountSettingsViewModel {
+    public func getEditableAccountSettingsViewModel() -> EditableAccountSettingsViewModel {
         let editableAccountSettingsViewModel = EditableAccountSettingsViewModel(account: account)
         editableAccountSettingsViewModel.accountSettingsDelegate = self
         return editableAccountSettingsViewModel
@@ -481,6 +480,8 @@ extension AccountSettingsViewModel {
     }
 }
 
+// MARK: - Loading
+
 extension AccountSettingsViewModel {
     public func setLoadingView(visible: Bool) {
         DispatchQueue.main.async { [weak self] in
@@ -492,6 +493,8 @@ extension AccountSettingsViewModel {
         }
     }
 }
+
+// MARK: - AccountSettingsDelegate
 
 extension AccountSettingsViewModel: AccountSettingsDelegate {
     func didChange() {

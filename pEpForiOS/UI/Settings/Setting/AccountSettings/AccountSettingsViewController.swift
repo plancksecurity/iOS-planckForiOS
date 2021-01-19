@@ -60,7 +60,7 @@ final class AccountSettingsViewController: UIViewController {
         let account = vm.account
         switch segue.destination {
         case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
-            let editableAccountSettingsViewModel = vm.getEditableAccountSettingsViewModel(account: account)
+            let editableAccountSettingsViewModel = vm.getEditableAccountSettingsViewModel()
             editableAccountSettingsViewController.viewModel = editableAccountSettingsViewModel
         case let signatureEditor as EditSignatureViewController:
             let vm = EditSignatureViewModel(account: account, delegate: self)
