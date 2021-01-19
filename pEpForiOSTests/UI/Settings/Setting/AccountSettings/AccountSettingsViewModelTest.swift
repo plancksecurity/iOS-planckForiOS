@@ -43,12 +43,12 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
 
         //Test set to false
         var includedInUnifiedFolders = false
-        viewModel.handleSwitchChanged(isIncludedInUnifiedFolders: includedInUnifiedFolders)
+        viewModel.handleUnifiedFolderSwitchChanged(to: includedInUnifiedFolders)
         XCTAssertEqual(viewModel.includeInUnifiedFolders, includedInUnifiedFolders)
 
         //Test set to true
         includedInUnifiedFolders = true
-        viewModel.handleSwitchChanged(isIncludedInUnifiedFolders: includedInUnifiedFolders)
+        viewModel.handleUnifiedFolderSwitchChanged(to: includedInUnifiedFolders)
         XCTAssertEqual(viewModel.includeInUnifiedFolders, includedInUnifiedFolders)
     }
 

@@ -1,5 +1,5 @@
 //
-//  EditableAccountSettingsViewModelTest2.swift
+//  EditableAccountSettingsViewModelTest.swift
 //  pEpForiOSTests
 //
 //  Created by Martín Brude on 7/12/20.
@@ -90,6 +90,27 @@ class EditableAccountSettingsViewModelTest: AccountDrivenTestBase {
         let accountSettingsDelegate = MockAccountSettingsViewController(didChangeExpectation: didChangeExpectation)
         viewModel?.accountSettingsDelegate = accountSettingsDelegate
         viewModel?.handleSaveButtonPressed()
+    }
+
+    func testTransportSecurityIndexWithInvalidText() {
+        let expectedInvalidReturnValue = -1
+        let invalidIndex = viewModel?.transportSecurityIndex(for: "Invalid Transport Security Text")
+        XCTAssertEqual(invalidIndex, expectedInvalidReturnValue)
+    }
+
+    func testTransportSecurityIndexWithValidText() {
+        Server.Transport.allCases.forEach { (transport) in
+            let index = viewModel?.transportSecurityIndex(for: transport.asString())
+            XCTAssertEqual(index, Server.Transport.allCases[index!].index)
+        }
+    }
+
+    func testTransportSecurityIndex() {
+        Server.Transport.allCases.forEach { (transport) in
+            let index = viewModel?.transportSecurityIndex(for: transport.asString())
+            let option = viewModel?.transportSecurityOption(atIndex: index!)
+            XCTAssertEqual(transport.asString(), option)
+        }
     }
 }
 

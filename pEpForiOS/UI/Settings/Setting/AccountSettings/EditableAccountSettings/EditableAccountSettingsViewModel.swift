@@ -22,9 +22,9 @@ protocol EditableAccountSettingsDelegate: class {
     func dismissYourself()
 }
 
-final class EditableAccountSettingsViewModel {
+class EditableAccountSettingsViewModel {
 
-    // Helper to carry the user input ot its validation.
+    // Helper to carry the user input for its validation.
     private typealias Input = (userName: String,
                                emailAddress: String,
                                password: String?,
@@ -39,16 +39,12 @@ final class EditableAccountSettingsViewModel {
 
     /// Indicates if the account is OAuth2
     public private(set) var isOAuth2: Bool = false
-
     /// Delegate to trigger actions to the VC.
     public weak var delegate: EditableAccountSettingsDelegate?
-
     /// The sections of Editable Account Settings view.
     public private(set) var sections = [AccountSettingsViewModel.Section]()
-
     /// Delegate to inform the account settings had changed
     public weak var accountSettingsDelegate: AccountSettingsDelegate?
-
     /// Indicates the number ot transport security options.
     public var numberOfTransportSecurityOptions : Int {
         return transportSecurityViewModel.numberOfOptions
@@ -66,9 +62,12 @@ final class EditableAccountSettingsViewModel {
 
     /// Retrieves the index of the transtion security option.
     /// - Parameter option: The option to look for its index
-    /// - Returns: The index of the option.
+    /// - Returns: The index of the option. -1 if not found.
     public func transportSecurityIndex(for option: String) -> Int {
-        return Int(Server.Transport(fromString: option)?.rawValue ?? 1)
+        guard let rawValue = Server.Transport(fromString: option)?.rawValue else {
+            return -1
+        }
+        return Int(rawValue)
     }
 
     private var account: Account
@@ -119,7 +118,7 @@ final class EditableAccountSettingsViewModel {
     /// Generates and retrieves a section
     /// - Parameter type: The type of the section to generate.
     /// - Returns: The generated section.
-    private func generateSection(type : AccountSettingsViewModel.SectionType) -> AccountSettingsViewModel.Section {
+    private func generateSection(type: AccountSettingsViewModel.SectionType) -> AccountSettingsViewModel.Section {
         let rows = generateRows(type: type)
         let title = AccountSettingsHelper.sectionTitle(type: type)
         return AccountSettingsViewModel.Section(title: title, rows: rows, type: type)
@@ -209,7 +208,7 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
 
     public func didEndVerification(result: Result<Void, Error>) {
         switch result {
-        case .success(()):
+        case .success:
             do {
                 try verifiableAccount?.save { [weak self] _ in
                     guard let me = self else {
@@ -266,7 +265,7 @@ extension EditableAccountSettingsViewModel {
     ///   - type: The type of row.
     ///   - value: The value of the row.
     /// - Returns: The configured row.
-    private func getDisplayRow(type : AccountSettingsViewModel.RowType, value : String) -> AccountSettingsViewModel.DisplayRow {
+    private func getDisplayRow(type: AccountSettingsViewModel.RowType, value: String) -> AccountSettingsViewModel.DisplayRow {
         let title = AccountSettingsHelper.rowTitle(for: type)
         let cellIdentifier = AccountSettingsHelper.CellsIdentifiers.settingsDisplayCell
         let shouldShowCaretOrSelect = type != .tranportSecurity
@@ -366,7 +365,7 @@ extension EditableAccountSettingsViewModel {
         )
     }
 
-    private func rowValue(sectionType: AccountSettingsViewModel.SectionType, rowType : AccountSettingsViewModel.RowType) -> String? {
+    private func rowValue(sectionType: AccountSettingsViewModel.SectionType, rowType: AccountSettingsViewModel.RowType) -> String? {
         guard let sectionIndex = sectionType.index else {
             Log.shared.errorAndCrash("Section not found")
             return nil

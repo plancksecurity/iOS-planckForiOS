@@ -204,9 +204,9 @@ extension AccountSettingsViewModel {
         }
     }
 
-    public func handleSwitchChanged(isIncludedInUnifiedFolders: Bool) {
-        includeInUnifiedFolders = isIncludedInUnifiedFolders
-        account.isIncludedInUnifiedFolders = isIncludedInUnifiedFolders
+    public func handleUnifiedFolderSwitchChanged(to newValue: Bool) {
+        includeInUnifiedFolders = newValue
+        account.isIncludedInUnifiedFolders = newValue
         account.session.commit()
     }
 
@@ -375,7 +375,7 @@ extension AccountSettingsViewModel {
                                                             Log.shared.lostMySelf()
                                                             return
                                                         }
-                                                        me.handleSwitchChanged(isIncludedInUnifiedFolders: isIncludedInUnifiedFolders)
+                                                        me.handleUnifiedFolderSwitchChanged(to: isIncludedInUnifiedFolders)
                                                       }, cellIdentifier: AccountSettingsHelper.CellsIdentifiers.switchCell)
             rows.append(includeInUnifiedFolderRow)
 
