@@ -40,11 +40,12 @@ class EditableAccountSettingsViewModel {
     /// Indicates if the account is OAuth2
     public private(set) var isOAuth2: Bool = false
     /// Delegate to trigger actions to the VC.
-    public weak var delegate: EditableAccountSettingsDelegate?
+    public weak var editableAccountSettingsDelegate: EditableAccountSettingsDelegate?
     /// The sections of Editable Account Settings view.
-    public private(set) var sections = [AccountSettingsViewModel.Section]()
     /// Delegate to inform the account settings had changed
     public weak var accountSettingsDelegate: AccountSettingsDelegate?
+
+    public private(set) var sections = [AccountSettingsViewModel.Section]()
     /// Indicates the number ot transport security options.
     public var numberOfTransportSecurityOptions : Int {
         return transportSecurityViewModel.numberOfOptions
@@ -92,7 +93,7 @@ class EditableAccountSettingsViewModel {
     ///   - delegate: The delegate to communicate to the View Controller.
     public init(account: Account, delegate: EditableAccountSettingsDelegate? = nil) {
         self.account = account
-        self.delegate = delegate
+        self.editableAccountSettingsDelegate = delegate
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         if isOAuth2 {
             if let payload = account.imapServer?.credentials.password ??
@@ -112,14 +113,14 @@ class EditableAccountSettingsViewModel {
     /// Validates the user input
     /// Upload the changes if everything is OK, else informs the user
     public func handleSaveButtonPressed() {
-        delegate?.setLoadingView(visible: true)
+        editableAccountSettingsDelegate?.setLoadingView(visible: true)
         do {
             let validated = try validateInput()
             update(input: validated)
-            delegate?.setLoadingView(visible: false)
+            editableAccountSettingsDelegate?.setLoadingView(visible: false)
         } catch {
-            delegate?.setLoadingView(visible: false)
-            delegate?.showAlert(error: error)
+            editableAccountSettingsDelegate?.setLoadingView(visible: false)
+            editableAccountSettingsDelegate?.showAlert(error: error)
         }
     }
 
@@ -159,22 +160,22 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
                         return
                     }
                     DispatchQueue.main.async {
-                        me.delegate?.setLoadingView(visible: false)
+                        me.editableAccountSettingsDelegate?.setLoadingView(visible: false)
                         me.accountSettingsDelegate?.didChange()
-                        me.delegate?.dismissYourself()
+                        me.editableAccountSettingsDelegate?.dismissYourself()
                     }
                 }
             } catch {
                 Log.shared.errorAndCrash(error: error)
-                delegate?.setLoadingView(visible: false)
-                delegate?.dismissYourself()
+                editableAccountSettingsDelegate?.setLoadingView(visible: false)
+                editableAccountSettingsDelegate?.dismissYourself()
             }
         case .failure(let error):
-            delegate?.setLoadingView(visible: false)
+            editableAccountSettingsDelegate?.setLoadingView(visible: false)
             if let imapError = error as? ImapSyncOperationError {
-                delegate?.showAlert(error: imapError)
+                editableAccountSettingsDelegate?.showAlert(error: imapError)
             } else if let smtpError = error as? SmtpSendError {
-                delegate?.showAlert(error: smtpError)
+                editableAccountSettingsDelegate?.showAlert(error: smtpError)
             } else {
                 Log.shared.errorAndCrash(error: error)
             }
@@ -238,7 +239,6 @@ extension EditableAccountSettingsViewModel {
         let usernameRow = getDisplayRow(type : .username, value: server.credentials.loginName)
         rows.append(usernameRow)
     }
-
 
     /// This method generates all the rows for the section type passed
     /// - Parameter type: The type of the section to generate the rows.
@@ -417,8 +417,8 @@ extension EditableAccountSettingsViewModel {
         do {
             try theVerifier.verify()
         } catch {
-            delegate?.setLoadingView(visible: false)
-            delegate?.showAlert(error: LoginViewController.LoginError.noConnectData)
+            editableAccountSettingsDelegate?.setLoadingView(visible: false)
+            editableAccountSettingsDelegate?.showAlert(error: LoginViewController.LoginError.noConnectData)
         }
     }
 
@@ -435,5 +435,4 @@ extension EditableAccountSettingsViewModel {
             }
         }
     }
-
 }

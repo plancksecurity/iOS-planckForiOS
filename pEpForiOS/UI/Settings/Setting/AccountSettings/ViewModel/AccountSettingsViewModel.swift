@@ -18,6 +18,8 @@ protocol AccountSettingsViewModelDelegate: class {
     func showAlert(error: Error)
     /// Undo the last Pep Sync Change
     func undoPEPSyncToggle()
+    ///Informs changes in account Settings
+    func didChange()
 }
 
 /// Protocol that represents the basic data in a row.
@@ -45,7 +47,7 @@ final class AccountSettingsViewModel {
     private(set) var includeInUnifiedFolders: Bool
     private let isOAuth2: Bool
     private(set) var account: Account
-    public weak var delegate: (AccountSettingsViewModelDelegate & AccountSettingsDelegate)?
+    public weak var delegate: AccountSettingsViewModelDelegate?
     /// Items to be displayed in a Account Settings View Controller
     private(set) var sections: [Section] = [Section]()
     private let oauthViewModel = OAuthAuthorizer()
@@ -55,7 +57,7 @@ final class AccountSettingsViewModel {
     /// - Parameters:
     ///   - account: The account to configure the account settings view model.
     ///   - delegate: The delegate to communicate to the View Controller.
-    init(account: Account, delegate: (AccountSettingsViewModelDelegate & AccountSettingsDelegate)? = nil) {
+    init(account: Account, delegate: AccountSettingsViewModelDelegate? = nil) {
         self.account = account
         self.delegate = delegate
         includeInUnifiedFolders = account.isIncludedInUnifiedFolders

@@ -13,7 +13,7 @@ class EditableAccountSettingsViewController: UIViewController {
 
     var viewModel : EditableAccountSettingsViewModel? {
         didSet {
-            viewModel?.delegate = self
+            viewModel?.editableAccountSettingsDelegate = self
         }
     }
 
