@@ -2,7 +2,7 @@
 "None" = "Cap";
 
 /* pEp mail signature. Newlines will be added by app */
-"sent with p≡p" = "enviat amb Test LexiaPark";
+"sent with p≡p" = "enviat amb p≡p";
 
 /* Error description when failing to validate account fields */
 "Some fields seems not to be valid. Please check all input fields." = "Sembla que alguns camps no són vàlids. Comproveu tots els camps d’entrada.";
@@ -12,9 +12,6 @@
 
 /* No comment provided by engineer. */
 "StartTLS" = "StartTLS";
-
-/* section title for identity without username */
-"Unknown Name" = "Nom desconegut";
 
 /* file name used for unnamed attachments */
 "unnamed" = "sense nom";

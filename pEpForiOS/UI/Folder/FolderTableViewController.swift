@@ -70,8 +70,7 @@ final class FolderTableViewController: UITableViewController {
         toolbarItems = [flexibleSpace, compose, flexibleSpace, item]
         tableView.cellLayoutMarginsFollowReadableWidth = false
         addAccountButton.titleLabel?.numberOfLines = 0
-        addAccountButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
-        addAccountButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        addAccountButton.titleLabel?.setPEPFont(style: .body, weight: .regular)
     }
 
     // MARK: - Cell Setup
@@ -155,8 +154,7 @@ final class FolderTableViewController: UITableViewController {
         cell.chevronButton.isUserInteractionEnabled = fcvm.isChevronEnabled
         cell.padding = fcvm.padding
         cell.titleLabel.text = fcvm.title
-        cell.titleLabel.font = UIFont.pepFont(style: .body, weight: .regular)
-        cell.titleLabel.adjustsFontForContentSizeCategory = true
+        cell.titleLabel.setPEPFont(style: .body, weight: .regular)
         cell.titleLabel?.textColor = fcvm.isSelectable ? .black : .pEpGray
         cell.unreadMailsLabel.font = UIFont.pepFont(style: .body, weight: .regular)
         let numUnreadMails = fcvm.numUnreadMails

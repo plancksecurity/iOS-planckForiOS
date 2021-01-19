@@ -22,7 +22,6 @@ extension UIFont {
     ///   - style: The preferred font style.
     ///   - weight: The preferred font weight.
     /// - Returns: The configured font.
-    @available(iOS 11, *)
     public static func pepFont(style: TextStyle, weight: Weight) -> UIFont {
         let metrics = UIFontMetrics(forTextStyle: style)
         let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
