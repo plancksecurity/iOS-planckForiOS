@@ -1509,6 +1509,7 @@
 		15874BB62127493E00A3A4A6 /* AccountSettings */ = {
 			isa = PBXGroup;
 			children = (
+				5BF39DA7257A737A00A00A96 /* AccountSettingsHelper.swift */,
 				B7CE922C24E3F9F700B5A874 /* EditSignature */,
 				5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */,
 				5BE35AA5249219AD00AC605C /* Cells */,
@@ -1725,7 +1726,6 @@
 			children = (
 				5B884B43257A90FE006B2022 /* EditableAccountSettingsViewController.swift */,
 				5BF39DA2257A71AC00A00A96 /* EditableAccountSettingsViewModel.swift */,
-				5BF39DA7257A737A00A00A96 /* AccountSettingsHelper.swift */,
 			);
 			path = EditableAccountSettings;
 			sourceTree = "<group>";

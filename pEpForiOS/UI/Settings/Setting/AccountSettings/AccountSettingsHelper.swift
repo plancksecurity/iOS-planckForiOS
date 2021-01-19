@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct AccountSettingsHelper {
+public struct AccountSettingsHelper {
 
     /// Provides the title of the row
     /// - Parameter type: The type of the row
