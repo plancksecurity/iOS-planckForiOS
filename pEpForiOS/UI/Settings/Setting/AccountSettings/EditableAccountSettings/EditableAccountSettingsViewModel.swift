@@ -109,21 +109,6 @@ class EditableAccountSettingsViewModel {
         self.generateSections()
     }
 
-    private func generateSections() {
-        AccountSettingsViewModel.SectionType.allCases.forEach { (type) in
-            sections.append(generateSection(type: type))
-        }
-    }
-
-    /// Generates and retrieves a section
-    /// - Parameter type: The type of the section to generate.
-    /// - Returns: The generated section.
-    private func generateSection(type: AccountSettingsViewModel.SectionType) -> AccountSettingsViewModel.Section {
-        let rows = generateRows(type: type)
-        let title = AccountSettingsHelper.sectionTitle(type: type)
-        return AccountSettingsViewModel.Section(title: title, rows: rows, type: type)
-    }
-
     /// Validates the user input
     /// Upload the changes if everything is OK, else informs the user
     public func handleSaveButtonPressed() {
@@ -158,6 +143,102 @@ class EditableAccountSettingsViewModel {
             passwordChanged = true
         }
     }
+}
+
+// MARK: -  VerifiableAccountDelegate
+
+extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
+
+    public func didEndVerification(result: Result<Void, Error>) {
+        switch result {
+        case .success:
+            do {
+                try verifiableAccount?.save { [weak self] _ in
+                    guard let me = self else {
+                        //Valid case: the view might be dismissed.
+                        return
+                    }
+                    DispatchQueue.main.async {
+                        me.delegate?.setLoadingView(visible: false)
+                        me.accountSettingsDelegate?.didChange()
+                        me.delegate?.dismissYourself()
+                    }
+                }
+            } catch {
+                Log.shared.errorAndCrash(error: error)
+                delegate?.setLoadingView(visible: false)
+                delegate?.dismissYourself()
+            }
+        case .failure(let error):
+            delegate?.setLoadingView(visible: false)
+            if let imapError = error as? ImapSyncOperationError {
+                delegate?.showAlert(error: imapError)
+            } else if let smtpError = error as? SmtpSendError {
+                delegate?.showAlert(error: smtpError)
+            } else {
+                Log.shared.errorAndCrash(error: error)
+            }
+        }
+    }
+}
+
+// MARK: -  Private
+
+extension EditableAccountSettingsViewModel {
+    // MARK: -  Sections
+
+    /// Generates and retrieves a section
+    /// - Parameter type: The type of the section to generate.
+    /// - Returns: The generated section.
+    private func generateSection(type: AccountSettingsViewModel.SectionType) -> AccountSettingsViewModel.Section {
+        let rows = generateRows(type: type)
+        let title = AccountSettingsHelper.sectionTitle(type: type)
+        return AccountSettingsViewModel.Section(title: title, rows: rows, type: type)
+    }
+
+    private func generateSections() {
+        AccountSettingsViewModel.SectionType.allCases.forEach { (type) in
+            sections.append(generateSection(type: type))
+        }
+    }
+
+    // MARK: -  Rows
+
+    /// Generate and return the display row.
+    /// - Parameters:
+    ///   - type: The type of row.
+    ///   - value: The value of the row.
+    /// - Returns: The configured row.
+    private func getDisplayRow(type: AccountSettingsViewModel.RowType, value: String) -> AccountSettingsViewModel.DisplayRow {
+        let title = AccountSettingsHelper.rowTitle(for: type)
+        let cellIdentifier = AccountSettingsHelper.CellsIdentifiers.settingsDisplayCell
+        let shouldShowCaretOrSelect = type != .tranportSecurity
+        return AccountSettingsViewModel.DisplayRow(type: type,
+                                                   title: title,
+                                                   text: value,
+                                                   cellIdentifier: cellIdentifier,
+                                                   shouldShowCaret: shouldShowCaretOrSelect,
+                                                   shouldSelect: shouldShowCaretOrSelect)
+    }
+
+    /// Setup the server fields.
+    /// - Parameters:
+    ///   - server: The server from which to take the values
+    ///   - rows: The rows to populate the fields.
+    private func setupServerFields(_ server: Server, _ rows: inout [AccountSettingsRowProtocol]) {
+        let serverRow = getDisplayRow(type : .server, value: server.address)
+        rows.append(serverRow)
+
+        let resetRow = getDisplayRow(type : .port, value: String(server.port))
+        rows.append(resetRow)
+
+        let transportSecurityRow = getDisplayRow(type : .tranportSecurity, value: server.transport.asString())
+        rows.append(transportSecurityRow)
+
+        let usernameRow = getDisplayRow(type : .username, value: server.credentials.loginName)
+        rows.append(usernameRow)
+    }
+
 
     /// This method generates all the rows for the section type passed
     /// - Parameter type: The type of the section to generate the rows.
@@ -200,105 +281,8 @@ class EditableAccountSettingsViewModel {
         }
         return rows
     }
-}
 
-// MARK: -  VerifiableAccountDelegate
-
-extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
-
-    public func didEndVerification(result: Result<Void, Error>) {
-        switch result {
-        case .success:
-            do {
-                try verifiableAccount?.save { [weak self] _ in
-                    guard let me = self else {
-                        //Valid case: the view might be dismissed.
-                        return
-                    }
-                    DispatchQueue.main.async {
-                        me.delegate?.setLoadingView(visible: false)
-                        me.accountSettingsDelegate?.didChange()
-                        me.delegate?.dismissYourself()
-                    }
-                }
-            } catch {
-                Log.shared.errorAndCrash(error: error)
-                delegate?.setLoadingView(visible: false)
-                delegate?.dismissYourself()
-            }
-        case .failure(let error):
-            delegate?.setLoadingView(visible: false)
-            if let imapError = error as? ImapSyncOperationError {
-                delegate?.showAlert(error: imapError)
-            } else if let smtpError = error as? SmtpSendError {
-                delegate?.showAlert(error: smtpError)
-            } else {
-                Log.shared.errorAndCrash(error: error)
-            }
-        }
-    }
-}
-
-// MARK: -  TransportSecurityViewModel
-
-extension EditableAccountSettingsViewModel {
-
-    private struct TransportSecurityViewModel {
-        public var numberOfOptions: Int {
-            return Server.Transport.numberOfOptions
-        }
-
-        public subscript(option: Int) -> String {
-            get {
-                return Server.Transport.allCases[option].asString()
-            }
-        }
-    }
-}
-
-// MARK: -  Private
-
-extension EditableAccountSettingsViewModel {
-
-    /// Generate and return the display row.
-    /// - Parameters:
-    ///   - type: The type of row.
-    ///   - value: The value of the row.
-    /// - Returns: The configured row.
-    private func getDisplayRow(type: AccountSettingsViewModel.RowType, value: String) -> AccountSettingsViewModel.DisplayRow {
-        let title = AccountSettingsHelper.rowTitle(for: type)
-        let cellIdentifier = AccountSettingsHelper.CellsIdentifiers.settingsDisplayCell
-        let shouldShowCaretOrSelect = type != .tranportSecurity
-        return AccountSettingsViewModel.DisplayRow(type: type,
-                                                   title: title,
-                                                   text: value,
-                                                   cellIdentifier: cellIdentifier,
-                                                   shouldShowCaret: shouldShowCaretOrSelect,
-                                                   shouldSelect: shouldShowCaretOrSelect)
-    }
-
-    /// Setup the server fields.
-    /// - Parameters:
-    ///   - server: The server from which to take the values
-    ///   - rows: The rows to populate the fields.
-    private func setupServerFields(_ server: Server, _ rows: inout [AccountSettingsRowProtocol]) {
-        let serverRow = getDisplayRow(type : .server, value: server.address)
-        rows.append(serverRow)
-
-        let resetRow = getDisplayRow(type : .port, value: String(server.port))
-        rows.append(resetRow)
-
-        let transportSecurityRow = getDisplayRow(type : .tranportSecurity, value: server.transport.asString())
-        rows.append(transportSecurityRow)
-
-        let usernameRow = getDisplayRow(type : .username, value: server.credentials.loginName)
-        rows.append(usernameRow)
-    }
-}
-
-// MARK: -  Validate input
-
-extension EditableAccountSettingsViewModel {
+    // MARK: -  Validate input
 
     private func validateInput() throws -> Input {
         // IMAP
@@ -437,4 +421,19 @@ extension EditableAccountSettingsViewModel {
             delegate?.showAlert(error: LoginViewController.LoginError.noConnectData)
         }
     }
+
+    // MARK: -  TransportSecurityViewModel
+
+    private struct TransportSecurityViewModel {
+        public var numberOfOptions: Int {
+            return Server.Transport.numberOfOptions
+        }
+
+        public subscript(option: Int) -> String {
+            get {
+                return Server.Transport.allCases[option].asString()
+            }
+        }
+    }
+
 }
