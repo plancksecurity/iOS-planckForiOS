@@ -11,7 +11,7 @@ import UIKit
 
 extension UIView {
 
-    /// Find and retrieves the first superview that is an instance of class passed by parameter.
+    /// Find and retrieves the first superview that is an instance of the class passed by parameter.
     ///
     /// - Parameter ofClass: The target class.
     /// - Returns: If found, returns the view. Nil otherwise.
