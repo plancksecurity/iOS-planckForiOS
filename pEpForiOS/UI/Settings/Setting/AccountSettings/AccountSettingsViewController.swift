@@ -53,15 +53,17 @@ final class AccountSettingsViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let account = viewModel?.account else {
-            Log.shared.errorAndCrash("No VM")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
             return
         }
+        let account = vm.account
         switch segue.destination {
         case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
-            let viewModel = EditableAccountSettingsViewModel(account: account, delegate: editableAccountSettingsViewController)
-            viewModel.accountSettingsDelegate = self
-            editableAccountSettingsViewController.viewModel = viewModel
+            let editableAccountSettingsViewModel = vm.getEditableAccountSettingsViewModel(account: account,
+                                                                                          delegate: editableAccountSettingsViewController,
+                                                                                          accountSettingsDelegate: self)
+            editableAccountSettingsViewController.viewModel = editableAccountSettingsViewModel
         case let signatureEditor as EditSignatureViewController:
             let vm = EditSignatureViewModel(account: account, delegate: self)
             signatureEditor.viewModel = vm

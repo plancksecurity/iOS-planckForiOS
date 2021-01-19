@@ -10,7 +10,7 @@ import Foundation
 import MessageModel
 
 
-protocol AccountSettingsDelegate: class {
+public protocol AccountSettingsDelegate: class {
     /// Informs Account Settings that something had changed.
     func didChange()
 }

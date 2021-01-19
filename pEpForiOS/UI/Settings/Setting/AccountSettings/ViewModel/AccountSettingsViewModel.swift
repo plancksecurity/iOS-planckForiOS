@@ -77,6 +77,14 @@ final class AccountSettingsViewModel {
             }
         }
     }
+
+    public func getEditableAccountSettingsViewModel(account: Account,
+                                                    delegate: EditableAccountSettingsDelegate,
+                                                    accountSettingsDelegate: AccountSettingsDelegate) -> EditableAccountSettingsViewModel {
+        let editableAccountSettingsViewModel = EditableAccountSettingsViewModel(account: account, delegate: delegate)
+        editableAccountSettingsViewModel.accountSettingsDelegate = accountSettingsDelegate
+        return editableAccountSettingsViewModel
+    }
 }
 
 // MARK: -  enums & structs
