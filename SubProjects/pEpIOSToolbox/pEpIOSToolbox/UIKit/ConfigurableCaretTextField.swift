@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-/// Non editable texfield without caret
+/// Non editable texfield with configurable caret
 public class ConfigurableCaretTextField: UITextField {
 
     public var shouldShowCaret: Bool = true
