@@ -619,22 +619,14 @@ extension LoginViewController {
 
     private func setFonts() {
         emailAddress.font = UIFont.pepFont(style: .callout, weight: .regular)
-        emailAddress.adjustsFontForContentSizeCategory = true
         password.font = UIFont.pepFont(style: .callout, weight: .regular)
-        password.adjustsFontForContentSizeCategory = true
         user.font = UIFont.pepFont(style: .callout, weight: .regular)
-        user.adjustsFontForContentSizeCategory = true
-        loginButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
-        loginButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        dismissButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
-        dismissButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        manualConfigButton.titleLabel?.font = UIFont.pepFont(style: .callout, weight: .regular)
-        manualConfigButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        dismissButtonLeft.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
-        dismissButtonLeft.titleLabel?.adjustsFontForContentSizeCategory = true
-        loginButtonIPadLandscape.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
-        loginButtonIPadLandscape.titleLabel?.adjustsFontForContentSizeCategory = true
-        pepSyncLabel.font = UIFont.pepFont(style: .callout, weight: .regular)
-        pepSyncLabel.adjustsFontForContentSizeCategory = true
+        loginButton.setPEPFont(style: .body, weight: .regular)
+        dismissButton.setPEPFont(style: .body, weight: .regular)
+        manualConfigButton.setPEPFont(style: .callout, weight: .regular)
+        dismissButtonLeft.setPEPFont(style: .body, weight: .regular)
+        loginButtonIPadLandscape.setPEPFont(style: .body, weight: .regular)
+        pepSyncLabel.setPEPFont(style: .callout, weight: .regular)
     }
 }
+

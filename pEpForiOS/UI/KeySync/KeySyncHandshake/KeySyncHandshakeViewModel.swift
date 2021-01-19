@@ -147,7 +147,7 @@ extension KeySyncHandshakeViewModel {
                     Log.shared.errorAndCrash("Wont show picker, no languages to show")
                     return
                 }
-                let languagesNames = langs.map { $0.name }
+                let languagesNames = langs.map { $0.name.capitalized(with: Locale.current) }
                 let selectedlanguageIndex = langs.map { $0.code }.firstIndex(of: me.languageCode)
 
                 me.delegate?.showPicker(withLanguages: languagesNames,

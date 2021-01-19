@@ -37,7 +37,8 @@ extension CdIdentity {
             //
             // Thus we are manually dealing with those problem charactes.
             let problemCharacterList: [UnicodeScalarValue:LetterToMapTo] =
-                [223: "S"] // 223 is "ß"
+                [223: "S", // 223 is "ß"
+                 214: "O"] // 214 is "Ö"
             let sectionNameForNonAlphabeticCharacters = "#"
             guard let firstChar: String = userName?.prefix(ofLength: 1) else {
                 return sectionNameForNonAlphabeticCharacters
