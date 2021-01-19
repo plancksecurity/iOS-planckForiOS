@@ -9,12 +9,6 @@
 import Foundation
 import MessageModel
 
-
-public protocol AccountSettingsDelegate: class {
-    /// Informs Account Settings that something had changed.
-    func didChange()
-}
-
 class EditSignatureViewModel {
     
     private let account: Account

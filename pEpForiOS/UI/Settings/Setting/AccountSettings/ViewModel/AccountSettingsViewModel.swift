@@ -45,7 +45,7 @@ final class AccountSettingsViewModel {
     private(set) var includeInUnifiedFolders: Bool
     private let isOAuth2: Bool
     private(set) var account: Account
-    public weak var delegate: AccountSettingsViewModelDelegate?
+    public weak var delegate: (AccountSettingsViewModelDelegate & AccountSettingsDelegate)?
     /// Items to be displayed in a Account Settings View Controller
     private(set) var sections: [Section] = [Section]()
     private let oauthViewModel = OAuthAuthorizer()
@@ -55,7 +55,7 @@ final class AccountSettingsViewModel {
     /// - Parameters:
     ///   - account: The account to configure the account settings view model.
     ///   - delegate: The delegate to communicate to the View Controller.
-    init(account: Account, delegate: AccountSettingsViewModelDelegate? = nil) {
+    init(account: Account, delegate: (AccountSettingsViewModelDelegate & AccountSettingsDelegate)? = nil) {
         self.account = account
         self.delegate = delegate
         includeInUnifiedFolders = account.isIncludedInUnifiedFolders
@@ -78,11 +78,15 @@ final class AccountSettingsViewModel {
         }
     }
 
+    /// Retrieves the EditableAccountSettingsViewModel
+    /// - Parameters:
+    ///   - account: The account to edit.
+    ///   - delegate: The EditableAccountSettings delegate
+    /// - Returns: The EditableAccountSettingsViewModel
     public func getEditableAccountSettingsViewModel(account: Account,
-                                                    delegate: EditableAccountSettingsDelegate,
-                                                    accountSettingsDelegate: AccountSettingsDelegate) -> EditableAccountSettingsViewModel {
+                                                    delegate: EditableAccountSettingsDelegate) -> EditableAccountSettingsViewModel {
         let editableAccountSettingsViewModel = EditableAccountSettingsViewModel(account: account, delegate: delegate)
-        editableAccountSettingsViewModel.accountSettingsDelegate = accountSettingsDelegate
+        editableAccountSettingsViewModel.accountSettingsDelegate = self
         return editableAccountSettingsViewModel
     }
 }
@@ -485,5 +489,11 @@ extension AccountSettingsViewModel {
             }
             me.delegate?.setLoadingView(visible: visible)
         }
+    }
+}
+
+extension AccountSettingsViewModel: AccountSettingsDelegate {
+    func didChange() {
+        delegate?.didChange()
     }
 }

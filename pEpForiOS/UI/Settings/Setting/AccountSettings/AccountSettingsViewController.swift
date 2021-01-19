@@ -60,9 +60,7 @@ final class AccountSettingsViewController: UIViewController {
         let account = vm.account
         switch segue.destination {
         case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
-            let editableAccountSettingsViewModel = vm.getEditableAccountSettingsViewModel(account: account,
-                                                                                          delegate: editableAccountSettingsViewController,
-                                                                                          accountSettingsDelegate: self)
+            let editableAccountSettingsViewModel = vm.getEditableAccountSettingsViewModel(account: account, delegate: editableAccountSettingsViewController)
             editableAccountSettingsViewController.viewModel = editableAccountSettingsViewModel
         case let signatureEditor as EditSignatureViewController:
             let vm = EditSignatureViewModel(account: account, delegate: self)
@@ -323,7 +321,7 @@ extension AccountSettingsViewController: AccountSettingsDelegate {
         /// we re-init the view model in order re-generate those rows.
         /// With the rows having the data up-to-date we reload the table view.
         if let account = viewModel?.account {
-            viewModel = AccountSettingsViewModel(account: account)
+            viewModel = AccountSettingsViewModel(account: account, delegate: self)
             tableView.reloadData()
         }
     }
