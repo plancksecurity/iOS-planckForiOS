@@ -9,10 +9,11 @@
 import UIKit
 
 import pEpIOSToolbox
+import MessageModel
 
 final class ShareViewController: UIViewController {
     // TODO: Use MM
-    //private var messageModelService: MessageModelServiceProtocol?
+    private var messageModelService: MessageModelServiceProtocol?
 
     var composeTableVC: ComposeTableViewController?
 
