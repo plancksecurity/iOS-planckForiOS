@@ -218,6 +218,9 @@
 		3AC2B845240E692600E08EB3 /* ClientCertificateImportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B844240E692600E08EB3 /* ClientCertificateImportViewModel.swift */; };
 		3AD0E0A123E4659F006FFED3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AD0E0A023E4659F006FFED3 /* Assets.xcassets */; };
 		3AD2CBC923FD92650003A536 /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD2CBC823FD92640003A536 /* AccountSettingsViewModel.swift */; };
+		3AD89A08253C32ED00994F11 /* SendMailHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD89A07253C32ED00994F11 /* SendMailHelper.swift */; };
+		3AD89A0D253C360F00994F11 /* SmtpConnectAndSendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD89A0C253C360F00994F11 /* SmtpConnectAndSendMessage.swift */; };
+		3AD89A12253C364A00994F11 /* SmtpConnectionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD89A11253C364A00994F11 /* SmtpConnectionProtocol.swift */; };
 		43038EA2246D897F008FC36E /* KeyImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43038EA1246D897F008FC36E /* KeyImportViewController.swift */; };
 		43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43040A521E9776220083DED8 /* AttachmentSummaryView.swift */; };
 		43062B9424ED4AAF00489258 /* Rating+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43062B9324ED4AAE00489258 /* Rating+UI.swift */; };
@@ -764,6 +767,9 @@
 		3AC2B844240E692600E08EB3 /* ClientCertificateImportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateImportViewModel.swift; sourceTree = "<group>"; };
 		3AD0E0A023E4659F006FFED3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3AD2CBC823FD92640003A536 /* AccountSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModel.swift; sourceTree = "<group>"; };
+		3AD89A07253C32ED00994F11 /* SendMailHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMailHelper.swift; sourceTree = "<group>"; };
+		3AD89A0C253C360F00994F11 /* SmtpConnectAndSendMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmtpConnectAndSendMessage.swift; sourceTree = "<group>"; };
+		3AD89A11253C364A00994F11 /* SmtpConnectionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmtpConnectionProtocol.swift; sourceTree = "<group>"; };
 		43038EA1246D897F008FC36E /* KeyImportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportViewController.swift; sourceTree = "<group>"; };
 		43040A521E9776220083DED8 /* AttachmentSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentSummaryView.swift; sourceTree = "<group>"; };
 		43062B9324ED4AAE00489258 /* Rating+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rating+UI.swift"; sourceTree = "<group>"; };
@@ -1896,6 +1902,7 @@
 				3A503B212537456A0070AB6A /* Storyboards */,
 				3A503B222537457D0070AB6A /* ViewControllers */,
 				3A503B292537459C0070AB6A /* Extensions */,
+				3AD89A16253C365200994F11 /* MailSender */,
 			);
 			path = "pEp-share";
 			sourceTree = "<group>";
@@ -1931,6 +1938,16 @@
 				15944A3423980FEC006B133B /* EmailDisplayViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		3AD89A16253C365200994F11 /* MailSender */ = {
+			isa = PBXGroup;
+			children = (
+				3AD89A11253C364A00994F11 /* SmtpConnectionProtocol.swift */,
+				3AD89A0C253C360F00994F11 /* SmtpConnectAndSendMessage.swift */,
+				3AD89A07253C32ED00994F11 /* SendMailHelper.swift */,
+			);
+			path = MailSender;
 			sourceTree = "<group>";
 		};
 		430D73601E9CBD0600EA6FA9 /* Background */ = {
@@ -2991,9 +3008,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AD89A0D253C360F00994F11 /* SmtpConnectAndSendMessage.swift in Sources */,
+				3AD89A08253C32ED00994F11 /* SendMailHelper.swift in Sources */,
 				3A503B18253744390070AB6A /* ComposeTableViewController.swift in Sources */,
 				3A503A9F253737B20070AB6A /* ShareViewController.swift in Sources */,
 				3A503B1D253744D40070AB6A /* UIImage+Resize.swift in Sources */,
+				3AD89A12253C364A00994F11 /* SmtpConnectionProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
