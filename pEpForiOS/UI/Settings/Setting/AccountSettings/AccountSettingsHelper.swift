@@ -22,6 +22,17 @@ public struct AccountSettingsHelper {
         return account?.imapServer?.credentials.clientCertificate != .none
     }
 
+    public var certificateDescription: String {
+        guard let certificate = account?.imapServer?.credentials.clientCertificate else {
+            Log.shared.errorAndCrash("Client Certificate not found")
+            return ""
+        }
+        let name = certificate.label ?? "--"
+        let date = certificate.date?.fullString() ?? ""
+        let separator = NSLocalizedString("Exp. date:", comment: "separator string between name and date")
+        return "\(name), \(separator) \(date)"
+    }
+
     /// Provides the title of the row
     /// - Parameter type: The type of the row
     /// - Returns: the title of the row.
@@ -55,14 +66,7 @@ public struct AccountSettingsHelper {
         case .signature:
             return NSLocalizedString("Signature", comment: "Signature label in account settings")
         case .certificate:
-            guard let certificate = account?.imapServer?.credentials.clientCertificate else {
-                Log.shared.errorAndCrash("Client Certificate not found")
-                return ""
-            }
-            let name = certificate.label ?? "--"
-            let date = certificate.date?.fullString() ?? ""
-            let separator = NSLocalizedString("Exp. date:", comment: "separator string between name and date")
-            return "\(name), \(separator) \(date)"
+            return NSLocalizedString("Certificate", comment: "Certificate label in account settings")
         }
     }
 

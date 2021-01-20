@@ -16,8 +16,15 @@ final class AccountSettingsTableViewCell: UITableViewCell {
     @IBOutlet weak var valueTextfield: ConfigurableCaretTextField!
     @IBOutlet private weak var stackView: UIStackView!
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        configureDisplayRow()
+        keyLabel.font = UIFont.pepFont(style: .body, weight: .regular)
+        valueTextfield.font = UIFont.pepFont(style: .body, weight: .regular)
+    }
+
     /// Configure the cell according to the current trait collection
-    public func configure(with row : AccountSettingsViewModel.DisplayRow? = nil, for traitCollection : UITraitCollection? = nil) {
+    public func configureDisplayRow(with row : AccountSettingsViewModel.DisplayRow? = nil, for traitCollection : UITraitCollection? = nil) {
         guard let traitCollection = traitCollection else {
             //This is a valid case
             return
@@ -47,11 +54,25 @@ final class AccountSettingsTableViewCell: UITableViewCell {
         }
     }
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        configure()
-        keyLabel.font = UIFont.pepFont(style: .body, weight: .regular)
-        valueTextfield.font = UIFont.pepFont(style: .body, weight: .regular)
+    /// Configure the cell according to the current trait collection
+    public func configureActionRow(with row : AccountSettingsViewModel.ActionRow? = nil,
+                          for traitCollection : UITraitCollection? = nil) {
+        guard let traitCollection = traitCollection else {
+            //This is a valid case
+            return
+        }
+        let contentSize = traitCollection.preferredContentSizeCategory
+        stackView.axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
+        stackView.spacing = contentSize.isAccessibilityCategory ? 10.0 : 5.0
+
+        guard let row = row else {
+            Log.shared.errorAndCrash("Without row the cell can not be configured")
+            return
+        }
+        keyLabel.text = row.title
+        valueTextfield.shouldShowCaret = false
+        valueTextfield.shouldSelect = false
+        accessoryType = .detailDisclosureButton
     }
 }
 

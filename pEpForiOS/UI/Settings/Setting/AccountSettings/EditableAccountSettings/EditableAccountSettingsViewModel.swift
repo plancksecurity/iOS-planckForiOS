@@ -218,12 +218,12 @@ extension EditableAccountSettingsViewModel {
     ///   - value: The value of the row.
     /// - Returns: The configured row.
     private func getDisplayRow(type: AccountSettingsViewModel.RowType, value: String) -> AccountSettingsViewModel.DisplayRow {
+        let cellIdentifier = AccountSettingsHelper.CellsIdentifiers.settingsDisplayCell
         guard let accountSettingsHelper = accountSettingsHelper else {
             Log.shared.errorAndCrash("AccountSettingsHelper not found")
-            return AccountSettingsViewModel.DisplayRow(type: .email, title: "", text: "", cellIdentifier: "")
+            return AccountSettingsViewModel.DisplayRow(type: .email, title: "", text: "", cellIdentifier: cellIdentifier)
         }
         let title = accountSettingsHelper.rowTitle(for: type)
-        let cellIdentifier = AccountSettingsHelper.CellsIdentifiers.settingsDisplayCell
         let shouldShowCaretOrSelect = type != .tranportSecurity
         return AccountSettingsViewModel.DisplayRow(type: type,
                                                    title: title,
@@ -232,6 +232,20 @@ extension EditableAccountSettingsViewModel {
                                                    shouldShowCaret: shouldShowCaretOrSelect,
                                                    shouldSelect: shouldShowCaretOrSelect)
     }
+
+    private func getActionRow(type: AccountSettingsViewModel.RowType, value: String) -> AccountSettingsViewModel.ActionRow {
+        let cellIdentifier = AccountSettingsHelper.CellsIdentifiers.settingsDisplayCell
+        guard let accountSettingsHelper = accountSettingsHelper else {
+            Log.shared.errorAndCrash("AccountSettingsHelper not found")
+            return AccountSettingsViewModel.ActionRow(type: type, title: "", cellIdentifier: cellIdentifier)
+        }
+        let title = accountSettingsHelper.rowTitle(for: type)
+        return AccountSettingsViewModel.ActionRow(type: type, title: title, isDangerous: false, action: {
+            print("Tap tap")
+        }, cellIdentifier: cellIdentifier)
+    }
+
+
 
     /// Setup the server fields.
     /// - Parameters:
@@ -281,7 +295,7 @@ extension EditableAccountSettingsViewModel {
                 return []
             }
             if accountSettingsHelper.hasClientCertificate {
-                rows.append(getDisplayRow(type : .certificate, value: ""))
+                rows.append(getActionRow(type : .certificate, value: accountSettingsHelper.certificateDescription))
             }
         case .imap:
             guard let imapServer = account.imapServer else {

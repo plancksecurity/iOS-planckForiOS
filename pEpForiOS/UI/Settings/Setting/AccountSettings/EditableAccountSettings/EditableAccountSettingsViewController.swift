@@ -79,16 +79,29 @@ extension EditableAccountSettingsViewController: UITableViewDataSource {
             Log.shared.errorAndCrash("Can't dequeue cell")
             return UITableViewCell()
         }
-        guard let row = vm.sections[indexPath.section].rows[indexPath.row] as? AccountSettingsViewModel.DisplayRow else {
-            Log.shared.errorAndCrash("Can't get row")
+
+        let row = vm.sections[indexPath.section].rows[indexPath.row]
+
+        switch row.type {
+        case .certificate:
+            guard let row = row as? AccountSettingsViewModel.ActionRow else {
+                Log.shared.errorAndCrash("Can't get row")
+                return cell
+            }
+            cell.configureActionRow(with: row, for: traitCollection)
+            return cell
+        default:
+            guard let row = row as? AccountSettingsViewModel.DisplayRow else {
+                Log.shared.errorAndCrash("Can't get row")
+                return cell
+            }
+            cell.configureDisplayRow(with: row, for: traitCollection)
+            if row.type == .tranportSecurity {
+                cell.valueTextfield.inputView = pickerView
+            }
+            cell.valueTextfield.delegate = self
             return cell
         }
-        cell.configure(with: row, for: traitCollection)
-        if row.type == .tranportSecurity {
-            cell.valueTextfield.inputView = pickerView
-        }
-        cell.valueTextfield.delegate = self
-        return cell
     }
 }
 

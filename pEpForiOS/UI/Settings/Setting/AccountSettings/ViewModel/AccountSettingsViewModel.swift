@@ -52,12 +52,15 @@ final class AccountSettingsViewModel {
     private(set) var sections: [Section] = [Section]()
     private let oauthViewModel = OAuthAuthorizer()
     private lazy var folderSyncService = FetchImapFoldersService()
+    private var accountSettingsHelper: AccountSettingsHelper?
 
     /// Constructor
     /// - Parameters:
     ///   - account: The account to configure the account settings view model.
     ///   - delegate: The delegate to communicate to the View Controller.
     init(account: Account, delegate: AccountSettingsViewModelDelegate? = nil) {
+        accountSettingsHelper = AccountSettingsHelper(account: account)
+
         self.account = account
         self.delegate = delegate
         includeInUnifiedFolders = account.isIncludedInUnifiedFolders
