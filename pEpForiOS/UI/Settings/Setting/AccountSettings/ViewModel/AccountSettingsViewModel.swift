@@ -176,6 +176,8 @@ extension AccountSettingsViewModel {
         var type: AccountSettingsViewModel.RowType
         /// Title of the action row
         var title: String
+        /// The text of the row
+        var text: String?
         /// Indicates if the action to be performed is dangerous.
         var isDangerous: Bool = false
         /// Block that will be executed when action cell is pressed

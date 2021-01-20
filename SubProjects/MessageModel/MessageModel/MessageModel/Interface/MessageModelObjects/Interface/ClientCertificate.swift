@@ -33,6 +33,8 @@ public class ClientCertificate: MessageModelObjectProtocol, ManagedObjectWrapper
     public var date: Date? {
         return cdObject.importDate
     }
+
+    public var url: URL?
 }
 
 extension ClientCertificate: Equatable {
@@ -47,3 +49,4 @@ extension ClientCertificate: Hashable {
         hasher.combine(cdObject.keychainUuid)
     }
 }
+

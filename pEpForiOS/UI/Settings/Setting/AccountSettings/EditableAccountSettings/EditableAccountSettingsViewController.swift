@@ -11,7 +11,7 @@ import pEpIOSToolbox
 
 class EditableAccountSettingsViewController: UIViewController {
 
-    var viewModel : EditableAccountSettingsViewModel? {
+    final var viewModel : EditableAccountSettingsViewModel? {
         didSet {
             viewModel?.delegate = self
         }
@@ -32,6 +32,9 @@ class EditableAccountSettingsViewController: UIViewController {
         tableView.hideSeperatorForEmptyCells()
         UIHelper.variableContentHeight(tableView)
         setKeyboardHandling()
+//        tableView.allowsSelection = true
+//        tableView.delegate = self
+//        tableView.dataSource = self
     }
 
     @IBAction func saveButtonTapped() {
@@ -89,6 +92,7 @@ extension EditableAccountSettingsViewController: UITableViewDataSource {
                 return cell
             }
             cell.configureActionRow(with: row, for: traitCollection)
+            cell.valueTextfield.delegate = self
             return cell
         default:
             guard let row = row as? AccountSettingsViewModel.DisplayRow else {
@@ -125,11 +129,23 @@ extension EditableAccountSettingsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0
     }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        if let row = vm.sections[indexPath.section].rows[indexPath.row] as? AccountSettingsViewModel.ActionRow,
+           let action = row.action {
+            action()
+        }
+    }
 }
 
 // MARK: - EditableAccountSettingsDelegate2
 
 extension EditableAccountSettingsViewController: EditableAccountSettingsDelegate {
+
     func setLoadingView(visible: Bool) {
         LoadingInterface.setLoadingView(visible: visible)
     }
@@ -141,11 +157,31 @@ extension EditableAccountSettingsViewController: EditableAccountSettingsDelegate
     func dismissYourself() {
         navigationController?.popViewController(animated: true)
     }
+
+    func showEditCertificate() {
+        guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateManagementViewController.storyboardIdentifier) as? ClientCertificateManagementViewController else {
+            return
+        }
+        vc.viewModel = viewModel?.clientCertificateManagementViewModel()
+        present(vc, animated: true)
+    }
 }
 
 // MARK: - UITextFieldDelegate
 
 extension EditableAccountSettingsViewController: UITextFieldDelegate {
+
+    private func getRow(of textField: UITextField) -> AccountSettingsRowProtocol {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return AccountSettingsViewModel.DisplayRow(type: .email, title: "", text: "", cellIdentifier: "")
+        }
+        guard let indexPath = indexPathOfCellWith(textField: textField) else {
+            Log.shared.errorAndCrash("Textfield begins editing doesn't belong to any row")
+            return AccountSettingsViewModel.DisplayRow(type: .email, title: "", text: "", cellIdentifier: "")
+        }
+        return vm.sections[indexPath.section].rows[indexPath.row]
+    }
 
     private func indexPathOfCellWith(textField: UITextField) -> IndexPath? {
         guard let cell = textField.superviewOfClass(ofClass: AccountSettingsTableViewCell.self) else {
@@ -159,22 +195,23 @@ extension EditableAccountSettingsViewController: UITextFieldDelegate {
         return indexPath
     }
 
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        let row = getRow(of: textField)
+        return row.type != .certificate
+    }
+
     func textFieldDidBeginEditing(_ textField: UITextField) {
         firstResponder = textField
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-        guard let indexPath = indexPathOfCellWith(textField: textField) else {
-            Log.shared.errorAndCrash("Textfield begins editing doesn't belong to any row")
-            return
-        }
-        guard let row = vm.sections[indexPath.section].rows[indexPath.row] as? AccountSettingsViewModel.DisplayRow else {
-            Log.shared.errorAndCrash("Row not found")
-            return
-        }
+        let row = getRow(of: textField)
         if row.type == .tranportSecurity {
-            let index = vm.transportSecurityIndex(for: row.text)
+            guard let displayRow = row as? AccountSettingsViewModel.DisplayRow else {
+                return
+            }
+            let index = vm.transportSecurityIndex(for: displayRow.text)
             pickerView.selectRow(index, inComponent: 0, animated: true)
             textField.tintColor = .clear
         }
@@ -256,8 +293,10 @@ extension EditableAccountSettingsViewController {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard),
+                                       name: UIResponder.keyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard),
+                                       name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
 
     @objc private func dismissKeyboard() {

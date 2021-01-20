@@ -20,6 +20,8 @@ protocol EditableAccountSettingsDelegate: class {
     func showAlert(error: Error)
     /// Informs the VC that has to dismiss
     func dismissYourself()
+    /// Show Edit Certificate
+    func showEditCertificate()
 }
 
 class EditableAccountSettingsViewModel {
@@ -147,6 +149,11 @@ class EditableAccountSettingsViewModel {
             passwordChanged = true
         }
     }
+
+    public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
+        let verifiableAccount = VerifiableAccount.verifiableAccount(for: .clientCertificate, usePEPFolderProvider: AppSettings.shared)
+        return ClientCertificateManagementViewModel(verifiableAccount: verifiableAccount)
+    }
 }
 
 // MARK: -  VerifiableAccountDelegate
@@ -233,19 +240,21 @@ extension EditableAccountSettingsViewModel {
                                                    shouldSelect: shouldShowCaretOrSelect)
     }
 
-    private func getActionRow(type: AccountSettingsViewModel.RowType, value: String) -> AccountSettingsViewModel.ActionRow {
+    private func getActionRow(type: AccountSettingsViewModel.RowType, value: String, action: AccountSettingsViewModel.AlertActionBlock) -> AccountSettingsViewModel.ActionRow {
         let cellIdentifier = AccountSettingsHelper.CellsIdentifiers.settingsDisplayCell
         guard let accountSettingsHelper = accountSettingsHelper else {
             Log.shared.errorAndCrash("AccountSettingsHelper not found")
             return AccountSettingsViewModel.ActionRow(type: type, title: "", cellIdentifier: cellIdentifier)
         }
         let title = accountSettingsHelper.rowTitle(for: type)
-        return AccountSettingsViewModel.ActionRow(type: type, title: title, isDangerous: false, action: {
-            print("Tap tap")
-        }, cellIdentifier: cellIdentifier)
+        return AccountSettingsViewModel.ActionRow(type: type,
+                                                  title: title,
+                                                  text: value,
+                                                  isDangerous: false,
+                                                  action: {
+                                                    print("Tap tap")
+                                                  }, cellIdentifier: cellIdentifier)
     }
-
-
 
     /// Setup the server fields.
     /// - Parameters:
@@ -295,7 +304,13 @@ extension EditableAccountSettingsViewModel {
                 return []
             }
             if accountSettingsHelper.hasClientCertificate {
-                rows.append(getActionRow(type : .certificate, value: accountSettingsHelper.certificateDescription))
+                rows.append(getActionRow(type : .certificate, value: accountSettingsHelper.certificateDescription, action: { [weak self] in
+                    guard let me = self else {
+                        Log.shared.errorAndCrash("Lost myself")
+                        return
+                    }
+                    me.delegate?.showEditCertificate()
+                }))
             }
         case .imap:
             guard let imapServer = account.imapServer else {

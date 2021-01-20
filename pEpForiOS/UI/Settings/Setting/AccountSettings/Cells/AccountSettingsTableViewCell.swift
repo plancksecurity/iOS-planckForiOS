@@ -43,6 +43,10 @@ final class AccountSettingsTableViewCell: UITableViewCell {
         valueTextfield.isSecureTextEntry = row.type == .password
         valueTextfield.shouldShowCaret = row.shouldShowCaret
         valueTextfield.shouldSelect = row.shouldSelect
+        accessoryType = .none
+        selectionStyle = .none
+        stackView.spacing = 0
+
         switch row.type {
         case .email:
             valueTextfield.isEnabled = false
@@ -69,10 +73,14 @@ final class AccountSettingsTableViewCell: UITableViewCell {
             Log.shared.errorAndCrash("Without row the cell can not be configured")
             return
         }
+
         keyLabel.text = row.title
+        valueTextfield.text = row.text
+        valueTextfield.isEnabled = false
         valueTextfield.shouldShowCaret = false
         valueTextfield.shouldSelect = false
-        accessoryType = .detailDisclosureButton
+        accessoryType = .disclosureIndicator
+        selectionStyle = .default
     }
 }
 
