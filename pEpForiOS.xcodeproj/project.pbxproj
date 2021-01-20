@@ -179,16 +179,11 @@
 		3705096622CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705096522CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift */; };
 		3705096822CF6AD100CB73D6 /* KeySyncHandshakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705096722CF6AD100CB73D6 /* KeySyncHandshakeViewController.swift */; };
 		3705096C22DC8C1800CB73D6 /* KeyInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705096B22DC8C1800CB73D6 /* KeyInputView.swift */; };
-		37156E44234CD47C00845A28 /* EditableAccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E43234CD47C00845A28 /* EditableAccountSettingsViewController.swift */; };
-		37156E46234CD49F00845A28 /* EditableAccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E45234CD49F00845A28 /* EditableAccountSettingsViewModel.swift */; };
-		37156E4C234CDDF100845A28 /* EditableAccountSettingsTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E4B234CDDF100845A28 /* EditableAccountSettingsTableViewModel.swift */; };
 		37156E4E234DCE2B00845A28 /* UIViewController+LoadingInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E4D234DCE2B00845A28 /* UIViewController+LoadingInterface.swift */; };
 		37156E50234DD3FB00845A28 /* LoadingInterface.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37156E4F234DD3FB00845A28 /* LoadingInterface.xib */; };
 		371A715A231D45D0008B31F3 /* TutorialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371A7159231D45D0008B31F3 /* TutorialViewModel.swift */; };
 		371D641D231D17390036AE62 /* StartUpTutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371D641C231D17390036AE62 /* StartUpTutorial.swift */; };
 		371D6420231D17F80036AE62 /* TutorialWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371D641F231D17F80036AE62 /* TutorialWizardViewController.swift */; };
-		3756434E2370810400FB354D /* EditableAccountSettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F272EF237075D9005C51AA /* EditableAccountSettingsViewModelTest.swift */; };
-		375643502371BC4600FB354D /* EditableAccountSettingsTableViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3756434F2371B92200FB354D /* EditableAccountSettingsTableViewModelTest.swift */; };
 		375BA08A238BFC4100BBFE7C /* ManualAccountSetupContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375BA089238BFC4100BBFE7C /* ManualAccountSetupContainerView.swift */; };
 		37816542230EC72C00B967E3 /* PEPAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816541230EC72C00B967E3 /* PEPAlertViewController.swift */; };
 		37816544230EC73900B967E3 /* PEPAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816543230EC73900B967E3 /* PEPAlertViewModel.swift */; };
@@ -345,6 +340,7 @@
 		49A6114E2179F3A1006BA3C5 /* UnitTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A6114D2179F3A1006BA3C5 /* UnitTestUtils.swift */; };
 		49C34AF620E4F649009D11CC /* CellDetailTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C34AF520E4F649009D11CC /* CellDetailTransition.swift */; };
 		49D3BECC20F8F7330043E05D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D3BECB20F8F7330043E05D /* LoginViewController.swift */; };
+		5B09DB4725B71247005D8125 /* SettingChangeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B09DB4625B71247005D8125 /* SettingChangeDelegate.swift */; };
 		5B0B339D24AC85E800CABD0B /* UIUtils+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */; };
 		5B0B339F24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0B339E24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift */; };
 		5B1C0E1823FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */; };
@@ -360,14 +356,15 @@
 		5B70B1F724507B8A0010AED7 /* pEpFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */; };
 		5B71016E243619CF00BAE405 /* TrustedServerSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B71016D243619CF00BAE405 /* TrustedServerSettingsViewController.swift */; };
 		5B74C00D249B7EA300802704 /* FolderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B74C00C249B7EA300802704 /* FolderTableViewCell.swift */; };
+		5B884B44257A90FE006B2022 /* EditableAccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B884B43257A90FE006B2022 /* EditableAccountSettingsViewController.swift */; };
 		5BA946232542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA946222542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift */; };
+		5BAAD350257E2658002CACAA /* EditableAccountSettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAAD34F257E2658002CACAA /* EditableAccountSettingsViewModelTest.swift */; };
 		5BB7C73524D2EB3700D5F328 /* UnifiedTrash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C73424D2EB3700D5F328 /* UnifiedTrash.swift */; };
 		5BB7C73724D2EC0800D5F328 /* UnifiedDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C73624D2EC0800D5F328 /* UnifiedDraft.swift */; };
 		5BB7C73924D2EC4400D5F328 /* UnifiedSent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C73824D2EC4400D5F328 /* UnifiedSent.swift */; };
 		5BB7C73B24D2EC6300D5F328 /* UnifiedInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C73A24D2EC6300D5F328 /* UnifiedInbox.swift */; };
 		5BB7C74524D82B6300D5F328 /* Constants+Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C74424D82B6300D5F328 /* Constants+Support.swift */; };
 		5BB7C74724D85A3B00D5F328 /* PEPWebviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C74624D85A3A00D5F328 /* PEPWebviewController.swift */; };
-		5BBDDD1A255EDF9C00999385 /* EditableAccountSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E47234CDD4A00845A28 /* EditableAccountSettingsTableViewController.swift */; };
 		5BBE80CB24B733C0008DE0E5 /* AccountSettingsDangerousTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80C624B733BF008DE0E5 /* AccountSettingsDangerousTableViewCell.swift */; };
 		5BBE80CC24B733C0008DE0E5 /* AccountSettingsOAuthTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80C724B733BF008DE0E5 /* AccountSettingsOAuthTableViewCell.swift */; };
 		5BBE80CD24B733C0008DE0E5 /* AccountSettingsSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80C824B733BF008DE0E5 /* AccountSettingsSwitchTableViewCell.swift */; };
@@ -387,6 +384,8 @@
 		5BE35A9A249139DD00AC605C /* AccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */; };
 		5BE35AA424913B4700AC605C /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35AA324913B4700AC605C /* SettingsViewModel.swift */; };
 		5BEAECB525370C3E0082AAC6 /* String+Mailto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEAECB425370C3E0082AAC6 /* String+Mailto.swift */; };
+		5BF39DA4257A71AC00A00A96 /* EditableAccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF39DA2257A71AC00A00A96 /* EditableAccountSettingsViewModel.swift */; };
+		5BF39DA8257A737A00A00A96 /* AccountSettingsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF39DA7257A737A00A00A96 /* AccountSettingsHelper.swift */; };
 		5BF449F4240827F500B23E50 /* TutorialStep0ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF449F3240827F500B23E50 /* TutorialStep0ViewController.swift */; };
 		5BF505FE253EFBA50051FBD3 /* MailtoTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD917E1252DD64D0092B30F /* MailtoTest.swift */; };
 		5BF9B3D723FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF9B3D623FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift */; };
@@ -719,23 +718,17 @@
 		3705096522CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncHandshakeViewModel.swift; sourceTree = "<group>"; };
 		3705096722CF6AD100CB73D6 /* KeySyncHandshakeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncHandshakeViewController.swift; sourceTree = "<group>"; };
 		3705096B22DC8C1800CB73D6 /* KeyInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyInputView.swift; sourceTree = "<group>"; };
-		37156E43234CD47C00845A28 /* EditableAccountSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewController.swift; sourceTree = "<group>"; };
-		37156E45234CD49F00845A28 /* EditableAccountSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModel.swift; sourceTree = "<group>"; };
-		37156E47234CDD4A00845A28 /* EditableAccountSettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsTableViewController.swift; sourceTree = "<group>"; };
-		37156E4B234CDDF100845A28 /* EditableAccountSettingsTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsTableViewModel.swift; sourceTree = "<group>"; };
 		37156E4D234DCE2B00845A28 /* UIViewController+LoadingInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+LoadingInterface.swift"; sourceTree = "<group>"; };
 		37156E4F234DD3FB00845A28 /* LoadingInterface.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingInterface.xib; sourceTree = "<group>"; };
 		371A7159231D45D0008B31F3 /* TutorialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewModel.swift; sourceTree = "<group>"; };
 		371D641C231D17390036AE62 /* StartUpTutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartUpTutorial.swift; sourceTree = "<group>"; };
 		371D641F231D17F80036AE62 /* TutorialWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialWizardViewController.swift; sourceTree = "<group>"; };
-		3756434F2371B92200FB354D /* EditableAccountSettingsTableViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsTableViewModelTest.swift; sourceTree = "<group>"; };
 		375BA089238BFC4100BBFE7C /* ManualAccountSetupContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualAccountSetupContainerView.swift; sourceTree = "<group>"; };
 		37816541230EC72C00B967E3 /* PEPAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPAlertViewController.swift; sourceTree = "<group>"; };
 		37816543230EC73900B967E3 /* PEPAlertViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPAlertViewModel.swift; sourceTree = "<group>"; };
 		37816545230EE5F700B967E3 /* PEPUIAlertAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPUIAlertAction.swift; sourceTree = "<group>"; };
 		37816548231035F000B967E3 /* PEPAlertViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPAlertViewModelTest.swift; sourceTree = "<group>"; };
 		37A710DF233B5AA5001FEAF0 /* UIHelper+PEP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIHelper+PEP.swift"; sourceTree = "<group>"; };
-		37F272EF237075D9005C51AA /* EditableAccountSettingsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModelTest.swift; sourceTree = "<group>"; };
 		37F615CB238BE51F001AAE48 /* ManualAccountSetupView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ManualAccountSetupView.xib; sourceTree = "<group>"; };
 		37F615CE238BE584001AAE48 /* ManualAccountSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualAccountSetupView.swift; sourceTree = "<group>"; };
 		37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedPlaceholderTextfield.swift; sourceTree = "<group>"; };
@@ -966,6 +959,7 @@
 		49A6114D2179F3A1006BA3C5 /* UnitTestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitTestUtils.swift; sourceTree = "<group>"; };
 		49C34AF520E4F649009D11CC /* CellDetailTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellDetailTransition.swift; sourceTree = "<group>"; };
 		49D3BECB20F8F7330043E05D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		5B09DB4625B71247005D8125 /* SettingChangeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingChangeDelegate.swift; sourceTree = "<group>"; };
 		5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+Passphrase.swift"; sourceTree = "<group>"; };
 		5B0B339E24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGPKeyImportSettingSwitchTableViewCell.swift; sourceTree = "<group>"; };
 		5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCellProtocols.swift; sourceTree = "<group>"; };
@@ -981,7 +975,9 @@
 		5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpFooterView.swift; sourceTree = "<group>"; };
 		5B71016D243619CF00BAE405 /* TrustedServerSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustedServerSettingsViewController.swift; sourceTree = "<group>"; };
 		5B74C00C249B7EA300802704 /* FolderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FolderTableViewCell.swift; path = Folder/FolderTableViewCell.swift; sourceTree = "<group>"; };
+		5B884B43257A90FE006B2022 /* EditableAccountSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewController.swift; sourceTree = "<group>"; };
 		5BA946222542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPAlertViewController+KeySyncError.swift"; sourceTree = "<group>"; };
+		5BAAD34F257E2658002CACAA /* EditableAccountSettingsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModelTest.swift; sourceTree = "<group>"; };
 		5BB7C73424D2EB3700D5F328 /* UnifiedTrash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedTrash.swift; sourceTree = "<group>"; };
 		5BB7C73624D2EC0800D5F328 /* UnifiedDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedDraft.swift; sourceTree = "<group>"; };
 		5BB7C73824D2EC4400D5F328 /* UnifiedSent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedSent.swift; sourceTree = "<group>"; };
@@ -1008,6 +1004,8 @@
 		5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewController.swift; sourceTree = "<group>"; };
 		5BE35AA324913B4700AC605C /* SettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		5BEAECB425370C3E0082AAC6 /* String+Mailto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Mailto.swift"; sourceTree = "<group>"; };
+		5BF39DA2257A71AC00A00A96 /* EditableAccountSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModel.swift; sourceTree = "<group>"; };
+		5BF39DA7257A737A00A00A96 /* AccountSettingsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsHelper.swift; sourceTree = "<group>"; };
 		5BF449F3240827F500B23E50 /* TutorialStep0ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep0ViewController.swift; sourceTree = "<group>"; };
 		5BF9B3D623FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementResetTableViewCell.swift; sourceTree = "<group>"; };
 		8B69E3981E30F80E0022959E /* Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
@@ -1555,6 +1553,8 @@
 		15874BB62127493E00A3A4A6 /* AccountSettings */ = {
 			isa = PBXGroup;
 			children = (
+				5B09DB4625B71247005D8125 /* SettingChangeDelegate.swift */,
+				5BF39DA7257A737A00A00A96 /* AccountSettingsHelper.swift */,
 				B7CE922C24E3F9F700B5A874 /* EditSignature */,
 				5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */,
 				5BE35AA5249219AD00AC605C /* Cells */,
@@ -1614,7 +1614,6 @@
 				439EA15224727966005D6C9A /* KeyImport */,
 				37A710E2233B7A96001FEAF0 /* AccountSettings */,
 				37F272ED237075A8005C51AA /* EditableAccountSettings */,
-				37F272EE237075B9005C51AA /* EditableAccountSettingsTableViewModel */,
 				158A6E2D230D53C7006A9ECE /* ExtraKeysSetting */,
 			);
 			path = Setting;
@@ -1770,28 +1769,10 @@
 		37156E42234CD43600845A28 /* EditableAccountSettings */ = {
 			isa = PBXGroup;
 			children = (
-				37156E49234CDD5700845A28 /* Container */,
-				37156E4A234CDDB700845A28 /* TableView */,
+				5B884B43257A90FE006B2022 /* EditableAccountSettingsViewController.swift */,
+				5BF39DA2257A71AC00A00A96 /* EditableAccountSettingsViewModel.swift */,
 			);
 			path = EditableAccountSettings;
-			sourceTree = "<group>";
-		};
-		37156E49234CDD5700845A28 /* Container */ = {
-			isa = PBXGroup;
-			children = (
-				37156E43234CD47C00845A28 /* EditableAccountSettingsViewController.swift */,
-				37156E45234CD49F00845A28 /* EditableAccountSettingsViewModel.swift */,
-			);
-			path = Container;
-			sourceTree = "<group>";
-		};
-		37156E4A234CDDB700845A28 /* TableView */ = {
-			isa = PBXGroup;
-			children = (
-				37156E47234CDD4A00845A28 /* EditableAccountSettingsTableViewController.swift */,
-				37156E4B234CDDF100845A28 /* EditableAccountSettingsTableViewModel.swift */,
-			);
-			path = TableView;
 			sourceTree = "<group>";
 		};
 		37156E51234DD49A00845A28 /* LoadingInterface */ = {
@@ -1873,17 +1854,9 @@
 		37F272ED237075A8005C51AA /* EditableAccountSettings */ = {
 			isa = PBXGroup;
 			children = (
-				37F272EF237075D9005C51AA /* EditableAccountSettingsViewModelTest.swift */,
+				5BAAD34F257E2658002CACAA /* EditableAccountSettingsViewModelTest.swift */,
 			);
 			path = EditableAccountSettings;
-			sourceTree = "<group>";
-		};
-		37F272EE237075B9005C51AA /* EditableAccountSettingsTableViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				3756434F2371B92200FB354D /* EditableAccountSettingsTableViewModelTest.swift */,
-			);
-			path = EditableAccountSettingsTableViewModel;
 			sourceTree = "<group>";
 		};
 		3A085A6F23FAF4DC0013C63E /* Reusable */ = {
@@ -3032,7 +3005,6 @@
 				43AA825D1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift in Sources */,
 				152A39D821905C3E00D9F8E4 /* BodyCellViewModel.swift in Sources */,
 				5BF449F4240827F500B23E50 /* TutorialStep0ViewController.swift in Sources */,
-				5BBDDD1A255EDF9C00999385 /* EditableAccountSettingsTableViewController.swift in Sources */,
 				B7C7E3142334E7A1009ABFFE /* ResetTrustViewModel.swift in Sources */,
 				3A928C86242259E300FEFA4C /* HtmlTagParser.swift in Sources */,
 				B72C7BAC2395198D0013B12E /* AccountTypeSelectorViewModel.swift in Sources */,
@@ -3055,7 +3027,6 @@
 				B7DFEA56225397AB0080A2BA /* Folder+LocalizedName.swift in Sources */,
 				4351C2D51F4441190053381F /* latex.c in Sources */,
 				B74F37CD24ADD2B00083501B /* EmailViewController.swift in Sources */,
-				37156E4C234CDDF100845A28 /* EditableAccountSettingsTableViewModel.swift in Sources */,
 				37816546230EE5F700B967E3 /* PEPUIAlertAction.swift in Sources */,
 				5BBE80CE24B733C0008DE0E5 /* SettingSwitchTableViewCell.swift in Sources */,
 				5BBE80CC24B733C0008DE0E5 /* AccountSettingsOAuthTableViewCell.swift in Sources */,
@@ -3156,6 +3127,7 @@
 				43257C801F50064100DDC7F0 /* HtmlToTextSaxParser.swift in Sources */,
 				431C2B191F38888B00D87FFD /* ConnectionTransport+AccountSettings.swift in Sources */,
 				158A56502403F043003C0D7E /* ClientCertificateManagementViewController.swift in Sources */,
+				5B09DB4725B71247005D8125 /* SettingChangeDelegate.swift in Sources */,
 				00EB89AF20E3E4A000CDFA0D /* ReplyAlertCreator.swift in Sources */,
 				B7C7E3122334E054009ABFFE /* ResetTrustViewController.swift in Sources */,
 				B78CF8251E76D706008C1739 /* FilterTableViewController.swift in Sources */,
@@ -3270,7 +3242,6 @@
 				152A39DB21905C3E00D9F8E4 /* CellViewModel.swift in Sources */,
 				15944A30239802D5006B133B /* EmailDetailViewController.swift in Sources */,
 				155050F01FE82356009CEAD2 /* UserNotificationTool.swift in Sources */,
-				37156E44234CD47C00845A28 /* EditableAccountSettingsViewController.swift in Sources */,
 				4351C2D21F4441190053381F /* html.c in Sources */,
 				152A39DE21905C3E00D9F8E4 /* AccountCellViewModel.swift in Sources */,
 				49D3BECC20F8F7330043E05D /* LoginViewController.swift in Sources */,
@@ -3286,17 +3257,19 @@
 				15FE1F761FE122D900CC2D97 /* CreditsViewController.swift in Sources */,
 				152A39942190587200D9F8E4 /* TextViewInTableViewScrollUtil.swift in Sources */,
 				1521B791241BDCD9000EAE57 /* UIUtils+Alerts.swift in Sources */,
+				5BF39DA8257A737A00A00A96 /* AccountSettingsHelper.swift in Sources */,
 				1579348F246D499600E2D8D2 /* PGPKeyImportSettingViewModel.swift in Sources */,
 				43F9D99A1E92725700F78A1C /* AttachmentsViewHelper.swift in Sources */,
+				5BF39DA4257A71AC00A00A96 /* EditableAccountSettingsViewModel.swift in Sources */,
 				43B10C801EC2EE7F003E849F /* CppDummy.cpp in Sources */,
 				5BF9B3D723FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift in Sources */,
-				37156E46234CD49F00845A28 /* EditableAccountSettingsViewModel.swift in Sources */,
 				15B220501FBF5D6E00CA52BA /* InfoPlist.swift in Sources */,
 				15874BD421274BD400A3A4A6 /* TrustedServerSettingCell.swift in Sources */,
 				1521B795241BDFE5000EAE57 /* UIUtils+Compose.swift in Sources */,
 				5BB7C73924D2EC4400D5F328 /* UnifiedSent.swift in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
 				4349E8BB252DCC58000F2BBB /* LiveLogViewModel.swift in Sources */,
+				5B884B44257A90FE006B2022 /* EditableAccountSettingsViewController.swift in Sources */,
 				3705096622CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift in Sources */,
 				49C34AF620E4F649009D11CC /* CellDetailTransition.swift in Sources */,
 				5B394E1323ED5673006A1FC0 /* TrustManagementTableViewCell.swift in Sources */,
@@ -3386,6 +3359,7 @@
 				15D7D995219B2C5C00A1A2B9 /* ComposeViewModel+InitDataTest.swift in Sources */,
 				158A6E2F230D53E3006A9ECE /* ExtraKeysSettingViewModelTest.swift in Sources */,
 				150707DC21006CD000AA213F /* ComposeUtilTest.swift in Sources */,
+				5BAAD350257E2658002CACAA /* EditableAccountSettingsViewModelTest.swift in Sources */,
 				1574D07D2114696B00FEDC93 /* URL+MailToTest.swift in Sources */,
 				3705095D22CF4AC900CB73D6 /* KeySyncHandshakeViewModelTest.swift in Sources */,
 				4356FFEC21356CB600804089 /* ReplyAllPossibleCheckerTest.swift in Sources */,
@@ -3393,7 +3367,6 @@
 				3A7F89C1252B4FDA00A38460 /* EmailListViewModel+DraftsPreviewTests.swift in Sources */,
 				154D173D2373327C001FDF78 /* AccountDrivenTestBase.swift in Sources */,
 				00DF2C3B2164C53F004EBA6C /* FolderViewModelTest.swift in Sources */,
-				3756434E2370810400FB354D /* EditableAccountSettingsViewModelTest.swift in Sources */,
 				5BF505FE253EFBA50051FBD3 /* MailtoTest.swift in Sources */,
 				4349E8C0252DCD42000F2BBB /* LiveLogViewModelTest.swift in Sources */,
 				157C05482180756300E530DE /* DocumentAttachmentPickerViewModelTest.swift in Sources */,
@@ -3403,7 +3376,6 @@
 				43257C861F50659200DDC7F0 /* StringHTMLExtensionTests.swift in Sources */,
 				43A0B2CF214006FC00FB779D /* ReplyUtilTests.swift in Sources */,
 				B78602B12412B6380027132B /* AccountTypeSelectorTest.swift in Sources */,
-				375643502371BC4600FB354D /* EditableAccountSettingsTableViewModelTest.swift in Sources */,
 				5BC14AC923E47A55005F0AF3 /* TrustManagementViewModelTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3865,7 +3837,7 @@
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.250;
+				MARKETING_VERSION = 1.1.251;
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "-DDEBUG_LOGGING -D DEBUG $(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = security.pEp;
@@ -3905,7 +3877,7 @@
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.250;
+				MARKETING_VERSION = 1.1.251;
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = security.pEp;
 				PRODUCT_MODULE_NAME = pEpForiOS;
