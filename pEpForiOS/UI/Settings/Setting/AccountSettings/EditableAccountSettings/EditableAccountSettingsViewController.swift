@@ -11,13 +11,15 @@ import pEpIOSToolbox
 
 class EditableAccountSettingsViewController: UIViewController {
 
-    final var viewModel : EditableAccountSettingsViewModel? {
+    final var viewModel: EditableAccountSettingsViewModel? {
         didSet {
             viewModel?.delegate = self
         }
     }
 
     @IBOutlet private var tableView: UITableView!
+    @IBOutlet private var cancelButton: UIBarButtonItem!
+
     private var firstResponder: UITextField?
     private lazy var pickerView: UIPickerView = {
         let picker = UIPickerView()
@@ -25,16 +27,25 @@ class EditableAccountSettingsViewController: UIViewController {
         return picker
     }()
 
+    private var shouldShowCancel: Bool {
+        return splitViewController?.isCollapsed ?? true
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = NSLocalizedString("Account", comment: "Editable Account Settings view title")
         tableView.register(PEPHeaderView.self, forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
         tableView.hideSeperatorForEmptyCells()
         UIHelper.variableContentHeight(tableView)
-        setKeyboardHandling()
         tableView.allowsSelection = true
+        setKeyboardHandling()
         tableView.delegate = self
         tableView.dataSource = self
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        showHideCancelButton()
     }
 
     @IBAction func saveButtonTapped() {
@@ -113,6 +124,10 @@ extension EditableAccountSettingsViewController: UITableViewDataSource {
 
 extension EditableAccountSettingsViewController: UITableViewDelegate {
 
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: PEPHeaderView.reuseIdentifier) as? PEPHeaderView else {
             Log.shared.errorAndCrash("pEpHeaderView doesn't exist!")
@@ -124,10 +139,6 @@ extension EditableAccountSettingsViewController: UITableViewDelegate {
         }
         headerView.title = vm.sections[section].title.uppercased()
         return headerView
-    }
-
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -166,37 +177,16 @@ extension EditableAccountSettingsViewController: EditableAccountSettingsDelegate
         let nextViewModel = viewModel?.clientCertificateManagementViewModel()
         nextViewModel?.delegate = vc
         vc.viewModel = nextViewModel
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController?.modalPresentationStyle = .fullScreen
+        vc.modalPresentationStyle = .overFullScreen
+        vc.hidesBottomBarWhenPushed = true
+        present(vc, animated: true)
     }
 }
 
 // MARK: - UITextFieldDelegate
 
 extension EditableAccountSettingsViewController: UITextFieldDelegate {
-
-    private func getRow(of textField: UITextField) -> AccountSettingsRowProtocol {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return AccountSettingsViewModel.DisplayRow(type: .email, title: "", text: "", cellIdentifier: "")
-        }
-        guard let indexPath = indexPathOfCellWith(textField: textField) else {
-            Log.shared.errorAndCrash("Textfield begins editing doesn't belong to any row")
-            return AccountSettingsViewModel.DisplayRow(type: .email, title: "", text: "", cellIdentifier: "")
-        }
-        return vm.sections[indexPath.section].rows[indexPath.row]
-    }
-
-    private func indexPathOfCellWith(textField: UITextField) -> IndexPath? {
-        guard let cell = textField.superviewOfClass(ofClass: AccountSettingsTableViewCell.self) else {
-            Log.shared.errorAndCrash("Cell not found")
-            return nil
-        }
-        guard let indexPath = tableView.indexPath(for: cell) else {
-            Log.shared.errorAndCrash("indexPath not found")
-            return nil
-        }
-        return indexPath
-    }
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         let row = getRow(of: textField)
@@ -230,11 +220,38 @@ extension EditableAccountSettingsViewController: UITextFieldDelegate {
             return
         }
         guard let indexPath = tableView.indexPath(for: cell) else {
-            Log.shared.errorAndCrash("indexPath not found")
+            //Valid case: indexPath not found
             return
         }
         vm.handleRowDidChange(at:indexPath, value: textField.text ?? "")
     }
+
+    // MARK: - Private
+
+    private func getRow(of textField: UITextField) -> AccountSettingsRowProtocol {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return AccountSettingsViewModel.DisplayRow(type: .email, title: "", text: "", cellIdentifier: "")
+        }
+        guard let indexPath = indexPathOfCellWith(textField: textField) else {
+            Log.shared.errorAndCrash("Textfield begins editing doesn't belong to any row")
+            return AccountSettingsViewModel.DisplayRow(type: .email, title: "", text: "", cellIdentifier: "")
+        }
+        return vm.sections[indexPath.section].rows[indexPath.row]
+    }
+
+    private func indexPathOfCellWith(textField: UITextField) -> IndexPath? {
+        guard let cell = textField.superviewOfClass(ofClass: AccountSettingsTableViewCell.self) else {
+            Log.shared.errorAndCrash("Cell not found")
+            return nil
+        }
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            Log.shared.errorAndCrash("indexPath not found")
+            return nil
+        }
+        return indexPath
+    }
+
 }
 
 // MARK: - UIPickerViewDataSource
@@ -294,6 +311,7 @@ extension EditableAccountSettingsViewController {
 
     private func setKeyboardHandling() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard),
@@ -317,5 +335,15 @@ extension EditableAccountSettingsViewController {
             tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom + bottomPadding, right: 0)
         }
         tableView.scrollIndicatorInsets = tableView.contentInset
+    }
+}
+
+extension EditableAccountSettingsViewController {
+    private func showHideCancelButton() {
+        if shouldShowCancel {
+            navigationItem.leftBarButtonItem = cancelButton
+        } else {
+            navigationItem.leftBarButtonItem = nil
+        }
     }
 }

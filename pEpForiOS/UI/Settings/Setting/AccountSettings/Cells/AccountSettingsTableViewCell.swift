@@ -18,7 +18,6 @@ final class AccountSettingsTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        configureDisplayRow()
         keyLabel.font = UIFont.pepFont(style: .body, weight: .regular)
         valueTextfield.font = UIFont.pepFont(style: .body, weight: .regular)
     }
@@ -83,4 +82,3 @@ final class AccountSettingsTableViewCell: UITableViewCell {
         selectionStyle = .default
     }
 }
-
