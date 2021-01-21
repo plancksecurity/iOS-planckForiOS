@@ -163,8 +163,10 @@ extension EditableAccountSettingsViewController: EditableAccountSettingsDelegate
         guard let vc = UIStoryboard.init(name: "AccountCreation", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateManagementViewController.storyboardIdentifier) as? ClientCertificateManagementViewController else {
             return
         }
-        vc.viewModel = viewModel?.clientCertificateManagementViewModel()
-        present(vc, animated: true)
+        let nextViewModel = viewModel?.clientCertificateManagementViewModel()
+        nextViewModel?.delegate = vc
+        vc.viewModel = nextViewModel
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
