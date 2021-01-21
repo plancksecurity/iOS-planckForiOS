@@ -251,8 +251,12 @@ extension EditableAccountSettingsViewModel {
                                                   title: title,
                                                   text: value,
                                                   isDangerous: false,
-                                                  action: {
-                                                    print("Tap tap")
+                                                  action: { [weak self] in
+                                                    guard let me = self else {
+                                                        Log.shared.errorAndCrash("Lost myself")
+                                                        return
+                                                    }
+                                                    me.delegate?.showEditCertificate()
                                                   }, cellIdentifier: cellIdentifier)
     }
 

@@ -251,6 +251,16 @@ extension AccountSettingsViewModel {
     public func isPEPSyncGrayedOut() -> Bool {
         return KeySyncUtil.isInDeviceGroup
     }
+
+    public func row(for type: AccountSettingsViewModel.RowType) -> Int {
+        var rowNumber = 0
+        sections.forEach { (section) in
+            if let index = section.rows.firstIndex(where: {$0.type == type}) {
+                rowNumber = index
+            }
+        }
+        return rowNumber
+    }
 }
 
 // MARK: - OAuthAuthorizer

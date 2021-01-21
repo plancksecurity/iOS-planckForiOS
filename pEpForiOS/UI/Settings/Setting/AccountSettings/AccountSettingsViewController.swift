@@ -241,6 +241,7 @@ extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
     }
 
     func undoPEPSyncToggle() {
+        //MB:-
         keySyncSwitch.setOn(!keySyncSwitch.isOn, animated: true)
     }
 }

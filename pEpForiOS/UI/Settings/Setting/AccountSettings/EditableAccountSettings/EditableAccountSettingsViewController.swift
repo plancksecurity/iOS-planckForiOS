@@ -32,9 +32,9 @@ class EditableAccountSettingsViewController: UIViewController {
         tableView.hideSeperatorForEmptyCells()
         UIHelper.variableContentHeight(tableView)
         setKeyboardHandling()
-//        tableView.allowsSelection = true
-//        tableView.delegate = self
-//        tableView.dataSource = self
+        tableView.allowsSelection = true
+        tableView.delegate = self
+        tableView.dataSource = self
     }
 
     @IBAction func saveButtonTapped() {
@@ -131,6 +131,7 @@ extension EditableAccountSettingsViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
@@ -159,7 +160,7 @@ extension EditableAccountSettingsViewController: EditableAccountSettingsDelegate
     }
 
     func showEditCertificate() {
-        guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateManagementViewController.storyboardIdentifier) as? ClientCertificateManagementViewController else {
+        guard let vc = UIStoryboard.init(name: "AccountCreation", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateManagementViewController.storyboardIdentifier) as? ClientCertificateManagementViewController else {
             return
         }
         vc.viewModel = viewModel?.clientCertificateManagementViewModel()
