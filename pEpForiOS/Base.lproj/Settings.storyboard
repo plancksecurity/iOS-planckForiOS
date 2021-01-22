@@ -1083,22 +1083,11 @@
                     <connections>
                         <outlet property="cancelButton" destination="pAr-Hy-tbs" id="rkm-nc-qlf"/>
                         <outlet property="tableView" destination="Aty-hJ-7dP" id="Adq-5N-vgv"/>
-                        <segue destination="CAc-qE-FmU" kind="show" identifier="showClientCertificateManagementView" id="n4y-i5-Juh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f7A-KH-fED" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-681" y="382"/>
-        </scene>
-        <!--ClientCertificateManagementViewController-->
-        <scene sceneID="Mil-UH-jlS">
-            <objects>
-                <viewControllerPlaceholder storyboardIdentifier="AccountCreation" storyboardName="AccountCreation" referencedIdentifier="ClientCertificateManagementViewController" id="CAc-qE-FmU" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="Nhr-B7-kFU"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0qi-pz-ryu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="124" y="382"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

@@ -27,7 +27,7 @@ class EditableAccountSettingsViewController: UIViewController {
         return picker
     }()
 
-    private var shouldShowCancel: Bool {
+    private var shouldShowCancelButton: Bool {
         return splitViewController?.isCollapsed ?? true
     }
 
@@ -181,34 +181,6 @@ extension EditableAccountSettingsViewController: EditableAccountSettingsDelegate
         vc.modalPresentationStyle = .overFullScreen
         vc.hidesBottomBarWhenPushed = true
         present(vc, animated: true)
-
-//        performSegue(withIdentifier: "showClientCertificateManagementView", sender: self)
-    }
-}
-
-// MARK: - SegueHandlerType
-
-extension EditableAccountSettingsViewController: SegueHandlerType {
-    public enum SegueIdentifier: String {
-        case showClientCertificateManagementView
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
-        }
-        
-        switch segueIdentifier(for: segue) {
-        case .showClientCertificateManagementView:
-            guard let vc = segue.destination as? ClientCertificateManagementViewController else {
-                Log.shared.errorAndCrash("fail to cast to ClientCertificateManagementViewController")
-                return
-            }
-            let nextViewModel = vm.clientCertificateManagementViewModel()
-            nextViewModel.delegate = vc
-            vc.viewModel = nextViewModel
-        }
     }
 }
 
@@ -366,9 +338,11 @@ extension EditableAccountSettingsViewController {
     }
 }
 
+// MARK: - Show / Hide Cancel Button
+
 extension EditableAccountSettingsViewController {
     private func showHideCancelButton() {
-        if shouldShowCancel {
+        if shouldShowCancelButton {
             navigationItem.leftBarButtonItem = cancelButton
         } else {
             navigationItem.leftBarButtonItem = nil

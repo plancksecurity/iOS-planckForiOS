@@ -92,13 +92,4 @@ public struct AccountSettingsHelper {
         static let settingsCell = "settingsCell"
         static let settingsDisplayCell = "settingsDisplayCell"
     }
-
-
-    public func certificateUrl(completion: @escaping (URL?)->Void) {
-        guard let accountWithCertificate = account else {
-            completion(nil)
-            return
-        }
-        
-    }
 }
