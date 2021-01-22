@@ -21,7 +21,7 @@ open class MessageSenderCell: MessageCell {
         let attributes = [NSAttributedString.Key.font: font,
                           NSAttributedString.Key.foregroundColor: UIColor.lightGray]
         var temp: [String] = []
-        message.allRecipients.forEach { (recepient) in
+        message.allRecipientsOrdered.forEach { (recepient) in
             let recepient = recepient.address
             temp.append(recepient)
         }

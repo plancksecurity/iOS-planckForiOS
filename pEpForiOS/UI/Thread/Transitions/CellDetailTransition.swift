@@ -54,13 +54,6 @@
 //        var fromFrame: CGRect!
 //        var toFrame = toView.frame
 //
-//        if #available(iOS 11, *) {
-//            //Intentioanlly nothing to do?
-//        } else {
-//            toFrame.origin.y = 64.0
-//            toFrame.size.height = toFrame.size.height - 64.0
-//        }
-//
 //        fromFrame = containerView.convert(fromCellView.frame, from: cell)
 //        toView.frame = fromFrame
 //        toView.alpha = 0

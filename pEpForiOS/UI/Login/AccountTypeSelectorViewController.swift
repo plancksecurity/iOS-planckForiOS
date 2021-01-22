@@ -25,12 +25,8 @@ final class AccountTypeSelectorViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         viewModel.delegate = self
-
-        welcomeToPepLabel.font = UIFont.pepFont(style: .largeTitle, weight: .regular)
-        welcomeToPepLabel.adjustsFontForContentSizeCategory = true
-
-        selectAccountTypeLabel.font = UIFont.pepFont(style: .callout, weight: .regular)
-        selectAccountTypeLabel.adjustsFontForContentSizeCategory = true
+        welcomeToPepLabel.setPEPFont(style: .largeTitle, weight: .regular)
+        selectAccountTypeLabel.setPEPFont(style: .callout, weight: .regular)
     }
     
     override func viewWillAppear(_ animated: Bool) {

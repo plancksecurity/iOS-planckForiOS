@@ -19,6 +19,9 @@
 /* Class = "UILabel"; text = "Label"; ObjectID = "KYt-Qv-FPp"; */
 "KYt-Qv-FPp.text" = "Label";
 
+/* Class = "UILabel"; text = "Email"; ObjectID = "Lcu-U0-qEs"; */
+"Lcu-U0-qEs.text" = "Email";
+
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Rgh-E1-f1w"; */
 "Rgh-E1-f1w.normalTitle" = "Bouton";
 
