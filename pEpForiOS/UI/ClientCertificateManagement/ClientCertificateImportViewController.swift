@@ -174,7 +174,7 @@ extension ClientCertificateImportViewController {
                                         Log.shared.lostMySelf()
                                         return
                                     }
-                                    me.presentedViewController?.dismiss(animated: true) {
+                                    me.dismissAndPerform {
                                         me.dismiss()
                                     }
                                    }, positiveButtonAction: {

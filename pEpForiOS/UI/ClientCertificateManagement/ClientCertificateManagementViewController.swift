@@ -58,7 +58,7 @@ final class ClientCertificateManagementViewController: UIViewController {
     }
 
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        tableView.reloadData()
+        certificateCouldImported()
     }
 
     @IBAction private func cancelButtonPressed() {
