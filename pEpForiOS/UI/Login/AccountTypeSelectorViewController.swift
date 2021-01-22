@@ -174,6 +174,9 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
                 return
             }
             dvc.viewModel = viewModel.clientCertificateManagementViewModel()
+//            navigationController?.modalPresentationStyle = .fullScreen
+//            dvc.modalPresentationStyle = .overFullScreen
+//            dvc.hidesBottomBarWhenPushed = true
         }
     }
 }

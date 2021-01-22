@@ -49,6 +49,10 @@ final class ClientCertificateManagementViewController: UIViewController {
         picker.modalPresentationStyle = .fullScreen
         present(picker, animated: true)
     }
+
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        tableView.reloadData()
+    }
 }
 
 extension ClientCertificateManagementViewController: UIDocumentPickerDelegate {
@@ -117,6 +121,7 @@ extension ClientCertificateManagementViewController: UITableViewDelegate {
         case .updateCertificate:
             navigationController?.popViewController(animated: true)
         }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
@@ -199,7 +204,7 @@ extension ClientCertificateManagementViewController: SwipeTableViewCellDelegate 
         }
         configure(action: deleteAction, with: swipeActionDescriptor)
         swipeActions.append(deleteAction)
-        return swipeActions
+        return (orientation == .right ? swipeActions : nil)
     }
     
     func deleteAction(forCellAt: IndexPath) {
