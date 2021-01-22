@@ -243,23 +243,29 @@ extension EditableAccountSettingsViewModel {
     }
 
     private func getActionRow(type: AccountSettingsViewModel.RowType, value: String, action: AccountSettingsViewModel.AlertActionBlock) -> AccountSettingsViewModel.ActionRow {
-        let cellIdentifier = AccountSettingsHelper.CellsIdentifiers.settingsDisplayCell
-        guard let accountSettingsHelper = accountSettingsHelper else {
-            Log.shared.errorAndCrash("AccountSettingsHelper not found")
-            return AccountSettingsViewModel.ActionRow(type: type, title: "", cellIdentifier: cellIdentifier)
+        switch type {
+        case .certificate:
+            let cellIdentifier = AccountSettingsHelper.CellsIdentifiers.settingsDisplayCell
+            guard let accountSettingsHelper = accountSettingsHelper else {
+                Log.shared.errorAndCrash("AccountSettingsHelper not found")
+                return AccountSettingsViewModel.ActionRow(type: type, title: "", cellIdentifier: cellIdentifier)
+            }
+            let title = accountSettingsHelper.rowTitle(for: type)
+            return AccountSettingsViewModel.ActionRow(type: type,
+                                                      title: title,
+                                                      text: value,
+                                                      isDangerous: false,
+                                                      action: { [weak self] in
+                                                        guard let me = self else {
+                                                            Log.shared.errorAndCrash("Lost myself")
+                                                            return
+                                                        }
+                                                        me.delegate?.showEditCertificate()
+                                                      }, cellIdentifier: cellIdentifier)
+        default:
+            Log.shared.errorAndCrash("Wrong row type for an action row")
+            return AccountSettingsViewModel.ActionRow(type: type, title: "", cellIdentifier: "")
         }
-        let title = accountSettingsHelper.rowTitle(for: type)
-        return AccountSettingsViewModel.ActionRow(type: type,
-                                                  title: title,
-                                                  text: value,
-                                                  isDangerous: false,
-                                                  action: { [weak self] in
-                                                    guard let me = self else {
-                                                        Log.shared.errorAndCrash("Lost myself")
-                                                        return
-                                                    }
-                                                    me.delegate?.showEditCertificate()
-                                                  }, cellIdentifier: cellIdentifier)
     }
 
     /// Setup the server fields.
