@@ -87,6 +87,7 @@ extension ClientCertificateManagementViewController {
         addCertButton.setImage(image?.withRenderingMode(.alwaysTemplate), for: .normal)
         addCertButton.tintColor = UIColor.white
 
+        ///MB:- if
         let backButtonTitle = NSLocalizedString("Cancel",
                                                 comment: "Back button for client cert managment")
         let newBackButton = UIBarButtonItem(title: backButtonTitle,
@@ -119,7 +120,12 @@ extension ClientCertificateManagementViewController: UITableViewDelegate {
         case .newAccount:
             performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
         case .updateCertificate:
-            navigationController?.popViewController(animated: true)
+            // as this view could have been pushed or modally presented we must distinguish the forms of dismissing
+            if let navigationController = navigationController {
+                navigationController.popViewController(animated: true)
+            } else {
+                dismiss(animated: true)
+            }
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }

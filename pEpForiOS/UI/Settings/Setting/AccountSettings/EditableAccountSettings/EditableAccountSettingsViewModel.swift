@@ -152,7 +152,9 @@ class EditableAccountSettingsViewModel {
 
     public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
         let verifiableAccount = VerifiableAccount.verifiableAccount(for: .clientCertificate, usePEPFolderProvider: AppSettings.shared)
-        return ClientCertificateManagementViewModel(verifiableAccount: verifiableAccount)
+        let clientCertificateManagementViewModel = ClientCertificateManagementViewModel(verifiableAccount: verifiableAccount)
+        clientCertificateManagementViewModel.accountToUpdate = account
+        return clientCertificateManagementViewModel
     }
 }
 
