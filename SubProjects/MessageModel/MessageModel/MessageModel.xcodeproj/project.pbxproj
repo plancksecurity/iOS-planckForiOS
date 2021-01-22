@@ -703,9 +703,6 @@
 		4358A06522A5011F00C49E43 /* MockNotifyHandshakeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNotifyHandshakeDelegate.swift; sourceTree = "<group>"; };
 		435C0CBF222939A10025C6B5 /* PEPRating+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPRating+Extension.swift"; sourceTree = "<group>"; };
 		435C0CCC222942DE0025C6B5 /* CdIdentity+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdIdentity+pEp.swift"; sourceTree = "<group>"; };
-		435C1CAE25B063DB000A9715 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		435C1CAF25B063DB000A9715 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		435C1CB025B063DB000A9715 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		435F511F221FF750006EB11F /* PEPUtil+Internal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PEPUtil+Internal.swift"; sourceTree = "<group>"; };
 		435F5121221FF80F006EB11F /* SmtpSendError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtpSendError.swift; sourceTree = "<group>"; };
 		435F5133221FFF3A006EB11F /* CdFolder+Pantomime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdFolder+Pantomime.swift"; sourceTree = "<group>"; };
