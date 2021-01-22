@@ -188,13 +188,16 @@ class MockEditableViewController: EditableAccountSettingsDelegate {
     private var setLoadingViewExpectation: XCTestExpectation?
     private var showAlertExpectation: XCTestExpectation?
     private var dismissYourselfExpectation: XCTestExpectation?
+    private var showEditCertificateExpectation: XCTestExpectation?
 
     init(setLoadingViewExpectation: XCTestExpectation? = nil,
          showAlertExpectation: XCTestExpectation? = nil,
-         dismissYourselfExpectation: XCTestExpectation? = nil) {
+         dismissYourselfExpectation: XCTestExpectation? = nil,
+         showEditCertificateExpectation: XCTestExpectation? = nil) {
         self.setLoadingViewExpectation = setLoadingViewExpectation
         self.showAlertExpectation = showAlertExpectation
         self.dismissYourselfExpectation = dismissYourselfExpectation
+        self.showEditCertificateExpectation = showEditCertificateExpectation
     }
 
     func setLoadingView(visible: Bool) {
@@ -207,6 +210,10 @@ class MockEditableViewController: EditableAccountSettingsDelegate {
 
     func dismissYourself() {
         fulfillIfNotNil(expectation: dismissYourselfExpectation)
+    }
+
+    func showEditCertificate() {
+        fulfillIfNotNil(expectation: showEditCertificateExpectation)
     }
 
     private func fulfillIfNotNil(expectation: XCTestExpectation?) {
