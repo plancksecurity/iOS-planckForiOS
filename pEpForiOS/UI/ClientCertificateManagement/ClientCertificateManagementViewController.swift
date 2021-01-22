@@ -22,6 +22,7 @@ final class ClientCertificateManagementViewController: UIViewController {
 
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var addCertButton: UIButton!
+
     @IBOutlet private weak var selectCertificateTitleLabel: UILabel!
     @IBOutlet private weak var selectCertificateSubtitleLabel: UILabel!
     @IBOutlet private weak var cancelButtonContainer: UIView!
@@ -57,20 +58,19 @@ final class ClientCertificateManagementViewController: UIViewController {
         present(picker, animated: true)
     }
 
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        certificateCouldImported()
-    }
-
     @IBAction private func cancelButtonPressed() {
         dismiss()
     }
 }
 
+
 extension ClientCertificateManagementViewController: UIDocumentPickerDelegate {
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
-        guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController else {
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController, let url = urls.first else {
+            Log.shared.errorAndCrash("VC or certificate url not found")
             return
         }
+        vc.delegate = self
         vc.viewModel = ClientCertificateImportViewModel(certificateUrl: url, delegate: vc)
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
