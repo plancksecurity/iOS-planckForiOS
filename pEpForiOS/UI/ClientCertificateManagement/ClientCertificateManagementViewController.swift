@@ -20,12 +20,14 @@ final class ClientCertificateManagementViewController: UIViewController {
 
     public static let storyboardIdentifier = "ClientCertificateManagementViewController"
 
+
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var addCertButton: UIButton!
 
     @IBOutlet private weak var selectCertificateTitleLabel: UILabel!
     @IBOutlet private weak var selectCertificateSubtitleLabel: UILabel!
-    @IBOutlet private weak var cancelButtonContainer: UIView!
+    @IBOutlet private weak var backButtonContainer: UIView!
+    @IBOutlet private weak var backButton: UIButton!
     @IBOutlet private weak var stackView: UIStackView!
 
     public var viewModel: ClientCertificateManagementViewModel?
@@ -46,8 +48,12 @@ final class ClientCertificateManagementViewController: UIViewController {
             Log.shared.errorAndCrash("VM not found")
             return
         }
+
+        let backButtonText = NSLocalizedString("Back", comment: "Back button title")
+        backButton.setTitle(backButtonText, for: .normal)
+
         if vm.shouldRemoveCancelButtonContainer {
-            stackView.removeFully(view: cancelButtonContainer)
+            stackView.removeFully(view: backButtonContainer)
         }
     }
 
@@ -108,12 +114,12 @@ extension ClientCertificateManagementViewController {
             let newBackButton = UIBarButtonItem(title: backButtonTitle,
                                                 style: .plain,
                                                 target: self,
-                                                action: #selector(backButton))
+                                                action: #selector(backButtonPressed))
             navigationItem.leftBarButtonItem = newBackButton
         }
     }
     
-    @objc private func backButton() {
+    @objc private func backButtonPressed() {
         navigationController?.popViewController(animated: true)
     }
 
