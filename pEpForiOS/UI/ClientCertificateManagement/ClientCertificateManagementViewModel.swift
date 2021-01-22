@@ -65,6 +65,11 @@ final class ClientCertificateManagementViewModel {
         }
     }
 
+    /// Indicate if the Cancel Button Container should be removed. 
+    public var shouldRemoveCancelButtonContainer: Bool {
+        return accountToUpdate == nil
+    }
+
     public func loginViewModel() -> LoginViewModel {
         return LoginViewModel(verifiableAccount: verifiableAccount)
     }

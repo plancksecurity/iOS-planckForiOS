@@ -7,9 +7,7 @@
 //
 
 import UIKit
-
 import SwipeCellKit
-
 import pEpIOSToolbox
 
 private struct Localized {
@@ -26,6 +24,8 @@ final class ClientCertificateManagementViewController: UIViewController {
     @IBOutlet private weak var addCertButton: UIButton!
     @IBOutlet private weak var selectCertificateTitleLabel: UILabel!
     @IBOutlet private weak var selectCertificateSubtitleLabel: UILabel!
+    @IBOutlet private weak var cancelButtonContainer: UIView!
+    @IBOutlet private weak var stackView: UIStackView!
 
     public var viewModel: ClientCertificateManagementViewModel?
     
@@ -41,6 +41,13 @@ final class ClientCertificateManagementViewController: UIViewController {
         tableView.dataSource = self
         setupTableView()
         configureAppearance()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        if vm.shouldRemoveCancelButtonContainer {
+            stackView.removeFully(view: cancelButtonContainer)
+        }
     }
 
     @IBAction func addCertificateButtonPressed(_ sender: Any) {
@@ -52,6 +59,10 @@ final class ClientCertificateManagementViewController: UIViewController {
 
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         tableView.reloadData()
+    }
+
+    @IBAction private func cancelButtonPressed() {
+        dismiss()
     }
 }
 
@@ -87,14 +98,19 @@ extension ClientCertificateManagementViewController {
         addCertButton.setImage(image?.withRenderingMode(.alwaysTemplate), for: .normal)
         addCertButton.tintColor = UIColor.white
 
-        ///MB:- if
-        let backButtonTitle = NSLocalizedString("Cancel",
-                                                comment: "Back button for client cert managment")
-        let newBackButton = UIBarButtonItem(title: backButtonTitle,
-                                            style: .plain,
-                                            target: self,
-                                            action: #selector(backButton))
-        navigationItem.leftBarButtonItem = newBackButton
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        if vm.shouldRemoveCancelButtonContainer {
+            let backButtonTitle = NSLocalizedString("Cancel",
+                                                    comment: "Back button for client cert managment")
+            let newBackButton = UIBarButtonItem(title: backButtonTitle,
+                                                style: .plain,
+                                                target: self,
+                                                action: #selector(backButton))
+            navigationItem.leftBarButtonItem = newBackButton
+        }
     }
     
     @objc private func backButton() {
@@ -120,14 +136,18 @@ extension ClientCertificateManagementViewController: UITableViewDelegate {
         case .newAccount:
             performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
         case .updateCertificate:
-            // as this view could have been pushed or modally presented we must distinguish the forms of dismissing
-            if let navigationController = navigationController {
-                navigationController.popViewController(animated: true)
-            } else {
-                dismiss(animated: true)
-            }
+            dismiss()
         }
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+
+    private func dismiss() {
+        // as this view could have been pushed or modally presented we must distinguish the forms of dismissing
+        if let navigationController = navigationController {
+            navigationController.popViewController(animated: true)
+        } else {
+            dismiss(animated: true)
+        }
     }
 }
 
@@ -274,7 +294,11 @@ extension ClientCertificateManagementViewController: ClientCertificateManagement
 extension ClientCertificateManagementViewController: ClientCertificateImportViewControllerDelegate {
 
     func certificateCouldImported() {
-        viewModel?.handleNewCertificateImported()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleNewCertificateImported()
         tableView.reloadData()
     }
 }
