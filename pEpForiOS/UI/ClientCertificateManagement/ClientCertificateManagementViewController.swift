@@ -41,11 +41,6 @@ final class ClientCertificateManagementViewController: UIViewController {
         tableView.dataSource = self
         setupTableView()
         configureAppearance()
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return
-        }
-
         let backButtonText = NSLocalizedString("Back", comment: "Back button title")
         backButton.setTitle(backButtonText, for: .normal)
 
