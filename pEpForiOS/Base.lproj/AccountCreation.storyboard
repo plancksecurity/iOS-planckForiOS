@@ -721,10 +721,10 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="IOr-E5-1Cz">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jkx-V5-nLU" userLabel="Back Button Container View">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jkx-V5-nLU" userLabel="Button Container View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="61"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Veu-lx-Whc" userLabel="Back">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Veu-lx-Whc" userLabel="Cancel">
                                                 <rect key="frame" x="20" y="20" width="38" height="33"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <state key="normal" title="Back">
@@ -866,8 +866,8 @@
                     <navigationItem key="navigationItem" id="TGi-N8-gcY"/>
                     <connections>
                         <outlet property="addCertButton" destination="Tm4-05-7M1" id="SuH-wP-5LU"/>
-                        <outlet property="backButton" destination="Veu-lx-Whc" id="GBs-ua-EUt"/>
                         <outlet property="backButtonContainer" destination="Jkx-V5-nLU" id="6ZG-J6-MT4"/>
+                        <outlet property="cancelButton" destination="Veu-lx-Whc" id="BF5-tw-hxQ"/>
                         <outlet property="selectCertificateSubtitleLabel" destination="43K-i7-nBj" id="0Ua-Ex-Am0"/>
                         <outlet property="selectCertificateTitleLabel" destination="jrd-fZ-xRk" id="jMy-a6-84v"/>
                         <outlet property="stackView" destination="IOr-E5-1Cz" id="uiT-Tz-a7b"/>

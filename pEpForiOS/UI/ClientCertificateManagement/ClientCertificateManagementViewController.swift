@@ -24,7 +24,7 @@ final class ClientCertificateManagementViewController: UIViewController {
     @IBOutlet private weak var selectCertificateTitleLabel: UILabel!
     @IBOutlet private weak var selectCertificateSubtitleLabel: UILabel!
     @IBOutlet private weak var backButtonContainer: UIView!
-    @IBOutlet private weak var backButton: UIButton!
+    @IBOutlet private weak var cancelButton: UIButton!
     @IBOutlet private weak var stackView: UIStackView!
 
     public var viewModel: ClientCertificateManagementViewModel?
@@ -41,9 +41,12 @@ final class ClientCertificateManagementViewController: UIViewController {
         tableView.dataSource = self
         setupTableView()
         configureAppearance()
-        let backButtonText = NSLocalizedString("Back", comment: "Back button title")
-        backButton.setTitle(backButtonText, for: .normal)
+        let backButtonText = NSLocalizedString("Cancel", comment: "Cancel button title")
+        cancelButton.setTitle(backButtonText, for: .normal)
+        showCancelButtonIfWeAreModallyPresented()
+    }
 
+    private func showCancelButtonIfWeAreModallyPresented() {
         //If the view is presented modally, it's needed to have a back button to dismiss the view.
         // If the view was pushed, this back button is no longer needed as we have the back button in the navigation bar.
         if presentingViewController != .none {
@@ -97,19 +100,17 @@ extension ClientCertificateManagementViewController {
         addCertButton.setImage(image?.withRenderingMode(.alwaysTemplate), for: .normal)
         addCertButton.tintColor = UIColor.white
 
-
-        // If the view is presented modally, the navigation bar does not exist. 
-        if presentingViewController != .none {
-            let backButtonTitle = NSLocalizedString("Cancel",
-                                                    comment: "Back button for client cert managment")
-            let newBackButton = UIBarButtonItem(title: backButtonTitle,
-                                                style: .plain,
-                                                target: self,
-                                                action: #selector(backButtonPressed))
-            navigationItem.leftBarButtonItem = newBackButton
-        }
+        // If the view is presented modally, the navigation bar does not exist.
+        // For that case we have a the backButton.
+        let backButtonTitle = NSLocalizedString("Back",
+                                                comment: "Back button for client cert managment")
+        let newBackButton = UIBarButtonItem(title: backButtonTitle,
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(backButtonPressed))
+        navigationItem.leftBarButtonItem = newBackButton
     }
-    
+
     @objc private func backButtonPressed() {
         navigationController?.popViewController(animated: true)
     }
