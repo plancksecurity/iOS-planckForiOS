@@ -137,6 +137,7 @@
 		15A3B4DD2358710A00DB9135 /* CdAccount+ReplicationServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A3B4DC2358710A00DB9135 /* CdAccount+ReplicationServiceProvider.swift */; };
 		15A3B4E4235877F800DB9135 /* ImapReplicationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A3B4E1235877F800DB9135 /* ImapReplicationService.swift */; };
 		15A3B4E6235877F800DB9135 /* ImapConnectionCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A3B4E3235877F800DB9135 /* ImapConnectionCache.swift */; };
+		15A91EBD25BB357B00D33EAB /* system.db in Resources */ = {isa = PBXBuildFile; fileRef = 15A91EBC25BB357A00D33EAB /* system.db */; };
 		15B854E4232D3D9400DB8FB1 /* Identity+AddessBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B854E3232D3D9400DB8FB1 /* Identity+AddessBook.swift */; };
 		15BA9713229410EF00FF9DFE /* CdIdentity+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BA9712229410EF00FF9DFE /* CdIdentity+Validation.swift */; };
 		15C7A88423830BB600C47364 /* CdAccount+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C7A88323830BB600C47364 /* CdAccount+KeySync.swift */; };
@@ -599,6 +600,7 @@
 		15A3B4DC2358710A00DB9135 /* CdAccount+ReplicationServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAccount+ReplicationServiceProvider.swift"; sourceTree = "<group>"; };
 		15A3B4E1235877F800DB9135 /* ImapReplicationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapReplicationService.swift; sourceTree = "<group>"; };
 		15A3B4E3235877F800DB9135 /* ImapConnectionCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapConnectionCache.swift; sourceTree = "<group>"; };
+		15A91EBC25BB357A00D33EAB /* system.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = system.db; path = ../../../../pEpEngine/db/system.db; sourceTree = "<group>"; };
 		15B854E3232D3D9400DB8FB1 /* Identity+AddessBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Identity+AddessBook.swift"; sourceTree = "<group>"; };
 		15BA9712229410EF00FF9DFE /* CdIdentity+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdIdentity+Validation.swift"; sourceTree = "<group>"; };
 		15C7A88323830BB600C47364 /* CdAccount+KeySync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAccount+KeySync.swift"; sourceTree = "<group>"; };
@@ -2028,6 +2030,7 @@
 				43CB60841DA4EB4E0015281E /* MessageModel */,
 				43CB608F1DA4EB4E0015281E /* MessageModelTests */,
 				B751B99322D4D5100018DE0D /* MessageModelTestApp */,
+				15A91EBC25BB357A00D33EAB /* system.db */,
 				43CB60831DA4EB4E0015281E /* Products */,
 				B7DB7FA322147000003968DA /* Frameworks */,
 				4303EA41253826A8006151D3 /* Recovered References */,
@@ -2532,6 +2535,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15A91EBD25BB357B00D33EAB /* system.db in Resources */,
 				37FED9712283354B004C7804 /* jsonMimeType.txt in Resources */,
 				43BC0E6B235764D800125E01 /* Localizable.strings in Resources */,
 				1533492523E4604800CB8C0B /* README.md in Resources */,
@@ -3188,6 +3192,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-Onone";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -3249,6 +3254,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = " ";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
