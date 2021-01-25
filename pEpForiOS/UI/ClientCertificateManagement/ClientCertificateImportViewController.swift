@@ -174,6 +174,7 @@ extension ClientCertificateImportViewController {
                                         Log.shared.lostMySelf()
                                         return
                                     }
+                                    //Dismisses the error view regardless of whether the view was presented modally or pushed
                                     me.dismissAndPerform {
                                         me.dismiss()
                                     }
