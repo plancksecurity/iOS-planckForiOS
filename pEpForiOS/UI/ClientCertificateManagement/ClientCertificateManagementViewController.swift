@@ -101,7 +101,7 @@ extension ClientCertificateManagementViewController {
         addCertButton.tintColor = UIColor.white
 
         // If the view is presented modally, the navigation bar does not exist.
-        // For that case we have a the backButton.
+        // For that case we have the cancelButton.
         let backButtonTitle = NSLocalizedString("Back",
                                                 comment: "Back button for client cert managment")
         let newBackButton = UIBarButtonItem(title: backButtonTitle,
