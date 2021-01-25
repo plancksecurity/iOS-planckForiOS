@@ -23,7 +23,7 @@ final class ClientCertificateManagementViewController: UIViewController {
 
     @IBOutlet private weak var selectCertificateTitleLabel: UILabel!
     @IBOutlet private weak var selectCertificateSubtitleLabel: UILabel!
-    @IBOutlet private weak var backButtonContainer: UIView!
+    @IBOutlet private weak var cancelButtonContainer: UIView!
     @IBOutlet private weak var cancelButton: UIButton!
     @IBOutlet private weak var stackView: UIStackView!
 
@@ -50,7 +50,7 @@ final class ClientCertificateManagementViewController: UIViewController {
         //If the view is presented modally, it's needed to have a back button to dismiss the view.
         // If the view was pushed, this back button is no longer needed as we have the back button in the navigation bar.
         if presentingViewController != .none {
-            backButtonContainer.isHidden = true
+            cancelButtonContainer.isHidden = true
         }
     }
 

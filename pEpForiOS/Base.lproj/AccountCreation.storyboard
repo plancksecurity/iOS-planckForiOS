@@ -866,8 +866,8 @@
                     <navigationItem key="navigationItem" id="TGi-N8-gcY"/>
                     <connections>
                         <outlet property="addCertButton" destination="Tm4-05-7M1" id="SuH-wP-5LU"/>
-                        <outlet property="backButtonContainer" destination="Jkx-V5-nLU" id="6ZG-J6-MT4"/>
                         <outlet property="cancelButton" destination="Veu-lx-Whc" id="BF5-tw-hxQ"/>
+                        <outlet property="cancelButtonContainer" destination="Jkx-V5-nLU" id="hKl-ox-nyD"/>
                         <outlet property="selectCertificateSubtitleLabel" destination="43K-i7-nBj" id="0Ua-Ex-Am0"/>
                         <outlet property="selectCertificateTitleLabel" destination="jrd-fZ-xRk" id="jMy-a6-84v"/>
                         <outlet property="stackView" destination="IOr-E5-1Cz" id="uiT-Tz-a7b"/>
