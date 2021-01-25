@@ -65,8 +65,9 @@ final class ClientCertificateManagementViewModel {
         }
     }
 
-    /// Indicate if the Cancel Button Container should be removed. 
+    /// Indicates if the Cancel Button Container should be removed.
     public var shouldRemoveCancelButtonContainer: Bool {
+        // If there is no account to update that means that is part of login flow. Therefore, it should remove th cancel button as we have one in the navigation bar. 
         return accountToUpdate == nil
     }
 
