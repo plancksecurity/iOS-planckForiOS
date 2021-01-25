@@ -143,7 +143,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
             }
-            dequeuedCell.configureDisplayRow(with: row, for: traitCollection)
+            dequeuedCell.configure(with: row, for: traitCollection)
             return dequeuedCell
 
         case .name,
@@ -159,7 +159,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
             }
-            dequeuedCell.configureDisplayRow(with: row, for: traitCollection)
+            dequeuedCell.configure(with: row, for: traitCollection)
             return dequeuedCell
         case .pepSync:
             let dequeuedCell = dequeue(with: row, type: AccountSettingsSwitchTableViewCell.self)

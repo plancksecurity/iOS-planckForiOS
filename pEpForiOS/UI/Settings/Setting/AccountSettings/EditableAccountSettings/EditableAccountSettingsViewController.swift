@@ -102,15 +102,15 @@ extension EditableAccountSettingsViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("Can't get row")
                 return cell
             }
-            cell.configureActionRow(with: row, for: traitCollection)
-            cell.valueTextfield.delegate = self
+            cell.configure(with: row, for: traitCollection)
+//            cell.valueTextfield.delegate = self
             return cell
         default:
             guard let row = row as? AccountSettingsViewModel.DisplayRow else {
                 Log.shared.errorAndCrash("Can't get row")
                 return cell
             }
-            cell.configureDisplayRow(with: row, for: traitCollection)
+            cell.configure(with: row, for: traitCollection)
             if row.type == .tranportSecurity {
                 cell.valueTextfield.inputView = pickerView
             }
@@ -187,11 +187,6 @@ extension EditableAccountSettingsViewController: EditableAccountSettingsDelegate
 // MARK: - UITextFieldDelegate
 
 extension EditableAccountSettingsViewController: UITextFieldDelegate {
-
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        let row = getRow(of: textField)
-        return row.type != .certificate
-    }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         firstResponder = textField

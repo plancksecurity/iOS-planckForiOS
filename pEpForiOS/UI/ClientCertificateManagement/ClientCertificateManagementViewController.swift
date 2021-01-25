@@ -49,7 +49,7 @@ final class ClientCertificateManagementViewController: UIViewController {
         let backButtonText = NSLocalizedString("Back", comment: "Back button title")
         backButton.setTitle(backButtonText, for: .normal)
 
-        if vm.shouldRemoveCancelButtonContainer {
+        if presentingViewController != .none {
             backButtonContainer.isHidden = true
         }
     }
@@ -99,12 +99,7 @@ extension ClientCertificateManagementViewController {
         let image = UIImage(named: "button-add")
         addCertButton.setImage(image?.withRenderingMode(.alwaysTemplate), for: .normal)
         addCertButton.tintColor = UIColor.white
-
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return
-        }
-        if vm.shouldRemoveCancelButtonContainer {
+        if presentingViewController != .none {
             let backButtonTitle = NSLocalizedString("Cancel",
                                                     comment: "Back button for client cert managment")
             let newBackButton = UIBarButtonItem(title: backButtonTitle,
@@ -232,6 +227,7 @@ extension ClientCertificateManagementViewController: SwipeTableViewCellDelegate 
         }
         configure(action: deleteAction, with: swipeActionDescriptor)
         swipeActions.append(deleteAction)
+        // swipe to the left only shows delete option.
         return (orientation == .right ? swipeActions : nil)
     }
     

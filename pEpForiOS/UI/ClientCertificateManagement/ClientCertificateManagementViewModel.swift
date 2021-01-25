@@ -65,15 +65,10 @@ final class ClientCertificateManagementViewModel {
         }
     }
 
-    /// Indicates if the Cancel Button Container should be removed.
-    public var shouldRemoveCancelButtonContainer: Bool {
-        // If there is no account to update that means that is part of login flow. Therefore, it should remove th cancel button as we have one in the navigation bar. 
-        return accountToUpdate == nil
-    }
-
     public func loginViewModel() -> LoginViewModel {
         return LoginViewModel(verifiableAccount: verifiableAccount)
     }
+
     public func deleteCertificate(indexPath: IndexPath) -> Bool{
         let list = clientCertificateUtil.listCertificates()
         do {

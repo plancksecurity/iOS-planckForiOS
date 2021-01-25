@@ -22,17 +22,20 @@ final class AccountSettingsTableViewCell: UITableViewCell {
         valueTextfield.font = UIFont.pepFont(style: .body, weight: .regular)
     }
 
-    /// Configure the cell according to the current trait collection
-    public func configureDisplayRow(with row : AccountSettingsViewModel.DisplayRow? = nil, for traitCollection : UITraitCollection? = nil) {
+    /// Configure the cell with the appropiate content from the row according to the current trait collection
+    /// Title, textfield, keyboard and layout in general are configured.
+    /// - Parameters:
+    ///   - displayRow: The row to configurate the cell
+    ///   - traitCollection: The current trait collection.
+    public func configure(with displayRow: AccountSettingsViewModel.DisplayRow? = nil, for traitCollection : UITraitCollection? = nil) {
         guard let traitCollection = traitCollection else {
-            //This is a valid case
             return
         }
         let contentSize = traitCollection.preferredContentSizeCategory
         stackView.axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
         stackView.spacing = contentSize.isAccessibilityCategory ? 10.0 : 5.0
 
-        guard let row = row else {
+        guard let row = displayRow else {
             Log.shared.errorAndCrash("Without row the cell can not be configured")
             return
         }
@@ -57,18 +60,21 @@ final class AccountSettingsTableViewCell: UITableViewCell {
         }
     }
 
-    /// Configure the cell according to the current trait collection
-    public func configureActionRow(with row : AccountSettingsViewModel.ActionRow? = nil,
+    /// Configure the cell with the appropiate content from the row according to the current trait collection
+    /// Title, textfield, keyboard and layout in general are configured.
+    /// - Parameters:
+    ///   - actionRow: The row to configurate the cell
+    ///   - traitCollection: The current trait collection.
+    public func configure(with actionRow : AccountSettingsViewModel.ActionRow? = nil,
                           for traitCollection : UITraitCollection? = nil) {
         guard let traitCollection = traitCollection else {
-            //This is a valid case
             return
         }
         let contentSize = traitCollection.preferredContentSizeCategory
         stackView.axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
         stackView.spacing = contentSize.isAccessibilityCategory ? 10.0 : 5.0
 
-        guard let row = row else {
+        guard let row = actionRow else {
             Log.shared.errorAndCrash("Without row the cell can not be configured")
             return
         }
