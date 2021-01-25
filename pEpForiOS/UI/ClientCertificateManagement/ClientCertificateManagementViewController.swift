@@ -44,6 +44,8 @@ final class ClientCertificateManagementViewController: UIViewController {
         let backButtonText = NSLocalizedString("Back", comment: "Back button title")
         backButton.setTitle(backButtonText, for: .normal)
 
+        //If the view is presented modally, it's needed to have a back button to dismiss the view.
+        // If the view was pushed, this back button is no longer needed as we have the back button in the navigation bar.
         if presentingViewController != .none {
             backButtonContainer.isHidden = true
         }
@@ -94,6 +96,9 @@ extension ClientCertificateManagementViewController {
         let image = UIImage(named: "button-add")
         addCertButton.setImage(image?.withRenderingMode(.alwaysTemplate), for: .normal)
         addCertButton.tintColor = UIColor.white
+
+
+        // If the view is presented modally, the navigation bar does not exist. 
         if presentingViewController != .none {
             let backButtonTitle = NSLocalizedString("Cancel",
                                                     comment: "Back button for client cert managment")
