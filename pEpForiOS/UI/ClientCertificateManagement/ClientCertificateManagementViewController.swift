@@ -50,7 +50,7 @@ final class ClientCertificateManagementViewController: UIViewController {
         backButton.setTitle(backButtonText, for: .normal)
 
         if vm.shouldRemoveCancelButtonContainer {
-            stackView.removeFully(view: backButtonContainer)
+            backButtonContainer.isHidden = true
         }
     }
 
@@ -65,7 +65,6 @@ final class ClientCertificateManagementViewController: UIViewController {
         dismiss()
     }
 }
-
 
 extension ClientCertificateManagementViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
