@@ -103,7 +103,6 @@ extension EditableAccountSettingsViewController: UITableViewDataSource {
                 return cell
             }
             cell.configure(with: row, for: traitCollection)
-//            cell.valueTextfield.delegate = self
             return cell
         default:
             guard let row = row as? AccountSettingsViewModel.DisplayRow else {
