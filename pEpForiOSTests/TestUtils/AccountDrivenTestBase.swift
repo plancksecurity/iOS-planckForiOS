@@ -10,8 +10,6 @@ import XCTest
 
 @testable import pEpForiOS
 @testable import MessageModel //FIXME:
-import PEPObjCAdapterTypes_iOS
-import PEPObjCAdapter_iOS // Only for the tear down
 
 /// Base class for tests that need an account set up.
 open class AccountDrivenTestBase: XCTestCase {
@@ -25,7 +23,6 @@ open class AccountDrivenTestBase: XCTestCase {
 
     override open func tearDown() {
         Stack.shared.reset()
-        PEPSession.cleanup()
         XCTAssertTrue(PEPUtils.pEpClean())
         super.tearDown()
     }
