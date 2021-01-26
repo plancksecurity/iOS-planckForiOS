@@ -11,6 +11,7 @@ import pEpIOSToolbox
 import MessageModel
 
 extension UIViewController {
+
     var isModalViewCurrentlyShown: Bool {
         return presentedViewController != nil
     }
