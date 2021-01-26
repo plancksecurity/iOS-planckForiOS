@@ -151,6 +151,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
              .server,
              .port,
              .tranportSecurity,
+             .certificate,
              .username,
              .signature:
             let dequeuedCell = dequeue(with: row, type: AccountSettingsTableViewCell.self)

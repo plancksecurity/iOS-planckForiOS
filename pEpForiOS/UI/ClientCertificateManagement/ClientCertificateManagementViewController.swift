@@ -7,9 +7,7 @@
 //
 
 import UIKit
-
 import SwipeCellKit
-
 import pEpIOSToolbox
 
 private struct Localized {
@@ -19,11 +17,15 @@ private struct Localized {
 
 /// View that lists all imported client certificates and let's the user choose one.
 final class ClientCertificateManagementViewController: UIViewController {
-
+    public static let storyboardIdentifier = "ClientCertificateManagementViewController"
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var addCertButton: UIButton!
+
     @IBOutlet private weak var selectCertificateTitleLabel: UILabel!
     @IBOutlet private weak var selectCertificateSubtitleLabel: UILabel!
+    @IBOutlet private weak var cancelButtonContainer: UIView!
+    @IBOutlet private weak var cancelButton: UIButton!
+    @IBOutlet private weak var stackView: UIStackView!
 
     public var viewModel: ClientCertificateManagementViewModel?
     
@@ -39,6 +41,15 @@ final class ClientCertificateManagementViewController: UIViewController {
         tableView.dataSource = self
         setupTableView()
         configureAppearance()
+        let backButtonText = NSLocalizedString("Cancel", comment: "Cancel button title")
+        cancelButton.setTitle(backButtonText, for: .normal)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        if vm.shouldHideCancelButton {
+            cancelButtonContainer.isHidden = true
+        }
     }
 
     @IBAction func addCertificateButtonPressed(_ sender: Any) {
@@ -47,13 +58,19 @@ final class ClientCertificateManagementViewController: UIViewController {
         picker.modalPresentationStyle = .fullScreen
         present(picker, animated: true)
     }
+
+    @IBAction private func cancelButtonPressed() {
+        dismiss()
+    }
 }
 
 extension ClientCertificateManagementViewController: UIDocumentPickerDelegate {
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
-        guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController else {
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController, let url = urls.first else {
+            Log.shared.errorAndCrash("VC or certificate url not found")
             return
         }
+        vc.delegate = self
         vc.viewModel = ClientCertificateImportViewModel(certificateUrl: url, delegate: vc)
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
@@ -80,18 +97,6 @@ extension ClientCertificateManagementViewController {
         let image = UIImage(named: "button-add")
         addCertButton.setImage(image?.withRenderingMode(.alwaysTemplate), for: .normal)
         addCertButton.tintColor = UIColor.white
-
-        let backButtonTitle = NSLocalizedString("Cancel",
-                                                comment: "Back button for client cert managment")
-        let newBackButton = UIBarButtonItem(title: backButtonTitle,
-                                            style: .plain,
-                                            target: self,
-                                            action: #selector(backButton))
-        navigationItem.leftBarButtonItem = newBackButton
-    }
-    
-    @objc private func backButton() {
-        navigationController?.popViewController(animated: true)
     }
 
     private func setupTableView() {
@@ -113,7 +118,17 @@ extension ClientCertificateManagementViewController: UITableViewDelegate {
         case .newAccount:
             performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
         case .updateCertificate:
-            navigationController?.popViewController(animated: true)
+            dismiss()
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+
+    private func dismiss() {
+        // as this view could have been pushed or modally presented we must distinguish the forms of dismissing
+        if let navigationController = navigationController {
+            navigationController.popViewController(animated: true)
+        } else {
+            dismiss(animated: true)
         }
     }
 }
@@ -197,7 +212,8 @@ extension ClientCertificateManagementViewController: SwipeTableViewCellDelegate 
         }
         configure(action: deleteAction, with: swipeActionDescriptor)
         swipeActions.append(deleteAction)
-        return swipeActions
+        // swipe to the left only shows delete option.
+        return (orientation == .right ? swipeActions : nil)
     }
     
     func deleteAction(forCellAt: IndexPath) {
@@ -261,7 +277,11 @@ extension ClientCertificateManagementViewController: ClientCertificateManagement
 extension ClientCertificateManagementViewController: ClientCertificateImportViewControllerDelegate {
 
     func certificateCouldImported() {
-        viewModel?.handleNewCertificateImported()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleNewCertificateImported()
         tableView.reloadData()
     }
 }

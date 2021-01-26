@@ -7,13 +7,36 @@
 //
 
 import Foundation
+import pEpIOSToolbox
+import MessageModel
 
 public struct AccountSettingsHelper {
+
+    private var account: Account?
+
+    init(account: Account) {
+        self.account = account
+    }
+
+    public var hasClientCertificate: Bool {
+        return account?.imapServer?.credentials.clientCertificate != .none
+    }
+
+    public var certificateDescription: String {
+        guard let certificate = account?.imapServer?.credentials.clientCertificate else {
+            Log.shared.errorAndCrash("Client Certificate not found")
+            return ""
+        }
+        let name = certificate.label ?? "--"
+        let date = certificate.date?.fullString() ?? ""
+        let separator = NSLocalizedString("Exp. date:", comment: "separator string between name and date")
+        return "\(name), \(separator) \(date)"
+    }
 
     /// Provides the title of the row
     /// - Parameter type: The type of the row
     /// - Returns: the title of the row.
-    static func rowTitle(for type : AccountSettingsViewModel.RowType) -> String {
+    func rowTitle(for type : AccountSettingsViewModel.RowType) -> String {
         switch type {
         case .name:
             return NSLocalizedString("Name", comment: "Name label in account settings")
@@ -42,13 +65,15 @@ public struct AccountSettingsHelper {
                                      comment: "Include in Unified Folders label in account settings")
         case .signature:
             return NSLocalizedString("Signature", comment: "Signature label in account settings")
+        case .certificate:
+            return NSLocalizedString("Certificate", comment: "Certificate label in account settings")
         }
     }
 
     /// This method return the corresponding title for each section.
     /// - Parameter type: The section type to choose the proper title.
     /// - Returns: The title for the requested section.
-    static func sectionTitle(type: AccountSettingsViewModel.SectionType) -> String {
+    func sectionTitle(type: AccountSettingsViewModel.SectionType) -> String {
         switch type {
         case .account:
             return NSLocalizedString("Account", comment: "Tableview section  header: Account")
