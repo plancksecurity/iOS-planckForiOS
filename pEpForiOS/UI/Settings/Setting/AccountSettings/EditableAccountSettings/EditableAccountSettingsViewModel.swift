@@ -20,6 +20,8 @@ protocol EditableAccountSettingsDelegate: class {
     func showAlert(error: Error)
     /// Informs the VC that has to dismiss
     func dismissYourself()
+    /// Show Edit Certificate
+    func showEditCertificate()
 }
 
 class EditableAccountSettingsViewModel {
@@ -87,11 +89,14 @@ class EditableAccountSettingsViewModel {
 
     private let transportSecurityViewModel = TransportSecurityViewModel()
 
+    private var accountSettingsHelper: AccountSettingsHelper?
     /// Constructor
     /// - Parameters:
     ///   - account: The account to configure the editable account settings view model.
     ///   - delegate: The delegate to communicate to the View Controller.
     public init(account: Account, delegate: EditableAccountSettingsDelegate? = nil) {
+         accountSettingsHelper = AccountSettingsHelper(account: account)
+
         self.account = account
         self.delegate = delegate
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
@@ -144,6 +149,13 @@ class EditableAccountSettingsViewModel {
             passwordChanged = true
         }
     }
+
+    public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
+        let verifiableAccount = VerifiableAccount.verifiableAccount(for: .clientCertificate, usePEPFolderProvider: AppSettings.shared)
+        let clientCertificateManagementViewModel = ClientCertificateManagementViewModel(verifiableAccount: verifiableAccount, shouldHideCancelButton: false)
+        clientCertificateManagementViewModel.accountToUpdate = account
+        return clientCertificateManagementViewModel
+    }
 }
 
 // MARK: -  VerifiableAccountDelegate
@@ -192,8 +204,12 @@ extension EditableAccountSettingsViewModel {
     /// - Parameter type: The type of the section to generate.
     /// - Returns: The generated section.
     private func generateSection(type: AccountSettingsViewModel.SectionType) -> AccountSettingsViewModel.Section {
+        guard let accountSettingsHelper = accountSettingsHelper else {
+            Log.shared.errorAndCrash("AccountSettingsHelper not found")
+            return AccountSettingsViewModel.Section.init(title: "", rows: [], type: .account)
+        }
         let rows = generateRows(type: type)
-        let title = AccountSettingsHelper.sectionTitle(type: type)
+        let title = accountSettingsHelper.sectionTitle(type: type)
         return AccountSettingsViewModel.Section(title: title, rows: rows, type: type)
     }
 
@@ -211,8 +227,12 @@ extension EditableAccountSettingsViewModel {
     ///   - value: The value of the row.
     /// - Returns: The configured row.
     private func getDisplayRow(type: AccountSettingsViewModel.RowType, value: String) -> AccountSettingsViewModel.DisplayRow {
-        let title = AccountSettingsHelper.rowTitle(for: type)
         let cellIdentifier = AccountSettingsHelper.CellsIdentifiers.settingsDisplayCell
+        guard let accountSettingsHelper = accountSettingsHelper else {
+            Log.shared.errorAndCrash("AccountSettingsHelper not found")
+            return AccountSettingsViewModel.DisplayRow(type: .email, title: "", text: "", cellIdentifier: cellIdentifier)
+        }
+        let title = accountSettingsHelper.rowTitle(for: type)
         let shouldShowCaretOrSelect = type != .tranportSecurity
         return AccountSettingsViewModel.DisplayRow(type: type,
                                                    title: title,
@@ -220,6 +240,32 @@ extension EditableAccountSettingsViewModel {
                                                    cellIdentifier: cellIdentifier,
                                                    shouldShowCaret: shouldShowCaretOrSelect,
                                                    shouldSelect: shouldShowCaretOrSelect)
+    }
+
+    private func getActionRow(type: AccountSettingsViewModel.RowType, value: String, action: AccountSettingsViewModel.AlertActionBlock) -> AccountSettingsViewModel.ActionRow {
+        switch type {
+        case .certificate:
+            let cellIdentifier = AccountSettingsHelper.CellsIdentifiers.settingsDisplayCell
+            guard let accountSettingsHelper = accountSettingsHelper else {
+                Log.shared.errorAndCrash("AccountSettingsHelper not found")
+                return AccountSettingsViewModel.ActionRow(type: type, title: "", cellIdentifier: cellIdentifier)
+            }
+            let title = accountSettingsHelper.rowTitle(for: type)
+            return AccountSettingsViewModel.ActionRow(type: type,
+                                                      title: title,
+                                                      text: value,
+                                                      isDangerous: false,
+                                                      action: { [weak self] in
+                                                        guard let me = self else {
+                                                            Log.shared.errorAndCrash("Lost myself")
+                                                            return
+                                                        }
+                                                        me.delegate?.showEditCertificate()
+                                                      }, cellIdentifier: cellIdentifier)
+        default:
+            Log.shared.errorAndCrash("Wrong row type for an action row")
+            return AccountSettingsViewModel.ActionRow(type: type, title: "", cellIdentifier: "")
+        }
     }
 
     /// Setup the server fields.
@@ -264,6 +310,19 @@ extension EditableAccountSettingsViewModel {
                 let fakePassword = "JustAPassword"
                 let passwordRow = getDisplayRow(type : .password, value: fakePassword)
                 rows.append(passwordRow)
+            }
+            guard let accountSettingsHelper = accountSettingsHelper else {
+                Log.shared.errorAndCrash("AccountSettingsHelper not found")
+                return []
+            }
+            if accountSettingsHelper.hasClientCertificate {
+                rows.append(getActionRow(type : .certificate, value: accountSettingsHelper.certificateDescription, action: { [weak self] in
+                    guard let me = self else {
+                        Log.shared.errorAndCrash("Lost myself")
+                        return
+                    }
+                    me.delegate?.showEditCertificate()
+                }))
             }
         case .imap:
             guard let imapServer = account.imapServer else {

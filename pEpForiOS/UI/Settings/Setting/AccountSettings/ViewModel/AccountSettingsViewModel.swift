@@ -52,12 +52,15 @@ final class AccountSettingsViewModel {
     private(set) var sections: [Section] = [Section]()
     private let oauthViewModel = OAuthAuthorizer()
     private lazy var folderSyncService = FetchImapFoldersService()
+    private var accountSettingsHelper: AccountSettingsHelper?
 
     /// Constructor
     /// - Parameters:
     ///   - account: The account to configure the account settings view model.
     ///   - delegate: The delegate to communicate to the View Controller.
     init(account: Account, delegate: AccountSettingsViewModelDelegate? = nil) {
+        accountSettingsHelper = AccountSettingsHelper(account: account)
+
         self.account = account
         self.delegate = delegate
         includeInUnifiedFolders = account.isIncludedInUnifiedFolders
@@ -109,6 +112,7 @@ extension AccountSettingsViewModel {
         case server
         case port
         case tranportSecurity
+        case certificate
         case username
         case oauth2Reauth
     }
@@ -172,6 +176,8 @@ extension AccountSettingsViewModel {
         var type: AccountSettingsViewModel.RowType
         /// Title of the action row
         var title: String
+        /// The text of the row
+        var text: String?
         /// Indicates if the action to be performed is dangerous.
         var isDangerous: Bool = false
         /// Block that will be executed when action cell is pressed
@@ -244,6 +250,16 @@ extension AccountSettingsViewModel {
     /// - Returns: True if it is.
     public func isPEPSyncGrayedOut() -> Bool {
         return KeySyncUtil.isInDeviceGroup
+    }
+
+    public func row(for type: AccountSettingsViewModel.RowType) -> Int {
+        var rowNumber = 0
+        sections.forEach { (section) in
+            if let index = section.rows.firstIndex(where: {$0.type == type}) {
+                rowNumber = index
+            }
+        }
+        return rowNumber
     }
 }
 
@@ -335,6 +351,9 @@ extension AccountSettingsViewModel {
                                      comment: "Include in Unified Folders label in account settings")
         case .signature:
             return NSLocalizedString("Signature", comment: "Signature label in account settings")
+        case .certificate:
+            Log.shared.errorAndCrash("Invalid row type for AccountSettings")
+            return ""
         }
     }
 
