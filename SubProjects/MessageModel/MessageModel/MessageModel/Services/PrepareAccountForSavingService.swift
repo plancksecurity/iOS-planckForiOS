@@ -38,7 +38,7 @@ class PrepareAccountForSavingService {
                 return
             }
             guard success else {
-                Log.shared.errorAndCrash("Error generating key") //BUFF: HERE. MYSELFE FAILS
+                Log.shared.errorAndCrash("Error generating key")
                 completion(success)
                 return
             }
