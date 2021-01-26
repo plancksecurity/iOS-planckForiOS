@@ -13,7 +13,6 @@
 		1506E9C525AF0BD100909821 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1506E8E725ADF00500909821 /* LaunchScreen.storyboard */; };
 		15078BB323883D280075C7B4 /* DefaultImapConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15078BB223883D280075C7B4 /* DefaultImapConnectionDelegate.swift */; };
 		150C5EF024A38825005BA3C9 /* CreateIMAPPepFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150C5EEF24A38825005BA3C9 /* CreateIMAPPepFolderOperation.swift */; };
-		15160A63257A53A700DD42E0 /* libPEPObjCAdapterTypes_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15160A62257A53A700DD42E0 /* libPEPObjCAdapterTypes_iOS.a */; platformFilter = ios; };
 		15160B41257A599C00DD42E0 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 15160B3C257A597B00DD42E0 /* libz.tbd */; platformFilter = ios; };
 		15160B45257A59A500DD42E0 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 15160B3D257A598100DD42E0 /* libiconv.tbd */; platformFilter = ios; };
 		15160D3A257A950700DD42E0 /* libPEPObjCAdapter_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15160D39257A950700DD42E0 /* libPEPObjCAdapter_iOS.a */; };
@@ -931,7 +930,6 @@
 				15160B45257A59A500DD42E0 /* libiconv.tbd in Frameworks */,
 				15160B41257A599C00DD42E0 /* libz.tbd in Frameworks */,
 				1543DCD92579455B0041EFB5 /* libPEPObjCAdapter_iOS.a in Frameworks */,
-				15160A63257A53A700DD42E0 /* libPEPObjCAdapterTypes_iOS.a in Frameworks */,
 				43EA489D221E95E3006E8F83 /* PantomimeFramework.framework in Frameworks */,
 				B7DB7FA522147000003968DA /* pEpIOSToolbox.framework in Frameworks */,
 			);
