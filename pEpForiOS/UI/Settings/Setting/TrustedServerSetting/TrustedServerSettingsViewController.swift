@@ -139,7 +139,7 @@ extension TrustedServerSettingsViewController: TrustedServerSettingsViewModelDel
                 Log.shared.errorAndCrash("Fail to get TrustedServerSettingCell")
                 return
             }
-            trustCell.onOfSwitch.setOn(false, animated: true)
+            trustCell.onOfSwitch.setOn(true, animated: true)
         }
         let positiveAction = { [weak self] in
             guard let me = self else {
