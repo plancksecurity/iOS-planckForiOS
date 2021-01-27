@@ -47,7 +47,6 @@ public class UnifiedFolderBase: VirtualFolderProtocol {
 
     public var messagesPredicate: NSPredicate {
         get {
-            self.updateLastLookAt()
             var predicates = [NSPredicate]()
             guard let folderType = agregatedFolderType else {
                 Log.shared.errorAndCrash("Folder Type not found")
@@ -98,6 +97,15 @@ public class UnifiedFolderBase: VirtualFolderProtocol {
             // Already fetching do nothing
         }
     }
+
+    /// Update LastLookAt property for all folders of the current type that are have the includeInUnifiedFolder on.
+    public func updateLastLookAt() {
+        guard let folderType = agregatedFolderType else {
+            Log.shared.errorAndCrash(message: "missing folder type for unified inbox?")
+            return
+        }
+        Folder.getAll(folderType: folderType).filter({$0.account.isIncludedInUnifiedFolders}).forEach({$0.updateLastLookAt()})
+    }
 }
 
 extension UnifiedFolderBase: Equatable {
@@ -109,17 +117,5 @@ extension UnifiedFolderBase: Equatable {
 extension UnifiedFolderBase: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(messagesPredicate.description)
-    }
-}
-
-extension UnifiedFolderBase {
-
-    /// Update LastLookAt property for all folders of the current type that are have the includeInUnifiedFolder on.
-    public func updateLastLookAt() {
-        guard let folderType = agregatedFolderType else {
-            Log.shared.errorAndCrash(message: "missing folder type for unified inbox?")
-            return
-        }
-        _ = Folder.getAll(folderType: folderType).filter({$0.account.isIncludedInUnifiedFolders}).map({$0.updateLastLookAt()})
     }
 }
