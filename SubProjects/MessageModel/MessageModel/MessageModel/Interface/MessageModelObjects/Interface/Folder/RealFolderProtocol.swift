@@ -12,7 +12,4 @@ public protocol RealFolderProtocol: DisplayableFolderProtocol {
 
     /// the account the folder belongs to
     var account: Account { get }
-
-    /// Saves the current date as lastLookAt.
-    func updateLastLookAt()
 }
