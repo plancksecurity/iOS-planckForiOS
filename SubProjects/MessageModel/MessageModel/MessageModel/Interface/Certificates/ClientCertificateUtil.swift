@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import pEpIOSToolbox
 
 public protocol ClientCertificateUtilProtocol {
     /// - Parameters:
@@ -276,6 +277,7 @@ extension ClientCertificateUtil {
             commonName = commonNameCF as String?
         }
 
+
         var emailAddressesCF: CFArray?
         let emailAddressStatus = SecCertificateCopyEmailAddresses(theCertificate, &emailAddressesCF)
         if emailAddressStatus == errSecSuccess,
@@ -310,23 +312,52 @@ extension ClientCertificateUtil {
         // See the CFGetTypeID() check above.
         let theSecIdentity = identityObj as! SecIdentity
 
+        var certificate: SecCertificate?
+        let certificateStatus = SecIdentityCopyCertificate(theSecIdentity, &certificate)
+        guard certificateStatus == errSecSuccess else {
+            Log.shared.errorAndCrash("Can't get cert")
+            return nil
+        }
+        guard let theCertificate = certificate else {
+            Log.shared.errorAndCrash("Can't get cert")
+            return nil
+        }
+
+        guard let normalizedIssuer = SecCertificateCopyNormalizedIssuerSequence(theCertificate) else {
+            Log.shared.errorAndCrash("Can't get normalizedIssuer")
+            return nil
+        }
+        guard let serialNumber = SecCertificateCopySerialNumberData(theCertificate, nil) else {
+            Log.shared.errorAndCrash("Can't get serialNumber")
+            return nil
+        }
         guard let identityLabel = label(for: theSecIdentity) else {
             throw ImportError.insufficientInformation
         }
 
         let uuidLabel = NSUUID().uuidString
-
         let addIdentityAttributes: [CFString : Any] = [kSecReturnPersistentRef: true,
                                                        kSecAttrLabel: uuidLabel,
-                                                       kSecValueRef: theSecIdentity]
+                                                       kSecValueRef: theSecIdentity,
+                                                       kSecAttrIssuer: normalizedIssuer,
+                                                       kSecAttrSerialNumber: serialNumber,
+                                                       kSecAttrCertificateType:  SecCertificateGetTypeID()
+        ]
 
         var resultRef: CFTypeRef? = nil
         let identityStatus = SecItemAdd(addIdentityAttributes as CFDictionary, &resultRef);
+
         if identityStatus != errSecSuccess {
+            if let error = identityStatus.error {
+                Log.shared.error("%@", "\(error.localizedDescription)")
+            }
             if identityStatus != errSecDuplicateItem {
                 // Throw on all errors except duplicate items
                 throw ImportError.keychainError
             } else {
+                // The keychain already has an item of the same class with the same set of composite primary keys
+                // https://developer.apple.com/documentation/security/errsecduplicateitem
+                //
                 // If the error hints at a duplicate already in the keychain,
                 // try to find it.
                 if let existingUuid = matchExisting(secIdentity: theSecIdentity) {
@@ -377,3 +408,4 @@ extension ClientCertificateUtil {
         return false
     }
 }
+
