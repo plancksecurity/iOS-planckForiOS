@@ -165,22 +165,16 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
     public func didEndVerification(result: Result<Void, Error>) {
         switch result {
         case .success:
-            do {
-                try verifiableAccount?.save { [weak self] _ in
-                    guard let me = self else {
-                        //Valid case: the view might be dismissed.
-                        return
-                    }
-                    DispatchQueue.main.async {
-                        me.delegate?.setLoadingView(visible: false)
-                        me.changeDelegate?.didChange()
-                        me.delegate?.dismissYourself()
-                    }
+            verifiableAccount?.save { [weak self] _ in
+                guard let me = self else {
+                    //Valid case: the view might be dismissed.
+                    return
                 }
-            } catch {
-                Log.shared.errorAndCrash(error: error)
-                delegate?.setLoadingView(visible: false)
-                delegate?.dismissYourself()
+                DispatchQueue.main.async {
+                    me.delegate?.setLoadingView(visible: false)
+                    me.changeDelegate?.didChange()
+                    me.delegate?.dismissYourself()
+                }
             }
         case .failure(let error):
             delegate?.setLoadingView(visible: false)
