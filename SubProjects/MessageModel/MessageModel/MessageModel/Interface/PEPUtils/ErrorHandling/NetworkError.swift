@@ -8,5 +8,5 @@
 
 public typealias FunctionName = String
 
-enum NetworkError: Error {
+public enum NetworkError: Error {
 }
