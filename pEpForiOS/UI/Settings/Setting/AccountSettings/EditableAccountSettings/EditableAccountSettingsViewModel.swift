@@ -473,6 +473,11 @@ extension EditableAccountSettingsViewModel {
         if let transport = Server.Transport(fromString: input.smtpTranportSecurity) {
             theVerifier.transportSMTP = ConnectionTransport(transport: transport)
         }
+
+        if let clientCertificate = account.imapServer?.credentials.clientCertificate {
+            theVerifier.clientCertificate = clientCertificate
+        }
+
         do {
             try theVerifier.verify()
         } catch {
