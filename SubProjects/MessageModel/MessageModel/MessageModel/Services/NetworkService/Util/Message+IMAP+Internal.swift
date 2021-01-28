@@ -11,7 +11,7 @@ import pEpIOSToolbox
 // MARK: - Deletion
 
 extension Message {
-    /// - Note: This method does NOT save context. It MUST be saved afterwards.
+    /// - Note: This method does NOT save context.
     func imapDelete() {
         if isDeleted {
             // Do not bother messages that have been deleted from the DB already by some background
