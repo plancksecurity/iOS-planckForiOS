@@ -119,7 +119,9 @@ class AnimatedPlaceholderTextfield: UITextField {
     ///   - animated: enable or disable the textField placeholder going up animation.
     func set(text: String?, animated: Bool = true) {
         isAnimationEnable = animated
-        self.text = text
+        DispatchQueue.main.async {
+            self.text = text
+        }
     }
 }
 
