@@ -336,9 +336,6 @@
 /* Account settings title IMAP */
 "IMAP Settings" = "Nastavenia IMAP";
 
-/* Empty username message */
-"Imap username must not be empty." = "Používateľské meno pre IMAP nesmie byť prázdne.";
-
 /* Select certificate - import certificate date */
 "Import date" = "Dátum importu";
 
@@ -776,9 +773,6 @@
 
 /* Account settings title SMTP */
 "SMTP Settings" = "Nastavenia SMTP";
-
-/* Empty username message */
-"Smtp username must not be empty." = "Používateľské meno pre IMAP nesmie byť prázdne.";
 
 /* Title for address filter */
 "some address" = "nejaká adresa";

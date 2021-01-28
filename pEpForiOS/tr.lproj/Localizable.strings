@@ -324,9 +324,6 @@
 /* Account settings title IMAP */
 "IMAP Settings" = "IMAP Ayarları";
 
-/* Empty username message */
-"Imap username must not be empty." = "Imap kullanıcı adı boş olmamalıdır.";
-
 /* Select certificate - import certificate date */
 "Import date" = "İçe aktarma tarihi";
 
@@ -748,9 +745,6 @@
 
 /* Account settings title SMTP */
 "SMTP Settings" = "SMTP Ayarları";
-
-/* Empty username message */
-"Smtp username must not be empty." = "Smtp kullanıcı adı boş olmamalıdır.";
 
 /* Title for address filter */
 "some address" = "bazı adres";
