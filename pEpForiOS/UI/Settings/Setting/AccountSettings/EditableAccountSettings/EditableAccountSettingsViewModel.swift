@@ -163,10 +163,14 @@ class EditableAccountSettingsViewModel {
 extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
 
     public func didEndVerification(result: Result<Void, Error>) {
+        guard let verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("VerifiableAccount not found")
+            return
+        }
         switch result {
         case .success:
             do {
-                try verifiableAccount?.save { [weak self] _ in
+                verifiableAccount.save { [weak self] _ in
                     guard let me = self else {
                         //Valid case: the view might be dismissed.
                         return
@@ -177,19 +181,21 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
                         me.delegate?.dismissYourself()
                     }
                 }
-            } catch {
-                Log.shared.errorAndCrash(error: error)
-                delegate?.setLoadingView(visible: false)
-                delegate?.dismissYourself()
             }
         case .failure(let error):
-            delegate?.setLoadingView(visible: false)
-            if let imapError = error as? ImapSyncOperationError {
-                delegate?.showAlert(error: imapError)
-            } else if let smtpError = error as? SmtpSendError {
-                delegate?.showAlert(error: smtpError)
-            } else {
-                Log.shared.errorAndCrash(error: error)
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    //Valid case: the view might be dismissed.
+                    return
+                }
+                me.delegate?.setLoadingView(visible: false)
+                if let imapError = error as? ImapSyncOperationError {
+                    me.delegate?.showAlert(error: imapError)
+                } else if let smtpError = error as? SmtpSendError {
+                    me.delegate?.showAlert(error: smtpError)
+                } else {
+                    Log.shared.errorAndCrash(error: error)
+                }
             }
         }
     }
