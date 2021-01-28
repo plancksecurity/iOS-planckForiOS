@@ -200,7 +200,7 @@ extension SMTPSettingsViewController: VerifiableAccountDelegate {
         case .success:
             verifiableAccount?.save(completion: { [weak self] (savingResult) in
                 guard let me = self else {
-                    Log.shared.lostMySelf()
+                    // Valid case. We might have been dismissed already.
                     return
                 }
                 switch savingResult {

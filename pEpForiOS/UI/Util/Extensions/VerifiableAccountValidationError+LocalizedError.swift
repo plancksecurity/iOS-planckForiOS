@@ -19,7 +19,6 @@ extension VerifiableAccountValidationError {
         case .unknown:
             return NSLocalizedString("Something went wrong.",
                                      comment: "Error description when something went wrong")
-
         }
     }
 }

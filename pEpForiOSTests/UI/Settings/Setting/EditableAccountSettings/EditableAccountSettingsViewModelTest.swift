@@ -264,3 +264,4 @@ class MockAccountSettingsViewController: VerifiableAccount, SettingChangeDelegat
         }
     }
 }
+
