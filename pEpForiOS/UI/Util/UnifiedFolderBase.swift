@@ -61,7 +61,6 @@ public class UnifiedFolderBase: VirtualFolderProtocol {
         }
     }
 
-
     public func fetchOlder(completion: (()->())? = nil) {
         guard let folderType = agregatedFolderType else {
             Log.shared.errorAndCrash(message: "missing folder type for unified inbox?")
@@ -98,6 +97,15 @@ public class UnifiedFolderBase: VirtualFolderProtocol {
             }
             // Already fetching do nothing
         }
+    }
+
+    /// Update LastLookAt property for all folders of the current type that are have the includeInUnifiedFolder on.
+    public func updateLastLookAt() {
+        guard let folderType = agregatedFolderType else {
+            Log.shared.errorAndCrash(message: "missing folder type for unified inbox?")
+            return
+        }
+        Folder.getAll(folderType: folderType).filter({$0.account.isIncludedInUnifiedFolders}).forEach({$0.updateLastLookAt()})
     }
 }
 
