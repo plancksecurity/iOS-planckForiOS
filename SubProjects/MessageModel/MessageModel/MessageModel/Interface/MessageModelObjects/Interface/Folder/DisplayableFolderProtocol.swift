@@ -27,4 +27,7 @@ public protocol DisplayableFolderProtocol {
     ///
     /// - Parameter completion: optional execution block that will be called once the fetch is compleeted
     func fetchNewMessages(completion: (()->())?)
+    /// Saves the current date as lastLookAt.
+    func updateLastLookAt()
+
 }

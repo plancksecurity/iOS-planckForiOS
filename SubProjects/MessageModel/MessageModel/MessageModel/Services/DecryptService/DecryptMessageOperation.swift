@@ -9,7 +9,8 @@
 import CoreData
 
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
+import PEPObjCAdapterTypes_iOS
+import PEPObjCAdapter_iOS
 
 class DecryptMessageOperation: BaseOperation {
     private let moc: NSManagedObjectContext
