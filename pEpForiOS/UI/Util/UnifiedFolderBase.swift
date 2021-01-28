@@ -52,6 +52,7 @@ public class UnifiedFolderBase: VirtualFolderProtocol {
                 Log.shared.errorAndCrash("Folder Type not found")
                 return NSPredicate()
             }
+            predicates.append(Message.PredicateFactory.inUnifiedFolder())
             predicates.append(Message.PredicateFactory.isIn(folderOfType: folderType))
             predicates.append(Message.PredicateFactory.existingMessages())
             predicates.append(Message.PredicateFactory.processed())

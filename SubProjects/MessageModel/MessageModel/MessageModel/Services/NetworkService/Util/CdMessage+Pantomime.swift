@@ -10,7 +10,8 @@ import CoreData
 
 import pEpIOSToolbox
 import PantomimeFramework
-import PEPObjCAdapterFramework
+import PEPObjCAdapterTypes_iOS
+import PEPObjCAdapter_iOS
 
 typealias ImapStoreCommand = (command: String, pantomimeDict:[AnyHashable: Any])
 
