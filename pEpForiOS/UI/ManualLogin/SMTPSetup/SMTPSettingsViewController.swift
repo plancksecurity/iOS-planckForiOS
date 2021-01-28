@@ -196,24 +196,30 @@ extension SMTPSettingsViewController: SegueHandlerType {
 
 extension SMTPSettingsViewController: VerifiableAccountDelegate {
     func didEndVerification(result: Result<Void, Error>) {
+        guard let verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("Verifiable account not found")
+            return
+        }
+
         switch result {
         case .success:
-            verifiableAccount?.save(completion: { [weak self] (savingResult) in
+            verifiableAccount.save(completion: { [weak self] (savingResult) in
                 guard let me = self else {
                     // Valid case. We might have been dismissed already.
                     return
                 }
-                switch savingResult {
-                case .success:
-                    me.isCurrentlyVerifying = false
-                    me.performSegue(withIdentifier: .backToEmailListSegue, sender: me)
-                case .failure(_):
-                    me.isCurrentlyVerifying = false
-                    UIUtils.show(error: VerifiableAccountValidationError.invalidUserData)
+                DispatchQueue.main.async {
+                    switch savingResult {
+                    case .success:
+                        me.isCurrentlyVerifying = false
+                        me.performSegue(withIdentifier: .backToEmailListSegue, sender: me)
+                    case .failure(_):
+                        me.isCurrentlyVerifying = false
+                        UIUtils.show(error: VerifiableAccountValidationError.invalidUserData)
+                    }
                 }
             })
-            isCurrentlyVerifying = false
-            performSegue(withIdentifier: .backToEmailListSegue, sender: self)
+
         case .failure(let error):
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
