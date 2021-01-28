@@ -26,14 +26,31 @@ extension AppSettings {
     static private let keyShouldShowTutorialWizard = "keyShouldShowTutorialWizard"
     static private let keyUserHasBeenAskedForContactAccessPermissions = "keyUserHasBeenAskedForContactAccessPermissions"
     static private let keyUnsecureReplyWarningEnabled = "keyUnsecureReplyWarningEnabled"
-    static private var keyAccountSignature = "keyAccountSignature"
+    static private let keyAccountSignature = "keyAccountSignature"
     static private let keyVerboseLogginEnabled = "keyVerboseLogginEnabled"
+    static private let keyCollapsingState = "keyCollapsingState"
 }
 
 // MARK: - AppSettings
 
 /// Signleton representing and managing the App's settings.
 public final class AppSettings: KeySyncStateProvider {
+
+    public enum CollapsingStatus: String {
+        case expanded
+        case collapsed
+        case hidden
+    }
+    /// This structure keeps the state of the collapsing of folders and accounts.
+    /// [AccountAddress : [ FolderName : collapsedStatus ] ]
+    /// As folders can't have an empty string as name,
+    /// the collapsing state of the account will be represented as an empty string for the FolderName
+    /// See CollapsingStatus enum. 
+    ///
+    /// For example:
+    /// ["mb@pep.security" : [ "" : "collapsed" ] ] indicates the account is collapsed.
+    /// ["mb@pep.security" : [ "SomeFolder" : "collapsed" ] ] indicates the folder is collapsed.
+    public typealias CollapsingState = [String:[ [String:String] ] ]
 
     // MARK: - Singleton
     
@@ -96,7 +113,7 @@ extension AppSettings {
         defaults[AppSettings.keyUnsecureReplyWarningEnabled] = false
         defaults[AppSettings.keyAccountSignature] = [String:String]()
         defaults[AppSettings.keyVerboseLogginEnabled] = false
-
+        defaults[AppSettings.keyCollapsingState] = CollapsingState()
         AppSettings.userDefaults.register(defaults: defaults)
     }
 
@@ -194,6 +211,31 @@ extension AppSettings: AppSettingsProtocol {
         }
     }
 
+    public func saveCollapsingState(state: CollapsingState) {
+        var current = collapsingState
+        if let account = state.keys.first, let value = state.values.first {
+            current[account] = value
+            collapsingState = current
+        }
+    }
+
+    public func removeCollapsingState() {
+        AppSettings.userDefaults.set(nil, forKey: AppSettings.keyCollapsingState)
+    }
+
+    public var collapsingState: CollapsingState {
+        get {
+            guard let collapsingState = AppSettings.userDefaults.object(forKey: AppSettings.keyCollapsingState) as? CollapsingState else {
+                Log.shared.errorAndCrash("Can't cast collapsing state")
+                return CollapsingState()
+            }
+            return collapsingState
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCollapsingState)
+        }
+    }
+
     public var userHasBeenAskedForContactAccessPermissions: Bool {
         get {
             return AppSettings.userDefaults.bool(forKey: AppSettings.keyUserHasBeenAskedForContactAccessPermissions)
@@ -274,3 +316,4 @@ extension AppSettings: AppSettingsProtocol {
         }
     }
 }
+

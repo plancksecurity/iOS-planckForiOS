@@ -11,8 +11,14 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
+
+protocol CollapsingDelegate: class {
+    func didChangeCollapsingState(of folderCellViewModel: FolderCellViewModel, to value: AppSettings.CollapsingStatus)
+}
+
 public class FolderCellViewModel {
 
+    weak var collapsingDelegate: CollapsingDelegate?
     let folder: DisplayableFolderProtocol
     let level : Int
     var indentationLevel: Int {
@@ -64,14 +70,23 @@ public class FolderCellViewModel {
         }
     }
 
-    public var isExpand = true
-    public var isHidden = false
+    public var isExpand = true {
+        didSet {
+            collapsingDelegate?.didChangeCollapsingState(of: self, to: isExpand ? .expanded : .collapsed)
+        }
+    }
+    public var isHidden = false {
+        didSet {
+            collapsingDelegate?.didChangeCollapsingState(of: self, to: isHidden ? .hidden : .expanded)
+        }
+    }
 
     public init(folder: DisplayableFolderProtocol, level: Int) {
         self.folder = folder
         self.level = level
     }
 
+    ///Indicates if the arrow of the chevron should rotate to point down.
     public var shouldRotateChevron : Bool {
         return isExpand && hasSubfolders() && isChevronEnabled && !isFolder(ofType: .inbox)
     }

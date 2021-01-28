@@ -28,7 +28,8 @@ class FolderTableViewCell: UITableViewCell {
 
     var shouldRotateChevron: Bool = true {
         didSet {
-            chevronButton.imageView?.transform = shouldRotateChevron ? CGAffineTransform.rotate90Degress() : .identity
+            chevronButton.imageView?.transform = shouldRotateChevron ?
+                CGAffineTransform.rotate90Degress() : .identity
         }
     }
 

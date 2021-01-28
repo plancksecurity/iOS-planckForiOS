@@ -11,7 +11,14 @@ import MessageModel
 import pEpIOSToolbox
 
 public class FolderSectionViewModel {
-    public var collapsed = false
+
+    /// Indicates if the section is collapsed.
+    public var isCollapsed : Bool = false {
+        didSet {
+            saveCollapsingStates()
+        }
+    }
+
     private var account: Account?
     public var hidden = false
     private var items = [FolderCellViewModel]()
@@ -40,11 +47,38 @@ public class FolderSectionViewModel {
         }
         let sorted = ac.rootFolders.sorted()
         for folder in sorted {
-            items.append(FolderCellViewModel(folder: folder, level: 0))
+            let fcvm = FolderCellViewModel(folder: folder, level: 0)
+            items.append(fcvm)
             let level = folder.folderType == .inbox ? 0 : 1
             calculateChildFolder(root: folder, level: level)
+            items.forEach({$0.collapsingDelegate = self})
+        }
+
+        ///We save the collapsing state once, then we update in case of modifications.
+        if AppSettings.shared.collapsingState == nil {
+            saveCollapsingStates()
         }
     }
+
+    private func saveCollapsingStates() {
+        var states = [[String:String]]()
+        items.forEach { (fcvm) in
+            /// Unified folders can't have subfolders.
+            /// Therefore, they are not collapsibles.
+            if !(fcvm.folder is UnifiedFolderBase)  {
+                let value: AppSettings.CollapsingStatus = fcvm.isHidden ? .hidden : fcvm.isExpand ? .expanded : .collapsed
+                let state = [fcvm.folder.title: value.rawValue]
+                states.append(state)
+            }
+        }
+        /// Empty string to keep the account collapsing state.
+        /// For more info see  CollapsingState in AppSettings
+        /// Accounts can be only collapsed or expanded.
+        let value : AppSettings.CollapsingStatus = isCollapsed ? AppSettings.CollapsingStatus.collapsed : AppSettings.CollapsingStatus.expanded
+        states.insert(["": value.rawValue ], at: 0)
+        AppSettings.shared.saveCollapsingState(state: [userAddress:states])
+    }
+
 
     private func calculateChildFolder(root folder: Folder, level: Int) {
         let sorted = folder.subFolders().sorted()
@@ -155,5 +189,13 @@ public class FolderSectionViewModel {
             return FolderCellViewModel(folder: items[0] as! DisplayableFolderProtocol, level: 0)
         }
         return fcvm
+    }
+}
+
+//MARK:- Collapsing Delegate
+
+extension FolderSectionViewModel: CollapsingDelegate {
+    func didChangeCollapsingState(of folderCellViewModel: FolderCellViewModel, to value: AppSettings.CollapsingStatus) {
+        saveCollapsingStates()
     }
 }

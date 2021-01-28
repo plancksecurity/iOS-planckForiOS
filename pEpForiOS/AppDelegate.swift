@@ -97,7 +97,7 @@ extension AppDelegate {
             // We have been opened by the OS to handle a certain file.
             result = handleUrlTheOSHasBroughtUsToForgroundFor(openedToOpenFile)
         }
-
+        AppSettings.shared.saveCollapsingState(state: AppSettings.CollapsingState)
         return result
     }
 

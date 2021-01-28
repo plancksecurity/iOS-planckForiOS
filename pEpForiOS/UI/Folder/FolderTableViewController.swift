@@ -361,6 +361,7 @@ extension FolderTableViewController {
         /// Modify the visibility of all rows in section
         /// - Parameter newValue: True to hide, false to show.
         func setAllRowsHidden(to newValue: Bool) {
+            vm[section].isCollapsed = newValue
             for i in 0..<vm[section].count {
                 vm[section][i].isHidden = newValue
                 if !newValue {
