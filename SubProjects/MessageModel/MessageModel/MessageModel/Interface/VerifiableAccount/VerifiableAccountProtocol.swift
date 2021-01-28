@@ -14,6 +14,20 @@ import PantomimeFramework
 /// when input data is incomplete or inconsistent.
 public enum VerifiableAccountValidationError: Error {
     case invalidUserData
+    case unknown
+}
+
+extension VerifiableAccountValidationError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .invalidUserData:
+            return NSLocalizedString("Some fields seems not to be valid. Please check all input fields.",
+                                     comment: "Error description when failing to validate account fields")
+        case .unknown:
+            return NSLocalizedString("Something went wrong.",
+                                     comment: "Error description when failing for an unknown reason")
+        }
+    }
 }
 
 /// The delegate used for the `VerifiableAccountProtocol`.
@@ -120,10 +134,9 @@ public protocol VerifiableAccountProtocol {
 
     /// When called after a successful `verify()`, prepares the account
     /// (generating keys, fetching folders ...) and saves it.
-    /// On success calls `completion` with `true`, otherwise calls it with `false`.
-    /// - Note: Throws for missing data (i.e., all cases when `verify()` would throw).
-    /// - Throws: VerifiableAccountValidationError
-    func save(completion: ((Success)->())? ) throws
+    /// On success calls `completion` with `success`, otherwise calls it with `failure`.
+    /// - Parameter completion: The completion block to be executed after saving.
+    func save(completion: @escaping (Result<Void, Error>) -> ())
 
     // MARK: - VerifiableAccountProtocol (UI support)
 
@@ -131,6 +144,8 @@ public protocol VerifiableAccountProtocol {
     var loginNameIsValid: Bool { get }
 
     /// The UI might want to know this, i.e. to decide which element is first responder.
+    /// - Note: At least one implementation, `VerifiableAccount`, does not take the email into
+    /// account at all for this.
     var isValidUser: Bool { get }
 
     /// Is the server information sufficient to connect the servers?

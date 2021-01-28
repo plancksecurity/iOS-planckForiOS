@@ -29,7 +29,7 @@
 /* KeySyncWizard introduction message - two devices */
 "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "Se ha encontrado un segundo dispositivo con el que puedes sincronizar toda tu tu privacidad. ¿Quieres empezar a sincronizar?";
 
-/* error message for .missingEmail or .invalidEmail */
+/* error message for .missingEmail */
 "A valid email address is required" = "Se requiere una dirección de correo electrónico válida";
 
 /* error message for .invalidEmail
@@ -344,9 +344,6 @@
 
 /* Account settings title IMAP */
 "IMAP Settings" = "Configuraciones IMAP";
-
-/* Empty username message */
-"Imap username must not be empty." = "El nombre de usuario de Imap no puede estar vacío.";
 
 /* Select certificate - import certificate date */
 "Import date" = "Fecha de importación";
@@ -785,9 +782,6 @@
 
 /* Account settings title SMTP */
 "SMTP Settings" = "Configuraciones SMTP";
-
-/* Empty username message */
-"Smtp username must not be empty." = "El nombre de usuario no puede estar vacío.";
 
 /* Title for address filter */
 "some address" = "alguna direccion";

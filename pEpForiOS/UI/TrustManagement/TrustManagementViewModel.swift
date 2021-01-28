@@ -227,6 +227,7 @@ final class TrustManagementViewModel {
     private let undoManager = UndoManager()
     /// It contains the names of the actions that are going to revert previously executed actions.
     /// For example: 'Undo Trust Rejection'. In case the last action was a Trust Rejection.
+    /// - Note: Must be already localized.
     private var revertActionNames = [String]()
     
     /// Items to be displayed in the View Controller

@@ -324,9 +324,6 @@
 /* Account settings title IMAP */
 "IMAP Settings" = "Configuració IMAP";
 
-/* Empty username message */
-"Imap username must not be empty." = "El nom d’usuari de Imap no ha d’estar buit.";
-
 /* Select certificate - import certificate date */
 "Import date" = "Data d'importació";
 
@@ -748,9 +745,6 @@
 
 /* Account settings title SMTP */
 "SMTP Settings" = "Configuració SMTP";
-
-/* Empty username message */
-"Smtp username must not be empty." = "El nom d'usuari de smtp no ha d'estar buit.";
 
 /* Title for address filter */
 "some address" = "alguna adreça";
