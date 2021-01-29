@@ -115,6 +115,9 @@ extension CdFolder {
 
                         // Inbox must always be selectable
                         folder.selectable = folder.folderType == .inbox ? true :  selectable
+                    } else if folder.folderType == .inbox {
+                        // Inbox must always be selectable.
+                        folder.selectable = true
                     }
                     // This is a dirty workaround for IOS-941.
                     if parentFolder != nil {
@@ -151,6 +154,10 @@ extension CdFolder {
         return result
     }
 
+    /// We intentionally ignore `isSelectable`, as `findOrInsert` is used for all folder name path
+    /// components.
+    /// E.g. "INBOX.pEp" will use this method to create INBOX folder, while the actual currently
+    /// processed folder "pEp" is NOT selectable.
     static private func findOrInsert(folderName: String,
                                      folderType: FolderType?,
                                      account: CdAccount,
