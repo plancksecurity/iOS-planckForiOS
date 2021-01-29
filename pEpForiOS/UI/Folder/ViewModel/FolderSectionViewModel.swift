@@ -69,19 +69,15 @@ public class FolderSectionViewModel {
             let child = FolderCellViewModel(folder: subFolder, level: level)
 
             //MARK: Collapsing State
-            var isChildExpanded = true
             if let accountCollapsingState = AppSettings.shared.collapsingState[folder.account.user.address] {
                 if let folderCollapsingState = accountCollapsingState[subFolder.name] {
-                    isChildExpanded = !folderCollapsingState
-                    if folderCollapsingState == true {
-                        child.isExpand = false
-                    }
+                    child.isExpand = !folderCollapsingState
                 }
             }
 
             child.isHidden = !isParentExpand
             items.append(child)
-            calculateChildFolder(root: subFolder, level: level + 1, isParentExpand: isChildExpanded)
+            calculateChildFolder(root: subFolder, level: level + 1, isParentExpand: child.isExpand)
         }
     }
 
