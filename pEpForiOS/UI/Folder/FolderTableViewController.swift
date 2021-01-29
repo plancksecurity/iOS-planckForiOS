@@ -387,7 +387,7 @@ extension FolderTableViewController {
             //Do not change the order of this methods as the next line change the hidden status
             let ips = allIndexPathsForSection()
             setAllRowsHidden(to: false)
-
+            vm.saveCollapsingState(forAccountInSection: section, isCollapsed: false)
             tableView.insertRows(at: ips)
         } else {
             sender.imageView?.transform = .identity
@@ -395,6 +395,7 @@ extension FolderTableViewController {
             //Do not change the order of this methods as the next line change the hidden status
             let ips = indexPathsForSection()
             setAllRowsHidden(to: true)
+            vm.saveCollapsingState(forAccountInSection: section, isCollapsed: true)
             tableView.deleteRows(at: ips)
         }
     }
@@ -445,10 +446,13 @@ extension FolderTableViewController {
 
         // Insert or delete rows
         if folderCellViewModel.isExpand {
+            
             tableView.insertRows(at: childrenIPs)
         } else {
             tableView.deleteRows(at: childrenIPs)
         }
+        folderCellViewModel.saveCollapsingState()
+
     }
 }
 
@@ -482,7 +486,7 @@ extension FolderTableViewController {
             return header
         }
 
-        if vm[section].hidden {
+        if vm[section].sectionHeaderHidden {
             return nil
         }
 
@@ -501,7 +505,7 @@ extension FolderTableViewController {
             Log.shared.errorAndCrash("No VM.")
             return 0.0
         }
-        if vm[section].hidden {
+        if vm[section].sectionHeaderHidden {
             return 0.0
         } else {
             return tableView.sectionHeaderHeight

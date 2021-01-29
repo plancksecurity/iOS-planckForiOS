@@ -27,4 +27,7 @@ public protocol AppSettingsProtocol {
 
     /// Should the logging be verbose, or not?
     var verboseLogginEnabled: Bool { get set }
+
+    /// User preference on collapsing folder
+    var collapsingState: [String:[String:Bool]] { get set }
 }

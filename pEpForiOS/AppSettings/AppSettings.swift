@@ -36,21 +36,16 @@ extension AppSettings {
 /// Signleton representing and managing the App's settings.
 public final class AppSettings: KeySyncStateProvider {
 
-    public enum CollapsingStatus: String {
-        case expanded
-        case collapsed
-        case hidden
-    }
     /// This structure keeps the state of the collapsing of folders and accounts.
-    /// [AccountAddress : [ FolderName : collapsedStatus ] ]
+    /// [AccountAddress : [ FolderName : isCollapsedStatus ] ]
     /// As folders can't have an empty string as name,
     /// the collapsing state of the account will be represented as an empty string for the FolderName
     /// See CollapsingStatus enum. 
     ///
     /// For example:
-    /// ["mb@pep.security" : [ "" : "collapsed" ] ] indicates the account is collapsed.
-    /// ["mb@pep.security" : [ "SomeFolder" : "collapsed" ] ] indicates the folder is collapsed.
-    public typealias CollapsingState = [String:[ [String:String] ] ]
+    /// ["mb@pep.security" : [ "" : true ] ] indicates the account is collapsed.
+    /// ["mb@pep.security" : [ "SomeFolder" : true ] ] indicates the folder is collapsed.
+    public typealias CollapsingState = [String:[String: Bool]]
 
     // MARK: - Singleton
     
@@ -217,6 +212,7 @@ extension AppSettings: AppSettingsProtocol {
             current[account] = value
             collapsingState = current
         }
+        collapsingState.printJson()
     }
 
     public func removeCollapsingState() {

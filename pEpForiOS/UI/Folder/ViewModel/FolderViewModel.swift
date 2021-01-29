@@ -20,6 +20,10 @@ public class FolderViewModel {
     /// The hidden sections are the collapsed accounts.
     public var hiddenSections = Set<Int>()
 
+    public func saveCollapsingState(forAccountInSection section : Int, isCollapsed: Bool) {
+        AppSettings.shared.saveCollapsingState(state: [items[section].userAddress: ["": isCollapsed]])
+    }
+
     public var maxIndentationLevel: Int {
         return DeviceUtils.isIphone5 ? 3 : 4
     }
@@ -77,6 +81,12 @@ public class FolderViewModel {
         }
         let includeInUnifiedFolders = isUnified && shouldShowUnifiedFolders
         generateSections(accounts: accountsToUse, includeInUnifiedFolders: includeInUnifiedFolders)
+
+        for (index, item) in items.enumerated() {
+            if item.isCollapsed {
+                hiddenSections.insert(index)
+            }
+        }
     }
 
     /// Indicates if there isn't accounts registered.

@@ -11,14 +11,8 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
-
-protocol CollapsingDelegate: class {
-    func didChangeCollapsingState(of folderCellViewModel: FolderCellViewModel, to value: AppSettings.CollapsingStatus)
-}
-
 public class FolderCellViewModel {
 
-    weak var collapsingDelegate: CollapsingDelegate?
     let folder: DisplayableFolderProtocol
     let level : Int
     var indentationLevel: Int {
@@ -70,20 +64,22 @@ public class FolderCellViewModel {
         }
     }
 
-    public var isExpand = true {
-        didSet {
-            collapsingDelegate?.didChangeCollapsingState(of: self, to: isExpand ? .expanded : .collapsed)
-        }
-    }
-    public var isHidden = false {
-        didSet {
-            collapsingDelegate?.didChangeCollapsingState(of: self, to: isHidden ? .hidden : .expanded)
-        }
-    }
+    public var isExpand = true
+
+    public var isHidden = false
 
     public init(folder: DisplayableFolderProtocol, level: Int) {
         self.folder = folder
         self.level = level
+    }
+
+    public func saveCollapsingState() {
+        guard let folder = folder as? Folder else {
+            // Unified folders implements DisplayableFolderProtocol but are not Folders
+            Log.shared.errorAndCrash("saveCollapsingState should not be called for Unified Folders")
+            return
+        }
+        AppSettings.shared.saveCollapsingState(state: [folder.account.user.address: [folder.name: !isExpand]])
     }
 
     ///Indicates if the arrow of the chevron should rotate to point down.
