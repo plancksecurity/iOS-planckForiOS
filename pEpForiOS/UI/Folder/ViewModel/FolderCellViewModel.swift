@@ -13,14 +13,23 @@ import pEpIOSToolbox
 
 public class FolderCellViewModel {
 
-    let folder: DisplayableFolderProtocol
-    let level : Int
-    var indentationLevel: Int {
-        let subLevel = isSubfolder() ? 1 : 0
-        return level + subLevel
-    }
     private var requiredFolderTypes : [FolderType] {
         return [.drafts, .sent, .spam, .trash, .outbox]
+    }
+
+    private var name: String {
+        return Folder.localizedName(realName: self.folder.title)
+    }
+
+    /// The folder to display
+    public let folder: DisplayableFolderProtocol
+
+    private let level : Int
+
+    /// The folder's indentation level
+    public var indentationLevel: Int {
+        let subLevel = isSubfolder() ? 1 : 0
+        return level + subLevel
     }
 
     public var title : String {
@@ -37,15 +46,7 @@ public class FolderCellViewModel {
         }
     }
 
-    private var name: String {
-        return Folder.localizedName(realName: self.folder.title)
-    }
-
-    var leftPadding: Int {
-        return level
-    }
-
-    var padding: CGFloat {
+    public var padding: CGFloat {
         return DeviceUtils.isIphone5 ? 16.0 : 25.0
     }
 
@@ -68,11 +69,23 @@ public class FolderCellViewModel {
 
     public var isHidden = false
 
-    public init(folder: DisplayableFolderProtocol, level: Int) {
+    public init(folder: DisplayableFolderProtocol, level: Int, isExpand: Bool = true) {
         self.folder = folder
         self.level = level
+
+        self.isExpand = isExpand
+//        if let folder = folder as? Folder {
+//            if let accountCollapsingState = AppSettings.shared.collapsingState[folder.account.user.address] {
+//                if let folderCollapsingState = accountCollapsingState[folder.name] {
+//                    isExpand = !folderCollapsingState
+//
+//
+//                }
+//            }
+//        }
     }
 
+    /// Save the collapsing state
     public func saveCollapsingState() {
         guard let folder = folder as? Folder else {
             // Unified folders implements DisplayableFolderProtocol but are not Folders

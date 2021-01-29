@@ -446,7 +446,6 @@ extension FolderTableViewController {
 
         // Insert or delete rows
         if folderCellViewModel.isExpand {
-            
             tableView.insertRows(at: childrenIPs)
         } else {
             tableView.deleteRows(at: childrenIPs)

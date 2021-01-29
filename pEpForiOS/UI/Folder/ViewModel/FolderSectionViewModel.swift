@@ -36,14 +36,12 @@ public class FolderSectionViewModel {
         if let ac = acc {
             self.account = ac
             generateAccountCells()
-            let collapsingState = AppSettings.shared.collapsingState
-            if let accountCollapsingState = collapsingState[ac.user.address] {
-                print(accountCollapsingState)
+
+            //MARK: Collapsing State
+
+            if let accountCollapsingState = AppSettings.shared.collapsingState[ac.user.address] {
                 let accountMark = ""
-                if accountCollapsingState[accountMark] ?? false {
-                    isCollapsed = true
-                    
-                }
+                isCollapsed = accountCollapsingState[accountMark] ?? false
             }
         }
     }
@@ -54,19 +52,36 @@ public class FolderSectionViewModel {
             return
         }
         let sorted = ac.rootFolders.sorted()
+
+        
         for folder in sorted {
             let fcvm = FolderCellViewModel(folder: folder, level: 0)
             items.append(fcvm)
             let level = folder.folderType == .inbox ? 0 : 1
-            calculateChildFolder(root: folder, level: level)
+            calculateChildFolder(root: folder, level: level, isParentExpand: true)
         }
     }
 
-    private func calculateChildFolder(root folder: Folder, level: Int) {
+    private func calculateChildFolder(root folder: Folder, level: Int, isParentExpand: Bool) {
+
         let sorted = folder.subFolders().sorted()
         for subFolder in sorted {
-            items.append(FolderCellViewModel(folder: subFolder, level: level))
-            calculateChildFolder(root: subFolder, level: level + 1)
+            let child = FolderCellViewModel(folder: subFolder, level: level)
+
+            //MARK: Collapsing State
+            var isChildExpanded = true
+            if let accountCollapsingState = AppSettings.shared.collapsingState[folder.account.user.address] {
+                if let folderCollapsingState = accountCollapsingState[subFolder.name] {
+                    isChildExpanded = !folderCollapsingState
+                    if folderCollapsingState == true {
+                        child.isExpand = false
+                    }
+                }
+            }
+
+            child.isHidden = !isParentExpand
+            items.append(child)
+            calculateChildFolder(root: subFolder, level: level + 1, isParentExpand: isChildExpanded)
         }
     }
 
