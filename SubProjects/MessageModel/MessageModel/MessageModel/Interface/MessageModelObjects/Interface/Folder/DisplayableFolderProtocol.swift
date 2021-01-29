@@ -19,7 +19,7 @@ public protocol DisplayableFolderProtocol {
     var defaultFilter: MessageQueryResultsFilter { get }
     ///Handles if a folder can be showed.
     var isSelectable: Bool { get }
-    /// get the following 20 older messages of this folder.
+    /// get the following n older messages of this folder.
     ///
     /// - Parameter completion: optional execution block that will be called once the fetch is compleeted
     func fetchOlder(completion: (()->())?)
