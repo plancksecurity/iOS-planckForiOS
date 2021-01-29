@@ -218,6 +218,12 @@
    Display Name TextField Placeholder in Login Screen */
 "Display Name" = "Zobraziť meno";
 
+/* Name of Drafts folder (showing draft messages, of one account) */
+"Drafts" = "Koncepty";
+
+/* Edit - Right bar button item in Email List */
+"Edit" = "Upraviť";
+
 /* Email */
 "Email" = "E-mail";
 
@@ -731,6 +737,12 @@
 /* Alert title before trusting an account */
 "Security Alert" = "Bezpečnostné upozornenie";
 
+/* Select all emails */
+"Select all" = "Vybrať všetko";
+
+/* Name of Sent folder (showing messages to send, of one account) */
+"Sent" = "Odoslaná";
+
 /* Privacy status suggestion */
 "Separately verify the content of this message with your communication partner." = "Obsah tejto správy si overte osobitne u svojho komunikačného partnera.";
 
@@ -755,6 +767,9 @@
 
 /* Login */
 "Sign In" = "Prihlásiť sa";
+
+/* Signature label in account settings */
+"Signature" = "Podpis";
 
 /* Start up tutorial skip button */
 "Skip" = "Preskočiť";
@@ -791,6 +806,12 @@
 
 /* AccountSettings viewModel no account error */
 "Something went wrong, please try again later" = "Niečo sa pokazilo. Skúste neskôr prosím";
+
+/* Name of Spam folder (showing messages marked as spam by the server, of one account) */
+"Spam" = "Nevyžiadaná";
+
+/* SSL/TLS (ConnectionTransport) */
+"SSL/TLS" = "SSL/TLS";
 
 /* Stop/trust button in handshake overview */
 "Start Trusting" = "Začať dôverovať";
@@ -981,6 +1002,9 @@
    User Name placeholder for manual account setup
    User Name placeholder for manual account SMTP setup */
 "User Name" = "Meno používateľa";
+
+/* User name label in account settings */
+"Username" = "Používateľské meno";
 
 /* Empty username message */
 "Username must not be empty." = "Používateľské meno nesmie byť prázdne.";
