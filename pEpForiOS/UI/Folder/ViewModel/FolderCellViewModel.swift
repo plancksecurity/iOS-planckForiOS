@@ -65,14 +65,14 @@ public class FolderCellViewModel {
         }
     }
 
-    public var isExpand = true
+    public var isExpanded = true
 
     public var isHidden = false
 
-    public init(folder: DisplayableFolderProtocol, level: Int, isExpand: Bool = true) {
+    public init(folder: DisplayableFolderProtocol, level: Int, isExpanded: Bool = true) {
         self.folder = folder
         self.level = level
-        self.isExpand = isExpand
+        self.isExpanded = isExpanded
     }
 
     /// Save the collapsing state
@@ -82,12 +82,12 @@ public class FolderCellViewModel {
             Log.shared.errorAndCrash("saveCollapsingState should not be called for Unified Folders")
             return
         }
-        AppSettings.shared.saveCollapsingState(state: [folder.account.user.address: [folder.name: !isExpand]])
+        AppSettings.shared.saveFolderCollapsingState(state: [folder.account.user.address: [folder.name: !isExpanded]])
     }
 
     ///Indicates if the arrow of the chevron should rotate to point down.
     public var shouldRotateChevron : Bool {
-        return isExpand && hasSubfolders() && isChevronEnabled && !isFolder(ofType: .inbox)
+        return isExpanded && hasSubfolders() && isChevronEnabled && !isFolder(ofType: .inbox)
     }
 
     public var isChevronEnabled: Bool {

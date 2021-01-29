@@ -365,7 +365,7 @@ extension FolderTableViewController {
             for i in 0..<vm[section].count {
                 vm[section][i].isHidden = newValue
                 if !newValue {
-                    vm[section][i].isExpand = true
+                    vm[section][i].isExpanded = true
                 }
             }
         }
@@ -411,11 +411,11 @@ extension FolderTableViewController {
         /// The indexPaths of the subfolders
         /// - Parameter isExpand: Indicates if the parent is Expanded
         /// - Returns: The children's Indexpaths.
-        func childrenIndexPaths(isParentExpand isExpand : Bool) -> [IndexPath] {
+        func childrenIndexPaths(isParentExpand isExpanded : Bool) -> [IndexPath] {
             let sectionVM = vm[indexPath.section]
             var childrenIndexPaths = [IndexPath]()
-            let children = sectionVM.children(of: folderCellViewModel).filter { $0.isHidden == isExpand }
-            if !isExpand {
+            let children = sectionVM.children(of: folderCellViewModel).filter { $0.isHidden == isExpanded }
+            if !isExpanded {
                 children.forEach {
                     guard let item = sectionVM.visibleIndex(of: $0) else {
                         Log.shared.errorAndCrash("Item not found")
@@ -436,16 +436,16 @@ extension FolderTableViewController {
 
         //Expand or collapse the root folder
         let folderCellViewModel = vm[indexPath.section].visibleFolderCellViewModel(index: indexPath.item)
-        folderCellViewModel.isExpand.toggle()
-        let childrenIPs = childrenIndexPaths(isParentExpand : folderCellViewModel.isExpand)
+        folderCellViewModel.isExpanded.toggle()
+        let childrenIPs = childrenIndexPaths(isParentExpand : folderCellViewModel.isExpanded)
         let children = vm[indexPath.section].children(of: folderCellViewModel)
         children.forEach {
-            $0.isHidden = !folderCellViewModel.isExpand
-            $0.isExpand = folderCellViewModel.isExpand
+            $0.isHidden = !folderCellViewModel.isExpanded
+            $0.isExpanded = folderCellViewModel.isExpanded
         }
 
         // Insert or delete rows
-        if folderCellViewModel.isExpand {
+        if folderCellViewModel.isExpanded {
             tableView.insertRows(at: childrenIPs)
         } else {
             tableView.deleteRows(at: childrenIPs)

@@ -215,6 +215,26 @@ extension AppSettings: AppSettingsProtocol {
         }
     }
 
+    public func saveFolderCollapsingState(state: CollapsingState) {
+        var current = collapsingState
+        if let account = state.keys.first, let value = state.values.first {
+            // If collapsing state already exist for this account
+            // Add the new one.
+            if var accountCollapsingState = current[account],
+               let folderName = value.keys.first {
+                let isCollapsed = value.values.first
+                accountCollapsingState[folderName] = isCollapsed
+                current[account] = accountCollapsingState
+                //If not, create it.
+            } else if let account = state.keys.first,
+                      let folderName = state.values.first?.keys.first,
+                      let state = state.values.first?.values.first {
+                current[account] = [folderName : state]
+            }
+        }
+        collapsingState = current
+    }
+
     /// Removes the collapsing state for the account address passed by parameter.
     /// - Parameter address: The address of the account to delete its collapsing states preferences.
     public func removeCollapsingStateForAccountWithAddress(address: String) {

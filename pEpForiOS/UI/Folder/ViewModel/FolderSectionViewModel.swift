@@ -53,31 +53,32 @@ public class FolderSectionViewModel {
         }
         let sorted = ac.rootFolders.sorted()
 
-        
         for folder in sorted {
             let fcvm = FolderCellViewModel(folder: folder, level: 0)
             items.append(fcvm)
             let level = folder.folderType == .inbox ? 0 : 1
-            calculateChildFolder(root: folder, level: level, isParentExpand: true)
+            // Root folder are always isParentExpanded.
+            calculateChildFolder(root: folder, level: level)
         }
     }
 
-    private func calculateChildFolder(root folder: Folder, level: Int, isParentExpand: Bool) {
-
+    private func calculateChildFolder(root folder: Folder, level: Int, isParentCollapsed: Bool = false) {
         let sorted = folder.subFolders().sorted()
         for subFolder in sorted {
             let child = FolderCellViewModel(folder: subFolder, level: level)
 
+            if isParentCollapsed {
+                child.isHidden = true
+                child.isExpanded = false
+            }
             //MARK: Collapsing State
             if let accountCollapsingState = AppSettings.shared.collapsingState[folder.account.user.address] {
-                if let folderCollapsingState = accountCollapsingState[subFolder.name] {
-                    child.isExpand = !folderCollapsingState
+                if let isFolderCollapsed = accountCollapsingState[subFolder.name] {
+                    child.isExpanded = !isFolderCollapsed
                 }
             }
-
-            child.isHidden = !isParentExpand
             items.append(child)
-            calculateChildFolder(root: subFolder, level: level + 1, isParentExpand: child.isExpand)
+            calculateChildFolder(root: subFolder, level: level + 1, isParentCollapsed: !child.isExpanded)
         }
     }
 
