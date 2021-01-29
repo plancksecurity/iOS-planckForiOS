@@ -284,6 +284,7 @@ import CocoaLumberjackSwift
         // only the ObjC version of lumberjack.
         let interpolatedString = String(format: message, arguments: args)
         let interpolatedMessage = "\(filePath):\(fileLine) \(function) \(interpolatedString)"
+
         switch severity {
         case .debug:
             DDLogDebug(interpolatedMessage)
