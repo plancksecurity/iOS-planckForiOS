@@ -50,6 +50,7 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         accountType.translatesAutoresizingMaskIntoConstraints = false
         accountType.font = UIFont.pepFont(style: .body, weight: .regular)
 
+
         //Label stack view
         labelStackView.addArrangedSubview(accountType)
         labelStackView.addArrangedSubview(accountName)
