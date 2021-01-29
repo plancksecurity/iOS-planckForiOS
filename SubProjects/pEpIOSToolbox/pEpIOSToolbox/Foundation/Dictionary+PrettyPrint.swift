@@ -12,8 +12,20 @@ extension Dictionary {
 
     /// Pretty print dictionary in console as json.
     /// If the dictionary is not json compatible, does nothing.
-    ///
     /// Only for Debug.
+    ///
+    /// Usage example:
+    /// ["foo": [ "bar": [ "baz", 1.0, 2 ] ] ].printJson() prints the folllowing
+    /// {
+    ///    "foo" : {
+    ///      "bar" : [
+    ///        "baz",
+    ///        1,
+    ///        2
+    ///      ]
+    ///    }
+    ///  }
+    ///
     public func printJson() {
         #if DEBUG
         if let data = try? JSONSerialization.data(withJSONObject: self, options: .prettyPrinted) {

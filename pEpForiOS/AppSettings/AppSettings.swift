@@ -206,19 +206,25 @@ extension AppSettings: AppSettingsProtocol {
         }
     }
 
+    /// Save the collapsing state passed by parameter.
+    /// - Parameter state: The state to save.
     public func saveCollapsingState(state: CollapsingState) {
         var current = collapsingState
         if let account = state.keys.first, let value = state.values.first {
             current[account] = value
             collapsingState = current
         }
-        collapsingState.printJson()
     }
 
-    public func removeCollapsingState() {
-        AppSettings.userDefaults.set(nil, forKey: AppSettings.keyCollapsingState)
+    /// Removes the collapsing state for the account address passed by parameter.
+    /// - Parameter address: The address of the account to delete its collapsing states preferences.
+    public func removeCollapsingStateForAccountWithAddress(address: String) {
+        var current = collapsingState
+        current[address] = nil
+        collapsingState = current
     }
 
+    /// Collapsing state. Do not use this property to set the value. Instead use `saveCollapsingState` function.
     public var collapsingState: CollapsingState {
         get {
             guard let collapsingState = AppSettings.userDefaults.object(forKey: AppSettings.keyCollapsingState) as? CollapsingState else {
