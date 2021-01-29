@@ -36,11 +36,10 @@ extension AppSettings {
 /// Signleton representing and managing the App's settings.
 public final class AppSettings: KeySyncStateProvider {
 
-    /// This structure keeps the state of the collapsing of folders and accounts.
+    /// This structure keeps the collapsing state of folders and accounts.
     /// [AccountAddress : [ FolderName : isCollapsedStatus ] ]
     /// As folders can't have an empty string as name,
     /// the collapsing state of the account will be represented as an empty string for the FolderName
-    /// See CollapsingStatus enum. 
     ///
     /// For example:
     /// ["mb@pep.security" : [ "" : true ] ] indicates the account is collapsed.
