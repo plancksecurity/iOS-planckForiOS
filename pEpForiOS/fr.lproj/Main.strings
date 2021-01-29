@@ -1,8 +1,23 @@
+/* Class = "UIButton"; normalTitle = "Show External Content"; ObjectID = "3uL-KY-gV7"; */
+"3uL-KY-gV7.normalTitle" = "Afficher le contenu externe";
+
 /* Class = "UILabel"; text = "Date"; ObjectID = "a1D-BW-3Rd"; */
 "a1D-BW-3Rd.text" = "Date";
 
 /* Class = "UINavigationItem"; title = "Inbox"; ObjectID = "aP4-ia-HTP"; */
 "aP4-ia-HTP.title" = "Boîte de réception";
+
+/* Class = "UILabel"; text = "From:"; ObjectID = "Asq-Vx-nQs"; */
+"Asq-Vx-nQs.text" = "De :";
+
+/* Class = "UILabel"; text = "Subject:"; ObjectID = "bCM-fK-pFW"; */
+"bCM-fK-pFW.text" = "Objet :";
+
+/* Class = "UIBarButtonItem"; title = "Send"; ObjectID = "d2A-SO-1Ce"; */
+"d2A-SO-1Ce.title" = "Envoyer";
+
+/* Class = "UILabel"; text = "To:"; ObjectID = "DES-F8-7zn"; */
+"DES-F8-7zn.text" = "À :";
 
 /* Class = "UIViewController"; title = "Move to Account"; ObjectID = "EmS-3d-sKb"; */
 "EmS-3d-sKb.title" = "Déplacer vers le compte";
@@ -10,15 +25,36 @@
 /* Class = "UILabel"; text = "Subject jlkfj glkafj kal jfa slfaj alsjf aslj fsajk"; ObjectID = "ha5-Vd-x3U"; */
 "ha5-Vd-x3U.text" = "Sujet jlkfj glkafj kal jfa slfaj alsjf aslj fsajk";
 
+/* Class = "UIBarButtonItem"; title = "Cancel"; ObjectID = "ijh-vj-Bee"; */
+"ijh-vj-Bee.title" = "Annuler";
+
+/* Class = "UILabel"; text = "just some placeholder text for storyboard"; ObjectID = "j6J-vb-VLn"; */
+"j6J-vb-VLn.text" = "juste un texte de remplacement pour le story-board";
+
 /* Class = "UILabel"; text = "Sender sfasflask jfhsajfkas fjksaj"; ObjectID = "KTi-T9-Inm"; */
 "KTi-T9-Inm.text" = "Expéditeur sfasflask jfhsajfkas fjksaj";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "OLo-8A-CCo"; */
 "OLo-8A-CCo.text" = "Titre";
 
+/* Class = "UILabel"; text = "Date"; ObjectID = "Ozt-zL-XpS"; */
+"Ozt-zL-XpS.text" = "Date";
+
 /* Class = "UILabel"; text = "Title"; ObjectID = "riI-qM-PeJ"; */
 "riI-qM-PeJ.text" = "Titre";
 
+/* Class = "UILabel"; text = "To: Recipients"; ObjectID = "ss8-ZR-hIs"; */
+"ss8-ZR-hIs.text" = "Pour : Destinataires";
+
 /* Class = "UILabel"; text = "Summary"; ObjectID = "Tbi-dG-KCA"; */
 "Tbi-dG-KCA.text" = "Sommaire";
+
+/* Class = "UILabel"; text = "Subject"; ObjectID = "VDN-ne-7lE"; */
+"VDN-ne-7lE.text" = "Objet";
+
+/* Class = "UILabel"; text = "Sender"; ObjectID = "yhr-Um-Ftu"; */
+"yhr-Um-Ftu.text" = "Expéditeur";
+
+/* Class = "UILabel"; text = "Cc/Bcc:"; ObjectID = "ZpG-yk-ifY"; */
+"ZpG-yk-ifY.text" = "Cc/Cci :";
 

@@ -16,14 +16,8 @@
 /* Class = "UILabel"; text = "Label  akjsfhaj ksfas fsdahfkajsdf kashf akjdhf jkasdf asf kjsfkasf ajshf ahkfs jashf kjasdhkf jakhf"; ObjectID = "Ag8-Qj-N8l"; */
 "Ag8-Qj-N8l.text" = "Etiket akjsfhaj ksfas fsdahfkajsdf kashf akjdhf jkasdf asf kjsfkasf ajshf ahkfs jashf kjasdhkf jakhf";
 
-/* Class = "UILabel"; text = "Password"; ObjectID = "aYO-l7-9iG"; */
-"aYO-l7-9iG.text" = "Şifre";
-
 /* Class = "UILabel"; text = "Title"; ObjectID = "D99-2G-2i2"; */
 "D99-2G-2i2.text" = "Başlık";
-
-/* Class = "UILabel"; text = "Transport Security"; ObjectID = "dpq-4F-9sG"; */
-"dpq-4F-9sG.text" = "Taşımacılık Güvenliği";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "GAd-Jm-sFz"; */
 "GAd-Jm-sFz.text" = "Başlık";
@@ -37,44 +31,17 @@
 /* Class = "UIButton"; normalTitle = "Set Own Key"; ObjectID = "lzc-xZ-iKm"; */
 "lzc-xZ-iKm.normalTitle" = "Kendi Anahtarını Ayarla";
 
-/* Class = "UILabel"; text = "Email"; ObjectID = "o8M-bM-KZX"; */
-"o8M-bM-KZX.text" = "E-posta";
-
-/* Class = "UILabel"; text = "Server"; ObjectID = "oCE-8g-idG"; */
-"oCE-8g-idG.text" = "Sunucu";
-
-/* Class = "UILabel"; text = "Port"; ObjectID = "Osx-2y-29f"; */
-"Osx-2y-29f.text" = "Port";
-
 /* Class = "UILabel"; text = "Title"; ObjectID = "Pdx-rN-QPm"; */
 "Pdx-rN-QPm.text" = "Başlık";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "Pgw-uY-8FO"; */
 "Pgw-uY-8FO.text" = "Başlık";
 
-/* Class = "UILabel"; text = "Username"; ObjectID = "RYB-AT-TSB"; */
-"RYB-AT-TSB.text" = "Kullanıcı adı";
-
-/* Class = "UILabel"; text = "Name"; ObjectID = "s9I-CU-fSE"; */
-"s9I-CU-fSE.text" = "Adı";
-
-/* Class = "UILabel"; text = "Username"; ObjectID = "tt1-bn-s7P"; */
-"tt1-bn-s7P.text" = "Kullanıcı adı";
-
-/* Class = "UILabel"; text = "Transport Security"; ObjectID = "Tul-XU-PSw"; */
-"Tul-XU-PSw.text" = "Taşımacılık Güvenliği";
-
-/* Class = "UILabel"; text = "Port"; ObjectID = "U7P-zv-48U"; */
-"U7P-zv-48U.text" = "Port";
-
 /* Class = "UILabel"; text = "set_own_key Error"; ObjectID = "ujL-Pa-uXD"; Note = "Don't localize this"; */
 "ujL-Pa-uXD.text" = "set_own_key Hatası";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "vjp-2e-dTM"; */
 "vjp-2e-dTM.text" = "Başlık";
-
-/* Class = "UILabel"; text = "Server"; ObjectID = "x85-ha-uBw"; */
-"x85-ha-uBw.text" = "Sunucu";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "xiv-OD-YNL"; */
 "xiv-OD-YNL.text" = "Başlık";
