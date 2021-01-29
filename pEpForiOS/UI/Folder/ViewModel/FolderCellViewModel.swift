@@ -72,17 +72,7 @@ public class FolderCellViewModel {
     public init(folder: DisplayableFolderProtocol, level: Int, isExpand: Bool = true) {
         self.folder = folder
         self.level = level
-
         self.isExpand = isExpand
-//        if let folder = folder as? Folder {
-//            if let accountCollapsingState = AppSettings.shared.collapsingState[folder.account.user.address] {
-//                if let folderCollapsingState = accountCollapsingState[folder.name] {
-//                    isExpand = !folderCollapsingState
-//
-//
-//                }
-//            }
-//        }
     }
 
     /// Save the collapsing state
