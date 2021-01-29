@@ -9,14 +9,18 @@
 import Foundation
 
 extension Dictionary {
-    #if DEBUG
+
     /// Pretty print dictionary in console as json.
+    /// If the dictionary is not json compatible, does nothing.
     ///
-    /// Only for debug.
+    /// Only for Debug.
     public func printJson() {
-        if let string = String(data: try! JSONSerialization.data(withJSONObject: self, options: .prettyPrinted), encoding: .utf8) {
-            print(string)
+        #if DEBUG
+        if let data = try? JSONSerialization.data(withJSONObject: self, options: .prettyPrinted) {
+            if let string = String(data: data, encoding: .utf8) {
+                print(string)
+            }
         }
+        #endif
     }
-    #endif
 }
