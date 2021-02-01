@@ -223,9 +223,11 @@ extension AccountSettingsViewModel {
     }
 
     public func handleUnifiedFolderSwitchChanged(to newValue: Bool) {
+        delegate?.setLoadingView(visible: true)
         includeInUnifiedFolders = newValue
         account.isIncludedInUnifiedFolders = newValue
         account.session.commit()
+        delegate?.setLoadingView(visible: false)
     }
 
     /// [En][Dis]able the pEpSync status

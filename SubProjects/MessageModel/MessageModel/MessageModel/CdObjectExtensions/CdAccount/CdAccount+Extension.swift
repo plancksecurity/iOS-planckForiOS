@@ -89,6 +89,7 @@ extension CdAccount {
 extension CdAccount {
 
     /// Inform MessageQueryResult about a change in Unified Folders status.
+    /// This method does NOT save the context. 
     public func setIsUnifiedTriggeringQueryResultsChange() {
         let predicate = NSPredicate(format: "parent.%@ = %@", CdFolder.RelationshipName.account, self)
         let moc = Session.main.moc
@@ -97,6 +98,5 @@ extension CdAccount {
             let tmpParent = message.parent
             message.parent = tmpParent
         }
-        moc.saveAndLogErrors()
     }
 }
