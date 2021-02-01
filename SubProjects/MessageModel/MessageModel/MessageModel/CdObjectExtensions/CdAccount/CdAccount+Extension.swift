@@ -84,14 +84,11 @@ extension CdAccount {
     func folder(byName name: String, context: NSManagedObjectContext) -> CdFolder? {
         return CdFolder.first(attributes: ["account": self, "name": name], in: context)
     }
-}
-
-extension CdAccount {
 
     /// Informs to MessageQueryResult about a change in Unified Folders status.
     /// This operation might be expensive.
     ///
-    /// This method does NOT save the context. 
+    /// This method does NOT save the context.
     public func setIsUnifiedTriggeringQueryResultsChange() {
         let predicate = NSPredicate(format: "parent.%@ = %@", CdFolder.RelationshipName.account, self)
         let moc = Session.main.moc
