@@ -400,6 +400,7 @@
 		5B0BEB3824F8E25900A00D57 /* FolderQueryResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0BEB3724F8E25900A00D57 /* FolderQueryResult.swift */; };
 		5B4A715C252B5B6F00436FCF /* NSError+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A715A252B5B6F00436FCF /* NSError+Passphrase.swift */; };
 		5B4A715D252B5B6F00436FCF /* Error+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A715B252B5B6F00436FCF /* Error+Passphrase.swift */; };
+		5B64966025C82D570028B9ED /* CdAccount+FetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B64965F25C82D570028B9ED /* CdAccount+FetchedResultsController.swift */; };
 		5B87D79A23F3117D009DACAA /* String+Fingerprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D79923F3117D009DACAA /* String+Fingerprint.swift */; };
 		5B88A19D2406C1A2003240B8 /* TrustManagementUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */; };
 		5BD4466324F7DA5F00422594 /* AccountQueryResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4466224F7DA5F00422594 /* AccountQueryResults.swift */; };
@@ -872,6 +873,7 @@
 		5B3BFC6324DAF07200B99FA6 /* 1.1.205.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.1.205.xcdatamodel; sourceTree = "<group>"; };
 		5B4A715A252B5B6F00436FCF /* NSError+Passphrase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSError+Passphrase.swift"; sourceTree = "<group>"; };
 		5B4A715B252B5B6F00436FCF /* Error+Passphrase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Error+Passphrase.swift"; sourceTree = "<group>"; };
+		5B64965F25C82D570028B9ED /* CdAccount+FetchedResultsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAccount+FetchedResultsController.swift"; sourceTree = "<group>"; };
 		5B87D79923F3117D009DACAA /* String+Fingerprint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Fingerprint.swift"; sourceTree = "<group>"; };
 		5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustManagementUtil.swift; sourceTree = "<group>"; };
 		5BD4466224F7DA5F00422594 /* AccountQueryResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountQueryResults.swift; sourceTree = "<group>"; };
@@ -1551,6 +1553,7 @@
 				155FE569228B50D8003D3E68 /* CdAccount+Extensions.swift */,
 				15679F012292CAD90051DCC3 /* CdAccount+Trusted.swift */,
 				43EA4808221E9518006E8F83 /* CdAccount+Extension.swift */,
+				5B64965F25C82D570028B9ED /* CdAccount+FetchedResultsController.swift */,
 				43B2270F242362D9007EB91E /* CdAccount+ProviderSpecific.swift */,
 			);
 			path = CdAccount;
@@ -2711,6 +2714,7 @@
 				B7C7E31823351092009ABFFE /* IdentityQueryResultsSearch.swift in Sources */,
 				15E39FCF22551EE30016A1C4 /* Identity+SessionAware.swift in Sources */,
 				439CADC12563B9B50043077E /* AuthMethod.swift in Sources */,
+				5B64966025C82D570028B9ED /* CdAccount+FetchedResultsController.swift in Sources */,
 				151645B0223A783C009532BE /* Identity+IdentityImageUtils.swift in Sources */,
 				155FE565228B5005003D3E68 /* CdMessageKeyword.swift in Sources */,
 				155FE56E228B51A8003D3E68 /* CdHeaderField+Extensions.swift in Sources */,

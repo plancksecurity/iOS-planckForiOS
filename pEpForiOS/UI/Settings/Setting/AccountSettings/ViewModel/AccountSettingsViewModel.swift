@@ -225,11 +225,9 @@ extension AccountSettingsViewModel {
     /// Handle the change of status of the Unified Folders option.
     /// - Parameter newValue: The value to set. True means enabled, False means disabled. 
     public func handleUnifiedFolderSwitchChanged(to newValue: Bool) {
-        delegate?.setLoadingView(visible: true)
         includeInUnifiedFolders = newValue
         account.isIncludedInUnifiedFolders = newValue
         account.session.commit()
-        delegate?.setLoadingView(visible: false)
     }
 
     /// [En][Dis]able the pEpSync status
