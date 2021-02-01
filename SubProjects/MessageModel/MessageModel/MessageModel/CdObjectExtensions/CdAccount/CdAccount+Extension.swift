@@ -88,7 +88,9 @@ extension CdAccount {
 
 extension CdAccount {
 
-    /// Inform MessageQueryResult about a change in Unified Folders status.
+    /// Informs to MessageQueryResult about a change in Unified Folders status.
+    /// This operation might be expensive.
+    ///
     /// This method does NOT save the context. 
     public func setIsUnifiedTriggeringQueryResultsChange() {
         let predicate = NSPredicate(format: "parent.%@ = %@", CdFolder.RelationshipName.account, self)
