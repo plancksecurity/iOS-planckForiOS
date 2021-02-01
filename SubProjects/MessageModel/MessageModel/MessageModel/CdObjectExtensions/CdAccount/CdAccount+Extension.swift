@@ -85,3 +85,18 @@ extension CdAccount {
         return CdFolder.first(attributes: ["account": self, "name": name], in: context)
     }
 }
+
+extension CdAccount {
+
+    /// Inform MessageQueryResult about a change in Unified Folders status.
+    public func setIsUnifiedTriggeringQueryResultsChange() {
+        let predicate = NSPredicate(format: "parent.%@ = %@", CdFolder.RelationshipName.account, self)
+        let moc = Session.main.moc
+        let messages: [CdMessage] = CdMessage.all(predicate: predicate, in: moc) ?? []
+        messages.forEach { (message) in
+            let tmpParent = message.parent
+            message.parent = tmpParent
+        }
+        moc.saveAndLogErrors()
+    }
+}

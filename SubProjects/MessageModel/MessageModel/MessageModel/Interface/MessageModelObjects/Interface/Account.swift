@@ -136,6 +136,7 @@ public class Account: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         }
         set {
             cdObject.includeFoldersInUnifiedFolders = newValue
+            cdObject.setIsUnifiedTriggeringQueryResultsChange()
         }
     }
 }
