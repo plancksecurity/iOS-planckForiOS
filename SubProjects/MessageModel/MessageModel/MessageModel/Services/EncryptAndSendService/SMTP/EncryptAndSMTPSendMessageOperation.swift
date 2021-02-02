@@ -18,9 +18,6 @@ class EncryptAndSMTPSendMessageOperation: ConcurrentBaseOperation {
     private var cdMessage: CdMessage? = nil
     private let cdMessageToSendObjectId: NSManagedObjectID
 
-    /** The object ID of the last sent message, so we can move it on success */
-    private var lastSentMessageObjectID: NSManagedObjectID?
-
     init(parentName: String = #file + #function,
          cdMessageToSendObjectId: NSManagedObjectID,
          smtpConnection: SmtpConnectionProtocol,

@@ -8,17 +8,10 @@
 
 import Foundation
 
+
+//MB:- rm this file
 extension UITableViewController {
-    static func setupCommonSettings(tableView: UITableView) {
-        hideSeperatorForEmptyCells(on: tableView)
-    }
-    
-    static private func hideSeperatorForEmptyCells(on tableView: UITableView) {
-        // Add empty footer to not show empty cells (visible as dangling seperators)
-        if tableView.tableFooterView == nil {
-            tableView.tableFooterView = UIView(frame: .zero)
-        }
-    }
+
 }
 
 

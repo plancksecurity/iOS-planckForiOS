@@ -17,7 +17,6 @@ public class FolderSectionViewModel {
     private var items = [FolderCellViewModel]()
     private let unifiedFolders = [UnifiedInbox(), UnifiedDraft(), UnifiedSent(), UnifiedTrash()]
 
-    private var help = [FolderCellViewModel]()
     private let identityImageTool = IdentityImageTool()
 
     public init(account acc: Account?, unified: Bool) {

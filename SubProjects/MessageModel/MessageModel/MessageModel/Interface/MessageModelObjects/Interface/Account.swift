@@ -92,11 +92,6 @@ public class Account: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         }
     }
 
-    public func replaceServers(with elements: [Server]) {
-        cdObject.servers = nil
-        appendToServers(elements)
-    }
-
     public func appendToServers(_ element: Server) {
         appendToServers([element])
     }
@@ -108,13 +103,6 @@ public class Account: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
             result.add(cdElement)
             element.cdObject.account = self.cdObject
         }
-        cdObject.servers = result
-    }
-
-    public func removeFromServers(_ element: Server) {
-        let result = (cdObject.servers?.mutableCopy() as? NSMutableSet) ?? NSMutableSet()
-        result.remove(element.cdObject)
-        element.moc.delete(element.cdObject)
         cdObject.servers = result
     }
 

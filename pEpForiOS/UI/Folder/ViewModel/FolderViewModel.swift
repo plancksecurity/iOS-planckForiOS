@@ -21,7 +21,7 @@ public class FolderViewModel {
     public var hiddenSections = Set<Int>()
 
     public var maxIndentationLevel: Int {
-        return DeviceUtils.isIphone5 ? 3 : 4
+        return UIDevice.isSmall ? 3 : 4
     }
 
     public var shouldShowUnifiedFolders: Bool {

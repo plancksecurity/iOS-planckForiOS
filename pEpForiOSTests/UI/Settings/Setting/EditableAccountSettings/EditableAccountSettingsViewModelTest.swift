@@ -255,7 +255,7 @@ class MockAccountSettingsViewController: VerifiableAccount, SettingChangeDelegat
         if expectation != nil {
             expectation?.fulfill()
         }
-    } 
+    }
 
     override func save(completion: @escaping (Result<Void, Error>) -> ()) {
         super.save { [weak self] success in

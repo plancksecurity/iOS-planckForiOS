@@ -21,29 +21,6 @@ extension CdMessage {
         return cdMsg1.isEarlierTo(cdMessage2: cdMsg2)
     }
 
-    /**
-     For use by `sorted`, `sort`, sorts a sequence so that earlier messages appear last.
-     */
-    static func areInDecreasingOrder(_ cdMsg1: CdMessage, cdMsg2: CdMessage) -> Bool {
-        return cdMsg1.isLaterTo(cdMessage2: cdMsg2)
-    }
-
-    func dumpReferences() {
-        let theUuid = uuid ?? "unknown"
-        let theRefs = references?.array as? [CdMessageReference] ?? []
-        if !theRefs.isEmpty {
-            for ref in theRefs {
-                if let refID = ref.reference {
-                    let info = "messageID \(theUuid) -> ref \(refID)"
-                    Log.shared.info("%@", info)
-                }
-            }
-        } else {
-            let info = "messageID \(theUuid) -> no refs"
-            Log.shared.info("%@", info)
-        }
-    }
-
     // MARK: Private
 
     /**

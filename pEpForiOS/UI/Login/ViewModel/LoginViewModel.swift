@@ -12,14 +12,6 @@ import MessageModel
 import pEpIOSToolbox
 import PantomimeFramework
 
-// MARK: - LoginCellType
-
-extension LoginViewModel {
-    enum LoginCellType {
-        case Text, Button
-    }
-}
-
 // MARK: - OAuth2Parameters
 
 extension LoginViewModel {
@@ -304,7 +296,7 @@ extension LoginViewModel: VerifiableAccountDelegate {
         case .success:
             verifiableAccount.save { [weak self] (result) in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                // Valid case. We might have been dismissed already.
                     return
                 }
                 switch result {
