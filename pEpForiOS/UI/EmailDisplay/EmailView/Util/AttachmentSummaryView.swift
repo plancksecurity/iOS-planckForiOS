@@ -36,16 +36,6 @@ class AttachmentSummaryView: UIView {
     let attachmentInfo: AttachmentInfo
     let iconImage: UIImage?
 
-    /**
-     The view on top that one.
-     */
-    var upperView: UIView?
-
-    /**
-     The view below that one.
-     */
-    var lowerView: UIView?
-
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

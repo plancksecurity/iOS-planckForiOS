@@ -13,7 +13,6 @@ import MessageModel
 /// Lets the user choose the mail account used as default,
 /// e.g. when composing a mail in unified inbox, the default account is used as "From".
 class SettingDefaultAccountTableViewController: UITableViewController {
-    let storyboardID = "SettingDefaultAccountTableViewController"
     let cellID = "SettingDefaultAccountCell"
     var allAccounts: [Account] {
         return Account.all()

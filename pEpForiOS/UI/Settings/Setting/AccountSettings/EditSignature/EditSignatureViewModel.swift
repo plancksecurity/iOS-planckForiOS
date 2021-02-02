@@ -13,7 +13,7 @@ class EditSignatureViewModel {
     
     private let account: Account
     
-    private weak var editableAccountSettingsdelegate: EditableAccountSettingsDelegate?
+    private weak var accountSettingsdelegate: SettingChangeDelegate?
     
     public var numberOfRows: Int {
         return 1
@@ -21,11 +21,16 @@ class EditSignatureViewModel {
 
     public var signatureInProgress: String?
     
-    init(account: Account, delegate: EditableAccountSettingsDelegate? = nil) {
+    init(account: Account, delegate: SettingChangeDelegate? = nil) {
         self.account = account
-        self.editableAccountSettingsdelegate = delegate
+        self.accountSettingsdelegate = delegate
     }
-
+    
+    public func updateSignature(newSignature: String) {
+        account.signature = newSignature
+        accountSettingsdelegate?.didChange()
+    }
+    
     public func signature() -> String {
         return account.signature
     }

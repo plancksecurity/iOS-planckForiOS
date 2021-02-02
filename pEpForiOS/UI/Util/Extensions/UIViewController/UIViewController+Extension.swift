@@ -11,6 +11,7 @@ import pEpIOSToolbox
 import MessageModel
 
 extension UIViewController {
+
     var isModalViewCurrentlyShown: Bool {
         return presentedViewController != nil
     }
@@ -114,7 +115,6 @@ extension UIViewController: SplitViewControllerBehaviorProtocol {
     ///
     /// - Returns: returns the value of the actual status of the split view controller using SplitViewDisplayMode
     func currentSplitViewMode() -> UISplitViewController.SplitViewDisplayMode {
-        
         if let selfsplit = self as? UISplitViewController {
             return selfsplit.currentDisplayMode
         }
