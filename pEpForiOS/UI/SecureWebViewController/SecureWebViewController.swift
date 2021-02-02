@@ -117,9 +117,11 @@ class SecureWebViewController: UIViewController {
             }
         }
     }
+}
 
-    // MARK: - Helpers
+// MARK: - Private
 
+extension SecureWebViewController {
     /// Remove the observer to the `WKWebView`'s `contentSizeKeyPath`, if still observed.
     private func removeContentSizeKeyPathObservers() {
         if observingWebViewContentSizeKey {
@@ -127,11 +129,6 @@ class SecureWebViewController: UIViewController {
             observingWebViewContentSizeKey = false
         }
     }
-}
-
-// MARK: - Private
-
-extension SecureWebViewController {
 
     private func preferences(javaScriptEnabled: Bool = false) -> WKPreferences {
         let createe  = WKPreferences()
