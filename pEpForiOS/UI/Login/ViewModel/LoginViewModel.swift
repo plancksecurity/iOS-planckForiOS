@@ -296,7 +296,7 @@ extension LoginViewModel: VerifiableAccountDelegate {
         case .success:
             verifiableAccount.save { [weak self] (result) in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                // Valid case. We might have been dismissed already.
                     return
                 }
                 switch result {
