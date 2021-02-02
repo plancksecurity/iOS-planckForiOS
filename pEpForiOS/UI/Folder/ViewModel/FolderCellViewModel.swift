@@ -94,12 +94,12 @@ public class FolderCellViewModel {
             foldersToHandle.append(contentsOf: folder.getSubfoldersRecursively())
             ///Handle the change
             AppSettings.shared.setFoldersCollapsedState(address: address,
-                                                           foldersName: foldersToHandle.map(\.name),
-                                                           isCollapsed: isCollapsed)
+                                                        foldersName: foldersToHandle.map(\.name),
+                                                        isCollapsed: isCollapsed)
         } else {
             AppSettings.shared.setFolderCollapsedState(address: address,
-                                                          folderName: folder.name,
-                                                          isCollapsed: isCollapsed)
+                                                       folderName: folder.name,
+                                                       isCollapsed: isCollapsed)
         }
     }
 

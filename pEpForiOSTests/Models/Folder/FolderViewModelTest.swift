@@ -58,7 +58,7 @@ class FolderViewModelTest: AccountDrivenTestBase {
         let noAccountsExist = viewmodel.noAccountsExist()
         XCTAssertTrue(noAccountsExist)
     }
-    
+
     func testSubscript() {
         let accounts = givenThereIs(numberOfAccounts: 1)
         givenThereIsAViewModel(withUniFiedInBox: false, and: accounts)
@@ -93,5 +93,19 @@ class FolderViewModelTest: AccountDrivenTestBase {
     func givenThereIsNotAccounts(withUnifiedInbox: Bool) {
         Account.all().forEach { $0.delete() }
         viewmodel = FolderViewModel(withFoldersIn: nil)
+    }
+
+    func testHandleCollapsingSectionStateChanged() {
+        let accounts = givenThereIs(numberOfAccounts: 1)
+        givenThereIsAViewModel(withUniFiedInBox: false, and: accounts)
+
+        //Just a fresh start
+        AppSettings.shared.removeCollapsingStateOfAccountWithAddress(address: account.user.address)
+
+        let originalStatus = AppSettings.shared.collapsedState(forAccountWithAddress: account.user.address)
+        XCTAssertFalse(originalStatus)
+        viewmodel.handleCollapsingSectionStateChanged(forAccountInSection: 0, isCollapsed: true)
+        let newStatus = AppSettings.shared.collapsedState(forAccountWithAddress: account.user.address)
+        XCTAssertTrue(newStatus)
     }
 }

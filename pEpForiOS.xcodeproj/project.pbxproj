@@ -342,7 +342,7 @@
 		5B3C13BF23D8AF2E00FC0A53 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */; };
 		5B41C6082418F15100C268CE /* TutorialStep3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41C6072418F15100C268CE /* TutorialStep3ViewController.swift */; };
 		5B4A718A252CC4A500436FCF /* Mailto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A7189252CC4A500436FCF /* Mailto.swift */; };
-		5B6496D325C853670028B9ED /* AppSettingsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6496D225C853670028B9ED /* AppSettingsTest.swift */; };
+		5B6496D325C853670028B9ED /* CollapsingFoldersAndAccountsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6496D225C853670028B9ED /* CollapsingFoldersAndAccountsTest.swift */; };
 		5B70B1F724507B8A0010AED7 /* pEpFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */; };
 		5B71016E243619CF00BAE405 /* TrustedServerSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B71016D243619CF00BAE405 /* TrustedServerSettingsViewController.swift */; };
 		5B74C00D249B7EA300802704 /* FolderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B74C00C249B7EA300802704 /* FolderTableViewCell.swift */; };
@@ -933,7 +933,7 @@
 		5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		5B41C6072418F15100C268CE /* TutorialStep3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep3ViewController.swift; sourceTree = "<group>"; };
 		5B4A7189252CC4A500436FCF /* Mailto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mailto.swift; sourceTree = "<group>"; };
-		5B6496D225C853670028B9ED /* AppSettingsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsTest.swift; sourceTree = "<group>"; };
+		5B6496D225C853670028B9ED /* CollapsingFoldersAndAccountsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsingFoldersAndAccountsTest.swift; sourceTree = "<group>"; };
 		5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpFooterView.swift; sourceTree = "<group>"; };
 		5B71016D243619CF00BAE405 /* TrustedServerSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustedServerSettingsViewController.swift; sourceTree = "<group>"; };
 		5B74C00C249B7EA300802704 /* FolderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FolderTableViewCell.swift; path = Folder/FolderTableViewCell.swift; sourceTree = "<group>"; };
@@ -1151,7 +1151,7 @@
 				150707DB21006CD000AA213F /* ComposeUtilTest.swift */,
 				43A0B2CE214006FC00FB779D /* ReplyUtilTests.swift */,
 				15A5368F2155136800CF6204 /* PEPUtilTest.swift */,
-				5B6496D225C853670028B9ED /* AppSettingsTest.swift */,
+				5B6496D225C853670028B9ED /* CollapsingFoldersAndAccountsTest.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -3190,7 +3190,7 @@
 				4395CDEE20AAC909003FC5F1 /* UIImageExtensionsTests.swift in Sources */,
 				491116BD216E0DF4005A42D2 /* MessageViewModelTests.swift in Sources */,
 				153B2188219472A400497D3D /* BodyCellViewModelTest.swift in Sources */,
-				5B6496D325C853670028B9ED /* AppSettingsTest.swift in Sources */,
+				5B6496D325C853670028B9ED /* CollapsingFoldersAndAccountsTest.swift in Sources */,
 				0017CD1D2162614400F62F13 /* MoveToFolderCellViewModelTests.swift in Sources */,
 				37816549231035F000B967E3 /* PEPAlertViewModelTest.swift in Sources */,
 				43D1900E2513734400A36973 /* SettingsViewModelTest.swift in Sources */,

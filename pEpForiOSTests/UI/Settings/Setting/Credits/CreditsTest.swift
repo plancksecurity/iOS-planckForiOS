@@ -30,6 +30,7 @@ class CreditsTest: XCTestCase {
 
 class AppSettingsMoc: AppSettingsProtocol {
 
+
     init(verboseLogginEnabled: Bool) {
         self.verboseLogginEnabled = verboseLogginEnabled
     }
@@ -57,7 +58,9 @@ class AppSettingsMoc: AppSettingsProtocol {
 
     var verboseLogginEnabled: Bool
 
-    func removeCollapsingStateOfAccountWithAddress(address: String) { }
+    func removeCollapsingStateOfAccountWithAddress(address: String) {
+
+    }
 
     func collapsedState(forAccountWithAddress address: String) -> Bool {
         return true
@@ -66,4 +69,17 @@ class AppSettingsMoc: AppSettingsProtocol {
     func collapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String) -> Bool {
         return true
     }
+
+    func setFoldersCollapsedState(address: String, foldersName: [String], isCollapsed: Bool) {
+
+    }
+
+    func setFolderCollapsedState(address: String, folderName: String, isCollapsed: Bool) {
+
+    }
+
+    func setAccountCollapsedState(address: String, isCollapsed: Bool) {
+
+    }
+
 }

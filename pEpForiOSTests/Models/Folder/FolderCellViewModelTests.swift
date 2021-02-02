@@ -163,4 +163,43 @@ class FolderCellViewModelTests: AccountDrivenTestBase {
         XCTAssertFalse(result)
     }
 
+    func testhandleCollapsingFolderStateChanged() {
+        let parentViewModel = FolderCellViewModel(folder: folder, level: 0)
+        parentViewModel.isExpanded = true
+        let isCollapsed = AppSettings.shared.collapsedState(forFolderNamed: Input.folderName, ofAccountWithAddress: account.user.address)
+        XCTAssertFalse(isCollapsed)
+        parentViewModel.isExpanded = false
+        parentViewModel.handleFolderCollapsedStateChange()
+        let collapsedState = AppSettings.shared.collapsedState(forFolderNamed: Input.folderName, ofAccountWithAddress: account.user.address)
+        XCTAssertTrue(collapsedState)
+    }
+
+    func testhandleCollapsingFoldersStateChanged() {
+        let sonFolder1 = Folder(name: "Son 1", parent: folder, account: account, folderType: .normal)
+        let sonFolder2 = Folder(name: "Son 2", parent: folder, account: account, folderType: .normal)
+        folder.session.commit()
+
+        let son1VM = FolderCellViewModel(folder: sonFolder1, level: 1)
+        let son2VM = FolderCellViewModel(folder: sonFolder2, level: 1)
+
+        let parentViewModel = FolderCellViewModel(folder: folder, level: 0)
+        parentViewModel.isExpanded = true
+        let isCollapsed = AppSettings.shared.collapsedState(forFolderNamed: Input.folderName, ofAccountWithAddress: account.user.address)
+        XCTAssertFalse(isCollapsed)
+
+        parentViewModel.isExpanded = false
+        son1VM.isExpanded = false
+        son2VM.isExpanded = false
+
+        parentViewModel.handleFolderCollapsedStateChange()
+
+        let newIsCollapsedParent = AppSettings.shared.collapsedState(forFolderNamed: Input.folderName, ofAccountWithAddress: account.user.address)
+        let newIsCollapsedSon1 = AppSettings.shared.collapsedState(forFolderNamed: "Son 1", ofAccountWithAddress: account.user.address)
+        let newIsCollapsedSon2 = AppSettings.shared.collapsedState(forFolderNamed: "Son 2", ofAccountWithAddress: account.user.address)
+
+        XCTAssertTrue(newIsCollapsedParent)
+        XCTAssertTrue(newIsCollapsedSon1)
+        XCTAssertTrue(newIsCollapsedSon2)
+    }
+
 }

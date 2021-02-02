@@ -11,11 +11,10 @@ import Foundation
 
 extension Folder {
 
-    /// - Returns: The all subfolders, recursively.
-    
+    /// - Returns: The all subfolders, recursively.    
     public func getSubfoldersRecursively<T: Folder>() -> [T] {
         var subfoldersToReturn = [T]()
-        self.subFolders().forEach { subfolder in
+        subFolders().forEach { subfolder in
             subfoldersToReturn += subfolder.getSubfoldersRecursively() as [T]
             if let subfolder = subfolder as? T {
                 subfoldersToReturn.append(subfolder)
