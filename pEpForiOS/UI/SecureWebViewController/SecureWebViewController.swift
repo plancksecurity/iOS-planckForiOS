@@ -119,6 +119,19 @@ class SecureWebViewController: UIViewController {
     }
 }
 
+// MARK: - Tracking the observed status
+
+extension SecureWebViewController {
+    /// True if anyone observes anything in of `webView.scrollView`, false otherwize.
+    private func webviewIsCurrentlyObserved() -> Bool {
+        guard let testee: UnsafeMutableRawPointer = webView.scrollView.observationInfo else {
+            return false
+        }
+        let pointee: Dictionary<AnyHashable,AnyObject> = testee.load(as: Dictionary<AnyHashable,AnyObject>.self)
+        return !pointee.isEmpty
+    }
+}
+
 // MARK: - Private
 
 extension SecureWebViewController {
