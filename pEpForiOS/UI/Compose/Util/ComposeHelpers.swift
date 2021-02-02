@@ -9,10 +9,6 @@
 import UIKit
 import MessageModel
 
-struct ComposeHelpers {
-    static fileprivate let defaultFilenameLength = 20
-}
-
 extension String {
     static let textAttachmentCharacter: UInt32 = 65532
 
@@ -32,15 +28,5 @@ extension String {
             return ch.value == String.textAttachmentCharacter
         }
         return false
-    }
-
-    var truncate: String {
-        let length = self.count
-        if length > ComposeHelpers.defaultFilenameLength {
-            let index: String.Index = self.index(self.startIndex,
-                                                 offsetBy: ComposeHelpers.defaultFilenameLength)
-            return String(prefix(upTo: index))
-        }
-        return self
     }
 }

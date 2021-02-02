@@ -26,12 +26,6 @@ extension CdServer {
                                          Server.ServerType.imap.rawValue)
         }
         
-        static func isSmtp() -> NSPredicate {
-            return NSPredicate(format: "%K = %d",
-                               CdServer.AttributeName.serverTypeRawValue,
-                               Server.ServerType.smtp.rawValue)
-        }
-        
         static func notAutomaticallyTrusted() -> NSPredicate {
             return NSPredicate(format: "%K = false", CdServer.AttributeName.automaticallyTrusted)
         }

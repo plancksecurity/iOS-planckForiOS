@@ -99,17 +99,6 @@ extension CdMessage {
                                uid)
         }
 
-        static func belongingToUidAndUuidAndParentFolderAndAccount(uid: Int32,
-                                                             uuid: MessageID,
-                                                             folderName: String,
-                                                             account: CdAccount) -> NSPredicate {
-            return NSPredicate(format: "uid = %d AND uuid = %@ AND parent.name = %@ AND parent.account = %@",
-                               uid,
-                               uuid,
-                               folderName,
-                               account)
-        }
-
         static func flagged(value: Bool) -> NSPredicate {
             return NSPredicate(format: "%K = %d",
                                     RelationshipKeyPath.cdMessage_imap_localFlags + "." +
@@ -179,12 +168,6 @@ extension CdMessage {
                 CdAttachment.AttributeName.mimeType,
                 MimeTypeUtils.unviewableMimeTypes)
             return NSCompoundPredicate(andPredicateWithSubpredicates: [notUnencryptable, viewableOnly])
-        }
-
-        static func unprocessed() -> NSPredicate {
-            return NSPredicate(format: "%K = %d",
-                               CdMessage.AttributeName.pEpRating,
-                               Int(PEPRating.undefined.rawValue))
         }
 
         static func processed() -> NSPredicate {
