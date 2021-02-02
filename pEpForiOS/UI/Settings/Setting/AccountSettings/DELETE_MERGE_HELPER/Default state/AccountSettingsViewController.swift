@@ -190,12 +190,6 @@ extension AccountSettingsViewController : UITableViewDataSource {
         headerView.title = sections[section].title.uppercased()
         return headerView
     }
-
-    private enum CellType {
-        case keyValueCell
-        case switchCell
-        case dangerousCell
-    }
 }
 
 //MARK : - ViewModel Delegate
@@ -324,20 +318,6 @@ extension AccountSettingsViewController: OAuthAuthorizerDelegate {
             return
         }
         viewModel?.updateToken(accessToken: token)
-    }
-}
-
-// MARK: - AccountSettingsSwitchTableViewCellDelegate
-
-extension AccountSettingsViewController: AccountSettingsSwitchTableViewCellDelegate {
-    func switchValueChanged(of rowType: AccountSettingsViewModel.RowType, to newValue: Bool) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash(message: "A view model is required")
-            return
-        }
-        if rowType == .pepSync {
-            vm.pEpSync(enable: newValue)
-        }
     }
 }
 

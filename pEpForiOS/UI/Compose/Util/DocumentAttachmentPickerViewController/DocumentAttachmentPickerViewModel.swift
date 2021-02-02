@@ -18,9 +18,7 @@ protocol DocumentAttachmentPickerViewModelResultDelegate: class {
 
 class DocumentAttachmentPickerViewModel {
     lazy private var attachmentFileIOQueue = DispatchQueue(label:
-        "security.pep.DocumentAttachmentPickerViewModel.attachmentFileIOQueue",
-                                                           qos: .userInitiated)
-    private let mimeUtils = MimeTypeUtils()
+        "security.pep.DocumentAttachmentPickerViewModel.attachmentFileIOQueue", qos: .userInitiated)
     private let session: Session
     weak public var resultDelegate: DocumentAttachmentPickerViewModelResultDelegate?
 

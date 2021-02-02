@@ -34,7 +34,6 @@ class MediaAttachmentPickerProviderViewModel {
         "security.pep.MediaAttachmentPickerProviderViewModel.attachmentFileIOQueue",
                                                            qos: .userInitiated)
     private var numVideosSelected = 0
-    private let mimeTypeUtils = MimeTypeUtils()
     let session: Session
     weak public var resultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?
 

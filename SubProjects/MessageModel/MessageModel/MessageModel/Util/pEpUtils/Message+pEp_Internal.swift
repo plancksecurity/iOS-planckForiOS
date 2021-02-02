@@ -31,17 +31,6 @@ extension Message {
         let isOkToShowAttachments = !rating.dontShowAttachments()
         return isOkToShowAttachments
     }
-
-    private func getOriginalRatingHeader() -> String? {
-        return optionalFields[Headers.originalRating.rawValue]
-    }
-
-    private func getOriginalRatingHeaderRating() -> PEPRating? {
-        guard let originalRatingStr = getOriginalRatingHeader() else {
-            return nil
-        }
-        return PEPRating.fromString(str: originalRatingStr)
-    }
 }
 
 // MARK: - Private session and main session objects getters
