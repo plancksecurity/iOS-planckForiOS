@@ -62,9 +62,6 @@ class SecureWebViewController: UIViewController {
     /// The key path of the `WKWebView` that gets observed under certain conditions.
     private var keyPathContentSize = "contentSize"
 
-    /// Flag for telling whether the `contentSizeKeyPath` of the `WKWebView` is currently observed.
-    private var observingWebViewContentSizeKey = false
-
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -122,7 +119,7 @@ class SecureWebViewController: UIViewController {
 // MARK: - Tracking the observed status
 
 extension SecureWebViewController {
-    /// True if anyone observes anything in of `webView.scrollView`, false otherwize.
+    /// True if anyone observes anything in of `webView.scrollView`, false otherwise.
     private func webviewIsCurrentlyObserved() -> Bool {
         guard let testee: UnsafeMutableRawPointer = webView.scrollView.observationInfo else {
             return false
@@ -137,9 +134,8 @@ extension SecureWebViewController {
 extension SecureWebViewController {
     /// Remove the observer to the `WKWebView`'s `contentSizeKeyPath`, if still observed.
     private func removeContentSizeKeyPathObservers() {
-        if observingWebViewContentSizeKey {
+        if webviewIsCurrentlyObserved() {
             webView.scrollView.removeObserver(self, forKeyPath: keyPathContentSize)
-            observingWebViewContentSizeKey = false
         }
     }
 
@@ -286,7 +282,6 @@ extension SecureWebViewController: WKNavigationDelegate {
                                        forKeyPath: keyPathContentSize,
                                        options: .new,
                                        context: nil)
-        observingWebViewContentSizeKey = true
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
