@@ -41,7 +41,7 @@ public final class AppSettings: KeySyncStateProvider {
     /// [AccountAddress : [ FolderName : isCollapsedStatus ] ]
     ///
     /// For example:
-    /// ["mb@pep.security" : [ "keyAccountCollapstedState" : true ] ] indicates the account is collapsed.
+    /// ["mb@pep.security" : [ "keyAccountCollapstedState" : true ] ] indicates the account is collapsed. Do not change the key 'keyAccountCollapstedState'
     /// ["mb@pep.security" : [ "SomeFolder" : true ] ] indicates the folder is collapsed.
     private typealias CollapsingState = [String: [String: Bool]]
 
@@ -311,20 +311,21 @@ extension AppSettings {
         } else {
             current[address] = [folderName: isCollapsed]
         }
-
         collapsingState = current
     }
 
     public func handleFoldersColapsedStateChange(address: String, foldersName: [String], isCollapsed: Bool) {
         var current = collapsingState
-        if var currentAddressState = current[address] {
+        if var addressState = current[address] {
             foldersName.forEach { (folderName) in
-                currentAddressState[folderName] = isCollapsed
+                addressState[folderName] = isCollapsed
             }
-            current[address] = currentAddressState
+            current[address] = addressState
         } else {
+            let key = AppSettings.keyAccountCollapstedState
+            current[address] = [key: false]
             foldersName.forEach { (folderName) in
-                current[address] = [folderName: isCollapsed]
+                current[address]?[folderName] = isCollapsed
             }
         }
         collapsingState = current
