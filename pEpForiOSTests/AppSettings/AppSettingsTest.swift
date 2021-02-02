@@ -10,7 +10,7 @@ import XCTest
 @testable import pEpForiOS
 import pEp4iosIntern
 
-class CollapsingFoldersAndAccountsTest: XCTestCase {
+class AppSettingsTest: XCTestCase {
 
     let address1 = "mb@pep.security"
     let address2 = "iostest017@pep.security"
