@@ -127,6 +127,9 @@ extension SMTPSettingsViewController: ManualAccountSetupViewDelegate {
                 case .invalidUserData:
                     errorMessage = NSLocalizedString("Some mandatory fields are empty",
                                                      comment: "Message of alert: a required field is empty")
+                case .unknown:
+                    errorMessage = NSLocalizedString("Something went wrong.",
+                                                     comment: "Message of alert: something went wrong.")
                 }
             } else {
                 errorMessage = error.localizedDescription
@@ -193,28 +196,30 @@ extension SMTPSettingsViewController: SegueHandlerType {
 
 extension SMTPSettingsViewController: VerifiableAccountDelegate {
     func didEndVerification(result: Result<Void, Error>) {
+        guard let verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("Verifiable account not found")
+            return
+        }
+
         switch result {
-        case .success(()):
-            do {
-                try verifiableAccount?.save() { [weak self] success in
-                    DispatchQueue.main.async { [weak self] in
-                        guard let me = self else {
-                            // Valid case. We might have been dismissed already.
-                            return
-                        }
-                        switch success {
-                        case true:
-                            me.isCurrentlyVerifying = false
-                            me.performSegue(withIdentifier: .backToEmailListSegue, sender: me)
-                        case false:
-                            me.isCurrentlyVerifying = false
-                            UIUtils.show(error: VerifiableAccountValidationError.invalidUserData)
-                        }
+        case .success:
+            verifiableAccount.save(completion: { [weak self] (savingResult) in
+                guard let me = self else {
+                    // Valid case. We might have been dismissed already.
+                    return
+                }
+                DispatchQueue.main.async {
+                    switch savingResult {
+                    case .success:
+                        me.isCurrentlyVerifying = false
+                        me.performSegue(withIdentifier: .backToEmailListSegue, sender: me)
+                    case .failure(_):
+                        me.isCurrentlyVerifying = false
+                        UIUtils.show(error: VerifiableAccountValidationError.invalidUserData)
                     }
                 }
-            } catch {
-                Log.shared.errorAndCrash(error: error)
-            }
+            })
+
         case .failure(let error):
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {

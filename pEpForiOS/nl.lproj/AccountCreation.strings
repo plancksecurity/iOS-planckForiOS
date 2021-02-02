@@ -10,9 +10,6 @@
 /* Class = "UILabel"; text = "p≡p Sync"; ObjectID = "DEp-6Y-fcV"; */
 "DEp-6Y-fcV.text" = "p≡p Sync";
 
-/* Class = "UILabel"; text = "Select Certificate"; ObjectID = "Fd1-jY-GRg"; */
-"Fd1-jY-GRg.text" = "Certificaat Selecteren";
-
 /* Class = "UILabel"; text = "Please select the type of account you would like to set up with p≡p"; ObjectID = "fLS-EM-fbk"; */
 "fLS-EM-fbk.text" = "Selecteer het type account dat je met p≡p wilt instellen";
 
@@ -24,9 +21,6 @@
 
 /* Class = "UIButton"; normalTitle = "Manual Setup"; ObjectID = "JT1-ND-6bH"; */
 "JT1-ND-6bH.normalTitle" = "Handmatige Setup";
-
-/* Class = "UILabel"; text = "Please select which certificate you would like to use:"; ObjectID = "piS-rX-R34"; */
-"piS-rX-R34.text" = "Selecteer welk certificaat je wilt gebruiken:";
 
 /* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "Sub-2j-OvV"; */
 "Sub-2j-OvV.normalTitle" = "Annuleren";

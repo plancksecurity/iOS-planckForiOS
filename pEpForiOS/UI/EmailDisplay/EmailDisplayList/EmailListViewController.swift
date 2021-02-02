@@ -113,6 +113,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         }
         updateFilterText()
         updateEditButton()
+        vm.updateLastLookAt()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

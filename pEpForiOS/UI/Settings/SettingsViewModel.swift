@@ -463,7 +463,7 @@ extension SettingsViewModel {
         delegate?.showLoadingView()
         Account.resetAllOwnKeys() { [weak self] result in
             switch result {
-            case .success():
+            case .success:
                 Log.shared.info("Success", [])
                 self?.delegate?.hideLoadingView()
             case .failure(let error):

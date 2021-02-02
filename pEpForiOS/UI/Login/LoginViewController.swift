@@ -17,6 +17,9 @@ protocol LoginViewControllerDelegate: class  {
 
 final class LoginViewController: UIViewController {
 
+    @IBOutlet weak var centerX: NSLayoutConstraint!
+    @IBOutlet weak var manualSetupWidth: NSLayoutConstraint!
+    @IBOutlet weak var leadingZero: NSLayoutConstraint!
     weak var delegate: LoginViewControllerDelegate?
     
     @IBOutlet private weak var pepSyncLabel: UILabel!
@@ -28,7 +31,7 @@ final class LoginViewController: UIViewController {
     @IBOutlet private weak var dismissButton: UIButton!
     @IBOutlet private weak var dismissButtonLeft: UIButton!
     @IBOutlet private weak var loginButtonIPadLandscape: UIButton!
-    @IBOutlet private weak var manualConfigButton: UIButton!
+    @IBOutlet private weak var manualConfigButton: TwoLinesButton!
     @IBOutlet private weak var mainContainerView: UIView!
     @IBOutlet private weak var stackView: UIStackView!
     @IBOutlet private weak var scrollView: DynamicHeightScrollView!
@@ -40,6 +43,7 @@ final class LoginViewController: UIViewController {
     var viewModel: LoginViewModel?
     var offerManualSetup = false
 
+    @IBOutlet weak var pepSyncLeadingBiggerThan: NSLayoutConstraint!
     var isCurrentlyVerifying = false {
         didSet {
             updateView()
@@ -71,6 +75,7 @@ final class LoginViewController: UIViewController {
         setManualSetupButtonHidden(manualConfigButton.isHidden)
         syncStackView.axis = UIDevice.isSmall && UIDevice.isLandscape ? .vertical : .horizontal
         syncStackView.superview?.layoutIfNeeded()
+        manualConfigButton.contentHorizontalAlignment = UIDevice.isPortrait ? .right : .left
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
@@ -92,11 +97,11 @@ final class LoginViewController: UIViewController {
                              offerManualSetup: false)
             return
         }
-        guard email.isProbablyValidEmail() else {
-            handleLoginError(error: LoginViewController.LoginError.invalidEmail,
-                             offerManualSetup: false)
-            return
-        }
+
+        // Allow _any_ email address, don't check anything
+        // (was calling `email.isProbablyValidEmail` and reporting
+        // `LoginViewController.LoginError.invalidEmail` in case).
+
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
@@ -306,7 +311,6 @@ extension LoginViewController: LoginViewModelOAuth2ErrorDelegate {
 extension LoginViewController {
     enum LoginError: Error {
         case missingEmail
-        case invalidEmail
         case missingPassword
         case noConnectData
         case missingUsername
@@ -318,9 +322,9 @@ extension LoginViewController {
 extension LoginViewController.LoginError: LocalizedError {
     var errorDescription: String? {
         switch self {
-        case .missingEmail, .invalidEmail:
+        case .missingEmail:
             return NSLocalizedString("A valid email address is required",
-                                     comment: "error message for .missingEmail or .invalidEmail")
+                                     comment: "error message for .missingEmail")
         case .missingPassword:
             return NSLocalizedString("A non-empty password is required",
                                      comment: "error message for .missingPassword")
@@ -510,7 +514,25 @@ extension LoginViewController {
     }
 
     private func setManualSetupButtonHidden(_ hidden: Bool) {
+        let hasChanged = manualConfigButton.isHidden != hidden
         manualConfigButton.isHidden = hidden
+        if UIDevice.isPortrait || (UIDevice.isIpad && UIDevice.isLandscape) {
+            pEpSyncViewCenterHConstraint.isActive = hidden
+            centerX.isActive = hidden
+            leadingZero.isActive = !hidden
+            pepSyncLeadingBiggerThan.isActive = hidden
+            manualSetupWidth.isActive = hidden
+
+            UIView.animate(withDuration: 0.5) { [weak self] in
+                guard let me = self else {
+                    //Valid case: might be dismmissed already
+                    return
+                }
+                if hasChanged {
+                    me.view.layoutIfNeeded()
+                }
+            }
+        }
     }
 
     private func updateView() {
@@ -569,22 +591,14 @@ extension LoginViewController {
 
     private func setFonts() {
         emailAddress.font = UIFont.pepFont(style: .callout, weight: .regular)
-        emailAddress.adjustsFontForContentSizeCategory = true
         password.font = UIFont.pepFont(style: .callout, weight: .regular)
-        password.adjustsFontForContentSizeCategory = true
         user.font = UIFont.pepFont(style: .callout, weight: .regular)
-        user.adjustsFontForContentSizeCategory = true
-        loginButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
-        loginButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        dismissButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
-        dismissButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        manualConfigButton.titleLabel?.font = UIFont.pepFont(style: .callout, weight: .regular)
-        manualConfigButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        dismissButtonLeft.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
-        dismissButtonLeft.titleLabel?.adjustsFontForContentSizeCategory = true
-        loginButtonIPadLandscape.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
-        loginButtonIPadLandscape.titleLabel?.adjustsFontForContentSizeCategory = true
-        pepSyncLabel.font = UIFont.pepFont(style: .callout, weight: .regular)
-        pepSyncLabel.adjustsFontForContentSizeCategory = true
+        loginButton.setPEPFont(style: .body, weight: .regular)
+        dismissButton.setPEPFont(style: .body, weight: .regular)
+        manualConfigButton.setPEPFont(style: .callout, weight: .regular)
+        dismissButtonLeft.setPEPFont(style: .body, weight: .regular)
+        loginButtonIPadLandscape.setPEPFont(style: .body, weight: .regular)
+        pepSyncLabel.setPEPFont(style: .callout, weight: .regular)
     }
 }
+

@@ -6,7 +6,8 @@ translationdir=../pEp-Translate/
 
 mytmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
 
-appdir=$mytmpdir/pEpForiOS
+# This is a tmp dir, it does not have to match any real project path at the end.
+appdir=$mytmpdir/pep4ios
 
 mkdir $appdir
 

@@ -253,6 +253,11 @@ class EmailListViewModel: EmailDisplayViewModel {
         contactImageTool.clearCache()
     }
 
+    /// Update LastLookAt of the folder to show.
+    public func updateLastLookAt() {
+        folderToShow.updateLastLookAt()
+    }
+
     // MARK: - EmailDisplayViewModelDelegate Overrides
 
     override func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])

@@ -47,7 +47,7 @@ class TrustManagementViewController: UIViewController {
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         guard let vm = viewModel, vm.canUndo() && motion == .motionShake,
             let actionName = vm.revertAction() else { return }
-        let title = NSLocalizedString(actionName, comment: "Revert last action performed named - alert title")
+        let title = actionName // this is already localized
         let confirmTitle = NSLocalizedString("Undo", comment: "Undo trust change verification button title")
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel trust change to be undone")
         UIUtils.showTwoButtonAlert(withTitle: title,
@@ -180,7 +180,7 @@ extension TrustManagementViewController {
                 }
 
                 for language in langs {
-                    guard let languageName = NSLocale.current.localizedString(forLanguageCode: language)
+                    guard let languageName = NSLocale.current.localizedString(forLanguageCode: language)?.capitalized
                         else {
                             Log.shared.debug("Language name not found")
                             break

@@ -29,7 +29,7 @@
 /* KeySyncWizard introduction message - two devices */
 "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "Se ha encontrado un segundo dispositivo con el que puedes sincronizar toda tu tu privacidad. ¿Quieres empezar a sincronizar?";
 
-/* error message for .missingEmail or .invalidEmail */
+/* error message for .missingEmail */
 "A valid email address is required" = "Se requiere una dirección de correo electrónico válida";
 
 /* error message for .invalidEmail
@@ -227,6 +227,12 @@
    Display Name TextField Placeholder in Login Screen */
 "Display Name" = "Nombre para Mostrar";
 
+/* Name of Drafts folder (showing draft messages, of one account) */
+"Drafts" = "Borradores";
+
+/* Edit - Right bar button item in Email List */
+"Edit" = "Editar";
+
 /* Email */
 "Email" = "Correo electrónico";
 
@@ -344,9 +350,6 @@
 
 /* Account settings title IMAP */
 "IMAP Settings" = "Configuraciones IMAP";
-
-/* Empty username message */
-"Imap username must not be empty." = "El nombre de usuario de Imap no puede estar vacío.";
 
 /* Select certificate - import certificate date */
 "Import date" = "Fecha de importación";
@@ -743,6 +746,12 @@
 /* Alert title before trusting an account */
 "Security Alert" = "Alerta de Seguridad";
 
+/* Select all emails */
+"Select all" = "Seleccionar todos";
+
+/* Name of Sent folder (showing messages to send, of one account) */
+"Sent" = "Enviados";
+
 /* Privacy status suggestion */
 "Separately verify the content of this message with your communication partner." = "Verifique el contenido de este mensaje con su interlocutor por separado.";
 
@@ -768,6 +777,9 @@
 /* Login */
 "Sign In" = "Iniciar Sesión";
 
+/* Signature label in account settings */
+"Signature" = "Firma";
+
 /* Start up tutorial skip button */
 "Skip" = "Omitir";
 
@@ -786,9 +798,6 @@
 /* Account settings title SMTP */
 "SMTP Settings" = "Configuraciones SMTP";
 
-/* Empty username message */
-"Smtp username must not be empty." = "El nombre de usuario no puede estar vacío.";
-
 /* Title for address filter */
 "some address" = "alguna direccion";
 
@@ -806,6 +815,12 @@
 
 /* AccountSettings viewModel no account error */
 "Something went wrong, please try again later" = "Algo salió mal. Por favor, inténtelo de nuevo más tarde";
+
+/* Name of Spam folder (showing messages marked as spam by the server, of one account) */
+"Spam" = "Spam";
+
+/* SSL/TLS (ConnectionTransport) */
+"SSL/TLS" = "SSL/TLS";
 
 /* Stop/trust button in handshake overview */
 "Start Trusting" = "Empiece a Confiar";
@@ -1008,6 +1023,9 @@
    User Name placeholder for manual account setup
    User Name placeholder for manual account SMTP setup */
 "User Name" = "Usuario";
+
+/* User name label in account settings */
+"Username" = "Usuario";
 
 /* Empty username message */
 "Username must not be empty." = "El nombre de usuario no puede estar vacío.";
