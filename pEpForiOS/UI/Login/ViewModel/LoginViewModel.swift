@@ -12,14 +12,6 @@ import MessageModel
 import pEpIOSToolbox
 import PantomimeFramework
 
-// MARK: - LoginCellType
-
-extension LoginViewModel {
-    enum LoginCellType {
-        case Text, Button
-    }
-}
-
 // MARK: - OAuth2Parameters
 
 extension LoginViewModel {

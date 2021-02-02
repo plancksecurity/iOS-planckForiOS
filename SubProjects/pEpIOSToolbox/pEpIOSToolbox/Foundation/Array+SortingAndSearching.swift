@@ -81,29 +81,4 @@ extension Array {
         return insertIndexByTraversing(
             element: element, from: 0, to: count - 1, shouldInsert: shouldInsert)
     }
-
-    public func binarySearch(element: Element, comparator: Comparator) -> Int? {
-        var lowerIndex = 0;
-        var upperIndex = count - 1
-
-        while (true) {
-            if (lowerIndex > upperIndex) {
-                return nil
-            }
-
-            let currentIndex = (lowerIndex + upperIndex) / 2
-
-            let comparison = comparator(self[currentIndex], element)
-
-            if comparison == .orderedSame {
-                return currentIndex
-            } else {
-                if comparison == .orderedDescending {
-                    upperIndex = currentIndex - 1
-                } else {
-                    lowerIndex = currentIndex + 1
-                }
-            }
-        }
-    }
 }

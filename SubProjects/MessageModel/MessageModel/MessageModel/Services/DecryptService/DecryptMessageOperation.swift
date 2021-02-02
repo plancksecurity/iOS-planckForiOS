@@ -210,15 +210,6 @@ extension DecryptMessageOperation {
                                                                 context: moc)
         return updatedMessage
     }
-
-    private func setFlags(_ flags: CdImapFlags?, toLocalFlagsOf cdMessage: CdMessage) {
-        guard flags != nil else {
-            // That's OK.
-            // No fake message (und thus no flags) exists for the currently decrypted msg.
-            return
-        }
-        cdMessage.imapFields().localFlags = flags
-    }
 }
 
 // MARK: - Re-Upload - Trusted Server & Extry Keys
