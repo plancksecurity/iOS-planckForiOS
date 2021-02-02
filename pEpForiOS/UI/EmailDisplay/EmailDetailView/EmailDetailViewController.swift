@@ -69,6 +69,19 @@ class EmailDetailViewController: UIViewController {
         configureView()
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        guard let currentlyShown = indexPathOfCurrentlyVisibleCell else {
+            // Nothing shown, nothing todo
+            return
+        }
+        vm.handleEmailDidEndDisplay(forItemAt: currentlyShown)
+    }
+
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         // Re-layout cells after device orientaion change
@@ -441,6 +454,16 @@ extension EmailDetailViewController: UICollectionViewDelegate {
         }
         vm.handleEmailShown(forItemAt: currentlyVisibledIdxPth)
         configureView()
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        didEndDisplaying cell: UICollectionViewCell,
+                        forItemAt indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("Expect to have a view model")
+            return
+        }
+        vm.handleEmailDidEndDisplay(forItemAt: indexPath)
     }
 }
 
