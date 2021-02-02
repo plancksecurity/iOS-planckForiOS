@@ -15,18 +15,6 @@ extension Folder {
         return folderType.isLocalFolder
     }
 
-    public func messageCount() -> Int {
-        return  allMessages().count //allCdMessagesCount(ignoringPepRating: showsMessagesNeverSeenByEngine) //!!!: lets CD count please
-    }
-
-    //!!!: should become obsolete
-    public func messageAt(index: Int) -> Message? {
-        if let message = allMessages()[safe: index] {
-            return message
-        }
-        return nil
-    }
-
     /// Returns: All the messages contained in that folder that are valid to show the user (not deleted ++).
     public func allMessages() -> [Message] {
         return

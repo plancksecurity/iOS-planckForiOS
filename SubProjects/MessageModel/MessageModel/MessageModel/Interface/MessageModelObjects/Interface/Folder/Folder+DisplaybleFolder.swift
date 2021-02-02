@@ -25,7 +25,7 @@ extension Folder: DisplayableFolderProtocol  {
     }
 
     public var isSelectable: Bool {
-        return self.selectable
+        return selectable
     }
 
     public func fetchOlder(completion: (()->())? = nil) {

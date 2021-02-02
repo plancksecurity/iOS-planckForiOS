@@ -8,11 +8,12 @@
 
 import UIKit
 
-public protocol CellWithIconTextNumberArrow {
-    var icon: UIImage { get set }
-    var title: String { get }
-    var number: Int { get }
-    var arrow: UIImage { get }
-
-}
-
+//MB:- rm this file. 
+//public protocol CellWithIconTextNumberArrow {
+//    var icon: UIImage { get set }
+//    var title: String { get }
+//    var number: Int { get }
+//    var arrow: UIImage { get }
+//
+//}
+//

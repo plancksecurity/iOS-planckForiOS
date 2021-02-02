@@ -86,20 +86,6 @@ class PEPPageViewControllerBase: UIPageViewController {
         }
     }
 
-    func goToPreviousView() {
-        guard let previousView = previousView() else { return }
-        setViewControllers([previousView], direction: .reverse, animated: true) {
-            [weak self] completed in
-            guard let me = self else {
-                Log.shared.lostMySelf() 
-                return
-            }
-            me.delegate?.pageViewController?(me, didFinishAnimating: true,
-                                             previousViewControllers: [previousView],
-                                             transitionCompleted: completed)
-        }
-    }
-
     func dismiss() {
         DispatchQueue.main.async { [weak self] in
             self?.dismiss(animated: true, completion: nil)

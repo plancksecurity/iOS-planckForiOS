@@ -26,9 +26,4 @@ extension UILayoutPriority {
     public static var almostRequired: UILayoutPriority {
         return UILayoutPriority(rawValue: 999)
     }
-
-    /// Creates a priority which is not required at all.
-    public static var notRequired: UILayoutPriority {
-        return UILayoutPriority(rawValue: 0)
-    }
 }
