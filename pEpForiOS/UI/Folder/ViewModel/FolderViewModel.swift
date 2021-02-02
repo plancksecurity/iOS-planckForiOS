@@ -22,7 +22,7 @@ public class FolderViewModel {
 
     public func handleCollapsingSectionStateChanged(forAccountInSection section : Int, isCollapsed: Bool) {
         let address = items[section].userAddress
-        AppSettings.shared.handleAccountColapsedStateChange(address: address, isCollapsed: isCollapsed)
+        AppSettings.shared.setAccountCollapsedState(address: address, isCollapsed: isCollapsed)
     }
 
     public var maxIndentationLevel: Int {

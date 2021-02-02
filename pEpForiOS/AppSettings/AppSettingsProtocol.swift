@@ -32,11 +32,11 @@ public protocol AppSettingsProtocol {
 
     /// Removes the collapsing state for the account address passed by parameter.
     /// - Parameter address: The address of the account to delete its collapsing states preferences.
-    func handleRemovalOfAccountWithAddress(address: String)
+    func removeCollapsingStateOfAccountWithAddress(address: String)
 
     /// Retrieves the collapsed state for the account passed by parameter.
     ///
-    /// - Parameter address: The account to check its collapsed state
+    /// - Parameter address: The account address to check its collapsed state
     /// - returns: True if it is collapsed, false if not, or if not found, as it means that hasn't been collapsed yet.
     func collapsedState(forAccountWithAddress address: String) -> Bool
 
@@ -44,23 +44,30 @@ public protocol AppSettingsProtocol {
     ///
     /// - Parameter address: The account to check its collapsed state
     ///   - folderName: The name of the folder. For example: `Inbox.My Folder`
-    ///   - address: The account to check the collapsed state of its folder.
+    ///   - address: The account address to check the collapsed state of its folder.
     /// - Returns: True if it is collapsed, false if not, or if not found, as it means that hasn't been collapsed yet.
     func collapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String) -> Bool
 
-    /// Handle changes in the collapsing state of the folders passed by parameter
+    /// Set changes in the collapsing state of the folders passed by parameter
     ///
     /// - Parameters:
-    ///   - address: The address of the account
+    ///   - address: The account address
     ///   - foldersName: The names of the folders
     ///   - isCollapsed: The collapsing state.
-    func handleFoldersColapsedStateChange(address: String, foldersName: [String], isCollapsed: Bool)
+    func setFoldersCollapsedState(address: String, foldersName: [String], isCollapsed: Bool)
 
-    /// Handle changes in the collapsing state of the folder passed by parameter
+    /// Set changes in the collapsing state of the folder passed by parameter
     ///
     /// - Parameters:
-    ///   - address: The address of the account
-    ///   - folderName: The names of the folder
-    ///   - isCollapsed: The collapsing state.  
-    func handleFolderColapsedStateChange(address: String, folderName: String, isCollapsed: Bool)
+    ///   - address: The account address
+    ///   - folderName: The name of the folder. For example: `Inbox.My Folder`
+    ///   - isCollapsed: The collapsing state.
+    func setFolderCollapsedState(address: String, folderName: String, isCollapsed: Bool)
+
+    /// Set changes in the collapsing state of the account passed by parameter
+    ///
+    /// - Parameters:
+    ///   - address: The account address
+    ///   - isCollapsed: The collapsing state.
+    func setAccountCollapsedState(address: String, isCollapsed: Bool)
 }

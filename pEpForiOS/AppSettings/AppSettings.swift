@@ -290,20 +290,14 @@ extension AppSettings {
 
     //MARK: Setters
 
-    /// Handles Account collapsing state changed.
-    /// - Parameters:
-    ///   - address: The address of the account
-    ///   - isCollapsed: The state, true if it's collapsed.
-    public func handleAccountColapsedStateChange(address: String, isCollapsed: Bool) {
+    public func setAccountCollapsedState(address: String, isCollapsed: Bool) {
         var current = collapsingState
         let key = AppSettings.keyAccountCollapstedState
         current[address] = [key: isCollapsed]
         collapsingState = current
     }
 
-    /// Handles the new collapsing state.
-    /// - Parameter state: The collapsing state.
-    public func handleFolderColapsedStateChange(address: String, folderName: String, isCollapsed: Bool) {
+    public func setFolderCollapsedState(address: String, folderName: String, isCollapsed: Bool) {
         var current = collapsingState
         if var currentAddressState = current[address] {
             currentAddressState[folderName] = isCollapsed
@@ -314,7 +308,7 @@ extension AppSettings {
         collapsingState = current
     }
 
-    public func handleFoldersColapsedStateChange(address: String, foldersName: [String], isCollapsed: Bool) {
+    public func setFoldersCollapsedState(address: String, foldersName: [String], isCollapsed: Bool) {
         var current = collapsingState
         if var addressState = current[address] {
             foldersName.forEach { (folderName) in
@@ -331,11 +325,7 @@ extension AppSettings {
         collapsingState = current
     }
 
-    /// Handles the removal of the account.
-    /// Removes preferences binded to the account.
-    ///
-    /// - Parameter address: The account email address.
-    public func handleRemovalOfAccountWithAddress(address: String) {
+    public func removeCollapsingStateOfAccountWithAddress(address: String) {
         var current = collapsingState
         current[address] = nil
         collapsingState = current

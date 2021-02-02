@@ -75,11 +75,11 @@ public class FolderCellViewModel {
         self.isExpanded = isExpanded
     }
 
-    /// Handles the ColapsedState change of the Folder. 
-    public func handleFolderColapsedStateChange() {
+    /// Handles the CollapsedState change of the Folder. 
+    public func handleFolderCollapsedStateChange() {
         guard let folder = folder as? Folder else {
             // Unified folders implements DisplayableFolderProtocol but are not Folders
-            Log.shared.errorAndCrash("handleFolderColapsedStateChange should not be called for Unified Folders")
+            Log.shared.errorAndCrash("handleFolderCollapsedStateChange should not be called for Unified Folders")
             return
         }
         let address = folder.account.user.address
@@ -93,13 +93,13 @@ public class FolderCellViewModel {
             //Add all the subfolders
             foldersToHandle.append(contentsOf: folder.getSubfoldersRecursively())
             ///Handle the change
-            AppSettings.shared.handleFoldersColapsedStateChange(address: address,
-                                                                foldersName: foldersToHandle.map(\.name),
-                                                                isCollapsed: isCollapsed)
+            AppSettings.shared.setFoldersCollapsedState(address: address,
+                                                           foldersName: foldersToHandle.map(\.name),
+                                                           isCollapsed: isCollapsed)
         } else {
-            AppSettings.shared.handleFolderColapsedStateChange(address: address,
-                                                               folderName: folder.name,
-                                                               isCollapsed: isCollapsed)
+            AppSettings.shared.setFolderCollapsedState(address: address,
+                                                          folderName: folder.name,
+                                                          isCollapsed: isCollapsed)
         }
     }
 

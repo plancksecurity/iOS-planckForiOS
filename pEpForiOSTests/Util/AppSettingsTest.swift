@@ -52,7 +52,7 @@ class MockAppSettings: AppSettingsProtocol {
     var verboseLogginEnabled: Bool = false
 
 
-    func handleRemovalOfAccountWithAddress(address: String) {
+    func removeCollapsingStateOfAccountWithAddress(address: String) {
 
     }
 

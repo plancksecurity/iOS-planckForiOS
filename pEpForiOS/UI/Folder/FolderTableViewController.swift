@@ -450,7 +450,7 @@ extension FolderTableViewController {
         } else {
             tableView.deleteRows(at: childrenIPs)
         }
-        folderCellViewModel.handleFolderColapsedStateChange()
+        folderCellViewModel.handleFolderCollapsedStateChange()
 
     }
 }
