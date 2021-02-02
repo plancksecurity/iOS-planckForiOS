@@ -15,8 +15,8 @@ extension CdAccount {
     /// This operation might be expensive, therefore, it's executed in background.
     ///
     /// This method does NOT save the context.
-    /// - Parameter session: Session in which to launch the changes.
-    public func triggerFetchedResultsControllerChangeForAllMessages(session : Session = Session.main) {
+    /// - Parameter moc: The context to apply the change
+    func triggerFetchedResultsControllerChangeForAllMessages(moc: NSManagedObjectContext = Session.main.moc) {
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -24,7 +24,6 @@ extension CdAccount {
             }
             session.perform {
                 let predicate = NSPredicate(format: "parent.%@ = %@", CdFolder.RelationshipName.account, me)
-                let moc = session.moc
                 let messages: [CdMessage] = CdMessage.all(predicate: predicate, in: moc) ?? []
                 messages.forEach { (message) in
                     let tmpParent = message.parent
