@@ -26,17 +26,12 @@ class EditSignatureViewModel {
         self.accountSettingsdelegate = delegate
     }
     
-    public func updateSignature(newSignature: String) {
-        account.signature = newSignature
-        accountSettingsdelegate?.didChange()
-    }
-    
     public func signature() -> String {
         return account.signature
     }
 
     public func updateSignature() {
         account.signature = signatureInProgress ?? signature()
-        editableAccountSettingsdelegate?.didChange()
+        accountSettingsdelegate?.didChange()
     }
 }
