@@ -38,11 +38,8 @@ public class FolderSectionViewModel {
             generateAccountCells()
 
             //MARK: Collapsing State
-
-            if let accountCollapsingState = AppSettings.shared.collapsingState[ac.user.address] {
-                let accountMark = ""
-                isCollapsed = accountCollapsingState[accountMark] ?? false
-            }
+            let address = ac.user.address
+            isCollapsed = AppSettings.shared.collapsedState(forAccountWithAddress: address)
         }
     }
 
@@ -72,11 +69,14 @@ public class FolderSectionViewModel {
                 child.isExpanded = false
             }
             //MARK: Collapsing State
-            if let accountCollapsingState = AppSettings.shared.collapsingState[folder.account.user.address] {
-                if let isFolderCollapsed = accountCollapsingState[subFolder.name] {
-                    child.isExpanded = !isFolderCollapsed
-                }
+
+            guard let account = account else {
+                Log.shared.errorAndCrash("No account")
+                return
             }
+            let isFolderCollapsed = AppSettings.shared.collapsedState(forFolderNamed: subFolder.name,
+                                                                      ofAccountWithAddress: account.user.address)
+            child.isExpanded = !isFolderCollapsed
             items.append(child)
             calculateChildFolder(root: subFolder, level: level + 1, isParentCollapsed: !child.isExpanded)
         }

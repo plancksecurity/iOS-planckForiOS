@@ -387,7 +387,7 @@ extension FolderTableViewController {
             //Do not change the order of this methods as the next line change the hidden status
             let ips = allIndexPathsForSection()
             setAllRowsHidden(to: false)
-            vm.saveCollapsingState(forAccountInSection: section, isCollapsed: false)
+            vm.handleCollapsingSectionStateChanged(forAccountInSection: section, isCollapsed: false)
             tableView.insertRows(at: ips)
         } else {
             sender.imageView?.transform = .identity
@@ -395,7 +395,7 @@ extension FolderTableViewController {
             //Do not change the order of this methods as the next line change the hidden status
             let ips = indexPathsForSection()
             setAllRowsHidden(to: true)
-            vm.saveCollapsingState(forAccountInSection: section, isCollapsed: true)
+            vm.handleCollapsingSectionStateChanged(forAccountInSection: section, isCollapsed: true)
             tableView.deleteRows(at: ips)
         }
     }
@@ -450,7 +450,7 @@ extension FolderTableViewController {
         } else {
             tableView.deleteRows(at: childrenIPs)
         }
-        folderCellViewModel.saveCollapsingState()
+        folderCellViewModel.handleFolderColapsedStateChange()
 
     }
 }

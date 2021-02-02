@@ -75,14 +75,32 @@ public class FolderCellViewModel {
         self.isExpanded = isExpanded
     }
 
-    /// Save the collapsing state
-    public func saveCollapsingState() {
+    /// Handles the ColapsedState change of the Folder. 
+    public func handleFolderColapsedStateChange() {
         guard let folder = folder as? Folder else {
             // Unified folders implements DisplayableFolderProtocol but are not Folders
-            Log.shared.errorAndCrash("saveCollapsingState should not be called for Unified Folders")
+            Log.shared.errorAndCrash("handleFolderColapsedStateChange should not be called for Unified Folders")
             return
         }
-        AppSettings.shared.saveFolderCollapsingState(state: [folder.account.user.address: [folder.name: !isExpanded]])
+        let address = folder.account.user.address
+        let isCollapsed = !isExpanded
+
+        if hasSubfolders() {
+            /// Pass the current folder and subfolders.
+            var foldersToHandle = [Folder]()
+            //Add the current folder
+            foldersToHandle.append(folder)
+            //Add all the subfolders
+            foldersToHandle.append(contentsOf: folder.getSubfoldersRecursively())
+            ///Handle the change
+            AppSettings.shared.handleFoldersColapsedStateChange(address: address,
+                                                                foldersName: foldersToHandle.map(\.name),
+                                                                isCollapsed: isCollapsed)
+        } else {
+            AppSettings.shared.handleFolderColapsedStateChange(address: address,
+                                                               folderName: folder.name,
+                                                               isCollapsed: isCollapsed)
+        }
     }
 
     ///Indicates if the arrow of the chevron should rotate to point down.

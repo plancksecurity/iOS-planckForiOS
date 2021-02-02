@@ -56,4 +56,14 @@ class AppSettingsMoc: AppSettingsProtocol {
     var unsecureReplyWarningEnabled: Bool = false
 
     var verboseLogginEnabled: Bool
+
+    func handleRemovalOfAccountWithAddress(address: String) { }
+
+    func collapsedState(forAccountWithAddress address: String) -> Bool {
+        return true
+    }
+
+    func collapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String) -> Bool {
+        return true
+    }
 }

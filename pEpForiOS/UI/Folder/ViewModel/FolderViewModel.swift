@@ -20,8 +20,9 @@ public class FolderViewModel {
     /// The hidden sections are the collapsed accounts.
     public var hiddenSections = Set<Int>()
 
-    public func saveCollapsingState(forAccountInSection section : Int, isCollapsed: Bool) {
-        AppSettings.shared.saveCollapsingState(state: [items[section].userAddress: ["": isCollapsed]])
+    public func handleCollapsingSectionStateChanged(forAccountInSection section : Int, isCollapsed: Bool) {
+        let address = items[section].userAddress
+        AppSettings.shared.handleAccountColapsedStateChange(address: address, isCollapsed: isCollapsed)
     }
 
     public var maxIndentationLevel: Int {

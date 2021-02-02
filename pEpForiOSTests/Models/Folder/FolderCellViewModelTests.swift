@@ -32,12 +32,6 @@ class FolderCellViewModelTests: AccountDrivenTestBase {
         XCTAssertEqual(title, Input.folderName)
     }
     
-    func testLeftPadding() {
-        givenAViewModelWithFolderAndLevel()
-        let leftPadding = viewModel.leftPadding
-        XCTAssertEqual(leftPadding, Input.level)
-    }
-    
     func testIcon() {
         givenAViewModelWithFolderAndLevel()
         let icon = viewModel.image

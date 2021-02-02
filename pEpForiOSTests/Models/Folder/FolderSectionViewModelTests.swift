@@ -23,12 +23,12 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
     
     func testHiddenWhenUnifiedInbox() {
         givenThereIsAViewModelWithAccount(withUnifiedInbox: true)
-        XCTAssertTrue(viewModel.hidden)
+        XCTAssertTrue(viewModel.sectionHeaderHidden)
     }
     
     func testNotHiddenWithoutUnifiedInbox() {
         givenThereIsAViewModelWithAccount(withUnifiedInbox: false)
-        XCTAssertFalse(viewModel.hidden)
+        XCTAssertFalse(viewModel.sectionHeaderHidden)
     }
     
     func testUserNameWithAccount() {

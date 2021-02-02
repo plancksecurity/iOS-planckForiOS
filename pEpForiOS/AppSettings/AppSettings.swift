@@ -29,6 +29,7 @@ extension AppSettings {
     static private let keyAccountSignature = "keyAccountSignature"
     static private let keyVerboseLogginEnabled = "keyVerboseLogginEnabled"
     static private let keyCollapsingState = "keyCollapsingState"
+    static private let keyAccountCollapstedState = "keyAccountCollapstedState"
 }
 
 // MARK: - AppSettings
@@ -38,13 +39,11 @@ public final class AppSettings: KeySyncStateProvider {
 
     /// This structure keeps the collapsing state of folders and accounts.
     /// [AccountAddress : [ FolderName : isCollapsedStatus ] ]
-    /// As folders can't have an empty string as name,
-    /// the collapsing state of the account will be represented as an empty string for the FolderName
     ///
     /// For example:
-    /// ["mb@pep.security" : [ "" : true ] ] indicates the account is collapsed.
+    /// ["mb@pep.security" : [ "keyAccountCollapstedState" : true ] ] indicates the account is collapsed.
     /// ["mb@pep.security" : [ "SomeFolder" : true ] ] indicates the folder is collapsed.
-    public typealias CollapsingState = [String:[String: Bool]]
+    private typealias CollapsingState = [String: [String: Bool]]
 
     // MARK: - Singleton
     
@@ -134,7 +133,6 @@ extension AppSettings {
 // MARK: - AppSettingsProtocol
 
 extension AppSettings: AppSettingsProtocol {
-
     public var keySyncEnabled: Bool {
         get {
             return AppSettings.userDefaults.bool(forKey: AppSettings.keyKeySyncEnabled)
@@ -202,58 +200,6 @@ extension AppSettings: AppSettingsProtocol {
         set {
             AppSettings.userDefaults.set(newValue,
                                          forKey: AppSettings.keyShouldShowTutorialWizard)
-        }
-    }
-
-    /// Save the collapsing state passed by parameter.
-    /// - Parameter state: The state to save.
-    public func saveCollapsingState(state: CollapsingState) {
-        var current = collapsingState
-        if let account = state.keys.first, let value = state.values.first {
-            current[account] = value
-            collapsingState = current
-        }
-    }
-
-    public func saveFolderCollapsingState(state: CollapsingState) {
-        var current = collapsingState
-        if let account = state.keys.first, let value = state.values.first {
-            // If collapsing state already exist for this account
-            // Add the new one.
-            if var accountCollapsingState = current[account],
-               let folderName = value.keys.first {
-                let isCollapsed = value.values.first
-                accountCollapsingState[folderName] = isCollapsed
-                current[account] = accountCollapsingState
-                //If not, create it.
-            } else if let account = state.keys.first,
-                      let folderName = state.values.first?.keys.first,
-                      let state = state.values.first?.values.first {
-                current[account] = [folderName : state]
-            }
-        }
-        collapsingState = current
-    }
-
-    /// Removes the collapsing state for the account address passed by parameter.
-    /// - Parameter address: The address of the account to delete its collapsing states preferences.
-    public func removeCollapsingStateForAccountWithAddress(address: String) {
-        var current = collapsingState
-        current[address] = nil
-        collapsingState = current
-    }
-
-    /// Collapsing state. Do not use this property to set the value. Instead use `saveCollapsingState` function.
-    public var collapsingState: CollapsingState {
-        get {
-            guard let collapsingState = AppSettings.userDefaults.object(forKey: AppSettings.keyCollapsingState) as? CollapsingState else {
-                Log.shared.errorAndCrash("Can't cast collapsing state")
-                return CollapsingState()
-            }
-            return collapsingState
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCollapsingState)
         }
     }
 
@@ -338,3 +284,95 @@ extension AppSettings: AppSettingsProtocol {
     }
 }
 
+//MARK: Collapsing State
+
+extension AppSettings {
+
+    //MARK: Setters
+
+    /// Handles Account collapsing state changed.
+    /// - Parameters:
+    ///   - address: The address of the account
+    ///   - isCollapsed: The state, true if it's collapsed.
+    public func handleAccountColapsedStateChange(address: String, isCollapsed: Bool) {
+        var current = collapsingState
+        let key = AppSettings.keyAccountCollapstedState
+        current[address] = [key: isCollapsed]
+        collapsingState = current
+    }
+
+    /// Handles the new collapsing state.
+    /// - Parameter state: The collapsing state.
+    public func handleFolderColapsedStateChange(address: String, folderName: String, isCollapsed: Bool) {
+        var current = collapsingState
+        if var currentAddressState = current[address] {
+            currentAddressState[folderName] = isCollapsed
+            current[address] = currentAddressState
+        } else {
+            current[address] = [folderName: isCollapsed]
+        }
+
+        collapsingState = current
+    }
+
+    public func handleFoldersColapsedStateChange(address: String, foldersName: [String], isCollapsed: Bool) {
+        var current = collapsingState
+        if var currentAddressState = current[address] {
+            foldersName.forEach { (folderName) in
+                currentAddressState[folderName] = isCollapsed
+            }
+            current[address] = currentAddressState
+        } else {
+            foldersName.forEach { (folderName) in
+                current[address] = [folderName: isCollapsed]
+            }
+        }
+        collapsingState = current
+    }
+
+    /// Handles the removal of the account.
+    /// Removes preferences binded to the account.
+    ///
+    /// - Parameter address: The account email address.
+    public func handleRemovalOfAccountWithAddress(address: String) {
+        var current = collapsingState
+        current[address] = nil
+        collapsingState = current
+    }
+
+    //MARK: Getters
+
+    public func collapsedState(forAccountWithAddress address: String) -> Bool {
+        let key = AppSettings.keyAccountCollapstedState
+        guard let state = collapsingState[address] else {
+            //Valid case: might not been saved yet.
+            return false
+        }
+        // If the value is not found, it wasn't collapsed.
+        let isCollapsed: Bool = state[key] ?? false
+        return isCollapsed
+    }
+
+    public func collapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String) -> Bool {
+        guard let state = collapsingState[address] else {
+            //Valid case: might not been saved yet.
+            return false
+        }
+        // If the value is not found, it wasn't collapsed.
+        let isCollapsed = state[folderName] ?? false
+        return isCollapsed
+    }
+
+    private var collapsingState: CollapsingState {
+        get {
+            guard let collapsingState = AppSettings.userDefaults.object(forKey: AppSettings.keyCollapsingState) as? CollapsingState else {
+                Log.shared.errorAndCrash("Can't cast collapsing state")
+                return CollapsingState()
+            }
+            return collapsingState
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCollapsingState)
+        }
+    }
+}

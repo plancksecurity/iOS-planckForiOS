@@ -28,6 +28,23 @@ public protocol AppSettingsProtocol {
     /// Should the logging be verbose, or not?
     var verboseLogginEnabled: Bool { get set }
 
-    /// User preference on collapsing folder
-    var collapsingState: [String:[String:Bool]] { get set }
+    // MARK:- Collapsing State
+
+    /// Removes the collapsing state for the account address passed by parameter.
+    /// - Parameter address: The address of the account to delete its collapsing states preferences.
+    func handleRemovalOfAccountWithAddress(address: String)
+
+    /// Retrieves the collapsed state for the account passed by parameter.
+    ///
+    /// - Parameter address: The account to check its collapsed state
+    /// - returns: True if it is collapsed, false if not, or if not found, as it means that hasn't been collapsed yet.
+    func collapsedState(forAccountWithAddress address: String) -> Bool
+
+    /// Retrieves the collapsed state for the folder passed by parameter in the account passed by parameter.
+    ///
+    /// - Parameter address: The account to check its collapsed state
+    ///   - folderName: The name of the folder. For example: `Inbox.My Folder`
+    ///   - address: The account to check the collapsed state of its folder.
+    /// - Returns: True if it is collapsed, false if not, or if not found, as it means that hasn't been collapsed yet.
+    func collapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String) -> Bool
 }
