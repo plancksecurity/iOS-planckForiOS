@@ -169,7 +169,7 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
         }
         switch result {
         case .success:
-            verifiableAccount?.save { [weak self] _ in
+            verifiableAccount.save { [weak self] _ in
                 guard let me = self else {
                     //Valid case: the view might be dismissed.
                     return
