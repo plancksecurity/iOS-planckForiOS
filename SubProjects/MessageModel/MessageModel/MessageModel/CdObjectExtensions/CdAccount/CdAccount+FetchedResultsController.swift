@@ -8,6 +8,7 @@
 
 import Foundation
 import pEpIOSToolbox
+import CoreData
 
 extension CdAccount {
 
@@ -22,7 +23,7 @@ extension CdAccount {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            session.perform {
+            moc.perform {
                 let predicate = NSPredicate(format: "parent.%@ = %@", CdFolder.RelationshipName.account, me)
                 let messages: [CdMessage] = CdMessage.all(predicate: predicate, in: moc) ?? []
                 messages.forEach { (message) in
