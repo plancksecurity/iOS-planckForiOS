@@ -40,11 +40,12 @@ extension EmailDisplayReadStatusManager: EmailDisplayReadStatusManagerProtocol {
         timePerMessageCache[message] = Date()
     }
     func stoppedDisplaying(message: Message) {
-        guard let cachedMsgDisplaTime = timePerMessageCache[message] else {
-            Log.shared.errorAndCrash("Stopped displaying a message that was never reproted as displaying. Inconsistant state!")
+        guard let cachedMsgDisplayTime = timePerMessageCache[message] else {
+            Log.shared.info("Stopped displaying a message that was never reproted as displaying. Seems tobe a valid case. Looks like CollectionViewDelegate doesnot call willDisForItemAtIndexPath consistantly")
             return
         }
-        if cachedMsgDisplaTime.timeIntervalSince(cachedMsgDisplaTime) > minReadTime {
+        let now = Date()
+        if now.timeIntervalSince(cachedMsgDisplayTime) > minReadTime {
             message.markAsSeen()
         }
     }
