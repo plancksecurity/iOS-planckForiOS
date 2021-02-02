@@ -13,7 +13,7 @@ import MessageModel
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
-    /** The model */
+    /// The model
     private var messageModelService: MessageModelServiceProtocol?
 
     private var errorSubscriber = ErrorSubscriber()
