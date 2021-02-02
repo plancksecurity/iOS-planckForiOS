@@ -124,8 +124,8 @@ extension SecureWebViewController {
         guard let testee: UnsafeMutableRawPointer = webView.scrollView.observationInfo else {
             return false
         }
-        let pointee: NSDictionary = testee.load(as: NSDictionary.self)
-        return pointee.count != 0
+        let pointee: Dictionary<AnyHashable,AnyObject> = testee.load(as: Dictionary<AnyHashable,AnyObject>.self)
+        return !pointee.isEmpty
     }
 }
 
