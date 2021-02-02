@@ -32,7 +32,7 @@ public protocol AppSettingsProtocol {
 
     /// Removes the collapsing state for the account address passed by parameter.
     /// - Parameter address: The address of the account to delete its collapsing states preferences.
-    func removeCollapsingStateOfAccountWithAddress(address: String)
+    func removeCollapsedStateOfAccountWithAddress(address: String)
 
     /// Retrieves the collapsed state for the account passed by parameter.
     ///

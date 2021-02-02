@@ -201,7 +201,7 @@ extension SettingsViewModel {
                         Log.shared.lostMySelf()
                         return
                     }
-                    AppSettings.shared.removeCollapsingStateOfAccountWithAddress(address: acc.user.address)
+                    AppSettings.shared.removeCollapsedStateOfAccountWithAddress(address: acc.user.address)
                     me.delete(account: acc)
                     guard let section = me.items.first(where: { (section) -> Bool in
                         return section.type == type

@@ -99,7 +99,7 @@ class AppSettingsTest: XCTestCase {
                                                    folderName: folderName2,
                                                    isCollapsed: true)
 
-        AppSettings.shared.removeCollapsingStateOfAccountWithAddress(address: address1)
+        AppSettings.shared.removeCollapsedStateOfAccountWithAddress(address: address1)
         let address1CollapsedState = AppSettings.shared.collapsedState(forAccountWithAddress: address1)
         XCTAssertFalse(address1CollapsedState)
     }

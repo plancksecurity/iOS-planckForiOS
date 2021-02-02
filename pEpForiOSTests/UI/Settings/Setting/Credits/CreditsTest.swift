@@ -58,7 +58,7 @@ class AppSettingsMoc: AppSettingsProtocol {
 
     var verboseLogginEnabled: Bool
 
-    func removeCollapsingStateOfAccountWithAddress(address: String) {
+    func removeCollapsedStateOfAccountWithAddress(address: String) {
 
     }
 

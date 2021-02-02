@@ -325,7 +325,7 @@ extension AppSettings {
         collapsingState = current
     }
 
-    public func removeCollapsingStateOfAccountWithAddress(address: String) {
+    public func removeCollapsedStateOfAccountWithAddress(address: String) {
         var current = collapsingState
         current[address] = nil
         collapsingState = current

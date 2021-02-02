@@ -100,7 +100,7 @@ class FolderViewModelTest: AccountDrivenTestBase {
         givenThereIsAViewModel(withUniFiedInBox: false, and: accounts)
 
         //Just a fresh start
-        AppSettings.shared.removeCollapsingStateOfAccountWithAddress(address: account.user.address)
+        AppSettings.shared.removeCollapsedStateOfAccountWithAddress(address: account.user.address)
 
         let originalStatus = AppSettings.shared.collapsedState(forAccountWithAddress: account.user.address)
         XCTAssertFalse(originalStatus)
