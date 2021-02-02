@@ -60,10 +60,10 @@ class SecureWebViewController: UIViewController {
     private var htmlOptimizer = HtmlOptimizerUtil(minimumFontSize: 16.0)
 
     /// The key path of the `WKWebView` that gets observed under certain conditions.
-    private var contentSizeKeyPath = "contentSize"
+    private var keyPathContentSize = "contentSize"
 
     /// Flag for telling whether the `contentSizeKeyPath` of the `WKWebView` is currently observed.
-    private var observingWebView = false
+    private var observingWebViewContentSizeKey = false
 
     // MARK: - Life Cycle
 
@@ -122,9 +122,9 @@ class SecureWebViewController: UIViewController {
 
     /// Remove the observer to the `WKWebView`'s `contentSizeKeyPath`, if still observed.
     private func removeContentSizeKeyPathObservers() {
-        if observingWebView {
-            webView.scrollView.removeObserver(self, forKeyPath: contentSizeKeyPath)
-            observingWebView = false
+        if observingWebViewContentSizeKey {
+            webView.scrollView.removeObserver(self, forKeyPath: keyPathContentSize)
+            observingWebViewContentSizeKey = false
         }
     }
 }
@@ -273,10 +273,10 @@ extension SecureWebViewController: WKNavigationDelegate {
         // The contentSize scrollView observer is needed to get an event
         // when the size of the scrollView content changes from CGSize.zero to final dimensions.
         webView.scrollView.addObserver(self,
-                                       forKeyPath: contentSizeKeyPath,
+                                       forKeyPath: keyPathContentSize,
                                        options: .new,
                                        context: nil)
-        observingWebView = true
+        observingWebViewContentSizeKey = true
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
