@@ -84,23 +84,9 @@ public class FolderCellViewModel {
         }
         let address = folder.account.user.address
         let isCollapsed = !isExpanded
-
-        if hasSubfolders() {
-            /// Pass the current folder and subfolders.
-            var foldersToHandle = [Folder]()
-            //Add the current folder
-            foldersToHandle.append(folder)
-            //Add all the subfolders
-            foldersToHandle.append(contentsOf: folder.getSubfoldersRecursively())
-            ///Handle the change
-            AppSettings.shared.setFoldersCollapsedState(address: address,
-                                                        foldersName: foldersToHandle.map(\.name),
-                                                        isCollapsed: isCollapsed)
-        } else {
-            AppSettings.shared.setFolderCollapsedState(address: address,
+        AppSettings.shared.setFolderCollapsedState(address: address,
                                                        folderName: folder.name,
                                                        isCollapsed: isCollapsed)
-        }
     }
 
     ///Indicates if the arrow of the chevron should rotate to point down.

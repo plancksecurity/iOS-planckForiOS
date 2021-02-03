@@ -308,23 +308,6 @@ extension AppSettings {
         collapsingState = current
     }
 
-    public func setFoldersCollapsedState(address: String, foldersName: [String], isCollapsed: Bool) {
-        var current = collapsingState
-        if var addressState = current[address] {
-            foldersName.forEach { (folderName) in
-                addressState[folderName] = isCollapsed
-            }
-            current[address] = addressState
-        } else {
-            let key = AppSettings.keyAccountCollapstedState
-            current[address] = [key: false]
-            foldersName.forEach { (folderName) in
-                current[address]?[folderName] = isCollapsed
-            }
-        }
-        collapsingState = current
-    }
-
     public func removeCollapsedStateOfAccountWithAddress(address: String) {
         var current = collapsingState
         current[address] = nil

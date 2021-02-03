@@ -52,33 +52,38 @@ public class FolderSectionViewModel {
 
         for folder in sorted {
             let fcvm = FolderCellViewModel(folder: folder, level: 0)
+            let isFolderCollapsed = AppSettings.shared.collapsedState(forFolderNamed: folder.name, ofAccountWithAddress: ac.user.address)
+            fcvm.isExpanded = !isFolderCollapsed
             items.append(fcvm)
             let level = folder.folderType == .inbox ? 0 : 1
-            // Root folder are always isParentExpanded.
-            calculateChildFolder(root: folder, level: level)
+            calculateChildFolder(root: folder, level: level, isAncestorCollapsed: isFolderCollapsed)
         }
     }
 
-    private func calculateChildFolder(root folder: Folder, level: Int, isParentCollapsed: Bool = false) {
+    private func calculateChildFolder(root folder: Folder, level: Int, isAncestorCollapsed: Bool = false) {
         let sorted = folder.subFolders().sorted()
         for subFolder in sorted {
             let child = FolderCellViewModel(folder: subFolder, level: level)
-
-            if isParentCollapsed {
-                child.isHidden = true
-                child.isExpanded = false
-            }
-            //MARK: Collapsing State
 
             guard let account = account else {
                 Log.shared.errorAndCrash("No account")
                 return
             }
-            let isFolderCollapsed = AppSettings.shared.collapsedState(forFolderNamed: subFolder.name,
-                                                                      ofAccountWithAddress: account.user.address)
-            child.isExpanded = !isFolderCollapsed
+            let isChildFolderCollapsed = AppSettings.shared.collapsedState(forFolderNamed: subFolder.name, ofAccountWithAddress: account.user.address)
+
+            if isChildFolderCollapsed {
+                child.isExpanded = false
+            }
+
+            /// if the parent folder is collapsed, its children are hidden.
+            if isAncestorCollapsed {
+                child.isHidden = true
+            }
+
             items.append(child)
-            calculateChildFolder(root: subFolder, level: level + 1, isParentCollapsed: !child.isExpanded)
+
+            //If the child is collapsed, or any of its ancestors is collapsed, its childre must be collapsed.
+            calculateChildFolder(root: subFolder, level: level + 1, isAncestorCollapsed: isChildFolderCollapsed || isAncestorCollapsed)
         }
     }
 
