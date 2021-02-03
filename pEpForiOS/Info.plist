@@ -151,6 +151,29 @@
 				</array>
 			</dict>
 		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Possible client certificate types</string>
+			<key>UTTypeIconFiles</key>
+			<array>
+				<string>pEpForiOS-icon</string>
+			</array>
+			<key>UTTypeIdentifier</key>
+			<string>security.pep.certificates.client</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>pEp12</string>
+					<string>cert</string>
+					<string>p12</string>
+				</array>
+			</dict>
+		</dict>
 	</array>
 	<key>security.pEp.apps.pEpForiOS.oauth2</key>
 	<string>Verify OAuth2 authorization requests</string>
