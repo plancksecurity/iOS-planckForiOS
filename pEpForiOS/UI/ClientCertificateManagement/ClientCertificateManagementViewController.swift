@@ -53,7 +53,7 @@ final class ClientCertificateManagementViewController: UIViewController {
     }
 
     @IBAction func addCertificateButtonPressed(_ sender: Any) {
-        let picker = UIDocumentPickerViewController(documentTypes: ["public.data"], in: .import)
+        let picker = UIDocumentPickerViewController(documentTypes: ["security.pep.certificates.client"], in: .import)
         picker.delegate = self
         picker.modalPresentationStyle = .fullScreen
         present(picker, animated: true)
