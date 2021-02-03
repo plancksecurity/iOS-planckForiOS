@@ -168,9 +168,9 @@
 			<dict>
 				<key>public.filename-extension</key>
 				<array>
-					<string>pEp12</string>
 					<string>cert</string>
 					<string>p12</string>
+					<string>pfx</string>
 				</array>
 			</dict>
 		</dict>
