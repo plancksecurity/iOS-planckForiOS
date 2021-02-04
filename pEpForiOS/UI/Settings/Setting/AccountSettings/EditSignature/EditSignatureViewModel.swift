@@ -36,9 +36,4 @@ class EditSignatureViewModel {
         account.signature = signatureInProgress ?? signature()
         accountSettingsdelegate?.didChange()
     }
-
-    /// Handle clear button pressed.
-    public func handleClearButtonPressed() {
-
-    }
 }
