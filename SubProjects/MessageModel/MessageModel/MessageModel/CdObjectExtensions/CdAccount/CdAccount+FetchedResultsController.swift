@@ -17,7 +17,7 @@ extension CdAccount {
     ///
     /// This method does NOT save the context.
     /// - Parameter moc: The context to apply the change
-    func triggerFetchedResultsControllerChangeForAllMessages(moc: NSManagedObjectContext = Session.main.moc) {
+    func triggerFetchedResultsControllerChangeForAllMessages(moc: NSManagedObjectContext = Stack.shared.mainContext) {
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
