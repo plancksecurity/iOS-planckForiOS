@@ -59,12 +59,22 @@ class SecureWebViewController: UIViewController {
     private var webView: WKWebView!
     private var htmlOptimizer = HtmlOptimizerUtil(minimumFontSize: 16.0)
 
+    /// The key path of the `WKWebView` that gets observed under certain conditions.
+    private var keyPathContentSize = "contentSize"
+
+    /// Flag for telling whether the `contentSizeKeyPath` of the `WKWebView` is currently observed.
+    private var observingWebViewContentSizeKey = false
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         htmlOptimizer = HtmlOptimizerUtil(minimumFontSize: minimumFontSize)
         webView.scrollView.isScrollEnabled = scrollingEnabled
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        removeContentSizeKeyPathObservers()
     }
 
     // Due to an Apple bug (https://bugs.webkit.org/show_bug.cgi?id=137160),
@@ -112,6 +122,13 @@ class SecureWebViewController: UIViewController {
 // MARK: - Private
 
 extension SecureWebViewController {
+    /// Remove the observer to the `WKWebView`'s `contentSizeKeyPath`, if still observed.
+    private func removeContentSizeKeyPathObservers() {
+        if observingWebViewContentSizeKey {
+            webView.scrollView.removeObserver(self, forKeyPath: keyPathContentSize)
+            observingWebViewContentSizeKey = false
+        }
+    }
 
     private func preferences(javaScriptEnabled: Bool = false) -> WKPreferences {
         let createe  = WKPreferences()
@@ -252,13 +269,17 @@ extension SecureWebViewController: WKNavigationDelegate {
         // ScrollView needs some time to calculate own size.
         // The contentSize scrollView observer is needed to get an event
         // when the size of the scrollView content changes from CGSize.zero to final dimensions.
-        webView.scrollView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
+        webView.scrollView.addObserver(self,
+                                       forKeyPath: keyPathContentSize,
+                                       options: .new,
+                                       context: nil)
+        observingWebViewContentSizeKey = true
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "contentSize" {
             // ContentSize observer has just done its job.
-            webView.scrollView.removeObserver(self, forKeyPath: "contentSize")
+            removeContentSizeKeyPathObservers()
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
                     Log.shared.lostMySelf()
