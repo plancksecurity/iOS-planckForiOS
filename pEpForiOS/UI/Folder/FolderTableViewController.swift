@@ -38,6 +38,7 @@ final class FolderTableViewController: UITableViewController {
     private func setup() {
         navigationController?.setToolbarHidden(false, animated: false)
         folderVM = FolderViewModel()
+        folderVM?.delegate = self
         tableView.reloadData()
     }
 
@@ -343,60 +344,16 @@ extension FolderTableViewController {
             Log.shared.errorAndCrash("No VM.")
             return
         }
-
         // Number of section
         let section = sender.section
-
-        /// - Parameter numberOfRows: The number of rows to generate the indexPaths collection.
-        /// - Returns: The IndexPaths of the current section using the number of rows passed by parameter
-        func indexPathsBy(numberOfRows : Int) -> [IndexPath] {
-            var indexPaths = [IndexPath]()
-            for row in 0 ..< numberOfRows {
-                let ip = IndexPath(row: row, section: section)
-                indexPaths.append(ip)
-            }
-            return indexPaths
-        }
-
-        /// Modify the visibility of all rows in section
-        /// - Parameter newValue: True to hide, false to show.
-        func setAllRowsHidden(to newValue: Bool) {
-            vm[section].isCollapsed = newValue
-            for i in 0..<vm[section].count {
-                vm[section][i].isHidden = newValue
-                if !newValue {
-                    vm[section][i].isExpanded = true
-                }
-            }
-        }
-
-        /// - Returns: The indexPath of visibles rows in section.
-        func indexPathsForSection() -> [IndexPath] {
-            return indexPathsBy(numberOfRows: vm[section].numberOfRows)
-        }
-
-        /// - Returns: The indexPath of all rows in section.
-        func allIndexPathsForSection() -> [IndexPath] {
-            return indexPathsBy(numberOfRows: vm[section].count)
-        }
 
         // Toogle section visibility.
         if vm.hiddenSections.contains(section) {
             sender.imageView?.transform = CGAffineTransform.rotate90Degress()
-            vm.hiddenSections.remove(section)
-            //Do not change the order of this methods as the next line change the hidden status
-            let ips = allIndexPathsForSection()
-            setAllRowsHidden(to: false)
             vm.handleCollapsingSectionStateChanged(forAccountInSection: section, isCollapsed: false)
-            tableView.insertRows(at: ips)
         } else {
             sender.imageView?.transform = .identity
-            vm.hiddenSections.insert(section)
-            //Do not change the order of this methods as the next line change the hidden status
-            let ips = indexPathsForSection()
-            setAllRowsHidden(to: true)
             vm.handleCollapsingSectionStateChanged(forAccountInSection: section, isCollapsed: true)
-            tableView.deleteRows(at: ips)
         }
     }
 
@@ -509,5 +466,17 @@ extension FolderTableViewController {
         } else {
             return tableView.sectionHeaderHeight
         }
+    }
+}
+
+// MARK:- FolderVideModelDelegate
+
+extension FolderTableViewController : FolderVideModelDelegate {
+    func insertRowsAtIndexPaths(indexPaths: [IndexPath]) {
+        tableView.insertRows(at: indexPaths)
+    }
+
+    func deleteRowsAtIndexPaths(indexPaths: [IndexPath]) {
+        tableView.deleteRows(at: indexPaths)
     }
 }

@@ -157,14 +157,14 @@ public class FolderSectionViewModel {
     /// - Parameter item: The FCVM to find its children.
     /// - Returns: The FCMV's children
     public func children(of item: FolderCellViewModel) -> [FolderCellViewModel] {
-        return items.filter { item.isParentOf(fcvm: $0) }
+        return items.filter { item.isAncestorOf(fcvm: $0) }
     }
 
     /// Returns the visible children folder cell view models of a given folder cell view model.
     /// - Parameter item: The FCVM to find its children.
     /// - Returns: The visible FCMV's children
     public func visibleChildren(of item: FolderCellViewModel) -> [FolderCellViewModel] {
-        return items.filter { item.isParentOf(fcvm: $0) && !$0.isHidden }
+        return items.filter { item.isAncestorOf(fcvm: $0) && !$0.isHidden }
     }
 
     /// Retrives the index o a folder cell view model.

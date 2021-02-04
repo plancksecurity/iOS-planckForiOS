@@ -293,7 +293,13 @@ extension AppSettings {
     public func setAccountCollapsedState(address: String, isCollapsed: Bool) {
         var current = collapsingState
         let key = AppSettings.keyAccountCollapstedState
-        current[address] = [key: isCollapsed]
+        if var currentAddress = current[address] {
+            currentAddress[key] = isCollapsed ?? nil
+            current[address] = currentAddress
+        } else {
+            current[address] = [key: isCollapsed]
+        }
+
         collapsingState = current
     }
 
