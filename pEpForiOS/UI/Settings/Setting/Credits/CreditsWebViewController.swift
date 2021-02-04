@@ -24,14 +24,14 @@ class CreditsWebViewController: PEPWebViewController {
         let appVersion = InfoPlist.versionDisplayString() ?? "666"
         let backgroundColor = UIColor.pEpLightBackground
         let fontColor = UIColor.pEpGray
-        let fontSize = "22"
+        let fontSize = "18"
         let fontFamily = "Helvetica Neue"
         let fontWeight = "500"
         let styleP = "p {color: \(fontColor);font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}"
         let styleBody = "body {background-color: \(backgroundColor);}"
         let styleA = "a {color: \(fontColor);font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}"
         let styleLink = "a:link {color:\(UIColor.pEpDarkGreenHex); text-decoration: underline; word-break: break-all; !important;}"
-        let styleColumn = ".column {float: left;margin: -15px 0px -20px 0px;font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}.left {width: 40%;}.right {width: 60%;}.row:after {content: \"\";display: table;clear: both;}"
+        let styleColumn = ".column {} .left {} .right {} .row:after {}"
         let style = "<style>\(styleP)\(styleBody)\(styleColumn)\(styleA)\(styleLink)</style>"
         let result = """
         <html>
