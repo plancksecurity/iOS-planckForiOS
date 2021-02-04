@@ -93,7 +93,7 @@ extension EditSignatureViewController: UITextViewDelegate {
         guard textViewHeight != textViewNewHeight else {
             return
         }
-        UIView.setAnimationsEnabled(false) // Disable animations
+        UIView.setAnimationsEnabled(false)
         tableView.beginUpdates()
         tableView.endUpdates()
 
@@ -101,6 +101,6 @@ extension EditSignatureViewController: UITextViewDelegate {
         let point = CGPoint(x: 0, y: scrollTo)
         tableView.setContentOffset(point, animated: false)
 
-        UIView.setAnimationsEnabled(true)  // Re-enable animations.
+        UIView.setAnimationsEnabled(true)
     }
 }
