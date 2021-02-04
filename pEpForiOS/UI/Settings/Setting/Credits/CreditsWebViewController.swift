@@ -36,6 +36,7 @@ class CreditsWebViewController: PEPWebViewController {
         let result = """
         <html>
          <head>
+           <meta name="viewport" content="initial-scale=1.0">
            \(style)
            <meta charset="utf-8"/>
         </head>
