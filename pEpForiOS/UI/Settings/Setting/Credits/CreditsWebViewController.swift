@@ -24,7 +24,8 @@ class CreditsWebViewController: PEPWebViewController {
         let appVersion = InfoPlist.versionDisplayString() ?? "666"
         let backgroundColor = UIColor.pEpLightBackground
         let fontColor = UIColor.pEpGray
-        let fontSize = splitViewController?.currentDisplayMode == .masterAndDetail ? "22" : "28"
+        let isMasterAndDetail = splitViewController?.currentDisplayMode == .masterAndDetail
+        let fontSize = isMasterAndDetail ? "22" : "28"
         let fontFamily = "Helvetica Neue"
         let fontWeight = "500"
         let styleP = "p {color: \(fontColor);font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}"
@@ -33,7 +34,7 @@ class CreditsWebViewController: PEPWebViewController {
         let styleLink = "a:link {color:\(UIColor.pEpDarkGreenHex); text-decoration: underline; word-break: break-all; !important;}"
         let styleColumnMasterAndDetail = ".column {float: left;margin: -15px 0px -20px 0px;font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}.left {width: 40%;}.right {width: 60%;}.row:after {content: \"\";display: table;clear: both;}"
         let styleColumnRegular = ".column {float: left;margin: -15px 0px -20px 0px;font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}.left {width: 25%;}.right {width: 75%;}.row:after {content: \"\";display: table;clear: both;}"
-        let styleColumn = splitViewController?.currentDisplayMode == .masterAndDetail ? styleColumnMasterAndDetail : styleColumnRegular
+        let styleColumn = isMasterAndDetail ? styleColumnMasterAndDetail : styleColumnRegular
         let style = "<style>\(styleP)\(styleBody)\(styleColumn)\(styleA)\(styleLink)</style>"
         let result = """
         <html>
