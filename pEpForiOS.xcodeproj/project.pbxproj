@@ -2362,7 +2362,6 @@
 				5BBE80C824B733BF008DE0E5 /* AccountSettingsSwitchTableViewCell.swift */,
 				5BBE80CA24B733C0008DE0E5 /* AccountSettingsTableViewCell.swift */,
 				5BBE80C924B733C0008DE0E5 /* SettingSwitchTableViewCell.swift */,
-				5B649AED25CC80290028B9ED /* SignatureTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -2561,6 +2560,7 @@
 			children = (
 				B7CE922D24E3FC7600B5A874 /* EditSignatureViewController.swift */,
 				B745049824ED144A00293B8C /* EditSignatureViewModel.swift */,
+				5B649AED25CC80290028B9ED /* SignatureTableViewCell.swift */,
 			);
 			path = EditSignature;
 			sourceTree = "<group>";
