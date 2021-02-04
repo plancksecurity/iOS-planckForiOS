@@ -12,6 +12,8 @@ import pEpIOSToolbox
 
 public class FolderSectionViewModel {
 
+    private var appSettings: AppSettingsProtocol
+
     /// Indicates if the section is collapsed.
     public var isCollapsed : Bool = false
 
@@ -26,7 +28,8 @@ public class FolderSectionViewModel {
     private var help = [FolderCellViewModel]()
     private let identityImageTool = IdentityImageTool()
 
-    public init(account acc: Account?, unified: Bool) {
+    public init(account acc: Account?, unified: Bool, appSettings: AppSettingsProtocol = AppSettings.shared) {
+        self.appSettings = appSettings
         if unified {
             sectionHeaderHidden = true
             unifiedFolders.forEach { (unifiedFolder) in
@@ -39,7 +42,7 @@ public class FolderSectionViewModel {
 
             //MARK: Collapsing State
             let address = ac.user.address
-            isCollapsed = AppSettings.shared.collapsedState(forAccountWithAddress: address)
+            isCollapsed = appSettings.collapsedState(forAccountWithAddress: address)
         }
     }
 
@@ -52,7 +55,7 @@ public class FolderSectionViewModel {
 
         for folder in sorted {
             let fcvm = FolderCellViewModel(folder: folder, level: 0)
-            let isFolderCollapsed = AppSettings.shared.collapsedState(forFolderNamed: folder.name, ofAccountWithAddress: ac.user.address)
+            let isFolderCollapsed = appSettings.collapsedState(forFolderNamed: folder.name, ofAccountWithAddress: ac.user.address)
             fcvm.isExpanded = !isFolderCollapsed
             items.append(fcvm)
             let level = folder.folderType == .inbox ? 0 : 1
@@ -69,7 +72,7 @@ public class FolderSectionViewModel {
                 Log.shared.errorAndCrash("No account")
                 return
             }
-            let isChildFolderCollapsed = AppSettings.shared.collapsedState(forFolderNamed: subFolder.name, ofAccountWithAddress: account.user.address)
+            let isChildFolderCollapsed = appSettings.collapsedState(forFolderNamed: subFolder.name, ofAccountWithAddress: account.user.address)
 
             if isChildFolderCollapsed {
                 child.isExpanded = false

@@ -26,6 +26,7 @@ public protocol FolderVideModelDelegate: class {
 /// View Model for folder hierarchy.
 public class FolderViewModel {
 
+    private var appSettings: AppSettingsProtocol
     public weak var delegate: FolderVideModelDelegate?
     private lazy var folderSyncService = FetchImapFoldersService()
     public var items: [FolderSectionViewModel]
@@ -80,7 +81,8 @@ public class FolderViewModel {
     /// One row per folder
     /// If no account is given, all accounts found in the store are taken into account.
     /// - Parameter accounts: accounts to to create folder hierarchy view model for.
-    public init(withFoldersIn accounts: [Account]? = nil, isUnified: Bool = true) {
+    public init(withFoldersIn accounts: [Account]? = nil, isUnified: Bool = true, appSettings: AppSettingsProtocol = AppSettings.shared) {
+        self.appSettings = appSettings
         items = [FolderSectionViewModel]()
         let accountsToUse: [Account]
         if let safeAccounts = accounts {
@@ -152,7 +154,7 @@ extension FolderViewModel {
             return
         }
         let address = items[section].userAddress
-        AppSettings.shared.setAccountCollapsedState(address: address, isCollapsed: isCollapsed)
+        appSettings.setAccountCollapsedState(address: address, isCollapsed: isCollapsed)
         if isCollapsed {
             hiddenSections.insert(section)
             let indexPaths = hideRows(ofSection: section)
@@ -201,11 +203,11 @@ extension FolderViewModel {
             }
 
             // Check if the folder is collapsed.
-            let isFolderCollapsed = AppSettings.shared.collapsedState(forFolderNamed: f.name,
-                                                                      ofAccountWithAddress: self[section].userAddress)
+            let isFolderCollapsed = appSettings.collapsedState(forFolderNamed: f.name,
+                                                               ofAccountWithAddress: self[section].userAddress)
             /// If the folder is collapsed, it's visible and not expanded.
-            /// if the folder is not collapsd, it's by expanded.
-            /// But if any of its ancestors is collapsed, it should be hidden.
+            /// If the folder is not collapsd, it's expanded.
+            /// If it's expanded but any of its ancestors is collapsed, it should be hidden.
             if isFolderCollapsed {
                 collapsedRows.append(self[section][i])
                 self[section][i].isExpanded = false

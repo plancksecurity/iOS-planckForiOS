@@ -10,7 +10,7 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-final class FolderTableViewController: UITableViewController {
+class FolderTableViewController: UITableViewController {
     var folderVM: FolderViewModel?
     // Indicates if it's needed to lead the user to a new screen,
     // the email list or the new account, for example.
@@ -408,7 +408,6 @@ extension FolderTableViewController {
             tableView.deleteRows(at: childrenIPs)
         }
         folderCellViewModel.handleFolderCollapsedStateChange()
-
     }
 }
 

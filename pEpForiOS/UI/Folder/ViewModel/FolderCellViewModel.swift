@@ -13,6 +13,8 @@ import pEpIOSToolbox
 
 public class FolderCellViewModel {
 
+    private var appSettings: AppSettingsProtocol
+
     private var requiredFolderTypes : [FolderType] {
         return [.drafts, .sent, .spam, .trash, .outbox]
     }
@@ -69,7 +71,8 @@ public class FolderCellViewModel {
 
     public var isHidden = false
 
-    public init(folder: DisplayableFolderProtocol, level: Int, isExpanded: Bool = true) {
+    public init(folder: DisplayableFolderProtocol, level: Int, isExpanded: Bool = true, appSettings: AppSettingsProtocol = AppSettings.shared) {
+        self.appSettings = appSettings
         self.folder = folder
         self.level = level
         self.isExpanded = isExpanded
@@ -84,11 +87,11 @@ public class FolderCellViewModel {
         }
         let address = folder.account.user.address
         let isCollapsed = !isExpanded
-        AppSettings.shared.setFolderCollapsedState(address: address,
-                                                       folderName: folder.name,
-                                                       isCollapsed: isCollapsed)
+        appSettings.setFolderCollapsedState(address: address,
+                                            folderName: folder.name,
+                                            isCollapsed: isCollapsed)
     }
-
+    
     ///Indicates if the arrow of the chevron should rotate to point down.
     public var shouldRotateChevron : Bool {
         return isExpanded && hasSubfolders() && isChevronEnabled && !isFolder(ofType: .inbox)

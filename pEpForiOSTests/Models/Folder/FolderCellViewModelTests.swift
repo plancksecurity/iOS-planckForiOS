@@ -136,7 +136,7 @@ class FolderCellViewModelTests: AccountDrivenTestBase {
         sonFolder.session.commit()
         let parentViewModel = FolderCellViewModel(folder: folder, level: 0)
         let sonViewModel = FolderCellViewModel(folder: sonFolder, level: 1)
-        let result = parentViewModel.isParentOf(fcvm: sonViewModel)
+        let result = parentViewModel.isAncestorOf(fcvm: sonViewModel)
         XCTAssertTrue(result)
     }
 
@@ -145,7 +145,7 @@ class FolderCellViewModelTests: AccountDrivenTestBase {
         notSonFolder.session.commit()
         let folderViewModel = FolderCellViewModel(folder: folder, level: 0)
         let notSonViewModel = FolderCellViewModel(folder: notSonFolder, level: 0)
-        let result = folderViewModel.isParentOf(fcvm: notSonViewModel)
+        let result = folderViewModel.isAncestorOf(fcvm: notSonViewModel)
         XCTAssertFalse(result)
     }
 
@@ -163,43 +163,90 @@ class FolderCellViewModelTests: AccountDrivenTestBase {
         XCTAssertFalse(result)
     }
 
-    func testhandleCollapsingFolderStateChanged() {
-        let parentViewModel = FolderCellViewModel(folder: folder, level: 0)
-        parentViewModel.isExpanded = true
-        let isCollapsed = AppSettings.shared.collapsedState(forFolderNamed: Input.folderName, ofAccountWithAddress: account.user.address)
-        XCTAssertFalse(isCollapsed)
-        parentViewModel.isExpanded = false
-        parentViewModel.handleFolderCollapsedStateChange()
-        let collapsedState = AppSettings.shared.collapsedState(forFolderNamed: Input.folderName, ofAccountWithAddress: account.user.address)
-        XCTAssertTrue(collapsedState)
-    }
-
-    func testhandleCollapsingFoldersStateChanged() {
-        let sonFolder1 = Folder(name: "Son 1", parent: folder, account: account, folderType: .normal)
-        let sonFolder2 = Folder(name: "Son 2", parent: folder, account: account, folderType: .normal)
+    func testSetFolderCollapsedStateExpectation() {
+        let exp = expectation(description: "setFolderCollapsedStateExpectation")
+        let appSettingsMock = MockAppSettings(setFolderCollapsedStateExpectation:exp)
+        folder = Folder(name: Input.folderName, parent: nil, account: account, folderType: .inbox)
         folder.session.commit()
-
-        let son1VM = FolderCellViewModel(folder: sonFolder1, level: 1)
-        let son2VM = FolderCellViewModel(folder: sonFolder2, level: 1)
-
-        let parentViewModel = FolderCellViewModel(folder: folder, level: 0)
-        parentViewModel.isExpanded = true
-        let isCollapsed = AppSettings.shared.collapsedState(forFolderNamed: Input.folderName, ofAccountWithAddress: account.user.address)
-        XCTAssertFalse(isCollapsed)
-
-        parentViewModel.isExpanded = false
-        son1VM.isExpanded = false
-        son2VM.isExpanded = false
-
+        let parentViewModel = FolderCellViewModel(folder: folder, level: 0, appSettings: appSettingsMock)
         parentViewModel.handleFolderCollapsedStateChange()
+        waitForExpectations(timeout: TestUtil.waitTime)
+    }
+}
 
-        let newIsCollapsedParent = AppSettings.shared.collapsedState(forFolderNamed: Input.folderName, ofAccountWithAddress: account.user.address)
-        let newIsCollapsedSon1 = AppSettings.shared.collapsedState(forFolderNamed: "Son 1", ofAccountWithAddress: account.user.address)
-        let newIsCollapsedSon2 = AppSettings.shared.collapsedState(forFolderNamed: "Son 2", ofAccountWithAddress: account.user.address)
+class MockAppSettings: AppSettingsProtocol {
 
-        XCTAssertTrue(newIsCollapsedParent)
-        XCTAssertTrue(newIsCollapsedSon1)
-        XCTAssertTrue(newIsCollapsedSon2)
+    var removeCollapsedStateOfAccountWithAddressExpectation: XCTestExpectation?
+    // getters
+    var collapsedStateForAccountWithAddressExpectation: XCTestExpectation?
+    var collapsedStateForFolderOfAccountExpectation: XCTestExpectation?
+    // setters
+    var setFolderCollapsedStateExpectation: XCTestExpectation?
+    var setAccountCollapsedStateExpectation: XCTestExpectation?
+
+    init(removeCollapsedStateOfAccountWithAddressExpectation: XCTestExpectation? = nil,
+         collapsedStateForAccountWithAddressExpectation: XCTestExpectation? = nil,
+         collapsedStateForFolderOfAccountExpectation: XCTestExpectation? = nil,
+         setFolderCollapsedStateExpectation: XCTestExpectation? = nil,
+         setAccountCollapsedStateExpectation: XCTestExpectation? = nil) {
+        self.removeCollapsedStateOfAccountWithAddressExpectation = removeCollapsedStateOfAccountWithAddressExpectation
+        self.collapsedStateForAccountWithAddressExpectation = collapsedStateForAccountWithAddressExpectation
+        self.collapsedStateForFolderOfAccountExpectation = collapsedStateForFolderOfAccountExpectation
+        self.setFolderCollapsedStateExpectation = setFolderCollapsedStateExpectation
+        self.setAccountCollapsedStateExpectation = setAccountCollapsedStateExpectation
     }
 
+    var keySyncEnabled: Bool = true
+
+    var usePEPFolderEnabled: Bool = true
+
+    var extraKeysEditable: Bool = true
+
+    var unencryptedSubjectEnabled: Bool = true
+
+    var threadedViewEnabled: Bool = true
+
+    var passiveMode: Bool = true
+
+    var defaultAccount: String? = "some@account.com"
+
+    var lastKnownDeviceGroupState: DeviceGroupState = .grouped
+
+    var shouldShowTutorialWizard: Bool = false
+
+    var userHasBeenAskedForContactAccessPermissions: Bool = false
+
+    var unsecureReplyWarningEnabled: Bool = false
+
+    var verboseLogginEnabled: Bool = false
+
+    // MARK: - Collapsing State
+
+    func removeCollapsedStateOfAccountWithAddress(address: String) {
+        fulfillIfNotNil(expectation: removeCollapsedStateOfAccountWithAddressExpectation)
+    }
+
+    func collapsedState(forAccountWithAddress address: String) -> Bool {
+        fulfillIfNotNil(expectation: collapsedStateForAccountWithAddressExpectation)
+        return true
+    }
+
+    func collapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String) -> Bool {
+        fulfillIfNotNil(expectation: collapsedStateForFolderOfAccountExpectation)
+        return true
+    }
+
+    func setFolderCollapsedState(address: String, folderName: String, isCollapsed: Bool) {
+        fulfillIfNotNil(expectation: setFolderCollapsedStateExpectation)
+    }
+
+    func setAccountCollapsedState(address: String, isCollapsed: Bool) {
+        fulfillIfNotNil(expectation: setAccountCollapsedStateExpectation)
+    }
+
+    private func fulfillIfNotNil(expectation: XCTestExpectation?) {
+        if expectation != nil {
+            expectation?.fulfill()
+        }
+    }
 }

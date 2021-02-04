@@ -12,6 +12,8 @@ import XCTest
 
 class FolderViewModelTest: AccountDrivenTestBase {
 
+    var appSettings : AppSettingsProtocol?
+
     var viewmodel: FolderViewModel!
     var folder: Folder!
     
@@ -96,16 +98,42 @@ class FolderViewModelTest: AccountDrivenTestBase {
     }
 
     func testHandleCollapsingSectionStateChanged() {
+        let setAccountCollapsedStateExpectation = expectation(description: "setAccountCollapsedStateExpectation")
+        let mockAppSettings = MockAppSettings(setAccountCollapsedStateExpectation: setAccountCollapsedStateExpectation)
         let accounts = givenThereIs(numberOfAccounts: 1)
-        givenThereIsAViewModel(withUniFiedInBox: false, and: accounts)
+        viewmodel = FolderViewModel(withFoldersIn: accounts, appSettings: mockAppSettings)
 
-        //Just a fresh start
-        AppSettings.shared.removeCollapsedStateOfAccountWithAddress(address: account.user.address)
-
-        let originalStatus = AppSettings.shared.collapsedState(forAccountWithAddress: account.user.address)
-        XCTAssertFalse(originalStatus)
+        let deleteRowsAtIndexPathsExpectation = expectation(description: "deleteRowsAtIndexPathsExpectation")
+        let delegate = MockFolderTableViewController(deleteRowsAtIndexPathsExpectation: deleteRowsAtIndexPathsExpectation)
+        viewmodel.delegate = delegate
         viewmodel.handleCollapsingSectionStateChanged(forAccountInSection: 0, isCollapsed: true)
-        let newStatus = AppSettings.shared.collapsedState(forAccountWithAddress: account.user.address)
-        XCTAssertTrue(newStatus)
+        waitForExpectations(timeout: TestUtil.waitTime)
     }
+}
+
+class MockFolderTableViewController: FolderVideModelDelegate {
+    var insertRowsAtIndexPathsExpectation: XCTestExpectation?
+    var deleteRowsAtIndexPathsExpectation: XCTestExpectation?
+
+    init(insertRowsAtIndexPathsExpectation: XCTestExpectation? = nil,
+         deleteRowsAtIndexPathsExpectation: XCTestExpectation? = nil) {
+        self.insertRowsAtIndexPathsExpectation = insertRowsAtIndexPathsExpectation
+        self.deleteRowsAtIndexPathsExpectation = deleteRowsAtIndexPathsExpectation
+    }
+
+    func insertRowsAtIndexPaths(indexPaths: [IndexPath]) {
+        fulfillIfNotNil(expectation: insertRowsAtIndexPathsExpectation)
+    }
+
+    func deleteRowsAtIndexPaths(indexPaths: [IndexPath]) {
+        fulfillIfNotNil(expectation: deleteRowsAtIndexPathsExpectation)
+    }
+
+    private func fulfillIfNotNil(expectation: XCTestExpectation?) {
+        if expectation != nil {
+            expectation?.fulfill()
+        }
+    }
+
+
 }

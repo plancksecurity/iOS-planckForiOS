@@ -159,4 +159,13 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
         XCTAssert(sonIndex != NSNotFound)
         XCTAssert(sonIndex! > index!)
     }
+
+    func testAppSettingsCollapsedStateForAccount() {
+        let collapsedStateForAccountWithAddressExpectation = expectation(description: "collapsedStateForAccountWithAddressExpectation")
+        let collapsedStateForFolderOfAccountExpectation = expectation(description: "collapsedStateForFolderOfAccountExpectation")
+        let appSettingsMock = MockAppSettings(collapsedStateForAccountWithAddressExpectation: collapsedStateForAccountWithAddressExpectation,
+                                   collapsedStateForFolderOfAccountExpectation: collapsedStateForFolderOfAccountExpectation)
+        _ = FolderSectionViewModel(account: account, unified: false, appSettings:appSettingsMock)
+        waitForExpectations(timeout: TestUtil.waitTime)
+    }
 }
