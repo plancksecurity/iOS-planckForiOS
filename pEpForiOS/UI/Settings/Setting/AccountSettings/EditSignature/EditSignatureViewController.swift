@@ -35,6 +35,18 @@ class EditSignatureViewController: UIViewController {
         }
         vm.updateSignature()
     }
+
+    @IBAction private func clearButtonPressed() {
+        let indexPath = IndexPath(row: 0, section: 0)
+        if let cell = tableView.cellForRow(at: indexPath) as? SignatureTableViewCell {
+            cell.textView.text = ""
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("No VM")
+                return
+            }
+            vm.signatureInProgress = ""
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource
