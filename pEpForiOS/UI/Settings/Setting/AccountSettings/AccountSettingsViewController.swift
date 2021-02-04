@@ -229,11 +229,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
 
 extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
     func setLoadingView(visible: Bool) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return
-        }
-        vm.setLoadingView(visible: visible)
+        LoadingInterface.setLoadingView(visible: visible)
     }
 
     func showAlert(error: Error) {
