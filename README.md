@@ -97,7 +97,7 @@ git clone https://pep-security.lu/gitlab/misc/sqlite.git
 git clone https://gitea.pep.foundation/pep.foundation/Pantomime.git
 git clone https://gitea.pep.foundation/pEp.foundation/pEpEngine
 git clone https://gitea.pep.foundation/pep.foundation/pEpObjCAdapter.git
-hg clone https://pep.foundation/dev/repos/libAccountSettings/
+git clone https://gitea.pep.foundation/pEp.foundation/libAccountSettings
 hg up tag_for_1.1.300
 
 git clone https://pep-security.lu/gitlab/iOS/pep4ios.git
