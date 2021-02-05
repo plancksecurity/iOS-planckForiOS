@@ -29,7 +29,7 @@ extension AppSettings {
     static private let keyAccountSignature = "keyAccountSignature"
     static private let keyVerboseLogginEnabled = "keyVerboseLogginEnabled"
     static private let keyCollapsingState = "keyCollapsingState"
-    static private let keyAccountCollapstedState = "keyAccountCollapstedState"
+    static private let keyFolderViewAccountCollapsedState = "keyFolderViewAccountCollapsedState-162844EB-1F32-4F66-8F92-9B77664523F1"
 }
 
 // MARK: - AppSettings
@@ -38,11 +38,11 @@ extension AppSettings {
 public final class AppSettings: KeySyncStateProvider {
 
     /// This structure keeps the collapsing state of folders and accounts.
-    /// [AccountAddress : [ FolderName : isCollapsedStatus ] ]
+    /// [AccountAddress : [ key : isCollapsedStatus ] ]
     ///
     /// For example:
-    /// ["mb@pep.security" : [ "keyAccountCollapstedState" : true ] ] indicates the account is collapsed. Do not change the key 'keyAccountCollapstedState'
-    /// ["mb@pep.security" : [ "SomeFolder" : true ] ] indicates the folder is collapsed.
+    /// ["mb@pep.security" : [ keyFolderViewAccountCollapsedState : true ] ] indicates the account is collapsed. Do not change the key keyFolderViewAccountCollapsedState
+    /// ["mb@pep.security" : [ "SomeFolderName" : true ] ] indicates the folder is collapsed.
     private typealias CollapsingState = [String: [String: Bool]]
 
     // MARK: - Singleton
@@ -106,7 +106,6 @@ extension AppSettings {
         defaults[AppSettings.keyUnsecureReplyWarningEnabled] = false
         defaults[AppSettings.keyAccountSignature] = [String:String]()
         defaults[AppSettings.keyVerboseLogginEnabled] = false
-        defaults[AppSettings.keyCollapsingState] = CollapsingState()
         AppSettings.userDefaults.register(defaults: defaults)
     }
 
@@ -290,11 +289,11 @@ extension AppSettings {
 
     //MARK: Setters
 
-    public func setAccountCollapsedState(address: String, isCollapsed: Bool) {
+    public func setFolderViewCollapsedState(address: String, isCollapsed: Bool) {
         var current = collapsingState
-        let key = AppSettings.keyAccountCollapstedState
+        let key = AppSettings.keyFolderViewAccountCollapsedState
         if var currentAddress = current[address] {
-            currentAddress[key] = isCollapsed ?? nil
+            currentAddress[key] = isCollapsed 
             current[address] = currentAddress
         } else {
             current[address] = [key: isCollapsed]
@@ -303,7 +302,7 @@ extension AppSettings {
         collapsingState = current
     }
 
-    public func setFolderCollapsedState(address: String, folderName: String, isCollapsed: Bool) {
+    public func setFolderViewCollapsedState(forFolderNamed folderName: String, ofAccountWith address: String, isCollapsed: Bool) {
         var current = collapsingState
         if var currentAddressState = current[address] {
             currentAddressState[folderName] = isCollapsed
@@ -323,7 +322,7 @@ extension AppSettings {
     //MARK: Getters
 
     public func collapsedState(forAccountWithAddress address: String) -> Bool {
-        let key = AppSettings.keyAccountCollapstedState
+        let key = AppSettings.keyFolderViewAccountCollapsedState
         guard let state = collapsingState[address] else {
             //Valid case: might not been saved yet.
             return false
@@ -346,7 +345,7 @@ extension AppSettings {
     private var collapsingState: CollapsingState {
         get {
             guard let collapsingState = AppSettings.userDefaults.object(forKey: AppSettings.keyCollapsingState) as? CollapsingState else {
-                Log.shared.errorAndCrash("Can't cast collapsing state")
+                // Valid case: there isn't a default value. 
                 return CollapsingState()
             }
             return collapsingState

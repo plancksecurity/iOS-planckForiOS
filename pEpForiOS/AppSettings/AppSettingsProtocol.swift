@@ -54,12 +54,12 @@ public protocol AppSettingsProtocol {
     ///   - address: The account address
     ///   - folderName: The name of the folder. For example: `Inbox.My Folder`
     ///   - isCollapsed: The collapsing state.
-    func setFolderCollapsedState(address: String, folderName: String, isCollapsed: Bool)
+    func setFolderViewCollapsedState(forFolderNamed folderName: String, ofAccountWith address: String, isCollapsed: Bool)
 
     /// Set changes in the collapsing state of the account passed by parameter
     ///
     /// - Parameters:
     ///   - address: The account address
     ///   - isCollapsed: The collapsing state.
-    func setAccountCollapsedState(address: String, isCollapsed: Bool)
+    func setFolderViewCollapsedState(address: String, isCollapsed: Bool)
 }

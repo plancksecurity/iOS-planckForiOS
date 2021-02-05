@@ -111,7 +111,7 @@ class FolderViewModelTest: AccountDrivenTestBase {
     }
 }
 
-class MockFolderTableViewController: FolderVideModelDelegate {
+class MockFolderTableViewController: FolderViewModelDelegate {
     var insertRowsAtIndexPathsExpectation: XCTestExpectation?
     var deleteRowsAtIndexPathsExpectation: XCTestExpectation?
 

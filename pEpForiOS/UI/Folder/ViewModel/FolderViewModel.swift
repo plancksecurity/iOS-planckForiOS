@@ -12,7 +12,7 @@ import MessageModel
 import pEpIOSToolbox
 
 
-public protocol FolderVideModelDelegate: class {
+public protocol FolderViewModelDelegate: class {
 
     /// Inform the VC to insert rows in the givven indexpaths
     /// - Parameter indexPaths: The indexPath of the rows.
@@ -27,7 +27,7 @@ public protocol FolderVideModelDelegate: class {
 public class FolderViewModel {
 
     private var appSettings: AppSettingsProtocol
-    public weak var delegate: FolderVideModelDelegate?
+    public weak var delegate: FolderViewModelDelegate?
     private lazy var folderSyncService = FetchImapFoldersService()
     public var items: [FolderSectionViewModel]
 
@@ -154,7 +154,7 @@ extension FolderViewModel {
             return
         }
         let address = items[section].userAddress
-        appSettings.setAccountCollapsedState(address: address, isCollapsed: isCollapsed)
+        appSettings.setFolderViewCollapsedState(address: address, isCollapsed: isCollapsed)
         if isCollapsed {
             hiddenSections.insert(section)
             let indexPaths = hideRows(ofSection: section)

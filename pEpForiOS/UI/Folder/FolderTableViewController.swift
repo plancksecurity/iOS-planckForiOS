@@ -395,7 +395,7 @@ extension FolderTableViewController {
         } else {
             tableView.deleteRows(at: childrenIPs)
         }
-        folderCellViewModel.handleFolderCollapsedStateChange()
+        folderCellViewModel.handleFolderCollapsedStateChange(to: !folderCellViewModel.isExpanded)
     }
 }
 
@@ -456,9 +456,9 @@ extension FolderTableViewController {
     }
 }
 
-// MARK:- FolderVideModelDelegate
+// MARK:- FolderViewModelDelegate
 
-extension FolderTableViewController : FolderVideModelDelegate {
+extension FolderTableViewController : FolderViewModelDelegate {
     func insertRowsAtIndexPaths(indexPaths: [IndexPath]) {
         tableView.insertRows(at: indexPaths)
     }
