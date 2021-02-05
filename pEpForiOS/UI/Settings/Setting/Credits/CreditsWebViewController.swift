@@ -82,7 +82,7 @@ class CreditsWebViewController: PEPWebViewController {
                      "Lumberjack",
                      "AppAuth-iOS",
                      "Sequoia-PGP"]
-        let links = ["https://pep.foundation/dev/repos/pEpEngine/",
+        let links = ["https://gitea.pep.foundation/pEp.foundation/pEpEngine",
                      "https://gnupg.org/related_software/libassuan",
                      "https://gnupg.org/related_software/libksba",
                      "https://curl.haxx.se/libcurl/",
