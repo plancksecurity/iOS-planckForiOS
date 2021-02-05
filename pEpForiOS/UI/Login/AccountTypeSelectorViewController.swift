@@ -93,7 +93,8 @@ extension AccountTypeSelectorViewController: UICollectionViewDataSource {
         return 1
     }
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
         return viewModel.count
     }
 
@@ -140,14 +141,16 @@ extension AccountTypeSelectorViewController: AccountTypeSelectorViewModelDelegat
 }
 
 extension AccountTypeSelectorViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         var numberOfRows: CGFloat = 2.0
         if UIApplication.shared.statusBarOrientation.isLandscape {
             numberOfRows = 3.0
         }
         // this forces the collection view to have only 2 colums and all the cells with the same size
         let spaceBetweenCells: CGFloat = 30.0
-        let cellwidth = (collectionView.frame.width - spaceBetweenCells)/numberOfRows
+        let cellwidth = (collectionView.frame.width - spaceBetweenCells) / numberOfRows
         let cellHeight = cellwidth/2
         return CGSize(width: cellwidth, height: cellHeight)
     }
