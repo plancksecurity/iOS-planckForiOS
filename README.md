@@ -94,7 +94,7 @@ git clone https://pep-security.lu/gitlab/iOS/AppAuth-iOS.git
 git clone https://pep-security.lu/gitlab/misc/ldns.git
 git clone https://pep-security.lu/gitlab/misc/sqlite.git
 
-git clone https://gitea.pep.foundation/buff/Pantomime.git
+git clone https://gitea.pep.foundation/pep.foundation/Pantomime.git
 git clone https://gitea.pep.foundation/pEp.foundation/pEpEngine
 git clone https://gitea.pep.foundation/pep.foundation/pEpObjCAdapter.git
 hg clone https://pep.foundation/dev/repos/libAccountSettings/
