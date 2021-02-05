@@ -366,39 +366,6 @@ extension EmailDetailViewController {
         emailSubViewControllers = emailSubViewControllers.filter { $0.view.superview != nil }
     }
 
-    private func showSettingsAction() -> UIAlertAction {
-        let action = UIAlertAction(
-            title: NSLocalizedString("Settings", comment: "acction sheet title 2"),
-            style: .default) { [weak self] (action) in
-                guard let me = self else {
-                    Log.shared.lostMySelf()
-                    return
-                }
-                me.showSettingsViewController()
-        }
-        return action
-    }
-
-    private func tutorialAction() -> UIAlertAction {
-        return UIAlertAction(
-            title: NSLocalizedString("Tutorial", comment: "show tutorial from compose view"),
-            style: .default) { _ in
-                TutorialWizardViewController.presentTutorialWizard(viewController: self)
-        }
-    }
-
-    private func showTrustManagementViewAction() -> UIAlertAction {
-        let action = UIAlertAction(title: NSLocalizedString("Privacy Status", comment: "action sheet title 1"),
-                                   style: .default) { [weak self] (action) in
-                                    guard let me = self else {
-                                        Log.shared.lostMySelf()
-                                        return
-                                    }
-                                    me.showTrustManagementView()
-        }
-        return action
-    }
-
     @objc
     private func showSettingsViewController() {
         splitViewController?.preferredDisplayMode = .allVisible

@@ -24,21 +24,19 @@ class CreditsWebViewController: PEPWebViewController {
         let appVersion = InfoPlist.versionDisplayString() ?? "666"
         let backgroundColor = UIColor.pEpLightBackground
         let fontColor = UIColor.pEpGray
-        let fontSize = splitViewController?.currentDisplayMode == .masterAndDetail ? "22" : "28"
+        let fontSize = "18"
         let fontFamily = "Helvetica Neue"
         let fontWeight = "500"
         let styleP = "p {color: \(fontColor);font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}"
         let styleBody = "body {background-color: \(backgroundColor);}"
         let styleA = "a {color: \(fontColor);font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}"
         let styleLink = "a:link {color:\(UIColor.pEpDarkGreenHex); text-decoration: underline; word-break: break-all; !important;}"
-        let styleColumnMasterAndDetail = ".column {float: left;margin: -15px 0px -20px 0px;font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}.left {width: 40%;}.right {width: 60%;}.row:after {content: \"\";display: table;clear: both;}"
-        let styleColumnRegular = ".column {float: left;margin: -15px 0px -20px 0px;font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}.left {width: 25%;}.right {width: 75%;}.row:after {content: \"\";display: table;clear: both;}"
-        let styleColumn = splitViewController?.currentDisplayMode == .masterAndDetail ? styleColumnMasterAndDetail : styleColumnRegular
-        let style = "<style>\(styleP)\(styleBody)\(styleColumn)\(styleA)\(styleLink)</style>"
+        let style = "<style>\(styleP)\(styleBody)\(styleA)\(styleLink)</style>"
         let result = """
         <html>
          <head>
            \(style)
+           <meta name="viewport" content="width=device-width, initial-scale=1.0">
            <meta charset="utf-8"/>
         </head>
         <body>
@@ -76,19 +74,21 @@ class CreditsWebViewController: PEPWebViewController {
                      "Libcurl",
                      "Libiconv",
                      "LibEtPan",
-                     "Pantomime",
+                     "Pantomime (GNUStep)",
+                     "Pantomime (github)",
                      "OpenSSL-for-iPhone",
                      "SwipeCellKit",
                      "Lumberjack",
                      "AppAuth-iOS",
                      "Sequoia-PGP"]
-        let links = ["https://pep.foundation/dev/repos/pEpEngine/",
+        let links = ["https://gitea.pep.foundation/pEp.foundation/pEpEngine",
                      "https://gnupg.org/related_software/libassuan",
                      "https://gnupg.org/related_software/libksba",
                      "https://curl.haxx.se/libcurl/",
                      "https://www.gnu.org/software/libiconv/",
                      "https://www.etpan.org/libetpan.html",
-                     "http://wiki.gnustep.org/index.php/Pantomime  https://github.com/timburks/Pantomime",
+                     "http://wiki.gnustep.org/index.php/Pantomime",
+                     "https://github.com/timburks/Pantomime",
                      "https://github.com/x2on/OpenSSL-for-iPhone",
                      "https://github.com/SwipeCellKit/SwipeCellKit",
                      "https://github.com/CocoaLumberjack/CocoaLumberjack",
@@ -98,18 +98,11 @@ class CreditsWebViewController: PEPWebViewController {
         var htmlThanx = ""
         for (i, name) in names.enumerated() {
             let link = links[i]
-            var row = "<div class=\"row\">"
-            row += "<div class=\"column left\">"
-            row += "<p>\(name)</p>"
-            row += "</div>"
-            row += "<div class=\"column right\">"
-            row += "<p><a href=\"\(link)\">\(link)</a></p>"
-            row += "</div>"
-            row += "</div> "
+            let row = "<p><a href=\"\(link)\">\(name)</a></p>"
             htmlThanx += row
         }
 
-        return htmlThanx
+        return "<div class=\"links\">\(htmlThanx)</div>"
     }
 
     private func eula() -> String {

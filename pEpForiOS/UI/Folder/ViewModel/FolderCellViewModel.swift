@@ -46,7 +46,7 @@ public class FolderCellViewModel {
     }
 
     var padding: CGFloat {
-        return DeviceUtils.isIphone5 ? 16.0 : 25.0
+        return UIDevice.isSmall ? 16.0 : 25.0
     }
 
     public var isSelectable: Bool {

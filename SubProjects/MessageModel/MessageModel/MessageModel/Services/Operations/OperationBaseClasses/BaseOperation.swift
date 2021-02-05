@@ -39,10 +39,6 @@ class BaseOperation: Operation {
         comp = "\(comp) \(unsafeBitCast(self, to: UnsafeRawPointer.self)) [\(parentName)]"
         self.name = comp
     }
-
-    func logSelf(functionName: String) {
-        Log.shared.info("%@: %@", comp, self)
-    }
 }
 
 // MARK: - ErrorContainerProtocol
