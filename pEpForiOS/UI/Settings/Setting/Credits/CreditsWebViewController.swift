@@ -31,8 +31,7 @@ class CreditsWebViewController: PEPWebViewController {
         let styleBody = "body {background-color: \(backgroundColor);}"
         let styleA = "a {color: \(fontColor);font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}"
         let styleLink = "a:link {color:\(UIColor.pEpDarkGreenHex); text-decoration: underline; word-break: break-all; !important;}"
-        let styleColumn = ".column {} .left {} .right {} .row:after {}"
-        let style = "<style>\(styleP)\(styleBody)\(styleColumn)\(styleA)\(styleLink)</style>"
+        let style = "<style>\(styleP)\(styleBody)\(styleA)\(styleLink)</style>"
         let result = """
         <html>
          <head>
@@ -99,15 +98,11 @@ class CreditsWebViewController: PEPWebViewController {
         var htmlThanx = ""
         for (i, name) in names.enumerated() {
             let link = links[i]
-            var row = "<div class=\"row\">"
-            row += "<div class=\"column left\">"
-            row += "<p><a href=\"\(link)\">\(name)</a></p>"
-            row += "</div>"
-            row += "</div> "
+            let row = "<p><a href=\"\(link)\">\(name)</a></p>"
             htmlThanx += row
         }
 
-        return htmlThanx
+        return "<div class=\"links\">\(htmlThanx)</div>"
     }
 
     private func eula() -> String {
