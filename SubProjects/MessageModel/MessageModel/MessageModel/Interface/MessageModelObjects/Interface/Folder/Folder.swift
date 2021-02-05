@@ -130,8 +130,7 @@ public class Folder: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
             cdObject.parent?.account = newValue.cdAccount()
         }
     }
-    var folderUuids = MutableOrderedSet<MessageID>()
-    var messageUuids = MutableOrderedSet<MessageID>()
+
     public var folderType: FolderType {
         return cdObject.folderType
     }

@@ -18,7 +18,7 @@ extension VerifiableAccountValidationError {
                                      comment: "Error description when failing to validate account fields")
         case .unknown:
             return NSLocalizedString("Something went wrong.",
-                                     comment: "Error description when something unknown was wrong")
+                                     comment: "Error description when something went wrong")
         }
     }
 }

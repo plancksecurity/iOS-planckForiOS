@@ -128,12 +128,6 @@ final class SettingsViewModel {
         return nil
     }
 
-    /// Deletes the row at the passed index Path
-    /// - Parameter indexPath: The index Path to
-    public func deleteRowAt(_ indexPath: IndexPath) {
-        items[indexPath.section].rows.remove(at: indexPath.row)
-    }
-
     /// Handle the tap gesture triggered on the ExtraKeys cell.
     public func handleExtraKeysEditabilityGestureTriggered() {
         let newValue = !AppSettings.shared.extraKeysEditable
@@ -527,19 +521,6 @@ extension SettingsViewModel {
         static func == (lhs: SettingsViewModel.Section, rhs: SettingsViewModel.Section) -> Bool {
             return (lhs.title == rhs.title && lhs.footer == rhs.footer)
         }
-    }
-}
-
-// MARK: - Private enums
-
-extension SettingsViewModel {
-
-    //Identifies visually the type of row.
-    private enum RowType {
-        case action
-        case swipe
-        case navigation
-        case all
     }
 }
 

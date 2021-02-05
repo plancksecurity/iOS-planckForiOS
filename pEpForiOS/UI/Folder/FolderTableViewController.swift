@@ -74,18 +74,6 @@ class FolderTableViewController: UITableViewController {
         addAccountButton.titleLabel?.setPEPFont(style: .body, weight: .regular)
     }
 
-    // MARK: - Cell Setup
-
-    private func setNotSelectableStyle(to cell: UITableViewCell) {
-        cell.accessoryType = .none
-        cell.textLabel?.textColor = .pEpGray
-    }
-
-    private func setSelectableStyle(to cell: UITableViewCell) {
-        cell.accessoryType = .disclosureIndicator
-        cell.textLabel?.textColor = .black
-    }
-
     // MARK: - Action
 
     @objc private func pullToRefresh() {

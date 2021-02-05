@@ -222,6 +222,8 @@ extension AccountSettingsViewModel {
         }
     }
 
+    /// Handle the change of status of the Unified Folders option.
+    /// - Parameter newValue: The value to set. True means enabled, False means disabled. 
     public func handleUnifiedFolderSwitchChanged(to newValue: Bool) {
         includeInUnifiedFolders = newValue
         account.isIncludedInUnifiedFolders = newValue

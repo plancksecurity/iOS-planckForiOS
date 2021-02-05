@@ -17,8 +17,6 @@ final class ContactCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
 
-    private let colon = ":"
-    
     var contact: Identity? {
         didSet {
             nameLabel.text = contact?.displayString ?? String()

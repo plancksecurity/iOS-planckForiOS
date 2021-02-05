@@ -10,8 +10,6 @@ import MessageModel
 import pEpIOSToolbox
 
 public struct ReplyUtil {
-    private static let nameSeparator = ", "
-    private static let newline = "\n"
 
     /**
      Gets the quoted message body for the given `Message`.
@@ -23,7 +21,7 @@ public struct ReplyUtil {
             return "\n\n\(footerPlainText)".attribString()
         }
         let citationPlainText = citationHeaderForMessage(message)
-
+        
         return "\n\n".attribString()
             + footer(for: message).attribString()
             + "\n\n"
