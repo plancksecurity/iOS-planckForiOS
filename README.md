@@ -71,7 +71,7 @@ Clone into your home directory:
 
 ```
 pushd ~
-hg clone https://pep.foundation/dev/repos/yml2/
+git clone https://gitea.pep.foundation/fdik/yml2
 popd
 ```
 
