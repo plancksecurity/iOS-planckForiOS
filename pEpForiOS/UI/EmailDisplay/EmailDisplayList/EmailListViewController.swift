@@ -688,7 +688,7 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         var options = SwipeTableOptions()
         options.transitionStyle = .border
         options.buttonSpacing = 11
-        options.expansionStyle = .destructive(automaticallyDelete: false)
+        options.expansionStyle = .destructive(automaticallyDelete: false, timing: .after)
         return options
     }
 
