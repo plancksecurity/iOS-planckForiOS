@@ -142,14 +142,23 @@
 /* Compose field title */
 "Cc/Bcc:" = "Cc/Cci :";
 
+/* Certificate label in account settings */
+"Certificate" = "Certificat";
+
 /* UI alert message for transport protocol */
 "Choose a Security protocol for your accont" = "Choisissez un protocole de sécurité pour votre compte";
 
 /* Empty IMAP transport security method */
 "Choose IMAP transport security method." = "Choisissez la méthode de sécurité de transport IMAP.";
 
+/* Empty IMAP username */
+"Choose IMAP username." = "Choisissez le nom d'utilisateur IMAP.";
+
 /* Empty SMTP transport security method */
 "Choose SMTP transport security method." = "Choisissez la méthode de sécurité de transport SMTP";
+
+/* Empty IMAP transport security method */
+"Choose SMTP username." = "Choisissez le nom d'utilisateur SMTP.";
 
 /* Header for client certificate password screen */
 "Client Certificate" = "Certificat client";
@@ -249,6 +258,9 @@
    Email TextField Placeholder in Login Screen */
 "Email Address" = "Adresse courriel";
 
+/* Email address missing message */
+"Email address must not be empty." = "L'adresse électronique ne doit pas être vide.";
+
 /* Title of alert: a required field is empty */
 "Empty Field" = "Champ vide";
 
@@ -280,6 +292,9 @@
 
 /* Generic error message on trying to import a key */
 "Error occurred. No key imported." = "Une erreur s’est produite. Aucune clé importée.";
+
+/* separator string between name and date */
+"Exp. date:" = "Date d'expiration :";
 
 /* Settings: Cell (button) title to view Extra Keys setting */
 "Extra Keys" = "Clés supplémentaires";
@@ -846,6 +861,10 @@
 
 /* AccountSettings viewModel no account error */
 "Something went wrong, please try again later" = "Un problème est survenu. Veuillez réessayer plus tard";
+
+/* Error description when something went wrong
+   Message of alert: something went wrong. */
+"Something went wrong." = "Quelque chose a mal tourné.";
 
 /* Name of Spam folder (showing messages marked as spam by the server, of one account) */
 "Spam" = "Pourriel";
