@@ -87,6 +87,7 @@ git clone https://pep-security.lu/gitlab/misc/libetpan.git
 pushd libetpan
 git checkout ios_1.1.200
 popd
+
 git clone https://pep-security.lu/gitlab/iOS/OpenSSL-for-iPhone.git
 git clone https://pep-security.lu/gitlab/iOS/SwipeCellKit.git/
 git clone https://pep-security.lu/gitlab/iOS/CocoaLumberjack
@@ -97,8 +98,11 @@ git clone https://pep-security.lu/gitlab/misc/sqlite.git
 git clone https://gitea.pep.foundation/pep.foundation/Pantomime.git
 git clone https://gitea.pep.foundation/pEp.foundation/pEpEngine
 git clone https://gitea.pep.foundation/pep.foundation/pEpObjCAdapter.git
+
 git clone https://gitea.pep.foundation/pEp.foundation/libAccountSettings
-hg up tag_for_1.1.300
+pushd libAccountSettings
+git co tag_for_1.1.300
+popd
 
 git clone https://pep-security.lu/gitlab/iOS/pep4ios.git
 
