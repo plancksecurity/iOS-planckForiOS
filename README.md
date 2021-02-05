@@ -15,7 +15,6 @@ For building the engine, you need a working python3 environment and all dependen
 
 ```
 sudo port install git
-sudo port install mercurial
 
 sudo port install asn1c
 
