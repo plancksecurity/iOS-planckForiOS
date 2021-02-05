@@ -1724,13 +1724,6 @@
 			path = UIViewController;
 			sourceTree = "<group>";
 		};
-		371D641B231D17100036AE62 /* StartUpTutotial */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = StartUpTutotial;
-			sourceTree = "<group>";
-		};
 		371D641E231D17A80036AE62 /* TutorialWizard */ = {
 			isa = PBXGroup;
 			children = (
@@ -2086,7 +2079,6 @@
 			isa = PBXGroup;
 			children = (
 				5BC0738C25B218DB00ECE3FC /* TextFieldWithoutSelection.swift */,
-				5B3B019224B46DA600FBB4B5 /* DeviceUtils.swift */,
 				5BB7C74824D85BD600D5F328 /* PEPWebviewController */,
 				1521B78B241BDA66000EAE57 /* UIUtils */,
 				B7DB7FC22215C484003968DA /* Extensions */,
@@ -2207,7 +2199,6 @@
 				B70D32AF205BCF460094A92A /* ManualLogin */,
 				15BA537A20A1F5CA0090F126 /* MoveToFolder */,
 				15874BA72127493E00A3A4A6 /* Settings */,
-				371D641B231D17100036AE62 /* StartUpTutotial */,
 				003C0FAA20B57C2E0093A987 /* SplitView */,
 				492EF92B20C69547004EAE14 /* Thread */,
 				150DF6D12052A99800A9DCF7 /* SecureWebViewController */,
