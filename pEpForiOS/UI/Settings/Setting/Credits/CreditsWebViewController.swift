@@ -75,7 +75,8 @@ class CreditsWebViewController: PEPWebViewController {
                      "Libcurl",
                      "Libiconv",
                      "LibEtPan",
-                     "Pantomime",
+                     "Pantomime (GNUStep)",
+                     "Pantomime (github)",
                      "OpenSSL-for-iPhone",
                      "SwipeCellKit",
                      "Lumberjack",
@@ -87,7 +88,8 @@ class CreditsWebViewController: PEPWebViewController {
                      "https://curl.haxx.se/libcurl/",
                      "https://www.gnu.org/software/libiconv/",
                      "https://www.etpan.org/libetpan.html",
-                     "http://wiki.gnustep.org/index.php/Pantomime  https://github.com/timburks/Pantomime",
+                     "http://wiki.gnustep.org/index.php/Pantomime",
+                     "https://github.com/timburks/Pantomime",
                      "https://github.com/x2on/OpenSSL-for-iPhone",
                      "https://github.com/SwipeCellKit/SwipeCellKit",
                      "https://github.com/CocoaLumberjack/CocoaLumberjack",
@@ -99,10 +101,7 @@ class CreditsWebViewController: PEPWebViewController {
             let link = links[i]
             var row = "<div class=\"row\">"
             row += "<div class=\"column left\">"
-            row += "<p>\(name)</p>"
-            row += "</div>"
-            row += "<div class=\"column right\">"
-            row += "<p><a href=\"\(link)\">\(link)</a></p>"
+            row += "<p><a href=\"\(link)\">\(name)</a></p>"
             row += "</div>"
             row += "</div> "
             htmlThanx += row
