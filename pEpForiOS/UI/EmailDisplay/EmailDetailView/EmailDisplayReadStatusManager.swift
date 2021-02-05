@@ -27,7 +27,7 @@ protocol EmailDisplayReadStatusManagerProtocol {
 }
 
 class EmailDisplayReadStatusManager {
-    private let minReadTime: TimeInterval = 0.5
+    private let minReadTime: TimeInterval = 0.3
     private typealias StartDisplayTime = Date
     private var timePerMessageCache = [Message:StartDisplayTime]()
 }

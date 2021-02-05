@@ -69,7 +69,7 @@ class EmailDetailViewController: UIViewController {
         configureView()
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewDidAppear(animated)
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
