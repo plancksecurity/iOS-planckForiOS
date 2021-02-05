@@ -136,6 +136,10 @@ public class Account: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         }
         set {
             cdObject.includeFoldersInUnifiedFolders = newValue
+            // As changes in this MMO do not automatically trigger changes in MessageQueryResults (MQR),
+            // it is necessary to call this, which will make MQR update according to the new status.
+            // For further information please go to: https://pep.foundation/jira/browse/IOS-2641
+            cdObject.triggerFetchedResultsControllerChangeForAllMessages()
         }
     }
 }
