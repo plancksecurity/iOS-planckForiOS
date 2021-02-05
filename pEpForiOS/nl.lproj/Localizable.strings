@@ -92,7 +92,7 @@
 "Are you sure you want to delete the account?" = "Weet je zeker dat je het account wilt verwijderen?";
 
 /* Leave device group confirmation */
-"Are you sure you want to leave your device group?" = "Weet je zeker dat je je apparaatgroep wilt verlaten?";
+"Are you sure you want to leave your device group?" = "Weet u zeker dat u uw apparaatgroep wilt verlaten?";
 
 /* Insert document in message text context menu */
 "Attach file" = "Bestand toevoegen";
@@ -142,14 +142,23 @@
 /* Compose field title */
 "Cc/Bcc:" = "Cc/Bcc:";
 
+/* Certificate label in account settings */
+"Certificate" = "Certificaat";
+
 /* UI alert message for transport protocol */
 "Choose a Security protocol for your accont" = "Kies een Beveiligingsprotocol voor je account";
 
 /* Empty IMAP transport security method */
 "Choose IMAP transport security method." = "Kies een IMAP transport beveiligingsmethode.";
 
+/* Empty IMAP username */
+"Choose IMAP username." = "Kies IMAP gebruikersnaam.";
+
 /* Empty SMTP transport security method */
 "Choose SMTP transport security method." = "Kies SMTP transport beveiligingsmethode";
+
+/* Empty IMAP transport security method */
+"Choose SMTP username." = "Kies SMTP gebruikersnaam.";
 
 /* Header for client certificate password screen */
 "Client Certificate" = "Client Certificaat";
@@ -249,6 +258,9 @@
    Email TextField Placeholder in Login Screen */
 "Email Address" = "E-mailadres";
 
+/* Email address missing message */
+"Email address must not be empty." = "Het e-mailadres mag niet leeg zijn.";
+
 /* Title of alert: a required field is empty */
 "Empty Field" = "Leeg Veld";
 
@@ -280,6 +292,9 @@
 
 /* Generic error message on trying to import a key */
 "Error occurred. No key imported." = "Fout opgetreden. Geen sleutel geïmporteerd.";
+
+/* separator string between name and date */
+"Exp. date:" = "Vervaldatum:";
 
 /* Settings: Cell (button) title to view Extra Keys setting */
 "Extra Keys" = "Extra Sleutels";
@@ -847,6 +862,10 @@
 /* AccountSettings viewModel no account error */
 "Something went wrong, please try again later" = "Er is iets fout gegaan. Probeer het later opnieuw";
 
+/* Error description when something went wrong
+   Message of alert: something went wrong. */
+"Something went wrong." = "Er is iets fout gegaan.";
+
 /* Name of Spam folder (showing messages marked as spam by the server, of one account) */
 "Spam" = "Spam";
 
@@ -1101,7 +1120,7 @@
 "When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted" = "Wanneer wordt bevestigd dat de Vertrouwenswoorden correct zijn en de Handdruk is voltooid, zal de communicatie volledig veilig en vertrouwd zijn";
 
 /* Privacy status explanation Label */
-"When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication parner." = "Wanneer je op de knop Privacy Status in de bovenste balk klikt, komt je bij Handdruk, waar je je communicatieparner kunt verifiëren.";
+"When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication parner." = "Wanneer u op het pictogram Privacy Status in de bovenbalk klikt, komt u bij Handshake, waar u uw communicatiepartner kunt verifiëren.";
 
 /* Confirm Trustwords explanation Label */
 "When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted." = "Wanneer je bevestigt dat de Trustwords van je communicatiepartner correct zijn, zal je communicatie volledig Veilig & Vertrouwd zijn.";

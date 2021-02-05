@@ -46,6 +46,9 @@
 /* Class = "UITextField"; text = "John Appleseed"; ObjectID = "jWl-U8-Gg3"; */
 "jWl-U8-Gg3.text" = "John Appleseed";
 
+/* Class = "UITextField"; text = "John Appleseed"; ObjectID = "kdZ-UO-KYC"; */
+"kdZ-UO-KYC.text" = "John Appleseed";
+
 /* Class = "UIButton"; normalTitle = "Set Own Key"; ObjectID = "lzc-xZ-iKm"; */
 "lzc-xZ-iKm.normalTitle" = "Définir sa propre clé";
 
@@ -57,6 +60,9 @@
 
 /* Class = "UILabel"; text = "Use a passphrase for new keys"; ObjectID = "Ppr-kD-hKR"; */
 "Ppr-kD-hKR.text" = "Utiliser une phrase secrète pour les nouvelles clés";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "s0a-c5-T0Q"; */
+"s0a-c5-T0Q.text" = "Nom";
 
 /* Class = "UILabel"; text = "set_own_key Error"; ObjectID = "ujL-Pa-uXD"; Note = "Don't localize this"; */
 "ujL-Pa-uXD.text" = "Erreur set_own_key";
