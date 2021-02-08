@@ -155,18 +155,16 @@ extension NSAttributedString {
 
 extension NSMutableAttributedString {
     @discardableResult public func bold(_ text:String) -> NSMutableAttributedString {
-        let attrs:[NSAttributedString.Key: Any] =
-            [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .callout)]
-
+        let attrs: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .callout)]
         let boldString = NSMutableAttributedString(string: text, attributes: attrs)
-        self.append(boldString)
+        append(boldString)
         return self
     }
 
     @discardableResult public func normal(_ text: String) -> NSMutableAttributedString {
-        let attrs:[NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .body)]
-        let normal =  NSMutableAttributedString(string: text, attributes: attrs)
-        self.append(normal)
+        let attrs: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .body)]
+        let normal = NSMutableAttributedString(string: text, attributes: attrs)
+        append(normal)
         return self
     }
 }

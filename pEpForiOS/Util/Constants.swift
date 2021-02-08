@@ -14,8 +14,8 @@ struct Constants {
     /// holds the ViewController, which the ViewController has no knowledge of.
     static let composeSceneStoryboardId = "ReplyNavigation"
 
-    /// Name of Storyboard that contains ComposeViewController.
-    static let composeSceneStoryboard = "Main"
+    /// Name of Main Storyboard
+    static let mainStoryboard = "Main"
 
     /// Name of Storyboard that contains AddToContactsViewController.
     static let addToContactsStoryboard = "Reusable"
@@ -32,5 +32,9 @@ struct Constants {
     struct XibNames {
         static let loadingInterface = "LoadingInterface"
     }
+
+    static let emailViewControllerStoryboardId = "EmailViewController"
+
+
 }
 

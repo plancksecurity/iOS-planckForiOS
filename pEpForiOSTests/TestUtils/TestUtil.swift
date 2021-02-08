@@ -104,6 +104,7 @@ class TestUtil {
                               longMessageFormatted: String = "",
                               dateSent: Date = Date(),
                               attachments: Int = 0,
+                              dispositionType : Attachment.ContentDispositionType = .inline,
                               uid: Int? = nil) -> Message {
         let msg : Message
         if let uid = uid {
@@ -123,7 +124,15 @@ class TestUtil {
         if engineProccesed {
             msg.pEpRatingInt = Int(Rating.unreliable.toInt())
         }
-        msg.replaceAttachments(with: createAttachments(number: attachments))
+        msg.replaceAttachments(with: createAttachments(number: attachments, dispositionType: dispositionType))
+        return msg
+    }
+
+    static func createMessage(with attachment: Attachment) -> Message {
+        let account = TestData().createWorkingAccount()
+        let inbox = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
+        let msg = Message(uuid: "\(1)", uid: 1, parentFolder: inbox)
+        msg.replaceAttachments(with: [attachment])
         return msg
     }
 
@@ -134,11 +143,11 @@ class TestUtil {
         return msg
     }
 
-    static func createAttachments(number: Int) -> [Attachment] {
+    static func createAttachments(number: Int, dispositionType: Attachment.ContentDispositionType = .inline) -> [Attachment] {
         var attachments: [Attachment] = []
 
         for _ in 0..<number {
-            attachments.append(createAttachment())
+            attachments.append(createAttachment(inlined: dispositionType == .inline))
         }
         return attachments
     }
@@ -148,7 +157,9 @@ class TestUtil {
         guard let imageData = MiscUtil.loadData(bundleClass: TestUtil.self,
                                                 fileName: imageFileName) else {
                                                     XCTFail()
-                                                    return Attachment(data: nil, mimeType: "meh", contentDisposition: .attachment)
+                                                    return Attachment(data: nil,
+                                                                      mimeType: "meh",
+                                                                      contentDisposition: .attachment)
         }
 
         let contentDisposition = inlined ? Attachment.ContentDispositionType.inline : .attachment

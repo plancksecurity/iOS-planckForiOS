@@ -235,6 +235,19 @@ class EmailDetailViewModel: EmailDisplayViewModel {
 
         msg.parent.fetchOlder(completion: nil)
     }
+
+    /// Retrieves an EmailViewModel for the message in the provided indexPath
+    /// - Parameters:
+    ///   - indexPath: The indexPath of the message
+    ///   - delegate: The email view model delegate.
+    /// - Returns: The Email View Model
+    public func emailViewModel(withMessageRepresentedByRowAt indexPath: IndexPath, delegate: EmailViewModelDelegate) -> EmailViewModel? {
+        guard let m = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("Message not found")
+            return nil
+        }
+        return EmailViewModel(message: m, delegate: delegate)
+    }
 }
 
 // MARK: - Private

@@ -1296,11 +1296,11 @@
                         <viewControllerLayoutGuide type="bottom" id="0vp-az-Ica"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="i60-v8-zoo">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EC5-YV-DuZ">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="667"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="643"/>
                                 <connections>
                                     <segue destination="a1y-j3-omP" kind="embed" identifier="EditableAccountTableViewControllerEmbed" id="oMT-qb-PGX"/>
                                 </connections>
@@ -1339,7 +1339,7 @@
             <objects>
                 <tableViewController id="a1y-j3-omP" customClass="EditableAccountSettingsTableViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="50" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="1" id="ACY-84-B35">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="643"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -2150,7 +2150,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="ybN-lJ-Sba"/>
+        <segue reference="7xR-BQ-yxm"/>
         <segue reference="voI-Bz-LUT"/>
     </inferredMetricsTieBreakers>
     <resources>
