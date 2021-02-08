@@ -147,6 +147,10 @@ public class FolderViewModel {
 
 extension FolderViewModel {
 
+    /// Handle collapsing state change of the section passed by parameter
+    /// - Parameters:
+    ///   - section: The section that has changed
+    ///   - isCollapsed: The new collapsing state.
     public func handleCollapsingSectionStateChanged(forAccountInSection section: Int, isCollapsed: Bool) {
         guard let delegate = delegate else {
             // The Delegate is needed to handle this.
