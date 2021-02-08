@@ -192,7 +192,10 @@ public class FolderSectionViewModel {
         return fcvm
     }
 
-    func hasAncestorsCollapsed(folderCellViewModel: FolderCellViewModel) -> Bool {
+    /// Indicates if the folder cell view model passed by parameter has an ancestor that is collapsed.
+    /// - Parameter folderCellViewModel: The folder cell view model to evaluate
+    /// - Returns: True if it has an ancestor collapsed. 
+    public func hasAncestorsCollapsed(folderCellViewModel: FolderCellViewModel) -> Bool {
         var valueToReturn = false
         forLoop: for i in 0..<items.count {
             if items[i].isAncestorOf(fcvm: folderCellViewModel) && !items[i].isExpanded {
