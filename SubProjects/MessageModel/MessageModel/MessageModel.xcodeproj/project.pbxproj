@@ -398,7 +398,6 @@
 		5B0BEB3824F8E25900A00D57 /* FolderQueryResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0BEB3724F8E25900A00D57 /* FolderQueryResult.swift */; };
 		5B4A715C252B5B6F00436FCF /* NSError+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A715A252B5B6F00436FCF /* NSError+Passphrase.swift */; };
 		5B4A715D252B5B6F00436FCF /* Error+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A715B252B5B6F00436FCF /* Error+Passphrase.swift */; };
-		5B64978A25C957F90028B9ED /* Folder+Subfolders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B64978925C957F90028B9ED /* Folder+Subfolders.swift */; };
 		5B64966025C82D570028B9ED /* CdAccount+FetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B64965F25C82D570028B9ED /* CdAccount+FetchedResultsController.swift */; };
 		5B87D79A23F3117D009DACAA /* String+Fingerprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D79923F3117D009DACAA /* String+Fingerprint.swift */; };
 		5B88A19D2406C1A2003240B8 /* TrustManagementUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */; };
@@ -870,7 +869,6 @@
 		5B3BFC6324DAF07200B99FA6 /* 1.1.205.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.1.205.xcdatamodel; sourceTree = "<group>"; };
 		5B4A715A252B5B6F00436FCF /* NSError+Passphrase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSError+Passphrase.swift"; sourceTree = "<group>"; };
 		5B4A715B252B5B6F00436FCF /* Error+Passphrase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Error+Passphrase.swift"; sourceTree = "<group>"; };
-		5B64978925C957F90028B9ED /* Folder+Subfolders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+Subfolders.swift"; sourceTree = "<group>"; };
 		5B64965F25C82D570028B9ED /* CdAccount+FetchedResultsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAccount+FetchedResultsController.swift"; sourceTree = "<group>"; };
 		5B87D79923F3117D009DACAA /* String+Fingerprint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Fingerprint.swift"; sourceTree = "<group>"; };
 		5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustManagementUtil.swift; sourceTree = "<group>"; };
@@ -1189,7 +1187,6 @@
 				B7BED3142254FAA700CCF638 /* Folder+DisplaybleFolder.swift */,
 				43CB609E1DA4EBB60015281E /* Folder.swift */,
 				1522953A230057A800204FD3 /* Folder+Fetching.swift */,
-				5B64978925C957F90028B9ED /* Folder+Subfolders.swift */,
 				439CAE592563C9C50043077E /* Folder+VirtualMailbox.swift */,
 			);
 			path = Folder;
@@ -2906,7 +2903,6 @@
 				439CACDB2562CA7A0043077E /* Message+FakeMessage.swift in Sources */,
 				15466135233B9A64008D2137 /* OperationBasedService.swift in Sources */,
 				1535D075223AB4BF008F0ACC /* ImapFlags.swift in Sources */,
-				5B64978A25C957F90028B9ED /* Folder+Subfolders.swift in Sources */,
 				B7F6F47C234CDB4A003DF84A /* QueryResultsDelegate.swift in Sources */,
 				43A536EA23E474EA0040715D /* ImapConnectionDelegate.swift in Sources */,
 				15175EC6221D88B900C91DB8 /* QueryResultsController.swift in Sources */,
