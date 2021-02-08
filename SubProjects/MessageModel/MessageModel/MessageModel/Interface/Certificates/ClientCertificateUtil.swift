@@ -82,6 +82,19 @@ public class ClientCertificateUtil {
 
     /// Can the given data be imported as a certificate?
     public func isCertificate(p12Data: Data) -> Bool {
+        let p12Options: NSDictionary = [:]
+        var itemsCF: CFArray?
+        let status = SecPKCS12Import(p12Data as CFData, p12Options, &itemsCF)
+        if status != .zero {
+            switch status {
+            case errSecDecode:
+                return false
+            case errSecAuthFailed:
+                return true
+            default:
+                return false
+            }
+        }
         return false
     }
 }
