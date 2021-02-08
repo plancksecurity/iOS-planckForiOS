@@ -4,11 +4,26 @@
 /* Class = "UINavigationItem"; title = "Inbox"; ObjectID = "aP4-ia-HTP"; */
 "aP4-ia-HTP.title" = "Bústia d'entrada";
 
+/* Class = "UILabel"; text = "From:"; ObjectID = "Asq-Vx-nQs"; */
+"Asq-Vx-nQs.text" = "De:";
+
+/* Class = "UILabel"; text = "Subject:"; ObjectID = "bCM-fK-pFW"; */
+"bCM-fK-pFW.text" = "Assumpte:";
+
+/* Class = "UIBarButtonItem"; title = "Send"; ObjectID = "d2A-SO-1Ce"; */
+"d2A-SO-1Ce.title" = "Envia";
+
+/* Class = "UILabel"; text = "To:"; ObjectID = "DES-F8-7zn"; */
+"DES-F8-7zn.text" = "A:";
+
 /* Class = "UIViewController"; title = "Move to Account"; ObjectID = "EmS-3d-sKb"; */
 "EmS-3d-sKb.title" = "Vés al compte";
 
 /* Class = "UILabel"; text = "Subject jlkfj glkafj kal jfa slfaj alsjf aslj fsajk"; ObjectID = "ha5-Vd-x3U"; */
 "ha5-Vd-x3U.text" = "Assumpte jlkfj glkafj kal jfa slfaj alsjf aslj fsajk";
+
+/* Class = "UIBarButtonItem"; title = "Cancel"; ObjectID = "ijh-vj-Bee"; */
+"ijh-vj-Bee.title" = "Cancel·lar";
 
 /* Class = "UILabel"; text = "Sender sfasflask jfhsajfkas fjksaj"; ObjectID = "KTi-T9-Inm"; */
 "KTi-T9-Inm.text" = "Enviador sfasflask jfhsajfkas fjksaj";
@@ -16,9 +31,21 @@
 /* Class = "UILabel"; text = "Title"; ObjectID = "OLo-8A-CCo"; */
 "OLo-8A-CCo.text" = "Títol";
 
+/* Class = "UILabel"; text = "Date"; ObjectID = "Ozt-zL-XpS"; */
+"Ozt-zL-XpS.text" = "Data";
+
 /* Class = "UILabel"; text = "Title"; ObjectID = "riI-qM-PeJ"; */
 "riI-qM-PeJ.text" = "Títol";
 
 /* Class = "UILabel"; text = "Summary"; ObjectID = "Tbi-dG-KCA"; */
 "Tbi-dG-KCA.text" = "Resum";
+
+/* Class = "UILabel"; text = "Subject"; ObjectID = "VDN-ne-7lE"; */
+"VDN-ne-7lE.text" = "Assumpte";
+
+/* Class = "UILabel"; text = "Sender"; ObjectID = "yhr-Um-Ftu"; */
+"yhr-Um-Ftu.text" = "Remitent";
+
+/* Class = "UILabel"; text = "Cc/Bcc:"; ObjectID = "ZpG-yk-ifY"; */
+"ZpG-yk-ifY.text" = "Cc / Bcc:";
 

@@ -59,14 +59,4 @@ extension TutorialStep1ViewController {
         mistrustedDescription.text = NSLocalizedString("If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle.", comment: "Secure & Trusted Description Label - Step 1")
         mistrustedDescription.font = font
     }
-    
-    private struct Constants {
-        struct Portrait {
-            static let centerYOffset: CGFloat = -120
-        }
-
-        struct Landscape {
-            static let centerYOffset: CGFloat = -100
-        }
-    }
 }

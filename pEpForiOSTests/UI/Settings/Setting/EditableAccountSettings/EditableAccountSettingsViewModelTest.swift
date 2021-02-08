@@ -92,6 +92,22 @@ class EditableAccountSettingsViewModelTest: AccountDrivenTestBase {
         viewModel?.handleSaveButtonPressed()
     }
 
+    func testClientCertificateRowPressed() {
+        let cdClientCertificate = CdClientCertificate(context: account.moc)
+        let clientCertificate = ClientCertificate(cdObject: cdClientCertificate, context: account.moc)
+        let showEditCertificateExpectation = expectation(description: "showEditCertificateExpectation was called")
+        let mockViewController = MockEditableViewController(showEditCertificateExpectation: showEditCertificateExpectation)
+        account.imapServer?.credentials.clientCertificate = clientCertificate
+        viewModel = EditableAccountSettingsViewModel(account: account, delegate: mockViewController)
+        mockViewController.showEditCertificate()
+        waitForExpectations(timeout: TestUtil.waitTime)
+    }
+
+    func testClientCertificateManagementViewModel() {
+        let clientCertificateManagementViewModel = viewModel?.clientCertificateManagementViewModel()
+        XCTAssertEqual(clientCertificateManagementViewModel?.accountToUpdate, account)
+    }
+
     func testTransportSecurityIndexWithInvalidText() {
         let expectedInvalidReturnValue = -1
         let invalidIndex = viewModel?.transportSecurityIndex(for: "Invalid Transport Security Text")
@@ -188,13 +204,16 @@ class MockEditableViewController: EditableAccountSettingsDelegate {
     private var setLoadingViewExpectation: XCTestExpectation?
     private var showAlertExpectation: XCTestExpectation?
     private var dismissYourselfExpectation: XCTestExpectation?
+    private var showEditCertificateExpectation: XCTestExpectation?
 
     init(setLoadingViewExpectation: XCTestExpectation? = nil,
          showAlertExpectation: XCTestExpectation? = nil,
-         dismissYourselfExpectation: XCTestExpectation? = nil) {
+         dismissYourselfExpectation: XCTestExpectation? = nil,
+         showEditCertificateExpectation: XCTestExpectation? = nil) {
         self.setLoadingViewExpectation = setLoadingViewExpectation
         self.showAlertExpectation = showAlertExpectation
         self.dismissYourselfExpectation = dismissYourselfExpectation
+        self.showEditCertificateExpectation = showEditCertificateExpectation
     }
 
     func setLoadingView(visible: Bool) {
@@ -209,6 +228,10 @@ class MockEditableViewController: EditableAccountSettingsDelegate {
         fulfillIfNotNil(expectation: dismissYourselfExpectation)
     }
 
+    func showEditCertificate() {
+        fulfillIfNotNil(expectation: showEditCertificateExpectation)
+    }
+
     private func fulfillIfNotNil(expectation: XCTestExpectation?) {
         if expectation != nil {
             expectation?.fulfill()
@@ -216,7 +239,7 @@ class MockEditableViewController: EditableAccountSettingsDelegate {
     }
 }
 
-class MockAccountSettingsViewController: SettingChangeDelegate {
+class MockAccountSettingsViewController: VerifiableAccount, SettingChangeDelegate {
 
     private var didChangeExpectation: XCTestExpectation?
 
@@ -233,4 +256,12 @@ class MockAccountSettingsViewController: SettingChangeDelegate {
             expectation?.fulfill()
         }
     }
+
+    override func save(completion: @escaping (Result<Void, Error>) -> ()) {
+        super.save { [weak self] success in
+            self?.verifiableAccountDelegate?.didEndVerification(result: success)
+            completion(success)
+        }
+    }
 }
+

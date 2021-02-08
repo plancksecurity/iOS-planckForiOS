@@ -355,26 +355,6 @@ extension NSAttributedString {
     }
 }
 
-extension Character {
-    public func isWhitespace() -> Bool {
-        switch self {
-        case " ", "\t", "\n", "\r", "\r\n":
-            return true
-        default:
-            return false
-        }
-    }
-
-    public func isNewline() -> Bool {
-        switch self {
-        case "\n", "\r", "\r\n":
-            return true
-        default:
-            return false
-        }
-    }
-}
-
 // MARK: - Extensions for drawing initials from users
 
 extension String {

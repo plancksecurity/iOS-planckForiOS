@@ -10,7 +10,8 @@ import CoreData
 
 import pEpIOSToolbox
 import PantomimeFramework
-import PEPObjCAdapterFramework
+import PEPObjCAdapterTypes_iOS
+import PEPObjCAdapter_iOS
 
 typealias ImapStoreCommand = (command: String, pantomimeDict:[AnyHashable: Any])
 
@@ -20,40 +21,12 @@ enum UpdateFlagsMode: String {
 }
 
 extension CdMessage {
-    /**
-     - Returns: A `CWFlags object` for the given `NSNumber`
-     */
-    static func pantomimeFlagsFromNumber(_ flags: Int16) -> CWFlags {
-        if let fl = PantomimeFlag(rawValue: UInt(flags)) {
-            return CWFlags(flags: fl)
-        }
-        Log.shared.error("Could not convert %d to PantomimeFlag", flags)
-        return CWFlags()
-    }
-
-    /**
-     - Returns: The current flags as String, like "\Deleted \Answered"
-     */
-    static func flagsStringFromNumber(_ flags: Int16) -> String {
-        return pantomimeFlagsFromNumber(flags).asString()
-    }
 
     /**
      - Returns: `flags` as `CWFlags`
      */
     func pantomimeFlags() -> CWFlags {
         if let theFlags = imap?.localFlags {
-            return theFlags.pantomimeFlags() ?? CWFlags()
-        } else {
-            return CWFlags()
-        }
-    }
-
-    /**
-     - Returns: `flagsFromServer` as `CWFlags`
-     */
-    func pantomimeflagsFromServer() -> CWFlags {
-        if let theFlags = imap?.serverFlags {
             return theFlags.pantomimeFlags() ?? CWFlags()
         } else {
             return CWFlags()

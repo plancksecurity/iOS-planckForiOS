@@ -8,7 +8,8 @@
 
 import Foundation
 
-import PEPObjCAdapterFramework
+import PEPObjCAdapterTypes_iOS
+import PEPObjCAdapter_iOS
 
 public class LeaveDeviceGroupService {
     static public func leaveDeviceGroup(_ errorCallback: @escaping (Error) -> Void,

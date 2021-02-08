@@ -15,7 +15,6 @@ For building the engine, you need a working python3 environment and all dependen
 
 ```
 sudo port install git
-sudo port install mercurial
 
 sudo port install asn1c
 
@@ -71,7 +70,7 @@ Clone into your home directory:
 
 ```
 pushd ~
-hg clone https://pep.foundation/dev/repos/yml2/
+git clone https://gitea.pep.foundation/fdik/yml2
 popd
 ```
 
@@ -87,6 +86,7 @@ git clone https://pep-security.lu/gitlab/misc/libetpan.git
 pushd libetpan
 git checkout ios_1.1.200
 popd
+
 git clone https://pep-security.lu/gitlab/iOS/OpenSSL-for-iPhone.git
 git clone https://pep-security.lu/gitlab/iOS/SwipeCellKit.git/
 git clone https://pep-security.lu/gitlab/iOS/CocoaLumberjack
@@ -94,11 +94,14 @@ git clone https://pep-security.lu/gitlab/iOS/AppAuth-iOS.git
 git clone https://pep-security.lu/gitlab/misc/ldns.git
 git clone https://pep-security.lu/gitlab/misc/sqlite.git
 
-git clone https://gitea.pep.foundation/buff/Pantomime.git
-hg clone https://pep.foundation/dev/repos/pEpEngine
-git clone https://gitea.pep.foundation/buff/pEpObjCAdapter.git
-hg clone https://pep.foundation/dev/repos/libAccountSettings/
-hg up tag_for_1.1.300
+git clone https://gitea.pep.foundation/pep.foundation/Pantomime.git
+git clone https://gitea.pep.foundation/pEp.foundation/pEpEngine
+git clone https://gitea.pep.foundation/pep.foundation/pEpObjCAdapter.git
+
+git clone https://gitea.pep.foundation/pEp.foundation/libAccountSettings
+pushd libAccountSettings
+git co tag_for_1.1.300
+popd
 
 git clone https://pep-security.lu/gitlab/iOS/pep4ios.git
 

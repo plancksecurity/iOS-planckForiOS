@@ -28,19 +28,6 @@ extension ConnectionTransport {
         }
     }
 
-    static func fromInteger(_ i: Int) -> ConnectionTransport {
-        switch i {
-        case ConnectionTransport.plain.rawValue:
-            return ConnectionTransport.plain
-        case ConnectionTransport.startTLS.rawValue:
-            return ConnectionTransport.startTLS
-        case ConnectionTransport.TLS.rawValue:
-            return ConnectionTransport.TLS
-        default:
-            abort()
-        }
-    }
-
     // XXX: Here material from the Model area is used: to be avoided or code-shared.
     func toServerTransport() -> Server.Transport {
         switch self {
@@ -86,9 +73,6 @@ enum EmailProtocol: String {
 }
 
 class EmailConnectInfo: ConnectInfo {
-    enum EmailConnectInfoError: Error {
-        case cannotFindServerCredentials
-    }
 
     let emailProtocol: EmailProtocol
     let connectionTransport: ConnectionTransport

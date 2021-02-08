@@ -12,14 +12,6 @@ import MessageModel
 import pEpIOSToolbox
 import PantomimeFramework
 
-// MARK: - LoginCellType
-
-extension LoginViewModel {
-    enum LoginCellType {
-        case Text, Button
-    }
-}
-
 // MARK: - OAuth2Parameters
 
 extension LoginViewModel {
@@ -283,7 +275,7 @@ extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
 // MARK: - VerifiableAccountDelegate
 
 extension LoginViewModel: VerifiableAccountDelegate {
-    func informAccountVerificationResultDelegate(error: Error?) {
+    func informAccountVerificationResultDelegate(error: Error? = nil) {
         if let imapError = error as? ImapSyncOperationError {
             accountVerificationResultDelegate?.didVerify(
                 result: .imapError(imapError))
@@ -301,17 +293,18 @@ extension LoginViewModel: VerifiableAccountDelegate {
 
     func didEndVerification(result: Result<Void, Error>) {
         switch result {
-        case .success(()):
-            do {
-                try verifiableAccount.save() { [weak self] success in
-                    guard let me = self else {
-                        // Valid case. We might have been dismissed already.
-                        return
-                    }
-                    me.informAccountVerificationResultDelegate(error: nil)
+        case .success:
+            verifiableAccount.save { [weak self] (result) in
+                guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                    return
                 }
-            } catch {
-                Log.shared.errorAndCrash(error: error)
+                switch result {
+                case .success:
+                    me.informAccountVerificationResultDelegate()
+                case .failure(let error):
+                    me.informAccountVerificationResultDelegate(error: error)
+                }
             }
         case .failure(let error):
             informAccountVerificationResultDelegate(error: error)
