@@ -820,7 +820,8 @@
 /* Login */
 "Sign In" = "Iniciar Sesión";
 
-/* Signature label in account settings */
+/* Edit Signature title
+   Signature label in account settings */
 "Signature" = "Firma";
 
 /* Start up tutorial skip button */

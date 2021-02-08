@@ -820,7 +820,8 @@
 /* Login */
 "Sign In" = "Inloggen";
 
-/* Signature label in account settings */
+/* Edit Signature title
+   Signature label in account settings */
 "Signature" = "Handtekening";
 
 /* Start up tutorial skip button */
