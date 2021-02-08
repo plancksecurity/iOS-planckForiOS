@@ -187,6 +187,60 @@ extension FolderViewModel {
         return ipsToReturn
     }
 
+    private func showRows(ofSection section: Int) -> [IndexPath] {
+        var rowsToShow = 0
+        self[section].isCollapsed = false
+
+        /// Keep track of collapsed rows to hide its children.
+        var collapsedRows = [FolderCellViewModel]()
+
+        /// iterate over all FolderCellViewModels
+
+        for i in 0..<self[section].count {
+
+            guard let f: Folder = self[section][i].folder as? Folder else {
+                Log.shared.errorAndCrash("A Folder should be a Folder")
+                return [IndexPath]()
+            }
+
+            // Check if the folder is collapsed.
+            let isFolderCollapsed = appSettings.collapsedState(forFolderNamed: f.name,
+                                                               ofAccountWithAddress: self[section].userAddress)
+            if isFolderCollapsed {
+                collapsedRows.append(self[section][i])
+                self[section][i].isExpanded = false
+
+                if !self[section].hasAncestorsCollapsed(folderCellViewModel: self[section][i]) {
+                    self[section][i].isHidden = false
+                    rowsToShow += 1
+                } else {
+                    self[section][i].isHidden = true
+                }
+
+            } else {
+                self[section][i].isExpanded = true
+                var shouldShow = true
+
+                /// Check if any of the colllapsed rows is ancestor of the current row.
+                if collapsedRows.contains(where: {$0.isAncestorOf(fcvm: self[section][i])}) {
+                    shouldShow = false
+                }
+                if shouldShow {
+                    self[section][i].isHidden = false
+                    rowsToShow += 1
+                } else {
+                    self[section][i].isHidden = true
+                }
+            }
+        }
+        var ipsToReturn = [IndexPath]()
+        for row in 0..<rowsToShow {
+            let ip = IndexPath(row: row, section: section)
+            ipsToReturn.append(ip)
+        }
+        return ipsToReturn
+    }
+
     /// Expands the cell and get the
     /// - Parameters:
     ///   - section: The section of the cell to expand
@@ -215,13 +269,6 @@ extension FolderViewModel {
             // Check if the folder is collapsed.
             let isFolderCollapsed = appSettings.collapsedState(forFolderNamed: f.name,
                                                                ofAccountWithAddress: self[section].userAddress)
-            /// If the folder is collapsed,
-            /// evaluate if has any ancestor collapsed,
-            /// If so, it is not visible.
-            /// Else, it's visible and not expanded.
-            ///
-            /// If the folder is not collapsd, it's expanded.
-            /// If it's expanded but any of its ancestors is collapsed, it should be hidden.
             if isFolderCollapsed {
                 collapsedRows.append(self[section][i])
                 self[section][i].isExpanded = false
@@ -250,85 +297,5 @@ extension FolderViewModel {
         }
         return rowsToShow
     }
-
-    /// Indicates the number of rows to hide.
-    ///
-    /// - Parameters:
-    ///   - section: The section of the cell to collapse.
-    ///   - folderCellViewModel: The folder cell view model of the cell to collapse
-    ///   - isExpanded:
-    /// - Returns:
-    public func numberOfRowsToHide(ofSection section: Int,
-                                   folderCellViewModel: FolderCellViewModel,
-                                   isParentExpand isExpanded: Bool) -> Int {
-        let sectionVM = self[section]
-        var childrenIndexPaths = [IndexPath]()
-        let children = sectionVM.children(of: folderCellViewModel).filter { $0.isHidden == isExpanded }
-        if !isExpanded {
-            children.forEach {
-                guard let item = sectionVM.visibleIndex(of: $0) else {
-                    Log.shared.errorAndCrash("Item not found")
-                    return
-                }
-                let ip = IndexPath(item:item, section: section)
-                childrenIndexPaths.append(ip)
-            }
-            return childrenIndexPaths.count
-        }
-        return 0
-    }
-
-    private func showRows(ofSection section: Int) -> [IndexPath] {
-        var rowsToShow = 0
-        self[section].isCollapsed = false
-
-        /// Keep track of collapsed rows to hide its children.
-        var collapsedRows = [FolderCellViewModel]()
-
-        /// iterate over all FolderCellViewModels
-
-        for i in 0..<self[section].count {
-
-            guard let f: Folder = self[section][i].folder as? Folder else {
-                Log.shared.errorAndCrash("A Folder should be a Folder")
-                return [IndexPath]()
-            }
-
-            // Check if the folder is collapsed.
-            let isFolderCollapsed = appSettings.collapsedState(forFolderNamed: f.name,
-                                                               ofAccountWithAddress: self[section].userAddress)
-            /// If the folder is collapsed, it's visible and not expanded.
-            /// If the folder is not collapsd, it's expanded.
-            /// If it's expanded but any of its ancestors is collapsed, it should be hidden.
-            if isFolderCollapsed {
-                collapsedRows.append(self[section][i])
-                self[section][i].isExpanded = false
-                self[section][i].isHidden = false
-                rowsToShow += 1
-            } else {
-                self[section][i].isExpanded = true
-                var shouldShow = true
-
-                /// Check if any of the colllapsed rows is ancestor of the current row.
-                if collapsedRows.contains(where: {$0.isAncestorOf(fcvm: self[section][i])}) {
-                    shouldShow = false
-                }
-                if shouldShow {
-                    self[section][i].isHidden = false
-                    rowsToShow += 1
-                } else {
-                    self[section][i].isHidden = true
-                }
-            }
-        }
-        var ipsToReturn = [IndexPath]()
-        for row in 0..<rowsToShow {
-            let ip = IndexPath(row: row, section: section)
-            ipsToReturn.append(ip)
-        }
-        return ipsToReturn
-    }
-
-
 }
 
