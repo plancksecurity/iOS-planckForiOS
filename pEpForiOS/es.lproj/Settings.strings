@@ -1,6 +1,9 @@
 /* Class = "UILabel"; text = "Detail"; ObjectID = "0Qq-nB-Xso"; */
 "0Qq-nB-Xso.text" = "Detalles";
 
+/* Class = "UILabel"; text = "OAuth2 Reauthorization"; ObjectID = "2dH-l3-cvY"; */
+"2dH-l3-cvY.text" = "Reautorización de OAuth2";
+
 /* Class = "UIViewController"; title = "Extra Keys"; ObjectID = "4fP-ku-UtU"; */
 "4fP-ku-UtU.title" = "Claves Adicionales";
 
@@ -37,6 +40,12 @@
 /* Class = "UIButton"; normalTitle = "add fingerprint"; ObjectID = "J2v-Vi-URg"; */
 "J2v-Vi-URg.normalTitle" = "Añadir huella digital";
 
+/* Class = "UITextField"; text = "John Appleseed"; ObjectID = "jWl-U8-Gg3"; */
+"jWl-U8-Gg3.text" = "John Appleseed";
+
+/* Class = "UITextField"; text = "John Appleseed"; ObjectID = "kdZ-UO-KYC"; */
+"kdZ-UO-KYC.text" = "John Appleseed";
+
 /* Class = "UIButton"; normalTitle = "Set Own Key"; ObjectID = "lzc-xZ-iKm"; */
 "lzc-xZ-iKm.normalTitle" = "Establecer Clave Propia";
 
@@ -48,6 +57,9 @@
 
 /* Class = "UILabel"; text = "Use a passphrase for new keys"; ObjectID = "Ppr-kD-hKR"; */
 "Ppr-kD-hKR.text" = "Usar una frase de contraseña para claves nuevas";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "s0a-c5-T0Q"; */
+"s0a-c5-T0Q.text" = "Nombre";
 
 /* Class = "UILabel"; text = "set_own_key Error"; ObjectID = "ujL-Pa-uXD"; Note = "Don't localize this"; */
 "ujL-Pa-uXD.text" = "Error establecer_clave_propia";

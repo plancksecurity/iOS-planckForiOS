@@ -768,7 +768,8 @@
 /* Login */
 "Sign In" = "Prihlásiť sa";
 
-/* Signature label in account settings */
+/* Edit Signature title
+   Signature label in account settings */
 "Signature" = "Podpis";
 
 /* Start up tutorial skip button */
