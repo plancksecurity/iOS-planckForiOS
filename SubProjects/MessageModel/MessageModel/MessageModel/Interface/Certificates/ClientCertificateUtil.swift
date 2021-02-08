@@ -79,6 +79,11 @@ public class ClientCertificateUtil {
 
     /// Make initializable for MM clients.
     public init() {}
+
+    /// Can the given data be imported as a certificate?
+    public func isCertificate(p12Data: Data) -> Bool {
+        return false
+    }
 }
 
 // MARK: - ClientCertificateUtilProtocol
