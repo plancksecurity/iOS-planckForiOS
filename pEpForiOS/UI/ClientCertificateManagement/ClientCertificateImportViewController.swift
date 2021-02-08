@@ -97,8 +97,6 @@ extension ClientCertificateImportViewController: ClientCertificateImportViewMode
             showWrongPasswordError()
         case .corruptedFile:
             showCorruptedFileError()
-        case .noPermissions:
-            showPermissionsDeniedError()
         }
     }
 
@@ -135,18 +133,6 @@ extension ClientCertificateImportViewController: UITextFieldDelegate {
 // MARK: - Showing Error
 
 extension ClientCertificateImportViewController {
-
-    private func showPermissionsDeniedError() {
-        UIUtils.showAlertWithOnlyPositiveButton(title: Localized.PermissionsDeniedError.title,
-                                                message: Localized.PermissionsDeniedError.message) { [weak self] in
-                                                    guard let me = self else {
-                                                        Log.shared.lostMySelf()
-                                                        return
-                                                    }
-                                                    me.dismiss(animated: true, completion: nil)
-        }
-    }
-
     private func showCorruptedFileError() {
         let title = Localized.CorruptedFileError.title
         let message = Localized.CorruptedFileError.message

@@ -19,7 +19,6 @@ protocol ClientCertificateImportViewModelDelegate: class {
 public enum ImportCertificateError {
     case wrongPassword
     case corruptedFile
-    case noPermissions
 }
 
 final class ClientCertificateImportViewModel {
