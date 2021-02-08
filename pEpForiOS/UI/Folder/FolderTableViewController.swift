@@ -379,7 +379,7 @@ extension FolderTableViewController {
                 }
                 return childrenIndexPaths
             } else {
-                let numberOfRowsToShow = vm.numberOfRowsToInsert(ofSection: section, folderCellViewModel: folderCellViewModel)
+                let numberOfRowsToShow = vm.expandCellAndGetTheNumberOfRowsToInsert(ofSection: section, folderCellViewModel: folderCellViewModel)
                 for i in 0 ..< numberOfRowsToShow {
                     let childIndexPath = IndexPath(item: indexPath.item + i + 1, section: section)
                     childrenIndexPaths.append(childIndexPath)

@@ -187,37 +187,51 @@ extension FolderViewModel {
         return ipsToReturn
     }
 
-    public func numberOfRowsToInsert(ofSection section: Int, folderCellViewModel: FolderCellViewModel) -> Int {
+    /// Expands the cell and get the
+    /// - Parameters:
+    ///   - section: The section of the cell to expand
+    ///   - folderCellViewModel: The Folder Cell View Model of the cell to expand
+    /// - Returns: The number of rows to insert.
+    public func expandCellAndGetTheNumberOfRowsToInsert(ofSection section: Int, folderCellViewModel: FolderCellViewModel) -> Int {
         var rowsToShow = 0
 
         /// Keep track of collapsed rows to hide its children.
         var collapsedRows = [FolderCellViewModel]()
 
-        /// iterate over all FolderCellViewModels
-        let fcvmToIterate = self[section].children(of: folderCellViewModel)
-        for i in 0..<self[section].count {
+        /// iterate over all FolderCellViewModels, but only care about the children of the cell to expand.
+        let childrenFolderCellViewModels = self[section].children(of: folderCellViewModel)
 
-            if !fcvmToIterate.contains(self[section][i]) {
+        for i in 0..<self[section].count {
+            if !childrenFolderCellViewModels.contains(self[section][i]) {
                 continue
             }
 
+            // Get the Folder (MMO).
             guard let f: Folder = self[section][i].folder as? Folder else {
                 Log.shared.errorAndCrash("A Folder should be a Folder")
                 return 0
             }
 
-
             // Check if the folder is collapsed.
             let isFolderCollapsed = appSettings.collapsedState(forFolderNamed: f.name,
                                                                ofAccountWithAddress: self[section].userAddress)
-            /// If the folder is collapsed, it's visible and not expanded.
+            /// If the folder is collapsed,
+            /// evaluate if has any ancestor collapsed,
+            /// If so, it is not visible.
+            /// Else, it's visible and not expanded.
+            ///
             /// If the folder is not collapsd, it's expanded.
             /// If it's expanded but any of its ancestors is collapsed, it should be hidden.
             if isFolderCollapsed {
                 collapsedRows.append(self[section][i])
                 self[section][i].isExpanded = false
-                self[section][i].isHidden = false
-                rowsToShow += 1
+
+                if !self[section].hasAncestorsCollapsed(folderCellViewModel: self[section][i]) {
+                    self[section][i].isHidden = false
+                    rowsToShow += 1
+                } else {
+                    self[section][i].isHidden = true
+                }
             } else {
                 self[section][i].isExpanded = true
                 var shouldShow = true
@@ -237,7 +251,13 @@ extension FolderViewModel {
         return rowsToShow
     }
 
-
+    /// Indicates the number of rows to hide.
+    ///
+    /// - Parameters:
+    ///   - section: The section of the cell to collapse.
+    ///   - folderCellViewModel: The folder cell view model of the cell to collapse
+    ///   - isExpanded:
+    /// - Returns:
     public func numberOfRowsToHide(ofSection section: Int,
                                    folderCellViewModel: FolderCellViewModel,
                                    isParentExpand isExpanded: Bool) -> Int {

@@ -191,4 +191,15 @@ public class FolderSectionViewModel {
         }
         return fcvm
     }
+
+    func hasAncestorsCollapsed(folderCellViewModel: FolderCellViewModel) -> Bool {
+        var valueToReturn = false
+        forLoop: for i in 0..<items.count {
+            if items[i].isAncestorOf(fcvm: folderCellViewModel) && !items[i].isExpanded {
+                valueToReturn = true
+                break forLoop
+            }
+        }
+        return valueToReturn
+    }
 }
