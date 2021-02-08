@@ -10,11 +10,6 @@ import Foundation
 
 extension Message {
 
-    /// Indicates if the message has been processed by the engine.
-    public var isEncrypted: Bool {
-        return PEPUtils.pEpRatingFromInt(self.pEpRatingInt) == .undefined
-    }
-
     /// Persists the original rating header to the current message.
     /// - Parameter rating: The PEPRating to be set.
     public func setOriginalRatingHeader(rating: Rating) {
