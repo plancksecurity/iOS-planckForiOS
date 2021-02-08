@@ -1,3 +1,6 @@
 /* Class = "UIButton"; normalTitle = "Add Account"; ObjectID = "NEj-lZ-p6O"; */
 "NEj-lZ-p6O.normalTitle" = "Pridať účet";
 
+/* Class = "UILabel"; text = "Title"; ObjectID = "s3w-9y-WE2"; */
+"s3w-9y-WE2.text" = "nadpis";
+

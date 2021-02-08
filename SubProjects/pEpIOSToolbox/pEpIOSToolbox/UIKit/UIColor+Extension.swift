@@ -22,7 +22,6 @@ extension UIColor {
     public static let pEpLightBackgroundHex = "#F2F2F2"
     public static let pEpCellBackgroundHex = "#FFFFFF"
     public static let pEpNavigationBarColor = "#f7f7f7"
-    public static let pEpBlueHex = "#007AFF"
     public static let pEpGrayBackgroundResetHex = "#c8c7cc"
     public static let pEpDarkTextHex = "#171717"
     public static let pEpGrayBorderHex = "#B2B2B2"
@@ -31,21 +30,16 @@ extension UIColor {
     public static var pEpDarkGreen = UIColor(hexString: pEpDarkGreenHex)
     public static var pEpRed = UIColor(hexString: pEpRedHex)
     public static var pEpGray = UIColor(hexString: pEpGreyHex)
-    public static var pEpYellow = UIColor(hexString: pEpYellowHex)
     public static var pEpNavigation = UIColor(hexString: pEpNavigationBarColor)
     public static var pEpGreyLines = UIColor(hexString: pEpGreyLinesHex)
     public static var pEpGreyButtonLines = UIColor(hexString: pEpGreyButtonLinesHex)
     public static var pEpGreyText = UIColor(hexString: pEpGreyTextHex)
     public static var pEpGrayBorder = UIColor(hexString: pEpGrayBorderHex)
     public static var pEpGreyBackground = UIColor(hexString: pEpGreyBackgroundHex)
-    public static var pEpBlue = UIColor(hexString: pEpBlueHex)
     public static var pEpGrayBackgroundReset = UIColor(hexString: pEpGrayBackgroundResetHex)
     public static var pEpCellBackground = UIColor(hexString: pEpCellBackgroundHex)
     public static var pEpDarkText = UIColor(hexString: pEpDarkTextHex)
     public static var pEpTextDark = UIColor.black
-
-    public static let AppleRed =
-                UIColor(red: 255/255.0, green: 59/255, blue: 48/255.0, alpha: 1.0)
 
     /**
      Example use: In trustwords table view cells.

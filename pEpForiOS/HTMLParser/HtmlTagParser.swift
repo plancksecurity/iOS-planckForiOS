@@ -33,10 +33,6 @@ class HtmlTagParser: NSObject, XMLParserDelegate {
         tree[key] = tree[key] ?? 0 > 0 ? tree[key] ?? 0 - 1 : 0
     }
 
-    private func treeNthChild(key: String) -> Int {
-        return tree[key] ?? 0
-    }
-
     func parser(_ parser: XMLParser, foundNotationDeclarationWithName name: String, publicID: String?, systemID: String?) {
     }
 

@@ -10,10 +10,6 @@ import Foundation
 
 struct RelationshipKeyPath {
 
-    /// CdFolders
-    static let cdFolder_parent_account = CdFolder.RelationshipName.parent + "." +
-        CdFolder.RelationshipName.account
-
     /// CdMessage
     static let cdMessage_parent_account_isUnifiable = CdMessage.RelationshipName.parent + "." +
         CdFolder.RelationshipName.account + "." + CdAccount.AttributeName.includeFoldersInUnifiedFolders

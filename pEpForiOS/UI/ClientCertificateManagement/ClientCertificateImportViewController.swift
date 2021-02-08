@@ -34,9 +34,6 @@ final class ClientCertificateImportViewController: UIViewController {
 
     @IBOutlet weak private var scrollViewBottomConstraint: NSLayoutConstraint!
 
-    private var portraitConstraints: [NSLayoutConstraint] = []
-    private var landscapeConstraints: [NSLayoutConstraint] = []
-
 // MARK: - ViewModel
 
     public var viewModel: ClientCertificateImportViewModel?
@@ -174,7 +171,10 @@ extension ClientCertificateImportViewController {
                                         Log.shared.lostMySelf()
                                         return
                                     }
-                                    me.dismiss(animated: true, completion: nil)
+                                    //Dismisses the error view regardless of whether the view was presented modally or pushed
+                                    me.dismissAndPerform {
+                                        me.dismiss()
+                                    }
                                    }, positiveButtonAction: {
                                     // We don't need to do something here. Our expectation is close this alert
                                    })

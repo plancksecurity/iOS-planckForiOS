@@ -1,5 +1,5 @@
 //
-//  nonPasteableUiTextField.swift
+//  NonEditMenuUITextField.swift
 //  pEp
 //
 //  Created by Xavier Algarra on 18/07/2019.
@@ -9,9 +9,10 @@
 import Foundation
 import UIKit
 
-class NonEditMenuUITextField: UITextField {
+/// This Textfield does not allow any Edit Action such as copy, paste, cut.
+public class NonEditMenuUITextField: UITextField {
 
-    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+    public override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         return false
     }
 }

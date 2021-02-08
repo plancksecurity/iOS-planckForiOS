@@ -9,7 +9,8 @@
 import Foundation
 import CoreData
 
-import PEPObjCAdapterFramework
+import PEPObjCAdapterTypes_iOS
+import PEPObjCAdapter_iOS
 import pEpIOSToolbox
 
 class PrepareAccountForSavingService {
@@ -31,10 +32,9 @@ class PrepareAccountForSavingService {
         }
         KeyGeneratorService.generateKey(cdIdentity: cdIdentity,
                                         context: context,
-                                        pEpSyncEnabled: pEpSyncEnable)
-        { [weak self] (success) in
+                                        pEpSyncEnabled: pEpSyncEnable) { [weak self] (success) in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             guard success else {
