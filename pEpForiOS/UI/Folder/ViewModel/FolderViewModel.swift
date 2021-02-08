@@ -187,7 +187,7 @@ extension FolderViewModel {
         return ipsToReturn
     }
 
-    public func numberOfRowsToShow(ofSection section: Int, folderCellViewModel: FolderCellViewModel) -> Int {
+    public func numberOfRowsToInsert(ofSection section: Int, folderCellViewModel: FolderCellViewModel) -> Int {
         var rowsToShow = 0
 
         /// Keep track of collapsed rows to hide its children.

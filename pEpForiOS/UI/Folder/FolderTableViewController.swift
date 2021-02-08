@@ -138,6 +138,8 @@ class FolderTableViewController: UITableViewController {
             Log.shared.errorAndCrash("No subfolder cell found")
             return UITableViewCell()
         }
+
+        // Setup cell: padding, indentation, texts, colors, separator, chevron, etc.
         cell.indentationLevel = min(fcvm.indentationLevel, vm.maxIndentationLevel)
         cell.shouldRotateChevron = fcvm.shouldRotateChevron
         cell.chevronButton.isUserInteractionEnabled = fcvm.isChevronEnabled
@@ -161,6 +163,8 @@ class FolderTableViewController: UITableViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
+
+        // We only access to visible folders.
         let cellViewModel = folderViewModel[indexPath.section].visibleFolderCellViewModel(index: indexPath.row)
         if !cellViewModel.isSelectable {
             // Me must not open unselectable folders. Unselectable folders are typically path
@@ -357,23 +361,27 @@ extension FolderTableViewController {
         /// - Parameter isExpand: Indicates if the parent is Expanded
         /// - Returns: The children's Indexpaths.
         func childrenIndexPaths(isParentExpand isExpanded: Bool) -> [IndexPath] {
-            let sectionVM = vm[indexPath.section]
+            let section = indexPath.section
+            let sectionViewModel = vm[section]
             var childrenIndexPaths = [IndexPath]()
-            let children = sectionVM.children(of: folderCellViewModel).filter { $0.isHidden == isExpanded }
+
+            let children = sectionViewModel.children(of: folderCellViewModel).filter { $0.isHidden == isExpanded }
+
+            // if not expanded, we will collapse, otherwise we will expand
             if !isExpanded {
                 children.forEach {
-                    guard let item = sectionVM.visibleIndex(of: $0) else {
+                    guard let row = sectionViewModel.visibleIndex(of: $0) else {
                         Log.shared.errorAndCrash("Item not found")
                         return
                     }
-                    let ip = IndexPath(item:item, section: indexPath.section)
-                    childrenIndexPaths.append(ip)
+                    let childrenIndexPath = IndexPath(row:row, section:section)
+                    childrenIndexPaths.append(childrenIndexPath)
                 }
                 return childrenIndexPaths
             } else {
-                let numberOfRowsToShow = vm.numberOfRowsToShow(ofSection: indexPath.section, folderCellViewModel: folderCellViewModel)
+                let numberOfRowsToShow = vm.numberOfRowsToInsert(ofSection: section, folderCellViewModel: folderCellViewModel)
                 for i in 0 ..< numberOfRowsToShow {
-                    let childIndexPath = IndexPath(item: indexPath.item + i + 1, section: indexPath.section)
+                    let childIndexPath = IndexPath(item: indexPath.item + i + 1, section: section)
                     childrenIndexPaths.append(childIndexPath)
                 }
                 return childrenIndexPaths
@@ -383,12 +391,9 @@ extension FolderTableViewController {
         //Expand or collapse the root folder
         let folderCellViewModel = vm[indexPath.section].visibleFolderCellViewModel(index: indexPath.item)
         folderCellViewModel.isExpanded.toggle()
-
         let childrenIPs = childrenIndexPaths(isParentExpand : folderCellViewModel.isExpanded)
-
         if !folderCellViewModel.isExpanded {
             let children = vm[indexPath.section].children(of: folderCellViewModel)
-
             children.forEach {
                 $0.isHidden = !folderCellViewModel.isExpanded
                 $0.isExpanded = folderCellViewModel.isExpanded
