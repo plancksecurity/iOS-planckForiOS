@@ -116,6 +116,8 @@ class ClientCertificateUtilTest: PersistentStoreDrivenTestBase {
         XCTAssertTrue(ClientCertificatesTestUtil.isCertificate(filename: "Certificate_001.p12"))
         XCTAssertTrue(ClientCertificatesTestUtil.isCertificate(filename: "Certificate_002.p12"))
         XCTAssertTrue(ClientCertificatesTestUtil.isCertificate(filename: "Certificate_003.p12"))
+
+        // This is an animated gif disguised as certificate
         XCTAssertFalse(ClientCertificatesTestUtil.isCertificate(filename: "Not_a_certificate.p12"))
     }
 
