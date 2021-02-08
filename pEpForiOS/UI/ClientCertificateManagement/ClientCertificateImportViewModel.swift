@@ -43,7 +43,8 @@ final class ClientCertificateImportViewModel {
         do {
             CFURLStartAccessingSecurityScopedResource(certificateUrl as CFURL)
             defer { CFURLStopAccessingSecurityScopedResource(certificateUrl as CFURL) }
-            p12Data = try Data(contentsOf: certificateUrl)
+            let theP12Data = try Data(contentsOf: certificateUrl)
+            p12Data = theP12Data
         } catch {
             delegate?.showError(type: .corruptedFile, dissmisAfterError: true)
             return
