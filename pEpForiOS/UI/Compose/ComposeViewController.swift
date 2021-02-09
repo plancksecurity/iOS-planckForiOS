@@ -7,11 +7,18 @@
 //
 
 import UIKit
-import MessageModel
-import SwipeCellKit
 import Photos
-import pEpIOSToolbox
 import ContactsUI
+
+import SwipeCellKit
+
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
+import MessageModel
+#endif
+
+import pEpIOSToolbox
 
 class ComposeViewController: UIViewController {
     @IBOutlet var sendButton: UIBarButtonItem!
