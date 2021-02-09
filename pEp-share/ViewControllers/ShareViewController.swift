@@ -8,13 +8,9 @@
 
 import UIKit
 
-import MessageModel
 import pEpIOSToolbox
 
 final class ShareViewController: UIViewController {
-
-    private var messageModelService: MessageModelServiceProtocol?
-
     var composeTableVC: ComposeTableViewController?
 
     override func viewDidLoad() {
