@@ -3590,7 +3590,7 @@
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.251;
+				MARKETING_VERSION = 1.1.252;
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "-DDEBUG_LOGGING -D DEBUG $(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = security.pEp;
@@ -3627,7 +3627,7 @@
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.251;
+				MARKETING_VERSION = 1.1.252;
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = security.pEp;
 				PRODUCT_MODULE_NAME = pEpForiOS;

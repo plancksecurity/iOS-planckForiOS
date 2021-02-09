@@ -820,7 +820,8 @@
 /* Login */
 "Sign In" = "Se connecter";
 
-/* Signature label in account settings */
+/* Edit Signature title
+   Signature label in account settings */
 "Signature" = "Signature";
 
 /* Start up tutorial skip button */
