@@ -219,6 +219,9 @@
 		433E743A225B76E000B84CD9 /* CdServer+NonOptionalConvenienceAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433E7439225B76E000B84CD9 /* CdServer+NonOptionalConvenienceAccessors.swift */; };
 		433E743F225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433E743E225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift */; };
 		43495984239E509300CF1E12 /* CdFolder+SyncFolderMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43495983239E509300CF1E12 /* CdFolder+SyncFolderMode.swift */; };
+		434A6CE625D2BF1B00179335 /* MessageModelForAppExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 434A6CE425D2BF1B00179335 /* MessageModelForAppExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		434A6CE925D2BF1B00179335 /* MessageModelForAppExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 434A6CE225D2BF1B00179335 /* MessageModelForAppExtensions.framework */; };
+		434A6CEA25D2BF1B00179335 /* MessageModelForAppExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 434A6CE225D2BF1B00179335 /* MessageModelForAppExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -442,6 +445,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		434A6CE725D2BF1B00179335 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 43CB60791DA4EB4E0015281E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 434A6CE125D2BF1B00179335;
+			remoteInfo = MessageModelForAppExtensions;
+		};
 		43CB608D1DA4EB4E0015281E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 43CB60791DA4EB4E0015281E /* Project object */;
@@ -457,6 +467,20 @@
 			remoteInfo = MessageModelTestApp;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		434A6CEB25D2BF1B00179335 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				434A6CEA25D2BF1B00179335 /* MessageModelForAppExtensions.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1506E8D925ADEE5C00909821 /* QualifyServerIsLocalServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalServiceTest.swift; sourceTree = "<group>"; };
@@ -682,6 +706,9 @@
 		433E7439225B76E000B84CD9 /* CdServer+NonOptionalConvenienceAccessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdServer+NonOptionalConvenienceAccessors.swift"; sourceTree = "<group>"; };
 		433E743E225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift"; sourceTree = "<group>"; };
 		43495983239E509300CF1E12 /* CdFolder+SyncFolderMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+SyncFolderMode.swift"; sourceTree = "<group>"; };
+		434A6CE225D2BF1B00179335 /* MessageModelForAppExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MessageModelForAppExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		434A6CE425D2BF1B00179335 /* MessageModelForAppExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageModelForAppExtensions.h; sourceTree = "<group>"; };
+		434A6CE525D2BF1B00179335 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdMessageTest.swift; sourceTree = "<group>"; };
 		434DC0D41DAE72D4007C98B8 /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		434DC0D61DAE7407007C98B8 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -917,6 +944,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		434A6CDF25D2BF1B00179335 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		43CB607E1DA4EB4E0015281E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -946,6 +980,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				434A6CE925D2BF1B00179335 /* MessageModelForAppExtensions.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1854,6 +1889,15 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		434A6CE325D2BF1B00179335 /* MessageModelForAppExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				434A6CE425D2BF1B00179335 /* MessageModelForAppExtensions.h */,
+				434A6CE525D2BF1B00179335 /* Info.plist */,
+			);
+			path = MessageModelForAppExtensions;
+			sourceTree = "<group>";
+		};
 		43598DF51DA7F74F00EAD0B7 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
@@ -2023,6 +2067,7 @@
 				43CB608F1DA4EB4E0015281E /* MessageModelTests */,
 				B751B99322D4D5100018DE0D /* MessageModelTestApp */,
 				15A91EBC25BB357A00D33EAB /* system.db */,
+				434A6CE325D2BF1B00179335 /* MessageModelForAppExtensions */,
 				43CB60831DA4EB4E0015281E /* Products */,
 				B7DB7FA322147000003968DA /* Frameworks */,
 				4303EA41253826A8006151D3 /* Recovered References */,
@@ -2035,6 +2080,7 @@
 				43CB60821DA4EB4E0015281E /* MessageModel.framework */,
 				43CB608B1DA4EB4E0015281E /* MessageModelTests.xctest */,
 				B751B99222D4D5100018DE0D /* OfferCapabilitiesToUnitTests.app */,
+				434A6CE225D2BF1B00179335 /* MessageModelForAppExtensions.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2397,6 +2443,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		434A6CDD25D2BF1B00179335 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				434A6CE625D2BF1B00179335 /* MessageModelForAppExtensions.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		43CB607F1DA4EB4E0015281E /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -2408,6 +2462,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		434A6CE125D2BF1B00179335 /* MessageModelForAppExtensions */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 434A6CEE25D2BF1B00179335 /* Build configuration list for PBXNativeTarget "MessageModelForAppExtensions" */;
+			buildPhases = (
+				434A6CDD25D2BF1B00179335 /* Headers */,
+				434A6CDE25D2BF1B00179335 /* Sources */,
+				434A6CDF25D2BF1B00179335 /* Frameworks */,
+				434A6CE025D2BF1B00179335 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MessageModelForAppExtensions;
+			productName = MessageModelForAppExtensions;
+			productReference = 434A6CE225D2BF1B00179335 /* MessageModelForAppExtensions.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		43CB60811DA4EB4E0015281E /* MessageModel */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43CB60961DA4EB4E0015281E /* Build configuration list for PBXNativeTarget "MessageModel" */;
@@ -2457,10 +2529,12 @@
 				B751B98E22D4D5100018DE0D /* Sources */,
 				B751B98F22D4D5100018DE0D /* Frameworks */,
 				B751B99022D4D5100018DE0D /* Resources */,
+				434A6CEB25D2BF1B00179335 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				434A6CE825D2BF1B00179335 /* PBXTargetDependency */,
 			);
 			name = OfferCapabilitiesToUnitTests;
 			productName = MessageModelTestApp;
@@ -2477,6 +2551,9 @@
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "pEp Security S.A.";
 				TargetAttributes = {
+					434A6CE125D2BF1B00179335 = {
+						CreatedOnToolsVersion = 12.4;
+					};
 					43CB60811DA4EB4E0015281E = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = NQLYU6MGPN;
@@ -2517,11 +2594,19 @@
 				43CB60811DA4EB4E0015281E /* MessageModel */,
 				43CB608A1DA4EB4E0015281E /* MessageModelTests */,
 				B751B99122D4D5100018DE0D /* OfferCapabilitiesToUnitTests */,
+				434A6CE125D2BF1B00179335 /* MessageModelForAppExtensions */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		434A6CE025D2BF1B00179335 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		43CB60801DA4EB4E0015281E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2653,6 +2738,13 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		434A6CDE25D2BF1B00179335 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		43CB607D1DA4EB4E0015281E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3070,6 +3162,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		434A6CE825D2BF1B00179335 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 434A6CE125D2BF1B00179335 /* MessageModelForAppExtensions */;
+			targetProxy = 434A6CE725D2BF1B00179335 /* PBXContainerItemProxy */;
+		};
 		43CB608E1DA4EB4E0015281E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 43CB60811DA4EB4E0015281E /* MessageModel */;
@@ -3126,6 +3223,75 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		434A6CEC25D2BF1B00179335 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = NQLYU6MGPN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = MessageModelForAppExtensions/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = security.pep.MessageModel.MessageModelForAppExtensions;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		434A6CED25D2BF1B00179335 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = NQLYU6MGPN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = MessageModelForAppExtensions/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = security.pep.MessageModel.MessageModelForAppExtensions;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		43CB60941DA4EB4E0015281E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3410,6 +3576,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		434A6CEE25D2BF1B00179335 /* Build configuration list for PBXNativeTarget "MessageModelForAppExtensions" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				434A6CEC25D2BF1B00179335 /* Debug */,
+				434A6CED25D2BF1B00179335 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		43CB607C1DA4EB4E0015281E /* Build configuration list for PBXProject "MessageModel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
