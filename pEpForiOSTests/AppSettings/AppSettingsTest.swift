@@ -32,9 +32,9 @@ class AppSettingsTest: XCTestCase {
 
     func testSetAccountCollapsedState() {
         //Set a few collapsing states
-        AppSettings.shared.setCollapsedState(forAccountWith: address2, to: true)
-        AppSettings.shared.setCollapsedState(forAccountWith: address3, to: false)
-        AppSettings.shared.setCollapsedState(forAccountWith: address1, to: true)
+        AppSettings.shared.setCollapsedState(forAccountWithAddress: address2, to: true)
+        AppSettings.shared.setCollapsedState(forAccountWithAddress: address3, to: false)
+        AppSettings.shared.setCollapsedState(forAccountWithAddress: address1, to: true)
 
         //Check each
         let address1CollapsedState = AppSettings.shared.collapsedState(forAccountWithAddress: address1)
@@ -47,46 +47,46 @@ class AppSettingsTest: XCTestCase {
         XCTAssertTrue(address2CollapsedState)
 
         // Override value of one of them
-        AppSettings.shared.setCollapsedState(forAccountWith: address1, to: false)
+        AppSettings.shared.setCollapsedState(forAccountWithAddress: address1, to: false)
         let address1CollapsedStateAgain = AppSettings.shared.collapsedState(forAccountWithAddress: address1)
         XCTAssertFalse(address1CollapsedStateAgain)
     }
 
     func testsetFolderViewCollapsedState() {
-        let folder1CollapsingState = AppSettings.shared.collapsedState(forFolderNamed: folderName1, ofAccountWith: address1)
+        let folder1CollapsingState = AppSettings.shared.collapsedState(forFolderNamed: folderName1, ofAccountWithAddress: address1)
         XCTAssertFalse(folder1CollapsingState)
-        AppSettings.shared.setCollapsedState(forFolderNamed: folderName1, ofAccountWith: address1, to: true)
-        let newFolder1CollapsingState = AppSettings.shared.collapsedState(forFolderNamed: folderName1, ofAccountWith: address1)
+        AppSettings.shared.setCollapsedState(forFolderNamed: folderName1, ofAccountWithAddress: address1, to: true)
+        let newFolder1CollapsingState = AppSettings.shared.collapsedState(forFolderNamed: folderName1, ofAccountWithAddress: address1)
         XCTAssertTrue(newFolder1CollapsingState)
     }
 
     func testSetFoldersCollapsedState() {
-        let folder1CollapsingState = AppSettings.shared.collapsedState(forFolderNamed: folderName1, ofAccountWith: address1)
-        let folder2CollapsingState = AppSettings.shared.collapsedState(forFolderNamed: folderName2, ofAccountWith: address1)
-        let folder3CollapsingState = AppSettings.shared.collapsedState(forFolderNamed: folderName3, ofAccountWith: address1)
+        let folder1CollapsingState = AppSettings.shared.collapsedState(forFolderNamed: folderName1, ofAccountWithAddress: address1)
+        let folder2CollapsingState = AppSettings.shared.collapsedState(forFolderNamed: folderName2, ofAccountWithAddress: address1)
+        let folder3CollapsingState = AppSettings.shared.collapsedState(forFolderNamed: folderName3, ofAccountWithAddress: address1)
         XCTAssertFalse(folder1CollapsingState)
         XCTAssertFalse(folder2CollapsingState)
         XCTAssertFalse(folder3CollapsingState)
 
-        AppSettings.shared.setCollapsedState(forFolderNamed: folderName1, ofAccountWith: address1, to: true)
-        AppSettings.shared.setCollapsedState(forFolderNamed: folderName2, ofAccountWith: address1, to: true)
+        AppSettings.shared.setCollapsedState(forFolderNamed: folderName1, ofAccountWithAddress: address1, to: true)
+        AppSettings.shared.setCollapsedState(forFolderNamed: folderName2, ofAccountWithAddress: address1, to: true)
 
-        let newFolder1CollapsingState = AppSettings.shared.collapsedState(forFolderNamed: folderName1, ofAccountWith: address1)
+        let newFolder1CollapsingState = AppSettings.shared.collapsedState(forFolderNamed: folderName1, ofAccountWithAddress: address1)
         XCTAssertTrue(newFolder1CollapsingState)
-        let newFolder2CollapsingState = AppSettings.shared.collapsedState(forFolderNamed: folderName2, ofAccountWith: address1)
+        let newFolder2CollapsingState = AppSettings.shared.collapsedState(forFolderNamed: folderName2, ofAccountWithAddress: address1)
         XCTAssertTrue(newFolder2CollapsingState)
-        let newFolder3CollapsingState = AppSettings.shared.collapsedState(forFolderNamed: folderName3, ofAccountWith: address1)
+        let newFolder3CollapsingState = AppSettings.shared.collapsedState(forFolderNamed: folderName3, ofAccountWithAddress: address1)
         XCTAssertFalse(newFolder3CollapsingState)
     }
 
     func testSetFolderCollapsedStateSetsAccountUncollapsedByDefault() {
-        AppSettings.shared.setCollapsedState(forFolderNamed: folderName2, ofAccountWith: address1, to: true)
+        AppSettings.shared.setCollapsedState(forFolderNamed: folderName2, ofAccountWithAddress: address1, to: true)
         let expectedFalse = AppSettings.shared.collapsedState(forAccountWithAddress: address1)
         XCTAssertFalse(expectedFalse)
     }
 
     func testRemoveAll() {
-        AppSettings.shared.setCollapsedState(forFolderNamed: folderName2, ofAccountWith: address1, to: true)
+        AppSettings.shared.setCollapsedState(forFolderNamed: folderName2, ofAccountWithAddress: address1, to: true)
         AppSettings.shared.removeCollapsedStateOfAccountWithAddress(address: address1)
         let address1CollapsedState = AppSettings.shared.collapsedState(forAccountWithAddress: address1)
         XCTAssertFalse(address1CollapsedState)

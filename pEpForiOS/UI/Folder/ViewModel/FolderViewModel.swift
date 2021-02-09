@@ -163,7 +163,7 @@ extension FolderViewModel {
             return
         }
         let address = items[section].userAddress
-        appSettings.setCollapsedState(forAccountWith: address, to: isCollapsed)
+        appSettings.setCollapsedState(forAccountWithAddress: address, to: isCollapsed)
         if isCollapsed {
             hiddenSections.insert(section)
             let indexPaths = hideRows(ofSection: section)
@@ -238,7 +238,7 @@ extension FolderViewModel {
         }
         let address = self[sectionIndex].userAddress
         let isFolderCollapsed = appSettings.collapsedState(forFolderNamed: folder.name,
-                                                           ofAccountWith: address)
+                                                           ofAccountWithAddress: address)
         if isFolderCollapsed {
             collapsedRows.append(self[sectionIndex][itemIndex])
             self[sectionIndex][itemIndex].isExpanded = false
