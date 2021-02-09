@@ -248,6 +248,9 @@
 		43498CDD200D0790006DC947 /* LoginViewModelOAuth2ErrorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43498CDC200D0790006DC947 /* LoginViewModelOAuth2ErrorDelegate.swift */; };
 		4349E8BB252DCC58000F2BBB /* LiveLogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4349E8BA252DCC58000F2BBB /* LiveLogViewModel.swift */; };
 		4349E8C0252DCD42000F2BBB /* LiveLogViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4349E8BF252DCD42000F2BBB /* LiveLogViewModelTest.swift */; };
+		434A6C1225D2A08800179335 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E2A1CBD0BC900A7FC3C /* Main.storyboard */; };
+		434A6C1325D2A08F00179335 /* AccountCreation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B78309C61EAA09040051A2E0 /* AccountCreation.storyboard */; };
+		434A6C1625D2A17900179335 /* TrustManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4398175B2418ED2000C8AB84 /* TrustManagement.storyboard */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
@@ -2810,7 +2813,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				434A6C1625D2A17900179335 /* TrustManagement.storyboard in Resources */,
 				3A503AA2253737B20070AB6A /* MainInterface.storyboard in Resources */,
+				434A6C1225D2A08800179335 /* Main.storyboard in Resources */,
+				434A6C1325D2A08F00179335 /* AccountCreation.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
