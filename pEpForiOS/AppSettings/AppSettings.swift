@@ -302,7 +302,7 @@ extension AppSettings {
         collapsingState = current
     }
 
-    public func setCollapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String, to value: Bool) {
+    public func setFolderViewCollapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String, to value: Bool) {
         var current = collapsingState
         if var currentAddressState = current[address] {
             currentAddressState[folderName] = value
@@ -332,7 +332,7 @@ extension AppSettings {
         return isCollapsed
     }
 
-    public func collapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String) -> Bool {
+    public func folderViewCollapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String) -> Bool {
         guard let state = collapsingState[address] else {
             //Valid case: might not been saved yet.
             return false

@@ -237,7 +237,7 @@ extension FolderViewModel {
             return
         }
         let address = self[sectionIndex].userAddress
-        let isFolderCollapsed = appSettings.collapsedState(forFolderNamed: folder.name,
+        let isFolderCollapsed = appSettings.folderViewCollapsedState(forFolderNamed: folder.name,
                                                            ofAccountWithAddress: address)
         if isFolderCollapsed {
             collapsedRows.append(self[sectionIndex][itemIndex])

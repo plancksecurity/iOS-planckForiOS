@@ -73,12 +73,12 @@ class MockAppSettings: AppSettingsProtocol {
         return true
     }
 
-    func collapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String) -> Bool {
+    func folderViewCollapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String) -> Bool {
         fulfillIfNotNil(expectation: collapsedStateForFolderOfAccountExpectation)
         return true
     }
 
-    func setCollapsedState(forFolderNamed: String, ofAccountWithAddress address: String, to value: Bool) {
+    func setFolderViewCollapsedState(forFolderNamed: String, ofAccountWithAddress address: String, to value: Bool) {
         fulfillIfNotNil(expectation: setFolderCollapsedStateExpectation)
     }
 

@@ -90,7 +90,7 @@ public class FolderCellViewModel {
             return
         }
         let address = folder.account.user.address
-        appSettings.setCollapsedState(forFolderNamed: folder.name, ofAccountWithAddress: address, to: isCollapsed)
+        appSettings.setFolderViewCollapsedState(forFolderNamed: folder.name, ofAccountWithAddress: address, to: isCollapsed)
     }
     
     ///Indicates if the arrow of the chevron should rotate to point down.

@@ -55,7 +55,7 @@ public class FolderSectionViewModel {
         for folder in sorted {
             let fcvm = FolderCellViewModel(folder: folder, level: 0)
             let address = ac.user.address
-            let isFolderCollapsed = appSettings.collapsedState(forFolderNamed: folder.name, ofAccountWithAddress: address)
+            let isFolderCollapsed = appSettings.folderViewCollapsedState(forFolderNamed: folder.name, ofAccountWithAddress: address)
             fcvm.isExpanded = !isFolderCollapsed
             items.append(fcvm)
             let level = folder.folderType == .inbox ? 0 : 1
@@ -73,7 +73,7 @@ public class FolderSectionViewModel {
                 return
             }
             let address = account.user.address
-            let isChildFolderCollapsed = appSettings.collapsedState(forFolderNamed: subFolder.name, ofAccountWithAddress: address)
+            let isChildFolderCollapsed = appSettings.folderViewCollapsedState(forFolderNamed: subFolder.name, ofAccountWithAddress: address)
 
             if isChildFolderCollapsed {
                 child.isExpanded = false

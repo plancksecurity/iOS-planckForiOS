@@ -46,7 +46,7 @@ public protocol AppSettingsProtocol {
     ///   - folderName: The name of the folder. For example: `Inbox.My Folder`
     ///   - address: The account address to check the collapsed state of its folder.
     /// - Returns: True if it is collapsed, false if not, or if not found, as it means that hasn't been collapsed yet.
-    func collapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String) -> Bool
+    func folderViewCollapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String) -> Bool
 
     /// Set changes in the collapsing state of the folder passed by parameter
     ///
@@ -54,7 +54,7 @@ public protocol AppSettingsProtocol {
     ///   - address: The account address
     ///   - folderName: The name of the folder. For example: `Inbox.My Folder`
     ///   - isCollapsed: The collapsing state.
-    func setCollapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String, to value: Bool)
+    func setFolderViewCollapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String, to value: Bool)
 
     /// Set changes in the collapsing state of the account passed by parameter
     ///
