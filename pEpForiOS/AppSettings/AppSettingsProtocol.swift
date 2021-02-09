@@ -32,13 +32,13 @@ public protocol AppSettingsProtocol {
 
     /// Removes the collapsing state for the account address passed by parameter.
     /// - Parameter address: The address of the account to delete its collapsing states preferences.
-    func removeCollapsedStateOfAccountWithAddress(address: String)
+    func removeFolderViewCollapsedStateOfAccountWith(address: String)
 
     /// Retrieves the collapsed state for the account passed by parameter.
     ///
     /// - Parameter address: The account address to check its collapsed state
     /// - returns: True if it is collapsed, false if not, or if not found, as it means that hasn't been collapsed yet.
-    func collapsedState(forAccountWithAddress address: String) -> Bool
+    func folderViewCollapsedState(forAccountWith address: String) -> Bool
 
     /// Retrieves the collapsed state for the folder passed by parameter in the account passed by parameter.
     ///
@@ -46,7 +46,7 @@ public protocol AppSettingsProtocol {
     ///   - folderName: The name of the folder. For example: `Inbox.My Folder`
     ///   - address: The account address to check the collapsed state of its folder.
     /// - Returns: True if it is collapsed, false if not, or if not found, as it means that hasn't been collapsed yet.
-    func folderViewCollapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String) -> Bool
+    func folderViewCollapsedState(forFolderNamed folderName: String, ofAccountWith address: String) -> Bool
 
     /// Set changes in the collapsing state of the folder passed by parameter
     ///
@@ -54,12 +54,12 @@ public protocol AppSettingsProtocol {
     ///   - address: The account address
     ///   - folderName: The name of the folder. For example: `Inbox.My Folder`
     ///   - isCollapsed: The collapsing state.
-    func setFolderViewCollapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String, to value: Bool)
+    func setFolderViewCollapsedState(forFolderNamed folderName: String, ofAccountWith address: String, to value: Bool)
 
     /// Set changes in the collapsing state of the account passed by parameter
     ///
     /// - Parameters:
     ///   - address: The account address
     ///   - isCollapsed: The collapsing state.
-    func setCollapsedState(forAccountWithAddress address: String, to value: Bool)
+    func setFolderViewCollapsedState(forAccountWith address: String, to value: Bool)
 }

@@ -289,7 +289,7 @@ extension AppSettings {
 
     //MARK: Setters
 
-    public func setCollapsedState(forAccountWithAddress address: String, to value: Bool) {
+    public func setFolderViewCollapsedState(forAccountWith address: String, to value: Bool) {
         var current = collapsingState
         let key = AppSettings.keyFolderViewAccountCollapsedState
         if var currentAddress = current[address] {
@@ -302,7 +302,7 @@ extension AppSettings {
         collapsingState = current
     }
 
-    public func setFolderViewCollapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String, to value: Bool) {
+    public func setFolderViewCollapsedState(forFolderNamed folderName: String, ofAccountWith address: String, to value: Bool) {
         var current = collapsingState
         if var currentAddressState = current[address] {
             currentAddressState[folderName] = value
@@ -313,7 +313,7 @@ extension AppSettings {
         collapsingState = current
     }
 
-    public func removeCollapsedStateOfAccountWithAddress(address: String) {
+    public func removeFolderViewCollapsedStateOfAccountWith(address: String) {
         var current = collapsingState
         current[address] = nil
         collapsingState = current
@@ -321,7 +321,7 @@ extension AppSettings {
 
     //MARK: Getters
 
-    public func collapsedState(forAccountWithAddress address: String) -> Bool {
+    public func folderViewCollapsedState(forAccountWith address: String) -> Bool {
         let key = AppSettings.keyFolderViewAccountCollapsedState
         guard let state = collapsingState[address] else {
             //Valid case: might not been saved yet.
@@ -332,7 +332,7 @@ extension AppSettings {
         return isCollapsed
     }
 
-    public func folderViewCollapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String) -> Bool {
+    public func folderViewCollapsedState(forFolderNamed folderName: String, ofAccountWith address: String) -> Bool {
         guard let state = collapsingState[address] else {
             //Valid case: might not been saved yet.
             return false

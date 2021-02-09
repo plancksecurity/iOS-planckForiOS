@@ -91,8 +91,8 @@ class SettingsViewModelTest: AccountDrivenTestBase {
     
     func testDeleteAccountWithOnlyOneAccount() {
         let delegate = SettingsViewModeldelegate()
-        let removeCollapsedStateOfAccountWithAddressExpectation = expectation(description: "removeCollapsedStateOfAccountWithAddressExpectation")
-        let appSettingsMock = MockAppSettings(removeCollapsedStateOfAccountWithAddressExpectation: removeCollapsedStateOfAccountWithAddressExpectation)
+        let removeFolderViewCollapsedStateOfAccountWithExpectation = expectation(description: "removeFolderViewCollapsedStateOfAccountWithExpectation")
+        let appSettingsMock = MockAppSettings(removeFolderViewCollapsedStateOfAccountWithExpectation: removeFolderViewCollapsedStateOfAccountWithExpectation)
         setupViewModel(delegate: delegate, appSettings: appSettingsMock)
         let firstIndexPath = IndexPath(row: 0, section: 0)
         let firstSection = settingsVM.section(for: firstIndexPath)
@@ -110,8 +110,8 @@ class SettingsViewModelTest: AccountDrivenTestBase {
     func testDeleteAccountWithMoreThanOneAccount() {
         givenThereAreTwoAccounts()
         let delegate = SettingsViewModeldelegate()
-        let removeCollapsedStateOfAccountWithAddressExpectation = expectation(description: "removeCollapsedStateOfAccountWithAddressExpectation")
-        let appSettingsMock = MockAppSettings(removeCollapsedStateOfAccountWithAddressExpectation: removeCollapsedStateOfAccountWithAddressExpectation)
+        let removeFolderViewCollapsedStateOfAccountWithExpectation = expectation(description: "removeFolderViewCollapsedStateOfAccountWithExpectation")
+        let appSettingsMock = MockAppSettings(removeFolderViewCollapsedStateOfAccountWithExpectation: removeFolderViewCollapsedStateOfAccountWithExpectation)
         setupViewModel(delegate: delegate, appSettings: appSettingsMock)
         let firstIndexPath = IndexPath(row: 0, section: 0)
         let firstSection = settingsVM.section(for: firstIndexPath)

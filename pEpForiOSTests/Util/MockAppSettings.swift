@@ -14,7 +14,7 @@ import XCTest
 
 class MockAppSettings: AppSettingsProtocol {
 
-    var removeCollapsedStateOfAccountWithAddressExpectation: XCTestExpectation?
+    var removeFolderViewCollapsedStateOfAccountWithExpectation: XCTestExpectation?
     // getters
     var collapsedStateForAccountWithAddressExpectation: XCTestExpectation?
     var collapsedStateForFolderOfAccountExpectation: XCTestExpectation?
@@ -26,12 +26,12 @@ class MockAppSettings: AppSettingsProtocol {
         self.verboseLogginEnabled = verboseLogginEnabled
     }
 
-    init(removeCollapsedStateOfAccountWithAddressExpectation: XCTestExpectation? = nil,
+    init(removeFolderViewCollapsedStateOfAccountWithExpectation: XCTestExpectation? = nil,
          collapsedStateForAccountWithAddressExpectation: XCTestExpectation? = nil,
          collapsedStateForFolderOfAccountExpectation: XCTestExpectation? = nil,
          setFolderCollapsedStateExpectation: XCTestExpectation? = nil,
          setAccountCollapsedStateExpectation: XCTestExpectation? = nil) {
-        self.removeCollapsedStateOfAccountWithAddressExpectation = removeCollapsedStateOfAccountWithAddressExpectation
+        self.removeFolderViewCollapsedStateOfAccountWithExpectation = removeFolderViewCollapsedStateOfAccountWithExpectation
         self.collapsedStateForAccountWithAddressExpectation = collapsedStateForAccountWithAddressExpectation
         self.collapsedStateForFolderOfAccountExpectation = collapsedStateForFolderOfAccountExpectation
         self.setFolderCollapsedStateExpectation = setFolderCollapsedStateExpectation
@@ -64,25 +64,25 @@ class MockAppSettings: AppSettingsProtocol {
 
     // MARK: - Collapsing State
 
-    func removeCollapsedStateOfAccountWithAddress(address: String) {
-        fulfillIfNotNil(expectation: removeCollapsedStateOfAccountWithAddressExpectation)
+    func removeFolderViewCollapsedStateOfAccountWith(address: String) {
+        fulfillIfNotNil(expectation: removeFolderViewCollapsedStateOfAccountWithExpectation)
     }
 
-    func collapsedState(forAccountWithAddress address: String) -> Bool {
+    func folderViewCollapsedState(forAccountWith address: String) -> Bool {
         fulfillIfNotNil(expectation: collapsedStateForAccountWithAddressExpectation)
         return true
     }
 
-    func folderViewCollapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String) -> Bool {
+    func folderViewCollapsedState(forFolderNamed folderName: String, ofAccountWith address: String) -> Bool {
         fulfillIfNotNil(expectation: collapsedStateForFolderOfAccountExpectation)
         return true
     }
 
-    func setFolderViewCollapsedState(forFolderNamed: String, ofAccountWithAddress address: String, to value: Bool) {
+    func setFolderViewCollapsedState(forFolderNamed: String, ofAccountWith address: String, to value: Bool) {
         fulfillIfNotNil(expectation: setFolderCollapsedStateExpectation)
     }
 
-    func setCollapsedState(forAccountWithAddress address: String, to value: Bool) {
+    func setFolderViewCollapsedState(forAccountWith address: String, to value: Bool) {
         fulfillIfNotNil(expectation: setAccountCollapsedStateExpectation)
     }
 
