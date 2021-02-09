@@ -61,5 +61,5 @@ public protocol AppSettingsProtocol {
     /// - Parameters:
     ///   - address: The account address
     ///   - isCollapsed: The collapsing state.
-    func setFolderViewCollapsedState(address: String, isCollapsed: Bool)
+    func setFolderViewCollapsedState(forAccountWith address: String, isCollapsed: Bool)
 }

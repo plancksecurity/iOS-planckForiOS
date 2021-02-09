@@ -289,7 +289,7 @@ extension AppSettings {
 
     //MARK: Setters
 
-    public func setFolderViewCollapsedState(address: String, isCollapsed: Bool) {
+    public func setFolderViewCollapsedState(forAccountWith address: String, isCollapsed: Bool) {
         var current = collapsingState
         let key = AppSettings.keyFolderViewAccountCollapsedState
         if var currentAddress = current[address] {

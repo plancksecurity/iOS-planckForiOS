@@ -32,9 +32,9 @@ class AppSettingsTest: XCTestCase {
 
     func testSetAccountCollapsedState() {
         //Set a few collapsing states
-        AppSettings.shared.setFolderViewCollapsedState(address: address2, isCollapsed: true)
-        AppSettings.shared.setFolderViewCollapsedState(address: address3, isCollapsed: false)
-        AppSettings.shared.setFolderViewCollapsedState(address: address1, isCollapsed: true)
+        AppSettings.shared.setFolderViewCollapsedState(forAccountWith: address2, isCollapsed: true)
+        AppSettings.shared.setFolderViewCollapsedState(forAccountWith: address3, isCollapsed: false)
+        AppSettings.shared.setFolderViewCollapsedState(forAccountWith: address1, isCollapsed: true)
 
         //Check each
         let address1CollapsedState = AppSettings.shared.collapsedState(forAccountWithAddress: address1)
@@ -47,7 +47,7 @@ class AppSettingsTest: XCTestCase {
         XCTAssertTrue(address2CollapsedState)
 
         // Override value of one of them
-        AppSettings.shared.setFolderViewCollapsedState(address: address1, isCollapsed: false)
+        AppSettings.shared.setFolderViewCollapsedState(forAccountWith: address1, isCollapsed: false)
         let address1CollapsedStateAgain = AppSettings.shared.collapsedState(forAccountWithAddress: address1)
         XCTAssertFalse(address1CollapsedStateAgain)
     }

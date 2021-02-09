@@ -77,7 +77,7 @@ class CreditsTest: XCTestCase {
 //
 //    }
 //
-//    func setFolderViewCollapsedState(address: String, isCollapsed: Bool) {
+//    func setFolderViewCollapsedState(forAccountWith address: String, isCollapsed: Bool) {
 //
 //    }
 //}
