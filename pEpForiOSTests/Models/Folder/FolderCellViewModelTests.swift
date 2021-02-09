@@ -32,12 +32,6 @@ class FolderCellViewModelTests: AccountDrivenTestBase {
         XCTAssertEqual(title, Input.folderName)
     }
     
-    func testLeftPadding() {
-        givenAViewModelWithFolderAndLevel()
-        let leftPadding = viewModel.leftPadding
-        XCTAssertEqual(leftPadding, Input.level)
-    }
-    
     func testIcon() {
         givenAViewModelWithFolderAndLevel()
         let icon = viewModel.image
@@ -142,7 +136,7 @@ class FolderCellViewModelTests: AccountDrivenTestBase {
         sonFolder.session.commit()
         let parentViewModel = FolderCellViewModel(folder: folder, level: 0)
         let sonViewModel = FolderCellViewModel(folder: sonFolder, level: 1)
-        let result = parentViewModel.isParentOf(fcvm: sonViewModel)
+        let result = parentViewModel.isAncestorOf(fcvm: sonViewModel)
         XCTAssertTrue(result)
     }
 
@@ -151,7 +145,7 @@ class FolderCellViewModelTests: AccountDrivenTestBase {
         notSonFolder.session.commit()
         let folderViewModel = FolderCellViewModel(folder: folder, level: 0)
         let notSonViewModel = FolderCellViewModel(folder: notSonFolder, level: 0)
-        let result = folderViewModel.isParentOf(fcvm: notSonViewModel)
+        let result = folderViewModel.isAncestorOf(fcvm: notSonViewModel)
         XCTAssertFalse(result)
     }
 
@@ -169,4 +163,13 @@ class FolderCellViewModelTests: AccountDrivenTestBase {
         XCTAssertFalse(result)
     }
 
+    func testSetFolderCollapsedStateExpectation() {
+        let exp = expectation(description: "setFolderCollapsedStateExpectation")
+        let appSettingsMock = MockAppSettings(setFolderCollapsedStateExpectation:exp)
+        folder = Folder(name: Input.folderName, parent: nil, account: account, folderType: .inbox)
+        folder.session.commit()
+        let parentViewModel = FolderCellViewModel(folder: folder, level: 0, appSettings: appSettingsMock)
+        parentViewModel.handleFolderCollapsedStateChange(to: true)
+        waitForExpectations(timeout: TestUtil.waitTime)
+    }
 }
