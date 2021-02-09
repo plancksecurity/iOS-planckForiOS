@@ -236,8 +236,9 @@ extension FolderViewModel {
             Log.shared.errorAndCrash("A Folder should be a Folder")
             return
         }
+        let address = self[sectionIndex].userAddress
         let isFolderCollapsed = appSettings.collapsedState(forFolderNamed: folder.name,
-                                                           ofAccountWithAddress: self[sectionIndex].userAddress)
+                                                           ofAccountWith: address)
         if isFolderCollapsed {
             collapsedRows.append(self[sectionIndex][itemIndex])
             self[sectionIndex][itemIndex].isExpanded = false

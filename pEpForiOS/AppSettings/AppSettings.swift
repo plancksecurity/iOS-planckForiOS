@@ -332,7 +332,7 @@ extension AppSettings {
         return isCollapsed
     }
 
-    public func collapsedState(forFolderNamed folderName: String, ofAccountWithAddress address: String) -> Bool {
+    public func collapsedState(forFolderNamed folderName: String, ofAccountWith address: String) -> Bool {
         guard let state = collapsingState[address] else {
             //Valid case: might not been saved yet.
             return false
