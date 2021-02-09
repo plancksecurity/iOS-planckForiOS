@@ -222,6 +222,7 @@
 		434A6CE625D2BF1B00179335 /* MessageModelForAppExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 434A6CE425D2BF1B00179335 /* MessageModelForAppExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		434A6CE925D2BF1B00179335 /* MessageModelForAppExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 434A6CE225D2BF1B00179335 /* MessageModelForAppExtensions.framework */; };
 		434A6CEA25D2BF1B00179335 /* MessageModelForAppExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 434A6CE225D2BF1B00179335 /* MessageModelForAppExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		434A6D5B25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 434A6D5A25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -709,6 +710,7 @@
 		434A6CE225D2BF1B00179335 /* MessageModelForAppExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MessageModelForAppExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		434A6CE425D2BF1B00179335 /* MessageModelForAppExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageModelForAppExtensions.h; sourceTree = "<group>"; };
 		434A6CE525D2BF1B00179335 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		434A6D5A25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libPEPObjCAdapter_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdMessageTest.swift; sourceTree = "<group>"; };
 		434DC0D41DAE72D4007C98B8 /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		434DC0D61DAE7407007C98B8 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -948,6 +950,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				434A6D5B25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2400,6 +2403,7 @@
 		B7DB7FA322147000003968DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				434A6D5A25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a */,
 				15160B3D257A598100DD42E0 /* libiconv.tbd */,
 				15160B3C257A597B00DD42E0 /* libz.tbd */,
 				15160D39257A950700DD42E0 /* libPEPObjCAdapter_iOS.a */,
