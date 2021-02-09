@@ -34,6 +34,7 @@ protocol SettingsRowProtocol {
 
 /// View Model for SettingsTableViewController
 final class SettingsViewModel {
+    private var appSettings: AppSettingsProtocol
 
     weak var delegate : SettingsViewModelDelegate?
     typealias SwitchBlock = ((Bool) -> Void)
@@ -88,7 +89,8 @@ final class SettingsViewModel {
     }
 
     /// Constructor for SettingsViewModel
-    public init(delegate: SettingsViewModelDelegate) {
+    public init(delegate: SettingsViewModelDelegate, appSettings : AppSettingsProtocol = AppSettings.shared) {
+        self.appSettings = appSettings
         self.delegate = delegate
         setup()
     }
@@ -195,8 +197,8 @@ extension SettingsViewModel {
                         Log.shared.lostMySelf()
                         return
                     }
+                    me.appSettings.removeFolderViewCollapsedStateOfAccountWith(address: acc.user.address)
                     me.delete(account: acc)
-                    
                     guard let section = me.items.first(where: { (section) -> Bool in
                         return section.type == type
                     }), let index = me.items.firstIndex(of: section) else {
