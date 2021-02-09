@@ -259,7 +259,7 @@ extension FolderTableViewController: SegueHandlerType {
     /// Show folder in email list
     /// - Parameter folder: The folder to show.
     private func showEmailList(folder: DisplayableFolderProtocol) {
-        let sb = UIStoryboard(name: EmailViewController.storyboard, bundle: nil)
+        let sb = UIStoryboard(name: Constants.mainStoryboard, bundle: nil)
         guard
             let vc = sb.instantiateViewController(
                 withIdentifier: EmailListViewController.storyboardId) as? EmailListViewController
