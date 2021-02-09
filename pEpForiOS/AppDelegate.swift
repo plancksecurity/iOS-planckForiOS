@@ -246,5 +246,3 @@ extension AppDelegate {
         return true
     }
 }
-
-
