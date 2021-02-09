@@ -289,26 +289,26 @@ extension AppSettings {
 
     //MARK: Setters
 
-    public func setFolderViewCollapsedState(forAccountWith address: String, isCollapsed: Bool) {
+    public func setCollapsedState(forAccountWith address: String, to value: Bool) {
         var current = collapsingState
         let key = AppSettings.keyFolderViewAccountCollapsedState
         if var currentAddress = current[address] {
-            currentAddress[key] = isCollapsed 
+            currentAddress[key] = value
             current[address] = currentAddress
         } else {
-            current[address] = [key: isCollapsed]
+            current[address] = [key: value]
         }
 
         collapsingState = current
     }
 
-    public func setFolderViewCollapsedState(forFolderNamed folderName: String, ofAccountWith address: String, isCollapsed: Bool) {
+    public func setCollapsedState(forFolderNamed folderName: String, ofAccountWith address: String, to value: Bool) {
         var current = collapsingState
         if var currentAddressState = current[address] {
-            currentAddressState[folderName] = isCollapsed
+            currentAddressState[folderName] = value
             current[address] = currentAddressState
         } else {
-            current[address] = [folderName: isCollapsed]
+            current[address] = [folderName: value]
         }
         collapsingState = current
     }
