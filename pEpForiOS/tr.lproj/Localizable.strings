@@ -740,7 +740,8 @@
 /* Login */
 "Sign In" = "Oturum aç";
 
-/* Signature label in account settings */
+/* Edit Signature title
+   Signature label in account settings */
 "Signature" = "İmza";
 
 /* Start up tutorial skip button */
