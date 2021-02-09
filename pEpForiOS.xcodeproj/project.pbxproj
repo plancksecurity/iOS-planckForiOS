@@ -368,7 +368,6 @@
 		5BF505FE253EFBA50051FBD3 /* MailtoTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD917E1252DD64D0092B30F /* MailtoTest.swift */; };
 		5BF9B3D723FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF9B3D623FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift */; };
 		5BFBB20825D2A87700F269C4 /* EmailViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFBB20725D2A87700F269C4 /* EmailViewModelTest.swift */; };
-		5BFBB20C25D2A90E00F269C4 /* XCTest+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFBB20B25D2A90E00F269C4 /* XCTest+Extension.swift */; };
 		5BFBB21625D2B46300F269C4 /* test01_internal_cert.pEp12 in Resources */ = {isa = PBXBuildFile; fileRef = 5BFBB21025D2AAD500F269C4 /* test01_internal_cert.pEp12 */; };
 		5BFBB21825D2B46600F269C4 /* random.docx in Resources */ = {isa = PBXBuildFile; fileRef = 5BFBB20F25D2AAC000F269C4 /* random.docx */; };
 		8B69E3991E30F80E0022959E /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69E3981E30F80E0022959E /* Appearance.swift */; };
@@ -411,7 +410,7 @@
 		B7CE922E24E3FC7600B5A874 /* EditSignatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CE922D24E3FC7600B5A874 /* EditSignatureViewController.swift */; };
 		B7D1EEC81E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D1EEC71E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift */; };
 		B7DB7FC42215C4FF003968DA /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FC32215C4FF003968DA /* UINavigationController+Extensions.swift */; };
-		B7DB7FC82215C57F003968DA /* UIView+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FC62215C57F003968DA /* UIView+Util.swift */; };
+		B7DB7FC82215C57F003968DA /* UIView+ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FC62215C57F003968DA /* UIView+ActivityIndicator.swift */; };
 		B7DB7FD2221AD332003968DA /* SegueHandlerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FD1221AD332003968DA /* SegueHandlerType.swift */; };
 		B7DB7FD7221AD3BB003968DA /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FD4221AD3BB003968DA /* UIButton+Extension.swift */; };
 		B7DB7FD8221AD3BB003968DA /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FD5221AD3BB003968DA /* UITableView+Extension.swift */; };
@@ -949,7 +948,6 @@
 		5BF449F3240827F500B23E50 /* TutorialStep0ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep0ViewController.swift; sourceTree = "<group>"; };
 		5BF9B3D623FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementResetTableViewCell.swift; sourceTree = "<group>"; };
 		5BFBB20725D2A87700F269C4 /* EmailViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailViewModelTest.swift; sourceTree = "<group>"; };
-		5BFBB20B25D2A90E00F269C4 /* XCTest+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTest+Extension.swift"; sourceTree = "<group>"; };
 		5BFBB20F25D2AAC000F269C4 /* random.docx */ = {isa = PBXFileReference; lastKnownFileType = file; path = random.docx; sourceTree = "<group>"; };
 		5BFBB21025D2AAD500F269C4 /* test01_internal_cert.pEp12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = test01_internal_cert.pEp12; sourceTree = "<group>"; };
 		8B69E3981E30F80E0022959E /* Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
@@ -987,7 +985,7 @@
 		B7CE922D24E3FC7600B5A874 /* EditSignatureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSignatureViewController.swift; sourceTree = "<group>"; };
 		B7D1EEC71E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollapsibleTableViewHeader.swift; path = Folder/CollapsibleTableViewHeader.swift; sourceTree = "<group>"; };
 		B7DB7FC32215C4FF003968DA /* UINavigationController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extensions.swift"; sourceTree = "<group>"; };
-		B7DB7FC62215C57F003968DA /* UIView+Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Util.swift"; sourceTree = "<group>"; };
+		B7DB7FC62215C57F003968DA /* UIView+ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ActivityIndicator.swift"; sourceTree = "<group>"; };
 		B7DB7FD1221AD332003968DA /* SegueHandlerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandlerType.swift; sourceTree = "<group>"; };
 		B7DB7FD4221AD3BB003968DA /* UIButton+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
 		B7DB7FD5221AD3BB003968DA /* UITableView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
@@ -1387,7 +1385,6 @@
 				4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */,
 				1574D07C2114696B00FEDC93 /* URL+MailToTest.swift */,
 				153D4A412540380200AE8A4E /* ExtraKey+TestUtils.swift */,
-				5BFBB20B25D2A90E00F269C4 /* XCTest+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2599,7 +2596,7 @@
 				5B1C1431259A25B2006DB2A1 /* UILabel+Extension.swift */,
 				B7DB7FD5221AD3BB003968DA /* UITableView+Extension.swift */,
 				5B3B019024B46CFC00FBB4B5 /* UILayout+Extension.swift */,
-				B7DB7FC62215C57F003968DA /* UIView+Util.swift */,
+				B7DB7FC62215C57F003968DA /* UIView+ActivityIndicator.swift */,
 				B7DB7FC32215C4FF003968DA /* UINavigationController+Extensions.swift */,
 				37156E52234DD4CC00845A28 /* UIViewController */,
 				437E9BA8237AFB7F00E9A847 /* UIStoryboard+Constants.swift */,
@@ -3043,7 +3040,7 @@
 				15944A3523980FEC006B133B /* EmailDisplayViewModel.swift in Sources */,
 				430D73651E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift in Sources */,
 				15944A3223980C99006B133B /* EmailDetailViewModel.swift in Sources */,
-				B7DB7FC82215C57F003968DA /* UIView+Util.swift in Sources */,
+				B7DB7FC82215C57F003968DA /* UIView+ActivityIndicator.swift in Sources */,
 				152A39CC21905C3E00D9F8E4 /* MediaAttachmentPickerProvider.swift in Sources */,
 				5BC8C72325ADDAF1000AAC7A /* TwoLinesButton.swift in Sources */,
 				5BC4E60724113659008C01ED /* TutorialStep2ViewController.swift in Sources */,
@@ -3180,7 +3177,6 @@
 				15D7D990219AD38B00A1A2B9 /* MediaAttachmentPickerProviderViewModelTest.swift in Sources */,
 				15410D222199D83200BBF65F /* AccountCellViewModelTest.swift in Sources */,
 				15BBBC6B1FD0527200B9DCC8 /* DisplayUserErrorTest.swift in Sources */,
-				5BFBB20C25D2A90E00F269C4 /* XCTest+Extension.swift in Sources */,
 				15D7D997219C374600A1A2B9 /* ComposeViewModelStateTest.swift in Sources */,
 				F73E4F7A2180744700CCFFED /* FolderCellViewModelTests.swift in Sources */,
 				B7F4A793212DDFC500507B76 /* EmailListViewModelTest.swift in Sources */,

@@ -162,7 +162,6 @@ class EmailViewModel {
    }
 
    /// Retrieve the attachments.
-   /// When done -or if they were already retrieved-, the delegate will inform it.
    public func retrieveAttachments() {
 
        /// Retrieves the IndexPaths of the rows with attachments.
@@ -311,7 +310,6 @@ extension EmailViewModel {
        var isImage: Bool = false
    }
 
-   /// Attachment inherits from Row
    public struct Row: EmailRowProtocol {
        public private(set) var type: EmailRowType
        public private(set) var height: CGFloat = 0.0

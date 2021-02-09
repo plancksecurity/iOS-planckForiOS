@@ -132,7 +132,7 @@ class EmailViewModelTest: XCTestCase {
        let numberOfAttachments = 1
        let fileName = "random"
        let fileExtension = "docx"
-       let fileData = loadFile(withName: fileName, withExtension: fileExtension)
+        let fileData = TestUtil.loadFile(withName: fileName, withExtension: fileExtension, aClass: type(of: self))
 
        let account = TestData().createWorkingAccount()
        let inbox = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
@@ -208,8 +208,7 @@ extension EmailViewModelTest {
        if vm == nil {
            let fileName = "test01_internal_cert"
            let fileExtension = "pEp12"
-           let fileData = loadFile(withName: fileName, withExtension: fileExtension)
-
+        let fileData = TestUtil.loadFile(withName: fileName, withExtension: fileExtension, aClass: type(of: self))
            let account = TestData().createWorkingAccount()
            let inbox = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
            let fromIdentity = Identity(address: "from@mail.com")

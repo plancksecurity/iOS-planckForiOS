@@ -1,5 +1,5 @@
 //
-//  UIView+Util.swift
+//  UIView+ActivityIndicator.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 10.04.17.

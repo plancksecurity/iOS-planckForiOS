@@ -267,4 +267,23 @@ class TestUtil {
            error = nil
        }
    }
+
+    /// Loads the file and retrive its data.
+    /// - Parameters:
+    ///   - name: The name of the file
+    ///   - fileExtension: The file extension
+    /// - Returns: The data if doesnt fail. In case it does, check the target of the file.
+    static func loadFile(withName name: String, withExtension fileExtension: String, aClass: AnyClass) -> Data? {
+        let testBundle = Bundle(for: aClass)
+        guard let url = testBundle.url(forResource: name, withExtension: fileExtension) else {
+            Log.shared.errorAndCrash("File not found. Please, check its target.")
+            return nil
+        }
+
+        guard let data = try? Data(contentsOf: url) else {
+            Log.shared.errorAndCrash("Data not found.")
+            return nil
+        }
+        return data
+    }
 }
