@@ -29,7 +29,7 @@ public class FolderViewModel {
     private var appSettings: AppSettingsProtocol
     public weak var delegate: FolderViewModelDelegate?
     private lazy var folderSyncService = FetchImapFoldersService()
-    public var items: [FolderSectionViewModel]
+    public var items: [FolderSectionViewModel] = [FolderSectionViewModel]()
 
     /// The hidden sections are the collapsed accounts.
     public var hiddenSections = Set<Int>()
@@ -76,6 +76,7 @@ public class FolderViewModel {
         return items.count
     }
 
+
     /// Instantiates a folder hierarchy model with:
     /// One section per account
     /// One row per folder
@@ -83,6 +84,10 @@ public class FolderViewModel {
     /// - Parameter accounts: accounts to to create folder hierarchy view model for.
     public init(withFoldersIn accounts: [Account]? = nil, isUnified: Bool = true, appSettings: AppSettingsProtocol = AppSettings.shared) {
         self.appSettings = appSettings
+        self.generateSections(accounts: accounts, isUnified: isUnified)
+    }
+
+    private func generateSections(accounts: [Account]?, isUnified: Bool) {
         items = [FolderSectionViewModel]()
         let accountsToUse: [Account]
         if let safeAccounts = accounts {
