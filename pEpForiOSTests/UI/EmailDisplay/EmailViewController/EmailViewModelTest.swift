@@ -132,7 +132,7 @@ class EmailViewModelTest: XCTestCase {
        let numberOfAttachments = 1
        let fileName = "random"
        let fileExtension = "docx"
-        let fileData = TestUtil.loadFile(withName: fileName, withExtension: fileExtension, aClass: type(of: self))
+       let fileData = TestUtil.loadFile(withName: fileName, withExtension: fileExtension, aClass: type(of: self))
 
        let account = TestData().createWorkingAccount()
        let inbox = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
