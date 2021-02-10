@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension String {
     /// Create NSAttributedString with preffered default font face and size attributes (default option)
