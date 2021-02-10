@@ -281,6 +281,7 @@
 		434A6CF625D2BF8B00179335 /* MessageModelForAppExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 434A6CF525D2BF8B00179335 /* MessageModelForAppExtensions.framework */; };
 		434C19AB25D3D92D00F622DB /* AccountPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D43999216E697700EB3933 /* AccountPickerView.swift */; };
 		434C19AE25D3D98E00F622DB /* AccountPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D4399B216E698E00EB3933 /* AccountPickerViewModel.swift */; };
+		434C19B125D3DA2000F622DB /* Attachment+DefaultFilename.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43269D3D2552B2BA001E18C6 /* Attachment+DefaultFilename.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
@@ -2988,6 +2989,7 @@
 				434A6C5125D2A3A700179335 /* CellViewModel.swift in Sources */,
 				434A6C5225D2A3AA00179335 /* TextViewContainingTableViewCell.swift in Sources */,
 				434A6C6625D2A3CF00179335 /* RecipientCell.swift in Sources */,
+				434C19B125D3DA2000F622DB /* Attachment+DefaultFilename.swift in Sources */,
 				434A6C6E25D2A3DC00179335 /* RecipientTextViewModel+TextAttachment.swift in Sources */,
 				434A6C6A25D2A3D500179335 /* RecipientTextView.swift in Sources */,
 				434A6C7925D2A3EE00179335 /* WrappedCell.swift in Sources */,
