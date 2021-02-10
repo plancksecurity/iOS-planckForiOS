@@ -12,7 +12,11 @@ import MessageModelForAppExtensions
 import MessageModel
 #endif
 
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 extension NSAttributedString {
 
