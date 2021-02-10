@@ -7,8 +7,14 @@
 //
 
 import UIKit
-import MessageModel
 import ContactsUI
+
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
+import MessageModel
+#endif
+
 import pEpIOSToolbox
 
 class UIUtils {
