@@ -848,6 +848,7 @@
 		4349E8BA252DCC58000F2BBB /* LiveLogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveLogViewModel.swift; sourceTree = "<group>"; };
 		4349E8BF252DCD42000F2BBB /* LiveLogViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveLogViewModelTest.swift; sourceTree = "<group>"; };
 		434A6CF525D2BF8B00179335 /* MessageModelForAppExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MessageModelForAppExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		434C1A3825D3FCDD00F622DB /* pEp-share-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEp-share-Bridging-Header.h"; sourceTree = "<group>"; };
 		434F40931EB0B173002FBF0D /* ObservableValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableValue.swift; sourceTree = "<group>"; };
 		4351C2A21F4441190053381F /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
 		4351C2A31F4441190053381F /* chunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chunk.h; sourceTree = "<group>"; };
@@ -1900,6 +1901,7 @@
 				3A503B212537456A0070AB6A /* Storyboards */,
 				3A503B222537457D0070AB6A /* ViewControllers */,
 				3A503B292537459C0070AB6A /* Extensions */,
+				434C1A3825D3FCDD00F622DB /* pEp-share-Bridging-Header.h */,
 			);
 			path = "pEp-share";
 			sourceTree = "<group>";
