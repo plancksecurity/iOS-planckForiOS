@@ -12,6 +12,6 @@ import MessageModel
 class MessageAttachmentCell: MessageCell {
    @IBOutlet weak var attachmentView: AttachmentCellBackgroundView!
    @IBOutlet weak var extensionLabel: UILabel!
-   @IBOutlet weak var nameLabel: UILabel!
+   @IBOutlet weak var fileNameLabel: UILabel!
    @IBOutlet weak var iconImageView: UIImageView!
 }

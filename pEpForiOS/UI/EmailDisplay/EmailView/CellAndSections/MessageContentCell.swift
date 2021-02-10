@@ -1,13 +1,13 @@
 //
-//  MessageContentCell.swift
+//  MessageBodyCell.swift
+//  pEp
 //
-//  Created by Yves Landert on 20.12.16.
-//  Copyright © 2016 appculture AG. All rights reserved.
-//
+//  Created by Martín Brude on 10/2/21.
+//  Copyright © 2021 p≡p Security S.A. All rights reserved.
 
 import Foundation
 import UIKit
 
-class MessageContentCell: MessageCell {
+class MessageBodyCell: MessageCell {
     @IBOutlet weak var contentText: UITextView!
 }

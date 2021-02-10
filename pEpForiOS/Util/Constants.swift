@@ -17,6 +17,9 @@ struct Constants {
     /// Name of the Main Storyboard
     static let mainStoryboard = "Main"
 
+    /// Name of the Certificates Storyboard
+    static let certificatesStoryboard = "Certificates"
+
     /// Name of Storyboard that contains SuggestTableViewController.
     static let reusableStoryboard = "Reusable"
     

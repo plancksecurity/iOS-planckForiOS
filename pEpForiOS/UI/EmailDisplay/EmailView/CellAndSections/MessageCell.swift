@@ -7,12 +7,8 @@
 
 import UIKit
 
-open class MessageCell: UITableViewCell {
-    @IBOutlet weak public var titleLabel: UILabel?
-    @IBOutlet weak public var valueLabel: UILabel?
-    
-    override open func awakeFromNib() {
-        super.awakeFromNib()
-        selectionStyle = .none
-    }
+class MessageCell: UITableViewCell {
+    @IBOutlet public weak var titleLabel: UILabel?
+    @IBOutlet public weak var valueLabel: UILabel?
 }
+

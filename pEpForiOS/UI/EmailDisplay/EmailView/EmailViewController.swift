@@ -54,12 +54,7 @@ class EmailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        showExternalContentButton.backgroundColor = UIColor.pEpGreen
-        showExternalContentButton.tintColor = UIColor.white
-        showExternalContentLabel.text = NSLocalizedString("""
-By showing external content, your privacy may be invaded.
-This may affect the privacy status of the message.
-""", comment: "external content label text")
+        showExternalContentLabel.text = Localized.showExternalContentText
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -84,7 +79,7 @@ This may affect the privacy status of the message.
             Log.shared.errorAndCrash("VM not found")
             return
         }
-        vm.handleDidTapShowExternalContentButton()
+        vm.handleShowExternalContentButtonPressed()
     }
 }
 
@@ -105,67 +100,67 @@ extension EmailViewController: UITableViewDataSource {
             Log.shared.errorAndCrash("VM not found")
             return UITableViewCell()
         }
-        let cellId = vm.cellIdentifier(for: indexPath)
+        let cellIdentifier = vm.cellIdentifier(for: indexPath)
         let row = vm[indexPath.row]
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? MessageCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageCell else {
             return UITableViewCell()
         }
-        switch row.type {
+
+        switch vm.type(ofRow: row) {
         case .sender:
+            guard let row = vm[indexPath.row] as? SenderRowProtocol else {
+                Log.shared.errorAndCrash("Can't get or cast sender row")
+                return cell
+            }
             setupSender(cell: cell, with: row)
             return cell
         case .subject:
+            guard let row = vm[indexPath.row] as? SubjectRowProtocol else {
+                Log.shared.errorAndCrash("Can't get or cast sender row")
+                return cell
+            }
             setupSubject(cell: cell, with: row)
             return cell
         case .body:
-            guard let dequeued = cell as? MessageContentCell else {
+            guard let cell = cell as? MessageBodyCell else {
                 Log.shared.errorAndCrash("Invalid state.")
                 return UITableViewCell()
             }
-            setup(cell: dequeued, with: vm)
-            return dequeued
+            guard let row = vm[indexPath.row] as? BodyRowProtocol else {
+                Log.shared.errorAndCrash("Can't get or cast sender row")
+                return cell
+            }
+            setup(cell: cell, with: row)
+            return cell
         case .attachment:
             guard let dequeued = cell as? MessageAttachmentCell else {
                 Log.shared.errorAndCrash("Invalid state.")
                 return UITableViewCell()
             }
+            guard let row = vm[indexPath.row] as? AttachmentRowProtocol else {
+                Log.shared.errorAndCrash("Can't get or cast attachment row")
+                return cell
+            }
             setup(cell: dequeued, with: row)
             return dequeued
         }
-    }
-
-    private func isLastRow(indexPath: IndexPath) -> Bool {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return false
-        }
-        return indexPath.row == vm.numberOfRows - 1
     }
 }
 
 //MARK: - UITableViewDelegate
 
 extension EmailViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if isLastRow(indexPath: indexPath) {
-            guard let vm = viewModel else {
-                Log.shared.errorAndCrash("No VM")
-                return
-            }
-            vm.retrieveAttachments()
-        }
-    }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("Missing vm")
             return tableView.estimatedRowHeight
         }
-        let row = vm[indexPath.row]
-        if row.type == .attachment {
+
+        if let row = vm[indexPath.row] as? AttachmentRowProtocol {
             return row.height
         }
-        if row.type == .body, viewModel?.htmlBody != nil {
+        if vm[indexPath.row] is BodyRowProtocol {
             return htmlViewerViewController.contentSize.height
         } else {
             return tableView.rowHeight
@@ -178,8 +173,8 @@ extension EmailViewController: UITableViewDelegate {
             return
         }
         let row = vm[indexPath.row]
-        if row.type == .attachment {
-            vm.handleDidTapAttachment(at: indexPath)
+        if vm.type(ofRow: row) == .attachment {
+            vm.handleDidTapAttachmentRow(at: indexPath)
         }
     }
 }
@@ -196,8 +191,9 @@ extension EmailViewController: SecureWebViewControllerDelegate {
 
 extension EmailViewController: UIPopoverPresentationControllerDelegate, UIPopoverPresentationControllerProtocol {
 
-    func popoverPresentationController(_ popoverPresentationController: UIPopoverPresentationController, willRepositionPopoverTo rect:
-                                        UnsafeMutablePointer<CGRect>, in view: AutoreleasingUnsafeMutablePointer<UIView>) {
+    func popoverPresentationController(_ popoverPresentationController: UIPopoverPresentationController,
+                                       willRepositionPopoverTo rect: UnsafeMutablePointer<CGRect>,
+                                       in view: AutoreleasingUnsafeMutablePointer<UIView>) {
         repositionPopoverTo(rect: rect, in: view)
     }
 }
@@ -206,12 +202,16 @@ extension EmailViewController: UIPopoverPresentationControllerDelegate, UIPopove
 
 extension EmailViewController: EmailViewModelDelegate {
 
-    func showQuickLookOfAttachment(qlItem: QLPreviewItem) {
-        guard let url = qlItem.previewItemURL else {
+    func showQuickLookOfAttachment(quickLookItem: QLPreviewItem) {
+        guard let url = quickLookItem.previewItemURL else {
             Log.shared.errorAndCrash("QL item is not an URL")
             return
         }
-        delegate?.openQLPreviewController(toShowDocumentWithUrl: url)
+        guard let delegate = delegate else {
+            Log.shared.errorAndCrash("Delegate not found")
+            return
+        }
+        delegate.openQLPreviewController(toShowDocumentWithUrl: url)
     }
 
     func showDocumentsEditor(url: URL) {
@@ -222,7 +222,7 @@ extension EmailViewController: EmailViewModelDelegate {
     }
 
     func showClientCertificateImport(viewModel: ClientCertificateImportViewModel) {
-        guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil)
+        guard let vc = UIStoryboard.init(name: Constants.certificatesStoryboard, bundle: nil)
                 .instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController else {
             Log.shared.errorAndCrash("No VC")
             return
@@ -245,24 +245,6 @@ extension EmailViewController: EmailViewModelDelegate {
         view.stopDisplayingAsBusy(viewBusyState: busyState)
     }
 
-    func didSetAttachments(forRowsAt indexPaths: [IndexPath]) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("Missing vm")
-            return
-        }
-        indexPaths.forEach { (indexPath) in
-            guard let cell = tableView.cellForRow(at: indexPath) as? MessageAttachmentCell else {
-                // Valid case. We might have been dismissed already.
-                return
-            }
-            let row = vm[indexPath.row]
-            cell.nameLabel.text = row.firstValue
-            cell.extensionLabel.text = row.secondValue
-            cell.iconImageView.image = row.image
-        }
-        vm.didRetrieveAttachments = true
-    }
-
     func showExternalContent() {
         removeExternalContentView()
         tableView.reloadData()
@@ -277,12 +259,12 @@ extension EmailViewController {
         showExternalContentView.isHidden = true
     }
 
-    private func setup(cell: MessageContentCell, with vm: EmailViewModel) {
-        if let htmlBody = viewModel?.htmlBody {
+    private func setup(cell: MessageBodyCell, with row: BodyRowProtocol) {
+        if let htmlBody = row.htmlBody {
             cell.contentView.addSubview(htmlViewerViewController.view)
             htmlViewerViewController.view.fullSizeInSuperView()
-            showExternalContentView.isHidden = !vm.shouldShowExternalContentView
-            htmlViewerViewController.display(html: htmlBody, showExternalContent: !vm.shouldShowExternalContentView)
+            showExternalContentView.isHidden = !row.shouldShowExternalContentView
+            htmlViewerViewController.display(html: htmlBody, showExternalContent: !row.shouldShowExternalContentView)
         } else {
             // We do not have HTML content.
             // Remove the HTML view if we just stepped from an HTML mail to one without
@@ -290,13 +272,12 @@ extension EmailViewController {
                 htmlViewerViewController.view.superview == cell.contentView {
                 htmlViewerViewController.view.removeFromSuperview()
             }
-            vm.body { [weak self] (body) in
+            row.body { [weak self] (body) in
                 guard let me = self else {
                     // Valid case. We might have been dismissed already.
                     return
                 }
                 cell.contentText.attributedText = body
-                cell.contentText.tintColor = UIColor.pEpGreen
                 cell.contentText.dataDetectorTypes = .link
                 cell.contentText.delegate = me.clickHandler
                 me.tableView.updateSize()
@@ -304,23 +285,22 @@ extension EmailViewController {
         }
     }
 
-    private func setupSender(cell: MessageCell, with row: EmailRowProtocol) {
+    private func setupSender(cell: MessageCell, with row: SenderRowProtocol) {
         let font = UIFont.pepFont(style: .footnote, weight: .semibold)
         cell.titleLabel?.font = font
-        cell.titleLabel?.text = row.firstValue
-        if let subtitle = row.secondValue {
-            let attributes = [NSAttributedString.Key.font: font,
-                              NSAttributedString.Key.foregroundColor: UIColor.lightGray]
-            cell.valueLabel?.attributedText = NSAttributedString(string: subtitle, attributes: attributes)
-        }
+        cell.titleLabel?.text = row.from
+        let subtitle = row.to
+        let attributes = [NSAttributedString.Key.font: font,
+                          NSAttributedString.Key.foregroundColor: UIColor.lightGray]
+        cell.valueLabel?.attributedText = NSAttributedString(string: subtitle, attributes: attributes)
     }
 
-    private func setupSubject(cell: MessageCell, with row: EmailRowProtocol) {
+    private func setupSubject(cell: MessageCell, with row: SubjectRowProtocol) {
         cell.titleLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
-        cell.titleLabel?.text = row.firstValue
-        if let value = row.secondValue {
+        cell.titleLabel?.text = row.title
+        if let date = row.date {
             cell.valueLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
-            cell.valueLabel?.text = value
+            cell.valueLabel?.text = date
             cell.valueLabel?.isHidden = false
         } else {
             cell.valueLabel?.text = nil
@@ -328,9 +308,20 @@ extension EmailViewController {
         }
     }
 
-    private func setup(cell: MessageAttachmentCell, with row: EmailRowProtocol) {
-        cell.nameLabel.text = row.firstValue ?? ""
-        cell.iconImageView.image = row.image ?? nil
-        cell.extensionLabel.text = row.secondValue ?? ""
+    private func setup(cell: MessageAttachmentCell, with row: AttachmentRowProtocol) {
+        row.retrieveAttachmentData { (fileName, fileExtension, image) in
+            cell.fileNameLabel.text = fileName
+            cell.iconImageView.image = image
+            cell.extensionLabel.text = fileExtension
+        }
+    }
+}
+
+extension EmailViewController {
+    private struct Localized {
+        static let showExternalContentText = NSLocalizedString("""
+By showing external content, your privacy may be invaded.
+This may affect the privacy status of the message.
+""", comment: "external content label text")
     }
 }

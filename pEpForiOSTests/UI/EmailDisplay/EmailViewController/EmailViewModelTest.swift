@@ -75,11 +75,11 @@ class EmailViewModelTest: XCTestCase {
 
    func testRetrieveAttachments() {
        setupVMWithMessageWith(numberOfAttachments: 4)
-       let didSetAttachmentsExpectation = XCTestExpectation(description: "didSetAttachmentsExpectation")
-       let delegate = MockEmailViewModelDelegate(didSetAttachmentsExpectation: didSetAttachmentsExpectation)
+       let updateAttachmentsRowsExpectation = XCTestExpectation(description: "updateAttachmentsRowsExpectation")
+       let delegate = MockEmailViewModelDelegate(updateAttachmentsRowsExpectation: updateAttachmentsRowsExpectation)
        vm.delegate = delegate
        vm.retrieveAttachments()
-       wait(for: [didSetAttachmentsExpectation], timeout: TestUtil.waitTime)
+       wait(for: [updateAttachmentsRowsExpectation], timeout: TestUtil.waitTime)
    }
 
    // MARK: - Delegate
@@ -243,7 +243,7 @@ class MockEmailViewModelDelegate: EmailViewModelDelegate {
    private var hideLoadingViewExpectation: XCTestExpectation?
    private var showDocumentsEditorExpectation: XCTestExpectation?
    private var showClientCertificateImportExpectation: XCTestExpectation?
-   private var didSetAttachmentsExpectation: XCTestExpectation?
+   private var updateAttachmentsRowsExpectation: XCTestExpectation?
    private var showExternalContentExpectation: XCTestExpectation?
 
    init(showLoadingViewExpectation: XCTestExpectation? = nil,
@@ -251,18 +251,18 @@ class MockEmailViewModelDelegate: EmailViewModelDelegate {
        showQuickLookOfAttachmentExpectation: XCTestExpectation? = nil,
        showDocumentsEditorExpectation: XCTestExpectation? = nil,
        showClientCertificateImportExpectation: XCTestExpectation? = nil,
-       didSetAttachmentsExpectation: XCTestExpectation? = nil,
+       updateAttachmentsRowsExpectation: XCTestExpectation? = nil,
        showExternalContentExpectation: XCTestExpectation? = nil) {
        self.showClientCertificateImportExpectation = showClientCertificateImportExpectation
        self.showQuickLookOfAttachmentExpectation = showQuickLookOfAttachmentExpectation
        self.showLoadingViewExpectation = showLoadingViewExpectation
        self.hideLoadingViewExpectation = hideLoadingViewExpectation
        self.showDocumentsEditorExpectation = showDocumentsEditorExpectation
-       self.didSetAttachmentsExpectation = didSetAttachmentsExpectation
+       self.updateAttachmentsRowsExpectation = updateAttachmentsRowsExpectation
        self.showExternalContentExpectation = showExternalContentExpectation
    }
 
-   func showQuickLookOfAttachment(qlItem: QLPreviewItem) {
+   func showQuickLookOfAttachment(quickLookItem: QLPreviewItem) {
        fulfillIfNotNil(expectation: showQuickLookOfAttachmentExpectation)
    }
 
@@ -282,8 +282,8 @@ class MockEmailViewModelDelegate: EmailViewModelDelegate {
        fulfillIfNotNil(expectation: hideLoadingViewExpectation)
    }
 
-   func didSetAttachments(forRowsAt indexPaths: [IndexPath]) {
-       fulfillIfNotNil(expectation: didSetAttachmentsExpectation)
+   func updateAttachmentsRows(forRowsAt indexPaths: [IndexPath]) {
+       fulfillIfNotNil(expectation: updateAttachmentsRowsExpectation)
    }
 
    func showExternalContent() {
