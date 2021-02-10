@@ -7,7 +7,12 @@
 //
 
 import WebKit
+
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 protocol SecureWebViewControllerDelegate: class {
     /// Called on content size changes while content is loaded.
