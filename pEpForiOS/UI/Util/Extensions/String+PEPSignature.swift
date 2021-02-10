@@ -6,6 +6,8 @@
 //  Copyright © 2019 pEp Security S.A. All rights reserved.
 //
 
+import UIKit
+
 extension String {
     public static var pepSignature: String {
         return NSLocalizedString("sent with p≡p",
