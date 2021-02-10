@@ -8,6 +8,7 @@
 import Foundation
 import Contacts
 import Photos
+import UIKit
 
 #if EXT_SHARE
 import PEPIOSToolboxForAppExtensions
