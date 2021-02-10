@@ -6,8 +6,17 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
+
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 /// Utils for composing a message. Helps finding out values depending on the original message
 /// (the correct recipients, cancle actions ...).
