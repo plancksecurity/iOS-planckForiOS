@@ -8,7 +8,12 @@
 
 import Foundation
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
+
 import pEpIOSToolbox
 
 /// TrustManagementViewModel View Mode Delegate
