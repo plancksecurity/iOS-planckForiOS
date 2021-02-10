@@ -292,6 +292,7 @@
 		434C19CB25D3E13000F622DB /* DocumentAttachmentPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A399D21905C3D00D9F8E4 /* DocumentAttachmentPickerViewController.swift */; };
 		434C19CE25D3E13E00F622DB /* TextViewInTableViewScrollUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39932190587100D9F8E4 /* TextViewInTableViewScrollUtil.swift */; };
 		434C19D125D3E1BF00F622DB /* DocumentAttachmentPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A399E21905C3D00D9F8E4 /* DocumentAttachmentPickerViewModel.swift */; };
+		434C19DA25D3E2AE00F622DB /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FD5221AD3BB003968DA /* UITableView+Extension.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
@@ -3003,6 +3004,7 @@
 				434C19B125D3DA2000F622DB /* Attachment+DefaultFilename.swift in Sources */,
 				434A6C6E25D2A3DC00179335 /* RecipientTextViewModel+TextAttachment.swift in Sources */,
 				434C19C725D3E11100F622DB /* SuggestTableViewController.swift in Sources */,
+				434C19DA25D3E2AE00F622DB /* UITableView+Extension.swift in Sources */,
 				434A6C6A25D2A3D500179335 /* RecipientTextView.swift in Sources */,
 				434A6C7925D2A3EE00179335 /* WrappedCell.swift in Sources */,
 				434A6C5625D2A3B100179335 /* AccountCellViewModel.swift in Sources */,
