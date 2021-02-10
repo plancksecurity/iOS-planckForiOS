@@ -21,10 +21,9 @@ class AttachmentViewOperation: Operation {
     private var index: Int
 
     ///The resulting attachments view will appear here.
-    //MB:- should be only one.
-    var attachmentContainers = [AttachmentContainer]()
+    public var attachmentContainer: AttachmentContainer?
 
-    init(mimeTypes: MimeTypeUtils?, message: Message, index: Int) {
+    init(mimeTypes: MimeTypeUtils? = MimeTypeUtils(), message: Message, index: Int) {
         self.message = message
         self.mimeTypes = mimeTypes
         self.index = index
@@ -34,13 +33,11 @@ class AttachmentViewOperation: Operation {
     override func main() {
         let session = Session()
         let safeMessage = message.safeForSession(session)
-
         session.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-
             let attachments = safeMessage.viewableAttachments()
             let att = attachments[me.index]
             if att.isInlined {
@@ -59,7 +56,6 @@ class AttachmentViewOperation: Operation {
                     return
                 }
             }
-
             let isImage: Bool
             if let mimeType = att.mimeType {
                 isImage = MimeTypeUtils.isImage(mimeType: mimeType)
@@ -69,9 +65,9 @@ class AttachmentViewOperation: Operation {
             if (isImage),
                let imgData = att.data,
                let img = UIImage.image(gifData: imgData) ?? UIImage(data: imgData) {
-                me.attachmentContainers.append(.imageAttachment(att, img))
+                me.attachmentContainer = (.imageAttachment(att, img))
             } else {
-                me.attachmentContainers.append(.docAttachment(att))
+                me.attachmentContainer = (.docAttachment(att))
             }
         }
     }
