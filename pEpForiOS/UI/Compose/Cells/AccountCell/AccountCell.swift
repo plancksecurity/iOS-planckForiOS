@@ -7,7 +7,12 @@
 //
 
 import UIKit
+
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 class AccountCell: TextViewContainingTableViewCell {
     static let reuseId = "AccountCell"
