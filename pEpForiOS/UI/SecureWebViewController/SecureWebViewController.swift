@@ -15,12 +15,6 @@ protocol SecureWebViewControllerDelegate: class {
     func didFinishLoading()
 }
 
-protocol SecureWebViewUrlClickHandlerProtocol: class {
-    /// Called whenever a mailto:// URL has been clicked by the user.
-    /// - Parameter url: The mailto:// URL
-    func didClickOn(mailToUrlLink url: URL)
-}
-
 /// Webview that does not:
 /// - excecute JS
 /// - load any remote content
