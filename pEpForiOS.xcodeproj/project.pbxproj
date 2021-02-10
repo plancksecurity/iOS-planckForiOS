@@ -328,6 +328,7 @@
 		434C1AB825D410F400F622DB /* SecureWebViewUrlClickHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C1AB725D410F400F622DB /* SecureWebViewUrlClickHandlerProtocol.swift */; };
 		434C1ABD25D4112B00F622DB /* SecureWebViewUrlClickHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C1AB725D410F400F622DB /* SecureWebViewUrlClickHandlerProtocol.swift */; };
 		434C1AC025D4116D00F622DB /* SegueHandlerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FD1221AD332003968DA /* SegueHandlerType.swift */; };
+		434C1AC325D411B700F622DB /* UIUtils+Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521B790241BDCD9000EAE57 /* UIUtils+Alerts.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
@@ -3069,6 +3070,7 @@
 				434C19B725D3DC8C00F622DB /* NSAttributedString+pEp.swift in Sources */,
 				434A6C7125D2A3DF00179335 /* RecipientTextViewModel.swift in Sources */,
 				434C19AB25D3D92D00F622DB /* AccountPickerView.swift in Sources */,
+				434C1AC325D411B700F622DB /* UIUtils+Alerts.swift in Sources */,
 				434A6C6925D2A3D200179335 /* RecipientCellViewModel+FieldType.swift in Sources */,
 				434C1A8025D40B0400F622DB /* SplitViewHandlingProtocol.swift in Sources */,
 				434A6C4D25D2A3A100179335 /* ComposeViewModel+Factory.swift in Sources */,
