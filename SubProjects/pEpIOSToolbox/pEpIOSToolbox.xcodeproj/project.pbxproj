@@ -30,6 +30,11 @@
 		3AE10BAD249A6EC60050BFB0 /* String+EmailHtml.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE10BAC249A6EC60050BFB0 /* String+EmailHtml.swift */; };
 		3AE10BAF249A6F1A0050BFB0 /* String+HtmlTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE10BAE249A6F1A0050BFB0 /* String+HtmlTest.swift */; };
 		431E68AC246C00F200B3A977 /* DocumentsDirectoryBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E68AB246C00F200B3A977 /* DocumentsDirectoryBrowser.swift */; };
+		434C199B25D3D82500F622DB /* PEPIOSToolboxForAppExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 434C199925D3D82500F622DB /* PEPIOSToolboxForAppExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		434C19A425D3D87300F622DB /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 434C19A225D3D87300F622DB /* CocoaLumberjack.framework */; };
+		434C19A525D3D87300F622DB /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 434C19A225D3D87300F622DB /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		434C19A625D3D87300F622DB /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 434C19A325D3D87300F622DB /* CocoaLumberjackSwift.framework */; };
+		434C19A725D3D87300F622DB /* CocoaLumberjackSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 434C19A325D3D87300F622DB /* CocoaLumberjackSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		436F1BA125028B2E004426DC /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436F1BA025028B2E004426DC /* CocoaLumberjackSwift.framework */; };
 		43B1E33725B1B93D00D01801 /* StringExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B1E33625B1B93D00D01801 /* StringExtensionsTest.swift */; };
 		43BE66D2246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BE66D1246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift */; };
@@ -89,6 +94,21 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		434C19A825D3D87300F622DB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				434C19A725D3D87300F622DB /* CocoaLumberjackSwift.framework in Embed Frameworks */,
+				434C19A525D3D87300F622DB /* CocoaLumberjack.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		1505C5142316771E0078A210 /* UIApplication+NetworkActivitySpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+NetworkActivitySpinner.swift"; sourceTree = "<group>"; };
 		1506E89E25ADE91600909821 /* TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
@@ -113,6 +133,11 @@
 		3AE10BAC249A6EC60050BFB0 /* String+EmailHtml.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+EmailHtml.swift"; sourceTree = "<group>"; };
 		3AE10BAE249A6F1A0050BFB0 /* String+HtmlTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+HtmlTest.swift"; sourceTree = "<group>"; };
 		431E68AB246C00F200B3A977 /* DocumentsDirectoryBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsDirectoryBrowser.swift; sourceTree = "<group>"; };
+		434C199725D3D82500F622DB /* PEPIOSToolboxForAppExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PEPIOSToolboxForAppExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		434C199925D3D82500F622DB /* PEPIOSToolboxForAppExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PEPIOSToolboxForAppExtensions.h; sourceTree = "<group>"; };
+		434C199A25D3D82500F622DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		434C19A225D3D87300F622DB /* CocoaLumberjack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		434C19A325D3D87300F622DB /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjackSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		436F1BA025028B2E004426DC /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjackSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43B1E33625B1B93D00D01801 /* StringExtensionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTest.swift; sourceTree = "<group>"; };
 		43BE66D1246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsDirectoryBrowserProtocol.swift; sourceTree = "<group>"; };
@@ -166,6 +191,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		434C199425D3D82500F622DB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				434C19A625D3D87300F622DB /* CocoaLumberjackSwift.framework in Frameworks */,
+				434C19A425D3D87300F622DB /* CocoaLumberjack.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		436F1B9E25028B20004426DC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -269,9 +303,20 @@
 			path = Logging;
 			sourceTree = "<group>";
 		};
+		434C199825D3D82500F622DB /* PEPIOSToolboxForAppExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				434C199925D3D82500F622DB /* PEPIOSToolboxForAppExtensions.h */,
+				434C199A25D3D82500F622DB /* Info.plist */,
+			);
+			path = PEPIOSToolboxForAppExtensions;
+			sourceTree = "<group>";
+		};
 		436F1B9F25028B2E004426DC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				434C19A225D3D87300F622DB /* CocoaLumberjack.framework */,
+				434C19A325D3D87300F622DB /* CocoaLumberjackSwift.framework */,
 				43E1A865252B6A1300307A7D /* CocoaLumberjack.framework */,
 				436F1BA025028B2E004426DC /* CocoaLumberjackSwift.framework */,
 			);
@@ -340,6 +385,7 @@
 			children = (
 				B7911EB621F7358500D7F66F /* pEpIOSToolbox */,
 				B7DB7F58221315BD003968DA /* pEpIOSToolboxTests */,
+				434C199825D3D82500F622DB /* PEPIOSToolboxForAppExtensions */,
 				B7911EB521F7358500D7F66F /* Products */,
 				436F1B9F25028B2E004426DC /* Frameworks */,
 			);
@@ -350,6 +396,7 @@
 			children = (
 				B7911EB421F7358500D7F66F /* pEpIOSToolbox.framework */,
 				B7DB7F57221315BD003968DA /* pEpIOSToolboxTests.xctest */,
+				434C199725D3D82500F622DB /* PEPIOSToolboxForAppExtensions.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -396,6 +443,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		434C199225D3D82500F622DB /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				434C199B25D3D82500F622DB /* PEPIOSToolboxForAppExtensions.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B7911EAF21F7358500D7F66F /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -406,6 +461,25 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		434C199625D3D82500F622DB /* PEPIOSToolboxForAppExtensions */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 434C199E25D3D82500F622DB /* Build configuration list for PBXNativeTarget "PEPIOSToolboxForAppExtensions" */;
+			buildPhases = (
+				434C199225D3D82500F622DB /* Headers */,
+				434C199325D3D82500F622DB /* Sources */,
+				434C199425D3D82500F622DB /* Frameworks */,
+				434C199525D3D82500F622DB /* Resources */,
+				434C19A825D3D87300F622DB /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PEPIOSToolboxForAppExtensions;
+			productName = PEPIOSToolboxForAppExtensions;
+			productReference = 434C199725D3D82500F622DB /* PEPIOSToolboxForAppExtensions.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		B7911EB321F7358500D7F66F /* pEpIOSToolbox */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B7911EBC21F7358500D7F66F /* Build configuration list for PBXNativeTarget "pEpIOSToolbox" */;
@@ -453,6 +527,9 @@
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "pEp Security SA";
 				TargetAttributes = {
+					434C199625D3D82500F622DB = {
+						CreatedOnToolsVersion = 12.4;
+					};
 					B7911EB321F7358500D7F66F = {
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1020;
@@ -478,11 +555,19 @@
 			targets = (
 				B7911EB321F7358500D7F66F /* pEpIOSToolbox */,
 				B7DB7F56221315BD003968DA /* pEpIOSToolboxTests */,
+				434C199625D3D82500F622DB /* PEPIOSToolboxForAppExtensions */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		434C199525D3D82500F622DB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B7911EB221F7358500D7F66F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -521,6 +606,13 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		434C199325D3D82500F622DB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B7911EB021F7358500D7F66F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -613,6 +705,58 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		434C199C25D3D82500F622DB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = NQLYU6MGPN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = PEPIOSToolboxForAppExtensions/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = security.pEp.PEPIOSToolboxForAppExtensions;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		434C199D25D3D82500F622DB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = NQLYU6MGPN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = PEPIOSToolboxForAppExtensions/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = security.pEp.PEPIOSToolboxForAppExtensions;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		B7911EBA21F7358500D7F66F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -828,6 +972,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		434C199E25D3D82500F622DB /* Build configuration list for PBXNativeTarget "PEPIOSToolboxForAppExtensions" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				434C199C25D3D82500F622DB /* Debug */,
+				434C199D25D3D82500F622DB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B7911EAE21F7358500D7F66F /* Build configuration list for PBXProject "pEpIOSToolbox" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
