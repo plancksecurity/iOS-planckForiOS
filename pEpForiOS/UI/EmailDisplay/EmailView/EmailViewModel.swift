@@ -209,9 +209,8 @@ struct AttachmentRow: AttachmentRowProtocol {
                 }
             }
         }
-        let mimeTypes = MimeTypeUtils()
         operationQueue.cancelAllOperations()
-        let attachmentViewOperation = AttachmentViewOperation(mimeTypes: mimeTypes, message: message, index: index)
+        let attachmentViewOperation = AttachmentViewOperation(message: message, attachmentIndex: index)
         attachmentViewOperation.completionBlock = {
             DispatchQueue.main.async {
                 prepareAttachmentRow(attachmentViewOperation: attachmentViewOperation, completion: completion)
@@ -251,21 +250,21 @@ class EmailViewModel {
         }
         let toDestinataries = NSLocalizedString("To:", comment: "Email field title") + tempTo.joined(separator: ", ")
         let senderRow = SenderRow(from: from, to: toDestinataries)
-        self.rows.append(senderRow)
+        rows.append(senderRow)
 
         //Subject
         let title = message.shortMessage
         let subjectRow = SubjectRow(title: title ?? "", date: message.sent?.fullString())
-        self.rows.append(subjectRow)
+        rows.append(subjectRow)
 
         //Body
         let bodyRow = BodyRow(htmlBody: htmlBody, shouldShowExternalContentView: shouldShowExternalContentView, message: message)
-        self.rows.append(bodyRow)
+        rows.append(bodyRow)
 
         //Attachments
         for attachmentIndex in 0..<attachments.count {
             let attachmentRow = AttachmentRow(message: message, attachmentIndex: attachmentIndex)
-            self.rows.append(attachmentRow)
+            rows.append(attachmentRow)
         }
     }
 
@@ -360,9 +359,9 @@ class EmailViewModel {
             Log.shared.errorAndCrash("attachments Out of bounds")
             return
         }
-        //MB:- fix this.
-        let index = 0
-        //        let index = indexPath.row - rows.count(where: {$0.type != .attachment})
+        let index = indexPath.row - rows.count(where: {
+            type(ofRow: $0) != .attachment
+        })
         let attachment = attachments[index]
         let defaultFileName = MessageModel.Attachment.defaultFilename
 

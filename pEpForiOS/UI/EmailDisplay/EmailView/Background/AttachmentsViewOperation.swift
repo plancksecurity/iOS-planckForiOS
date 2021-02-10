@@ -16,19 +16,20 @@ class AttachmentViewOperation: Operation {
         case docAttachment(Attachment)
     }
 
-    private let mimeTypes: MimeTypeUtils?
+    private let mimeTypes = MimeTypeUtils()
     private var message: Message
-    private var index: Int
+    private var attachmentIndex: Int
 
-    ///The resulting attachments view will appear here.
-    //MB:- should be only one.
-    var attachmentContainers = [AttachmentContainer]()
+    ///The resulting attachment view will appear here.
     var container: AttachmentContainer?
 
-    init(mimeTypes: MimeTypeUtils?, message: Message, index: Int) {
+    /// Constructor
+    /// - Parameters:
+    ///   - message: The message
+    ///   - attachmentIndex: The index of the attachment. (Very useful if the message has more than one attachment.)
+    init(message: Message, attachmentIndex: Int) {
         self.message = message
-        self.mimeTypes = mimeTypes
-        self.index = index
+        self.attachmentIndex = attachmentIndex
         super.init()
     }
 
@@ -43,7 +44,7 @@ class AttachmentViewOperation: Operation {
             }
 
             let attachments = safeMessage.viewableAttachments()
-            let att = attachments[me.index]
+            let att = attachments[me.attachmentIndex]
             if att.isInlined {
                 // Ignore attachments that are already shown inline in the message body.
                 // Try to verify this by checking if their CID (if any) is mentioned there.
@@ -71,10 +72,8 @@ class AttachmentViewOperation: Operation {
                let imgData = att.data,
                let img = UIImage.image(gifData: imgData) ?? UIImage(data: imgData) {
                 me.container = .imageAttachment(att, img)
-                me.attachmentContainers.append(.imageAttachment(att, img))
             } else {
                 me.container = .docAttachment(att)
-                me.attachmentContainers.append(.docAttachment(att))
             }
         }
     }
