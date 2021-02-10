@@ -9,5 +9,8 @@
 #ifndef pEp_share_Bridging_Header_h
 #define pEp_share_Bridging_Header_h
 
+#pragma mark - HTML
+
+#import "Axt.h"
 
 #endif /* pEp_share_Bridging_Header_h */
