@@ -6,9 +6,15 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
-import MessageModel
-import pEpIOSToolbox
 import Contacts
+
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
+import MessageModel
+#endif
+
+import pEpIOSToolbox
 
 protocol SuggestViewModelResultDelegate: class {
     /// Will be called whenever the user selects an Identity.
