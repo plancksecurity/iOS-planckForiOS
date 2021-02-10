@@ -330,6 +330,7 @@
 		434C1AC025D4116D00F622DB /* SegueHandlerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FD1221AD332003968DA /* SegueHandlerType.swift */; };
 		434C1AC325D411B700F622DB /* UIUtils+Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521B790241BDCD9000EAE57 /* UIUtils+Alerts.swift */; };
 		434C1AC625D411F300F622DB /* PEPAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816541230EC72C00B967E3 /* PEPAlertViewController.swift */; };
+		434C1AC925D4121900F622DB /* PEPAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816543230EC73900B967E3 /* PEPAlertViewModel.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
@@ -3086,6 +3087,7 @@
 				434C1A8625D40B6E00F622DB /* UIStoryboard+Constants.swift in Sources */,
 				434A6C4E25D2A3A400179335 /* ComposeViewModel+InitData.swift in Sources */,
 				434A6C6525D2A3CB00179335 /* NSAttributedString+BodyTextUtils.swift in Sources */,
+				434C1AC925D4121900F622DB /* PEPAlertViewModel.swift in Sources */,
 				434A6C5A25D2A3B800179335 /* AttachmentViewModel.swift in Sources */,
 				434C19CB25D3E13000F622DB /* DocumentAttachmentPickerViewController.swift in Sources */,
 				434C19DD25D3E35E00F622DB /* SuggestViewModel.swift in Sources */,
