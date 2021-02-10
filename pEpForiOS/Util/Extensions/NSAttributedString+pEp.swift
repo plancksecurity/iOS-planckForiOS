@@ -7,8 +7,14 @@
 //
 
 import Foundation
-import pEpIOSToolbox
+
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
+
+import pEpIOSToolbox
 
 class ToMarkdownDelegate: NSAttributedStringParsingDelegate {
     var attachments = [Attachment]()
