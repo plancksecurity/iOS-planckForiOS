@@ -7,7 +7,12 @@
 //
 
 import Foundation
+
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 /// Suggests a list of Identities that fit to a given sarch string
 class SuggestTableViewController: UITableViewController {
