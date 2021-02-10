@@ -14,7 +14,12 @@ import MessageModelForAppExtensions
 import MessageModel
 #endif
 
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
 import pEpIOSToolbox
+#endif
+
 import pEp4iosIntern
 
 // MARK: - Keys
