@@ -289,6 +289,7 @@
 		434C19C425D3E09C00F622DB /* String+PEPSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43269D262552ABE9001E18C6 /* String+PEPSignature.swift */; };
 		434C19C725D3E11100F622DB /* SuggestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597721623637006A78DF /* SuggestTableViewController.swift */; };
 		434C19CA25D3E11D00F622DB /* MediaAttachmentPickerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39A021905C3D00D9F8E4 /* MediaAttachmentPickerProvider.swift */; };
+		434C19CB25D3E13000F622DB /* DocumentAttachmentPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A399D21905C3D00D9F8E4 /* DocumentAttachmentPickerViewController.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
@@ -3014,6 +3015,7 @@
 				434A6C4E25D2A3A400179335 /* ComposeViewModel+InitData.swift in Sources */,
 				434A6C6525D2A3CB00179335 /* NSAttributedString+BodyTextUtils.swift in Sources */,
 				434A6C5A25D2A3B800179335 /* AttachmentViewModel.swift in Sources */,
+				434C19CB25D3E13000F622DB /* DocumentAttachmentPickerViewController.swift in Sources */,
 				434A6C5925D2A3B500179335 /* AttachmentCell.swift in Sources */,
 				434C19C425D3E09C00F622DB /* String+PEPSignature.swift in Sources */,
 				3A503B1D253744D40070AB6A /* UIImage+Resize.swift in Sources */,
