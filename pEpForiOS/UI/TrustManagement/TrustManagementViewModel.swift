@@ -14,7 +14,11 @@ import MessageModelForAppExtensions
 import MessageModel
 #endif
 
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 /// TrustManagementViewModel View Mode Delegate
 protocol TrustManagementViewModelDelegate: class {
