@@ -8,8 +8,18 @@
 
 import UIKit
 import AddressBook
+
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
+
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 extension IdentityImageTool {
 
