@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Small utility to share some scrolling behavior of text views contained in table views
 /// (basically "scroll-to-caret-on-edit").
