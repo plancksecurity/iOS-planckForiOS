@@ -311,6 +311,7 @@
 		434C1A7725D40A2F00F622DB /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265949216230B0006A78DF /* ContactCell.swift */; };
 		434C1A7A25D40A9800F622DB /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43293EFA1EB9DD6700EEE010 /* UIViewController+Extension.swift */; };
 		434C1A7D25D40ACF00F622DB /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FDB221ADDBD003968DA /* UIImageView+Extension.swift */; };
+		434C1A8025D40B0400F622DB /* SplitViewHandlingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B0E8F224094BB1003A34DC /* SplitViewHandlingProtocol.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
@@ -3038,6 +3039,7 @@
 				434A6C7125D2A3DF00179335 /* RecipientTextViewModel.swift in Sources */,
 				434C19AB25D3D92D00F622DB /* AccountPickerView.swift in Sources */,
 				434A6C6925D2A3D200179335 /* RecipientCellViewModel+FieldType.swift in Sources */,
+				434C1A8025D40B0400F622DB /* SplitViewHandlingProtocol.swift in Sources */,
 				434A6C4D25D2A3A100179335 /* ComposeViewModel+Factory.swift in Sources */,
 				434A6C7225D2A3E200179335 /* RecipientCellViewModel.swift in Sources */,
 				434A6C6D25D2A3D900179335 /* NSAttributedString+RecipientTextUtils.swift in Sources */,
