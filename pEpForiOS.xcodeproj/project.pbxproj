@@ -329,6 +329,7 @@
 		434C1ABD25D4112B00F622DB /* SecureWebViewUrlClickHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C1AB725D410F400F622DB /* SecureWebViewUrlClickHandlerProtocol.swift */; };
 		434C1AC025D4116D00F622DB /* SegueHandlerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FD1221AD332003968DA /* SegueHandlerType.swift */; };
 		434C1AC325D411B700F622DB /* UIUtils+Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521B790241BDCD9000EAE57 /* UIUtils+Alerts.swift */; };
+		434C1AC625D411F300F622DB /* PEPAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816541230EC72C00B967E3 /* PEPAlertViewController.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
@@ -3040,6 +3041,7 @@
 				434A6C7525D2A3E700179335 /* SubjectCell.swift in Sources */,
 				3A503B18253744390070AB6A /* ComposeTableViewController.swift in Sources */,
 				3A503A9F253737B20070AB6A /* ShareViewController.swift in Sources */,
+				434C1AC625D411F300F622DB /* PEPAlertViewController.swift in Sources */,
 				434C1A7D25D40ACF00F622DB /* UIImageView+Extension.swift in Sources */,
 				434A6C4B25D2A39C00179335 /* ComposeViewModelState.swift in Sources */,
 				434C1A8325D40B4000F622DB /* PEPSplitViewController.swift in Sources */,
