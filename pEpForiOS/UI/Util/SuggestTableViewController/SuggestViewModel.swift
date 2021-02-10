@@ -14,7 +14,11 @@ import MessageModelForAppExtensions
 import MessageModel
 #endif
 
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 protocol SuggestViewModelResultDelegate: class {
     /// Will be called whenever the user selects an Identity.
