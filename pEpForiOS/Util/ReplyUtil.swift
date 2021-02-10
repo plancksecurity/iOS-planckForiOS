@@ -6,8 +6,17 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
+
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 public struct ReplyUtil {
 
