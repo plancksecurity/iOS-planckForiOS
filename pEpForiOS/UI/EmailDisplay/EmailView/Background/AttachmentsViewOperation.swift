@@ -23,6 +23,7 @@ class AttachmentViewOperation: Operation {
     ///The resulting attachments view will appear here.
     //MB:- should be only one.
     var attachmentContainers = [AttachmentContainer]()
+    var container: AttachmentContainer?
 
     init(mimeTypes: MimeTypeUtils?, message: Message, index: Int) {
         self.message = message
@@ -69,8 +70,10 @@ class AttachmentViewOperation: Operation {
             if (isImage),
                let imgData = att.data,
                let img = UIImage.image(gifData: imgData) ?? UIImage(data: imgData) {
+                me.container = .imageAttachment(att, img)
                 me.attachmentContainers.append(.imageAttachment(att, img))
             } else {
+                me.container = .docAttachment(att)
                 me.attachmentContainers.append(.docAttachment(att))
             }
         }

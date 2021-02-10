@@ -185,29 +185,30 @@ struct AttachmentRow: AttachmentRowProtocol {
                                   completion: @escaping (AttachmentRow.Attachment) -> ()) {
             let defaultFileName = MessageModel.Attachment.defaultFilename
 
-            attachmentViewOperation.attachmentContainers.forEach { (container) in
-                switch container {
-                case .imageAttachment(let attachment, let image):
-                    let safeAttachment = attachment.safeForSession(Session.main)
-                    Session.main.performAndWait {
-                        let fileName = safeAttachment.fileName ?? defaultFileName
-                        let attachmentToReturn = AttachmentRow.Attachment(filename: fileName, ´extension´: safeAttachment.mimeType, icon: image, isImage: true)
-                        completion(attachmentToReturn)
+            guard let container = attachmentViewOperation.container else {
+                /// Valid case, could be an inline attachment
+                return
+            }
+            switch container {
+            case .imageAttachment(let attachment, let image):
+                let safeAttachment = attachment.safeForSession(Session.main)
+                Session.main.performAndWait {
+                    let fileName = safeAttachment.fileName ?? defaultFileName
+                    let attachmentToReturn = AttachmentRow.Attachment(filename: fileName, ´extension´: safeAttachment.mimeType, icon: image, isImage: true)
+                    completion(attachmentToReturn)
 
-                    }
-                case .docAttachment(let attachment):
-                    let safeAttachment = attachment.safeForSession(.main)
-                    Session.main.performAndWait {
-                        let (name, finalExt) = safeAttachment.fileName?.splitFileExtension() ?? (defaultFileName, nil)
-                        let dic = UIDocumentInteractionController()
-                        dic.name = safeAttachment.fileName
-                        var attachmentToReturn = AttachmentRow.Attachment(filename: name, ´extension´: finalExt, icon: dic.icons.first, isImage: false)
-                        completion(attachmentToReturn)
-                    }
+                }
+            case .docAttachment(let attachment):
+                let safeAttachment = attachment.safeForSession(.main)
+                Session.main.performAndWait {
+                    let (name, finalExt) = safeAttachment.fileName?.splitFileExtension() ?? (defaultFileName, nil)
+                    let dic = UIDocumentInteractionController()
+                    dic.name = safeAttachment.fileName
+                    let attachmentToReturn = AttachmentRow.Attachment(filename: name, ´extension´: finalExt, icon: dic.icons.first, isImage: false)
+                    completion(attachmentToReturn)
                 }
             }
         }
-
         let mimeTypes = MimeTypeUtils()
         operationQueue.cancelAllOperations()
         let attachmentViewOperation = AttachmentViewOperation(mimeTypes: mimeTypes, message: message, index: index)
