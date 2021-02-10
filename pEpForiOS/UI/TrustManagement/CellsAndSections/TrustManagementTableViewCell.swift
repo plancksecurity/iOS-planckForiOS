@@ -8,6 +8,12 @@
 
 import UIKit
 
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
+import pEpIOSToolbox
+#endif
+
 /// UITableViewCell for trust management screen
 final class TrustManagementTableViewCell: UITableViewCell {
  
