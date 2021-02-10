@@ -13,4 +13,8 @@
 
 #import "Axt.h"
 
+#pragma mark - Markdown
+
+#import "NSString+Markdown.h"
+
 #endif /* pEp_share_Bridging_Header_h */
