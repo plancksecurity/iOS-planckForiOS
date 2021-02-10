@@ -6,7 +6,11 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
 
 /// If pEp offers custom handling for a URL clicked by a user, here is the place for the custom
 /// implementation.
