@@ -298,6 +298,7 @@
 		434C19E325D3E3F700F622DB /* ComposeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39A321905C3D00D9F8E4 /* ComposeUtil.swift */; };
 		434C19EA25D3E52F00F622DB /* Account+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433E7437225B564400B84CD9 /* Account+Extension.swift */; };
 		434C19F125D3E5C300F622DB /* Message+ComposeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A399B21905C3D00D9F8E4 /* Message+ComposeUtils.swift */; };
+		434C19F425D3E61B00F622DB /* NSAttributedString+Html.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BAA242CC31F00083BB5 /* NSAttributedString+Html.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
@@ -3008,6 +3009,7 @@
 				434A6C5225D2A3AA00179335 /* TextViewContainingTableViewCell.swift in Sources */,
 				434A6C6625D2A3CF00179335 /* RecipientCell.swift in Sources */,
 				434C19B125D3DA2000F622DB /* Attachment+DefaultFilename.swift in Sources */,
+				434C19F425D3E61B00F622DB /* NSAttributedString+Html.swift in Sources */,
 				434A6C6E25D2A3DC00179335 /* RecipientTextViewModel+TextAttachment.swift in Sources */,
 				434C19C725D3E11100F622DB /* SuggestTableViewController.swift in Sources */,
 				434C19EA25D3E52F00F622DB /* Account+Extension.swift in Sources */,
