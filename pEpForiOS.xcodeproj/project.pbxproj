@@ -353,6 +353,7 @@
 		434C1B0825D4290700F622DB /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7EC1FC81D4200D52A5D /* URL+Extensions.swift */; };
 		434C1B0B25D4295900F622DB /* HtmlToMarkdownSaxParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E657E61F3CAB310014CBEC /* HtmlToMarkdownSaxParser.swift */; };
 		434C1B3D25D42D5400F622DB /* NSString+Markdown.m in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2DD1F4457620053381F /* NSString+Markdown.m */; };
+		434C1B4025D433D600F622DB /* HtmlTagParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A928C85242259E200FEFA4C /* HtmlTagParser.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
@@ -3104,6 +3105,7 @@
 				434C1A8925D40BEA00F622DB /* UIUtils.swift in Sources */,
 				434C1B0825D4290700F622DB /* URL+Extensions.swift in Sources */,
 				434C19B725D3DC8C00F622DB /* NSAttributedString+pEp.swift in Sources */,
+				434C1B4025D433D600F622DB /* HtmlTagParser.swift in Sources */,
 				434A6C7125D2A3DF00179335 /* RecipientTextViewModel.swift in Sources */,
 				434C19AB25D3D92D00F622DB /* AccountPickerView.swift in Sources */,
 				434C1AE125D4141800F622DB /* TrustManagementTableViewCellProtocols.swift in Sources */,
