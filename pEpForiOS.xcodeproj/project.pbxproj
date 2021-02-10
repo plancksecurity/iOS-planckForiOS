@@ -327,6 +327,7 @@
 		434C1AAF25D4103400F622DB /* UrlClickHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D077211356E000FEDC93 /* UrlClickHandlerProtocol.swift */; };
 		434C1AB825D410F400F622DB /* SecureWebViewUrlClickHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C1AB725D410F400F622DB /* SecureWebViewUrlClickHandlerProtocol.swift */; };
 		434C1ABD25D4112B00F622DB /* SecureWebViewUrlClickHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C1AB725D410F400F622DB /* SecureWebViewUrlClickHandlerProtocol.swift */; };
+		434C1AC025D4116D00F622DB /* SegueHandlerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FD1221AD332003968DA /* SegueHandlerType.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
@@ -3060,6 +3061,7 @@
 				434C19C725D3E11100F622DB /* SuggestTableViewController.swift in Sources */,
 				434C19EA25D3E52F00F622DB /* Account+Extension.swift in Sources */,
 				434C19DA25D3E2AE00F622DB /* UITableView+Extension.swift in Sources */,
+				434C1AC025D4116D00F622DB /* SegueHandlerType.swift in Sources */,
 				434A6C6A25D2A3D500179335 /* RecipientTextView.swift in Sources */,
 				434A6C7925D2A3EE00179335 /* WrappedCell.swift in Sources */,
 				434A6C5625D2A3B100179335 /* AccountCellViewModel.swift in Sources */,
