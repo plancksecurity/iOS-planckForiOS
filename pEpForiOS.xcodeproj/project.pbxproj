@@ -334,6 +334,7 @@
 		434C1ACC25D4123900F622DB /* PEPUIAlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816545230EE5F700B967E3 /* PEPUIAlertAction.swift */; };
 		434C1ACF25D412B600F622DB /* TrustManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14AEF23EB19B5005F0AF3 /* TrustManagementViewController.swift */; };
 		434C1AD225D412F300F622DB /* TrustManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14ABE23E2EE78005F0AF3 /* TrustManagementViewModel.swift */; };
+		434C1AD525D4133400F622DB /* Color+PrivacyStatusDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9818B24E53BFF00830603 /* Color+PrivacyStatusDescription.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
@@ -3120,6 +3121,7 @@
 				434C1A7425D409ED00F622DB /* UIHelper+PEP.swift in Sources */,
 				434C19E025D3E3A900F622DB /* Color+UI.swift in Sources */,
 				434C19CE25D3E13E00F622DB /* TextViewInTableViewScrollUtil.swift in Sources */,
+				434C1AD525D4133400F622DB /* Color+PrivacyStatusDescription.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
