@@ -318,6 +318,7 @@
 		434C1A9125D40CEC00F622DB /* UIUtils+ShowError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C1A9025D40CEC00F622DB /* UIUtils+ShowError.swift */; };
 		434C1A9625D40D6500F622DB /* UIUtils+ActionSheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521B792241BDD33000EAE57 /* UIUtils+ActionSheets.swift */; };
 		434C1A9925D40DB700F622DB /* Mailto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A7189252CC4A500436FCF /* Mailto.swift */; };
+		434C1A9C25D40DEE00F622DB /* URL+MailTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D079211464CC00FEDC93 /* URL+MailTo.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
@@ -3038,6 +3039,7 @@
 				434C19FA25D3E68E00F622DB /* ComposeHelpers.swift in Sources */,
 				434C19B125D3DA2000F622DB /* Attachment+DefaultFilename.swift in Sources */,
 				434C19F425D3E61B00F622DB /* NSAttributedString+Html.swift in Sources */,
+				434C1A9C25D40DEE00F622DB /* URL+MailTo.swift in Sources */,
 				434A6C6E25D2A3DC00179335 /* RecipientTextViewModel+TextAttachment.swift in Sources */,
 				434C1A0325D3EFF500F622DB /* BasicSaxParser.swift in Sources */,
 				434C19C725D3E11100F622DB /* SuggestTableViewController.swift in Sources */,
