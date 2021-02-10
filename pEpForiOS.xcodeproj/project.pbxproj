@@ -294,6 +294,7 @@
 		434C19D125D3E1BF00F622DB /* DocumentAttachmentPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A399E21905C3D00D9F8E4 /* DocumentAttachmentPickerViewModel.swift */; };
 		434C19DA25D3E2AE00F622DB /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FD5221AD3BB003968DA /* UITableView+Extension.swift */; };
 		434C19DD25D3E35E00F622DB /* SuggestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597921623652006A78DF /* SuggestViewModel.swift */; };
+		434C19E025D3E3A900F622DB /* Color+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9818D24E53CF800830603 /* Color+UI.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
@@ -3034,6 +3035,7 @@
 				434A6C5325D2A3AF00179335 /* AccountCell.swift in Sources */,
 				434A6C7825D2A3EA00179335 /* SubjectCellViewModel.swift in Sources */,
 				434A6C4825D2A39800179335 /* ComposeViewController.swift in Sources */,
+				434C19E025D3E3A900F622DB /* Color+UI.swift in Sources */,
 				434C19CE25D3E13E00F622DB /* TextViewInTableViewScrollUtil.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
