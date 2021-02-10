@@ -288,6 +288,7 @@
 		434C19C125D3E07000F622DB /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		434C19C425D3E09C00F622DB /* String+PEPSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43269D262552ABE9001E18C6 /* String+PEPSignature.swift */; };
 		434C19C725D3E11100F622DB /* SuggestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597721623637006A78DF /* SuggestTableViewController.swift */; };
+		434C19CA25D3E11D00F622DB /* MediaAttachmentPickerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39A021905C3D00D9F8E4 /* MediaAttachmentPickerProvider.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
@@ -3008,6 +3009,7 @@
 				434A6C4D25D2A3A100179335 /* ComposeViewModel+Factory.swift in Sources */,
 				434A6C7225D2A3E200179335 /* RecipientCellViewModel.swift in Sources */,
 				434A6C6D25D2A3D900179335 /* NSAttributedString+RecipientTextUtils.swift in Sources */,
+				434C19CA25D3E11D00F622DB /* MediaAttachmentPickerProvider.swift in Sources */,
 				434C19BE25D3E02C00F622DB /* AppSettings+KeySyncDeviceGroupStateChangeNotification.swift in Sources */,
 				434A6C4E25D2A3A400179335 /* ComposeViewModel+InitData.swift in Sources */,
 				434A6C6525D2A3CB00179335 /* NSAttributedString+BodyTextUtils.swift in Sources */,
