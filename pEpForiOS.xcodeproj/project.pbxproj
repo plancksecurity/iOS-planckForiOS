@@ -341,6 +341,7 @@
 		434C1AE125D4141800F622DB /* TrustManagementTableViewCellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */; };
 		434C1AE425D4145C00F622DB /* TrustManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */; };
 		434C1AEA25D4158000F622DB /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FD4221AD3BB003968DA /* UIButton+Extension.swift */; };
+		434C1AED25D4163A00F622DB /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C1431259A25B2006DB2A1 /* UILabel+Extension.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
@@ -3070,6 +3071,7 @@
 				434A6C6625D2A3CF00179335 /* RecipientCell.swift in Sources */,
 				434C19FA25D3E68E00F622DB /* ComposeHelpers.swift in Sources */,
 				434C19B125D3DA2000F622DB /* Attachment+DefaultFilename.swift in Sources */,
+				434C1AED25D4163A00F622DB /* UILabel+Extension.swift in Sources */,
 				434C1ADE25D413ED00F622DB /* TrustManagementResetTableViewCell.swift in Sources */,
 				434C19F425D3E61B00F622DB /* NSAttributedString+Html.swift in Sources */,
 				434C1A9C25D40DEE00F622DB /* URL+MailTo.swift in Sources */,
