@@ -13,9 +13,9 @@ import MessageModel
 #endif
 
 #if EXT_SHARE
-import MessageModelForAppExtensions
+import PEPIOSToolboxForAppExtensions
 #else
-import MessageModel
+import pEpIOSToolbox
 #endif
 
 protocol DocumentAttachmentPickerViewModelResultDelegate: class {
