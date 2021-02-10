@@ -12,7 +12,11 @@ import MessageModelForAppExtensions
 import MessageModel
 #endif
 
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 class AttachmentViewModel: CellViewModel {
     /// - note: Before crafting a message to send, this is a dangling Attachment! (message == nil).
