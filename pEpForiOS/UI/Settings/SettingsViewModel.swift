@@ -454,8 +454,6 @@ extension SettingsViewModel {
         updatePEPSyncEnabled(value: value)
     }
 
-
-
     private var keySyncStatus: Bool {
         get {
             AppSettings.shared.isKeySyncEnabled
