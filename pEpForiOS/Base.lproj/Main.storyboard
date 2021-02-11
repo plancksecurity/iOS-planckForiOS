@@ -760,7 +760,7 @@
                     <connections>
                         <outlet property="showExternalContentButton" destination="kwH-Mw-szw" id="gv6-sd-kJB"/>
                         <outlet property="showExternalContentLabel" destination="GZX-Q2-Z5a" id="SqQ-IV-zrN"/>
-                        <outlet property="showExternalContentView" destination="1gM-RO-PE9" id="rpj-70-bGH"/>
+                        <outlet property="showExternalContentView" destination="1gM-RO-PE9" id="7ds-Vj-bex"/>
                         <outlet property="tableView" destination="SId-vz-C31" id="3Om-uV-g6Q"/>
                         <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" id="e2D-Sv-Lmt"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" id="wZp-rH-OFv"/>
