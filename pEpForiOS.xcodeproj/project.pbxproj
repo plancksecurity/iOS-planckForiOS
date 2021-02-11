@@ -200,7 +200,7 @@
 		3AD2CBC923FD92650003A536 /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD2CBC823FD92640003A536 /* AccountSettingsViewModel.swift */; };
 		43038EA2246D897F008FC36E /* KeyImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43038EA1246D897F008FC36E /* KeyImportViewController.swift */; };
 		4307D5DA23575853004569C4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4307D5D823575853004569C4 /* InfoPlist.strings */; };
-		430D73651E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430D73641E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift */; };
+		430D73651E9CBD4E00EA6FA9 /* AttachmentViewOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430D73641E9CBD4E00EA6FA9 /* AttachmentViewOperation.swift */; };
 		4315E4C3201242BB00F68763 /* OAuth2Type+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */; };
 		431BB9451E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 431BB9441E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg */; };
 		431C2B171F387C4100D87FFD /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431C2B161F387C4100D87FFD /* LoginViewModelTests.swift */; };
@@ -715,7 +715,7 @@
 		4307D5DF23575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Reusable.strings; sourceTree = "<group>"; };
 		4307D5E123575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Thread.strings; sourceTree = "<group>"; };
 		4307D5E223575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
-		430D73641E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsViewOperation.swift; sourceTree = "<group>"; };
+		430D73641E9CBD4E00EA6FA9 /* AttachmentViewOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentViewOperation.swift; sourceTree = "<group>"; };
 		4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OAuth2Type+Extension.swift"; sourceTree = "<group>"; };
 		431BB9441E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = PorpoiseGalaxy_HubbleFraile_960.jpg; sourceTree = "<group>"; };
 		431C2B161F387C4100D87FFD /* LoginViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
@@ -1793,7 +1793,7 @@
 		430D73601E9CBD0600EA6FA9 /* Background */ = {
 			isa = PBXGroup;
 			children = (
-				430D73641E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift */,
+				430D73641E9CBD4E00EA6FA9 /* AttachmentViewOperation.swift */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -3038,7 +3038,7 @@
 				434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */,
 				B7DB7FC42215C4FF003968DA /* UINavigationController+Extensions.swift in Sources */,
 				15944A3523980FEC006B133B /* EmailDisplayViewModel.swift in Sources */,
-				430D73651E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift in Sources */,
+				430D73651E9CBD4E00EA6FA9 /* AttachmentViewOperation.swift in Sources */,
 				15944A3223980C99006B133B /* EmailDetailViewModel.swift in Sources */,
 				B7DB7FC82215C57F003968DA /* UIView+ActivityIndicator.swift in Sources */,
 				152A39CC21905C3E00D9F8E4 /* MediaAttachmentPickerProvider.swift in Sources */,
