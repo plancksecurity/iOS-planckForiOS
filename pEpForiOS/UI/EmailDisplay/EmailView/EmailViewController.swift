@@ -102,12 +102,11 @@ extension EmailViewController: UITableViewDataSource {
         }
         let cellIdentifier = vm.cellIdentifier(for: indexPath)
         let row = vm[indexPath.row]
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageCell else {
-            return UITableViewCell()
-        }
-
         switch vm.type(ofRow: row) {
         case .sender:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageSenderCell else {
+                return UITableViewCell()
+            }
             guard let row = vm[indexPath.row] as? SenderRowProtocol else {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
@@ -115,6 +114,9 @@ extension EmailViewController: UITableViewDataSource {
             setupSender(cell: cell, with: row)
             return cell
         case .subject:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageSubjectCell else {
+                return UITableViewCell()
+            }
             guard let row = vm[indexPath.row] as? SubjectRowProtocol else {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
@@ -122,8 +124,7 @@ extension EmailViewController: UITableViewDataSource {
             setupSubject(cell: cell, with: row)
             return cell
         case .body:
-            guard let cell = cell as? MessageBodyCell else {
-                Log.shared.errorAndCrash("Invalid state.")
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageBodyCell else {
                 return UITableViewCell()
             }
             guard let row = vm[indexPath.row] as? BodyRowProtocol else {
@@ -133,16 +134,15 @@ extension EmailViewController: UITableViewDataSource {
             setup(cell: cell, with: row)
             return cell
         case .attachment:
-            guard let dequeued = cell as? MessageAttachmentCell else {
-                Log.shared.errorAndCrash("Invalid state.")
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageAttachmentCell else {
                 return UITableViewCell()
             }
             guard let row = vm[indexPath.row] as? AttachmentRowProtocol else {
                 Log.shared.errorAndCrash("Can't get or cast attachment row")
                 return cell
             }
-            setup(cell: dequeued, with: row)
-            return dequeued
+            setup(cell: cell, with: row)
+            return cell
         }
     }
 }
@@ -285,26 +285,26 @@ extension EmailViewController {
         }
     }
 
-    private func setupSender(cell: MessageCell, with row: SenderRowProtocol) {
+    private func setupSender(cell: MessageSenderCell, with row: SenderRowProtocol) {
         let font = UIFont.pepFont(style: .footnote, weight: .semibold)
-        cell.titleLabel?.font = font
-        cell.titleLabel?.text = row.from
+        cell.fromLabel.font = font
+        cell.fromLabel.text = row.from
         let subtitle = row.to
         let attributes = [NSAttributedString.Key.font: font,
                           NSAttributedString.Key.foregroundColor: UIColor.lightGray]
-        cell.valueLabel?.attributedText = NSAttributedString(string: subtitle, attributes: attributes)
+        cell.toLabel?.attributedText = NSAttributedString(string: subtitle, attributes: attributes)
     }
 
-    private func setupSubject(cell: MessageCell, with row: SubjectRowProtocol) {
-        cell.titleLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
-        cell.titleLabel?.text = row.title
+    private func setupSubject(cell: MessageSubjectCell, with row: SubjectRowProtocol) {
+        cell.subjectLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
+        cell.subjectLabel?.text = row.title
         if let date = row.date {
-            cell.valueLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
-            cell.valueLabel?.text = date
-            cell.valueLabel?.isHidden = false
+            cell.dateLabel.font = UIFont.pepFont(style: .footnote, weight: .semibold)
+            cell.dateLabel.text = date
+            cell.dateLabel.isHidden = false
         } else {
-            cell.valueLabel?.text = nil
-            cell.valueLabel?.isHidden = true
+            cell.dateLabel.text = nil
+            cell.dateLabel.isHidden = true
         }
     }
 
@@ -312,7 +312,7 @@ extension EmailViewController {
         row.retrieveAttachmentData { (fileName, fileExtension, image) in
             cell.fileNameLabel.text = fileName
             cell.iconImageView.image = image
-            cell.extensionLabel.text = fileExtension
+            cell.fileExtensionLabel.text = fileExtension
         }
     }
 }

@@ -8,6 +8,6 @@
 import Foundation
 import UIKit
 
-class MessageBodyCell: MessageCell {
+class MessageBodyCell: UITableViewCell {
     @IBOutlet weak var contentText: UITextView!
 }

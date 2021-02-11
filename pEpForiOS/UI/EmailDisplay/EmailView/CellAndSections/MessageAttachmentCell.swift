@@ -9,9 +9,9 @@
 import Foundation
 import MessageModel
 
-class MessageAttachmentCell: MessageCell {
+class MessageAttachmentCell: UITableViewCell {
    @IBOutlet weak var attachmentView: AttachmentCellBackgroundView!
-   @IBOutlet weak var extensionLabel: UILabel!
+   @IBOutlet weak var fileExtensionLabel: UILabel!
    @IBOutlet weak var fileNameLabel: UILabel!
    @IBOutlet weak var iconImageView: UIImageView!
 }

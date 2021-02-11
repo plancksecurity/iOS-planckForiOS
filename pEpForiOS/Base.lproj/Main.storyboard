@@ -493,7 +493,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </tableViewCellContentView>
                                             </tableViewCell>
-                                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="senderCell" rowHeight="72" id="5C0-BM-OjH" customClass="MessageCell" customModule="pEpForiOS" customModuleProvider="target">
+                                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="senderCell" rowHeight="72" id="5C0-BM-OjH" customClass="MessageSenderCell" customModule="pEpForiOS" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="71.5" width="375" height="72"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5C0-BM-OjH" id="314-rf-9fH">
@@ -524,24 +524,24 @@
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
-                                                    <outlet property="titleLabel" destination="Eqy-26-Dp7" id="67O-Qr-eIB"/>
-                                                    <outlet property="valueLabel" destination="pYF-SV-znm" id="bEN-hb-xcS"/>
+                                                    <outlet property="fromLabel" destination="Eqy-26-Dp7" id="l9M-nb-Bzp"/>
+                                                    <outlet property="toLabel" destination="pYF-SV-znm" id="QaU-r9-52O"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="senderSubjectCell" rowHeight="66" id="dOn-lF-8Mt" userLabel="subjectCell" customClass="MessageCell" customModule="pEpForiOS" customModuleProvider="target">
+                                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="senderSubjectCell" rowHeight="66" id="dOn-lF-8Mt" userLabel="subjectCell" customClass="MessageSubjectCell" customModule="pEpForiOS" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="143.5" width="375" height="66"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dOn-lF-8Mt" id="kkm-Hl-To6">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="66"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Subject" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7WS-qg-fiH">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Subject" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7WS-qg-fiH" userLabel="Subject Label">
                                                             <rect key="frame" x="20" y="11" width="331" height="14"/>
                                                             <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Wv-cJ-cSu">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Wv-cJ-cSu" userLabel="Date Label">
                                                             <rect key="frame" x="20" y="31" width="331" height="22"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" red="0.54901960780000003" green="0.54901960780000003" blue="0.54901960780000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -571,8 +571,8 @@
                                                     <constraint firstAttribute="trailing" secondItem="Wyd-Sj-Zn2" secondAttribute="trailing" id="j40-PW-9qJ"/>
                                                 </constraints>
                                                 <connections>
-                                                    <outlet property="titleLabel" destination="7WS-qg-fiH" id="B6B-gC-0mn"/>
-                                                    <outlet property="valueLabel" destination="1Wv-cJ-cSu" id="scg-ad-e9o"/>
+                                                    <outlet property="dateLabel" destination="1Wv-cJ-cSu" id="0tZ-h5-dOh"/>
+                                                    <outlet property="subjectLabel" destination="7WS-qg-fiH" id="e3z-mX-BXB"/>
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderBodyCell" rowHeight="200" id="2zG-Ta-cbU" userLabel="bodyCell" customClass="MessageBodyCell" customModule="pEpForiOS" customModuleProvider="target">
@@ -688,7 +688,7 @@
                                                 </tableViewCellContentView>
                                                 <connections>
                                                     <outlet property="attachmentView" destination="7AT-v0-245" id="8sG-FS-oiX"/>
-                                                    <outlet property="extensionLabel" destination="QAe-a9-sKI" id="iJr-f1-6Iw"/>
+                                                    <outlet property="fileExtensionLabel" destination="QAe-a9-sKI" id="dV9-rw-UYI"/>
                                                     <outlet property="fileNameLabel" destination="dKq-m3-XfR" id="MAH-PT-Oor"/>
                                                     <outlet property="iconImageView" destination="XGl-Uo-5x1" id="MUL-1f-AYr"/>
                                                 </connections>
