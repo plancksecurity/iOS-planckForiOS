@@ -233,11 +233,14 @@ class EmailViewModel {
         self.message = message
         self.delegate = delegate
         self.rows = [EmailRowProtocol]()
-        self.attachments = message.viewableAttachments().filter({!$0.isInlined})
-        self.setuprows(message: message)
+
+        self.attachments = message.viewableAttachments().filter({
+            !$0.isInlined
+        })
+        self.setupRows(message: message)
     }
 
-    private func setuprows(message: Message) {
+    private func setupRows(message: Message) {
         /// Sender
         guard let from = message.from?.displayString else {
             Log.shared.errorAndCrash("From identity not found.")

@@ -43,7 +43,9 @@ class AttachmentViewOperation: Operation {
                 return
             }
 
-            let attachments = safeMessage.viewableAttachments()
+            let attachments = safeMessage.viewableAttachments().filter({
+                !$0.isInlined
+            })
             let att = attachments[me.attachmentIndex]
             if att.isInlined {
                 // Ignore attachments that are already shown inline in the message body.

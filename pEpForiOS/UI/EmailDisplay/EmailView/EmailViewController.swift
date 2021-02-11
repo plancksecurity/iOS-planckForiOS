@@ -131,7 +131,7 @@ extension EmailViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
-            setup(cell: cell, with: row)
+            setupBody(cell: cell, with: row)
             return cell
         case .attachment:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageAttachmentCell else {
@@ -141,7 +141,7 @@ extension EmailViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("Can't get or cast attachment row")
                 return cell
             }
-            setup(cell: cell, with: row)
+            setupAttachment(cell: cell, with: row)
             return cell
         }
     }
@@ -259,7 +259,7 @@ extension EmailViewController {
         showExternalContentView.isHidden = true
     }
 
-    private func setup(cell: MessageBodyCell, with row: BodyRowProtocol) {
+    private func setupBody(cell: MessageBodyCell, with row: BodyRowProtocol) {
         if let htmlBody = row.htmlBody {
             cell.contentView.addSubview(htmlViewerViewController.view)
             htmlViewerViewController.view.fullSizeInSuperView()
@@ -308,7 +308,7 @@ extension EmailViewController {
         }
     }
 
-    private func setup(cell: MessageAttachmentCell, with row: AttachmentRowProtocol) {
+    private func setupAttachment(cell: MessageAttachmentCell, with row: AttachmentRowProtocol) {
         row.retrieveAttachmentData { (fileName, fileExtension, image) in
             cell.fileNameLabel.text = fileName
             cell.iconImageView.image = image
