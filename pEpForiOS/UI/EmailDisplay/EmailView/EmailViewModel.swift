@@ -72,8 +72,6 @@ struct SubjectRow: SubjectRowProtocol {
 protocol BodyRowProtocol: EmailRowProtocol {
     /// The html body of the message
     var htmlBody: String? { get }
-    /// Indicates if should show the external content view
-    var shouldShowExternalContentView: Bool { get }
     /// Evaluates the pepRating to provide the body
     /// Use it for non-html content.
     /// - Parameter completion: The callback with the body.
@@ -81,10 +79,9 @@ protocol BodyRowProtocol: EmailRowProtocol {
 }
 
 struct BodyRow: BodyRowProtocol {
-    var cellIdentifier: String = "senderBodyCell"
+    public var cellIdentifier: String = "senderBodyCell"
     private var message: Message?
-    var htmlBody: String?
-    var shouldShowExternalContentView: Bool = false
+    public var htmlBody: String?
 
     /// Constructor
     ///
@@ -92,9 +89,8 @@ struct BodyRow: BodyRowProtocol {
     ///   - htmlBody: The html body
     ///   - shouldShowExternalContentView: Indicates if should show the external content view
     ///   - message: The message.
-    init(htmlBody: String?, shouldShowExternalContentView: Bool, message: Message? = nil) {
+    init(htmlBody: String?, message: Message? = nil) {
         self.htmlBody = htmlBody
-        self.shouldShowExternalContentView = shouldShowExternalContentView
         self.message = message
     }
 
@@ -227,6 +223,7 @@ class EmailViewModel {
     private var rows: [EmailRowProtocol]
     private var message: Message
     private var attachments = [MessageModel.Attachment]()
+
     /// Constructor
     /// - Parameter message: The message to display
     public init(message: Message, delegate: EmailViewModelDelegate) {
@@ -240,37 +237,6 @@ class EmailViewModel {
         self.setupRows(message: message)
     }
 
-    private func setupRows(message: Message) {
-        /// Sender
-        guard let from = message.from?.displayString else {
-            Log.shared.errorAndCrash("From identity not found.")
-            return
-        }
-        var tempTo: [String] = []
-        message.allRecipients.forEach { (recepient) in
-            let recepient = recepient.address
-            tempTo.append(recepient)
-        }
-        let toDestinataries = NSLocalizedString("To:", comment: "Email field title") + tempTo.joined(separator: ", ")
-        let senderRow = SenderRow(from: from, to: toDestinataries)
-        rows.append(senderRow)
-
-        //Subject
-        let title = message.shortMessage
-        let subjectRow = SubjectRow(title: title ?? "", date: message.sent?.fullString())
-        rows.append(subjectRow)
-
-        //Body
-        let bodyRow = BodyRow(htmlBody: htmlBody, shouldShowExternalContentView: shouldShowExternalContentView, message: message)
-        rows.append(bodyRow)
-
-        //Attachments
-        for attachmentIndex in 0..<attachments.count {
-            let attachmentRow = AttachmentRow(message: message, attachmentIndex: attachmentIndex)
-            rows.append(attachmentRow)
-        }
-    }
-
     private var shouldHideExternalContent: Bool = true
 
     // Indicates if the External Content View has to be shown.
@@ -281,8 +247,8 @@ class EmailViewModel {
         return body.containsExternalContent() && shouldHideExternalContent
     }
 
-    /// Yields the HTML message body if we can show it in a secure way or we have non-empty HTML content at all
-    public var htmlBody: String? {
+    // Yields the HTML message body if we can show it in a secure way or we have non-empty HTML content at all
+    private var htmlBody: String? {
         guard let htmlBody = message.longMessageFormatted,
               !htmlBody.isEmpty else {
             return nil
@@ -331,6 +297,9 @@ class EmailViewModel {
         return rows[indexPath.row].cellIdentifier
     }
 
+    /// Get the row type of the row.
+    /// - Parameter row: The row
+    /// - Returns: The Email Row type
     public func type(ofRow row: EmailRowProtocol) -> EmailRowType {
         if row is SenderRowProtocol {
             return .sender
@@ -390,4 +359,41 @@ class EmailViewModel {
             }
         }
     }
+}
+
+//MARK:- Private
+
+extension EmailViewModel {
+
+    private func setupRows(message: Message) {
+        /// Sender
+        guard let from = message.from?.displayString else {
+            Log.shared.errorAndCrash("From identity not found.")
+            return
+        }
+        var tempTo: [String] = []
+        message.allRecipients.forEach { (recepient) in
+            let recepient = recepient.address
+            tempTo.append(recepient)
+        }
+        let toDestinataries = NSLocalizedString("To:", comment: "Email field title") + tempTo.joined(separator: ", ")
+        let senderRow = SenderRow(from: from, to: toDestinataries)
+        rows.append(senderRow)
+
+        //Subject
+        let title = message.shortMessage
+        let subjectRow = SubjectRow(title: title ?? "", date: message.sent?.fullString())
+        rows.append(subjectRow)
+
+        //Body
+        let bodyRow = BodyRow(htmlBody: htmlBody, message: message)
+        rows.append(bodyRow)
+
+        //Attachments
+        for attachmentIndex in 0..<attachments.count {
+            let attachmentRow = AttachmentRow(message: message, attachmentIndex: attachmentIndex)
+            rows.append(attachmentRow)
+        }
+    }
+
 }

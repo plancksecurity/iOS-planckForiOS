@@ -260,11 +260,15 @@ extension EmailViewController {
     }
 
     private func setupBody(cell: MessageBodyCell, with row: BodyRowProtocol) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("Missing vm")
+            return
+        }
         if let htmlBody = row.htmlBody {
             cell.contentView.addSubview(htmlViewerViewController.view)
             htmlViewerViewController.view.fullSizeInSuperView()
-            showExternalContentView.isHidden = !row.shouldShowExternalContentView
-            htmlViewerViewController.display(html: htmlBody, showExternalContent: !row.shouldShowExternalContentView)
+            showExternalContentView.isHidden = !vm.shouldShowExternalContentView
+            htmlViewerViewController.display(html: htmlBody, showExternalContent: !vm.shouldShowExternalContentView)
         } else {
             // We do not have HTML content.
             // Remove the HTML view if we just stepped from an HTML mail to one without
