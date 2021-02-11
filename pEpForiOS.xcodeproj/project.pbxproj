@@ -278,7 +278,6 @@
 		434A6C7825D2A3EA00179335 /* SubjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39AC21905C3D00D9F8E4 /* SubjectCellViewModel.swift */; };
 		434A6C7925D2A3EE00179335 /* WrappedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0CBAAC23F5909C00AE200C /* WrappedCell.swift */; };
 		434A6C7C25D2A3F100179335 /* WrappedBccViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39B921905C3D00D9F8E4 /* WrappedBccViewModel.swift */; };
-		434A6CF625D2BF8B00179335 /* MessageModelForAppExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 434A6CF525D2BF8B00179335 /* MessageModelForAppExtensions.framework */; };
 		434C19AB25D3D92D00F622DB /* AccountPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D43999216E697700EB3933 /* AccountPickerView.swift */; };
 		434C19AE25D3D98E00F622DB /* AccountPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D4399B216E698E00EB3933 /* AccountPickerViewModel.swift */; };
 		434C19B125D3DA2000F622DB /* Attachment+DefaultFilename.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43269D3D2552B2BA001E18C6 /* Attachment+DefaultFilename.swift */; };
@@ -1154,7 +1153,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				434A6CF625D2BF8B00179335 /* MessageModelForAppExtensions.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
