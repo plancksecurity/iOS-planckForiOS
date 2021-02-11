@@ -10,6 +10,7 @@ import UIKit
 import pEpIOSToolbox
 
 class PEPSplitViewController: UISplitViewController, UISplitViewControllerDelegate {
+
     override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
@@ -52,8 +53,9 @@ class PEPSplitViewController: UISplitViewController, UISplitViewControllerDelega
                 let vc = storyboard.instantiateViewController(
                     withIdentifier: UIStoryboard.nothingSelectedViewController)
                 navigationController.pushViewController(vc, animated: false)
+
             }
-            return navigationController
+        return navigationController
     }
     
     func splitViewController(_ splitViewController: UISplitViewController,

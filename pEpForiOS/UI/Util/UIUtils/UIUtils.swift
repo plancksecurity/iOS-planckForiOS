@@ -34,7 +34,9 @@ class UIUtils {
                 // Do nothing. The error type is not suitable to bother the user with.
                 return
             }
-            showAlertWithOnlyPositiveButton(title: displayError.title, message: displayError.errorDescription)
+            DispatchQueue.main.async {
+                showAlertWithOnlyPositiveButton(title: displayError.title, message: displayError.errorDescription)
+            }
         }
 
         if Thread.current == Thread.main {

@@ -23,12 +23,12 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
     
     func testHiddenWhenUnifiedInbox() {
         givenThereIsAViewModelWithAccount(withUnifiedInbox: true)
-        XCTAssertTrue(viewModel.hidden)
+        XCTAssertTrue(viewModel.sectionHeaderHidden)
     }
     
     func testNotHiddenWithoutUnifiedInbox() {
         givenThereIsAViewModelWithAccount(withUnifiedInbox: false)
-        XCTAssertFalse(viewModel.hidden)
+        XCTAssertFalse(viewModel.sectionHeaderHidden)
     }
     
     func testUserNameWithAccount() {
@@ -158,5 +158,14 @@ class FolderSectionViewModelTests: AccountDrivenTestBase {
         XCTAssert(index != NSNotFound)
         XCTAssert(sonIndex != NSNotFound)
         XCTAssert(sonIndex! > index!)
+    }
+
+    func testAppSettingsCollapsedStateForAccount() {
+        let collapsedStateForAccountWithAddressExpectation = expectation(description: "collapsedStateForAccountWithAddressExpectation")
+        let collapsedStateForFolderOfAccountExpectation = expectation(description: "collapsedStateForFolderOfAccountExpectation")
+        let appSettingsMock = MockAppSettings(collapsedStateForAccountWithAddressExpectation: collapsedStateForAccountWithAddressExpectation,
+                                   collapsedStateForFolderOfAccountExpectation: collapsedStateForFolderOfAccountExpectation)
+        _ = FolderSectionViewModel(account: account, unified: false, appSettings:appSettingsMock)
+        waitForExpectations(timeout: TestUtil.waitTime)
     }
 }

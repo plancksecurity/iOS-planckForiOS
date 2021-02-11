@@ -9,7 +9,7 @@
 import Foundation
 
 extension Server {
-    public enum Transport: Int16 {
+    public enum Transport: Int16, CaseIterable {
         case plain
         case tls
         case startTls
@@ -41,20 +41,10 @@ extension Server {
             }
         }
 
-        public static var size: Int {
+        public static var numberOfOptions: Int {
             get {
-                return 3
+                return Transport.allCases.count
             }
-        }
-
-        public static func toArray() -> [Transport] {
-            var array = [Transport]()
-            for index in 0...Transport.size {
-                if let transport = Transport(rawValue: Int16(index)) {
-                    array.append(transport)
-                }
-            }
-            return array
         }
     }
 }

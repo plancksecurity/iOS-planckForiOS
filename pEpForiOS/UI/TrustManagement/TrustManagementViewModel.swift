@@ -103,8 +103,6 @@ extension TrustManagementViewModel {
         }
         /// Indicates if the long (or the short) version of the trustwords should be shown
         var showLongTrustwordVersion: Bool = false
-        /// The privacy status in between the current user and the partner
-        var privacyStatus: String?
         /// Status indicator
         func color(completion: @escaping (Color) -> Void){
             if forceRed {
@@ -227,6 +225,7 @@ final class TrustManagementViewModel {
     private let undoManager = UndoManager()
     /// It contains the names of the actions that are going to revert previously executed actions.
     /// For example: 'Undo Trust Rejection'. In case the last action was a Trust Rejection.
+    /// - Note: Must be already localized.
     private var revertActionNames = [String]()
     
     /// Items to be displayed in the View Controller

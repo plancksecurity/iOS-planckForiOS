@@ -103,23 +103,6 @@ extension ImapFlagsBits {
         return Int16(0)
     }
 
-    //        PantomimeFlagAnswered = 1,
-    //        PantomimeFlagDraft = 2,
-    //        PantomimeFlagFlagged = 4,
-    //        PantomimeFlagRecent = 8,
-    //        PantomimeFlagSeen = 16,
-    //        PantomimeFlagDeleted = 32
-    func debugString() -> String {
-        let str = "1 answered: \(imapFlagBitIsSet(flagbit: .answered)) " +
-            "2 draft: \(imapFlagBitIsSet(flagbit: .draft)) " +
-            "4 flagged: \(imapFlagBitIsSet(flagbit: .flagged)) " +
-            "8 recent: \(imapFlagBitIsSet(flagbit: .recent)) " +
-            "16 seen: \(imapFlagBitIsSet(flagbit: .seen)) " +
-        "32 deleted: \(imapFlagBitIsSet(flagbit: .deleted))"
-
-        return str
-    }
-
     /// Figures out if the given flag is the only flag set.
     ///
     /// - Parameter flag: flag to check if ot is the only set flag

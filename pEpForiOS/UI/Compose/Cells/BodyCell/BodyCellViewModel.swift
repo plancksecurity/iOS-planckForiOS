@@ -60,7 +60,7 @@ class BodyCellViewModel: CellViewModel {
     public func inititalText() -> (text: String?, attributedText: NSAttributedString?) {
         if plaintext.isEmpty {
             let signature = AppSettings.shared.signature(forAddress: identity?.address)
-            plaintext.append("\n\n\(signature)\n")
+            plaintext.append("\n\n\n\n\(signature)\n")
         }
         attributedText?.assureMaxTextAttachmentImageWidth(maxTextattachmentWidth)
         return (plaintext, attributedText)

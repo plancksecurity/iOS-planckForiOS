@@ -10,7 +10,8 @@ import XCTest
 import CoreData
 
 @testable import MessageModel
-import PEPObjCAdapterFramework
+import PEPObjCAdapterTypes_iOS
+import PEPObjCAdapter_iOS
 
 class DeleteOldSyncMessagesTest: PersistentStoreDrivenTestBase {
     func testDeleteAndNotDeleteDueToDate() {

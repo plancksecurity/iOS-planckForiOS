@@ -18,10 +18,6 @@ protocol EditableAccountSettingsViewModelDelegate: class {
     func popViewController()
 }
 
-protocol EditableAccountSettingsDelegate: class {
-    func didChange()
-}
-
 final class EditableAccountSettingsViewModel {
     typealias Inputs = (addrImap: String, portImap: String, transImap: String,
     addrSmpt: String, portSmtp: String, transSmtp: String, accountName: String,
@@ -47,7 +43,6 @@ final class EditableAccountSettingsViewModel {
 
     weak var delegate: EditableAccountSettingsViewModelDelegate?
     weak var tableViewModel: EditableAccountSettingsTableViewModel?
-    weak var editableAccountSettingsDelegate: EditableAccountSettingsDelegate?
 
     /// If there was OAUTH2 for this account, here is a current token.
     /// This trumps both the `originalPassword` and a password given by the user
@@ -57,9 +52,8 @@ final class EditableAccountSettingsViewModel {
     ///         It is extracted from the existing server credentials on `init`.
     private var accessToken: OAuth2AccessTokenProtocol?
 
-    init(account: Account, editableAccountSettingsDelegate: EditableAccountSettingsDelegate? = nil) {
+    init(account: Account) {
         self.account = account
-        self.editableAccountSettingsDelegate = editableAccountSettingsDelegate
 
         if isOAuth2 {
             if let payload = account.imapServer?.credentials.password ??
@@ -97,24 +91,21 @@ final class EditableAccountSettingsViewModel {
 extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
     func didEndVerification(result: Result<Void, Error>) {
         switch result {
-        case .success(()):
-            do {
-                try verifiableAccount?.save { [weak self] _ in
-                    guard let me = self else {
-                        //Valid case: the view might be dismissed. 
-                        return
-                    }
-                    DispatchQueue.main.async {
-                        me.delegate?.hideLoadingView()
-                        me.editableAccountSettingsDelegate?.didChange()
-                        me.delegate?.popViewController()
-                    }
+        case .success:
+            verifiableAccount?.save(completion: { [weak self] (savingResult) in
+                guard let me = self else {
+                    Log.shared.lostMySelf()
+                    return
                 }
-            } catch {
-                Log.shared.errorAndCrash(error: error)
-                delegate?.hideLoadingView()
-                delegate?.popViewController()
-            }
+                switch savingResult {
+                case .success:
+                    me.delegate?.hideLoadingView()
+                    me.delegate?.popViewController()
+                case .failure(let error):
+                    me.delegate?.showErrorAlert(error: error)
+                    me.delegate?.hideLoadingView()
+                }
+            })
         case .failure(let error):
             delegate?.hideLoadingView()
             if let imapError = error as? ImapSyncOperationError {
