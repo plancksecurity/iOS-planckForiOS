@@ -422,7 +422,6 @@ extension SettingsViewModel {
     /// - Parameter value: The new value of the pEp Sync status
     private func setPEPSyncEnabled(to value: Bool) {
         func updatePEPSyncEnabled(value: Bool) {
-            // Update state
             guard let pEpSyncSectionIndex = items.firstIndex(where: { $0.type == .pEpSync }) else {
                 Log.shared.errorAndCrash("pepSync row was tapped but it's not found")
                 return
