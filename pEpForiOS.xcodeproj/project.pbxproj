@@ -354,6 +354,7 @@
 		434C1B3D25D42D5400F622DB /* NSString+Markdown.m in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2DD1F4457620053381F /* NSString+Markdown.m */; };
 		434C1B4025D433D600F622DB /* HtmlTagParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A928C85242259E200FEFA4C /* HtmlTagParser.swift */; };
 		434C1B7425D5123A00F622DB /* NothingSelectedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BEC89620B85FD300A36E60 /* NothingSelectedViewController.swift */; };
+		434C1DD525D5834400F622DB /* MessageModelForAppExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 434C1DD425D5834400F622DB /* MessageModelForAppExtensions.framework */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
@@ -901,6 +902,7 @@
 		434C1A9025D40CEC00F622DB /* UIUtils+ShowError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+ShowError.swift"; sourceTree = "<group>"; };
 		434C1AA525D40F3B00F622DB /* UIUtils+DraftsPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+DraftsPreview.swift"; sourceTree = "<group>"; };
 		434C1AB725D410F400F622DB /* SecureWebViewUrlClickHandlerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureWebViewUrlClickHandlerProtocol.swift; sourceTree = "<group>"; };
+		434C1DD425D5834400F622DB /* MessageModelForAppExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MessageModelForAppExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		434F40931EB0B173002FBF0D /* ObservableValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableValue.swift; sourceTree = "<group>"; };
 		4351C2A21F4441190053381F /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
 		4351C2A31F4441190053381F /* chunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chunk.h; sourceTree = "<group>"; };
@@ -1153,6 +1155,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				434C1DD525D5834400F622DB /* MessageModelForAppExtensions.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2469,6 +2472,7 @@
 		495560841E7150ED0016579E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				434C1DD425D5834400F622DB /* MessageModelForAppExtensions.framework */,
 				434A6CF525D2BF8B00179335 /* MessageModelForAppExtensions.framework */,
 				436F1BA225028B7D004426DC /* CocoaLumberjackSwift.framework */,
 				4320294B252C8E4E00986C44 /* CocoaLumberjack.framework */,
