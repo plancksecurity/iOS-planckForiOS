@@ -689,10 +689,8 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         options.transitionStyle = .border
         options.buttonSpacing = 11
         if orientation == .right {
-            // This affects, among others, the "delete" action.
             options.expansionStyle = .destructive(automaticallyDelete: false)
         } else {
-            // This affects only the "toggle read status" action.
             options.expansionStyle = .selection
         }
         return options
