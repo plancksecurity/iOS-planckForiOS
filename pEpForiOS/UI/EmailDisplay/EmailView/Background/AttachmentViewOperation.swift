@@ -47,21 +47,20 @@ class AttachmentViewOperation: Operation {
                 !$0.isInlined
             })
             let att = attachments[me.attachmentIndex]
-            if att.isInlined {
-                // Ignore attachments that are already shown inline in the message body.
-                // Try to verify this by checking if their CID (if any) is mentioned there.
-                // So attachments labeled as inline _are_ shown if
-                //  * they don't have a CID
-                //  * their CID doesn't occur in the HTML body
-                var cidContained = false
-                if let theCid = att.fileName?.extractCid() {
-                    cidContained = safeMessage.longMessageFormatted?.contains(
-                        find: theCid) ?? false
-                }
-                if cidContained {
-                    // seems like this inline attachment is really inline, don't show it
-                    return
-                }
+
+            // Ignore attachments that are already shown inline in the message body.
+            // Try to verify this by checking if their CID (if any) is mentioned there.
+            // So attachments labeled as inline _are_ shown if
+            //  * they don't have a CID
+            //  * their CID doesn't occur in the HTML body
+            var cidContained = false
+            if let theCid = att.fileName?.extractCid() {
+                cidContained = safeMessage.longMessageFormatted?.contains(
+                    find: theCid) ?? false
+            }
+            if cidContained {
+                // seems like this inline attachment is really inline, don't show it
+                return
             }
 
             let isImage: Bool
