@@ -91,7 +91,9 @@ class SettingsViewModelTest: AccountDrivenTestBase {
     
     func testDeleteAccountWithOnlyOneAccount() {
         let delegate = SettingsViewModeldelegate()
-        setupViewModel(delegate: delegate)
+        let removeFolderViewCollapsedStateOfAccountWithExpectation = expectation(description: "removeFolderViewCollapsedStateOfAccountWithExpectation")
+        let appSettingsMock = MockAppSettings(removeFolderViewCollapsedStateOfAccountWithExpectation: removeFolderViewCollapsedStateOfAccountWithExpectation)
+        setupViewModel(delegate: delegate, appSettings: appSettingsMock)
         let firstIndexPath = IndexPath(row: 0, section: 0)
         let firstSection = settingsVM.section(for: firstIndexPath)
         let cellsBefore = firstSection.rows.count
@@ -102,22 +104,39 @@ class SettingsViewModelTest: AccountDrivenTestBase {
         }
         let cellsAfter = settingsVM.section(for: firstIndexPath).rows.count
         XCTAssertEqual(cellsBefore, cellsAfter + 1)
+        waitForExpectations(timeout: TestUtil.waitTime)
     }
 
     func testDeleteAccountWithMoreThanOneAccount() {
         givenThereAreTwoAccounts()
         let delegate = SettingsViewModeldelegate()
-        setupViewModel(delegate: delegate)
-        testDeleteAccountWithOnlyOneAccount()
+        let removeFolderViewCollapsedStateOfAccountWithExpectation = expectation(description: "removeFolderViewCollapsedStateOfAccountWithExpectation")
+        let appSettingsMock = MockAppSettings(removeFolderViewCollapsedStateOfAccountWithExpectation: removeFolderViewCollapsedStateOfAccountWithExpectation)
+        setupViewModel(delegate: delegate, appSettings: appSettingsMock)
+        let firstIndexPath = IndexPath(row: 0, section: 0)
+        let firstSection = settingsVM.section(for: firstIndexPath)
+        let cellsBefore = firstSection.rows.count
+        let firstSectionRows = firstSection.rows
+        if let row = firstSectionRows.first as? SettingsViewModel.ActionRow,
+            let action = row.action {
+            action()
+        }
+        let cellsAfter = settingsVM.section(for: firstIndexPath).rows.count
+        XCTAssertEqual(cellsBefore, cellsAfter + 1)
+        waitForExpectations(timeout: TestUtil.waitTime)
     }
 }
 
 // MARK: - Private
 
 extension SettingsViewModelTest {
-    private func setupViewModel(delegate: SettingsViewModelDelegate) {
+    private func setupViewModel(delegate: SettingsViewModelDelegate, appSettings: AppSettingsProtocol? = nil) {
         if settingsVM == nil {
-            settingsVM = SettingsViewModel(delegate: delegate)
+            if let appSettings = appSettings {
+                settingsVM = SettingsViewModel(delegate: delegate, appSettings:appSettings)
+            } else {
+                settingsVM = SettingsViewModel(delegate: delegate)
+            }
         }
     }
 }

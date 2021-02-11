@@ -100,7 +100,7 @@ git clone https://gitea.pep.foundation/pep.foundation/pEpObjCAdapter.git
 
 git clone https://gitea.pep.foundation/pEp.foundation/libAccountSettings
 pushd libAccountSettings
-git co tag_for_1.1.300
+git checkout tag_for_1.1.300
 popd
 
 git clone https://pep-security.lu/gitlab/iOS/pep4ios.git
