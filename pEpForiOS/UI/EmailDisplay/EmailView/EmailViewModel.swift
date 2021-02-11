@@ -14,7 +14,7 @@ import pEpIOSToolbox
 /// Delegate to comunicate with Email View.
 protocol EmailViewModelDelegate: class {
    /// Show the item
-   /// - Parameter qlItem: The quick look item to show. Could be the url of a document.
+   /// - Parameter quickLookItem: The quick look item to show. Could be the url of a document.
    func showQuickLookOfAttachment(quickLookItem: QLPreviewItem)
    /// Show Documents Editor
    /// - Parameter url: The url of the document
@@ -40,16 +40,18 @@ protocol EmailRowProtocol {
 //MARK: - Sender
 
 protocol SenderRowProtocol: EmailRowProtocol {
-    /// From recipient text
+    /// From recipient text to show
     var from: String { get }
-    /// To recipient text
+    /// To recipient text to show
     var to: String { get }
 }
 
 //MARK: - Subject
 
 protocol SubjectRowProtocol: EmailRowProtocol {
+    /// The subject to show
     var title: String { get }
+    /// The date to show
     var date: String? { get }
 }
 
@@ -85,7 +87,6 @@ class EmailViewModel {
         self.message = message
         self.delegate = delegate
         self.rows = [EmailRowProtocol]()
-
         self.attachments = message.viewableAttachments().filter({
             !$0.isInlined
         })
