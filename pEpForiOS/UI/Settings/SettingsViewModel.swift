@@ -423,15 +423,15 @@ extension SettingsViewModel {
     private func setPEPSyncEnabled(to value: Bool) {
         func updatePEPSyncEnabled(value: Bool) {
             guard let pEpSyncSectionIndex = items.firstIndex(where: { $0.type == .pEpSync }) else {
-                Log.shared.errorAndCrash("pepSync row was tapped but it's not found")
+                Log.shared.errorAndCrash("pepSync section not found")
                 return
             }
             guard let pepSyncRowIndex = items[pEpSyncSectionIndex].rows.firstIndex(where: {$0.identifier == SettingsViewModel.RowIdentifier.pEpSync}) else {
-                Log.shared.errorAndCrash("pepSync row was tapped but it's not found")
+                Log.shared.errorAndCrash("pepSync row not found")
                 return
             }
             guard var pepSyncRow = items[pEpSyncSectionIndex].rows[pepSyncRowIndex] as? SwitchRow else {
-                Log.shared.errorAndCrash("pepSync row was tapped but it's not found")
+                Log.shared.errorAndCrash("can't cast pepSync row")
                 return
             }
             pepSyncRow.isOn = value
