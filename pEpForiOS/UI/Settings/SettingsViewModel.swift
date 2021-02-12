@@ -465,8 +465,8 @@ extension SettingsViewModel {
     private func delete(account: Account) {
         account.setKeySyncEnabled(enable: false,
                                   errorCallback: { error in
-                                    if !MiscUtil.isUnitTest() {
-                                        Log.shared.errorAndCrash("Can't disable key sync")
+                                    if let theError = error {
+                                        Log.shared.log(error: theError)
                                     }
                                   }, successCallback: {
                                     //All good, nothing to do.
