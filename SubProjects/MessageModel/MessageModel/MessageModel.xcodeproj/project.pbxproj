@@ -244,6 +244,8 @@
 		434C219F25D6976C00F622DB /* Account+Fetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E61A5F2271B513000DF876 /* Account+Fetching.swift */; };
 		434C21A325D6977200F622DB /* CdAccount+FetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B64965F25C82D570028B9ED /* CdAccount+FetchedResultsController.swift */; };
 		434C21A425D6978000F622DB /* CdAccount+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECFB762462B93C004842D6 /* CdAccount+PredicateFactory.swift */; };
+		434C21A825D697B700F622DB /* FolderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E9BC611DB5181800AD2352 /* FolderType.swift */; };
+		434C21AC25D697C000F622DB /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE4608D1DB7B5FC008D63C6 /* Query.swift */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -2777,6 +2779,8 @@
 				434C219525D6972B00F622DB /* UnappendableArray.swift in Sources */,
 				434C219F25D6976C00F622DB /* Account+Fetching.swift in Sources */,
 				434C19E625D3E4CD00F622DB /* Account.swift in Sources */,
+				434C21A825D697B700F622DB /* FolderType.swift in Sources */,
+				434C21AC25D697C000F622DB /* Query.swift in Sources */,
 				434C19ED25D3E57B00F622DB /* Message.swift in Sources */,
 				434C218825D6969300F622DB /* MessageModelObjectUtils.swift in Sources */,
 				434C219725D6973E00F622DB /* Server+ServerType.swift in Sources */,
