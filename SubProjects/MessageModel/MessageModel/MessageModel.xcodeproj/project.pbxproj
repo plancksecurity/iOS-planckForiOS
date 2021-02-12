@@ -348,6 +348,7 @@
 		434C237625D6C00800F622DB /* ServerCredentialsInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D47A51225C767B00E97C5B /* ServerCredentialsInfoCache.swift */; };
 		434C237A25D6C02800F622DB /* NSManagedObjectContext+FromObjectID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A2923622C5039D00ED42B6 /* NSManagedObjectContext+FromObjectID.swift */; };
 		434C237E25D6C03E00F622DB /* CdAccount+Trusted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15679F012292CAD90051DCC3 /* CdAccount+Trusted.swift */; };
+		434C238225D6C05400F622DB /* OAuth2AccessTokenProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153DDF4A25ADD455008F645F /* OAuth2AccessTokenProtocol.swift */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -2942,6 +2943,7 @@
 				434C221525D6998200F622DB /* CdMessageReference.swift in Sources */,
 				434C219F25D6976C00F622DB /* Account+Fetching.swift in Sources */,
 				434C19E625D3E4CD00F622DB /* Account.swift in Sources */,
+				434C238225D6C05400F622DB /* OAuth2AccessTokenProtocol.swift in Sources */,
 				434C229B25D69CAC00F622DB /* CdAttachment+Extension.swift in Sources */,
 				434C227B25D69BCC00F622DB /* CdMessageReference+PredicateFactory.swift in Sources */,
 				434C22DF25D6A0B000F622DB /* CdImapFields+Clone.swift in Sources */,
