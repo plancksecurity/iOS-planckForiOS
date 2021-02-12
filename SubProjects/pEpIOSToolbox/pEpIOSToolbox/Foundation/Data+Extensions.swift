@@ -27,4 +27,30 @@ extension Data {
         }
         return nil
     }
+
+    public func debugSave(basePath: String, fileName: String, ext: String = "data") {
+        #if DEBUG
+        let dateDesc = Date().description(with: nil)
+        let filePath = "\(basePath)/\(fileName)_\(dateDesc).\(ext)"
+        let url = URL(fileURLWithPath: filePath)
+        do {
+            try write(to: url)
+        } catch {
+            Log.shared.error("Could not save to %@", url.absoluteString)
+        }
+        #endif
+    }
+
+    public func debugSaveAsJson(basePath: String, fileName: String, ext: String = "data") {
+        #if DEBUG
+        do {
+            let jsonData = try JSONSerialization.data(
+                withJSONObject: self, options: .prettyPrinted)
+            jsonData.debugSave(basePath: basePath, fileName: fileName, ext: ext)
+        } catch let err {
+            Log.shared.error("%@", "\(err)")
+        }
+        #endif
+    }
+
 }
