@@ -27,7 +27,6 @@ protocol EmailDetailViewModelSelectionChangeDelegate: class {
 }
 
 class EmailDetailViewModel: EmailDisplayViewModel {
-    private let emailDisplayReadStatusManager: EmailDisplayReadStatusManagerProtocol
     /// Used to figure out whether or not the currently displayed message has been decrypted while
     /// being shown to the user.
     private var pathsForMessagesMarkedForRedecrypt = [IndexPath]()
@@ -48,9 +47,7 @@ class EmailDetailViewModel: EmailDisplayViewModel {
     weak var selectionChangeDelegate: EmailDetailViewModelSelectionChangeDelegate?
 
     init(messageQueryResults: MessageQueryResults,
-         emailDisplayReadStatusManager: EmailDisplayReadStatusManagerProtocol? = nil,
          delegate: EmailDisplayViewModelDelegate? = nil) {
-        self.emailDisplayReadStatusManager = emailDisplayReadStatusManager ?? EmailDisplayReadStatusManager()
         super.init(messageQueryResults: messageQueryResults)
         self.messageQueryResults.rowDelegate = self
     }
@@ -105,21 +102,9 @@ class EmailDetailViewModel: EmailDisplayViewModel {
     public func handleEmailShown(forItemAt indexPath: IndexPath) {
         lastShownMessage = message(representedByRowAt: indexPath)
         markForRedecryptionIfNeeded(messageRepresentedBy: indexPath)
+        markSeenIfNeeded(messageRepresentedby: indexPath)
         selectionChangeDelegate?.emailDetailViewModel(emailDetailViewModel: self,
                                                       didSelectItemAt: indexPath)
-        guard let msg = message(representedByRowAt: indexPath) else {
-            Log.shared.errorAndCrash("Ended displaing no message?")
-            return
-        }
-        emailDisplayReadStatusManager.startedDisplaying(message: msg)
-    }
-
-    public func handleEmailDidEndDisplay(forItemAt indexPath: IndexPath) {
-        guard let msg = message(representedByRowAt: indexPath) else {
-            Log.shared.errorAndCrash("Ended displaing no message?")
-            return
-        }
-        emailDisplayReadStatusManager.stoppedDisplaying(message: msg)
     }
 
     /// The indexpath of the last displayerd message.
@@ -255,6 +240,14 @@ class EmailDetailViewModel: EmailDisplayViewModel {
 // MARK: - Private
 
 extension EmailDetailViewModel {
+
+    private func markSeenIfNeeded(messageRepresentedby indexPath: IndexPath) {
+        guard let message = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("No msg")
+            return
+        }
+        message.markAsSeen()
+    }
 
     /// Resets bookholding vars
     private func reset() {
