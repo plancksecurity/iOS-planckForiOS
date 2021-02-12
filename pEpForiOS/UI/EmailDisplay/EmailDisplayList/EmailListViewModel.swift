@@ -253,6 +253,11 @@ class EmailListViewModel: EmailDisplayViewModel {
         contactImageTool.clearCache()
     }
 
+    /// Update LastLookAt of the folder to show.
+    public func updateLastLookAt() {
+        folderToShow.updateLastLookAt()
+    }
+
     // MARK: - EmailDisplayViewModelDelegate Overrides
 
     override func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])
@@ -443,6 +448,7 @@ extension EmailListViewModel {
     }
 
     private func setSeenValue(forIndexPath indexPath: [IndexPath], newValue seen: Bool) {
+        updatesEnabled = false
         let messages = indexPath.map { messageQueryResults[$0.row] }
         Message.setSeenValue(to: messages, newValue: seen)
     }

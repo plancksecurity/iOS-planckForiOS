@@ -34,6 +34,7 @@ protocol SettingsRowProtocol {
 
 /// View Model for SettingsTableViewController
 final class SettingsViewModel {
+    private var appSettings: AppSettingsProtocol
 
     weak var delegate : SettingsViewModelDelegate?
     typealias SwitchBlock = ((Bool) -> Void)
@@ -88,7 +89,8 @@ final class SettingsViewModel {
     }
 
     /// Constructor for SettingsViewModel
-    public init(delegate: SettingsViewModelDelegate) {
+    public init(delegate: SettingsViewModelDelegate, appSettings : AppSettingsProtocol = AppSettings.shared) {
+        self.appSettings = appSettings
         self.delegate = delegate
         setup()
     }
@@ -195,8 +197,8 @@ extension SettingsViewModel {
                         Log.shared.lostMySelf()
                         return
                     }
+                    me.appSettings.removeFolderViewCollapsedStateOfAccountWith(address: acc.user.address)
                     me.delete(account: acc)
-                    
                     guard let section = me.items.first(where: { (section) -> Bool in
                         return section.type == type
                     }), let index = me.items.firstIndex(of: section) else {
@@ -419,6 +421,23 @@ extension SettingsViewModel {
     /// This method sets the pEp Sync status according to the parameter value
     /// - Parameter value: The new value of the pEp Sync status
     private func setPEPSyncEnabled(to value: Bool) {
+        func updatePEPSyncEnabled(value: Bool) {
+            guard let pEpSyncSectionIndex = items.firstIndex(where: { $0.type == .pEpSync }) else {
+                Log.shared.errorAndCrash("pepSync section not found")
+                return
+            }
+            guard let pepSyncRowIndex = items[pEpSyncSectionIndex].rows.firstIndex(where: {$0.identifier == SettingsViewModel.RowIdentifier.pEpSync}) else {
+                Log.shared.errorAndCrash("pepSync row not found")
+                return
+            }
+            guard var pepSyncRow = items[pEpSyncSectionIndex].rows[pepSyncRowIndex] as? SwitchRow else {
+                Log.shared.errorAndCrash("can't cast pepSync row")
+                return
+            }
+            pepSyncRow.isOn = value
+            items[pEpSyncSectionIndex].rows[pepSyncRowIndex] = pepSyncRow
+        }
+
         let grouped = KeySyncUtil.isInDeviceGroup
         if value {
             KeySyncUtil.enableKeySync()
@@ -431,6 +450,7 @@ extension SettingsViewModel {
                 KeySyncUtil.disableKeySync()
             }
         }
+        updatePEPSyncEnabled(value: value)
     }
 
     private var keySyncStatus: Bool {
@@ -463,7 +483,7 @@ extension SettingsViewModel {
         delegate?.showLoadingView()
         Account.resetAllOwnKeys() { [weak self] result in
             switch result {
-            case .success():
+            case .success:
                 Log.shared.info("Success", [])
                 self?.delegate?.hideLoadingView()
             case .failure(let error):

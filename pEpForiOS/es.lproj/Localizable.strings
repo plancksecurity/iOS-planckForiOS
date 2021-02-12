@@ -1,6 +1,9 @@
 /* client certificate provider key */
 "\n            Client\n            Certificate\n            " = "\n            ...........Cliente             \n...........Certificado\n            ";
 
+/* external content label text */
+"\n By showing external content, your privacy may be invaded.\n This may affect the privacy status of the message.\n" = "\n Al mostrar contenido externo, su privacidad puede ser invadida.\n Esto puede afectar al estado de privacidad del mensaje.\n";
+
 /* Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion. */
 "\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n%1$@\n\n%2$@\n\n%3$@\n\nLos adjuntos están deshabilitados.\n\n";
 
@@ -29,7 +32,7 @@
 /* KeySyncWizard introduction message - two devices */
 "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "Se ha encontrado un segundo dispositivo con el que puedes sincronizar toda tu tu privacidad. ¿Quieres empezar a sincronizar?";
 
-/* error message for .missingEmail or .invalidEmail */
+/* error message for .missingEmail */
 "A valid email address is required" = "Se requiere una dirección de correo electrónico válida";
 
 /* error message for .invalidEmail
@@ -139,14 +142,23 @@
 /* Compose field title */
 "Cc/Bcc:" = "Cc/Bcc:";
 
+/* Certificate label in account settings */
+"Certificate" = "Certificado";
+
 /* UI alert message for transport protocol */
 "Choose a Security protocol for your accont" = "Elija un protocolo de Seguridad para su cuenta";
 
 /* Empty IMAP transport security method */
 "Choose IMAP transport security method." = "Elija el método de seguridad de transporte IMAP.";
 
+/* Empty IMAP username */
+"Choose IMAP username." = "Elija el nombre de usuario IMAP.";
+
 /* Empty SMTP transport security method */
 "Choose SMTP transport security method." = "Elija el método de seguridad de transporte SMTP";
+
+/* Empty IMAP transport security method */
+"Choose SMTP username." = "Elija el nombre de usuario SMTP.";
 
 /* Header for client certificate password screen */
 "Client Certificate" = "Certificado de Cliente";
@@ -208,6 +220,9 @@
 /* ComposeTableView: button to decide to delete changes made on a drafted mail. */
 "Delete Changes" = "Borrar los cambios";
 
+/* Deselect all emails */
+"Deselect all" = "Deseleccionar todo";
+
 /* Device field, reporting issue */
 "Device" = "Dispositivo";
 
@@ -227,12 +242,24 @@
    Display Name TextField Placeholder in Login Screen */
 "Display Name" = "Nombre para Mostrar";
 
+/* Name of Drafts folder (showing draft messages, of one account) */
+"Drafts" = "Borradores";
+
+/* Unified Drafts Folder name */
+"Drafts (all)" = "Borradores (todos)";
+
+/* Edit - Right bar button item in Email List */
+"Edit" = "Editar";
+
 /* Email */
 "Email" = "Correo electrónico";
 
 /* Email address placeholder for manual account setup
    Email TextField Placeholder in Login Screen */
 "Email Address" = "Dirección de correo";
+
+/* Email address missing message */
+"Email address must not be empty." = "La dirección de correo electrónico no debe estar vacía.";
 
 /* Title of alert: a required field is empty */
 "Empty Field" = "Campo Vacío";
@@ -265,6 +292,9 @@
 
 /* Generic error message on trying to import a key */
 "Error occurred. No key imported." = "Se ha producido un error y no se ha importado ninguna clave.";
+
+/* separator string between name and date */
+"Exp. date:" = "Fecha de caducidad:";
 
 /* Settings: Cell (button) title to view Extra Keys setting */
 "Extra Keys" = "Claves Adicionales";
@@ -345,9 +375,6 @@
 /* Account settings title IMAP */
 "IMAP Settings" = "Configuraciones IMAP";
 
-/* Empty username message */
-"Imap username must not be empty." = "El nombre de usuario de Imap no puede estar vacío.";
-
 /* Select certificate - import certificate date */
 "Import date" = "Fecha de importación";
 
@@ -359,6 +386,12 @@
 
 /* Name of INBOX mailbox (of one account) */
 "Inbox" = "Entrada";
+
+/* Unified Inbox Folder name */
+"Inbox (all)" = "Bandeja de entrada (todas)";
+
+/* Include in Unified Folders label in account settings */
+"Include in Unified Folders" = "Incluir en carpetas unificadas";
 
 /* title for the accounts section */
 "INCLUDE MAIL FROM:" = "INCLUYE CORREO DESDE:";
@@ -483,6 +516,9 @@
 /* Alert button while client certificate is importing: Try again? No */
 "No" = "No";
 
+/* 'No' button to confirm less secure email sent */
+"NO" = "NO";
+
 /* Error when no account found for set_own_key UI */
 "No account found with the given email address." = "No se ha encontrado ninguna cuenta con la dirección de correo electrónico indicada.";
 
@@ -520,6 +556,10 @@
 
 /* Default message in detail view when nothing has been selected */
 "Nothing Selected" = "Nada Seleccionado";
+
+/* OAuth2 Reauthorization label
+   OAuth2 Reauthorization label in account settings */
+"OAuth2 Reauthorization" = "Reautorización de OAuth2";
 
 /* Filter accept text
    General alert positive button
@@ -743,6 +783,18 @@
 /* Alert title before trusting an account */
 "Security Alert" = "Alerta de Seguridad";
 
+/* Select all emails */
+"Select all" = "Seleccionar todos";
+
+/* Name of Sent folder (showing messages to send, of one account) */
+"Sent" = "Enviados";
+
+/* Unified Sent Folder name */
+"Sent (all)" = "Enviados (todos)";
+
+/* pEp mail signature. Newlines will be added by app */
+"sent with p≡p" = "enviado con p≡p";
+
 /* Privacy status suggestion */
 "Separately verify the content of this message with your communication partner." = "Verifique el contenido de este mensaje con su interlocutor por separado.";
 
@@ -768,6 +820,10 @@
 /* Login */
 "Sign In" = "Iniciar Sesión";
 
+/* Edit Signature title
+   Signature label in account settings */
+"Signature" = "Firma";
+
 /* Start up tutorial skip button */
 "Skip" = "Omitir";
 
@@ -786,11 +842,11 @@
 /* Account settings title SMTP */
 "SMTP Settings" = "Configuraciones SMTP";
 
-/* Empty username message */
-"Smtp username must not be empty." = "El nombre de usuario no puede estar vacío.";
-
 /* Title for address filter */
 "some address" = "alguna direccion";
+
+/* Error description when failing to validate account fields */
+"Some fields seems not to be valid. Please check all input fields." = "Algunos campos parecen no ser válidos. Por favor, compruebe todos los campos de entrada.";
 
 /* Message of alert: a required field is empty */
 "Some mandatory fields are empty" = "Algunos campos obligatorios están vacíos";
@@ -807,8 +863,21 @@
 /* AccountSettings viewModel no account error */
 "Something went wrong, please try again later" = "Algo salió mal. Por favor, inténtelo de nuevo más tarde";
 
+/* Error description when something went wrong
+   Message of alert: something went wrong. */
+"Something went wrong." = "Algo salió mal.";
+
+/* Name of Spam folder (showing messages marked as spam by the server, of one account) */
+"Spam" = "Correo no deseado";
+
+/* SSL/TLS (ConnectionTransport) */
+"SSL/TLS" = "SSL/TLS";
+
 /* Stop/trust button in handshake overview */
 "Start Trusting" = "Empiece a Confiar";
+
+/* StartTLS (ConnectionTransport) */
+"StartTLS" = "StartTLS";
 
 /* Stop/trust button in handshake overview */
 "Stop Trusting" = "Deje de Confiar";
@@ -945,6 +1014,9 @@
 /* Trash button in slide-left menu */
 "Trash" = "Papelera";
 
+/* Unified Trash Folder name */
+"Trash (all)" = "Basura (todos)";
+
 /* Alert trust button title before trusting an account */
 "Trust" = "Confiar";
 
@@ -1009,6 +1081,9 @@
    User Name placeholder for manual account SMTP setup */
 "User Name" = "Usuario";
 
+/* User name label in account settings */
+"Username" = "Usuario";
+
 /* Empty username message */
 "Username must not be empty." = "El nombre de usuario no puede estar vacío.";
 
@@ -1068,6 +1143,9 @@
 
 /* Alert button while client certificate is importing: Try again? Yes */
 "Yes" = "Si";
+
+/* 'Yes' button to confirm less secure email sent */
+"YES" = "SÍ";
 
 /* Confirm less secure answer message alert body */
 "You are about to answer a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Está a punto de responder un mensaje seguro como no seguro. Si elige continuar, se puede filtrar información confidencial que lo pone a usted y a sus interlocutores en riesgo. ¿Está seguro de que quieres continuar?";

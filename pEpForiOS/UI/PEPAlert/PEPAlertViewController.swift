@@ -50,24 +50,24 @@ final class PEPAlertViewController: UIViewController {
                      image: [UIImage]? = nil,
                      viewModel: PEPAlertViewModelProtocol = PEPAlertViewModel())
         -> PEPAlertViewController? {
-            let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
-            guard let pEpAlertViewController = storyboard.instantiateViewController(
+        let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: .main)
+        guard let pEpAlertViewController = storyboard.instantiateViewController(
                 withIdentifier: PEPAlertViewController.storyboardId) as? PEPAlertViewController else {
-                    Log.shared.errorAndCrash("Fail to instantiateViewController PEPAlertViewController")
-                    return nil
-            }
-            pEpAlertViewController.viewModel = viewModel
-            pEpAlertViewController.viewModel.delegate = pEpAlertViewController
+            Log.shared.errorAndCrash("Fail to instantiateViewController PEPAlertViewController")
+            return nil
+        }
+        pEpAlertViewController.viewModel = viewModel
+        pEpAlertViewController.viewModel.delegate = pEpAlertViewController
 
-            pEpAlertViewController.titleString = title
-            pEpAlertViewController.paintPEPInTitle = paintPEPInTitle
-            pEpAlertViewController.message = message
-            pEpAlertViewController.images = image
+        pEpAlertViewController.titleString = title
+        pEpAlertViewController.paintPEPInTitle = paintPEPInTitle
+        pEpAlertViewController.message = message
+        pEpAlertViewController.images = image
 
-            pEpAlertViewController.modalPresentationStyle = .overFullScreen
-            pEpAlertViewController.modalTransitionStyle = .crossDissolve
+        pEpAlertViewController.modalPresentationStyle = .overFullScreen
+        pEpAlertViewController.modalTransitionStyle = .crossDissolve
 
-            return pEpAlertViewController
+        return pEpAlertViewController
     }
 
     func add(action: PEPUIAlertAction) {

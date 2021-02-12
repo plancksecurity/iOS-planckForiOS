@@ -7,3 +7,6 @@
 //
 
 public typealias FunctionName = String
+
+public enum NetworkError: Error {
+}

@@ -8,7 +8,8 @@
 
 import pEpIOSToolbox
 import CoreData
-import PEPObjCAdapterFramework
+import PEPObjCAdapterTypes_iOS
+import PEPObjCAdapter_iOS
 
 // MARK: - Internal
 extension Message {

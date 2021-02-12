@@ -49,24 +49,24 @@ final class AccountSettingsViewController: UIViewController {
     
     enum SegueIdentifier: String {
         case EditSignatureSegue
+        case EditAccountSegue
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        let account = vm.account
         switch segue.destination {
         case let editableAccountSettingsViewController as EditableAccountSettingsViewController:
-            guard let account = viewModel?.account else {
-                Log.shared.errorAndCrash("No VM")
-                return
-            }
-            editableAccountSettingsViewController.viewModel = EditableAccountSettingsViewModel(account: account, editableAccountSettingsDelegate: self)
+            let editableAccountSettingsViewModel = vm.getEditableAccountSettingsViewModel()
+            editableAccountSettingsViewController.viewModel = editableAccountSettingsViewModel
         case let signatureEditor as EditSignatureViewController:
-            guard let account = viewModel?.account else {
-                Log.shared.errorAndCrash("No VM")
-                return
-            }
             let vm = EditSignatureViewModel(account: account, delegate: self)
             signatureEditor.viewModel = vm
         default:
+            Log.shared.errorAndCrash("Segue destination not handled")
             break
         }
     }
@@ -151,6 +151,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
              .server,
              .port,
              .tranportSecurity,
+             .certificate,
              .username,
              .signature:
             let dequeuedCell = dequeue(with: row, type: AccountSettingsTableViewCell.self)
@@ -228,11 +229,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
 
 extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
     func setLoadingView(visible: Bool) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return
-        }
-        vm.setLoadingView(visible: visible)
+        LoadingInterface.setLoadingView(visible: visible)
     }
 
     func showAlert(error: Error) {
@@ -315,13 +312,13 @@ extension AccountSettingsViewController: OAuthAuthorizerDelegate {
 
 // MARK: - EditableAccountSettingsDelegate
 
-extension AccountSettingsViewController: EditableAccountSettingsDelegate {
+extension AccountSettingsViewController: SettingChangeDelegate {
     func didChange() {
         /// As the data source of this table view provides the rows generated at the vm initialization,
         /// we re-init the view model in order re-generate those rows.
         /// With the rows having the data up-to-date we reload the table view.
         if let account = viewModel?.account {
-            viewModel = AccountSettingsViewModel(account: account)
+            viewModel = AccountSettingsViewModel(account: account, delegate: self)
             tableView.reloadData()
         }
     }

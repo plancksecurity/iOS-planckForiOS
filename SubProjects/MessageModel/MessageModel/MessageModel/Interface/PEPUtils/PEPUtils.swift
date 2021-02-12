@@ -10,7 +10,9 @@ import Foundation
 import CoreData
 
 import PantomimeFramework
-import PEPObjCAdapterFramework
+import PEPObjCAdapterTypes_iOS
+import PEPObjCAdapter_iOS
+import PEPObjCAdapterTypes_iOS
 import pEpIOSToolbox
 
 //!!!: Clean up! 1) Loads of topics mixed here. 2) Loads of public methods that expose CoreData.

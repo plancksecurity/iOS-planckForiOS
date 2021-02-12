@@ -11,47 +11,41 @@ import pEpIOSToolbox
 
 class EditSignatureViewController: UIViewController {
 
-    @IBOutlet var tableView: UITableView!
+    @IBOutlet private var tableView: UITableView!
     public var viewModel: EditSignatureViewModel?
 
-    private var doOnce: (()->())?
-
-    override func viewDidLoad() {
-        doOnce = { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.tableView.reloadData()
-            me.doOnce = nil
-        }
-        tableView.dataSource = self
+    override var collapsedBehavior: CollapsedSplitViewBehavior {
+        return .needed
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        doOnce?()
+    override var separatedBehavior: SeparatedSplitViewBehavior {
+        return .detail
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = NSLocalizedString("Signature", comment: "Edit Signature title")
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        guard let newSignature = getSignature() else {
-            Log.shared.errorAndCrash("No signature")
-            return
-        }
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        vm.updateSignature(newSignature: newSignature)
+        vm.updateSignature()
     }
 
-    func getSignature() -> String? {
-        let presentedCellIndexPaht = IndexPath(row: 0, section: 0)
-        guard let cell = tableView.cellForRow(at: presentedCellIndexPaht) as? SignatureTableViewCell else {
-            return nil
+    @IBAction private func clearButtonPressed() {
+        let indexPath = IndexPath(row: 0, section: 0)
+        if let cell = tableView.cellForRow(at: indexPath) as? SignatureTableViewCell {
+            cell.textView.text = ""
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("No VM")
+                return
+            }
+            vm.signatureInProgress = ""
         }
-        return cell.editableSignature.text
     }
 }
 
@@ -67,8 +61,7 @@ extension EditSignatureViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard
-            let cell = tableView.dequeueReusableCell(withIdentifier: "SignatureCell") as? SignatureTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SignatureTableViewCell") as? SignatureTableViewCell
         else {
             Log.shared.errorAndCrash("No cell")
             return UITableViewCell()
@@ -77,7 +70,49 @@ extension EditSignatureViewController: UITableViewDataSource {
             Log.shared.errorAndCrash("No VM")
             return UITableViewCell()
         }
-        cell.editableSignature.text = vm.signature()
+        cell.textView.text = vm.signature()
         return cell
+    }
+}
+
+// MARK: UITextViewDelegate
+
+extension EditSignatureViewController: UITextViewDelegate {
+
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
+                  replacementText text: String) -> Bool {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return false
+        }
+        let currentText = textView.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else {
+            return false
+        }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: text)
+        vm.signatureInProgress = updatedText
+        return true
+    }
+
+    func textViewDidChange(_ textView: UITextView) {
+        // Calculate if the textView will change its height.
+        // If so, update the tableView.
+        // Also disable animations to prevent "jankiness".
+
+        let textViewHeight = textView.frame.size.height
+        let textViewNewHeight = textView.sizeThatFits(textView.frame.size).height
+
+        guard textViewHeight != textViewNewHeight else {
+            return
+        }
+        UIView.setAnimationsEnabled(false)
+        tableView.beginUpdates()
+        tableView.endUpdates()
+
+        let scrollTo = tableView.contentSize.height - tableView.frame.size.height
+        let point = CGPoint(x: 0, y: scrollTo)
+        tableView.setContentOffset(point, animated: false)
+
+        UIView.setAnimationsEnabled(true)
     }
 }

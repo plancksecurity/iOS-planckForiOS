@@ -121,38 +121,50 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         try startSmtpVerification()
     }
 
-    public func save(completion: ((Success)->())? = nil) throws {
-        guard let (moc, cdAccount, _, _) = try createAccount() else {
-            Log.shared.errorAndCrash("Could not create the account")
-            return
-        }
-
-        moc.performAndWait { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+    /// Saves the account if possible.
+    /// - Parameter completion: The completion block to be executed.
+    public func save(completion: @escaping (Result<Void, Error>) -> ()) {
+        do {
+            guard let (moc, cdAccount, _, _) = try createAccount() else {
+                completion(.failure(VerifiableAccountValidationError.invalidUserData))
                 return
             }
-            let alsoCreatePEPFolder = me.keySyncEnable && (me.usePEPFolderProvider?.usePepFolder ?? false)
-            me.prepareAccountForSavingService.prepareAccount(cdAccount: cdAccount,
-                                                      pEpSyncEnable: me.keySyncEnable,
-                                                      alsoCreatePEPFolder: alsoCreatePEPFolder,
-                                                      context: moc) { success in
-                DispatchQueue.main.async {
-                    if success {
-                        // The account has been successfully verified and prepared. We are gonna
-                        // save it.
-                        moc.performAndWait {
-                            moc.saveAndLogErrors()
+            moc.performAndWait { [weak self] in
+                guard let me = self else {
+                    Log.shared.lostMySelf()
+                    return
+                }
+                let alsoCreatePEPFolder = me.keySyncEnable && (me.usePEPFolderProvider?.usePepFolder ?? false)
+                me.prepareAccountForSavingService.prepareAccount(cdAccount: cdAccount,
+                                                          pEpSyncEnable: me.keySyncEnable,
+                                                          alsoCreatePEPFolder: alsoCreatePEPFolder,
+                                                          context: moc) { success in
+                    DispatchQueue.main.async {
+                        if success {
+                            // The account has been successfully verified and prepared.
+                            // We are gonna save it.
+                            moc.performAndWait {
+                                moc.saveAndLogErrors()
+                            }
+                            completion(.success(()))
+                        } else {
+                            moc.performAndWait {
+                                moc.rollback()
+                            }
+                            // Several reasons can end with this error:
+                            // - Impossible to get the identity
+                            // - Error generating key
+                            // - Login operation has errors.
+                            // - SyncFoldersFromServerOperation has errors
+                            // - CreateIMAPPepFolderOperation has errors
+                            completion(.failure(VerifiableAccountValidationError.unknown))
                         }
-                        completion?(true)
-                    } else {
-                        moc.performAndWait {
-                            moc.rollback()
-                        }
-                        completion?(false)
                     }
                 }
             }
+        } catch {
+            Log.shared.errorAndCrash("Errors thrown should be handled already")
+            completion(.failure(VerifiableAccountValidationError.unknown))
         }
     }
 
@@ -162,8 +174,9 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         return (loginNameSMTP?.count ?? 0) >= 1 && (loginNameIMAP?.count ?? 0) >= 1
     }
 
+    /// - Note: Does not take the email into account at all for this.
     public var isValidUser: Bool {
-        return loginNameIsValid && isValidEmail && isValidPassword
+        return loginNameIsValid && isValidPassword
     }
 }
 
@@ -195,11 +208,6 @@ extension VerifiableAccount {
 // MARK: - Private Validation Helpers
 
 extension VerifiableAccount {
-
-    private var isValidEmail: Bool {
-        return address?.isProbablyValidEmail() ?? false
-    }
-
     private var isValidPassword: Bool {
         if let pass = password {
             return pass.count > 0
