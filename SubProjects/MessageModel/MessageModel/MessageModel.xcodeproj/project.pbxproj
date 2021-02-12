@@ -349,6 +349,7 @@
 		434C237A25D6C02800F622DB /* NSManagedObjectContext+FromObjectID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A2923622C5039D00ED42B6 /* NSManagedObjectContext+FromObjectID.swift */; };
 		434C237E25D6C03E00F622DB /* CdAccount+Trusted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15679F012292CAD90051DCC3 /* CdAccount+Trusted.swift */; };
 		434C238225D6C05400F622DB /* OAuth2AccessTokenProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153DDF4A25ADD455008F645F /* OAuth2AccessTokenProtocol.swift */; };
+		434C247425D6C97700F622DB /* OAuth2AccessToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153DDF4925ADD455008F645F /* OAuth2AccessToken.swift */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -2955,6 +2956,7 @@
 				434C225C25D69B2800F622DB /* ContentDispositionType+Conversion.swift in Sources */,
 				434C234E25D6AE8200F622DB /* BackgroundError.swift in Sources */,
 				434C21CE25D698D000F622DB /* CdKey.swift in Sources */,
+				434C247425D6C97700F622DB /* OAuth2AccessToken.swift in Sources */,
 				434C223A25D69A5600F622DB /* Rating+pEp.swift in Sources */,
 				434C22AF25D69EF300F622DB /* CdMessage+Fake.swift in Sources */,
 				434C222525D699EA00F622DB /* CdMessage+IMAP.swift in Sources */,
