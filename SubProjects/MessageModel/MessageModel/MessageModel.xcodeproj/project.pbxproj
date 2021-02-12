@@ -345,6 +345,7 @@
 		434C236A25D6B95700F622DB /* LoginImapOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA482A221E9518006E8F83 /* LoginImapOperation.swift */; };
 		434C236E25D6BFE100F622DB /* ConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47F9221E9518006E8F83 /* ConnectInfo.swift */; };
 		434C237225D6BFF700F622DB /* AccountInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D47A4D225C729900E97C5B /* AccountInfoCache.swift */; };
+		434C237625D6C00800F622DB /* ServerCredentialsInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D47A51225C767B00E97C5B /* ServerCredentialsInfoCache.swift */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -2863,6 +2864,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				434C237625D6C00800F622DB /* ServerCredentialsInfoCache.swift in Sources */,
 				434C21D625D698E500F622DB /* CdMessage+PredicateFactory.swift in Sources */,
 				434C21CA25D6987100F622DB /* CdExtraKey.swift in Sources */,
 				434C232325D6A22E00F622DB /* ErrorPropagator.swift in Sources */,
