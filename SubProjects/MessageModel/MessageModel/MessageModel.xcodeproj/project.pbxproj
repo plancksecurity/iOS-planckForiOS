@@ -218,6 +218,7 @@
 		433C51D51E6828AE00272E19 /* MessageID+UUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433C51D41E6828AE00272E19 /* MessageID+UUID.swift */; };
 		433E743A225B76E000B84CD9 /* CdServer+NonOptionalConvenienceAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433E7439225B76E000B84CD9 /* CdServer+NonOptionalConvenienceAccessors.swift */; };
 		433E743F225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433E743E225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift */; };
+		4348FBAE25D1505F00059282 /* Not_a_certificate.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 4348FBAD25D1505F00059282 /* Not_a_certificate.p12 */; };
 		43495984239E509300CF1E12 /* CdFolder+SyncFolderMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43495983239E509300CF1E12 /* CdFolder+SyncFolderMode.swift */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
@@ -681,6 +682,7 @@
 		433C51D41E6828AE00272E19 /* MessageID+UUID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MessageID+UUID.swift"; sourceTree = "<group>"; };
 		433E7439225B76E000B84CD9 /* CdServer+NonOptionalConvenienceAccessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdServer+NonOptionalConvenienceAccessors.swift"; sourceTree = "<group>"; };
 		433E743E225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift"; sourceTree = "<group>"; };
+		4348FBAD25D1505F00059282 /* Not_a_certificate.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Not_a_certificate.p12; sourceTree = "<group>"; };
 		43495983239E509300CF1E12 /* CdFolder+SyncFolderMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+SyncFolderMode.swift"; sourceTree = "<group>"; };
 		434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdMessageTest.swift; sourceTree = "<group>"; };
 		434DC0D41DAE72D4007C98B8 /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
@@ -1897,6 +1899,7 @@
 		4383344523FD7E58004CC422 /* ClientCertificateUtilTest */ = {
 			isa = PBXGroup;
 			children = (
+				4348FBAD25D1505F00059282 /* Not_a_certificate.p12 */,
 				4383344623FD806D004CC422 /* Certificate_001.p12 */,
 				43607DDC23FE814900FA66B8 /* Certificate_002.p12 */,
 				43607DDE23FE81D300FA66B8 /* Certificate_003.p12 */,
@@ -2046,7 +2049,6 @@
 				15175EB9221D74C200C91DB8 /* Modules */,
 				155FE575228B5368003D3E68 /* CdObjectExtensions */,
 				15175E4E221D5A4500C91DB8 /* Submodule */,
-				B718EF291F866FF6000CFB71 /* Filter */,
 				43CB60AB1DA4EBBF0015281E /* Util */,
 				1574390E229EA4D100E1C337 /* Services */,
 				15C7A88E2387EF6500C47364 /* Pantomime */,
@@ -2286,13 +2288,6 @@
 				8BE4608D1DB7B5FC008D63C6 /* Query.swift */,
 			);
 			path = Record;
-			sourceTree = "<group>";
-		};
-		B718EF291F866FF6000CFB71 /* Filter */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Filter;
 			sourceTree = "<group>";
 		};
 		B747A7E0234E4B5B00508565 /* Internal */ = {
@@ -2555,6 +2550,7 @@
 				43F86BA624504B95008961DA /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc in Resources */,
 				4331CE85229BDF0F00DDDC65 /* IOS-1556_html_mail_with_html_attachment.txt in Resources */,
 				4331CE89229BEB7A00DDDC65 /* IOS-1556_html_mail_with_html_attachments_mixed.txt in Resources */,
+				4348FBAE25D1505F00059282 /* Not_a_certificate.p12 in Resources */,
 				4384D3FA243F2FD6006CCBA2 /* UnencryptedHTMLMail.txt in Resources */,
 				43517245229FD8EF00D92026 /* IOS-1432_keypair.asc in Resources */,
 			);

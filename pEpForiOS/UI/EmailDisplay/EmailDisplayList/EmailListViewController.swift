@@ -688,7 +688,11 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         var options = SwipeTableOptions()
         options.transitionStyle = .border
         options.buttonSpacing = 11
-        options.expansionStyle = .destructive(automaticallyDelete: false, timing: .after)
+        if orientation == .right {
+            options.expansionStyle = .destructive(automaticallyDelete: false)
+        } else {
+            options.expansionStyle = .selection
+        }
         return options
     }
 
@@ -1020,8 +1024,11 @@ extension EmailListViewController {
         if let popoverPresentationController = alertController.popoverPresentationController {
             popoverPresentationController.sourceView = tableView
             let cellFrame = tableView.rectForRow(at: indexPath)
-            let sourceRect = view.convert(cellFrame, from: tableView)
-            popoverPresentationController.sourceRect = sourceRect
+            popoverPresentationController.sourceRect = CGRect(x: cellFrame.maxX,
+                                                              y: cellFrame.midY,
+                                                              width: 0,
+                                                              height: 0)
+            popoverPresentationController.permittedArrowDirections = [.left]
         }
         present(alertController, animated: true, completion: nil)
     }
