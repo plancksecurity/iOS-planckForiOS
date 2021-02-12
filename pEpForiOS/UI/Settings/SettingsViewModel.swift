@@ -454,6 +454,14 @@ extension SettingsViewModel {
     /// It also updates the default account if necessary.
     /// - Parameter account: The account to be deleted
     private func delete(account: Account) {
+        account.setKeySyncEnabled(enable: false,
+                                  errorCallback: { error in
+                                    if let theError = error {
+                                        Log.shared.log(error: theError)
+                                    }
+                                  }, successCallback: {
+                                    //All good, nothing to do.
+                                  })
         let oldAddress = account.user.address
         account.delete()
         Session.main.commit()
