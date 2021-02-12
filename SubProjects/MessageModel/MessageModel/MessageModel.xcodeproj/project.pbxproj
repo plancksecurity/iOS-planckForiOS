@@ -240,6 +240,7 @@
 		434C219525D6972B00F622DB /* UnappendableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15293835224E1C6D00CAE126 /* UnappendableArray.swift */; };
 		434C219625D6973500F622DB /* CdServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE460881DB7B4D6008D63C6 /* CdServer.swift */; };
 		434C219725D6973E00F622DB /* Server+ServerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645B1223A9E9F009532BE /* Server+ServerType.swift */; };
+		434C219B25D6975900F622DB /* CdFolder+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47FE221E9518006E8F83 /* CdFolder+Extension.swift */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -2758,6 +2759,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				434C219B25D6975900F622DB /* CdFolder+Extension.swift in Sources */,
 				434C217F25D6966400F622DB /* Server.swift in Sources */,
 				434C219625D6973500F622DB /* CdServer.swift in Sources */,
 				434C217D25D6965300F622DB /* CdAccount.swift in Sources */,
