@@ -358,6 +358,7 @@
 		434C249325D6CE6D00F622DB /* CdImapFlags+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F484431E8130180028BC1A /* CdImapFlags+Extension.swift */; };
 		434C249725D6CE8E00F622DB /* Int16+ImapFlagBits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490FF7FD1E795B1500BC15F9 /* Int16+ImapFlagBits.swift */; };
 		434C249B25D6CEAC00F622DB /* CdMessage+Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A3B4D82358497F00DB9135 /* CdMessage+Factory.swift */; };
+		434C249F25D6CEC900F622DB /* CdAttachment+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435F514B222017E8006EB11F /* CdAttachment+Pantomime.swift */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -2929,6 +2930,7 @@
 				434C249325D6CE6D00F622DB /* CdImapFlags+Extension.swift in Sources */,
 				434C231B25D6A1EF00F622DB /* Folder+Imap.swift in Sources */,
 				434C237E25D6C03E00F622DB /* CdAccount+Trusted.swift in Sources */,
+				434C249F25D6CEC900F622DB /* CdAttachment+Pantomime.swift in Sources */,
 				434C217C25D6964B00F622DB /* ManagedObjectWrapperProtocol.swift in Sources */,
 				434C226025D69B3C00F622DB /* String+Attachment.swift in Sources */,
 				434C21C625D6985D00F622DB /* CdServerCredentials.swift in Sources */,
