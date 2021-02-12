@@ -346,6 +346,7 @@
 		434C236E25D6BFE100F622DB /* ConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47F9221E9518006E8F83 /* ConnectInfo.swift */; };
 		434C237225D6BFF700F622DB /* AccountInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D47A4D225C729900E97C5B /* AccountInfoCache.swift */; };
 		434C237625D6C00800F622DB /* ServerCredentialsInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D47A51225C767B00E97C5B /* ServerCredentialsInfoCache.swift */; };
+		434C237A25D6C02800F622DB /* NSManagedObjectContext+FromObjectID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A2923622C5039D00ED42B6 /* NSManagedObjectContext+FromObjectID.swift */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -2986,6 +2987,7 @@
 				434C22A725D69EC900F622DB /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift in Sources */,
 				434C221125D6996F00F622DB /* CdImapFlags.swift in Sources */,
 				434C21B025D697D800F622DB /* CdServer+PredicateFactory.swift in Sources */,
+				434C237A25D6C02800F622DB /* NSManagedObjectContext+FromObjectID.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
