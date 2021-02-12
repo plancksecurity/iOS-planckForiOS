@@ -241,6 +241,9 @@
 		434C219625D6973500F622DB /* CdServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE460881DB7B4D6008D63C6 /* CdServer.swift */; };
 		434C219725D6973E00F622DB /* Server+ServerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645B1223A9E9F009532BE /* Server+ServerType.swift */; };
 		434C219B25D6975900F622DB /* CdFolder+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47FE221E9518006E8F83 /* CdFolder+Extension.swift */; };
+		434C219F25D6976C00F622DB /* Account+Fetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E61A5F2271B513000DF876 /* Account+Fetching.swift */; };
+		434C21A325D6977200F622DB /* CdAccount+FetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B64965F25C82D570028B9ED /* CdAccount+FetchedResultsController.swift */; };
+		434C21A425D6978000F622DB /* CdAccount+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECFB762462B93C004842D6 /* CdAccount+PredicateFactory.swift */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -2761,15 +2764,18 @@
 			files = (
 				434C219B25D6975900F622DB /* CdFolder+Extension.swift in Sources */,
 				434C217F25D6966400F622DB /* Server.swift in Sources */,
+				434C21A425D6978000F622DB /* CdAccount+PredicateFactory.swift in Sources */,
 				434C219625D6973500F622DB /* CdServer.swift in Sources */,
 				434C217D25D6965300F622DB /* CdAccount.swift in Sources */,
 				434C218C25D696F700F622DB /* MessageModel.xcdatamodeld in Sources */,
+				434C21A325D6977200F622DB /* CdAccount+FetchedResultsController.swift in Sources */,
 				434C219425D6972500F622DB /* CdFolder.swift in Sources */,
 				434C217E25D6965B00F622DB /* Identity.swift in Sources */,
 				434C217C25D6964B00F622DB /* ManagedObjectWrapperProtocol.swift in Sources */,
 				434C218025D6966D00F622DB /* Session.swift in Sources */,
 				434C218425D6968A00F622DB /* CdAccount+Extensions.swift in Sources */,
 				434C219525D6972B00F622DB /* UnappendableArray.swift in Sources */,
+				434C219F25D6976C00F622DB /* Account+Fetching.swift in Sources */,
 				434C19E625D3E4CD00F622DB /* Account.swift in Sources */,
 				434C19ED25D3E57B00F622DB /* Message.swift in Sources */,
 				434C218825D6969300F622DB /* MessageModelObjectUtils.swift in Sources */,
