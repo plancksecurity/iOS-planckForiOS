@@ -265,6 +265,8 @@
 		434C221925D6999500F622DB /* CdMessageKeyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155FE564228B5005003D3E68 /* CdMessageKeyword.swift */; };
 		434C221D25D699A800F622DB /* RelationshipKeyPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374A8AE5224E2D16001914D5 /* RelationshipKeyPath.swift */; };
 		434C222125D699CA00F622DB /* MimeTypeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4814221E9518006E8F83 /* MimeTypeUtils.swift */; };
+		434C222525D699EA00F622DB /* CdMessage+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FC1225388FB0038D72C /* CdMessage+IMAP.swift */; };
+		434C222625D699EF00F622DB /* CdMessagePredicateFactory+Imap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47EF221E9518006E8F83 /* CdMessagePredicateFactory+Imap.swift */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -2795,6 +2797,7 @@
 				434C218C25D696F700F622DB /* MessageModel.xcdatamodeld in Sources */,
 				434C21A325D6977200F622DB /* CdAccount+FetchedResultsController.swift in Sources */,
 				434C219425D6972500F622DB /* CdFolder.swift in Sources */,
+				434C222625D699EF00F622DB /* CdMessagePredicateFactory+Imap.swift in Sources */,
 				434C222125D699CA00F622DB /* MimeTypeUtils.swift in Sources */,
 				434C217E25D6965B00F622DB /* Identity.swift in Sources */,
 				434C217C25D6964B00F622DB /* ManagedObjectWrapperProtocol.swift in Sources */,
@@ -2812,6 +2815,7 @@
 				434C21A825D697B700F622DB /* FolderType.swift in Sources */,
 				434C21AC25D697C000F622DB /* Query.swift in Sources */,
 				434C21CE25D698D000F622DB /* CdKey.swift in Sources */,
+				434C222525D699EA00F622DB /* CdMessage+IMAP.swift in Sources */,
 				434C21B825D6980300F622DB /* CdServer+Extensions.swift in Sources */,
 				434C21BD25D6981700F622DB /* CoreDataEntityAttributeNames.swift in Sources */,
 				434C21DA25D6990800F622DB /* CdHeaderField.swift in Sources */,
