@@ -156,36 +156,17 @@ extension SettingsViewModel {
 
     /// This method generates all the sections for the settings view.
     private func generateSections() {
-        items.append(Section(title: sectionTitle(type: .accounts),
-                             footer: sectionFooter(type: .accounts),
-                             rows: generateRows(type: .accounts),
-                             type: .accounts))
-        
-        items.append(Section(title: sectionTitle(type: .globalSettings),
-                             footer: sectionFooter(type: .globalSettings),
-                             rows: generateRows(type: .globalSettings),
-                             type: .globalSettings))
-        
-        items.append(Section(title: sectionTitle(type: .pEpSync),
-                             footer: sectionFooter(type: .pEpSync),
-                             rows: generateRows(type: .pEpSync),
-                             type: .pEpSync))
+        SettingsViewModel.SectionType.allCases.forEach { (type) in
+            items.append(sectionForType(sectionType: type))
+        }
+    }
 
-        items.append(Section(title: sectionTitle(type: .companyFeatures),
-                             footer: sectionFooter(type: .companyFeatures),
-                             rows: generateRows(type: .companyFeatures),
-                             type: .companyFeatures))
-
-        items.append(Section(title: sectionTitle(type: .tutorial),
-                             footer: sectionFooter(type: .tutorial),
-                             rows: generateRows(type: .tutorial),
-                             type: .tutorial))
-
-        items.append(Section(title: sectionTitle(type: .contacts),
-                             footer: sectionFooter(type: .contacts),
-                             rows: generateRows(type: .contacts),
-                             type: .contacts))
-            }
+    private func sectionForType(sectionType: SectionType) -> Section {
+        return Section(title: sectionTitle(type: sectionType),
+                       footer: sectionFooter(type: sectionType),
+                       rows: generateRows(type: sectionType),
+                       type: sectionType)
+    }
 
     /// This method generates all the rows for the section type passed
     /// - Parameter type: The type of the section to generate the rows.
@@ -509,13 +490,13 @@ extension SettingsViewModel {
 
 extension SettingsViewModel {
     /// Identifies the section in the table view.
-    public enum SectionType {
+    public enum SectionType : String, CaseIterable {
         case accounts
         case globalSettings
         case pEpSync
-        case contacts
         case companyFeatures
         case tutorial
+        case contacts
     }
 
     /// Identifies semantically the type of row.
