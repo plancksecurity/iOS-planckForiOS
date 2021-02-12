@@ -224,7 +224,11 @@ final class EmailListViewController: UIViewController {
 
     /// Called on pull-to-refresh triggered
     @objc private func refreshView() {
-        viewModel?.fetchNewMessages() { [weak self] in
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.fetchNewMessages() { [weak self] in
             guard let me = self else {
                 // Loosing self is a valid case here. The view might have been dismissed.
                 return
@@ -348,8 +352,12 @@ final class EmailListViewController: UIViewController {
     }
 
     @IBAction private func flagToolbar() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
         if let selectedItems = tableView.indexPathsForSelectedRows {
-            viewModel?.markAsFlagged(indexPaths: selectedItems)
+            vm.markAsFlagged(indexPaths: selectedItems)
         }
     }
 
@@ -360,8 +368,12 @@ final class EmailListViewController: UIViewController {
     }
 
     @IBAction private func unflagToolbar() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
         if let selectedItems = tableView.indexPathsForSelectedRows {
-            viewModel?.markAsUnFlagged(indexPaths: selectedItems)
+            vm.markAsUnFlagged(indexPaths: selectedItems)
         }
     }
 
@@ -372,8 +384,12 @@ final class EmailListViewController: UIViewController {
     }
 
     @IBAction private func readToolbar() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
         if let selectedItems = tableView.indexPathsForSelectedRows {
-            viewModel?.markAsRead(indexPaths: selectedItems)
+            vm.markAsRead(indexPaths: selectedItems)
         }
     }
 
@@ -384,8 +400,12 @@ final class EmailListViewController: UIViewController {
     }
 
     @IBAction private func unreadToolbar() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
         if let selectedItems = tableView.indexPathsForSelectedRows {
-            viewModel?.markAsUnread(indexPaths: selectedItems)
+            vm.markAsUnread(indexPaths: selectedItems)
         }
     }
 
@@ -502,8 +522,7 @@ final class EmailListViewController: UIViewController {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-
-        textFilterButton.title = vm.getFilterButtonTitle()
+        textFilterButton.title = vm.filterButtonTitle
     }
 
     // MARK: - Memory Warning
@@ -750,17 +769,6 @@ extension EmailListViewController: SwipeTableViewCellDelegate {
         let item = UIBarButtonItem.getPEPButton(
             action: #selector(showSettingsViewController),
             target: self)
-        return item
-    }
-
-    /// Our own factory method for creating flexible space bar button items,
-    /// tagged so we recognize them later, for easy removal.
-    private func createFlexibleBarButtonItem() -> UIBarButtonItem {
-        let item = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
-            target: nil,
-            action: nil)
-        item.tag = flexibleSpaceButtonItemTag
         return item
     }
 }
@@ -1025,15 +1033,19 @@ extension EmailListViewController {
                 Log.shared.lostMySelf()
                 return
             }
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return
+            }
             guard let cell = me.tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
                 Log.shared.errorAndCrash(message: "Cell type is wrong")
                 return
             }
             cell.isSeen = !seenState
             if seenState {
-                me.viewModel?.markAsUnread(indexPaths: [indexPath])
+                vm.markAsUnread(indexPaths: [indexPath])
             } else {
-                me.viewModel?.markAsRead(indexPaths: [indexPath])
+                vm.markAsRead(indexPaths: [indexPath])
             }
         }
     }
@@ -1096,15 +1108,19 @@ extension EmailListViewController {
             Log.shared.errorAndCrash("No data for indexPath!")
             return
         }
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
         guard let cell = tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
             Log.shared.errorAndCrash("No cell for indexPath!")
             return
         }
         if row.isSeen {
-            viewModel?.markAsUnread(indexPaths: [indexPath])
+            vm.markAsUnread(indexPaths: [indexPath])
             cell.isSeen = false
         } else {
-            viewModel?.markAsRead(indexPaths: [indexPath])
+            vm.markAsRead(indexPaths: [indexPath])
             cell.isSeen = true
         }
     }
@@ -1114,15 +1130,19 @@ extension EmailListViewController {
             Log.shared.errorAndCrash("No data for indexPath!")
             return
         }
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
         guard let cell = tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
             Log.shared.errorAndCrash("No cell for indexPath!")
             return
         }
         if row.isFlagged {
-            viewModel?.markAsUnFlagged(indexPaths: [indexPath])
+            vm.markAsUnFlagged(indexPaths: [indexPath])
             cell.isFlagged = false
         } else {
-            viewModel?.markAsFlagged(indexPaths: [indexPath])
+            vm.markAsFlagged(indexPaths: [indexPath])
             cell.isFlagged = true
         }
     }

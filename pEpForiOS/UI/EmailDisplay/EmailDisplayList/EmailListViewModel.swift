@@ -38,7 +38,7 @@ protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
 
 class EmailListViewModel: EmailDisplayViewModel {
 
-    public func getFilterButtonTitle() -> String {
+    public var filterButtonTitle: String {
         var txt = currentFilter.getFilterText()
         if txt.count > filterMaxChars {
             let prefix = txt.prefix(ofLength: filterMaxChars)
@@ -52,6 +52,7 @@ class EmailListViewModel: EmailDisplayViewModel {
                                        comment: "'Filter by' in formatted string, followed by the localized filter name")
         let title = String(format: format, txt)
         return title
+
     }
     private var emailDetailViewModel: EmailDetailViewModel?
     private let contactImageTool = IdentityImageTool()
