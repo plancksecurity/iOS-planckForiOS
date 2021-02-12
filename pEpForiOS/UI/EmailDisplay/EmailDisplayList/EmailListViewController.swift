@@ -1024,8 +1024,11 @@ extension EmailListViewController {
         if let popoverPresentationController = alertController.popoverPresentationController {
             popoverPresentationController.sourceView = tableView
             let cellFrame = tableView.rectForRow(at: indexPath)
-            let sourceRect = view.convert(cellFrame, from: tableView)
-            popoverPresentationController.sourceRect = sourceRect
+            popoverPresentationController.sourceRect = CGRect(x: cellFrame.maxX,
+                                                              y: cellFrame.midY,
+                                                              width: 0,
+                                                              height: 0)
+            popoverPresentationController.permittedArrowDirections = [.left]
         }
         present(alertController, animated: true, completion: nil)
     }
