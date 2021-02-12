@@ -29,7 +29,6 @@ class MessageViewModel: CustomDebugStringConvertible {
     private let identity: Identity
     private let dateSent: Date
     private let longMessageFormatted: String?
-    private var ratingImage: UIImage?
     private let from: String
     private var profilePictureComposer: ProfilePictureComposerProtocol
     private var internalBoddyPeek: String? = nil
@@ -252,20 +251,9 @@ extension MessageViewModel {
 
     private static func getDisplayedUsername(for message: Message) -> String {
         if (message.parent.folderType == .sent || message.parent.folderType == .drafts) {
-            return message.allRecipients.map { $0.userNameOrAddress }.joined(separator: ", ")
+            return message.allRecipientsOrdered.map { $0.userNameOrAddress }.joined(separator: ", ")
         }
         return message.from?.userNameOrAddress ?? ""
-    }
-
-    private func append(appendText: String, to body: String) -> String {
-        var result = body
-        let replacee = result.contains(find: "</body>") ? "</body>" : "</html>"
-        if result.contains(find: replacee) {
-            result = result.replacingOccurrences(of: replacee, with: appendText + replacee)
-        } else {
-            result += "\n" + appendText
-        }
-        return result
     }
 
     private func informIfBodyPeekCompleted() {

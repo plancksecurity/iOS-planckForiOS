@@ -78,32 +78,6 @@ final class AccountSettingsViewModel {
             return headers[section]
         }
     }
-    
-    public func rowShouldBeHidden(indexPath: IndexPath) -> Bool {
-        if indexPath.section == 0 && indexPath.row == 3 {
-            if account.imapServer?.credentials.clientCertificate != nil {
-                return false
-            }
-            return true
-        }
-        return false
-    }
-    
-    public func clientCertificateViewModel() -> ClientCertificateManagementViewModel {
-        let viewModel = ClientCertificateManagementViewModel(account: account)
-        return viewModel
-    }
-    
-    public func certificateInfo() -> String {
-        
-        guard let certificate = account.imapServer?.credentials.clientCertificate else {
-            return ""
-        }
-        let name = certificate.label ?? "--"
-        let date = certificate.date?.fullString() ?? ""
-        let separator = NSLocalizedString("Exp. date:", comment: "spearator string bewtween name and date")
-        return "\(name), \(separator) \(date)"
-    }
 
     public func handleResetIdentity() {
         delegate?.showLoadingView()
@@ -140,10 +114,6 @@ final class AccountSettingsViewModel {
 
     public func updateToken(accessToken: OAuth2AccessTokenProtocol) {
         self.accessToken = accessToken
-    }
-
-    public func isPEPSyncSwitchGreyedOut() -> Bool {
-        return KeySyncUtil.isInDeviceGroup
     }
 }
 

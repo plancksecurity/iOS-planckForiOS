@@ -34,6 +34,7 @@ protocol SettingsRowProtocol {
 
 /// View Model for SettingsTableViewController
 final class SettingsViewModel {
+    private var appSettings: AppSettingsProtocol
 
     weak var delegate : SettingsViewModelDelegate?
     typealias SwitchBlock = ((Bool) -> Void)
@@ -88,7 +89,8 @@ final class SettingsViewModel {
     }
 
     /// Constructor for SettingsViewModel
-    public init(delegate: SettingsViewModelDelegate) {
+    public init(delegate: SettingsViewModelDelegate, appSettings : AppSettingsProtocol = AppSettings.shared) {
+        self.appSettings = appSettings
         self.delegate = delegate
         setup()
     }
@@ -126,12 +128,6 @@ final class SettingsViewModel {
         return nil
     }
 
-    /// Deletes the row at the passed index Path
-    /// - Parameter indexPath: The index Path to
-    public func deleteRowAt(_ indexPath: IndexPath) {
-        items[indexPath.section].rows.remove(at: indexPath.row)
-    }
-
     /// Handle the tap gesture triggered on the ExtraKeys cell.
     public func handleExtraKeysEditabilityGestureTriggered() {
         let newValue = !AppSettings.shared.extraKeysEditable
@@ -160,30 +156,16 @@ extension SettingsViewModel {
 
     /// This method generates all the sections for the settings view.
     private func generateSections() {
-        items.append(Section(title: sectionTitle(type: .accounts),
-                             footer: sectionFooter(type: .accounts),
-                             rows: generateRows(type: .accounts),
-                             type: .accounts))
-        
-        items.append(Section(title: sectionTitle(type: .globalSettings),
-                             footer: sectionFooter(type: .globalSettings),
-                             rows: generateRows(type: .globalSettings),
-                             type: .globalSettings))
-        
-        items.append(Section(title: sectionTitle(type: .pEpSync),
-                             footer: sectionFooter(type: .pEpSync),
-                             rows: generateRows(type: .pEpSync),
-                             type: .pEpSync))
-        
-        items.append(Section(title: sectionTitle(type: .contacts),
-                             footer: sectionFooter(type: .contacts),
-                             rows: generateRows(type: .contacts),
-                             type: .contacts))
-        
-        items.append(Section(title: sectionTitle(type: .companyFeatures),
-                             footer: sectionFooter(type: .companyFeatures),
-                             rows: generateRows(type: .companyFeatures),
-                             type: .companyFeatures))
+        SettingsViewModel.SectionType.allCases.forEach { (type) in
+            items.append(sectionForType(sectionType: type))
+        }
+    }
+
+    private func sectionForType(sectionType: SectionType) -> Section {
+        return Section(title: sectionTitle(type: sectionType),
+                       footer: sectionFooter(type: sectionType),
+                       rows: generateRows(type: sectionType),
+                       type: sectionType)
     }
 
     /// This method generates all the rows for the section type passed
@@ -201,8 +183,8 @@ extension SettingsViewModel {
                         Log.shared.lostMySelf()
                         return
                     }
+                    me.appSettings.removeFolderViewCollapsedStateOfAccountWith(address: acc.user.address)
                     me.delete(account: acc)
-                    
                     guard let section = me.items.first(where: { (section) -> Bool in
                         return section.type == type
                     }), let index = me.items.firstIndex(of: section) else {
@@ -263,6 +245,8 @@ extension SettingsViewModel {
             rows.append(generateNavigationRow(type: .resetTrust, isDangerous: true))
         case .companyFeatures:
             rows.append(generateNavigationRow(type: .extraKeys, isDangerous: false))
+        case .tutorial:
+            rows.append(generateNavigationRow(type: .tutorial, isDangerous: false))
         }
         return rows
     }
@@ -329,6 +313,9 @@ extension SettingsViewModel {
         case .companyFeatures:
             return NSLocalizedString("Enterprise Features",
                                      comment: "Tableview section header: Enterprise Features")
+        case .tutorial:
+            return NSLocalizedString("Tutorial",
+                                     comment: "Tableview section header: Tutorial")
         }
     }
 
@@ -337,7 +324,7 @@ extension SettingsViewModel {
     /// - Returns: The title of the footer. If the section is an account, a pepSync or the company features, it will be nil because there is no footer.
     private func sectionFooter(type: SectionType) -> String? {
         switch type {
-        case .pEpSync, .companyFeatures:
+        case .pEpSync, .companyFeatures, .tutorial:
             return nil
         case .accounts:
             return NSLocalizedString("Performs a reset of the privacy settings of your account(s)",
@@ -425,6 +412,23 @@ extension SettingsViewModel {
     /// This method sets the pEp Sync status according to the parameter value
     /// - Parameter value: The new value of the pEp Sync status
     private func setPEPSyncEnabled(to value: Bool) {
+        func updatePEPSyncEnabled(value: Bool) {
+            guard let pEpSyncSectionIndex = items.firstIndex(where: { $0.type == .pEpSync }) else {
+                Log.shared.errorAndCrash("pepSync section not found")
+                return
+            }
+            guard let pepSyncRowIndex = items[pEpSyncSectionIndex].rows.firstIndex(where: {$0.identifier == SettingsViewModel.RowIdentifier.pEpSync}) else {
+                Log.shared.errorAndCrash("pepSync row not found")
+                return
+            }
+            guard var pepSyncRow = items[pEpSyncSectionIndex].rows[pepSyncRowIndex] as? SwitchRow else {
+                Log.shared.errorAndCrash("can't cast pepSync row")
+                return
+            }
+            pepSyncRow.isOn = value
+            items[pEpSyncSectionIndex].rows[pepSyncRowIndex] = pepSyncRow
+        }
+
         let grouped = KeySyncUtil.isInDeviceGroup
         if value {
             KeySyncUtil.enableKeySync()
@@ -437,6 +441,7 @@ extension SettingsViewModel {
                 KeySyncUtil.disableKeySync()
             }
         }
+        updatePEPSyncEnabled(value: value)
     }
 
     private var keySyncStatus: Bool {
@@ -449,6 +454,14 @@ extension SettingsViewModel {
     /// It also updates the default account if necessary.
     /// - Parameter account: The account to be deleted
     private func delete(account: Account) {
+        account.setKeySyncEnabled(enable: false,
+                                  errorCallback: { error in
+                                    if let theError = error {
+                                        Log.shared.log(error: theError)
+                                    }
+                                  }, successCallback: {
+                                    //All good, nothing to do.
+                                  })
         let oldAddress = account.user.address
         account.delete()
         Session.main.commit()
@@ -469,7 +482,7 @@ extension SettingsViewModel {
         delegate?.showLoadingView()
         Account.resetAllOwnKeys() { [weak self] result in
             switch result {
-            case .success():
+            case .success:
                 Log.shared.info("Success", [])
                 self?.delegate?.hideLoadingView()
             case .failure(let error):
@@ -485,12 +498,13 @@ extension SettingsViewModel {
 
 extension SettingsViewModel {
     /// Identifies the section in the table view.
-    public enum SectionType {
+    public enum SectionType : String, CaseIterable {
         case accounts
         case globalSettings
         case pEpSync
-        case contacts
         case companyFeatures
+        case tutorial
+        case contacts
     }
 
     /// Identifies semantically the type of row.
@@ -525,19 +539,6 @@ extension SettingsViewModel {
         static func == (lhs: SettingsViewModel.Section, rhs: SettingsViewModel.Section) -> Bool {
             return (lhs.title == rhs.title && lhs.footer == rhs.footer)
         }
-    }
-}
-
-// MARK: - Private enums
-
-extension SettingsViewModel {
-
-    //Identifies visually the type of row.
-    private enum RowType {
-        case action
-        case swipe
-        case navigation
-        case all
     }
 }
 

@@ -52,17 +52,6 @@ extension UIUtils {
                                  completion: completion)
     }
 
-    /// Shows an alert to inform the passphrase entered is too long and to require a new one.
-    static private func showPassphraseTooLongAlert(completion: ((String?)->Void)? = nil) {
-        let title = NSLocalizedString("Passphrase too long", comment: "Passphrase too long - title")
-        let message = NSLocalizedString("Please enter one shorter", comment: "Please enter one shorter - message")
-        let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
-        showPassphraseInputAlert(title: title,
-                                 message: message,
-                                 placeholder: placeholder,
-                                 completion: completion)
-    }
-
     // MARK: Private
 
     static private func showPassphraseInputAlert(title: String,

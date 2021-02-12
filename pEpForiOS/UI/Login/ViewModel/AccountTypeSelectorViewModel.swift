@@ -105,7 +105,7 @@ class AccountTypeSelectorViewModel {
     }
 
     public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
-        return ClientCertificateManagementViewModel(verifiableAccount: verifiableAccountForCoosenAccountType())
+        return ClientCertificateManagementViewModel(verifiableAccount: verifiableAccountForCoosenAccountType(), shouldHideCancelButton: true)
     }
 
     public func loginViewModel() -> LoginViewModel {

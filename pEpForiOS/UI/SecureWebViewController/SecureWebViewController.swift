@@ -20,14 +20,9 @@ protocol SecureWebViewUrlClickHandlerProtocol: class {
     func didClickOn(mailToUrlLink url: URL)
 }
 
-// WKContentRuleList is not available below iOS11, thus remote content would be loaded
-// which is considered as inaceptable for a secure web view.
-@available(iOS 11.0, *)
 /// Webview that does not:
 /// - excecute JS
 /// - load any remote content
-/// Note: It is insecure to use this class on iOS < 11. Thus it will intentionally take the
-/// emergency exit and crash when trying to use it running iOS < 11.
 class SecureWebViewController: UIViewController {
     static public let storyboardId = "SecureWebViewController"
 
@@ -64,12 +59,22 @@ class SecureWebViewController: UIViewController {
     private var webView: WKWebView!
     private var htmlOptimizer = HtmlOptimizerUtil(minimumFontSize: 16.0)
 
+    /// The key path of the `WKWebView` that gets observed under certain conditions.
+    private var keyPathContentSize = "contentSize"
+
+    /// Flag for telling whether the `contentSizeKeyPath` of the `WKWebView` is currently observed.
+    private var observingWebViewContentSizeKey = false
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         htmlOptimizer = HtmlOptimizerUtil(minimumFontSize: minimumFontSize)
         webView.scrollView.isScrollEnabled = scrollingEnabled
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        removeContentSizeKeyPathObservers()
     }
 
     // Due to an Apple bug (https://bugs.webkit.org/show_bug.cgi?id=137160),
@@ -117,6 +122,13 @@ class SecureWebViewController: UIViewController {
 // MARK: - Private
 
 extension SecureWebViewController {
+    /// Remove the observer to the `WKWebView`'s `contentSizeKeyPath`, if still observed.
+    private func removeContentSizeKeyPathObservers() {
+        if observingWebViewContentSizeKey {
+            webView.scrollView.removeObserver(self, forKeyPath: keyPathContentSize)
+            observingWebViewContentSizeKey = false
+        }
+    }
 
     private func preferences(javaScriptEnabled: Bool = false) -> WKPreferences {
         let createe  = WKPreferences()
@@ -127,7 +139,6 @@ extension SecureWebViewController {
 
     // MARK: - WKContentRuleList (block loading of all remote content)
 
-    @available(iOS, introduced: 11.0)
     private func setupBlocklist(completion: @escaping () -> Void) {
         let listID = "pep.security.SecureWebViewController.block_all_external_content"
         var compiledBlockList: WKContentRuleList?
@@ -258,13 +269,17 @@ extension SecureWebViewController: WKNavigationDelegate {
         // ScrollView needs some time to calculate own size.
         // The contentSize scrollView observer is needed to get an event
         // when the size of the scrollView content changes from CGSize.zero to final dimensions.
-        webView.scrollView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
+        webView.scrollView.addObserver(self,
+                                       forKeyPath: keyPathContentSize,
+                                       options: .new,
+                                       context: nil)
+        observingWebViewContentSizeKey = true
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "contentSize" {
             // ContentSize observer has just done its job.
-            webView.scrollView.removeObserver(self, forKeyPath: "contentSize")
+            removeContentSizeKeyPathObservers()
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
                     Log.shared.lostMySelf()

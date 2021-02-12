@@ -365,13 +365,6 @@ public class Message: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         cdObject.cc = result
     }
 
-    public func removeFromCc(_ element: Identity) {
-        let result =
-            (cdObject.cc?.mutableCopy() as? NSMutableOrderedSet) ?? NSMutableOrderedSet()
-        result.remove(element.cdObject)
-        cdObject.cc = result
-    }
-
     // MARK: - BCC
 
     public var bcc: UnappendableArray<Identity> {
@@ -445,6 +438,13 @@ extension Message {
         recipients = recipients.union(cc)
         recipients = recipients.union(bcc)
         return recipients
+    }
+
+    /// Returns all the recipients, already deduped.
+    //!!!: MARTIN: this might has to be removed when IOS-2541 is done as we won't need all recipients in a single collection.
+    public var allRecipientsOrdered: [Identity] {
+        let recipients = to.allObjects + cc.allObjects + bcc.allObjects
+        return recipients.uniques
     }
 
     public var allIdentities: Set<Identity> {

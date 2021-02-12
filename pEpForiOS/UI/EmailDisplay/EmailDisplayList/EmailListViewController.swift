@@ -115,6 +115,7 @@ final class EmailListViewController: UIViewController {
         }
         updateFilterText()
         updateEditButton()
+        vm.updateLastLookAt()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -718,7 +719,11 @@ extension EmailListViewController: SwipeTableViewCellDelegate {
         var options = SwipeTableOptions()
         options.transitionStyle = .border
         options.buttonSpacing = 11
-        options.expansionStyle = .destructive(automaticallyDelete: false)
+        if orientation == .right {
+            options.expansionStyle = .destructive(automaticallyDelete: false)
+        } else {
+            options.expansionStyle = .selection
+        }
         return options
     }
 
@@ -735,6 +740,28 @@ extension EmailListViewController: SwipeTableViewCellDelegate {
             action.font = .systemFont(ofSize: 13)
             action.transitionDelegate = ScaleTransition.default
         }
+    }
+
+    // MARK: - Manipulating the (master) bottom toolbar
+
+    /// Our own factory method for creating pEp bar button items,
+    /// tagged so we recognize them later, for easy removal.
+    private func createPepBarButtonItem() -> UIBarButtonItem {
+        let item = UIBarButtonItem.getPEPButton(
+            action: #selector(showSettingsViewController),
+            target: self)
+        return item
+    }
+
+    /// Our own factory method for creating flexible space bar button items,
+    /// tagged so we recognize them later, for easy removal.
+    private func createFlexibleBarButtonItem() -> UIBarButtonItem {
+        let item = UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
+            target: nil,
+            action: nil)
+        item.tag = flexibleSpaceButtonItemTag
+        return item
     }
 }
 
@@ -963,8 +990,11 @@ extension EmailListViewController {
         if let popoverPresentationController = alertController.popoverPresentationController {
             popoverPresentationController.sourceView = tableView
             let cellFrame = tableView.rectForRow(at: indexPath)
-            let sourceRect = view.convert(cellFrame, from: tableView)
-            popoverPresentationController.sourceRect = sourceRect
+            popoverPresentationController.sourceRect = CGRect(x: cellFrame.maxX,
+                                                              y: cellFrame.midY,
+                                                              width: 0,
+                                                              height: 0)
+            popoverPresentationController.permittedArrowDirections = [.left]
         }
         present(alertController, animated: true, completion: nil)
     }

@@ -42,12 +42,21 @@ final class ClientCertificateManagementViewModel {
     public private(set) var rows = [Row]()
     public var accountToUpdate: Account?
 
+    /// If the view shows a navigation bar (it was presented by pushing it), we need to hide the cancel button as we have one already.
+    /// Else, if it's not there (it was presented modally), we need to show it.
+    /// As there is not a pure way to distinguish them, we handle that with this property.
+    ///
+    /// True to hide the cancel button. False to show it.
+    public private(set) var shouldHideCancelButton: Bool
+
     public init(verifiableAccount: VerifiableAccountProtocol? = nil,
                 clientCertificateUtil: ClientCertificateUtil = ClientCertificateUtil(),
-                account: Account? = nil) {
+                account: Account? = nil,
+                shouldHideCancelButton: Bool = false) {
         self.clientCertificateUtil = clientCertificateUtil
         self.verifiableAccount = verifiableAccount ??
             VerifiableAccount.verifiableAccount(for: .clientCertificate)
+        self.shouldHideCancelButton = shouldHideCancelButton
         setup()
         accountToUpdate = account
     }
@@ -68,6 +77,7 @@ final class ClientCertificateManagementViewModel {
     public func loginViewModel() -> LoginViewModel {
         return LoginViewModel(verifiableAccount: verifiableAccount)
     }
+
     public func deleteCertificate(indexPath: IndexPath) -> Bool{
         let list = clientCertificateUtil.listCertificates()
         do {

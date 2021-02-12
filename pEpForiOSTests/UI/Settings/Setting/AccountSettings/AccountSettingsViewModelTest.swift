@@ -43,12 +43,12 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
 
         //Test set to false
         var includedInUnifiedFolders = false
-        viewModel.handleSwitchChanged(isIncludedInUnifiedFolders: includedInUnifiedFolders)
+        viewModel.handleUnifiedFolderSwitchChanged(to: includedInUnifiedFolders)
         XCTAssertEqual(viewModel.includeInUnifiedFolders, includedInUnifiedFolders)
 
         //Test set to true
         includedInUnifiedFolders = true
-        viewModel.handleSwitchChanged(isIncludedInUnifiedFolders: includedInUnifiedFolders)
+        viewModel.handleUnifiedFolderSwitchChanged(to: includedInUnifiedFolders)
         XCTAssertEqual(viewModel.includeInUnifiedFolders, includedInUnifiedFolders)
     }
 
@@ -59,7 +59,8 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
         let delegate = MockedAccountSettingsViewModelDelegate(testCase: self,
                                                               showLoadingViewExpectation: showLoadingViewExpectation,
                                                               hideLoadingViewExpectation: hideLoadingViewExpectation)
-        viewModel = AccountSettingsViewModel(account: account, delegate: delegate)
+        let accountSettingsViewModel = AccountSettingsViewModel(account: account, delegate: delegate)
+        viewModel = accountSettingsViewModel
         viewModel.handleResetIdentity()
         waitForExpectations(timeout: TestUtil.waitTime)
     }
@@ -77,7 +78,8 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
         let delegate = MockedAccountSettingsViewModelDelegate(testCase: self,
                                                               undoPEPSyncToggleExpectation: undoPEPSyncToggleExpectation)
 
-        viewModel = AccountSettingsViewModel(account: account, delegate: delegate)
+        let accountSettingsViewModel = AccountSettingsViewModel(account: account, delegate: delegate)
+        viewModel = accountSettingsViewModel
 
         viewModel.pEpSync(enable: true)
         delegate.undoPEPSyncToggle()
@@ -102,22 +104,25 @@ extension MockedAccountSettingsViewController: OAuthAuthorizerDelegate {
     }
 }
 
-class MockedAccountSettingsViewModelDelegate : AccountSettingsViewModelDelegate {
+class MockedAccountSettingsViewModelDelegate : AccountSettingsViewModelDelegate, SettingChangeDelegate {
 
     var showErrorAlertExpectation: XCTestExpectation?
     var showLoadingViewExpectation: XCTestExpectation?
     var hideLoadingViewExpectation: XCTestExpectation?
     var undoPEPSyncToggleExpectation: XCTestExpectation?
+    var didChangeExpectation: XCTestExpectation?
 
     init(testCase: XCTestCase,
          showErrorAlertExpectation: XCTestExpectation? = nil,
          showLoadingViewExpectation: XCTestExpectation? = nil,
          hideLoadingViewExpectation: XCTestExpectation? = nil,
-         undoPEPSyncToggleExpectation: XCTestExpectation? = nil) {
+         undoPEPSyncToggleExpectation: XCTestExpectation? = nil,
+         didChangeExpectation: XCTestExpectation? = nil) {
         self.showErrorAlertExpectation = showErrorAlertExpectation
         self.showLoadingViewExpectation = showLoadingViewExpectation
         self.hideLoadingViewExpectation = hideLoadingViewExpectation
         self.undoPEPSyncToggleExpectation = undoPEPSyncToggleExpectation
+        self.didChangeExpectation = didChangeExpectation
     }
 
     func setLoadingView(visible: Bool) {
@@ -145,6 +150,13 @@ class MockedAccountSettingsViewModelDelegate : AccountSettingsViewModelDelegate 
         if undoPEPSyncToggleExpectation != nil {
             undoPEPSyncToggleExpectation?.fulfill()
             undoPEPSyncToggleExpectation = nil
+        }
+    }
+
+    func didChange() {
+        if didChangeExpectation != nil {
+            didChangeExpectation?.fulfill()
+            didChangeExpectation = nil
         }
     }
 }

@@ -303,6 +303,11 @@ class EmailListViewModel: EmailDisplayViewModel {
         contactImageTool.clearCache()
     }
 
+    /// Update LastLookAt of the folder to show.
+    public func updateLastLookAt() {
+        folderToShow.updateLastLookAt()
+    }
+
     // MARK: - EmailDisplayViewModelDelegate Overrides
 
     override func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])
@@ -348,11 +353,7 @@ class EmailListViewModel: EmailDisplayViewModel {
         }
     }
 
-    // MARK: - multiple message selection handler
-
-    private var unreadMessages = false
-    private var flaggedMessages = false
-
+    // MARK: - Multiple message selection handler
 
     /// Handles changes of the selected messages in edit mode.
     /// Updates toolbar buttons (maybe more)  accoring to selection.
@@ -498,8 +499,9 @@ extension EmailListViewModel {
         Message.setFlaggedValue(to: messages, newValue: flagged)
     }
 
-    private func setSeenValue(forIndexPath indexPaths: [IndexPath], newValue seen: Bool) {
-        let messages = indexPaths.map { messageQueryResults[$0.row] }
+    private func setSeenValue(forIndexPath indexPath: [IndexPath], newValue seen: Bool) {
+        updatesEnabled = false
+        let messages = indexPath.map { messageQueryResults[$0.row] }
         Message.setSeenValue(to: messages, newValue: seen)
     }
 

@@ -104,9 +104,11 @@ class ClientCertificateUtilMockTest: ClientCertificateUtilProtocol {
         return listOfCerts
     }
     
-    func storeCertificate(p12Data: Data, password: String) throws {
-        
-    }
+    func storeCertificate(p12Data: Data, password: String) throws {}
 
     func delete(clientCertificate: ClientCertificate) throws {}
+
+    func isCertificate(p12Data: Data) -> Bool {
+        return false
+    }
 }

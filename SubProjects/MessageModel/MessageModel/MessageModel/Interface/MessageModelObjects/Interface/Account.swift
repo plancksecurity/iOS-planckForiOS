@@ -92,11 +92,6 @@ public class Account: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         }
     }
 
-    public func replaceServers(with elements: [Server]) {
-        cdObject.servers = nil
-        appendToServers(elements)
-    }
-
     public func appendToServers(_ element: Server) {
         appendToServers([element])
     }
@@ -108,13 +103,6 @@ public class Account: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
             result.add(cdElement)
             element.cdObject.account = self.cdObject
         }
-        cdObject.servers = result
-    }
-
-    public func removeFromServers(_ element: Server) {
-        let result = (cdObject.servers?.mutableCopy() as? NSMutableSet) ?? NSMutableSet()
-        result.remove(element.cdObject)
-        element.moc.delete(element.cdObject)
         cdObject.servers = result
     }
 
@@ -148,6 +136,10 @@ public class Account: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         }
         set {
             cdObject.includeFoldersInUnifiedFolders = newValue
+            // As changes in this MMO do not automatically trigger changes in MessageQueryResults (MQR),
+            // it is necessary to call this, which will make MQR update according to the new status.
+            // For further information please go to: https://pep.foundation/jira/browse/IOS-2641
+            cdObject.triggerFetchedResultsControllerChangeForAllMessages()
         }
     }
 }

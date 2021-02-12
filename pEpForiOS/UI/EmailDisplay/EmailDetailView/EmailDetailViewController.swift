@@ -69,6 +69,19 @@ class EmailDetailViewController: UIViewController {
         configureView()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        guard let currentlyShown = indexPathOfCurrentlyVisibleCell else {
+            // Nothing shown, nothing todo
+            return
+        }
+        vm.handleEmailDidEndDisplay(forItemAt: currentlyShown)
+    }
+
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         // Re-layout cells after device orientaion change
@@ -353,39 +366,6 @@ extension EmailDetailViewController {
         emailSubViewControllers = emailSubViewControllers.filter { $0.view.superview != nil }
     }
 
-    private func showSettingsAction() -> UIAlertAction {
-        let action = UIAlertAction(
-            title: NSLocalizedString("Settings", comment: "acction sheet title 2"),
-            style: .default) { [weak self] (action) in
-                guard let me = self else {
-                    Log.shared.lostMySelf()
-                    return
-                }
-                me.showSettingsViewController()
-        }
-        return action
-    }
-
-    private func tutorialAction() -> UIAlertAction {
-        return UIAlertAction(
-            title: NSLocalizedString("Tutorial", comment: "show tutorial from compose view"),
-            style: .default) { _ in
-                TutorialWizardViewController.presentTutorialWizard(viewController: self)
-        }
-    }
-
-    private func showTrustManagementViewAction() -> UIAlertAction {
-        let action = UIAlertAction(title: NSLocalizedString("Privacy Status", comment: "action sheet title 1"),
-                                   style: .default) { [weak self] (action) in
-                                    guard let me = self else {
-                                        Log.shared.lostMySelf()
-                                        return
-                                    }
-                                    me.showTrustManagementView()
-        }
-        return action
-    }
-
     @objc
     private func showSettingsViewController() {
         splitViewController?.preferredDisplayMode = .allVisible
@@ -441,6 +421,16 @@ extension EmailDetailViewController: UICollectionViewDelegate {
         }
         vm.handleEmailShown(forItemAt: currentlyVisibledIdxPth)
         configureView()
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        didEndDisplaying cell: UICollectionViewCell,
+                        forItemAt indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("Expect to have a view model")
+            return
+        }
+        vm.handleEmailDidEndDisplay(forItemAt: indexPath)
     }
 }
 

@@ -12,8 +12,6 @@ import Foundation
  Methods that deal with email detection.
  */
 extension String {
-    private static let gmailRegex = emailProviderDetectionPattern(providerDomainPart: "gmail")
-    private static let yahooRegex = emailProviderDetectionPattern(providerDomainPart: "yahoo")
 
     public static func emailProviderDetectionPattern(providerDomainPart: String) -> NSRegularExpression {
         return try! NSRegularExpression(

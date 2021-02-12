@@ -14,7 +14,7 @@ class CreditsTest: XCTestCase {
 
     func testSwitchReflectedInSettings() throws {
         var expectedValue = true
-        let appSettingsMock = AppSettingsMoc(verboseLogginEnabled: expectedValue)
+        let appSettingsMock = MockAppSettings(verboseLogginEnabled: expectedValue)
         let creditsViewModel = CreditsViewModel(appSettings: appSettingsMock)
         XCTAssertEqual(expectedValue, appSettingsMock.verboseLogginEnabled)
 
@@ -26,34 +26,4 @@ class CreditsTest: XCTestCase {
         creditsViewModel.handleVerboseLoggingSwitchChange(newValue: expectedValue)
         XCTAssertEqual(expectedValue, appSettingsMock.verboseLogginEnabled)
     }
-}
-
-class AppSettingsMoc: AppSettingsProtocol {
-
-    init(verboseLogginEnabled: Bool) {
-        self.verboseLogginEnabled = verboseLogginEnabled
-    }
-    var keySyncEnabled: Bool = false
-
-    var usePEPFolderEnabled: Bool = false
-
-    var extraKeysEditable: Bool = false
-
-    var unencryptedSubjectEnabled: Bool = false
-
-    var threadedViewEnabled: Bool = false
-
-    var passiveMode: Bool = false
-
-    var defaultAccount: String? = nil
-
-    var lastKnownDeviceGroupState: DeviceGroupState = .sole
-
-    var shouldShowTutorialWizard: Bool = false
-
-    var userHasBeenAskedForContactAccessPermissions: Bool = false
-
-    var unsecureReplyWarningEnabled: Bool = false
-
-    var verboseLogginEnabled: Bool
 }
