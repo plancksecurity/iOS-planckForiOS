@@ -226,6 +226,12 @@
 		434A6D5B25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 434A6D5A25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a */; };
 		434C19E625D3E4CD00F622DB /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
 		434C19ED25D3E57B00F622DB /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CB609F1DA4EBB60015281E /* Message.swift */; };
+		434C217825D6964600F622DB /* MessageModelObjectProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645A52239183B009532BE /* MessageModelObjectProtocol.swift */; };
+		434C217C25D6964B00F622DB /* ManagedObjectWrapperProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645A722391871009532BE /* ManagedObjectWrapperProtocol.swift */; };
+		434C217D25D6965300F622DB /* CdAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE460761DB7B1D2008D63C6 /* CdAccount.swift */; };
+		434C217E25D6965B00F622DB /* Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0E11DAE7A49007C98B8 /* Identity.swift */; };
+		434C217F25D6966400F622DB /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
+		434C218025D6966D00F622DB /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15795C0822C60ECB00010938 /* Session.swift */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -709,7 +715,7 @@
 		433C51D41E6828AE00272E19 /* MessageID+UUID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MessageID+UUID.swift"; sourceTree = "<group>"; };
 		433E7439225B76E000B84CD9 /* CdServer+NonOptionalConvenienceAccessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdServer+NonOptionalConvenienceAccessors.swift"; sourceTree = "<group>"; };
 		433E743E225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift"; sourceTree = "<group>"; };
-		4348FBAD25D1505F00059282 /* Not_a_certificate.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Not_a_certificate.p12; sourceTree = "<group>"; };
+		4348FBAD25D1505F00059282 /* Not_a_certificate.p12 */ = {isa = PBXFileReference; lastKnownFileType = text; path = Not_a_certificate.p12; sourceTree = "<group>"; };
 		43495983239E509300CF1E12 /* CdFolder+SyncFolderMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+SyncFolderMode.swift"; sourceTree = "<group>"; };
 		434A6CE225D2BF1B00179335 /* MessageModelForAppExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MessageModelForAppExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		434A6CE425D2BF1B00179335 /* MessageModelForAppExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageModelForAppExtensions.h; sourceTree = "<group>"; };
@@ -2744,8 +2750,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				434C217F25D6966400F622DB /* Server.swift in Sources */,
+				434C217D25D6965300F622DB /* CdAccount.swift in Sources */,
+				434C217E25D6965B00F622DB /* Identity.swift in Sources */,
+				434C217C25D6964B00F622DB /* ManagedObjectWrapperProtocol.swift in Sources */,
+				434C218025D6966D00F622DB /* Session.swift in Sources */,
 				434C19E625D3E4CD00F622DB /* Account.swift in Sources */,
 				434C19ED25D3E57B00F622DB /* Message.swift in Sources */,
+				434C217825D6964600F622DB /* MessageModelObjectProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
