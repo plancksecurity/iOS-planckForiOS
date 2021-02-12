@@ -305,6 +305,8 @@
 		434C22A725D69EC900F622DB /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A102248D2E2008E40CC /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift */; };
 		434C22AB25D69EE000F622DB /* CdAccount+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C12407223A9DEA00F6A9B2 /* CdAccount+pEp.swift */; };
 		434C22AF25D69EF300F622DB /* CdMessage+Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3A254224E473B004CAC84 /* CdMessage+Fake.swift */; };
+		434C22B325D69F4700F622DB /* CdMessage+Clone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3A243224E2BED004CAC84 /* CdMessage+Clone.swift */; };
+		434C22B725D69F4E00F622DB /* CdFolder+NonOptionalConvenienceAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437AA506224507A200B5C7A4 /* CdFolder+NonOptionalConvenienceAccessors.swift */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -2854,6 +2856,7 @@
 				434C226025D69B3C00F622DB /* String+Attachment.swift in Sources */,
 				434C21C625D6985D00F622DB /* CdServerCredentials.swift in Sources */,
 				434C224325D69A7C00F622DB /* PEPUtil+Internal.swift in Sources */,
+				434C22B725D69F4E00F622DB /* CdFolder+NonOptionalConvenienceAccessors.swift in Sources */,
 				434C21C225D6984500F622DB /* CdAttachment.swift in Sources */,
 				434C218025D6966D00F622DB /* Session.swift in Sources */,
 				434C227025D69B9100F622DB /* MessageID+UUID.swift in Sources */,
@@ -2875,6 +2878,7 @@
 				434C224225D69A7500F622DB /* CdIdentity+Extensions.swift in Sources */,
 				434C224C25D69AA800F622DB /* MimeTypeUtils+MimeType.swift in Sources */,
 				434C21A825D697B700F622DB /* FolderType.swift in Sources */,
+				434C22B325D69F4700F622DB /* CdMessage+Clone.swift in Sources */,
 				434C21AC25D697C000F622DB /* Query.swift in Sources */,
 				434C225C25D69B2800F622DB /* ContentDispositionType+Conversion.swift in Sources */,
 				434C21CE25D698D000F622DB /* CdKey.swift in Sources */,
