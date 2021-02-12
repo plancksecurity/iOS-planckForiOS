@@ -315,6 +315,9 @@
 		434C22EB25D6A0FA00F622DB /* Server+Tranport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645B5223AA169009532BE /* Server+Tranport.swift */; };
 		434C22EF25D6A10F00F622DB /* FetchOlderImapMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153DDF3C25ADD43D008F645F /* FetchOlderImapMessagesService.swift */; };
 		434C22F325D6A11300F622DB /* FetchMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153DDF3B25ADD43D008F645F /* FetchMessagesService.swift */; };
+		434C22F725D6A12B00F622DB /* CdFolder+ImapFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15795B9E22C0F48F00010938 /* CdFolder+ImapFolder.swift */; };
+		434C22FB25D6A14C00F622DB /* CdMessagePredicateFactory+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4367342E22F18462005FC567 /* CdMessagePredicateFactory+KeySync.swift */; };
+		434C22FF25D6A16100F622DB /* CdFolder+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F0F7B32136F68A002BE853 /* CdFolder+PredicateFactory.swift */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -2858,6 +2861,8 @@
 				434C21A325D6977200F622DB /* CdAccount+FetchedResultsController.swift in Sources */,
 				434C219425D6972500F622DB /* CdFolder.swift in Sources */,
 				434C223E25D69A6F00F622DB /* CdIdentity+UserID.swift in Sources */,
+				434C22FB25D6A14C00F622DB /* CdMessagePredicateFactory+KeySync.swift in Sources */,
+				434C22F725D6A12B00F622DB /* CdFolder+ImapFolder.swift in Sources */,
 				434C222625D699EF00F622DB /* CdMessagePredicateFactory+Imap.swift in Sources */,
 				434C224B25D69A9E00F622DB /* ContentTypeUtils.swift in Sources */,
 				434C222125D699CA00F622DB /* MimeTypeUtils.swift in Sources */,
@@ -2914,6 +2919,7 @@
 				434C227125D69B9900F622DB /* CdMessage+PEPMessage.swift in Sources */,
 				434C217825D6964600F622DB /* MessageModelObjectProtocol.swift in Sources */,
 				434C225025D69AC400F622DB /* CWIMAPMessage+pEp.swift in Sources */,
+				434C22FF25D6A16100F622DB /* CdFolder+PredicateFactory.swift in Sources */,
 				434C219025D6972000F622DB /* Folder.swift in Sources */,
 				434C229325D69C5600F622DB /* Attachment+ContentDispositionType+PEPContentDisposition.swift in Sources */,
 				434C21BE25D6981C00F622DB /* CdMessage.swift in Sources */,
