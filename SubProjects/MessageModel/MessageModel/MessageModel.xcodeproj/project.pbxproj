@@ -368,6 +368,7 @@
 		434C24BB25D6D63E00F622DB /* Notification+CWServiceClientNotificationParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA480F221E9518006E8F83 /* Notification+CWServiceClientNotificationParsing.swift */; };
 		434C24BF25D6D7CC00F622DB /* Persistable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15795C0322C60E3400010938 /* Persistable.swift */; };
 		434C24C325D6DB2B00F622DB /* SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15795C0622C60E9B00010938 /* SessionAware.swift */; };
+		434C24C725D6DD0D00F622DB /* Account+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E39FC522551DBB0016A1C4 /* Account+SessionAware.swift */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -2890,6 +2891,7 @@
 				434C24C325D6DB2B00F622DB /* SessionAware.swift in Sources */,
 				434C21D625D698E500F622DB /* CdMessage+PredicateFactory.swift in Sources */,
 				434C21CA25D6987100F622DB /* CdExtraKey.swift in Sources */,
+				434C24C725D6DD0D00F622DB /* Account+SessionAware.swift in Sources */,
 				434C232325D6A22E00F622DB /* ErrorPropagator.swift in Sources */,
 				434C22AB25D69EE000F622DB /* CdAccount+pEp.swift in Sources */,
 				434C219B25D6975900F622DB /* CdFolder+Extension.swift in Sources */,
