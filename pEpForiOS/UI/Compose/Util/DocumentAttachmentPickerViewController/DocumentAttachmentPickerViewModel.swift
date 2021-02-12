@@ -18,9 +18,7 @@ protocol DocumentAttachmentPickerViewModelResultDelegate: class {
 
 class DocumentAttachmentPickerViewModel {
     lazy private var attachmentFileIOQueue = DispatchQueue(label:
-        "security.pep.DocumentAttachmentPickerViewModel.attachmentFileIOQueue",
-                                                           qos: .userInitiated)
-    private let mimeUtils = MimeTypeUtils()
+        "security.pep.DocumentAttachmentPickerViewModel.attachmentFileIOQueue", qos: .userInitiated)
     private let session: Session
     weak public var resultDelegate: DocumentAttachmentPickerViewModelResultDelegate?
 
@@ -35,7 +33,7 @@ class DocumentAttachmentPickerViewModel {
             createAttachment(forSecurityScopedResource: url) {
                 [weak self] (attachment: Attachment?) in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                    // Valid case. We might have been dismissed already.
                     return
                 }
                 guard let safeAttachment = attachment else {
@@ -65,7 +63,7 @@ class DocumentAttachmentPickerViewModel {
         let cfUrl = resourceUrl as CFURL
         attachmentFileIOQueue.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             CFURLStartAccessingSecurityScopedResource(cfUrl)

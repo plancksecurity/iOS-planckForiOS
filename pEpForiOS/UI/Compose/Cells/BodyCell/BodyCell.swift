@@ -12,12 +12,19 @@ import pEpIOSToolbox
 class BodyCell: TextViewContainingTableViewCell {
     static let reuseId = "BodyCell"
 
+    private let defaultFontSize: CGFloat = 17.0
+
     var viewModel: BodyCellViewModel? {
         didSet {
             viewModel?.delegate = self
             viewModel?.maxTextattachmentWidth = textView.contentSize.width
             setupInitialText()
         }
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        textView.font = UIFont.systemFont(ofSize: defaultFontSize)
     }
 
     public func setup(with viewModel: BodyCellViewModel) {
@@ -130,9 +137,9 @@ extension BodyCell {
 
 extension BodyCell {
     private func setupContextMenu() {
-        let media = UIMenuItem(title: viewModel?.contextMenuItemTitleAttachMedia ?? "",
+        let media = UIMenuItem(title: viewModel?.contextMenuItemTitleAddPhotoOrVideo ?? "",
                                action: #selector(userClickedSelectMedia))
-        let attachment = UIMenuItem(title: viewModel?.contextMenuItemTitleAttachFile ?? "",
+        let attachment = UIMenuItem(title: viewModel?.contextMenuItemTitleAddDocument ?? "",
                                     action: #selector(userClickedSelectDocument))
         UIMenuController.shared.menuItems = [media, attachment]
     }

@@ -16,9 +16,6 @@ class TutorialStep1ViewController: TutorialStepViewController {
     @IBOutlet private weak var mistrustedLabel: UILabel!
     @IBOutlet private weak var mistrustedDescription: UILabel!
     
-    // We manipulate constraints to support iPad orientations as this inherits from CustomTraitCollectionViewController,
-    @IBOutlet weak var centerY: NSLayoutConstraint!
-    
     public override func configureView() {
         setupSecureLabel()
         setupSecureDescriptionLabel()
@@ -61,15 +58,5 @@ extension TutorialStep1ViewController {
     private func setupMistrustedDescriptionLabel() {
         mistrustedDescription.text = NSLocalizedString("If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle.", comment: "Secure & Trusted Description Label - Step 1")
         mistrustedDescription.font = font
-    }
-    
-    private struct Constants {
-        struct Portrait {
-            static let centerYOffset: CGFloat = -120
-        }
-
-        struct Landscape {
-            static let centerYOffset: CGFloat = -100
-        }
     }
 }

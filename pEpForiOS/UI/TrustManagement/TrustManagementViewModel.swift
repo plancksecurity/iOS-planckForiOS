@@ -7,8 +7,9 @@
 //
 
 import Foundation
+
 import MessageModel
-import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 /// TrustManagementViewModel View Mode Delegate
 protocol TrustManagementViewModelDelegate: class {
@@ -32,11 +33,14 @@ extension TrustManagementViewModel {
 
         public init(language: LanguageCode,
                     handshakeCombination: TrustManagementUtil.HandshakeCombination,
-                    trustManagementUtil: TrustManagementUtilProtocol? = nil) {
-            self.language = language
+                    trustManagementUtil: TrustManagementUtilProtocol? = nil,
+                    completion: @escaping () -> ()) {
+            _language = language
             self.handshakeCombination = handshakeCombination
             self.trustManagementUtil = trustManagementUtil ?? TrustManagementUtil()
-            setupTrustwords(combination: handshakeCombination, language: language)
+            setupTrustwords(combination: handshakeCombination, language: language) {
+                completion()
+            }
         }
 
         /// Indicates the handshake partner's name
@@ -45,45 +49,96 @@ extension TrustManagementViewModel {
             let address = handshakeCombination.partnerIdentity.address
             return name ?? address
         }
+
         /// The description for the row
-        public var description: String {
+        public func description(completion: @escaping (String) -> Void) {
             if forceRed {
-                return PEPColor.red.privacyStatusDescription
+                completion(Color.red.privacyStatusDescription)
+            } else {
+                color { (color) in
+                    DispatchQueue.main.async {
+                        completion(color.privacyStatusDescription)
+                    }
+                }
             }
-            return color.privacyStatusDescription
         }
+
         /// The privacy status name
-        public var privacyStatusName: String {
-            if (forceRed) {
-                return String.trustIdentityTranslation(pEpRating: .underAttack).title
+        public func privacyStatusName(completion: @escaping (String)->Void){
+            guard !forceRed else {
+                completion(String.trustIdentityTranslation(pEpRating: .underAttack).title)
+                return
             }
-            let rating = handshakeCombination.partnerIdentity.pEpRating()
-            let translations = String.trustIdentityTranslation(pEpRating: rating)
-            return translations.title
+            handshakeCombination.partnerIdentity.pEpRating { (rating) in
+                let translations = String.trustIdentityTranslation(pEpRating: rating)
+                DispatchQueue.main.async {
+                    completion(translations.title)
+                }
+            }
         }
+
         /// The privacy status image
-        public var privacyStatusImage: UIImage? {
+        public func privacyStatusImage(completion: @escaping (UIImage?) -> Void) {
             if forceRed {
-                return PEPColor.red.statusIconForMessage(enabled: true, withText: false)
+                completion(Color.red.statusIconForMessage(enabled: true, withText: false))
+            }else {
+                color { (color) in
+                    DispatchQueue.main.async {
+                        completion(color.statusIconForMessage(enabled: true, withText: false))
+                    }
+                }
             }
-            return color.statusIconForMessage(enabled: true, withText: false)
         }
+
         /// The current language
-        fileprivate var language: String {
-            didSet {
-                setupTrustwords(combination: handshakeCombination, language: language)
+        private var _language: String
+        fileprivate func setLanguage(newLang: String, completion: @escaping ()->Void) {
+            _language = newLang
+            setupTrustwords(combination: handshakeCombination, language: _language) {
+                completion()
             }
+        }
+        fileprivate var language: String {
+            return _language
         }
         /// Indicates if the long (or the short) version of the trustwords should be shown
         var showLongTrustwordVersion: Bool = false
-        /// The privacy status in between the current user and the partner
-        var privacyStatus: String?
         /// Status indicator
-        var color : PEPColor {
+        func color(completion: @escaping (Color) -> Void){
             if forceRed {
-                return PEPColor.red
+                completion(.red)
+            } else {
+                handshakeCombination.partnerIdentity.pEpColor { (color) in
+                    DispatchQueue.main.async {
+                        completion(color)
+                    }
+                }
             }
-            return handshakeCombination.partnerIdentity.pEpColor()
+        }
+
+        /// Mega ugly.
+        /// Do not use with the expection of the following use case:
+        /// In cellForRowAtIndexpath, there is no way without blocking. See implementi0on.
+        func blockingColor() -> Color {
+            var result = Color.noColor
+            if forceRed {
+                result = .red
+            } else {
+                let partner = handshakeCombination.partnerIdentity
+                let group = DispatchGroup()
+                group.enter()
+                let queue = DispatchQueue(label: "blockColorQueue", qos: .userInteractive)
+                queue.async {
+                    let privateSession = Session()
+                    let savePartner = partner.safeForSession(privateSession)
+                    savePartner.pEpColor(session: privateSession) { (color) in
+                        result = color
+                        group.leave()
+                    }
+                }
+                group.wait()
+            }
+            return result
         }
 
         public typealias TrustWords = String
@@ -101,21 +156,45 @@ extension TrustManagementViewModel {
         fileprivate var fingerprint: String?
 
         private func setupTrustwords(combination: TrustManagementUtil.HandshakeCombination,
-                                     language: LanguageCode) {
-            let longTw =  try? trustManagementUtil.getTrustwords(for: combination.ownIdentity,
-                                                                 and: combination.partnerIdentity,
-                                                                 language: language,
-                                                                 long: true)
-            trustwordsLong = prepareTrustwordStringForDisplay(trustwords: longTw)
-            var shortTw =  try? trustManagementUtil.getTrustwords(for: combination.ownIdentity,
-                                                                  and: combination.partnerIdentity,
-                                                                  language: language,
-                                                                  long: false)
-            if let tmp = shortTw {
-                // Short TWs must have three dots for signaling as truncated
-                shortTw = "\(tmp)…"
+                                     language: LanguageCode,
+                                     completion: @escaping ()->Void) {
+            let group = DispatchGroup()
+            var longTw: String? = nil
+            var shortTw: String? = nil
+            group.enter()
+            trustManagementUtil.getTrustwords(for: combination.ownIdentity,
+                                              and: combination.partnerIdentity,
+                                              language: language,
+                                              long: true)
+            { (trustwords) in
+                longTw = trustwords
+                group.leave()
             }
-            trustwordsShort = prepareTrustwordStringForDisplay(trustwords: shortTw)
+            group.enter()
+            trustManagementUtil.getTrustwords(for: combination.ownIdentity,
+                                              and: combination.partnerIdentity,
+                                              language: language,
+                                              long: false)
+            { (trustwords) in
+                shortTw = trustwords
+                group.leave()
+            }
+            group.notify(queue: DispatchQueue.main) { [weak self] in
+                guard let me = self else {
+                    // Valid case. We might have been dismissed already.
+                    // Do nothing.
+                    return
+                }
+
+                me.trustwordsLong = me.prepareTrustwordStringForDisplay(trustwords: longTw)
+
+                if let tmp = shortTw {
+                    // Short TWs must have three dots for signaling as truncated
+                    shortTw = "\(tmp)…"
+                }
+                me.trustwordsShort = me.prepareTrustwordStringForDisplay(trustwords: shortTw)
+                completion()
+            }
         }
 
         private func prepareTrustwordStringForDisplay(trustwords: TrustWords?) -> TrustWords? {
@@ -144,7 +223,10 @@ final class TrustManagementViewModel {
     private var message: Message
     private var trustManagementUtil : TrustManagementUtilProtocol
     private let undoManager = UndoManager()
-    private var actionPerformed = [String]()
+    /// It contains the names of the actions that are going to revert previously executed actions.
+    /// For example: 'Undo Trust Rejection'. In case the last action was a Trust Rejection.
+    /// - Note: Must be already localized.
+    private var revertActionNames = [String]()
     
     /// Items to be displayed in the View Controller
     private (set) var rows: [Row] = [Row]()
@@ -172,30 +254,51 @@ final class TrustManagementViewModel {
     /// Reject the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to reject the handshake
     public func handleRejectHandshakePressed(at indexPath: IndexPath) {
-        let actionName = NSLocalizedString("Trust Rejection", comment: "Action name to be suggested at the moment of revert")
-        actionPerformed.append(actionName)
+        let actionName = NSLocalizedString("Undo Trust Rejection", comment: "Action name to be suggested at the moment of revert")
+        revertActionNames.append(actionName)
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
-        rows[indexPath.row].fingerprint = trustManagementUtil.getFingerprint(for: identity)
-        rows[indexPath.row].forceRed = true
-        trustManagementUtil.denyTrust(for: identity)
-        reevaluateMessage()
-        delegate?.dataChanged(forRowAt: indexPath)
+        trustManagementUtil.getFingerprint(for: identity) { [weak self] theFpr in
+            DispatchQueue.main.async {
+                guard let me = self else {
+                    // UI, can happen
+                    return
+                }
+                me.rows[indexPath.row].fingerprint = theFpr
+                me.rows[indexPath.row].forceRed = true
+                me.trustManagementUtil.denyTrust(for: identity) { [weak self] _ in
+                    DispatchQueue.main.async {
+                        guard let me = self else {
+                            // UI, can happen
+                            return
+                        }
+                        me.reevaluateMessage(forRowAt: indexPath)
+                    }
+                }
+            }
+        }
     }
     
     /// Confirm the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to confirm the handshake
     public func handleConfirmHandshakePressed(at indexPath: IndexPath) {
-        let actionName = NSLocalizedString("Trust Confirmation", comment: "Action name to be suggested at the moment of revert")
-        actionPerformed.append(actionName)
+        let actionName = NSLocalizedString("Undo Trust Confirmation", comment: "Action name to be suggested at the moment of revert")
+        revertActionNames.append(actionName)
         registerUndoAction(at: indexPath)
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
         let identity : Identity = row.handshakeCombination.partnerIdentity.safeForSession(Session.main)
-        trustManagementUtil.confirmTrust(for: identity)
-        reevaluateMessage()
-        delegate?.dataChanged(forRowAt: indexPath)
+        trustManagementUtil.confirmTrust(for: identity) { [weak self] _ in
+            DispatchQueue.main.async {
+                guard let me = self else {
+                    // UI, can happen
+                    return
+                }
+                // Note that the message is reevaluated regardless of errors
+                me.reevaluateMessage(forRowAt: indexPath)
+            }
+        }
     }
     
     /// Handles the undo action.
@@ -206,9 +309,16 @@ final class TrustManagementViewModel {
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
         trustManagementUtil.undoMisstrustOrTrust(for: row.handshakeCombination.partnerIdentity,
-                                                 fingerprint: row.fingerprint)
-        reevaluateMessage()
-        delegate?.dataChanged(forRowAt: indexPath)
+                                                 fingerprint: row.fingerprint) { [weak self] _ in
+                                                    DispatchQueue.main.async {
+                                                        guard let me = self else {
+                                                            // UI, can happen
+                                                            return
+                                                        }
+                                                        // Note that the message is reevaluated regardless of errors
+                                                        me.reevaluateMessage(forRowAt: indexPath)
+                                                    }
+        }
     }
     
     /// Handles the redey action
@@ -216,14 +326,21 @@ final class TrustManagementViewModel {
     public func handleResetPressed(forRowAt indexPath: IndexPath) {
         let row = rows[indexPath.row]
         rows[indexPath.row].forceRed = false
-        trustManagementUtil.resetTrust(for: row.handshakeCombination.partnerIdentity)
-        reevaluateMessage()
-        delegate?.dataChanged(forRowAt: indexPath)
+        trustManagementUtil.resetTrust(for: row.handshakeCombination.partnerIdentity,
+                                       completion: { [weak self] in
+                                        DispatchQueue.main.async {
+                                            guard let me = self else {
+                                                // UI, can happen
+                                                return
+                                            }
+                                            me.reevaluateMessage(forRowAt: indexPath)
+                                        }
+        })
     }
 
     /// - returns: the available languages.
-    public var languages: [String] {
-        return trustManagementUtil.languagesList() ?? []
+    public func languages(completion: @escaping ([String]) -> ()) {
+        return trustManagementUtil.languagesList(completion: completion)
     }
     
     /// Updates the selected language for that row.
@@ -231,8 +348,14 @@ final class TrustManagementViewModel {
     ///   - indexPath: The index path of the row
     ///   - language: The chosen language
     public func handleDidSelect(language: String, forRowAt indexPath: IndexPath) {
-        rows[indexPath.row].language = language
-        delegate?.dataChanged(forRowAt: indexPath)
+        rows[indexPath.row].setLanguage(newLang: language) { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                // Do nothing.
+                return
+            }
+            me.delegate?.dataChanged(forRowAt: indexPath)
+        }
     }
     
     /// Toogle pEp protection status
@@ -246,9 +369,9 @@ final class TrustManagementViewModel {
         return undoManager.canUndo
     }
     
-    /// - returns: The name of the last action performed, nil if there isn't any.
-    public func lastActionPerformed() -> String? {
-        return actionPerformed.last
+    /// - returns: The name of the action to revert the last one performed, nil if there isn't any.
+    public func revertAction() -> String? {
+        return revertActionNames.last
     }
 
     /// Method that makes the trustwords long or short (more or less trustwords in fact).
@@ -266,36 +389,64 @@ final class TrustManagementViewModel {
         if (undoManager.canUndo) {
             undoManager.undo()
             delegate?.reload()
-            _ = actionPerformed.popLast()
+            _ = revertActionNames.popLast()
         }
     }
 
     ///MARK: - Private
 
+    /// Re-computes the messages rating, saves the message and informs the delegate about a possible data change.
     /// This must be called after every trust state change. The curently processed message might
     /// change color.
-    private func reevaluateMessage() {
+    /// - Note: Will be called from background queues.
+    private func reevaluateMessage(forRowAt indexPath: IndexPath) {
         message.session.performAndWait { [weak self] in
             guard let me = self else {
-                Log.shared.error("Lost myself - The message will not be reevaluated")
+                // Valid case. We might have been dismissed already.
                 return
             }
-            RatingReEvaluator.reevaluate(message: me.message)
+            RatingReEvaluator.reevaluate(message: me.message) {
+                DispatchQueue.main.async {
+                    me.delegate?.dataChanged(forRowAt: indexPath)
+                }
+            }
         }
     }
 
     /// Method that generates the rows to be used by the VC
     private func setupRows() {
-        let combinations = trustManagementUtil.handshakeCombinations(message: message)
+        trustManagementUtil.handshakeCombinations(message: message) { [weak self] (combinations) in
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                // Do nothing.
+                return
+            }
 
-        for combination in combinations{
-            let backupLanguage = "en"
-            let language =
-            combination.partnerIdentity.language ?? Locale.current.languageCode ?? backupLanguage
-            let row = Row(language: language,
-                          handshakeCombination: combination,
-                          trustManagementUtil: trustManagementUtil)
-            rows.append(row)
+            let rowsLoadedGroup = DispatchGroup()
+
+            for combination in combinations{
+                let backupLanguage = "en"
+                let language =
+                combination.partnerIdentity.language ?? Locale.current.languageCode ?? backupLanguage
+
+                rowsLoadedGroup.enter()
+
+                let row = Row(language: language,
+                              handshakeCombination: combination,
+                              trustManagementUtil: me.trustManagementUtil) {
+                                rowsLoadedGroup.leave()
+                }
+                me.rows.append(row)
+            }
+
+            rowsLoadedGroup.notify(queue: DispatchQueue.main) { [weak self] in
+                guard let me = self else {
+                    // Valid case. We might have been dismissed already.
+                    // Do nothing.
+                    return
+                }
+                me.delegate?.reload()
+            }
         }
     }
 
@@ -310,7 +461,7 @@ final class TrustManagementViewModel {
     }
 }
 
-/// MARK: - Image 
+// MARK: - Image 
 
 extension TrustManagementViewModel {
     
@@ -326,7 +477,9 @@ extension TrustManagementViewModel {
         let contactImageTool = IdentityImageTool()
         let key = IdentityImageTool.IdentityKey(identity: partnerIdentity)
         if let cachedContactImage = contactImageTool.cachedIdentityImage(for: key) {
-            complete(cachedContactImage)
+            DispatchQueue.main.async {
+                complete(cachedContactImage)
+            }
             return
         }
         
@@ -337,7 +490,9 @@ extension TrustManagementViewModel {
             session.performAndWait {
                 if let contactImage = contactImageTool.identityImage(for:
                     IdentityImageTool.IdentityKey(identity: safePartnerIdentity)) {
-                    complete(contactImage)
+                    DispatchQueue.main.async {
+                        complete(contactImage)
+                    }
                 }
             }
         }

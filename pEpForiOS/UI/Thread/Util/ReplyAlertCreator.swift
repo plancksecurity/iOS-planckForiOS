@@ -7,7 +7,9 @@
 //
 
 import Foundation
+
 import MessageModel
+import pEpIOSToolbox
 
 struct ReplyAlertCreator {
 
@@ -16,7 +18,7 @@ struct ReplyAlertCreator {
 
     public init(replyAllChecker: ReplyAllPossibleCheckerProtocol) {
         self.replyAllChecker = replyAllChecker
-        alert = UIAlertController.pEpAlertController()
+        alert = UIUtils.actionSheet()
     }
 
     public func withReplyOption(

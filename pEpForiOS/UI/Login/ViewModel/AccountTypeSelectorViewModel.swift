@@ -7,7 +7,9 @@
 //
 
 import Foundation
+
 import MessageModel
+import pEpIOSToolbox
 
 protocol AccountTypeSelectorViewModelDelegate: class {
     func showMustImportClientCertificateAlert()
@@ -55,10 +57,10 @@ class AccountTypeSelectorViewModel {
         }
     }
 
-    public func accountType(row: Int) -> VerifiableAccount.AccountType? {
+    public func accountType(row: Int) -> VerifiableAccount.AccountType {
         guard row < accountTypes.count else {
             Log.shared.errorAndCrash("Index out of range")
-            return nil
+            return .other
         }
         return accountTypes[row]
     }
@@ -103,10 +105,19 @@ class AccountTypeSelectorViewModel {
     }
 
     public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
-        return ClientCertificateManagementViewModel(verifiableAccount: VerifiableAccount.verifiableAccount(for: chosenAccountType))
+        return ClientCertificateManagementViewModel(verifiableAccount: verifiableAccountForCoosenAccountType(), shouldHideCancelButton: true)
     }
 
     public func loginViewModel() -> LoginViewModel {
-        return LoginViewModel(verifiableAccount: VerifiableAccount.verifiableAccount(for: chosenAccountType))
+        return LoginViewModel(verifiableAccount: verifiableAccountForCoosenAccountType())
+    }
+}
+
+// MARK: - Private
+
+extension AccountTypeSelectorViewModel {
+    private func verifiableAccountForCoosenAccountType() -> VerifiableAccountProtocol{
+        return VerifiableAccount.verifiableAccount(for: chosenAccountType,
+                                                   usePEPFolderProvider: AppSettings.shared)
     }
 }

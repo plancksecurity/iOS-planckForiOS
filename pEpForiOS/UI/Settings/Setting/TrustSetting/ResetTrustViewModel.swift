@@ -7,9 +7,9 @@
 //
 
 import Foundation
-import MessageModel
-import PEPObjCAdapterFramework
 
+import MessageModel
+import pEpIOSToolbox
 
 /// delegate protocol to inform about incoming changes in the tableview
 protocol ResetTrustViewModelDelegate: class {
@@ -148,14 +148,14 @@ class ResetTrustViewModel {
         }
     }
 
-    func resetTrust(foridentityAt indexPath: IndexPath) {
+    func resetTrust(foridentityAt indexPath: IndexPath, completion: @escaping () -> ()) {
         let identity = identityQueryResult[indexPath.section].objects[indexPath.row]
-        identity.resetTrust()
+        identity.resetTrust(completion: completion)
     }
 
-    func resetTrustAll(foridentityAt indexPath: IndexPath) {
+    func resetTrustAll(foridentityAt indexPath: IndexPath, completion: @escaping () -> ()) {
         let identity = identityQueryResult[indexPath.section].objects[indexPath.row]
-        Identity.resetTrustAllIdentities(for: identity)
+        Identity.resetTrustAllIdentities(for: identity, completion: completion)
     }
 
     func multipleIdentitiesExist(forIdentityAt indexPath: IndexPath) -> Bool {

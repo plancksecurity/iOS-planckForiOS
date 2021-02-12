@@ -7,15 +7,11 @@
 //
 
 import UIKit
-import PEPObjCAdapterFramework
+import pEpIOSToolbox
+import MessageModel
 
 extension UIViewController {
-    var isIpad : Bool {
-        return UIDevice.current.userInterfaceIdiom == .pad
-    }
-    var isLandscape: Bool {
-        return UIDevice.current.orientation.isLandscape
-    }
+
     var isModalViewCurrentlyShown: Bool {
         return presentedViewController != nil
     }
@@ -29,7 +25,7 @@ extension UIViewController {
     func adjustTitleViewPositionIfNeeded() {
         //reset previous transformations if any
         navigationItem.titleView?.transform = .identity
-        if isIpad && isLandscape {
+        if UIDevice.isIpad && UIDevice.isLandscape {
             let oldCenterX = view.center.x
             let newCenterX = UIScreen.main.bounds.size.width / 2
             let deltaX = oldCenterX - newCenterX
@@ -48,7 +44,7 @@ extension UIViewController {
     /// - Returns: The view that was put into the navigation item title, or nil,
     ///   if no view was put there. In that case, the navigation item title view has
     ///   been nil'ed.
-    @discardableResult func showNavigationBarSecurityBadge(pEpRating: PEPRating?,
+    @discardableResult func showNavigationBarSecurityBadge(pEpRating: Rating?,
                                                            pEpProtection: Bool = true) -> UIView? {
         let titleView = navigationItemTitleView(pEpRating: pEpRating, pEpProtection: pEpProtection)
         titleView?.isUserInteractionEnabled = true
@@ -57,7 +53,7 @@ extension UIViewController {
         return titleView
     }
 
-    private func navigationItemTitleView(pEpRating: PEPRating?, pEpProtection: Bool = true) -> UIView? {
+    private func navigationItemTitleView(pEpRating: Rating?, pEpProtection: Bool = true) -> UIView? {
         if let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) {
             // according to apple's design guidelines ('Hit Targets'):
             // https://developer.apple.com/design/tips/
@@ -99,6 +95,18 @@ extension UIViewController {
     func showNavigationBar() {
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
+
+    /// Dismiss the presentedViewController if exists and perform the action.
+    /// - Parameter completion: The action to be performed.
+    func dismissAndPerform(completion: (() -> Void)? = nil) {
+        if let presentedViewController = presentedViewController {
+            presentedViewController.dismiss(animated: true) {
+                completion?()
+            }
+        } else {
+            completion?()
+        }
+    }
 }
 
 // MARK: - SplitViewControllerBehaviorProtocol
@@ -107,7 +115,6 @@ extension UIViewController: SplitViewControllerBehaviorProtocol {
     ///
     /// - Returns: returns the value of the actual status of the split view controller using SplitViewDisplayMode
     func currentSplitViewMode() -> UISplitViewController.SplitViewDisplayMode {
-        
         if let selfsplit = self as? UISplitViewController {
             return selfsplit.currentDisplayMode
         }
@@ -129,5 +136,44 @@ extension UIViewController: SplitViewControllerBehaviorProtocol {
     
     var separatedBehavior: SeparatedSplitViewBehavior {
         return .master
+    }
+    
+    /// If applicable, shows the "empty selection" view controller in the details view.
+    /// - Parameter message: The message to show in the view.
+    func showEmptyDetailViewIfApplicable(message: String) {
+        guard let spvc = splitViewController else {
+            return
+        }
+        
+        /// Inner function for doing the actual work.
+        func showEmptyDetail() {
+            let detailIndex = 1 // The index of the detail view controller
+            
+            if let emptyVC = spvc.viewControllers[safe: detailIndex] as? NothingSelectedViewController {
+                emptyVC.message = message
+                emptyVC.updateView()
+            } else {
+                let storyboard: UIStoryboard = UIStoryboard(
+                    name: UIStoryboard.noSelectionStoryBoard,
+                    bundle: nil)
+                guard let detailVC = storyboard.instantiateViewController(
+                    withIdentifier: UIStoryboard.nothingSelectedViewController) as? NothingSelectedViewController else {
+                        return
+                }
+                detailVC.message = message
+                spvc.showDetailViewController(detailVC, sender: self)
+            }
+        }
+        
+        switch spvc.currentDisplayMode {
+        case .masterAndDetail:
+            showEmptyDetail()
+        case .onlyDetail:
+            // nothing to do
+            break
+        case .onlyMaster:
+            // nothing to do
+            break
+        }
     }
 }

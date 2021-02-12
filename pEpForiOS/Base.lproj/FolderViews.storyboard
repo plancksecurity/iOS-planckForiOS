@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="N0y-5z-66z">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="N0y-5z-66z">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -11,7 +11,7 @@
         <scene sceneID="sp8-r5-QDF">
             <objects>
                 <tableViewController storyboardIdentifier="Folders" id="6ra-tc-Aiv" customClass="FolderTableViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="OAM-Xh-1fA">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="OAM-Xh-1fA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -42,13 +42,77 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Default" id="Gav-RT-MrD">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FolderTableViewCell" id="qGb-BL-Uzf" userLabel="FolderTableViewCell" customClass="FolderTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Gav-RT-MrD" id="GDF-rs-ueo">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qGb-BL-Uzf" translatesAutoresizingMaskIntoConstraints="NO" id="aEO-6H-0GF">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalCompressionResistancePriority="749" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s3w-9y-WE2">
+                                            <rect key="frame" x="70" y="11.5" width="33" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" image="pEpForiOS-icon-movetofolder" translatesAutoresizingMaskIntoConstraints="NO" id="nzC-3a-eQ0" userLabel="icon">
+                                            <rect key="frame" x="16" y="10" width="29" height="24"/>
+                                        </imageView>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8hS-wf-RIZ" userLabel="separator">
+                                            <rect key="frame" x="70" y="42" width="305" height="1"/>
+                                            <color key="backgroundColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="1" id="Ae1-PL-AF7"/>
+                                            </constraints>
+                                        </view>
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5mO-NN-q2z" userLabel="chevron" customClass="SectionButton" customModule="pEpForiOS" customModuleProvider="target">
+                                            <rect key="frame" x="331" y="0.0" width="44" height="44"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="44" id="RMa-dG-RSy"/>
+                                            </constraints>
+                                            <state key="normal" image="chevron-icon-right-gray"/>
+                                            <connections>
+                                                <action selector="chevronButtonPressed:" destination="qGb-BL-Uzf" eventType="touchUpInside" id="Rfx-GR-7dK"/>
+                                            </connections>
+                                        </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n8J-L1-57d" userLabel="Unread">
+                                            <rect key="frame" x="315" y="22" width="0.0" height="0.0"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="8hS-wf-RIZ" secondAttribute="trailing" id="GQT-Qq-WJb"/>
+                                        <constraint firstAttribute="trailing" secondItem="5mO-NN-q2z" secondAttribute="trailing" id="La4-H9-CFi"/>
+                                        <constraint firstItem="s3w-9y-WE2" firstAttribute="leading" secondItem="nzC-3a-eQ0" secondAttribute="trailing" constant="25" id="SEH-Cf-5Ni"/>
+                                        <constraint firstItem="8hS-wf-RIZ" firstAttribute="leading" secondItem="s3w-9y-WE2" secondAttribute="leading" id="b6O-fG-gO8"/>
+                                        <constraint firstItem="nzC-3a-eQ0" firstAttribute="leading" secondItem="aEO-6H-0GF" secondAttribute="leading" constant="16" id="hMr-tw-6zZ"/>
+                                        <constraint firstItem="5mO-NN-q2z" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="s3w-9y-WE2" secondAttribute="trailing" priority="750" constant="8" id="sah-oE-AhP"/>
+                                        <constraint firstItem="n8J-L1-57d" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="s3w-9y-WE2" secondAttribute="trailing" constant="8" id="v5f-g4-y6K"/>
+                                        <constraint firstItem="5mO-NN-q2z" firstAttribute="leading" secondItem="n8J-L1-57d" secondAttribute="trailing" constant="16" id="wDO-jw-2RG"/>
+                                        <constraint firstItem="n8J-L1-57d" firstAttribute="centerY" secondItem="5mO-NN-q2z" secondAttribute="centerY" id="wsQ-Vs-Cm4"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <constraints>
+                                    <constraint firstItem="5mO-NN-q2z" firstAttribute="top" secondItem="qGb-BL-Uzf" secondAttribute="top" id="0K6-yM-dhj"/>
+                                    <constraint firstItem="s3w-9y-WE2" firstAttribute="centerY" secondItem="qGb-BL-Uzf" secondAttribute="centerY" id="1Iv-bj-E4u"/>
+                                    <constraint firstAttribute="bottom" secondItem="8hS-wf-RIZ" secondAttribute="bottom" constant="1" id="219-tH-2Ri"/>
+                                    <constraint firstItem="aEO-6H-0GF" firstAttribute="leading" secondItem="qGb-BL-Uzf" secondAttribute="leading" id="26z-7w-59J"/>
+                                    <constraint firstAttribute="bottom" secondItem="5mO-NN-q2z" secondAttribute="bottom" id="HTm-Bg-iRl"/>
+                                    <constraint firstItem="nzC-3a-eQ0" firstAttribute="centerY" secondItem="qGb-BL-Uzf" secondAttribute="centerY" id="Un4-rU-7wf"/>
+                                    <constraint firstAttribute="bottom" secondItem="aEO-6H-0GF" secondAttribute="bottom" id="fi0-v8-POy"/>
+                                    <constraint firstItem="aEO-6H-0GF" firstAttribute="top" secondItem="qGb-BL-Uzf" secondAttribute="top" id="p6j-UI-Qay"/>
+                                    <constraint firstAttribute="trailing" secondItem="aEO-6H-0GF" secondAttribute="trailing" id="uRo-4R-ciH"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="chevronButton" destination="5mO-NN-q2z" id="iDe-Lt-14c"/>
+                                    <outlet property="iconImageView" destination="nzC-3a-eQ0" id="Cb0-Bv-BRI"/>
+                                    <outlet property="iconLeadingConstraint" destination="hMr-tw-6zZ" id="VZI-rs-5qD"/>
+                                    <outlet property="separatorImageView" destination="8hS-wf-RIZ" id="Fjm-KZ-k2b"/>
+                                    <outlet property="titleLabel" destination="s3w-9y-WE2" id="gZ1-Y1-fmm"/>
+                                    <outlet property="unreadMailsLabel" destination="n8J-L1-57d" id="nN1-FU-Gvx"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -66,7 +130,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o2c-UY-yR4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9916" y="-1164"/>
+            <point key="canvasLocation" x="9916" y="-1164.4677661169417"/>
         </scene>
         <!--AccountCreation-->
         <scene sceneID="rdR-gU-SsC">
@@ -138,5 +202,7 @@
     </scenes>
     <resources>
         <image name="button-add" width="22" height="22"/>
+        <image name="chevron-icon-right-gray" width="13" height="13"/>
+        <image name="pEpForiOS-icon-movetofolder" width="29" height="24"/>
     </resources>
 </document>

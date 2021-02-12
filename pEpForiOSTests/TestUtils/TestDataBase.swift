@@ -9,8 +9,8 @@
 import UIKit
 
 @testable import MessageModel
-import PEPObjCAdapterFramework
 import PantomimeFramework
+import pEpIOSToolbox
 
 /// Base class for test data.
 /// - Note:
@@ -108,12 +108,6 @@ class TestDataBase {
             acc.session.commit()
 
             return acc
-        }
-
-        func pEpIdentity() -> PEPIdentity {
-            let ident = PEPIdentity(address: idAddress)
-            ident.userName = accountName
-            return ident
         }
 
         /// Transfers the account data into a `VerifiableAccountProtocol`

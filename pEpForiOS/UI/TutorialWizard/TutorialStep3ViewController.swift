@@ -8,16 +8,14 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 class TutorialStep3ViewController: TutorialStepViewController {
     
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var explanationLabel: UILabel!
     @IBOutlet private weak var commonDenominatorLabel: UILabel!
-
-    @IBOutlet weak var trustedAssetCenterX: NSLayoutConstraint!
-    @IBOutlet weak var secureAssetCenterX: NSLayoutConstraint!
-    
-    @IBOutlet weak var imageWidth: NSLayoutConstraint!
+    @IBOutlet private weak var imageWidth: NSLayoutConstraint!
     public override func configureView() {
         setupTitleLabel()
         setupExplanationLabel()
@@ -45,14 +43,12 @@ class TutorialStep3ViewController: TutorialStepViewController {
     }
     
     private func adjustConstraintsIfNeeded() {
-        guard let superView = view.superview, isIpad else {
+        guard let superView = view.superview, UIDevice.isIpad else {
             Log.shared.info("Superview is missing or is not needed to adjust constraints here")
             return
         }
         
         imageWidth.constant = 334
-        trustedAssetCenterX.constant = isLandscape ? 100 : 50
-        secureAssetCenterX.constant = isLandscape ? -100 : -50
         superView.layoutIfNeeded()
     }
 }

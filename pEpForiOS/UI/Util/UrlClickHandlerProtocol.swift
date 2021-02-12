@@ -13,9 +13,7 @@ import MessageModel
 /// Note: Conforming classes have to inherit from NSObject. Conforming to UITextViewDelegate
 /// requires that for some reason.
 protocol UrlClickHandlerProtocol: SecureWebViewUrlClickHandlerProtocol, UITextViewDelegate {
-    /// - Parameters:
-    ///   - appConfig: appConfig. Required to pass around
-    init(appConfig: AppConfig)
+
 }
 
 class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
@@ -29,21 +27,16 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
             self = scheme
         }
     }
-    private let appConfig: AppConfig
-
-    required init(appConfig: AppConfig) {
-        self.appConfig = appConfig
-    }
 
     private func presentComposeView(forRecipientInUrl url: URL) {
-        UIUtils.presentComposeView(forRecipientInUrl: url, appConfig: appConfig)
+        let mailto = Mailto(url: url)
+        UIUtils.showComposeView(from: mailto)
     }
     
     private func presentAvailableMailtoUrlHandlingChoices(for url: URL, at rect: CGRect, at view: UIView) {
-        UIUtils.presentActionSheetWithContactOptions(forUrl: url,
-                                                     at: rect,
-                                                     at: view,
-                                                     appConfig: appConfig)
+        UIUtils.showActionSheetWithContactOptions(forUrl: url,
+                                                  at: rect,
+                                                  at: view)
     }
 
     // MARK: - UITextViewDelegate
@@ -89,8 +82,7 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
 
     // MARK: - SecureWebViewUrlClickHandlerProtocol
 
-    func secureWebViewController(_ webViewController: SecureWebViewController,
-                                 didClickMailToUrlLink url: URL) {
+    public func didClickOn(mailToUrlLink url: URL) {
         presentComposeView(forRecipientInUrl: url)
     }
 }

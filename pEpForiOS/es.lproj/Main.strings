@@ -1,8 +1,5 @@
-/* Class = "UITableViewController"; title = "Show email"; ObjectID = "3bx-34-vLD"; */
-"3bx-34-vLD.title" = "Mostrar correo electrónico";
-
-/* Class = "UIBarButtonItem"; title = "Edit"; ObjectID = "4U1-dM-wKT"; */
-"4U1-dM-wKT.title" = "Editar";
+/* Class = "UIButton"; normalTitle = "Show External Content"; ObjectID = "3uL-KY-gV7"; */
+"3uL-KY-gV7.normalTitle" = "Mostrar contenido externo";
 
 /* Class = "UILabel"; text = "Date"; ObjectID = "a1D-BW-3Rd"; */
 "a1D-BW-3Rd.text" = "Fecha";
@@ -10,11 +7,17 @@
 /* Class = "UINavigationItem"; title = "Inbox"; ObjectID = "aP4-ia-HTP"; */
 "aP4-ia-HTP.title" = "Entrada";
 
-/* Class = "UILabel"; text = "To:"; ObjectID = "Bd2-Nr-sTF"; */
-"Bd2-Nr-sTF.text" = "Para:";
+/* Class = "UILabel"; text = "From:"; ObjectID = "Asq-Vx-nQs"; */
+"Asq-Vx-nQs.text" = "De:";
 
-/* Class = "UILabel"; text = "This email has been sent as part of a mailing list."; ObjectID = "BjL-CL-0Cu"; */
-"BjL-CL-0Cu.text" = "Este correo electrónico ha sido enviado como parte de una lista de correo.";
+/* Class = "UILabel"; text = "Subject:"; ObjectID = "bCM-fK-pFW"; */
+"bCM-fK-pFW.text" = "Asunto:";
+
+/* Class = "UIBarButtonItem"; title = "Send"; ObjectID = "d2A-SO-1Ce"; */
+"d2A-SO-1Ce.title" = "Enviar";
+
+/* Class = "UILabel"; text = "To:"; ObjectID = "DES-F8-7zn"; */
+"DES-F8-7zn.text" = "Para:";
 
 /* Class = "UIViewController"; title = "Move to Account"; ObjectID = "EmS-3d-sKb"; */
 "EmS-3d-sKb.title" = "Mover a Cuenta";
@@ -22,45 +25,36 @@
 /* Class = "UILabel"; text = "Subject jlkfj glkafj kal jfa slfaj alsjf aslj fsajk"; ObjectID = "ha5-Vd-x3U"; */
 "ha5-Vd-x3U.text" = "Subject jlkfj glkafj kal jfa slfaj alsjf aslj fsajk";
 
-/* Class = "UILabel"; text = "Sender"; ObjectID = "hnw-Tp-mga"; */
-"hnw-Tp-mga.text" = "Remitente";
+/* Class = "UIBarButtonItem"; title = "Cancel"; ObjectID = "ijh-vj-Bee"; */
+"ijh-vj-Bee.title" = "Cancelar";
+
+/* Class = "UILabel"; text = "just some placeholder text for storyboard"; ObjectID = "j6J-vb-VLn"; */
+"j6J-vb-VLn.text" = "sólo un texto de marcador de posición para el storyboard";
 
 /* Class = "UILabel"; text = "Sender sfasflask jfhsajfkas fjksaj"; ObjectID = "KTi-T9-Inm"; */
 "KTi-T9-Inm.text" = "Remitente sfasflask jfhsajfkas fjksaj";
 
-/* Class = "UILabel"; text = "To: Recipients"; ObjectID = "Mfx-AS-hpP"; */
-"Mfx-AS-hpP.text" = "Para: Destinatarios";
-
-/* Class = "UIBarButtonItem"; title = "Cancel"; ObjectID = "NoQ-uw-dGp"; */
-"NoQ-uw-dGp.title" = "Cancelar";
-
-/* Class = "UILabel"; text = "Subject:"; ObjectID = "NTc-GH-Ell"; */
-"NTc-GH-Ell.text" = "Asunto:";
-
 /* Class = "UILabel"; text = "Title"; ObjectID = "OLo-8A-CCo"; */
 "OLo-8A-CCo.text" = "Título";
 
-/* Class = "UIButton"; normalTitle = "Unsubscribe"; ObjectID = "oWA-cC-IZF"; */
-"oWA-cC-IZF.normalTitle" = "Darse de baja";
-
-/* Class = "UILabel"; text = "From:"; ObjectID = "pkd-ua-DYh"; */
-"pkd-ua-DYh.text" = "De:";
-
-/* Class = "UILabel"; text = "Cc/Bcc:"; ObjectID = "QgY-uq-4qZ"; */
-"QgY-uq-4qZ.text" = "Cc/Bcc:";
+/* Class = "UILabel"; text = "Date"; ObjectID = "Ozt-zL-XpS"; */
+"Ozt-zL-XpS.text" = "Fecha";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "riI-qM-PeJ"; */
 "riI-qM-PeJ.text" = "Título";
 
-/* Class = "UILabel"; text = "Date"; ObjectID = "Swb-L2-8yp"; */
-"Swb-L2-8yp.text" = "Fecha";
+/* Class = "UILabel"; text = "To: Recipients"; ObjectID = "ss8-ZR-hIs"; */
+"ss8-ZR-hIs.text" = "Para: Destinatarios";
 
 /* Class = "UILabel"; text = "Summary"; ObjectID = "Tbi-dG-KCA"; */
 "Tbi-dG-KCA.text" = "Resumen";
 
-/* Class = "UILabel"; text = "Subject"; ObjectID = "xrz-WN-2Dg"; */
-"xrz-WN-2Dg.text" = "Asunto";
+/* Class = "UILabel"; text = "Subject"; ObjectID = "VDN-ne-7lE"; */
+"VDN-ne-7lE.text" = "Asunto";
 
-/* Class = "UIBarButtonItem"; title = "Send"; ObjectID = "yQg-rY-YPK"; */
-"yQg-rY-YPK.title" = "Enviar";
+/* Class = "UILabel"; text = "Sender"; ObjectID = "yhr-Um-Ftu"; */
+"yhr-Um-Ftu.text" = "Remitente";
+
+/* Class = "UILabel"; text = "Cc/Bcc:"; ObjectID = "ZpG-yk-ifY"; */
+"ZpG-yk-ifY.text" = "Cc/Bcc:";
 

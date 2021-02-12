@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UISearchResultsUpdating {
 
     private let cellId = "ResetTrustSettingCell"
@@ -114,16 +116,16 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     private func showAlert(indexPath: IndexPath) {
-
-        let alertView = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
+        let alertView = UIUtils.actionSheet()
         let resetTrustThisIdentityAction = UIAlertAction(
             title: NSLocalizedString("Reset This Identity", comment: "alert action 1"),
             style: .destructive) { [weak self] action in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(message: "lost myself")
+                    Log.shared.lostMySelf()
                     return
                 }
-                me.model.resetTrust(foridentityAt: indexPath)
+                me.model.resetTrust(foridentityAt: indexPath, completion: {})
+                // Note: UI reaction is immediate, even before the reset has been executed
                 me.tableView.deselectRow(at: indexPath, animated: true)
         }
         alertView.addAction(resetTrustThisIdentityAction)
@@ -133,10 +135,11 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
                 title: NSLocalizedString("Reset Trust For All Identities", comment: "alert action 2"),
                 style: .destructive) { [weak self] action in
                     guard let me = self else {
-                        Log.shared.errorAndCrash(message: "lost myself")
+                        Log.shared.lostMySelf()
                         return
                     }
-                    me.model.resetTrustAll(foridentityAt: indexPath)
+                    me.model.resetTrustAll(foridentityAt: indexPath, completion: {})
+                    // Note: UI reaction is immediate, even before the reset has been executed
                     me.tableView.deselectRow(at: indexPath, animated: true)
             }
             alertView.addAction(resetTrustAllIdentityAction)
@@ -146,7 +149,7 @@ extension ResetTrustViewController: UITableViewDataSource, UITableViewDelegate {
             title: NSLocalizedString("Cancel", comment: "alert action 3"),
             style: .cancel) { [weak self] action in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(message: "lost myself")
+                    Log.shared.lostMySelf()
                     return
                 }
                 me.tableView.deselectRow(at: indexPath, animated: true)

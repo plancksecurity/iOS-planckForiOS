@@ -1,11 +1,11 @@
 /* Class = "UILabel"; text = "Detail"; ObjectID = "0Qq-nB-Xso"; */
 "0Qq-nB-Xso.text" = "Detalles";
 
+/* Class = "UILabel"; text = "OAuth2 Reauthorization"; ObjectID = "2dH-l3-cvY"; */
+"2dH-l3-cvY.text" = "Reautorización de OAuth2";
+
 /* Class = "UIViewController"; title = "Extra Keys"; ObjectID = "4fP-ku-UtU"; */
 "4fP-ku-UtU.title" = "Claves Adicionales";
-
-/* Class = "UILabel"; text = "Reset"; ObjectID = "4L6-wx-Ghl"; */
-"4L6-wx-Ghl.text" = "Restablecer Esta Identidad";
 
 /* Class = "UILabel"; text = "Detail"; ObjectID = "4Ql-jN-Oal"; */
 "4Ql-jN-Oal.text" = "Detalle";
@@ -16,38 +16,23 @@
 /* Class = "UILabel"; text = "Fingerprint"; ObjectID = "8ib-BO-jFp"; */
 "8ib-BO-jFp.text" = "Huella";
 
+/* Class = "UILabel"; text = "Name"; ObjectID = "409-SW-yds"; */
+"409-SW-yds.text" = "Nombre";
+
 /* Class = "UILabel"; text = "Label  akjsfhaj ksfas fsdahfkajsdf kashf akjdhf jkasdf asf kjsfkasf ajshf ahkfs jashf kjasdhkf jakhf"; ObjectID = "Ag8-Qj-N8l"; */
 "Ag8-Qj-N8l.text" = "Label  akjsfhaj ksfas fsdahfkajsdf kashf akjdhf jkasdf asf kjsfkasf ajshf ahkfs jashf kjasdhkf jakhf";
 
-/* Class = "UILabel"; text = "Password"; ObjectID = "aYO-l7-9iG"; */
-"aYO-l7-9iG.text" = "Contraseña";
-
-/* Class = "UILabel"; text = "Username"; ObjectID = "azH-be-f3A"; */
-"azH-be-f3A.text" = "Usuario";
-
-/* Class = "UILabel"; text = "Certificate"; ObjectID = "cmM-dq-fKg"; */
-"cmM-dq-fKg.text" = "Certificado";
+/* Class = "UILabel"; text = "Reset"; ObjectID = "d1b-kd-zmh"; */
+"d1b-kd-zmh.text" = "Restablecer";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "D99-2G-2i2"; */
 "D99-2G-2i2.text" = "Título";
 
-/* Class = "UILabel"; text = "Transport Security"; ObjectID = "daw-LF-EZF"; */
-"daw-LF-EZF.text" = "Seguridad de Transporte:";
-
-/* Class = "UILabel"; text = "Transport Security"; ObjectID = "dpq-4F-9sG"; */
-"dpq-4F-9sG.text" = "Seguridad de Transporte";
-
-/* Class = "UILabel"; text = "Server"; ObjectID = "DQ0-sB-CRx"; */
-"DQ0-sB-CRx.text" = "Servidor:";
-
-/* Class = "UILabel"; text = "Password"; ObjectID = "En6-h6-xZD"; */
-"En6-h6-xZD.text" = "Contraseña:";
+/* Class = "UILabel"; text = "Verbose Logging"; ObjectID = "fGY-OS-V4W"; */
+"fGY-OS-V4W.text" = "Registro de Verbosa";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "GAd-Jm-sFz"; */
 "GAd-Jm-sFz.text" = "Título";
-
-/* Class = "UILabel"; text = "Transport Security"; ObjectID = "hAL-c1-ngD"; */
-"hAL-c1-ngD.text" = "Seguridad de Transporte:";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "hHr-Jq-PRg"; */
 "hHr-Jq-PRg.text" = "Título";
@@ -55,20 +40,14 @@
 /* Class = "UIButton"; normalTitle = "add fingerprint"; ObjectID = "J2v-Vi-URg"; */
 "J2v-Vi-URg.normalTitle" = "Añadir huella digital";
 
+/* Class = "UITextField"; text = "John Appleseed"; ObjectID = "jWl-U8-Gg3"; */
+"jWl-U8-Gg3.text" = "John Appleseed";
+
+/* Class = "UITextField"; text = "John Appleseed"; ObjectID = "kdZ-UO-KYC"; */
+"kdZ-UO-KYC.text" = "John Appleseed";
+
 /* Class = "UIButton"; normalTitle = "Set Own Key"; ObjectID = "lzc-xZ-iKm"; */
 "lzc-xZ-iKm.normalTitle" = "Establecer Clave Propia";
-
-/* Class = "UILabel"; text = "Email"; ObjectID = "Ne5-6o-O4F"; */
-"Ne5-6o-O4F.text" = "Correo electrónico:";
-
-/* Class = "UILabel"; text = "Email"; ObjectID = "o8M-bM-KZX"; */
-"o8M-bM-KZX.text" = "Correo electrónico";
-
-/* Class = "UILabel"; text = "Server"; ObjectID = "oCE-8g-idG"; */
-"oCE-8g-idG.text" = "Servidor";
-
-/* Class = "UILabel"; text = "Port"; ObjectID = "Osx-2y-29f"; */
-"Osx-2y-29f.text" = "Puerto";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "Pdx-rN-QPm"; */
 "Pdx-rN-QPm.text" = "Título";
@@ -76,54 +55,24 @@
 /* Class = "UILabel"; text = "Title"; ObjectID = "Pgw-uY-8FO"; */
 "Pgw-uY-8FO.text" = "Título";
 
-/* Class = "UILabel"; text = "Name"; ObjectID = "QcW-va-Qh4"; */
-"QcW-va-Qh4.text" = "Nombre:";
+/* Class = "UILabel"; text = "Use a passphrase for new keys"; ObjectID = "Ppr-kD-hKR"; */
+"Ppr-kD-hKR.text" = "Usar una frase de contraseña para claves nuevas";
 
-/* Class = "UILabel"; text = "Username"; ObjectID = "RYB-AT-TSB"; */
-"RYB-AT-TSB.text" = "Usuario";
-
-/* Class = "UILabel"; text = "Name"; ObjectID = "s9I-CU-fSE"; */
-"s9I-CU-fSE.text" = "Nombre";
-
-/* Class = "UILabel"; text = "p≡p Sync"; ObjectID = "Tjb-uM-eUF"; */
-"Tjb-uM-eUF.text" = "p≡p Sync";
-
-/* Class = "UILabel"; text = "Username"; ObjectID = "tt1-bn-s7P"; */
-"tt1-bn-s7P.text" = "Usuario";
-
-/* Class = "UILabel"; text = "Transport Security"; ObjectID = "Tul-XU-PSw"; */
-"Tul-XU-PSw.text" = "Seguridad de Transporte";
-
-/* Class = "UILabel"; text = "Port"; ObjectID = "U7P-zv-48U"; */
-"U7P-zv-48U.text" = "Puerto";
+/* Class = "UILabel"; text = "Name"; ObjectID = "s0a-c5-T0Q"; */
+"s0a-c5-T0Q.text" = "Nombre";
 
 /* Class = "UILabel"; text = "set_own_key Error"; ObjectID = "ujL-Pa-uXD"; Note = "Don't localize this"; */
 "ujL-Pa-uXD.text" = "Error establecer_clave_propia";
 
-/* Class = "UILabel"; text = "Port"; ObjectID = "Vdb-LS-4JH"; */
-"Vdb-LS-4JH.text" = "Puerto:";
-
 /* Class = "UILabel"; text = "Title"; ObjectID = "vjp-2e-dTM"; */
 "vjp-2e-dTM.text" = "Título";
 
-/* Class = "UILabel"; text = "Username"; ObjectID = "vzX-eS-BYY"; */
-"vzX-eS-BYY.text" = "Usuario";
-
-/* Class = "UILabel"; text = "Server"; ObjectID = "weI-Bw-0PK"; */
-"weI-Bw-0PK.text" = "Servidor:";
-
-/* Class = "UILabel"; text = "OAuth2 Reauthorization"; ObjectID = "wxK-W7-y8D"; */
-"wxK-W7-y8D.text" = "Reautorización de OAuth2";
-
-/* Class = "UILabel"; text = "Label"; ObjectID = "X0Z-Ju-XOO"; */
-"X0Z-Ju-XOO.text" = "Etiqueta";
-
-/* Class = "UILabel"; text = "Server"; ObjectID = "x85-ha-uBw"; */
-"x85-ha-uBw.text" = "Servidor";
+/* Class = "UILabel"; text = "Label"; ObjectID = "wy0-sZ-Zan"; */
+"wy0-sZ-Zan.text" = "Etiqueta";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "xiv-OD-YNL"; */
 "xiv-OD-YNL.text" = "Título";
 
-/* Class = "UILabel"; text = "Port"; ObjectID = "zDb-ax-ng4"; */
-"zDb-ax-ng4.text" = "Puerto:";
+/* Class = "UILabel"; text = "p≡p Sync"; ObjectID = "yCf-X7-gtF"; */
+"yCf-X7-gtF.text" = "p≡p Sync";
 

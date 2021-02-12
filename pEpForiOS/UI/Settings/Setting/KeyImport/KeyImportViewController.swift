@@ -8,7 +8,7 @@
 
 import Foundation
 
-class KeyImportViewController: BaseViewController {
+class KeyImportViewController: UIViewController {
     static private let cellID = "KeyImportTableViewCell"
 
     public let viewModel = KeyImportViewModel()
@@ -77,33 +77,23 @@ extension KeyImportViewController: KeyImportViewModelDelegate {
         tableView.reloadData()
     }
 
-    func showConfirmSetOwnKey(key: KeyImportViewModel.KeyDetails) {
+    func showConfirmSetOwnKey(keys: [KeyImportViewModel.KeyDetails]) {
         func userAccepted() {
-            viewModel.setOwnKey(key: key)
+            viewModel.setOwnKeys(keys: keys)
         }
 
         func userCanceled() {
             // nothing to do
         }
 
-        var theFingerprint = key.fingerprint
-        let fprDist = theFingerprint.distance(from: theFingerprint.startIndex,
-                                              to: theFingerprint.endIndex)
-
-        var index = theFingerprint.startIndex
-        for _ in 1...fprDist/2 {
-            index = theFingerprint.index(after: index)
-        }
-        theFingerprint.insert("\n", at: index)
-
-        let yesMessage = NSLocalizedString("Yes",
+        let yesMessage = NSLocalizedString("OK",
                                            comment: "Title for yes button when trying to import a key")
-        let noMessage = NSLocalizedString("No",
-                                           comment: "Title for no button (cancel) when trying to import a key")
-        let message = String.localizedStringWithFormat(NSLocalizedString("You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?",
-                                                                         comment: "Message when asking user for confirmation about importing a key"),
-                                                       key.userPresentableNameAndAddress(),
-                                                       theFingerprint)
+        let noMessage = NSLocalizedString("Cancel",
+                                          comment: "Title for no button (cancel) when trying to import a key")
+        let message = String.localizedStringWithFormat(NSLocalizedString("The fingerprint of the selected key is:\n%1$@\n%2$@\n\nImport and use this key?",
+                                                                         comment: "Message when asking user for confirmation about importing keys"),
+                                                       viewModel.userPresentableFingerprint(keyDetails: keys),
+                                                       viewModel.userPresentableNames(keyDetails: keys))
 
         UIUtils.showTwoButtonAlert(withTitle: KeyImportViewController.alertTitle,
                                    message: message,

@@ -46,12 +46,8 @@ final class AttachmentsViewHelper {
     }
 
     func attachmentInfo(attachment: Attachment) -> AttachmentSummaryView.AttachmentInfo {
-        let (name, ext) =
-            attachment.fileName?.splitFileExtension() ?? (Attachment.defaultFileName, nil)
-        var finalExt: String? = nil
-        if let mimeType = attachment.mimeType{
-            finalExt = ext ?? mimeTypes?.fileExtension(fromMimeType: mimeType)
-        }
+        let (name, finalExt) =
+            attachment.fileName?.splitFileExtension() ?? (Attachment.defaultFilename, nil)
 
         return AttachmentSummaryView.AttachmentInfo(
             filename: name.extractFileNameOrCid(),

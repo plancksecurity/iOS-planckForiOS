@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+import pEpIOSToolbox
+
 class TutorialStep2ViewController: TutorialStepViewController {
     
     @IBOutlet private weak var secureLabel: UILabel!
@@ -22,11 +24,9 @@ class TutorialStep2ViewController: TutorialStepViewController {
 
     // We manipulate constraints to support iPad orientations as this inherits from CustomTraitCollectionViewController,
     @IBOutlet private weak var containerLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var distanceBetweenTitleAndContainerView: NSLayoutConstraint!
     @IBOutlet weak var secureCenterX: NSLayoutConstraint!
     @IBOutlet weak var distanceBetweenLabels: NSLayoutConstraint!
 
-    
     public override func configureView() {
         setupHandshakeTitle()
         setupPrivacyStatusExplanationLabel()
@@ -42,7 +42,6 @@ class TutorialStep2ViewController: TutorialStepViewController {
         adjustConstraintsIfNeeded()
     }
 }
-
 
 // MARK: - Private - Setup View
 
@@ -93,11 +92,11 @@ extension TutorialStep2ViewController {
 extension TutorialStep2ViewController {
 
     func adjustConstraintsIfNeeded() {
-        guard let superView = view.superview, isIpad else {
+        guard let superView = view.superview, UIDevice.isIpad else {
             Log.shared.info("Superview is missing or is not needed to adjust constraints here")
             return
         }
-        containerLeadingConstraint.constant = isLandscape ? Constants.Landscape.containerLeading : Constants.Portrait.containerLeading
+        containerLeadingConstraint.constant = UIDevice.isLandscape ? Constants.Landscape.containerLeading : Constants.Portrait.containerLeading
         distanceBetweenLabels.constant = 50
         secureCenterX.constant = -6
         superView.layoutIfNeeded()

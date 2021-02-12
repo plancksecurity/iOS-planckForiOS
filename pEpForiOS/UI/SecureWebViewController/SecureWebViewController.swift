@@ -10,50 +10,40 @@ import WebKit
 import pEpIOSToolbox
 
 protocol SecureWebViewControllerDelegate: class {
-    /// Called on content size changes when content is loaded.
+    /// Called on content size changes while content is loaded.
     func didFinishLoading()
 }
 
 protocol SecureWebViewUrlClickHandlerProtocol: class {
     /// Called whenever a mailto:// URL has been clicked by the user.
-    /// - Parameters:
-    ///   - sender: caller of the message
-    ///   - mailToUrlClicked: the clicked URL
-    func secureWebViewController(_ webViewController: SecureWebViewController,
-                                 didClickMailToUrlLink url: URL)
+    /// - Parameter url: The mailto:// URL
+    func didClickOn(mailToUrlLink url: URL)
 }
 
-// WKContentRuleList is not available below iOS11, thus remote content would be loaded
-// which is considered as inaceptable for a secure web view.
-@available(iOS 11.0, *)
 /// Webview that does not:
 /// - excecute JS
 /// - load any remote content
-/// Note: It is insecure to use this class on iOS < 11. Thus it will intentionally take the
-/// emergency exit and crash when trying to use it running iOS < 11.
 class SecureWebViewController: UIViewController {
     static public let storyboardId = "SecureWebViewController"
 
     public var contentSize: CGSize {
         get {
-            return webView?.scrollView.contentSize ?? CGSize.zero
+            return webView?.scrollView.contentSize ?? .zero
         }
     }
-
+    private var _userInteractionEnabled: Bool = true
     private var _scrollingEnabled = false
     private var scrollingEnabled: Bool {
         get {
             return _scrollingEnabled
         }
-        set {
-            _scrollingEnabled = newValue
-            if let wv = webView {
-                wv.scrollView.isScrollEnabled = _scrollingEnabled
-            }
-        }
     }
 
-    private var _userInteractionEnabled = true
+
+    weak public var delegate: SecureWebViewControllerDelegate?
+    weak public var urlClickHandler: SecureWebViewUrlClickHandlerProtocol?
+    public var minimumFontSize: CGFloat = 16.0
+    public var zoomingEnabled: Bool = true
     private var userInteractionEnabled: Bool {
         get {
             return _userInteractionEnabled
@@ -66,12 +56,14 @@ class SecureWebViewController: UIViewController {
         }
     }
 
-    weak public var delegate: SecureWebViewControllerDelegate?
-    weak public var urlClickHandler: SecureWebViewUrlClickHandlerProtocol?
-    public var minimumFontSize: CGFloat = 16.0
-    public var zoomingEnabled: Bool = true
     private var webView: WKWebView!
     private var htmlOptimizer = HtmlOptimizerUtil(minimumFontSize: 16.0)
+
+    /// The key path of the `WKWebView` that gets observed under certain conditions.
+    private var keyPathContentSize = "contentSize"
+
+    /// Flag for telling whether the `contentSizeKeyPath` of the `WKWebView` is currently observed.
+    private var observingWebViewContentSizeKey = false
 
     // MARK: - Life Cycle
 
@@ -79,6 +71,10 @@ class SecureWebViewController: UIViewController {
         super.viewDidLoad()
         htmlOptimizer = HtmlOptimizerUtil(minimumFontSize: minimumFontSize)
         webView.scrollView.isScrollEnabled = scrollingEnabled
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        removeContentSizeKeyPathObservers()
     }
 
     // Due to an Apple bug (https://bugs.webkit.org/show_bug.cgi?id=137160),
@@ -107,11 +103,14 @@ class SecureWebViewController: UIViewController {
 
     // MARK: - API
 
-    public func display(html: String) {
+    public func display(html: String, showExternalContent: Bool) {
         setupBlocklist() { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
+            }
+            if showExternalContent {
+                me.webView.configuration.userContentController.removeAllContentRuleLists()
             }
             me.htmlOptimizer.optimizeForDislaying(html: html) { processedHtml in
                 me.webView.loadHTMLString(processedHtml, baseURL: nil)
@@ -123,6 +122,13 @@ class SecureWebViewController: UIViewController {
 // MARK: - Private
 
 extension SecureWebViewController {
+    /// Remove the observer to the `WKWebView`'s `contentSizeKeyPath`, if still observed.
+    private func removeContentSizeKeyPathObservers() {
+        if observingWebViewContentSizeKey {
+            webView.scrollView.removeObserver(self, forKeyPath: keyPathContentSize)
+            observingWebViewContentSizeKey = false
+        }
+    }
 
     private func preferences(javaScriptEnabled: Bool = false) -> WKPreferences {
         let createe  = WKPreferences()
@@ -133,7 +139,6 @@ extension SecureWebViewController {
 
     // MARK: - WKContentRuleList (block loading of all remote content)
 
-    @available(iOS, introduced: 11.0)
     private func setupBlocklist(completion: @escaping () -> Void) {
         let listID = "pep.security.SecureWebViewController.block_all_external_content"
         var compiledBlockList: WKContentRuleList?
@@ -241,7 +246,7 @@ extension SecureWebViewController: WKNavigationDelegate {
             }
             if url.scheme == "mailto" {
                 // The user clicked on an email URL.
-                urlClickHandler?.secureWebViewController(self, didClickMailToUrlLink: url)
+                urlClickHandler?.didClickOn(mailToUrlLink: url)
             } else {
                 // The user clicked a link type we do not allow custom handling for.
                 // Try to open it in an appropriate app, do nothing if that fails.
@@ -264,13 +269,17 @@ extension SecureWebViewController: WKNavigationDelegate {
         // ScrollView needs some time to calculate own size.
         // The contentSize scrollView observer is needed to get an event
         // when the size of the scrollView content changes from CGSize.zero to final dimensions.
-        webView.scrollView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
+        webView.scrollView.addObserver(self,
+                                       forKeyPath: keyPathContentSize,
+                                       options: .new,
+                                       context: nil)
+        observingWebViewContentSizeKey = true
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "contentSize" {
             // ContentSize observer has just done its job.
-            webView.scrollView.removeObserver(self, forKeyPath: "contentSize")
+            removeContentSizeKeyPathObservers()
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
                     Log.shared.lostMySelf()
@@ -292,23 +301,12 @@ extension SecureWebViewController: UIScrollViewDelegate {
 
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         // We disable vertical scrolling if we are not zoomed in.
-        scrollingEnabled = scrollView.contentSize.width > view.frame.size.width
+        _scrollingEnabled = scrollView.contentSize.width > view.frame.size.width
     }
 }
 
 // MARK: -
-// MARK: !! EXTREMELY DIRTY HACK !! ( START )
 
-/// This is the only hack found to intercept WKWebViews default long-press on mailto: URL
-/// behaviour.
-/// !! IF YOU ARE AWARE OF A BETTER SOLUTION, PLEASE LET US KNOW OR IMPLEMENT !!
-/// We must intercept it to show our custom action sheet.
-/// The hack overrrides present(...) in the root view controller of the App (!).
-
-extension SecureWebViewController {
-    /// DIRTY HACK. Find details in below UISplitViewController extension
-    static var appConfigDirtyHack: AppConfig?
-}
 extension UISplitViewController {
 
     override open func present(_ viewControllerToPresent: UIViewController,
@@ -327,8 +325,7 @@ extension UISplitViewController {
 
         let alertTitle = alertController.title ?? ""
 
-        if alertTitle.isProbablyValidEmail(),
-            let appConfig = SecureWebViewController.appConfigDirtyHack {
+        if alertTitle.isProbablyValidEmail() {
             // It *is* an Action Sheet shown due to long-press on mailto: URL and we know the
             // clicked address.
             // Forward for custom handling.
@@ -344,10 +341,9 @@ extension UISplitViewController {
                 alertRect =  CGRect(x: 0, y: 0, width: 0, height: 0)
             }
 
-            UIUtils.presentActionSheetWithContactOptions(forContactWithEmailAddress: mailAddress,
-                                                         at: alertRect,
-                                                         at: self.view,
-                                                         appConfig: appConfig)
+            UIUtils.showActionSheetWithContactOptions(forContactWithEmailAddress: mailAddress,
+                                                      at: alertRect,
+                                                      at: self.view)
         } else if alertTitle.hasPrefix(UrlClickHandler.Scheme.mailto.rawValue) {
             // It *is* an Action Sheet shown due to long-press on mailto: URL, but we do not know
             // the clicked address.

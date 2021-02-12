@@ -25,8 +25,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
     @IBOutlet weak var trustwordsLabel: UILabel! {
         didSet {
-            trustwordsLabel.adjustsFontForContentSizeCategory = true
-            trustwordsLabel.font = UIFont.pepFont(style: .body, weight: .regular)
+            trustwordsLabel.setPEPFont(style: .body, weight: .regular)
             trustwordsLabel.backgroundColor = .white
         }
     }

@@ -7,10 +7,17 @@
 //
 
 import MessageModel
-import PEPObjCAdapterFramework
 
 class UIHelper {
-    
+
+    /// Configures the table view to support dynamic cells, footer and header height based on its content.
+    /// - Parameter tableView: The table view to configure
+    static func variableContentHeight(_ tableView: UITableView) {
+        variableCellHeightsTableView(tableView)
+        variableSectionHeadersHeightTableView(tableView)
+        variableSectionFootersHeightTableView(tableView)
+    }
+
     /// Configures the table view to support dynamic cells height based on its content.
     /// - Parameter tableView: The table view to configure
     static func variableCellHeightsTableView(_ tableView: UITableView) {
@@ -52,8 +59,8 @@ class UIHelper {
      If the privacy color is `PrivacyColor.NoColor` the default color is used.
      */
     static func setBackgroundColor(
-        _ privacyColor: PEPColor, forLabel label: UILabel, defaultColor: UIColor?) {
-        if privacyColor != PEPColor.noColor {
+        _ privacyColor: Color, forLabel label: UILabel, defaultColor: UIColor?) {
+        if privacyColor != .noColor {
             let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(privacyColor)
             label.backgroundColor = uiColor
         } else {

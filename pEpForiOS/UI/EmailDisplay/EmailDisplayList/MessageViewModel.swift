@@ -7,13 +7,11 @@
 //
 
 import Foundation
-
 import MessageModel
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
 
 class MessageViewModel: CustomDebugStringConvertible {
-    static fileprivate var maxBodyPreviewCharacters = 120
+    private static var maxBodyPreviewCharacters = 120
 
     private let queueForHeavyStuff: OperationQueue = {
         let createe = OperationQueue()
@@ -22,37 +20,32 @@ class MessageViewModel: CustomDebugStringConvertible {
         return createe
     }()
 
-    let message: Message
-
-    let uid: Int
+    private let message: Message
+    private let uid: Int
     private let uuid: MessageID
     private let parentFolderName: String
     private let accountAddress: String
     private let displayedImageIdentity: Identity
-
-    let identity:Identity
-    let dateSent: Date
-    let longMessageFormatted: String?
-    var senderContactImage: UIImage?
-    private var ratingImage: UIImage?
-    var showAttchmentIcon: Bool = false
-    let from: String
-    let subject: String
-    var isFlagged: Bool = false
-    var isSeen: Bool = false
-    var dateText: String
-    var profilePictureComposer: ProfilePictureComposerProtocol
-    var body: NSAttributedString {
-            return getBodyMessage()
-    }
-    var displayedUsername: String
-    var internalBoddyPeek: String? = nil
+    private let identity: Identity
+    private let dateSent: Date
+    private let longMessageFormatted: String?
+    private let from: String
+    private var profilePictureComposer: ProfilePictureComposerProtocol
+    private var internalBoddyPeek: String? = nil
     private var bodyPeek: String? {
         didSet {
             informIfBodyPeekCompleted()
         }
     }
-    var bodyPeekCompletion: ((String) -> ())? = nil {
+
+    public let subject: String
+    public var isFlagged: Bool = false
+    public var isSeen: Bool = false
+    public var dateText: String
+    public var showAttchmentIcon: Bool = false
+    public var senderContactImage: UIImage?
+    public var displayedUsername: String
+    public var bodyPeekCompletion: ((String) -> ())? = nil {
         didSet {
             guard bodyPeekCompletion != nil else {
                 return
@@ -85,50 +78,8 @@ class MessageViewModel: CustomDebugStringConvertible {
         setBodyPeek(for: message)
     }
 
-    static private func getDisplayedUsername(for message: Message) -> String {
-        if (message.parent.folderType == .sent
-            || message.parent.folderType == .drafts){
-            var identities: [String] = []
-            message.allRecipients.forEach { (recepient) in
-                let recepient = recepient.userNameOrAddress
-                identities.append(recepient)
-            }
-            return identities.joined(separator: ", ")
-        } else {
-            return message.from?.userNameOrAddress ?? ""
-
-        }
-    }
-
-    public func flagsDiffer(from messageViewModel: MessageViewModel) -> Bool {
-        if self != messageViewModel {
-            return true
-        }
-        return self.isFlagged != messageViewModel.isFlagged || self.isSeen != messageViewModel.isSeen
-    }
-
-    func unsubscribeForUpdates() {
+    public func unsubscribeForUpdates() {
         queueForHeavyStuff.cancelAllOperations()
-    }
-
-    private func setBodyPeek(for message: Message) {
-        if let bodyPeek = internalBoddyPeek {
-            self.bodyPeek = bodyPeek
-        } else {
-            let operation = getBodyPeekOperation(for: message) { [weak self] bodyPeek in
-                // It's valid to loose self here. The view can dissappear @ any time.
-                self?.bodyPeek = bodyPeek
-            }
-            queueForHeavyStuff.addOperation(operation)
-        }
-    }
-
-    private func informIfBodyPeekCompleted() {
-        guard let bodyPeek = bodyPeek else {
-            return
-        }
-        bodyPeekCompletion?(bodyPeek)
-        bodyPeekCompletion = nil
     }
 
     // Message threading is not supported. Let's keep it for now. It might be helpful for
@@ -147,16 +98,7 @@ class MessageViewModel: CustomDebugStringConvertible {
 //        }
 //    }
 
-    private class func identityForImage(from message: Message) -> Identity {
-        switch message.parent.folderType {
-        case .all, .archive, .spam, .trash, .flagged, .inbox, .normal, .pEpSync:
-            return (message.from ?? Identity(address: "unknown@unknown.com"))
-        case .drafts, .sent, .outbox:
-            return message.to.first ?? Identity(address: "unknown@unknown.com")
-        }
-    }
-
-    class func getSummary(fromMessage msg: Message) -> String {
+    public class func getSummary(fromMessage msg: Message) -> String {
         var body: String?
         if var text = msg.longMessage {
             text = text.stringCleanedFromNSAttributedStingAttributes()
@@ -195,81 +137,24 @@ class MessageViewModel: CustomDebugStringConvertible {
         return result
     }
 
-    func appendInlinedAttachmentsPlainText(to text: String) -> String {
-        var result = text
-        let inlinedText = message.inlinedTextAttachments()
-        for inlinedTextAttachment in inlinedText {
-            guard
-                let data = inlinedTextAttachment.data,
-                let inlinedText = String(data: data, encoding: .utf8) else {
-                    continue
+    public func getProfilePicture(completion: @escaping (UIImage?) -> ()) {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                // Do nothing ...
+                return
             }
-            result = append(appendText: inlinedText, to: result)
+            let operation = me.getProfilePictureOperation(completion: completion)
+            me.queueForHeavyStuff.addOperation(operation)
         }
-        return result
     }
 
-    private func append(appendText: String, to body: String) -> String {
-        var result = body
-        let replacee = result.contains(find: "</body>") ? "</body>" : "</html>"
-        if result.contains(find: replacee) {
-            result = result.replacingOccurrences(of: replacee, with: appendText + replacee)
-        } else {
-            result += "\n" + appendText
+    public func getSecurityBadge(completion: @escaping (UIImage?)->Void) {
+        message.securityBadgeForContactPicture { (image) in
+            DispatchQueue.main.async {
+                completion(image)
+            }
         }
-        return result
-    }
-
-    func getProfilePicture(completion: @escaping (UIImage?) -> ()) {
-        let operation = getProfilePictureOperation(completion: completion)
-        queueForHeavyStuff.addOperation(operation)
-    }
-
-    func getSecurityBadge() -> UIImage? {
-        return message.securityBadgeForContactPicture
-    }
-
-    func getBodyMessage() -> NSMutableAttributedString {
-        let finalText = NSMutableAttributedString()
-        if message.underAttack {
-            let status = String.pEpRatingTranslation(pEpRating: .underAttack)
-            let messageString = String.localizedStringWithFormat(
-                NSLocalizedString(
-                    "\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n",
-                    comment: "Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion."),
-                status.title, status.explanation, status.suggestion)
-            finalText.bold(messageString)
-        }
-
-        if let text = message.longMessage?.trimmed() {
-            finalText.normal(text)
-        } else if let text = message.longMessageFormatted?.attributedStringHtmlToMarkdown() {
-            finalText.normal(text)
-        } else if message.pEpRating().isUnDecryptable() {
-            finalText.normal(NSLocalizedString(
-                "This message could not be decrypted.",
-                comment: "content that is shown for undecryptable messages"))
-        } else {
-            // Empty body
-            finalText.normal("")
-        }
-        return finalText
-    }
-
-    func getTo()->NSMutableAttributedString {
-        let attributed = NSMutableAttributedString(
-            string: NSLocalizedString("To:", comment: "Compose field title"))
-        let attributes = [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15.0),
-            NSAttributedString.Key.foregroundColor: UIColor.lightGray
-        ]
-        var temp: [String] = []
-        message.allRecipients.forEach { (recepient) in
-            let recepient = recepient.address
-            temp.append(recepient)
-        }
-        attributed.append(NSAttributedString(string: temp.joined(separator: ", "), attributes: attributes))
-        return attributed
     }
 
     public var debugDescription: String {
@@ -291,25 +176,23 @@ extension MessageViewModel: Equatable {
     }
 }
 
+// MARK: Private
 // MARK: Operations
 
 extension MessageViewModel {
 
     private func getBodyPeekOperation(for message: Message, completion: @escaping (String)->()) -> Operation {
-
         let session = Session()
         let safeMsg = message.safeForSession(session)
-
         let getBodyPeekOperation = SelfReferencingOperation { [weak self] operation in
             guard
                 let operation = operation,
                 !operation.isCancelled else {
-                    return
+                return
             }
             guard let me = self else {
                 return
             }
-
             session.performAndWait {
                 guard !operation.isCancelled else {
                     return
@@ -330,22 +213,63 @@ extension MessageViewModel {
     }
 
     private func getProfilePictureOperation(completion: @escaping (UIImage?) -> ())
-        -> SelfReferencingOperation {
-
-            let identitykey = IdentityImageTool.IdentityKey(identity: displayedImageIdentity)
-
-            let profilePictureOperation = SelfReferencingOperation { [weak self] operation in
-                guard let me = self else {
-                    return
-                }
-                guard
-                    let operation = operation,
-                    !operation.isCancelled else {
-                        return
-                }
-                let profileImage = me.profilePictureComposer.profilePicture(for: identitykey)
+    -> SelfReferencingOperation {
+        let identitykey = IdentityImageTool.IdentityKey(identity: displayedImageIdentity)
+        let profilePictureOperation = SelfReferencingOperation { [weak self] operation in
+            guard let me = self else {
+                return
+            }
+            guard
+                let operation = operation,
+                !operation.isCancelled else {
+                return
+            }
+            let profileImage = me.profilePictureComposer.profilePicture(for: identitykey)
+            DispatchQueue.main.async {
                 completion(profileImage)
             }
-            return profilePictureOperation
+        }
+        return profilePictureOperation
+    }
+}
+
+// MARK: Helpers
+
+extension MessageViewModel {
+
+    private func setBodyPeek(for message: Message) {
+        if let bodyPeek = internalBoddyPeek {
+            self.bodyPeek = bodyPeek
+        } else {
+            let operation = getBodyPeekOperation(for: message) { [weak self] bodyPeek in
+                // It's valid to loose self here. The view can dissappear @ any time.
+                self?.bodyPeek = bodyPeek
+            }
+            queueForHeavyStuff.addOperation(operation)
+        }
+    }
+
+    private static func getDisplayedUsername(for message: Message) -> String {
+        if (message.parent.folderType == .sent || message.parent.folderType == .drafts) {
+            return message.allRecipientsOrdered.map { $0.userNameOrAddress }.joined(separator: ", ")
+        }
+        return message.from?.userNameOrAddress ?? ""
+    }
+
+    private func informIfBodyPeekCompleted() {
+        guard let bodyPeek = bodyPeek else {
+            return
+        }
+        bodyPeekCompletion?(bodyPeek)
+        bodyPeekCompletion = nil
+    }
+
+    private class func identityForImage(from message: Message) -> Identity {
+        switch message.parent.folderType {
+        case .all, .archive, .spam, .trash, .flagged, .inbox, .normal, .pEpSync:
+            return (message.from ?? Identity(address: "unknown@unknown.com"))
+        case .drafts, .sent, .outbox:
+            return message.to.first ?? Identity(address: "unknown@unknown.com")
+        }
     }
 }

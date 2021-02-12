@@ -11,22 +11,48 @@ import MessageModel
 import ContactsUI
 import pEpIOSToolbox
 
-struct UIUtils {
+class UIUtils {
 
     /// Converts the error to a user frienldy DisplayUserError and presents it to the user
     ///
     /// - Parameters:
     ///   - error: error to preset to user
     static public func show(error: Error) {
-        Log.shared.error("May or may not display error to user: (interpolate) %@", "\(error)")
+        let workBlock = {
+            // Do not show alerts when app is in background.
+            if UIApplication.shared.applicationState != .active {
+                #if DEBUG
+                // show alert in background when in debug.
+                #else
+                return
+                #endif
+            }
 
-        guard let displayError = DisplayUserError(withError: error) else {
-            // Do nothing. The error type is not suitable to bother the user with.
-            return
+            Log.shared.info("May or may not display error to user: (interpolate) %@", "\(error)")
+
+            guard let displayError = DisplayUserError(withError: error) else {
+                // Do nothing. The error type is not suitable to bother the user with.
+                return
+            }
+            DispatchQueue.main.async {
+                showAlertWithOnlyPositiveButton(title: displayError.title, message: displayError.errorDescription)
+            }
         }
-        DispatchQueue.main.async {
-            showAlertWithOnlyPositiveButton(title: displayError.title,
-                                            message: displayError.errorDescription)
+
+        if Thread.current == Thread.main {
+            workBlock()
+        } else {
+            DispatchQueue.main.async {
+                workBlock()
+            }
         }
     }
+
+    /// Shows the navigation controller passed by parameter
+    /// - Parameter navigationController: The Navigation Controller to present.
+    public static func show(navigationController: UINavigationController) {
+        let presenterVc = UIApplication.currentlyVisibleViewController()
+        presenterVc.present(navigationController, animated: true)
+    }
+
 }

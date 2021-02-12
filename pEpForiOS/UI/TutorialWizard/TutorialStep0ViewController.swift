@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 /// ViewController that configures the layout of the first step of the tutorial.
 /// It basically set the texts and it's properties.
 /// The layout differences regarding the device orientation and screen size are configured
@@ -81,12 +83,13 @@ extension TutorialStep0ViewController {
     }
     
     private func adjustConstraintsIfNeeded() {
-        guard let superView = view.superview, isIpad else {
+        guard let superView = view.superview, UIDevice.isIpad else {
             Log.shared.info("Superview is missing or is not needed to adjust constraints here")
             return
         }
 
-        let avatarSize = isLandscape ? CGSize(width: 100, height: 100) : CGSize(width: 78, height: 78)
+        let isLandscape = UIDevice.isLandscape
+        let avatarSize = UIDevice.isLandscape ? CGSize(width: 100, height: 100) : CGSize(width: 78, height: 78)
         avatarImageView.image = avatarImageView.image?.resizeImage(targetSize: avatarSize)
         distanceBetweenSkipAndTitleConstraint.constant = isLandscape ? Constants.Landscape.skipTitleDistance : Constants.Portrait.skipTitleDistance
         distanceBetweenTitleViewAndTopConstraint.constant = isLandscape ? Constants.Landscape.titleViewTopDistance : Constants.Portrait.titleViewTopDistance
@@ -156,7 +159,7 @@ extension TutorialStep0ViewController {
     private func set(_ text : String, on label : UILabel) {
         let attributedText = NSMutableAttributedString(string:text)
         attributedText.addAttributes(textAttributes, range: NSRange(location: 0, length: text.count))
-        label.textAlignment = isLandscape ? .left : .center
+        label.textAlignment = UIDevice.isLandscape ? .left : .center
         label.attributedText = attributedText
     }
 }

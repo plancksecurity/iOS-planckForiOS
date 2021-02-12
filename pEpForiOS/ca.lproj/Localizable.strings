@@ -2,7 +2,7 @@
 "\n            Client\n            Certificate\n            " = "\n            Client\n            Certificat\n            ";
 
 /* Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion. */
-"\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n% 1 $ @\n\n% 2 $ @\n\n% 3 $ @\n\nEls fitxers adjunts estan desactivats.\n\n";
+"\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n%1$@\n\n%2$@\n\n%3$@\n\nEls fitxers adjunts estan desactivats.\n\n";
 
 /* No privacy status explanation
    No privacy status suggestion */
@@ -12,13 +12,13 @@
 "(numMails) new messages received" = "(numMails) missatges nous rebuts";
 
 /* Reply to single contact, with date. Placeholders: Name, date. */
-"%1$@ wrote on %2$@:" = "% 1 $ @ ha escrit el% 2 $ @:";
+"%1$@ wrote on %2$@:" = "%1$@ ha escrit el %2$@:";
 
 /* Reply to single contact, without date. Placeholder: Name. */
-"%1$@ wrote:" = "% 1 $ @ ha escrit:";
+"%1$@ wrote:" = "%1$@ ha escrit:";
 
 /* Number of filters instead of filter name */
-"%d filters" = "% d filtres";
+"%d filters" = "%d filtres";
 
 /* error message for .missingPassword */
 "A non-empty password is required" = "Es requereix contrasenya";
@@ -89,7 +89,7 @@
 "Attach media" = "Adjunteu suports";
 
 /* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
-"Attached Image %1$d (%2$@)" = "Imatge adjunta% 1 $ d (% 2 $ @)";
+"Attached Image %1$d (%2$@)" = "Imatge adjunta %1$d (%2$@)";
 
 /* title attachments filter cell */
 "Attachments" = "Adjunts";
@@ -212,12 +212,18 @@
    Display Name TextField Placeholder in Login Screen */
 "Display Name" = "Nom de visualització";
 
-/* Email address placeholder for manual account setup
-   Email TextField Placeholder in Login Screen */
-"E-mail Address" = "Correu electrònic";
+/* Name of Drafts folder (showing draft messages, of one account) */
+"Drafts" = "Esborranys";
+
+/* Edit - Right bar button item in Email List */
+"Edit" = "Edita";
 
 /* Email */
 "Email" = "Correu electrònic";
+
+/* Email address placeholder for manual account setup
+   Email TextField Placeholder in Login Screen */
+"Email Address" = "Adreça de correu";
 
 /* Title of alert: a required field is empty */
 "Empty Field" = "Camp buit";
@@ -248,9 +254,6 @@
 /* Generic error message on trying to import a key */
 "Error occurred. No key imported." = "S'ha produït un error. No s’ha importat cap clau.";
 
-/* spearator string bewtween name and date */
-"Exp. date:" = "Exp. data:";
-
 /* Settings: Cell (button) title to view Extra Keys setting */
 "Extra Keys" = "Claus addicionals";
 
@@ -258,7 +261,7 @@
 "Extra Keys Editable" = "Claus addicionals editables";
 
 /* 'Filter by' in formatted string, followed by the localized filter name */
-"Filter by: %@" = "Filtra per:% @";
+"Filter by: %@" = "Filtra per: %@";
 
 /* Filter Title */
 "Filters" = "Filtres";
@@ -327,9 +330,6 @@
 /* Account settings title IMAP */
 "IMAP Settings" = "Configuració IMAP";
 
-/* Empty username message */
-"Imap username must not be empty." = "El nom d’usuari de Imap no ha d’estar buit.";
-
 /* Select certificate - import certificate date */
 "Import date" = "Data d'importació";
 
@@ -355,13 +355,13 @@
 "Internal Error" = "Error intern";
 
 /* Invalid input for account */
-"Invalid account name: %1$@" = "Nom del compte no vàlid:% 1 $ @";
+"Invalid account name: %1$@" = "Nom del compte no vàlid: %1$@";
 
 /* Please enter a valid Gmail address.Fail to log in, email does not match account type */
 "Invalid Address" = "Adreça no vàlida";
 
 /* Invalid input for email address */
-"Invalid email address: %1$@" = "Adreça de correu electrònic no vàlida:% 1 $ @";
+"Invalid email address: %1$@" = "Adreça de correu electrònic no vàlida: %1$@";
 
 /* alert message. trying to add an invalid fingerprint
    alert title. trying to add an invalid fingerprint */
@@ -371,19 +371,19 @@
 "Invalid Input" = "Entrada incorrecta";
 
 /* Invalid input for por */
-"Invalid port: %1$@" = "Port no vàlid:% 1 $ @";
+"Invalid port: %1$@" = "Port no vàlid: %1$@";
 
 /* Invalid input for server */
-"Invalid server: %1$@" = "Servidor no vàlid:% 1 $ @";
+"Invalid server: %1$@" = "Servidor no vàlid: %1$@";
 
 /* Invalid input for transport security */
-"Invalid transport security: %1$@" = "Seguretat de transport no vàlida:% 1 $ @";
+"Invalid transport security: %1$@" = "Seguretat de transport no vàlida: %1$@";
 
 /* Invalid input for username */
-"Invalid username: %1$@" = "Nom d'usuari no vàlid:% 1 $ @";
+"Invalid username: %1$@" = "Nom d'usuari no vàlid: %1$@";
 
 /* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
-"It was impossible to login to %1$@. Username or password is wrong." = "No s'ha pogut iniciar la sessió a% 1 $ @. El nom d’usuari o la contrasenya són incorrectes.";
+"It was impossible to login to %1$@. Username or password is wrong." = "No s'ha pogut iniciar la sessió a %1$@. El nom d’usuari o la contrasenya són incorrectes.";
 
 /* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
 "It was impossible to login to the server. Username or password is wrong." = "No s'ha pogut iniciar la sessió al servidor. El nom d’usuari o la contrasenya són incorrectes.";
@@ -462,9 +462,11 @@
 /* keySyncWizard intro view Next button title */
 "Next" = "Següent";
 
-/* Alert button while client certificate is importing: Try again? No
-   Title for no button (cancel) when trying to import a key */
+/* Alert button while client certificate is importing: Try again? No */
 "No" = "No";
+
+/* Error when no account found for set_own_key UI */
+"No account found with the given email address." = "No s'ha trobat cap compte amb el correu electrònic indicat.";
 
 /* Error when no account found for set_own_key UI */
 "No account found with the given email." = "No s'ha trobat cap compte amb el correu electrònic indicat.";
@@ -627,7 +629,8 @@
 /* Validation error for set_own_key UI */
 "Please provide an email and a fingerprint. The email must match an existing account." = "Proporcioneu una adreça de correu electrònic i una empremta digital. L’adreça de correu electrònic ha de coincidir amb un compte existent.";
 
-/* Port placeholder for manual account IMAP setup
+/* Port label in account settings
+   Port placeholder for manual account IMAP setup
    Port placeholder for manual account SMTP setup */
 "Port" = "Port";
 
@@ -665,8 +668,8 @@
 "Reply All" = "Respondre a tots";
 
 /* Account settings confirm to reset identity title alert
-   Account settings reset identity
    Reset account identity button title
+   Reset label in account settings
    Settings: cell (button) title to view the trust contacts option */
 "Reset" = "Reset";
 
@@ -709,10 +712,17 @@
 /* Alert title before trusting an account */
 "Security Alert" = "Alerta de seguretat";
 
+/* Select all emails */
+"Select all" = "Selecciona-ho tot";
+
+/* Name of Sent folder (showing messages to send, of one account) */
+"Sent" = "Enviat";
+
 /* Privacy status suggestion */
 "Separately verify the content of this message with your communication partner." = "Verifiqueu el contingut d’aquest missatge amb el vostre soci de comunicació per separat.";
 
-/* Server placeholder for manual account IMAP setup
+/* Server label in account settings
+   Server placeholder for manual account IMAP setup
    Server placeholder for manual account SMTP setup */
 "Server" = "Servidor";
 
@@ -729,6 +739,10 @@
 
 /* Login */
 "Sign In" = "Inicieu la sessió";
+
+/* Edit Signature title
+   Signature label in account settings */
+"Signature" = "Firma";
 
 /* Start up tutorial skip button */
 "Skip" = "Ometre";
@@ -748,9 +762,6 @@
 /* Account settings title SMTP */
 "SMTP Settings" = "Configuració SMTP";
 
-/* Empty username message */
-"Smtp username must not be empty." = "El nom d'usuari de smtp no ha d'estar buit.";
-
 /* Title for address filter */
 "some address" = "alguna adreça";
 
@@ -758,7 +769,7 @@
 "Some mandatory fields are empty" = "Alguns camps obligatoris estan buits";
 
 /* Reply to unknown sender with date */
-"Someone wrote on %1$@:" = "Algú va escriure el% 1 $ @:";
+"Someone wrote on %1$@:" = "Algú va escriure el %1$@:";
 
 /* Reply to unknown sender without date */
 "Someone wrote:" = "Algú va escriure:";
@@ -768,6 +779,12 @@
 
 /* AccountSettings viewModel no account error */
 "Something went wrong, please try again later" = "Alguna cosa ha anat malament. Siusplau, intenta-ho més tard";
+
+/* Name of Spam folder (showing messages marked as spam by the server, of one account) */
+"Spam" = "Brossa";
+
+/* SSL/TLS (ConnectionTransport) */
+"SSL/TLS" = "SSL/TLS";
 
 /* Stop/trust button in handshake overview */
 "Start Trusting" = "Comença a confiar";
@@ -890,7 +907,8 @@
 /* UI alert title for transport protocol */
 "Transport protocol" = "Protocol de transport";
 
-/* TransportSecurity placeholder for manual account IMAP setup
+/* Transport security label in account settings
+   TransportSecurity placeholder for manual account IMAP setup
    TransportSecurity placeholder for manual account SMTP setup */
 "Transport Security" = "Seguretat del transport";
 
@@ -899,12 +917,6 @@
 
 /* Alert trust button title before trusting an account */
 "Trust" = "Confia";
-
-/* Action name to be suggested at the moment of revert */
-"Trust Confirmation" = "Confirmació de confiança";
-
-/* Action name to be suggested at the moment of revert */
-"Trust Rejection" = "Rebuig de confiança";
 
 /* keySyncWizard error view Try Again button title */
 "Try Again" = "Proveu de nou";
@@ -917,9 +929,6 @@
 
 /* Undo trust change verification button title */
 "Undo" = "Desfer";
-
-/* Undo trust change verification alert title */
-"Undo (actionName)" = "Desfés (actionName)";
 
 /* read button in slide-left menu */
 "Unflag" = "Unflag";
@@ -958,6 +967,9 @@
    User Name placeholder for manual account SMTP setup */
 "User Name" = "Usuari";
 
+/* User name label in account settings */
+"Username" = "Nom d'usuari";
+
 /* Empty username message */
 "Username must not be empty." = "El nom d’usuari no ha d’estar buit.";
 
@@ -969,6 +981,9 @@
 
 /* Error message shown to the user in case we can not connect to the IMAP server */
 "We could not connect to the IMAP server." = "No hem pogut connectar-nos al servidor IMAP.";
+
+/* Error message shown to the user in case we can not connect to the SMTP server */
+"We could not connect to the SMTP server: %1@" = "No hem pogut connectar-nos al servidor SMTP.";
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
 "We could not connect to the SMTP server." = "No hem pogut connectar-nos al servidor SMTP.";
@@ -1009,8 +1024,7 @@
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Trustwords incorrectes";
 
-/* Alert button while client certificate is importing: Try again? Yes
-   Title for yes button when trying to import a key */
+/* Alert button while client certificate is importing: Try again? Yes */
 "Yes" = "Sí";
 
 /* Confirm less secure answer message alert body */
@@ -1019,11 +1033,11 @@
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Esteu a punt de reenviar un missatge segur com no segur. Si decidiu continuar, es podria filtrar informació confidencial, posant en risc vosaltres i els vostres col·laboradors de comunicació. Estàs segur que vols continuar?";
 
-/* Message when asking user for confirmation about importing a key */
-"You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?" = "Esteu a punt d’importar la següent clau:\n\nNom:% 1 $ @\nEmpremta digital:% 2 $ @\n\nEsteu segur que voleu importar i utilitzar aquesta clau?";
-
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Podeu tancar aquest tutorial en qualsevol moment amb el botó Saltar.";
+
+/* PGPKeyImportSetting row title when grouped */
+"You can not import keys while the device is in a device group." = "You can not import keys while the device is in a device group.";
 
 /* alert error message certificate delete */
 "You can only delete certificates that are not connected to an account. The certificate is currently used for the following account: (by)" = "Només podeu suprimir certificats que no estan connectats a un compte. Actualment el certificat s’utilitza per al següent compte: (per)";

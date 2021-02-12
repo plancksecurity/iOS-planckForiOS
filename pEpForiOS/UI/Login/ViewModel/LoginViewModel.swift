@@ -12,14 +12,6 @@ import MessageModel
 import pEpIOSToolbox
 import PantomimeFramework
 
-// MARK: - LoginCellType
-
-extension LoginViewModel {
-    enum LoginCellType {
-        case Text, Button
-    }
-}
-
 // MARK: - OAuth2Parameters
 
 extension LoginViewModel {
@@ -52,16 +44,16 @@ final class LoginViewModel {
 
     public var shouldShowPasswordField: Bool {
            return !verifiableAccount.accountType.isOauth
-       }
+    }
 
     let qualifyServerIsLocalService = QualifyServerIsLocalService()
 
     init(verifiableAccount: VerifiableAccountProtocol? = nil) {
-        self.verifiableAccount = verifiableAccount ??
-            VerifiableAccount.verifiableAccount(for: .other)
+        self.verifiableAccount =
+            verifiableAccount ??
+            VerifiableAccount.verifiableAccount(for: .other,
+                                                usePEPFolderProvider: AppSettings.shared)
     }
-
-
 
     func isThereAnAccount() -> Bool {
         return !Account.all().isEmpty
@@ -135,7 +127,7 @@ final class LoginViewModel {
                                          provider: nil,
                                          flags: AS_FLAG_USE_ANY,
                                          credentials: nil)
-        acSettings.lookupCompletion() { [weak self] settings in
+        acSettings.lookupCompletion() { settings in
             GCD.onMain() {
                 libAccoutSettingsStatusOK()
             }
@@ -143,7 +135,7 @@ final class LoginViewModel {
 
         func libAccoutSettingsStatusOK() {
             if let error = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
-                Log.shared.error("%@", "\(error)")
+                Log.shared.log(error: error)
                 loginViewModelLoginErrorDelegate?.handle(loginError: error)
                 return
             }
@@ -230,7 +222,7 @@ extension LoginViewModel {
         do {
             try verifiableAccount.verify()
         } catch {
-            Log.shared.error("%@", "\(error)")
+            Log.shared.log(error: error)
             loginViewModelLoginErrorDelegate?.handle(loginError: error)
         }
     }
@@ -268,7 +260,7 @@ extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
     func didQualify(serverName: String, isLocal: Bool?, error: Error?) {
         GCD.onMain { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             if let err = error {
@@ -283,7 +275,7 @@ extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
 // MARK: - VerifiableAccountDelegate
 
 extension LoginViewModel: VerifiableAccountDelegate {
-    func informAccountVerificationResultDelegate(error: Error?) {
+    func informAccountVerificationResultDelegate(error: Error? = nil) {
         if let imapError = error as? ImapSyncOperationError {
             accountVerificationResultDelegate?.didVerify(
                 result: .imapError(imapError))
@@ -301,17 +293,18 @@ extension LoginViewModel: VerifiableAccountDelegate {
 
     func didEndVerification(result: Result<Void, Error>) {
         switch result {
-        case .success(()):
-            do {
-                try verifiableAccount.save() { [weak self] success in
-                    guard let me = self else {
-                        Log.shared.errorAndCrash("Lost MySelf")
-                        return
-                    }
-                    me.informAccountVerificationResultDelegate(error: nil)
+        case .success:
+            verifiableAccount.save { [weak self] (result) in
+                guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                    return
                 }
-            } catch {
-                Log.shared.errorAndCrash(error: error)
+                switch result {
+                case .success:
+                    me.informAccountVerificationResultDelegate()
+                case .failure(let error):
+                    me.informAccountVerificationResultDelegate(error: error)
+                }
             }
         case .failure(let error):
             informAccountVerificationResultDelegate(error: error)

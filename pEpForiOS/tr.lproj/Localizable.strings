@@ -2,7 +2,7 @@
 "\n            Client\n            Certificate\n            " = "\n            müşteri\n            sertifika\n            ";
 
 /* Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion. */
-"\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n% 1 $ @\n\n% 2 $ @\n\n% 3 $ @\n\nEkler devre dışı.\n\n";
+"\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n%1$@\n\n%2$@\n\n%3$@\n\nEkler devre dışı.\n\n";
 
 /* No privacy status explanation
    No privacy status suggestion */
@@ -12,13 +12,13 @@
 "(numMails) new messages received" = "(numMails) yeni mesaj alındı";
 
 /* Reply to single contact, with date. Placeholders: Name, date. */
-"%1$@ wrote on %2$@:" = "% 1 $ @% 2 $ @ 'da yazdı:";
+"%1$@ wrote on %2$@:" = "%1$@ %2$@ 'da yazdı:";
 
 /* Reply to single contact, without date. Placeholder: Name. */
-"%1$@ wrote:" = "% 1 $ @ şunu yazdı:";
+"%1$@ wrote:" = "%1$@ şunu yazdı:";
 
 /* Number of filters instead of filter name */
-"%d filters" = "% d filtre";
+"%d filters" = "%d filtre";
 
 /* error message for .missingPassword */
 "A non-empty password is required" = "Şifre gereklidir";
@@ -89,7 +89,7 @@
 "Attach media" = "Medya ekle";
 
 /* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
-"Attached Image %1$d (%2$@)" = "Ekli resim% 1 $ d (% 2 $ @)";
+"Attached Image %1$d (%2$@)" = "Ekli resim %1$d (%2$@)";
 
 /* title attachments filter cell */
 "Attachments" = "Ekler";
@@ -212,12 +212,18 @@
    Display Name TextField Placeholder in Login Screen */
 "Display Name" = "Ekran adı";
 
-/* Email address placeholder for manual account setup
-   Email TextField Placeholder in Login Screen */
-"E-mail Address" = "E";
+/* Name of Drafts folder (showing draft messages, of one account) */
+"Drafts" = "Taslaklar";
+
+/* Edit - Right bar button item in Email List */
+"Edit" = "Düzenle";
 
 /* Email */
 "Email" = "E-posta";
+
+/* Email address placeholder for manual account setup
+   Email TextField Placeholder in Login Screen */
+"Email Address" = "E-posta adresi";
 
 /* Title of alert: a required field is empty */
 "Empty Field" = "Boş alan";
@@ -247,9 +253,6 @@
 
 /* Generic error message on trying to import a key */
 "Error occurred. No key imported." = "Error occured. No key imported.";
-
-/* spearator string bewtween name and date */
-"Exp. date:" = "Tecrübe. tarih:";
 
 /* Settings: Cell (button) title to view Extra Keys setting */
 "Extra Keys" = "Ekstra Tuşlar";
@@ -327,9 +330,6 @@
 /* Account settings title IMAP */
 "IMAP Settings" = "IMAP Ayarları";
 
-/* Empty username message */
-"Imap username must not be empty." = "Imap kullanıcı adı boş olmamalıdır.";
-
 /* Select certificate - import certificate date */
 "Import date" = "İçe aktarma tarihi";
 
@@ -355,13 +355,13 @@
 "Internal Error" = "İç hata";
 
 /* Invalid input for account */
-"Invalid account name: %1$@" = "Geçersiz hesap adı:% 1 $ @";
+"Invalid account name: %1$@" = "Geçersiz hesap adı: %1$@";
 
 /* Please enter a valid Gmail address.Fail to log in, email does not match account type */
 "Invalid Address" = "Geçersiz adres";
 
 /* Invalid input for email address */
-"Invalid email address: %1$@" = "Geçersiz e-posta adresi:% 1 $ @";
+"Invalid email address: %1$@" = "Geçersiz e-posta adresi: %1$@";
 
 /* alert message. trying to add an invalid fingerprint
    alert title. trying to add an invalid fingerprint */
@@ -371,19 +371,19 @@
 "Invalid Input" = "Geçersiz Giriş";
 
 /* Invalid input for por */
-"Invalid port: %1$@" = "Geçersiz bağlantı noktası:% 1 $ @";
+"Invalid port: %1$@" = "Geçersiz bağlantı noktası: %1$@";
 
 /* Invalid input for server */
-"Invalid server: %1$@" = "Geçersiz sunucu:% 1 $ @";
+"Invalid server: %1$@" = "Geçersiz sunucu: %1$@";
 
 /* Invalid input for transport security */
-"Invalid transport security: %1$@" = "Geçersiz taşıma güvenliği:% 1 $ @";
+"Invalid transport security: %1$@" = "Geçersiz taşıma güvenliği: %1$@";
 
 /* Invalid input for username */
-"Invalid username: %1$@" = "Geçersiz kullanıcı adı:% 1 $ @";
+"Invalid username: %1$@" = "Geçersiz kullanıcı adı: %1$@";
 
 /* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
-"It was impossible to login to %1$@. Username or password is wrong." = "% 1 $ @ oturumu açmak mümkün değildi. Kullanıcı ismi veya parola yanlış.";
+"It was impossible to login to %1$@. Username or password is wrong." = "%1$@ oturumu açmak mümkün değildi. Kullanıcı ismi veya parola yanlış.";
 
 /* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
 "It was impossible to login to the server. Username or password is wrong." = "Sunucuda oturum açmak mümkün değildi. Kullanıcı ismi veya parola yanlış.";
@@ -462,9 +462,11 @@
 /* keySyncWizard intro view Next button title */
 "Next" = "İleri";
 
-/* Alert button while client certificate is importing: Try again? No
-   Title for no button (cancel) when trying to import a key */
+/* Alert button while client certificate is importing: Try again? No */
 "No" = "Hayır";
+
+/* Error when no account found for set_own_key UI */
+"No account found with the given email address." = "Belirtilen e-postayla hesap bulunamadı.";
 
 /* Error when no account found for set_own_key UI */
 "No account found with the given email." = "Belirtilen e-postayla hesap bulunamadı.";
@@ -627,7 +629,8 @@
 /* Validation error for set_own_key UI */
 "Please provide an email and a fingerprint. The email must match an existing account." = "Lütfen bir e-posta adresi ve bir parmak izi sağlayın. E-posta adresi mevcut bir hesapla eşleşmelidir.";
 
-/* Port placeholder for manual account IMAP setup
+/* Port label in account settings
+   Port placeholder for manual account IMAP setup
    Port placeholder for manual account SMTP setup */
 "Port" = "Port";
 
@@ -665,8 +668,8 @@
 "Reply All" = "Tümünü Yanıtla";
 
 /* Account settings confirm to reset identity title alert
-   Account settings reset identity
    Reset account identity button title
+   Reset label in account settings
    Settings: cell (button) title to view the trust contacts option */
 "Reset" = "Reset";
 
@@ -709,10 +712,17 @@
 /* Alert title before trusting an account */
 "Security Alert" = "Güvenlik uyarısı";
 
+/* Select all emails */
+"Select all" = "Tümünü Seç";
+
+/* Name of Sent folder (showing messages to send, of one account) */
+"Sent" = "Gönderilen";
+
 /* Privacy status suggestion */
 "Separately verify the content of this message with your communication partner." = "Bu mesajın içeriğini iletişim ortağınızla ayrı olarak doğrulayın.";
 
-/* Server placeholder for manual account IMAP setup
+/* Server label in account settings
+   Server placeholder for manual account IMAP setup
    Server placeholder for manual account SMTP setup */
 "Server" = "Sunucu";
 
@@ -729,6 +739,10 @@
 
 /* Login */
 "Sign In" = "Oturum aç";
+
+/* Edit Signature title
+   Signature label in account settings */
+"Signature" = "İmza";
 
 /* Start up tutorial skip button */
 "Skip" = "Atla";
@@ -748,9 +762,6 @@
 /* Account settings title SMTP */
 "SMTP Settings" = "SMTP Ayarları";
 
-/* Empty username message */
-"Smtp username must not be empty." = "Smtp kullanıcı adı boş olmamalıdır.";
-
 /* Title for address filter */
 "some address" = "bazı adres";
 
@@ -758,7 +769,7 @@
 "Some mandatory fields are empty" = "Bazı zorunlu alanlar boş";
 
 /* Reply to unknown sender with date */
-"Someone wrote on %1$@:" = "Birisi% 1 $ @ üzerine yazdı:";
+"Someone wrote on %1$@:" = "Birisi %1$@ üzerine yazdı:";
 
 /* Reply to unknown sender without date */
 "Someone wrote:" = "Birisi şunu yazdı:";
@@ -768,6 +779,12 @@
 
 /* AccountSettings viewModel no account error */
 "Something went wrong, please try again later" = "Bir şeyler yanlış gitti. Lütfen daha sonra tekrar deneyiniz";
+
+/* Name of Spam folder (showing messages marked as spam by the server, of one account) */
+"Spam" = "Spam";
+
+/* SSL/TLS (ConnectionTransport) */
+"SSL/TLS" = "SSL/TLS";
 
 /* Stop/trust button in handshake overview */
 "Start Trusting" = "Güvenmeye Başla";
@@ -890,7 +907,8 @@
 /* UI alert title for transport protocol */
 "Transport protocol" = "Taşıma protokolü";
 
-/* TransportSecurity placeholder for manual account IMAP setup
+/* Transport security label in account settings
+   TransportSecurity placeholder for manual account IMAP setup
    TransportSecurity placeholder for manual account SMTP setup */
 "Transport Security" = "Taşımacılık Güvenliği";
 
@@ -899,12 +917,6 @@
 
 /* Alert trust button title before trusting an account */
 "Trust" = "Güven";
-
-/* Action name to be suggested at the moment of revert */
-"Trust Confirmation" = "Güven Onayı";
-
-/* Action name to be suggested at the moment of revert */
-"Trust Rejection" = "Güven Reddi";
 
 /* keySyncWizard error view Try Again button title */
 "Try Again" = "Tekrar deneyin";
@@ -917,9 +929,6 @@
 
 /* Undo trust change verification button title */
 "Undo" = "Geri alma";
-
-/* Undo trust change verification alert title */
-"Undo (actionName)" = "Geri al (actionName)";
 
 /* read button in slide-left menu */
 "Unflag" = "İşaretini Kaldır";
@@ -958,6 +967,9 @@
    User Name placeholder for manual account SMTP setup */
 "User Name" = "Kullanıcı Adı";
 
+/* User name label in account settings */
+"Username" = "Kullanıcı adı";
+
 /* Empty username message */
 "Username must not be empty." = "Kullanıcı adı boş olmamalıdır.";
 
@@ -969,6 +981,9 @@
 
 /* Error message shown to the user in case we can not connect to the IMAP server */
 "We could not connect to the IMAP server." = "IMAP sunucusuna bağlanamadık.";
+
+/* Error message shown to the user in case we can not connect to the SMTP server */
+"We could not connect to the SMTP server: %1@" = "SMTP sunucusuna bağlanamadık.";
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
 "We could not connect to the SMTP server." = "SMTP sunucusuna bağlanamadık.";
@@ -1009,8 +1024,7 @@
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Hatalı Trustwords";
 
-/* Alert button while client certificate is importing: Try again? Yes
-   Title for yes button when trying to import a key */
+/* Alert button while client certificate is importing: Try again? Yes */
 "Yes" = "Evet";
 
 /* Confirm less secure answer message alert body */
@@ -1019,11 +1033,11 @@
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Güvenli bir mesajı güvenli olarak iletmek üzeresiniz. Devam etmeyi seçerseniz, sizi ve iletişim ortaklarınızı riske atacak gizli bilgiler sızdırılabilir. Devam etmek istediğine emin misin?";
 
-/* Message when asking user for confirmation about importing a key */
-"You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?" = "Aşağıdaki anahtarı içe aktarmak üzeresiniz:\n\nİsim:% 1 $ @\nParmak izi:% 2 $ @\n\nBu anahtarı içe aktarmak ve kullanmak istediğinizden emin misiniz?";
-
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Bu öğreticiyi Atla düğmesiyle istediğiniz zaman kapatabilirsiniz.";
+
+/* PGPKeyImportSetting row title when grouped */
+"You can not import keys while the device is in a device group." = "You can not import keys while the device is in a device group.";
 
 /* alert error message certificate delete */
 "You can only delete certificates that are not connected to an account. The certificate is currently used for the following account: (by)" = "Yalnızca bir hesaba bağlı olmayan sertifikaları silebilirsiniz. Sertifika şu anda aşağıdaki hesap için kullanılıyor: (tarafından)";

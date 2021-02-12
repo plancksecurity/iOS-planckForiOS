@@ -23,7 +23,7 @@ extension UIAlertController {
     }
 }
 
-final class IMAPSettingsViewController: BaseViewController, TextfieldResponder {
+final class IMAPSettingsViewController: UIViewController, TextfieldResponder {
     @IBOutlet weak var manualAccountSetupContainerView: ManualAccountSetupContainerView!
 
     var fields = [UITextField]()
@@ -85,7 +85,7 @@ extension IMAPSettingsViewController: UITextFieldDelegate {
         }
         if textField == setupView.fourthTextField {
             view.endEditing(true)
-            alertWithSecurityValues(textField)
+            presentActionSheetWithTransportSecurityValues(textField)
             return false
         }
         return true
@@ -125,7 +125,6 @@ extension IMAPSettingsViewController: SegueHandlerType {
         switch segueIdentifier(for: segue) {
         case .SMTPSettings:
             if let destination = segue.destination as? SMTPSettingsViewController {
-                destination.appConfig = appConfig
                 destination.verifiableAccount = verifiableAccount
             } else {
                 Log.shared.errorAndCrash(
@@ -223,13 +222,10 @@ extension IMAPSettingsViewController {
         setupView.fourthTextField.placeholder = TransportSecurityPlaceholder
     }
 
-    private func alertWithSecurityValues(_ sender: UITextField) {
-        let alertController = UIAlertController.pEpAlertController(
-            title: NSLocalizedString("Transport protocol",
-                                     comment: "UI alert title for transport protocol"),
-            message: NSLocalizedString("Choose a Security protocol for your accont",
-                                       comment: "UI alert message for transport protocol"),
-            preferredStyle: .actionSheet)
+    private func presentActionSheetWithTransportSecurityValues(_ sender: UITextField) {
+        let title = NSLocalizedString("Transport protocol", comment: "UI alert title for transport protocol")
+        let message = NSLocalizedString("Choose a Security protocol for your accont", comment: "UI alert message for transport protocol")
+        let alertController = UIUtils.actionSheet(title: title, message: message)
         let block: (ConnectionTransport) -> () = { transport in
             sender.text = transport.localizedString()
             self.verifiableAccount?.transportIMAP = transport

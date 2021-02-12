@@ -1,0 +1,37 @@
+
+include yslt.yml2
+
+tstylesheet  {
+// CdMessage+Constants.swift
+
+template "/model/entity", "text" {
+
+    ||
+ 
+    extension «@name» {
+
+        /// All attribute names as constant String
+        struct AttributeName {
+            `` apply "attribute", mode="propertyNameConstants"
+        }
+
+        /// All relationship names as constant String
+        struct RelationshipName {
+            `` apply "relationship", mode="propertyNameConstants"
+        }
+    }
+    ||
+}
+
+// NAME CONSTANTS FOR ATTRIBUTES AND RELATIONSHIPS
+
+template "attribute", mode="propertyNameConstants" {
+|> static let «@name» = "«@name»"
+}
+
+template "relationship", mode="propertyNameConstants" {
+|> static let «@name» = "«@name»"
+}
+
+template "text()";
+}

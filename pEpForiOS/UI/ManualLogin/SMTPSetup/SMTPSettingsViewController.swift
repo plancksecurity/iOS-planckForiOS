@@ -12,7 +12,7 @@ import pEpIOSToolbox
 import MessageModel
 import PantomimeFramework
 
-final class SMTPSettingsViewController: BaseViewController, TextfieldResponder {
+final class SMTPSettingsViewController: UIViewController, TextfieldResponder {
     @IBOutlet weak var manualAccountSetupContainerView: ManualAccountSetupContainerView!
 
     /// - Note: This VC doesn't have a view model yet, so this is used for the model.
@@ -79,7 +79,7 @@ extension SMTPSettingsViewController: UITextFieldDelegate {
         }
         if textField == setupView.fourthTextField {
             view.endEditing(true)
-            alertWithSecurityValues(textField)
+            presentActionSheetWithTransportSecurityValues(textField)
             return false
         }
         return true
@@ -127,8 +127,9 @@ extension SMTPSettingsViewController: ManualAccountSetupViewDelegate {
                 case .invalidUserData:
                     errorMessage = NSLocalizedString("Some mandatory fields are empty",
                                                      comment: "Message of alert: a required field is empty")
-                default:
-                    Log.shared.errorAndCrash("Unhandled case in SMTPSettingsViewController")
+                case .unknown:
+                    errorMessage = NSLocalizedString("Something went wrong.",
+                                                     comment: "Message of alert: something went wrong.")
                 }
             } else {
                 errorMessage = error.localizedDescription
@@ -195,32 +196,34 @@ extension SMTPSettingsViewController: SegueHandlerType {
 
 extension SMTPSettingsViewController: VerifiableAccountDelegate {
     func didEndVerification(result: Result<Void, Error>) {
+        guard let verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("Verifiable account not found")
+            return
+        }
+
         switch result {
-        case .success(()):
-            do {
-                try verifiableAccount?.save() { [weak self] success in
-                    DispatchQueue.main.async { [weak self] in
-                        guard let me = self else {
-                            Log.shared.errorAndCrash("Lost MySelf")
-                            return
-                        }
-                        switch success {
-                        case true:
-                            me.isCurrentlyVerifying = false
-                            me.performSegue(withIdentifier: .backToEmailListSegue, sender: me)
-                        case false:
-                            me.isCurrentlyVerifying = false
-                            UIUtils.show(error: VerifiableAccountValidationError.invalidUserData)
-                        }
+        case .success:
+            verifiableAccount.save(completion: { [weak self] (savingResult) in
+                guard let me = self else {
+                    // Valid case. We might have been dismissed already.
+                    return
+                }
+                DispatchQueue.main.async {
+                    switch savingResult {
+                    case .success:
+                        me.isCurrentlyVerifying = false
+                        me.performSegue(withIdentifier: .backToEmailListSegue, sender: me)
+                    case .failure(_):
+                        me.isCurrentlyVerifying = false
+                        UIUtils.show(error: VerifiableAccountValidationError.invalidUserData)
                     }
                 }
-            } catch {
-                Log.shared.errorAndCrash(error: error)
-            }
+            })
+
         case .failure(let error):
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash("Lost MySelf")
+                    // Valid case. We might have been dismissed already.
                     return
                 }
                 me.isCurrentlyVerifying = false
@@ -281,15 +284,7 @@ extension SMTPSettingsViewController {
     }
 
     private func informUser(about message: String, title: String) {
-        let alert = UIAlertController.pEpAlertController(
-            title: title,
-            message: message,
-            preferredStyle: UIAlertController.Style.alert)
-        let cancelAction = UIAlertAction(title:
-            NSLocalizedString("OK", comment: "OK button for invalid accout settings user input alert"),
-                                         style: .cancel, handler: nil)
-        alert.addAction(cancelAction)
-        present(alert, animated: true)
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message)
     }
 
     private func hideKeybord() {
@@ -334,13 +329,12 @@ extension SMTPSettingsViewController {
         setupView.fourthTextField.placeholder = TransportSecurityPlaceholder
     }
 
-    private func alertWithSecurityValues(_ sender: UITextField) {
-        let alertController = UIAlertController.pEpAlertController(
-            title: NSLocalizedString("Transport protocol",
-                                     comment: "UI alert title for transport protocol"),
-            message: NSLocalizedString("Choose a Security protocol for your accont",
-                                       comment: "UI alert message for transport protocol"),
-            preferredStyle: .actionSheet)
+    private func presentActionSheetWithTransportSecurityValues(_ sender: UITextField) {
+        let title = NSLocalizedString("Transport protocol",
+                                 comment: "UI alert title for transport protocol")
+        let message = NSLocalizedString("Choose a Security protocol for your accont",
+                                   comment: "UI alert message for transport protocol")
+        let alertController = UIUtils.actionSheet(title: title, message: message)
         let block: (ConnectionTransport) -> () = { transport in
             self.verifiableAccount?.transportSMTP = transport
             sender.text = transport.localizedString()
@@ -355,11 +349,10 @@ extension SMTPSettingsViewController {
         alertController.setupActionFromConnectionTransport(.TLS, block: block)
         alertController.setupActionFromConnectionTransport(.startTLS, block: block)
 
-        let cancelAction = UIAlertAction(
-            title: NSLocalizedString("Cancel", comment: "Cancel for an alert view"),
-            style: .cancel) { (action) in}
+        let actionTitle = NSLocalizedString("Cancel", comment: "Cancel for an alert view")
+        let cancelAction = UIUtils.action(actionTitle, .cancel)
         alertController.addAction(cancelAction)
-        self.present(alertController, animated: true) {}
+        present(alertController, animated: true) {}
     }
 
     private func setUpContainerView() {

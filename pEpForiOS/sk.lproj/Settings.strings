@@ -4,9 +4,6 @@
 /* Class = "UIViewController"; title = "Extra Keys"; ObjectID = "4fP-ku-UtU"; */
 "4fP-ku-UtU.title" = "Extra kľúče";
 
-/* Class = "UILabel"; text = "Reset"; ObjectID = "4L6-wx-Ghl"; */
-"4L6-wx-Ghl.text" = "Resetovať";
-
 /* Class = "UILabel"; text = "Detail"; ObjectID = "4Ql-jN-Oal"; */
 "4Ql-jN-Oal.text" = "Podrobnosti";
 
@@ -16,38 +13,20 @@
 /* Class = "UILabel"; text = "Fingerprint"; ObjectID = "8ib-BO-jFp"; */
 "8ib-BO-jFp.text" = "Fingerprint";
 
+/* Class = "UILabel"; text = "Name"; ObjectID = "409-SW-yds"; */
+"409-SW-yds.text" = "Meno";
+
 /* Class = "UILabel"; text = "Label  akjsfhaj ksfas fsdahfkajsdf kashf akjdhf jkasdf asf kjsfkasf ajshf ahkfs jashf kjasdhkf jakhf"; ObjectID = "Ag8-Qj-N8l"; */
 "Ag8-Qj-N8l.text" = "Label  akjsfhaj ksfas fsdahfkajsdf kashf akjdhf jkasdf asf kjsfkasf ajshf ahkfs jashf kjasdhkf jakhf";
 
-/* Class = "UILabel"; text = "Password"; ObjectID = "aYO-l7-9iG"; */
-"aYO-l7-9iG.text" = "Heslo";
-
-/* Class = "UILabel"; text = "Username"; ObjectID = "azH-be-f3A"; */
-"azH-be-f3A.text" = "Používateľské meno";
-
-/* Class = "UILabel"; text = "Certificate"; ObjectID = "cmM-dq-fKg"; */
-"cmM-dq-fKg.text" = "Certifikát";
+/* Class = "UILabel"; text = "Reset"; ObjectID = "d1b-kd-zmh"; */
+"d1b-kd-zmh.text" = "Resetovať";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "D99-2G-2i2"; */
 "D99-2G-2i2.text" = "nadpis";
 
-/* Class = "UILabel"; text = "Transport Security"; ObjectID = "daw-LF-EZF"; */
-"daw-LF-EZF.text" = "Bezpečnosť transportu:";
-
-/* Class = "UILabel"; text = "Transport Security"; ObjectID = "dpq-4F-9sG"; */
-"dpq-4F-9sG.text" = "Zabezpečenie prenosu";
-
-/* Class = "UILabel"; text = "Server"; ObjectID = "DQ0-sB-CRx"; */
-"DQ0-sB-CRx.text" = "Server:";
-
-/* Class = "UILabel"; text = "Password"; ObjectID = "En6-h6-xZD"; */
-"En6-h6-xZD.text" = "Heslo:";
-
 /* Class = "UILabel"; text = "Title"; ObjectID = "GAd-Jm-sFz"; */
 "GAd-Jm-sFz.text" = "nadpis";
-
-/* Class = "UILabel"; text = "Transport Security"; ObjectID = "hAL-c1-ngD"; */
-"hAL-c1-ngD.text" = "Bezpečnosť transportu:";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "hHr-Jq-PRg"; */
 "hHr-Jq-PRg.text" = "nadpis";
@@ -58,72 +37,27 @@
 /* Class = "UIButton"; normalTitle = "Set Own Key"; ObjectID = "lzc-xZ-iKm"; */
 "lzc-xZ-iKm.normalTitle" = "Nastaviť vlastný kľúč";
 
-/* Class = "UILabel"; text = "Email"; ObjectID = "Ne5-6o-O4F"; */
-"Ne5-6o-O4F.text" = "E-mail:";
-
-/* Class = "UILabel"; text = "Email"; ObjectID = "o8M-bM-KZX"; */
-"o8M-bM-KZX.text" = "E-mail";
-
-/* Class = "UILabel"; text = "Server"; ObjectID = "oCE-8g-idG"; */
-"oCE-8g-idG.text" = "Server";
-
-/* Class = "UILabel"; text = "Port"; ObjectID = "Osx-2y-29f"; */
-"Osx-2y-29f.text" = "Port";
-
 /* Class = "UILabel"; text = "Title"; ObjectID = "Pdx-rN-QPm"; */
 "Pdx-rN-QPm.text" = "nadpis";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "Pgw-uY-8FO"; */
 "Pgw-uY-8FO.text" = "nadpis";
 
-/* Class = "UILabel"; text = "Name"; ObjectID = "QcW-va-Qh4"; */
-"QcW-va-Qh4.text" = "Meno:";
-
-/* Class = "UILabel"; text = "Username"; ObjectID = "RYB-AT-TSB"; */
-"RYB-AT-TSB.text" = "Používateľské meno";
-
-/* Class = "UILabel"; text = "Name"; ObjectID = "s9I-CU-fSE"; */
-"s9I-CU-fSE.text" = "Meno";
-
-/* Class = "UILabel"; text = "p≡p Sync"; ObjectID = "Tjb-uM-eUF"; */
-"Tjb-uM-eUF.text" = "p≡p Sync";
-
-/* Class = "UILabel"; text = "Username"; ObjectID = "tt1-bn-s7P"; */
-"tt1-bn-s7P.text" = "Používateľské meno";
-
-/* Class = "UILabel"; text = "Transport Security"; ObjectID = "Tul-XU-PSw"; */
-"Tul-XU-PSw.text" = "Zabezpečenie prenosu";
-
-/* Class = "UILabel"; text = "Port"; ObjectID = "U7P-zv-48U"; */
-"U7P-zv-48U.text" = "Port";
+/* Class = "UILabel"; text = "Use a passphrase for new keys"; ObjectID = "Ppr-kD-hKR"; */
+"Ppr-kD-hKR.text" = "Použite prístupovú frázu pre nové kľúče";
 
 /* Class = "UILabel"; text = "set_own_key Error"; ObjectID = "ujL-Pa-uXD"; Note = "Don't localize this"; */
 "ujL-Pa-uXD.text" = "Chyba set_own_key";
 
-/* Class = "UILabel"; text = "Port"; ObjectID = "Vdb-LS-4JH"; */
-"Vdb-LS-4JH.text" = "Port:";
-
 /* Class = "UILabel"; text = "Title"; ObjectID = "vjp-2e-dTM"; */
 "vjp-2e-dTM.text" = "nadpis";
 
-/* Class = "UILabel"; text = "Username"; ObjectID = "vzX-eS-BYY"; */
-"vzX-eS-BYY.text" = "Používateľské meno";
-
-/* Class = "UILabel"; text = "Server"; ObjectID = "weI-Bw-0PK"; */
-"weI-Bw-0PK.text" = "Server:";
-
-/* Class = "UILabel"; text = "OAuth2 Reauthorization"; ObjectID = "wxK-W7-y8D"; */
-"wxK-W7-y8D.text" = "OAuth2 Obnovenie autorizácie";
-
-/* Class = "UILabel"; text = "Label"; ObjectID = "X0Z-Ju-XOO"; */
-"X0Z-Ju-XOO.text" = "Label";
-
-/* Class = "UILabel"; text = "Server"; ObjectID = "x85-ha-uBw"; */
-"x85-ha-uBw.text" = "Server";
+/* Class = "UILabel"; text = "Label"; ObjectID = "wy0-sZ-Zan"; */
+"wy0-sZ-Zan.text" = "Label";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "xiv-OD-YNL"; */
 "xiv-OD-YNL.text" = "nadpis";
 
-/* Class = "UILabel"; text = "Port"; ObjectID = "zDb-ax-ng4"; */
-"zDb-ax-ng4.text" = "Port:";
+/* Class = "UILabel"; text = "p≡p Sync"; ObjectID = "yCf-X7-gtF"; */
+"yCf-X7-gtF.text" = "p≡p Sync";
 

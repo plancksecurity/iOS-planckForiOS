@@ -10,8 +10,6 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 import PantomimeFramework
-import PEPObjCAdapterFramework
-
 
 class AccountTypeSelectorTest: AccountDrivenTestBase {
     
@@ -62,13 +60,6 @@ class AccountTypeSelectorTest: AccountDrivenTestBase {
         XCTAssertEqual(vm.fileNameOrText(provider: .gmail), "asset-Google")
         XCTAssertEqual(vm.fileNameOrText(provider: .other), "Other")
     }
-    
-    func testNumberOfSections() {
-        let expectedSections = 6
-        let vm = AccountTypeSelectorViewModel()
-        XCTAssertEqual(expectedSections, vm.count)
-    }
-    
 }
 
 class AccountTypeDelegateMockTest: AccountTypeSelectorViewModelDelegate {
@@ -113,9 +104,11 @@ class ClientCertificateUtilMockTest: ClientCertificateUtilProtocol {
         return listOfCerts
     }
     
-    func storeCertificate(p12Data: Data, password: String) throws {
-        
-    }
+    func storeCertificate(p12Data: Data, password: String) throws {}
 
     func delete(clientCertificate: ClientCertificate) throws {}
+
+    func isCertificate(p12Data: Data) -> Bool {
+        return false
+    }
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 extension PEPHeaderView {
     private struct Constants {
         struct Margin {
@@ -20,14 +21,15 @@ extension PEPHeaderView {
 final class PEPHeaderView: UITableViewHeaderFooterView {
     static let reuseIdentifier = "pEp Section Header"
 
-    private let titleTextView: UITextView = {
-        let createe = UITextView()
+    private let titleTextView: TextFieldWithoutSelection = {
+        let createe = TextFieldWithoutSelection()
         createe.translatesAutoresizingMaskIntoConstraints = false
         createe.isScrollEnabled = false
         createe.isUserInteractionEnabled = false
         createe.isEditable = false
         return createe
     }()
+
 
     override var isUserInteractionEnabled: Bool {
         set {
@@ -105,10 +107,8 @@ extension PEPHeaderView {
         NSLayoutConstraint.activate([
             titleTextView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             titleTextView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-            titleTextView.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor,
-                                            constant: Constants.Margin.top),
-            titleTextView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
-                                               constant: -Constants.Margin.bottom)
+            titleTextView.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: Constants.Margin.top),
+            titleTextView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -Constants.Margin.bottom).usingPriority(.defaultHigh)
         ])
     }
 }

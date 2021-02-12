@@ -12,6 +12,8 @@ import XCTest
 
 class FolderViewModelTest: AccountDrivenTestBase {
 
+    var appSettings : AppSettingsProtocol?
+
     var viewmodel: FolderViewModel!
     var folder: Folder!
     
@@ -23,18 +25,6 @@ class FolderViewModelTest: AccountDrivenTestBase {
         super.setUp()
         folder = Folder(name: Input.folderName, parent: nil, account: account, folderType: .inbox)
         folder.session.commit()
-    }
-
-    func testAccountSectionsWithUnifiedFolderShouldBeOnePlusAccountNumber() {
-        for accountNumber in 0...Input.maxNumberOfTestAccounts {
-            let accounts = givenThereIs(numberOfAccounts: accountNumber)
-            givenThereIsAViewModel(withUniFiedInBox: true, and: accounts )
-
-            let viewmodelSections = viewmodel.count
-
-            //If is unified inbox it should have accounts.count + 1 section
-            XCTAssertEqual(viewmodelSections, accounts.count + 1)
-        }
     }
 
     func testFoldersAppearInTheCorrectOrder() {
@@ -65,25 +55,12 @@ class FolderViewModelTest: AccountDrivenTestBase {
         }
     }
 
-    func testAccountSectionsWithoutUnifiedFolderShouldBeAccountNumber() {
-        for accountNumber in 0...Input.maxNumberOfTestAccounts {
-
-            let accounts = givenThereIs(numberOfAccounts: accountNumber)
-            givenThereIsAViewModel(withUniFiedInBox: false, and: accounts )
-
-            let viewmodelSections = viewmodel.count
-
-            //If it is not unified inbox it should have accounts.count section
-            XCTAssertEqual(viewmodelSections, accounts.count)
-        }
-    }
-    
     func testNoAccountExistTrueAfterDeleteAccounts() {
         givenThereIsNotAccounts(withUnifiedInbox: false)
         let noAccountsExist = viewmodel.noAccountsExist()
         XCTAssertTrue(noAccountsExist)
     }
-    
+
     func testSubscript() {
         let accounts = givenThereIs(numberOfAccounts: 1)
         givenThereIsAViewModel(withUniFiedInBox: false, and: accounts)
@@ -112,11 +89,51 @@ class FolderViewModelTest: AccountDrivenTestBase {
     }
 
     func givenThereIsAViewModel(withUniFiedInBox: Bool, and accounts: [Account]){
-        viewmodel = FolderViewModel(withFoldersIn: accounts, includeUnifiedInbox: withUniFiedInBox)
+        viewmodel = FolderViewModel(withFoldersIn: accounts)
     }
 
     func givenThereIsNotAccounts(withUnifiedInbox: Bool) {
         Account.all().forEach { $0.delete() }
-        viewmodel = FolderViewModel(withFoldersIn: nil, includeUnifiedInbox: withUnifiedInbox)
+        viewmodel = FolderViewModel(withFoldersIn: nil)
     }
+
+    func testHandleCollapsingSectionStateChanged() {
+        let setAccountCollapsedStateExpectation = expectation(description: "setAccountCollapsedStateExpectation")
+        let mockAppSettings = MockAppSettings(setAccountCollapsedStateExpectation: setAccountCollapsedStateExpectation)
+        let accounts = givenThereIs(numberOfAccounts: 1)
+        viewmodel = FolderViewModel(withFoldersIn: accounts, appSettings: mockAppSettings)
+
+        let deleteRowsAtIndexPathsExpectation = expectation(description: "deleteRowsAtIndexPathsExpectation")
+        let delegate = MockFolderTableViewController(deleteRowsAtIndexPathsExpectation: deleteRowsAtIndexPathsExpectation)
+        viewmodel.delegate = delegate
+        viewmodel.handleCollapsingSectionStateChanged(forAccountInSection: 0, isCollapsed: true)
+        waitForExpectations(timeout: TestUtil.waitTime)
+    }
+}
+
+class MockFolderTableViewController: FolderViewModelDelegate {
+    var insertRowsAtIndexPathsExpectation: XCTestExpectation?
+    var deleteRowsAtIndexPathsExpectation: XCTestExpectation?
+
+    init(insertRowsAtIndexPathsExpectation: XCTestExpectation? = nil,
+         deleteRowsAtIndexPathsExpectation: XCTestExpectation? = nil) {
+        self.insertRowsAtIndexPathsExpectation = insertRowsAtIndexPathsExpectation
+        self.deleteRowsAtIndexPathsExpectation = deleteRowsAtIndexPathsExpectation
+    }
+
+    func insertRowsAtIndexPaths(indexPaths: [IndexPath]) {
+        fulfillIfNotNil(expectation: insertRowsAtIndexPathsExpectation)
+    }
+
+    func deleteRowsAtIndexPaths(indexPaths: [IndexPath]) {
+        fulfillIfNotNil(expectation: deleteRowsAtIndexPathsExpectation)
+    }
+
+    private func fulfillIfNotNil(expectation: XCTestExpectation?) {
+        if expectation != nil {
+            expectation?.fulfill()
+        }
+    }
+
+
 }

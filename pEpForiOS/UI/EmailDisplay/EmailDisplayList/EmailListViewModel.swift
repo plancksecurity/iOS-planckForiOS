@@ -7,16 +7,19 @@
 //
 
 import Foundation
+
 import pEpIOSToolbox
 import MessageModel
-import PEPObjCAdapterFramework
 
 
 protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
     func setToolbarItemsEnabledState(to newValue: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
+    func showEmail(forCellAt: IndexPath)
+    func showEditDraftInComposeView()
     func select(itemAt indexPath: IndexPath)
+    func deselect(itemAt indexPath: IndexPath)
 }
 
 // MARK: - EmailListViewModel
@@ -69,6 +72,13 @@ class EmailListViewModel: EmailDisplayViewModel {
         return Folder.localizedName(realName: folderToShow.title)
     }
 
+    /// This is used to handle the selection row when it receives an update
+    /// and also when swipeCellAction is performed to store from which cell the action is done.
+    public var lastSelectedIndexPath: IndexPath?
+
+    public var isDraftsPreviewMode: Bool {
+        return folderToShow is UnifiedDraft
+    }
     /// - Parameter indexPath: indexPath to check editability for.
     /// - returns:  Whether or not to show compose view rather then the email for message
     ///             represented by row at given `indexPath`.
@@ -131,19 +141,22 @@ class EmailListViewModel: EmailDisplayViewModel {
         AppSettings.shared.shouldShowTutorialWizard = false
     }
 
-    /// - returns: action to trigger if user clicks destructive button
-    public func getDestructiveAction(forMessageAt index: Int) -> SwipeActionDescriptor {
+    /// Returns the descriptor for the destructive action, it could be archive or trash
+    /// - Parameter index: The index of the row
+    /// - Returns: The descriptor to trigger the action if user taps a destructive button
+    public func getDestructiveDescriptor(forMessageAt index: Int) -> SwipeActionDescriptor {
         let parentFolder = getParentFolder(forMessageAt: index)
         let defaultDestructiveAction: SwipeActionDescriptor
             = parentFolder.defaultDestructiveActionIsArchive
                 ? .archive
                 : .trash
-
         return folderIsOutbox(parentFolder) ? .trash : defaultDestructiveAction
     }
 
-    /// - returns: action to trigger if user clicks "flag" button
-    public func getFlagAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
+    /// Returns the descriptor with the Flag status (May be flag or unflag)
+    /// - Parameter index: The index of the row
+    /// - Returns: The descriptor to trigger the action if user taps "flag" button
+    public func getFlagDescriptor(forMessageAt index: Int) -> SwipeActionDescriptor? {
         let parentFolder = getParentFolder(forMessageAt: index)
         if folderIsDraftsOrOutbox(parentFolder) {
             return nil
@@ -153,8 +166,22 @@ class EmailListViewModel: EmailDisplayViewModel {
         }
     }
 
-    /// - returns: action to trigger if user clicks "more" button
-    public func getMoreAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
+    /// Returns the descriptor with the Read status (May be read or unread)
+    /// - Parameter index: The index of the row
+    /// - Returns: The descriptor to trigger the action if user taps "read" button
+    public func getReadDescriptor(forMessageAt index: Int) -> SwipeActionDescriptor? {
+        let parentFolder = getParentFolder(forMessageAt: index)
+        if folderIsDraftsOrOutbox(parentFolder) {
+            return nil
+        }
+        let seen = messageQueryResults[index].imapFlags.seen
+        return seen ? .unread : .read
+    }
+    
+    /// Returns the descriptor for the option More
+    /// - Parameter index: The index of the row
+    /// - Returns: The descriptor to trigger the action if user taps "More" button
+    public func getMoreDescriptor(forMessageAt index: Int) -> SwipeActionDescriptor? {
         let parentFolder = getParentFolder(forMessageAt: index)
         if folderIsDraftsOrOutbox(parentFolder) {
             return nil
@@ -226,6 +253,11 @@ class EmailListViewModel: EmailDisplayViewModel {
         contactImageTool.clearCache()
     }
 
+    /// Update LastLookAt of the folder to show.
+    public func updateLastLookAt() {
+        folderToShow.updateLastLookAt()
+    }
+
     // MARK: - EmailDisplayViewModelDelegate Overrides
 
     override func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])
@@ -269,11 +301,7 @@ class EmailListViewModel: EmailDisplayViewModel {
         }
     }
 
-    // MARK: - multiple message selection handler
-
-    private var unreadMessages = false
-    private var flaggedMessages = false
-
+    // MARK: - Multiple message selection handler
 
     /// Handles changes of the selected messages in edit mode.
     /// Updates toolbar buttons (maybe more)  accoring to selection.
@@ -288,6 +316,26 @@ class EmailListViewModel: EmailDisplayViewModel {
             delegate.setToolbarItemsEnabledState(to: true)
         } else {
             delegate.setToolbarItemsEnabledState(to: false)
+        }
+    }
+
+    /// Handles did select row action and make a decision what to do next (show different view or something else)
+    public func handleDidSelectRow(indexPath: IndexPath) {
+        guard let del = delegate as? EmailListViewModelDelegate else {
+            Log.shared.errorAndCrash("Wrong Delegate")
+            return
+        }
+
+        if isSelectable(messageAt: indexPath) {
+            lastSelectedIndexPath = indexPath
+            del.select(itemAt: indexPath)
+            if isEditable(messageAt: indexPath) {
+                del.showEditDraftInComposeView()
+            } else {
+                del.showEmail(forCellAt: indexPath)
+            }
+        } else {
+            del.deselect(itemAt: indexPath)
         }
     }
 
@@ -400,6 +448,7 @@ extension EmailListViewModel {
     }
 
     private func setSeenValue(forIndexPath indexPath: [IndexPath], newValue seen: Bool) {
+        updatesEnabled = false
         let messages = indexPath.map { messageQueryResults[$0.row] }
         Message.setSeenValue(to: messages, newValue: seen)
     }

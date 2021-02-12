@@ -10,7 +10,7 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-final class UserInfoViewController: BaseViewController {
+final class UserInfoViewController: UIViewController {
     @IBOutlet weak var manualAccountSetupContainerView: ManualAccountSetupContainerView!
 
     var fields = [UITextField]()
@@ -186,7 +186,6 @@ extension UserInfoViewController: SegueHandlerType {
         view.endEditing(true)
         switch segue.destination {
         case let iMAPSettingsViewController as IMAPSettingsViewController:
-            iMAPSettingsViewController.appConfig = appConfig
             iMAPSettingsViewController.verifiableAccount = verifiableAccount
         default:
             break
@@ -195,7 +194,6 @@ extension UserInfoViewController: SegueHandlerType {
         switch segueIdentifier(for: segue) {
         case .IMAPSettings:
             if let destination = segue.destination as? IMAPSettingsViewController {
-                destination.appConfig = appConfig
                 destination.verifiableAccount = verifiableAccount
             }
             break
@@ -252,7 +250,7 @@ extension UserInfoViewController {
         let userNamePlaceholder = NSLocalizedString("User Name", comment: "User Name placeholder for manual account setup")
         setupView.firstTextField.placeholder = userNamePlaceholder
 
-        let emailPlaceholder = NSLocalizedString("E-mail Address", comment: "Email address placeholder for manual account setup")
+        let emailPlaceholder = NSLocalizedString("Email Address", comment: "Email address placeholder for manual account setup")
         setupView.secondTextField.placeholder = emailPlaceholder
 
         let passwordPlaceholder = NSLocalizedString("Password", comment: "Password placeholder for manual account setup")

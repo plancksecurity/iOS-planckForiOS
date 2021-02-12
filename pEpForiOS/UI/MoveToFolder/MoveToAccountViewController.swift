@@ -8,8 +8,10 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 /// Enables the user to move an IMAP message to a folder of her choice
-class MoveToAccountViewController: BaseViewController {
+class MoveToAccountViewController: UIViewController {
     static let storyboardId = "MoveToAccountViewController"
     @IBOutlet var tableview: UITableView!
     var viewModel: MoveToAccountViewModel?
@@ -30,7 +32,7 @@ class MoveToAccountViewController: BaseViewController {
     }
 
     private func setupTableView() {
-        BaseTableViewController.setupCommonSettings(tableView: tableview)
+        tableview.hideSeperatorForEmptyCells()
     }
 
     private func setupNavigationBar() {
@@ -90,8 +92,7 @@ extension MoveToAccountViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showAccount" {
-            if let vc = segue.destination as? MoveToFolderTableViewController, let appCfg = self.appConfig, let vm = selectedViewModel {
-                vc.appConfig = appCfg
+            if let vc = segue.destination as? MoveToFolderTableViewController, let vm = selectedViewModel {
                 vc.viewModel = vm
             }
         }

@@ -7,7 +7,9 @@
 //
 
 import Foundation
-import PEPObjCAdapterFramework
+
+import MessageModel
+import pEpIOSToolbox
 
 protocol KeySyncHandshakeViewModelDelegate: class {
     func showPicker(withLanguages languages: [String], selectedLanguageIndex: Int?)
@@ -33,33 +35,45 @@ final class KeySyncHandshakeViewModel {
 
     weak var delegate: KeySyncHandshakeViewModelDelegate?
     var fullTrustWords = false //Internal since testing
-    private var languageCode = Locale.current.languageCode
+    private var languageCode = Locale.current.languageCode ?? "en"
     private var meFPR: String?
     private var partnerFPR: String?
     private var isNewGroup = true
-    private let pEpSession: PEPSessionProtocol
-    private var _languages = [PEPLanguage]()
-    private var languages: [PEPLanguage] {
-        guard _languages.isEmpty else {
-            return _languages
-        }
-        do {
-            _languages = try pEpSession.languageList()
-            return _languages
-        } catch {
-            Log.shared.errorAndCrash("%@", error.localizedDescription)
-            return []
-        }
-    }
 
-    init(pEpSession: PEPSessionProtocol = PEPSession()) {
-        self.pEpSession = pEpSession
+    private var _languages = [TrustwordsLanguage]()
+
+    func languages(completion: @escaping ([TrustwordsLanguage]) -> ()) {
+        if !_languages.isEmpty {
+            completion(_languages)
+        } else {
+            TrustwordsLanguage.languages() { [weak self] langs in
+                guard let me = self else {
+                    // UI, this can happen
+                    return
+                }
+
+                if langs.isEmpty {
+                    Log.shared.errorAndCrash("There must be trustwords languages defined")
+                }
+
+                me._languages = langs
+                completion(langs)
+            }
+        }
     }
 
     func didSelect(languageRow: Int) {
-        languageCode = languages[languageRow].code
-        delegate?.closePicker()
-        delegate?.change(handshakeWordsTo: trustWords())
+        languages { [weak self] langs in
+            DispatchQueue.main.async {
+                guard let me = self else {
+                    // UI, this can happen
+                    return
+                }
+                me.languageCode = langs[languageRow].code
+                me.delegate?.closePicker()
+                me.updateTrustwords()
+            }
+        }
     }
 
     func handle(action: Action) {
@@ -80,12 +94,12 @@ final class KeySyncHandshakeViewModel {
         self.meFPR = meFPR
         self.partnerFPR = partnerFPR
         self.isNewGroup = isNewGroup
-        delegate?.change(handshakeWordsTo: trustWords())
+        updateTrustwords()
     }
 
     func didLongPressWords() {
         fullTrustWords = !fullTrustWords
-        delegate?.change(handshakeWordsTo: trustWords())
+        updateTrustwords()
     }
 
     func getMessage() -> String {
@@ -98,30 +112,48 @@ final class KeySyncHandshakeViewModel {
 // MARK: - Private
 
 extension KeySyncHandshakeViewModel {
-    private func trustWords() -> String {
+
+    private func updateTrustwords() {
+        trustWords { [weak self] (trustWords) in
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                return
+            }
+            me.delegate?.change(handshakeWordsTo: trustWords)
+        }
+    }
+
+    private func trustWords(completion: @escaping (String)->Void) {
         guard let meFPR = meFPR, let partnerFPR = partnerFPR else {
             Log.shared.errorAndCrash("Nil meFingerPrints or Nil partnerFingerPrints")
-            return String()
+            completion("")
+            return
         }
-        do {
-            return try pEpSession.getTrustwordsFpr1(meFPR, fpr2: partnerFPR, language: languageCode,
-                                                      full: fullTrustWords)
-        } catch {
-            Log.shared.errorAndCrash("%@", error.localizedDescription)
-            return ""
+        TrustManagementUtil().getTrustwords(forFpr1: meFPR, fpr2: partnerFPR, language: languageCode, full: fullTrustWords) { (trustwords) in
+            DispatchQueue.main.async {
+                completion(trustwords ?? "")
+            }
         }
     }
 
     private func handleChangeLanguageButton() {
-        guard !languages.isEmpty else {
-            Log.shared.errorAndCrash("Wont show picker, no languages to show")
-            return
-        }
-        let languagesNames = languages.map { $0.name }
-        let selectedlanguageIndex = languages.map { $0.code }.firstIndex(of: languageCode)
+        languages { [weak self] langs in
+            DispatchQueue.main.async {
+                guard let me = self else {
+                    // UI, this can happen
+                    return
+                }
+                guard !langs.isEmpty else {
+                    Log.shared.errorAndCrash("Wont show picker, no languages to show")
+                    return
+                }
+                let languagesNames = langs.map { $0.name.capitalized(with: Locale.current) }
+                let selectedlanguageIndex = langs.map { $0.code }.firstIndex(of: me.languageCode)
 
-        delegate?.showPicker(withLanguages: languagesNames,
-                             selectedLanguageIndex: selectedlanguageIndex)
+                me.delegate?.showPicker(withLanguages: languagesNames,
+                                        selectedLanguageIndex: selectedlanguageIndex)
+            }
+        }
     }
 
     private func viewControllerAction(viewModelAction: KeySyncHandshakeViewModel.Action)

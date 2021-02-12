@@ -38,10 +38,21 @@ extension String {
             .nsMarkdownToHtml()? //!!!: //ADAM:
             .replacingOccurrencesOfPepSignatureWithHtmlVersion()
     }
+    
+    public func containsExternalContent() -> Bool {
+        let pattern = """
+(<img.*? src=(3D)?"((https?)|(www)).*?>)
+"""
+        let result = find(pattern: pattern)
+        return result.count > 0
+    }
 
     public func htmlConvertImageLinksToImageMarkdownString(html: String, attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate? = nil) -> String {
 
-        let pattern = "<img\\b(?=\\s)(?=(?:[^>=]|='[^']*'|=\"[^\"]*\"|=[^'\"][^\\s>]*)*?\\ssrc=['\"]([^\"]*)['\"]?)(?:[^>=]|='[^']*'|=\"[^\"]*\"|=[^'\"\\s]*)*\"\\s?\\/?>"
+        //Pattern to get all images tags in the current html
+        let pattern = """
+(<img.*?)(src.*?=.*?)(".*?")(.*?)(\\/*?>)
+"""
 
         let results = html.find(pattern: pattern)
 
@@ -61,9 +72,17 @@ extension String {
         return htmlConverted
     }
 
+    /// Remove all font-faces (@font-face{...})
+    ///
+    /// We found a crash trying to show some mails because NSAttributedString has problems with external content in the html. It uses a webview under the hood.
+    /// As any external content in NSAttributedString is potentially dangeurous and font-faces load fonts from external resources, this method prevents the crash.
+    /// To go deeper please read https://pep.foundation/jira/browse/IOS-2434.
+    public mutating func removeFontFaces() {
+        removeRegexMatches(of: #"@font-face\s*\{[^}]*\}"#)
+    }
+
     public func htmlToAttributedString(deleteInlinePictures: Bool = false,
                                        attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate?) -> NSAttributedString {
-
         var htmlWithCitedChars = self
 
         let patternStartBlockqoute = "[<]blockquote[^>]*>(.*?)"
@@ -78,11 +97,13 @@ extension String {
 
         // prepare HTML for HTML foundation framework parsing
         // we change cid to image coded with base64
-        let html = htmlConvertImageLinksToImageMarkdownString(html: htmlWithCitedChars, attachmentDelegate: attachmentDelegate)
+        var html = htmlConvertImageLinksToImageMarkdownString(html: htmlWithCitedChars, attachmentDelegate: attachmentDelegate)
+        html.removeFontFaces()
         let htmlData = html.data(using: .utf8,
                                  allowLossyConversion: true)
         let options: [NSAttributedString.DocumentReadingOptionKey : Any] =
             [.documentType : NSAttributedString.DocumentType.html]
+
         guard let attribString = try? NSAttributedString(data: htmlData ?? Data(),
                                                    options: options,
                                                    documentAttributes: nil) else {

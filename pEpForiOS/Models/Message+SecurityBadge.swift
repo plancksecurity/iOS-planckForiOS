@@ -7,19 +7,18 @@
 //
 
 import MessageModel
-import PEPObjCAdapterFramework
 
 extension Message {
 
     /// Retrieves a status icon matching the status of the given message.
-    ///
-    /// - Returns: pEp security badge image
-    var securityBadgeForContactPicture: UIImage? {
-        let color = PEPUtils.pEpColor(pEpRating: self.pEpRating())
-        var image: UIImage? = nil
-        if color != PEPColor.noColor {
-            image = color.statusIconInContactPicture()
+    func securityBadgeForContactPicture(completion: @escaping (UIImage?)->Void) {
+        pEpRating { (rating) in
+            let color = rating.pEpColor()
+            var image: UIImage? = nil
+            if color != .noColor {
+                image = color.statusIconInContactPicture()
+            }
+            completion(image)
         }
-        return image
     }
 }

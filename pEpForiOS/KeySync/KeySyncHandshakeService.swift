@@ -7,10 +7,10 @@
 //
 
 import MessageModel
-import PEPObjCAdapterFramework
+import pEpIOSToolbox
 
 class KeySyncHandshakeService {
-    private var pEpSyncWizard: KeySyncWizardViewController?
+    private weak var pEpSyncWizard: KeySyncWizardViewController?
 
     init() {
         registerForKeySyncDeviceGroupStateChangeNotification()
@@ -25,7 +25,7 @@ class KeySyncHandshakeService {
 
 extension KeySyncHandshakeService {
 
-    func registerForKeySyncDeviceGroupStateChangeNotification() {
+    private func registerForKeySyncDeviceGroupStateChangeNotification() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handleDeviceGroupStateChangeNotification(_:)),
                                                name: Notification.Name.pEpDeviceGroupStateChange,
@@ -34,29 +34,28 @@ extension KeySyncHandshakeService {
 
     @objc
     private func handleDeviceGroupStateChangeNotification(_ notification: Notification) {
-        guard let wizzard = pEpSyncWizard else {
+        guard let wizard = pEpSyncWizard else {
             // This is a valid case. pEpSyncWizard is initiated on demand and we might currently not
-            // display the wizzard.
+            // display the wizard.
             return
         }
         DispatchQueue.main.async {
-            guard !wizzard.isCurrentlyShowingSuccessfullyGroupedView else {
-                // We want to dismiss any wizzard view but the SuccessfullyGrouped one.
+            guard !wizard.isCurrentlyShowingSuccessfullyGroupedView else {
+                // We want to dismiss any wizard view but the SuccessfullyGrouped one.
                 return
             }
-
-            wizzard.dismiss()
+            wizard.dismiss()
         }
     }
 }
 
 extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
-    func showHandshake(me: PEPIdentity,
-                       partner: PEPIdentity,
-                       isNewGroup: Bool,
-                       completion: ((PEPSyncHandshakeResult)->())? = nil) {
 
-        guard let meFPR = me.fingerPrint, let partnerFPR = partner.fingerPrint else {
+    public func showHandshake(meFingerprint: String?,
+                              partnerFingerprint: String?,
+                              isNewGroup: Bool,
+                              completion: ((KeySyncHandshakeResult)->())? = nil) {
+        guard let meFPR = meFingerprint, let partnerFPR = partnerFingerprint else {
             Log.shared.errorAndCrash("Missing FPRs")
             return
         }
@@ -69,72 +68,49 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            me.pEpSyncWizard = UIUtils.presentKeySyncWizard(meFPR: meFPR,
-                                                            partnerFPR: partnerFPR,
-                                                            isNewGroup: isNewGroup) { action in
-                                                                switch action {
-                                                                case .accept:
-                                                                    completion?(.accepted)
-                                                                case .cancel:
-                                                                    completion?(.cancel)
-                                                                case .decline:
-                                                                    completion?(.rejected)
-                                                                }
+            me.pEpSyncWizard = UIUtils.showKeySyncWizard(meFPR: meFPR,
+                                                         partnerFPR: partnerFPR,
+                                                         isNewGroup: isNewGroup) { action in
+                switch action {
+                case .accept:
+                    completion?(.accepted)
+                case .cancel:
+                    completion?(.cancel)
+                case .decline:
+                    completion?(.rejected)
+                }
             }
         }
     }
 
-    func cancelHandshake() {
+    public func cancelHandshake() {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                // Valid case. We might have been dismissed already.
                 return
             }
             me.pEpSyncWizard?.dismiss()
         }
     }
 
-    func showSuccessfullyGrouped() {
+    public func showSuccessfullyGrouped() {
         guard let pEpSyncWizard = pEpSyncWizard else {
+            // Valid case. We might have been dismissed already.
             return
         }
         let completedViewIndex = pEpSyncWizard.views.count - 1
         DispatchQueue.main.async { [weak self] in
-            self?.pEpSyncWizard?.goTo(index: completedViewIndex)
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                return
+            }
+            me.pEpSyncWizard?.goTo(index: completedViewIndex)
         }
     }
 
     // We must dismiss pEpSyncWizard before presenting pEpSyncWizard error view.
-    func showError(error: Error?,
-                   completion: ((KeySyncErrorResponse) -> ())? = nil) {
-
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
-            }
-            guard let presentingViewController = me.pEpSyncWizard?.presentingViewController else {
-                //presentingViewController is nil then, pEpSyncWizard failed to be shown.
-                //So we call tryAgain to engine, to give it a another try to show pEpSyncWizard.
-                completion?(.tryAgain)
-                return
-            }
-
-            let isNewGroup = me.pEpSyncWizard?.isNewGroup ?? true
-
-            me.pEpSyncWizard?.dismiss(animated: true) {
-                KeySyncErrorView.presentKeySyncError(viewController: presentingViewController,
-                                                     isNewGroup: isNewGroup,
-                                                     error: error) {
-                    action in
-                    switch action {
-                    case .tryAgain:
-                        completion?(.tryAgain)
-                    case .notNow:
-                        completion?(.notNow)
-                    }
-                }
-            }
-        }
+    public func showError(error: Error?, completion: ((KeySyncErrorResponse) -> ())? = nil) {
+        let isNewGroup = pEpSyncWizard?.isNewGroup ?? true
+        UIUtils.showKeySyncErrorView(isNewGroup: isNewGroup, error: error, completion: completion)
     }
 }

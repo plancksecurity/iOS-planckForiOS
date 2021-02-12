@@ -80,6 +80,9 @@ struct DisplayUserError: LocalizedError {
     /// Some error types have extra info to be used
     var extraInfo: String?
 
+    /// Contains the underlying `NSError`'s `localizedDescription`, if available.
+    var errorString: String?
+
 
     /// Creates a user friendly error to present in an alert or such. I case the error type is not
     /// suitable to display to the user (should fail silently), nil is returned.
@@ -98,11 +101,13 @@ struct DisplayUserError: LocalizedError {
                 extraInfo = account
             case .illegalState(_):
                 break
-            case .connectionLost(_):
+            case .connectionLost(_, let errorDescription):
+                errorString = errorDescription
                 break
             case .connectionTerminated(_):
                 break
-            case .connectionTimedOut(_):
+            case .connectionTimedOut(_, let errorDescription):
+                errorString = errorDescription
                 break
             case .badResponse(_):
                 break
@@ -286,7 +291,7 @@ struct DisplayUserError: LocalizedError {
 
     static private func type(forError error: BackgroundError.PepError) -> ErrorType {
         switch error {
-        case .encryptionError:
+        case .passphraseRequired, .wrongPassphrase:
             return .internalError
         }
     }
@@ -312,7 +317,7 @@ struct DisplayUserError: LocalizedError {
 
     // MARK: - TITLE & MESSAGE
 
-    public var title: String? {
+    public var title: String {
         switch type {
         case .authenticationFailed:
             return NSLocalizedString("Login Failed",
@@ -378,10 +383,18 @@ struct DisplayUserError: LocalizedError {
                 comment:
                 "Error message shown to the user in case we can not connect to the IMAP server")
         case .brokenServerConnectionSmtp:
+            if let theErrorString = errorString {
+                return String(format:NSLocalizedString(
+                    "We could not connect to the SMTP server: %1@",
+                    comment:
+                    "Error message shown to the user in case we can not connect to the SMTP server"),
+                              theErrorString)
+            } else {
             return NSLocalizedString(
                 "We could not connect to the SMTP server.",
                 comment:
                 "Error message shown to the user in case we can not connect to the SMTP server")
+            }
         case .internalError:
             return NSLocalizedString(
                 "An internal error occured. Sorry, that should not happen.",

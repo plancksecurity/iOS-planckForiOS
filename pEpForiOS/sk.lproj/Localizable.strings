@@ -15,10 +15,10 @@
 "%1$@ wrote on %2$@:" = "%1$@ napísal na %2$@:";
 
 /* Reply to single contact, without date. Placeholder: Name. */
-"%1$@ wrote:" = "Napísal (-a)% 1 $ @:";
+"%1$@ wrote:" = "Napísal (-a) %1$@:";
 
 /* Number of filters instead of filter name */
-"%d filters" = "% d filtre";
+"%d filters" = "%d filtre";
 
 /* error message for .missingPassword */
 "A non-empty password is required" = "Heslo je povinné";
@@ -196,6 +196,12 @@
 /* Account delete confirmation comment */
 "delete account message" = "vymazať správu účtu";
 
+/* ComposeTableView: button to decide to delete changes made on a drafted mail. */
+"Delete Changes" = "Odstrániť zmeny";
+
+/* Device field, reporting issue */
+"Device" = "zariadenie";
+
 /* keysync alert leave device group disable */
 "Disable" = "Zakázať";
 
@@ -212,12 +218,18 @@
    Display Name TextField Placeholder in Login Screen */
 "Display Name" = "Zobraziť meno";
 
-/* Email address placeholder for manual account setup
-   Email TextField Placeholder in Login Screen */
-"E-mail Address" = "E-mailová adresa";
+/* Name of Drafts folder (showing draft messages, of one account) */
+"Drafts" = "Koncepty";
+
+/* Edit - Right bar button item in Email List */
+"Edit" = "Upraviť";
 
 /* Email */
 "Email" = "E-mail";
+
+/* Email address placeholder for manual account setup
+   Email TextField Placeholder in Login Screen */
+"Email Address" = "E-mailová adresa";
 
 /* Title of alert: a required field is empty */
 "Empty Field" = "Prázdne pole";
@@ -234,6 +246,9 @@
 /* possible private status action */
 "Enable Protection" = "Povoľte ochranu súkromia";
 
+/* Enter passphrase alert - message - shown while pEp sync is running */
+"Enter passphrase for p≡p Sync:" = "Zadajte prístupové heslo pre synchronizáciu p≡p:";
+
 /* Tableview section header: Enterprise Features */
 "Enterprise Features" = "Enterprise Funkcie";
 
@@ -247,9 +262,6 @@
 
 /* Generic error message on trying to import a key */
 "Error occurred. No key imported." = "Vyskytla sa chyba. Nebol importovaný žiadny kľúč.";
-
-/* spearator string bewtween name and date */
-"Exp. date:" = "Exp. dátum:";
 
 /* Settings: Cell (button) title to view Extra Keys setting */
 "Extra Keys" = "Extra kľúče";
@@ -294,6 +306,9 @@
 /* possible privacy status action */
 "Handshake" = "Handshake";
 
+/* Contact Support - Mail subject */
+"Help" = "Získať pomoc";
+
 /* PGPKeyImportSettingViewModel - part of pgpKeyImportTitle that should link to support page (... click _here_ for info ...) */
 "here" = "tu";
 
@@ -326,9 +341,6 @@
 
 /* Account settings title IMAP */
 "IMAP Settings" = "Nastavenia IMAP";
-
-/* Empty username message */
-"Imap username must not be empty." = "Používateľské meno pre IMAP nesmie byť prázdne.";
 
 /* Select certificate - import certificate date */
 "Import date" = "Dátum importu";
@@ -462,9 +474,11 @@
 /* keySyncWizard intro view Next button title */
 "Next" = "Ďalej";
 
-/* Alert button while client certificate is importing: Try again? No
-   Title for no button (cancel) when trying to import a key */
+/* Alert button while client certificate is importing: Try again? No */
 "No" = "Nie";
+
+/* Error when no account found for set_own_key UI */
+"No account found with the given email address." = "S daným e-mailom sa nenašiel žiadny účet.";
 
 /* Error when no account found for set_own_key UI */
 "No account found with the given email." = "S daným e-mailom sa nenašiel žiadny účet.";
@@ -540,6 +554,13 @@
 /* Passive mode title */
 "Passive mode" = "Pasívny režim";
 
+/* Passphrase placeholder
+   Passphrase title */
+"Passphrase" = "prístupová fráza";
+
+/* Passphrase too long - title */
+"Passphrase too long" = "Heslo je príliš dlhé";
+
 /* password */
 "Password" = "Heslo";
 
@@ -612,6 +633,12 @@
 /* Fail to log in, email does not match account type */
 "Please enter a valid Gmail address." = "Zadajte platnú adresu Gmail.";
 
+/* Please enter one shorter - message */
+"Please enter one shorter" = "Zadajte jednu kratšiu";
+
+/* Passphrase message */
+"Please enter the passphrase to continue" = "Pokračujte zadaním prístupovej frázy";
+
 /* Description for client certificate password screen */
 "Please enter the password of the certificate to import it:" = "Ak chcete importovať certifikát, zadajte heslo certifikátu:";
 
@@ -627,7 +654,8 @@
 /* Validation error for set_own_key UI */
 "Please provide an email and a fingerprint. The email must match an existing account." = "Uveďte e-mailovú adresu a odtlačok prsta. E-mailová adresa sa musí zhodovať s existujúcim účtom.";
 
-/* Port placeholder for manual account IMAP setup
+/* Port label in account settings
+   Port placeholder for manual account IMAP setup
    Port placeholder for manual account SMTP setup */
 "Port" = "Port";
 
@@ -665,8 +693,8 @@
 "Reply All" = "Odpovedať všetkým";
 
 /* Account settings confirm to reset identity title alert
-   Account settings reset identity
    Reset account identity button title
+   Reset label in account settings
    Settings: cell (button) title to view the trust contacts option */
 "Reset" = "Resetovať";
 
@@ -709,10 +737,17 @@
 /* Alert title before trusting an account */
 "Security Alert" = "Bezpečnostné upozornenie";
 
+/* Select all emails */
+"Select all" = "Vybrať všetko";
+
+/* Name of Sent folder (showing messages to send, of one account) */
+"Sent" = "Odoslaná";
+
 /* Privacy status suggestion */
 "Separately verify the content of this message with your communication partner." = "Obsah tejto správy si overte osobitne u svojho komunikačného partnera.";
 
-/* Server placeholder for manual account IMAP setup
+/* Server label in account settings
+   Server placeholder for manual account IMAP setup
    Server placeholder for manual account SMTP setup */
 "Server" = "server";
 
@@ -727,8 +762,15 @@
    Settings view title */
 "Settings" = "Nastavenia";
 
+/* Enter passphrase alert - Negative button text - shown while pEp sync is running */
+"Shutdown p≡p Sync" = "Vypnite synchronizáciu p≡p";
+
 /* Login */
 "Sign In" = "Prihlásiť sa";
+
+/* Edit Signature title
+   Signature label in account settings */
+"Signature" = "Podpis";
 
 /* Start up tutorial skip button */
 "Skip" = "Preskočiť";
@@ -748,9 +790,6 @@
 /* Account settings title SMTP */
 "SMTP Settings" = "Nastavenia SMTP";
 
-/* Empty username message */
-"Smtp username must not be empty." = "Používateľské meno pre IMAP nesmie byť prázdne.";
-
 /* Title for address filter */
 "some address" = "nejaká adresa";
 
@@ -768,6 +807,12 @@
 
 /* AccountSettings viewModel no account error */
 "Something went wrong, please try again later" = "Niečo sa pokazilo. Skúste neskôr prosím";
+
+/* Name of Spam folder (showing messages marked as spam by the server, of one account) */
+"Spam" = "Nevyžiadaná";
+
+/* SSL/TLS (ConnectionTransport) */
+"SSL/TLS" = "SSL/TLS";
 
 /* Stop/trust button in handshake overview */
 "Start Trusting" = "Začať dôverovať";
@@ -802,6 +847,9 @@
 
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "Správu nebolo možné odoslať. Skúste neskôr prosím.";
+
+/* Passphrase message */
+"The passphrase you entered is wrong. Please enter it again to continue" = "Zadaná prístupová fráza je nesprávna. Ak chcete pokračovať, zadajte ho znova";
 
 /* error message for .minimumLengthUsername */
 "The username must contain more than 1 characters" = "Používateľské meno musí obsahovať viac ako 1 znak";
@@ -890,7 +938,8 @@
 /* UI alert title for transport protocol */
 "Transport protocol" = "Zabezpečenie prenosu";
 
-/* TransportSecurity placeholder for manual account IMAP setup
+/* Transport security label in account settings
+   TransportSecurity placeholder for manual account IMAP setup
    TransportSecurity placeholder for manual account SMTP setup */
 "Transport Security" = "Zabezpečenie prenosu";
 
@@ -899,12 +948,6 @@
 
 /* Alert trust button title before trusting an account */
 "Trust" = "Dôvera";
-
-/* Action name to be suggested at the moment of revert */
-"Trust Confirmation" = "Potvrdenie dôvery";
-
-/* Action name to be suggested at the moment of revert */
-"Trust Rejection" = "Zamietnutie dôvery";
 
 /* keySyncWizard error view Try Again button title */
 "Try Again" = "Skúste to znova";
@@ -917,9 +960,6 @@
 
 /* Undo trust change verification button title */
 "Undo" = "Vrátenie späť";
-
-/* Undo trust change verification alert title */
-"Undo (actionName)" = "Vrátiť späť (actionName)";
 
 /* read button in slide-left menu */
 "Unflag" = "zrušiť označenie";
@@ -953,10 +993,19 @@
 /* setting row title: Unsecure reply warning */
 "Unsecure reply warning" = "Varovanie nezabezpečenej odpovede";
 
+/* PGPKeyImportSetting - Use a Passphrase for new keys */
+"Use a passphrase for new keys" = "Použite prístupovú frázu pre nové kľúče";
+
+/* Settings: title for enable/disable usePEPFolder feature */
+"Use p≡p Folder For Sync Messages" = "Use p≡p folder for Sync messages";
+
 /* User Name placeholder for manual account IMAP setup
    User Name placeholder for manual account setup
    User Name placeholder for manual account SMTP setup */
 "User Name" = "Meno používateľa";
+
+/* User name label in account settings */
+"Username" = "Používateľské meno";
 
 /* Empty username message */
 "Username must not be empty." = "Používateľské meno nesmie byť prázdne.";
@@ -971,6 +1020,9 @@
 "We could not connect to the IMAP server." = "Nepodarilo sa pripojiť k serveru IMAP.";
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
+"We could not connect to the SMTP server: %1@" = "K serveru SMTP sa nepodarilo pripojiť.";
+
+/* Error message shown to the user in case we can not connect to the SMTP server */
 "We could not connect to the SMTP server." = "K serveru SMTP sa nepodarilo pripojiť.";
 
 /* Client certificate import: wrong password alert message */
@@ -978,6 +1030,9 @@
 
 /* Client certificate import: wrong password alert message */
 "We could not import the certificate. We do not have permissions to open this file.\n\nTry again?" = "Certifikát sa nepodarilo importovať. Nemáme povolenie na otvorenie tohto súboru.\n\nSkúste to znova?";
+
+/* Passphrase message */
+"We recommend to use device encryption instead of using passphrases, because they're securing all data, not only keys. In case you want to use a passphrase anyway, please enter a passphrase here and enable it." = "Odporúčame používať šifrovanie zariadenia namiesto používania prístupových fráz, pretože zabezpečujú všetky údaje, nielen kľúče. Ak chcete aj tak použiť prístupovú frázu, zadajte sem prístupovú frázu a povoľte ju.";
 
 /* KeySyncWizard complete message - two devices */
 "We successfully created a device group. All your privacy is now synchronized." = "Úspešne sme vytvorili skupinu zariadení. Všetko vaše súkromie je teraz synchronizované.";
@@ -1009,8 +1064,7 @@
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Chybné Trustwords";
 
-/* Alert button while client certificate is importing: Try again? Yes
-   Title for yes button when trying to import a key */
+/* Alert button while client certificate is importing: Try again? Yes */
 "Yes" = "Áno";
 
 /* Confirm less secure answer message alert body */
@@ -1019,11 +1073,11 @@
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Chystáte sa poslať zabezpečenú správu ako nezabezpečenú. Ak sa rozhodnete pokračovať, môže dôjsť k úniku dôverných informácií, čo vás a vašich komunikačných partnerov ohrozí. Ste si istý, že chcete pokračovať?";
 
-/* Message when asking user for confirmation about importing a key */
-"You are about to import the following key:\n\nName: %1$@\nFingerprint: %2$@\n\nAre you sure you want to import and use this key?" = "Chystáte sa importovať nasledujúci kľúč:\n\nMeno: %1$@\nOdtlačok prsta PGP: %2$@\n\nNaozaj chcete importovať a používať tento kľúč?";
-
 /* Tutorial First text */
 "You can close this tutorial anytime with the Skip button." = "Túto príručku môžete kedykoľvek zavrieť pomocou tlačidla Preskočiť.";
+
+/* PGPKeyImportSetting row title when grouped */
+"You can not import keys while the device is in a device group." = "You can not import keys while the device is in a device group.";
 
 /* alert error message certificate delete */
 "You can only delete certificates that are not connected to an account. The certificate is currently used for the following account: (by)" = "Môžete odstrániť iba certifikáty, ktoré nie sú pripojené k účtu. Certifikát sa momentálne používa pre tento účet: (podľa)";

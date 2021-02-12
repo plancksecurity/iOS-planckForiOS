@@ -15,11 +15,15 @@ protocol LoginViewControllerDelegate: class  {
     func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController)
 }
 
-final class LoginViewController: BaseViewController {
+final class LoginViewController: UIViewController {
 
+    @IBOutlet weak var centerX: NSLayoutConstraint!
+    @IBOutlet weak var manualSetupWidth: NSLayoutConstraint!
+    @IBOutlet weak var leadingZero: NSLayoutConstraint!
     weak var delegate: LoginViewControllerDelegate?
-
+    
     @IBOutlet private weak var pepSyncLabel: UILabel!
+    @IBOutlet private weak var syncStackView: UIStackView!
     @IBOutlet private weak var user: AnimatedPlaceholderTextfield!
     @IBOutlet private weak var password: AnimatedPlaceholderTextfield!
     @IBOutlet private weak var emailAddress: AnimatedPlaceholderTextfield!
@@ -27,7 +31,7 @@ final class LoginViewController: BaseViewController {
     @IBOutlet private weak var dismissButton: UIButton!
     @IBOutlet private weak var dismissButtonLeft: UIButton!
     @IBOutlet private weak var loginButtonIPadLandscape: UIButton!
-    @IBOutlet private weak var manualConfigButton: UIButton!
+    @IBOutlet private weak var manualConfigButton: TwoLinesButton!
     @IBOutlet private weak var mainContainerView: UIView!
     @IBOutlet private weak var stackView: UIStackView!
     @IBOutlet private weak var scrollView: DynamicHeightScrollView!
@@ -39,6 +43,7 @@ final class LoginViewController: BaseViewController {
     var viewModel: LoginViewModel?
     var offerManualSetup = false
 
+    @IBOutlet weak var pepSyncLeadingBiggerThan: NSLayoutConstraint!
     var isCurrentlyVerifying = false {
         didSet {
             updateView()
@@ -68,6 +73,9 @@ final class LoginViewController: BaseViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setManualSetupButtonHidden(manualConfigButton.isHidden)
+        syncStackView.axis = UIDevice.isSmall && UIDevice.isLandscape ? .vertical : .horizontal
+        syncStackView.superview?.layoutIfNeeded()
+        manualConfigButton.contentHorizontalAlignment = UIDevice.isPortrait ? .right : .left
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
@@ -89,11 +97,11 @@ final class LoginViewController: BaseViewController {
                              offerManualSetup: false)
             return
         }
-        guard email.isProbablyValidEmail() else {
-            handleLoginError(error: LoginViewController.LoginError.invalidEmail,
-                             offerManualSetup: false)
-            return
-        }
+
+        // Allow _any_ email address, don't check anything
+        // (was calling `email.isProbablyValidEmail` and reporting
+        // `LoginViewController.LoginError.invalidEmail` in case).
+
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
@@ -118,7 +126,7 @@ final class LoginViewController: BaseViewController {
         // isOAuth2Possible is use to hide password field only if isOauthAccount is false and the
         // user type a possible ouath in the email textfield.
         if vm.verifiableAccount.accountType.isOauth {
-            let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
+            let oauth = OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer()
             vm.loginWithOAuth2(viewController: self,
                                emailAddress: email,
                                userName: userName,
@@ -192,13 +200,12 @@ extension LoginViewController: UITextFieldDelegate {
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        guard UIDevice.current.userInterfaceIdiom != .pad else { return }
-        //If is iOS13+ then this will be trigger in keyboard will appear
-        if !ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 13,
-                                                                          minorVersion: 0,
-                                                                          patchVersion: 0)) {
-            scrollView.scrollAndMakeVisible(textField)
-        }
+
+        let item = textField.inputAssistantItem
+        item.leadingBarButtonGroups = []
+        item.trailingBarButtonGroups = []
+
+        scrollView.scrollAndMakeVisible(textField)
     }
 
     func textField(_ textField: UITextField,
@@ -250,7 +257,6 @@ extension LoginViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("fail to cast to UserInfoViewController")
                     return
             }
-            vc.appConfig = appConfig
             // Give the next model all that we know.
             vc.verifiableAccount = vm.verifiableAccount
         default:
@@ -266,7 +272,7 @@ extension LoginViewController: AccountVerificationResultDelegate {
     func didVerify(result: AccountVerificationResult) {
         GCD.onMain() { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost MySelf")
+                Log.shared.lostMySelf()
                 return
             }
             LoadingInterface.removeLoadingInterface()
@@ -305,7 +311,6 @@ extension LoginViewController: LoginViewModelOAuth2ErrorDelegate {
 extension LoginViewController {
     enum LoginError: Error {
         case missingEmail
-        case invalidEmail
         case missingPassword
         case noConnectData
         case missingUsername
@@ -318,11 +323,8 @@ extension LoginViewController.LoginError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .missingEmail:
-            return NSLocalizedString("A valid email is required",
+            return NSLocalizedString("A valid email address is required",
                                      comment: "error message for .missingEmail")
-        case .invalidEmail:
-            return NSLocalizedString("A valid email is required",
-                                     comment: "error message for .invalidEmail")
         case .missingPassword:
             return NSLocalizedString("A non-empty password is required",
                                      comment: "error message for .missingPassword")
@@ -365,34 +367,6 @@ extension LoginViewController {
         setManualSetupButtonHidden(true)
     }
 
-    private func hidePasswordTextField() {
-        UIView.animate(withDuration: 0.2,
-                       delay: 0,
-                       options: [.curveEaseInOut, .beginFromCurrentState],
-                       animations: { [weak self] in
-                        self?.password.alpha = 0
-            }, completion: { [weak self] completed in
-                guard completed else { return }
-                UIView.animate(withDuration: 0.2) {
-                    self?.password.isHidden = true
-                }
-        })
-    }
-
-    private func showPasswordTextField() {
-        UIView.animate(withDuration: 0.2, animations: { [weak self] in
-            self?.password.isHidden = false
-            }, completion: { [weak self] completed in
-                guard completed else { return }
-                UIView.animate(withDuration: 0.2,
-                               delay: 0,
-                               options: [.curveEaseInOut, .beginFromCurrentState],
-                               animations: { [weak self] in
-                                self?.password.alpha = 1.0
-                    }, completion: nil)
-        })
-    }
-
     private func configureAppearance() {
         if #available(iOS 13, *) {
             Appearance.customiseForLogin(viewController: self)
@@ -408,7 +382,7 @@ extension LoginViewController {
     }
 
     private func handleLoginError(error: Error, offerManualSetup: Bool) {
-        Log.shared.error("%@", "\(error)")
+        Log.shared.log(error: error)
         isCurrentlyVerifying = false
 
         guard let vm = viewModel else {
@@ -416,7 +390,7 @@ extension LoginViewController {
             return
         }
 
-        var title: String?
+        var title: String
         var message: String?
 
         if let oauthError = error as? OAuthAuthorizerError,
@@ -431,29 +405,20 @@ extension LoginViewController {
                 Log.shared.errorAndCrash("Login should not do ouath with other email address")
             }
         } else {
-            guard let error = DisplayUserError(withError: error) else {
+            guard let displayError = DisplayUserError(withError: error) else {
                 // Do nothing. The error type is not suitable to bother the user with.
                 return
             }
-            title = error.title
-            message = error.localizedDescription
+            title = displayError.title
+            message = displayError.errorDescription
         }
-
-        let alertView = UIAlertController.pEpAlertController(title: title,
-                                                             message: message,
-                                                             preferredStyle: .alert)
-        alertView.addAction(UIAlertAction(
-            title: NSLocalizedString(
-                "OK",
-                comment: "UIAlertAction ok after error"),
-            style: .default, handler: { [weak self] action in
-                guard let me = self else {
-                    Log.shared.lostMySelf()
-                    return
-                }
-                me.setManualSetupButtonHidden(!offerManualSetup)
-        }))
-        present(alertView, animated: true, completion: nil)
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.setManualSetupButtonHidden(!offerManualSetup)
+        }
     }
 
     private func configureView() {
@@ -489,9 +454,6 @@ extension LoginViewController {
             target: self, action: #selector(LoginViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
 
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            scrollView.isScrollEnabled = false
-        }
         setManualSetupButtonHidden(true)
         hideSpecificDeviceButton()
         configureAnimatedTextFields()
@@ -524,7 +486,7 @@ extension LoginViewController {
                                                  comment: "Password TextField Placeholder in Login Screen")
 
         emailAddress.textColorWithText = .pEpGreen
-        emailAddress.placeholder = NSLocalizedString("E-mail Address",
+        emailAddress.placeholder = NSLocalizedString("Email Address",
                                                      comment: "Email TextField Placeholder in Login Screen")
     }
 
@@ -552,18 +514,25 @@ extension LoginViewController {
     }
 
     private func setManualSetupButtonHidden(_ hidden: Bool) {
+        let hasChanged = manualConfigButton.isHidden != hidden
         manualConfigButton.isHidden = hidden
-        pEpSyncViewCenterHConstraint.isActive = hidden
-        UIView.animate(withDuration: 0.25,
-                       delay: 0,
-                       options: .curveEaseInOut,
-                       animations: { [weak self] in
-                        guard let me = self else {
-                            Log.shared.lostMySelf()
-                            return
-                        }
-                        me.mainContainerView.layoutIfNeeded()
-        })
+        if UIDevice.isPortrait || (UIDevice.isIpad && UIDevice.isLandscape) {
+            pEpSyncViewCenterHConstraint.isActive = hidden
+            centerX.isActive = hidden
+            leadingZero.isActive = !hidden
+            pepSyncLeadingBiggerThan.isActive = hidden
+            manualSetupWidth.isActive = hidden
+
+            UIView.animate(withDuration: 0.5) { [weak self] in
+                guard let me = self else {
+                    //Valid case: might be dismmissed already
+                    return
+                }
+                if hasChanged {
+                    me.view.layoutIfNeeded()
+                }
+            }
+        }
     }
 
     private func updateView() {
@@ -599,7 +568,7 @@ extension LoginViewController {
 extension LoginViewController {
     private func showiCloudAlert() {
         func openiCloudInfoInBrowser() {
-            let urlString = "https://support.apple.com/en-jo/HT204397"
+            let urlString = "https://support.apple.com/en-us/HT204174"
             guard let url = URL(string: urlString) else {
                 Log.shared.errorAndCrash(message: "Not a URL? \(urlString)")
                 return
@@ -608,42 +577,28 @@ extension LoginViewController {
                                       options: [:],
                                       completionHandler: nil)
         }
-
-        UIUtils.showTwoButtonAlert(withTitle: NSLocalizedString("iCloud",
-                                                                comment: "Alert title for iCloud instructions"),
-                                   message: NSLocalizedString("You need to create an app-specific password in your iCloud account.",
-                                                              comment: "iCloud instructions"),
-                                   cancelButtonText: NSLocalizedString("OK",
-                                                                       comment: "OK (dismiss) button for iCloud instructions alert"),
-                                   positiveButtonText: NSLocalizedString("Info",
-                                                                         comment: "Info button for showing iCloud page"),
+        UIUtils.showTwoButtonAlert(withTitle: NSLocalizedString("iCloud", comment: "Alert title for iCloud instructions"),
+                                   message: NSLocalizedString("You need to create an app-specific password in your iCloud account.", comment: "iCloud instructions"),
+                                   cancelButtonText: NSLocalizedString("OK", comment: "OK (dismiss) button for iCloud instructions alert"),
+                                   positiveButtonText: NSLocalizedString("Info", comment: "Info button for showing iCloud page"),
                                    cancelButtonAction: {},
                                    positiveButtonAction: openiCloudInfoInBrowser)
     }
 }
-
 // MARK: - Accessibility
 
 extension LoginViewController {
 
     private func setFonts() {
         emailAddress.font = UIFont.pepFont(style: .callout, weight: .regular)
-        emailAddress.adjustsFontForContentSizeCategory = true
         password.font = UIFont.pepFont(style: .callout, weight: .regular)
-        password.adjustsFontForContentSizeCategory = true
         user.font = UIFont.pepFont(style: .callout, weight: .regular)
-        user.adjustsFontForContentSizeCategory = true
-        loginButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
-        loginButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        dismissButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
-        dismissButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        manualConfigButton.titleLabel?.font = UIFont.pepFont(style: .callout, weight: .regular)
-        manualConfigButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        dismissButtonLeft.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
-        dismissButtonLeft.titleLabel?.adjustsFontForContentSizeCategory = true
-        loginButtonIPadLandscape.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
-        loginButtonIPadLandscape.titleLabel?.adjustsFontForContentSizeCategory = true
-        pepSyncLabel.font = UIFont.pepFont(style: .callout, weight: .regular)
-        pepSyncLabel.adjustsFontForContentSizeCategory = true
+        loginButton.setPEPFont(style: .body, weight: .regular)
+        dismissButton.setPEPFont(style: .body, weight: .regular)
+        manualConfigButton.setPEPFont(style: .callout, weight: .regular)
+        dismissButtonLeft.setPEPFont(style: .body, weight: .regular)
+        loginButtonIPadLandscape.setPEPFont(style: .body, weight: .regular)
+        pepSyncLabel.setPEPFont(style: .callout, weight: .regular)
     }
 }
+

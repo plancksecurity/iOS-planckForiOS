@@ -12,7 +12,6 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
 import PantomimeFramework
 
 class TestUtil {
@@ -48,23 +47,23 @@ class TestUtil {
     static var initialNumberOfServices = 0
 
     /**
-     Dumps some diff between two NSDirectories to the console.
+     Makes the servers for this account unreachable, for tests that expects failure.
      */
-    static func diffDictionaries(_ dict1: NSDictionary, dict2: NSDictionary) {
-        for (k,v1) in dict1 {
-            if let v2 = dict2[k as! NSCopying] {
-                if !(v1 as AnyObject).isEqual(v2) {
-                    print("Difference in '\(k)': '\(v2)' <-> '\(v1)'")
-                }
-            } else {
-                print("Only in dict1: \(k)")
-            }
+    static func makeServersUnreachable(cdAccount: CdAccount) {
+        guard let cdServers = cdAccount.servers?.allObjects as? [CdServer] else {
+            XCTFail()
+            return
         }
-        for (k,_) in dict2 {
-            if dict1[k as! NSCopying] == nil {
-                print("Only in dict2: \(k)")
-            }
+
+        for cdServer in cdServers {
+            cdServer.address = "localhost"
+            cdServer.port = 2525
         }
+        guard let context = cdAccount.managedObjectContext else {
+            Log.shared.errorAndCrash("The account we are using has been deleted from moc!")
+            return
+        }
+        context.saveAndLogErrors()
     }
 
     // MARK: - Sync Loop
@@ -122,7 +121,7 @@ class TestUtil {
         msg.longMessageFormatted = longMessageFormatted
         msg.sent = dateSent
         if engineProccesed {
-            msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
+            msg.pEpRatingInt = Int(Rating.unreliable.toInt())
         }
         msg.replaceAttachments(with: createAttachments(number: attachments))
         return msg
@@ -131,7 +130,7 @@ class TestUtil {
     static func createMessage(uid: Int, inFolder folder: Folder) -> Message {
         let msg = Message(uuid: "\(uid)", uid: uid, parentFolder: folder)
         XCTAssertEqual(msg.uid, uid)
-        msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
+        msg.pEpRatingInt = Int(Rating.unreliable.toInt())
         return msg
     }
 
@@ -148,14 +147,14 @@ class TestUtil {
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
         guard let imageData = MiscUtil.loadData(bundleClass: TestUtil.self,
                                                 fileName: imageFileName) else {
-            XCTFail()
-            return Attachment(data: nil, mimeType: "meh", contentDisposition: .attachment)
+                                                    XCTFail()
+                                                    return Attachment(data: nil, mimeType: "meh", contentDisposition: .attachment)
         }
 
         let contentDisposition = inlined ? Attachment.ContentDispositionType.inline : .attachment
 
         return Attachment(data: imageData,
-                          mimeType: MimeTypeUtils.MimesType.jpeg,
+                          mimeType: MimeTypeUtils.MimeType.jpeg.rawValue,
                           fileName: imageFileName,
                           contentDisposition: contentDisposition)
     }
@@ -214,18 +213,47 @@ class TestUtil {
                           parentFolder: folder)
         msg.from = blueprint.from
         msg.replaceTo(with: [receiver])
-        msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
+        msg.pEpRatingInt = Int(Rating.unreliable.toInt())
         msg.sent = Date(timeIntervalSince1970: Double(number))
         msg.session.commit()
 
         return msg
     }
 
-    // MARK: - MISC
+    // MARK: - SERVER
 
-    static func replacedCRLFWithLF(data: Data) -> Data {
-        let mData = NSMutableData(data: data)
-        mData.replaceCRLFWithLF()
-        return mData as Data
+    static func setServersTrusted(forCdAccount cdAccount: CdAccount, testCase: XCTestCase) {
+        guard let cdServers = cdAccount.servers?.allObjects as? [CdServer] else {
+            XCTFail("No Servers")
+            return
+        }
+        for server in cdServers {
+            server.automaticallyTrusted = true
+        }
+        guard let context = cdAccount.managedObjectContext else {
+            Log.shared.errorAndCrash("The account we are using has been deleted from moc!")
+            return
+        }
+        context.saveAndLogErrors()
+    }
+
+    // MARK: - ERROR
+
+    class TestErrorContainer: ErrorContainerProtocol { //!!!: rm. AFAICS the implementation is copy & pasted from ErrorContainer. If so, why not use ErrorContainer?
+        var error: Error?
+
+        func addError(_ error: Error) {
+            if self.error == nil {
+                self.error = error
+            }
+        }
+
+        var hasErrors: Bool {
+            return error != nil
+        }
+
+        func reset() {
+            error = nil
+        }
     }
 }

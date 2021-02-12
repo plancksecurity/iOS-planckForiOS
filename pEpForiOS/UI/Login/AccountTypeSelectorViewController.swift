@@ -8,7 +8,9 @@
 
 import UIKit
 
-final class AccountTypeSelectorViewController: BaseViewController {
+import pEpIOSToolbox
+
+final class AccountTypeSelectorViewController: UIViewController {
 
     var viewModel = AccountTypeSelectorViewModel()
     var delegate: AccountTypeSelectorViewModelDelegate?
@@ -23,12 +25,8 @@ final class AccountTypeSelectorViewController: BaseViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         viewModel.delegate = self
-
-        welcomeToPepLabel.font = UIFont.pepFont(style: .largeTitle, weight: .regular)
-        welcomeToPepLabel.adjustsFontForContentSizeCategory = true
-
-        selectAccountTypeLabel.font = UIFont.pepFont(style: .callout, weight: .regular)
-        selectAccountTypeLabel.adjustsFontForContentSizeCategory = true
+        welcomeToPepLabel.setPEPFont(style: .largeTitle, weight: .regular)
+        selectAccountTypeLabel.setPEPFont(style: .callout, weight: .regular)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,19 +59,20 @@ final class AccountTypeSelectorViewController: BaseViewController {
         //as we need a title for the back button of the next view
         //but this title is not show
         //the view in the title are is replaced for a blank view.
-        self.navigationItem.titleView = UIView()
+        navigationItem.titleView = UIView()
         title = NSLocalizedString("Account Select", comment: "account type selector title")
-        self.navigationController?.navigationBar.isHidden = !viewModel.isThereAnAccount()
+        navigationController?.navigationBar.isHidden = !viewModel.isThereAnAccount()
         let imagebutton = UIButton(type: .custom)
-        imagebutton.setImage(UIImage(named: "close-icon"), for: .normal)
+        let image = UIImage(named: "close-icon")
+        imagebutton.setImage(image, for: .normal)
         imagebutton.addTarget(self, action: #selector(backButton), for: .touchUpInside)
         imagebutton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
         let finalBarButton = UIBarButtonItem(customView: imagebutton)
-        self.navigationItem.leftBarButtonItem = finalBarButton
+        navigationItem.leftBarButtonItem = finalBarButton
     }
     
     @objc func backButton() {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 }
 
@@ -94,7 +93,8 @@ extension AccountTypeSelectorViewController: UICollectionViewDataSource {
         return 1
     }
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
         return viewModel.count
     }
 
@@ -132,7 +132,7 @@ extension AccountTypeSelectorViewController: AccountTypeSelectorViewModelDelegat
                                         comment: "No client certificate exists alert message")
         UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
             me.navigationController?.popViewController(animated: true)
@@ -141,14 +141,16 @@ extension AccountTypeSelectorViewController: AccountTypeSelectorViewModelDelegat
 }
 
 extension AccountTypeSelectorViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         var numberOfRows: CGFloat = 2.0
         if UIApplication.shared.statusBarOrientation.isLandscape {
             numberOfRows = 3.0
         }
         // this forces the collection view to have only 2 colums and all the cells with the same size
         let spaceBetweenCells: CGFloat = 30.0
-        let cellwidth = (collectionView.frame.width - spaceBetweenCells)/numberOfRows
+        let cellwidth = (collectionView.frame.width - spaceBetweenCells) / numberOfRows
         let cellHeight = cellwidth/2
         return CGSize(width: cellwidth, height: cellHeight)
     }
@@ -167,7 +169,6 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("accountType is invalid")
                 return
             }
-            vc.appConfig = appConfig
             vc.viewModel = viewModel.loginViewModel()
             vc.delegate = loginDelegate
         case .clientCertManagementSegue:
@@ -175,7 +176,6 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("Invalid state")
                 return
             }
-            dvc.appConfig = appConfig
             dvc.viewModel = viewModel.clientCertificateManagementViewModel()
         }
     }
@@ -183,6 +183,7 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
 
 // MARK: - ClientCertificateImport Delegate
 extension AccountTypeSelectorViewController: ClientCertificateImportViewControllerDelegate {
+
     func certificateCouldImported() {
         viewModel.refreshAccountTypes()
         collectionView.reloadData()

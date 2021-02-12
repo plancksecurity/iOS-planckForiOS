@@ -10,20 +10,16 @@
 import UIKit
 import MessageModel
 
-class ContactCell: UITableViewCell {
+final class ContactCell: UITableViewCell {
     static let reuseId = "ContactCell"
-    
+
+    @IBOutlet weak var pEpStatusImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
-    
+
     var contact: Identity? {
         didSet {
             nameLabel.text = contact?.displayString ?? String()
         }
-    }
-
-    func updateCell(_ identity: Identity) {
-        nameLabel.text = identity.userName
-        emailLabel.text = identity.address
     }
 }
