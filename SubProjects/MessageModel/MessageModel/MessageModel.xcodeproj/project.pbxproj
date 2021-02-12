@@ -350,6 +350,7 @@
 		434C237E25D6C03E00F622DB /* CdAccount+Trusted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15679F012292CAD90051DCC3 /* CdAccount+Trusted.swift */; };
 		434C238225D6C05400F622DB /* OAuth2AccessTokenProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153DDF4A25ADD455008F645F /* OAuth2AccessTokenProtocol.swift */; };
 		434C247425D6C97700F622DB /* OAuth2AccessToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153DDF4925ADD455008F645F /* OAuth2AccessToken.swift */; };
+		434C247825D6C99C00F622DB /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4352FA261DC7A1C20081161A /* KeyChain.swift */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -2994,6 +2995,7 @@
 				434C221125D6996F00F622DB /* CdImapFlags.swift in Sources */,
 				434C21B025D697D800F622DB /* CdServer+PredicateFactory.swift in Sources */,
 				434C237A25D6C02800F622DB /* NSManagedObjectContext+FromObjectID.swift in Sources */,
+				434C247825D6C99C00F622DB /* KeyChain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
