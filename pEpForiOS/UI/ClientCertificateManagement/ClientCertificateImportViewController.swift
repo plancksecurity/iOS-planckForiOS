@@ -97,8 +97,8 @@ extension ClientCertificateImportViewController: ClientCertificateImportViewMode
             showWrongPasswordError()
         case .corruptedFile:
             showCorruptedFileError()
-        case .noPermissions:
-            showPermissionsDeniedError()
+        case .invalidFileType:
+            showInvalidFileTypeError()
         }
     }
 
@@ -135,18 +135,6 @@ extension ClientCertificateImportViewController: UITextFieldDelegate {
 // MARK: - Showing Error
 
 extension ClientCertificateImportViewController {
-
-    private func showPermissionsDeniedError() {
-        UIUtils.showAlertWithOnlyPositiveButton(title: Localized.PermissionsDeniedError.title,
-                                                message: Localized.PermissionsDeniedError.message) { [weak self] in
-                                                    guard let me = self else {
-                                                        Log.shared.lostMySelf()
-                                                        return
-                                                    }
-                                                    me.dismiss(animated: true, completion: nil)
-        }
-    }
-
     private func showCorruptedFileError() {
         let title = Localized.CorruptedFileError.title
         let message = Localized.CorruptedFileError.message
@@ -179,6 +167,20 @@ extension ClientCertificateImportViewController {
                                     // We don't need to do something here. Our expectation is close this alert
                                    })
     }
+
+    private func showInvalidFileTypeError() {
+        let title = Localized.InvalidFileTypeError.title
+        let message = Localized.InvalidFileTypeError.message
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.dismiss(animated: true) {
+                me.dismiss(animated: true)
+            }
+        }
+    }
 }
 
 // MARK: - Localized strings
@@ -190,18 +192,28 @@ private struct Localized {
         static let message = NSLocalizedString("We could not import the certificate. The password is incorrect.\n\nTry again?",
                                                comment: "Client certificate import: wrong password alert message")
     }
+
     struct PermissionsDeniedError {
         static let title = NSLocalizedString("Permissions Denied",
                                              comment: "Client certificate import: PermissionsDenied alert title")
         static let message = NSLocalizedString("We could not import the certificate. We do not have permissions to open this file.\n\nTry again?",
                                                comment: "Client certificate import: wrong password alert message")
     }
+
     struct CorruptedFileError {
         static let title = NSLocalizedString("Corrupted File",
                                              comment: "Client certificate import: corrupted file error alert title")
         static let message = NSLocalizedString("The file could not be imported",
                                                comment: "Client certificate import: corrupted file error alert message")
     }
+
+    struct InvalidFileTypeError {
+        static let title = NSLocalizedString("Invalid Certificate",
+                                             comment: "Client certificate import: File does not look like a certificate title")
+        static let message = NSLocalizedString("The file could not be imported as a certificate",
+                                               comment: "Client certificate import: File does not look like a certificate")
+    }
+
     static let no = NSLocalizedString("No",
                                       comment: "Alert button while client certificate is importing: Try again? No")
     static let yes = NSLocalizedString("Yes",
