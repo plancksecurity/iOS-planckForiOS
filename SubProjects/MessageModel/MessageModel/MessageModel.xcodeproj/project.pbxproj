@@ -341,6 +341,7 @@
 		434C235A25D6B20100F622DB /* EmailConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47EB221E9518006E8F83 /* EmailConnectInfo.swift */; };
 		434C235E25D6B6EB00F622DB /* CdServer+NonOptionalConvenienceAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433E7439225B76E000B84CD9 /* CdServer+NonOptionalConvenienceAccessors.swift */; };
 		434C236225D6B73200F622DB /* AuthMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CADC02563B9B50043077E /* AuthMethod.swift */; };
+		434C236625D6B93A00F622DB /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433E743E225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -2889,6 +2890,7 @@
 				434C217D25D6965300F622DB /* CdAccount.swift in Sources */,
 				434C236225D6B73200F622DB /* AuthMethod.swift in Sources */,
 				434C232725D6A24400F622DB /* FetchMessagesInImapFolderOperation.swift in Sources */,
+				434C236625D6B93A00F622DB /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift in Sources */,
 				434C218C25D696F700F622DB /* MessageModel.xcdatamodeld in Sources */,
 				434C227225D69BA100F622DB /* MessageID.swift in Sources */,
 				434C233625D6A2AA00F622DB /* ImapSyncOperation.swift in Sources */,
