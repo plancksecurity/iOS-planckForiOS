@@ -688,7 +688,11 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         var options = SwipeTableOptions()
         options.transitionStyle = .border
         options.buttonSpacing = 11
-        options.expansionStyle = .destructive(automaticallyDelete: false, timing: .after)
+        if orientation == .right {
+            options.expansionStyle = .destructive(automaticallyDelete: false)
+        } else {
+            options.expansionStyle = .selection
+        }
         return options
     }
 
