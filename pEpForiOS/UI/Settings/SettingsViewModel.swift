@@ -156,30 +156,16 @@ extension SettingsViewModel {
 
     /// This method generates all the sections for the settings view.
     private func generateSections() {
-        items.append(Section(title: sectionTitle(type: .accounts),
-                             footer: sectionFooter(type: .accounts),
-                             rows: generateRows(type: .accounts),
-                             type: .accounts))
-        
-        items.append(Section(title: sectionTitle(type: .globalSettings),
-                             footer: sectionFooter(type: .globalSettings),
-                             rows: generateRows(type: .globalSettings),
-                             type: .globalSettings))
-        
-        items.append(Section(title: sectionTitle(type: .pEpSync),
-                             footer: sectionFooter(type: .pEpSync),
-                             rows: generateRows(type: .pEpSync),
-                             type: .pEpSync))
-        
-        items.append(Section(title: sectionTitle(type: .contacts),
-                             footer: sectionFooter(type: .contacts),
-                             rows: generateRows(type: .contacts),
-                             type: .contacts))
-        
-        items.append(Section(title: sectionTitle(type: .companyFeatures),
-                             footer: sectionFooter(type: .companyFeatures),
-                             rows: generateRows(type: .companyFeatures),
-                             type: .companyFeatures))
+        SettingsViewModel.SectionType.allCases.forEach { (type) in
+            items.append(sectionForType(sectionType: type))
+        }
+    }
+
+    private func sectionForType(sectionType: SectionType) -> Section {
+        return Section(title: sectionTitle(type: sectionType),
+                       footer: sectionFooter(type: sectionType),
+                       rows: generateRows(type: sectionType),
+                       type: sectionType)
     }
 
     /// This method generates all the rows for the section type passed
@@ -259,6 +245,8 @@ extension SettingsViewModel {
             rows.append(generateNavigationRow(type: .resetTrust, isDangerous: true))
         case .companyFeatures:
             rows.append(generateNavigationRow(type: .extraKeys, isDangerous: false))
+        case .tutorial:
+            rows.append(generateNavigationRow(type: .tutorial, isDangerous: false))
         }
         return rows
     }
@@ -325,6 +313,9 @@ extension SettingsViewModel {
         case .companyFeatures:
             return NSLocalizedString("Enterprise Features",
                                      comment: "Tableview section header: Enterprise Features")
+        case .tutorial:
+            return NSLocalizedString("Tutorial",
+                                     comment: "Tableview section header: Tutorial")
         }
     }
 
@@ -333,7 +324,7 @@ extension SettingsViewModel {
     /// - Returns: The title of the footer. If the section is an account, a pepSync or the company features, it will be nil because there is no footer.
     private func sectionFooter(type: SectionType) -> String? {
         switch type {
-        case .pEpSync, .companyFeatures:
+        case .pEpSync, .companyFeatures, .tutorial:
             return nil
         case .accounts:
             return NSLocalizedString("Performs a reset of the privacy settings of your account(s)",
@@ -463,6 +454,14 @@ extension SettingsViewModel {
     /// It also updates the default account if necessary.
     /// - Parameter account: The account to be deleted
     private func delete(account: Account) {
+        account.setKeySyncEnabled(enable: false,
+                                  errorCallback: { error in
+                                    if let theError = error {
+                                        Log.shared.log(error: theError)
+                                    }
+                                  }, successCallback: {
+                                    //All good, nothing to do.
+                                  })
         let oldAddress = account.user.address
         account.delete()
         Session.main.commit()
@@ -499,12 +498,13 @@ extension SettingsViewModel {
 
 extension SettingsViewModel {
     /// Identifies the section in the table view.
-    public enum SectionType {
+    public enum SectionType : String, CaseIterable {
         case accounts
         case globalSettings
         case pEpSync
-        case contacts
         case companyFeatures
+        case tutorial
+        case contacts
     }
 
     /// Identifies semantically the type of row.

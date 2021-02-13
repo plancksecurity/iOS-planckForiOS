@@ -80,7 +80,6 @@
 		B7A46C5E220DBAF00027CCB5 /* OperationQueue+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A46C5D220DBAF00027CCB5 /* OperationQueue+Extension.swift */; };
 		B7A46C62220DCEA80027CCB5 /* NSAttributedString+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A46C61220DCEA80027CCB5 /* NSAttributedString+Parsing.swift */; };
 		B7CE922924E3BC6C00B5A874 /* RoundedCornersButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CE922824E3BC6C00B5A874 /* RoundedCornersButton.swift */; };
-		B7CE922B24E3BD2100B5A874 /* UIButton+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CE922A24E3BD2100B5A874 /* UIButton+extension.swift */; };
 		B7DB7F522213120B003968DA /* SortedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7F512213120B003968DA /* SortedSet.swift */; };
 		B7DB7F5C221315BD003968DA /* pEpIOSToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7911EB421F7358500D7F66F /* pEpIOSToolbox.framework */; };
 		B7DB7F8422144E4E003968DA /* SortedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7F8322144E4E003968DA /* SortedSetTest.swift */; };
@@ -185,7 +184,6 @@
 		B7A46C5D220DBAF00027CCB5 /* OperationQueue+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OperationQueue+Extension.swift"; sourceTree = "<group>"; };
 		B7A46C61220DCEA80027CCB5 /* NSAttributedString+Parsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Parsing.swift"; sourceTree = "<group>"; };
 		B7CE922824E3BC6C00B5A874 /* RoundedCornersButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedCornersButton.swift; sourceTree = "<group>"; };
-		B7CE922A24E3BD2100B5A874 /* UIButton+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+extension.swift"; sourceTree = "<group>"; };
 		B7DB7F512213120B003968DA /* SortedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedSet.swift; sourceTree = "<group>"; };
 		B7DB7F57221315BD003968DA /* pEpIOSToolboxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pEpIOSToolboxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7DB7F5B221315BD003968DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -377,7 +375,6 @@
 				3A0CBAAA23F582B900AE200C /* UITextView+Font.swift */,
 				5B2EDC632551954300DA18A7 /* NonPasteableUITextField.swift */,
 				158A564C24004619003C0D7E /* UIApplication+NavigationStack.swift */,
-				B7CE922A24E3BD2100B5A874 /* UIButton+extension.swift */,
 				5BA2F5E824C997ED00F27099 /* UIDevice+Extension.swift */,
 			);
 			path = UIKit;
@@ -629,7 +626,6 @@
 				37904563223FA486006DAB3B /* Reachability.swift in Sources */,
 				B7911ECC21F8B46600D7F66F /* GCD.swift in Sources */,
 				B7A46C54220C73BE0027CCB5 /* String+Extensions.swift in Sources */,
-				B7CE922B24E3BD2100B5A874 /* UIButton+extension.swift in Sources */,
 				B7CE922924E3BC6C00B5A874 /* RoundedCornersButton.swift in Sources */,
 				B7A46C58220DA6190027CCB5 /* String+Email.swift in Sources */,
 				37904565223FA486006DAB3B /* ReachabilityProtocol.swift in Sources */,
