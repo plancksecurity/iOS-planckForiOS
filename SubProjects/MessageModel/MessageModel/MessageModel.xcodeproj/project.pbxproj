@@ -418,6 +418,7 @@
 		436FD25425DA82A200D929B3 /* PEPSession+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4360AA1922281B7100E62E5A /* PEPSession+Extensions.swift */; };
 		436FD25825DA82CB00D929B3 /* ServerCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8D22901DBA164E000BDE79 /* ServerCredentials.swift */; };
 		436FD25C25DA82E000D929B3 /* ServerCredentials+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E39FD022551F0F0016A1C4 /* ServerCredentials+SessionAware.swift */; };
+		436FD26025DA831000D929B3 /* Server+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E39FC922551E630016A1C4 /* Server+SessionAware.swift */; };
 		43753CC2222D247D002EE98B /* CdMessage+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CC1222D247D002EE98B /* CdMessage+pEp.swift */; };
 		43753CDE222D2DA7002EE98B /* ContentDispositionType+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CDD222D2DA7002EE98B /* ContentDispositionType+Conversion.swift */; };
 		43753CEC222D39B3002EE98B /* ImapFlags+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CEB222D39B3002EE98B /* ImapFlags+Pantomime.swift */; };
@@ -2917,6 +2918,7 @@
 				434C234625D6A32A00F622DB /* ConcurrentBaseOperation.swift in Sources */,
 				434C231725D6A1DE00F622DB /* FetchServiceBaseClass.swift in Sources */,
 				434C230725D6A18600F622DB /* ImapConnection.swift in Sources */,
+				436FD26025DA831000D929B3 /* Server+SessionAware.swift in Sources */,
 				434C227325D69BAA00F622DB /* CdHeaderField+Extensions.swift in Sources */,
 				436FD25025DA827300D929B3 /* Color+pEp.swift in Sources */,
 				434C22A325D69CD200F622DB /* CdAccount+NonOptionalConvenienceAccessors.swift.swift in Sources */,
