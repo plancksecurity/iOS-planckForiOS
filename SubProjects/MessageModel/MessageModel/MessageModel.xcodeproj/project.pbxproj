@@ -424,6 +424,7 @@
 		436FD2A425DA8B8900D929B3 /* ClientCertificateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230C23FD41C2007E9364 /* ClientCertificateUtil.swift */; };
 		436FD2A825DA8BB600D929B3 /* ClientCertificateUtil+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230F23FD5079007E9364 /* ClientCertificateUtil+Internal.swift */; };
 		436FD2AC25DA8BEC00D929B3 /* CdClientCertificate+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43607DF5240031FE00FA66B8 /* CdClientCertificate+Extension.swift */; };
+		436FD2B025DA8C1C00D929B3 /* CdClientCertificate+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A318596246C308A00EE3D4D /* CdClientCertificate+PredicateFactory.swift */; };
 		43753CC2222D247D002EE98B /* CdMessage+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CC1222D247D002EE98B /* CdMessage+pEp.swift */; };
 		43753CDE222D2DA7002EE98B /* ContentDispositionType+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CDD222D2DA7002EE98B /* ContentDispositionType+Conversion.swift */; };
 		43753CEC222D39B3002EE98B /* ImapFlags+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CEB222D39B3002EE98B /* ImapFlags+Pantomime.swift */; };
@@ -2935,6 +2936,7 @@
 				436FD2A025DA8B5A00D929B3 /* KeyChain+Extensions.swift in Sources */,
 				434C226825D69B6300F622DB /* CdMessage+NonOptionalConvenienceAccessors.swift in Sources */,
 				436FD2A425DA8B8900D929B3 /* ClientCertificateUtil.swift in Sources */,
+				436FD2B025DA8C1C00D929B3 /* CdClientCertificate+PredicateFactory.swift in Sources */,
 				434C22EF25D6A10F00F622DB /* FetchOlderImapMessagesService.swift in Sources */,
 				434C21A425D6978000F622DB /* CdAccount+PredicateFactory.swift in Sources */,
 				434C235A25D6B20100F622DB /* EmailConnectInfo.swift in Sources */,
