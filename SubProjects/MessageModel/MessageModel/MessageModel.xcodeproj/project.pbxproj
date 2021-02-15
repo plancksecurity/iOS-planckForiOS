@@ -402,6 +402,7 @@
 		4368309F22F9682A0005880D /* DeleteOldSyncMailsOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4368309E22F9682A0005880D /* DeleteOldSyncMailsOperationTest.swift */; };
 		436C9A4824E3FC9700007A3D /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C9A4724E3FC9700007A3D /* Rating.swift */; };
 		436C9A4A24E3FE0B00007A3D /* Rating+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C9A4924E3FE0B00007A3D /* Rating+pEp.swift */; };
+		436FD21925DA806E00D929B3 /* Attachment+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E39FCB22551E990016A1C4 /* Attachment+SessionAware.swift */; };
 		43753CC2222D247D002EE98B /* CdMessage+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CC1222D247D002EE98B /* CdMessage+pEp.swift */; };
 		43753CDE222D2DA7002EE98B /* ContentDispositionType+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CDD222D2DA7002EE98B /* ContentDispositionType+Conversion.swift */; };
 		43753CEC222D39B3002EE98B /* ImapFlags+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CEB222D39B3002EE98B /* ImapFlags+Pantomime.swift */; };
@@ -2927,6 +2928,7 @@
 				434C232725D6A24400F622DB /* FetchMessagesInImapFolderOperation.swift in Sources */,
 				434C24B325D6D3C300F622DB /* FolderType+IMAP.swift in Sources */,
 				434C236625D6B93A00F622DB /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift in Sources */,
+				436FD21925DA806E00D929B3 /* Attachment+SessionAware.swift in Sources */,
 				434C218C25D696F700F622DB /* MessageModel.xcdatamodeld in Sources */,
 				434C227225D69BA100F622DB /* MessageID.swift in Sources */,
 				434C233625D6A2AA00F622DB /* ImapSyncOperation.swift in Sources */,
