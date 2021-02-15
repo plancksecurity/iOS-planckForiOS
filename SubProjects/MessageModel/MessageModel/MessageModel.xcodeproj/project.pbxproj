@@ -422,6 +422,7 @@
 		436FD29525DA8B2200D929B3 /* CdServerCredentials+KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155FE573228B52D4003D3E68 /* CdServerCredentials+KeyChain.swift */; };
 		436FD2A025DA8B5A00D929B3 /* KeyChain+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587D166204DA3C2002C2157 /* KeyChain+Extensions.swift */; };
 		436FD2A425DA8B8900D929B3 /* ClientCertificateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230C23FD41C2007E9364 /* ClientCertificateUtil.swift */; };
+		436FD2A825DA8BB600D929B3 /* ClientCertificateUtil+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230F23FD5079007E9364 /* ClientCertificateUtil+Internal.swift */; };
 		43753CC2222D247D002EE98B /* CdMessage+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CC1222D247D002EE98B /* CdMessage+pEp.swift */; };
 		43753CDE222D2DA7002EE98B /* ContentDispositionType+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CDD222D2DA7002EE98B /* ContentDispositionType+Conversion.swift */; };
 		43753CEC222D39B3002EE98B /* ImapFlags+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CEB222D39B3002EE98B /* ImapFlags+Pantomime.swift */; };
@@ -3002,6 +3003,7 @@
 				434C219525D6972B00F622DB /* UnappendableArray.swift in Sources */,
 				434C230325D6A17600F622DB /* CdFolder+SyncFolderMode.swift in Sources */,
 				436FD22D25DA813800D929B3 /* ExtraKey.swift in Sources */,
+				436FD2A825DA8BB600D929B3 /* ClientCertificateUtil+Internal.swift in Sources */,
 				434C221925D6999500F622DB /* CdMessageKeyword.swift in Sources */,
 				434C230B25D6A19C00F622DB /* ImapConnectionProtocol.swift in Sources */,
 				434C228F25D69C4000F622DB /* CdAttachment+PredicateFactory.swift in Sources */,
