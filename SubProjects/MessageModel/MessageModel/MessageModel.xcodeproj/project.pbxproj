@@ -416,6 +416,7 @@
 		436FD24C25DA825100D929B3 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9818524E5382900830603 /* Color.swift */; };
 		436FD25025DA827300D929B3 /* Color+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9818724E5393300830603 /* Color+pEp.swift */; };
 		436FD25425DA82A200D929B3 /* PEPSession+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4360AA1922281B7100E62E5A /* PEPSession+Extensions.swift */; };
+		436FD25825DA82CB00D929B3 /* ServerCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8D22901DBA164E000BDE79 /* ServerCredentials.swift */; };
 		43753CC2222D247D002EE98B /* CdMessage+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CC1222D247D002EE98B /* CdMessage+pEp.swift */; };
 		43753CDE222D2DA7002EE98B /* ContentDispositionType+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CDD222D2DA7002EE98B /* ContentDispositionType+Conversion.swift */; };
 		43753CEC222D39B3002EE98B /* ImapFlags+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CEB222D39B3002EE98B /* ImapFlags+Pantomime.swift */; };
@@ -2988,6 +2989,7 @@
 				434C248425D6C9FA00F622DB /* CdMessage+Pantomime.swift in Sources */,
 				434C22E325D6A0C100F622DB /* CdHeaderField+Clone.swift in Sources */,
 				434C230F25D6A1AC00F622DB /* ImapConnectionDelegate.swift in Sources */,
+				436FD25825DA82CB00D929B3 /* ServerCredentials.swift in Sources */,
 				434C219525D6972B00F622DB /* UnappendableArray.swift in Sources */,
 				434C230325D6A17600F622DB /* CdFolder+SyncFolderMode.swift in Sources */,
 				436FD22D25DA813800D929B3 /* ExtraKey.swift in Sources */,
