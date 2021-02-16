@@ -17,11 +17,11 @@ protocol LoginViewControllerDelegate: class  {
 
 final class LoginViewController: UIViewController {
 
-    @IBOutlet weak var centerX: NSLayoutConstraint!
-    @IBOutlet weak var manualSetupWidth: NSLayoutConstraint!
+
     @IBOutlet weak var leadingZero: NSLayoutConstraint!
     weak var delegate: LoginViewControllerDelegate?
-    
+
+
     @IBOutlet private weak var pepSyncLabel: UILabel!
     @IBOutlet private weak var syncStackView: UIStackView!
     @IBOutlet private weak var user: AnimatedPlaceholderTextfield!
@@ -35,10 +35,18 @@ final class LoginViewController: UIViewController {
     @IBOutlet private weak var mainContainerView: UIView!
     @IBOutlet private weak var stackView: UIStackView!
     @IBOutlet private weak var scrollView: DynamicHeightScrollView!
+    @IBOutlet private weak var pEpSyncSwitch: UISwitch!
+
+    // Constraints
     @IBOutlet private weak var scrollViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var pEpSyncViewCenterHConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var loginButtonConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var pEpSyncSwitch: UISwitch!
+    @IBOutlet private weak var loginButtonCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var loginButtonTrailingConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var centerX: NSLayoutConstraint!
+    @IBOutlet weak var manualSetupWidth: NSLayoutConstraint!
+
+
 
     var viewModel: LoginViewModel?
     var offerManualSetup = false
@@ -53,6 +61,7 @@ final class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setFonts()
+        setManualSetupButtonHidden(true)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -76,6 +85,27 @@ final class LoginViewController: UIViewController {
         syncStackView.axis = UIDevice.isSmall && UIDevice.isLandscape ? .vertical : .horizontal
         syncStackView.superview?.layoutIfNeeded()
         manualConfigButton.contentHorizontalAlignment = UIDevice.isPortrait ? .right : .left
+        setLoginButtonPosition()
+    }
+
+    private func setLoginButtonPosition() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+
+        if vm.isThereAnAccount() {
+            loginButtonCenterXConstraint.isActive = false
+            loginButtonTrailingConstraint.isActive = true
+        } else {
+            if UIDevice.isLandscape {
+                loginButtonCenterXConstraint.isActive = false
+            } else {
+                loginButtonCenterXConstraint.isActive = true
+            }
+            loginButtonTrailingConstraint.isActive = false
+        }
+        loginButton.contentHorizontalAlignment = UIDevice.isPortrait ? .right : .left
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
@@ -243,7 +273,6 @@ extension LoginViewController: SegueHandlerType {
         case manualConfigSegue
         case clientCertManagementSegue
     }
-
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let vm = viewModel else {
@@ -422,15 +451,6 @@ extension LoginViewController {
     }
 
     private func configureView() {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
-        }
-
-        let isThereAnAccount = vm.isThereAnAccount()
-        loginButtonConstraint.constant =
-            isThereAnAccount ? stackView.bounds.midX - loginButton.bounds.midX : 0
-
         loginButton.convertToLoginButton(
             placeholder: NSLocalizedString("Log In",
                                            comment: "Log in button in Login View"))
