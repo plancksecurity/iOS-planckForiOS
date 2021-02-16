@@ -182,34 +182,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43980E221CBD0BC900A7FC3C"
-               BuildableName = "pEp.app"
-               BlueprintName = "pEp"
-               ReferencedContainer = "container:pEpForiOS.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B72A64D71EC0525500F71131"
-               BuildableName = "AccountSettingsAdapterTests.xctest"
-               BlueprintName = "AccountSettingsAdapterTests"
-               ReferencedContainer = "container:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "434A6CE125D2BF1B00179335"
                BuildableName = "MessageModelForAppExtensions.framework"
                BlueprintName = "MessageModelForAppExtensions"
@@ -228,6 +200,34 @@
                BuildableName = "pEp-share.appex"
                BlueprintName = "pEp-share"
                ReferencedContainer = "container:pEpForiOS.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43980E221CBD0BC900A7FC3C"
+               BuildableName = "pEp.app"
+               BlueprintName = "pEp"
+               ReferencedContainer = "container:pEpForiOS.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B72A64D71EC0525500F71131"
+               BuildableName = "AccountSettingsAdapterTests.xctest"
+               BlueprintName = "AccountSettingsAdapterTests"
+               ReferencedContainer = "container:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
