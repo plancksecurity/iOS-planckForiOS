@@ -40,6 +40,7 @@
 		434C1AE725D414A500F622DB /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7911EC121F8694000D7F66F /* UIColor+Extension.swift */; };
 		436F1BA125028B2E004426DC /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436F1BA025028B2E004426DC /* CocoaLumberjackSwift.framework */; };
 		43B1E33725B1B93D00D01801 /* StringExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B1E33625B1B93D00D01801 /* StringExtensionsTest.swift */; };
+		43BDDBA925DC1DA800FC0C68 /* SystemUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */; };
 		43BE66D2246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BE66D1246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift */; };
 		43E1A866252B6A1300307A7D /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43E1A865252B6A1300307A7D /* CocoaLumberjack.framework */; };
 		5B2EDC642551954300DA18A7 /* NonPasteableUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2EDC632551954300DA18A7 /* NonPasteableUITextField.swift */; };
@@ -612,6 +613,7 @@
 			files = (
 				434C1AE725D414A500F622DB /* UIColor+Extension.swift in Sources */,
 				434C19D425D3E22500F622DB /* Log.swift in Sources */,
+				43BDDBA925DC1DA800FC0C68 /* SystemUtils.swift in Sources */,
 				434C19D725D3E22E00F622DB /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
