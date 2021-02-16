@@ -20,6 +20,7 @@ class ErrorHandler: LoginViewModelLoginErrorDelegate {
 
 class LoginViewModelTests: AccountDrivenTestBase {
     class TestVerifiableAccount: VerifiableAccountProtocol {
+
         var accountType: VerifiableAccount.AccountType = VerifiableAccount.AccountType.other
         var loginNameIMAP: String?
 
@@ -73,8 +74,9 @@ class LoginViewModelTests: AccountDrivenTestBase {
             expLookedUp.fulfill()
         }
 
-        func save(completion: ((Bool)->())? ) throws {
+        func save(completion: @escaping (Result<Void, Error>) -> ()) {
         }
+
     }
 
     /// This tests makes sense only if the server settings 

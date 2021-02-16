@@ -115,9 +115,9 @@ class EmailDetailViewModel: EmailDisplayViewModel {
         guard
             let messageShownBeforeUpdating = lastShownMessage,
             !messageShownBeforeUpdating.isDeleted
-            else {
-                // Nothing to do
-                return nil
+        else {
+            // Nothing to do
+            return nil
         }
         for i in 0..<messageQueryResults.all.count {
             let testee = messageQueryResults[i]
@@ -140,8 +140,8 @@ class EmailDetailViewModel: EmailDisplayViewModel {
         guard
             let path = indexPath,
             let msg = message(representedByRowAt: path) else {
-                Log.shared.info("Nothing shown")
-                return nil
+            Log.shared.info("Nothing shown")
+            return nil
         }
         if msg.parent.defaultDestructiveActionIsArchive {
             return #imageLiteral(resourceName: "folders-icon-archive")
@@ -156,8 +156,8 @@ class EmailDetailViewModel: EmailDisplayViewModel {
         guard
             let path = indexPath,
             let msg = message(representedByRowAt: path) else {
-                Log.shared.info("Nothing shown")
-                return nil
+            Log.shared.info("Nothing shown")
+            return nil
         }
         
         if msg.imapFlags.flagged {
@@ -241,19 +241,19 @@ class EmailDetailViewModel: EmailDisplayViewModel {
 
 extension EmailDetailViewModel {
 
-    /// Resets bookholding vars
-    private func reset() {
-        pathsForMessagesMarkedForRedecrypt = [IndexPath]()
-        lastShownMessage = nil
-        updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = false
-    }
-
     private func markSeenIfNeeded(messageRepresentedby indexPath: IndexPath) {
         guard let message = message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash("No msg")
             return
         }
         message.markAsSeen()
+    }
+
+    /// Resets bookholding vars
+    private func reset() {
+        pathsForMessagesMarkedForRedecrypt = [IndexPath]()
+        lastShownMessage = nil
+        updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = false
     }
 
     private func markForRedecryptionIfNeeded(messageRepresentedBy indexPath: IndexPath) {
@@ -404,7 +404,7 @@ extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
 
     private func handleIndexPathIsBeforeCurrentlyShownMessage(insertedIndexPath: IndexPath) {
         if let currentlyShownIndex = indexPathForCellDisplayedBeforeUpdating,
-            insertedIndexPath.row <= currentlyShownIndex.row {
+           insertedIndexPath.row <= currentlyShownIndex.row {
             updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = true
         }
     }

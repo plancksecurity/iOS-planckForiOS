@@ -80,7 +80,7 @@ extension TrustedServerSettingsViewModel {
 
     private func shouldShowWaringnBeforeChangingTrustState(forAccount account: Account,
                                                            storeSecurely: Bool) -> Bool {
-        return  !storeSecurely && account.shouldShowWaringnBeforeTrusting
+        return !storeSecurely && account.shouldShowWaringnBeforeTrusting
     }
 
     mutating private func reset() {

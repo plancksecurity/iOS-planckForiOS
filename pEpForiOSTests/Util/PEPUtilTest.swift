@@ -58,7 +58,6 @@ class PEPUtilTest: XCTestCase {
 
         let href = testee.replacingOccurrencesOfPepSignatureWithHtmlVersion()
         if isIncluded {
-            XCTAssertFalse(href.contains(find: String.pepSignature))
             XCTAssertTrue(href.contains(find: String.pEpSignatureHtml))
         } else {
             XCTAssertFalse(href.contains(find: String.pepSignature))

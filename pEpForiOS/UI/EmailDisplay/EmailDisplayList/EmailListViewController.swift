@@ -113,6 +113,7 @@ final class EmailListViewController: UIViewController, SwipeTableViewCellDelegat
         }
         updateFilterText()
         updateEditButton()
+        vm.updateLastLookAt()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -687,7 +688,11 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
         var options = SwipeTableOptions()
         options.transitionStyle = .border
         options.buttonSpacing = 11
-        options.expansionStyle = .destructive(automaticallyDelete: false)
+        if orientation == .right {
+            options.expansionStyle = .destructive(automaticallyDelete: false)
+        } else {
+            options.expansionStyle = .selection
+        }
         return options
     }
 
@@ -792,25 +797,6 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
             action: nil)
         item.tag = flexibleSpaceButtonItemTag
         return item
-    }
-
-    /// - Returns: A new array of `UIBarButtonItem`s with trailing flexible whitespace
-    /// removed (at least the ones created by our own factory method).
-    /// - Parameter barButtonItems: The bar button items to remove from.
-    private func trailingFlexibleSpaceRemoved(barButtonItems: [UIBarButtonItem]) -> [UIBarButtonItem] {
-        var theItems = barButtonItems
-        while true {
-            if let lastItem = theItems.last {
-                if lastItem.tag == flexibleSpaceButtonItemTag {
-                    theItems.removeLast()
-                } else {
-                    break
-                }
-            } else {
-                break
-            }
-        }
-        return theItems
     }
 }
 
@@ -1038,8 +1024,11 @@ extension EmailListViewController {
         if let popoverPresentationController = alertController.popoverPresentationController {
             popoverPresentationController.sourceView = tableView
             let cellFrame = tableView.rectForRow(at: indexPath)
-            let sourceRect = view.convert(cellFrame, from: tableView)
-            popoverPresentationController.sourceRect = sourceRect
+            popoverPresentationController.sourceRect = CGRect(x: cellFrame.maxX,
+                                                              y: cellFrame.midY,
+                                                              width: 0,
+                                                              height: 0)
+            popoverPresentationController.permittedArrowDirections = [.left]
         }
         present(alertController, animated: true, completion: nil)
     }
@@ -1138,17 +1127,7 @@ extension EmailListViewController {
 // MARK: - TableViewCell Actions
 
 extension EmailListViewController {
-    private func createRowAction(image: UIImage?,
-                                 action: @escaping (UITableViewRowAction, IndexPath) -> Void)
-        -> UITableViewRowAction {
-        let rowAction = UITableViewRowAction(style: .normal, title: nil, handler: action)
-        if let theImage = image {
-            let iconColor = UIColor(patternImage: theImage)
-            rowAction.backgroundColor = iconColor
-        }
-        return rowAction
-    }
-    
+
     func readAction(forCellAt indexPath: IndexPath) {
         guard let row = viewModel?.viewModel(for: indexPath.row) else {
             Log.shared.errorAndCrash("No data for indexPath!")
@@ -1172,7 +1151,7 @@ extension EmailListViewController {
             Log.shared.errorAndCrash("No data for indexPath!")
             return
         }
-        guard let cell = self.tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
+        guard let cell = tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
             Log.shared.errorAndCrash("No cell for indexPath!")
             return
         }

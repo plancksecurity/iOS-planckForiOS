@@ -8,7 +8,8 @@
 
 import pEpIOSToolbox
 import CoreData
-import PEPObjCAdapterFramework
+import PEPObjCAdapterTypes_iOS
+import PEPObjCAdapter_iOS
 
 // MARK: - Internal
 extension Message {
@@ -29,17 +30,6 @@ extension Message {
         let rating = PEPUtils.pEpRatingFromInt(msgRatingInt)
         let isOkToShowAttachments = !rating.dontShowAttachments()
         return isOkToShowAttachments
-    }
-
-    private func getOriginalRatingHeader() -> String? {
-        return optionalFields[Headers.originalRating.rawValue]
-    }
-
-    private func getOriginalRatingHeaderRating() -> PEPRating? {
-        guard let originalRatingStr = getOriginalRatingHeader() else {
-            return nil
-        }
-        return PEPRating.fromString(str: originalRatingStr)
     }
 }
 

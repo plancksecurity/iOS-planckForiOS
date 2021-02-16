@@ -23,7 +23,6 @@ open class MessageCell: UITableViewCell {
     
     public var fieldModel: ComposeFieldModel?
     public var message: Message?
-    public var isExpanded = false
     public var height: CGFloat = UITableView.automaticDimension
 
     /**

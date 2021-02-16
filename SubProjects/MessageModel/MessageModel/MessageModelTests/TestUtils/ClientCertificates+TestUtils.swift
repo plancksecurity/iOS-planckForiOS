@@ -35,4 +35,19 @@ class ClientCertificatesTestUtil {
 
         return true
     }
+
+    /// Loads from the given file and checks whether it is a certificate.
+    static func isCertificate(filename: String) -> Bool {
+        let testBundle = Bundle(for: ClientCertificatesTestUtil.self)
+        guard let url = testBundle.url(forResource: filename,
+                                       withExtension: nil) else {
+                                        return false
+        }
+
+        guard let p12Data = try? Data(contentsOf: url) else {
+            return false
+        }
+
+        return ClientCertificateUtil().isCertificate(p12Data: p12Data)
+    }
 }

@@ -163,33 +163,37 @@ class EditableAccountSettingsViewModel {
 extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
 
     public func didEndVerification(result: Result<Void, Error>) {
+        guard let verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("VerifiableAccount not found")
+            return
+        }
         switch result {
         case .success:
-            do {
-                try verifiableAccount?.save { [weak self] _ in
-                    guard let me = self else {
-                        //Valid case: the view might be dismissed.
-                        return
-                    }
-                    DispatchQueue.main.async {
-                        me.delegate?.setLoadingView(visible: false)
-                        me.changeDelegate?.didChange()
-                        me.delegate?.dismissYourself()
-                    }
+            verifiableAccount.save { [weak self] _ in
+                guard let me = self else {
+                    //Valid case: the view might be dismissed.
+                    return
                 }
-            } catch {
-                Log.shared.errorAndCrash(error: error)
-                delegate?.setLoadingView(visible: false)
-                delegate?.dismissYourself()
+                DispatchQueue.main.async {
+                    me.delegate?.setLoadingView(visible: false)
+                    me.changeDelegate?.didChange()
+                    me.delegate?.dismissYourself()
+                }
             }
         case .failure(let error):
-            delegate?.setLoadingView(visible: false)
-            if let imapError = error as? ImapSyncOperationError {
-                delegate?.showAlert(error: imapError)
-            } else if let smtpError = error as? SmtpSendError {
-                delegate?.showAlert(error: smtpError)
-            } else {
-                Log.shared.errorAndCrash(error: error)
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    //Valid case: the view might be dismissed.
+                    return
+                }
+                me.delegate?.setLoadingView(visible: false)
+                if let imapError = error as? ImapSyncOperationError {
+                    me.delegate?.showAlert(error: imapError)
+                } else if let smtpError = error as? SmtpSendError {
+                    me.delegate?.showAlert(error: smtpError)
+                } else {
+                    Log.shared.errorAndCrash(error: error)
+                }
             }
         }
     }
@@ -473,6 +477,11 @@ extension EditableAccountSettingsViewModel {
         if let transport = Server.Transport(fromString: input.smtpTranportSecurity) {
             theVerifier.transportSMTP = ConnectionTransport(transport: transport)
         }
+
+        if let clientCertificate = account.imapServer?.credentials.clientCertificate {
+            theVerifier.clientCertificate = clientCertificate
+        }
+
         do {
             try theVerifier.verify()
         } catch {

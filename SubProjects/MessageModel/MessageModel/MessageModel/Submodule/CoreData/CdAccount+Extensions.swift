@@ -9,14 +9,6 @@
 import Foundation
 
 extension CdAccount {
-    func serverNTuple(credentials: CdServerCredentials,
-                      server: CdServer) -> (CdServer, CdServerCredentials, String?)? {
-        if let serverType = Server.ServerType.init(rawValue: Int(server.serverType))?.asString(),
-            let key = credentials.key {
-            return (server, credentials, KeyChain.password(key: key, serverType: serverType))
-        }
-        return nil
-    }
 
     open var emailConnectInfos: [EmailConnectInfo: CdServerCredentials] {
         var result = [EmailConnectInfo: CdServerCredentials]()

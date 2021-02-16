@@ -852,7 +852,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="44.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2l1-6r-wkF">
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2l1-6r-wkF">
                                                     <rect key="frame" x="345" y="7" width="51" height="31"/>
                                                     <connections>
                                                         <action selector="switchChanged:" destination="bzn-F3-9sV" eventType="valueChanged" id="PLL-04-CZL"/>
@@ -946,36 +946,55 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="RSp-qK-Tzq">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="100" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="RSp-qK-Tzq">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="667"/>
                                 <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SignatureCell" id="wdm-AT-m5z" customClass="SignatureTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.333332061767578" width="414" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SelfSizingSignatureTableViewCell" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SignatureTableViewCell" id="F0M-Mk-ZEz" userLabel="Signature" customClass="SignatureTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="55.333332061767578" width="414" height="38"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wdm-AT-m5z" id="A3d-Jj-WZG">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="F0M-Mk-ZEz" id="VG6-Ar-tnJ">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="38"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="signature" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="0Ht-YN-GKS">
-                                                    <rect key="frame" x="15" y="0.0" width="384" height="44"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits"/>
-                                                </textField>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="Signature" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="xYO-T2-bDx">
+                                                    <rect key="frame" x="20" y="0.0" width="374" height="38"/>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                    <color key="textColor" systemColor="labelColor"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="9xa-gb-As9" id="VI0-zC-dyt"/>
+                                                    </connections>
+                                                </textView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9nI-Z2-d2e" userLabel="clearButton">
+                                                    <rect key="frame" x="378" y="10" width="16" height="22"/>
+                                                    <state key="normal" image="clearTextfield"/>
+                                                    <connections>
+                                                        <action selector="clearButtonPressed" destination="9xa-gb-As9" eventType="touchUpInside" id="e2l-HT-u2d"/>
+                                                        <action selector="clearButtonPressed:" destination="n4X-sI-VqB" eventType="touchUpInside" id="cwy-wj-Na6"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="0Ht-YN-GKS" firstAttribute="leading" secondItem="A3d-Jj-WZG" secondAttribute="leading" constant="15" id="9EN-kw-CA5"/>
-                                                <constraint firstItem="0Ht-YN-GKS" firstAttribute="top" secondItem="A3d-Jj-WZG" secondAttribute="top" id="Zbr-8y-tji"/>
-                                                <constraint firstAttribute="trailing" secondItem="0Ht-YN-GKS" secondAttribute="trailing" constant="15" id="kJh-Ye-1fR"/>
-                                                <constraint firstAttribute="bottom" secondItem="0Ht-YN-GKS" secondAttribute="bottom" id="zZZ-nJ-Q2m"/>
+                                                <constraint firstAttribute="trailing" secondItem="9nI-Z2-d2e" secondAttribute="trailing" constant="20" id="AXh-mk-Zud"/>
+                                                <constraint firstAttribute="trailing" secondItem="xYO-T2-bDx" secondAttribute="trailing" constant="20" symbolic="YES" id="HTY-GS-tom"/>
+                                                <constraint firstItem="xYO-T2-bDx" firstAttribute="top" secondItem="VG6-Ar-tnJ" secondAttribute="top" id="oqN-Bs-dPZ"/>
+                                                <constraint firstItem="xYO-T2-bDx" firstAttribute="leading" secondItem="VG6-Ar-tnJ" secondAttribute="leading" constant="20" symbolic="YES" id="yFD-Ux-Pmg"/>
+                                                <constraint firstItem="9nI-Z2-d2e" firstAttribute="top" secondItem="VG6-Ar-tnJ" secondAttribute="top" constant="10" id="z3u-y7-RNE"/>
+                                                <constraint firstAttribute="bottom" secondItem="xYO-T2-bDx" secondAttribute="bottom" id="zKf-qO-2tO"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
-                                            <outlet property="editableSignature" destination="0Ht-YN-GKS" id="tZO-YI-RTA"/>
+                                            <outlet property="textView" destination="xYO-T2-bDx" id="w96-DQ-aGo"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="9xa-gb-As9" id="dml-jX-S7v"/>
+                                    <outlet property="delegate" destination="9xa-gb-As9" id="6R8-SA-qAg"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -992,8 +1011,9 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6u7-Q7-Rpz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="n4X-sI-VqB" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-2103" y="382"/>
+            <point key="canvasLocation" x="-2104.3478260869565" y="381.52173913043481"/>
         </scene>
         <!--Editable Account Settings View Controller-->
         <scene sceneID="99Q-d2-hCz">
@@ -1094,6 +1114,7 @@
         <segue reference="voI-Bz-LUT"/>
     </inferredMetricsTieBreakers>
     <resources>
+        <image name="clearTextfield" width="16" height="16"/>
         <systemColor name="groupTableViewBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

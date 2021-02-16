@@ -239,7 +239,7 @@ class MockEditableViewController: EditableAccountSettingsDelegate {
     }
 }
 
-class MockAccountSettingsViewController: SettingChangeDelegate {
+class MockAccountSettingsViewController: VerifiableAccount, SettingChangeDelegate {
 
     private var didChangeExpectation: XCTestExpectation?
 
@@ -256,4 +256,12 @@ class MockAccountSettingsViewController: SettingChangeDelegate {
             expectation?.fulfill()
         }
     }
+
+    override func save(completion: @escaping (Result<Void, Error>) -> ()) {
+        super.save { [weak self] success in
+            self?.verifiableAccountDelegate?.didEndVerification(result: success)
+            completion(success)
+        }
+    }
 }
+

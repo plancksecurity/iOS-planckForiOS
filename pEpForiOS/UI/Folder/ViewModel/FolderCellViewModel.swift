@@ -13,14 +13,25 @@ import pEpIOSToolbox
 
 public class FolderCellViewModel {
 
-    let folder: DisplayableFolderProtocol
-    let level : Int
-    var indentationLevel: Int {
-        let subLevel = isSubfolder() ? 1 : 0
-        return level + subLevel
-    }
+    private var appSettings: AppSettingsProtocol
+
     private var requiredFolderTypes : [FolderType] {
         return [.drafts, .sent, .spam, .trash, .outbox]
+    }
+
+    private var name: String {
+        return Folder.localizedName(realName: self.folder.title)
+    }
+
+    /// The folder to display
+    public let folder: DisplayableFolderProtocol
+
+    private let level : Int
+
+    /// The folder's indentation level
+    public var indentationLevel: Int {
+        let subLevel = isSubfolder() ? 1 : 0
+        return level + subLevel
     }
 
     public var title : String {
@@ -37,16 +48,12 @@ public class FolderCellViewModel {
         }
     }
 
-    private var name: String {
-        return Folder.localizedName(realName: self.folder.title)
-    }
-
     var leftPadding: Int {
         return level
     }
 
     var padding: CGFloat {
-        return DeviceUtils.isIphone5 ? 16.0 : 25.0
+        return UIDevice.isSmall ? 16.0 : 25.0
     }
 
     public var isSelectable: Bool {
@@ -64,16 +71,31 @@ public class FolderCellViewModel {
         }
     }
 
-    public var isExpand = true
+    public var isExpanded = true
+
     public var isHidden = false
 
-    public init(folder: DisplayableFolderProtocol, level: Int) {
+    public init(folder: DisplayableFolderProtocol, level: Int, isExpanded: Bool = true, appSettings: AppSettingsProtocol = AppSettings.shared) {
+        self.appSettings = appSettings
         self.folder = folder
         self.level = level
+        self.isExpanded = isExpanded
     }
 
+    /// Handles the CollapsedState change of the Folder. 
+    public func handleFolderCollapsedStateChange(to isCollapsed: Bool) {
+        guard let folder = folder as? Folder else {
+            // Unified folders implements DisplayableFolderProtocol but are not Folders
+            Log.shared.errorAndCrash("handleFolderCollapsedStateChange should not be called for Unified Folders")
+            return
+        }
+        let address = folder.account.user.address
+        appSettings.setFolderViewCollapsedState(forFolderNamed: folder.name, ofAccountWith: address, to: isCollapsed)
+    }
+    
+    ///Indicates if the arrow of the chevron should rotate to point down.
     public var shouldRotateChevron : Bool {
-        return isExpand && hasSubfolders() && isChevronEnabled && !isFolder(ofType: .inbox)
+        return isExpanded && hasSubfolders() && isChevronEnabled && !isFolder(ofType: .inbox)
     }
 
     public var isChevronEnabled: Bool {
@@ -97,7 +119,7 @@ public class FolderCellViewModel {
     /// Indicates if the FolderCellViewModel passed by parameter is its children
     /// - Parameter fcvm: The possible children of the current FolderCellViewModel
     /// - Returns: True if its child or decendent. 
-    public func isParentOf(fcvm: FolderCellViewModel) -> Bool {
+    public func isAncestorOf(fcvm: FolderCellViewModel) -> Bool {
         if let childFolder = fcvm.folder as? Folder, let parentFolder = folder as? Folder {
             if childFolder.account.accountType != VerifiableAccount.AccountType.gmail {
                 if requiredFolderTypes.contains(childFolder.folderType) {
@@ -120,6 +142,7 @@ public class FolderCellViewModel {
         }
         return false
     }
+
 
     /// Indicates if the folder of the type passed by parameter.
     /// - Parameter type: The Folder type

@@ -46,6 +46,7 @@
 		5BD917EE252E17D20092B30F /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD917ED252E17D20092B30F /* String+Extension.swift */; };
 		5BEC4D6F24B5F6E800EBF0E9 /* CGAffineTransform+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEC4D6E24B5F6E800EBF0E9 /* CGAffineTransform+Extension.swift */; };
 		5BECF11925B1F72B00EFE7D1 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECF11825B1F72B00EFE7D1 /* Array+Extension.swift */; };
+		5BF2D6F125C408EF0016B90B /* Dictionary+PrettyPrint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF2D6F025C408EF0016B90B /* Dictionary+PrettyPrint.swift */; };
 		B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5422005BD400EDCE61 /* Date+Extension.swift */; };
 		B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */; };
 		B70A3A7322006B9F00EDCE61 /* SystemUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */; };
@@ -71,7 +72,6 @@
 		B7A46C5E220DBAF00027CCB5 /* OperationQueue+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A46C5D220DBAF00027CCB5 /* OperationQueue+Extension.swift */; };
 		B7A46C62220DCEA80027CCB5 /* NSAttributedString+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A46C61220DCEA80027CCB5 /* NSAttributedString+Parsing.swift */; };
 		B7CE922924E3BC6C00B5A874 /* RoundedCornersButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CE922824E3BC6C00B5A874 /* RoundedCornersButton.swift */; };
-		B7CE922B24E3BD2100B5A874 /* UIButton+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CE922A24E3BD2100B5A874 /* UIButton+extension.swift */; };
 		B7DB7F522213120B003968DA /* SortedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7F512213120B003968DA /* SortedSet.swift */; };
 		B7DB7F5C221315BD003968DA /* pEpIOSToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7911EB421F7358500D7F66F /* pEpIOSToolbox.framework */; };
 		B7DB7F8422144E4E003968DA /* SortedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7F8322144E4E003968DA /* SortedSetTest.swift */; };
@@ -128,6 +128,7 @@
 		5BD917ED252E17D20092B30F /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		5BEC4D6E24B5F6E800EBF0E9 /* CGAffineTransform+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGAffineTransform+Extension.swift"; sourceTree = "<group>"; };
 		5BECF11825B1F72B00EFE7D1 /* Array+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
+		5BF2D6F025C408EF0016B90B /* Dictionary+PrettyPrint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+PrettyPrint.swift"; sourceTree = "<group>"; };
 		B70A3A5422005BD400EDCE61 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemUtils.swift; sourceTree = "<group>"; };
@@ -155,7 +156,6 @@
 		B7A46C5D220DBAF00027CCB5 /* OperationQueue+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OperationQueue+Extension.swift"; sourceTree = "<group>"; };
 		B7A46C61220DCEA80027CCB5 /* NSAttributedString+Parsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Parsing.swift"; sourceTree = "<group>"; };
 		B7CE922824E3BC6C00B5A874 /* RoundedCornersButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedCornersButton.swift; sourceTree = "<group>"; };
-		B7CE922A24E3BD2100B5A874 /* UIButton+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+extension.swift"; sourceTree = "<group>"; };
 		B7DB7F512213120B003968DA /* SortedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedSet.swift; sourceTree = "<group>"; };
 		B7DB7F57221315BD003968DA /* pEpIOSToolboxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pEpIOSToolboxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7DB7F5B221315BD003968DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -280,6 +280,7 @@
 			isa = PBXGroup;
 			children = (
 				5BECF11825B1F72B00EFE7D1 /* Array+Extension.swift */,
+				5BF2D6F025C408EF0016B90B /* Dictionary+PrettyPrint.swift */,
 				3AE10BAC249A6EC60050BFB0 /* String+EmailHtml.swift */,
 				370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */,
 				B7911ECB21F8B46600D7F66F /* GCD.swift */,
@@ -326,7 +327,6 @@
 				3A0CBAAA23F582B900AE200C /* UITextView+Font.swift */,
 				5B2EDC632551954300DA18A7 /* NonPasteableUITextField.swift */,
 				158A564C24004619003C0D7E /* UIApplication+NavigationStack.swift */,
-				B7CE922A24E3BD2100B5A874 /* UIButton+extension.swift */,
 				5BA2F5E824C997ED00F27099 /* UIDevice+Extension.swift */,
 			);
 			path = UIKit;
@@ -528,7 +528,6 @@
 				37904563223FA486006DAB3B /* Reachability.swift in Sources */,
 				B7911ECC21F8B46600D7F66F /* GCD.swift in Sources */,
 				B7A46C54220C73BE0027CCB5 /* String+Extensions.swift in Sources */,
-				B7CE922B24E3BD2100B5A874 /* UIButton+extension.swift in Sources */,
 				B7CE922924E3BC6C00B5A874 /* RoundedCornersButton.swift in Sources */,
 				B7A46C58220DA6190027CCB5 /* String+Email.swift in Sources */,
 				37904565223FA486006DAB3B /* ReachabilityProtocol.swift in Sources */,
@@ -560,6 +559,7 @@
 				B70A3A77220091D400EDCE61 /* Logger.swift in Sources */,
 				5BA2F5E924C997ED00F27099 /* UIDevice+Extension.swift in Sources */,
 				B7A46C56220DA5EB0027CCB5 /* Substring+Email.swift in Sources */,
+				5BF2D6F125C408EF0016B90B /* Dictionary+PrettyPrint.swift in Sources */,
 				1522956223044EAA00204FD3 /* String+FPR.swift in Sources */,
 				43BE66D2246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift in Sources */,
 				B7A46C5E220DBAF00027CCB5 /* OperationQueue+Extension.swift in Sources */,

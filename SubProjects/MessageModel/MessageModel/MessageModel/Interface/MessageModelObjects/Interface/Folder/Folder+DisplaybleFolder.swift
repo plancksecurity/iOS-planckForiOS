@@ -25,7 +25,7 @@ extension Folder: DisplayableFolderProtocol  {
     }
 
     public var isSelectable: Bool {
-        return self.selectable
+        return selectable
     }
 
     public func fetchOlder(completion: (()->())? = nil) {
@@ -46,7 +46,6 @@ extension Folder: DisplayableFolderProtocol  {
 
     public var messagesPredicate: NSPredicate {
         get {
-            self.updateLastLookAt()
             guard let safeCdFolder = cdFolder() else {
                 Log.shared.errorAndCrash("folder without cdFolder is not possible sorry")
                 return NSPredicate(value: false)

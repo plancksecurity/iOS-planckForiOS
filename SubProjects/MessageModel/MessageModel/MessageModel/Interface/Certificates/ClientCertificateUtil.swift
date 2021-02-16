@@ -33,6 +33,9 @@ public protocol ClientCertificateUtilProtocol {
     /// - Parameter clientCertificate: The client certificate to delete.
     /// - Throws: `DeleteError`
     func delete(clientCertificate: ClientCertificate) throws
+
+    /// Does the given data reperesent certificate data, importable with `SecPKCS12Import`?
+    func isCertificate(p12Data: Data) -> Bool
 }
 
 // MARK: - ImportError
@@ -163,6 +166,23 @@ extension ClientCertificateUtil: ClientCertificateUtilProtocol {
         if let error = errorToThrow {
             throw error
         }
+    }
+
+    public func isCertificate(p12Data: Data) -> Bool {
+        let p12Options: NSDictionary = [:]
+        var itemsCF: CFArray?
+        let status = SecPKCS12Import(p12Data as CFData, p12Options, &itemsCF)
+        if status != .zero {
+            switch status {
+            case errSecDecode:
+                return false
+            case errSecAuthFailed:
+                return true
+            default:
+                return false
+            }
+        }
+        return false
     }
 }
 

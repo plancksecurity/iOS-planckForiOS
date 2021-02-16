@@ -23,13 +23,13 @@
 "EdT-Qp-2PC.text" = "OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER";
 
 /* Class = "UILabel"; text = "When you click on the Privacy Status icon in the top bar, you will get to the Handshake, where you can verify your communication partner. "; ObjectID = "i1p-j1-tYp"; */
-"i1p-j1-tYp.text" = "Als je op het Privacy Status icoon in de bovenste balk klikt, komt je bij de Handdruk, waar je je communicatiepartner kunt verifiëren. ";
+"i1p-j1-tYp.text" = "Wanneer u op het pictogram Privacy Status in de bovenbalk klikt, komt u bij de Handshake, waar u uw communicatiepartner kunt verifiëren. ";
 
 /* Class = "UILabel"; text = "Handshake"; ObjectID = "ICO-LI-a2E"; */
 "ICO-LI-a2E.text" = "Handdruk";
 
 /* Class = "UILabel"; text = "When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted. "; ObjectID = "lMo-1v-V01"; */
-"lMo-1v-V01.text" = "Wanneer je bevestigt dat de Vertrouwenswoorden van je communicatiepartner correct zijn, zal je communicatie volledig Veilig & amp; Vertrouwd zijn. ";
+"lMo-1v-V01.text" = "Wanneer je bevestigt dat de Vertrouwenswoorden van je communicatiepartner correct zijn, zal je communicatie volledig Veilig & Vertrouwd zijn. ";
 
 /* Class = "UILabel"; text = "Secure"; ObjectID = "N7R-0r-VFh"; */
 "N7R-0r-VFh.text" = "Veilig";
@@ -50,7 +50,7 @@
 "rM7-ay-vaT.text" = "Met deze Privacy Status is alle communicatie Veilig, maar om te bevestigen dat je contactpersoon echt de persoon is die u kent, moet je Vertrouwenswoorden met deze contactpersoon vergelijken.";
 
 /* Class = "UILabel"; text = "Secure & Trusted"; ObjectID = "s5s-sx-Dv7"; */
-"s5s-sx-Dv7.text" = "Secure & Trusted";
+"s5s-sx-Dv7.text" = "Veilig & Vertrouwd";
 
 /* Class = "UILabel"; text = "Secure"; ObjectID = "V9f-sY-x1Q"; */
 "V9f-sY-x1Q.text" = "Veilig";

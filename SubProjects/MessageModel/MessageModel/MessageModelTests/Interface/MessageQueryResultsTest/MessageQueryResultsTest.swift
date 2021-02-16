@@ -11,7 +11,8 @@ import XCTest
 import CoreData
 
 @testable import MessageModel
-import PEPObjCAdapterFramework
+import PEPObjCAdapterTypes_iOS
+import PEPObjCAdapter_iOS
 
 class MessageQueryResultsTest: PersistentStoreDrivenTestBase {
     var messageQueryResults: MessageQueryResults?

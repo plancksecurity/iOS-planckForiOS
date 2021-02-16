@@ -9,7 +9,8 @@
 import CoreData
 
 import pEpIOSToolbox
-import PEPObjCAdapterFramework
+import PEPObjCAdapterTypes_iOS
+import PEPObjCAdapter_iOS
 
 class DecryptMessageOperation: BaseOperation {
     private let moc: NSManagedObjectContext
@@ -208,15 +209,6 @@ extension DecryptMessageOperation {
                                                                 realMessage: cdMessage,
                                                                 context: moc)
         return updatedMessage
-    }
-
-    private func setFlags(_ flags: CdImapFlags?, toLocalFlagsOf cdMessage: CdMessage) {
-        guard flags != nil else {
-            // That's OK.
-            // No fake message (und thus no flags) exists for the currently decrypted msg.
-            return
-        }
-        cdMessage.imapFields().localFlags = flags
     }
 }
 

@@ -8,9 +8,8 @@
 
 extension String {
     public static var pepSignature: String {
-        let bottom = NSLocalizedString("sent with p≡p",
-                                       comment: "pEp mail signature. Newlines will be added by app")
-        return "\n\n\(bottom)\n"
+        return NSLocalizedString("sent with p≡p",
+                                 comment: "pEp mail signature. Newlines will be added by app")
     }
 
     public static var pEpSignatureHtml: String {

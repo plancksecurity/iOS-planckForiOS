@@ -12,24 +12,28 @@ import MessageModel
 class EditSignatureViewModel {
     
     private let account: Account
-    
+
     private weak var accountSettingsdelegate: SettingChangeDelegate?
     
     public var numberOfRows: Int {
         return 1
     }
+
+    public var signatureInProgress: String?
     
     init(account: Account, delegate: SettingChangeDelegate? = nil) {
         self.account = account
         self.accountSettingsdelegate = delegate
     }
-    
-    public func updateSignature(newSignature: String) {
-        account.signature = newSignature
-        accountSettingsdelegate?.didChange()
-    }
-    
+
+    /// - Returns: The text of the signature
     public func signature() -> String {
         return account.signature
+    }
+
+    /// Update signature to the account.
+    public func updateSignature() {
+        account.signature = signatureInProgress ?? signature()
+        accountSettingsdelegate?.didChange()
     }
 }
