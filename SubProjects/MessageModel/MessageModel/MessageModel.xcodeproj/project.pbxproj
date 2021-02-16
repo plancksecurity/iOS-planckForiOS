@@ -557,6 +557,7 @@
 		43F484441E8130180028BC1A /* CdImapFlags+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F484431E8130180028BC1A /* CdImapFlags+Extension.swift */; };
 		43F484461E8130A80028BC1A /* CdImapFields+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F484451E8130A80028BC1A /* CdImapFields+Extension.swift */; };
 		43F609802248BCBD0008B900 /* CdFolder+VirtualMailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6097F2248BCBD0008B900 /* CdFolder+VirtualMailbox.swift */; };
+		43F7E3E725DBD22F00B924F3 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F7E3E625DBD22F00B924F3 /* libz.tbd */; };
 		43F86BA324503E61008961DA /* Keychain+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F86BA124503E61008961DA /* Keychain+TestUtils.swift */; };
 		43F86BA424503E61008961DA /* KeyChainTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F86BA224503E61008961DA /* KeyChainTest.swift */; };
 		43F86BA624504B95008961DA /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc in Resources */ = {isa = PBXBuildFile; fileRef = 43F86BA524504B95008961DA /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc */; };
@@ -1054,6 +1055,7 @@
 		43F484431E8130180028BC1A /* CdImapFlags+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdImapFlags+Extension.swift"; sourceTree = "<group>"; };
 		43F484451E8130A80028BC1A /* CdImapFields+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdImapFields+Extension.swift"; sourceTree = "<group>"; };
 		43F6097F2248BCBD0008B900 /* CdFolder+VirtualMailbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+VirtualMailbox.swift"; sourceTree = "<group>"; };
+		43F7E3E625DBD22F00B924F3 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		43F86BA124503E61008961DA /* Keychain+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Keychain+TestUtils.swift"; sourceTree = "<group>"; };
 		43F86BA224503E61008961DA /* KeyChainTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyChainTest.swift; sourceTree = "<group>"; };
 		43F86BA524504B95008961DA /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc"; sourceTree = "<group>"; };
@@ -1121,6 +1123,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43F7E3E725DBD22F00B924F3 /* libz.tbd in Frameworks */,
 				434A6D5B25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2567,6 +2570,7 @@
 		B7DB7FA322147000003968DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43F7E3E625DBD22F00B924F3 /* libz.tbd */,
 				434A6D5A25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a */,
 				15160B3D257A598100DD42E0 /* libiconv.tbd */,
 				15160B3C257A597B00DD42E0 /* libz.tbd */,
