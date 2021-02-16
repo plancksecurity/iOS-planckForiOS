@@ -487,6 +487,7 @@
 		43BC0E68235764D800125E01 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43BC0E66235764D800125E01 /* InfoPlist.strings */; };
 		43BC0E6B235764D800125E01 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43BC0E69235764D800125E01 /* Localizable.strings */; };
 		43BDDB4725DC1C6700FC0C68 /* PEPIOSToolboxForAppExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43BDDB4625DC1C6700FC0C68 /* PEPIOSToolboxForAppExtensions.framework */; };
+		43BDDC4325DC208900FC0C68 /* DeviceGroupState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6AD22ABF368002B59AB /* DeviceGroupState.swift */; };
 		43C123C7223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123C2223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift */; };
 		43C123EA223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */; };
 		43C123EC223A7FCF00F6A9B2 /* AccountVerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */; };
@@ -3038,6 +3039,7 @@
 				434C224225D69A7500F622DB /* CdIdentity+Extensions.swift in Sources */,
 				434C224C25D69AA800F622DB /* MimeTypeUtils+MimeType.swift in Sources */,
 				434C21A825D697B700F622DB /* FolderType.swift in Sources */,
+				43BDDC4325DC208900FC0C68 /* DeviceGroupState.swift in Sources */,
 				434C21AC25D697C000F622DB /* Query.swift in Sources */,
 				434C225C25D69B2800F622DB /* ContentDispositionType+Conversion.swift in Sources */,
 				434C234E25D6AE8200F622DB /* BackgroundError.swift in Sources */,
