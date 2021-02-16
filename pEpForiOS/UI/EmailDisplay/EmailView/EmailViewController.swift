@@ -299,7 +299,8 @@ extension EmailViewController: MessageAttachmentDelegate {
                 return
         }
         vc.viewModel = ClientCertificateImportViewModel(certificateUrl: url, delegate: vc)
-        vc.modalPresentationStyle = .fullScreen
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .coverVertical
         clientCertificateImportViewController = vc
     }
 }
