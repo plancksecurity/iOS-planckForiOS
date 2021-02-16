@@ -19,7 +19,9 @@ protocol ClientCertificateImportViewModelDelegate: class {
 public enum ImportCertificateError {
     case wrongPassword
     case corruptedFile
-    case noPermissions
+
+    /// The "certificate" is not a certificate.
+    case invalidFileType
 }
 
 final class ClientCertificateImportViewModel {
@@ -41,7 +43,12 @@ final class ClientCertificateImportViewModel {
         do {
             CFURLStartAccessingSecurityScopedResource(certificateUrl as CFURL)
             defer { CFURLStopAccessingSecurityScopedResource(certificateUrl as CFURL) }
-            p12Data = try Data(contentsOf: certificateUrl)
+            let theP12Data = try Data(contentsOf: certificateUrl)
+            guard clientCertificateUtil.isCertificate(p12Data: theP12Data) else {
+                delegate?.showError(type: .invalidFileType, dissmisAfterError: true)
+                return
+            }
+            p12Data = theP12Data
         } catch {
             delegate?.showError(type: .corruptedFile, dissmisAfterError: true)
             return
