@@ -61,7 +61,6 @@ final class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setFonts()
-        setManualSetupButtonHidden(true)
     }
 
     override func viewWillAppear(_ animated: Bool) {
