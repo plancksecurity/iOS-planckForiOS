@@ -20,6 +20,10 @@ protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
     func showEditDraftInComposeView()
     func select(itemAt indexPath: IndexPath)
     func deselect(itemAt indexPath: IndexPath)
+
+
+    /// TODO: rm this.
+    /// 
     /// Indicates which rows has been marked as unflagged
     /// - Parameter rows: The numbers of the rows
     func didMarkAsUnflagged(rows : [Int])
