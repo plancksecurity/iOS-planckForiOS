@@ -506,6 +506,7 @@
 		43BDDD8225DD4AE300FC0C68 /* GmailSpecificInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47F7221E9518006E8F83 /* GmailSpecificInformation.swift */; };
 		43BDDD8625DD4B2100FC0C68 /* CdAccount+ProviderSpecific.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B2270F242362D9007EB91E /* CdAccount+ProviderSpecific.swift */; };
 		43BDDD8A25DD4B9000FC0C68 /* VerifiableAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16A522802B6B00201DE5 /* VerifiableAccount.swift */; };
+		43BDDD8E25DD4BDC00FC0C68 /* VerifiableAccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */; };
 		43C123C7223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123C2223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift */; };
 		43C123EA223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */; };
 		43C123EC223A7FCF00F6A9B2 /* AccountVerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */; };
@@ -2946,6 +2947,7 @@
 				434C24C325D6DB2B00F622DB /* SessionAware.swift in Sources */,
 				434C21D625D698E500F622DB /* CdMessage+PredicateFactory.swift in Sources */,
 				434C21CA25D6987100F622DB /* CdExtraKey.swift in Sources */,
+				43BDDD8E25DD4BDC00FC0C68 /* VerifiableAccountProtocol.swift in Sources */,
 				434C24C725D6DD0D00F622DB /* Account+SessionAware.swift in Sources */,
 				434C232325D6A22E00F622DB /* ErrorPropagator.swift in Sources */,
 				43BDDCC725DD2B1C00FC0C68 /* Attachment+Extension.swift in Sources */,
