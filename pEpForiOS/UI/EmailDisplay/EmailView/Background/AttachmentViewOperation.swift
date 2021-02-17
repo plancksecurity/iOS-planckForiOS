@@ -1,9 +1,9 @@
 //
-//  AttachmentsViewOperation.swift
+//  AttachmentViewOperation.swift
 //  pEpForiOS
 //
-//  Created by Dirk Zimmermann on 03.04.17.
-//  Copyright © 2017 p≡p Security S.A. All rights reserved.
+//  Created by Martín Brude on 17/2/21.
+//  Copyright © 2021 p≡p Security S.A. All rights reserved.
 //
 
 import Foundation
@@ -21,7 +21,7 @@ class AttachmentViewOperation: Operation {
     private var attachment: Attachment
 
     ///The resulting attachment view will appear here.
-    var container: AttachmentContainer?
+    private var container: AttachmentContainer?
 
     /// Constructor
     ///
@@ -36,44 +36,22 @@ class AttachmentViewOperation: Operation {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            if let container = me.container {
-                completionBlock(container)
-            } else {
-                Log.shared.errorAndCrash("Something went wrong, missing container")
+            guard let container = me.container else {
+                Log.shared.errorAndCrash("No container")
+                return
             }
+            completionBlock(container)
         }
     }
 
     override func main() {
         let session = Session()
         let safeAttachment = attachment.safeForSession(session)
-
         session.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            guard let message = safeAttachment.message else {
-                Log.shared.errorAndCrash("Attachment with no Message")
-                return
-            }
-            let safeMessage = message.safeForSession(session)
-
-            // Ignore attachments that are already shown inline in the message body.
-            // Try to verify this by checking if their CID (if any) is mentioned there.
-            // So attachments labeled as inline _are_ shown if
-            //  * they don't have a CID
-            //  * their CID doesn't occur in the HTML body
-            var cidContained = false
-            if let theCid = safeAttachment.fileName?.extractCid() {
-                cidContained = safeMessage.longMessageFormatted?.contains(
-                    find: theCid) ?? false
-            }
-            if cidContained {
-                // seems like this inline attachment is really inline, don't show it
-                return
-            }
-
             var isImage: Bool = false
             if let mimeType = safeAttachment.mimeType {
                 isImage = MimeTypeUtils.isImage(mimeType: mimeType)
