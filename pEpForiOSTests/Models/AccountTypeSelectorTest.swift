@@ -58,7 +58,7 @@ class AccountTypeSelectorTest: AccountDrivenTestBase {
  Certificate
  """)
         XCTAssertEqual(vm.fileNameOrText(provider: .gmail), "asset-Google")
-        XCTAssertEqual(vm.fileNameOrText(provider: .other), NSLocalizedString("Other", comment: "Test - Other"))
+        XCTAssertEqual(vm.fileNameOrText(provider: .other), "Other")
     }
 }
 
