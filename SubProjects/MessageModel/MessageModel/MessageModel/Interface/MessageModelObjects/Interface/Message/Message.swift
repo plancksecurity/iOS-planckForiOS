@@ -392,6 +392,13 @@ public class Message: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         }
         cdObject.bcc = result
     }
+
+    public func removeFromBcc(_ element: Identity) {
+        let result =
+            (cdObject.bcc?.mutableCopy() as? NSMutableOrderedSet) ?? NSMutableOrderedSet()
+        result.remove(element.cdObject)
+        cdObject.bcc = result
+    }
 }
 
 // MARK: - Fetching
