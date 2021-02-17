@@ -7,6 +7,7 @@
 //
 
 import Photos
+import UIKit
 
 #if EXT_SHARE
 import MessageModelForAppExtensions
