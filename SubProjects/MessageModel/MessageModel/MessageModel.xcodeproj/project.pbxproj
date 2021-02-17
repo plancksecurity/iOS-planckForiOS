@@ -518,6 +518,7 @@
 		43BDDDB225DD4E4E00FC0C68 /* PantomimeFolderAttribute+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47F6221E9518006E8F83 /* PantomimeFolderAttribute+Extensions.swift */; };
 		43BDDDB625DD615E00FC0C68 /* CreateRequiredFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4825221E9518006E8F83 /* CreateRequiredFoldersOperation.swift */; };
 		43BDDDBA25DD619C00FC0C68 /* FolderType+FolderName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CACEC2562CEB10043077E /* FolderType+FolderName.swift */; };
+		43BDDDBE25DD61D100FC0C68 /* CreateIMAPPepFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150C5EEF24A38825005BA3C9 /* CreateIMAPPepFolderOperation.swift */; };
 		43C123C7223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123C2223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift */; };
 		43C123EA223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */; };
 		43C123EC223A7FCF00F6A9B2 /* AccountVerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */; };
@@ -3149,6 +3150,7 @@
 				434C220D25D6996A00F622DB /* CdImapFields.swift in Sources */,
 				434C22A725D69EC900F622DB /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift in Sources */,
 				434C221125D6996F00F622DB /* CdImapFlags.swift in Sources */,
+				43BDDDBE25DD61D100FC0C68 /* CreateIMAPPepFolderOperation.swift in Sources */,
 				434C21B025D697D800F622DB /* CdServer+PredicateFactory.swift in Sources */,
 				434C237A25D6C02800F622DB /* NSManagedObjectContext+FromObjectID.swift in Sources */,
 				434C247825D6C99C00F622DB /* KeyChain.swift in Sources */,
