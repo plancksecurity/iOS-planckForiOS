@@ -512,6 +512,7 @@
 		43BDDD9A25DD4CCE00FC0C68 /* SmtpConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4839221E9518006E8F83 /* SmtpConnection.swift */; };
 		43BDDD9E25DD4D0A00FC0C68 /* SmtpConnectionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A536E523E4626E0040715D /* SmtpConnectionProtocol.swift */; };
 		43BDDDA225DD4D4900FC0C68 /* SmtpSendError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435F5121221FF80F006EB11F /* SmtpSendError.swift */; };
+		43BDDDA625DD4D7E00FC0C68 /* PrepareAccountForSavingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A1152222C3CA3F00FB6E91 /* PrepareAccountForSavingService.swift */; };
 		43C123C7223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123C2223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift */; };
 		43C123EA223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */; };
 		43C123EC223A7FCF00F6A9B2 /* AccountVerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */; };
@@ -2982,6 +2983,7 @@
 				436FD2A425DA8B8900D929B3 /* ClientCertificateUtil.swift in Sources */,
 				436FD2B025DA8C1C00D929B3 /* CdClientCertificate+PredicateFactory.swift in Sources */,
 				434C22EF25D6A10F00F622DB /* FetchOlderImapMessagesService.swift in Sources */,
+				43BDDDA625DD4D7E00FC0C68 /* PrepareAccountForSavingService.swift in Sources */,
 				434C21A425D6978000F622DB /* CdAccount+PredicateFactory.swift in Sources */,
 				43BDDC4725DC213800FC0C68 /* KeySyncStateProvider.swift in Sources */,
 				436FD2B425DA8C5400D929B3 /* NSManagedObjectContext+Reset.swift in Sources */,
