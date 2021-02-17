@@ -10,51 +10,57 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
+/// Operation to get the Attachments view.
+/// Instanciate this operation, set a completion block,  add it to a queue.
+///
+///   let attachmentViewOperation = AttachmentViewOperation(attachment: attachment)
+///  attachmentViewOperation.completionBlock = {
+///    DispatchQueue.main.async {
+///        prepareAttachmentRow(attachmentViewOperation: attachmentViewOperation, completion: completion)
+///    }
+/// }
+/// operationQueue.addOperation(attachmentViewOperation)
+
 class AttachmentViewOperation: Operation {
     enum AttachmentContainer {
         case imageAttachment(Attachment, UIImage)
         case docAttachment(Attachment)
     }
 
-    private let mimeTypes = MimeTypeUtils()
-    private var message: Message
-    private var attachmentIndex: Int
+    private var attachment: Attachment
 
     ///The resulting attachment view will appear here.
     var container: AttachmentContainer?
 
     /// Constructor
-    /// - Parameters:
-    ///   - message: The message
-    ///   - attachmentIndex: The index of the attachment. (Very useful if the message has more than one attachment.)
-    init(message: Message, attachmentIndex: Int) {
-        self.message = message
-        self.attachmentIndex = attachmentIndex
+    /// - Parameter attachment: The attachment
+    init(attachment: Attachment, completionBlock: (() -> Void)?) {
+        self.attachment = attachment
+        self.completionBlock = completionBlock
         super.init()
     }
 
     override func main() {
         let session = Session()
+        guard let message = attachment.message else {
+            Log.shared.errorAndCrash("Attachment with no Message")
+            return
+        }
         let safeMessage = message.safeForSession(session)
+        let safeAttachment = attachment.safeForSession(session)
 
         session.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-
-            let attachments = safeMessage.viewableAttachments().filter({
-                !$0.isInlined
-            })
-            let att = attachments[me.attachmentIndex]
-
             // Ignore attachments that are already shown inline in the message body.
             // Try to verify this by checking if their CID (if any) is mentioned there.
             // So attachments labeled as inline _are_ shown if
             //  * they don't have a CID
             //  * their CID doesn't occur in the HTML body
             var cidContained = false
-            if let theCid = att.fileName?.extractCid() {
+            if let theCid = safeAttachment.fileName?.extractCid() {
                 cidContained = safeMessage.longMessageFormatted?.contains(
                     find: theCid) ?? false
             }
@@ -63,18 +69,15 @@ class AttachmentViewOperation: Operation {
                 return
             }
 
-            let isImage: Bool
-            if let mimeType = att.mimeType {
+            var isImage: Bool = false
+            if let mimeType = safeAttachment.mimeType {
                 isImage = MimeTypeUtils.isImage(mimeType: mimeType)
-            } else {
-                isImage = false
             }
-            if (isImage),
-               let imgData = att.data,
-               let img = UIImage.image(gifData: imgData) ?? UIImage(data: imgData) {
-                me.container = .imageAttachment(att, img)
+            if isImage, let imageData = safeAttachment.data,
+               let image = UIImage.image(gifData: imageData) ?? UIImage(data: imageData) {
+                me.container = .imageAttachment(safeAttachment, image)
             } else {
-                me.container = .docAttachment(att)
+                me.container = .docAttachment(safeAttachment)
             }
         }
     }

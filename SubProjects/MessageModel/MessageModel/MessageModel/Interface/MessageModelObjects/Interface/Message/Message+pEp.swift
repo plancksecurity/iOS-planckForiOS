@@ -43,4 +43,8 @@ extension Message {
         let result = attachments.filter() { $0.isInlinedPlainText }
         return result
     }
+
+    public var viewableNotInlinedAttachments : [Attachment] {
+        return viewableAttachments().filter{ !$0.isInlined && $0.fileName != nil } 
+    }
 }

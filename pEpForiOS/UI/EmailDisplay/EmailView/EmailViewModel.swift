@@ -87,9 +87,7 @@ class EmailViewModel {
         self.message = message
         self.delegate = delegate
         self.rows = [EmailRowProtocol]()
-        self.attachments = message.viewableAttachments().filter({
-            !$0.isInlined
-        })
+        self.attachments = message.viewableNotInlinedAttachments
         self.setupRows(message: message)
     }
 
@@ -302,31 +300,39 @@ extension EmailViewModel {
             var isImage: Bool = false
         }
 
-        private(set) public var attachmentIndex: Int
+        private(set) public var attachment: MessageModel.Attachment
+        
         private var operationQueue: OperationQueue
-        private var message: Message
+        private var message: Message?
         public var height: CGFloat
 
-        init(message: Message, attachmentIndex: Int) {
+        init(attachment: MessageModel.Attachment) {
             self.operationQueue = OperationQueue()
             self.operationQueue.qualityOfService = .userInitiated
-            self.message = message
             self.height = 120.0
-            self.attachmentIndex = attachmentIndex
+            self.attachment = attachment
+            guard let message = attachment.message else {
+                Log.shared.errorAndCrash("Attachment with no Message")
+                return
+            }
+            self.message = message
         }
 
         /// Retrieve attachment data
         /// - Parameter completion: The callback to pass the data.
         public func retrieveAttachmentData(completion: @escaping (String, String, UIImage) -> Void) {
-            retrieveAttachmentFromMessage(withIndex: attachmentIndex, message: message) { (attachment) in
+            guard let message = message else {
+                Log.shared.errorAndCrash("Attachment with no Message")
+                return
+            }
+            retrieveAttachmentFromMessage(message: message) { (attachment) in
                 DispatchQueue.main.async {
                     completion(attachment.filename, attachment.´extension´ ?? "", attachment.icon ?? UIImage())
                 }
             }
         }
 
-        private func retrieveAttachmentFromMessage(withIndex index: Int,
-                                                   message: Message,
+        private func retrieveAttachmentFromMessage(message: Message,
                                                    completion: @escaping (AttachmentRow.Attachment) -> ()) {
             func prepareAttachmentRow(attachmentViewOperation: AttachmentViewOperation,
                                       completion: @escaping (AttachmentRow.Attachment) -> ()) {
@@ -356,8 +362,8 @@ extension EmailViewModel {
                     }
                 }
             }
-            operationQueue.cancelAllOperations()
-            let attachmentViewOperation = AttachmentViewOperation(message: message, attachmentIndex: index)
+
+            let attachmentViewOperation = AttachmentViewOperation(attachment: attachment)
             attachmentViewOperation.completionBlock = {
                 DispatchQueue.main.async {
                     prepareAttachmentRow(attachmentViewOperation: attachmentViewOperation, completion: completion)
@@ -397,9 +403,7 @@ extension EmailViewModel {
         rows.append(bodyRow)
 
         //Attachments
-        for attachmentIndex in 0..<attachments.count {
-            let attachmentRow = AttachmentRow(message: message, attachmentIndex: attachmentIndex)
-            rows.append(attachmentRow)
-        }
+        let attachmentRows = attachments.map { AttachmentRow(attachment: $0) }
+        rows.append(contentsOf: attachmentRows)
     }
 }
