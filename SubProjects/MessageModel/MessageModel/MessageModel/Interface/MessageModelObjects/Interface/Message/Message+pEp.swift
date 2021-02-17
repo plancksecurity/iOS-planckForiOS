@@ -44,7 +44,8 @@ extension Message {
         return result
     }
 
+    /// - returns: all viewable attachments non inlined with file name
     public var viewableNotInlinedAttachments : [Attachment] {
-        return viewableAttachments().filter{ !$0.isInlined && $0.fileName != nil } 
+        return viewableAttachments().filter{ !$0.isInlined && $0.fileName != nil }
     }
 }

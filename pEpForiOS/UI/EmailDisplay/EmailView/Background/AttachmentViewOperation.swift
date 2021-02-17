@@ -11,8 +11,7 @@ import MessageModel
 import pEpIOSToolbox
 
 /// Operation to get the Attachments view.
-/// Instanciate this operation, set a completion block,  add it to a queue.
-
+/// Instanciate this operation and set a completion block,  then add it to a queue.
 class AttachmentViewOperation: Operation {
     enum AttachmentContainer {
         case imageAttachment(Attachment, UIImage)
