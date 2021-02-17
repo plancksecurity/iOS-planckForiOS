@@ -520,6 +520,7 @@
 		43BDDDBA25DD619C00FC0C68 /* FolderType+FolderName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CACEC2562CEB10043077E /* FolderType+FolderName.swift */; };
 		43BDDDBE25DD61D100FC0C68 /* CreateIMAPPepFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150C5EEF24A38825005BA3C9 /* CreateIMAPPepFolderOperation.swift */; };
 		43BDDDC225DD62A500FC0C68 /* KeyGeneratorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37855650229D305800AACFD2 /* KeyGeneratorService.swift */; };
+		43BDDDC625DD62F100FC0C68 /* UsePEPFolderProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15326E2E24A4C45B00EA8C9B /* UsePEPFolderProviderProtocol.swift */; };
 		43C123C7223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123C2223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift */; };
 		43C123EA223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */; };
 		43C123EC223A7FCF00F6A9B2 /* AccountVerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */; };
@@ -3150,6 +3151,7 @@
 				434C222E25D69A1B00F622DB /* PEPUtils.swift in Sources */,
 				434C223225D69A2E00F622DB /* Rating.swift in Sources */,
 				434C220D25D6996A00F622DB /* CdImapFields.swift in Sources */,
+				43BDDDC625DD62F100FC0C68 /* UsePEPFolderProviderProtocol.swift in Sources */,
 				434C22A725D69EC900F622DB /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift in Sources */,
 				434C221125D6996F00F622DB /* CdImapFlags.swift in Sources */,
 				43BDDDBE25DD61D100FC0C68 /* CreateIMAPPepFolderOperation.swift in Sources */,
