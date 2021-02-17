@@ -58,12 +58,6 @@ class ToMarkdownDelegate: NSAttributedStringParsingDelegate {
 }
 
 extension NSAttributedString {
-    func convertToMarkDown() -> (String, [Attachment]) {
-        let theDelegate = ToMarkdownDelegate()
-        let markdown = convert(delegate: theDelegate)
-        return (markdown.trimmingCharacters(in: .whitespacesAndNewlines),
-                theDelegate.attachments)
-    }
 
     public func textAttachments(range: NSRange? = nil) -> [TextAttachment] {
         let theRange = range ?? NSMakeRange(0, length)

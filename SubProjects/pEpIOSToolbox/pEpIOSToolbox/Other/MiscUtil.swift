@@ -8,17 +8,6 @@
 import Foundation
 
 open class MiscUtil {
-    public static func optionalHashValue<T: Hashable>(_ someVar: T?) -> Int {
-        if let theVar = someVar {
-            return theVar.hashValue
-        } else {
-            return 0
-        }
-    }
-
-    public static func isNilOrEmptyNSArray(_ array: NSArray?) -> Bool {
-        return array == nil || array?.count == 0
-    }
 
     public static func isEmptyString(_ s: String?) -> Bool {
         if s == nil {

@@ -43,13 +43,6 @@ extension Date {
         return formatter.string(from: self)
     }
 
-    public func shortString() -> String {
-        let dateFormatter = DateFormatter.init()
-        dateFormatter.dateStyle = DateFormatter.Style.short
-        dateFormatter.timeStyle = DateFormatter.Style.short
-        return dateFormatter.string(from: self)
-    }
-
     public func fullString() -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale.autoupdatingCurrent
