@@ -18,7 +18,6 @@
 		15160D44257A96DE00DD42E0 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 15160B3D257A598100DD42E0 /* libiconv.tbd */; };
 		151645A62239183B009532BE /* MessageModelObjectProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645A52239183B009532BE /* MessageModelObjectProtocol.swift */; };
 		151645A822391871009532BE /* ManagedObjectWrapperProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645A722391871009532BE /* ManagedObjectWrapperProtocol.swift */; };
-		151645B0223A783C009532BE /* Identity+IdentityImageUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645AF223A783C009532BE /* Identity+IdentityImageUtils.swift */; };
 		151645B2223A9E9F009532BE /* Server+ServerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645B1223A9E9F009532BE /* Server+ServerType.swift */; };
 		151645B4223AA049009532BE /* Attachment+ContentDispositionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645B3223AA049009532BE /* Attachment+ContentDispositionType.swift */; };
 		151645B6223AA169009532BE /* Server+Tranport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645B5223AA169009532BE /* Server+Tranport.swift */; };
@@ -474,7 +473,6 @@
 		15160D3B257A951C00DD42E0 /* libPEPObjCAdapterTypes_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libPEPObjCAdapterTypes_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		151645A52239183B009532BE /* MessageModelObjectProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModelObjectProtocol.swift; sourceTree = "<group>"; };
 		151645A722391871009532BE /* ManagedObjectWrapperProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedObjectWrapperProtocol.swift; sourceTree = "<group>"; };
-		151645AF223A783C009532BE /* Identity+IdentityImageUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Identity+IdentityImageUtils.swift"; sourceTree = "<group>"; };
 		151645B1223A9E9F009532BE /* Server+ServerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Server+ServerType.swift"; sourceTree = "<group>"; };
 		151645B3223AA049009532BE /* Attachment+ContentDispositionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Attachment+ContentDispositionType.swift"; path = "MessageModel/Interface/MessageModelObjects/Interface/Attachment/Attachment+ContentDispositionType.swift"; sourceTree = SOURCE_ROOT; };
 		151645B5223AA169009532BE /* Server+Tranport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Server+Tranport.swift"; sourceTree = "<group>"; };
@@ -1616,7 +1614,6 @@
 			isa = PBXGroup;
 			children = (
 				434DC0E11DAE7A49007C98B8 /* Identity.swift */,
-				151645AF223A783C009532BE /* Identity+IdentityImageUtils.swift */,
 				1543B6A522ABDA3A002B59AB /* Identity+pEp.swift */,
 				15B854E3232D3D9400DB8FB1 /* Identity+AddessBook.swift */,
 				B7A6B7B9233BC18100CAC6E3 /* Identity+ResetTrust.swift */,

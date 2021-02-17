@@ -18,7 +18,6 @@ extension UIColor {
     public static let pEpGreyButtonLinesHex = "#CDCED2"
     public static let pEpGreyTextHex = "#8A8A8F"
     public static let pEpGreyBackgroundHex = "#EDEEED"
-    public static let pEpYellowHex = "#FFCC00"
     public static let pEpLightBackgroundHex = "#F2F2F2"
     public static let pEpCellBackgroundHex = "#FFFFFF"
     public static let pEpNavigationBarColor = "#f7f7f7"
