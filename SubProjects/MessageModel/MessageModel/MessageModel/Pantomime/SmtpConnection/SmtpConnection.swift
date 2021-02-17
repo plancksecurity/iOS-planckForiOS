@@ -7,7 +7,12 @@
 //
 
 import PantomimeFramework
+
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 protocol SmtpConnectionDelegate: class {
     func messageSent(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?)
