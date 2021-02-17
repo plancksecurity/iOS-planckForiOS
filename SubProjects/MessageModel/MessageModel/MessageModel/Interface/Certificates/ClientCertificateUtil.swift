@@ -343,14 +343,14 @@ extension ClientCertificateUtil {
             return nil
         }
 
-        guard let normalizedIssuer = SecCertificateCopyNormalizedIssuerSequence(theCertificate) else {
-            Log.shared.errorAndCrash("Can't get normalizedIssuer")
-            return nil
-        }
-        guard let serialNumber = SecCertificateCopySerialNumberData(theCertificate, nil) else {
-            Log.shared.errorAndCrash("Can't get serialNumber")
-            return nil
-        }
+//        guard let normalizedIssuer = SecCertificateCopyNormalizedIssuerSequence(theCertificate) else {
+//            Log.shared.errorAndCrash("Can't get normalizedIssuer")
+//            return nil
+//        }
+//        guard let serialNumber = SecCertificateCopySerialNumberData(theCertificate, nil) else {
+//            Log.shared.errorAndCrash("Can't get serialNumber")
+//            return nil
+//        }
         guard let identityLabel = label(for: theSecIdentity) else {
             throw ImportError.insufficientInformation
         }
@@ -358,10 +358,11 @@ extension ClientCertificateUtil {
         let uuidLabel = NSUUID().uuidString
         let addIdentityAttributes: [CFString : Any] = [kSecReturnPersistentRef: true,
                                                        kSecAttrLabel: uuidLabel,
-                                                       kSecValueRef: theSecIdentity,
-                                                       kSecAttrIssuer: normalizedIssuer,
-                                                       kSecAttrSerialNumber: serialNumber,
-                                                       kSecAttrCertificateType:  SecCertificateGetTypeID()
+                                                       kSecValueRef: theSecIdentity
+//                                                       ,
+//                                                       kSecAttrIssuer: normalizedIssuer,
+//                                                       kSecAttrSerialNumber: serialNumber,
+//                                                       kSecAttrCertificateType:  SecCertificateGetTypeID()
         ]
 
         var resultRef: CFTypeRef? = nil
@@ -373,6 +374,7 @@ extension ClientCertificateUtil {
             }
             if identityStatus != errSecDuplicateItem {
                 // Throw on all errors except duplicate items
+                
                 throw ImportError.keychainError
             } else {
                 // The keychain already has an item of the same class with the same set of composite primary keys
@@ -380,15 +382,47 @@ extension ClientCertificateUtil {
                 //
                 // If the error hints at a duplicate already in the keychain,
                 // try to find it.
-                if let existingUuid = matchExisting(secIdentity: theSecIdentity) {
-                    return (existingUuid, identityLabel)
+
+                let deletionSuccessful = try deleteOlderCertificateFromKeychain(secIdentity: theSecIdentity)
+
+                if deletionSuccessful {
+                    guard let context = Stack.shared.mainContext else {
+                        Log.shared.errorAndCrash("Main context missing")
+                        return nil
+                    }
+                    if let existingCertificate = CdClientCertificate.search(label: identityLabel,
+                                                                            keychainUuid: uuidLabel,
+                                                                            context: context) {
+                        MessageModelObjectUtils.getClientCertificate(fromCdClientCertificat: existingCertificate, context: context).delete()
+
+                    } else {
+                        print("Mmmmmm")
+                    }
+
                 } else {
-                    return nil
+                    if let existingUuid = matchExisting(secIdentity: theSecIdentity) {
+                        return (existingUuid, identityLabel)
+                    } else {
+                        return nil
+                    }
                 }
             }
         }
 
         return (uuidLabel, identityLabel)
+    }
+
+    private func deleteOlderCertificateFromKeychain(secIdentity: SecIdentity) throws -> Success {
+        let queryToDeleteTheOlderCertificate: NSDictionary = [kSecClass: kSecClassCertificate, kSecValueRef: secIdentity]
+
+        let status = SecItemDelete(queryToDeleteTheOlderCertificate)
+        guard status != errSecItemNotFound else {
+            throw ImportError.keychainError
+        }
+        guard status == errSecSuccess else {
+            throw ImportError.keychainError
+        }
+        return status.error == nil
     }
 
     /// Matches the given `SecIdentity` with what is already available in the keychain

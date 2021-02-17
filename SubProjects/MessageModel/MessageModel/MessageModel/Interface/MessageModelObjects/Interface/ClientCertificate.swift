@@ -33,6 +33,10 @@ public class ClientCertificate: MessageModelObjectProtocol, ManagedObjectWrapper
     public var date: Date? {
         return cdObject.importDate
     }
+
+    public var uuid: String? {
+        return cdObject.keychainUuid
+    }
 }
 
 extension ClientCertificate: Equatable {

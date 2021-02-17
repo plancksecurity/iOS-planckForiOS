@@ -83,6 +83,7 @@ extension AppDelegate {
         }
         Log.shared.verboseLoggingEnabled = AppSettings.shared.verboseLogginEnabled
 
+        let status = SecItemDelete([kSecClass: kSecClassCertificate] as CFDictionary)
         Log.shared.logDebugInfo()
 
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
