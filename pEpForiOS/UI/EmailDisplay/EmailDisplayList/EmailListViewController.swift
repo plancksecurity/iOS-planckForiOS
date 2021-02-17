@@ -1033,7 +1033,7 @@ extension EmailListViewController {
                 Log.shared.lostMySelf()
                 return
             }
-            guard let vm = viewModel else {
+            guard let vm = me.viewModel else {
                 Log.shared.errorAndCrash("VM not found")
                 return
             }
