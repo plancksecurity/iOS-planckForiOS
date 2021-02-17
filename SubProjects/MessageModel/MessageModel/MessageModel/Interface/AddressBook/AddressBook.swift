@@ -9,7 +9,11 @@
 import Contacts
 import CoreData
 
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 public class AddressBook {
     static private var shouldStopUpdatingExistingIdentities = false
