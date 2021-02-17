@@ -332,41 +332,34 @@ extension EmailViewModel {
             }
         }
 
-        private func retrieveAttachmentFromMessage(message: Message,
-                                                   completion: @escaping (AttachmentRow.Attachment) -> ()) {
-            func prepareAttachmentRow(attachmentViewOperation: AttachmentViewOperation,
-                                      completion: @escaping (AttachmentRow.Attachment) -> ()) {
-                let defaultFileName = MessageModel.Attachment.defaultFilename
-
-                guard let container = attachmentViewOperation.container else {
-                    /// Valid case, could be an inline attachment
-                    return
-                }
-                switch container {
-                case .imageAttachment(let attachment, let image):
-                    let safeAttachment = attachment.safeForSession(Session.main)
-                    Session.main.performAndWait {
-                        let fileName = safeAttachment.fileName ?? defaultFileName
-                        let attachmentToReturn = AttachmentRow.Attachment(filename: fileName, ´extension´: safeAttachment.mimeType, icon: image, isImage: true)
-                        completion(attachmentToReturn)
-
-                    }
-                case .docAttachment(let attachment):
-                    let safeAttachment = attachment.safeForSession(.main)
-                    Session.main.performAndWait {
-                        let (name, finalExt) = safeAttachment.fileName?.splitFileExtension() ?? (defaultFileName, nil)
-                        let dic = UIDocumentInteractionController()
-                        dic.name = safeAttachment.fileName
-                        let attachmentToReturn = AttachmentRow.Attachment(filename: name, ´extension´: finalExt, icon: dic.icons.first, isImage: false)
-                        completion(attachmentToReturn)
-                    }
-                }
-            }
-
-            let attachmentViewOperation = AttachmentViewOperation(attachment: attachment)
-            attachmentViewOperation.completionBlock = {
+        /// Retrieve attachment from message
+        ///
+        /// - Parameters:
+        ///   - message: The message to get the attachment
+        ///   - completion: The completion block to execute when the attachment is obtained.
+        private func retrieveAttachmentFromMessage(message: Message, completion: @escaping (AttachmentRow.Attachment) -> ()) {
+            let attachmentViewOperation = AttachmentViewOperation(attachment: attachment) { (container) in
                 DispatchQueue.main.async {
-                    prepareAttachmentRow(attachmentViewOperation: attachmentViewOperation, completion: completion)
+                    let defaultFileName = MessageModel.Attachment.defaultFilename
+
+                    switch container {
+                    case .imageAttachment(let attachment, let image):
+                        let safeAttachment = attachment.safeForSession(Session.main)
+                        Session.main.performAndWait {
+                            let fileName = safeAttachment.fileName ?? defaultFileName
+                            let attachmentToReturn = AttachmentRow.Attachment(filename: fileName, ´extension´: safeAttachment.mimeType, icon: image, isImage: true)
+                            completion(attachmentToReturn)
+                        }
+                    case .docAttachment(let attachment):
+                        let safeAttachment = attachment.safeForSession(.main)
+                        Session.main.performAndWait {
+                            let (name, finalExt) = safeAttachment.fileName?.splitFileExtension() ?? (defaultFileName, nil)
+                            let dic = UIDocumentInteractionController()
+                            dic.name = safeAttachment.fileName
+                            let attachmentToReturn = AttachmentRow.Attachment(filename: name, ´extension´: finalExt, icon: dic.icons.first, isImage: false)
+                            completion(attachmentToReturn)
+                        }
+                    }
                 }
             }
             operationQueue.addOperation(attachmentViewOperation)

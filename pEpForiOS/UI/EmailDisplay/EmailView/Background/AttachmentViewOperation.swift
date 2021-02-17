@@ -12,14 +12,6 @@ import pEpIOSToolbox
 
 /// Operation to get the Attachments view.
 /// Instanciate this operation, set a completion block,  add it to a queue.
-///
-///   let attachmentViewOperation = AttachmentViewOperation(attachment: attachment)
-///  attachmentViewOperation.completionBlock = {
-///    DispatchQueue.main.async {
-///        prepareAttachmentRow(attachmentViewOperation: attachmentViewOperation, completion: completion)
-///    }
-/// }
-/// operationQueue.addOperation(attachmentViewOperation)
 
 class AttachmentViewOperation: Operation {
     enum AttachmentContainer {
@@ -33,20 +25,28 @@ class AttachmentViewOperation: Operation {
     var container: AttachmentContainer?
 
     /// Constructor
-    /// - Parameter attachment: The attachment
-    init(attachment: Attachment, completionBlock: (() -> Void)?) {
+    ///
+    /// - Parameters:
+    ///   - attachment: The attachment to perform the operation.
+    ///   - completionBlock: The completion block.
+    init(attachment: Attachment, completionBlock: @escaping((AttachmentContainer) -> Void)) {
         self.attachment = attachment
-        self.completionBlock = completionBlock
         super.init()
+        self.completionBlock = { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            if let container = me.container {
+                completionBlock(container)
+            } else {
+                Log.shared.errorAndCrash("Something went wrong, missing container")
+            }
+        }
     }
 
     override func main() {
         let session = Session()
-        guard let message = attachment.message else {
-            Log.shared.errorAndCrash("Attachment with no Message")
-            return
-        }
-        let safeMessage = message.safeForSession(session)
         let safeAttachment = attachment.safeForSession(session)
 
         session.performAndWait { [weak self] in
@@ -54,6 +54,12 @@ class AttachmentViewOperation: Operation {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
+            guard let message = safeAttachment.message else {
+                Log.shared.errorAndCrash("Attachment with no Message")
+                return
+            }
+            let safeMessage = message.safeForSession(session)
+
             // Ignore attachments that are already shown inline in the message body.
             // Try to verify this by checking if their CID (if any) is mentioned there.
             // So attachments labeled as inline _are_ shown if
