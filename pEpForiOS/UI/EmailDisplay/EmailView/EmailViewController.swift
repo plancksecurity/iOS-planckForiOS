@@ -102,12 +102,12 @@ extension EmailViewController: UITableViewDataSource {
         }
         let cellIdentifier = vm.cellIdentifier(for: indexPath)
         let row = vm[indexPath.row]
-        switch vm.type(ofRow: row) {
+        switch row.type {
         case .sender:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageSenderCell else {
                 return UITableViewCell()
             }
-            guard let row = vm[indexPath.row] as? SenderRowProtocol else {
+            guard let row = vm[indexPath.row] as? EmailViewModel.SenderRow else {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
@@ -117,7 +117,7 @@ extension EmailViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageSubjectCell else {
                 return UITableViewCell()
             }
-            guard let row = vm[indexPath.row] as? SubjectRowProtocol else {
+            guard let row = vm[indexPath.row] as? EmailViewModel.SubjectRow else {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
@@ -127,7 +127,7 @@ extension EmailViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageBodyCell else {
                 return UITableViewCell()
             }
-            guard let row = vm[indexPath.row] as? BodyRowProtocol else {
+            guard let row = vm[indexPath.row] as? EmailViewModel.BodyRow else {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
@@ -160,7 +160,7 @@ extension EmailViewController: UITableViewDelegate {
         if let row = vm[indexPath.row] as? AttachmentRowProtocol {
             return row.height
         }
-        if vm[indexPath.row] is BodyRowProtocol {
+        if vm[indexPath.row] is EmailViewModel.BodyRow {
             return htmlViewerViewController.contentSize.height
         } else {
             return tableView.rowHeight
@@ -173,7 +173,7 @@ extension EmailViewController: UITableViewDelegate {
             return
         }
         let row = vm[indexPath.row]
-        if vm.type(ofRow: row) == .attachment {
+        if row.type == .attachment {
             vm.handleDidTapAttachmentRow(at: indexPath)
         }
     }
@@ -259,7 +259,7 @@ extension EmailViewController {
         showExternalContentView.isHidden = true
     }
 
-    private func setupBody(cell: MessageBodyCell, with row: BodyRowProtocol) {
+    private func setupBody(cell: MessageBodyCell, with row: EmailViewModel.BodyRow) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("Missing vm")
             return
@@ -289,7 +289,7 @@ extension EmailViewController {
         }
     }
 
-    private func setupSender(cell: MessageSenderCell, with row: SenderRowProtocol) {
+    private func setupSender(cell: MessageSenderCell, with row: EmailViewModel.SenderRow) {
         let font = UIFont.pepFont(style: .footnote, weight: .semibold)
         cell.fromLabel.font = font
         cell.fromLabel.text = row.from
@@ -299,7 +299,7 @@ extension EmailViewController {
         cell.toLabel?.attributedText = NSAttributedString(string: subtitle, attributes: attributes)
     }
 
-    private func setupSubject(cell: MessageSubjectCell, with row: SubjectRowProtocol) {
+    private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {
         cell.subjectLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
         cell.subjectLabel?.text = row.title
         if let date = row.date {

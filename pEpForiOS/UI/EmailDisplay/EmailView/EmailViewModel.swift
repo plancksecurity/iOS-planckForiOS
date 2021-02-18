@@ -35,36 +35,37 @@ protocol EmailViewModelDelegate: class {
 protocol EmailRowProtocol {
     /// The cell identifier
     var cellIdentifier: String { get }
+    var type: EmailViewModel.EmailRowType { get }
 }
 
 //MARK: - Sender
 
-protocol SenderRowProtocol: EmailRowProtocol {
-    /// From recipient text to show
-    var from: String { get }
-    /// To recipient text to show
-    var to: String { get }
-}
-
+//protocol SenderRowProtocol: EmailRowProtocol {
+//    /// From recipient text to show
+//    var from: String { get }
+//    /// To recipient text to show
+//    var to: String { get }
+//}
+//
 //MARK: - Subject
 
-protocol SubjectRowProtocol: EmailRowProtocol {
-    /// The subject to show
-    var title: String { get }
-    /// The date to show
-    var date: String? { get }
-}
+//protocol SubjectRowProtocol: EmailRowProtocol {
+//    /// The subject to show
+//    var title: String { get }
+//    /// The date to show
+//    var date: String? { get }
+//}
 
 //MARK: - Body
 
-protocol BodyRowProtocol: EmailRowProtocol {
-    /// The html body of the message
-    var htmlBody: String? { get }
-    /// Evaluates the pepRating to provide the body
-    /// Use it for non-html content.
-    /// - Parameter completion: The callback with the body.
-    func body(completion: @escaping (NSMutableAttributedString) -> Void)
-}
+//protocol BodyRowProtocol: EmailRowProtocol {
+//    /// The html body of the message
+//    var htmlBody: String? { get }
+//    /// Evaluates the pepRating to provide the body
+//    /// Use it for non-html content.
+//    /// - Parameter completion: The callback with the body.
+//    func body(completion: @escaping (NSMutableAttributedString) -> Void)
+//}
 
 //MARK: - AttachmentRowProtocol
 
@@ -151,23 +152,6 @@ class EmailViewModel {
         return rows[indexPath.row].cellIdentifier
     }
 
-    /// Get the row type of the row.
-    /// - Parameter row: The row
-    /// - Returns: The Email Row type
-    public func type(ofRow row: EmailRowProtocol) -> EmailRowType {
-        if row is SenderRowProtocol {
-            return .sender
-        } else if row is BodyRowProtocol {
-            return .body
-        } else if row is SubjectRowProtocol {
-            return .subject
-        } else if row is AttachmentRowProtocol {
-            return .attachment
-        }
-        Log.shared.errorAndCrash("Row type not supported")
-        return .sender
-    }
-
     /// Show external content.
     public func handleShowExternalContentButtonPressed() {
         shouldHideExternalContent = false
@@ -186,7 +170,7 @@ class EmailViewModel {
             return
         }
         let index = indexPath.row - rows.count(where: {
-            type(ofRow: $0) != .attachment
+            $0.type != .attachment
         })
         let attachment = attachments[index]
         let defaultFileName = MessageModel.Attachment.defaultFilename
@@ -222,19 +206,22 @@ extension EmailViewModel {
        case sender, subject, body, attachment
     }
 
-    struct SenderRow: SenderRowProtocol {
+    struct SenderRow: EmailRowProtocol {
+        var type: EmailViewModel.EmailRowType = .sender
         var cellIdentifier: String = "senderCell"
         var from: String
         var to: String
     }
 
-    struct SubjectRow: SubjectRowProtocol {
+    struct SubjectRow: EmailRowProtocol {
+        var type: EmailViewModel.EmailRowType = .subject
         var cellIdentifier: String = "senderSubjectCell"
         var title: String
         var date: String?
     }
 
-    struct BodyRow: BodyRowProtocol {
+    struct BodyRow: EmailRowProtocol {
+        var type: EmailViewModel.EmailRowType = .body
         public var cellIdentifier: String = "senderBodyCell"
         private var message: Message?
         public var htmlBody: String?
@@ -289,6 +276,7 @@ extension EmailViewModel {
     }
 
     struct AttachmentRow: AttachmentRowProtocol {
+        var type: EmailViewModel.EmailRowType = .attachment
         var cellIdentifier: String = "attachmentsCell"
 
         /// Attachment, in the context of EmailViewModel.
