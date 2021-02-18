@@ -374,7 +374,6 @@ extension ClientCertificateUtil {
             }
             if identityStatus != errSecDuplicateItem {
                 // Throw on all errors except duplicate items
-                
                 throw ImportError.keychainError
             } else {
                 // The keychain already has an item of the same class with the same set of composite primary keys
@@ -382,47 +381,15 @@ extension ClientCertificateUtil {
                 //
                 // If the error hints at a duplicate already in the keychain,
                 // try to find it.
-
-                let deletionSuccessful = try deleteOlderCertificateFromKeychain(secIdentity: theSecIdentity)
-
-                if deletionSuccessful {
-                    guard let context = Stack.shared.mainContext else {
-                        Log.shared.errorAndCrash("Main context missing")
-                        return nil
-                    }
-                    if let existingCertificate = CdClientCertificate.search(label: identityLabel,
-                                                                            keychainUuid: uuidLabel,
-                                                                            context: context) {
-                        MessageModelObjectUtils.getClientCertificate(fromCdClientCertificat: existingCertificate, context: context).delete()
-
-                    } else {
-                        print("Mmmmmm")
-                    }
-
+                if let existingUuid = matchExisting(secIdentity: theSecIdentity) {
+                    return (existingUuid, identityLabel)
                 } else {
-                    if let existingUuid = matchExisting(secIdentity: theSecIdentity) {
-                        return (existingUuid, identityLabel)
-                    } else {
-                        return nil
-                    }
+                    return nil
                 }
             }
         }
 
         return (uuidLabel, identityLabel)
-    }
-
-    private func deleteOlderCertificateFromKeychain(secIdentity: SecIdentity) throws -> Success {
-        let queryToDeleteTheOlderCertificate: NSDictionary = [kSecClass: kSecClassCertificate, kSecValueRef: secIdentity]
-
-        let status = SecItemDelete(queryToDeleteTheOlderCertificate)
-        guard status != errSecItemNotFound else {
-            throw ImportError.keychainError
-        }
-        guard status == errSecSuccess else {
-            throw ImportError.keychainError
-        }
-        return status.error == nil
     }
 
     /// Matches the given `SecIdentity` with what is already available in the keychain

@@ -34,6 +34,7 @@ public class ClientCertificate: MessageModelObjectProtocol, ManagedObjectWrapper
         return cdObject.importDate
     }
 
+    //TODO: This only for testing, remove it when done. 
     public var uuid: String? {
         return cdObject.keychainUuid
     }
