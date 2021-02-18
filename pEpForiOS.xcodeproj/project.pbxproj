@@ -412,6 +412,8 @@
 		43BDE05125DE818C00FC0C68 /* references.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C31F4441190053381F /* references.c */; };
 		43BDE05425DE81D300FC0C68 /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C61F4441190053381F /* utf8.c */; };
 		43BDE05725DE820C00FC0C68 /* iterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BF1F4441190053381F /* iterator.c */; };
+		43BDE05A25DE821C00FC0C68 /* inlines.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BE1F4441190053381F /* inlines.c */; };
+		43BDE05D25DE826000FC0C68 /* houdini_html_e.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BB1F4441190053381F /* houdini_html_e.c */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3077,6 +3079,7 @@
 				3A503B18253744390070AB6A /* ComposeTableViewController.swift in Sources */,
 				3A503A9F253737B20070AB6A /* ShareViewController.swift in Sources */,
 				434C1AD825D4136A00F622DB /* String+pEp.swift in Sources */,
+				43BDE05D25DE826000FC0C68 /* houdini_html_e.c in Sources */,
 				434C1AC625D411F300F622DB /* PEPAlertViewController.swift in Sources */,
 				434C1A7D25D40ACF00F622DB /* UIImageView+Extension.swift in Sources */,
 				434A6C4B25D2A39C00179335 /* ComposeViewModelState.swift in Sources */,
@@ -3179,6 +3182,7 @@
 				434A6C4825D2A39800179335 /* ComposeViewController.swift in Sources */,
 				434C1A7425D409ED00F622DB /* UIHelper+PEP.swift in Sources */,
 				434C19E025D3E3A900F622DB /* Color+UI.swift in Sources */,
+				43BDE05A25DE821C00FC0C68 /* inlines.c in Sources */,
 				434C19CE25D3E13E00F622DB /* TextViewInTableViewScrollUtil.swift in Sources */,
 				434C1AD525D4133400F622DB /* Color+PrivacyStatusDescription.swift in Sources */,
 				43BDE04B25DE7FA800FC0C68 /* houdini_html_u.c in Sources */,
