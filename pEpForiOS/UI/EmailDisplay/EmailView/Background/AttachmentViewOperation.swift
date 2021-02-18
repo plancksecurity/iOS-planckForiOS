@@ -11,7 +11,7 @@ import MessageModel
 import pEpIOSToolbox
 
 /// Operation to get the Attachments view.
-/// Instanciate this operation and set a completion block,  then add it to a queue.
+/// Loads all attachments of the given message from disk and creates AttachmentContainers for it
 class AttachmentViewOperation: Operation {
     enum AttachmentContainer {
         case imageAttachment(Attachment, UIImage)
@@ -46,6 +46,8 @@ class AttachmentViewOperation: Operation {
 
     override func main() {
         let session = Session()
+        /// As we use a private session.
+        /// This MUST NOT be used on main
         let safeAttachment = attachment.safeForSession(session)
         session.performAndWait { [weak self] in
             guard let me = self else {
