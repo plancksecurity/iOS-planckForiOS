@@ -403,6 +403,7 @@
 		43BDE03625DE7C8A00FC0C68 /* cmark.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B61F4441190053381F /* cmark.c */; };
 		43BDE03925DE7CFC00FC0C68 /* html.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BD1F4441190053381F /* html.c */; };
 		43BDE03C25DE7D0E00FC0C68 /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
+		43BDE03F25DE7D1A00FC0C68 /* node.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C21F4441190053381F /* node.c */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3060,6 +3061,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				434C19E325D3E3F700F622DB /* ComposeUtil.swift in Sources */,
+				43BDE03F25DE7D1A00FC0C68 /* node.c in Sources */,
 				434C1A9625D40D6500F622DB /* UIUtils+ActionSheets.swift in Sources */,
 				434C1AFF25D4279100F622DB /* HtmlToAttributedTextSaxParser.swift in Sources */,
 				434C1AAC25D40FF800F622DB /* AddToContactsViewController.swift in Sources */,
