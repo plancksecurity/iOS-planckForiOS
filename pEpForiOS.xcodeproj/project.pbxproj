@@ -402,6 +402,7 @@
 		43B10C801EC2EE7F003E849F /* CppDummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B10C7F1EC2EE7F003E849F /* CppDummy.cpp */; };
 		43BDE03625DE7C8A00FC0C68 /* cmark.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B61F4441190053381F /* cmark.c */; };
 		43BDE03925DE7CFC00FC0C68 /* html.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BD1F4441190053381F /* html.c */; };
+		43BDE03C25DE7D0E00FC0C68 /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3100,6 +3101,7 @@
 				434C1AC025D4116D00F622DB /* SegueHandlerType.swift in Sources */,
 				434A6C6A25D2A3D500179335 /* RecipientTextView.swift in Sources */,
 				434A6C7925D2A3EE00179335 /* WrappedCell.swift in Sources */,
+				43BDE03C25DE7D0E00FC0C68 /* blocks.c in Sources */,
 				434A6C5625D2A3B100179335 /* AccountCellViewModel.swift in Sources */,
 				434C1A8925D40BEA00F622DB /* UIUtils.swift in Sources */,
 				434C1B0825D4290700F622DB /* URL+Extensions.swift in Sources */,
