@@ -411,6 +411,7 @@
 		43BDE04E25DE817900FC0C68 /* cmark_ctype.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B71F4441190053381F /* cmark_ctype.c */; };
 		43BDE05125DE818C00FC0C68 /* references.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C31F4441190053381F /* references.c */; };
 		43BDE05425DE81D300FC0C68 /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C61F4441190053381F /* utf8.c */; };
+		43BDE05725DE820C00FC0C68 /* iterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BF1F4441190053381F /* iterator.c */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3152,6 +3153,7 @@
 				434C19C425D3E09C00F622DB /* String+PEPSignature.swift in Sources */,
 				43BDE04E25DE817900FC0C68 /* cmark_ctype.c in Sources */,
 				3A503B1D253744D40070AB6A /* UIImage+Resize.swift in Sources */,
+				43BDE05725DE820C00FC0C68 /* iterator.c in Sources */,
 				434C19C125D3E07000F622DB /* AppSettingsProtocol.swift in Sources */,
 				434C1AD225D412F300F622DB /* TrustManagementViewModel.swift in Sources */,
 				434C1ABD25D4112B00F622DB /* SecureWebViewUrlClickHandlerProtocol.swift in Sources */,
