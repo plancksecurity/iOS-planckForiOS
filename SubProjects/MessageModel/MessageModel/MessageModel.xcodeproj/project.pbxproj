@@ -528,6 +528,7 @@
 		43BDDDDE25DD64FA00FC0C68 /* AddressBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A2EF11E829C4600878837 /* AddressBook.swift */; };
 		43BDDF6325DE5EF400FC0C68 /* Identity+AddessBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B854E3232D3D9400DB8FB1 /* Identity+AddessBook.swift */; };
 		43BDDF6725DE5FCE00FC0C68 /* Identity+Fetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1F4EF2459CD5F00070DCC /* Identity+Fetching.swift */; };
+		43BDDF6E25DE607B00FC0C68 /* Identity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6A522ABDA3A002B59AB /* Identity+pEp.swift */; };
 		43C123C7223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123C2223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift */; };
 		43C123EA223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */; };
 		43C123EC223A7FCF00F6A9B2 /* AccountVerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */; };
@@ -3005,6 +3006,7 @@
 				43BDDDCE25DD63B300FC0C68 /* TrustManagementUtil.swift in Sources */,
 				436FD2B425DA8C5400D929B3 /* NSManagedObjectContext+Reset.swift in Sources */,
 				43BDDD9A25DD4CCE00FC0C68 /* SmtpConnection.swift in Sources */,
+				43BDDF6E25DE607B00FC0C68 /* Identity+pEp.swift in Sources */,
 				434C235A25D6B20100F622DB /* EmailConnectInfo.swift in Sources */,
 				436FD24425DA820100D929B3 /* Error+Passphrase.swift in Sources */,
 				434C228725D69C2800F622DB /* Attachment+ContentDispositionType.swift in Sources */,
