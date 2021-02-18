@@ -8,6 +8,8 @@
 
 import UIKit
 
+import PEPIOSToolboxForAppExtensions
+
 final class ShareViewController: UIViewController {
     var composeTableVC: ComposeViewController?
 
@@ -39,7 +41,7 @@ extension ShareViewController {
         //sendMail.sendMessage()
 
         guard let context = extensionContext else {
-            //Log.shared.errorAndCrash(message: "Lost extension context!")
+            Log.shared.errorAndCrash(message: "Lost extension context!")
             return
         }
 
