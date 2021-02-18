@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "NSString+Markdown.h"
+
 #import "cmark.h"
+
+#import "NSString+Markdown.h"
 
 @implementation NSString (Markdown)
 
