@@ -69,7 +69,7 @@ extension ShareViewController {
 
             if let text = item as? String {
                 DispatchQueue.main.async {
-                    me.composeTableVC?.addPlainText(text: text)
+                    // TODO: Inform compose about a text attachment?
                 }
             }
         })
@@ -84,7 +84,7 @@ extension ShareViewController {
                let imgData = try? Data(contentsOf: imgUrl),
                let img = UIImage(data: imgData) {
                 DispatchQueue.main.async {
-                    me.composeTableVC?.addImage(image: img)
+                    // TODO: Inform compose about an image to attach
                 }
             }
 
