@@ -9,7 +9,7 @@
 import UIKit
 
 final class ShareViewController: UIViewController {
-    var composeTableVC: ComposeTableViewController?
+    var composeTableVC: ComposeViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +18,7 @@ final class ShareViewController: UIViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let vc = segue.destination as? ComposeTableViewController {
+        if let vc = segue.destination as? ComposeViewController {
             composeTableVC = vc
         }
 
