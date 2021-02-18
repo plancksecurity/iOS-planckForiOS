@@ -406,6 +406,7 @@
 		43BDE03F25DE7D1A00FC0C68 /* node.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C21F4441190053381F /* node.c */; };
 		43BDE04225DE7D6800FC0C68 /* scanners.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C51F4441190053381F /* scanners.c */; };
 		43BDE04525DE7F0800FC0C68 /* houdini_href_e.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BA1F4441190053381F /* houdini_href_e.c */; };
+		43BDE04825DE7F6100FC0C68 /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3084,6 +3085,7 @@
 				434C1A9F25D40E4F00F622DB /* UIUtils+Compose.swift in Sources */,
 				434A6C4C25D2A39F00179335 /* ComposeViewModel.swift in Sources */,
 				434C1AA225D40EC200F622DB /* UINavigationController+Extensions.swift in Sources */,
+				43BDE04825DE7F6100FC0C68 /* buffer.c in Sources */,
 				434C1AF325D419C100F622DB /* SwipeActionDescriptor.swift in Sources */,
 				434A6C5125D2A3A700179335 /* CellViewModel.swift in Sources */,
 				434C19D125D3E1BF00F622DB /* DocumentAttachmentPickerViewModel.swift in Sources */,
