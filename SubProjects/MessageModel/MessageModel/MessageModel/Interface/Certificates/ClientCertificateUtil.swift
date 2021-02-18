@@ -355,14 +355,12 @@ extension ClientCertificateUtil {
         }
 
         let uuidLabel = NSUUID().uuidString
-
         let addIdentityAttributes: [CFString : Any] = [kSecReturnPersistentRef: true,
                                                        kSecAttrLabel: uuidLabel,
                                                        kSecValueRef: theSecIdentity,
                                                        kSecAttrIssuer: normalizedIssuer,
                                                        kSecAttrSerialNumber: serialNumber,
-                                                       kSecClass: kSecClassIdentity
-        ]
+                                                       kSecClass: kSecClassIdentity]
 
         var resultRef: CFTypeRef? = nil
         let identityStatus = SecItemAdd(addIdentityAttributes as CFDictionary, &resultRef);
