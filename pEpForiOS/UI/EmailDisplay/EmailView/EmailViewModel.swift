@@ -38,35 +38,6 @@ protocol EmailRowProtocol {
     var type: EmailViewModel.EmailRowType { get }
 }
 
-//MARK: - Sender
-
-//protocol SenderRowProtocol: EmailRowProtocol {
-//    /// From recipient text to show
-//    var from: String { get }
-//    /// To recipient text to show
-//    var to: String { get }
-//}
-//
-//MARK: - Subject
-
-//protocol SubjectRowProtocol: EmailRowProtocol {
-//    /// The subject to show
-//    var title: String { get }
-//    /// The date to show
-//    var date: String? { get }
-//}
-
-//MARK: - Body
-
-//protocol BodyRowProtocol: EmailRowProtocol {
-//    /// The html body of the message
-//    var htmlBody: String? { get }
-//    /// Evaluates the pepRating to provide the body
-//    /// Use it for non-html content.
-//    /// - Parameter completion: The callback with the body.
-//    func body(completion: @escaping (NSMutableAttributedString) -> Void)
-//}
-
 //MARK: - AttachmentRowProtocol
 
 protocol AttachmentRowProtocol: EmailRowProtocol {
