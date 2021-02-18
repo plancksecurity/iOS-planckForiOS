@@ -59,7 +59,7 @@ extension ShareViewController {
             } else if elem.hasItemConformingToTypeIdentifier("public.file-url") {
                 loadFile(elem: elem)
             }
-            Log.shared.debug("DEV: elem \(elem)")
+            Log.shared.logInfo(message: "DEV: elem \(elem)")
         }
 
     }
