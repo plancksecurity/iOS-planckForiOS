@@ -195,7 +195,6 @@
 		3A503A9F253737B20070AB6A /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A503A9E253737B20070AB6A /* ShareViewController.swift */; };
 		3A503AA2253737B20070AB6A /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A503AA0253737B20070AB6A /* MainInterface.storyboard */; };
 		3A503AA6253737B20070AB6A /* pEp-share.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3A503A9C253737B20070AB6A /* pEp-share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		3A503B18253744390070AB6A /* ComposeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A503B17253744390070AB6A /* ComposeTableViewController.swift */; };
 		3A503B1D253744D40070AB6A /* UIImage+Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A503B1C253744D40070AB6A /* UIImage+Resize.swift */; };
 		3A796BA9242CC26100083BB5 /* HtmlConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BA8242CC26100083BB5 /* HtmlConversions.swift */; };
 		3A796BAB242CC31F00083BB5 /* NSAttributedString+Html.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BAA242CC31F00083BB5 /* NSAttributedString+Html.swift */; };
@@ -850,7 +849,6 @@
 		3A503A9E253737B20070AB6A /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		3A503AA1253737B20070AB6A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		3A503AA3253737B20070AB6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3A503B17253744390070AB6A /* ComposeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeTableViewController.swift; sourceTree = "<group>"; };
 		3A503B1C253744D40070AB6A /* UIImage+Resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Resize.swift"; sourceTree = "<group>"; };
 		3A796BA8242CC26100083BB5 /* HtmlConversions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlConversions.swift; sourceTree = "<group>"; };
 		3A796BAA242CC31F00083BB5 /* NSAttributedString+Html.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Html.swift"; sourceTree = "<group>"; };
@@ -1984,7 +1982,6 @@
 			isa = PBXGroup;
 			children = (
 				3A503A9E253737B20070AB6A /* ShareViewController.swift */,
-				3A503B17253744390070AB6A /* ComposeTableViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -3076,7 +3073,6 @@
 				434C1AFF25D4279100F622DB /* HtmlToAttributedTextSaxParser.swift in Sources */,
 				434C1AAC25D40FF800F622DB /* AddToContactsViewController.swift in Sources */,
 				434A6C7525D2A3E700179335 /* SubjectCell.swift in Sources */,
-				3A503B18253744390070AB6A /* ComposeTableViewController.swift in Sources */,
 				3A503A9F253737B20070AB6A /* ShareViewController.swift in Sources */,
 				434C1AD825D4136A00F622DB /* String+pEp.swift in Sources */,
 				43BDE05D25DE826000FC0C68 /* houdini_html_e.c in Sources */,
