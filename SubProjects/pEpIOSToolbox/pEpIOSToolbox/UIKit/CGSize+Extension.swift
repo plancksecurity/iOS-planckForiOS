@@ -13,11 +13,4 @@ extension CGSize {
      Default size for avatar images. Should also match storyboard sizes.
      */
     public static let defaultAvatarSize = CGSize(width: 48, height: 48)
-
-    /**
-     Default size for pEp rating image in avatar images.
-     Related with `defaultAvatarSize`, and should be smaller.
-     Should also match storyboard sizes.
-     */
-    public static let defaultAvatarPEPStatusSize = CGSize(width: 20, height: 20)
 }
