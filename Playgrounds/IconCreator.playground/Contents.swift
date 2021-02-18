@@ -58,20 +58,14 @@ func produceGreen() {
     produceImage(fileName: path) { ctx, size in
         // You would use UIBezierPath and its -addCurveToPoint:controlPoint1:controlPoint2: or -addQuadCurveToPoint:controlPoint: method. You'll have to calculate the control points yourself.
         let lineWidth: CGFloat = 2.0
-        let bottomDistance: CGFloat = 10.0
         ctx.setStrokeColor(UIColor.green.cgColor)
         ctx.setLineWidth(lineWidth)
         ctx.beginPath()
         let startP = CGPoint(x: size.width / 2, y: lineWidth)
-        let leftBottom = CGPoint(x: lineWidth, y: size.height - bottomDistance)
-        let rightBottom = CGPoint(x: size.width - lineWidth, y: size.height - bottomDistance)
         let cpLeft = CGPoint(x: lineWidth, y: size.height/3)
 
         var cpRight = cpLeft
         cpRight.x = size.width - lineWidth
-
-        let cpBottom = CGPoint(x: size.width/2, y: size.height - bottomDistance)
-
         ctx.move(to: startP)
         ctx.strokePath()
     }

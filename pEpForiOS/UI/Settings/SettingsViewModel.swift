@@ -211,20 +211,36 @@ extension SettingsViewModel {
             rows.append(generateNavigationRow(type: .pgpKeyImport, isDangerous: false))
             rows.append(generateSwitchRow(type: .unsecureReplyWarningEnabled,
                                           isDangerous: false,
-                                          isOn: AppSettings.shared.unsecureReplyWarningEnabled) {
-                                            (value) in
-                                            AppSettings.shared.unsecureReplyWarningEnabled = value
+                                          isOn: AppSettings.shared.unsecureReplyWarningEnabled) {  [weak self]
+                (value) in
+                AppSettings.shared.unsecureReplyWarningEnabled = value
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                me.setSwtichRow(ofType: .globalSettings, withIdentifier: .unsecureReplyWarningEnabled, newValue: value)
             })
             rows.append(generateSwitchRow(type: .protectMessageSubject,
                                           isDangerous: false,
-                                          isOn: !AppSettings.shared.unencryptedSubjectEnabled) {
-                                            (value) in
-                                            AppSettings.shared.unencryptedSubjectEnabled = !value
+                                          isOn: !AppSettings.shared.unencryptedSubjectEnabled) { [weak self]
+                (value) in
+                AppSettings.shared.unencryptedSubjectEnabled = !value
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                me.setSwtichRow(ofType: .globalSettings, withIdentifier: .protectMessageSubject, newValue: value)
             })
             rows.append(generateSwitchRow(type: .passiveMode,
                                           isDangerous: false,
-                                          isOn: AppSettings.shared.passiveMode) { (value) in
+                                          isOn: AppSettings.shared.passiveMode) { [weak self] (value) in
                                             AppSettings.shared.passiveMode = value
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                me.setSwtichRow(ofType: .globalSettings, withIdentifier: .passiveMode, newValue: value)
+
             })
         case .pEpSync:
             rows.append(generateSwitchRow(type: .pEpSync,
@@ -235,11 +251,18 @@ extension SettingsViewModel {
                     return
                 }
                 me.setPEPSyncEnabled(to: value)
+                me.setSwtichRow(ofType: .pEpSync, withIdentifier: .pEpSync, newValue: value)
+
             })
             rows.append(generateSwitchRow(type: .usePEPFolder,
                                           isDangerous: false,
-                                          isOn: AppSettings.shared.usePEPFolderEnabled) { (value) in
+                                          isOn: AppSettings.shared.usePEPFolderEnabled) { [weak self] (value) in
                 AppSettings.shared.usePEPFolderEnabled = value
+                guard let me = self else {
+                    Log.shared.lostMySelf()
+                    return
+                }
+                me.setSwtichRow(ofType: .pEpSync, withIdentifier: .usePEPFolder, newValue: value)
             })
         case .contacts:
             rows.append(generateNavigationRow(type: .resetTrust, isDangerous: true))
@@ -409,26 +432,32 @@ extension SettingsViewModel {
         }
     }
 
+    /// Set the new value of the switch row.
+    ///
+    /// - Parameters:
+    ///   - sectionType: The section type.
+    ///   - identifier: The row identifier.
+    ///   - newValue: The value to set.
+    private func setSwtichRow(ofType sectionType: SectionType, withIdentifier identifier: SettingsViewModel.RowIdentifier, newValue: Bool) {
+        guard let sectionIndex = sectionType.index else {
+            Log.shared.errorAndCrash("section index not found")
+            return
+        }
+        guard let rowIndex = items[sectionIndex].rows.firstIndex(where: { $0.identifier == identifier }) else {
+            Log.shared.errorAndCrash("row index not found")
+            return
+        }
+        guard var row = items[sectionIndex].rows[rowIndex] as? SwitchRow else {
+            Log.shared.errorAndCrash("can't cast row")
+            return
+        }
+        row.isOn = newValue
+        items[sectionIndex].rows[rowIndex] = row
+    }
+
     /// This method sets the pEp Sync status according to the parameter value
     /// - Parameter value: The new value of the pEp Sync status
     private func setPEPSyncEnabled(to value: Bool) {
-        func updatePEPSyncEnabled(value: Bool) {
-            guard let pEpSyncSectionIndex = items.firstIndex(where: { $0.type == .pEpSync }) else {
-                Log.shared.errorAndCrash("pepSync section not found")
-                return
-            }
-            guard let pepSyncRowIndex = items[pEpSyncSectionIndex].rows.firstIndex(where: {$0.identifier == SettingsViewModel.RowIdentifier.pEpSync}) else {
-                Log.shared.errorAndCrash("pepSync row not found")
-                return
-            }
-            guard var pepSyncRow = items[pEpSyncSectionIndex].rows[pepSyncRowIndex] as? SwitchRow else {
-                Log.shared.errorAndCrash("can't cast pepSync row")
-                return
-            }
-            pepSyncRow.isOn = value
-            items[pEpSyncSectionIndex].rows[pepSyncRowIndex] = pepSyncRow
-        }
-
         let grouped = KeySyncUtil.isInDeviceGroup
         if value {
             KeySyncUtil.enableKeySync()
@@ -441,7 +470,6 @@ extension SettingsViewModel {
                 KeySyncUtil.disableKeySync()
             }
         }
-        updatePEPSyncEnabled(value: value)
     }
 
     private var keySyncStatus: Bool {
@@ -508,7 +536,7 @@ extension SettingsViewModel {
     }
 
     /// Identifies semantically the type of row.
-    public enum RowIdentifier {
+    public enum RowIdentifier: String {
         case account
         case resetAccounts
         case defaultAccount

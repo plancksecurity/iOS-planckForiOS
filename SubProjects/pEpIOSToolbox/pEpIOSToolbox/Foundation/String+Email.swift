@@ -13,13 +13,6 @@ import Foundation
  */
 extension String {
 
-    public static func emailProviderDetectionPattern(providerDomainPart: String) -> NSRegularExpression {
-        return try! NSRegularExpression(
-            // character classes: https://en.wikipedia.org/wiki/Unicode_character_property
-            pattern: "[-_[\\p{Ll}\\p{Lu}\\p{Nd}.]]+@\(providerDomainPart)\\.[a-z]+",
-            options: [])
-    }
-
     /**
      Very rudimentary test whether this String is a valid email.
      - Returns: `true` if the number of matches are exactly 1, `false` otherwise.
@@ -77,22 +70,5 @@ extension String {
      */
     public func isValidEmailLocalPart() -> Bool {
         return self[startIndex..<endIndex].isValidEmailLocalPart()
-    }
-
-    /**
-     Contains a String like e.g. "email1, email2, email3", only probably valid emails?
-     - Parameter delimiter: The delimiter that separates the emails.
-     - Returns: True if all email parts yield true with `isProbablyValidEmail`.
-     */
-    public func isProbablyValidEmailListSeparatedBy(_ delimiter: String = ",") -> Bool {
-        let emails = self.components(separatedBy: delimiter).map({
-            $0.trimmed()
-        })
-        for e in emails {
-            if e.matches(pattern: "\(delimiter)") || !e.isProbablyValidEmail() {
-                return false
-            }
-        }
-        return true
     }
 }
