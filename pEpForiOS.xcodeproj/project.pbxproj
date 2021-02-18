@@ -407,6 +407,7 @@
 		43BDE04225DE7D6800FC0C68 /* scanners.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C51F4441190053381F /* scanners.c */; };
 		43BDE04525DE7F0800FC0C68 /* houdini_href_e.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BA1F4441190053381F /* houdini_href_e.c */; };
 		43BDE04825DE7F6100FC0C68 /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
+		43BDE04B25DE7FA800FC0C68 /* houdini_html_u.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BC1F4441190053381F /* houdini_html_u.c */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3172,6 +3173,7 @@
 				434C19E025D3E3A900F622DB /* Color+UI.swift in Sources */,
 				434C19CE25D3E13E00F622DB /* TextViewInTableViewScrollUtil.swift in Sources */,
 				434C1AD525D4133400F622DB /* Color+PrivacyStatusDescription.swift in Sources */,
+				43BDE04B25DE7FA800FC0C68 /* houdini_html_u.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
