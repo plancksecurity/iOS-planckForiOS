@@ -257,64 +257,6 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         let composeVM = emailListVM.composeViewModelForNewMessage()
         XCTAssertEqual(composeVM.state.from, expectedFrom)
     }
-
-
-    func testMessageInInboxIsMarkedAsRead() {
-        let msg = TestUtil.createMessage(uid: 1, inFolder: inbox)
-        msg.session.commit()
-        setupViewModel()
-        emailListVM.startMonitoring()
-        let didMarkAsReadExpectation = expectation(description: "didMarkAsReadExpectation")
-        let expectationDidUpdateDataAtCalled = expectation(description: "expectationDidUpdateDataAtCalled")
-        let viewModelTestDelegate = TestMasterViewController(expectationDidUpdateDataAt: expectationDidUpdateDataAtCalled, expectationDidMarkAsRead: didMarkAsReadExpectation)
-        masterViewController = viewModelTestDelegate
-        emailListVM.delegate = masterViewController
-        emailListVM.markAsRead(indexPaths: [IndexPath(row: 0, section: 0)])
-        waitForExpectations(timeout: TestUtil.waitTime)
-    }
-
-
-    func testMessageInInboxIsMarkedAsUnread() {
-        let msg = TestUtil.createMessage(uid: 1, inFolder: inbox)
-        msg.session.commit()
-        setupViewModel()
-        emailListVM.startMonitoring()
-        let didMarkAsUnreadExpectation = expectation(description: "didMarkAsUnreadExpectation")
-        let expectationDidUpdateDataAtCalled = expectation(description: "expectationDidUpdateDataAtCalled")
-        let viewModelTestDelegate = TestMasterViewController(
-            expectationDidUpdateDataAt: expectationDidUpdateDataAtCalled,
-            expectationDidMarkAsUnread: didMarkAsUnreadExpectation)
-        masterViewController = viewModelTestDelegate
-        emailListVM.delegate = masterViewController
-        emailListVM.markAsUnread(indexPaths: [IndexPath(row: 0, section: 0)])
-        waitForExpectations(timeout: TestUtil.waitTime)
-    }
-
-    func testMessageInInboxIsMarkedAsFlagged() {
-        let msg = TestUtil.createMessage(uid: 1, inFolder: inbox)
-        msg.session.commit()
-        setupViewModel()
-        emailListVM.startMonitoring()
-        let didMarkAFlaggedExpectation = expectation(description: "didMarkAsFlaggedExpectation")
-        let viewModelTestDelegate = TestMasterViewController(expectationDidMarkAsFlagged: didMarkAFlaggedExpectation)
-        masterViewController = viewModelTestDelegate
-        emailListVM.delegate = masterViewController
-        emailListVM.markAsFlagged(indexPaths: [IndexPath(row: 0, section: 0)])
-        waitForExpectations(timeout: TestUtil.waitTime)
-    }
-
-    func testMessageInInboxIsMarkedAsUnflagged() {
-        let msg = TestUtil.createMessage(uid: 1, inFolder: inbox)
-        msg.session.commit()
-        setupViewModel()
-        emailListVM.startMonitoring()
-        let didMarkAsUnFlaggedExpectation = expectation(description: "didMarkAsUnflaggedExpectation")
-        let viewModelTestDelegate = TestMasterViewController(expectationDidMarkAsUnflagged: didMarkAsUnFlaggedExpectation)
-        masterViewController = viewModelTestDelegate
-        emailListVM.delegate = masterViewController
-        emailListVM.markAsUnFlagged(indexPaths: [IndexPath(row: 0, section: 0)])
-        waitForExpectations(timeout: TestUtil.waitTime)
-    }
 }
 
 // MARK: - HELPER
@@ -375,59 +317,15 @@ private class TestMasterViewController: EmailListViewModelDelegate {
     var excpectationDidInsertDataAtCalled: XCTestExpectation?
     var expectationDidUpdateDataAtCalled: XCTestExpectation?
     var expectationDidRemoveDataAtCalled: XCTestExpectation?
-    var expectationDidMarkAsUnflagged: XCTestExpectation?
-    var expectationDidMarkAsRead: XCTestExpectation?
-    var expectationDidMarkAsUnread: XCTestExpectation?
-    var expectationDidMarkAsFlagged: XCTestExpectation?
 
     init(expectationUpdateView: XCTestExpectation? = nil,
          expectationDidInsertDataAt: XCTestExpectation? = nil,
          expectationDidUpdateDataAt: XCTestExpectation? = nil,
-         expectationDidRemoveDataAt: XCTestExpectation? = nil,
-         expectationDidMarkAsUnflagged: XCTestExpectation? = nil,
-         expectationDidMarkAsRead: XCTestExpectation? = nil,
-         expectationDidMarkAsUnread: XCTestExpectation? = nil,
-         expectationDidMarkAsFlagged: XCTestExpectation? = nil) {
+         expectationDidRemoveDataAt: XCTestExpectation? = nil) {
         self.expectationUpdateViewCalled = expectationUpdateView
         self.excpectationDidInsertDataAtCalled = expectationDidInsertDataAt
         self.expectationDidUpdateDataAtCalled = expectationDidUpdateDataAt
         self.expectationDidRemoveDataAtCalled = expectationDidRemoveDataAt
-        self.expectationDidMarkAsRead = expectationDidMarkAsRead
-        self.expectationDidMarkAsUnread = expectationDidMarkAsUnread
-        self.expectationDidMarkAsFlagged = expectationDidMarkAsFlagged
-        self.expectationDidMarkAsUnflagged = expectationDidMarkAsUnflagged
-    }
-
-    func didMarkAsUnflagged(rows: [Int]) {
-        if let expectationDidMarkAsUnflagged = expectationDidMarkAsUnflagged {
-            expectationDidMarkAsUnflagged.fulfill()
-        } else {
-            XCTFail()
-        }
-    }
-
-    func didMarkAsRead(rows: [Int]) {
-        if let expectationDidMarkAsRead = expectationDidMarkAsRead {
-            expectationDidMarkAsRead.fulfill()
-        } else {
-            XCTFail()
-        }
-    }
-
-    func didMarkAsUnread(rows: [Int]) {
-        if let expectationDidMarkAsUnread = expectationDidMarkAsUnread {
-            expectationDidMarkAsUnread.fulfill()
-        } else {
-            XCTFail()
-        }
-    }
-
-    func didMarkAsFlagged(rows: [Int]) {
-        if let expectationDidMarkAsFlagged = expectationDidMarkAsFlagged {
-            expectationDidMarkAsFlagged.fulfill()
-        } else {
-            XCTFail()
-        }
     }
 
     func setToolbarItemsEnabledState(to newValue: Bool) {
