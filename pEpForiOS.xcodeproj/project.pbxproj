@@ -410,6 +410,7 @@
 		43BDE04B25DE7FA800FC0C68 /* houdini_html_u.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BC1F4441190053381F /* houdini_html_u.c */; };
 		43BDE04E25DE817900FC0C68 /* cmark_ctype.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B71F4441190053381F /* cmark_ctype.c */; };
 		43BDE05125DE818C00FC0C68 /* references.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C31F4441190053381F /* references.c */; };
+		43BDE05425DE81D300FC0C68 /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C61F4441190053381F /* utf8.c */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3103,6 +3104,7 @@
 				434C1A9C25D40DEE00F622DB /* URL+MailTo.swift in Sources */,
 				434A6C6E25D2A3DC00179335 /* RecipientTextViewModel+TextAttachment.swift in Sources */,
 				434C1A0325D3EFF500F622DB /* BasicSaxParser.swift in Sources */,
+				43BDE05425DE81D300FC0C68 /* utf8.c in Sources */,
 				434C19C725D3E11100F622DB /* SuggestTableViewController.swift in Sources */,
 				434C1ADB25D413AE00F622DB /* IdentityImageTool.swift in Sources */,
 				434C19EA25D3E52F00F622DB /* Account+Extension.swift in Sources */,
