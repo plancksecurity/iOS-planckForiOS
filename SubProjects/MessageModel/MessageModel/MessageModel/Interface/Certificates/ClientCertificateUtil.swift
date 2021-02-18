@@ -159,12 +159,19 @@ extension ClientCertificateUtil: ClientCertificateUtilProtocol {
                 } else {
                     moc.delete(existing)
                     moc.saveAndLogErrors()
+                    removeFromKeychain(cdCertificate: existing)
                 }
             }
         }
 
         if let error = errorToThrow {
             throw error
+        }
+    }
+
+    private func removeFromKeychain(cdCertificate: CdClientCertificate) {
+        if let element = listExisting().first(where: {$0.0 == cdCertificate.keychainUuid}) {
+            SecItemDelete([kSecValueRef: element.1] as CFDictionary)
         }
     }
 
@@ -357,10 +364,12 @@ extension ClientCertificateUtil {
         let uuidLabel = NSUUID().uuidString
         let addIdentityAttributes: [CFString : Any] = [kSecReturnPersistentRef: true,
                                                        kSecAttrLabel: uuidLabel,
-                                                       kSecValueRef: theSecIdentity,
-                                                       kSecAttrIssuer: normalizedIssuer,
-                                                       kSecAttrSerialNumber: serialNumber,
-                                                       kSecClass: kSecClassIdentity]
+                                                       kSecValueRef: theSecIdentity
+//                                                       ,
+//                                                       kSecAttrIssuer: normalizedIssuer,
+//                                                       kSecAttrSerialNumber: serialNumber,
+//                                                       kSecClass: kSecClassIdentity
+        ]
 
         var resultRef: CFTypeRef? = nil
         let identityStatus = SecItemAdd(addIdentityAttributes as CFDictionary, &resultRef);

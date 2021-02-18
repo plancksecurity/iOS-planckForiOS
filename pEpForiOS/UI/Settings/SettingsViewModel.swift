@@ -491,8 +491,21 @@ extension SettingsViewModel {
                                     //All good, nothing to do.
                                   })
         let oldAddress = account.user.address
-        account.delete()
-        Session.main.commit()
+
+
+        if let certificate = account.imapServer?.credentials.clientCertificate {
+            account.delete()
+            Session.main.commit()
+            let clientCertificateUtil = ClientCertificateUtil()
+            do {
+                try clientCertificateUtil.delete(clientCertificate: certificate)
+            } catch {
+                Log.shared.log(error: error)
+            }
+        } else {
+            account.delete()
+            Session.main.commit()
+        }
 
         if AppSettings.shared.defaultAccount == nil ||
             AppSettings.shared.defaultAccount == oldAddress {
