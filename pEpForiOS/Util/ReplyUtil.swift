@@ -35,9 +35,9 @@ public struct ReplyUtil {
         
         return "\n\n".attribString()
             + footer(for: message).attribString()
-            + "\n\n"
+            + "\n\n".attribString()
             + citationPlainText.attribString()
-            + "\n\n"
+            + "\n\n".attribString()
             + quotedText
     }
 
