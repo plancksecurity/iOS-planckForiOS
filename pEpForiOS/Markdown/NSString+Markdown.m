@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "cmark.h"
+#import <cmark.h>
 
 #import "NSString+Markdown.h"
 
