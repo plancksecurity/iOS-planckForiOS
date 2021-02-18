@@ -109,16 +109,6 @@ class StringExtensionsTest: XCTestCase {
                        "test005@peptest.ch")
     }
 
-    func testIsProbablyValidEmailList() {
-        XCTAssertFalse("email1, email2".isProbablyValidEmailListSeparatedBy(","))
-        XCTAssertTrue("email1@test.com, email2@test.com".isProbablyValidEmailListSeparatedBy(","))
-        XCTAssertTrue("email1@test.com; email2@test.com".isProbablyValidEmailListSeparatedBy(";"))
-        XCTAssertFalse("email1@test.com, email2@test.com".isProbablyValidEmailListSeparatedBy(";"))
-        XCTAssertFalse(
-            "email1@test.com, email2@test.com, email, test@com".isProbablyValidEmailListSeparatedBy(
-            ","))
-    }
-
     func testComponentsSeparatedBy() {
         // This behavior is somewhat odd. Want to make sure it's documented.
         XCTAssertEqual("".components(separatedBy: ","), [""])

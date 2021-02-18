@@ -43,11 +43,4 @@ extension CdMessage {
             }
         }
     }
-
-    /**
-     Is this `CdMessage` later than `cdMessage2` by date, uid or message-id?
-     */
-    private func isLaterTo(cdMessage2: CdMessage) -> Bool {
-        return !isEarlierTo(cdMessage2: cdMessage2)
-    }
 }

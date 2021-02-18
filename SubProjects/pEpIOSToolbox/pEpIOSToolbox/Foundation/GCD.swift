@@ -16,17 +16,4 @@ public struct GCD {
             block()
         }
     }
-
-    /**
-     Since you will do this all the time in UI callbacks.
-     */
-    public static func onMainWait(_ block: @escaping () -> Void) {
-        if Thread.isMainThread {
-            block()
-        } else {
-            DispatchQueue.main.sync {
-                block()
-            }
-        }
-    }
 }
