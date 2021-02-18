@@ -47,7 +47,7 @@ extension ShareViewController {
 
         guard let item = context.inputItems.first as? NSExtensionItem,
               let attachments = item.attachments else {
-            print("DEV: attachments are NIL !!")
+            Log.shared.errorAndCrash(message: "DEV: attachments are NIL !!")
             return
         }
 
@@ -59,7 +59,7 @@ extension ShareViewController {
             } else if elem.hasItemConformingToTypeIdentifier("public.file-url") {
                 loadFile(elem: elem)
             }
-            print("DEV: elem \(elem)")
+            Log.shared.debug("DEV: elem \(elem)")
         }
 
     }
@@ -95,6 +95,6 @@ extension ShareViewController {
 
     private func loadFile(elem: NSItemProvider) {
         // TODO: - not yet implemented
-        print("DEV: load PDF element is not yet implemented!")
+        Log.shared.debug("DEV: load PDF element is not yet implemented!")
     }
 }
