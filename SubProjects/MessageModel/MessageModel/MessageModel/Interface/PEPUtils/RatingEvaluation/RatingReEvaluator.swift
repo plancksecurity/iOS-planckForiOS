@@ -10,7 +10,12 @@ import CoreData
 
 import PEPObjCAdapterTypes_iOS
 import PEPObjCAdapter_iOS
+
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 protocol RatingReEvaluatorProtocol {
     /// Reevaluates the pEp rating of the given message and saves it.
