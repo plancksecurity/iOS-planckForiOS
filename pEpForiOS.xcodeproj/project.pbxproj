@@ -404,6 +404,7 @@
 		43BDE03925DE7CFC00FC0C68 /* html.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BD1F4441190053381F /* html.c */; };
 		43BDE03C25DE7D0E00FC0C68 /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		43BDE03F25DE7D1A00FC0C68 /* node.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C21F4441190053381F /* node.c */; };
+		43BDE04225DE7D6800FC0C68 /* scanners.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C51F4441190053381F /* scanners.c */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3161,6 +3162,7 @@
 				434A6C7825D2A3EA00179335 /* SubjectCellViewModel.swift in Sources */,
 				434C1A7125D409B100F622DB /* UIHelper.swift in Sources */,
 				434C1AA925D40FB600F622DB /* UIUtils+Contacts.swift in Sources */,
+				43BDE04225DE7D6800FC0C68 /* scanners.c in Sources */,
 				434A6C4825D2A39800179335 /* ComposeViewController.swift in Sources */,
 				434C1A7425D409ED00F622DB /* UIHelper+PEP.swift in Sources */,
 				434C19E025D3E3A900F622DB /* Color+UI.swift in Sources */,
