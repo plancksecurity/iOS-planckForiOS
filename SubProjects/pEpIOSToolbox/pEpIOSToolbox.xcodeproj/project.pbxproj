@@ -45,6 +45,7 @@
 		43BDDDE525DD65CA00FC0C68 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A46C53220C73BE0027CCB5 /* String+Extensions.swift */; };
 		43BDDDE825DD65E700FC0C68 /* NSRegularExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */; };
 		43BDDF3125DE5C6000FC0C68 /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7936E3C220DD8F5003B39E6 /* NSAttributedString+Extensions.swift */; };
+		43BDDF6B25DE601000FC0C68 /* SelfReferencingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154944CE229A97AA00CC6431 /* SelfReferencingOperation.swift */; };
 		43BE66D2246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BE66D1246D2C78007FA645 /* DocumentsDirectoryBrowserProtocol.swift */; };
 		43E1A866252B6A1300307A7D /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43E1A865252B6A1300307A7D /* CocoaLumberjack.framework */; };
 		5B2EDC642551954300DA18A7 /* NonPasteableUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2EDC632551954300DA18A7 /* NonPasteableUITextField.swift */; };
@@ -617,6 +618,7 @@
 				43BDDF3125DE5C6000FC0C68 /* NSAttributedString+Extensions.swift in Sources */,
 				43BDDDE825DD65E700FC0C68 /* NSRegularExpression+Extension.swift in Sources */,
 				43BDDDE525DD65CA00FC0C68 /* String+Extensions.swift in Sources */,
+				43BDDF6B25DE601000FC0C68 /* SelfReferencingOperation.swift in Sources */,
 				43BDDCBC25DD098700FC0C68 /* GCD.swift in Sources */,
 				434C1AE725D414A500F622DB /* UIColor+Extension.swift in Sources */,
 				434C19D425D3E22500F622DB /* Log.swift in Sources */,
