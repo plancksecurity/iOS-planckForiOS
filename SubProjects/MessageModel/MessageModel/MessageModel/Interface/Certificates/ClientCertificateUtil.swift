@@ -297,7 +297,6 @@ extension ClientCertificateUtil {
             commonName = commonNameCF as String?
         }
 
-
         var emailAddressesCF: CFArray?
         let emailAddressStatus = SecCertificateCopyEmailAddresses(theCertificate, &emailAddressesCF)
         if emailAddressStatus == errSecSuccess,
@@ -343,26 +342,26 @@ extension ClientCertificateUtil {
             return nil
         }
 
-//        guard let normalizedIssuer = SecCertificateCopyNormalizedIssuerSequence(theCertificate) else {
-//            Log.shared.errorAndCrash("Can't get normalizedIssuer")
-//            return nil
-//        }
-//        guard let serialNumber = SecCertificateCopySerialNumberData(theCertificate, nil) else {
-//            Log.shared.errorAndCrash("Can't get serialNumber")
-//            return nil
-//        }
+        guard let normalizedIssuer = SecCertificateCopyNormalizedIssuerSequence(theCertificate) else {
+            Log.shared.errorAndCrash("Can't get normalizedIssuer")
+            return nil
+        }
+        guard let serialNumber = SecCertificateCopySerialNumberData(theCertificate, nil) else {
+            Log.shared.errorAndCrash("Can't get serialNumber")
+            return nil
+        }
         guard let identityLabel = label(for: theSecIdentity) else {
             throw ImportError.insufficientInformation
         }
 
         let uuidLabel = NSUUID().uuidString
+
         let addIdentityAttributes: [CFString : Any] = [kSecReturnPersistentRef: true,
                                                        kSecAttrLabel: uuidLabel,
-                                                       kSecValueRef: theSecIdentity
-//                                                       ,
-//                                                       kSecAttrIssuer: normalizedIssuer,
-//                                                       kSecAttrSerialNumber: serialNumber,
-//                                                       kSecAttrCertificateType:  SecCertificateGetTypeID()
+                                                       kSecValueRef: theSecIdentity,
+                                                       kSecAttrIssuer: normalizedIssuer,
+                                                       kSecAttrSerialNumber: serialNumber,
+                                                       kSecClass: kSecClassIdentity
         ]
 
         var resultRef: CFTypeRef? = nil
