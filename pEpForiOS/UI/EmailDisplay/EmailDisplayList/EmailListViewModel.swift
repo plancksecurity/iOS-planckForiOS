@@ -20,22 +20,6 @@ protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
     func showEditDraftInComposeView()
     func select(itemAt indexPath: IndexPath)
     func deselect(itemAt indexPath: IndexPath)
-
-
-    /// TODO: rm this.
-    /// 
-    /// Indicates which rows has been marked as unflagged
-    /// - Parameter rows: The numbers of the rows
-    func didMarkAsUnflagged(rows : [Int])
-    /// Indicates which rows has been marked as read
-    /// - Parameter rows: The numbers of the rows
-    func didMarkAsRead(rows : [Int])
-    /// Indicates which rows has been marked as unread
-    /// - Parameter rows: The numbers of the rows
-    func didMarkAsUnread(rows : [Int])
-    /// Indicates which rows has been marked as flagged
-    /// - Parameter rows: The numbers of the rows
-    func didMarkAsFlagged(rows : [Int])
 }
 
 // MARK: - EmailListViewModel
@@ -243,45 +227,24 @@ class EmailListViewModel: EmailDisplayViewModel {
     /// - Parameter indexPath: indexPaths of messages to set flagged.
     public func markAsFlagged(indexPaths: [IndexPath]) {
         setFlaggedValue(forIndexPath: indexPaths, newValue: true)
-
-        guard let delegate = delegate as? EmailListViewModelDelegate else {
-            Log.shared.errorAndCrash("No delegate")
-            return
-        }
-        delegate.didMarkAsFlagged(rows: indexPaths.map(\.row))
     }
 
     /// Marks the message represented by the given `indexPaths` as not-flagged.
     /// - Parameter indexPath: indexPaths of messages to unsset flag flag for.
     public func markAsUnFlagged(indexPaths: [IndexPath]) {
         setFlaggedValue(forIndexPath: indexPaths, newValue: false)
-        guard let delegate = delegate as? EmailListViewModelDelegate else {
-            Log.shared.errorAndCrash("No delegate")
-            return
-        }
-        delegate.didMarkAsUnflagged(rows: indexPaths.map(\.row))
     }
 
     /// Marks the message represented by the given `indexPaths` as seen.
     /// - Parameter indexPath: indexPaths of messages to set seen.
     public func markAsRead(indexPaths: [IndexPath]) {
         setSeenValue(forIndexPath: indexPaths, newValue: true)
-        guard let delegate = delegate as? EmailListViewModelDelegate else {
-            Log.shared.errorAndCrash("No delegate")
-            return
-        }
-        delegate.didMarkAsRead(rows: indexPaths.map(\.row))
     }
 
     /// Marks the message represented by the given `indexPaths` as not-seen.
     /// - Parameter indexPath: indexPaths of messages to unsset seen flag for.
     public func markAsUnread(indexPaths: [IndexPath]) {
         setSeenValue(forIndexPath: indexPaths, newValue: false)
-        guard let delegate = delegate as? EmailListViewModelDelegate else {
-            Log.shared.errorAndCrash("No delegate")
-            return
-        }
-        delegate.didMarkAsUnread(rows: indexPaths.map(\.row))
     }
 
     /// Handles destructive button click for messages represented by given `indexPaths`.
@@ -505,7 +468,6 @@ extension EmailListViewModel {
     }
 
     private func setSeenValue(forIndexPath indexPath: [IndexPath], newValue seen: Bool) {
-        updatesEnabled = false
         let messages = indexPath.map { messageQueryResults[$0.row] }
         Message.setSeenValue(to: messages, newValue: seen)
     }
