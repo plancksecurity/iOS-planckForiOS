@@ -526,6 +526,7 @@
 		43BDDDD625DD645000FC0C68 /* String+Fingerprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D79923F3117D009DACAA /* String+Fingerprint.swift */; };
 		43BDDDDA25DD649400FC0C68 /* Identity+ResetTrust.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A6B7B9233BC18100CAC6E3 /* Identity+ResetTrust.swift */; };
 		43BDDDDE25DD64FA00FC0C68 /* AddressBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A2EF11E829C4600878837 /* AddressBook.swift */; };
+		43BDDF6325DE5EF400FC0C68 /* Identity+AddessBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B854E3232D3D9400DB8FB1 /* Identity+AddessBook.swift */; };
 		43C123C7223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123C2223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift */; };
 		43C123EA223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */; };
 		43C123EC223A7FCF00F6A9B2 /* AccountVerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */; };
@@ -3028,6 +3029,7 @@
 				434C218C25D696F700F622DB /* MessageModel.xcdatamodeld in Sources */,
 				434C227225D69BA100F622DB /* MessageID.swift in Sources */,
 				434C233625D6A2AA00F622DB /* ImapSyncOperation.swift in Sources */,
+				43BDDF6325DE5EF400FC0C68 /* Identity+AddessBook.swift in Sources */,
 				43BDDD7A25DD42C600FC0C68 /* Folder+VirtualMailbox+Internal.swift in Sources */,
 				43BDDDDE25DD64FA00FC0C68 /* AddressBook.swift in Sources */,
 				434C21A325D6977200F622DB /* CdAccount+FetchedResultsController.swift in Sources */,
@@ -3228,7 +3230,6 @@
 				15E39FCF22551EE30016A1C4 /* Identity+SessionAware.swift in Sources */,
 				439CADC12563B9B50043077E /* AuthMethod.swift in Sources */,
 				5B64966025C82D570028B9ED /* CdAccount+FetchedResultsController.swift in Sources */,
-				151645B0223A783C009532BE /* Identity+IdentityImageUtils.swift in Sources */,
 				155FE565228B5005003D3E68 /* CdMessageKeyword.swift in Sources */,
 				155FE56E228B51A8003D3E68 /* CdHeaderField+Extensions.swift in Sources */,
 				1543B6A622ABDA3A002B59AB /* Identity+pEp.swift in Sources */,
