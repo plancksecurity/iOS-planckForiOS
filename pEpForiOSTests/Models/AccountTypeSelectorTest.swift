@@ -57,8 +57,10 @@ class AccountTypeSelectorTest: AccountDrivenTestBase {
  Client
  Certificate
  """)
+        /// Localized value to pass the test even if the simulator is configured in other language.
+        let otherText = NSLocalizedString("Other", comment: "Other")
         XCTAssertEqual(vm.fileNameOrText(provider: .gmail), "asset-Google")
-        XCTAssertEqual(vm.fileNameOrText(provider: .other), "Other")
+        XCTAssertEqual(vm.fileNameOrText(provider: .other), otherText)
     }
 }
 
