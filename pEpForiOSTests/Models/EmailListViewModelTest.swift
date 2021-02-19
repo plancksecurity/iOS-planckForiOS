@@ -291,41 +291,6 @@ extension EmailListViewModelTest {
         setUpViewModel(forFolder: folder, masterViewController: viewModelTestDelegate)
     }
 
-    private func setUpViewModelExpectations(expectedUpdateView: Bool = false,
-                                            expectationDidInsertDataAt: Bool = false,
-                                            expectationDidUpdateDataAt: Bool = false,
-                                            expectationDidDeleteDataAt: Bool = false ) {
-        var expectationUpdateViewCalled: XCTestExpectation?
-        if expectedUpdateView {
-            expectationUpdateViewCalled = expectation(description: "UpdateViewCalled")
-        }
-
-        var excpectationDidInsertDataAtCalled: XCTestExpectation?
-        if expectationDidInsertDataAt {
-            excpectationDidInsertDataAtCalled =
-                expectation(description: "excpectationDidInsertDataAtCalled")
-        }
-
-        var excpectationDidUpdateDataAtCalled: XCTestExpectation?
-        if expectationDidUpdateDataAt {
-            excpectationDidUpdateDataAtCalled =
-                expectation(description: "excpectationDidUpdateDataAtCalled")
-        }
-
-        var excpectationDidDeleteDataAtCalled: XCTestExpectation?
-        if expectationDidDeleteDataAt {
-            excpectationDidDeleteDataAtCalled =
-                expectation(description: "excpectationDidInsertDataAtCalled")
-        }
-
-        masterViewController =
-            TestMasterViewController(expectationUpdateView: expectationUpdateViewCalled,
-                                     expectationDidInsertDataAt: excpectationDidInsertDataAtCalled,
-                                     expectationDidUpdateDataAt: excpectationDidUpdateDataAtCalled,
-                                     expectationDidRemoveDataAt: excpectationDidDeleteDataAtCalled)
-        emailListVM.delegate = masterViewController
-    }
-
     private func getSafeLastLookAt() -> Date {
         guard let safeLastLookedAt = inbox?.lastLookedAt as Date? else {
             XCTFail()
