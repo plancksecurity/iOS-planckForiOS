@@ -248,7 +248,7 @@ public extension UIDevice {
 
     /// Indicates if the device is in Landscape
     static var isLandscape: Bool {
-        return UIDevice.current.orientation.isLandscape
+        return UIDevice.current.orientation.isLandscape || UIApplication.shared.statusBarOrientation.isLandscape
     }
 
     /// Indicates if the device is in Portrait

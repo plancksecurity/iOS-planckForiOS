@@ -22,11 +22,11 @@ public class CustomTraitCollectionViewController: UIViewController {
     /// The traits of the current view controller and its descendants classes.
     override public var traitCollection: UITraitCollection {
         //Only for ipad portrait a custom trait collection is set.
-        if UIDevice.isIpad && !UIDevice.isLandscape {
-            let compact = UITraitCollection(horizontalSizeClass: .compact)
-            let regular = UITraitCollection(verticalSizeClass: .regular)
-            return UITraitCollection(traitsFrom: [compact, regular])
-        }
+//        if UIDevice.isIpad && !UIDevice.isLandscape {
+//            let compact = UITraitCollection(horizontalSizeClass: .compact)
+//            let regular = UITraitCollection(verticalSizeClass: .regular)
+//            return UITraitCollection(traitsFrom: [compact, regular])
+//        }
         return super.traitCollection
     }
 }
