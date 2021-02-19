@@ -40,8 +40,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = window
         window.rootViewController = initialNVC
         window.makeKeyAndVisible()
-        //Delete all certificates
-        let status = SecItemDelete([kSecClass: kSecClassIdentity] as CFDictionary)
         return true
     }
 
