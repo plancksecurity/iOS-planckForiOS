@@ -338,12 +338,6 @@ extension ClientCertificateUtil {
         // See the CFGetTypeID() check above.
         let theSecIdentity = identityObj as! SecIdentity
 
-        var certificate: SecCertificate?
-        let certificateStatus = SecIdentityCopyCertificate(theSecIdentity, &certificate)
-        guard certificateStatus == errSecSuccess else {
-            Log.shared.errorAndCrash("Can't get cert")
-            return nil
-        }
         guard let identityLabel = label(for: theSecIdentity) else {
             throw ImportError.insufficientInformation
         }
