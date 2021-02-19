@@ -12,8 +12,6 @@ import pEpIOSToolbox
 
 /// Operation to get the Attachments view.
 /// Loads all attachments of the given message from disk and creates AttachmentContainers for it
-/// As we use a private session.
-/// This MUST NOT be used on main
 class AttachmentViewOperation: Operation {
     enum AttachmentContainer {
         case imageAttachment(Attachment, UIImage)
@@ -47,9 +45,9 @@ class AttachmentViewOperation: Operation {
     }
 
     override func main() {
-        let session = Session()
-        let safeAttachment = attachment.safeForSession(session)
-        session.performAndWait { [weak self] in
+        let mainSession = Session.main
+        let safeAttachment = attachment.safeForSession(mainSession)
+        mainSession.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
