@@ -220,7 +220,6 @@
 		4348FBAE25D1505F00059282 /* Not_a_certificate.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 4348FBAD25D1505F00059282 /* Not_a_certificate.p12 */; };
 		43495984239E509300CF1E12 /* CdFolder+SyncFolderMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43495983239E509300CF1E12 /* CdFolder+SyncFolderMode.swift */; };
 		434A6CE625D2BF1B00179335 /* MessageModelForAppExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 434A6CE425D2BF1B00179335 /* MessageModelForAppExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		434A6CE925D2BF1B00179335 /* MessageModelForAppExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 434A6CE225D2BF1B00179335 /* MessageModelForAppExtensions.framework */; };
 		434A6CEA25D2BF1B00179335 /* MessageModelForAppExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 434A6CE225D2BF1B00179335 /* MessageModelForAppExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		434A6D5B25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 434A6D5A25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a */; };
 		434C19E625D3E4CD00F622DB /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -1205,7 +1204,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				434A6CE925D2BF1B00179335 /* MessageModelForAppExtensions.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
