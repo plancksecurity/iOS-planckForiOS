@@ -88,7 +88,7 @@ final class EmailListViewController: UIViewController {
             me.showNoMessageSelected()
 
             me.updateFilterButton()
-            vm.viewDidLoad()
+            vm.handleViewDidLoad()
             me.tableView.reloadData()
             me.doOnce = nil
         }
