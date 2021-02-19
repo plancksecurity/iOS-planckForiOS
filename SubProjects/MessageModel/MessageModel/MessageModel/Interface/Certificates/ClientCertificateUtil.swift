@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import pEpIOSToolbox
 
 public protocol ClientCertificateUtilProtocol {
     /// - Parameters:
@@ -158,12 +159,19 @@ extension ClientCertificateUtil: ClientCertificateUtilProtocol {
                 } else {
                     moc.delete(existing)
                     moc.saveAndLogErrors()
+                    removeFromKeychain(cdCertificate: existing)
                 }
             }
         }
 
         if let error = errorToThrow {
             throw error
+        }
+    }
+
+    private func removeFromKeychain(cdCertificate: CdClientCertificate) {
+        if let element = listExisting().first(where: {$0.0 == cdCertificate.keychainUuid}) {
+            SecItemDelete([kSecValueRef: element.1] as CFDictionary)
         }
     }
 
@@ -333,20 +341,24 @@ extension ClientCertificateUtil {
         guard let identityLabel = label(for: theSecIdentity) else {
             throw ImportError.insufficientInformation
         }
-
         let uuidLabel = NSUUID().uuidString
-
         let addIdentityAttributes: [CFString : Any] = [kSecReturnPersistentRef: true,
                                                        kSecAttrLabel: uuidLabel,
                                                        kSecValueRef: theSecIdentity]
-
         var resultRef: CFTypeRef? = nil
         let identityStatus = SecItemAdd(addIdentityAttributes as CFDictionary, &resultRef);
+
         if identityStatus != errSecSuccess {
+            if let error = identityStatus.error {
+                Log.shared.error("%@", "\(error.localizedDescription)")
+            }
             if identityStatus != errSecDuplicateItem {
                 // Throw on all errors except duplicate items
                 throw ImportError.keychainError
             } else {
+                // The keychain already has an item of the same class with the same set of composite primary keys
+                // https://developer.apple.com/documentation/security/errsecduplicateitem
+                //
                 // If the error hints at a duplicate already in the keychain,
                 // try to find it.
                 if let existingUuid = matchExisting(secIdentity: theSecIdentity) {
@@ -397,3 +409,4 @@ extension ClientCertificateUtil {
         return false
     }
 }
+
