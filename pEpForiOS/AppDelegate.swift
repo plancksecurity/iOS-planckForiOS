@@ -40,7 +40,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = window
         window.rootViewController = initialNVC
         window.makeKeyAndVisible()
-        let status = SecItemDelete([kSecClass: kSecClassIdentity] as CFDictionary)
         return true
     }
 

@@ -344,33 +344,13 @@ extension ClientCertificateUtil {
             Log.shared.errorAndCrash("Can't get cert")
             return nil
         }
-        guard let theCertificate = certificate else {
-            Log.shared.errorAndCrash("Can't get cert")
-            return nil
-        }
-
-        guard let normalizedIssuer = SecCertificateCopyNormalizedIssuerSequence(theCertificate) else {
-            Log.shared.errorAndCrash("Can't get normalizedIssuer")
-            return nil
-        }
-        guard let serialNumber = SecCertificateCopySerialNumberData(theCertificate, nil) else {
-            Log.shared.errorAndCrash("Can't get serialNumber")
-            return nil
-        }
         guard let identityLabel = label(for: theSecIdentity) else {
             throw ImportError.insufficientInformation
         }
-
         let uuidLabel = NSUUID().uuidString
         let addIdentityAttributes: [CFString : Any] = [kSecReturnPersistentRef: true,
                                                        kSecAttrLabel: uuidLabel,
-                                                       kSecValueRef: theSecIdentity
-//                                                       ,
-//                                                       kSecAttrIssuer: normalizedIssuer,
-//                                                       kSecAttrSerialNumber: serialNumber,
-//                                                       kSecClass: kSecClassIdentity
-        ]
-
+                                                       kSecValueRef: theSecIdentity]
         var resultRef: CFTypeRef? = nil
         let identityStatus = SecItemAdd(addIdentityAttributes as CFDictionary, &resultRef);
 

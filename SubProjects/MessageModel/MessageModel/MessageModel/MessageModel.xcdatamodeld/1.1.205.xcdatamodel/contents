@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D74" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="refactor0.1">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19F101" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="refactor0.1">
     <entity name="CdAccount" representedClassName="CdAccount" syncable="YES" codeGenerationType="category">
         <attribute name="includeFoldersInUnifiedFolders" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <relationship name="folders" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CdFolder" inverseName="account" inverseEntity="CdFolder"/>
@@ -185,7 +185,7 @@
         <relationship name="servers" toMany="YES" deletionRule="Nullify" destinationEntity="CdServer" inverseName="credentials" inverseEntity="CdServer"/>
     </entity>
     <elements>
-        <element name="CdAccount" positionX="-756" positionY="50" width="128" height="89"/>
+        <element name="CdAccount" positionX="-756" positionY="50" width="128" height="103"/>
         <element name="CdAttachment" positionX="-18" positionY="126" width="128" height="135"/>
         <element name="CdClientCertificate" positionX="-867.265625" positionY="185.22265625" width="128" height="103"/>
         <element name="CdExtraKey" positionX="-846" positionY="-90" width="128" height="45"/>
