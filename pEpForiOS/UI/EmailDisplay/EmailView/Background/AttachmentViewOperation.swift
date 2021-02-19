@@ -40,7 +40,9 @@ class AttachmentViewOperation: Operation {
                 Log.shared.errorAndCrash("No container")
                 return
             }
-            completionBlock(container)
+            DispatchQueue.main.async {
+                completionBlock(container)
+            }
         }
     }
 
