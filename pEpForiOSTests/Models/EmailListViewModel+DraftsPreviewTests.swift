@@ -16,6 +16,10 @@ class EmailListViewModel_DraftsPreviewTests: AccountDrivenTestBase {
     private var sut: EmailListViewModel!
     private var folderToShow: Folder!
 
+    private var didMarkAsFlagged: TestBoolState = .unspecified
+    private var didMarkAsUnread: TestBoolState = .unspecified
+    private var didMarkAsRead: TestBoolState = .unspecified
+    private var didMarkAsUnflagged: TestBoolState = .unspecified
     private var selectDidHandle: TestBoolState = .unspecified
     private var deselectDidHandle: TestBoolState = .unspecified
     private var showEmailDidHandle: TestBoolState = .unspecified
@@ -56,6 +60,22 @@ class EmailListViewModel_DraftsPreviewTests: AccountDrivenTestBase {
 }
 
 extension EmailListViewModel_DraftsPreviewTests: EmailListViewModelDelegate {
+    func didMarkAsUnflagged(rows: [Int]) {
+        didMarkAsUnflagged = .called
+    }
+
+    func didMarkAsRead(rows: [Int]) {
+        didMarkAsRead = .called
+    }
+
+    func didMarkAsUnread(rows: [Int]) {
+        didMarkAsUnread = .called
+    }
+
+    func didMarkAsFlagged(rows: [Int]) {
+        didMarkAsFlagged = .called
+    }
+
     func select(itemAt indexPath: IndexPath) {
         selectDidHandle = .called
     }

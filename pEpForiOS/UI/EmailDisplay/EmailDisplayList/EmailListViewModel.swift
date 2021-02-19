@@ -25,12 +25,30 @@ protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
 // MARK: - EmailListViewModel
 
 class EmailListViewModel: EmailDisplayViewModel {
+
+    public var filterButtonTitle: String {
+        var txt = currentFilter.getFilterText()
+        if txt.count > filterMaxChars {
+            let prefix = txt.prefix(ofLength: filterMaxChars)
+            txt = String(prefix)
+            txt += "..."
+        }
+        if txt.isEmpty {
+            txt = NSLocalizedString("none", comment: "empty mail filter (no filter at all)")
+        }
+        let format = NSLocalizedString("Filter by: %@",
+                                       comment: "'Filter by' in formatted string, followed by the localized filter name")
+        let title = String(format: format, txt)
+        return title
+
+    }
     private var emailDetailViewModel: EmailDetailViewModel?
     private let contactImageTool = IdentityImageTool()
 
     private var lastSearchTerm = ""
     private var updatesEnabled = true
 
+    public let filterMaxChars = 20
     // MARK: - Life Cycle
 
     init(delegate: EmailListViewModelDelegate? = nil, folderToShow: DisplayableFolderProtocol) {
@@ -297,7 +315,9 @@ class EmailListViewModel: EmailDisplayViewModel {
 
     public func fetchNewMessages(completition: (() -> Void)? = nil) {
         folderToShow.fetchNewMessages() {
-            completition?()
+            DispatchQueue.main.async {
+                completition?()
+            }
         }
     }
 
@@ -441,20 +461,20 @@ extension EmailListViewModel {
 
 extension EmailListViewModel {
 
-    private func setFlaggedValue(forIndexPath indexPath: [IndexPath], newValue flagged: Bool) {
+    private func setFlaggedValue(forIndexPath indexPaths: [IndexPath], newValue flagged: Bool) {
         updatesEnabled = false
-        let messages = indexPath.map { messageQueryResults[$0.row] }
+        let messages = indexPaths.map { messageQueryResults[$0.row] }
         Message.setFlaggedValue(to: messages, newValue: flagged)
     }
 
     private func setSeenValue(forIndexPath indexPath: [IndexPath], newValue seen: Bool) {
-        updatesEnabled = false
         let messages = indexPath.map { messageQueryResults[$0.row] }
         Message.setSeenValue(to: messages, newValue: seen)
     }
 
-    @discardableResult private func deleteMessages(at indexPath: [IndexPath]) -> [Message]? {
-        let messages = indexPath.map { messageQueryResults[$0.row] }
+    @discardableResult
+    private func deleteMessages(at indexPaths: [IndexPath]) -> [Message]? {
+        let messages = indexPaths.map { messageQueryResults[$0.row] }
         delete(messages: messages)
         return messages
     }

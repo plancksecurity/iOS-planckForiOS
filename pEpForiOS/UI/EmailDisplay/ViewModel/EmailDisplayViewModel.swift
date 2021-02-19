@@ -54,6 +54,10 @@ class EmailDisplayViewModel {
         }
     }
 
+    public func handleViewDidLoad() {
+        startMonitoring()
+    }
+
     /// Number of messages
     public var rowCount: Int {
         if messageQueryResults.filter?.accountsEnabledStates.count == 0 {
