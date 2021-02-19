@@ -27,7 +27,7 @@ class AttachmentViewOperation: Operation {
     ///
     /// - Parameters:
     ///   - attachment: The attachment to perform the operation.
-    ///   - completionBlock: The completion block.
+    ///   - completionBlock: The completion block. Will be dispatched on main queue. 
     init(attachment: Attachment, completionBlock: @escaping((AttachmentContainer) -> Void)) {
         self.attachment = attachment
         super.init()
