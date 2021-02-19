@@ -27,12 +27,11 @@ public protocol ClientCertificateUtilProtocol {
 
     /// Deletes the given `ClientCertificate`, which originates from a call to `listCertificates`.
     /// - Note:
-    /// * For technical reasons, the certificate cannot be removed from the keychain,
-    /// and is therefore only removed from core data.
+    /// * The certificate is deleted from CoreData and from the Keychain.
     /// * Attempts to delete client certificates that don't exist are ignored.
     /// - Parameter clientCertificate: The client certificate to delete.
     /// - Throws: `DeleteError`
-    func delete(clientCertificate: ClientCertificate) throws
+    func delete(clientCertificate: ClientCertificate, ignoreIfStillInUse shouldIgnoreIfStillInUse: Bool) throws
 
     /// Does the given data reperesent certificate data, importable with `SecPKCS12Import`?
     func isCertificate(p12Data: Data) -> Bool
@@ -139,7 +138,8 @@ extension ClientCertificateUtil: ClientCertificateUtilProtocol {
         }
     }
 
-    public func delete(clientCertificate: ClientCertificate) throws {
+    public func delete(clientCertificate: ClientCertificate,
+                       ignoreIfStillInUse shouldIgnoreIfStillInUse: Bool = false) throws {
         var errorToThrow: DeleteError? = nil
 
         let moc = Stack.shared.newPrivateConcurrentContext
@@ -154,12 +154,11 @@ extension ClientCertificateUtil: ClientCertificateUtilProtocol {
             if let existing = CdClientCertificate.search(label: label,
                                                          keychainUuid: keychainUuid,
                                                          context: moc) {
-                if isStillInUse(clientCertificate: existing) {
+                if isStillInUse(clientCertificate: existing) && !shouldIgnoreIfStillInUse {
                     errorToThrow = DeleteError.stillInUse
                 } else {
                     moc.delete(existing)
                     moc.saveAndLogErrors()
-                    removeFromKeychain(cdCertificate: existing)
                 }
             }
         }
@@ -169,7 +168,11 @@ extension ClientCertificateUtil: ClientCertificateUtilProtocol {
         }
     }
 
-    private func removeFromKeychain(cdCertificate: CdClientCertificate) {
+    /// Removes the identity binded to the client certificate passed by parameter.
+    /// If doesn't find it does nothing.
+    ///
+    /// - Parameter cdCertificate: The cdCertificate to find the identity to delete.
+    public func removeSecIdentityFromKeychain(of cdCertificate: CdClientCertificate) {
         if let element = listExisting().first(where: {$0.0 == cdCertificate.keychainUuid}) {
             SecItemDelete([kSecValueRef: element.1] as CFDictionary)
         }
@@ -196,6 +199,7 @@ extension ClientCertificateUtil: ClientCertificateUtilProtocol {
 // MARK: - Internal, used by other ClientCertificateUtil extensions
 
 extension ClientCertificateUtil {
+    
     /// - Returns: An array of client identities (`SecIdentity`) stored in the keychain,
     /// together with their label (which in our case is used as an UUID).
     func listExisting() -> [(String, SecIdentity)] {

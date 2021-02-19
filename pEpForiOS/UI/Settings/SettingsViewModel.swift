@@ -482,10 +482,6 @@ extension SettingsViewModel {
     /// It also updates the default account if necessary.
     /// - Parameter account: The account to be deleted
     private func delete(account: Account) {
-        func deleteAndCommit() {
-            account.delete()
-            Session.main.commit()
-        }
         account.setKeySyncEnabled(enable: false,
                                   errorCallback: { error in
                                     if let theError = error {
@@ -496,16 +492,15 @@ extension SettingsViewModel {
                                   })
         let oldAddress = account.user.address
         if let certificate = account.imapServer?.credentials.clientCertificate {
-            deleteAndCommit()
             let clientCertificateUtil = ClientCertificateUtil()
             do {
-                try clientCertificateUtil.delete(clientCertificate: certificate)
+                try clientCertificateUtil.delete(clientCertificate: certificate, ignoreIfStillInUse: true)
             } catch {
                 Log.shared.log(error: error)
             }
-        } else {
-            deleteAndCommit()
         }
+        account.delete()
+        Session.main.commit()
 
         if AppSettings.shared.defaultAccount == nil ||
             AppSettings.shared.defaultAccount == oldAddress {
