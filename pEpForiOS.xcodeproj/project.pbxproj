@@ -2888,7 +2888,7 @@
 					3A503A9B253737B20070AB6A = {
 						CreatedOnToolsVersion = 12.0;
 						DevelopmentTeam = NQLYU6MGPN;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					43980E221CBD0BC900A7FC3C = {
 						CreatedOnToolsVersion = 7.3;
@@ -3814,7 +3814,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
@@ -3827,6 +3827,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "security.pEp.pEp-share";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = iOS_SHAR_EXT_Development_Default_Mail_Client;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) EXT_SHARE";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/pEp-share/pEp-share-Bridging-Header.h";
@@ -3847,7 +3848,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
@@ -3859,6 +3860,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "security.pEp.pEp-share";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = iOS_SHAR_EXT_Development_Default_Mail_Client;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) EXT_SHARE";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/pEp-share/pEp-share-Bridging-Header.h";
