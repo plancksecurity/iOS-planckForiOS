@@ -20,7 +20,8 @@ class SettingsViewModelTest: AccountDrivenTestBase {
     }
 
     //Number of sections corresponding to SettingsViewModel.SectionType count
-    let sections = 6
+
+    let sections = SettingsViewModel.SectionType.allCases.count
 
     func testNumberOfSections() {
         let delegate = SettingsViewModeldelegate()
