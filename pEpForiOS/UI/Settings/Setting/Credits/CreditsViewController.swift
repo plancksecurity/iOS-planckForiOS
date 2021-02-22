@@ -8,6 +8,8 @@
 
 import WebKit
 
+import pEpIOSToolbox
+
 class CreditsViewController: UIViewController {
     @IBOutlet public weak var verboseLoggingSwitch: UISwitch!
 
@@ -50,6 +52,17 @@ extension CreditsViewController: SegueHandlerType {
 
 extension CreditsViewController {
     private func copyEngineFiles() {
+        let fm = FileManager.default
+        let appSupportUrls = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask)
+        guard let appSupportUrl = appSupportUrls.first else {
+            Log.shared.logError(message: "Cannot get application support directory")
+        }
+        fm.enumerator(at: appSupportUrl,
+                      includingPropertiesForKeys: nil,
+                      options: []) { (url, error) -> Bool in
+            Log.shared.log(error: error)
+            return true
+        }
     }
 
     @IBAction public func secretGestureAction(_ sender: UITapGestureRecognizer) {
