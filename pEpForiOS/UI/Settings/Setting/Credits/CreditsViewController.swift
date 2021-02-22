@@ -87,10 +87,8 @@ extension CreditsViewController {
 
         copyRecursive(srcUrl: srcUrlSystem, targetUrl: destUrlSystem)
 
-        let pEpAdd = ".pEp"
-
-        let srcUrlUser = srcUrlSystem.appendingPathComponent(pEpAdd)
-        let destUrlUser = destUrlSystem.appendingPathComponent(pEpAdd)
+        let srcUrlUser = srcUrlSystem.appendingPathComponent(".pEp")
+        let destUrlUser = destUrlSystem.appendingPathComponent("pEp")
 
         copyRecursive(srcUrl: srcUrlUser, targetUrl: destUrlUser)
     }
