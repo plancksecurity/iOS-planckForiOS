@@ -77,10 +77,11 @@ extension CreditsViewController {
         var fileURLs: [URL] = []
         for case let fileURL as URL in directoryEnumerator {
             guard let resourceValues = try? fileURL.resourceValues(forKeys: resourceKeys),
-                let isDirectory = resourceValues.isDirectory,
-                let name = resourceValues.name
-                else {
-                    continue
+                  let isDirectory = resourceValues.isDirectory,
+                  let name = resourceValues.name
+            else {
+                Log.shared.logError(message: "Cannot get resourceValues of file \(fileURL)")
+                continue
             }
 
             if isDirectory {
