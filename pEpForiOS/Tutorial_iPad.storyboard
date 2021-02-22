@@ -245,7 +245,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can close this tutorial anytime with the Skip button." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r2a-vJ-S4B">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="You can close this tutorial anytime with the Skip button." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r2a-vJ-S4B">
                                         <rect key="frame" x="0.0" y="69" width="556" height="26.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <nil key="textColor"/>
@@ -272,12 +272,8 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                         </variation>
                                     </label>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-1a" translatesAutoresizingMaskIntoConstraints="NO" id="dR7-LM-eX1" userLabel="Contact Placeholder">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-1a" translatesAutoresizingMaskIntoConstraints="NO" id="dR7-LM-eX1" userLabel="Contact Placeholder">
                                         <rect key="frame" x="0.0" y="261.5" width="556" height="58"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="58" id="6mN-ZR-csE"/>
-                                            <constraint firstAttribute="height" constant="58" id="Htf-37-TT2"/>
-                                        </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="And in the top bar when you open or write an email:" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bzG-oh-3x7">
                                         <rect key="frame" x="0.0" y="339.5" width="556" height="26.5"/>
@@ -333,7 +329,7 @@
                             <constraint firstItem="31V-WD-T5I" firstAttribute="leading" secondItem="6b8-1C-6wd" secondAttribute="centerX" multiplier="0.5" id="6Uc-UW-10j"/>
                             <constraint firstItem="31V-WD-T5I" firstAttribute="centerX" secondItem="6b8-1C-6wd" secondAttribute="centerX" id="NRX-OU-YBa"/>
                             <constraint firstItem="6b8-1C-6wd" firstAttribute="centerY" secondItem="31V-WD-T5I" secondAttribute="centerY" id="TM4-sp-0m7"/>
-                            <constraint firstItem="31V-WD-T5I" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6b8-1C-6wd" secondAttribute="top" constant="40" id="avs-O9-2kb"/>
+                            <constraint firstItem="31V-WD-T5I" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6b8-1C-6wd" secondAttribute="top" priority="750" constant="30" id="avs-O9-2kb"/>
                         </constraints>
                     </view>
                     <connections>
