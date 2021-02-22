@@ -17,6 +17,7 @@ final class ShareViewController: UIViewController {
         super.viewDidLoad()
 
         checkInputItems()
+        presentModalCompose()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -34,6 +35,15 @@ final class ShareViewController: UIViewController {
 // MARK: - Private (WIP)
 
 extension ShareViewController {
+    private func presentModalCompose() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let composeVC = storyboard.instantiateViewController(withIdentifier: "ComposeViewController") as? ComposeViewController else {
+            Log.shared.errorAndCrash("Cannot instantiate ComposeViewController")
+            return
+        }
+        present(composeVC, animated: true, completion: nil)
+    }
+
     private func checkInputItems() {
         guard let context = extensionContext else {
             Log.shared.errorAndCrash(message: "Lost extension context!")
