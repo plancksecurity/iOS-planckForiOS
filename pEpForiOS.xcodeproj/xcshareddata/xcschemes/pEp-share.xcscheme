@@ -169,20 +169,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43980E221CBD0BC900A7FC3C"
-               BuildableName = "pEp.app"
-               BlueprintName = "pEp"
-               ReferencedContainer = "container:pEpForiOS.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "3F234AC21E44A7A400E22A38"
                BuildableName = "SwipeCellKit.framework"
                BlueprintName = "SwipeCellKit"
@@ -200,6 +186,20 @@
                BlueprintIdentifier = "3A503A9B253737B20070AB6A"
                BuildableName = "pEp-share.appex"
                BlueprintName = "pEp-share"
+               ReferencedContainer = "container:pEpForiOS.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43980E221CBD0BC900A7FC3C"
+               BuildableName = "pEp.app"
+               BlueprintName = "pEp"
                ReferencedContainer = "container:pEpForiOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
