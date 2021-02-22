@@ -56,6 +56,7 @@ extension CreditsViewController {
         let appSupportUrls = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask)
         guard let appSupportUrl = appSupportUrls.first else {
             Log.shared.logError(message: "Cannot get application support directory")
+            return
         }
         fm.enumerator(at: appSupportUrl,
                       includingPropertiesForKeys: nil,
