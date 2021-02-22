@@ -58,11 +58,31 @@ extension CreditsViewController {
             Log.shared.logError(message: "Cannot get application support directory")
             return
         }
-        fm.enumerator(at: appSupportUrl,
-                      includingPropertiesForKeys: nil,
-                      options: []) { (url, error) -> Bool in
+
+        let resourceKeys = Set<URLResourceKey>([.nameKey, .isDirectoryKey])
+        let directoryEnumerator = fm.enumerator(at: directoryURL,
+                                                includingPropertiesForKeys: Array(resourceKeys),
+                                                options: .skipsHiddenFiles){ (url, error) -> Bool in
             Log.shared.log(error: error)
             return true
+        }
+
+        var fileURLs: [URL] = []
+        for case let fileURL as URL in directoryEnumerator {
+            guard let resourceValues = try? fileURL.resourceValues(forKeys: resourceKeys),
+                let isDirectory = resourceValues.isDirectory,
+                let name = resourceValues.name
+                else {
+                    continue
+            }
+
+            if isDirectory {
+                if name == "_extras" {
+                    directoryEnumerator.skipDescendants()
+                }
+            } else {
+                fileURLs.append(fileURL)
+            }
         }
     }
 
