@@ -52,6 +52,12 @@ extension CreditsViewController: SegueHandlerType {
 
 extension CreditsViewController {
     private func copyEngineFiles() {
+        // Handle errors when traversing/enumerating the dir
+        func errorHandler(url: URL, error: Error) -> Bool {
+            Log.shared.log(error: error)
+            return true
+        }
+
         let fm = FileManager.default
         let appSupportUrls = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask)
         guard let appSupportUrl = appSupportUrls.first else {
@@ -60,11 +66,12 @@ extension CreditsViewController {
         }
 
         let resourceKeys = Set<URLResourceKey>([.nameKey, .isDirectoryKey])
-        let directoryEnumerator = fm.enumerator(at: directoryURL,
-                                                includingPropertiesForKeys: Array(resourceKeys),
-                                                options: .skipsHiddenFiles){ (url, error) -> Bool in
-            Log.shared.log(error: error)
-            return true
+        guard let directoryEnumerator = fm.enumerator(at: appSupportUrl,
+                                                      includingPropertiesForKeys: Array(resourceKeys),
+                                                      options: .skipsHiddenFiles,
+                                                      errorHandler: errorHandler) else {
+            Log.shared.logError(message: "Cannot enumerate application support directory")
+            return
         }
 
         var fileURLs: [URL] = []
