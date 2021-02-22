@@ -52,12 +52,6 @@ extension CreditsViewController: SegueHandlerType {
 
 extension CreditsViewController {
     private func copyEngineFiles() {
-        // Handle errors when traversing/enumerating the dir
-        func errorHandler(url: URL, error: Error) -> Bool {
-            Log.shared.log(error: error)
-            return true
-        }
-
         let fm = FileManager.default
 
         let appSupportUrls = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask)
@@ -72,33 +66,13 @@ extension CreditsViewController {
             return
         }
 
-        let resourceKeys = Set<URLResourceKey>([.nameKey, .isDirectoryKey])
-        guard let directoryEnumerator = fm.enumerator(at: appSupportUrl,
-                                                      includingPropertiesForKeys: Array(resourceKeys),
-                                                      options: .skipsHiddenFiles,
-                                                      errorHandler: errorHandler) else {
-            Log.shared.logError(message: "Cannot enumerate application support directory")
-            return
-        }
+        let pEpHome = "pEp_home"
 
-        var fileURLs: [URL] = []
-        for case let fileURL as URL in directoryEnumerator {
-            guard let resourceValues = try? fileURL.resourceValues(forKeys: resourceKeys),
-                  let isDirectory = resourceValues.isDirectory,
-                  let name = resourceValues.name
-            else {
-                Log.shared.logError(message: "Cannot get resourceValues of file \(fileURL)")
-                continue
-            }
+        let srcUrl = documentUrl.appendingPathComponent(pEpHome)
+        let destUrl = documentUrl.appendingPathComponent(pEpHome)
 
-            if isDirectory {
-                if name == "_extras" {
-                    directoryEnumerator.skipDescendants()
-                }
-            } else {
-                fileURLs.append(fileURL)
-            }
-        }
+        // recursive copy
+        fm.copyItem(at: srcUrl, to: destUrl)
     }
 
     @IBAction public func secretGestureAction(_ sender: UITapGestureRecognizer) {
