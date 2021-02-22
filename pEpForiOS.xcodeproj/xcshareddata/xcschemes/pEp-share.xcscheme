@@ -15,6 +15,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "19FF46011B8B4CF400B43179"
+               BuildableName = "CocoaLumberjack.framework"
+               BlueprintName = "CocoaLumberjack"
+               ReferencedContainer = "container:../CocoaLumberjack/Lumberjack.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "19FF460E1B8B4D1400B43179"
                BuildableName = "CocoaLumberjackSwift.framework"
                BlueprintName = "CocoaLumberjackSwift"
