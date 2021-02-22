@@ -79,6 +79,21 @@ extension CreditsViewController {
         } catch {
             Log.shared.log(error: error)
         }
+
+        let pEpAdd = ".pEp"
+
+        let srcUrlUser = srcUrlSystem.appendingPathComponent(pEpAdd)
+        let destUrlUser = destUrlSystem.appendingPathComponent(pEpAdd)
+
+        // remove the target, if it exists
+        try? fm.removeItem(at: destUrlUser)
+
+        do {
+            // recursive copy of per user files
+            try fm.copyItem(at: srcUrlUser, to: destUrlUser)
+        } catch {
+            Log.shared.log(error: error)
+        }
     }
 
     @IBAction public func secretGestureAction(_ sender: UITapGestureRecognizer) {
