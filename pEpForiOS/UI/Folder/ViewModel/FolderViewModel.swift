@@ -8,9 +8,13 @@
 
 import Foundation
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
-import pEpIOSToolbox
+#endif
 
+import pEpIOSToolbox
 
 public protocol FolderViewModelDelegate: class {
 
