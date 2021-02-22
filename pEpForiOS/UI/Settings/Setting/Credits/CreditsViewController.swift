@@ -68,7 +68,7 @@ extension CreditsViewController {
 
         let pEpHome = "pEp_home"
 
-        let srcUrl = documentUrl.appendingPathComponent(pEpHome)
+        let srcUrl = appSupportUrl.appendingPathComponent(pEpHome)
         let destUrl = documentUrl.appendingPathComponent(pEpHome)
 
         do {
