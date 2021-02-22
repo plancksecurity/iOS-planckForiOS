@@ -197,6 +197,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43CB60811DA4EB4E0015281E"
+               BuildableName = "MessageModel.framework"
+               BlueprintName = "MessageModel"
+               ReferencedContainer = "container:SubProjects/MessageModel/MessageModel/MessageModel.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "43980E221CBD0BC900A7FC3C"
                BuildableName = "pEp.app"
                BlueprintName = "pEp"
