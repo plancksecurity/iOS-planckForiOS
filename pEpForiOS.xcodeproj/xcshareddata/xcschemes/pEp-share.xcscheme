@@ -211,6 +211,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43FBB7621FC6D9630057A3BD"
+               BuildableName = "ldns_xcode.framework"
+               BlueprintName = "ldns-xcode"
+               ReferencedContainer = "container:../ldns/xcode/ldns-xcode/ldns-xcode.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "B7E0502C1EB2491E006EC1EC"
                BuildableName = "libAccountSettingsAdapter.a"
                BlueprintName = "AccountSettingsAdapter"
