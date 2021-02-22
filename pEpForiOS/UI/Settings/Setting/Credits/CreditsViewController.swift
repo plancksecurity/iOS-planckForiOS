@@ -51,6 +51,21 @@ extension CreditsViewController: SegueHandlerType {
 }
 
 extension CreditsViewController {
+    /// _Removes_ `targetUrl`, then invokes `copyItem` from `srcUrl` to `targetUrl`.
+    private func copyRecursive(srcUrl: URL, targetUrl: URL) {
+        let fm = FileManager.default
+
+        // remove the target, if it exists
+        try? fm.removeItem(at: targetUrl)
+
+        do {
+            // recursive copy of per user files
+            try fm.copyItem(at: srcUrl, to: targetUrl)
+        } catch {
+            Log.shared.log(error: error)
+        }
+    }
+
     private func copyEngineFiles() {
         let fm = FileManager.default
 
@@ -70,30 +85,14 @@ extension CreditsViewController {
         let srcUrlSystem = containerUrl.appendingPathComponent(pEpHome)
         let destUrlSystem = documentUrl.appendingPathComponent(pEpHome)
 
-        // remove the target, if it exists
-        try? fm.removeItem(at: destUrlSystem)
-
-        do {
-            // recursive copy of the system.db
-            try fm.copyItem(at: srcUrlSystem, to: destUrlSystem)
-        } catch {
-            Log.shared.log(error: error)
-        }
+        copyRecursive(srcUrl: srcUrlSystem, targetUrl: destUrlSystem)
 
         let pEpAdd = ".pEp"
 
         let srcUrlUser = srcUrlSystem.appendingPathComponent(pEpAdd)
         let destUrlUser = destUrlSystem.appendingPathComponent(pEpAdd)
 
-        // remove the target, if it exists
-        try? fm.removeItem(at: destUrlUser)
-
-        do {
-            // recursive copy of per user files
-            try fm.copyItem(at: srcUrlUser, to: destUrlUser)
-        } catch {
-            Log.shared.log(error: error)
-        }
+        copyRecursive(srcUrl: srcUrlUser, targetUrl: destUrlUser)
     }
 
     @IBAction public func secretGestureAction(_ sender: UITapGestureRecognizer) {
