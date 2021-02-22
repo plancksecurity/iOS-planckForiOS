@@ -15,6 +15,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "434C199625D3D82500F622DB"
+               BuildableName = "PEPIOSToolboxForAppExtensions.framework"
+               BlueprintName = "PEPIOSToolboxForAppExtensions"
+               ReferencedContainer = "container:SubProjects/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "4329CA572238FCBF007D377E"
                BuildableName = "PantomimeFramework.framework"
                BlueprintName = "PantomimeFramework"
