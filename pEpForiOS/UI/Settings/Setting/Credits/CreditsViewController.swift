@@ -67,15 +67,15 @@ extension CreditsViewController {
 
         let pEpHome = "pEp_home"
 
-        let srcUrl = containerUrl.appendingPathComponent(pEpHome)
-        let destUrl = documentUrl.appendingPathComponent(pEpHome)
+        let srcUrlSystem = containerUrl.appendingPathComponent(pEpHome)
+        let destUrlSystem = documentUrl.appendingPathComponent(pEpHome)
 
         // remove the target, if it exists
-        try? fm.removeItem(at: destUrl)
+        try? fm.removeItem(at: destUrlSystem)
 
         do {
             // recursive copy of the system.db
-            try fm.copyItem(at: srcUrl, to: destUrl)
+            try fm.copyItem(at: srcUrlSystem, to: destUrlSystem)
         } catch {
             Log.shared.log(error: error)
         }
