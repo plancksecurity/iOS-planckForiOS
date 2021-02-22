@@ -54,9 +54,8 @@ extension CreditsViewController {
     private func copyEngineFiles() {
         let fm = FileManager.default
 
-        let appSupportUrls = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask)
-        guard let appSupportUrl = appSupportUrls.first else {
-            Log.shared.logError(message: "Cannot get application support directory")
+        guard let containerUrl = fm.containerURL(forSecurityApplicationGroupIdentifier: "group.security.pep.pep4ios") else {
+            Log.shared.logError(message: "Cannot get container URL")
             return
         }
 
@@ -68,7 +67,7 @@ extension CreditsViewController {
 
         let pEpHome = "pEp_home"
 
-        let srcUrl = appSupportUrl.appendingPathComponent(pEpHome)
+        let srcUrl = containerUrl.appendingPathComponent(pEpHome)
         let destUrl = documentUrl.appendingPathComponent(pEpHome)
 
         // remove the target, if it exists
