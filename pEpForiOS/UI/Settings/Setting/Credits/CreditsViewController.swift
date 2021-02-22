@@ -72,6 +72,9 @@ extension CreditsViewController {
         let destUrl = documentUrl.appendingPathComponent(pEpHome)
 
         do {
+            // remove the target
+            try fm.removeItem(at: destUrl)
+
             // recursive copy
             try fm.copyItem(at: srcUrl, to: destUrl)
         } catch {
