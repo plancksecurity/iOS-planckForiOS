@@ -85,6 +85,34 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "151606FC257A401000DD42E0"
+               BuildableName = "libPEPObjCAdapterTypes_iOS.a"
+               BlueprintName = "PEPObjCAdapterTypes_iOS"
+               ReferencedContainer = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1543DC65257943CE0041EFB5"
+               BuildableName = "libPEPObjCAdapter_iOS.a"
+               BlueprintName = "PEPObjCAdapter_iOS"
+               ReferencedContainer = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "434A6CE125D2BF1B00179335"
                BuildableName = "MessageModelForAppExtensions.framework"
                BlueprintName = "MessageModelForAppExtensions"
