@@ -49,8 +49,12 @@ extension CreditsViewController: SegueHandlerType {
 }
 
 extension CreditsViewController {
+    private func copyEngineFiles() {
+    }
+
     @IBAction public func secretGestureAction(_ sender: UITapGestureRecognizer) {
         if sender.state == .ended {
+            copyEngineFiles()
             performSegue(withIdentifier: SegueIdentifier.segueShowLog, sender: self)
         }
     }
