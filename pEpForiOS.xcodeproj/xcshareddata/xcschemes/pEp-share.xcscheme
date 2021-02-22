@@ -99,6 +99,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "64796A3E1B455AA5004B1C24"
+               BuildableName = "libpEpEngine.a"
+               BlueprintName = "pEpEngine"
+               ReferencedContainer = "container:../pEpEngine/build-mac/pEpEngine.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "151606FC257A401000DD42E0"
                BuildableName = "libPEPObjCAdapterTypes_iOS.a"
                BlueprintName = "PEPObjCAdapterTypes_iOS"
