@@ -74,7 +74,7 @@ extension CreditsViewController {
         try? fm.removeItem(at: destUrl)
 
         do {
-            // recursive copy
+            // recursive copy of the system.db
             try fm.copyItem(at: srcUrl, to: destUrl)
         } catch {
             Log.shared.log(error: error)
