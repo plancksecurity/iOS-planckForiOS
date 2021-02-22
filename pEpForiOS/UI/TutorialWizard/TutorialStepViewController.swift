@@ -15,25 +15,9 @@ import pEpIOSToolbox
 class TutorialStepViewController: CustomTraitCollectionViewController {
     private var shouldUpdateLayoutDueRotation: Bool = false
 
-
-    var left : NSMutableParagraphStyle {
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .left
-        paragraphStyle.lineSpacing = -2
-        return paragraphStyle
-    }
-
-    var justified : NSMutableParagraphStyle {
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .justified
-        paragraphStyle.lineSpacing = -2
-        return paragraphStyle
-    }
-
     var centered : NSMutableParagraphStyle {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
-        paragraphStyle.lineSpacing = -2
         return paragraphStyle
     }
 
@@ -44,25 +28,20 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
         return paragraphStyle
     }
 
-    var spacedJustified : NSMutableParagraphStyle {
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .justified
-        paragraphStyle.lineSpacing = 6
-        return paragraphStyle
-    }
-
-
     var textAttributes : [NSAttributedString.Key : Any] {
         return [
             .font: font,
             .foregroundColor: UIColor(white: 24.0 / 255.0, alpha: 1.0),
-            .paragraphStyle: (UIDevice.isLandscape || UIDevice.isIpad) ? left : centered,
+            .paragraphStyle: centered
         ]
     }
-    
-    var font : UIFont {
+
+    var font: UIFont {
         if UIDevice.isIpad {
-            return UIFont.systemFont(ofSize: 22.0, weight: .regular)
+            if UIDevice.isIpadMini {
+                return UIFont.systemFont(ofSize: 20.0, weight: .regular)
+            }
+            return UIFont.systemFont(ofSize: 23.0, weight: .regular)
         } else if UIDevice.isSmall {
             return UIFont.systemFont(ofSize: 11.0, weight: .regular)
         }
@@ -71,6 +50,9 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
     
     var smallFont : UIFont {
         if UIDevice.isIpad {
+            if UIDevice.isIpadMini {
+                return UIFont.systemFont(ofSize: 11.0, weight: .regular)
+            }
             return UIFont.systemFont(ofSize: 13.0, weight: .regular)
         } else if UIDevice.isSmall {
             return UIFont.systemFont(ofSize: 9.0, weight: .regular)
@@ -81,7 +63,10 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
 
     var titleFont : UIFont {
         if UIDevice.isIpad {
-            return UIFont.systemFont(ofSize: 41.0, weight: .regular)
+            if UIDevice.isIpadMini {
+                return UIFont.systemFont(ofSize: 42.0, weight: .regular)
+            }
+            return UIFont.systemFont(ofSize: 43.0, weight: .regular)
         } else if UIDevice.isSmall {
             return UIFont.systemFont(ofSize: 18.0, weight: .regular)
         }

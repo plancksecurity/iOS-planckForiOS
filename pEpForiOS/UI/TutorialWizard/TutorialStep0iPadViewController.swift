@@ -15,15 +15,16 @@ import pEpIOSToolbox
 /// The layout differences regarding the device orientation and screen size are configured
 /// in storyboard using size classes.
 class TutorialStep0iPadViewController: TutorialStepViewController {
-    @IBOutlet private weak var titleLabel: UILabel!
 
+    @IBOutlet private weak var stackView: UIStackView!
+
+    @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var skipTutorialLabel: UILabel!
     @IBOutlet private weak var privacyStatusLabel: UILabel!
     @IBOutlet private weak var privacyStatusShownLabel: UILabel!
     @IBOutlet private weak var topbarLabel: UILabel!
 
-    @IBOutlet private weak var avatarImageView: UIImageView!
-    @IBOutlet private weak var topbarImageView: UIImageView!
+    @IBOutlet weak var leadingLandscape: NSLayoutConstraint!
 
     public override func configureView() {
         setupTitleLabel()
@@ -31,6 +32,10 @@ class TutorialStep0iPadViewController: TutorialStepViewController {
         setupPrivacyStatusLabel()
         setupPrivacyStatusShownLabel()
         setupTopbarLabel()
+
+        if !UIDevice.isIpadMini && UIDevice.isPortrait {
+            stackView.spacing = 40
+        }
     }
 }
 
@@ -43,7 +48,6 @@ extension TutorialStep0iPadViewController {
         let attributedString = NSMutableAttributedString(string: titleText, attributes: [
             .font: titleFont,
             .foregroundColor: UIColor.black,
-            .kern: 0.36
         ])
         if let range = titleText.nsRange(of: "p≡p") {
             attributedString.addAttributes([.font: titleFont, .foregroundColor: UIColor.pEpGreen], range:range)
@@ -56,8 +60,8 @@ extension TutorialStep0iPadViewController {
         let attributes : [NSAttributedString.Key : Any] = [
           .font: font,
           .foregroundColor: UIColor.black,
-          .paragraphStyle: left,
-          .kern: 0.2]
+          .paragraphStyle: centered,
+        ]
         skipTutorialLabel.attributedText = NSMutableAttributedString(string:text, attributes: attributes)
     }
 
@@ -83,7 +87,7 @@ extension TutorialStep0iPadViewController {
 
     private func set(_ text : String, on label : UILabel) {
         let attributedText = NSMutableAttributedString(string:text)
-        attributedText.addAttributes(textAttributes, range: NSRange(location: 0, length: text.count))
+        attributedText.addAttributes(textAttributes, range: text.wholeRange())
         label.attributedText = attributedText
     }
 }

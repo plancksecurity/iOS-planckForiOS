@@ -17,6 +17,10 @@ public enum Model : String {
         return [.iPhone5C, .iPhone5S, .iPhone5, .iPhone4, .iPhone4S, .iPhoneSE, .iPhoneSE2]
     }
 
+    public static var iPadMinis : [Model] {
+        return [.iPadMini, .iPadMini2, .iPadMini3, .iPadMini4, .iPadMini5]
+    }
+
     case simulator     = "simulator",
 
     iPod1              = "iPod 1",
@@ -90,6 +94,10 @@ public extension UIDevice {
     /// Indicates if it is an iPhone5C, iPhone5S, iPhone5, iPhone4, iPhone4S, iPhoneSE or iPhoneSE2.
     static var isSmall: Bool {
         return Model.smallDevices.contains(UIDevice().type)
+    }
+
+    static var isIpadMini: Bool {
+        return Model.iPadMinis.contains(UIDevice().type)
     }
 
     /// returns the device model: e.g: "iPhone 11 Pro Max".
