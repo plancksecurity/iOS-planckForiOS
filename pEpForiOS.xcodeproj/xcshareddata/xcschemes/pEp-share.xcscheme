@@ -15,6 +15,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "19FF460E1B8B4D1400B43179"
+               BuildableName = "CocoaLumberjackSwift.framework"
+               BlueprintName = "CocoaLumberjackSwift"
+               ReferencedContainer = "container:../CocoaLumberjack/Lumberjack.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "434C199625D3D82500F622DB"
                BuildableName = "PEPIOSToolboxForAppExtensions.framework"
                BlueprintName = "PEPIOSToolboxForAppExtensions"
