@@ -59,9 +59,16 @@ extension CreditsViewController {
         }
 
         let fm = FileManager.default
+
         let appSupportUrls = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask)
         guard let appSupportUrl = appSupportUrls.first else {
             Log.shared.logError(message: "Cannot get application support directory")
+            return
+        }
+
+        let documentUrls = fm.urls(for: .documentDirectory, in: .userDomainMask)
+        guard let documentUrl = documentUrls.first else {
+            Log.shared.logError(message: "Cannot get documents directory")
             return
         }
 
