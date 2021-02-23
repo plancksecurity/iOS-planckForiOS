@@ -86,6 +86,17 @@ extension CreditsViewController {
         let destUrlSystem = documentUrl.appendingPathComponent(pEpHome)
 
         copyRecursive(srcUrl: srcUrlSystem, targetUrl: destUrlSystem)
+
+        // make the .pEp directory visible in the device's file browser
+
+        let dotPEPSrc = destUrlSystem.appendingPathComponent(".pEp")
+        let dotPEPDest = destUrlSystem.appendingPathComponent("pEp")
+
+        do {
+            try fm.moveItem(at: dotPEPSrc, to: dotPEPDest)
+        } catch {
+            Log.shared.logError(message: "Cannot move .pEp to pEp")
+        }
     }
 
     @IBAction public func secretGestureAction(_ sender: UITapGestureRecognizer) {
