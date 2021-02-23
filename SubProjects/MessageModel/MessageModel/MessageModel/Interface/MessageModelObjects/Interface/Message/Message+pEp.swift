@@ -10,11 +10,6 @@ import Foundation
 
 extension Message {
 
-    /// Indicates if the message has been processed by the engine.
-    public var isEncrypted: Bool {
-        return PEPUtils.pEpRatingFromInt(self.pEpRatingInt) == .undefined
-    }
-
     /// Persists the original rating header to the current message.
     /// - Parameter rating: The PEPRating to be set.
     public func setOriginalRatingHeader(rating: Rating) {
@@ -47,5 +42,10 @@ extension Message {
     public func inlinedTextAttachments() -> [Attachment] {
         let result = attachments.filter() { $0.isInlinedPlainText }
         return result
+    }
+
+    /// - returns: all viewable attachments non inlined with file name
+    public var viewableNotInlinedAttachments: [Attachment] {
+        return viewableAttachments().filter{ !$0.isInlined && $0.fileName != nil && !$0.isCidContained }
     }
 }

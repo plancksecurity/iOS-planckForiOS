@@ -26,7 +26,7 @@ public enum ImportCertificateError {
 
 final class ClientCertificateImportViewModel {
 
-    weak private var delegate: ClientCertificateImportViewModelDelegate?
+    public weak var delegate: ClientCertificateImportViewModelDelegate?
     private let clientCertificateUtil: ClientCertificateUtilProtocol
     private var certificateUrl: URL
     private var p12Data: Data?
