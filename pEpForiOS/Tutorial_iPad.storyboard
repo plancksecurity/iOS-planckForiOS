@@ -12,7 +12,7 @@
         <!--Tutorial Step2 View Controller-->
         <scene sceneID="wbN-gE-cad">
             <objects>
-                <viewController storyboardIdentifier="TutorialStep2ViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="g2Z-46-CUk" customClass="TutorialStep2ViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TutorialStep2ViewController_old" useStoryboardIdentifierAsRestorationIdentifier="YES" id="g2Z-46-CUk" customClass="TutorialStep2ViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Znu-Fy-vIT">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -226,12 +226,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7oA-Zj-0Hh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="355.98591549295776" y="1361.25"/>
+            <point key="canvasLocation" x="-374" y="2089"/>
         </scene>
-        <!--View Controller-->
+        <!--Tutorial Step 2 iPad View Controller-->
         <scene sceneID="BgI-6C-NHW">
             <objects>
-                <viewController id="mXM-sA-n3e" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TutorialStep2ViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mXM-sA-n3e" userLabel="Tutorial Step 2 iPad View Controller" customClass="TutorialStep2iPadViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1lb-dh-yBv">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -240,19 +240,40 @@
                                 <rect key="frame" x="256" y="126.5" width="512" height="1093"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Handshake" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fOU-Xn-JnK">
-                                        <rect key="frame" x="0.0" y="0.0" width="512" height="461.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="512" height="51.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="41"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ar9-Ed-5vv">
-                                        <rect key="frame" x="0.0" y="511.5" width="512" height="581.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ar9-Ed-5vv">
+                                        <rect key="frame" x="0.0" y="101.5" width="512" height="72"/>
                                         <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                                         <string key="text">When you click on the Privacy Status icon in the top bar, you will get to the Handshake, where you can verify your communication partner. </string>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zBu-Xp-Bdh" userLabel="Top Bar container">
+                                        <rect key="frame" x="0.0" y="223.5" width="512" height="869.5"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-4" translatesAutoresizingMaskIntoConstraints="NO" id="kUf-BZ-bUm" userLabel="Topbar Image View">
+                                                <rect key="frame" x="88.5" y="0.0" width="335" height="95"/>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Secure" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rhC-ro-8Gj">
+                                                <rect key="frame" x="266" y="25.5" width="53.5" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" systemColor="systemYellowColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstItem="kUf-BZ-bUm" firstAttribute="top" secondItem="zBu-Xp-Bdh" secondAttribute="top" id="5CN-VQ-glH"/>
+                                            <constraint firstItem="kUf-BZ-bUm" firstAttribute="centerX" secondItem="zBu-Xp-Bdh" secondAttribute="centerX" id="Rgx-rj-GIf"/>
+                                            <constraint firstItem="rhC-ro-8Gj" firstAttribute="centerY" secondItem="kUf-BZ-bUm" secondAttribute="centerY" multiplier="0.75" id="gtc-hT-sOg"/>
+                                            <constraint firstItem="rhC-ro-8Gj" firstAttribute="leading" secondItem="kUf-BZ-bUm" secondAttribute="centerX" constant="10" id="tBq-rd-8Uk"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                             </stackView>
                         </subviews>
@@ -268,7 +289,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="l46-MX-KNM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="355.7833089311859" y="2089.453125"/>
+            <point key="canvasLocation" x="354" y="1370"/>
         </scene>
         <!--Tutorial Step 0 iPad View Controller-->
         <scene sceneID="oYb-mQ-0q4">
