@@ -9,6 +9,7 @@
 import WebKit
 
 import pEpIOSToolbox
+import pEp4iosIntern
 
 class CreditsViewController: UIViewController {
     @IBOutlet public weak var verboseLoggingSwitch: UISwitch!
@@ -69,7 +70,7 @@ extension CreditsViewController {
     private func copyEngineFiles() {
         let fm = FileManager.default
 
-        guard let containerUrl = fm.containerURL(forSecurityApplicationGroupIdentifier: "group.security.pep.pep4ios") else {
+        guard let containerUrl = fm.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier) else {
             Log.shared.logError(message: "Cannot get container URL")
             return
         }
