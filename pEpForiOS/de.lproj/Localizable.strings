@@ -1,9 +1,6 @@
 /* client certificate provider key */
 "\n            Client\n            Certificate\n            " = "\n            Client\n            Zertifikat\n            ";
 
-/* external content label text */
-"\n By showing external content, your privacy may be invaded.\n This may affect the privacy status of the message.\n" = "\n Mit der Anzeige von externen Inhalten kann die Privatsphäre gebrochen werden.\nDies hat möglicherweise Auswirkungen auf den Privatsphärenstatus der Nachricht.\n";
-
 /* Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion. */
 "\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n%1$@\n\n%2$@\n\n%3$@\n\nAnhänge sind deaktiviert.\n\n";
 

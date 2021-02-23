@@ -31,20 +31,11 @@
 /* Class = "UILabel"; text = "Title"; ObjectID = "OLo-8A-CCo"; */
 "OLo-8A-CCo.text" = "nadpis";
 
-/* Class = "UILabel"; text = "Date"; ObjectID = "Ozt-zL-XpS"; */
-"Ozt-zL-XpS.text" = "Dátum";
-
 /* Class = "UILabel"; text = "Title"; ObjectID = "riI-qM-PeJ"; */
 "riI-qM-PeJ.text" = "Funkcia";
 
 /* Class = "UILabel"; text = "Summary"; ObjectID = "Tbi-dG-KCA"; */
 "Tbi-dG-KCA.text" = "Zhrnutie";
-
-/* Class = "UILabel"; text = "Subject"; ObjectID = "VDN-ne-7lE"; */
-"VDN-ne-7lE.text" = "Skrytá kópia";
-
-/* Class = "UILabel"; text = "Sender"; ObjectID = "yhr-Um-Ftu"; */
-"yhr-Um-Ftu.text" = "Odosielateľ";
 
 /* Class = "UILabel"; text = "Cc/Bcc:"; ObjectID = "ZpG-yk-ifY"; */
 "ZpG-yk-ifY.text" = "CC / BCC (kópie/skryté kópie):";

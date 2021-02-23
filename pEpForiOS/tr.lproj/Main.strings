@@ -31,20 +31,11 @@
 /* Class = "UILabel"; text = "Title"; ObjectID = "OLo-8A-CCo"; */
 "OLo-8A-CCo.text" = "Başlık";
 
-/* Class = "UILabel"; text = "Date"; ObjectID = "Ozt-zL-XpS"; */
-"Ozt-zL-XpS.text" = "Tarih";
-
 /* Class = "UILabel"; text = "Title"; ObjectID = "riI-qM-PeJ"; */
 "riI-qM-PeJ.text" = "Başlık";
 
 /* Class = "UILabel"; text = "Summary"; ObjectID = "Tbi-dG-KCA"; */
 "Tbi-dG-KCA.text" = "özet";
-
-/* Class = "UILabel"; text = "Subject"; ObjectID = "VDN-ne-7lE"; */
-"VDN-ne-7lE.text" = "Konu";
-
-/* Class = "UILabel"; text = "Sender"; ObjectID = "yhr-Um-Ftu"; */
-"yhr-Um-Ftu.text" = "Gönderen";
 
 /* Class = "UILabel"; text = "Cc/Bcc:"; ObjectID = "ZpG-yk-ifY"; */
 "ZpG-yk-ifY.text" = "Cc / Bcc:";
