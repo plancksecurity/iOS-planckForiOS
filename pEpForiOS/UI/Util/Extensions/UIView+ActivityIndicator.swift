@@ -1,5 +1,5 @@
 //
-//  UIView+Util.swift
+//  UIView+ActivityIndicator.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 10.04.17.
@@ -46,8 +46,11 @@ extension UIView {
      */
     public func stopDisplayingAsBusy(viewBusyState: ViewBusyState) {
         for v in viewBusyState.views {
-            v.removeFromSuperview()
+            UIView.animate(withDuration: 0.5) {
+                v.alpha = 0
+            } completion: { (complete) in
+                v.removeFromSuperview()
+            }
         }
     }
 }
-
