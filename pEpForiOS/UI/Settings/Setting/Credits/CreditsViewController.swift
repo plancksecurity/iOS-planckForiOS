@@ -52,21 +52,6 @@ extension CreditsViewController: SegueHandlerType {
 }
 
 extension CreditsViewController {
-    /// _Removes_ `targetUrl`, then invokes `copyItem` from `srcUrl` to `targetUrl`.
-    private func copyRecursive(srcUrl: URL, targetUrl: URL) {
-        let fm = FileManager.default
-
-        // remove the target, if it exists
-        try? fm.removeItem(at: targetUrl)
-
-        do {
-            // recursive copy of per user files
-            try fm.copyItem(at: srcUrl, to: targetUrl)
-        } catch {
-            Log.shared.log(error: error)
-        }
-    }
-
     private func copyEngineFiles() {
         let fm = FileManager.default
 
@@ -83,9 +68,23 @@ extension CreditsViewController {
 
         let pEpHomeUrl = containerUrl.appendingPathComponent("pEp_home")
         let pEpUrl = pEpHomeUrl.appendingPathComponent(".pEp")
-        let destUrl = documentUrl.appendingPathComponent("pEpDB")
+        let destBaseUrl = documentUrl.appendingPathComponent("pEpDB")
 
-        copyRecursive(srcUrl: pEpUrl, targetUrl: destUrl)
+        do {
+            try fm.createDirectory(at: destBaseUrl, withIntermediateDirectories: true, attributes: nil)
+        } catch {
+            Log.shared.log(error: error)
+        }
+
+        for filename in ["keys.db", "management.db"] {
+            let srcUrl = pEpUrl.appendingPathComponent(filename)
+            let destUrl = destBaseUrl.appendingPathComponent(filename)
+            do {
+                try fm.copyItem(at: srcUrl, to: destUrl)
+            } catch {
+                Log.shared.log(error: error)
+            }
+        }
     }
 
     @IBAction public func secretGestureAction(_ sender: UITapGestureRecognizer) {
