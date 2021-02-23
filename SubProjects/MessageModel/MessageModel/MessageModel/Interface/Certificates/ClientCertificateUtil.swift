@@ -31,7 +31,16 @@ public protocol ClientCertificateUtilProtocol {
     /// * Attempts to delete client certificates that don't exist are ignored.
     /// - Parameter clientCertificate: The client certificate to delete.
     /// - Throws: `DeleteError`
-    func delete(clientCertificate: ClientCertificate, ignoreIfStillInUse shouldIgnoreIfStillInUse: Bool) throws
+    func delete(clientCertificate: ClientCertificate) throws
+
+    /// Deletes the given `ClientCertificate`, even if it's being used.
+    /// *USE THIS ONLY FOR ACCOUNT DELETION*
+    ///
+    /// - Note:
+    /// * The certificate is deleted from CoreData and from the Keychain.
+    /// * Attempts to delete client certificates that don't exist are ignored.
+    /// - Parameter clientCertificate: The client certificate to delete.
+    func forceDelete(clientCertificate: ClientCertificate)
 
     /// Does the given data reperesent certificate data, importable with `SecPKCS12Import`?
     func isCertificate(p12Data: Data) -> Bool
@@ -88,6 +97,7 @@ public class ClientCertificateUtil {
 
 extension ClientCertificateUtil: ClientCertificateUtilProtocol {
 
+
     public func listCertificates(session: Session? = nil) -> [ClientCertificate] {
         let moc: NSManagedObjectContext = session?.moc ?? Session.main.moc
         let existingCdCerts = CdClientCertificate.all(in: moc) as? [CdClientCertificate] ?? []
@@ -138,31 +148,43 @@ extension ClientCertificateUtil: ClientCertificateUtilProtocol {
         }
     }
 
-    public func delete(clientCertificate: ClientCertificate,
-                       ignoreIfStillInUse shouldIgnoreIfStillInUse: Bool = false) throws {
-        var errorToThrow: DeleteError? = nil
+    public func delete(clientCertificate: ClientCertificate) throws {
+        try deleteCertificate(clientCertificate: clientCertificate)
+    }
 
+    public func forceDelete(clientCertificate: ClientCertificate) {
+        do {
+            try deleteCertificate(clientCertificate: clientCertificate, isForceDelete: true)
+        } catch {
+            Log.shared.errorAndCrash("Should not throw as it's a force delete.")
+        }
+    }
+
+    private func deleteCertificate(clientCertificate: ClientCertificate, isForceDelete: Bool = false) throws {
+        var errorToThrow: DeleteError? = nil
         let moc = Stack.shared.newPrivateConcurrentContext
         moc.performAndWait {
             let cdCert = clientCertificate.cdObject
             guard let label = cdCert.label else {
+                Log.shared.errorAndCrash("ClientCertificate Label not found")
                 return
             }
             guard let keychainUuid = cdCert.keychainUuid else {
+                Log.shared.errorAndCrash("Keychain Uuid not found")
                 return
             }
             if let existing = CdClientCertificate.search(label: label,
                                                          keychainUuid: keychainUuid,
                                                          context: moc) {
-                if isStillInUse(clientCertificate: existing) && !shouldIgnoreIfStillInUse {
-                    errorToThrow = DeleteError.stillInUse
-                } else {
+                // Delete only if it's not being used, or if it's a force deletion.
+                if isForceDelete || !isStillInUse(clientCertificate: cdCert) {
                     moc.delete(existing)
                     moc.saveAndLogErrors()
+                } else {
+                    errorToThrow = DeleteError.stillInUse
                 }
             }
         }
-
         if let error = errorToThrow {
             throw error
         }

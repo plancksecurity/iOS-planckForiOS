@@ -1,5 +1,5 @@
 //
-//  OSStatus+Extension.swift
+//  OSStatus+Error.swift
 //  MessageModel
 //
 //  Created by Martín Brude on 26/1/21.

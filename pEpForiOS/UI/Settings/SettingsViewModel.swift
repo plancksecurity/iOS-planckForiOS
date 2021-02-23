@@ -492,12 +492,7 @@ extension SettingsViewModel {
                                   })
         let oldAddress = account.user.address
         if let certificate = account.imapServer?.credentials.clientCertificate {
-            let clientCertificateUtil = ClientCertificateUtil()
-            do {
-                try clientCertificateUtil.delete(clientCertificate: certificate, ignoreIfStillInUse: true)
-            } catch {
-                Log.shared.log(error: error)
-            }
+            ClientCertificateUtil().forceDelete(clientCertificate: certificate)
         }
         account.delete()
         Session.main.commit()
