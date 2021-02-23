@@ -228,6 +228,48 @@
             </objects>
             <point key="canvasLocation" x="355.98591549295776" y="1361.25"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="BgI-6C-NHW">
+            <objects>
+                <viewController id="mXM-sA-n3e" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1lb-dh-yBv">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="2o1-qD-hhQ">
+                                <rect key="frame" x="256" y="126.5" width="512" height="1093"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Handshake" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fOU-Xn-JnK">
+                                        <rect key="frame" x="0.0" y="0.0" width="512" height="461.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="41"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ar9-Ed-5vv">
+                                        <rect key="frame" x="0.0" y="511.5" width="512" height="581.5"/>
+                                        <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
+                                        <string key="text">When you click on the Privacy Status icon in the top bar, you will get to the Handshake, where you can verify your communication partner. </string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="bOX-Qh-50l"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="2o1-qD-hhQ" firstAttribute="centerX" secondItem="bOX-Qh-50l" secondAttribute="centerX" id="BI0-Re-ZcS"/>
+                            <constraint firstItem="2o1-qD-hhQ" firstAttribute="height" secondItem="1lb-dh-yBv" secondAttribute="height" multiplier="0.8" id="XJG-2O-Ctm"/>
+                            <constraint firstItem="2o1-qD-hhQ" firstAttribute="centerY" secondItem="bOX-Qh-50l" secondAttribute="centerY" id="Y8q-FC-Bvv"/>
+                            <constraint firstItem="2o1-qD-hhQ" firstAttribute="leading" secondItem="bOX-Qh-50l" secondAttribute="centerX" multiplier="0.5" id="oyP-1n-jZx"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="l46-MX-KNM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="355.7833089311859" y="2089.453125"/>
+        </scene>
         <!--Tutorial Step 0 iPad View Controller-->
         <scene sceneID="oYb-mQ-0q4">
             <objects>
