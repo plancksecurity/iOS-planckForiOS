@@ -1389,7 +1389,7 @@ extension EmailListViewController {
 extension EmailListViewController {
 
     private func presentComposeViewToEditDraft(composeVM: ComposeViewModel) {
-        let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
+        let storyboard = UIStoryboard(name: Constants.mainStoryboard, bundle: nil)
         guard
             let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
                 Constants.composeSceneStoryboardId) as? UINavigationController,
