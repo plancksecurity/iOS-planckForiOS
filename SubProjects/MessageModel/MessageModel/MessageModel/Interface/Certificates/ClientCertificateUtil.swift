@@ -8,7 +8,6 @@
 
 import Foundation
 import CoreData
-import pEpIOSToolbox
 
 public protocol ClientCertificateUtilProtocol {
     /// - Parameters:
@@ -27,23 +26,19 @@ public protocol ClientCertificateUtilProtocol {
 
     /// Deletes the given `ClientCertificate`, which originates from a call to `listCertificates`.
     /// - Note:
-    /// * The certificate is deleted from CoreData and from the Keychain.
+    /// * For technical reasons, the certificate cannot be removed from the keychain,
+    /// and is therefore only removed from core data.
     /// * Attempts to delete client certificates that don't exist are ignored.
     /// - Parameter clientCertificate: The client certificate to delete.
     /// - Throws: `DeleteError`
     func delete(clientCertificate: ClientCertificate) throws
 
-    /// Deletes the given `ClientCertificate`, even if it's being used.
-    /// *USE THIS ONLY FOR ACCOUNT DELETION*
-    ///
-    /// - Note:
-    /// * The certificate is deleted from CoreData and from the Keychain.
-    /// * Attempts to delete client certificates that don't exist are ignored.
-    /// - Parameter clientCertificate: The client certificate to delete.
-    func forceDelete(clientCertificate: ClientCertificate)
-
     /// Does the given data reperesent certificate data, importable with `SecPKCS12Import`?
     func isCertificate(p12Data: Data) -> Bool
+
+    /// Removes the Sec Identity of the given certificate from the keychain
+    /// - Parameter cdCertificate: The certificate.
+    func removeSecIdentityFromKeychain(of cdCertificate: CdClientCertificate)
 }
 
 // MARK: - ImportError
@@ -97,7 +92,6 @@ public class ClientCertificateUtil {
 
 extension ClientCertificateUtil: ClientCertificateUtilProtocol {
 
-
     public func listCertificates(session: Session? = nil) -> [ClientCertificate] {
         let moc: NSManagedObjectContext = session?.moc ?? Session.main.moc
         let existingCdCerts = CdClientCertificate.all(in: moc) as? [CdClientCertificate] ?? []
@@ -149,54 +143,31 @@ extension ClientCertificateUtil: ClientCertificateUtilProtocol {
     }
 
     public func delete(clientCertificate: ClientCertificate) throws {
-        try deleteCertificate(clientCertificate: clientCertificate)
-    }
-
-    public func forceDelete(clientCertificate: ClientCertificate) {
-        do {
-            try deleteCertificate(clientCertificate: clientCertificate, isForceDelete: true)
-        } catch {
-            Log.shared.errorAndCrash("Should not throw as it's a force delete.")
-        }
-    }
-
-    private func deleteCertificate(clientCertificate: ClientCertificate, isForceDelete: Bool = false) throws {
         var errorToThrow: DeleteError? = nil
+
         let moc = Stack.shared.newPrivateConcurrentContext
         moc.performAndWait {
             let cdCert = clientCertificate.cdObject
             guard let label = cdCert.label else {
-                Log.shared.errorAndCrash("ClientCertificate Label not found")
                 return
             }
             guard let keychainUuid = cdCert.keychainUuid else {
-                Log.shared.errorAndCrash("Keychain Uuid not found")
                 return
             }
             if let existing = CdClientCertificate.search(label: label,
                                                          keychainUuid: keychainUuid,
                                                          context: moc) {
-                // Delete only if it's not being used, or if it's a force deletion.
-                if isForceDelete || !isStillInUse(clientCertificate: cdCert) {
+                if isStillInUse(clientCertificate: existing) {
+                    errorToThrow = DeleteError.stillInUse
+                } else {
                     moc.delete(existing)
                     moc.saveAndLogErrors()
-                } else {
-                    errorToThrow = DeleteError.stillInUse
                 }
             }
         }
+
         if let error = errorToThrow {
             throw error
-        }
-    }
-
-    /// Removes the identity binded to the client certificate passed by parameter.
-    /// If doesn't find it does nothing.
-    ///
-    /// - Parameter cdCertificate: The cdCertificate to find the identity to delete.
-    public func removeSecIdentityFromKeychain(of cdCertificate: CdClientCertificate) {
-        if let element = listExisting().first(where: {$0.0 == cdCertificate.keychainUuid}) {
-            SecItemDelete([kSecValueRef: element.1] as CFDictionary)
         }
     }
 
@@ -216,12 +187,22 @@ extension ClientCertificateUtil: ClientCertificateUtilProtocol {
         }
         return false
     }
+
+    /// Removes the identity binded to the client certificate passed by parameter.
+    /// If doesn't find it does nothing.
+    ///
+    /// - Parameter cdCertificate: The cdCertificate to find the identity to delete.
+    public func removeSecIdentityFromKeychain(of cdCertificate: CdClientCertificate) {
+        if let element = listExisting().first(where: {$0.0 == cdCertificate.keychainUuid}) {
+            SecItemDelete([kSecValueRef: element.1] as CFDictionary)
+        }
+    }
+
 }
 
 // MARK: - Internal, used by other ClientCertificateUtil extensions
 
 extension ClientCertificateUtil {
-    
     /// - Returns: An array of client identities (`SecIdentity`) stored in the keychain,
     /// together with their label (which in our case is used as an UUID).
     func listExisting() -> [(String, SecIdentity)] {
@@ -367,24 +348,20 @@ extension ClientCertificateUtil {
         guard let identityLabel = label(for: theSecIdentity) else {
             throw ImportError.insufficientInformation
         }
+
         let uuidLabel = NSUUID().uuidString
+
         let addIdentityAttributes: [CFString : Any] = [kSecReturnPersistentRef: true,
                                                        kSecAttrLabel: uuidLabel,
                                                        kSecValueRef: theSecIdentity]
+
         var resultRef: CFTypeRef? = nil
         let identityStatus = SecItemAdd(addIdentityAttributes as CFDictionary, &resultRef);
-
         if identityStatus != errSecSuccess {
-            if let error = identityStatus.error {
-                Log.shared.error("%@", "\(error.localizedDescription)")
-            }
             if identityStatus != errSecDuplicateItem {
                 // Throw on all errors except duplicate items
                 throw ImportError.keychainError
             } else {
-                // The keychain already has an item of the same class with the same set of composite primary keys
-                // https://developer.apple.com/documentation/security/errsecduplicateitem
-                //
                 // If the error hints at a duplicate already in the keychain,
                 // try to find it.
                 if let existingUuid = matchExisting(secIdentity: theSecIdentity) {
@@ -435,4 +412,3 @@ extension ClientCertificateUtil {
         return false
     }
 }
-
