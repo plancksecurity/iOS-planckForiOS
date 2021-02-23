@@ -20,6 +20,9 @@ public enum Model : String {
     public static var iPadMinis : [Model] {
         return [.iPadMini, .iPadMini2, .iPadMini3, .iPadMini4, .iPadMini5]
     }
+    public static var smallIpads : [Model] {
+        return [.iPadMini, .iPadMini2, .iPadMini3, .iPadMini4, .iPadMini5, .iPadPro9_7]
+    }
 
     case simulator     = "simulator",
 
@@ -98,6 +101,10 @@ public extension UIDevice {
 
     static var isIpadMini: Bool {
         return Model.iPadMinis.contains(UIDevice().type)
+    }
+
+    static var isIpadSmall: Bool {
+        return Model.smallIpads.contains(UIDevice().type)
     }
 
     /// returns the device model: e.g: "iPhone 11 Pro Max".

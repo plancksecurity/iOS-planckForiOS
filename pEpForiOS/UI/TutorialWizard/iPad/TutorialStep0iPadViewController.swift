@@ -18,24 +18,23 @@ class TutorialStep0iPadViewController: TutorialStepViewController {
 
     @IBOutlet private weak var stackView: UIStackView!
 
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var skipTutorialLabel: UILabel!
-    @IBOutlet private weak var privacyStatusLabel: UILabel!
-    @IBOutlet private weak var privacyStatusShownLabel: UILabel!
-    @IBOutlet private weak var topbarLabel: UILabel!
-
-    @IBOutlet weak var leadingLandscape: NSLayoutConstraint!
+    @IBOutlet private weak var welcomeTitle: UILabel!
+    @IBOutlet private weak var skipTutorial: UILabel!
+    @IBOutlet private weak var privacyStatus: UILabel!
+    @IBOutlet private weak var privacyStatusDescription: UILabel!
+    @IBOutlet private weak var topbar: UILabel!
+    @IBOutlet private weak var stackViewHeight: NSLayoutConstraint!
 
     public override func configureView() {
-        setupTitleLabel()
-        setupSkipTutorialLabel()
-        setupPrivacyStatusLabel()
-        setupPrivacyStatusShownLabel()
-        setupTopbarLabel()
+        setupLabels()
+    }
 
-        if !UIDevice.isIpadMini && UIDevice.isPortrait {
-            stackView.spacing = 40
-        }
+    private func setupLabels() {
+        setupTitle()
+        setupSkipTutorial()
+        setupPrivacyStatus()
+        setupPrivacyStatusDescription()
+        setupTopbar()
     }
 }
 
@@ -43,7 +42,7 @@ class TutorialStep0iPadViewController: TutorialStepViewController {
 
 extension TutorialStep0iPadViewController {
 
-    private func setupTitleLabel() {
+    private func setupTitle() {
         let titleText = NSLocalizedString("Welcome to the p≡p Tutorial", comment: "Welcome to the p≡p Tutorial - Step 0")
         let attributedString = NSMutableAttributedString(string: titleText, attributes: [
             .font: titleFont,
@@ -52,37 +51,37 @@ extension TutorialStep0iPadViewController {
         if let range = titleText.nsRange(of: "p≡p") {
             attributedString.addAttributes([.font: titleFont, .foregroundColor: UIColor.pEpGreen], range:range)
         }
-        titleLabel.attributedText = attributedString
+        welcomeTitle.attributedText = attributedString
     }
 
-    private func setupSkipTutorialLabel() {
+    private func setupSkipTutorial() {
         let text = NSLocalizedString("You can close this tutorial anytime with the Skip button.", comment: "Tutorial First text")
         let attributes : [NSAttributedString.Key : Any] = [
           .font: font,
           .foregroundColor: UIColor.black,
-          .paragraphStyle: centered,
+          .paragraphStyle: UIDevice.isIpadSmall ? centered : centeredSpaced,
         ]
-        skipTutorialLabel.attributedText = NSMutableAttributedString(string:text, attributes: attributes)
+        skipTutorial.attributedText = NSMutableAttributedString(string:text, attributes: attributes)
     }
 
-    private func setupPrivacyStatusLabel() {
+    private func setupPrivacyStatus() {
         let text = NSLocalizedString("p≡p uses a Privacy Status icon to indicate how secure your communication is.", comment: "Tutorial Second text")
         let attributedText = NSMutableAttributedString(string:text)
         if let range = text.nsRange(of: "p≡p") {
             attributedText.addAttributes([.font: font, .foregroundColor: UIColor.pEpGreen], range: range)
             attributedText.addAttributes(textAttributes, range: NSRange(location: range.location + range.length, length: text.count - range.length))
         }
-        privacyStatusLabel.attributedText = attributedText
+        privacyStatus.attributedText = attributedText
     }
 
-    private func setupPrivacyStatusShownLabel() {
+    private func setupPrivacyStatusDescription() {
         let text = NSLocalizedString("This Privacy Status is shown as an icon the user´s avatars:", comment: "Tutorial Third text")
-        set(text, on: privacyStatusShownLabel)
+        set(text, on: privacyStatusDescription)
     }
 
-    private func setupTopbarLabel() {
+    private func setupTopbar() {
         let text = NSLocalizedString("And in the top bar when you open or write an email:", comment: "Tutorial Fourth text")
-        set(text, on: topbarLabel)
+        set(text, on: topbar)
     }
 
     private func set(_ text : String, on label : UILabel) {

@@ -115,7 +115,7 @@ extension TutorialStep0ViewController {
     private func setupTitleLabel() {
         let titleText = NSLocalizedString("Welcome to the p≡p Tutorial", comment: "Welcome to the p≡p Tutorial - Step 0")
         let attributedString = NSMutableAttributedString(string: titleText, attributes: [
-            .paragraphStyle: spaced,
+            .paragraphStyle: centeredSpaced,
             .font: titleFont,
             .foregroundColor: UIColor.black,
             .kern: 0.36
@@ -131,7 +131,7 @@ extension TutorialStep0ViewController {
         let attributes : [NSAttributedString.Key : Any] = [
           .font: font,
           .foregroundColor: UIColor.black,
-          .paragraphStyle: centered,
+          .paragraphStyle: centeredSpaced,
           .kern: 0.2]
         skipTutorialLabel.attributedText = NSMutableAttributedString(string:text, attributes: attributes)
     }

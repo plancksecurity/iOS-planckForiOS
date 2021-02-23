@@ -21,7 +21,7 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
         return paragraphStyle
     }
 
-    var spaced : NSMutableParagraphStyle {
+    var centeredSpaced : NSMutableParagraphStyle {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
         paragraphStyle.lineSpacing = 6
@@ -32,16 +32,13 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
         return [
             .font: font,
             .foregroundColor: UIColor(white: 24.0 / 255.0, alpha: 1.0),
-            .paragraphStyle: centered
+            .paragraphStyle: UIDevice.isIpadSmall ? centered : centeredSpaced,
         ]
     }
 
     var font: UIFont {
         if UIDevice.isIpad {
-            if UIDevice.isIpadMini {
-                return UIFont.systemFont(ofSize: 20.0, weight: .regular)
-            }
-            return UIFont.systemFont(ofSize: 23.0, weight: .regular)
+            return UIFont.systemFont(ofSize: 20.0, weight: .regular)
         } else if UIDevice.isSmall {
             return UIFont.systemFont(ofSize: 11.0, weight: .regular)
         }
@@ -50,10 +47,7 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
     
     var smallFont : UIFont {
         if UIDevice.isIpad {
-            if UIDevice.isIpadMini {
-                return UIFont.systemFont(ofSize: 11.0, weight: .regular)
-            }
-            return UIFont.systemFont(ofSize: 13.0, weight: .regular)
+            return UIFont.systemFont(ofSize: 11.0, weight: .regular)
         } else if UIDevice.isSmall {
             return UIFont.systemFont(ofSize: 9.0, weight: .regular)
         }
@@ -63,10 +57,7 @@ class TutorialStepViewController: CustomTraitCollectionViewController {
 
     var titleFont : UIFont {
         if UIDevice.isIpad {
-            if UIDevice.isIpadMini {
-                return UIFont.systemFont(ofSize: 42.0, weight: .regular)
-            }
-            return UIFont.systemFont(ofSize: 43.0, weight: .regular)
+            return UIFont.systemFont(ofSize: 42.0, weight: .regular)
         } else if UIDevice.isSmall {
             return UIFont.systemFont(ofSize: 18.0, weight: .regular)
         }
