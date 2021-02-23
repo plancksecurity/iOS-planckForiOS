@@ -86,11 +86,6 @@ extension CreditsViewController {
         let destUrlSystem = documentUrl.appendingPathComponent(pEpHome)
 
         copyRecursive(srcUrl: srcUrlSystem, targetUrl: destUrlSystem)
-
-        let srcUrlUser = srcUrlSystem.appendingPathComponent(".pEp")
-        let destUrlUser = destUrlSystem.appendingPathComponent("pEp")
-
-        copyRecursive(srcUrl: srcUrlUser, targetUrl: destUrlUser)
     }
 
     @IBAction public func secretGestureAction(_ sender: UITapGestureRecognizer) {
