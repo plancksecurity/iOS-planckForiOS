@@ -1,6 +1,3 @@
-/* Class = "UIButton"; normalTitle = "Show External Content"; ObjectID = "3uL-KY-gV7"; */
-"3uL-KY-gV7.normalTitle" = "Mostrar contenido externo";
-
 /* Class = "UILabel"; text = "Date"; ObjectID = "a1D-BW-3Rd"; */
 "a1D-BW-3Rd.text" = "Fecha";
 
@@ -28,32 +25,17 @@
 /* Class = "UIBarButtonItem"; title = "Cancel"; ObjectID = "ijh-vj-Bee"; */
 "ijh-vj-Bee.title" = "Cancelar";
 
-/* Class = "UILabel"; text = "just some placeholder text for storyboard"; ObjectID = "j6J-vb-VLn"; */
-"j6J-vb-VLn.text" = "sólo un texto de marcador de posición para el storyboard";
-
 /* Class = "UILabel"; text = "Sender sfasflask jfhsajfkas fjksaj"; ObjectID = "KTi-T9-Inm"; */
 "KTi-T9-Inm.text" = "Remitente sfasflask jfhsajfkas fjksaj";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "OLo-8A-CCo"; */
 "OLo-8A-CCo.text" = "Título";
 
-/* Class = "UILabel"; text = "Date"; ObjectID = "Ozt-zL-XpS"; */
-"Ozt-zL-XpS.text" = "Fecha";
-
 /* Class = "UILabel"; text = "Title"; ObjectID = "riI-qM-PeJ"; */
 "riI-qM-PeJ.text" = "Título";
 
-/* Class = "UILabel"; text = "To: Recipients"; ObjectID = "ss8-ZR-hIs"; */
-"ss8-ZR-hIs.text" = "Para: Destinatarios";
-
 /* Class = "UILabel"; text = "Summary"; ObjectID = "Tbi-dG-KCA"; */
 "Tbi-dG-KCA.text" = "Resumen";
-
-/* Class = "UILabel"; text = "Subject"; ObjectID = "VDN-ne-7lE"; */
-"VDN-ne-7lE.text" = "Asunto";
-
-/* Class = "UILabel"; text = "Sender"; ObjectID = "yhr-Um-Ftu"; */
-"yhr-Um-Ftu.text" = "Remitente";
 
 /* Class = "UILabel"; text = "Cc/Bcc:"; ObjectID = "ZpG-yk-ifY"; */
 "ZpG-yk-ifY.text" = "Cc/Bcc:";
