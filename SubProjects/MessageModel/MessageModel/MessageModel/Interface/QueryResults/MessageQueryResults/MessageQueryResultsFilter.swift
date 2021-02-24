@@ -7,8 +7,12 @@
 //
 
 import Foundation
-import pEpIOSToolbox
 
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
+import pEpIOSToolbox
+#endif
 
 ///Struct that provides a interface to select which filters are enabled and how must be used.
 public struct MessageQueryResultsFilter {
