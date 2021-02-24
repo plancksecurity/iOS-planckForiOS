@@ -454,6 +454,7 @@
 		43BDF1AD25E6943100FC0C68 /* LoginViewModelOAuth2ErrorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43498CDC200D0790006DC947 /* LoginViewModelOAuth2ErrorDelegate.swift */; };
 		43BDF1DF25E6986300FC0C68 /* EditableAccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B884B43257A90FE006B2022 /* EditableAccountSettingsViewController.swift */; };
 		43BDF1E225E698AD00FC0C68 /* AccountSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80CA24B733C0008DE0E5 /* AccountSettingsTableViewCell.swift */; };
+		43BDF1E825E6992A00FC0C68 /* UIViewController+LoadingInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E4D234DCE2B00845A28 /* UIViewController+LoadingInterface.swift */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3152,6 +3153,7 @@
 				434C1ACF25D412B600F622DB /* TrustManagementViewController.swift in Sources */,
 				434C1B0B25D4295900F622DB /* HtmlToMarkdownSaxParser.swift in Sources */,
 				43BDF19125E6785600FC0C68 /* AccountSettingsViewModel.swift in Sources */,
+				43BDF1E825E6992A00FC0C68 /* UIViewController+LoadingInterface.swift in Sources */,
 				43BDF1AA25E691CB00FC0C68 /* LoginViewModelLoginErrorDelegate.swift in Sources */,
 				43BDF02E25E644F500FC0C68 /* EmailDisplayViewModel.swift in Sources */,
 				434C19AE25D3D98E00F622DB /* AccountPickerViewModel.swift in Sources */,
