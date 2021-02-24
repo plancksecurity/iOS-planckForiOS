@@ -8,7 +8,11 @@
 
 import UIKit
 
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 /// View Controller that handles the tutorial
 final class TutorialWizardViewController: PEPPageViewControllerBase {
