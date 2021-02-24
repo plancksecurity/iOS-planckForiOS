@@ -8,7 +8,11 @@
 
 import Foundation
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
 
 /**
  Errors that are not directly reported by the used OAuth2 lib, but detected internally.
