@@ -26,8 +26,6 @@ public protocol ClientCertificateUtilProtocol {
 
     /// Deletes the given `ClientCertificate`, which originates from a call to `listCertificates`.
     /// - Note:
-    /// * For technical reasons, the certificate cannot be removed from the keychain,
-    /// and is therefore only removed from core data.
     /// * Attempts to delete client certificates that don't exist are ignored.
     /// - Parameter clientCertificate: The client certificate to delete.
     /// - Throws: `DeleteError`
@@ -246,6 +244,16 @@ extension ClientCertificateUtil {
         }
 
         return result
+    }
+
+    /// Removes the identity binded to the client certificate passed by parameter.
+    /// If doesn't find it does nothing.
+    ///
+    /// - Parameter cdCertificate: The cdCertificate to find the identity to delete.
+    func removeSecIdentityFromKeychain(of cdCertificate: CdClientCertificate) {
+        if let element = listExisting().first(where: {$0.0 == cdCertificate.keychainUuid}) {
+            SecItemDelete([kSecValueRef: element.1] as CFDictionary)
+        }
     }
 }
 

@@ -40,7 +40,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = window
         window.rootViewController = initialNVC
         window.makeKeyAndVisible()
-
         return true
     }
 
