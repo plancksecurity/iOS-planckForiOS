@@ -434,6 +434,7 @@
 		43BDF16D25E66F6D00FC0C68 /* TextFieldWithoutSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC0738C25B218DB00ECE3FC /* TextFieldWithoutSelection.swift */; };
 		43BDF17025E66FF400FC0C68 /* UILayout+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3B019024B46CFC00FBB4B5 /* UILayout+Extension.swift */; };
 		43BDF17325E6706F00FC0C68 /* SettingSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80C924B733C0008DE0E5 /* SettingSwitchTableViewCell.swift */; };
+		43BDF17625E670A800FC0C68 /* UIUtils+ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521B796241BE026000EAE57 /* UIUtils+ActivityIndicator.swift */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3225,6 +3226,7 @@
 				434C1AF025D416AF00F622DB /* Capability.swift in Sources */,
 				434A6C6225D2A3C800179335 /* BodyCellViewModel.swift in Sources */,
 				434A6C7C25D2A3F100179335 /* WrappedBccViewModel.swift in Sources */,
+				43BDF17625E670A800FC0C68 /* UIUtils+ActivityIndicator.swift in Sources */,
 				434C1A0625D3F0AD00F622DB /* AXHTMLParser.m in Sources */,
 				434C1A7A25D40A9800F622DB /* UIViewController+Extension.swift in Sources */,
 				43BDF15B25E66A3500FC0C68 /* PGPKeyImportSettingViewModel.swift in Sources */,
