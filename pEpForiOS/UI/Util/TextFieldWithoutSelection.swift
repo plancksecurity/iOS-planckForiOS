@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// UITextView property 'isSelectable', when it's false, doesn't allow the user to tap links.
 /// This allows the interaction with the link and disable the selection.
