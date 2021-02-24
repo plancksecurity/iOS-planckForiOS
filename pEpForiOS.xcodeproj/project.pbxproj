@@ -435,6 +435,7 @@
 		43BDF17025E66FF400FC0C68 /* UILayout+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3B019024B46CFC00FBB4B5 /* UILayout+Extension.swift */; };
 		43BDF17325E6706F00FC0C68 /* SettingSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80C924B733C0008DE0E5 /* SettingSwitchTableViewCell.swift */; };
 		43BDF17625E670A800FC0C68 /* UIUtils+ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521B796241BE026000EAE57 /* UIUtils+ActivityIndicator.swift */; };
+		43BDF17925E673A300FC0C68 /* AccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3218,6 +3219,7 @@
 				434C19C125D3E07000F622DB /* AppSettingsProtocol.swift in Sources */,
 				43BDF06225E649BD00FC0C68 /* ReplyAllPossibleCheckerProtocol.swift in Sources */,
 				434C1AD225D412F300F622DB /* TrustManagementViewModel.swift in Sources */,
+				43BDF17925E673A300FC0C68 /* AccountSettingsViewController.swift in Sources */,
 				434C1ABD25D4112B00F622DB /* SecureWebViewUrlClickHandlerProtocol.swift in Sources */,
 				434C1AEA25D4158000F622DB /* UIButton+Extension.swift in Sources */,
 				43BDE03625DE7C8A00FC0C68 /* cmark.c in Sources */,
