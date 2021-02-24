@@ -6,6 +6,8 @@
 //  Copyright © 2019 p≡p Security S.A. All rights reserved.
 //
 
+import UIKit
+
 #if EXT_SHARE
 import MessageModelForAppExtensions
 #else
