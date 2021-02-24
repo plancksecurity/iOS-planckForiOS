@@ -156,15 +156,13 @@ extension EmailViewController: UITableViewDelegate {
             Log.shared.errorAndCrash("Missing vm")
             return tableView.estimatedRowHeight
         }
-
         if let row = vm[indexPath.row] as? AttachmentRowProtocol {
             return row.height
         }
-        if vm[indexPath.row] is EmailViewModel.BodyRow {
+        if (vm[indexPath.row] as? EmailViewModel.BodyRow)?.htmlBody != nil {
             return htmlViewerViewController.contentSize.height
-        } else {
-            return tableView.rowHeight
         }
+        return tableView.rowHeight
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
