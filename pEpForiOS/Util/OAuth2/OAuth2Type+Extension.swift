@@ -8,6 +8,8 @@
 
 import Foundation
 
+import AppAuth
+
 extension OAuth2Type {
     func oauth2Config() -> OAuth2ConfigurationProtocol? {
         switch self {
