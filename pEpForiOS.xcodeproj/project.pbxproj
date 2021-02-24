@@ -428,6 +428,7 @@
 		43BDF14B25E6687A00FC0C68 /* UIUtils+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521B78C241BDAD3000EAE57 /* UIUtils+Settings.swift */; };
 		43BDF14E25E6691100FC0C68 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */; };
 		43BDF15125E6695C00FC0C68 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35AA324913B4700AC605C /* SettingsViewModel.swift */; };
+		43BDF15425E669B600FC0C68 /* KeySyncDeviceGroupUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6AF22ABF53C002B59AB /* KeySyncDeviceGroupUtil.swift */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3191,6 +3192,7 @@
 				434C1ACC25D4123900F622DB /* PEPUIAlertAction.swift in Sources */,
 				43BDF05C25E6484A00FC0C68 /* Array+Extension.swift in Sources */,
 				434C1AC925D4121900F622DB /* PEPAlertViewModel.swift in Sources */,
+				43BDF15425E669B600FC0C68 /* KeySyncDeviceGroupUtil.swift in Sources */,
 				434A6C5A25D2A3B800179335 /* AttachmentViewModel.swift in Sources */,
 				434C1B7425D5123A00F622DB /* NothingSelectedViewController.swift in Sources */,
 				434C19CB25D3E13000F622DB /* DocumentAttachmentPickerViewController.swift in Sources */,
