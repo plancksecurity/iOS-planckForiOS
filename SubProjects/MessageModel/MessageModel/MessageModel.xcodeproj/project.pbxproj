@@ -553,6 +553,7 @@
 		43BDF15725E669F800FC0C68 /* LeaveDeviceGroupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43062B9924ED6EB400489258 /* LeaveDeviceGroupService.swift */; };
 		43BDF15E25E66CFF00FC0C68 /* PassphraseUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E01F9E24AB420B00DFADA3 /* PassphraseUtil.swift */; };
 		43BDF16225E66EA000FC0C68 /* Account+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FAA37E22EF15D700A06668 /* Account+KeySync.swift */; };
+		43BDF16625E66EE900FC0C68 /* CdAccount+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C7A88323830BB600C47364 /* CdAccount+KeySync.swift */; };
 		43C123C7223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123C2223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift */; };
 		43C123EA223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */; };
 		43C123EC223A7FCF00F6A9B2 /* AccountVerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */; };
@@ -3083,6 +3084,7 @@
 				43BDDF7225DE60FB00FC0C68 /* RatingReEvaluator.swift in Sources */,
 				434C222125D699CA00F622DB /* MimeTypeUtils.swift in Sources */,
 				43BDDD0E25DD36F700FC0C68 /* Message+IMAP+Internal.swift in Sources */,
+				43BDF16625E66EE900FC0C68 /* CdAccount+KeySync.swift in Sources */,
 				43BDDD9625DD4C6F00FC0C68 /* VerifiableAccountSMTP.swift in Sources */,
 				434C217E25D6965B00F622DB /* Identity.swift in Sources */,
 				434C24BF25D6D7CC00F622DB /* Persistable.swift in Sources */,
