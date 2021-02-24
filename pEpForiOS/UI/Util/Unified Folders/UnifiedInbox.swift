@@ -7,7 +7,12 @@
 //
 
 import Foundation
+
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
 
 public class UnifiedInbox : UnifiedFolderBase {
     public override var agregatedFolderType: FolderType? {
