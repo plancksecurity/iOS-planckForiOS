@@ -444,6 +444,7 @@
 		43BDF18B25E6761F00FC0C68 /* OAuth2Type+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */; };
 		43BDF18E25E6765100FC0C68 /* OAuth2Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0444B20077323007BCE3F /* OAuth2Configuration.swift */; };
 		43BDF19125E6785600FC0C68 /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD2CBC823FD92640003A536 /* AccountSettingsViewModel.swift */; };
+		43BDF19425E68C3C00FC0C68 /* AccountSettingsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF39DA7257A737A00A00A96 /* AccountSettingsHelper.swift */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3120,6 +3121,7 @@
 				434C19E325D3E3F700F622DB /* ComposeUtil.swift in Sources */,
 				43BDE03F25DE7D1A00FC0C68 /* node.c in Sources */,
 				434C1A9625D40D6500F622DB /* UIUtils+ActionSheets.swift in Sources */,
+				43BDF19425E68C3C00FC0C68 /* AccountSettingsHelper.swift in Sources */,
 				43BDF06825E64B9C00FC0C68 /* MessageQueryResultsFilter+FilterButtonTitle.swift in Sources */,
 				43BDF14E25E6691100FC0C68 /* SettingsTableViewController.swift in Sources */,
 				434C1AFF25D4279100F622DB /* HtmlToAttributedTextSaxParser.swift in Sources */,
