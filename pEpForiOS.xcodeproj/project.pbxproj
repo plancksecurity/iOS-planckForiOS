@@ -413,6 +413,7 @@
 		43BDF05C25E6484A00FC0C68 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79288992302D3DE00D2C68B /* Array+Extension.swift */; };
 		43BDF05F25E6493C00FC0C68 /* FolderType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155475632137FD96005A52D0 /* FolderType+Extensions.swift */; };
 		43BDF06225E649BD00FC0C68 /* ReplyAllPossibleCheckerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356FFE621354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift */; };
+		43BDF06525E64B4500FC0C68 /* ReplyAllPossibleChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356FFE42135448600804089 /* ReplyAllPossibleChecker.swift */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3192,6 +3193,7 @@
 				434C1A7A25D40A9800F622DB /* UIViewController+Extension.swift in Sources */,
 				434C19FD25D3E6BA00F622DB /* String+HTML.swift in Sources */,
 				434A6C6125D2A3C500179335 /* TextAttachment.swift in Sources */,
+				43BDF06525E64B4500FC0C68 /* ReplyAllPossibleChecker.swift in Sources */,
 				43BDF02825E6447B00FC0C68 /* UIBarButtonItem+Extension.swift in Sources */,
 				434C19B425D3DC3F00F622DB /* AppSettings.swift in Sources */,
 				434C19F725D3E64D00F622DB /* HtmlConversions.swift in Sources */,
