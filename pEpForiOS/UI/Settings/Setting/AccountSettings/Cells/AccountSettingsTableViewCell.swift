@@ -6,8 +6,13 @@
 //  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
-import pEpIOSToolbox
 import UIKit
+
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
+import pEpIOSToolbox
+#endif
 
 /// Cell that displays a title and a value.
 final class AccountSettingsTableViewCell: UITableViewCell {
