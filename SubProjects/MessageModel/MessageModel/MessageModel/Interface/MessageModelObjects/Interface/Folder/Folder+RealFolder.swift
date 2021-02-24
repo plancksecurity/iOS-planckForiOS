@@ -9,4 +9,13 @@
 import Foundation
 
 extension Folder: RealFolderProtocol  {
+
+    /**
+     Updates the lastLookedAt field with the current date and saves the folder
+     */
+    public func updateLastLookAt() {
+        lastLookedAt = Date()
+        session.commit()
+    }
+
 }

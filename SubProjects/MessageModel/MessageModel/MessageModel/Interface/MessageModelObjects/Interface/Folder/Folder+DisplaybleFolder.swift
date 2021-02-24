@@ -72,12 +72,4 @@ extension Folder: DisplayableFolderProtocol  {
             return MessageQueryResultsFilter(mustBeUnread: true, accounts: [account])
         }
     }
-
-    /**
-     Updates the lastLookedAt field with the current date and saves the folder
-     */
-    public func updateLastLookAt() {
-        lastLookedAt = Date()
-        session.commit()
-    }
 }
