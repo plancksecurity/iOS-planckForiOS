@@ -6,8 +6,17 @@
 //  Copyright © 2019 p≡p Security S.A. All rights reserved.
 //
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
+
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 protocol EmailDetailViewModelDelegate: EmailDisplayViewModelDelegate {
 
