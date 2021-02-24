@@ -533,6 +533,7 @@
 		43BDF03125E6453F00FC0C68 /* MessageQueryResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BC7AED222014D20047267A /* MessageQueryResults.swift */; };
 		43BDF03525E6458300FC0C68 /* DisplayableFolderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DFEA4F225365080080A2BA /* DisplayableFolderProtocol.swift */; };
 		43BDF03925E645BA00FC0C68 /* MessageQueryResultsFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7789CC922243DC800AB08F4 /* MessageQueryResultsFilter.swift */; };
+		43BDF03D25E6461300FC0C68 /* MessageQueryResultsSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7789CCB222446EC00AB08F4 /* MessageQueryResultsSearch.swift */; };
 		43C123C7223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123C2223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift */; };
 		43C123EA223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */; };
 		43C123EC223A7FCF00F6A9B2 /* AccountVerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */; };
@@ -3105,6 +3106,7 @@
 				43BDDD7E25DD42F200FC0C68 /* ProviderSpecificInformationProtocol.swift in Sources */,
 				43BDDDCA25DD634B00FC0C68 /* Message+FakeMessage.swift in Sources */,
 				436FD22125DA80C300D929B3 /* Identity+SessionAware.swift in Sources */,
+				43BDF03D25E6461300FC0C68 /* MessageQueryResultsSearch.swift in Sources */,
 				434C221525D6998200F622DB /* CdMessageReference.swift in Sources */,
 				434C219F25D6976C00F622DB /* Account+Fetching.swift in Sources */,
 				434C19E625D3E4CD00F622DB /* Account.swift in Sources */,
