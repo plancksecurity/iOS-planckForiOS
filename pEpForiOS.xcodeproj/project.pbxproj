@@ -423,6 +423,7 @@
 		43BDF13025E6640300FC0C68 /* PEPPageViewControllerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15146C90237F07EF00D69495 /* PEPPageViewControllerBase.swift */; };
 		43BDF13325E664E800FC0C68 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69E3981E30F80E0022959E /* Appearance.swift */; };
 		43BDF13625E6652000FC0C68 /* UnifiedInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C73A24D2EC6300D5F328 /* UnifiedInbox.swift */; };
+		43BDF13925E6665800FC0C68 /* VirtualFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DFEA51225368670080A2BA /* VirtualFolder.swift */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3144,6 +3145,7 @@
 				434C19EA25D3E52F00F622DB /* Account+Extension.swift in Sources */,
 				434C19DA25D3E2AE00F622DB /* UITableView+Extension.swift in Sources */,
 				434C1B0225D427DA00F622DB /* MediaAttachmentPickerProviderViewModel.swift in Sources */,
+				43BDF13925E6665800FC0C68 /* VirtualFolder.swift in Sources */,
 				434C1AC025D4116D00F622DB /* SegueHandlerType.swift in Sources */,
 				43BDF05F25E6493C00FC0C68 /* FolderType+Extensions.swift in Sources */,
 				434A6C6A25D2A3D500179335 /* RecipientTextView.swift in Sources */,
