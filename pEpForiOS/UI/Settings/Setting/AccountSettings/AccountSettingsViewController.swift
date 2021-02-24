@@ -8,8 +8,18 @@
 
 import UIKit
 import Foundation
+
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
+
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 final class AccountSettingsViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
