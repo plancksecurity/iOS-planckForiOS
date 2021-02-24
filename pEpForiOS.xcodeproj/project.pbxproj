@@ -452,6 +452,7 @@
 		43BDF1A325E6914A00FC0C68 /* AccountVerificationResultDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BB82127493E00A3A4A6 /* AccountVerificationResultDelegate.swift */; };
 		43BDF1AA25E691CB00FC0C68 /* LoginViewModelLoginErrorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43498CDA200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift */; };
 		43BDF1AD25E6943100FC0C68 /* LoginViewModelOAuth2ErrorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43498CDC200D0790006DC947 /* LoginViewModelOAuth2ErrorDelegate.swift */; };
+		43BDF1DF25E6986300FC0C68 /* EditableAccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B884B43257A90FE006B2022 /* EditableAccountSettingsViewController.swift */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3141,6 +3142,7 @@
 				43BDE05D25DE826000FC0C68 /* houdini_html_e.c in Sources */,
 				434C1AC625D411F300F622DB /* PEPAlertViewController.swift in Sources */,
 				434C1A7D25D40ACF00F622DB /* UIImageView+Extension.swift in Sources */,
+				43BDF1DF25E6986300FC0C68 /* EditableAccountSettingsViewController.swift in Sources */,
 				434A6C4B25D2A39C00179335 /* ComposeViewModelState.swift in Sources */,
 				434C1A8325D40B4000F622DB /* PEPSplitViewController.swift in Sources */,
 				434C1A9925D40DB700F622DB /* Mailto.swift in Sources */,
