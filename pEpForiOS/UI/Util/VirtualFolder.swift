@@ -7,8 +7,12 @@
 //
 
 import Foundation
-import MessageModel
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
+import MessageModel
+#endif
 
 public protocol VirtualFolderProtocol: DisplayableFolderProtocol {
 
