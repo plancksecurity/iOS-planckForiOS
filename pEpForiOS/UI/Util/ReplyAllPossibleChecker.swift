@@ -8,7 +8,11 @@
 
 import Foundation
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
 
 /// Determines if a reply-all is possible, or even desirable for a given message.
 struct ReplyAllPossibleChecker: ReplyAllPossibleCheckerProtocol {
