@@ -5,8 +5,13 @@
 //  Copyright © 2017 pEp Security S.A. All rights reserved.
 //
 
-import pEpIOSToolbox
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
+
+import pEpIOSToolbox
 
 // MARK: - Unified Folder Base
 
