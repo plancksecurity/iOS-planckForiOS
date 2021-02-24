@@ -26,8 +26,6 @@ public protocol ClientCertificateUtilProtocol {
 
     /// Deletes the given `ClientCertificate`, which originates from a call to `listCertificates`.
     /// - Note:
-    /// * For technical reasons, the certificate cannot be removed from the keychain,
-    /// and is therefore only removed from core data.
     /// * Attempts to delete client certificates that don't exist are ignored.
     /// - Parameter clientCertificate: The client certificate to delete.
     /// - Throws: `DeleteError`
