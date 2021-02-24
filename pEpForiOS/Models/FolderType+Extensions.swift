@@ -7,7 +7,12 @@
 //
 
 import UIKit
+
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
 
 // MARK: - ICON
 
