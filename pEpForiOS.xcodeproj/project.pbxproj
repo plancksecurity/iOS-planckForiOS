@@ -440,6 +440,7 @@
 		43BDF17F25E6744200FC0C68 /* OAuth2AuthorizationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438052881FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift */; };
 		43BDF18225E6750C00FC0C68 /* OAuth2ConfigurationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431C6E031FE7A85200E23BE0 /* OAuth2ConfigurationProtocol.swift */; };
 		43BDF18525E6754500FC0C68 /* OAuth2Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43306EC11FE129840045DD00 /* OAuth2Type.swift */; };
+		43BDF18825E675D200FC0C68 /* OAuth2Type+VerifiableAccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43236E642459891B00D8318D /* OAuth2Type+VerifiableAccountType.swift */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3255,6 +3256,7 @@
 				434C1AA925D40FB600F622DB /* UIUtils+Contacts.swift in Sources */,
 				43BDEFF025E6419E00FC0C68 /* EmailListViewController.swift in Sources */,
 				43BDE04225DE7D6800FC0C68 /* scanners.c in Sources */,
+				43BDF18825E675D200FC0C68 /* OAuth2Type+VerifiableAccountType.swift in Sources */,
 				434A6C4825D2A39800179335 /* ComposeViewController.swift in Sources */,
 				434C1A7425D409ED00F622DB /* UIHelper+PEP.swift in Sources */,
 				43BDF13625E6652000FC0C68 /* UnifiedInbox.swift in Sources */,
