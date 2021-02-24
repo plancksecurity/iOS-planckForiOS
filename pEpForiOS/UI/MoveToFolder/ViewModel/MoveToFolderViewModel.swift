@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 #if EXT_SHARE
 import MessageModelForAppExtensions
