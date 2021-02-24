@@ -9,7 +9,11 @@
 import Foundation
 import UIKit
 
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 /// Protocol to handle keyboard hide/show events when having table view that occupes the full height.
 protocol KeyboardHandlingProtocol {
