@@ -33,10 +33,6 @@ public protocol ClientCertificateUtilProtocol {
 
     /// Does the given data reperesent certificate data, importable with `SecPKCS12Import`?
     func isCertificate(p12Data: Data) -> Bool
-
-    /// Removes the Sec Identity of the given certificate from the keychain
-    /// - Parameter cdCertificate: The certificate.
-    func removeSecIdentityFromKeychain(of cdCertificate: CdClientCertificate)
 }
 
 // MARK: - ImportError
@@ -185,17 +181,6 @@ extension ClientCertificateUtil: ClientCertificateUtilProtocol {
         }
         return false
     }
-
-    /// Removes the identity binded to the client certificate passed by parameter.
-    /// If doesn't find it does nothing.
-    ///
-    /// - Parameter cdCertificate: The cdCertificate to find the identity to delete.
-    public func removeSecIdentityFromKeychain(of cdCertificate: CdClientCertificate) {
-        if let element = listExisting().first(where: {$0.0 == cdCertificate.keychainUuid}) {
-            SecItemDelete([kSecValueRef: element.1] as CFDictionary)
-        }
-    }
-
 }
 
 // MARK: - Internal, used by other ClientCertificateUtil extensions
@@ -259,6 +244,16 @@ extension ClientCertificateUtil {
         }
 
         return result
+    }
+
+    /// Removes the identity binded to the client certificate passed by parameter.
+    /// If doesn't find it does nothing.
+    ///
+    /// - Parameter cdCertificate: The cdCertificate to find the identity to delete.
+    func removeSecIdentityFromKeychain(of cdCertificate: CdClientCertificate) {
+        if let element = listExisting().first(where: {$0.0 == cdCertificate.keychainUuid}) {
+            SecItemDelete([kSecValueRef: element.1] as CFDictionary)
+        }
     }
 }
 
