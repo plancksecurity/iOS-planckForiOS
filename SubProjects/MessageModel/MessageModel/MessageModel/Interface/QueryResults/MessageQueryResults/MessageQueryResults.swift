@@ -8,7 +8,12 @@
 
 import Foundation
 import CoreData
+
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 public protocol MessageQueryResultsProtocol {
     init(withFolder folder: DisplayableFolderProtocol,
