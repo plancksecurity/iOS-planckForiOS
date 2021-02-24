@@ -430,6 +430,7 @@
 		43BDF15125E6695C00FC0C68 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35AA324913B4700AC605C /* SettingsViewModel.swift */; };
 		43BDF15425E669B600FC0C68 /* KeySyncDeviceGroupUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6AF22ABF53C002B59AB /* KeySyncDeviceGroupUtil.swift */; };
 		43BDF15B25E66A3500FC0C68 /* PGPKeyImportSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1579348E246D499600E2D8D2 /* PGPKeyImportSettingViewModel.swift */; };
+		43BDF16A25E66F3400FC0C68 /* PEPHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A085A6D23FAF4D50013C63E /* PEPHeaderView.swift */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3239,6 +3240,7 @@
 				434A6C4825D2A39800179335 /* ComposeViewController.swift in Sources */,
 				434C1A7425D409ED00F622DB /* UIHelper+PEP.swift in Sources */,
 				43BDF13625E6652000FC0C68 /* UnifiedInbox.swift in Sources */,
+				43BDF16A25E66F3400FC0C68 /* PEPHeaderView.swift in Sources */,
 				434C19E025D3E3A900F622DB /* Color+UI.swift in Sources */,
 				43BDE05A25DE821C00FC0C68 /* inlines.c in Sources */,
 				434C19CE25D3E13E00F622DB /* TextViewInTableViewScrollUtil.swift in Sources */,
