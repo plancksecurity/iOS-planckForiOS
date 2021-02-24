@@ -426,6 +426,7 @@
 		43BDF13925E6665800FC0C68 /* VirtualFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DFEA51225368670080A2BA /* VirtualFolder.swift */; };
 		43BDF13C25E666A300FC0C68 /* Folder+LocalizedName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DFEA55225397AB0080A2BA /* Folder+LocalizedName.swift */; };
 		43BDF14B25E6687A00FC0C68 /* UIUtils+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521B78C241BDAD3000EAE57 /* UIUtils+Settings.swift */; };
+		43BDF14E25E6691100FC0C68 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3102,6 +3103,7 @@
 				43BDE03F25DE7D1A00FC0C68 /* node.c in Sources */,
 				434C1A9625D40D6500F622DB /* UIUtils+ActionSheets.swift in Sources */,
 				43BDF06825E64B9C00FC0C68 /* MessageQueryResultsFilter+FilterButtonTitle.swift in Sources */,
+				43BDF14E25E6691100FC0C68 /* SettingsTableViewController.swift in Sources */,
 				434C1AFF25D4279100F622DB /* HtmlToAttributedTextSaxParser.swift in Sources */,
 				434C1AAC25D40FF800F622DB /* AddToContactsViewController.swift in Sources */,
 				43BDF02525E6442000FC0C68 /* UnifiedFolderBase.swift in Sources */,
