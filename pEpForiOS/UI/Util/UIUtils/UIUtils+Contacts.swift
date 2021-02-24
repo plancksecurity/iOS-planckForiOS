@@ -30,7 +30,7 @@ extension UIUtils {
     ///   - viewController:  presenting view controller
     ///   - appConfig: AppConfig to forward
     static func presentAddToContactsView(for contact: Identity) {
-        let storyboard = UIStoryboard(name: Constants.addToContactsStoryboard, bundle: nil)
+        let storyboard = UIStoryboard(name: Constants.reusableStoryboard, bundle: nil)
         guard let contactVc = storyboard.instantiateViewController(withIdentifier:
                                                                     AddToContactsViewController.storyboardId) as? AddToContactsViewController else {
             Log.shared.errorAndCrash("Missing required data")

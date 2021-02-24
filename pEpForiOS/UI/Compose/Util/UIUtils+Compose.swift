@@ -20,7 +20,7 @@ extension UIUtils {
 
     static public func showComposeView(from mailto: Mailto?) {
         DispatchQueue.main.async {
-            let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
+            let storyboard = UIStoryboard(name: Constants.mainStoryboard, bundle: nil)
             guard
                 let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
                     Constants.composeSceneStoryboardId) as? UINavigationController,
@@ -33,5 +33,34 @@ extension UIUtils {
             composeVc.viewModel = ComposeViewModel.from(mailTo: mailto)
             UIUtils.show(navigationController: composeNavigationController)
         }
+    }
+    
+    /// Modally presents a "Drafts Preview"
+    static public func presentDraftsPreview() {
+        let sb = UIStoryboard(name: Constants.reusableStoryboard, bundle: nil)
+        guard let vc = sb.instantiateViewController(withIdentifier: EmailListViewController.storyboardId) as? EmailListViewController else {
+            Log.shared.errorAndCrash("EmailListViewController needed to presentDraftsPreview is not available!")
+                return
+        }
+        let emailListVM = EmailListViewModel(delegate: vc, folderToShow: UnifiedDraft())
+        vc.viewModel = emailListVM
+        vc.hidesBottomBarWhenPushed = false
+        vc.modalPresentationStyle = .pageSheet
+        vc.modalTransitionStyle = .coverVertical
+        let navigationController =
+            UINavigationController(rootViewController: vc)
+        if let toolbar = navigationController.toolbar {
+            vc.modalPresentationStyle = .popover
+            vc.preferredContentSize = CGSize(width: toolbar.frame.width
+                                                - 16,
+                                             height: 420)
+            vc.popoverPresentationController?.sourceView = vc.view
+            let frame = CGRect(x: toolbar.frame.origin.x,
+                               y: toolbar.frame.origin.y - 10,
+                               width: toolbar.frame.width,
+                               height: toolbar.frame.height)
+            vc.popoverPresentationController?.sourceRect = frame
+        }
+        UIUtils.show(navigationController: navigationController)
     }
 }
