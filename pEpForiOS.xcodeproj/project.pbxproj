@@ -429,6 +429,7 @@
 		43BDF14E25E6691100FC0C68 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */; };
 		43BDF15125E6695C00FC0C68 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35AA324913B4700AC605C /* SettingsViewModel.swift */; };
 		43BDF15425E669B600FC0C68 /* KeySyncDeviceGroupUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6AF22ABF53C002B59AB /* KeySyncDeviceGroupUtil.swift */; };
+		43BDF15B25E66A3500FC0C68 /* PGPKeyImportSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1579348E246D499600E2D8D2 /* PGPKeyImportSettingViewModel.swift */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3219,6 +3220,7 @@
 				434A6C7C25D2A3F100179335 /* WrappedBccViewModel.swift in Sources */,
 				434C1A0625D3F0AD00F622DB /* AXHTMLParser.m in Sources */,
 				434C1A7A25D40A9800F622DB /* UIViewController+Extension.swift in Sources */,
+				43BDF15B25E66A3500FC0C68 /* PGPKeyImportSettingViewModel.swift in Sources */,
 				434C19FD25D3E6BA00F622DB /* String+HTML.swift in Sources */,
 				434A6C6125D2A3C500179335 /* TextAttachment.swift in Sources */,
 				43BDF06525E64B4500FC0C68 /* ReplyAllPossibleChecker.swift in Sources */,
