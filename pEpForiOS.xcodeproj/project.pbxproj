@@ -448,6 +448,7 @@
 		43BDF19725E68C7A00FC0C68 /* EditableAccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF39DA2257A71AC00A00A96 /* EditableAccountSettingsViewModel.swift */; };
 		43BDF19A25E68CCB00FC0C68 /* SettingChangeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B09DB4625B71247005D8125 /* SettingChangeDelegate.swift */; };
 		43BDF19D25E68EBC00FC0C68 /* ClientCertificateManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A56512403F05B003C0D7E /* ClientCertificateManagementViewModel.swift */; };
+		43BDF1A025E690E100FC0C68 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F81011EB0E20000519FCC /* LoginViewModel.swift */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3189,6 +3190,7 @@
 				43BDF02B25E644B100FC0C68 /* EmailListViewModel.swift in Sources */,
 				43BDF0DC25E65B1300FC0C68 /* EmailViewModel.swift in Sources */,
 				434C1B0825D4290700F622DB /* URL+Extensions.swift in Sources */,
+				43BDF1A025E690E100FC0C68 /* LoginViewModel.swift in Sources */,
 				434C19B725D3DC8C00F622DB /* NSAttributedString+pEp.swift in Sources */,
 				434C1B4025D433D600F622DB /* HtmlTagParser.swift in Sources */,
 				434A6C7125D2A3DF00179335 /* RecipientTextViewModel.swift in Sources */,
