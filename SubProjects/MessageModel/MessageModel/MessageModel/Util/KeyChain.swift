@@ -46,8 +46,8 @@ extension KeyChain {
     static func password(key: String) -> String? {
         let query = [
             kSecClass as String: kSecClassGenericPassword as String,
-            kSecMatchCaseInsensitive as String: kCFBooleanTrue,
-            kSecReturnData as String: kCFBooleanTrue,
+            kSecMatchCaseInsensitive as String: kCFBooleanTrue as Any,
+            kSecReturnData as String: kCFBooleanTrue as Any,
             kSecAttrService as String: defaultServerType,
             kSecAttrAccount as String: key] as [String : Any]
 

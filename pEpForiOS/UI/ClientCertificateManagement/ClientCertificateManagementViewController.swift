@@ -66,7 +66,7 @@ final class ClientCertificateManagementViewController: UIViewController {
 
 extension ClientCertificateManagementViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController, let url = urls.first else {
+        guard let vc = UIStoryboard.init(name: Constants.certificatesStoryboard, bundle: nil).instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController, let url = urls.first else {
             Log.shared.errorAndCrash("VC or certificate url not found")
             return
         }

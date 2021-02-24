@@ -33,4 +33,13 @@ extension Attachment {
     var isInlinedPlainText: Bool {
         return mimeType == "text/plain" && isInlined
     }
+
+    /// Indicates if the attachment is Cid contained.
+    public var isCidContained: Bool {
+        var cidContained = false
+        if let theCid = fileName?.extractCid() {
+            cidContained = message?.longMessageFormatted?.contains(find: theCid) ?? false
+        }
+        return cidContained
+    }
 }

@@ -40,7 +40,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = window
         window.rootViewController = initialNVC
         window.makeKeyAndVisible()
-
         return true
     }
 
@@ -234,7 +233,7 @@ extension AppDelegate {
             return false
         }
         let topVC = UIApplication.currentlyVisibleViewController()
-        guard let vc = UIStoryboard.init(name: "Certificates", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController else {
+        guard let vc = UIStoryboard.init(name: Constants.certificatesStoryboard, bundle: nil).instantiateViewController(withIdentifier: ClientCertificateImportViewController.storyboadIdentifier) as? ClientCertificateImportViewController else {
             return false
         }
         vc.viewModel = ClientCertificateImportViewModel(certificateUrl: url, delegate: vc)

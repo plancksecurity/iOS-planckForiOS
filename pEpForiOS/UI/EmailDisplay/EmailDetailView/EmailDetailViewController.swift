@@ -362,18 +362,17 @@ extension EmailDetailViewController {
     private func setupEmailViewController(forRowAt indexPath: IndexPath) -> EmailViewController? {
         guard
             let vm = viewModel,
-            let createe = storyboard?.instantiateViewController(withIdentifier: EmailViewController.storyboardId) as? EmailViewController
+            let emailViewController = UIStoryboard.init(name: Constants.mainStoryboard, bundle: nil).instantiateViewController(withIdentifier: "EmailViewController") as? EmailViewController
             else {
                 Log.shared.errorAndCrash("No V[M|C]")
                 return nil
         }
-        createe.message = vm.message(representedByRowAt: indexPath) //!!!: EmailVC should have a VM which should be created in our VM. This VC should not be aware of `Message`s!
-        createe.delegate = self
-        emailSubViewControllers.append(createe)
-
-        return createe
+        emailViewController.viewModel = vm.emailViewModel(withMessageRepresentedByRowAt: indexPath, delegate: emailViewController)
+        emailViewController.delegate = self
+        emailSubViewControllers.append(emailViewController)
+        return emailViewController
     }
-}
+ }
 
 // MARK: - UICollectionViewDelegate
 
@@ -422,19 +421,17 @@ extension EmailDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         releaseUnusedSubViewControllers()
-
-        guard
-            let cell =
-            collectionView.dequeueReusableCell(withReuseIdentifier: EmailDetailViewController.cellId,
-                                               for: indexPath) as? EmailDetailCollectionViewCell,
-            let emailViewController = setupEmailViewController(forRowAt: indexPath)
-            else {
-                Log.shared.errorAndCrash("Error setting up cell")
-                return collectionView.dequeueReusableCell(withReuseIdentifier: EmailDetailViewController.cellId,
-                                                          for: indexPath)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmailDetailViewController.cellId,
+                                                            for: indexPath) as? EmailDetailCollectionViewCell else {
+            Log.shared.errorAndCrash("Error setting up cell")
+            return collectionView.dequeueReusableCell(withReuseIdentifier: EmailDetailViewController.cellId,
+                                                      for: indexPath)
         }
-        cell.setContainedView(containedView: emailViewController.view)
-
+        guard let emailVC = setupEmailViewController(forRowAt: indexPath) else {
+            Log.shared.errorAndCrash("Email VC missing. Should not happen.")
+            return cell
+        }
+        cell.setContainedView(containedView: emailVC.view)
         return cell
     }
 }
@@ -558,23 +555,13 @@ extension EmailDetailViewController: SegueHandlerType {
 
 // MARK: - UIPopoverPresentationControllerDelegate
 
-extension EmailDetailViewController: UIPopoverPresentationControllerDelegate {
+extension EmailDetailViewController: UIPopoverPresentationControllerDelegate, UIPopoverPresentationControllerProtocol {
 
-    func popoverPresentationController(_ popoverPresentationController: UIPopoverPresentationController,
-                                       willRepositionPopoverTo rect: UnsafeMutablePointer<CGRect>,
-                                       in view: AutoreleasingUnsafeMutablePointer<UIView>) {
-
-        guard let titleView = navigationItem.titleView else {
-            return
-        }
-
-        rect.initialize(to: CGRect(x:titleView.bounds.midY,
-                                   y: titleView.bounds.midX,
-                                   width:0,
-                                   height:0))
-        view.pointee = titleView
-
-    }
+   func popoverPresentationController(_ popoverPresentationController: UIPopoverPresentationController,
+                                      willRepositionPopoverTo rect: UnsafeMutablePointer<CGRect>,
+                                      in view: AutoreleasingUnsafeMutablePointer<UIView>) {
+       repositionPopoverTo(rect: rect, in: view)
+   }
 }
 
 // MARK: - EmailDetailViewModelDelegate
