@@ -8,7 +8,11 @@
 
 import Foundation
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
 
 protocol ReplyAllPossibleCheckerProtocol {
     func isReplyAllPossible() -> Bool
