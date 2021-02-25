@@ -40,6 +40,8 @@ extension ShareViewController {
         let someVC = storyboard.instantiateInitialViewController()
         if someVC == nil {
             Log.shared.logError(message: "Cannot instantiate initial VC")
+        } else {
+            Log.shared.logInfo(message: "*** someVC \(someVC)")
         }
         guard let composeVC = storyboard.instantiateViewController(withIdentifier: "ShareViewController") as? ShareViewController else {
             Log.shared.errorAndCrash("Cannot instantiate ShareViewController")
