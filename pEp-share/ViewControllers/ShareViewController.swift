@@ -72,7 +72,10 @@ extension ShareViewController {
     private func loadPlainText(elem: NSItemProvider) {
         elem.loadItem(forTypeIdentifier: "public.plain-text", options: nil, completionHandler: { [weak self] item, error in
 
-            guard let me = self else { return }
+            guard let me = self else {
+                // assuming the extension can be canceled by the user
+                return
+            }
 
             if let text = item as? String {
                 DispatchQueue.main.async {
@@ -85,7 +88,10 @@ extension ShareViewController {
     private func loadImage(elem: NSItemProvider) {
         elem.loadItem(forTypeIdentifier: "public.jpeg", options: nil, completionHandler: { [weak self] item, error in
 
-            guard let me = self else { return }
+            guard let me = self else {
+                // assuming the extension can be canceled by the user
+                return
+            }
 
             if let imgUrl = item as? URL,
                let imgData = try? Data(contentsOf: imgUrl),
