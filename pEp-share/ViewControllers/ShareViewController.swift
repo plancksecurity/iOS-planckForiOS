@@ -59,7 +59,7 @@ extension ShareViewController {
         for elem in attachments {
             if elem.hasItemConformingToTypeIdentifier("public.plain-text") {
                 loadPlainText(elem: elem)
-            } else if elem.hasItemConformingToTypeIdentifier("public.jpeg") {
+            } else if elem.hasItemConformingToTypeIdentifier("public.image") {
                 loadImage(elem: elem)
             } else if elem.hasItemConformingToTypeIdentifier("public.file-url") {
                 loadFile(elem: elem)
