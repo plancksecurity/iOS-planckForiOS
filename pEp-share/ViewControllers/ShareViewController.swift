@@ -37,11 +37,6 @@ final class ShareViewController: UIViewController {
 extension ShareViewController {
     private func presentModalCompose() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let someVC = storyboard.instantiateInitialViewController() {
-            print("*** someVC \(someVC)")
-        } else {
-            Log.shared.logError(message: "Cannot instantiate initial VC")
-        }
         guard let composeVC = storyboard.instantiateViewController(withIdentifier: ComposeViewController.storyboardId) as? ComposeViewController else {
             Log.shared.errorAndCrash("Cannot instantiate ComposeViewController")
             return
