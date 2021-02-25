@@ -213,12 +213,9 @@
                     <connections>
                         <outlet property="confirmButton" destination="4fD-jL-4Gx" id="8Oi-Aa-HdU"/>
                         <outlet property="confirmTrustwordsExplanationLabel" destination="lMo-1v-V01" id="gMC-8I-mgp"/>
-                        <outlet property="containerLeadingConstraint" destination="NXO-xZ-ZvI" id="rNY-r8-TUs"/>
                         <outlet property="declineButton" destination="8Xq-lc-6Jt" id="7oq-Mp-sOx"/>
-                        <outlet property="distanceBetweenLabels" destination="gIR-IA-Oei" id="0dm-y4-aH3"/>
                         <outlet property="handshakeTitle" destination="ICO-LI-a2E" id="TWC-Oq-uQi"/>
                         <outlet property="privacyStatusExplanationLabel" destination="i1p-j1-tYp" id="738-JR-kTC"/>
-                        <outlet property="secureCenterX" destination="0lm-8T-muo" id="pEF-Q5-lEZ"/>
                         <outlet property="secureLabel" destination="V9f-sY-x1Q" id="CJp-Cw-gy9"/>
                         <outlet property="trustwordsContainer" destination="THo-TL-grV" id="fbh-UB-8J4"/>
                         <outlet property="truswordsLabel" destination="EdT-Qp-2PC" id="bNd-Zt-1Jm"/>
@@ -555,21 +552,12 @@
                     </view>
                     <connections>
                         <outlet property="avatarImageView" destination="BTb-PE-Srj" id="8Lw-8y-tCE"/>
-                        <outlet property="distanceBetweenAvatarAndPrivacyStatus2LabelConstraint" destination="OEp-Zf-ulJ" id="1wQ-1a-Iuo"/>
-                        <outlet property="distanceBetweenPrivacyStatusAndSkipConstraint" destination="pPm-0o-drZ" id="MKT-If-iW7"/>
-                        <outlet property="distanceBetweenSkipAndTitleConstraint" destination="IT2-Sz-ATc" id="BZ4-MZ-JPc"/>
-                        <outlet property="distanceBetweenTitleViewAndTopConstraint" destination="7Be-He-6I4" id="w2F-Jz-NpT"/>
-                        <outlet property="distanceBetweenTopbarImageAndBottomLabelConstraint" destination="1K7-r3-AOS" id="qxN-oc-t3f"/>
-                        <outlet property="distanceBetweenTopbarLabelAndPrivacyStatus2Constraint" destination="fkJ-Il-LtR" id="sJP-fn-n3z"/>
                         <outlet property="privacyStatusLabel" destination="WAK-KE-bk0" id="4OO-3c-BD5"/>
                         <outlet property="privacyStatusShownLabel" destination="B9p-Ah-ajI" id="pWE-zN-oD6"/>
                         <outlet property="skipTutorialLabel" destination="RKC-QV-5yv" id="5Wt-rP-GVz"/>
                         <outlet property="titleLabel" destination="XKD-ea-9Kh" id="XFZ-wJ-JFc"/>
-                        <outlet property="titleLabelLeadingContraint" destination="p8o-M3-tE1" id="fMu-CV-lh8"/>
                         <outlet property="topbarImageView" destination="BKf-gk-loR" id="dty-tJ-jOp"/>
                         <outlet property="topbarLabel" destination="ZDk-Zf-Xez" id="hJF-sA-QOI"/>
-                        <outlet property="topbarLabelLeadingConstraint" destination="hKh-6F-csZ" id="fad-5g-AHH"/>
-                        <outlet property="topbarWidthConstraint" destination="8tO-z1-YHB" id="Lln-hq-RFf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HGE-N9-bj6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

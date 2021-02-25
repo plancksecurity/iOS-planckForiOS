@@ -24,32 +24,17 @@ class TutorialStep3ViewController: TutorialStepViewController {
     }
     
     private func setupTitleLabel() {
-        titleLabel.text = NSLocalizedString("Privacy Status", comment: "Privacy Status Label")
+        titleLabel.text = Localized.privacyStatusTitle 
         titleLabel.font = titleFont
     }
     
     private func setupExplanationLabel() {
-        explanationLabel.text = NSLocalizedString("The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:", comment: "Privacy Status Explanation")
+        explanationLabel.text = Localized.privacyStatusExplanation
         explanationLabel.font = font
     }
     
     private func setupCommonDenominatorLabel() {
-        commonDenominatorLabel.text = NSLocalizedString("In this case the Privacy Status of the message is Secure, because this is the lowest common denominator of the two communication partners.", comment: "Privacy Status - Common Denominator Explanation")
+        commonDenominatorLabel.text = Localized.commonDenominator
         commonDenominatorLabel.font = font
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        adjustConstraintsIfNeeded()
-    }
-    
-    private func adjustConstraintsIfNeeded() {
-        guard let superView = view.superview, UIDevice.isIpad else {
-            Log.shared.info("Superview is missing or is not needed to adjust constraints here")
-            return
-        }
-        
-        imageWidth.constant = 334
-        superView.layoutIfNeeded()
     }
 }
