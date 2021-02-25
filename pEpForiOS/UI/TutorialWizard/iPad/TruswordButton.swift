@@ -11,9 +11,16 @@ import UIKit
 @IBDesignable
 class TrustwordsButton: UIButton {
 
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        // Prevent storyboard error.
+        #if TARGET_INTERFACE_BUILDER
         setup()
+        #endif
     }
 
     @IBInspectable var insetPlusHorizontal: CGFloat = 10 {
