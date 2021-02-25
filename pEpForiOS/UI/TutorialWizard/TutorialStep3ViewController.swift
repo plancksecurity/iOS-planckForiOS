@@ -16,6 +16,7 @@ class TutorialStep3ViewController: TutorialStepViewController {
     @IBOutlet private weak var explanationLabel: UILabel!
     @IBOutlet private weak var commonDenominatorLabel: UILabel!
     @IBOutlet private weak var imageWidth: NSLayoutConstraint!
+
     public override func configureView() {
         setupTitleLabel()
         setupExplanationLabel()

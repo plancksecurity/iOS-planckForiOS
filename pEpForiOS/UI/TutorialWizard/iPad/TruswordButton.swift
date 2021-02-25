@@ -11,41 +11,41 @@ import UIKit
 @IBDesignable
 class TrustwordsButton: UIButton {
 
+    private var isInterfaceBuilder: Bool = false
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setup()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setup()
     }
 
     override func prepareForInterfaceBuilder() {
         super.prepareForInterfaceBuilder()
+        isInterfaceBuilder = true
         setup()
     }
 
-
-    @IBInspectable var insetPlusHorizontal: CGFloat = 0 {
+    @IBInspectable var insetPlusHorizontal: CGFloat = 10 {
         didSet {
             updateInset()
         }
     }
 
-    @IBInspectable var insetPlusVertical: CGFloat = 0 {
+    @IBInspectable var insetPlusVertical: CGFloat = 5 {
         didSet {
             updateInset()
         }
     }
 
-    var buttonTitle: String? {
+    var buttonTitle: String? = "" {
         didSet {
             setTitle(buttonTitle, for: .normal)
         }
     }
 
-    @IBInspectable var textColor: UIColor? {
+    @IBInspectable var textColor: UIColor? = .white {
         didSet {
             setTitleColor(textColor, for: .normal)
         }
