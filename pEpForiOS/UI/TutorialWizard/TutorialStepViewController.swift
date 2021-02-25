@@ -22,8 +22,7 @@ class TutorialStepViewController: UIViewController {
     }
 
     var centeredSpaced : NSMutableParagraphStyle {
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
+        let paragraphStyle = centered
         paragraphStyle.lineSpacing = 6
         return paragraphStyle
     }
