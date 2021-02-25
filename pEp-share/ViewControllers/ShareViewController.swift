@@ -11,7 +11,7 @@ import UIKit
 import PEPIOSToolboxForAppExtensions
 
 final class ShareViewController: UIViewController {
-    var composeTableVC: ComposeViewController?
+    var composeViewController: ComposeViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +22,7 @@ final class ShareViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let vc = segue.destination as? ComposeViewController {
-            composeTableVC = vc
+            composeViewController = vc
         }
 
     }
@@ -80,6 +80,7 @@ extension ShareViewController {
             if let text = item as? String {
                 DispatchQueue.main.async {
                     // TODO: Inform compose about a text attachment?
+                    print("*** ComposeVC \(me.composeViewController)")
                 }
             }
         })
