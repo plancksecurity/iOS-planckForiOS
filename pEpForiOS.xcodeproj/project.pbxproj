@@ -354,7 +354,6 @@
 		5BC14ABF23E2EE78005F0AF3 /* TrustManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14ABE23E2EE78005F0AF3 /* TrustManagementViewModel.swift */; };
 		5BC14AC923E47A55005F0AF3 /* TrustManagementViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14AC823E47A55005F0AF3 /* TrustManagementViewModelTest.swift */; };
 		5BC14AF023EB19B5005F0AF3 /* TrustManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14AEF23EB19B5005F0AF3 /* TrustManagementViewController.swift */; };
-		5BC4E5FF240E99C2008C01ED /* CustomTraitCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4E5FE240E99C2008C01ED /* CustomTraitCollectionViewController.swift */; };
 		5BC4E601240FF156008C01ED /* TutorialStep1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4E600240FF155008C01ED /* TutorialStep1ViewController.swift */; };
 		5BC4E60724113659008C01ED /* TutorialStep2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4E60624113659008C01ED /* TutorialStep2ViewController.swift */; };
 		5BC8C72325ADDAF1000AAC7A /* TwoLinesButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC8C72225ADDAF1000AAC7A /* TwoLinesButton.swift */; };
@@ -946,7 +945,6 @@
 		5BC14ABE23E2EE78005F0AF3 /* TrustManagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementViewModel.swift; sourceTree = "<group>"; };
 		5BC14AC823E47A55005F0AF3 /* TrustManagementViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementViewModelTest.swift; sourceTree = "<group>"; };
 		5BC14AEF23EB19B5005F0AF3 /* TrustManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementViewController.swift; sourceTree = "<group>"; };
-		5BC4E5FE240E99C2008C01ED /* CustomTraitCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTraitCollectionViewController.swift; sourceTree = "<group>"; };
 		5BC4E600240FF155008C01ED /* TutorialStep1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep1ViewController.swift; sourceTree = "<group>"; };
 		5BC4E60624113659008C01ED /* TutorialStep2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep2ViewController.swift; sourceTree = "<group>"; };
 		5BC8C72225ADDAF1000AAC7A /* TwoLinesButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoLinesButton.swift; sourceTree = "<group>"; };
@@ -1742,7 +1740,6 @@
 				5BC4E60624113659008C01ED /* TutorialStep2ViewController.swift */,
 				5B41C6072418F15100C268CE /* TutorialStep3ViewController.swift */,
 				5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */,
-				5BC4E5FE240E99C2008C01ED /* CustomTraitCollectionViewController.swift */,
 				371D641F231D17F80036AE62 /* TutorialWizardViewController.swift */,
 			);
 			path = TutorialWizard;
@@ -3141,7 +3138,6 @@
 				49228A5520D4035100A51E9D /* DetailCellSegue.swift in Sources */,
 				15D3D48B239FC14700F2EBFB /* EmailDetailCollectionViewCell.swift in Sources */,
 				152A39E821905C3E00D9F8E4 /* RecipientCellViewModel.swift in Sources */,
-				5BC4E5FF240E99C2008C01ED /* CustomTraitCollectionViewController.swift in Sources */,
 				152A39CE21905C3E00D9F8E4 /* ComposeHelpers.swift in Sources */,
 				43985D0A2044296D0080FA9A /* OAuthAuthorizer.swift in Sources */,
 				49691B1520D7FD0200CA9367 /* MessageViewModelConfigurable.swift in Sources */,
