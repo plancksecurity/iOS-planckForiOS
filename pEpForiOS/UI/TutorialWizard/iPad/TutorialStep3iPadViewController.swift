@@ -9,9 +9,9 @@
 import UIKit
 
 class TutorialStep3iPadViewController: TutorialStepViewController {
-    @IBOutlet weak var privacyStatusLabel: UILabel!
-    @IBOutlet weak var explanationLabel: UILabel!
-    @IBOutlet weak var commonDenominatorLabel: UILabel!
+    @IBOutlet private weak var privacyStatusLabel: UILabel!
+    @IBOutlet private weak var explanationLabel: UILabel!
+    @IBOutlet private weak var commonDenominatorLabel: UILabel!
 
     public override func configureView() {
         setupTitleLabel()
@@ -20,17 +20,17 @@ class TutorialStep3iPadViewController: TutorialStepViewController {
     }
 
     private func setupTitleLabel() {
-        privacyStatusLabel.text = NSLocalizedString("Privacy Status", comment: "Privacy Status Label")
+        privacyStatusLabel.text = Localized.privacyStatusTitle
         privacyStatusLabel.font = titleFont
     }
 
     private func setupExplanationLabel() {
-        explanationLabel.text = NSLocalizedString("The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:", comment: "Privacy Status Explanation")
+        explanationLabel.text = Localized.privacyStatusExplanation
         explanationLabel.font = font
     }
 
     private func setupCommonDenominatorLabel() {
-        commonDenominatorLabel.text = NSLocalizedString("In this case the Privacy Status of the message is Secure, because this is the lowest common denominator of the two communication partners.", comment: "Privacy Status - Common Denominator Explanation")
+        commonDenominatorLabel.text = Localized.commonDenominator
         commonDenominatorLabel.font = font
     }
 }

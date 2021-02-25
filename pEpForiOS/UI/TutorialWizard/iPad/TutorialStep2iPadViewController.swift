@@ -27,26 +27,26 @@ class TutorialStep2iPadViewController : TutorialStepViewController {
 
     private func setupHandshakeTitle() {
         handshakeTitle.font = titleFont
-        handshakeTitle.text = NSLocalizedString("Handshake", comment: "Title of the view")
+        handshakeTitle.text = Localized.handshake
     }
 
     private func setupTrustwordsLabel() {
         trustwords.font = smallFont
-        trustwords.text = NSLocalizedString("OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER", comment: "Some trustwords")
+        trustwords.text = Localized.someTrustwords
     }
 
     private func setupTrustButtons() {
-        confirmButton.buttonTitle = NSLocalizedString("Confirm", comment: "Confirm correct trustwords/PGP fingerprint")
-        declineButton.buttonTitle = NSLocalizedString("Decline", comment: "Incorrect trustwords/PGP fingerprint")
+        confirmButton.buttonTitle = Localized.confirmButton
+        declineButton.buttonTitle = Localized.declineButton
     }
 
     private func setupPrivacyStatusExplanationLabel() {
         privacyStatusExplanation.font = font
-        privacyStatusExplanation.text = NSLocalizedString("When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication parner.", comment: "Privacy status explanation Label")
+        privacyStatusExplanation.text = Localized.privacyStatusIconExplanation
     }
 
     private func setupcCnfirmTrustwordsExplanationLabel() {
         confirmTrustwordsExplanation.font = font
-        confirmTrustwordsExplanation.text = NSLocalizedString("When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted.", comment: "Confirm Trustwords explanation Label")
+        confirmTrustwordsExplanation.text = Localized.confirmTrustwordsExplanation
     }
 }

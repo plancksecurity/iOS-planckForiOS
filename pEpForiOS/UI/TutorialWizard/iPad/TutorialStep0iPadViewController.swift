@@ -43,7 +43,7 @@ class TutorialStep0iPadViewController: TutorialStepViewController {
 extension TutorialStep0iPadViewController {
 
     private func setupTitle() {
-        let titleText = NSLocalizedString("Welcome to the p≡p Tutorial", comment: "Welcome to the p≡p Tutorial - Step 0")
+        let titleText = Localized.welcome
         let attributedString = NSMutableAttributedString(string: titleText, attributes: [
             .font: titleFont,
             .foregroundColor: UIColor.black,
@@ -55,17 +55,16 @@ extension TutorialStep0iPadViewController {
     }
 
     private func setupSkipTutorial() {
-        let text = NSLocalizedString("You can close this tutorial anytime with the Skip button.", comment: "Tutorial First text")
         let attributes : [NSAttributedString.Key : Any] = [
           .font: font,
           .foregroundColor: UIColor.black,
           .paragraphStyle: UIDevice.isIpadSmall ? centered : centeredSpaced,
         ]
-        skipTutorial.attributedText = NSMutableAttributedString(string:text, attributes: attributes)
+        skipTutorial.attributedText = NSMutableAttributedString(string: Localized.skipTutorial, attributes: attributes)
     }
 
     private func setupPrivacyStatus() {
-        let text = NSLocalizedString("p≡p uses a Privacy Status icon to indicate how secure your communication is.", comment: "Tutorial Second text")
+        let text = Localized.privacyStatus
         let attributedText = NSMutableAttributedString(string:text)
         if let range = text.nsRange(of: "p≡p") {
             attributedText.addAttributes([.font: font, .foregroundColor: UIColor.pEpGreen], range: range)
@@ -75,13 +74,11 @@ extension TutorialStep0iPadViewController {
     }
 
     private func setupPrivacyStatusDescription() {
-        let text = NSLocalizedString("This Privacy Status is shown as an icon the user´s avatars:", comment: "Tutorial Third text")
-        set(text, on: privacyStatusDescription)
+        set(Localized.privacyStatusDescription, on: privacyStatusDescription)
     }
 
     private func setupTopbar() {
-        let text = NSLocalizedString("And in the top bar when you open or write an email:", comment: "Tutorial Fourth text")
-        set(text, on: topbar)
+        set(Localized.topbar, on: topbar)
     }
 
     private func set(_ text : String, on label : UILabel) {

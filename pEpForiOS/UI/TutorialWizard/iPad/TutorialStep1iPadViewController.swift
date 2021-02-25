@@ -19,11 +19,14 @@ class TutorialStep1iPadViewController: TutorialStepViewController {
     @IBOutlet private weak var mistrustedTitle: UILabel!
     @IBOutlet private weak var mistrustedDescription: UILabel!
 
-
     public override func configureView() {
         setupLabels()
     }
+}
 
+// MARK: - Layout configuration
+
+extension TutorialStep1iPadViewController {
     private func setupLabels() {
         setupSecureTitle()
         setupSecureDescription()
@@ -32,39 +35,34 @@ class TutorialStep1iPadViewController: TutorialStepViewController {
         setupMistrusted()
         setupMistrustedDescription()
     }
-}
-
-// MARK: - Layout configuration
-
-extension TutorialStep1iPadViewController {
 
     private func setupSecureTitle() {
         secureTitle.font = titleFont
-        secureTitle.text = NSLocalizedString("Secure", comment: "Secure Label - Step 1")
+        secureTitle.text = Localized.secure
     }
 
     private func setupSecureDescription() {
-        secureDescription.text = NSLocalizedString("With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact.", comment: "Secure Description Label - Step 1")
+        secureDescription.text = Localized.secureDescription
         secureDescription.font = font
     }
 
     private func setupSecureAndTrusted() {
         secureAndTrustedTitle.font = titleFont
-        secureAndTrustedTitle.text = NSLocalizedString("Secure & Trusted", comment: "Secure & Trusted Label - Step 1")
+        secureAndTrustedTitle.text = Localized.secureAndTrustTitle
     }
 
     private func setupSecureAndTrustedDescription() {
-        secureAndTrustedDescription.text = NSLocalizedString("When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted", comment: "Secure & Trusted Description Label - Step 1")
+        secureAndTrustedDescription.text = Localized.secureAndTrustedDescription
         secureAndTrustedDescription.font = font
     }
 
     private func setupMistrusted() {
         mistrustedTitle.font = titleFont
-        mistrustedTitle.text = NSLocalizedString("Mistrusted", comment: "Mistrusted - Step 1")
+        mistrustedTitle.text = Localized.mistrusted
     }
 
     private func setupMistrustedDescription() {
-        mistrustedDescription.text = NSLocalizedString("If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle.", comment: "Secure & Trusted Description Label - Step 1")
+        mistrustedDescription.text = Localized.mistrustedDescription
         mistrustedDescription.font = font
     }
 }
