@@ -22,9 +22,7 @@ final class ShareViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let vc = segue.destination as? ComposeViewController {
-            composeViewController = vc
         }
-
     }
 
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {
@@ -41,6 +39,7 @@ extension ShareViewController {
             Log.shared.errorAndCrash("Cannot instantiate ComposeViewController")
             return
         }
+        composeViewController = composeVC
         present(composeVC, animated: true, completion: nil)
     }
 
