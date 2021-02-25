@@ -363,7 +363,7 @@
 		5BE35AA424913B4700AC605C /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35AA324913B4700AC605C /* SettingsViewModel.swift */; };
 		5BEAECB525370C3E0082AAC6 /* String+Mailto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEAECB425370C3E0082AAC6 /* String+Mailto.swift */; };
 		5BEB568B25E68C0E00304A38 /* TrustwordsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB568A25E68C0E00304A38 /* TrustwordsContainerView.swift */; };
-		5BEB568F25E6997300304A38 /* TruswordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB568E25E6997300304A38 /* TruswordButton.swift */; };
+		5BEB568F25E6997300304A38 /* TrustwordsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB568E25E6997300304A38 /* TrustwordsButton.swift */; };
 		5BEB569225E69BEE00304A38 /* TutorialStep2iPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB569125E69BEE00304A38 /* TutorialStep2iPadViewController.swift */; };
 		5BEB56CA25E7977500304A38 /* TutorialStep3iPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB56C925E7977500304A38 /* TutorialStep3iPadViewController.swift */; };
 		5BF39DA4257A71AC00A00A96 /* EditableAccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF39DA2257A71AC00A00A96 /* EditableAccountSettingsViewModel.swift */; };
@@ -955,7 +955,7 @@
 		5BE35AA324913B4700AC605C /* SettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		5BEAECB425370C3E0082AAC6 /* String+Mailto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Mailto.swift"; sourceTree = "<group>"; };
 		5BEB568A25E68C0E00304A38 /* TrustwordsContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustwordsContainerView.swift; sourceTree = "<group>"; };
-		5BEB568E25E6997300304A38 /* TruswordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TruswordButton.swift; sourceTree = "<group>"; };
+		5BEB568E25E6997300304A38 /* TrustwordsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustwordsButton.swift; sourceTree = "<group>"; };
 		5BEB569125E69BEE00304A38 /* TutorialStep2iPadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep2iPadViewController.swift; sourceTree = "<group>"; };
 		5BEB56C925E7977500304A38 /* TutorialStep3iPadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep3iPadViewController.swift; sourceTree = "<group>"; };
 		5BF39DA2257A71AC00A00A96 /* EditableAccountSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -2352,7 +2352,7 @@
 				5BEB569125E69BEE00304A38 /* TutorialStep2iPadViewController.swift */,
 				5BEB56C925E7977500304A38 /* TutorialStep3iPadViewController.swift */,
 				5BEB568A25E68C0E00304A38 /* TrustwordsContainerView.swift */,
-				5BEB568E25E6997300304A38 /* TruswordButton.swift */,
+				5BEB568E25E6997300304A38 /* TrustwordsButton.swift */,
 			);
 			path = iPad;
 			sourceTree = "<group>";
@@ -2956,7 +2956,7 @@
 				B7A50746224CD27A007B988F /* FilterViewModel.swift in Sources */,
 				5B5C2A9C25D2918800F9C18A /* AttachmentCellBackgroundView.swift in Sources */,
 				220DCE2E1E0AB544002FE716 /* MessageSenderCell.swift in Sources */,
-				5BEB568F25E6997300304A38 /* TruswordButton.swift in Sources */,
+				5BEB568F25E6997300304A38 /* TrustwordsButton.swift in Sources */,
 				B7DB7FD8221AD3BB003968DA /* UITableView+Extension.swift in Sources */,
 				8B69E3991E30F80E0022959E /* Appearance.swift in Sources */,
 				3A2119E1241251A80030C3E4 /* ClientCertificateManagementTableViewCell.swift in Sources */,
