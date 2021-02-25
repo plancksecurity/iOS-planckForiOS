@@ -116,6 +116,9 @@
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <accessibility key="accessibilityConfiguration">
+                                                    <accessibilityTraits key="traits" notEnabled="YES"/>
+                                                </accessibility>
                                                 <constraints>
                                                     <constraint firstItem="U0K-gs-rcW" firstAttribute="top" secondItem="4so-ip-7EI" secondAttribute="top" constant="20" id="3Et-Dd-6py"/>
                                                     <constraint firstItem="GPP-hZ-kRJ" firstAttribute="centerY" secondItem="gP8-zr-vel" secondAttribute="centerY" id="8fH-Tv-6aA"/>
@@ -150,6 +153,9 @@
                                             </label>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <accessibility key="accessibilityConfiguration">
+                                            <accessibilityTraits key="traits" notEnabled="YES"/>
+                                        </accessibility>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="hJ8-DF-7GD" secondAttribute="trailing" constant="9" id="31B-hr-iJ4"/>
                                             <constraint firstItem="4so-ip-7EI" firstAttribute="top" secondItem="giR-xD-hMk" secondAttribute="top" id="4OR-WK-3Wo"/>

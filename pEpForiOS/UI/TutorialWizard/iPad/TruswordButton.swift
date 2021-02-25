@@ -11,19 +11,8 @@ import UIKit
 @IBDesignable
 class TrustwordsButton: UIButton {
 
-    private var isInterfaceBuilder: Bool = false
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-    }
-
-    override func prepareForInterfaceBuilder() {
-        super.prepareForInterfaceBuilder()
-        isInterfaceBuilder = true
         setup()
     }
 
