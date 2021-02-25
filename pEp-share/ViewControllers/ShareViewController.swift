@@ -80,7 +80,6 @@ extension ShareViewController {
             if let text = item as? String {
                 DispatchQueue.main.async {
                     // TODO: Inform compose about a text attachment?
-                    print("*** composeViewController \(me.composeViewController)")
                 }
             }
         })
@@ -99,6 +98,7 @@ extension ShareViewController {
                let img = UIImage(data: imgData) {
                 DispatchQueue.main.async {
                     // TODO: Inform compose about an image to attach
+                    print("*** composeViewController \(me.composeViewController)")
                 }
             }
 
