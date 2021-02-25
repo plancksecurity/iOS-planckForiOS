@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="ipad12_9rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
+    <device id="ipad12_9rounded" orientation="landscape" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -14,14 +14,14 @@
             <objects>
                 <viewController storyboardIdentifier="TutorialStep2ViewController_old" useStoryboardIdentifierAsRestorationIdentifier="YES" id="g2Z-46-CUk" customClass="TutorialStep2ViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Znu-Fy-vIT">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qIW-gL-PHx">
-                                <rect key="frame" x="20" y="0.0" width="984" height="300"/>
+                                <rect key="frame" x="20" y="0.0" width="1326" height="300"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FU0-LV-7PX">
-                                        <rect key="frame" x="0.0" y="71" width="492" height="33.5"/>
+                                        <rect key="frame" x="0.0" y="71" width="663" height="33.5"/>
                                         <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                                         <string key="text">When you click on the Privacy Status icon in the top bar, you will get to the Handshake, where you can verify your communication partner. </string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -29,16 +29,16 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D82-fJ-Zkz" userLabel="Top Bar container">
-                                        <rect key="frame" x="502" y="71" width="482" height="137"/>
+                                        <rect key="frame" x="673" y="71" width="653" height="185.5"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-4" translatesAutoresizingMaskIntoConstraints="NO" id="wB6-CE-G8p" userLabel="Topbar Image View">
-                                                <rect key="frame" x="0.0" y="0.0" width="482" height="137"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="653" height="185.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="wB6-CE-G8p" secondAttribute="height" multiplier="257:73" id="2hl-Fc-8E2"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Secure" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3sv-pD-BpD">
-                                                <rect key="frame" x="262" y="41" width="54" height="21"/>
+                                                <rect key="frame" x="365" y="59" width="54" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" systemColor="systemYellowColor"/>
                                                 <nil key="highlightedColor"/>
@@ -55,7 +55,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fCZ-0j-JNZ" userLabel="Trustwords container">
-                                        <rect key="frame" x="502" y="224" width="482" height="70"/>
+                                        <rect key="frame" x="673" y="272.5" width="653" height="70"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e97-Sj-dJb" userLabel="Triustwords Label">
                                                 <rect key="frame" x="10" y="8" width="350.5" height="14.5"/>
@@ -118,14 +118,14 @@
                                         </variation>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R3q-Xn-1bc">
-                                        <rect key="frame" x="0.0" y="224" width="492" height="36"/>
+                                        <rect key="frame" x="0.0" y="272.5" width="663" height="36"/>
                                         <string key="text">When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure &amp; Trusted. </string>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Handshake" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tO2-a9-8cK">
-                                        <rect key="frame" x="449" y="30" width="86" height="21"/>
+                                        <rect key="frame" x="620" y="30" width="86" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -231,110 +231,226 @@
         <!--Tutorial Step 2 iPad View Controller-->
         <scene sceneID="BgI-6C-NHW">
             <objects>
-                <viewController storyboardIdentifier="TutorialStep2ViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mXM-sA-n3e" userLabel="Tutorial Step 2 iPad View Controller" customClass="TutorialStep2iPadViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TutorialStep2ViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mXM-sA-n3e" userLabel="Tutorial Step 2 iPad View Controller" customClass="TutorialStep2iPadViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1lb-dh-yBv">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="2o1-qD-hhQ">
-                                <rect key="frame" x="256" y="126.5" width="512" height="1093"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="2o1-qD-hhQ">
+                                <rect key="frame" x="341.5" y="118" width="683" height="768"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Handshake" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fOU-Xn-JnK">
-                                        <rect key="frame" x="0.0" y="0.0" width="512" height="51.5"/>
+                                        <rect key="frame" x="242.5" y="0.0" width="198" height="49"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="41"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ar9-Ed-5vv">
-                                        <rect key="frame" x="0.0" y="101.5" width="512" height="72"/>
-                                        <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
-                                        <string key="text">When you click on the Privacy Status icon in the top bar, you will get to the Handshake, where you can verify your communication partner. </string>
-                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zBu-Xp-Bdh" userLabel="Top Bar container">
-                                        <rect key="frame" x="0.0" y="223.5" width="512" height="869.5"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OL0-Yc-PA4">
+                                        <rect key="frame" x="7.5" y="69" width="668" height="93"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-4" translatesAutoresizingMaskIntoConstraints="NO" id="kUf-BZ-bUm" userLabel="Topbar Image View">
-                                                <rect key="frame" x="88.5" y="0.0" width="335" height="95"/>
-                                            </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Secure" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rhC-ro-8Gj">
-                                                <rect key="frame" x="266" y="25.5" width="53.5" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" systemColor="systemYellowColor"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ar9-Ed-5vv">
+                                                <rect key="frame" x="0.0" y="20" width="668" height="53"/>
+                                                <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
+                                                <string key="text">When you click on the Privacy Status icon in the top bar, you will get to the Handshake, where you can verify your communication partner. </string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstItem="kUf-BZ-bUm" firstAttribute="top" secondItem="zBu-Xp-Bdh" secondAttribute="top" id="5CN-VQ-glH"/>
-                                            <constraint firstItem="kUf-BZ-bUm" firstAttribute="centerX" secondItem="zBu-Xp-Bdh" secondAttribute="centerX" id="Rgx-rj-GIf"/>
-                                            <constraint firstItem="rhC-ro-8Gj" firstAttribute="centerY" secondItem="kUf-BZ-bUm" secondAttribute="centerY" multiplier="0.75" id="gtc-hT-sOg"/>
-                                            <constraint firstItem="rhC-ro-8Gj" firstAttribute="leading" secondItem="kUf-BZ-bUm" secondAttribute="centerX" constant="10" id="tBq-rd-8Uk"/>
+                                            <constraint firstItem="ar9-Ed-5vv" firstAttribute="leading" secondItem="OL0-Yc-PA4" secondAttribute="leading" id="8IL-07-D2g"/>
+                                            <constraint firstItem="ar9-Ed-5vv" firstAttribute="top" secondItem="OL0-Yc-PA4" secondAttribute="top" constant="20" symbolic="YES" id="Cft-fF-iuB"/>
+                                            <constraint firstAttribute="bottom" secondItem="ar9-Ed-5vv" secondAttribute="bottom" constant="20" symbolic="YES" id="kmH-fH-5kn"/>
+                                            <constraint firstAttribute="trailing" secondItem="ar9-Ed-5vv" secondAttribute="trailing" id="xYX-Fr-mDb"/>
+                                        </constraints>
+                                    </view>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="pEpForIOS-iPad-tutorial-graphic3a" translatesAutoresizingMaskIntoConstraints="NO" id="kUf-BZ-bUm" userLabel="Topbar Image View">
+                                        <rect key="frame" x="0.0" y="182" width="683" height="139"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="kUf-BZ-bUm" secondAttribute="height" multiplier="466:95" id="HbC-Ik-OUF"/>
+                                        </constraints>
+                                    </imageView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="giR-xD-hMk">
+                                        <rect key="frame" x="0.5" y="341" width="682.5" height="427"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4so-ip-7EI" userLabel="Trustwords container" customClass="TrustwordsContainerView" customModule="pEpForiOS" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="682.5" height="100"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U0K-gs-rcW" userLabel="Trustwords Label">
+                                                        <rect key="frame" x="20" y="20" width="350.5" height="14.5"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="GPP-hZ-kRJ" userLabel="DeclineButton" customClass="TrustwordsButton" customModule="pEpForiOS" customModuleProvider="target">
+                                                        <rect key="frame" x="20" y="50.5" width="86" height="26"/>
+                                                        <accessibility key="accessibilityConfiguration" label="wrongButton">
+                                                            <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
+                                                        </accessibility>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                        <state key="normal" title="Decline"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                                                <color key="value" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="insetPlusHorizontal">
+                                                                <real key="value" value="10"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="insetPlusVertical">
+                                                                <real key="value" value="5"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="4"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="gP8-zr-vel" userLabel="ConfirmButton" customClass="TrustwordsButton" customModule="pEpForiOS" customModuleProvider="target">
+                                                        <rect key="frame" x="128" y="50.5" width="89" height="26"/>
+                                                        <accessibility key="accessibilityConfiguration" label="confirmButton">
+                                                            <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
+                                                        </accessibility>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                        <state key="normal" title="Confirm"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="insetPlusHorizontal">
+                                                                <real key="value" value="10"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="insetPlusVertical">
+                                                                <real key="value" value="5"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="4"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                                                <color key="value" red="0.011764705882352941" green="0.66666666666666663" blue="0.29411764705882354" alpha="1" colorSpace="calibratedRGB"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <constraints>
+                                                    <constraint firstItem="U0K-gs-rcW" firstAttribute="top" secondItem="4so-ip-7EI" secondAttribute="top" constant="20" id="3Et-Dd-6py"/>
+                                                    <constraint firstItem="GPP-hZ-kRJ" firstAttribute="centerY" secondItem="gP8-zr-vel" secondAttribute="centerY" id="8fH-Tv-6aA"/>
+                                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="gP8-zr-vel" secondAttribute="trailing" constant="20" symbolic="YES" id="Q9y-Fn-62F"/>
+                                                    <constraint firstItem="U0K-gs-rcW" firstAttribute="leading" secondItem="4so-ip-7EI" secondAttribute="leading" constant="20" id="Rm9-Ka-dhJ"/>
+                                                    <constraint firstAttribute="height" constant="100" id="Tqa-Wy-zsx"/>
+                                                    <constraint firstItem="gP8-zr-vel" firstAttribute="leading" secondItem="GPP-hZ-kRJ" secondAttribute="trailing" priority="250" constant="22" id="Uwb-rh-cqL"/>
+                                                    <constraint firstItem="GPP-hZ-kRJ" firstAttribute="leading" secondItem="U0K-gs-rcW" secondAttribute="leading" id="kwL-42-Hob"/>
+                                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="U0K-gs-rcW" secondAttribute="trailing" constant="10" id="nHJ-Vc-w2u"/>
+                                                    <constraint firstItem="GPP-hZ-kRJ" firstAttribute="top" secondItem="U0K-gs-rcW" secondAttribute="bottom" constant="16" id="vp8-NT-SOa"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" red="0.69803921568627447" green="0.69803921568627447" blue="0.69803921568627447" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                        <real key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <variation key="heightClass=regular-widthClass=compact">
+                                                    <mask key="constraints">
+                                                        <exclude reference="nHJ-Vc-w2u"/>
+                                                    </mask>
+                                                </variation>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hJ8-DF-7GD">
+                                                <rect key="frame" x="9" y="150" width="664.5" height="53"/>
+                                                <string key="text">When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure &amp; Trusted. </string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="hJ8-DF-7GD" secondAttribute="trailing" constant="9" id="31B-hr-iJ4"/>
+                                            <constraint firstItem="4so-ip-7EI" firstAttribute="top" secondItem="giR-xD-hMk" secondAttribute="top" id="4OR-WK-3Wo"/>
+                                            <constraint firstAttribute="trailing" secondItem="4so-ip-7EI" secondAttribute="trailing" id="GzZ-r7-bmN"/>
+                                            <constraint firstItem="hJ8-DF-7GD" firstAttribute="leading" secondItem="giR-xD-hMk" secondAttribute="leading" constant="9" id="LT0-0S-hBT"/>
+                                            <constraint firstItem="4so-ip-7EI" firstAttribute="centerX" secondItem="giR-xD-hMk" secondAttribute="centerX" id="Mp4-cq-zip"/>
+                                            <constraint firstItem="4so-ip-7EI" firstAttribute="leading" secondItem="giR-xD-hMk" secondAttribute="leading" id="eEe-PW-Fa3"/>
+                                            <constraint firstItem="hJ8-DF-7GD" firstAttribute="top" secondItem="4so-ip-7EI" secondAttribute="bottom" constant="50" id="uxE-hi-j0c"/>
                                         </constraints>
                                     </view>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="kUf-BZ-bUm" firstAttribute="width" secondItem="2o1-qD-hhQ" secondAttribute="width" id="WTx-4Z-hgV"/>
+                                </constraints>
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="bOX-Qh-50l"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="2o1-qD-hhQ" firstAttribute="centerX" secondItem="bOX-Qh-50l" secondAttribute="centerX" id="BI0-Re-ZcS"/>
-                            <constraint firstItem="2o1-qD-hhQ" firstAttribute="height" secondItem="1lb-dh-yBv" secondAttribute="height" multiplier="0.8" id="XJG-2O-Ctm"/>
+                            <constraint firstItem="2o1-qD-hhQ" firstAttribute="height" secondItem="1lb-dh-yBv" secondAttribute="height" multiplier="0.75" id="XJG-2O-Ctm"/>
                             <constraint firstItem="2o1-qD-hhQ" firstAttribute="centerY" secondItem="bOX-Qh-50l" secondAttribute="centerY" id="Y8q-FC-Bvv"/>
                             <constraint firstItem="2o1-qD-hhQ" firstAttribute="leading" secondItem="bOX-Qh-50l" secondAttribute="centerX" multiplier="0.5" id="oyP-1n-jZx"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="confirmButton" destination="gP8-zr-vel" id="LTD-7E-DXq"/>
+                        <outlet property="confirmTrustwordsExplanation" destination="hJ8-DF-7GD" id="VS9-c3-c4r"/>
+                        <outlet property="declineButton" destination="GPP-hZ-kRJ" id="Zh9-YA-j79"/>
+                        <outlet property="handshakeTitle" destination="fOU-Xn-JnK" id="Mkm-tj-0Rm"/>
+                        <outlet property="privacyStatusExplanation" destination="ar9-Ed-5vv" id="o2n-tX-h1a"/>
+                        <outlet property="trustwords" destination="U0K-gs-rcW" id="jll-3B-Kan"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="l46-MX-KNM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="354" y="1370"/>
+            <point key="canvasLocation" x="353.76884422110555" y="1369.7841726618706"/>
         </scene>
         <!--Tutorial Step 0 iPad View Controller-->
         <scene sceneID="oYb-mQ-0q4">
             <objects>
                 <viewController storyboardIdentifier="TutorialStep0ViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="KHi-Zm-eZV" userLabel="Tutorial Step 0 iPad View Controller" customClass="TutorialStep0iPadViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6xy-jm-QAH">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="31V-WD-T5I">
-                                <rect key="frame" x="256" y="161" width="512" height="1024.5"/>
+                                <rect key="frame" x="341.5" y="118" width="683" height="768"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Welcome to the p≡p Tutorial" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sys-Kh-zMz" userLabel="Welcome Title">
-                                        <rect key="frame" x="12" y="0.0" width="488" height="49"/>
+                                        <rect key="frame" x="97.5" y="0.0" width="488" height="49"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="41"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mu8-jV-b12">
-                                        <rect key="frame" x="136" y="74" width="240" height="0.0"/>
+                                        <rect key="frame" x="221.5" y="74" width="240" height="0.0"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" id="b35-ls-csr"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="You can close this tutorial anytime with the Skip button." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r2a-vJ-S4B">
-                                        <rect key="frame" x="52.5" y="99" width="407.5" height="53"/>
+                                        <rect key="frame" x="81" y="99" width="521.5" height="26.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="p≡p uses a Privacy Status icon to indicate how secure your communication is" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BFn-AV-csa">
-                                        <rect key="frame" x="0.0" y="177" width="512" height="53"/>
+                                        <rect key="frame" x="61.5" y="150.5" width="560" height="53"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="This Privacy Status Icon is shown as an Icon the user's avatar" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="omd-1g-ZCM" userLabel="Privacy Status description">
-                                        <rect key="frame" x="28" y="255" width="456" height="53"/>
+                                        <rect key="frame" x="53" y="228.5" width="577.5" height="26.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J6v-Nk-vqJ">
-                                        <rect key="frame" x="64" y="333" width="384" height="691.5"/>
+                                        <rect key="frame" x="149.5" y="280" width="384" height="488"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="pEpForIOS-iPad-tutorial-graphic1" translatesAutoresizingMaskIntoConstraints="NO" id="dR7-LM-eX1" userLabel="Contact Placeholder">
                                                 <rect key="frame" x="151" y="10" width="82" height="82"/>
@@ -400,24 +516,24 @@
             <objects>
                 <viewController storyboardIdentifier="TutorialStep1ViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ePY-nB-lPa" userLabel="Tutorial Step 1 iPad View Controller" customClass="TutorialStep1iPadViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="2Td-BF-FHz">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="agI-vP-FZm">
-                                <rect key="frame" x="256" y="116.5" width="512" height="1093"/>
+                                <rect key="frame" x="341.5" y="108" width="683" height="768"/>
                                 <subviews>
                                     <view contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="VR1-8T-T6w" userLabel="Secure">
-                                        <rect key="frame" x="0.0" y="0.0" width="512" height="319.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="683" height="224"/>
                                         <subviews>
                                             <view contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="Hdf-Vj-PfW" userLabel="Secure Title Container">
-                                                <rect key="frame" x="192.5" y="30" width="127" height="40"/>
+                                                <rect key="frame" x="250.5" y="30" width="182.5" height="40"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" image="pEpForIOS-Asset-Tutorial-2a" translatesAutoresizingMaskIntoConstraints="NO" id="QQ2-5h-jIL" userLabel="Secure Image View">
                                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Secure" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="heq-V2-xIW" userLabel="Secure Title Label">
-                                                        <rect key="frame" x="60" y="7" width="67" height="26.5"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                        <rect key="frame" x="60" y="-4.5" width="122.5" height="49"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="41"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -433,7 +549,7 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hCw-VV-boy" userLabel="Secure Description">
-                                                <rect key="frame" x="0.0" y="100" width="512" height="105.5"/>
+                                                <rect key="frame" x="0.0" y="100" width="683" height="79"/>
                                                 <string key="text">With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                                 <nil key="textColor"/>
@@ -450,17 +566,17 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="Ij0-Cb-60l" userLabel="Secure and Trusted">
-                                        <rect key="frame" x="0.0" y="369.5" width="512" height="280.5"/>
+                                        <rect key="frame" x="0.0" y="274" width="683" height="197.5"/>
                                         <subviews>
                                             <view contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="dUY-Qn-h8h" userLabel="Secure Title Container">
-                                                <rect key="frame" x="144.5" y="30" width="223.5" height="40"/>
+                                                <rect key="frame" x="162.5" y="30" width="358.5" height="40"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" image="pEpForIOS-Asset-Tutorial-2b" translatesAutoresizingMaskIntoConstraints="NO" id="gy2-u9-Ae0" userLabel="Secure Image View">
                                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Secure &amp; Trusted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jEv-gJ-y1l">
-                                                        <rect key="frame" x="60" y="7" width="163.5" height="26.5"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                        <rect key="frame" x="60" y="-4.5" width="298.5" height="49"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="41"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -476,7 +592,7 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O0Z-cV-J1j" userLabel="Secure &amp; Trusted Description">
-                                                <rect key="frame" x="0.0" y="100" width="512" height="79"/>
+                                                <rect key="frame" x="0.0" y="100" width="683" height="53"/>
                                                 <string key="text">When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                                 <nil key="textColor"/>
@@ -493,17 +609,17 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="aYU-kh-No5" userLabel="Mistrusted">
-                                        <rect key="frame" x="0.0" y="700" width="512" height="393"/>
+                                        <rect key="frame" x="0.0" y="521.5" width="683" height="246.5"/>
                                         <subviews>
                                             <view contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="PMO-lm-Fos" userLabel="Mistrasted Title Container">
-                                                <rect key="frame" x="174" y="0.0" width="164.5" height="37"/>
+                                                <rect key="frame" x="217" y="0.0" width="249.5" height="49"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" image="pEpForIOS-Asset-Tutorial-2c" translatesAutoresizingMaskIntoConstraints="NO" id="9QN-5e-gpH" userLabel="Secure Image View">
-                                                        <rect key="frame" x="0.0" y="0.0" width="43" height="37"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="43" height="49"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mistrusted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHp-vY-7sK" userLabel="Mistrusted Title Label">
-                                                        <rect key="frame" x="63" y="0.0" width="101.5" height="37"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                        <rect key="frame" x="63" y="0.0" width="186.5" height="49"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="41"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -520,7 +636,7 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DwD-eT-gSJ" userLabel="Mistrusted Description">
-                                                <rect key="frame" x="0.0" y="67" width="512" height="105.5"/>
+                                                <rect key="frame" x="0.0" y="79" width="683" height="79"/>
                                                 <string key="text">With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                                 <nil key="textColor"/>
@@ -546,7 +662,7 @@
                         <viewLayoutGuide key="safeArea" id="NIF-fI-iGg"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="agI-vP-FZm" firstAttribute="height" secondItem="2Td-BF-FHz" secondAttribute="height" multiplier="0.8" id="Sam-Zd-Rbf"/>
+                            <constraint firstItem="agI-vP-FZm" firstAttribute="height" secondItem="2Td-BF-FHz" secondAttribute="height" multiplier="0.75" id="Sam-Zd-Rbf"/>
                             <constraint firstItem="agI-vP-FZm" firstAttribute="centerX" secondItem="NIF-fI-iGg" secondAttribute="centerX" id="X37-tI-5mT"/>
                             <constraint firstItem="agI-vP-FZm" firstAttribute="leading" secondItem="NIF-fI-iGg" secondAttribute="centerX" multiplier="0.5" id="cBv-YD-Bri" userLabel="StackView Leading"/>
                             <constraint firstItem="NIF-fI-iGg" firstAttribute="centerY" secondItem="agI-vP-FZm" secondAttribute="centerY" constant="10" id="qBI-HR-Ikw"/>
@@ -581,27 +697,27 @@
             <objects>
                 <viewController storyboardIdentifier="TutorialStep3ViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="6VH-if-sbY" customClass="TutorialStep3ViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kta-zz-3yk">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Privacy Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vF8-bi-CtE">
-                                <rect key="frame" x="457.5" y="30" width="109" height="20.5"/>
+                                <rect key="frame" x="628.5" y="30" width="109" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XJX-Nl-Osg">
-                                <rect key="frame" x="30" y="70.5" width="964" height="1200.5"/>
+                                <rect key="frame" x="30" y="70.5" width="1306" height="858.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qzD-ws-nIW" userLabel="Explanation">
-                                        <rect key="frame" x="41" y="0.0" width="882" height="33.5"/>
+                                        <rect key="frame" x="41" y="0.0" width="1224" height="17"/>
                                         <string key="text">The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-1b" translatesAutoresizingMaskIntoConstraints="NO" id="8WO-Kb-HEv" userLabel="Topbar Image View">
-                                        <rect key="frame" x="315" y="49.5" width="334" height="59"/>
+                                        <rect key="frame" x="486" y="33" width="334" height="59"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="334" id="3A1-k7-aRo">
                                                 <variation key="heightClass=compact-widthClass=compact" constant="222"/>
@@ -644,7 +760,7 @@
                                         </variation>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-4b" translatesAutoresizingMaskIntoConstraints="NO" id="ybS-zT-0fC" userLabel="Secure and trusted asset">
-                                        <rect key="frame" x="525.5" y="131.5" width="58" height="58"/>
+                                        <rect key="frame" x="722" y="115" width="58" height="58"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="58" id="6Al-V7-S4N">
                                                 <variation key="heightClass=compact-widthClass=compact" constant="38"/>
@@ -654,7 +770,7 @@
                                         </constraints>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" image="pEp-status-msg-yellow" translatesAutoresizingMaskIntoConstraints="NO" id="Rw3-jP-t1Z" userLabel="Privacy Status Image View">
-                                        <rect key="frame" x="452" y="68" width="60" height="22"/>
+                                        <rect key="frame" x="623" y="51.5" width="60" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="Rw3-jP-t1Z" secondAttribute="height" multiplier="19:7" id="C64-B3-hes"/>
                                             <constraint firstAttribute="width" constant="38" id="shn-0G-ld8"/>
@@ -671,7 +787,7 @@
                                         </variation>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-1a" translatesAutoresizingMaskIntoConstraints="NO" id="LU2-lp-3sq" userLabel="Secure Asset">
-                                        <rect key="frame" x="380.5" y="131.5" width="58" height="58"/>
+                                        <rect key="frame" x="526" y="115" width="58" height="58"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="LU2-lp-3sq" secondAttribute="height" multiplier="1:1" id="Ibf-YD-wI5"/>
                                             <constraint firstAttribute="width" constant="58" id="SBz-zc-Ui1">
@@ -681,7 +797,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3dU-iO-v4Z" userLabel="Common Denominator">
-                                        <rect key="frame" x="41" y="209.5" width="882" height="33.5"/>
+                                        <rect key="frame" x="41" y="193" width="1224" height="17"/>
                                         <string key="text">In this case the Privacy Status of the message is Secure, because this is the lowest common denominator of the two communication partners.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
@@ -764,6 +880,14 @@
             <point key="canvasLocation" x="1085.4910714285713" y="1359.4202898550725"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="GPP-hZ-kRJ">
+            <size key="intrinsicContentSize" width="86" height="26"/>
+        </designable>
+        <designable name="gP8-zr-vel">
+            <size key="intrinsicContentSize" width="89" height="26"/>
+        </designable>
+    </designables>
     <resources>
         <image name="pEp-status-msg-yellow" width="60" height="21"/>
         <image name="pEpForIOS-Asset-Tutorial-1a" width="58" height="58"/>
@@ -775,6 +899,7 @@
         <image name="pEpForIOS-Asset-Tutorial-4b" width="58" height="58"/>
         <image name="pEpForIOS-Asset-iPad-Tutorial-1b" width="468" height="43"/>
         <image name="pEpForIOS-iPad-tutorial-graphic1" width="82" height="82"/>
+        <image name="pEpForIOS-iPad-tutorial-graphic3a" width="466" height="95"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
