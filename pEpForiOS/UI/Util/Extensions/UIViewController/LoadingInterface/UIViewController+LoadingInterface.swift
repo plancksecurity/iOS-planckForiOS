@@ -8,11 +8,7 @@
 
 import UIKit
 
-#if EXT_SHARE
-import PEPIOSToolboxForAppExtensions
-#else
 import pEpIOSToolbox
-#endif
 
 final class LoadingInterface {
     static weak var loadingInterface: UIView?

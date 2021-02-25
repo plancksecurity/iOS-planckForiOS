@@ -7,12 +7,7 @@
 //
 
 import Foundation
-
-#if EXT_SHARE
-import MessageModelForAppExtensions
-#else
 import MessageModel
-#endif
 
 extension Array where Element == Folder {
 

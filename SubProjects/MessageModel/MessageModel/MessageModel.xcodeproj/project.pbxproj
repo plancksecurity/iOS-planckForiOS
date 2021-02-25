@@ -530,31 +530,6 @@
 		43BDDF6E25DE607B00FC0C68 /* Identity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6A522ABDA3A002B59AB /* Identity+pEp.swift */; };
 		43BDDF7225DE60FB00FC0C68 /* RatingReEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532CE7A23184130005DBC39 /* RatingReEvaluator.swift */; };
 		43BDEC6025E3FC4200FC0C68 /* Notification+KeySyncState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C7A8892385A28B00C47364 /* Notification+KeySyncState.swift */; };
-		43BDF03125E6453F00FC0C68 /* MessageQueryResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BC7AED222014D20047267A /* MessageQueryResults.swift */; };
-		43BDF03525E6458300FC0C68 /* DisplayableFolderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DFEA4F225365080080A2BA /* DisplayableFolderProtocol.swift */; };
-		43BDF03925E645BA00FC0C68 /* MessageQueryResultsFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7789CC922243DC800AB08F4 /* MessageQueryResultsFilter.swift */; };
-		43BDF03D25E6461300FC0C68 /* MessageQueryResultsSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7789CCB222446EC00AB08F4 /* MessageQueryResultsSearch.swift */; };
-		43BDF04125E6464500FC0C68 /* QueryResultsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F6F47B234CDB4A003DF84A /* QueryResultsDelegate.swift */; };
-		43BDF04525E6468900FC0C68 /* QueryResultsControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15175EC7221D88D200C91DB8 /* QueryResultsControllerProtocol.swift */; };
-		43BDF04925E646B700FC0C68 /* QueryResultsControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15175ECD221DC39300C91DB8 /* QueryResultsControllerDelegate.swift */; };
-		43BDF04D25E646F400FC0C68 /* QueryResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15175EC5221D88B900C91DB8 /* QueryResultsController.swift */; };
-		43BDF05125E6473500FC0C68 /* QueryResultsControllerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15175EC9221DB6DC00C91DB8 /* QueryResultsControllerState.swift */; };
-		43BDF05525E6478100FC0C68 /* QueryResultsController+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15175EDD22209D4500C91DB8 /* QueryResultsController+Error.swift */; };
-		43BDF06E25E64C8000FC0C68 /* Folder+VirtualMailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CAE592563C9C50043077E /* Folder+VirtualMailbox.swift */; };
-		43BDF07225E64CC300FC0C68 /* Folder+DisplaybleFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BED3142254FAA700CCF638 /* Folder+DisplaybleFolder.swift */; };
-		43BDF0D425E655BB00FC0C68 /* Folder+RealFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E0514122D63B5E005FE4F9 /* Folder+RealFolder.swift */; };
-		43BDF0D825E655E700FC0C68 /* RealFolderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156FF8C922994A47002A2566 /* RealFolderProtocol.swift */; };
-		43BDF11B25E6615A00FC0C68 /* Message+ReDecrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1546612B233A77F2008D2137 /* Message+ReDecrypt.swift */; };
-		43BDF11F25E6618D00FC0C68 /* CdMessage+ReDecrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1546612F233B3F9A008D2137 /* CdMessage+ReDecrypt.swift */; };
-		43BDF12325E6625C00FC0C68 /* PEPRating+Decryptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1546612D233B3C00008D2137 /* PEPRating+Decryptable.swift */; };
-		43BDF13F25E667AF00FC0C68 /* Folder+FoldersForType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BED3122254F75600CCF638 /* Folder+FoldersForType.swift */; };
-		43BDF14325E667ED00FC0C68 /* Message+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15466132233B41FB008D2137 /* Message+PredicateFactory.swift */; };
-		43BDF14725E6682C00FC0C68 /* Message+PredicateFactory+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431FD70422EEF1A30001FF37 /* Message+PredicateFactory+KeySync.swift */; };
-		43BDF15725E669F800FC0C68 /* LeaveDeviceGroupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43062B9924ED6EB400489258 /* LeaveDeviceGroupService.swift */; };
-		43BDF15E25E66CFF00FC0C68 /* PassphraseUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E01F9E24AB420B00DFADA3 /* PassphraseUtil.swift */; };
-		43BDF16225E66EA000FC0C68 /* Account+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FAA37E22EF15D700A06668 /* Account+KeySync.swift */; };
-		43BDF16625E66EE900FC0C68 /* CdAccount+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C7A88323830BB600C47364 /* CdAccount+KeySync.swift */; };
-		43BDF1A625E6919100FC0C68 /* AccountVerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */; };
 		43C123C7223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123C2223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift */; };
 		43C123EA223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */; };
 		43C123EC223A7FCF00F6A9B2 /* AccountVerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */; };
@@ -2994,11 +2969,9 @@
 				434C237625D6C00800F622DB /* ServerCredentialsInfoCache.swift in Sources */,
 				43BDDDB225DD4E4E00FC0C68 /* PantomimeFolderAttribute+Extensions.swift in Sources */,
 				434C24C325D6DB2B00F622DB /* SessionAware.swift in Sources */,
-				43BDF06E25E64C8000FC0C68 /* Folder+VirtualMailbox.swift in Sources */,
 				434C21D625D698E500F622DB /* CdMessage+PredicateFactory.swift in Sources */,
 				434C21CA25D6987100F622DB /* CdExtraKey.swift in Sources */,
 				43BDDD8E25DD4BDC00FC0C68 /* VerifiableAccountProtocol.swift in Sources */,
-				43BDF05125E6473500FC0C68 /* QueryResultsControllerState.swift in Sources */,
 				434C24C725D6DD0D00F622DB /* Account+SessionAware.swift in Sources */,
 				434C232325D6A22E00F622DB /* ErrorPropagator.swift in Sources */,
 				43BDDCC725DD2B1C00FC0C68 /* Attachment+Extension.swift in Sources */,
@@ -3026,7 +2999,6 @@
 				434C223625D69A3400F622DB /* CdIdentity+pEp.swift in Sources */,
 				434C22D325D6A05500F622DB /* CdMessage+Clone.swift in Sources */,
 				436FD2A025DA8B5A00D929B3 /* KeyChain+Extensions.swift in Sources */,
-				43BDF04925E646B700FC0C68 /* QueryResultsControllerDelegate.swift in Sources */,
 				434C226825D69B6300F622DB /* CdMessage+NonOptionalConvenienceAccessors.swift in Sources */,
 				436FD2A425DA8B8900D929B3 /* ClientCertificateUtil.swift in Sources */,
 				436FD2B025DA8C1C00D929B3 /* CdClientCertificate+PredicateFactory.swift in Sources */,
@@ -3038,7 +3010,6 @@
 				436FD2B425DA8C5400D929B3 /* NSManagedObjectContext+Reset.swift in Sources */,
 				43BDDD9A25DD4CCE00FC0C68 /* SmtpConnection.swift in Sources */,
 				43BDDF6E25DE607B00FC0C68 /* Identity+pEp.swift in Sources */,
-				43BDF12325E6625C00FC0C68 /* PEPRating+Decryptable.swift in Sources */,
 				434C235A25D6B20100F622DB /* EmailConnectInfo.swift in Sources */,
 				436FD24425DA820100D929B3 /* Error+Passphrase.swift in Sources */,
 				434C228725D69C2800F622DB /* Attachment+ContentDispositionType.swift in Sources */,
@@ -3049,7 +3020,6 @@
 				434C249B25D6CEAC00F622DB /* CdMessage+Factory.swift in Sources */,
 				43BDDC4B25DC218400FC0C68 /* MessageModelConfig.swift in Sources */,
 				434C22E725D6A0DB00F622DB /* CdAttachment+Clone.swift in Sources */,
-				43BDF1A625E6919100FC0C68 /* AccountVerificationResult.swift in Sources */,
 				434C24AF25D6D37A00F622DB /* CdFolder+Pantomime.swift in Sources */,
 				434C21D225D698DE00F622DB /* String+InboxFolderName.swift in Sources */,
 				434C219625D6973500F622DB /* CdServer.swift in Sources */,
@@ -3070,26 +3040,18 @@
 				43BDDDDE25DD64FA00FC0C68 /* AddressBook.swift in Sources */,
 				434C21A325D6977200F622DB /* CdAccount+FetchedResultsController.swift in Sources */,
 				434C219425D6972500F622DB /* CdFolder.swift in Sources */,
-				43BDF0D425E655BB00FC0C68 /* Folder+RealFolder.swift in Sources */,
-				43BDF03525E6458300FC0C68 /* DisplayableFolderProtocol.swift in Sources */,
-				43BDF11F25E6618D00FC0C68 /* CdMessage+ReDecrypt.swift in Sources */,
 				434C247C25D6C9C900F622DB /* PantomimeStore.swift in Sources */,
 				434C223E25D69A6F00F622DB /* CdIdentity+UserID.swift in Sources */,
 				434C22FB25D6A14C00F622DB /* CdMessagePredicateFactory+KeySync.swift in Sources */,
-				43BDF04125E6464500FC0C68 /* QueryResultsDelegate.swift in Sources */,
 				43BDDD9225DD4BEC00FC0C68 /* VerifiableAccountIMAP.swift in Sources */,
 				434C24B725D6D3F100F622DB /* ImapFlags+Pantomime.swift in Sources */,
-				43BDF14325E667ED00FC0C68 /* Message+PredicateFactory.swift in Sources */,
 				434C22F725D6A12B00F622DB /* CdFolder+ImapFolder.swift in Sources */,
 				434C222625D699EF00F622DB /* CdMessagePredicateFactory+Imap.swift in Sources */,
-				43BDF15725E669F800FC0C68 /* LeaveDeviceGroupService.swift in Sources */,
 				434C224B25D69A9E00F622DB /* ContentTypeUtils.swift in Sources */,
-				43BDF05525E6478100FC0C68 /* QueryResultsController+Error.swift in Sources */,
 				43BDDF6725DE5FCE00FC0C68 /* Identity+Fetching.swift in Sources */,
 				43BDDF7225DE60FB00FC0C68 /* RatingReEvaluator.swift in Sources */,
 				434C222125D699CA00F622DB /* MimeTypeUtils.swift in Sources */,
 				43BDDD0E25DD36F700FC0C68 /* Message+IMAP+Internal.swift in Sources */,
-				43BDF16625E66EE900FC0C68 /* CdAccount+KeySync.swift in Sources */,
 				43BDDD9625DD4C6F00FC0C68 /* VerifiableAccountSMTP.swift in Sources */,
 				434C217E25D6965B00F622DB /* Identity.swift in Sources */,
 				434C24BF25D6D7CC00F622DB /* Persistable.swift in Sources */,
@@ -3102,7 +3064,6 @@
 				434C237E25D6C03E00F622DB /* CdAccount+Trusted.swift in Sources */,
 				434C249F25D6CEC900F622DB /* CdAttachment+Pantomime.swift in Sources */,
 				434C217C25D6964B00F622DB /* ManagedObjectWrapperProtocol.swift in Sources */,
-				43BDF07225E64CC300FC0C68 /* Folder+DisplaybleFolder.swift in Sources */,
 				43BDDDAE25DD4DFC00FC0C68 /* SyncFoldersFromServerOperation.swift in Sources */,
 				436FD22925DA810E00D929B3 /* Message+SessionAware.swift in Sources */,
 				434C226025D69B3C00F622DB /* String+Attachment.swift in Sources */,
@@ -3118,12 +3079,10 @@
 				434C233225D6A29300F622DB /* BaseImapFolderOperation.swift in Sources */,
 				434C227025D69B9100F622DB /* MessageID+UUID.swift in Sources */,
 				434C237225D6BFF700F622DB /* AccountInfoCache.swift in Sources */,
-				43BDF0D825E655E700FC0C68 /* RealFolderProtocol.swift in Sources */,
 				434C218425D6968A00F622DB /* CdAccount+Extensions.swift in Sources */,
 				434C225825D69B0900F622DB /* PEPMessage+PGPMime.swift in Sources */,
 				434C226C25D69B7400F622DB /* CdMessage+Extensions.swift in Sources */,
 				434C229725D69C9700F622DB /* MutableOrderedSet.swift in Sources */,
-				43BDF11B25E6615A00FC0C68 /* Message+ReDecrypt.swift in Sources */,
 				434C21B425D697F100F622DB /* CdIdentity.swift in Sources */,
 				436FD25425DA82A200D929B3 /* PEPSession+Extensions.swift in Sources */,
 				434C248425D6C9FA00F622DB /* CdMessage+Pantomime.swift in Sources */,
@@ -3132,7 +3091,6 @@
 				436FD25825DA82CB00D929B3 /* ServerCredentials.swift in Sources */,
 				434C219525D6972B00F622DB /* UnappendableArray.swift in Sources */,
 				434C230325D6A17600F622DB /* CdFolder+SyncFolderMode.swift in Sources */,
-				43BDF15E25E66CFF00FC0C68 /* PassphraseUtil.swift in Sources */,
 				436FD22D25DA813800D929B3 /* ExtraKey.swift in Sources */,
 				436FD2A825DA8BB600D929B3 /* ClientCertificateUtil+Internal.swift in Sources */,
 				434C221925D6999500F622DB /* CdMessageKeyword.swift in Sources */,
@@ -3146,7 +3104,6 @@
 				43BDDD7E25DD42F200FC0C68 /* ProviderSpecificInformationProtocol.swift in Sources */,
 				43BDDDCA25DD634B00FC0C68 /* Message+FakeMessage.swift in Sources */,
 				436FD22125DA80C300D929B3 /* Identity+SessionAware.swift in Sources */,
-				43BDF03D25E6461300FC0C68 /* MessageQueryResultsSearch.swift in Sources */,
 				434C221525D6998200F622DB /* CdMessageReference.swift in Sources */,
 				434C219F25D6976C00F622DB /* Account+Fetching.swift in Sources */,
 				434C19E625D3E4CD00F622DB /* Account.swift in Sources */,
@@ -3158,10 +3115,8 @@
 				434C227B25D69BCC00F622DB /* CdMessageReference+PredicateFactory.swift in Sources */,
 				434C22DF25D6A0B000F622DB /* CdImapFields+Clone.swift in Sources */,
 				434C227F25D69BDE00F622DB /* CdAttachment+PEPAttachment.swift in Sources */,
-				43BDF04D25E646F400FC0C68 /* QueryResultsController.swift in Sources */,
 				434C224225D69A7500F622DB /* CdIdentity+Extensions.swift in Sources */,
 				434C224C25D69AA800F622DB /* MimeTypeUtils+MimeType.swift in Sources */,
-				43BDF13F25E667AF00FC0C68 /* Folder+FoldersForType.swift in Sources */,
 				434C21A825D697B700F622DB /* FolderType.swift in Sources */,
 				43BDDC4325DC208900FC0C68 /* DeviceGroupState.swift in Sources */,
 				434C21AC25D697C000F622DB /* Query.swift in Sources */,
@@ -3177,7 +3132,6 @@
 				434C249725D6CE8E00F622DB /* Int16+ImapFlagBits.swift in Sources */,
 				434C22AF25D69EF300F622DB /* CdMessage+Fake.swift in Sources */,
 				434C222525D699EA00F622DB /* CdMessage+IMAP.swift in Sources */,
-				43BDF03125E6453F00FC0C68 /* MessageQueryResults.swift in Sources */,
 				434C21B825D6980300F622DB /* CdServer+Extensions.swift in Sources */,
 				434C24BB25D6D63E00F622DB /* Notification+CWServiceClientNotificationParsing.swift in Sources */,
 				434C233E25D6A2E400F622DB /* ImapSyncOperationError.swift in Sources */,
@@ -3208,10 +3162,8 @@
 				434C22FF25D6A16100F622DB /* CdFolder+PredicateFactory.swift in Sources */,
 				434C24A725D6CF1B00F622DB /* ImapFlags.swift in Sources */,
 				434C219025D6972000F622DB /* Folder.swift in Sources */,
-				43BDF16225E66EA000FC0C68 /* Account+KeySync.swift in Sources */,
 				436FD23125DA814E00D929B3 /* ExtraKey+SessionAware.swift in Sources */,
 				434C229325D69C5600F622DB /* Attachment+ContentDispositionType+PEPContentDisposition.swift in Sources */,
-				43BDF03925E645BA00FC0C68 /* MessageQueryResultsFilter.swift in Sources */,
 				436FD22525DA80EB00D929B3 /* ImapFlags+SessionAware.swift in Sources */,
 				434C21BE25D6981C00F622DB /* CdMessage.swift in Sources */,
 				434C228325D69BF800F622DB /* Attachment.swift in Sources */,
@@ -3221,9 +3173,7 @@
 				434C220D25D6996A00F622DB /* CdImapFields.swift in Sources */,
 				43BDDDC625DD62F100FC0C68 /* UsePEPFolderProviderProtocol.swift in Sources */,
 				434C22A725D69EC900F622DB /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift in Sources */,
-				43BDF14725E6682C00FC0C68 /* Message+PredicateFactory+KeySync.swift in Sources */,
 				434C221125D6996F00F622DB /* CdImapFlags.swift in Sources */,
-				43BDF04525E6468900FC0C68 /* QueryResultsControllerProtocol.swift in Sources */,
 				43BDDDBE25DD61D100FC0C68 /* CreateIMAPPepFolderOperation.swift in Sources */,
 				434C21B025D697D800F622DB /* CdServer+PredicateFactory.swift in Sources */,
 				434C237A25D6C02800F622DB /* NSManagedObjectContext+FromObjectID.swift in Sources */,

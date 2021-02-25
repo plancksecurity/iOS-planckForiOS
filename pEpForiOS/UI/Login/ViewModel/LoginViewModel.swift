@@ -8,19 +8,9 @@
 
 import Foundation
 
-import PantomimeFramework
-
-#if EXT_SHARE
-import MessageModelForAppExtensions
-#else
 import MessageModel
-#endif
-
-#if EXT_SHARE
-import PEPIOSToolboxForAppExtensions
-#else
 import pEpIOSToolbox
-#endif
+import PantomimeFramework
 
 // MARK: - OAuth2Parameters
 

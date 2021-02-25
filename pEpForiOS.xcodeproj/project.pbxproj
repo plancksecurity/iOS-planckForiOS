@@ -403,58 +403,6 @@
 		43BDE05725DE820C00FC0C68 /* iterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BF1F4441190053381F /* iterator.c */; };
 		43BDE05A25DE821C00FC0C68 /* inlines.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BE1F4441190053381F /* inlines.c */; };
 		43BDE05D25DE826000FC0C68 /* houdini_html_e.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BB1F4441190053381F /* houdini_html_e.c */; };
-		43BDEFF025E6419E00FC0C68 /* EmailListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53641CC77F95006AB156 /* EmailListViewController.swift */; };
-		43BDEFF325E641CD00FC0C68 /* UnifiedDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C73624D2EC0800D5F328 /* UnifiedDraft.swift */; };
-		43BDF02525E6442000FC0C68 /* UnifiedFolderBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DFEA5322536D5E0080A2BA /* UnifiedFolderBase.swift */; };
-		43BDF02825E6447B00FC0C68 /* UIBarButtonItem+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FD9221ADDAF003968DA /* UIBarButtonItem+Extension.swift */; };
-		43BDF02B25E644B100FC0C68 /* EmailListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */; };
-		43BDF02E25E644F500FC0C68 /* EmailDisplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15944A3423980FEC006B133B /* EmailDisplayViewModel.swift */; };
-		43BDF05925E647C300FC0C68 /* MoveToFolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */; };
-		43BDF05C25E6484A00FC0C68 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79288992302D3DE00D2C68B /* Array+Extension.swift */; };
-		43BDF05F25E6493C00FC0C68 /* FolderType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155475632137FD96005A52D0 /* FolderType+Extensions.swift */; };
-		43BDF06225E649BD00FC0C68 /* ReplyAllPossibleCheckerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356FFE621354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift */; };
-		43BDF06525E64B4500FC0C68 /* ReplyAllPossibleChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356FFE42135448600804089 /* ReplyAllPossibleChecker.swift */; };
-		43BDF06825E64B9C00FC0C68 /* MessageQueryResultsFilter+FilterButtonTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F676BC227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift */; };
-		43BDF06B25E64BF200FC0C68 /* EmailDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15944A3123980C99006B133B /* EmailDetailViewModel.swift */; };
-		43BDF0DC25E65B1300FC0C68 /* EmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5C2A9E25D293F300F9C18A /* EmailViewModel.swift */; };
-		43BDF0DF25E65B5A00FC0C68 /* ClientCertificateImportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B844240E692600E08EB3 /* ClientCertificateImportViewModel.swift */; };
-		43BDF12725E662FA00FC0C68 /* EmailListViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4465F24F65DE300422594 /* EmailListViewController+Keyboard.swift */; };
-		43BDF12D25E6638500FC0C68 /* TutorialWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371D641F231D17F80036AE62 /* TutorialWizardViewController.swift */; };
-		43BDF13025E6640300FC0C68 /* PEPPageViewControllerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15146C90237F07EF00D69495 /* PEPPageViewControllerBase.swift */; };
-		43BDF13325E664E800FC0C68 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69E3981E30F80E0022959E /* Appearance.swift */; };
-		43BDF13625E6652000FC0C68 /* UnifiedInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C73A24D2EC6300D5F328 /* UnifiedInbox.swift */; };
-		43BDF13925E6665800FC0C68 /* VirtualFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DFEA51225368670080A2BA /* VirtualFolder.swift */; };
-		43BDF13C25E666A300FC0C68 /* Folder+LocalizedName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DFEA55225397AB0080A2BA /* Folder+LocalizedName.swift */; };
-		43BDF14B25E6687A00FC0C68 /* UIUtils+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521B78C241BDAD3000EAE57 /* UIUtils+Settings.swift */; };
-		43BDF14E25E6691100FC0C68 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */; };
-		43BDF15125E6695C00FC0C68 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35AA324913B4700AC605C /* SettingsViewModel.swift */; };
-		43BDF15425E669B600FC0C68 /* KeySyncDeviceGroupUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6AF22ABF53C002B59AB /* KeySyncDeviceGroupUtil.swift */; };
-		43BDF15B25E66A3500FC0C68 /* PGPKeyImportSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1579348E246D499600E2D8D2 /* PGPKeyImportSettingViewModel.swift */; };
-		43BDF16A25E66F3400FC0C68 /* PEPHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A085A6D23FAF4D50013C63E /* PEPHeaderView.swift */; };
-		43BDF16D25E66F6D00FC0C68 /* TextFieldWithoutSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC0738C25B218DB00ECE3FC /* TextFieldWithoutSelection.swift */; };
-		43BDF17025E66FF400FC0C68 /* UILayout+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3B019024B46CFC00FBB4B5 /* UILayout+Extension.swift */; };
-		43BDF17325E6706F00FC0C68 /* SettingSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80C924B733C0008DE0E5 /* SettingSwitchTableViewCell.swift */; };
-		43BDF17625E670A800FC0C68 /* UIUtils+ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521B796241BE026000EAE57 /* UIUtils+ActivityIndicator.swift */; };
-		43BDF17925E673A300FC0C68 /* AccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */; };
-		43BDF17C25E673F900FC0C68 /* OAuthAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43985D092044296D0080FA9A /* OAuthAuthorizer.swift */; };
-		43BDF17F25E6744200FC0C68 /* OAuth2AuthorizationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438052881FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift */; };
-		43BDF18225E6750C00FC0C68 /* OAuth2ConfigurationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431C6E031FE7A85200E23BE0 /* OAuth2ConfigurationProtocol.swift */; };
-		43BDF18525E6754500FC0C68 /* OAuth2Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43306EC11FE129840045DD00 /* OAuth2Type.swift */; };
-		43BDF18825E675D200FC0C68 /* OAuth2Type+VerifiableAccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43236E642459891B00D8318D /* OAuth2Type+VerifiableAccountType.swift */; };
-		43BDF18B25E6761F00FC0C68 /* OAuth2Type+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */; };
-		43BDF18E25E6765100FC0C68 /* OAuth2Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0444B20077323007BCE3F /* OAuth2Configuration.swift */; };
-		43BDF19125E6785600FC0C68 /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD2CBC823FD92640003A536 /* AccountSettingsViewModel.swift */; };
-		43BDF19425E68C3C00FC0C68 /* AccountSettingsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF39DA7257A737A00A00A96 /* AccountSettingsHelper.swift */; };
-		43BDF19725E68C7A00FC0C68 /* EditableAccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF39DA2257A71AC00A00A96 /* EditableAccountSettingsViewModel.swift */; };
-		43BDF19A25E68CCB00FC0C68 /* SettingChangeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B09DB4625B71247005D8125 /* SettingChangeDelegate.swift */; };
-		43BDF19D25E68EBC00FC0C68 /* ClientCertificateManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A56512403F05B003C0D7E /* ClientCertificateManagementViewModel.swift */; };
-		43BDF1A025E690E100FC0C68 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F81011EB0E20000519FCC /* LoginViewModel.swift */; };
-		43BDF1A325E6914A00FC0C68 /* AccountVerificationResultDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BB82127493E00A3A4A6 /* AccountVerificationResultDelegate.swift */; };
-		43BDF1AA25E691CB00FC0C68 /* LoginViewModelLoginErrorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43498CDA200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift */; };
-		43BDF1AD25E6943100FC0C68 /* LoginViewModelOAuth2ErrorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43498CDC200D0790006DC947 /* LoginViewModelOAuth2ErrorDelegate.swift */; };
-		43BDF1DF25E6986300FC0C68 /* EditableAccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B884B43257A90FE006B2022 /* EditableAccountSettingsViewController.swift */; };
-		43BDF1E225E698AD00FC0C68 /* AccountSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80CA24B733C0008DE0E5 /* AccountSettingsTableViewCell.swift */; };
-		43BDF1E825E6992A00FC0C68 /* UIViewController+LoadingInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37156E4D234DCE2B00845A28 /* UIViewController+LoadingInterface.swift */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -3127,24 +3075,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43BDF18B25E6761F00FC0C68 /* OAuth2Type+Extension.swift in Sources */,
 				434C19E325D3E3F700F622DB /* ComposeUtil.swift in Sources */,
 				43BDE03F25DE7D1A00FC0C68 /* node.c in Sources */,
 				434C1A9625D40D6500F622DB /* UIUtils+ActionSheets.swift in Sources */,
-				43BDF19425E68C3C00FC0C68 /* AccountSettingsHelper.swift in Sources */,
-				43BDF06825E64B9C00FC0C68 /* MessageQueryResultsFilter+FilterButtonTitle.swift in Sources */,
-				43BDF14E25E6691100FC0C68 /* SettingsTableViewController.swift in Sources */,
 				434C1AFF25D4279100F622DB /* HtmlToAttributedTextSaxParser.swift in Sources */,
 				434C1AAC25D40FF800F622DB /* AddToContactsViewController.swift in Sources */,
-				43BDF02525E6442000FC0C68 /* UnifiedFolderBase.swift in Sources */,
-				43BDF18525E6754500FC0C68 /* OAuth2Type.swift in Sources */,
 				434A6C7525D2A3E700179335 /* SubjectCell.swift in Sources */,
 				3A503A9F253737B20070AB6A /* ShareViewController.swift in Sources */,
 				434C1AD825D4136A00F622DB /* String+pEp.swift in Sources */,
 				43BDE05D25DE826000FC0C68 /* houdini_html_e.c in Sources */,
 				434C1AC625D411F300F622DB /* PEPAlertViewController.swift in Sources */,
 				434C1A7D25D40ACF00F622DB /* UIImageView+Extension.swift in Sources */,
-				43BDF1DF25E6986300FC0C68 /* EditableAccountSettingsViewController.swift in Sources */,
 				434A6C4B25D2A39C00179335 /* ComposeViewModelState.swift in Sources */,
 				434C1A8325D40B4000F622DB /* PEPSplitViewController.swift in Sources */,
 				434C1A9925D40DB700F622DB /* Mailto.swift in Sources */,
@@ -3152,28 +3093,20 @@
 				43BDE05125DE818C00FC0C68 /* references.c in Sources */,
 				434C1ACF25D412B600F622DB /* TrustManagementViewController.swift in Sources */,
 				434C1B0B25D4295900F622DB /* HtmlToMarkdownSaxParser.swift in Sources */,
-				43BDF19125E6785600FC0C68 /* AccountSettingsViewModel.swift in Sources */,
-				43BDF1E825E6992A00FC0C68 /* UIViewController+LoadingInterface.swift in Sources */,
-				43BDF1AA25E691CB00FC0C68 /* LoginViewModelLoginErrorDelegate.swift in Sources */,
-				43BDF02E25E644F500FC0C68 /* EmailDisplayViewModel.swift in Sources */,
 				434C19AE25D3D98E00F622DB /* AccountPickerViewModel.swift in Sources */,
 				434C1AF925D4260B00F622DB /* ReplyUtil.swift in Sources */,
 				434C1A9F25D40E4F00F622DB /* UIUtils+Compose.swift in Sources */,
 				434A6C4C25D2A39F00179335 /* ComposeViewModel.swift in Sources */,
 				434C1AA225D40EC200F622DB /* UINavigationController+Extensions.swift in Sources */,
-				43BDF12725E662FA00FC0C68 /* EmailListViewController+Keyboard.swift in Sources */,
 				43BDE04825DE7F6100FC0C68 /* buffer.c in Sources */,
 				434C1AF325D419C100F622DB /* SwipeActionDescriptor.swift in Sources */,
 				434A6C5125D2A3A700179335 /* CellViewModel.swift in Sources */,
 				434C19D125D3E1BF00F622DB /* DocumentAttachmentPickerViewModel.swift in Sources */,
 				434A6C5225D2A3AA00179335 /* TextViewContainingTableViewCell.swift in Sources */,
 				434A6C6625D2A3CF00179335 /* RecipientCell.swift in Sources */,
-				43BDEFF325E641CD00FC0C68 /* UnifiedDraft.swift in Sources */,
 				434C19FA25D3E68E00F622DB /* ComposeHelpers.swift in Sources */,
 				434C19B125D3DA2000F622DB /* Attachment+DefaultFilename.swift in Sources */,
 				434C1AED25D4163A00F622DB /* UILabel+Extension.swift in Sources */,
-				43BDF0DF25E65B5A00FC0C68 /* ClientCertificateImportViewModel.swift in Sources */,
-				43BDF14B25E6687A00FC0C68 /* UIUtils+Settings.swift in Sources */,
 				434C1ADE25D413ED00F622DB /* TrustManagementResetTableViewCell.swift in Sources */,
 				434C19F425D3E61B00F622DB /* NSAttributedString+Html.swift in Sources */,
 				434C1A9C25D40DEE00F622DB /* URL+MailTo.swift in Sources */,
@@ -3184,44 +3117,29 @@
 				434C1ADB25D413AE00F622DB /* IdentityImageTool.swift in Sources */,
 				434C19EA25D3E52F00F622DB /* Account+Extension.swift in Sources */,
 				434C19DA25D3E2AE00F622DB /* UITableView+Extension.swift in Sources */,
-				43BDF19A25E68CCB00FC0C68 /* SettingChangeDelegate.swift in Sources */,
 				434C1B0225D427DA00F622DB /* MediaAttachmentPickerProviderViewModel.swift in Sources */,
-				43BDF13925E6665800FC0C68 /* VirtualFolder.swift in Sources */,
 				434C1AC025D4116D00F622DB /* SegueHandlerType.swift in Sources */,
-				43BDF19725E68C7A00FC0C68 /* EditableAccountSettingsViewModel.swift in Sources */,
-				43BDF05F25E6493C00FC0C68 /* FolderType+Extensions.swift in Sources */,
 				434A6C6A25D2A3D500179335 /* RecipientTextView.swift in Sources */,
-				43BDF15125E6695C00FC0C68 /* SettingsViewModel.swift in Sources */,
 				434A6C7925D2A3EE00179335 /* WrappedCell.swift in Sources */,
 				43BDE03C25DE7D0E00FC0C68 /* blocks.c in Sources */,
 				434A6C5625D2A3B100179335 /* AccountCellViewModel.swift in Sources */,
 				434C1A8925D40BEA00F622DB /* UIUtils.swift in Sources */,
-				43BDF02B25E644B100FC0C68 /* EmailListViewModel.swift in Sources */,
-				43BDF0DC25E65B1300FC0C68 /* EmailViewModel.swift in Sources */,
 				434C1B0825D4290700F622DB /* URL+Extensions.swift in Sources */,
-				43BDF1A025E690E100FC0C68 /* LoginViewModel.swift in Sources */,
 				434C19B725D3DC8C00F622DB /* NSAttributedString+pEp.swift in Sources */,
 				434C1B4025D433D600F622DB /* HtmlTagParser.swift in Sources */,
 				434A6C7125D2A3DF00179335 /* RecipientTextViewModel.swift in Sources */,
-				43BDF13025E6640300FC0C68 /* PEPPageViewControllerBase.swift in Sources */,
 				434C19AB25D3D92D00F622DB /* AccountPickerView.swift in Sources */,
-				43BDF06B25E64BF200FC0C68 /* EmailDetailViewModel.swift in Sources */,
 				434C1AE125D4141800F622DB /* TrustManagementTableViewCellProtocols.swift in Sources */,
 				434C1AC325D411B700F622DB /* UIUtils+Alerts.swift in Sources */,
 				434A6C6925D2A3D200179335 /* RecipientCellViewModel+FieldType.swift in Sources */,
 				43BDE03925DE7CFC00FC0C68 /* html.c in Sources */,
 				434C1A8025D40B0400F622DB /* SplitViewHandlingProtocol.swift in Sources */,
-				43BDF17F25E6744200FC0C68 /* OAuth2AuthorizationProtocol.swift in Sources */,
 				434C1AE425D4145C00F622DB /* TrustManagementTableViewCell.swift in Sources */,
 				434A6C4D25D2A3A100179335 /* ComposeViewModel+Factory.swift in Sources */,
 				434A6C7225D2A3E200179335 /* RecipientCellViewModel.swift in Sources */,
-				43BDF16D25E66F6D00FC0C68 /* TextFieldWithoutSelection.swift in Sources */,
-				43BDF1E225E698AD00FC0C68 /* AccountSettingsTableViewCell.swift in Sources */,
 				434A6C6D25D2A3D900179335 /* NSAttributedString+RecipientTextUtils.swift in Sources */,
 				434C1B3D25D42D5400F622DB /* NSString+Markdown.m in Sources */,
-				43BDF05925E647C300FC0C68 /* MoveToFolderViewModel.swift in Sources */,
 				434C19CA25D3E11D00F622DB /* MediaAttachmentPickerProvider.swift in Sources */,
-				43BDF1AD25E6943100FC0C68 /* LoginViewModelOAuth2ErrorDelegate.swift in Sources */,
 				434C1A7725D40A2F00F622DB /* ContactCell.swift in Sources */,
 				434C19F125D3E5C300F622DB /* Message+ComposeUtils.swift in Sources */,
 				434C19BE25D3E02C00F622DB /* AppSettings+KeySyncDeviceGroupStateChangeNotification.swift in Sources */,
@@ -3230,10 +3148,7 @@
 				434A6C4E25D2A3A400179335 /* ComposeViewModel+InitData.swift in Sources */,
 				434A6C6525D2A3CB00179335 /* NSAttributedString+BodyTextUtils.swift in Sources */,
 				434C1ACC25D4123900F622DB /* PEPUIAlertAction.swift in Sources */,
-				43BDF05C25E6484A00FC0C68 /* Array+Extension.swift in Sources */,
 				434C1AC925D4121900F622DB /* PEPAlertViewModel.swift in Sources */,
-				43BDF17325E6706F00FC0C68 /* SettingSwitchTableViewCell.swift in Sources */,
-				43BDF15425E669B600FC0C68 /* KeySyncDeviceGroupUtil.swift in Sources */,
 				434A6C5A25D2A3B800179335 /* AttachmentViewModel.swift in Sources */,
 				434C1B7425D5123A00F622DB /* NothingSelectedViewController.swift in Sources */,
 				434C19CB25D3E13000F622DB /* DocumentAttachmentPickerViewController.swift in Sources */,
@@ -3241,54 +3156,35 @@
 				434C19DD25D3E35E00F622DB /* SuggestViewModel.swift in Sources */,
 				434C1A3D25D400D500F622DB /* Constants.swift in Sources */,
 				43BDE04525DE7F0800FC0C68 /* houdini_href_e.c in Sources */,
-				43BDF17025E66FF400FC0C68 /* UILayout+Extension.swift in Sources */,
-				43BDF12D25E6638500FC0C68 /* TutorialWizardViewController.swift in Sources */,
 				434A6C5925D2A3B500179335 /* AttachmentCell.swift in Sources */,
 				434C19C425D3E09C00F622DB /* String+PEPSignature.swift in Sources */,
 				43BDE04E25DE817900FC0C68 /* cmark_ctype.c in Sources */,
 				3A503B1D253744D40070AB6A /* UIImage+Resize.swift in Sources */,
 				43BDE05725DE820C00FC0C68 /* iterator.c in Sources */,
 				434C19C125D3E07000F622DB /* AppSettingsProtocol.swift in Sources */,
-				43BDF06225E649BD00FC0C68 /* ReplyAllPossibleCheckerProtocol.swift in Sources */,
 				434C1AD225D412F300F622DB /* TrustManagementViewModel.swift in Sources */,
-				43BDF17925E673A300FC0C68 /* AccountSettingsViewController.swift in Sources */,
 				434C1ABD25D4112B00F622DB /* SecureWebViewUrlClickHandlerProtocol.swift in Sources */,
 				434C1AEA25D4158000F622DB /* UIButton+Extension.swift in Sources */,
 				43BDE03625DE7C8A00FC0C68 /* cmark.c in Sources */,
-				43BDF13C25E666A300FC0C68 /* Folder+LocalizedName.swift in Sources */,
 				434C1AFC25D4266900F622DB /* String+NSAttributedString.swift in Sources */,
 				434C1AF025D416AF00F622DB /* Capability.swift in Sources */,
-				43BDF1A325E6914A00FC0C68 /* AccountVerificationResultDelegate.swift in Sources */,
 				434A6C6225D2A3C800179335 /* BodyCellViewModel.swift in Sources */,
 				434A6C7C25D2A3F100179335 /* WrappedBccViewModel.swift in Sources */,
-				43BDF17625E670A800FC0C68 /* UIUtils+ActivityIndicator.swift in Sources */,
 				434C1A0625D3F0AD00F622DB /* AXHTMLParser.m in Sources */,
 				434C1A7A25D40A9800F622DB /* UIViewController+Extension.swift in Sources */,
-				43BDF15B25E66A3500FC0C68 /* PGPKeyImportSettingViewModel.swift in Sources */,
 				434C19FD25D3E6BA00F622DB /* String+HTML.swift in Sources */,
 				434A6C6125D2A3C500179335 /* TextAttachment.swift in Sources */,
-				43BDF06525E64B4500FC0C68 /* ReplyAllPossibleChecker.swift in Sources */,
-				43BDF13325E664E800FC0C68 /* Appearance.swift in Sources */,
-				43BDF02825E6447B00FC0C68 /* UIBarButtonItem+Extension.swift in Sources */,
 				434C19B425D3DC3F00F622DB /* AppSettings.swift in Sources */,
-				43BDF18E25E6765100FC0C68 /* OAuth2Configuration.swift in Sources */,
 				434C19F725D3E64D00F622DB /* HtmlConversions.swift in Sources */,
 				434C1AAF25D4103400F622DB /* UrlClickHandlerProtocol.swift in Sources */,
 				434A6C5325D2A3AF00179335 /* AccountCell.swift in Sources */,
 				434C1B0525D4281800F622DB /* Attachment+Extensions.swift in Sources */,
 				434A6C7825D2A3EA00179335 /* SubjectCellViewModel.swift in Sources */,
-				43BDF17C25E673F900FC0C68 /* OAuthAuthorizer.swift in Sources */,
-				43BDF19D25E68EBC00FC0C68 /* ClientCertificateManagementViewModel.swift in Sources */,
-				43BDF18225E6750C00FC0C68 /* OAuth2ConfigurationProtocol.swift in Sources */,
 				434C1A7125D409B100F622DB /* UIHelper.swift in Sources */,
 				434C1AA925D40FB600F622DB /* UIUtils+Contacts.swift in Sources */,
-				43BDEFF025E6419E00FC0C68 /* EmailListViewController.swift in Sources */,
 				43BDE04225DE7D6800FC0C68 /* scanners.c in Sources */,
-				43BDF18825E675D200FC0C68 /* OAuth2Type+VerifiableAccountType.swift in Sources */,
 				434A6C4825D2A39800179335 /* ComposeViewController.swift in Sources */,
 				434C1A7425D409ED00F622DB /* UIHelper+PEP.swift in Sources */,
-				43BDF13625E6652000FC0C68 /* UnifiedInbox.swift in Sources */,
-				43BDF16A25E66F3400FC0C68 /* PEPHeaderView.swift in Sources */,
 				434C19E025D3E3A900F622DB /* Color+UI.swift in Sources */,
 				43BDE05A25DE821C00FC0C68 /* inlines.c in Sources */,
 				434C19CE25D3E13E00F622DB /* TextViewInTableViewScrollUtil.swift in Sources */,

@@ -10,12 +10,7 @@ import CoreData
 
 import PEPObjCAdapterTypes_iOS
 import PEPObjCAdapter_iOS
-
-#if EXT_SHARE
-import PEPIOSToolboxForAppExtensions
-#else
 import pEpIOSToolbox
-#endif
 
 extension CdAccount {
     

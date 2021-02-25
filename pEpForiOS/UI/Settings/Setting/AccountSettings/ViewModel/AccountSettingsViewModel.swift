@@ -7,18 +7,8 @@
 ////
 
 import Foundation
-
-#if EXT_SHARE
-import MessageModelForAppExtensions
-#else
 import MessageModel
-#endif
-
-#if EXT_SHARE
-import PEPIOSToolboxForAppExtensions
-#else
 import pEpIOSToolbox
-#endif
 
 ///Delegate protocol to communicate to the Account Settings View Controller
 protocol AccountSettingsViewModelDelegate: class {

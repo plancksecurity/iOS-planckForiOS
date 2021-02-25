@@ -9,12 +9,7 @@
 import UIKit
 
 import SwipeCellKit
-
-#if EXT_SHARE
-import PEPIOSToolboxForAppExtensions
-#else
 import pEpIOSToolbox
-#endif
 
 final class EmailListViewController: UIViewController {
 

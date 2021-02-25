@@ -6,11 +6,7 @@
 //  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
-#if EXT_SHARE
-import MessageModelForAppExtensions
-#else
 import MessageModel
-#endif
 
 enum ClientCertificateAction {
     case newAccount

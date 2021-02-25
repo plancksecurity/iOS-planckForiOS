@@ -8,11 +8,7 @@
 
 import UIKit
 
-#if EXT_SHARE
-import PEPIOSToolboxForAppExtensions
-#else
 import pEpIOSToolbox
-#endif
 
 /// Base class for PageViewControllers in pEp style.
 /// You MUST NOT use this class without subclassing

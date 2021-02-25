@@ -8,11 +8,7 @@
 
 import Foundation
 
-#if EXT_SHARE
-import MessageModelForAppExtensions
-#else
 import MessageModel
-#endif
 
 extension OAuth2Type {
     init?(accountType: VerifiableAccount.AccountType) {
