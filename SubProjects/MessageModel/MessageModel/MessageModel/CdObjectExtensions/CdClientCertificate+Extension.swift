@@ -20,4 +20,9 @@ extension CdClientCertificate {
         let certificates = rawSearchResult as? [CdClientCertificate] ?? []
         return certificates.first
     }
+
+    public override func validateForDelete() throws {
+        ClientCertificateUtil().removeSecIdentityFromKeychain(of: self)
+        try super.validateForDelete()
+    }
 }
