@@ -80,8 +80,7 @@ extension ShareViewController {
             if let text = item as? String {
                 DispatchQueue.main.async {
                     // TODO: Inform compose about a text attachment?
-                    let cvc = "\(me.composeViewController)" ?? "nil"
-                    print("*** ComposeVC \(cvc)")
+                    print("*** ComposeVC \(me.composeViewController)")
                 }
             }
         })
