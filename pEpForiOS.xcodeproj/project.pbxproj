@@ -1734,11 +1734,8 @@
 		371D641E231D17A80036AE62 /* TutorialWizard */ = {
 			isa = PBXGroup;
 			children = (
+				5B56E35D25E7C39D00B0AB42 /* iPhone */,
 				5B818DC525E3FED0004D04F0 /* iPad */,
-				5BF449F3240827F500B23E50 /* TutorialStep0ViewController.swift */,
-				5BC4E600240FF155008C01ED /* TutorialStep1ViewController.swift */,
-				5BC4E60624113659008C01ED /* TutorialStep2ViewController.swift */,
-				5B41C6072418F15100C268CE /* TutorialStep3ViewController.swift */,
 				5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */,
 				371D641F231D17F80036AE62 /* TutorialWizardViewController.swift */,
 			);
@@ -2326,6 +2323,17 @@
 			children = (
 			);
 			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		5B56E35D25E7C39D00B0AB42 /* iPhone */ = {
+			isa = PBXGroup;
+			children = (
+				5BF449F3240827F500B23E50 /* TutorialStep0ViewController.swift */,
+				5BC4E600240FF155008C01ED /* TutorialStep1ViewController.swift */,
+				5BC4E60624113659008C01ED /* TutorialStep2ViewController.swift */,
+				5B41C6072418F15100C268CE /* TutorialStep3ViewController.swift */,
+			);
+			path = iPhone;
 			sourceTree = "<group>";
 		};
 		5B6499F625C9BA000028B9ED /* AppSettings */ = {
