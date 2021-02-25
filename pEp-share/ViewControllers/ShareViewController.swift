@@ -16,8 +16,8 @@ final class ShareViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        checkInputItems()
         presentModalCompose()
+        checkInputItems()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
