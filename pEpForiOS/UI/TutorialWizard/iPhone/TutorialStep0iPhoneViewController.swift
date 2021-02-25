@@ -1,5 +1,5 @@
 //
-//  TutorialStep0ViewController.swift
+//  TutorialStep0iPhoneViewController.swift
 //  pEp
 //
 //  Created by Martin Brude on 27/02/2020.
@@ -14,7 +14,7 @@ import pEpIOSToolbox
 /// It basically set the texts and it's properties.
 /// The layout differences regarding the device orientation and screen size are configured
 /// in storyboard using size classes.
-class TutorialStep0ViewController: TutorialStepViewController {
+class TutorialStep0iPhoneViewController: TutorialStepViewController {
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var skipTutorialLabel: UILabel!
     @IBOutlet private weak var privacyStatusLabel: UILabel!
@@ -36,7 +36,7 @@ class TutorialStep0ViewController: TutorialStepViewController {
 
 // MARK: - Layout configuration
 
-extension TutorialStep0ViewController {
+extension TutorialStep0iPhoneViewController {
     
     private func setupTitleLabel() {
         let titleText = NSLocalizedString("Welcome to the p≡p Tutorial", comment: "Welcome to the p≡p Tutorial - Step 0")

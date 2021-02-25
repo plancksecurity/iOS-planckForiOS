@@ -1,5 +1,5 @@
 //
-//  TutorialStep2ViewController.swift
+//  TutorialStep2iPhoneViewController.swift
 //  pEp
 //
 //  Created by Martin Brude on 05/03/2020.
@@ -11,7 +11,7 @@ import UIKit
 
 import pEpIOSToolbox
 
-class TutorialStep2ViewController: TutorialStepViewController {
+class TutorialStep2iPhoneViewController: TutorialStepViewController {
     
     @IBOutlet private weak var secureLabel: UILabel!
     @IBOutlet private weak var truswordsLabel: UILabel!
@@ -35,7 +35,7 @@ class TutorialStep2ViewController: TutorialStepViewController {
 
 // MARK: - Private - Setup View
 
-extension TutorialStep2ViewController {
+extension TutorialStep2iPhoneViewController {
 
     private func setupTrustwordsLabel() {
         truswordsLabel.font = smallFont

@@ -16,7 +16,6 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupView()
         if #available(iOS 13, *) {
             Appearance.customiseForTutorial(viewController: self)

@@ -1,5 +1,5 @@
 //
-//  TutorialStep3ViewController.swift
+//  TutorialStep3iPhoneViewController.swift
 //  pEp
 //
 //  Created by Martin Brude on 11/03/2020.
@@ -10,7 +10,7 @@ import UIKit
 
 import pEpIOSToolbox
 
-class TutorialStep3ViewController: TutorialStepViewController {
+class TutorialStep3iPhoneViewController: TutorialStepViewController {
     
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var explanationLabel: UILabel!
