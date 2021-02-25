@@ -42,7 +42,7 @@ extension ShareViewController {
         } else {
             Log.shared.logError(message: "Cannot instantiate initial VC")
         }
-        guard let composeVC = storyboard.instantiateViewController(withIdentifier: "ComposeViewController") as? ComposeViewController else {
+        guard let composeVC = storyboard.instantiateViewController(withIdentifier: ComposeViewController.storyboardId) as? ComposeViewController else {
             Log.shared.errorAndCrash("Cannot instantiate ComposeViewController")
             return
         }
