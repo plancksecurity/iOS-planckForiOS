@@ -143,6 +143,10 @@ extension TutorialStep0ViewController {
             attributedText.addAttributes([.font: font, .foregroundColor: UIColor.pEpGreen], range: range)
             attributedText.addAttributes(textAttributes, range: NSRange(location: range.location + range.length, length: text.count - range.length))
         }
+        if UIDevice.isIphone && UIDevice.isLandscape {
+            privacyStatusLabel.textAlignment = .left
+        }
+
         privacyStatusLabel.attributedText = attributedText
     }
     

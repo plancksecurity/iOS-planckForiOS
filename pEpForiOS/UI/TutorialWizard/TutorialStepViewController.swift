@@ -15,6 +15,12 @@ import pEpIOSToolbox
 class TutorialStepViewController: UIViewController {
     private var shouldUpdateLayoutDueRotation: Bool = false
 
+    var left : NSMutableParagraphStyle {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .left
+        return paragraphStyle
+    }
+
     var centered : NSMutableParagraphStyle {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
@@ -28,10 +34,16 @@ class TutorialStepViewController: UIViewController {
     }
 
     var textAttributes : [NSAttributedString.Key : Any] {
+        var style: NSParagraphStyle = centeredSpaced
+        if UIDevice.isIphone && UIDevice.isLandscape {
+            style = left
+        } else if UIDevice.isIpadSmall {
+            style = centered
+        }
         return [
             .font: font,
             .foregroundColor: UIColor(white: 24.0 / 255.0, alpha: 1.0),
-            .paragraphStyle: UIDevice.isIpadSmall ? centered : centeredSpaced,
+            .paragraphStyle: style
         ]
     }
 
