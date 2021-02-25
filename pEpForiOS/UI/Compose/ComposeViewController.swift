@@ -25,10 +25,10 @@ import pEpIOSToolbox
 #endif
 
 class ComposeViewController: UIViewController {
+    public static let storyboardId = "ComposeViewController"
+
     @IBOutlet var sendButton: UIBarButtonItem!
     @IBOutlet var tableView: UITableView!
-
-    public static let storyboardId = "ComposeViewController"
 
     private var suggestionsChildViewController: SuggestTableViewController?
     lazy private var mediaAttachmentPickerProvider: MediaAttachmentPickerProvider? = {
