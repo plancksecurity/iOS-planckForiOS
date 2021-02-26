@@ -22,7 +22,7 @@ class Appearance {
             // iOS 13 ignores the navigation bar tint color in some cases,
             // therefore we use the new appearance API to customise explicitly.
             let normalNavigationBar = UINavigationBar.appearance()
-            normalNavigationBar.standardAppearance = navigationBarAppearanceDefault(color: .black)
+            normalNavigationBar.standardAppearance = navigationBarAppearanceDefault(color: UIColor.label)
         } else {
             UINavigationBar.appearance().backgroundColor = .white
             UINavigationBar.appearance().titleTextAttributes = titleTextAttributes()
