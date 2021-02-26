@@ -13,7 +13,7 @@ import pEpIOSToolbox
 
 /// Figures out the number of new (to us) messages in Inbox, taking all verified accounts
 /// into account.
-class FetchNumberOfNewMailsService {
+class FetchNumberOfNewMailsService { //BUFF: should inmherit from operationBasedService
     private var imapConnectionCache: ImapConnectionCache
     private let context: NSManagedObjectContext
     private let workerQueue = DispatchQueue(

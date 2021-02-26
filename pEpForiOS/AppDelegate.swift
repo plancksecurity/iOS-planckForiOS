@@ -8,6 +8,7 @@
 
 import pEpIOSToolbox
 import MessageModel
+import BackgroundTasks
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -56,13 +57,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UserNotificationTool.resetApplicationIconBadgeNumber()
         UserNotificationTool.askForPermissions()
     }
-
-    // MARK: - HELPER
-
-    private func cleanup(andCall completionHandler:(UIBackgroundFetchResult) -> Void,
-                                result:UIBackgroundFetchResult) {
-        completionHandler(result)
-    }
 }
 
 // MARK: - UIApplicationDelegate
@@ -84,7 +78,18 @@ extension AppDelegate {
 
         Log.shared.logDebugInfo()
 
-        application.setMinimumBackgroundFetchInterval(60.0 * 10)
+        if #available(iOS 13.0, *) {
+            BGTaskScheduler.shared.register(forTaskWithIdentifier: Constants.appRefreshTaskBackgroundtaskBackgroundfetchSchedulerid,
+                                            using: nil) { [weak self] task in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                me.handleAppRefreshTask(task as! BGAppRefreshTask)
+            }
+        } else {
+            application.setMinimumBackgroundFetchInterval(60.0 * 10)
+        }
         Appearance.setup()
         setupServices()
         askUserForNotificationPermissions()
@@ -123,6 +128,9 @@ extension AppDelegate {
         Log.shared.info("applicationDidEnterBackground")
         Session.main.commit()
         messageModelService?.finish()
+        if #available(iOS 13.0, *) {
+            scheduleAppRefresh()
+        }
     }
 
     /// Called as part of the transition from the background to the inactive state; here you can
@@ -153,24 +161,31 @@ extension AppDelegate {
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
-        completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-
-        guard let messageModelService = messageModelService else {
-            Log.shared.error("no networkService")
-            return
-        }
-
-        messageModelService.checkForNewMails_old() {[unowned self] (numMails: Int?) in
-            guard let numMails = numMails else {
-                self.cleanup(andCall: completionHandler, result: .failed)
+                        completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        if #available(iOS 13.0, *) {
+            Log.shared.errorAndCrash("Should not be called on iOS>=13. Should use BGTaskScheduler instead")
+            // Do nothing. We use different API (BGTaskScheduler) for iOS13 and up.
+        } else {
+            guard let messageModelService = messageModelService else {
+                Log.shared.error("no networkService")
+                completionHandler(.failed)
                 return
             }
-            switch numMails {
-            case 0:
-                self.cleanup(andCall: completionHandler, result: .noData)
-            default:
-                self.informUser(numNewMails: numMails) {
-                    self.cleanup(andCall: completionHandler, result: .newData)
+
+            messageModelService.checkForNewMails_old() {[unowned self] (numMails: Int?) in
+                var result = UIBackgroundFetchResult.failed
+                defer { completionHandler(result)}
+                guard let numMails = numMails else {
+                    result = .failed
+                    return
+                }
+                switch numMails {
+                case 0:
+                    result = .noData
+                default:
+                    self.informUser(numNewMails: numMails) {
+                        result = .newData
+                    }
                 }
             }
         }
@@ -189,6 +204,59 @@ extension AppDelegate {
             return oauth2Provider.processAuthorizationRedirect(url: theUrl)
         }
         return false
+    }
+}
+
+// MARK: - BGAppRefreshTask
+
+extension AppDelegate {
+
+    @available(iOS 13, *)
+    private func handleAppRefreshTask(_ task: BGAppRefreshTask) {
+        // Schedule a new refresh task
+        defer { scheduleAppRefresh() }
+
+        guard let messageModelService = messageModelService else {
+            Log.shared.error("no networkService")
+            task.setTaskCompleted(success: false)
+            return
+        }
+
+        task.expirationHandler = {
+            messageModelService.cancelCheckForNewMails_old()
+        }
+
+        Log.shared.info("BGAppRefreshTask: Start checking for new mails")
+        messageModelService.checkForNewMails_old() {[unowned self] (numMails: Int?) in
+            var success = false
+            defer { task.setTaskCompleted(success: success) }
+            guard let numMails = numMails else {
+                Log.shared.error("checkForNewMails returned nil")
+                success = false
+                return
+            }
+            switch numMails {
+            case 0:
+                Log.shared.info("Server reported zero new mails")
+                success = true
+            default:
+                self.informUser(numNewMails: numMails) {
+                    Log.shared.info("Server reported %d new mails", numMails)
+                    success = true
+                }
+            }
+        }
+    }
+
+    @available(iOS 13, *)
+    func scheduleAppRefresh() {
+        let request = BGAppRefreshTaskRequest(identifier: Constants.appRefreshTaskBackgroundtaskBackgroundfetchSchedulerid)
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 60.0 * 10)
+        do {
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            Log.shared.warn("Could not schedule app refresh: %@. If error is \"1\" (BGTaskScheduler.Error.unavailable), possible causes are: \n- You are on simulater (background fetch not supported any more)\n- The user has disabled background refresh in settings\n- The extension either hasn’t set RequestsOpenAccess to YES in The Info.plist File, or the user hasn’t granted open access", error.localizedDescription)
+        }
     }
 }
 
