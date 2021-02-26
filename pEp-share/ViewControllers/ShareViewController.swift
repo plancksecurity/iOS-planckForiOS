@@ -61,6 +61,8 @@ extension ShareViewController {
             return
         }
 
+        let dispatchGroup = DispatchGroup()
+
         for anyItem in context.inputItems {
             guard let inputItem = anyItem as? NSExtensionItem else {
                 continue
@@ -73,7 +75,8 @@ extension ShareViewController {
                     print("*** attachment title \(attributedTitle)")
                 }
                 if attachment.hasItemConformingToTypeIdentifier(ShareViewController.utiPlainText) {
-                    loadPlainText(item: attachment)
+                    dispatchGroup.enter()
+                    loadPlainText(dispatchGroup: dispatchGroup, item: attachment)
                 } else if attachment.hasItemConformingToTypeIdentifier(ShareViewController.utiImage) {
                     loadImage(item: attachment)
                 } else if attachment.hasItemConformingToTypeIdentifier(ShareViewController.utiUrl) {
@@ -83,18 +86,11 @@ extension ShareViewController {
         }
     }
 
-    private func loadPlainText(item: NSItemProvider) {
+    private func loadPlainText(dispatchGroup: DispatchGroup, item: NSItemProvider) {
         item.loadItem(forTypeIdentifier: "public.plain-text", options: nil, completionHandler: { [weak self] item, error in
-
-            guard let me = self else {
-                // assuming the extension can be canceled by the user
-                return
-            }
-
             if let text = item as? String {
-                DispatchQueue.main.async {
-                    // TODO: Inform compose about a text attachment?
-                }
+                // TODO: Store the result
+                dispatchGroup.leave()
             }
         })
     }
