@@ -34,6 +34,10 @@ final class ShareViewController: UIViewController {
 // MARK: - Private (WIP)
 
 extension ShareViewController {
+    private let utiPlainText = "public.plain-text"
+    private let utiImage = "public.image"
+    private let utiUrl = "public.file-url"
+
     private func setupComposeVC() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let composeVC = storyboard.instantiateViewController(withIdentifier: ComposeViewController.storyboardId) as? ComposeViewController else {
@@ -68,11 +72,11 @@ extension ShareViewController {
                 if let attributedTitle = inputItem.attributedTitle {
                     print("*** attachment title \(attributedTitle)")
                 }
-                if attachment.hasItemConformingToTypeIdentifier("public.plain-text") {
+                if attachment.hasItemConformingToTypeIdentifier(utiPlainText) {
                     loadPlainText(elem: attachment)
-                } else if attachment.hasItemConformingToTypeIdentifier("public.image") {
+                } else if attachment.hasItemConformingToTypeIdentifier(utiImage) {
                     loadImage(elem: attachment)
-                } else if attachment.hasItemConformingToTypeIdentifier("public.file-url") {
+                } else if attachment.hasItemConformingToTypeIdentifier(utiUrl) {
                     loadFile(elem: attachment)
                 }
             }
