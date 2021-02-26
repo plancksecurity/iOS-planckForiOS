@@ -79,8 +79,8 @@ extension ShareViewController {
         }
     }
 
-    private func loadPlainText(elem: NSItemProvider) {
-        elem.loadItem(forTypeIdentifier: "public.plain-text", options: nil, completionHandler: { [weak self] item, error in
+    private func loadPlainText(item: NSItemProvider) {
+        item.loadItem(forTypeIdentifier: "public.plain-text", options: nil, completionHandler: { [weak self] item, error in
 
             guard let me = self else {
                 // assuming the extension can be canceled by the user
