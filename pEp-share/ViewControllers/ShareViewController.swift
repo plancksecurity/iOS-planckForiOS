@@ -18,7 +18,6 @@ final class ShareViewController: UIViewController {
 
         setupComposeVC()
         checkInputItems()
-        presentComposeVC()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -83,6 +82,14 @@ extension ShareViewController {
                     loadFile(item: attachment)
                 }
             }
+        }
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let me = self else {
+                // user canceled early
+                return
+            }
+            dispatchGroup.wait()
+            me.presentComposeVC()
         }
     }
 
