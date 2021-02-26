@@ -115,7 +115,7 @@ extension ShareViewController {
         })
     }
 
-    private func loadFile(elem: NSItemProvider) {
+    private func loadFile(item: NSItemProvider) {
         // TODO: - not yet implemented
         Log.shared.debug("DEV: load PDF element is not yet implemented!")
     }
