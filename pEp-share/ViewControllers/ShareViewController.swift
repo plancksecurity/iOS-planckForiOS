@@ -94,7 +94,7 @@ extension ShareViewController {
     }
 
     private func loadPlainText(dispatchGroup: DispatchGroup, item: NSItemProvider) {
-        item.loadItem(forTypeIdentifier: "public.plain-text", options: nil,
+        item.loadItem(forTypeIdentifier: utiPlainText, options: nil,
                       completionHandler: { item, error in
                         if let text = item as? String {
                             // TODO: Store the result
@@ -107,7 +107,7 @@ extension ShareViewController {
     }
 
     private func loadImage(dispatchGroup: DispatchGroup, item: NSItemProvider) {
-        item.loadItem(forTypeIdentifier: "public.jpeg", options: nil,
+        item.loadItem(forTypeIdentifier: utiImage, options: nil,
                       completionHandler: { item, error in
                         if let imgUrl = item as? URL,
                            let imgData = try? Data(contentsOf: imgUrl),
