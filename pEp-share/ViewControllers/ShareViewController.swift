@@ -90,7 +90,9 @@ extension ShareViewController {
                 return
             }
             dispatchGroup.wait()
-            me.presentComposeVC()
+            DispatchQueue.main.async {
+                me.presentComposeVC()
+            }
         }
     }
 
