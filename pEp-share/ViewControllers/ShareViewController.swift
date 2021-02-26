@@ -73,11 +73,11 @@ extension ShareViewController {
                     print("*** attachment title \(attributedTitle)")
                 }
                 if attachment.hasItemConformingToTypeIdentifier(utiPlainText) {
-                    loadPlainText(elem: attachment)
+                    loadPlainText(item: attachment)
                 } else if attachment.hasItemConformingToTypeIdentifier(utiImage) {
-                    loadImage(elem: attachment)
+                    loadImage(item: attachment)
                 } else if attachment.hasItemConformingToTypeIdentifier(utiUrl) {
-                    loadFile(elem: attachment)
+                    loadFile(item: attachment)
                 }
             }
         }
