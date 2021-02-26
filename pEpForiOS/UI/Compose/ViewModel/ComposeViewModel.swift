@@ -122,7 +122,10 @@ class ComposeViewModel {
          prefilledTo: Identity? = nil,
          prefilledFrom: Identity? = nil,
          originalMessage: Message? = nil) {
-        let initData = InitData(prefilledTo: prefilledTo, prefilledFrom: prefilledFrom, originalMessage: originalMessage, composeMode: composeMode)
+        let initData = InitData(prefilledTo: prefilledTo,
+                                prefilledFrom: prefilledFrom,
+                                originalMessage: originalMessage,
+                                composeMode: composeMode)
         let state = ComposeViewModelState(initData: initData)
         self.init(state: state)
     }
