@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TutorialStep1ViewController: TutorialStepViewController {
+class TutorialStep1iPhoneViewController: TutorialStepViewController {
     @IBOutlet private weak var secureLabel: UILabel!
     @IBOutlet private weak var secureDescriptionLabel: UILabel!
     @IBOutlet private weak var secureAndTrustedLabel: UILabel!
@@ -28,7 +28,7 @@ class TutorialStep1ViewController: TutorialStepViewController {
 
 // MARK: - Layout configuration
 
-extension TutorialStep1ViewController {
+extension TutorialStep1iPhoneViewController {
 
     private func setupSecureLabel() {
         secureLabel.font = titleFont
