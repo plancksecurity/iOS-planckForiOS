@@ -112,13 +112,7 @@ class ComposeViewModel {
     /// would thus crash if anone commits the main session.
     private let session = Session()
 
-    init(state: ComposeViewModelState) {
-        self.state = state
-        self.state.delegate = self
-        setup()
-    }
-
-    convenience init(composeMode: ComposeUtil.ComposeMode? = nil,
+    init(composeMode: ComposeUtil.ComposeMode? = nil,
          prefilledTo: Identity? = nil,
          prefilledFrom: Identity? = nil,
          originalMessage: Message? = nil) {
@@ -127,7 +121,9 @@ class ComposeViewModel {
                                 originalMessage: originalMessage,
                                 composeMode: composeMode)
         let state = ComposeViewModelState(initData: initData)
-        self.init(state: state)
+        self.state = state
+        self.state.delegate = self
+        setup()
     }
 
     public func handleDidReAppear() {
