@@ -94,11 +94,14 @@ extension ShareViewController {
     }
 
     private func loadPlainText(dispatchGroup: DispatchGroup, item: NSItemProvider) {
-        item.loadItem(forTypeIdentifier: "public.plain-text", options: nil, completionHandler: { [weak self] item, error in
-            if let text = item as? String {
-                // TODO: Store the result
-                dispatchGroup.leave()
-            }
+        item.loadItem(forTypeIdentifier: "public.plain-text", options: nil,
+                      completionHandler: { item, error in
+                        if let text = item as? String {
+                            // TODO: Store the result
+                            dispatchGroup.leave()
+                        } else if let error = error {
+                            Log.shared.log(error: error)
+                        }
         })
     }
 
