@@ -57,23 +57,26 @@ extension ShareViewController {
             return
         }
 
-        guard let item = context.inputItems.first as? NSExtensionItem,
-              let attachments = item.attachments else {
-            Log.shared.errorAndCrash(message: "DEV: attachments are NIL !!")
-            return
-        }
-
-        for elem in attachments {
-            if elem.hasItemConformingToTypeIdentifier("public.plain-text") {
-                loadPlainText(elem: elem)
-            } else if elem.hasItemConformingToTypeIdentifier("public.image") {
-                loadImage(elem: elem)
-            } else if elem.hasItemConformingToTypeIdentifier("public.file-url") {
-                loadFile(elem: elem)
+        for anyItem in context.inputItems {
+            guard let inputItem = anyItem as? NSExtensionItem else {
+                continue
             }
-            Log.shared.logInfo(message: "DEV: elem \(elem)")
+            guard let attachments = inputItem.attachments else {
+                continue
+            }
+            for attachment in attachments {
+                if let attributedTitle = inputItem.attributedTitle {
+                    print("*** attachment title \(attributedTitle)")
+                }
+                if attachment.hasItemConformingToTypeIdentifier("public.plain-text") {
+                    loadPlainText(elem: attachment)
+                } else if attachment.hasItemConformingToTypeIdentifier("public.image") {
+                    loadImage(elem: attachment)
+                } else if attachment.hasItemConformingToTypeIdentifier("public.file-url") {
+                    loadFile(elem: attachment)
+                }
+            }
         }
-
     }
 
     private func loadPlainText(elem: NSItemProvider) {
