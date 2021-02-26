@@ -112,30 +112,27 @@ class ComposeViewModel {
     /// would thus crash if anone commits the main session.
     private let session = Session()
 
-    init(composeMode: ComposeUtil.ComposeMode? = nil,
-         prefilledTo: Identity? = nil,
-         prefilledFrom: Identity? = nil,
-         originalMessage: Message? = nil) {
-        let initData = InitData(prefilledTo: prefilledTo, prefilledFrom: prefilledFrom, originalMessage: originalMessage, composeMode: composeMode)
-        self.state = ComposeViewModelState(initData: initData)
-        self.state.delegate = self
-        setup()
-    }
-
-    
-    init(mailTo: Mailto) {
-        let initData = InitData(mailto: mailTo)
-        self.state = ComposeViewModelState(initData: initData)
-        self.state.delegate = self
-        setup()
-    }
-    
     init(state : ComposeViewModelState) {
         self.state = state
         self.state.delegate = self
         setup()
     }
 
+    convenience init(composeMode: ComposeUtil.ComposeMode? = nil,
+         prefilledTo: Identity? = nil,
+         prefilledFrom: Identity? = nil,
+         originalMessage: Message? = nil) {
+        let initData = InitData(prefilledTo: prefilledTo, prefilledFrom: prefilledFrom, originalMessage: originalMessage, composeMode: composeMode)
+        let state = ComposeViewModelState(initData: initData)
+        self.init(state: state)
+    }
+
+    convenience init(mailTo: Mailto) {
+        let initData = InitData(mailto: mailTo)
+        let state = ComposeViewModelState(initData: initData)
+        self.init(state: state)
+    }
+    
     public func handleDidReAppear() {
         state.validate()
     }
