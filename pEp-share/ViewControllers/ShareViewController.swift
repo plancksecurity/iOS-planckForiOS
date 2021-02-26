@@ -102,24 +102,22 @@ extension ShareViewController {
                         } else if let error = error {
                             Log.shared.log(error: error)
                         }
+                        dispatchGroup.leave()
         })
     }
 
     private func loadImage(dispatchGroup: DispatchGroup, item: NSItemProvider) {
-        item.loadItem(forTypeIdentifier: "public.jpeg", options: nil, completionHandler: { [weak self] item, error in
-
-            guard let me = self else {
-                // assuming the extension can be canceled by the user
-                return
-            }
-
-            if let imgUrl = item as? URL,
-               let imgData = try? Data(contentsOf: imgUrl),
-               let img = UIImage(data: imgData) {
-                // TODO: Store the result
-            }
-            dispatchGroup.leave()
-        })
+        item.loadItem(forTypeIdentifier: "public.jpeg", options: nil,
+                      completionHandler: { item, error in
+                        if let imgUrl = item as? URL,
+                           let imgData = try? Data(contentsOf: imgUrl),
+                           let img = UIImage(data: imgData) {
+                            // TODO: Store the result
+                        } else if let error = error {
+                            Log.shared.log(error: error)
+                        }
+                        dispatchGroup.leave()
+                      })
     }
 
     private func loadFile(item: NSItemProvider) {
