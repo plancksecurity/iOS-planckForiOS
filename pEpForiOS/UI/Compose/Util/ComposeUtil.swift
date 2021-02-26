@@ -101,9 +101,9 @@ struct ComposeUtil {
             return om?.parent.account.user
         case .normal:
             if let om = om,
-                om.parent.folderType == .sent ||
-                    om.parent.folderType == .drafts ||
-                    om.parent.folderType == .outbox  {
+               om.parent.folderType == .sent ||
+                om.parent.folderType == .drafts ||
+                om.parent.folderType == .outbox  {
                 return om.from
             }
             return Account.defaultAccount()?.user
@@ -157,14 +157,16 @@ struct ComposeUtil {
             let session = state.from?.session,
             let account = Account.by(address: from.address, in: session)?.safeForSession(session),
             let outbox = Folder.by(account: account, folderType: .outbox)?.safeForSession(session)
-            else {
-                Log.shared.errorAndCrash("Invalid state")
-                return nil
+        else {
+            Log.shared.errorAndCrash("Invalid state")
+            return nil
         }
+        let inlinedAttachments = Attachment.makeSafe(state.inlinedAttachments, forSession: session)
+        let nonInlinedAttachments = Attachment.makeSafe(state.nonInlinedAttachments, forSession: session)
         //!!!: DIRTY ALARM!
         //!!!: ADAM:
         //BUFF: !!!
-        let body = state.bodyText.toHtml(inlinedAttachments: state.inlinedAttachments) //!!!: ADAM: Bad! method called toHtml returns plaintext
+        let body = state.bodyText.toHtml(inlinedAttachments: inlinedAttachments) //!!!: ADAM: Bad! method called toHtml returns plaintext
         let bodyPlainText = body.plainText
         let bodyHtml = body.html ?? ""
         let message = Message.newOutgoingMessage(session: session)
@@ -176,7 +178,7 @@ struct ComposeUtil {
         message.shortMessage = state.subject
         message.longMessage = bodyPlainText
         message.longMessageFormatted = !bodyHtml.isEmpty ? bodyHtml : nil
-        message.replaceAttachments(with: state.inlinedAttachments + state.nonInlinedAttachments)
+        message.replaceAttachments(with: inlinedAttachments + nonInlinedAttachments)
         message.pEpProtected = state.pEpProtection
         if !state.pEpProtection {
             let unprotectedRating = Rating.unencrypted
