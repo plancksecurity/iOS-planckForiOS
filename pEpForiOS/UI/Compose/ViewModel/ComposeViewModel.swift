@@ -127,12 +127,6 @@ class ComposeViewModel {
         self.init(state: state)
     }
 
-    convenience init(mailTo: Mailto) {
-        let initData = InitData(mailto: mailTo)
-        let state = ComposeViewModelState(initData: initData)
-        self.init(state: state)
-    }
-    
     public func handleDidReAppear() {
         state.validate()
     }
