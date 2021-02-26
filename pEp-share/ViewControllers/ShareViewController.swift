@@ -77,7 +77,7 @@ extension ShareViewController {
                     dispatchGroup.enter()
                     loadPlainText(dispatchGroup: dispatchGroup, item: attachment)
                 } else if attachment.hasItemConformingToTypeIdentifier(ShareViewController.utiImage) {
-                    loadImage(item: attachment)
+                    loadImage(dispatchGroup: dispatchGroup, item: attachment)
                 } else if attachment.hasItemConformingToTypeIdentifier(ShareViewController.utiUrl) {
                     loadFile(item: attachment)
                 }
@@ -102,7 +102,7 @@ extension ShareViewController {
         })
     }
 
-    private func loadImage(item: NSItemProvider) {
+    private func loadImage(dispatchGroup: DispatchGroup, item: NSItemProvider) {
         item.loadItem(forTypeIdentifier: "public.jpeg", options: nil, completionHandler: { [weak self] item, error in
 
             guard let me = self else {
@@ -113,12 +113,9 @@ extension ShareViewController {
             if let imgUrl = item as? URL,
                let imgData = try? Data(contentsOf: imgUrl),
                let img = UIImage(data: imgData) {
-                DispatchQueue.main.async {
-                    // TODO: Inform compose about an image to attach
-                    print("*** composeViewController \(me.composeViewController)")
-                }
+                // TODO: Store the result
             }
-
+            dispatchGroup.leave()
         })
     }
 
