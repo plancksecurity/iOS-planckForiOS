@@ -130,19 +130,19 @@ extension ComposeViewModel {
         ///   - composeMode: The compose mode.
         init(prefilledTo: Identity? = nil,
              prefilledFrom: Identity? = nil,
-             originalMessage om: Message? = nil,
+             originalMessage: Message? = nil,
              composeMode: ComposeUtil.ComposeMode? = nil) {
 
             // We are cloning the message to get a clone off the attachments and the
             // longMessageFormatted updated with the CID:s of the cloned attachments.
             // We use it for settingus up and delete afterwards.
-            let cloneMessage = om?.cloneWithZeroUID(session: Session.main)
+            let cloneMessage = originalMessage?.cloneWithZeroUID(session: Session.main)
             self.composeMode = composeMode ?? ComposeUtil.ComposeMode.normal
             if let prefilledTo = prefilledTo {
                 self.prefilledTos = cloneMessage == nil ? [prefilledTo] : nil
             }
             self.prefilledFrom = prefilledFrom
-            self.originalMessage = om
+            self.originalMessage = originalMessage
             self.inlinedAttachments = ComposeUtil.initialAttachments(composeMode: self.composeMode,
                                                                      contentDisposition: .inline,
                                                                      originalMessage: cloneMessage)
