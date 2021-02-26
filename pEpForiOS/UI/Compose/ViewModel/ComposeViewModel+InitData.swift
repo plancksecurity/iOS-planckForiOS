@@ -126,7 +126,7 @@ extension ComposeViewModel {
         /// - Parameters:
         ///   - prefilledTo: The To: field to prefill
         ///   - prefilledFrom: The From: field to prefill
-        ///   - om: The original message
+        ///   - originalMessage: The original message
         ///   - composeMode: The compose mode.
         init(prefilledTo: Identity? = nil,
              prefilledFrom: Identity? = nil,
