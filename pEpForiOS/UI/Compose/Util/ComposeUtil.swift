@@ -124,12 +124,12 @@ struct ComposeUtil {
     /// - Returns: attachments appropriate for the given compose mode
     static func initialAttachments(composeMode: ComposeMode,
                                    contentDisposition: Attachment.ContentDispositionType,
-                                   originalMessage om: Message?) -> [Attachment] {
-        guard shouldTakeOverAttachments(composeMode: composeMode, originalMessage: om ) else {
+                                   originalMessage: Message?) -> [Attachment] {
+        guard shouldTakeOverAttachments(composeMode: composeMode, originalMessage: originalMessage) else {
             return []
         }
-        guard let om = om else {
-            // No om, no initial attachments
+        guard let om = originalMessage else {
+            // No original message, no initial attachments
             return []
         }
         let viewAbleAttachments = om.viewableAttachments()
