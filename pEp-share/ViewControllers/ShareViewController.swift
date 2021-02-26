@@ -77,6 +77,7 @@ extension ShareViewController {
                     dispatchGroup.enter()
                     loadPlainText(dispatchGroup: dispatchGroup, item: attachment)
                 } else if attachment.hasItemConformingToTypeIdentifier(ShareViewController.utiImage) {
+                    dispatchGroup.enter()
                     loadImage(dispatchGroup: dispatchGroup, item: attachment)
                 } else if attachment.hasItemConformingToTypeIdentifier(ShareViewController.utiUrl) {
                     loadFile(item: attachment)
