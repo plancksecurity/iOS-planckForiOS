@@ -112,7 +112,7 @@ class ComposeViewModel {
     /// would thus crash if anone commits the main session.
     private let session = Session()
 
-    init(state : ComposeViewModelState) {
+    init(state: ComposeViewModelState) {
         self.state = state
         self.state.delegate = self
         setup()
