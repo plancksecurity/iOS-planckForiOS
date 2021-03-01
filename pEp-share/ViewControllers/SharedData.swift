@@ -11,7 +11,7 @@ import UIKit
 
 /// The different data types supported by this extension
 public enum SharedType {
-    case picture (UIImage)
+    case image (UIImage)
     case url (URL)
     case plainText (String)
 }
