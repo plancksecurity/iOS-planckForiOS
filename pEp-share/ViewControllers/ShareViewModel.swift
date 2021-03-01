@@ -11,7 +11,14 @@ import UIKit
 
 import PEPIOSToolboxForAppExtensions
 
+protocol ShareViewModelDelegate: class {
+    /// All documents to be shared have been downloaded, ready to show the compose view.
+    func startComposeView(withSharedTypes: SharedType)
+}
+
 class ShareViewModel {
+    public weak var shareViewModelDelegate: ShareViewModelDelegate?
+
     public func checkInputItems(extensionContext: NSExtensionContext) {
         let sharedData = SharedData()
         let dispatchGroup = DispatchGroup()
