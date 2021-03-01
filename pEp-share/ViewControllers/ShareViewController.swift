@@ -74,11 +74,6 @@ extension ShareViewController {
             guard let inputItem = anyItem as? NSExtensionItem else {
                 continue
             }
-            if var userInfo = inputItem.userInfo {
-                print("*** userInfo \(userInfo)")
-                userInfo[inputItem] = "something"
-                userInfo["blah"] = UserAttachment.PlainText("blah")
-            }
             guard let attachments = inputItem.attachments else {
                 continue
             }
