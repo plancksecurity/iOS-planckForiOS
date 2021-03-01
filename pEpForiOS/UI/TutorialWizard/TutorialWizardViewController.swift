@@ -16,7 +16,6 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupView()
         if #available(iOS 13, *) {
             Appearance.customiseForTutorial(viewController: self)
@@ -28,7 +27,8 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
     /// - Parameter viewController: The base view controller to present the tutorial.
     /// This allows to present the tutorial from several places.
     public static func presentTutorialWizard(viewController: UIViewController) {
-        let storyboard = UIStoryboard(name: Constants.tutorialStoryboard, bundle: .main)
+        let storyboardName = UIDevice.isIpad ? Constants.tutorialiPadStoryboard : Constants.tutorialiPhoneStoryboard
+        let storyboard = UIStoryboard(name: storyboardName, bundle: .main)
         guard let tutorialWizard = storyboard.instantiateViewController(withIdentifier: storyboardId) as? TutorialWizardViewController else {
             Log.shared.errorAndCrash("Fail to instantiateViewController TutorialWizardViewController")
             return
@@ -67,10 +67,12 @@ extension TutorialWizardViewController {
     //Staring point
     private func tutorialViewControllers() -> [UIViewController] {
         var result = [UIViewController]()
-        
+
+        let storyboardName = UIDevice.isIpad ? Constants.tutorialiPadStoryboard : Constants.tutorialiPhoneStoryboard
+        let storyboard = UIStoryboard(name: storyboardName, bundle: .main)
+
         //We have 4 steps in the tutorial.
         for step in 0...3 {
-            let storyboard = UIStoryboard(name: Constants.tutorialStoryboard, bundle: .main)
             let stepViewController = storyboard.instantiateViewController(withIdentifier: "TutorialStep\(step)ViewController")
             result.append(stepViewController)
         }

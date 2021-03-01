@@ -17,6 +17,13 @@ public enum Model : String {
         return [.iPhone5C, .iPhone5S, .iPhone5, .iPhone4, .iPhone4S, .iPhoneSE, .iPhoneSE2]
     }
 
+    public static var iPadMinis : [Model] {
+        return [.iPadMini, .iPadMini2, .iPadMini3, .iPadMini4, .iPadMini5]
+    }
+    public static var smallIpads : [Model] {
+        return [.iPadMini, .iPadMini2, .iPadMini3, .iPadMini4, .iPadMini5, .iPadPro9_7]
+    }
+
     case simulator     = "simulator",
 
     iPod1              = "iPod 1",
@@ -90,6 +97,14 @@ public extension UIDevice {
     /// Indicates if it is an iPhone5C, iPhone5S, iPhone5, iPhone4, iPhone4S, iPhoneSE or iPhoneSE2.
     static var isSmall: Bool {
         return Model.smallDevices.contains(UIDevice().type)
+    }
+
+    static var isIpadMini: Bool {
+        return Model.iPadMinis.contains(UIDevice().type)
+    }
+
+    static var isIpadSmall: Bool {
+        return Model.smallIpads.contains(UIDevice().type)
     }
 
     /// returns the device model: e.g: "iPhone 11 Pro Max".
@@ -248,7 +263,7 @@ public extension UIDevice {
 
     /// Indicates if the device is in Landscape
     static var isLandscape: Bool {
-        return UIDevice.current.orientation.isLandscape
+        return UIDevice.current.orientation.isLandscape || UIApplication.shared.statusBarOrientation.isLandscape
     }
 
     /// Indicates if the device is in Portrait

@@ -54,7 +54,9 @@ extension UIUtils {
             Log.shared.errorAndCrash("KeySyncErrorView cant be instanciated")
             return
         }
-        UIUtils.show(keySyncErrorView)
+        DispatchQueue.main.async {
+            UIUtils.show(keySyncErrorView)
+        }
     }
 }
 

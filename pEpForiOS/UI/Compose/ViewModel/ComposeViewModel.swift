@@ -738,7 +738,7 @@ extension ComposeViewModel {
     }
 
     func trustManagementViewModel() -> TrustManagementViewModel? {
-        guard let message = ComposeUtil.messageToSend(withDataFrom: state) else {
+        guard let message = ComposeUtil.messageToSend(withDataFrom: state, recipientsOnly: true) else {
             Log.shared.errorAndCrash("No message")
             return nil
         }
