@@ -426,6 +426,7 @@
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jey-z5-Oqb">
                                         <rect key="frame" x="50.666666666666657" y="0.0" width="338.33333333333337" height="34"/>
+                                        <color key="backgroundColor" systemColor="placeholderTextColor"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
@@ -442,21 +443,25 @@
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WJx-kJ-kqt">
                                         <rect key="frame" x="93" y="0.0" width="296" height="34"/>
+                                        <color key="backgroundColor" systemColor="placeholderTextColor"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lzc-xZ-iKm">
-                                <rect key="frame" x="158" y="128" width="98" height="33"/>
+                                <rect key="frame" x="138" y="128" width="138" height="61"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                <state key="normal" title="Set Own Key"/>
+                                <inset key="contentEdgeInsets" minX="20" minY="20" maxX="20" maxY="20"/>
+                                <state key="normal" title="Set Own Key">
+                                    <color key="titleColor" systemColor="labelColor"/>
+                                </state>
                                 <connections>
                                     <action selector="setOwnKeyButtonTapped:" destination="cMW-fr-EKn" eventType="touchUpInside" id="tgw-KH-8Fx"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="set_own_key Error" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ujL-Pa-uXD">
-                                <rect key="frame" x="136.33333333333337" y="181" width="141.66666666666663" height="20.333333333333343"/>
+                                <rect key="frame" x="136.33333333333337" y="209" width="141.66666666666663" height="20.333333333333343"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -465,7 +470,7 @@
                                 </attributedString>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="p0I-we-pzx" firstAttribute="top" secondItem="fJ0-1d-tgq" secondAttribute="bottom" constant="20" id="3Le-ff-uKG"/>
                             <constraint firstItem="lzc-xZ-iKm" firstAttribute="centerX" secondItem="miw-EI-6rT" secondAttribute="centerX" id="An8-8P-yFd"/>
@@ -1121,6 +1126,9 @@
         </systemColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="placeholderTextColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="secondarySystemGroupedBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
