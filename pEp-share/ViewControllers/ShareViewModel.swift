@@ -32,8 +32,6 @@ class ShareViewModel {
                 continue
             }
             for itemProvider in itemProviders {
-                if let attributedTitle = extensionItem.attributedTitle {
-                }
                 foundItemProviders.append(itemProvider)
                 if itemProvider.hasItemConformingToTypeIdentifier(ShareViewModel.utiPlainText) {
                     dispatchGroup.enter()
