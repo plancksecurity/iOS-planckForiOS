@@ -31,6 +31,11 @@ final class ShareViewController: UIViewController {
 
     // MARK: - Private
 
+    private enum UserAttachment {
+        case Picture (UIImage)
+        case Url (URL)
+        case PlainText (String)
+    }
 }
 
 // MARK: - Private Extension
