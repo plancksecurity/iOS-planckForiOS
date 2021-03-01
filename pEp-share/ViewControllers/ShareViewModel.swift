@@ -53,7 +53,7 @@ class ShareViewModel {
         // the action to execute when all shared data has been loaded
         let finishWorkItem = DispatchWorkItem(qos: .userInitiated, flags: []) { [weak self] in
             guard let me = self else {
-                // user canceled early
+                // assume user canceled early
                 return
             }
 
