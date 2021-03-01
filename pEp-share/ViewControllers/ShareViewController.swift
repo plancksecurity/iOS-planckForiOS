@@ -32,6 +32,14 @@ final class ShareViewController: UIViewController {
     }
 }
 
+// MARK: - Private ShareViewModelDelegate
+
+extension ShareViewController: ShareViewModelDelegate {
+    func startComposeView(sharedTypes: [SharedType]) {
+        print("*** Can start compose: \(sharedTypes)")
+    }
+}
+
 // MARK: - Private Extension
 
 extension ShareViewController {
