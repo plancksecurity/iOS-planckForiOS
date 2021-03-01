@@ -12,6 +12,8 @@ import UIKit
 import PEPIOSToolboxForAppExtensions
 
 class ShareViewModel {
+    private let sharedData = SharedData()
+
     public func checkInputItems(extensionContext: NSExtensionContext) {
         let dispatchGroup = DispatchGroup()
 
@@ -29,15 +31,18 @@ class ShareViewModel {
                 if itemProvider.hasItemConformingToTypeIdentifier(ShareViewModel.utiPlainText) {
                     dispatchGroup.enter()
                     loadPlainText(dispatchGroup: dispatchGroup,
+                                  sharedData: sharedData,
                                   extensionItem: extensionItem,
                                   itemProvider: itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier(ShareViewModel.utiImage) {
                     dispatchGroup.enter()
                     loadImage(dispatchGroup: dispatchGroup,
+                              sharedData: sharedData,
                               extensionItem: extensionItem,
                               itemProvider: itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier(ShareViewModel.utiUrl) {
                     loadFile(dispatchGroup: dispatchGroup,
+                             sharedData: sharedData,
                              extensionItem: extensionItem,
                              itemProvider: itemProvider)
                 }
@@ -63,12 +68,15 @@ extension ShareViewModel {
     private static let utiUrl = "public.file-url"
 
     private func loadPlainText(dispatchGroup: DispatchGroup,
+                               sharedData: SharedData,
                                extensionItem: NSExtensionItem,
                                itemProvider: NSItemProvider) {
         itemProvider.loadItem(forTypeIdentifier: ShareViewModel.utiPlainText,
                               options: nil,
                               completionHandler: { item, error in
                                 if let text = item as? String {
+                                    sharedData.add(extensionItem: extensionItem,
+                                                   dataWithType: .PlainText(text))
                                     // TODO: Store the result
                                     dispatchGroup.leave()
                                 } else if let error = error {
@@ -79,6 +87,7 @@ extension ShareViewModel {
     }
 
     private func loadImage(dispatchGroup: DispatchGroup,
+                           sharedData: SharedData,
                            extensionItem: NSExtensionItem,
                            itemProvider: NSItemProvider) {
         itemProvider.loadItem(forTypeIdentifier: ShareViewModel.utiImage,
@@ -96,6 +105,7 @@ extension ShareViewModel {
     }
 
     private func loadFile(dispatchGroup: DispatchGroup,
+                          sharedData: SharedData,
                           extensionItem: NSExtensionItem,
                           itemProvider: NSItemProvider) {
         // TODO: - not yet implemented
