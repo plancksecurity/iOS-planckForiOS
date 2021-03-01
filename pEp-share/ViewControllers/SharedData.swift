@@ -11,9 +11,9 @@ import UIKit
 
 /// The different data types supported by this extension
 public enum SharedType {
-    case Picture (UIImage)
-    case Url (URL)
-    case PlainText (String)
+    case picture (UIImage)
+    case url (URL)
+    case plainText (String)
 }
 
 /// Stores items shared by the user, complete with their types and the  data (once loaded).

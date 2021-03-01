@@ -75,7 +75,7 @@ extension ShareViewModel {
                               completionHandler: { item, error in
                                 if let text = item as? String {
                                     sharedData.add(extensionItem: extensionItem,
-                                                   dataWithType: .PlainText(text))
+                                                   dataWithType: .plainText(text))
                                     dispatchGroup.leave()
                                 } else if let error = error {
                                     Log.shared.log(error: error)
