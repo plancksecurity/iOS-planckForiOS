@@ -84,7 +84,9 @@ extension ShareViewController {
                               extensionItem: extensionItem,
                               itemProvider: itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier(ShareViewController.utiUrl) {
-                    loadFile(itemProvider: itemProvider)
+                    loadFile(dispatchGroup: dispatchGroup,
+                             extensionItem: extensionItem,
+                             itemProvider: itemProvider)
                 }
             }
         }
@@ -133,7 +135,9 @@ extension ShareViewController {
                               })
     }
 
-    private func loadFile(itemProvider: NSItemProvider) {
+    private func loadFile(dispatchGroup: DispatchGroup,
+                          extensionItem: NSExtensionItem,
+                          itemProvider: NSItemProvider) {
         // TODO: - not yet implemented
         Log.shared.debug("DEV: load PDF element is not yet implemented!")
     }
