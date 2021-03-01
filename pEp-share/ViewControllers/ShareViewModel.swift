@@ -57,11 +57,11 @@ class ShareViewModel {
                 return
             }
 
-            for itemProvider in foundItemProviders {
-                
+            for sharedType in sharedData.allSharedTypes() {
+                // TODO: Inform the VC
             }
-            // TODO: Inform the VC
-            //me.presentComposeVC()
+
+            // TODO: Inform the VC to invoke the compose view
         }
 
         // let the dispatch group call us when all is done
