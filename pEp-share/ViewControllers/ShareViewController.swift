@@ -69,18 +69,18 @@ extension ShareViewController {
             guard let attachments = extensionItem.attachments else {
                 continue
             }
-            for attachment in attachments {
+            for itemProvider in attachments {
                 if let attributedTitle = extensionItem.attributedTitle {
                     print("*** attachment title \(attributedTitle)")
                 }
-                if attachment.hasItemConformingToTypeIdentifier(ShareViewController.utiPlainText) {
+                if itemProvider.hasItemConformingToTypeIdentifier(ShareViewController.utiPlainText) {
                     dispatchGroup.enter()
-                    loadPlainText(dispatchGroup: dispatchGroup, item: attachment)
-                } else if attachment.hasItemConformingToTypeIdentifier(ShareViewController.utiImage) {
+                    loadPlainText(dispatchGroup: dispatchGroup, item: itemProvider)
+                } else if itemProvider.hasItemConformingToTypeIdentifier(ShareViewController.utiImage) {
                     dispatchGroup.enter()
-                    loadImage(dispatchGroup: dispatchGroup, item: attachment)
-                } else if attachment.hasItemConformingToTypeIdentifier(ShareViewController.utiUrl) {
-                    loadFile(item: attachment)
+                    loadImage(dispatchGroup: dispatchGroup, item: itemProvider)
+                } else if itemProvider.hasItemConformingToTypeIdentifier(ShareViewController.utiUrl) {
+                    loadFile(item: itemProvider)
                 }
             }
         }
