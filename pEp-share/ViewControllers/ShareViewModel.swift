@@ -15,6 +15,7 @@ class ShareViewModel {
     public func checkInputItems(extensionContext: NSExtensionContext) {
         let sharedData = SharedData()
         let dispatchGroup = DispatchGroup()
+        var foundItemProviders = [NSItemProvider]()
 
         for anyItem in extensionContext.inputItems {
             guard let extensionItem = anyItem as? NSExtensionItem else {
@@ -27,6 +28,7 @@ class ShareViewModel {
                 if let attributedTitle = extensionItem.attributedTitle {
                     print("*** attachment title \(attributedTitle)")
                 }
+                foundItemProviders.append(itemProvider)
                 if itemProvider.hasItemConformingToTypeIdentifier(ShareViewModel.utiPlainText) {
                     dispatchGroup.enter()
                     loadPlainText(dispatchGroup: dispatchGroup,
@@ -53,6 +55,10 @@ class ShareViewModel {
             guard let me = self else {
                 // user canceled early
                 return
+            }
+
+            for itemProvider in foundItemProviders {
+                
             }
             // TODO: Inform the VC
             //me.presentComposeVC()
