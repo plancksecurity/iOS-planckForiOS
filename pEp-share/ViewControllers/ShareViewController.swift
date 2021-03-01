@@ -28,9 +28,12 @@ final class ShareViewController: UIViewController {
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {
         extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
     }
+
+    // MARK: - Private
+
 }
 
-// MARK: - Private (WIP)
+// MARK: - Private Extension
 
 extension ShareViewController {
     private static let utiPlainText = "public.plain-text"
