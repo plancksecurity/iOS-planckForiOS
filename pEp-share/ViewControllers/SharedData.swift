@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+import PEPIOSToolboxForAppExtensions
+
 /// The different data types supported by this extension
 public enum SharedType {
     case image (UIImage)
@@ -30,9 +32,17 @@ public class SharedData {
         }
     }
 
-    /// Gets the loaded data for a given `NSItemProvider`.
-    public func get(itemProvider: NSItemProvider) -> SharedType? {
-        return loadedDataMap[itemProvider]
+    /// - Returns: All the downloaded documents ready for sharing.
+    public func allSharedTypes() -> [SharedType] {
+        var result = [SharedType]()
+        for itemProvider in itemProviders {
+            guard let sharedData = loadedDataMap[itemProvider] else {
+                Log.shared.errorAndCrash("Expected SharedData for NSItemProvider")
+                continue
+            }
+            result.append(sharedData)
+        }
+        return result
     }
 
     /// All the data the user wants to share, in association with the `NSExtensionItem`
