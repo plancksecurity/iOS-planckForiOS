@@ -29,6 +29,11 @@ public class SharedData {
         }
     }
 
+    /// Gets the loaded data for a given `NSItemProvider`.
+    public func get(itemProvider: NSItemProvider) -> SharedType? {
+        return foundExtensionsMap[itemProvider]
+    }
+
     /// All the data the user wants to share, in association with the `NSExtensionItem`
     /// that was used.
     ///
