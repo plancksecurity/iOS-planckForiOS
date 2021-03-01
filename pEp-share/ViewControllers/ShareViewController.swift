@@ -75,10 +75,14 @@ extension ShareViewController {
                 }
                 if itemProvider.hasItemConformingToTypeIdentifier(ShareViewController.utiPlainText) {
                     dispatchGroup.enter()
-                    loadPlainText(dispatchGroup: dispatchGroup, itemProvider: itemProvider)
+                    loadPlainText(dispatchGroup: dispatchGroup,
+                                  extensionItem: extensionItem,
+                                  itemProvider: itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier(ShareViewController.utiImage) {
                     dispatchGroup.enter()
-                    loadImage(dispatchGroup: dispatchGroup, itemProvider: itemProvider)
+                    loadImage(dispatchGroup: dispatchGroup,
+                              extensionItem: extensionItem,
+                              itemProvider: itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier(ShareViewController.utiUrl) {
                     loadFile(itemProvider: itemProvider)
                 }
@@ -96,7 +100,9 @@ extension ShareViewController {
         }
     }
 
-    private func loadPlainText(dispatchGroup: DispatchGroup, itemProvider: NSItemProvider) {
+    private func loadPlainText(dispatchGroup: DispatchGroup,
+                               extensionItem: NSExtensionItem,
+                               itemProvider: NSItemProvider) {
         itemProvider.loadItem(forTypeIdentifier: ShareViewController.utiPlainText,
                               options: nil,
                               completionHandler: { item, error in
@@ -110,7 +116,9 @@ extension ShareViewController {
                               })
     }
 
-    private func loadImage(dispatchGroup: DispatchGroup, itemProvider: NSItemProvider) {
+    private func loadImage(dispatchGroup: DispatchGroup,
+                           extensionItem: NSExtensionItem,
+                           itemProvider: NSItemProvider) {
         itemProvider.loadItem(forTypeIdentifier: ShareViewController.utiImage,
                               options: nil,
                               completionHandler: { item, error in
