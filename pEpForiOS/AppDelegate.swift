@@ -227,7 +227,7 @@ extension AppDelegate {
         }
 
         Log.shared.info("BGAppRefreshTask: Start checking for new mails")
-        messageModelService.checkForNewMails_old() {[unowned self] (numMails: Int?) in
+        messageModelService.checkForNewMails_old() { [unowned self] (numMails: Int?) in
             var success = false
             defer { task.setTaskCompleted(success: success) }
             guard let numMails = numMails else {
