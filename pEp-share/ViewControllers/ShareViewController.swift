@@ -79,14 +79,14 @@ extension ShareViewController {
         let dispatchGroup = DispatchGroup()
 
         for anyItem in context.inputItems {
-            guard let inputItem = anyItem as? NSExtensionItem else {
+            guard let extensionItem = anyItem as? NSExtensionItem else {
                 continue
             }
-            guard let attachments = inputItem.attachments else {
+            guard let attachments = extensionItem.attachments else {
                 continue
             }
             for attachment in attachments {
-                if let attributedTitle = inputItem.attributedTitle {
+                if let attributedTitle = extensionItem.attributedTitle {
                     print("*** attachment title \(attributedTitle)")
                 }
                 if attachment.hasItemConformingToTypeIdentifier(ShareViewController.utiPlainText) {
