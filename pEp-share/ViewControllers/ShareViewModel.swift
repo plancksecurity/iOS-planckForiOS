@@ -33,7 +33,6 @@ class ShareViewModel {
             }
             for itemProvider in itemProviders {
                 if let attributedTitle = extensionItem.attributedTitle {
-                    print("*** attachment title \(attributedTitle)")
                 }
                 foundItemProviders.append(itemProvider)
                 if itemProvider.hasItemConformingToTypeIdentifier(ShareViewModel.utiPlainText) {

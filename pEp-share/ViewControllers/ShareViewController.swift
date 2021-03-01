@@ -34,7 +34,6 @@ final class ShareViewController: UIViewController {
 
 extension ShareViewController: ShareViewModelDelegate {
     func startComposeView(sharedTypes: [SharedType]) {
-        print("*** Can start compose: \(sharedTypes)")
         presentComposeVC()
     }
 }
