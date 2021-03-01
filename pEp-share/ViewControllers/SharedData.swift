@@ -20,7 +20,7 @@ public enum SharedType {
 public class SharedData {
     /// Add a loaded item to share.
     public func add(extensionItem: NSExtensionItem, dataWithType: SharedType) {
-        extensionStoreQueue.async { [weak self] in
+        extensionStoreQueue.sync { [weak self] in
             guard let me = self else {
                 // assume the user canceled the sharing
                 return
