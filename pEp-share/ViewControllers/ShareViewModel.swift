@@ -64,11 +64,7 @@ class ShareViewModel {
                 return
             }
 
-            for sharedType in sharedData.allSharedTypes() {
-                // TODO: Inform the VC
-            }
-
-            // TODO: Inform the VC to invoke the compose view
+            me.shareViewModelDelegate?.startComposeView(withSharedTypes: sharedData.allSharedTypes())
         }
 
         // let the dispatch group call us when all is done
