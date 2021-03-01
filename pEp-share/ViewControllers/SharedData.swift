@@ -7,8 +7,25 @@
 //
 
 import Foundation
+import UIKit
+
+/// The different data types supported by this extension
+public enum SharedType {
+    case Picture (UIImage)
+    case Url (URL)
+    case PlainText (String)
+}
 
 /// Stores data shared by the user, complete with types.
-class SharedData {
+public class SharedData {
+    /// All the data the user wants to share, in association with the `NSExtensionItem`
+    /// that was used.
+    ///
+    /// The association with `NSExtensionItem` is needed to uphold the order (if any),
+    /// in which the data was shared, despite of the async loading of it.
+    private var foundExtensionsMap = [NSExtensionItem:SharedType]()
 
+    /// The queue to serialize access to `foundExtensionsMap`.
+    private let extensionStoreQueue = DispatchQueue(label: "SharedViewControllerStoreQueue",
+                                                    qos: .userInitiated)
 }
