@@ -20,10 +20,10 @@ class ShareViewModel {
             guard let extensionItem = anyItem as? NSExtensionItem else {
                 continue
             }
-            guard let attachments = extensionItem.attachments else {
+            guard let itemProviders = extensionItem.attachments else {
                 continue
             }
-            for itemProvider in attachments {
+            for itemProvider in itemProviders {
                 if let attributedTitle = extensionItem.attributedTitle {
                     print("*** attachment title \(attributedTitle)")
                 }
