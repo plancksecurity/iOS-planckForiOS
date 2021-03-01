@@ -202,6 +202,7 @@
 		3AD0E0A123E4659F006FFED3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AD0E0A023E4659F006FFED3 /* Assets.xcassets */; };
 		3AD2CBC923FD92650003A536 /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD2CBC823FD92640003A536 /* AccountSettingsViewModel.swift */; };
 		4300CF6325ECEF98003DBEB4 /* SharedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4300CF6225ECEF98003DBEB4 /* SharedData.swift */; };
+		4300CF6725ECF4F4003DBEB4 /* ShareViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4300CF6625ECF4F4003DBEB4 /* ShareViewModel.swift */; };
 		43038EA2246D897F008FC36E /* KeyImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43038EA1246D897F008FC36E /* KeyImportViewController.swift */; };
 		4307D5DA23575853004569C4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4307D5D823575853004569C4 /* InfoPlist.strings */; };
 		430D73651E9CBD4E00EA6FA9 /* AttachmentViewOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430D73641E9CBD4E00EA6FA9 /* AttachmentViewOperation.swift */; };
@@ -868,6 +869,7 @@
 		3AD0E0A023E4659F006FFED3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3AD2CBC823FD92640003A536 /* AccountSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModel.swift; sourceTree = "<group>"; };
 		4300CF6225ECEF98003DBEB4 /* SharedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedData.swift; sourceTree = "<group>"; };
+		4300CF6625ECF4F4003DBEB4 /* ShareViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewModel.swift; sourceTree = "<group>"; };
 		43038EA1246D897F008FC36E /* KeyImportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportViewController.swift; sourceTree = "<group>"; };
 		4307D5D923575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4307D5DB23575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/FolderViews.strings; sourceTree = "<group>"; };
@@ -1994,6 +1996,7 @@
 			children = (
 				3A503A9E253737B20070AB6A /* ShareViewController.swift */,
 				4300CF6225ECEF98003DBEB4 /* SharedData.swift */,
+				4300CF6625ECF4F4003DBEB4 /* ShareViewModel.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -3222,6 +3225,7 @@
 				3A503B1D253744D40070AB6A /* UIImage+Resize.swift in Sources */,
 				43BDE05725DE820C00FC0C68 /* iterator.c in Sources */,
 				434C19C125D3E07000F622DB /* AppSettingsProtocol.swift in Sources */,
+				4300CF6725ECF4F4003DBEB4 /* ShareViewModel.swift in Sources */,
 				434C1AD225D412F300F622DB /* TrustManagementViewModel.swift in Sources */,
 				434C1ABD25D4112B00F622DB /* SecureWebViewUrlClickHandlerProtocol.swift in Sources */,
 				434C1AEA25D4158000F622DB /* UIButton+Extension.swift in Sources */,
