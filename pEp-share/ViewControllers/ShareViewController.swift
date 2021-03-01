@@ -35,24 +35,17 @@ final class ShareViewController: UIViewController {
 extension ShareViewController: ShareViewModelDelegate {
     func startComposeView(sharedTypes: [SharedType]) {
         print("*** Can start compose: \(sharedTypes)")
-        setupComposeVC()
+        presentComposeVC()
     }
 }
 
 // MARK: - Private Extension
 
 extension ShareViewController {
-    private func setupComposeVC() {
+    private func presentComposeVC() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let composeVC = storyboard.instantiateViewController(withIdentifier: ComposeViewController.storyboardId) as? ComposeViewController else {
             Log.shared.errorAndCrash("Cannot instantiate ComposeViewController")
-            return
-        }
-    }
-
-    private func presentComposeVC() {
-        guard let composeVC = composeViewController else {
-            Log.shared.errorAndCrash("Have not instantiated yet a ComposeViewController")
             return
         }
         present(composeVC, animated: true, completion: nil)
