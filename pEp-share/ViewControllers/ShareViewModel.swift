@@ -94,7 +94,8 @@ extension ShareViewModel {
                                 if let imgUrl = item as? URL,
                                    let imgData = try? Data(contentsOf: imgUrl),
                                    let img = UIImage(data: imgData) {
-                                    // TODO: Store the result
+                                    sharedData.add(extensionItem: extensionItem,
+                                                   dataWithType: .picture(img))
                                 } else if let error = error {
                                     Log.shared.log(error: error)
                                 }
