@@ -17,8 +17,6 @@ final class ShareViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupComposeVC()
-
         guard let context = extensionContext else {
             Log.shared.errorAndCrash(message: "Lost extension context!")
             return
@@ -38,6 +36,7 @@ final class ShareViewController: UIViewController {
 extension ShareViewController: ShareViewModelDelegate {
     func startComposeView(sharedTypes: [SharedType]) {
         print("*** Can start compose: \(sharedTypes)")
+        setupComposeVC()
     }
 }
 
