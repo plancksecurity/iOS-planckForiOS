@@ -48,6 +48,13 @@ class Appearance {
         setAlertControllerTintColor(.pEpGreen)
 
         Appearance.configureSelectedBackgroundViewForPep(tableViewCell: UITableViewCell.appearance())
+
+        if #available(iOS 13, *) {
+            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor.systemBackground
+            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.label
+            UISearchBar.appearance().backgroundColor = UIColor.systemBackground
+            UINavigationBar.appearance().backgroundColor = UIColor.systemBackground
+        }
     }
 
     public static func configureSelectedBackgroundViewForPep(tableViewCell: UITableViewCell) {
