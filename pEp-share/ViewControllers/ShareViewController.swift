@@ -32,7 +32,7 @@ final class ShareViewController: UIViewController {
     // MARK: - Private
 
     /// The different data types supported by this extension
-    private enum UserAttachment {
+    private enum SharedType {
         case Picture (UIImage)
         case Url (URL)
         case PlainText (String)
