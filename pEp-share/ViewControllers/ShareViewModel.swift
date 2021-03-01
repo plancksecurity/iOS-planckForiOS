@@ -12,9 +12,8 @@ import UIKit
 import PEPIOSToolboxForAppExtensions
 
 class ShareViewModel {
-    private let sharedData = SharedData()
-
     public func checkInputItems(extensionContext: NSExtensionContext) {
+        let sharedData = SharedData()
         let dispatchGroup = DispatchGroup()
 
         for anyItem in extensionContext.inputItems {
