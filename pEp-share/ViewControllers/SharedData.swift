@@ -19,13 +19,13 @@ public enum SharedType {
 /// Stores items shared by the user, complete with their types and the  data (once loaded).
 public class SharedData {
     /// Add a loaded item to share.
-    public func add(extensionItem: NSExtensionItem, dataWithType: SharedType) {
+    public func add(itemProvider: NSItemProvider, dataWithType: SharedType) {
         extensionStoreQueue.sync { [weak self] in
             guard let me = self else {
                 // assume the user canceled the sharing
                 return
             }
-            me.foundExtensionsMap[extensionItem] = dataWithType
+            me.foundExtensionsMap[itemProvider] = dataWithType
         }
     }
 
@@ -34,7 +34,7 @@ public class SharedData {
     ///
     /// The association with `NSExtensionItem` is needed to uphold the order (if any),
     /// in which the data was shared, despite of the async loading of it.
-    private var foundExtensionsMap = [NSExtensionItem:SharedType]()
+    private var foundExtensionsMap = [NSItemProvider:SharedType]()
 
     /// The queue to serialize access to `foundExtensionsMap`.
     private let extensionStoreQueue = DispatchQueue(label: "SharedViewControllerStoreQueue",

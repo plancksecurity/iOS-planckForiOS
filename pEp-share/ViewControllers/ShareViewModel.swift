@@ -82,7 +82,7 @@ extension ShareViewModel {
                               options: nil,
                               completionHandler: { item, error in
                                 if let text = item as? String {
-                                    sharedData.add(extensionItem: extensionItem,
+                                    sharedData.add(itemProvider: itemProvider,
                                                    dataWithType: .plainText(text))
                                 } else if let error = error {
                                     Log.shared.log(error: error)
@@ -101,7 +101,7 @@ extension ShareViewModel {
                                 if let imgUrl = item as? URL,
                                    let imgData = try? Data(contentsOf: imgUrl),
                                    let img = UIImage(data: imgData) {
-                                    sharedData.add(extensionItem: extensionItem,
+                                    sharedData.add(itemProvider: itemProvider,
                                                    dataWithType: .image(img))
                                 } else if let error = error {
                                     Log.shared.log(error: error)
