@@ -12,7 +12,6 @@ import PEPIOSToolboxForAppExtensions
 
 final class ShareViewController: UIViewController {
     var vm = ShareViewModel()
-    var composeViewController: ComposeViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +48,6 @@ extension ShareViewController {
             Log.shared.errorAndCrash("Cannot instantiate ComposeViewController")
             return
         }
-        composeViewController = composeVC
     }
 
     private func presentComposeVC() {
