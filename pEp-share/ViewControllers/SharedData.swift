@@ -25,13 +25,13 @@ public class SharedData {
                 // assume the user canceled the sharing
                 return
             }
-            me.foundExtensionsMap[itemProvider] = dataWithType
+            me.loadedDataMap[itemProvider] = dataWithType
         }
     }
 
     /// Gets the loaded data for a given `NSItemProvider`.
     public func get(itemProvider: NSItemProvider) -> SharedType? {
-        return foundExtensionsMap[itemProvider]
+        return loadedDataMap[itemProvider]
     }
 
     /// All the data the user wants to share, in association with the `NSExtensionItem`
@@ -39,7 +39,7 @@ public class SharedData {
     ///
     /// The association with `NSExtensionItem` is needed to uphold the order (if any),
     /// in which the data was shared, despite of the async loading of it.
-    private var foundExtensionsMap = [NSItemProvider:SharedType]()
+    private var loadedDataMap = [NSItemProvider:SharedType]()
 
     /// The queue to serialize access to `foundExtensionsMap`.
     private let extensionStoreQueue = DispatchQueue(label: "SharedViewControllerStoreQueue",
