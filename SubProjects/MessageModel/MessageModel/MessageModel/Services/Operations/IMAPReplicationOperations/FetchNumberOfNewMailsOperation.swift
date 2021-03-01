@@ -12,7 +12,7 @@ import pEpIOSToolbox
 
 /// Fetches UIDs of  new (to us) messages in a given folder and returns its count.
 class FetchNumberOfNewMailsOperation: ImapSyncOperation {
-    typealias CompletionBlock = (_ numNewMails: Int?) -> ()
+    typealias CompletionBlock = (_ numNewMails: Int) -> ()
 
     private var folderToOpen = ImapConnection.defaultInboxName
     private var numNewMailsFetchedBlock: CompletionBlock?
@@ -148,7 +148,7 @@ extension FetchNumberOfNewMailsOperation {
 
     fileprivate func handleResult(uids: [UInt]?) {
         let uids = validateResult(uids: uids)
-        numNewMailsFetchedBlock?(uids?.count)
+        numNewMailsFetchedBlock?(uids?.count ?? 0)
         waitForBackgroundTasksAndFinish()
     }
     
