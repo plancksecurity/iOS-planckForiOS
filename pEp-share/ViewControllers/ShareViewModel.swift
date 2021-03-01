@@ -47,17 +47,19 @@ class ShareViewModel {
                 }
             }
         }
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+
+        // the action to execute when all shared data has been loaded
+        let finishWorkItem = DispatchWorkItem(qos: .userInitiated, flags: []) { [weak self] in
             guard let me = self else {
                 // user canceled early
                 return
             }
-            dispatchGroup.wait()
-            DispatchQueue.main.async {
-                // TODO: Inform the VC
-                //me.presentComposeVC()
-            }
+            // TODO: Inform the VC
+            //me.presentComposeVC()
         }
+
+        // let the dispatch group call us when all is done
+        dispatchGroup.notify(queue: DispatchQueue.main, work: finishWorkItem)
     }
 }
 
