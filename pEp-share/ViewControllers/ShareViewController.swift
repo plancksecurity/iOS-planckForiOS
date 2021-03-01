@@ -43,7 +43,11 @@ final class ShareViewController: UIViewController {
     ///
     /// The association with `NSExtensionItem` is needed to uphold the order (if any),
     /// in which the data was shared, despite of the async loading of it.
-    private var foundExtension = [NSExtensionItem:SharedType]()
+    private var foundExtensionsMap = [NSExtensionItem:SharedType]()
+
+    /// The queue to serialize access to `foundExtensionsMap`.
+    private let extensionStoreQueue = DispatchQueue(label: "SharedViewControllerStoreQueue",
+                                                    qos: .userInitiated)
 }
 
 // MARK: - Private Extension
