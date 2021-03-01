@@ -26,7 +26,15 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
     public func configure(with row : AccountSettingsViewModel.SwitchRow, isGrayedOut: Bool) {
         self.row = row
         titleLabel.text = row.title
-        titleLabel.textColor = isGrayedOut ? .pEpTextDark : .gray
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .light {
+                titleLabel.textColor = isGrayedOut ? .pEpTextDark : .gray
+            } else {
+                titleLabel.textColor = isGrayedOut ? UIColor.label : .gray
+            }
+        } else {
+            titleLabel.textColor = isGrayedOut ? .pEpTextDark : .gray
+        }
         switchItem.isOn = row.isOn
         switchItem.isUserInteractionEnabled = isGrayedOut
         switchItem.onTintColor = isGrayedOut ? UIColor.pEpGreen : UIColor.pEpGreyBackground
@@ -37,7 +45,15 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
     public func configure(with row : AccountSettingsViewModel.SwitchRow) {
         self.row = row
         titleLabel.text = row.title
-        titleLabel.textColor = .pEpTextDark
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .light {
+                titleLabel.textColor = .pEpTextDark
+            } else {
+                titleLabel.textColor = UIColor.label
+            }
+        } else {
+            titleLabel.textColor = .pEpTextDark
+        }
         switchItem.isOn = row.isOn
         switchItem.onTintColor = .pEpGreen
     }
