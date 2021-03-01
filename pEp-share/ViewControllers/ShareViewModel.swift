@@ -13,7 +13,7 @@ import PEPIOSToolboxForAppExtensions
 
 protocol ShareViewModelDelegate: class {
     /// All documents to be shared have been downloaded, ready to show the compose view.
-    func startComposeView(withSharedTypes: [SharedType])
+    func startComposeView(sharedTypes: [SharedType])
 }
 
 class ShareViewModel {
@@ -64,7 +64,7 @@ class ShareViewModel {
                 return
             }
 
-            me.shareViewModelDelegate?.startComposeView(withSharedTypes: sharedData.allSharedTypes())
+            me.shareViewModelDelegate?.startComposeView(sharedTypes: sharedData.allSharedTypes())
         }
 
         // let the dispatch group call us when all is done
