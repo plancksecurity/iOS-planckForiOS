@@ -76,7 +76,6 @@ extension ShareViewModel {
                                 if let text = item as? String {
                                     sharedData.add(extensionItem: extensionItem,
                                                    dataWithType: .PlainText(text))
-                                    // TODO: Store the result
                                     dispatchGroup.leave()
                                 } else if let error = error {
                                     Log.shared.log(error: error)
