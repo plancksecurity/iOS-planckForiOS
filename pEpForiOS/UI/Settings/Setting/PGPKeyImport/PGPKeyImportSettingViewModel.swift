@@ -121,10 +121,14 @@ extension PGPKeyImportSettingViewModel {
         // Passphrase
         let usePassphraseForNewKeys = NSLocalizedString("Use a passphrase for new keys",
                                                      comment: "PGPKeyImportSetting - Use a Passphrase for new keys")
+        var titleFontColorToSet = UIColor.black
+        if #available(iOS 13.0, *) {
+            titleFontColorToSet = UIColor.label
+        }
         let passphraseForNewKey = Row(type: .passphrase,
                                       title: usePassphraseForNewKeys,
                                       isEnabled: true,
-                                      titleFontColor: .black)
+                                      titleFontColor: titleFontColorToSet)
         let pgpkeyImportSection = Section(rows: [pgpKeyImportRow, passphraseForNewKey],
                                           title: getPGPKeyImportSectionHeaderTitle())
         // setOwnKeySection
