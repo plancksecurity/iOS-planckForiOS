@@ -62,13 +62,13 @@ extension FetchNumberOfNewMailsOperation {
         // Treat Inbox specially, as it is the only mailbox that is mandatorily case-insensitive.
         // Thus we search for
         if folderToOpen.isInboxFolderName() {
-            if let folder = CdFolder.first(attributes:
-                ["folderTypeRawValue": FolderType.inbox.rawValue,   "account": account], in: privateMOC) {
+            if let folder = CdFolder.first(attributes:["folderTypeRawValue": FolderType.inbox.rawValue,
+                                                       "account": account],
+                                           in: privateMOC) {
                 return folder
             }
         }
-        return CdFolder.first(attributes: ["name": folderToOpen, "account": account],
-                              in: privateMOC)
+        return CdFolder.first(attributes: ["name": folderToOpen, "account": account], in: privateMOC)
     }
 
     private func process() {
