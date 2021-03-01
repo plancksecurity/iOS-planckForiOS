@@ -27,11 +27,6 @@ final class ShareViewController: UIViewController {
         vm.checkInputItems(extensionContext: context)
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let vc = segue.destination as? ComposeViewController {
-        }
-    }
-
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {
         extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
     }
