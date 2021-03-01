@@ -37,6 +37,13 @@ final class ShareViewController: UIViewController {
         case Url (URL)
         case PlainText (String)
     }
+
+    /// All the data the user wants to share, in association with the `NSExtensionItem`
+    /// that was used.
+    ///
+    /// The association with `NSExtensionItem` is needed to uphold the order (if any),
+    /// in which the data was shared, despite of the async loading of it.
+    private var foundExtension = [NSExtensionItem:SharedType]()
 }
 
 // MARK: - Private Extension
