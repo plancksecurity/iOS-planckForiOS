@@ -18,6 +18,17 @@ public enum SharedType {
 
 /// Stores items shared by the user, complete with their types and the  data (once loaded).
 public class SharedData {
+    /// Add a loaded item to share.
+    public func add(extensionItem: NSExtensionItem, dataWithType: SharedType) {
+        extensionStoreQueue.async { [weak self] in
+            guard let me = self else {
+                // assume the user canceled the sharing
+                return
+            }
+            me.foundExtensionsMap[extensionItem] = dataWithType
+        }
+    }
+
     /// All the data the user wants to share, in association with the `NSExtensionItem`
     /// that was used.
     ///
