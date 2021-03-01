@@ -24,6 +24,7 @@ final class ShareViewController: UIViewController {
             return
         }
 
+        vm.shareViewModelDelegate = self
         vm.checkInputItems(extensionContext: context)
     }
 
