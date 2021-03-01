@@ -20,7 +20,7 @@ public enum SharedType {
 public class SharedData {
     /// Add a loaded item to share.
     public func add(itemProvider: NSItemProvider, dataWithType: SharedType) {
-        extensionStoreQueue.sync { [weak self] in
+        manipulationQueue.sync { [weak self] in
             guard let me = self else {
                 // assume the user canceled the sharing
                 return
@@ -42,6 +42,6 @@ public class SharedData {
     private var loadedDataMap = [NSItemProvider:SharedType]()
 
     /// The queue to serialize access to `foundExtensionsMap`.
-    private let extensionStoreQueue = DispatchQueue(label: "SharedViewControllerStoreQueue",
-                                                    qos: .userInitiated)
+    private let manipulationQueue = DispatchQueue(label: "SharedViewControllerStoreQueue",
+                                                  qos: .userInitiated)
 }
