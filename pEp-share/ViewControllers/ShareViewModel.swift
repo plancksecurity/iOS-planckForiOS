@@ -62,10 +62,6 @@ class ShareViewModel {
 }
 
 extension ShareViewModel {
-    private static let utiPlainText = "public.plain-text"
-    private static let utiImage = "public.image"
-    private static let utiUrl = "public.file-url"
-
     private func loadPlainText(dispatchGroup: DispatchGroup,
                                sharedData: SharedData,
                                extensionItem: NSExtensionItem,
