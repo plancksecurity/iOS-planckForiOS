@@ -16,7 +16,7 @@ public enum SharedType {
     case PlainText (String)
 }
 
-/// Stores data shared by the user, complete with types.
+/// Stores items shared by the user, complete with their types and the  data (once loaded).
 public class SharedData {
     /// All the data the user wants to share, in association with the `NSExtensionItem`
     /// that was used.
