@@ -88,7 +88,7 @@ extension AppDelegate {
                 me.handleAppRefreshTask(task as! BGAppRefreshTask)
             }
         } else {
-            application.setMinimumBackgroundFetchInterval(60.0 * 10)
+            application.setMinimumBackgroundFetchInterval(60.0 * 2)
         }
         Appearance.setup()
         setupServices()
@@ -165,6 +165,7 @@ extension AppDelegate {
         if #available(iOS 13.0, *) {
             Log.shared.errorAndCrash("Should not be called on iOS>=13. Should use BGTaskScheduler instead")
             // Do nothing. We use different API (BGTaskScheduler) for iOS13 and up.
+            completionHandler(.failed)
         } else {
             guard let messageModelService = messageModelService else {
                 Log.shared.error("no networkService")
@@ -214,7 +215,7 @@ extension AppDelegate {
     @available(iOS 13, *)
     private func handleAppRefreshTask(_ task: BGAppRefreshTask) {
         // Schedule a new refresh task
-        defer { scheduleAppRefresh() }
+        scheduleAppRefresh()
 
         guard let messageModelService = messageModelService else {
             Log.shared.error("no networkService")
@@ -251,7 +252,7 @@ extension AppDelegate {
     @available(iOS 13, *)
     func scheduleAppRefresh() {
         let request = BGAppRefreshTaskRequest(identifier: Constants.appRefreshTaskBackgroundtaskBackgroundfetchSchedulerid)
-        request.earliestBeginDate = Date(timeIntervalSinceNow: 60.0 * 5)
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 60.0 * 2)
         do {
             try BGTaskScheduler.shared.submit(request)
         } catch {
