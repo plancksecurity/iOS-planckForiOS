@@ -251,7 +251,7 @@ extension AppDelegate {
     @available(iOS 13, *)
     func scheduleAppRefresh() {
         let request = BGAppRefreshTaskRequest(identifier: Constants.appRefreshTaskBackgroundtaskBackgroundfetchSchedulerid)
-        request.earliestBeginDate = Date(timeIntervalSinceNow: 60.0 * 10)
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 60.0 * 5)
         do {
             try BGTaskScheduler.shared.submit(request)
         } catch {
