@@ -75,12 +75,12 @@ extension ShareViewController {
                 }
                 if itemProvider.hasItemConformingToTypeIdentifier(ShareViewController.utiPlainText) {
                     dispatchGroup.enter()
-                    loadPlainText(dispatchGroup: dispatchGroup, item: itemProvider)
+                    loadPlainText(dispatchGroup: dispatchGroup, itemProvider: itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier(ShareViewController.utiImage) {
                     dispatchGroup.enter()
-                    loadImage(dispatchGroup: dispatchGroup, item: itemProvider)
+                    loadImage(dispatchGroup: dispatchGroup, itemProvider: itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier(ShareViewController.utiUrl) {
-                    loadFile(item: itemProvider)
+                    loadFile(itemProvider: itemProvider)
                 }
             }
         }
@@ -96,36 +96,36 @@ extension ShareViewController {
         }
     }
 
-    private func loadPlainText(dispatchGroup: DispatchGroup, item: NSItemProvider) {
-        item.loadItem(forTypeIdentifier: ShareViewController.utiPlainText,
-                      options: nil,
-                      completionHandler: { item, error in
-                        if let text = item as? String {
-                            // TODO: Store the result
-                            dispatchGroup.leave()
-                        } else if let error = error {
-                            Log.shared.log(error: error)
-                        }
-                        dispatchGroup.leave()
-        })
+    private func loadPlainText(dispatchGroup: DispatchGroup, itemProvider: NSItemProvider) {
+        itemProvider.loadItem(forTypeIdentifier: ShareViewController.utiPlainText,
+                              options: nil,
+                              completionHandler: { item, error in
+                                if let text = item as? String {
+                                    // TODO: Store the result
+                                    dispatchGroup.leave()
+                                } else if let error = error {
+                                    Log.shared.log(error: error)
+                                }
+                                dispatchGroup.leave()
+                              })
     }
 
-    private func loadImage(dispatchGroup: DispatchGroup, item: NSItemProvider) {
-        item.loadItem(forTypeIdentifier: ShareViewController.utiImage,
-                      options: nil,
-                      completionHandler: { item, error in
-                        if let imgUrl = item as? URL,
-                           let imgData = try? Data(contentsOf: imgUrl),
-                           let img = UIImage(data: imgData) {
-                            // TODO: Store the result
-                        } else if let error = error {
-                            Log.shared.log(error: error)
-                        }
-                        dispatchGroup.leave()
-                      })
+    private func loadImage(dispatchGroup: DispatchGroup, itemProvider: NSItemProvider) {
+        itemProvider.loadItem(forTypeIdentifier: ShareViewController.utiImage,
+                              options: nil,
+                              completionHandler: { item, error in
+                                if let imgUrl = item as? URL,
+                                   let imgData = try? Data(contentsOf: imgUrl),
+                                   let img = UIImage(data: imgData) {
+                                    // TODO: Store the result
+                                } else if let error = error {
+                                    Log.shared.log(error: error)
+                                }
+                                dispatchGroup.leave()
+                              })
     }
 
-    private func loadFile(item: NSItemProvider) {
+    private func loadFile(itemProvider: NSItemProvider) {
         // TODO: - not yet implemented
         Log.shared.debug("DEV: load PDF element is not yet implemented!")
     }
