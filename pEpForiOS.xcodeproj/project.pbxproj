@@ -415,6 +415,7 @@
 		43BDE05D25DE826000FC0C68 /* houdini_html_e.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BB1F4441190053381F /* houdini_html_e.c */; };
 		43C4156225EE5BD80071C608 /* Attachment+InlinedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C4156125EE5BD80071C608 /* Attachment+InlinedImage.swift */; };
 		43C4156525EE5CA50071C608 /* Attachment+InlinedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C4156125EE5BD80071C608 /* Attachment+InlinedImage.swift */; };
+		43C415C725EE687A0071C608 /* NSItemProvider+MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C415C625EE687A0071C608 /* NSItemProvider+MimeType.swift */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -1027,6 +1028,7 @@
 		43B0444B20077323007BCE3F /* OAuth2Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Configuration.swift; sourceTree = "<group>"; };
 		43B10C7F1EC2EE7F003E849F /* CppDummy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CppDummy.cpp; sourceTree = "<group>"; };
 		43C4156125EE5BD80071C608 /* Attachment+InlinedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Attachment+InlinedImage.swift"; sourceTree = "<group>"; };
+		43C415C625EE687A0071C608 /* NSItemProvider+MimeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSItemProvider+MimeType.swift"; sourceTree = "<group>"; };
 		43C98ABF219C22E8006418B0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/AccountCreation.strings; sourceTree = "<group>"; };
 		43C98AC0219C22E8006418B0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Settings.strings; sourceTree = "<group>"; };
 		43C98AC2219C275E006418B0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2008,6 +2010,7 @@
 			isa = PBXGroup;
 			children = (
 				3A503B1C253744D40070AB6A /* UIImage+Resize.swift */,
+				43C415C625EE687A0071C608 /* NSItemProvider+MimeType.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3197,6 +3200,7 @@
 				434A6C7125D2A3DF00179335 /* RecipientTextViewModel.swift in Sources */,
 				434C19AB25D3D92D00F622DB /* AccountPickerView.swift in Sources */,
 				434C1AE125D4141800F622DB /* TrustManagementTableViewCellProtocols.swift in Sources */,
+				43C415C725EE687A0071C608 /* NSItemProvider+MimeType.swift in Sources */,
 				434C1AC325D411B700F622DB /* UIUtils+Alerts.swift in Sources */,
 				434A6C6925D2A3D200179335 /* RecipientCellViewModel+FieldType.swift in Sources */,
 				43BDE03925DE7CFC00FC0C68 /* html.c in Sources */,
