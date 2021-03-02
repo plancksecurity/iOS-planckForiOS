@@ -135,35 +135,45 @@ extension BodyCellViewModel {
 
 extension BodyCellViewModel {
     public func inline(attachment: Attachment) {
-        guard let image = attachment.image else {
-            Log.shared.errorAndCrash("No image")
-            return
-        }
         attachment.session.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
             }
             attachment.contentDisposition = .inline
-            // Workaround: If the image has a higher resolution than that, UITextView has serious
-            // performance issues (delay typing).
-            guard let scaledImage = image.resized(newWidth: me.maxTextattachmentWidth / 2,
-                                                  useAlpha: false)
-                else {
-                    Log.shared.errorAndCrash("Error resizing")
-                    return
-            }
-            let textAttachment = TextAttachment()
-            textAttachment.image = scaledImage
-            textAttachment.attachment = attachment
+
             let margin: CGFloat = 10.0
-            textAttachment.bounds = CGRect.rect(withWidth: me.maxTextattachmentWidth - margin,
-                                                ratioOf: scaledImage.size)
-            let imageString = NSAttributedString(attachment: textAttachment)
+            let imageString = BodyCellViewModel.inlinedText(attachment: attachment,
+                                                            scaleToImageWidth: me.maxTextattachmentWidth / 2,
+                                                            attachmentWidth: me.maxTextattachmentWidth - margin)
 
             me.delegate?.insert(text: imageString)
             me.inlinedAttachments.append(attachment)
         }
+    }
+
+    static public func inlinedText(attachment: Attachment,
+                                   scaleToImageWidth: CGFloat,
+                                   attachmentWidth: CGFloat) -> NSAttributedString {
+        guard let image = attachment.image else {
+            Log.shared.errorAndCrash("No image")
+            return NSAttributedString()
+        }
+
+        // Workaround: If the image has a higher resolution than that, UITextView has serious
+        // performance issues (delay typing).
+        guard let scaledImage = image.resized(newWidth: scaleToImageWidth, useAlpha: false) else {
+            Log.shared.errorAndCrash("Error resizing")
+            return NSAttributedString()
+        }
+
+        let textAttachment = TextAttachment()
+        textAttachment.image = scaledImage
+        textAttachment.attachment = attachment
+        textAttachment.bounds = CGRect.rect(withWidth: attachmentWidth,
+                                            ratioOf: scaledImage.size)
+        let imageString = NSAttributedString(attachment: textAttachment)
+        return imageString
     }
 
     private func removeInlinedAttachments(_ removees: [Attachment]) {
