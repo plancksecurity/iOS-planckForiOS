@@ -166,6 +166,22 @@ extension ComposeViewModel {
             self.bodyPlaintext = mailto.body
         }
 
+        /// Used by the sharing extension, which is all about attachments.
+        init(subject: String,
+             bodyHtml: NSAttributedString,
+             inlinedAttachments: [Attachment],
+             nonInlinedAttachments: [Attachment]) {
+            self.bodyHtml = bodyHtml
+            self.inlinedAttachments = inlinedAttachments
+            self.nonInlinedAttachments = nonInlinedAttachments
+
+            self.composeMode = .normal
+            self.prefilledTos = []
+            self.prefilledCCs = []
+            self.prefilledBCCs = []
+            self.subject = subject
+        }
+
         mutating private func setupInitialSubject() {
             guard let originalMessage = originalMessage else {
                 // We have no original message. That's OK for compose mode .normal.
