@@ -10,6 +10,8 @@ import Foundation
 import MobileCoreServices
 
 extension NSItemProvider {
+    /// - Returns: An image-related mime type if this provider has an item conforming to a known image UTI
+    ///   that we support as inline attachment.
     public func supportedMimeTypeForInlineAttachment() -> String? {
         guard hasItemConformingToTypeIdentifier(kUTTypeImage as String) else {
             return nil
