@@ -143,37 +143,12 @@ extension BodyCellViewModel {
             attachment.contentDisposition = .inline
 
             let margin: CGFloat = 10.0
-            let imageString = BodyCellViewModel.inlinedText(attachment: attachment,
-                                                            scaleToImageWidth: me.maxTextattachmentWidth / 2,
-                                                            attachmentWidth: me.maxTextattachmentWidth - margin)
+            let imageString = attachment.inlinedText(scaleToImageWidth: me.maxTextattachmentWidth / 2,
+                                                     attachmentWidth: me.maxTextattachmentWidth - margin)
 
             me.delegate?.insert(text: imageString)
             me.inlinedAttachments.append(attachment)
         }
-    }
-
-    static public func inlinedText(attachment: Attachment,
-                                   scaleToImageWidth: CGFloat,
-                                   attachmentWidth: CGFloat) -> NSAttributedString {
-        guard let image = attachment.image else {
-            Log.shared.errorAndCrash("No image")
-            return NSAttributedString()
-        }
-
-        // Workaround: If the image has a higher resolution than that, UITextView has serious
-        // performance issues (delay typing).
-        guard let scaledImage = image.resized(newWidth: scaleToImageWidth, useAlpha: false) else {
-            Log.shared.errorAndCrash("Error resizing")
-            return NSAttributedString()
-        }
-
-        let textAttachment = TextAttachment()
-        textAttachment.image = scaledImage
-        textAttachment.attachment = attachment
-        textAttachment.bounds = CGRect.rect(withWidth: attachmentWidth,
-                                            ratioOf: scaledImage.size)
-        let imageString = NSAttributedString(attachment: textAttachment)
-        return imageString
     }
 
     private func removeInlinedAttachments(_ removees: [Attachment]) {

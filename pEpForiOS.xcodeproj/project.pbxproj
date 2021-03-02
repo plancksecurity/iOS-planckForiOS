@@ -413,6 +413,8 @@
 		43BDE05725DE820C00FC0C68 /* iterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BF1F4441190053381F /* iterator.c */; };
 		43BDE05A25DE821C00FC0C68 /* inlines.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BE1F4441190053381F /* inlines.c */; };
 		43BDE05D25DE826000FC0C68 /* houdini_html_e.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BB1F4441190053381F /* houdini_html_e.c */; };
+		43C4156225EE5BD80071C608 /* Attachment+InlinedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C4156125EE5BD80071C608 /* Attachment+InlinedImage.swift */; };
+		43C4156525EE5CA50071C608 /* Attachment+InlinedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C4156125EE5BD80071C608 /* Attachment+InlinedImage.swift */; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -1024,6 +1026,7 @@
 		43A9818D24E53CF800830603 /* Color+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+UI.swift"; sourceTree = "<group>"; };
 		43B0444B20077323007BCE3F /* OAuth2Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Configuration.swift; sourceTree = "<group>"; };
 		43B10C7F1EC2EE7F003E849F /* CppDummy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CppDummy.cpp; sourceTree = "<group>"; };
+		43C4156125EE5BD80071C608 /* Attachment+InlinedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Attachment+InlinedImage.swift"; sourceTree = "<group>"; };
 		43C98ABF219C22E8006418B0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/AccountCreation.strings; sourceTree = "<group>"; };
 		43C98AC0219C22E8006418B0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Settings.strings; sourceTree = "<group>"; };
 		43C98AC2219C275E006418B0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2860,6 +2863,7 @@
 				43269D262552ABE9001E18C6 /* String+PEPSignature.swift */,
 				43269D3D2552B2BA001E18C6 /* Attachment+DefaultFilename.swift */,
 				43269D6B2552B744001E18C6 /* VerifiableAccountValidationError+LocalizedError.swift */,
+				43C4156125EE5BD80071C608 /* Attachment+InlinedImage.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3242,6 +3246,7 @@
 				434C19F725D3E64D00F622DB /* HtmlConversions.swift in Sources */,
 				434C1AAF25D4103400F622DB /* UrlClickHandlerProtocol.swift in Sources */,
 				434A6C5325D2A3AF00179335 /* AccountCell.swift in Sources */,
+				43C4156525EE5CA50071C608 /* Attachment+InlinedImage.swift in Sources */,
 				434C1B0525D4281800F622DB /* Attachment+Extensions.swift in Sources */,
 				434A6C7825D2A3EA00179335 /* SubjectCellViewModel.swift in Sources */,
 				434C1A7125D409B100F622DB /* UIHelper.swift in Sources */,
@@ -3558,6 +3563,7 @@
 				3705096C22DC8C1800CB73D6 /* KeyInputView.swift in Sources */,
 				5B5C2A9225D2902C00F9C18A /* MessageAttachmentCell.swift in Sources */,
 				5BBE80CD24B733C0008DE0E5 /* AccountSettingsSwitchTableViewCell.swift in Sources */,
+				43C4156225EE5BD80071C608 /* Attachment+InlinedImage.swift in Sources */,
 				4351C2D81F4441190053381F /* references.c in Sources */,
 				152A39DC21905C3E00D9F8E4 /* TextViewContainingTableViewCell.swift in Sources */,
 				000D3C2F20D12BFD006B11B2 /* MessageViewModel.swift in Sources */,
