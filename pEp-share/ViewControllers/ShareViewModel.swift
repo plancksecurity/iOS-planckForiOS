@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+import MessageModelForAppExtensions
 import PEPIOSToolboxForAppExtensions
 
 protocol ShareViewModelDelegate: class {
@@ -84,6 +85,7 @@ class ShareViewModel {
                     bodyHtml.append(theTitle)
                 }
                 // TODO: Add the image
+
             default:
                 // TODO: Remove and explicitly handle all cases
                 break
