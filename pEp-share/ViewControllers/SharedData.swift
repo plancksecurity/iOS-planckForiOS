@@ -13,7 +13,7 @@ import PEPIOSToolboxForAppExtensions
 
 /// The different data types supported by this extension
 public enum SharedType {
-    case image (NSAttributedString?, UIImage)
+    case image (NSAttributedString?, UIImage, Data)
     case url (NSAttributedString?, URL)
     case plainText (NSAttributedString?, String)
 }

@@ -80,7 +80,7 @@ class ShareViewModel {
 
         for sharedType in sharedTypes {
             switch sharedType {
-            case .image(let title, let image):
+            case .image(let title, let image, let imageData):
                 if let theTitle = title {
                     bodyHtml.append(theTitle)
                 }
@@ -143,7 +143,9 @@ extension ShareViewModel {
                                    let imgData = try? Data(contentsOf: imgUrl),
                                    let img = UIImage(data: imgData) {
                                     sharedData.add(itemProvider: itemProvider,
-                                                   dataWithType: .image(attributedTitle, img))
+                                                   dataWithType: .image(attributedTitle,
+                                                                        img,
+                                                                        imgData))
                                 } else if let error = error {
                                     Log.shared.log(error: error)
                                 }
