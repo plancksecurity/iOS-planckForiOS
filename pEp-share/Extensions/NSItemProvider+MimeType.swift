@@ -26,5 +26,7 @@ extension NSItemProvider {
         return nil
     }
 
-    static private let supportedInlineImageUTIsToMimeType: [String:String] = [ kUTTypeJPEG as String: "image/jpeg" ]
+    static private let supportedInlineImageUTIsToMimeType: [String:String] = [
+        kUTTypeJPEG as String: "image/jpeg"
+    ]
 }
