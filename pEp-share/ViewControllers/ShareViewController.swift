@@ -22,7 +22,7 @@ final class ShareViewController: UIViewController {
         }
 
         vm.shareViewModelDelegate = self
-        vm.checkInputItems(extensionContext: context)
+        vm.loadInputItems(extensionContext: context)
     }
 
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {

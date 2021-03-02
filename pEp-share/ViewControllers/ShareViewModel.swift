@@ -19,7 +19,8 @@ protocol ShareViewModelDelegate: class {
 class ShareViewModel {
     public weak var shareViewModelDelegate: ShareViewModelDelegate?
 
-    public func checkInputItems(extensionContext: NSExtensionContext) {
+    /// Load all eligible files from the extension context and inform the delegate when done.
+    public func loadInputItems(extensionContext: NSExtensionContext) {
         let sharedData = SharedData()
         let dispatchGroup = DispatchGroup()
         var foundItemProviders = [NSItemProvider]()
