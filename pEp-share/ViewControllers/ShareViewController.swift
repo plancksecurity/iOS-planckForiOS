@@ -48,16 +48,6 @@ extension ShareViewController {
             return
         }
 
-        let bodyHtml = NSAttributedString(string: "This has been shared")
-        let initData = ComposeViewModel.InitData(subject: "Shared",
-                                                 bodyHtml: bodyHtml,
-                                                 inlinedAttachments: [],
-                                                 nonInlinedAttachments: [])
-
-        let composeVMState = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
-        let composeViewModel = ComposeViewModel(state: composeVMState)
-        composeVC.viewModel = composeViewModel
-
         present(composeVC, animated: true, completion: nil)
     }
 }

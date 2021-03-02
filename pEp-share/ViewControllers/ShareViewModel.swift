@@ -72,6 +72,23 @@ class ShareViewModel {
         // let the dispatch group call us when all is done
         dispatchGroup.notify(queue: DispatchQueue.main, work: finishWorkItem)
     }
+
+    /// Creates a `ComposeViewModel.InitData` from shared data, suitable for creating a compose view model.
+    static public func composeInitData(sharedTypes: [SharedType]) -> ComposeViewModel.InitData {
+        let bodyHtml = NSAttributedString(string: "This has been shared")
+        let initData = ComposeViewModel.InitData(subject: "Shared",
+                                                 bodyHtml: bodyHtml,
+                                                 inlinedAttachments: [],
+                                                 nonInlinedAttachments: [])
+        return initData
+    }
+
+    static public func composeViewModel(sharedTypes: [SharedType]) -> ComposeViewModel {
+        let initData = composeInitData(sharedTypes: sharedTypes)
+        let composeVMState = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
+        let composeViewModel = ComposeViewModel(state: composeVMState)
+        return composeViewModel
+    }
 }
 
 extension ShareViewModel {
