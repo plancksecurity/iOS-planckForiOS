@@ -48,6 +48,9 @@ extension ShareViewController {
             return
         }
 
+        let composeVM = ShareViewModel.composeViewModel(sharedTypes: sharedTypes)
+        composeVC.viewModel = composeVM
+
         present(composeVC, animated: true, completion: nil)
     }
 }
