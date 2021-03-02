@@ -75,13 +75,13 @@ class ShareViewModel {
 
     /// Creates a `ComposeViewModel.InitData` from shared data, suitable for creating a compose view model.
     static public func composeInitData(sharedTypes: [SharedType]) -> ComposeViewModel.InitData {
-        let bodyHtml = NSMutableAttributedString(string: "This has been shared")
+        let bodyHtml = NSMutableAttributedString(string: "")
 
         for sharedType in sharedTypes {
             switch sharedType {
             case .image(let title, let image):
                 if let theTitle = title {
-                    // TODO: Add the title
+                    bodyHtml.append(theTitle)
                 }
                 // TODO: Add the image
             default:
