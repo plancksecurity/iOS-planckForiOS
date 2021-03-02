@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import MobileCoreServices
 
 import MessageModelForAppExtensions
 import PEPIOSToolboxForAppExtensions
@@ -43,7 +44,7 @@ class ShareViewModel {
                                   extensionItem: extensionItem,
                                   attributedTitle: attributedTitle,
                                   itemProvider: itemProvider)
-                } else if itemProvider.hasItemConformingToTypeIdentifier(ShareViewModel.utiImage) {
+                } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeImage as String) {
                     dispatchGroup.enter()
                     loadImage(dispatchGroup: dispatchGroup,
                               sharedData: sharedData,
@@ -110,7 +111,6 @@ class ShareViewModel {
 
 extension ShareViewModel {
     private static let utiPlainText = "public.plain-text"
-    private static let utiImage = "public.image"
     private static let utiUrl = "public.file-url"
 
     private func loadPlainText(dispatchGroup: DispatchGroup,
@@ -136,7 +136,7 @@ extension ShareViewModel {
                            extensionItem: NSExtensionItem,
                            attributedTitle: NSAttributedString?,
                            itemProvider: NSItemProvider) {
-        itemProvider.loadItem(forTypeIdentifier: ShareViewModel.utiImage,
+        itemProvider.loadItem(forTypeIdentifier: kUTTypeImage as String,
                               options: nil,
                               completionHandler: { item, error in
                                 if let imgUrl = item as? URL,
