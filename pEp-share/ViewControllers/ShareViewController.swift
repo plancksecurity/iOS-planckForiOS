@@ -47,6 +47,13 @@ extension ShareViewController {
             Log.shared.errorAndCrash("Cannot instantiate ComposeViewController")
             return
         }
+
+        let bodyHtml = NSAttributedString(string: "This has been shared")
+        let initData = ComposeViewModel.InitData(subject: "Shared",
+                                                 bodyHtml: bodyHtml,
+                                                 inlinedAttachments: [],
+                                                 nonInlinedAttachments: [])
+
         present(composeVC, animated: true, completion: nil)
     }
 }
