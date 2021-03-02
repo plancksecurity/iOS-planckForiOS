@@ -37,7 +37,7 @@ class ShareViewModel {
             for itemProvider in itemProviders {
                 let attributedTitle = extensionItem.attributedTitle
                 foundItemProviders.append(itemProvider)
-                if itemProvider.hasItemConformingToTypeIdentifier(ShareViewModel.utiPlainText) {
+                if itemProvider.hasItemConformingToTypeIdentifier(kUTTypePlainText as String) {
                     dispatchGroup.enter()
                     loadPlainText(dispatchGroup: dispatchGroup,
                                   sharedData: sharedData,
@@ -110,7 +110,6 @@ class ShareViewModel {
 }
 
 extension ShareViewModel {
-    private static let utiPlainText = "public.plain-text"
     private static let utiUrl = "public.file-url"
 
     private func loadPlainText(dispatchGroup: DispatchGroup,
@@ -118,7 +117,7 @@ extension ShareViewModel {
                                extensionItem: NSExtensionItem,
                                attributedTitle: NSAttributedString?,
                                itemProvider: NSItemProvider) {
-        itemProvider.loadItem(forTypeIdentifier: ShareViewModel.utiPlainText,
+        itemProvider.loadItem(forTypeIdentifier: kUTTypePlainText as String,
                               options: nil,
                               completionHandler: { item, error in
                                 if let text = item as? String {
