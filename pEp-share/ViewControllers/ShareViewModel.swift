@@ -51,7 +51,7 @@ class ShareViewModel {
                               extensionItem: extensionItem,
                               attributedTitle: attributedTitle,
                               itemProvider: itemProvider)
-                } else if itemProvider.hasItemConformingToTypeIdentifier(ShareViewModel.utiUrl) {
+                } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeFileURL as String) {
                     loadFile(dispatchGroup: dispatchGroup,
                              sharedData: sharedData,
                              extensionItem: extensionItem,
@@ -110,8 +110,6 @@ class ShareViewModel {
 }
 
 extension ShareViewModel {
-    private static let utiUrl = "public.file-url"
-
     private func loadPlainText(dispatchGroup: DispatchGroup,
                                sharedData: SharedData,
                                extensionItem: NSExtensionItem,
