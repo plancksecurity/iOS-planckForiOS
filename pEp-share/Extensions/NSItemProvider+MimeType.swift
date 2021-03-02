@@ -10,5 +10,19 @@ import Foundation
 import MobileCoreServices
 
 extension NSItemProvider {
-    
+    static private let supportedInlineImageUTIsToMimeType: [String:String] = [ kUTTypeJPEG as String: "image/jpeg" ]
+
+    public func supportedMimeTypeForInlineAttachment() -> String? {
+        guard hasItemConformingToTypeIdentifier(kUTTypeImage as String) else {
+            return nil
+        }
+
+        for (uti, mimeType) in NSItemProvider.supportedInlineImageUTIsToMimeType {
+            if hasItemConformingToTypeIdentifier(uti) {
+                return mimeType
+            }
+        }
+
+        return nil
+    }
 }
