@@ -40,17 +40,20 @@ class ShareViewModel {
                     loadPlainText(dispatchGroup: dispatchGroup,
                                   sharedData: sharedData,
                                   extensionItem: extensionItem,
+                                  attributedTitle: NSAttributedString,
                                   itemProvider: itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier(ShareViewModel.utiImage) {
                     dispatchGroup.enter()
                     loadImage(dispatchGroup: dispatchGroup,
                               sharedData: sharedData,
                               extensionItem: extensionItem,
+                              attributedTitle: NSAttributedString,
                               itemProvider: itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier(ShareViewModel.utiUrl) {
                     loadFile(dispatchGroup: dispatchGroup,
                              sharedData: sharedData,
                              extensionItem: extensionItem,
+                             attributedTitle: NSAttributedString,
                              itemProvider: itemProvider)
                 }
             }
@@ -79,13 +82,14 @@ extension ShareViewModel {
     private func loadPlainText(dispatchGroup: DispatchGroup,
                                sharedData: SharedData,
                                extensionItem: NSExtensionItem,
+                               attributedTitle: NSAttributedString,
                                itemProvider: NSItemProvider) {
         itemProvider.loadItem(forTypeIdentifier: ShareViewModel.utiPlainText,
                               options: nil,
                               completionHandler: { item, error in
                                 if let text = item as? String {
                                     sharedData.add(itemProvider: itemProvider,
-                                                   dataWithType: .plainText(text))
+                                                   dataWithType: .plainText(attributedTitle, text))
                                 } else if let error = error {
                                     Log.shared.log(error: error)
                                 }
@@ -96,6 +100,7 @@ extension ShareViewModel {
     private func loadImage(dispatchGroup: DispatchGroup,
                            sharedData: SharedData,
                            extensionItem: NSExtensionItem,
+                           attributedTitle: NSAttributedString,
                            itemProvider: NSItemProvider) {
         itemProvider.loadItem(forTypeIdentifier: ShareViewModel.utiImage,
                               options: nil,
@@ -104,7 +109,7 @@ extension ShareViewModel {
                                    let imgData = try? Data(contentsOf: imgUrl),
                                    let img = UIImage(data: imgData) {
                                     sharedData.add(itemProvider: itemProvider,
-                                                   dataWithType: .image(img))
+                                                   dataWithType: .image(attributedTitle, img))
                                 } else if let error = error {
                                     Log.shared.log(error: error)
                                 }
@@ -115,6 +120,7 @@ extension ShareViewModel {
     private func loadFile(dispatchGroup: DispatchGroup,
                           sharedData: SharedData,
                           extensionItem: NSExtensionItem,
+                          attributedTitle: NSAttributedString,
                           itemProvider: NSItemProvider) {
         // TODO: - not yet implemented
         Log.shared.debug("DEV: load PDF element is not yet implemented!")
