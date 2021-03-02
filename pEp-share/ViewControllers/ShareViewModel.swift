@@ -81,7 +81,7 @@ class ShareViewModel {
 
         for sharedType in sharedTypes {
             switch sharedType {
-            case .image(let title, let image, let imageData):
+            case .image(let title, let image, let imageData, let mimeType):
                 if let theTitle = title {
                     bodyHtml.append(theTitle)
                 }
@@ -138,11 +138,13 @@ extension ShareViewModel {
                               completionHandler: { item, error in
                                 if let imgUrl = item as? URL,
                                    let imgData = try? Data(contentsOf: imgUrl),
-                                   let img = UIImage(data: imgData) {
+                                   let img = UIImage(data: imgData),
+                                   let mimeType = itemProvider.supportedMimeTypeForInlineAttachment() {
                                     sharedData.add(itemProvider: itemProvider,
                                                    dataWithType: .image(attributedTitle,
                                                                         img,
-                                                                        imgData))
+                                                                        imgData,
+                                                                        mimeType))
                                 } else if let error = error {
                                     Log.shared.log(error: error)
                                 }
