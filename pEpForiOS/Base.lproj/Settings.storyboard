@@ -275,7 +275,8 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xwh-71-o4X">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="616"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="separatorColor" systemColor="separatorColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ExtraKeysSettingCell" textLabel="hHr-Jq-PRg" style="IBUITableViewCellStyleDefault" id="ux3-4L-chV">
                                         <rect key="frame" x="0.0" y="28" width="414" height="43.666667938232422"/>
@@ -301,7 +302,8 @@
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zHk-jf-vFQ">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="67"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                                        <color key="textColor" systemColor="labelColor"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="alphabet" returnKeyType="done" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                     </textView>
@@ -314,6 +316,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="A7G-lK-k6l"/>
                                     <constraint firstItem="J2v-Vi-URg" firstAttribute="centerX" secondItem="PG6-XN-MQm" secondAttribute="centerX" id="Dnt-Wf-gJD"/>
@@ -325,7 +328,7 @@
                                 </constraints>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="xwh-71-o4X" secondAttribute="trailing" id="6dj-HV-KIE"/>
                             <constraint firstItem="xwh-71-o4X" firstAttribute="top" secondItem="MFw-tL-ska" secondAttribute="top" id="Dlj-xX-Arp"/>
