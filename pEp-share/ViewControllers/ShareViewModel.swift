@@ -75,21 +75,12 @@ class ShareViewModel {
         dispatchGroup.notify(queue: DispatchQueue.main, work: finishWorkItem)
     }
 
-    /// Shadows `SharedType` but without any associated types,
-    /// used for tracking the types shared in one step.
-    private enum MediaType {
-        case image
-        case text
-        case url
-        case file
-    }
-
     /// Creates a `ComposeViewModel.InitData` from shared data, suitable for creating a compose view model.
     static public func composeInitData(sharedTypes: [SharedType]) -> ComposeViewModel.InitData {
         let bodyHtml = NSMutableAttributedString(string: "")
 
         var inlinedAttachments = [Attachment]()
-        var alreadySharedMediaTypes = [MediaType:Bool]()
+        var alreadySharedMediaTypes = [SharedMediaType:Bool]()
 
         for sharedType in sharedTypes {
             switch sharedType {
@@ -114,13 +105,8 @@ class ShareViewModel {
                 bodyHtml.append(attachment.inlinedText(scaleToImageWidth: imageWidth,
                                                        attachmentWidth: imageWidth))
 
-            case .plainText(let title, let _):
-                alreadySharedMediaTypes[.text] = true
-                // TODO: Implement
-
-            case .url(let title, let _):
-                alreadySharedMediaTypes[.url] = true
-                // TODO: Implement
+            default: // TODO: Implement all cases
+                break
             }
         }
 

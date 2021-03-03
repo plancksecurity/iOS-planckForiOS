@@ -11,13 +11,38 @@ import UIKit
 
 import PEPIOSToolboxForAppExtensions
 
-/// The different data types supported by this extension
+/// Shadows `SharedType`, but without any payload, just the casas.
+public enum SharedMediaType {
+    case image
+    case url
+    case plainText
+    case file
+}
+
+/// The different data types that can be shared, together with their payload
 public enum SharedType {
-    /// Image with optional titile, loaded image, the corresponding data, and the mime type
+    /// Image with optional titile, loaded image, the corresponding data, and the mime type.
+    ///
+    /// Will get inlined in the message.
     case image (NSAttributedString?, UIImage, Data, String)
 
+    /// A simple URL
     case url (NSAttributedString?, URL)
+
+    /// Some general-purpose text
     case plainText (NSAttributedString?, String)
+
+    /// A general file, probably not getting inlined
+    case file (NSAttributedString?, Data)
+
+    public func mediaType() -> SharedMediaType {
+        switch self {
+        case .image: return .image
+        case .url: return .url
+        case .plainText: return .plainText
+        case .file: return .file
+        }
+    }
 }
 
 /// Stores items shared by the user, complete with their types and the  data (once loaded).
