@@ -92,6 +92,8 @@ class ShareViewModel {
                                             image: image,
                                             contentDisposition: .inline)
                 inlinedAttachments.append(attachment)
+                bodyHtml.append(attachment.inlinedText(scaleToImageWidth: 100.0,
+                                                       attachmentWidth: 100.0))
 
             default: // TODO: Remove default and explicitly handle all cases
                 break
