@@ -75,6 +75,14 @@ class ShareViewModel {
         dispatchGroup.notify(queue: DispatchQueue.main, work: finishWorkItem)
     }
 
+    /// Shadows `SharedType` but without any associated types,
+    /// used for tracking the types shared in one step.
+    private enum SharedFileType {
+        case image
+        case url
+        case file
+    }
+
     /// Creates a `ComposeViewModel.InitData` from shared data, suitable for creating a compose view model.
     static public func composeInitData(sharedTypes: [SharedType]) -> ComposeViewModel.InitData {
         let bodyHtml = NSMutableAttributedString(string: "")
