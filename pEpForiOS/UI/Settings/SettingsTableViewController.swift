@@ -61,6 +61,11 @@ extension SettingsTableViewController {
         title = Localized.navigationTitle
         tableView.register(PEPHeaderView.self,
                            forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = UIColor.systemBackground
+        } else {
+            // Nothing to do. 
+        }
     }
     /// Prepares and returns the swipe tableview cell, with the corresponding color and title.
     /// - Parameters:
@@ -74,7 +79,6 @@ extension SettingsTableViewController {
         cell.textLabel?.text = row.title
         cell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
         cell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
-        cell.backgroundColor = UIColor.pEpCellBackground
         cell.detailTextLabel?.text = nil
         cell.delegate = self
         return cell
@@ -85,7 +89,6 @@ extension SettingsTableViewController {
     ///   - dequeuedCell: the cell to configure
     ///   - row: the row with the information to configure the cell
     private func prepareActionCell(_ dequeuedCell: UITableViewCell, for row: SettingsRowProtocol) -> UITableViewCell {
-        dequeuedCell.backgroundColor = UIColor.pEpCellBackground
         dequeuedCell.textLabel?.text = row.title
         dequeuedCell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
         dequeuedCell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
@@ -118,10 +121,8 @@ extension SettingsTableViewController {
     ///   - tableView: The table view to dequeue the cell
     ///   - indexPath: The indexPath to identify the cell. 55
     private func dequeueCell(for tableView: UITableView, for indexPath: IndexPath) -> UITableViewCell {
-
         let cellId = viewModel.cellIdentifier(for: indexPath)
         let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        dequeuedCell.backgroundColor = UIColor.pEpCellBackground
         Appearance.configureSelectedBackgroundViewForPep(tableViewCell: dequeuedCell)
         let row : SettingsRowProtocol = viewModel.section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
