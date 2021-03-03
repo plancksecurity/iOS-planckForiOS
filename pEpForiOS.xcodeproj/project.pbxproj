@@ -190,7 +190,6 @@
 		3A503A9F253737B20070AB6A /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A503A9E253737B20070AB6A /* ShareViewController.swift */; };
 		3A503AA2253737B20070AB6A /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A503AA0253737B20070AB6A /* MainInterface.storyboard */; };
 		3A503AA6253737B20070AB6A /* pEp-share.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3A503A9C253737B20070AB6A /* pEp-share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		3A503B1D253744D40070AB6A /* UIImage+Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A503B1C253744D40070AB6A /* UIImage+Resize.swift */; };
 		3A796BA9242CC26100083BB5 /* HtmlConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BA8242CC26100083BB5 /* HtmlConversions.swift */; };
 		3A796BAB242CC31F00083BB5 /* NSAttributedString+Html.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BAA242CC31F00083BB5 /* NSAttributedString+Html.swift */; };
 		3A796BAD242E5CFC00083BB5 /* String+NSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BAC242E5CFC00083BB5 /* String+NSAttributedString.swift */; };
@@ -860,7 +859,6 @@
 		3A503A9E253737B20070AB6A /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		3A503AA1253737B20070AB6A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		3A503AA3253737B20070AB6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3A503B1C253744D40070AB6A /* UIImage+Resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Resize.swift"; sourceTree = "<group>"; };
 		3A796BA8242CC26100083BB5 /* HtmlConversions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlConversions.swift; sourceTree = "<group>"; };
 		3A796BAA242CC31F00083BB5 /* NSAttributedString+Html.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Html.swift"; sourceTree = "<group>"; };
 		3A796BAC242E5CFC00083BB5 /* String+NSAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+NSAttributedString.swift"; sourceTree = "<group>"; };
@@ -2009,7 +2007,6 @@
 		3A503B292537459C0070AB6A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				3A503B1C253744D40070AB6A /* UIImage+Resize.swift */,
 				43C415C625EE687A0071C608 /* NSItemProvider+MimeType.swift */,
 			);
 			path = Extensions;
@@ -3230,7 +3227,6 @@
 				434A6C5925D2A3B500179335 /* AttachmentCell.swift in Sources */,
 				434C19C425D3E09C00F622DB /* String+PEPSignature.swift in Sources */,
 				43BDE04E25DE817900FC0C68 /* cmark_ctype.c in Sources */,
-				3A503B1D253744D40070AB6A /* UIImage+Resize.swift in Sources */,
 				43BDE05725DE820C00FC0C68 /* iterator.c in Sources */,
 				434C19C125D3E07000F622DB /* AppSettingsProtocol.swift in Sources */,
 				4300CF6725ECF4F4003DBEB4 /* ShareViewModel.swift in Sources */,
