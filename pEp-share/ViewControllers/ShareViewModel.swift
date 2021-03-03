@@ -100,8 +100,10 @@ class ShareViewModel {
                                             image: image,
                                             contentDisposition: .inline)
                 inlinedAttachments.append(attachment)
-                bodyHtml.append(attachment.inlinedText(scaleToImageWidth: 100.0,
-                                                       attachmentWidth: 100.0))
+
+                let imageWidth: CGFloat = 200.0 // arbitrary, but should fit all devices
+                bodyHtml.append(attachment.inlinedText(scaleToImageWidth: imageWidth,
+                                                       attachmentWidth: imageWidth))
 
             default: // TODO: Remove default and explicitly handle all cases
                 break
