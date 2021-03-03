@@ -1036,6 +1036,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Aty-hJ-7dP">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="667"/>
                                 <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
+                                <color key="separatorColor" systemColor="separatorColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="KeyValueTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="KeyValueTableViewCell" id="Lga-pZ-bg4" userLabel="Key Value Table View Cell" customClass="AccountSettingsTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.333332061767578" width="414" height="44"/>
@@ -1071,7 +1072,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="Fau-Mf-al7" secondAttribute="bottom" constant="1" id="pOj-aj-Bje"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                         <connections>
                                             <outlet property="keyLabel" destination="s0a-c5-T0Q" id="95T-TG-FDp"/>
                                             <outlet property="stackView" destination="Fau-Mf-al7" id="SBU-ik-YwB"/>
@@ -1129,6 +1130,9 @@
         </systemColor>
         <systemColor name="placeholderTextColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="secondarySystemBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="secondarySystemGroupedBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
