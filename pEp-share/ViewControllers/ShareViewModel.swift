@@ -77,7 +77,7 @@ class ShareViewModel {
 
     /// Creates a `ComposeViewModel.InitData` from shared data, suitable for creating a compose view model.
     static public func composeInitData(sharedTypes: [SharedType]) -> ComposeViewModel.InitData {
-        let bodyHtml = NSMutableAttributedString(string: "")
+        let bodyHtml = NSMutableAttributedString(string: "Some other attachment")
 
         var inlinedAttachments = [Attachment]()
 
@@ -91,6 +91,7 @@ class ShareViewModel {
                     bodyHtml.append(theTitle)
                     bodyHtml.append(NSAttributedString(string: "\n"))
                 }
+                bodyHtml.append(NSMutableAttributedString(string: "Some Image Title"))
                 let attachment = Attachment(data: imageData,
                                             mimeType: mimeType,
                                             image: image,
