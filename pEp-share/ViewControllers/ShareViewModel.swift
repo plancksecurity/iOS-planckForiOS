@@ -79,6 +79,8 @@ class ShareViewModel {
     static public func composeInitData(sharedTypes: [SharedType]) -> ComposeViewModel.InitData {
         let bodyHtml = NSMutableAttributedString(string: "")
 
+        var inlinedAttachments = [Attachment]()
+
         for sharedType in sharedTypes {
             switch sharedType {
             case .image(let title, let image, let imageData, let mimeType):
@@ -89,7 +91,7 @@ class ShareViewModel {
                                             mimeType: mimeType,
                                             image: image,
                                             contentDisposition: .inline)
-                // TODO: Add the image
+                inlinedAttachments.append(attachment)
 
             default:
                 // TODO: Remove and explicitly handle all cases
@@ -99,7 +101,7 @@ class ShareViewModel {
 
         let initData = ComposeViewModel.InitData(subject: "Shared",
                                                  bodyHtml: NSAttributedString(attributedString: bodyHtml),
-                                                 inlinedAttachments: [],
+                                                 inlinedAttachments: inlinedAttachments,
                                                  nonInlinedAttachments: [])
         return initData
     }
