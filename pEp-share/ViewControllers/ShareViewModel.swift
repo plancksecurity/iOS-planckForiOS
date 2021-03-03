@@ -85,6 +85,10 @@ class ShareViewModel {
                 if let theTitle = title {
                     bodyHtml.append(theTitle)
                 }
+                let attachment = Attachment(data: imageData,
+                                            mimeType: mimeType,
+                                            image: image,
+                                            contentDisposition: .inline)
                 // TODO: Add the image
 
             default:
