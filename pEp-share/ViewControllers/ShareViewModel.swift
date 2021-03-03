@@ -79,6 +79,7 @@ class ShareViewModel {
     /// used for tracking the types shared in one step.
     private enum MediaType {
         case image
+        case text
         case url
         case file
     }
@@ -93,6 +94,8 @@ class ShareViewModel {
         for sharedType in sharedTypes {
             switch sharedType {
             case .image(let title, let image, let imageData, let mimeType):
+                alreadySharedMediaTypes[.image] = true
+
                 if bodyHtml.length > 0 {
                     bodyHtml.append(NSAttributedString(string: "\n\n"))
                 }
@@ -111,8 +114,13 @@ class ShareViewModel {
                 bodyHtml.append(attachment.inlinedText(scaleToImageWidth: imageWidth,
                                                        attachmentWidth: imageWidth))
 
-            default: // TODO: Remove default and explicitly handle all cases
-                break
+            case .plainText(let title, let _):
+                alreadySharedMediaTypes[.text] = true
+                // TODO: Implement
+
+            case .url(let title, let _):
+                alreadySharedMediaTypes[.url] = true
+                // TODO: Implement
             }
         }
 
