@@ -107,7 +107,8 @@ class ShareViewModel {
             }
         }
 
-        let initData = ComposeViewModel.InitData(subject: "Shared",
+        let initData = ComposeViewModel.InitData(subject: NSLocalizedString("Shared Files",
+                                                                            comment: "Standard subject for sharing files"),
                                                  bodyHtml: NSAttributedString(attributedString: bodyHtml),
                                                  inlinedAttachments: inlinedAttachments,
                                                  nonInlinedAttachments: [])
