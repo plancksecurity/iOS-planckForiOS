@@ -88,6 +88,7 @@ class ShareViewModel {
         let bodyHtml = NSMutableAttributedString(string: "")
 
         var inlinedAttachments = [Attachment]()
+        var sharedMediaTypes = [SharedFileType:Bool]()
 
         for sharedType in sharedTypes {
             switch sharedType {
