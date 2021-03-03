@@ -80,7 +80,6 @@ class ShareViewModel {
         let bodyHtml = NSMutableAttributedString(string: "")
 
         var inlinedAttachments = [Attachment]()
-        var subject = ""
 
         for sharedType in sharedTypes {
             switch sharedType {
@@ -91,11 +90,6 @@ class ShareViewModel {
                 if let theTitle = title {
                     bodyHtml.append(theTitle)
                     bodyHtml.append(NSAttributedString(string: "\n"))
-                }
-
-                if subject.isEmpty {
-                    subject = NSLocalizedString("Shared Image",
-                                                comment: "Subject when sharing only images")
                 }
 
                 let attachment = Attachment(data: imageData,
