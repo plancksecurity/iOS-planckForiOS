@@ -62,7 +62,7 @@ extension SettingsTableViewController {
         tableView.register(PEPHeaderView.self,
                            forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
         if #available(iOS 13.0, *) {
-            view.backgroundColor = UIColor.systemBackground
+            view.backgroundColor = UIColor.secondarySystemBackground
         } else {
             // Nothing to do. 
         }
