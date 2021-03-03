@@ -85,6 +85,12 @@ extension ExtraKeysSettingViewController {
         fpr.layer.borderWidth = 5.0
         fpr.layer.borderColor = UIColor.pEpGreen.cgColor
         fpr.backgroundColor = UIColor.pEpLightBackground
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                fpr.backgroundColor = UIColor.tertiarySystemBackground
+            }
+        }
+
 
         // add button
         addExtraKeyButton.tintColor = UIColor.pEpGreen
