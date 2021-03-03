@@ -72,7 +72,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="5eB-ze-50V" firstAttribute="top" secondItem="bKk-4n-FeT" secondAttribute="bottom" id="0be-hH-d3V"/>
                             <constraint firstItem="kh8-Xi-wkE" firstAttribute="top" secondItem="5eB-ze-50V" secondAttribute="bottom" id="Dr5-Hl-HGq"/>
@@ -1125,7 +1125,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="D3B-Zt-U43"/>
+        <segue reference="voI-Bz-LUT"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="clearTextfield" width="16" height="16"/>
