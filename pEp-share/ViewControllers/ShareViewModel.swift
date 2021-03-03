@@ -80,13 +80,10 @@ class ShareViewModel {
         let bodyHtml = NSMutableAttributedString(string: "")
 
         var inlinedAttachments = [Attachment]()
-        var alreadySharedMediaTypes = [SharedMediaType:Bool]()
 
         for sharedType in sharedTypes {
             switch sharedType {
             case .image(let title, let image, let imageData, let mimeType):
-                alreadySharedMediaTypes[.image] = true
-
                 if bodyHtml.length > 0 {
                     bodyHtml.append(NSAttributedString(string: "\n\n"))
                 }
