@@ -85,13 +85,16 @@ class ShareViewModel {
             switch sharedType {
             case .image(let title, let image, let imageData, let mimeType):
                 if bodyHtml.length > 0 {
-                    bodyHtml.append(NSAttributedString(string: "\n"))
+                    bodyHtml.append(NSAttributedString(string: "\n\n"))
                 }
                 if let theTitle = title {
                     bodyHtml.append(theTitle)
                     bodyHtml.append(NSAttributedString(string: "\n"))
                 }
+
                 bodyHtml.append(NSMutableAttributedString(string: "Some Image Title"))
+                bodyHtml.append(NSAttributedString(string: "\n\n"))
+
                 let attachment = Attachment(data: imageData,
                                             mimeType: mimeType,
                                             image: image,
