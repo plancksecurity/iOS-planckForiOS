@@ -93,8 +93,7 @@ class ShareViewModel {
                                             contentDisposition: .inline)
                 inlinedAttachments.append(attachment)
 
-            default:
-                // TODO: Remove and explicitly handle all cases
+            default: // TODO: Remove default and explicitly handle all cases
                 break
             }
         }
