@@ -77,7 +77,7 @@ class ShareViewModel {
 
     /// Shadows `SharedType` but without any associated types,
     /// used for tracking the types shared in one step.
-    private enum SharedFileType {
+    private enum MediaType {
         case image
         case url
         case file
@@ -88,7 +88,7 @@ class ShareViewModel {
         let bodyHtml = NSMutableAttributedString(string: "")
 
         var inlinedAttachments = [Attachment]()
-        var sharedMediaTypes = [SharedFileType:Bool]()
+        var alreadySharedMediaTypes = [MediaType:Bool]()
 
         for sharedType in sharedTypes {
             switch sharedType {
