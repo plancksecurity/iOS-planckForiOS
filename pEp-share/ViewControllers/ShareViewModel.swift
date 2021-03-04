@@ -57,6 +57,12 @@ class ShareViewModel {
                              extensionItem: extensionItem,
                              attributedTitle: attributedTitle,
                              itemProvider: itemProvider)
+                } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeURL as String) {
+                    getUrl(dispatchGroup: dispatchGroup,
+                           sharedData: sharedData,
+                           extensionItem: extensionItem,
+                           attributedTitle: attributedTitle,
+                           itemProvider: itemProvider)
                 }
             }
         }
@@ -136,6 +142,7 @@ extension ShareViewModel {
                               extensionItem: NSExtensionItem,
                               attributedTitle: NSAttributedString?,
                               itemProvider: NSItemProvider) {
+        // TODO: Do we really have to "load" a simple text? Test.
         itemProvider.loadItem(forTypeIdentifier: kUTTypePlainText as String,
                               options: nil,
                               completionHandler: { item, error in
@@ -144,6 +151,28 @@ extension ShareViewModel {
                                                    dataWithType: .plainText(attributedTitle, text))
                                 } else if let error = error {
                                     Log.shared.log(error: error)
+                                }
+                                dispatchGroup.leave()
+                              })
+    }
+
+    private func getUrl(dispatchGroup: DispatchGroup,
+                        sharedData: SharedData,
+                        extensionItem: NSExtensionItem,
+                        attributedTitle: NSAttributedString?,
+                        itemProvider: NSItemProvider) {
+        // TODO: Does this really fetch a URL as String? Have to test.
+        itemProvider.loadItem(forTypeIdentifier: kUTTypePlainText as String,
+                              options: nil,
+                              completionHandler: { item, error in
+                                if let text = item as? String,
+                                   let url = URL(string: text) {
+                                    sharedData.add(itemProvider: itemProvider,
+                                                   dataWithType: .url(attributedTitle, url))
+                                } else if let error = error {
+                                    Log.shared.log(error: error)
+                                } else {
+                                    Log.shared.logError(message: "Error without error. Maybe the url was malformed.")
                                 }
                                 dispatchGroup.leave()
                               })
