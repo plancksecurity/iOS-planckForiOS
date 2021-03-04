@@ -162,7 +162,7 @@ extension ShareViewModel {
                         extensionItem: NSExtensionItem,
                         attributedTitle: NSAttributedString?,
                         itemProvider: NSItemProvider) {
-        // TODO: Does this really fetch a URL as String? Have to test.
+        // TODO: Does this really "load" the URL as String? Test.
         itemProvider.loadItem(forTypeIdentifier: kUTTypePlainText as String,
                               options: nil,
                               completionHandler: { item, error in
