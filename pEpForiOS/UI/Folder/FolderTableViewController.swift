@@ -33,6 +33,24 @@ class FolderTableViewController: UITableViewController {
         updateRefreshControl()
     }
 
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+        if thePreviousTraitCollection.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            tableView.reloadData()
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                tableView.reloadData()
+            }
+        }
+    }
+
     // MARK: - Setup
 
     private func setup() {
