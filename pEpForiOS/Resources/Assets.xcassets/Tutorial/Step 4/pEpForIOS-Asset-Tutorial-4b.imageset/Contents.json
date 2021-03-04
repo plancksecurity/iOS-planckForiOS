@@ -3,6 +3,16 @@
     {
       "filename" : "pEpForIOS-Asset-Tutorial-4b.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "pEpForIOS-iPhone-tutorial-graphic4-darkmode.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

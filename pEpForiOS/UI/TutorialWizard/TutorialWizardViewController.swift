@@ -18,6 +18,7 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
         super.viewDidLoad()
         setupView()
         if #available(iOS 13, *) {
+            view.backgroundColor = .systemBackground
             Appearance.customiseForTutorial(viewController: self)
         }
     }
@@ -37,8 +38,17 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
         tutorialWizard.isScrollEnable = true
         tutorialWizard.showDots = true
         tutorialWizard.pageControlTint = .pEpGray
-        tutorialWizard.pageControlPageIndicatorColor = .black
-        tutorialWizard.pageControlBackgroundColor = .white
+
+        var backgroundColor: UIColor = .white
+        var indicatorColor: UIColor = .black
+
+        if #available(iOS 13.0, *) {
+            backgroundColor = .systemBackground
+            indicatorColor = .systemFill
+        }
+        tutorialWizard.pageControlPageIndicatorColor = indicatorColor
+
+        tutorialWizard.pageControlBackgroundColor = backgroundColor
         let navigationController = UINavigationController(rootViewController: tutorialWizard)
         DispatchQueue.main.async { [weak viewController] in
             navigationController.modalPresentationStyle = .fullScreen

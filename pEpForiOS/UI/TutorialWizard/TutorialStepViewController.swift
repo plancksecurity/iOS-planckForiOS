@@ -15,34 +15,39 @@ import pEpIOSToolbox
 class TutorialStepViewController: UIViewController {
     private var shouldUpdateLayoutDueRotation: Bool = false
 
-    var left : NSMutableParagraphStyle {
+    var left: NSMutableParagraphStyle {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .left
         return paragraphStyle
     }
 
-    var centered : NSMutableParagraphStyle {
+    var centered: NSMutableParagraphStyle {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
         return paragraphStyle
     }
 
-    var centeredSpaced : NSMutableParagraphStyle {
+    var centeredSpaced: NSMutableParagraphStyle {
         let paragraphStyle = centered
         paragraphStyle.lineSpacing = 6
         return paragraphStyle
     }
 
-    var textAttributes : [NSAttributedString.Key : Any] {
+    var textAttributes: [NSAttributedString.Key : Any] {
         var style: NSParagraphStyle = centeredSpaced
         if UIDevice.isIphone && UIDevice.isLandscape {
             style = left
         } else if UIDevice.isIpadSmall {
             style = centered
         }
+
+        var foregroundColor = UIColor(white: 24.0 / 255.0, alpha: 1.0)
+        if #available(iOS 13.0, *) {
+            foregroundColor = .secondaryLabel
+        }
         return [
             .font: font,
-            .foregroundColor: UIColor(white: 24.0 / 255.0, alpha: 1.0),
+            .foregroundColor: foregroundColor,
             .paragraphStyle: style
         ]
     }
@@ -56,7 +61,7 @@ class TutorialStepViewController: UIViewController {
         return UIFont.systemFont(ofSize: 14.0, weight: .regular)
     }
     
-    var smallFont : UIFont {
+    var smallFont: UIFont {
         if UIDevice.isIpad {
             return UIFont.systemFont(ofSize: 11.0, weight: .regular)
         } else if UIDevice.isSmall {
@@ -66,7 +71,7 @@ class TutorialStepViewController: UIViewController {
     }
     
 
-    var titleFont : UIFont {
+    var titleFont: UIFont {
         if UIDevice.isIpad {
             return UIFont.systemFont(ofSize: 42.0, weight: .regular)
         } else if UIDevice.isSmall {
