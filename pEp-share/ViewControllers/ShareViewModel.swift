@@ -44,6 +44,12 @@ class ShareViewModel {
                                  extensionItem: extensionItem,
                                  attributedTitle: attributedTitle,
                                  itemProvider: itemProvider)
+                } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeURL as String) {
+                    getUrl(dispatchGroup: dispatchGroup,
+                           sharedData: sharedData,
+                           extensionItem: extensionItem,
+                           attributedTitle: attributedTitle,
+                           itemProvider: itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeImage as String) {
                     dispatchGroup.enter()
                     loadImage(dispatchGroup: dispatchGroup,
@@ -57,12 +63,6 @@ class ShareViewModel {
                              extensionItem: extensionItem,
                              attributedTitle: attributedTitle,
                              itemProvider: itemProvider)
-                } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeURL as String) {
-                    getUrl(dispatchGroup: dispatchGroup,
-                           sharedData: sharedData,
-                           extensionItem: extensionItem,
-                           attributedTitle: attributedTitle,
-                           itemProvider: itemProvider)
                 }
             }
         }
