@@ -167,10 +167,13 @@ extension ComposeViewModel {
         }
 
         /// Used by the sharing extension, which is all about attachments.
-        init(subject: String,
+        init(prefilledFrom: Identity? = nil,
+             subject: String,
              bodyHtml: NSAttributedString,
              inlinedAttachments: [Attachment],
              nonInlinedAttachments: [Attachment]) {
+            self.prefilledFrom = prefilledFrom
+
             self.bodyHtml = bodyHtml
             self.inlinedAttachments = inlinedAttachments
             self.nonInlinedAttachments = nonInlinedAttachments

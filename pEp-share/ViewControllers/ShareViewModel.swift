@@ -113,13 +113,14 @@ class ShareViewModel {
             }
         }
 
-        guard let defaultSender = Account.defaultAccount()?.user else {
+        guard let prefilledFrom = Account.defaultAccount()?.user else {
             // TODO: What to do in this case exactly?
             Log.shared.errorAndCrash(message: "Sharing extension needs an account to send from")
             return ComposeViewModel.InitData()
         }
 
-        let initData = ComposeViewModel.InitData(subject: NSLocalizedString("Shared Files",
+        let initData = ComposeViewModel.InitData(prefilledFrom: prefilledFrom,
+                                                 subject: NSLocalizedString("Shared Files",
                                                                             comment: "Standard subject for sharing files"),
                                                  bodyHtml: NSAttributedString(attributedString: bodyHtml),
                                                  inlinedAttachments: inlinedAttachments,
