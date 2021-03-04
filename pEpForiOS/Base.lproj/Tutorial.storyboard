@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait" appearance="dark"/>
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -37,19 +37,11 @@
                                                     <constraint firstAttribute="width" secondItem="Lb9-UI-pW6" secondAttribute="height" multiplier="257:73" id="R3O-g6-7es"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Secure" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V9f-sY-x1Q">
-                                                <rect key="frame" x="174" y="25" width="54" height="21"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" systemColor="systemYellowColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstItem="V9f-sY-x1Q" firstAttribute="centerX" secondItem="Lb9-UI-pW6" secondAttribute="centerX" multiplier="1.2" id="0lm-8T-muo"/>
                                             <constraint firstItem="Lb9-UI-pW6" firstAttribute="top" secondItem="S8t-jR-oY0" secondAttribute="top" id="3Br-re-gLg"/>
                                             <constraint firstAttribute="bottom" secondItem="Lb9-UI-pW6" secondAttribute="bottom" id="HMJ-Li-9Qa"/>
-                                            <constraint firstItem="V9f-sY-x1Q" firstAttribute="centerY" secondItem="Lb9-UI-pW6" secondAttribute="centerY" multiplier="0.75" id="UDE-Ks-g1O"/>
                                             <constraint firstItem="Lb9-UI-pW6" firstAttribute="centerX" secondItem="S8t-jR-oY0" secondAttribute="centerX" id="WxU-dl-EkB"/>
                                             <constraint firstItem="Lb9-UI-pW6" firstAttribute="leading" secondItem="S8t-jR-oY0" secondAttribute="leading" id="nt2-Xk-3UL"/>
                                         </constraints>
@@ -216,7 +208,6 @@
                         <outlet property="declineButton" destination="8Xq-lc-6Jt" id="7oq-Mp-sOx"/>
                         <outlet property="handshakeTitle" destination="ICO-LI-a2E" id="TWC-Oq-uQi"/>
                         <outlet property="privacyStatusExplanationLabel" destination="i1p-j1-tYp" id="738-JR-kTC"/>
-                        <outlet property="secureLabel" destination="V9f-sY-x1Q" id="CJp-Cw-gy9"/>
                         <outlet property="trustwordsContainer" destination="THo-TL-grV" id="fbh-UB-8J4"/>
                         <outlet property="truswordsLabel" destination="EdT-Qp-2PC" id="bNd-Zt-1Jm"/>
                     </connections>
@@ -978,9 +969,6 @@
         </systemColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemYellowColor">
-            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

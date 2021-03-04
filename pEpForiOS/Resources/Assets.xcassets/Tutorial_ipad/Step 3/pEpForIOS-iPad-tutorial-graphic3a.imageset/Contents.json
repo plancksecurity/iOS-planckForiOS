@@ -8,19 +8,10 @@
       "appearances" : [
         {
           "appearance" : "luminosity",
-          "value" : "light"
-        }
-      ],
-      "filename" : "pEpForIOS-iPad-tutorial-graphic3a-1.pdf",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
           "value" : "dark"
         }
       ],
+      "filename" : "pEpForIOS-iPad-tutorial-graphic3a-darkmode2.pdf",
       "idiom" : "universal"
     }
   ],
