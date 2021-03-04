@@ -24,10 +24,6 @@ final class ShareViewController: UIViewController {
         vm.shareViewModelDelegate = self
         vm.loadInputItems(extensionContext: context)
     }
-
-    @IBAction func cancelAction(_ sender: UIBarButtonItem) {
-        extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
-    }
 }
 
 // MARK: - Private ShareViewModelDelegate

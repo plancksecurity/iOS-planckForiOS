@@ -45,14 +45,7 @@
                             <constraint firstItem="sFW-j2-qjB" firstAttribute="leading" secondItem="AYh-KY-7e9" secondAttribute="leading" id="o4J-Xd-wkv"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="piX-1c-Etx">
-                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="gIz-UU-1BS">
-                            <connections>
-                                <action selector="cancelAction:" destination="Hss-n5-N2C" id="u9t-10-Zza"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Send" id="M5x-yh-uuy"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="piX-1c-Etx"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9D9-va-pgX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
