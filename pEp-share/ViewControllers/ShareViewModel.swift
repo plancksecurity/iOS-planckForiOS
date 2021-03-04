@@ -39,11 +39,11 @@ class ShareViewModel {
                 foundItemProviders.append(itemProvider)
                 if itemProvider.hasItemConformingToTypeIdentifier(kUTTypePlainText as String) {
                     dispatchGroup.enter()
-                    loadPlainText(dispatchGroup: dispatchGroup,
-                                  sharedData: sharedData,
-                                  extensionItem: extensionItem,
-                                  attributedTitle: attributedTitle,
-                                  itemProvider: itemProvider)
+                    getPlainText(dispatchGroup: dispatchGroup,
+                                 sharedData: sharedData,
+                                 extensionItem: extensionItem,
+                                 attributedTitle: attributedTitle,
+                                 itemProvider: itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeImage as String) {
                     dispatchGroup.enter()
                     loadImage(dispatchGroup: dispatchGroup,
@@ -131,11 +131,11 @@ class ShareViewModel {
 }
 
 extension ShareViewModel {
-    private func loadPlainText(dispatchGroup: DispatchGroup,
-                               sharedData: SharedData,
-                               extensionItem: NSExtensionItem,
-                               attributedTitle: NSAttributedString?,
-                               itemProvider: NSItemProvider) {
+    private func getPlainText(dispatchGroup: DispatchGroup,
+                              sharedData: SharedData,
+                              extensionItem: NSExtensionItem,
+                              attributedTitle: NSAttributedString?,
+                              itemProvider: NSItemProvider) {
         itemProvider.loadItem(forTypeIdentifier: kUTTypePlainText as String,
                               options: nil,
                               completionHandler: { item, error in
