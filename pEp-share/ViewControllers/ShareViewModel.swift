@@ -105,7 +105,8 @@ class ShareViewModel {
                     let attachment = Attachment(data: imageData,
                                                 mimeType: mimeType,
                                                 image: image,
-                                                contentDisposition: .inline)
+                                                contentDisposition: .inline,
+                                                session: session)
                     inlinedAttachments.append(attachment)
                     bodyHtml.append(attachment.inlinedText(scaleToImageWidth: imageWidth,
                                                            attachmentWidth: imageWidth))
