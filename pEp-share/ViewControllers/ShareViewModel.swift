@@ -98,15 +98,18 @@ class ShareViewModel {
                     bodyHtml.append(NSAttributedString(string: "\n"))
                 }
 
-                let attachment = Attachment(data: imageData,
-                                            mimeType: mimeType,
-                                            image: image,
-                                            contentDisposition: .inline)
-                inlinedAttachments.append(attachment)
-
                 let imageWidth: CGFloat = 200.0 // arbitrary, but should fit all devices
-                bodyHtml.append(attachment.inlinedText(scaleToImageWidth: imageWidth,
-                                                       attachmentWidth: imageWidth))
+
+                let session = Session()
+                session.performAndWait() {
+                    let attachment = Attachment(data: imageData,
+                                                mimeType: mimeType,
+                                                image: image,
+                                                contentDisposition: .inline)
+                    inlinedAttachments.append(attachment)
+                    bodyHtml.append(attachment.inlinedText(scaleToImageWidth: imageWidth,
+                                                           attachmentWidth: imageWidth))
+                }
 
             default: // TODO: Implement all cases
                 break
