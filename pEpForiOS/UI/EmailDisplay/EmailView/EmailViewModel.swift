@@ -52,6 +52,7 @@ class EmailViewModel {
     private var rows: [EmailRowProtocol]
     private var message: Message
     private var attachments = [MessageModel.Attachment]()
+    private var inlinedAttachments = [MessageModel.Attachment]()
 
     /// Constructor
     /// - Parameter message: The message to display
@@ -60,6 +61,7 @@ class EmailViewModel {
         self.delegate = delegate
         self.rows = [EmailRowProtocol]()
         self.attachments = message.viewableNotInlinedAttachments
+        self.inlinedAttachments = message.viewableInlinedAttachments
         self.setupRows(message: message)
     }
 
@@ -174,7 +176,7 @@ class EmailViewModel {
 
 extension EmailViewModel {
     enum EmailRowType: String {
-       case sender, subject, body, attachment
+       case sender, subject, body, attachment, inlinedAttachment
     }
 
     struct SenderRow: EmailRowProtocol {
@@ -321,13 +323,80 @@ extension EmailViewModel {
             operationQueue.addOperation(attachmentViewOperation)
         }
     }
+
+    struct InlinedAttachmentRow: AttachmentRowProtocol {
+        var height: CGFloat = 200.0
+
+        var cellIdentifier: String = "inlinedAttachmentCell"
+        var type: EmailViewModel.EmailRowType = .inlinedAttachment
+
+        private var operationQueue: OperationQueue
+        private var message: Message?
+        private(set) public var attachment: MessageModel.Attachment
+
+        init(attachment: MessageModel.Attachment) {
+            self.operationQueue = OperationQueue()
+            self.operationQueue.qualityOfService = .userInitiated
+            self.attachment = attachment
+            guard let message = attachment.message else {
+                Log.shared.errorAndCrash("Attachment with no Message")
+                return
+            }
+            self.message = message
+        }
+
+        public func retrieveAttachmentData(completion: @escaping (String, String, UIImage) -> Void) {
+            guard let message = message else {
+                Log.shared.errorAndCrash("Attachment with no Message")
+                return
+            }
+            retrieveAttachmentFromMessage(message: message) { (attachment) in
+                DispatchQueue.main.async {
+                    completion(attachment.filename, attachment.´extension´ ?? "", attachment.icon ?? UIImage())
+                }
+            }
+        }
+
+        /// Retrieve attachment from message
+        ///
+        /// - Parameters:
+        ///   - message: The message to get the attachment
+        ///   - completion: The completion block to execute when the attachment is obtained.
+        private func retrieveAttachmentFromMessage(message: Message, completion: @escaping (AttachmentRow.Attachment) -> ()) {
+            let attachmentViewOperation = AttachmentViewOperation(attachment: attachment) { (container) in
+                let defaultFileName = MessageModel.Attachment.defaultFilename
+                switch container {
+                case .imageAttachment(let attachment, let image):
+                    let safeAttachment = attachment.safeForSession(Session.main)
+                    Session.main.performAndWait {
+                        let fileName = safeAttachment.fileName ?? defaultFileName
+                        let attachmentToReturn = AttachmentRow.Attachment(filename: fileName, ´extension´: safeAttachment.mimeType, icon: image, isImage: true)
+                        completion(attachmentToReturn)
+                    }
+                case .docAttachment(let attachment):
+                    let safeAttachment = attachment.safeForSession(.main)
+                    Session.main.performAndWait {
+                        let (name, finalExt) = safeAttachment.fileName?.splitFileExtension() ?? (defaultFileName, nil)
+                        let dic = UIDocumentInteractionController()
+                        dic.name = safeAttachment.fileName
+                        let attachmentToReturn = AttachmentRow.Attachment(filename: name, ´extension´: finalExt, icon: dic.icons.first, isImage: false)
+                        completion(attachmentToReturn)
+                    }
+                }
+            }
+            operationQueue.addOperation(attachmentViewOperation)
+        }
+
+    }
 }
+
 
 //MARK:- Private
 
 extension EmailViewModel {
 
     private func setupRows(message: Message) {
+        /// The order of rows will be the order of cells in the screen.
         /// Sender
         guard let from = message.from?.displayString else {
             Log.shared.errorAndCrash("From identity not found.")
@@ -351,7 +420,11 @@ extension EmailViewModel {
         let bodyRow = BodyRow(htmlBody: htmlBody, message: message)
         rows.append(bodyRow)
 
-        //Attachments
+        //Inline Attachments
+        let inlineAttachmentRows: [InlinedAttachmentRow] = inlinedAttachments.map { InlinedAttachmentRow(attachment: $0) }
+        rows.append(contentsOf: inlineAttachmentRows)
+
+        //Non Inlined Attachments
         let attachmentRows = attachments.map { AttachmentRow(attachment: $0) }
         rows.append(contentsOf: attachmentRows)
     }

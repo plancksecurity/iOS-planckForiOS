@@ -38,6 +38,10 @@ extension Message {
         return attachments.filter() { $0.isViewable() }
     }
 
+    public var viewableInlinedAttachments: [Attachment] {
+        return viewableAttachments().filter{ $0.isInlined && $0.fileName != nil && !$0.isCidContained }
+    }
+
     /// - returns: all attachments with mimeType "text/plain" and contentDisposition "inlined"
     public func inlinedTextAttachments() -> [Attachment] {
         let result = attachments.filter() { $0.isInlinedPlainText }

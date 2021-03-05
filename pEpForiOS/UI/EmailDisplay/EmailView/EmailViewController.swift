@@ -143,6 +143,17 @@ extension EmailViewController: UITableViewDataSource {
             }
             setupAttachment(cell: cell, with: row)
             return cell
+
+        case .inlinedAttachment:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageInlinedAttachmentCell else {
+                return UITableViewCell()
+            }
+            guard let row = vm[indexPath.row] as? EmailViewModel.InlinedAttachmentRow else {
+                Log.shared.errorAndCrash("Can't get or cast attachment row")
+                return cell
+            }
+            setupInlineAttachment(cell: cell, row: row)
+            return cell
         }
     }
 }
@@ -161,6 +172,9 @@ extension EmailViewController: UITableViewDelegate {
         }
         if (vm[indexPath.row] as? EmailViewModel.BodyRow)?.htmlBody != nil {
             return htmlViewerViewController.contentSize.height
+        }
+        if vm[indexPath.row] is EmailViewModel.InlinedAttachmentRow {
+            return 200
         }
         return tableView.rowHeight
     }
@@ -315,6 +329,12 @@ extension EmailViewController {
             cell.fileNameLabel.text = fileName
             cell.iconImageView.image = image
             cell.fileExtensionLabel.text = fileExtension
+        }
+    }
+
+    private func setupInlineAttachment(cell: MessageInlinedAttachmentCell, row: AttachmentRowProtocol) {
+        row.retrieveAttachmentData { (fileName, fileExtension, image) in
+            cell.inlinedImageView?.image = image
         }
     }
 }
