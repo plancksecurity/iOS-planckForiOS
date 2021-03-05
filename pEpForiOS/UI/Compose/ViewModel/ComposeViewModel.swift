@@ -66,7 +66,7 @@ protocol ComposeViewModelDelegate: class {
 }
 
 /// Contains messages about cancelation and send.
-protocol ComposeViewModelEndActionDelegate: class {
+protocol ComposeViewModelFinalActionDelegate: class {
     /// The user requested the mail to be sent.
     func sent()
 
@@ -83,7 +83,7 @@ class ComposeViewModel {
     }
 
     /// Signals having sent or canceled.
-    weak var composeViewModelEndActionDelegate: ComposeViewModelEndActionDelegate?
+    weak var composeViewModelEndActionDelegate: ComposeViewModelFinalActionDelegate?
 
     public private(set) var sections = [ComposeViewModel.Section]()
     public private(set) var state: ComposeViewModelState

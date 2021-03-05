@@ -219,7 +219,7 @@ extension ShareViewModel {
     }
 }
 
-extension ShareViewModel: ComposeViewModelEndActionDelegate {
+extension ShareViewModel: ComposeViewModelFinalActionDelegate {
     func sent() {
     }
 
