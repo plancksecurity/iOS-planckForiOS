@@ -82,7 +82,7 @@ class ShareViewModel {
     }
 
     /// Creates a `ComposeViewModel.InitData` from shared data, suitable for creating a compose view model.
-    static public func composeInitData(sharedTypes: [SharedType]) -> ComposeViewModel.InitData {
+    public func composeInitData(sharedTypes: [SharedType]) -> ComposeViewModel.InitData {
         let bodyHtml = NSMutableAttributedString(string: "")
 
         var inlinedAttachments = [Attachment]()
@@ -133,11 +133,12 @@ class ShareViewModel {
     }
 
     /// Creates a compose VM from the given shared data.
-    static public func composeViewModel(sharedTypes: [SharedType]) -> ComposeViewModel {
+    public func composeViewModel(sharedTypes: [SharedType]) -> ComposeViewModel {
         let initData = composeInitData(sharedTypes: sharedTypes)
         let composeVMState = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
         let composeViewModel = ComposeViewModel(state: composeVMState,
                                                 offerToSaveDraftOnCancel: false)
+        composeViewModel.composeViewModelEndActionDelegate = self
         return composeViewModel
     }
 }
@@ -215,5 +216,13 @@ extension ShareViewModel {
                           itemProvider: NSItemProvider) {
         // TODO: - not yet implemented
         Log.shared.debug("DEV: load PDF element is not yet implemented!")
+    }
+}
+
+extension ShareViewModel: ComposeViewModelEndActionDelegate {
+    func sent() {
+    }
+
+    func canceled() {
     }
 }

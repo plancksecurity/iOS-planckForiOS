@@ -44,7 +44,7 @@ extension ShareViewController {
             return
         }
 
-        let composeVM = ShareViewModel.composeViewModel(sharedTypes: sharedTypes)
+        let composeVM = vm.composeViewModel(sharedTypes: sharedTypes)
         composeVC.viewModel = composeVM
 
         navigationController?.pushViewController(composeVC, animated: false)
