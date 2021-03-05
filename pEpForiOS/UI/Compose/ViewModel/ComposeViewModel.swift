@@ -234,7 +234,7 @@ class ComposeViewModel {
             }
             sendClosure()
             me.delegate?.dismiss()
-            me.composeViewModelEndActionDelegate?.canceled()
+            me.composeViewModelEndActionDelegate?.sent()
         }
     }
 
