@@ -75,6 +75,10 @@ class ComposeViewModel {
     public private(set) var sections = [ComposeViewModel.Section]()
     public private(set) var state: ComposeViewModelState
 
+    /// During normal execution, the app will ask the user to save a draft on cancel,
+    /// which is not wanted when sharing a file.
+    public let offerToSaveDraftOnCancel: Bool
+
     private var suggestionsVM: SuggestViewModel?
     private var lastRowWithSuggestions: IndexPath?
 
@@ -112,8 +116,9 @@ class ComposeViewModel {
     /// would thus crash if anone commits the main session.
     private let session = Session()
 
-    init(state: ComposeViewModelState) {
+    init(state: ComposeViewModelState, offerToSaveDraftOnCancel: Bool = true) {
         self.state = state
+        self.offerToSaveDraftOnCancel = offerToSaveDraftOnCancel
         self.state.delegate = self
         setup()
     }
@@ -647,7 +652,11 @@ extension ComposeViewModel {
     }
 
     public var showCancelActions: Bool {
-        return existsDirtyCell() || state.edited
+        if offerToSaveDraftOnCancel {
+            return existsDirtyCell() || state.edited
+        } else {
+            return false
+        }
     }
 
     public var deleteActionTitle: String {

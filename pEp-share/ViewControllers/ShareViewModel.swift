@@ -136,7 +136,8 @@ class ShareViewModel {
     static public func composeViewModel(sharedTypes: [SharedType]) -> ComposeViewModel {
         let initData = composeInitData(sharedTypes: sharedTypes)
         let composeVMState = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
-        let composeViewModel = ComposeViewModel(state: composeVMState)
+        let composeViewModel = ComposeViewModel(state: composeVMState,
+                                                offerToSaveDraftOnCancel: false)
         return composeViewModel
     }
 }
