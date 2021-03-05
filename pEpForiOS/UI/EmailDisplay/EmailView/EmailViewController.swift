@@ -185,7 +185,7 @@ extension EmailViewController: UITableViewDelegate {
             return
         }
         let row = vm[indexPath.row]
-        if row.type == .attachment {
+        if row.type == .attachment || row.type == .inlinedAttachment {
             vm.handleDidTapAttachmentRow(at: indexPath)
         }
     }

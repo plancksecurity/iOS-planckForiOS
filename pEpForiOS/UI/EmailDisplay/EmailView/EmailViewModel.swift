@@ -131,23 +131,12 @@ class EmailViewModel {
         delegate?.showExternalContent()
     }
 
-    /// Handle the user tap gesture over the mail attachment
-    /// - Parameter index: The index of the attachment
-    public func handleDidTapAttachmentRow(at indexPath: IndexPath) {
+    fileprivate func show(attachment: Attachment) {
         func shouldShowClientCertificate(url : URL) -> Bool {
             return url.pathExtension == "pEp12" || url.pathExtension == "pfx"
         }
-        delegate?.showLoadingView()
-        guard rows.count > indexPath.row else {
-            Log.shared.errorAndCrash("attachments Out of bounds")
-            return
-        }
-        let index = indexPath.row - rows.count(where: {
-            $0.type != .attachment
-        })
-        let attachment = attachments[index]
-        let defaultFileName = MessageModel.Attachment.defaultFilename
 
+        let defaultFileName = MessageModel.Attachment.defaultFilename
         attachment.saveToTmpDirectory(defaultFilename: attachment.fileName ?? defaultFileName) { [weak self] (url) in
             guard let url = url else {
                 Log.shared.errorAndCrash("No Local URL")
@@ -168,6 +157,19 @@ class EmailViewModel {
                     me.delegate?.showDocumentsEditor(url: url)
                 }
             }
+        }
+    }
+
+    /// Handle the user tap gesture over the mail attachment
+    /// - Parameter index: The index of the attachment
+    public func handleDidTapAttachmentRow(at indexPath: IndexPath) {
+        delegate?.showLoadingView()
+        guard rows.count > indexPath.row else {
+            Log.shared.errorAndCrash("attachment out of bounds")
+            return
+        }
+        if let row = rows[indexPath.row] as? BaseAttachmentRow {
+            show(attachment: row.attachment)
         }
     }
 
@@ -289,6 +291,7 @@ extension EmailViewModel {
 
             if type == .attachment {
                 cellIdentifier = "attachmentsCell"
+                height = 120.0
             } else if type == .inlinedAttachment {
                 cellIdentifier = "inlinedAttachmentCell"
             }

@@ -633,6 +633,7 @@
                                                                         <constraint firstItem="br1-wM-hw2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Rzd-zE-jNB" secondAttribute="leading" constant="8" id="7Rw-Xd-ZrZ"/>
                                                                         <constraint firstItem="br1-wM-hw2" firstAttribute="centerX" secondItem="Rzd-zE-jNB" secondAttribute="centerX" id="FZY-no-PhS"/>
                                                                         <constraint firstItem="br1-wM-hw2" firstAttribute="centerY" secondItem="Rzd-zE-jNB" secondAttribute="centerY" id="bZj-Bp-rIK"/>
+                                                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="br1-wM-hw2" secondAttribute="trailing" constant="8" id="gow-zT-zR3"/>
                                                                         <constraint firstItem="br1-wM-hw2" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Rzd-zE-jNB" secondAttribute="top" constant="8" id="w3Q-I8-mhF"/>
                                                                     </constraints>
                                                                     <userDefinedRuntimeAttributes>
