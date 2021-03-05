@@ -65,6 +65,15 @@ protocol ComposeViewModelDelegate: class {
     func dismiss()
 }
 
+/// Contains messages about cancelation and send.
+protocol ComposeViewModelEndActionDelegate: class {
+    /// The user requested the mail to be sent.
+    func sent()
+
+    /// The user canceled the composing of the mail.
+    func canceled()
+}
+
 class ComposeViewModel {
     weak var delegate: ComposeViewModelDelegate? {
         didSet {
@@ -72,6 +81,10 @@ class ComposeViewModel {
                                             protectionEnabled: state.pEpProtection)
         }
     }
+
+    /// Signals having sent or canceled.
+    weak var composeViewModelEndActionDelegate: ComposeViewModelEndActionDelegate?
+
     public private(set) var sections = [ComposeViewModel.Section]()
     public private(set) var state: ComposeViewModelState
 
@@ -182,6 +195,7 @@ class ComposeViewModel {
     }
 
     public func handleUserClickedCancelButton() {
+        composeViewModelEndActionDelegate?.canceled()
     }
 
     public func handleUserClickedSendButton() {
@@ -220,6 +234,7 @@ class ComposeViewModel {
             }
             sendClosure()
             me.delegate?.dismiss()
+            me.composeViewModelEndActionDelegate?.canceled()
         }
     }
 
