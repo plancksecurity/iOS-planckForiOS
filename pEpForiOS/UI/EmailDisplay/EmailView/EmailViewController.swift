@@ -74,8 +74,14 @@ class EmailViewController: UIViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        if ((traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass) || (traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass)) {
-            tableView.updateSize()
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case. Optional param.
+            return
+        }
+
+        /// If size classes change, we need to reload. 
+        if ((traitCollection.verticalSizeClass != thePreviousTraitCollection.verticalSizeClass) || (traitCollection.horizontalSizeClass != thePreviousTraitCollection.horizontalSizeClass)) {
+            tableView.reloadData()
         }
     }
 
@@ -309,6 +315,7 @@ extension EmailViewController {
         }
     }
 
+
     private func setupSender(cell: MessageSenderCell, with row: EmailViewModel.SenderRow) {
         let font = UIFont.pepFont(style: .footnote, weight: .semibold)
         cell.fromLabel.font = font
@@ -345,7 +352,6 @@ extension EmailViewController {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-
         row.retrieveAttachmentData { [weak self] (_, _, image) in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
