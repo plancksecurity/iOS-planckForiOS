@@ -126,6 +126,7 @@ class ComposeViewController: UIViewController {
         } else {
             dismiss()
         }
+        viewModel?.handleUserClickedCancelButton()
     }
 
     @IBAction func send() {

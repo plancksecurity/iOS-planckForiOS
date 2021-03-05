@@ -181,6 +181,9 @@ class ComposeViewModel {
         state.pEpProtection = protected
     }
 
+    public func handleUserClickedCancelButton() {
+    }
+
     public func handleUserClickedSendButton() {
 
         let safeState = state.makeSafe(forSession: Session.main)
