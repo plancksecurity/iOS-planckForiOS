@@ -72,6 +72,13 @@ class EmailViewController: UIViewController {
         coordinator.animate(alongsideTransition: nil)
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if ((traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass) || (traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass)) {
+            tableView.updateSize()
+        }
+    }
+
     // MARK: - IBActions
 
     @IBAction func showExternalContentButtonPressed() {
@@ -173,7 +180,8 @@ extension EmailViewController: UITableViewDelegate {
         if (vm[indexPath.row] as? EmailViewModel.BodyRow)?.htmlBody != nil {
             return htmlViewerViewController.contentSize.height
         }
-        if let row = vm[indexPath.row] as? EmailViewModel.InlinedAttachmentRow {
+
+        if let row = vm[indexPath.row] as? EmailViewModel.BaseAttachmentRow {
             return row.height
         }
         return tableView.rowHeight
@@ -338,20 +346,16 @@ extension EmailViewController {
             return
         }
 
-        row.retrieveAttachmentData { [weak self] (fileName, fileExtension, image) in
+        row.retrieveAttachmentData { [weak self] (_, _, image) in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
             cell.inlinedImageView.isHidden = false
-            let aspectRatio = image.aspectRatio()
             cell.inlinedImageView?.image = image
-            let imageHeight = cell.frame.width * aspectRatio
-            UIView.setAnimationsEnabled(false)
-            me.tableView.beginUpdates()
-            vm.handleImageFetched(forRowAt: indexPath, withHeight: imageHeight)
-            me.tableView.endUpdates()
-            UIView.setAnimationsEnabled(true)
+            let margin: CGFloat = 20.0
+            vm.handleImageFetched(forRowAt: indexPath, withHeight: image.size.height + margin)
+            me.tableView.updateSize()
         }
     }
 }
