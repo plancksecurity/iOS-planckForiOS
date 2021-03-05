@@ -61,4 +61,9 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return newImage
     }
+
+    /// - Returns: The aspect ratio
+    public func aspectRatio() -> CGFloat {
+        return CGFloat(size.width / size.height)
+    }
 }

@@ -41,7 +41,7 @@ protocol EmailRowProtocol {
 //MARK: - AttachmentRowProtocol
 
 protocol AttachmentRowProtocol: EmailRowProtocol {
-    var height: CGFloat { get }
+    var height: CGFloat { get set }
     func retrieveAttachmentData(completion: @escaping (String, String, UIImage) -> Void)
 }
 
@@ -325,7 +325,7 @@ extension EmailViewModel {
     }
 
     struct InlinedAttachmentRow: AttachmentRowProtocol {
-        var height: CGFloat = 200.0
+        var height: CGFloat = 0.0
 
         var cellIdentifier: String = "inlinedAttachmentCell"
         var type: EmailViewModel.EmailRowType = .inlinedAttachment
@@ -386,10 +386,15 @@ extension EmailViewModel {
             }
             operationQueue.addOperation(attachmentViewOperation)
         }
+    }
 
+    func handleImageFetched(forRowAt indexPath: IndexPath, withHeight height: CGFloat) {
+        if var row = rows[indexPath.row] as? InlinedAttachmentRow {
+            row.height = height
+            rows[indexPath.row] = row
+        }
     }
 }
-
 
 //MARK:- Private
 

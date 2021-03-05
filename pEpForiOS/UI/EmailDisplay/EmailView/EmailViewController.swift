@@ -152,7 +152,7 @@ extension EmailViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("Can't get or cast attachment row")
                 return cell
             }
-            setupInlineAttachment(cell: cell, row: row)
+            setupInlineAttachment(cell: cell, row: row, indexPath: indexPath)
             return cell
         }
     }
@@ -173,8 +173,8 @@ extension EmailViewController: UITableViewDelegate {
         if (vm[indexPath.row] as? EmailViewModel.BodyRow)?.htmlBody != nil {
             return htmlViewerViewController.contentSize.height
         }
-        if vm[indexPath.row] is EmailViewModel.InlinedAttachmentRow {
-            return 200
+        if let row = vm[indexPath.row] as? EmailViewModel.InlinedAttachmentRow {
+            return row.height
         }
         return tableView.rowHeight
     }
@@ -332,9 +332,26 @@ extension EmailViewController {
         }
     }
 
-    private func setupInlineAttachment(cell: MessageInlinedAttachmentCell, row: AttachmentRowProtocol) {
-        row.retrieveAttachmentData { (fileName, fileExtension, image) in
+    private func setupInlineAttachment(cell: MessageInlinedAttachmentCell, row: EmailViewModel.InlinedAttachmentRow, indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+
+        row.retrieveAttachmentData { [weak self] (fileName, fileExtension, image) in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            cell.inlinedImageView.isHidden = false
+            let aspectRatio = image.aspectRatio()
             cell.inlinedImageView?.image = image
+            let imageHeight = cell.frame.width * aspectRatio
+            UIView.setAnimationsEnabled(false)
+            me.tableView.beginUpdates()
+            vm.handleImageFetched(forRowAt: indexPath, withHeight: imageHeight)
+            me.tableView.endUpdates()
+            UIView.setAnimationsEnabled(true)
         }
     }
 }

@@ -610,26 +610,22 @@
                                                     <outlet property="contentText" destination="AKf-Cd-1D0" id="Wan-U8-sRL"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="inlinedAttachmentCell" rowHeight="100" id="UWc-9l-ALp" userLabel="inlinedAttachmemntCell" customClass="MessageInlinedAttachmentCell" customModule="pEpForiOS" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="409.5" width="375" height="100"/>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="inlinedAttachmentCell" id="UWc-9l-ALp" userLabel="inlinedAttachmemntCell" customClass="MessageInlinedAttachmentCell" customModule="pEpForiOS" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="409.5" width="375" height="52.5"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UWc-9l-ALp" id="0y0-Ac-3kt">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="52.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qrb-Vj-l3h">
-                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="52.5"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rzd-zE-jNB" userLabel="Container">
-                                                                    <rect key="frame" x="8" y="7.5" width="359" height="84"/>
+                                                                    <rect key="frame" x="8" y="7.5" width="359" height="36.5"/>
                                                                     <subviews>
-                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="capsule.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="br1-wM-hw2" userLabel="InlineImage">
-                                                                            <rect key="frame" x="159.5" y="22.5" width="40" height="38.5"/>
+                                                                        <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="capsule.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="br1-wM-hw2" userLabel="InlineImage">
+                                                                            <rect key="frame" x="167" y="9" width="25" height="18.5"/>
                                                                             <color key="tintColor" red="0.01176470588" green="0.66666666669999997" blue="0.29411764709999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                                            <constraints>
-                                                                                <constraint firstAttribute="width" secondItem="br1-wM-hw2" secondAttribute="height" multiplier="1:1" id="Bjl-ID-Ywc"/>
-                                                                                <constraint firstAttribute="width" constant="40" id="Pj5-c4-uVG"/>
-                                                                            </constraints>
                                                                         </imageView>
                                                                     </subviews>
                                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -673,7 +669,7 @@
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="attachmentsCell" rowHeight="100" id="YNE-Z9-B1Y" userLabel="attachmentCell" customClass="MessageAttachmentCell" customModule="pEpForiOS" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="509.5" width="375" height="100"/>
+                                                <rect key="frame" x="0.0" y="462" width="375" height="100"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YNE-Z9-B1Y" id="tgS-Gw-kHS">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
