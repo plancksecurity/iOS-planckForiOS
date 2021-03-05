@@ -131,7 +131,7 @@ class EmailViewModel {
         delegate?.showExternalContent()
     }
 
-    fileprivate func show(attachment: Attachment) {
+    private func show(attachment: Attachment) {
         func shouldShowClientCertificate(url : URL) -> Bool {
             return url.pathExtension == "pEp12" || url.pathExtension == "pfx"
         }

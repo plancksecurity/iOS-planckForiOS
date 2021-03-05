@@ -79,7 +79,7 @@ class EmailViewController: UIViewController {
             return
         }
 
-        /// If size classes change, we need to reload. 
+        /// If size classes change, we need to reload.
         if ((traitCollection.verticalSizeClass != thePreviousTraitCollection.verticalSizeClass) || (traitCollection.horizontalSizeClass != thePreviousTraitCollection.horizontalSizeClass)) {
             tableView.reloadData()
         }
