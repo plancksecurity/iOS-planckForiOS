@@ -185,7 +185,6 @@ class ComposeViewModel {
     }
 
     public func handleUserClickedSendButton() {
-
         let safeState = state.makeSafe(forSession: Session.main)
         let sendClosure = { [weak self] in
             guard let me = self else {
