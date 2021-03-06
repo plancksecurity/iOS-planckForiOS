@@ -53,8 +53,6 @@ class Appearance {
             UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor.systemBackground
             UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.label
             UISearchBar.appearance().backgroundColor = UIColor.systemBackground
-//            UIBarButtonItem.appearance().tintColor = .purple
-            UINavigationBar.appearance().backgroundColor = UIColor.systemBackground
         }
     }
 
