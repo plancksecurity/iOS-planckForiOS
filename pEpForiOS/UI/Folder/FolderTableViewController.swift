@@ -146,7 +146,13 @@ class FolderTableViewController: UITableViewController {
         cell.padding = fcvm.padding
         cell.titleLabel.text = fcvm.title
         cell.titleLabel.setPEPFont(style: .body, weight: .regular)
-        cell.titleLabel?.textColor = fcvm.isSelectable ? .black : .pEpGray
+
+        if #available(iOS 13.0, *) {
+            cell.titleLabel?.textColor = fcvm.isSelectable ? .label : .tertiaryLabel
+        } else {
+            cell.titleLabel?.textColor = fcvm.isSelectable ? .black : .pEpGray
+        }
+
         cell.unreadMailsLabel.font = UIFont.pepFont(style: .body, weight: .regular)
         let numUnreadMails = fcvm.numUnreadMails
         cell.unreadMailsLabel.text = numUnreadMails > 0 ? String(numUnreadMails) : ""
