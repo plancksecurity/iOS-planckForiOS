@@ -39,30 +39,36 @@ extension TutorialStep1iPadViewController {
     private func setupSecureTitle() {
         secureTitle.font = titleFont
         secureTitle.text = Localized.secure
+        secureTitle.textColor = tutorialTextColor
     }
 
     private func setupSecureDescription() {
         secureDescription.text = Localized.secureDescription
         secureDescription.font = font
+        secureDescription.textColor = tutorialTextColor
     }
 
     private func setupSecureAndTrusted() {
         secureAndTrustedTitle.font = titleFont
         secureAndTrustedTitle.text = Localized.secureAndTrustTitle
+        secureAndTrustedTitle.textColor = tutorialTextColor
     }
 
     private func setupSecureAndTrustedDescription() {
         secureAndTrustedDescription.text = Localized.secureAndTrustedDescription
         secureAndTrustedDescription.font = font
+        secureAndTrustedDescription.textColor = tutorialTextColor
     }
 
     private func setupMistrusted() {
         mistrustedTitle.font = titleFont
         mistrustedTitle.text = Localized.mistrusted
+        mistrustedTitle.textColor = tutorialTextColor
     }
 
     private func setupMistrustedDescription() {
         mistrustedDescription.text = Localized.mistrustedDescription
         mistrustedDescription.font = font
+        mistrustedDescription.textColor = tutorialTextColor
     }
 }

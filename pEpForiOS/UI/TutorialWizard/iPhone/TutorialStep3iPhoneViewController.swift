@@ -26,15 +26,18 @@ class TutorialStep3iPhoneViewController: TutorialStepViewController {
     private func setupTitleLabel() {
         titleLabel.text = Localized.privacyStatusTitle 
         titleLabel.font = titleFont
+        titleLabel.textColor = tutorialTextColor
     }
     
     private func setupExplanationLabel() {
         explanationLabel.text = Localized.privacyStatusExplanation
         explanationLabel.font = font
+        explanationLabel.textColor = tutorialTextColor
     }
     
     private func setupCommonDenominatorLabel() {
         commonDenominatorLabel.text = Localized.commonDenominator
         commonDenominatorLabel.font = font
+        commonDenominatorLabel.textColor = tutorialTextColor
     }
 }

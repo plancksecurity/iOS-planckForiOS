@@ -15,6 +15,15 @@ import pEpIOSToolbox
 class TutorialStepViewController: UIViewController {
     private var shouldUpdateLayoutDueRotation: Bool = false
 
+
+    var tutorialTextColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor.label
+        } else {
+            return UIColor.black
+        }
+    }
+
     var left: NSMutableParagraphStyle {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .left

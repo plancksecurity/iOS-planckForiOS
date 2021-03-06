@@ -43,15 +43,11 @@ class TutorialStep0iPadViewController: TutorialStepViewController {
 extension TutorialStep0iPadViewController {
 
     private func setupTitle() {
-        var color = UIColor.black
-        if #available(iOS 13.0, *) {
-            color = .label
-        }
 
         let titleText = Localized.welcome
         let attributedString = NSMutableAttributedString(string: titleText, attributes: [
             .font: titleFont,
-            .foregroundColor: color,
+            .foregroundColor: tutorialTextColor,
         ])
         if let range = titleText.nsRange(of: "p≡p") {
             attributedString.addAttributes([.font: titleFont, .foregroundColor: UIColor.pEpGreen], range:range)

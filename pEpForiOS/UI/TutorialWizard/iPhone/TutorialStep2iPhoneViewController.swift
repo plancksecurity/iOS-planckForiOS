@@ -38,21 +38,26 @@ extension TutorialStep2iPhoneViewController {
     private func setupTrustwordsLabel() {
         truswordsLabel.font = smallFont
         truswordsLabel.text = Localized.someTrustwords
+        truswordsLabel.textColor = tutorialTextColor
     }
     
     private func setupHandshakeTitle() {
         handshakeTitle.font = titleFont
         handshakeTitle.text = Localized.handshake
+        handshakeTitle.textColor = tutorialTextColor
     }
 
     private func setupPrivacyStatusExplanationLabel() {
         privacyStatusExplanationLabel.font = font
         privacyStatusExplanationLabel.text = Localized.privacyStatusIconExplanation
+        privacyStatusExplanationLabel.textColor = tutorialTextColor
+
     }
 
     private func setupcCnfirmTrustwordsExplanationLabel() {
         confirmTrustwordsExplanationLabel.font = font
         confirmTrustwordsExplanationLabel.text = Localized.confirmTrustwordsExplanation
+        confirmTrustwordsExplanationLabel.textColor = tutorialTextColor
     }
     
     private func setupButtons() {

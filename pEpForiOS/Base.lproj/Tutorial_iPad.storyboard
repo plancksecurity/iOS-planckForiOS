@@ -65,7 +65,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="GPP-hZ-kRJ" userLabel="DeclineButton" customClass="TrustwordsButton" customModule="pEpForiOS" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="50.5" width="46" height="28"/>
+                                                        <rect key="frame" x="20" y="50.5" width="86" height="36"/>
                                                         <accessibility key="accessibilityConfiguration" label="wrongButton">
                                                             <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
                                                         </accessibility>
@@ -90,7 +90,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="gP8-zr-vel" userLabel="ConfirmButton" customClass="TrustwordsButton" customModule="pEpForiOS" customModuleProvider="target">
-                                                        <rect key="frame" x="88" y="50.5" width="49" height="28"/>
+                                                        <rect key="frame" x="128" y="50.5" width="89" height="36"/>
                                                         <accessibility key="accessibilityConfiguration" label="confirmButton">
                                                             <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
                                                         </accessibility>
@@ -602,10 +602,10 @@
     </scenes>
     <designables>
         <designable name="GPP-hZ-kRJ">
-            <size key="intrinsicContentSize" width="46" height="28"/>
+            <size key="intrinsicContentSize" width="86" height="36"/>
         </designable>
         <designable name="gP8-zr-vel">
-            <size key="intrinsicContentSize" width="49" height="28"/>
+            <size key="intrinsicContentSize" width="89" height="36"/>
         </designable>
     </designables>
     <resources>
