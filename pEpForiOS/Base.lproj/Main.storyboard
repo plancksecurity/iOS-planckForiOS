@@ -623,7 +623,7 @@
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rzd-zE-jNB" userLabel="Container">
                                                                     <rect key="frame" x="8" y="7.5" width="359" height="36.5"/>
                                                                     <subviews>
-                                                                        <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="icon-settings" translatesAutoresizingMaskIntoConstraints="NO" id="br1-wM-hw2" userLabel="InlineImage">
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="icon-settings" translatesAutoresizingMaskIntoConstraints="NO" id="br1-wM-hw2" userLabel="InlineImage">
                                                                             <rect key="frame" x="155" y="8.5" width="49" height="20"/>
                                                                             <color key="tintColor" red="0.01176470588" green="0.66666666669999997" blue="0.29411764709999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                         </imageView>
@@ -790,7 +790,7 @@
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="GZX-Q2-Z5a" secondAttribute="trailing" id="84x-I7-V1w"/>
                                             <constraint firstItem="kwH-Mw-szw" firstAttribute="centerX" secondItem="1gM-RO-PE9" secondAttribute="centerX" id="MZV-I5-4Ce"/>
                                             <constraint firstItem="GZX-Q2-Z5a" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1gM-RO-PE9" secondAttribute="leading" id="TL4-Xc-fb5"/>
-                                            <constraint firstItem="GZX-Q2-Z5a" firstAttribute="top" secondItem="kwH-Mw-szw" secondAttribute="bottom" constant="15" id="atA-sw-YoX"/>
+                                            <constraint firstItem="GZX-Q2-Z5a" firstAttribute="top" secondItem="kwH-Mw-szw" secondAttribute="bottom" priority="999" constant="15" id="atA-sw-YoX"/>
                                             <constraint firstAttribute="bottom" secondItem="GZX-Q2-Z5a" secondAttribute="bottom" constant="15" id="j6G-Ay-BS0"/>
                                             <constraint firstItem="kwH-Mw-szw" firstAttribute="top" secondItem="1gM-RO-PE9" secondAttribute="top" constant="10" id="mBa-No-tmz"/>
                                         </constraints>
