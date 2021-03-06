@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "pEpForIOS-Asset-Tutorial-3.pdf",
+      "filename" : "pEpForIOS-iPad-tutorial-graphic3a.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "light"
         }
       ],
-      "filename" : "pEpForIOS-Asset-Tutorial-4.pdf",
+      "filename" : "pEpForIOS-iPad-tutorial-graphic3a-1.pdf",
       "idiom" : "universal"
     },
     {
@@ -21,7 +21,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "pEpForIOS-iPhone-tutorial-graphic3a-darkmode-2.pdf",
+      "filename" : "pEpForIOS-iPad-tutorial-graphic3a-darkmode.pdf",
       "idiom" : "universal"
     }
   ],

@@ -13,7 +13,6 @@ import pEpIOSToolbox
 
 class TutorialStep2iPhoneViewController: TutorialStepViewController {
     
-    @IBOutlet private weak var secureLabel: UILabel!
     @IBOutlet private weak var truswordsLabel: UILabel!
     @IBOutlet private weak var confirmButton: UIButton!
     @IBOutlet private weak var declineButton: UIButton!
@@ -29,7 +28,6 @@ class TutorialStep2iPhoneViewController: TutorialStepViewController {
         setupButtons()
         setupTrustwordsContainer()
         setupTrustwordsLabel()
-        secureLabel.font = font
     }
 }
 

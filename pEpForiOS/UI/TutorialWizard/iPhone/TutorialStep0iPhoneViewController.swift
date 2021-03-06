@@ -40,10 +40,18 @@ extension TutorialStep0iPhoneViewController {
     
     private func setupTitleLabel() {
         let titleText = NSLocalizedString("Welcome to the p≡p Tutorial", comment: "Welcome to the p≡p Tutorial - Step 0")
+
+        var foregroundColor: UIColor
+        if #available(iOS 13.0, *) {
+            foregroundColor = UIColor.label
+        } else {
+            foregroundColor = UIColor.black
+        }
+
         let attributedString = NSMutableAttributedString(string: titleText, attributes: [
             .paragraphStyle: centeredSpaced,
             .font: titleFont,
-            .foregroundColor: UIColor.black,
+            .foregroundColor: foregroundColor,
             .kern: 0.36
         ])
         if let range = titleText.nsRange(of: "p≡p") {
@@ -53,10 +61,17 @@ extension TutorialStep0iPhoneViewController {
     }
     
     private func setupSkipTutorialLabel() {
+        var foregroundColor: UIColor
+        if #available(iOS 13.0, *) {
+            foregroundColor = UIColor.label
+        } else {
+            foregroundColor = UIColor.black
+        }
+
         let text = NSLocalizedString("You can close this tutorial anytime with the Skip button.", comment: "Tutorial First text")
         let attributes : [NSAttributedString.Key : Any] = [
           .font: font,
-          .foregroundColor: UIColor.black,
+          .foregroundColor: foregroundColor,
           .paragraphStyle: centeredSpaced,
           .kern: 0.2]
         skipTutorialLabel.attributedText = NSMutableAttributedString(string:text, attributes: attributes)

@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "pEpForIOS-Asset-Tutorial-1a.pdf",
+      "filename" : "pEpForIOS-iPad-tutorial-graphic1.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,15 +11,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "pEpForIOS-iPhone-tutorial-graphic1-darkmode.pdf",
+      "filename" : "pEpForIOS-iPad-tutorial-graphic1-darkmode.pdf",
       "idiom" : "universal"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
-  },
-  "properties" : {
-    "preserves-vector-representation" : true
   }
 }

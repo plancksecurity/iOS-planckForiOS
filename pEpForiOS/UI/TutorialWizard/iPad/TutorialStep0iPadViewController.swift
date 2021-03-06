@@ -43,10 +43,15 @@ class TutorialStep0iPadViewController: TutorialStepViewController {
 extension TutorialStep0iPadViewController {
 
     private func setupTitle() {
+        var color = UIColor.black
+        if #available(iOS 13.0, *) {
+            color = .label
+        }
+
         let titleText = Localized.welcome
         let attributedString = NSMutableAttributedString(string: titleText, attributes: [
             .font: titleFont,
-            .foregroundColor: UIColor.black,
+            .foregroundColor: color,
         ])
         if let range = titleText.nsRange(of: "p≡p") {
             attributedString.addAttributes([.font: titleFont, .foregroundColor: UIColor.pEpGreen], range:range)
@@ -55,9 +60,14 @@ extension TutorialStep0iPadViewController {
     }
 
     private func setupSkipTutorial() {
+        var color = UIColor.black
+        if #available(iOS 13.0, *) {
+            color = .secondaryLabel
+        }
+
         let attributes : [NSAttributedString.Key : Any] = [
           .font: font,
-          .foregroundColor: UIColor.black,
+          .foregroundColor: color,
           .paragraphStyle: UIDevice.isIpadSmall ? centered : centeredSpaced,
         ]
         skipTutorial.attributedText = NSMutableAttributedString(string: Localized.skipTutorial, attributes: attributes)
