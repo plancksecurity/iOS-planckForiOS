@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <device id="retina4_7" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -230,7 +230,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can close this tutorial anytime with the Skip button." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RKC-QV-5yv">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can close this tutorial anytime with the Skip button." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RKC-QV-5yv">
                                 <rect key="frame" x="56.5" y="95.5" width="262.5" height="31.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <nil key="textColor"/>
@@ -293,12 +293,6 @@
                                     </mask>
                                 </variation>
                             </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" image="pEp-status-msg-yellow" translatesAutoresizingMaskIntoConstraints="NO" id="m1I-aD-8YL" userLabel="Privacy Status Image View">
-                                <rect key="frame" x="157.5" y="370.5" width="60" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="m1I-aD-8YL" secondAttribute="height" multiplier="20:7" id="p5W-jS-9CY"/>
-                                </constraints>
-                            </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-1a" translatesAutoresizingMaskIntoConstraints="NO" id="BTb-PE-Srj" userLabel="Avatar Image View">
                                 <rect key="frame" x="158.5" y="226" width="58" height="58"/>
                                 <constraints>
@@ -356,7 +350,6 @@
                             <constraint firstItem="WAK-KE-bk0" firstAttribute="centerX" secondItem="RKC-QV-5yv" secondAttribute="centerX" id="Ymw-9z-63s"/>
                             <constraint firstItem="RKC-QV-5yv" firstAttribute="centerX" secondItem="XKD-ea-9Kh" secondAttribute="centerX" id="bRv-qP-Fd6"/>
                             <constraint firstItem="B9p-Ah-ajI" firstAttribute="centerX" secondItem="WAK-KE-bk0" secondAttribute="centerX" id="dOy-ft-D9A"/>
-                            <constraint firstItem="m1I-aD-8YL" firstAttribute="centerY" secondItem="BKf-gk-loR" secondAttribute="centerY" constant="6" id="eOq-oz-vPX"/>
                             <constraint firstItem="B9p-Ah-ajI" firstAttribute="leading" secondItem="RKC-QV-5yv" secondAttribute="leading" id="ec6-5b-Fra"/>
                             <constraint firstItem="B9p-Ah-ajI" firstAttribute="centerX" secondItem="WAK-KE-bk0" secondAttribute="centerX" id="f8a-Ye-P6H"/>
                             <constraint firstItem="ZDk-Zf-Xez" firstAttribute="top" secondItem="B9p-Ah-ajI" secondAttribute="bottom" constant="100" id="fkJ-Il-LtR">
@@ -368,9 +361,7 @@
                             <constraint firstItem="RKC-QV-5yv" firstAttribute="leading" secondItem="vnx-d9-CLf" secondAttribute="leading" constant="80" id="fzK-gZ-gqY"/>
                             <constraint firstItem="RKC-QV-5yv" firstAttribute="width" secondItem="cNu-nP-Lew" secondAttribute="width" multiplier="0.7" id="gdQ-dc-ejE"/>
                             <constraint firstItem="ZDk-Zf-Xez" firstAttribute="leading" secondItem="vnx-d9-CLf" secondAttribute="leading" constant="40" id="hKh-6F-csZ"/>
-                            <constraint firstItem="m1I-aD-8YL" firstAttribute="width" secondItem="BKf-gk-loR" secondAttribute="height" multiplier="60:59" id="hzy-F1-Opq"/>
                             <constraint firstItem="vnx-d9-CLf" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="RKC-QV-5yv" secondAttribute="trailing" constant="80" id="i5A-Ut-39k"/>
-                            <constraint firstItem="m1I-aD-8YL" firstAttribute="centerX" secondItem="BKf-gk-loR" secondAttribute="centerX" id="lSR-YE-WNL"/>
                             <constraint firstItem="vnx-d9-CLf" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="RKC-QV-5yv" secondAttribute="trailing" symbolic="YES" id="liU-hj-a4n"/>
                             <constraint firstItem="vnx-d9-CLf" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="BKf-gk-loR" secondAttribute="bottom" priority="249" constant="8" id="lrQ-Uc-Szq"/>
                             <constraint firstItem="BKf-gk-loR" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vnx-d9-CLf" secondAttribute="leading" constant="8" id="mgS-Qv-8LE"/>
@@ -464,7 +455,6 @@
                                 <include reference="MS1-XZ-VhU"/>
                                 <exclude reference="mgS-Qv-8LE"/>
                                 <exclude reference="mp1-Oi-yyk"/>
-                                <exclude reference="hzy-F1-Opq"/>
                                 <include reference="Brv-MI-ZoN"/>
                             </mask>
                         </variation>
@@ -834,7 +824,7 @@
                                             </mask>
                                         </variation>
                                     </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-iPhone-tutorial-graphic4-darkmode" translatesAutoresizingMaskIntoConstraints="NO" id="Dxw-e9-73u" userLabel="Secure and trusted asset">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-iPhone-tutorial-graphic4-darkmode2" translatesAutoresizingMaskIntoConstraints="NO" id="Dxw-e9-73u" userLabel="Secure and trusted asset">
                                         <rect key="frame" x="172" y="192.5" width="58" height="58"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="58" id="FqF-sF-qoh">
@@ -843,23 +833,6 @@
                                             </constraint>
                                             <constraint firstAttribute="width" secondItem="Dxw-e9-73u" secondAttribute="height" multiplier="1:1" id="a8O-ii-pBo"/>
                                         </constraints>
-                                    </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" image="pEp-status-msg-yellow" translatesAutoresizingMaskIntoConstraints="NO" id="d7r-hM-zxS" userLabel="Privacy Status Image View">
-                                        <rect key="frame" x="127.5" y="132" width="60" height="22"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="d7r-hM-zxS" secondAttribute="height" multiplier="19:7" id="3GQ-vg-oVB"/>
-                                            <constraint firstAttribute="width" constant="38" id="uJH-lX-ZtV"/>
-                                        </constraints>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="uJH-lX-ZtV"/>
-                                            </mask>
-                                        </variation>
-                                        <variation key="heightClass=compact-widthClass=compact">
-                                            <mask key="constraints">
-                                                <include reference="uJH-lX-ZtV"/>
-                                            </mask>
-                                        </variation>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEpForIOS-Asset-Tutorial-1a" translatesAutoresizingMaskIntoConstraints="NO" id="dxb-MX-efP" userLabel="Secure Asset">
                                         <rect key="frame" x="85" y="192.5" width="58" height="58"/>
@@ -891,12 +864,10 @@
                                         <variation key="heightClass=compact-widthClass=regular" constant="20"/>
                                     </constraint>
                                     <constraint firstItem="Dxw-e9-73u" firstAttribute="centerX" secondItem="JRj-Lz-8Q6" secondAttribute="centerX" multiplier="1.15" id="K2m-od-FZd"/>
-                                    <constraint firstItem="d7r-hM-zxS" firstAttribute="centerY" secondItem="JRj-Lz-8Q6" secondAttribute="centerY" id="Mxv-dF-njm"/>
                                     <constraint firstItem="rLc-J2-pmo" firstAttribute="leading" secondItem="Dbb-pf-Jeu" secondAttribute="leading" constant="41" id="Ww9-yc-bvT">
                                         <variation key="heightClass=compact-widthClass=compact" constant="0.0"/>
                                         <variation key="heightClass=compact-widthClass=regular" constant="0.0"/>
                                     </constraint>
-                                    <constraint firstItem="d7r-hM-zxS" firstAttribute="centerX" secondItem="JRj-Lz-8Q6" secondAttribute="centerX" id="ZYQ-3E-hQH"/>
                                     <constraint firstItem="JRj-Lz-8Q6" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Dbb-pf-Jeu" secondAttribute="leading" constant="8" id="awg-7V-SnC"/>
                                     <constraint firstItem="Dxw-e9-73u" firstAttribute="top" secondItem="JRj-Lz-8Q6" secondAttribute="bottom" priority="750" constant="23" id="hkk-YN-uBN">
                                         <variation key="heightClass=compact-widthClass=compact" constant="10"/>
@@ -956,14 +927,13 @@
         </scene>
     </scenes>
     <resources>
-        <image name="pEp-status-msg-yellow" width="60" height="21"/>
         <image name="pEpForIOS-Asset-Tutorial-1a" width="58" height="58"/>
         <image name="pEpForIOS-Asset-Tutorial-1b" width="334" height="59"/>
         <image name="pEpForIOS-Asset-Tutorial-2a" width="40" height="40"/>
         <image name="pEpForIOS-Asset-Tutorial-2b" width="40" height="40"/>
         <image name="pEpForIOS-Asset-Tutorial-2c" width="43" height="37"/>
         <image name="pEpForIOS-Asset-Tutorial-4" width="335" height="95"/>
-        <image name="pEpForIOS-iPhone-tutorial-graphic4-darkmode" width="58" height="58"/>
+        <image name="pEpForIOS-iPhone-tutorial-graphic4-darkmode2" width="58" height="58"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

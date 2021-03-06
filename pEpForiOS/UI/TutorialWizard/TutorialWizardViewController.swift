@@ -39,16 +39,14 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
         tutorialWizard.showDots = true
         tutorialWizard.pageControlTint = .pEpGray
 
-        var backgroundColor: UIColor = .white
-        var indicatorColor: UIColor = .black
-
-        if #available(iOS 13.0, *) {
-            backgroundColor = .systemBackground
-            indicatorColor = .systemFill
+	if #available(iOS 13.0, *) {
+            tutorialWizard.view.backgroundColor = .systemBackground
+            tutorialWizard.pageControlPageIndicatorColor = .systemFill
+            tutorialWizard.pageControlBackgroundColor = .systemBackground
+        } else {
+            tutorialWizard.pageControlPageIndicatorColor = .black
+            tutorialWizard.pageControlBackgroundColor = .white
         }
-        tutorialWizard.pageControlPageIndicatorColor = indicatorColor
-
-        tutorialWizard.pageControlBackgroundColor = backgroundColor
         let navigationController = UINavigationController(rootViewController: tutorialWizard)
         DispatchQueue.main.async { [weak viewController] in
             navigationController.modalPresentationStyle = .fullScreen
