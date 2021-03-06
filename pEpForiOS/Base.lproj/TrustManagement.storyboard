@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PZt-VJ-X5t">
-    <device id="ipad9_7" orientation="landscape" layout="fullscreen" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PZt-VJ-X5t">
+    <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -14,7 +15,7 @@
                 <navigationController storyboardIdentifier="TrustManagementViewControllerID" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="PZt-VJ-X5t" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="0Ex-jP-6bo">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="50"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -31,36 +32,36 @@
             <objects>
                 <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="ZyM-PO-eQ8" customClass="TrustManagementViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aVx-QE-VZP">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="crl-YO-ia8">
-                                <rect key="frame" x="0.0" y="50" width="1024" height="718"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <rect key="frame" x="0.0" y="50" width="768" height="974"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TrustManagementEmptyHeaderTableViewCell" id="yMU-X4-4om">
-                                        <rect key="frame" x="0.0" y="28" width="1024" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="768" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yMU-X4-4om" id="jkE-w4-XJN">
-                                            <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TrustManagementTableViewResetCell" rowHeight="250" id="yWq-sT-nzZ" userLabel="TrustManagementCellReset" customClass="TrustManagementResetTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="72" width="1024" height="250"/>
+                                        <rect key="frame" x="0.0" y="72" width="768" height="250"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yWq-sT-nzZ" id="h4u-4a-ram" userLabel="TrustManagementContentView">
-                                            <rect key="frame" x="0.0" y="0.0" width="1024" height="250"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="768" height="250"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="UaN-mM-Lnb" userLabel="OuterStackView">
-                                                    <rect key="frame" x="20" y="20" width="984" height="210"/>
+                                                    <rect key="frame" x="20" y="20" width="728" height="210"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jei-WB-3c7" userLabel="HeaderStackView">
-                                                            <rect key="frame" x="0.0" y="0.0" width="984" height="70"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="728" height="70"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zcX-Xh-hbh" userLabel="HeaderView">
-                                                                    <rect key="frame" x="8" y="0.0" width="968" height="70"/>
+                                                                    <rect key="frame" x="8" y="0.0" width="712" height="70"/>
                                                                     <subviews>
                                                                         <imageView contentMode="scaleToFill" image="empty-avatar" translatesAutoresizingMaskIntoConstraints="NO" id="gQM-Qw-FTF" userLabel="PartnerImage">
                                                                             <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
@@ -71,7 +72,7 @@
                                                                             </constraints>
                                                                         </imageView>
                                                                         <label opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" text="Hannibal Chew" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0t8-um-E1E" userLabel="PartnerNameLabel">
-                                                                            <rect key="frame" x="78" y="15.5" width="870" height="33.5"/>
+                                                                            <rect key="frame" x="78" y="15.5" width="614" height="33.5"/>
                                                                             <accessibility key="accessibilityConfiguration" identifier="partnerNameLabel"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                                                             <nil key="textColor"/>
@@ -91,7 +92,7 @@
                                                             <edgeInsets key="layoutMargins" top="0.0" left="8" bottom="0.0" right="8"/>
                                                         </stackView>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iy2-QD-E6O" userLabel="ResetContainer">
-                                                            <rect key="frame" x="0.0" y="90" width="984" height="120"/>
+                                                            <rect key="frame" x="0.0" y="90" width="728" height="120"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reset all p≡p data for this comunication partner:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x6I-yN-Uyv" userLabel="Reset Label">
                                                                     <rect key="frame" x="0.0" y="0.0" width="200" height="120"/>
@@ -112,7 +113,7 @@
                                                                         </mask>
                                                                     </variation>
                                                                 </label>
-                                                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ETf-Fn-foo">
+                                                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ETf-Fn-foo">
                                                                     <rect key="frame" x="208" y="42.5" width="54" height="35"/>
                                                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <constraints>
@@ -122,14 +123,14 @@
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                                                                     <state key="normal" title="Reset">
-                                                                        <color key="titleColor" systemColor="tertiarySystemBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                        <color key="titleColor" systemColor="tertiarySystemBackgroundColor"/>
                                                                     </state>
                                                                     <connections>
                                                                         <action selector="resetButtonPressed" destination="yWq-sT-nzZ" eventType="touchUpInside" id="zz2-WY-U3A"/>
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
-                                                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                             <constraints>
                                                                 <constraint firstItem="x6I-yN-Uyv" firstAttribute="centerY" secondItem="Iy2-QD-E6O" secondAttribute="centerY" id="Dop-VN-1fD"/>
                                                                 <constraint firstItem="x6I-yN-Uyv" firstAttribute="leading" secondItem="Iy2-QD-E6O" secondAttribute="leading" id="OSP-C3-6BI"/>
@@ -159,20 +160,20 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TrustManagementTableViewCell_OnlyMaster" rowHeight="370" id="dBo-wY-3Nn" userLabel="TrustManagementCell" customClass="TrustManagementTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="322" width="1024" height="370"/>
+                                        <rect key="frame" x="0.0" y="322" width="768" height="370"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dBo-wY-3Nn" id="PBy-V2-1ZV" userLabel="TrustManagementContentView">
-                                            <rect key="frame" x="0.0" y="0.0" width="1024" height="370"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="768" height="370"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="KMP-lx-Npd" userLabel="OuterStackView">
-                                                    <rect key="frame" x="20" y="20" width="984" height="330"/>
+                                                    <rect key="frame" x="20" y="20" width="728" height="330"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="My0-y1-PM9" userLabel="HeaderStackView">
-                                                            <rect key="frame" x="0.0" y="0.0" width="984" height="70"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="728" height="70"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nU9-3n-9JM" userLabel="HeaderView">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="976" height="70"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="720" height="70"/>
                                                                     <subviews>
                                                                         <imageView contentMode="scaleToFill" image="empty-avatar" translatesAutoresizingMaskIntoConstraints="NO" id="fkC-wD-aZH" userLabel="PartnerImage">
                                                                             <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
@@ -183,14 +184,14 @@
                                                                             </constraints>
                                                                         </imageView>
                                                                         <label opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" text="Hannibal Chew" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S81-yN-lUE" userLabel="PartnerNameLabel">
-                                                                            <rect key="frame" x="78" y="15.5" width="878" height="33.5"/>
+                                                                            <rect key="frame" x="78" y="15.5" width="622" height="33.5"/>
                                                                             <accessibility key="accessibilityConfiguration" identifier="partnerNameLabel"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" text="Mistrusted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XAP-1X-nYK" userLabel="PrivacyStatusLabel">
-                                                                            <rect key="frame" x="78" y="57" width="878" height="18"/>
+                                                                            <rect key="frame" x="78" y="57" width="622" height="18"/>
                                                                             <accessibility key="accessibilityConfiguration" identifier="privacyStatusTitle"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                             <nil key="textColor"/>
@@ -223,10 +224,10 @@
                                                             <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="8"/>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G3L-cB-he8" userLabel="PrivacyStatusDescriptionStackView">
-                                                            <rect key="frame" x="0.0" y="90" width="984" height="20.5"/>
+                                                            <rect key="frame" x="0.0" y="90" width="728" height="20.5"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" text="Your communication partner is mistrusted." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HIb-Ji-yfV" userLabel="PrivacyStatusDescription">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="976" height="20.5"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="720" height="20.5"/>
                                                                     <accessibility key="accessibilityConfiguration" identifier="privacyStatusDescription"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                     <nil key="textColor"/>
@@ -239,20 +240,20 @@
                                                             <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="8"/>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="RT3-1U-A8N" userLabel="TrustwordsStackView">
-                                                            <rect key="frame" x="0.0" y="130.5" width="984" height="59.5"/>
+                                                            <rect key="frame" x="0.0" y="130.5" width="728" height="59.5"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qnu-G6-wXn" userLabel="Container">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="976" height="59.5"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="720" height="59.5"/>
                                                                     <subviews>
                                                                         <label opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="OUTDISTANCE BLAH BLAH2 BLAH3 BLAH4 BLAH5" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0uK-Ys-aO5" userLabel="TrustWordsLabel">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="395.5" height="59.5"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="393.5" height="59.5"/>
                                                                             <accessibility key="accessibilityConfiguration" label="trustWordsLabel"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GVU-Lg-dr3" userLabel="LanguageButton">
-                                                                            <rect key="frame" x="936" y="0.0" width="30" height="30"/>
+                                                                            <rect key="frame" x="680" y="0.0" width="30" height="30"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="30" id="Gt7-FK-rhF"/>
                                                                                 <constraint firstAttribute="width" constant="30" id="rJ7-vJ-zLb"/>
@@ -263,7 +264,7 @@
                                                                             </connections>
                                                                         </button>
                                                                     </subviews>
-                                                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                     <constraints>
                                                                         <constraint firstItem="GVU-Lg-dr3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="0uK-Ys-aO5" secondAttribute="trailing" constant="30" id="R9E-8o-ER8"/>
                                                                         <constraint firstItem="0uK-Ys-aO5" firstAttribute="top" secondItem="Qnu-G6-wXn" secondAttribute="top" id="RBE-TI-zRT"/>
@@ -277,9 +278,9 @@
                                                             <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="8"/>
                                                         </stackView>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a6h-q0-Slk" userLabel="TrustButtonsView">
-                                                            <rect key="frame" x="0.0" y="210" width="984" height="50"/>
+                                                            <rect key="frame" x="0.0" y="210" width="728" height="50"/>
                                                             <subviews>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="sVr-xT-f8t" userLabel="DeclineButton">
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="sVr-xT-f8t" userLabel="DeclineButton">
                                                                     <rect key="frame" x="0.0" y="0.0" width="60" height="50"/>
                                                                     <accessibility key="accessibilityConfiguration" label="wrongButton"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
@@ -288,7 +289,7 @@
                                                                         <action selector="declineButtonPressed" destination="dBo-wY-3Nn" eventType="touchUpInside" id="hNN-EW-hOH"/>
                                                                     </connections>
                                                                 </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Q7n-8c-O25" userLabel="ConfirmButton">
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Q7n-8c-O25" userLabel="ConfirmButton">
                                                                     <rect key="frame" x="70" y="8.5" width="65" height="33"/>
                                                                     <accessibility key="accessibilityConfiguration" label="confirmButton"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
@@ -298,7 +299,7 @@
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
-                                                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                             <constraints>
                                                                 <constraint firstItem="sVr-xT-f8t" firstAttribute="top" secondItem="a6h-q0-Slk" secondAttribute="top" id="9SR-Ge-uZn"/>
                                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Q7n-8c-O25" secondAttribute="trailing" constant="10" id="H65-XH-XiP"/>
@@ -310,7 +311,7 @@
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XLY-Tc-o7v" userLabel="ResetContainer">
-                                                            <rect key="frame" x="0.0" y="280" width="984" height="50"/>
+                                                            <rect key="frame" x="0.0" y="280" width="728" height="50"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reset all p≡p data for this comunication partner:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K85-bq-q6Q" userLabel="Reset Label">
                                                                     <rect key="frame" x="0.0" y="0.0" width="200" height="50"/>
@@ -331,8 +332,8 @@
                                                                         </mask>
                                                                     </variation>
                                                                 </label>
-                                                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6bf-Gd-X5g">
-                                                                    <rect key="frame" x="922" y="7.5" width="54" height="35"/>
+                                                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6bf-Gd-X5g">
+                                                                    <rect key="frame" x="666" y="7.5" width="54" height="35"/>
                                                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="35" id="MrI-s1-INH"/>
@@ -341,14 +342,14 @@
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                                                                     <state key="normal" title="Reset">
-                                                                        <color key="titleColor" systemColor="tertiarySystemBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                        <color key="titleColor" systemColor="tertiarySystemBackgroundColor"/>
                                                                     </state>
                                                                     <connections>
                                                                         <action selector="resetButtonPressed" destination="dBo-wY-3Nn" eventType="touchUpInside" id="pNr-S1-gDa"/>
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
-                                                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                             <constraints>
                                                                 <constraint firstItem="6bf-Gd-X5g" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="K85-bq-q6Q" secondAttribute="trailing" constant="8" id="2J3-yf-67v"/>
                                                                 <constraint firstAttribute="bottom" secondItem="K85-bq-q6Q" secondAttribute="bottom" id="IMl-2X-Lrd"/>
@@ -391,17 +392,17 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TrustManagementTableViewCell_Detailed" rowHeight="370" id="rJy-jc-TFR" userLabel="TrustManagementWideCell" customClass="TrustManagementTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="692" width="1024" height="370"/>
+                                        <rect key="frame" x="0.0" y="692" width="768" height="370"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rJy-jc-TFR" id="IGB-g2-b9y" userLabel="TrustManagementContentView">
-                                            <rect key="frame" x="0.0" y="0.0" width="1024" height="370"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="768" height="370"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="C8m-ac-x3C" userLabel="OuterStackView">
-                                                    <rect key="frame" x="20" y="20" width="984" height="330"/>
+                                                    <rect key="frame" x="20" y="20" width="728" height="330"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="LAe-kT-Qws" userLabel="HeaderStackView">
-                                                            <rect key="frame" x="0.0" y="0.0" width="984" height="330"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="728" height="330"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="XHH-fK-iHt" userLabel="Left Side Stack View">
                                                                     <rect key="frame" x="0.0" y="0.0" width="320" height="330"/>
@@ -418,7 +419,7 @@
                                                                                     </constraints>
                                                                                 </imageView>
                                                                                 <label opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" text="Hannibal Chew" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eOu-ky-MME" userLabel="PartnerNameLabel">
-                                                                                    <rect key="frame" x="78" y="15.5" width="183" height="33.5"/>
+                                                                                    <rect key="frame" x="78" y="15.5" width="183.5" height="33.5"/>
                                                                                     <accessibility key="accessibilityConfiguration" identifier="partnerNameLabel"/>
                                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                                                                     <nil key="textColor"/>
@@ -479,7 +480,7 @@
                                                                                         </mask>
                                                                                     </variation>
                                                                                 </label>
-                                                                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kDe-b5-usQ">
+                                                                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kDe-b5-usQ">
                                                                                     <rect key="frame" x="207" y="105" width="54" height="35"/>
                                                                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                     <constraints>
@@ -489,14 +490,14 @@
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                     <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                                                                                     <state key="normal" title="Reset">
-                                                                                        <color key="titleColor" systemColor="tertiarySystemBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                                        <color key="titleColor" systemColor="tertiarySystemBackgroundColor"/>
                                                                                     </state>
                                                                                     <connections>
                                                                                         <action selector="resetButtonPressed" destination="rJy-jc-TFR" eventType="touchUpInside" id="dwV-0A-q5K"/>
                                                                                     </connections>
                                                                                 </button>
                                                                             </subviews>
-                                                                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                             <constraints>
                                                                                 <constraint firstItem="aT5-52-Wck" firstAttribute="leading" secondItem="Zgr-j1-iGp" secondAttribute="leading" id="8vs-Zk-Z1y"/>
                                                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kDe-b5-usQ" secondAttribute="trailing" constant="8" id="Ehi-FF-utg">
@@ -520,10 +521,10 @@
                                                                     </constraints>
                                                                 </stackView>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yin-G4-Q1S" userLabel="RightSide">
-                                                                    <rect key="frame" x="350" y="0.0" width="626" height="330"/>
+                                                                    <rect key="frame" x="350" y="0.0" width="370" height="330"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="5xj-yI-46H" userLabel="PrivacyStatusDescription">
-                                                                            <rect key="frame" x="0.0" y="24" width="606" height="40.5"/>
+                                                                            <rect key="frame" x="0.0" y="24" width="350" height="82.5"/>
                                                                             <accessibility key="accessibilityConfiguration" identifier="privacyStatusDescription"/>
                                                                             <string key="text">In order to make communication Secure &amp; Trusted, you will have to compare the Trustwords bellow with your communication partner.</string>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
@@ -531,14 +532,14 @@
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <label opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="OUTDISTANCE BLAH BLAH2 BLAH3 BLAH4 BLAH5" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="82G-iU-EVg" userLabel="TrustwordsLabel">
-                                                                            <rect key="frame" x="0.0" y="85" width="395.5" height="20.5"/>
+                                                                            <rect key="frame" x="0.0" y="127" width="282.5" height="42.5"/>
                                                                             <accessibility key="accessibilityConfiguration" label="trustWordsLabel"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="cLm-E4-Lx2" userLabel="DeclineButton">
-                                                                            <rect key="frame" x="0.0" y="134" width="60" height="33"/>
+                                                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="cLm-E4-Lx2" userLabel="DeclineButton">
+                                                                            <rect key="frame" x="0.0" y="198" width="60" height="33"/>
                                                                             <accessibility key="accessibilityConfiguration" label="wrongButton"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                             <state key="normal" title="Decline"/>
@@ -546,8 +547,8 @@
                                                                                 <action selector="declineButtonPressed" destination="rJy-jc-TFR" eventType="touchUpInside" id="iba-0U-RBU"/>
                                                                             </connections>
                                                                         </button>
-                                                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="cAK-ZW-JLu" userLabel="ConfirmButton">
-                                                                            <rect key="frame" x="82" y="134" width="65" height="33"/>
+                                                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="cAK-ZW-JLu" userLabel="ConfirmButton">
+                                                                            <rect key="frame" x="82" y="198" width="65" height="33"/>
                                                                             <accessibility key="accessibilityConfiguration" label="confirmButton"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                             <state key="normal" title="Confirm"/>
@@ -556,7 +557,7 @@
                                                                             </connections>
                                                                         </button>
                                                                         <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oRh-LC-ph7" userLabel="LanguageButton">
-                                                                            <rect key="frame" x="596" y="85" width="30" height="30"/>
+                                                                            <rect key="frame" x="340" y="127" width="30" height="30"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" constant="30" id="TB5-Sx-vGy"/>
                                                                                 <constraint firstAttribute="height" constant="30" id="k49-Sv-T7c"/>
@@ -567,7 +568,7 @@
                                                                             </connections>
                                                                         </button>
                                                                     </subviews>
-                                                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                     <constraints>
                                                                         <constraint firstItem="cAK-ZW-JLu" firstAttribute="centerY" secondItem="cLm-E4-Lx2" secondAttribute="centerY" id="0gq-lB-m92"/>
                                                                         <constraint firstItem="oRh-LC-ph7" firstAttribute="top" secondItem="82G-iU-EVg" secondAttribute="top" id="9Wg-nj-Odh"/>
@@ -622,14 +623,14 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="Cc9-zb-MFC"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="crl-YO-ia8" firstAttribute="top" secondItem="Cc9-zb-MFC" secondAttribute="top" id="Waw-Rc-UTV"/>
                             <constraint firstAttribute="trailing" secondItem="crl-YO-ia8" secondAttribute="trailing" id="eez-K7-mjM"/>
                             <constraint firstItem="crl-YO-ia8" firstAttribute="leading" secondItem="aVx-QE-VZP" secondAttribute="leading" id="lU7-u9-5d7"/>
                             <constraint firstItem="crl-YO-ia8" firstAttribute="bottom" secondItem="Cc9-zb-MFC" secondAttribute="bottom" id="pvS-zR-eeo"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="Cc9-zb-MFC"/>
                     </view>
                     <navigationItem key="navigationItem" id="YKE-S1-jhy">
                         <barButtonItem key="rightBarButtonItem" title="Options" id="zNZ-mq-ElZ">
@@ -653,5 +654,11 @@
         <image name="empty-avatar" width="150" height="150"/>
         <image name="pEp-status-yellow_white-border" width="21" height="21"/>
         <image name="pEpForiOS-icon-languagechange" width="100" height="100"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="tertiarySystemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

@@ -71,6 +71,13 @@ final class TrustManagementTableViewCell: UITableViewCell {
     private func setupView() {
         removeGestureRecognizers()
 
+        var buttonTextcolor : UIColor = .white
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                buttonTextcolor = UIColor.darkText
+            }
+        }
+
         let gesture = UITapGestureRecognizer(target: self, action: #selector(trustwordsLabelPressed))
         trustwordsLabel.addGestureRecognizer(gesture)
     
@@ -85,7 +92,7 @@ final class TrustManagementTableViewCell: UITableViewCell {
         declineButton.pEpIfyForTrust(backgroundColor: .pEpRed, textColor: .white)
 
         //Reset Button
-        resetButton.pEpIfyForTrust(backgroundColor: .pEpGrayBackgroundReset, textColor: .white)
+        resetButton.pEpIfyForTrust(backgroundColor: .pEpGrayBackgroundReset, textColor: buttonTextcolor)
      
         //Reset label
         resetLabel.text = NSLocalizedString("Reset all p≡p data for this comunication partner:",
