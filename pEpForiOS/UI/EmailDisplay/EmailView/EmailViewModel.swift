@@ -65,6 +65,13 @@ class EmailViewModel {
         self.setupRows(message: message)
     }
 
+    public func restart() {
+        self.rows = [EmailRowProtocol]()
+        self.attachments = message.viewableNotInlinedAttachments
+        self.inlinedAttachments = message.viewableInlinedAttachments
+        self.setupRows(message: message)
+    }
+
     private var shouldHideExternalContent: Bool = true
 
     // Indicates if the External Content View has to be shown.
@@ -179,7 +186,8 @@ class EmailViewModel {
     ///   - height: The height of the image.
     public func handleImageFetched(forRowAt indexPath: IndexPath, withHeight height: CGFloat) {
         if let row = rows[indexPath.row] as? InlinedAttachmentRow {
-            row.height = height
+            let margin: CGFloat = 20.0
+            row.height = height + margin
             rows[indexPath.row] = row
         }
     }

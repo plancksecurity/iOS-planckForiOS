@@ -81,6 +81,7 @@ class EmailViewController: UIViewController {
 
         /// If size classes change, we need to reload.
         if ((traitCollection.verticalSizeClass != thePreviousTraitCollection.verticalSizeClass) || (traitCollection.horizontalSizeClass != thePreviousTraitCollection.horizontalSizeClass)) {
+            viewModel!.restart()
             tableView.reloadData()
         }
     }
@@ -186,7 +187,6 @@ extension EmailViewController: UITableViewDelegate {
         if (vm[indexPath.row] as? EmailViewModel.BodyRow)?.htmlBody != nil {
             return htmlViewerViewController.contentSize.height
         }
-
         if let row = vm[indexPath.row] as? EmailViewModel.BaseAttachmentRow {
             return row.height
         }
@@ -315,7 +315,6 @@ extension EmailViewController {
         }
     }
 
-
     private func setupSender(cell: MessageSenderCell, with row: EmailViewModel.SenderRow) {
         let font = UIFont.pepFont(style: .footnote, weight: .semibold)
         cell.fromLabel.font = font
@@ -352,15 +351,19 @@ extension EmailViewController {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-        row.retrieveAttachmentData { [weak self] (_, _, image) in
+        let updateSizeGroup = DispatchGroup()
+
+        row.retrieveAttachmentData { (_, _, image) in
+            cell.inlinedImageView?.image = image
+            vm.handleImageFetched(forRowAt: indexPath, withHeight: image.size.height)
+            updateSizeGroup.leave()
+        }
+
+        updateSizeGroup.notify(queue: DispatchQueue.main) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
-            cell.inlinedImageView.isHidden = false
-            cell.inlinedImageView?.image = image
-            let margin: CGFloat = 20.0
-            vm.handleImageFetched(forRowAt: indexPath, withHeight: image.size.height + margin)
             me.tableView.updateSize()
         }
     }
