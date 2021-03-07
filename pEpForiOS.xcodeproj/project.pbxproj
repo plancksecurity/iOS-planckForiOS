@@ -269,7 +269,7 @@
 		43980E2C1CBD0BC900A7FC3C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E2A1CBD0BC900A7FC3C /* Main.storyboard */; };
 		43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */; };
 		439817592418ED2000C8AB84 /* TrustManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4398175B2418ED2000C8AB84 /* TrustManagement.storyboard */; };
-		439817692418EDB200C8AB84 /* Tutorial.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4398176B2418EDB200C8AB84 /* Tutorial.storyboard */; };
+		439817692418EDB200C8AB84 /* Tutorial_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4398176B2418EDB200C8AB84 /* Tutorial_iPhone.storyboard */; };
 		43985D0A2044296D0080FA9A /* OAuthAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43985D092044296D0080FA9A /* OAuthAuthorizer.swift */; };
 		439EA1542472797B005D6C9A /* KeyImportViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439EA1532472797B005D6C9A /* KeyImportViewModelTest.swift */; };
 		43A0B2CF214006FC00FB779D /* ReplyUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0B2CE214006FC00FB779D /* ReplyUtilTests.swift */; };
@@ -814,7 +814,7 @@
 		439048192424D18A00CDAE15 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		4390481A2424D18A00CDAE15 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/FolderViews.strings; sourceTree = "<group>"; };
 		4390481B2424D18A00CDAE15 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Reusable.strings; sourceTree = "<group>"; };
-		4390481C2424D18A00CDAE15 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Tutorial.strings; sourceTree = "<group>"; };
+		4390481C2424D18A00CDAE15 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Tutorial_iPhone.strings; sourceTree = "<group>"; };
 		4390481D2424D18A00CDAE15 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Thread.strings; sourceTree = "<group>"; };
 		4390481E2424D18A00CDAE15 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Certificates.strings; sourceTree = "<group>"; };
 		4390481F2424D18B00CDAE15 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -840,14 +840,14 @@
 		439817642418ED3B00C8AB84 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/TrustManagement.strings; sourceTree = "<group>"; };
 		439817662418ED3F00C8AB84 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/TrustManagement.strings; sourceTree = "<group>"; };
 		439817682418ED4400C8AB84 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/TrustManagement.strings; sourceTree = "<group>"; };
-		4398176C2418EDCC00C8AB84 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Tutorial.storyboard; sourceTree = "<group>"; };
-		4398176E2418EDD000C8AB84 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Tutorial.strings; sourceTree = "<group>"; };
-		439817702418EDD200C8AB84 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Tutorial.strings; sourceTree = "<group>"; };
-		439817722418EDD500C8AB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Tutorial.strings; sourceTree = "<group>"; };
-		439817742418EDD700C8AB84 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Tutorial.strings; sourceTree = "<group>"; };
-		439817762418EDD900C8AB84 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Tutorial.strings; sourceTree = "<group>"; };
-		439817782418EDDB00C8AB84 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Tutorial.strings; sourceTree = "<group>"; };
-		439817792418F06000C8AB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Tutorial.strings; sourceTree = "<group>"; };
+		4398176C2418EDCC00C8AB84 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Tutorial_iPhone.storyboard; sourceTree = "<group>"; };
+		4398176E2418EDD000C8AB84 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Tutorial_iPhone.strings; sourceTree = "<group>"; };
+		439817702418EDD200C8AB84 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Tutorial_iPhone.strings; sourceTree = "<group>"; };
+		439817722418EDD500C8AB84 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Tutorial_iPhone.strings; sourceTree = "<group>"; };
+		439817742418EDD700C8AB84 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Tutorial_iPhone.strings; sourceTree = "<group>"; };
+		439817762418EDD900C8AB84 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Tutorial_iPhone.strings; sourceTree = "<group>"; };
+		439817782418EDDB00C8AB84 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Tutorial_iPhone.strings; sourceTree = "<group>"; };
+		439817792418F06000C8AB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Tutorial_iPhone.strings; sourceTree = "<group>"; };
 		4398177A2418F06A00C8AB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TrustManagement.strings; sourceTree = "<group>"; };
 		43985D092044296D0080FA9A /* OAuthAuthorizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthAuthorizer.swift; sourceTree = "<group>"; };
 		43993C2F2357587700FE311E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -2434,7 +2434,7 @@
 				43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */,
 				151DE7E61FC5D41600CDC273 /* FolderViews.storyboard */,
 				155F2DA020530798001B4B1C /* Reusable.storyboard */,
-				4398176B2418EDB200C8AB84 /* Tutorial.storyboard */,
+				4398176B2418EDB200C8AB84 /* Tutorial_iPhone.storyboard */,
 				491B656020CFE0FD00C2ADDA /* Thread.storyboard */,
 				3A2119E624125AC60030C3E4 /* Certificates.storyboard */,
 				5B885DB425E7B0350027DD24 /* Tutorial_iPad.storyboard */,
@@ -2767,7 +2767,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				491B656220CFE0FD00C2ADDA /* Thread.storyboard in Resources */,
-				439817692418EDB200C8AB84 /* Tutorial.storyboard in Resources */,
+				439817692418EDB200C8AB84 /* Tutorial_iPhone.storyboard in Resources */,
 				151C68002418158B00481F75 /* SFUIText-Regular.ttf in Resources */,
 				43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */,
 				155F2D9E20530798001B4B1C /* Reusable.storyboard in Resources */,
@@ -3407,7 +3407,7 @@
 			name = TrustManagement.storyboard;
 			sourceTree = "<group>";
 		};
-		4398176B2418EDB200C8AB84 /* Tutorial.storyboard */ = {
+		4398176B2418EDB200C8AB84 /* Tutorial_iPhone.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				4398176C2418EDCC00C8AB84 /* Base */,
@@ -3420,7 +3420,7 @@
 				439817792418F06000C8AB84 /* en */,
 				4390481C2424D18A00CDAE15 /* sk */,
 			);
-			name = Tutorial.storyboard;
+			name = Tutorial_iPhone.storyboard;
 			sourceTree = "<group>";
 		};
 		43C98AC1219C275E006418B0 /* Localizable.strings */ = {

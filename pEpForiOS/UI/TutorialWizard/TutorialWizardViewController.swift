@@ -86,7 +86,7 @@ extension TutorialWizardViewController {
         }
         return result
     }
-    
+
     /// Close the tutorial.
     @objc private func closeScreen() {
         dismiss(animated: true)

@@ -1,6 +1,26 @@
 {
   "images" : [
     {
+      "filename" : "pEpForIOS-iPhone-tutorial-graphic2-darkmode-1.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "light"
+        }
+      ],
+      "filename" : "pEpForIOS-iPhone-tutorial-graphic2-darkmode-2.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
       "filename" : "pEpForIOS-iPhone-tutorial-graphic2-darkmode.pdf",
       "idiom" : "universal"
     }
