@@ -29,8 +29,17 @@ final class ShareViewController: UIViewController {
 // MARK: - Private ShareViewModelDelegate
 
 extension ShareViewController: ShareViewModelDelegate {
+    /// The possible errors this extension can give to the hosting app.
+    enum SharingError: Error {
+        case userCanceled
+    }
+
     func startComposeView(sharedTypes: [SharedType]) {
         presentComposeVC(sharedTypes: sharedTypes)
+    }
+
+    func canceledByUser() {
+        extensionContext?.cancelRequest(withError: SharingError.userCanceled)
     }
 }
 

@@ -16,6 +16,9 @@ import PEPIOSToolboxForAppExtensions
 protocol ShareViewModelDelegate: class {
     /// All documents to be shared have been downloaded, ready to show the compose view.
     func startComposeView(sharedTypes: [SharedType])
+
+    /// The user canceled before sending
+    func canceledByUser()
 }
 
 class ShareViewModel {
@@ -224,5 +227,6 @@ extension ShareViewModel: ComposeViewModelFinalActionDelegate {
     }
 
     func canceled() {
+        shareViewModelDelegate?.canceledByUser()
     }
 }
