@@ -19,6 +19,7 @@ final class SettingsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setUp()
         viewModel.delegate = self
         UIHelper.variableCellHeightsTableView(tableView)
@@ -62,9 +63,10 @@ extension SettingsTableViewController {
         tableView.register(PEPHeaderView.self,
                            forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
         if #available(iOS 13.0, *) {
-            view.backgroundColor = UIColor.systemBackground
+            view.backgroundColor = UIColor.systemGroupedBackground
         } else {
-            // Nothing to do. 
+            view.backgroundColor = .groupTableViewBackground
+            // Nothing to do.
         }
     }
     /// Prepares and returns the swipe tableview cell, with the corresponding color and title.
