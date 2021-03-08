@@ -40,7 +40,9 @@ class EditSignatureViewController: UIViewController {
         let indexPath = IndexPath(row: 0, section: 0)
         if let cell = tableView.cellForRow(at: indexPath) as? SignatureTableViewCell {
             cell.textView.text = ""
+            /// Update textview height.
             textViewDidChange(cell.textView)
+            cell.textView.becomeFirstResponder()
             guard let vm = viewModel else {
                 Log.shared.errorAndCrash("No VM")
                 return
