@@ -135,8 +135,8 @@ class CreditsWebViewController: PEPWebViewController {
     }
 
     private func eula() -> String {
-        var backgroundColor = UIColor.pEpLightBackground
         var fontColor = UIColor.black
+        var backgroundColor = UIColor.white
         if #available(iOS 13.0, *) {
             backgroundColor = UIColor.systemBackground
             fontColor = UIColor.label

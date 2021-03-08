@@ -12,7 +12,6 @@ import MessageModel
 import pEpIOSToolbox
 
 extension IdentityImageTool {
-
     /// Key for the identity image cache dictionary.
     // Created to avoid accessing Identity's from a wrong queue.
     struct IdentityKey: Hashable {
@@ -71,6 +70,10 @@ class IdentityImageTool {
     }
 
     func clearCache() {
+        IdentityImageTool.imageCache.removeAll()
+    }
+
+    static func clearCache() {
         IdentityImageTool.imageCache.removeAll()
     }
 

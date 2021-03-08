@@ -46,6 +46,11 @@ class FolderTableViewController: UITableViewController {
 
         if #available(iOS 13.0, *) {
             if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                guard let vm = folderVM else {
+                    Log.shared.errorAndCrash("VM not found")
+                    return
+                }
+                vm.handleAppereanceChanged()
                 tableView.reloadData()
             }
         }
