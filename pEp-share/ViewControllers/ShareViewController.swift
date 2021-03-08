@@ -32,6 +32,7 @@ extension ShareViewController: ShareViewModelDelegate {
     /// The possible errors this extension can give to the hosting app.
     enum SharingError: Error {
         case userCanceled
+        case messageCouldNotBeSaved
     }
 
     func startComposeView(sharedTypes: [SharedType]) {
@@ -39,7 +40,7 @@ extension ShareViewController: ShareViewModelDelegate {
     }
 
     func outgoingMessageCouldNotBeSaved() {
-        // TODO
+        extensionContext?.cancelRequest(withError: SharingError.messageCouldNotBeSaved)
     }
 
     func canceledByUser() {
