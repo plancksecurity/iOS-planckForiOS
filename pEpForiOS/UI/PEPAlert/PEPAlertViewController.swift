@@ -100,14 +100,22 @@ extension PEPAlertViewController {
         case .warn:
             return .pEpRed
         case .undo:
-            return .pEpBlack
+            if #available(iOS 13.0, *) {
+                return .label
+            } else {
+                return .pEpBlack
+            }
         }
     }
 
     public var secondaryColor: UIColor {
         switch alertStyle {
         case .default, .warn, .undo:
-            return .pEpBlack
+            if #available(iOS 13.0, *) {
+                return .label
+            } else {
+                return .pEpBlack
+            }
         }
     }
 }
@@ -141,7 +149,6 @@ extension PEPAlertViewController {
             alertImageView.removeFromSuperview()
             return
         }
-
         alertImageView.animationImages = images
         alertImageView.animationDuration = 2.6
         alertImageView.startAnimating()
@@ -175,12 +182,15 @@ extension PEPAlertViewController {
             button.setTitle(action.title, for: .normal)
             button.setTitleColor(action.style, for: .normal)
             setUp(alertButton: button, style: viewModel.alertType)
-            button.backgroundColor = .white
+            if #available(iOS 13.0, *) {
+                button.backgroundColor = .secondarySystemBackground
+            } else {
+                button.backgroundColor = .white
+            }
             button.tag = viewModel.alertActionsCount
             button.addTarget(self, action: #selector(didPress(sender:)), for: .touchUpInside)
             viewModel.add(action: action)
             buttonsStackView.addArrangedSubview(button)
-
         }
     }
 }

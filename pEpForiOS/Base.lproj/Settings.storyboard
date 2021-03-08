@@ -207,7 +207,7 @@
                                                     </connections>
                                                 </switch>
                                             </subviews>
-                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="qPx-oD-7wO" secondAttribute="trailing" id="93c-4g-iEI"/>
                                                 <constraint firstItem="qPx-oD-7wO" firstAttribute="leading" secondItem="O22-FB-lMm" secondAttribute="leading" constant="1" id="KZj-GT-kbL"/>

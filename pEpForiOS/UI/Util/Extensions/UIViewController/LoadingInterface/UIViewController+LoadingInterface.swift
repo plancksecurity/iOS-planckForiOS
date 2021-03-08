@@ -14,10 +14,12 @@ final class LoadingInterface {
     static weak var loadingInterface: UIView?
 
     static func setLoadingView(visible: Bool) {
-        if visible {
-            LoadingInterface.showLoadingInterface()
-        } else {
-            LoadingInterface.removeLoadingInterface()
+        DispatchQueue.main.async {
+            if visible {
+                LoadingInterface.showLoadingInterface()
+            } else {
+                LoadingInterface.removeLoadingInterface()
+            }
         }
     }
 
