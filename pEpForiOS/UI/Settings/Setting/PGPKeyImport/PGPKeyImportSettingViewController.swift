@@ -27,7 +27,11 @@ class PGPKeyImportSettingViewController: UIViewController {
                                   comment: "PGPKeyImportSettingViewController Navigationbar title")
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = .groupTableViewBackground
+        if #available(iOS 13.0, *) {
+            tableView.backgroundColor = .systemBackground
+        } else {
+            tableView.backgroundColor = .white
+        }
         tableView.sectionHeaderHeight = UITableView.automaticDimension
         tableView.estimatedSectionHeaderHeight = 100
         tableView.register(PEPHeaderView.self,

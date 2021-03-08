@@ -101,6 +101,8 @@ class IdentityImageTool {
             if #available(iOS 13.0, *) {
                 if UITraitCollection.current.userInterfaceStyle == .dark {
                     textColorToSet = UIColor.pEpBlack
+                } else {
+                    textColorToSet = UIColor.white
                 }
             }
         }
