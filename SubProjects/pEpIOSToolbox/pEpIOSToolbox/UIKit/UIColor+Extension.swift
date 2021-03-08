@@ -80,7 +80,7 @@ extension UIColor {
     /// Retrieves the hexadecimal value.
     /// For example: #FFFFFF
     /// - Returns: The hex value.
-    public func toHexString() -> String {
+    public func toHex() -> String {
         var r:CGFloat = 0
         var g:CGFloat = 0
         var b:CGFloat = 0
