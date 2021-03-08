@@ -38,6 +38,10 @@ extension ShareViewController: ShareViewModelDelegate {
         presentComposeVC(sharedTypes: sharedTypes)
     }
 
+    func outgoingMessageCouldNotBeSaved() {
+        // TODO
+    }
+
     func canceledByUser() {
         extensionContext?.cancelRequest(withError: SharingError.userCanceled)
     }

@@ -68,7 +68,10 @@ protocol ComposeViewModelDelegate: class {
 /// Contains messages about cancelation and send.
 protocol ComposeViewModelFinalActionDelegate: class {
     /// The user requested the mail to be sent.
-    func sent()
+    func userWantsToSend(message: Message)
+
+    /// The user opted to send, but there were problems creating the message
+    func couldNotCreateOutgoingMessage()
 
     /// The user canceled the composing of the mail.
     func canceled()
@@ -200,21 +203,23 @@ class ComposeViewModel {
 
     public func handleUserClickedSendButton() {
         let safeState = state.makeSafe(forSession: Session.main)
-        let sendClosure = { [weak self] in
+        let sendClosure: (() -> Message?) = { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
-                return
+                return nil
             }
+
             guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
                 Log.shared.warn("No message for sending")
-                return
+                return nil
             }
+
             msg.sent = Date()
             msg.session.commit()
 
             guard let data = me.state.initData else {
                 Log.shared.errorAndCrash("No data")
-                return
+                return msg
             }
             if data.isDrafts {
                 // From user perspective, we have edited a drafted message and will send it.
@@ -222,6 +227,8 @@ class ComposeViewModel {
                 // delete the original, previously drafted one.
                 me.deleteOriginalMessage()
             }
+
+            return msg
         }
 
         showAlertFordwardingLessSecureIfRequired(forState: safeState) { [weak self] (accepted) in
@@ -232,9 +239,14 @@ class ComposeViewModel {
             guard accepted else {
                 return
             }
-            sendClosure()
+            let msg = sendClosure()
             me.delegate?.dismiss()
-            me.composeViewModelEndActionDelegate?.sent()
+
+            if let theMsg = msg {
+                me.composeViewModelEndActionDelegate?.userWantsToSend(message: theMsg)
+            } else {
+                me.composeViewModelEndActionDelegate?.couldNotCreateOutgoingMessage()
+            }
         }
     }
 

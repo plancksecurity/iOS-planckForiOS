@@ -17,6 +17,9 @@ protocol ShareViewModelDelegate: class {
     /// All documents to be shared have been downloaded, ready to show the compose view.
     func startComposeView(sharedTypes: [SharedType])
 
+    /// User wanted to send, but there were problems creating the outgoing message
+    func outgoingMessageCouldNotBeSaved()
+
     /// The user canceled before sending
     func canceledByUser()
 }
@@ -223,7 +226,12 @@ extension ShareViewModel {
 }
 
 extension ShareViewModel: ComposeViewModelFinalActionDelegate {
-    func sent() {
+    func userWantsToSend(message: Message) {
+        // TODO
+    }
+
+    func couldNotCreateOutgoingMessage() {
+        shareViewModelDelegate?.canceledByUser()
     }
 
     func canceled() {
