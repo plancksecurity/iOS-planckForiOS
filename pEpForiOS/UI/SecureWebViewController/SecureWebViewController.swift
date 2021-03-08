@@ -113,7 +113,7 @@ class SecureWebViewController: UIViewController {
                 me.webView.configuration.userContentController.removeAllContentRuleLists()
             }
             me.htmlOptimizer.optimizeForDislaying(html: html) { processedHtml in
-//                me.webView.loadHTMLString(processedHtml, baseURL: nil)
+                me.webView.loadHTMLString(processedHtml, baseURL: nil)
             }
         }
     }
