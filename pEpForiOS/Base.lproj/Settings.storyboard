@@ -40,6 +40,7 @@
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bKk-4n-FeT">
                                 <rect key="frame" x="0.0" y="44" width="414" height="630"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <segue destination="Zm5-ki-2iG" kind="embed" id="Ugg-wV-scd"/>
                                 </connections>

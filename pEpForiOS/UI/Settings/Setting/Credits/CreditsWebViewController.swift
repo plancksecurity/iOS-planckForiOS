@@ -17,7 +17,7 @@ class CreditsWebViewController: PEPWebViewController {
         if #available(iOS 13.0, *) {
             webView.backgroundColor = UIColor.systemBackground
         } else {
-            // Fallback on earlier versions
+            webView.backgroundColor = .white
         }
         webView.loadHTMLString(html(), baseURL: nil)
         title = NSLocalizedString("Credits", comment: "Credits view title")
@@ -49,8 +49,6 @@ class CreditsWebViewController: PEPWebViewController {
         if #available(iOS 13.0, *) {
             backgroundColor = UIColor.systemBackground
             fontColor = UIColor.label
-        } else {
-            // Fallback on earlier versions
         }
 
         let fontSize = "18"
@@ -136,12 +134,8 @@ class CreditsWebViewController: PEPWebViewController {
 
     private func eula() -> String {
         var fontColor = UIColor.black
-        var backgroundColor = UIColor.white
         if #available(iOS 13.0, *) {
-            backgroundColor = UIColor.systemBackground
             fontColor = UIColor.label
-        } else {
-            // Fallback on earlier versions
         }
 
         let eula =
