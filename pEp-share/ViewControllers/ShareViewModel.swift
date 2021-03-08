@@ -231,7 +231,7 @@ extension ShareViewModel: ComposeViewModelFinalActionDelegate {
     }
 
     func couldNotCreateOutgoingMessage() {
-        shareViewModelDelegate?.canceledByUser()
+        shareViewModelDelegate?.outgoingMessageCouldNotBeSaved()
     }
 
     func canceled() {
