@@ -145,7 +145,7 @@ extension EmailViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
-            setupBody(cell: cell, with: row)
+            setupBody(cell: cell, with: row, indexPath: indexPath)
             return cell
         case .attachment:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageAttachmentCell else {
@@ -285,7 +285,7 @@ extension EmailViewController {
         showExternalContentView.isHidden = true
     }
 
-    private func setupBody(cell: MessageBodyCell, with row: EmailViewModel.BodyRow) {
+    private func setupBody(cell: MessageBodyCell, with row: EmailViewModel.BodyRow, indexPath: IndexPath) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("Missing vm")
             return
@@ -310,7 +310,9 @@ extension EmailViewController {
                 cell.contentText.attributedText = body
                 cell.contentText.dataDetectorTypes = .link
                 cell.contentText.delegate = me.clickHandler
-                me.tableView.updateSize()
+                if indexPath.row == vm.numberOfRows - 1 {
+                    me.tableView.updateSize()
+                }
             }
         }
     }
@@ -346,25 +348,23 @@ extension EmailViewController {
         }
     }
 
-    private func setupInlineAttachment(cell: MessageInlinedAttachmentCell, row: EmailViewModel.InlinedAttachmentRow, indexPath: IndexPath) {
+    private func setupInlineAttachment(cell: MessageInlinedAttachmentCell,
+                                       row: EmailViewModel.InlinedAttachmentRow,
+                                       indexPath: IndexPath) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-        let updateSizeGroup = DispatchGroup()
-
-        row.retrieveAttachmentData { (_, _, image) in
+        row.retrieveAttachmentData { [weak self] (_, _, image) in
             cell.inlinedImageView?.image = image
             vm.handleImageFetched(forRowAt: indexPath, withHeight: image.size.height)
-            updateSizeGroup.leave()
-        }
-
-        updateSizeGroup.notify(queue: DispatchQueue.main) { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
             }
-            me.tableView.updateSize()
+            if indexPath.row == vm.numberOfRows - 1 {
+                me.tableView.updateSize()
+            }
         }
     }
 }
