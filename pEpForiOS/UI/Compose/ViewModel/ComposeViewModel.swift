@@ -70,7 +70,8 @@ protocol ComposeViewModelFinalActionDelegate: class {
     /// The user requested the mail to be sent.
     func userWantsToSend(message: Message)
 
-    /// The user opted to send, but there were problems creating the message
+    /// The user opted to send, but there were (internal)
+    /// problems creating the message.
     func couldNotCreateOutgoingMessage()
 
     /// The user canceled the composing of the mail.
