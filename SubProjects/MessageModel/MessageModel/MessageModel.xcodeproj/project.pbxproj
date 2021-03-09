@@ -1239,6 +1239,7 @@
 				439CACD42562C95C0043077E /* Pantomime */,
 				153DDF3925ADD43D008F645F /* FetchImap */,
 				153DDF4825ADD455008F645F /* OAuth2 */,
+				437B126C25F78585000CCFBA /* Sharing */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -2153,6 +2154,13 @@
 				433E743E225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift */,
 			);
 			path = Accessors;
+			sourceTree = "<group>";
+		};
+		437B126C25F78585000CCFBA /* Sharing */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Sharing;
 			sourceTree = "<group>";
 		};
 		4383344223FD7891004CC422 /* Certificates */ = {
