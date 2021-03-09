@@ -243,7 +243,9 @@ extension ShareViewModel {
 
 extension ShareViewModel: ComposeViewModelFinalActionDelegate {
     func userWantsToSend(message: Message) {
-        // TODO
+        encryptAndSendSharing.send(message: message) { error in
+            shareViewModelDelegate?.messageSent(error: error)
+        }
     }
 
     func couldNotCreateOutgoingMessage() {

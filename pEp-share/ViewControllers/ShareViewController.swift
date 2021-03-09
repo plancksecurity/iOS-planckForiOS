@@ -48,7 +48,11 @@ extension ShareViewController: ShareViewModelDelegate {
     }
 
     func messageSent(error: Error?) {
-        // TODO
+        if let theError = error {
+            extensionContext?.cancelRequest(withError: theError)
+        } else {
+            extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        }
     }
 }
 
