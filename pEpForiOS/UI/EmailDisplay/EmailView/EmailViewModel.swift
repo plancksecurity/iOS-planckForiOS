@@ -390,8 +390,8 @@ extension EmailViewModel {
         let bodyRow = BodyRow(htmlBody: htmlBody, message: message)
         rows.append(bodyRow)
 
-        //Inline Attachments
-        let imageAttachmentRows: [ImageAttachmentRow] = message.viewableInlinedAttachments.map { ImageAttachmentRow(attachment: $0) }
+        //Image Attachments
+        let imageAttachmentRows: [ImageAttachmentRow] = message.viewableImageAttachments.map { ImageAttachmentRow(attachment: $0) }
         rows.append(contentsOf: imageAttachmentRows)
 
         //Non Inlined Attachments
