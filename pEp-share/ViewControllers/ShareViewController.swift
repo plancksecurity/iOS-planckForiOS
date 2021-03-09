@@ -35,8 +35,8 @@ extension ShareViewController: ShareViewModelDelegate {
         case messageCouldNotBeSaved
     }
 
-    func startComposeView(sharedTypes: [SharedType]) {
-        presentComposeVC(sharedTypes: sharedTypes)
+    func startComposeView(composeViewModel: ComposeViewModel) {
+        presentComposeVC(composeViewModel: composeViewModel)
     }
 
     func outgoingMessageCouldNotBeSaved() {
@@ -55,15 +55,14 @@ extension ShareViewController: ShareViewModelDelegate {
 // MARK: - Private Extension
 
 extension ShareViewController {
-    private func presentComposeVC(sharedTypes: [SharedType]) {
+    private func presentComposeVC(composeViewModel: ComposeViewModel) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let composeVC = storyboard.instantiateViewController(withIdentifier: ComposeViewController.storyboardId) as? ComposeViewController else {
             Log.shared.errorAndCrash("Cannot instantiate ComposeViewController")
             return
         }
 
-        let composeVM = vm.composeViewModel(sharedTypes: sharedTypes)
-        composeVC.viewModel = composeVM
+        composeVC.viewModel = composeViewModel
 
         navigationController?.pushViewController(composeVC, animated: false)
     }

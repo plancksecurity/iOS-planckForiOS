@@ -15,8 +15,9 @@ import PEPIOSToolboxForAppExtensions
 
 protocol ShareViewModelDelegate: class {
     /// All documents to be shared have been downloaded
-    /// (asynchronously), ready to show the compose view.
-    func startComposeView(sharedTypes: [SharedType])
+    /// (asynchronously), ready to show the compose view
+    /// with the given model.
+    func startComposeView(composeViewModel: ComposeViewModel)
 
     /// User wanted to send, but there were problems creating the
     /// outgoing message
@@ -86,7 +87,8 @@ class ShareViewModel {
                 return
             }
 
-            me.shareViewModelDelegate?.startComposeView(sharedTypes: sharedData.allSharedTypes())
+            let composeVM = me.composeViewModel(sharedTypes: sharedData.allSharedTypes())
+            me.shareViewModelDelegate?.startComposeView(composeViewModel: composeVM)
         }
 
         // let the dispatch group call us when all is done
