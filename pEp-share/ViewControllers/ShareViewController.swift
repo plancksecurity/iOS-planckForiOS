@@ -46,6 +46,10 @@ extension ShareViewController: ShareViewModelDelegate {
     func canceledByUser() {
         extensionContext?.cancelRequest(withError: SharingError.userCanceled)
     }
+
+    func messageSent(error: Error?) {
+        // TODO
+    }
 }
 
 // MARK: - Private Extension
