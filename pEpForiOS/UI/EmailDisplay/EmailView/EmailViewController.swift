@@ -81,7 +81,6 @@ class EmailViewController: UIViewController {
 
         /// If size classes change, we need to reload.
         if ((traitCollection.verticalSizeClass != thePreviousTraitCollection.verticalSizeClass) || (traitCollection.horizontalSizeClass != thePreviousTraitCollection.horizontalSizeClass)) {
-            viewModel!.restart()
             tableView.reloadData()
         }
     }
@@ -310,9 +309,7 @@ extension EmailViewController {
                 cell.contentText.attributedText = body
                 cell.contentText.dataDetectorTypes = .link
                 cell.contentText.delegate = me.clickHandler
-                if indexPath.row == vm.numberOfRows - 1 {
-                    me.tableView.updateSize()
-                }
+                me.updateSizeIfLastCell(indexPath: indexPath)
             }
         }
     }
@@ -356,15 +353,29 @@ extension EmailViewController {
             return
         }
         row.retrieveAttachmentData { [weak self] (_, _, image) in
-            cell.inlinedImageView?.image = image
-            vm.handleImageFetched(forRowAt: indexPath, withHeight: image.size.height)
+            var imageToShow = image
+            if image.size.width > cell.frame.width,
+               let resizedImage = image.resized(newWidth: cell.frame.width) {
+                imageToShow = resizedImage
+            }
+            cell.inlinedImageView?.image = imageToShow
+            vm.handleImageFetched(forRowAt: indexPath, withHeight: imageToShow.size.height)
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
             }
-            if indexPath.row == vm.numberOfRows - 1 {
-                me.tableView.updateSize()
-            }
+            me.updateSizeIfLastCell(indexPath: indexPath)
+        }
+    }
+
+    private func updateSizeIfLastCell(indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+
+        if indexPath.row == vm.numberOfRows - 1 {
+            tableView.updateSize()
         }
     }
 }

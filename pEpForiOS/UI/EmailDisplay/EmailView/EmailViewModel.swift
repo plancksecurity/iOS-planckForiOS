@@ -65,13 +65,6 @@ class EmailViewModel {
         self.setupRows(message: message)
     }
 
-    public func restart() {
-        self.rows = [EmailRowProtocol]()
-        self.attachments = message.viewableNotInlinedAttachments
-        self.inlinedAttachments = message.viewableInlinedAttachments
-        self.setupRows(message: message)
-    }
-
     private var shouldHideExternalContent: Bool = true
 
     // Indicates if the External Content View has to be shown.
