@@ -13,6 +13,10 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
         case notImplemented
     }
 
+    // Does nothing, for now, but the compiler insists.
+    public init() {
+    }
+
     public func send(message: Message, completion: (Error?) -> ()) {
         completion(SendError.notImplemented)
     }
