@@ -13,18 +13,23 @@ import PEPIOSToolboxForAppExtensions
 
 /// The different data types that can be shared, together with their payload
 public enum SharedType {
-    /// Some general-purpose text (shared as-is)
+    /// Some general-purpose text (shared as-is),
+    /// together with an optional title
     case plainText (NSAttributedString?, String)
 
-    /// A simple URL (shared as-is, nothing gets loaded)
+    /// A simple URL (shared as-is, nothing gets loaded),
+    /// together with an optional title
     case url (NSAttributedString?, URL)
 
-    /// Image with optional titile, loaded image, the corresponding data, and the mime type.
+    /// Image with optional titile, loaded image, the corresponding
+    /// data, and the mime type,
+    /// together with an optional title
     ///
     /// Will get inlined in the message.
     case image (NSAttributedString?, UIImage, Data, String)
 
-    /// A general file, probably not getting inlined
+    /// A general file, not getting inlined,
+    /// together with an optional title
     case file (NSAttributedString?, Data)
 }
 
