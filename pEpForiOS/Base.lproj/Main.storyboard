@@ -610,7 +610,7 @@
                                                     <outlet property="contentText" destination="AKf-Cd-1D0" id="Wan-U8-sRL"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="imageAttachmentCell" id="UWc-9l-ALp" userLabel="inlinedAttachmemntCell" customClass="ImageAttachmentCell" customModule="pEpForiOS" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="imageAttachmentCell" id="UWc-9l-ALp" userLabel="imageAttachmementCell" customClass="ImageAttachmentCell" customModule="pEpForiOS" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="409.5" width="375" height="52.5"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UWc-9l-ALp" id="0y0-Ac-3kt">
