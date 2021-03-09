@@ -13,7 +13,7 @@ import PEPIOSToolboxForAppExtensions
 
 public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
     public enum SendError: Error {
-        case notImplemented
+        case internalError
     }
 
     // Does nothing, for now, but the compiler insists.
@@ -23,7 +23,12 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
     public func send(message: Message, completion: @escaping (Error?) -> ()) {
         let privateMoc = Stack.shared.newPrivateConcurrentContext
         privateMoc.perform {
-            completion(SendError.notImplemented)
+            guard let cdMessage = message.cdMessage() else {
+                Log.shared.errorAndCrash(message: "Message without corresponding CdMessage")
+                completion(SendError.internalError)
+                return
+            }
+            completion(SendError.internalError)
         }
     }
 }
