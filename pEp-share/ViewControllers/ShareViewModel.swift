@@ -243,8 +243,12 @@ extension ShareViewModel {
 
 extension ShareViewModel: ComposeViewModelFinalActionDelegate {
     func userWantsToSend(message: Message) {
-        encryptAndSendSharing.send(message: message) { error in
-            shareViewModelDelegate?.messageSent(error: error)
+        encryptAndSendSharing.send(message: message) { [weak self] error in
+            guard let me = self else {
+                Log.shared.errorAndCrash(message: "User wants to send, but we lost ourselves")
+                return
+            }
+            me.shareViewModelDelegate?.messageSent(error: error)
         }
     }
 
