@@ -13,5 +13,5 @@ import Foundation
 public protocol EncryptAndSendSharingProtocol {
     /// Tries to send the given message directly, invoking the
     /// completion block thereafter. There may be errors.
-    func send(message: Message, completion: (Error?) -> ())
+    func send(message: Message, completion: @escaping (Error?) -> ())
 }

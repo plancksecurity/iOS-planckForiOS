@@ -18,7 +18,7 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
     public init() {
     }
 
-    public func send(message: Message, completion: (Error?) -> ()) {
+    public func send(message: Message, completion: @escaping (Error?) -> ()) {
         let privateMoc = Stack.shared.newPrivateConcurrentContext
         privateMoc.perform {
             completion(SendError.notImplemented)
