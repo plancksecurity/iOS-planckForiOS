@@ -28,7 +28,7 @@ class PGPKeyImportSettingViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         if #available(iOS 13.0, *) {
-            tableView.backgroundColor = .systemBackground
+            tableView.backgroundColor = UIColor.systemGroupedBackground
         } else {
             tableView.backgroundColor = .white
         }
