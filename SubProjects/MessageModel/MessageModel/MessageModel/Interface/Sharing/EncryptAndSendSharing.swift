@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
     public enum SendError: Error {
@@ -18,6 +19,9 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
     }
 
     public func send(message: Message, completion: (Error?) -> ()) {
-        completion(SendError.notImplemented)
+        let privateMoc = Stack.shared.newPrivateConcurrentContext
+        privateMoc.perform {
+            completion(SendError.notImplemented)
+        }
     }
 }
