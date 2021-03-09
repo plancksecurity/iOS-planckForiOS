@@ -167,7 +167,14 @@ final class EmailListViewController: UIViewController {
     }
 
     private func setupRefreshControl() {
-        refreshController.tintColor = UIColor.pEpGreen
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .light {
+                refreshController.tintColor = UIColor.pEpGreen
+            }
+        } else {
+            refreshController.tintColor = UIColor.pEpGreen
+        }
+
         refreshController.addTarget(self, action: #selector(refreshView), for: .valueChanged)
         // Apples default UIRefreshControl implementation is buggy when using a UITableView in a
         // UIViewController (instead of a UITableViewController). The UI freaks out while
