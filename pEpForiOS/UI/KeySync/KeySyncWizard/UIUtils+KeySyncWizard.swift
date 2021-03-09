@@ -71,29 +71,30 @@ extension UIUtils {
     /// Will happen if the presenter is a KeySync error and the view controller to present is also a KeySync error.
     @discardableResult
     private static func show<T: UIViewController>(_ viewControllerToPresent: T) -> T? {
-        let currentlyShownViewController = UIApplication.currentlyVisibleViewController()
+        DispatchQueue(label: "\(#file)-\(#function)", qos: .userInteractive).sync {
+            let currentlyShownViewController = UIApplication.currentlyVisibleViewController()
 
-        // If the presenter is an pEp Sync Error alert view
-        //  - Do not show another pEp Sync Error alert view.
-        //  - Dismiss and present a KeySync wizard if needed.
-        //
-        if currentlyShownViewController is PEPAlertViewController {
-            if viewControllerToPresent is PEPAlertViewController {
-                return nil
-            } else if viewControllerToPresent is KeySyncWizardViewController {
+            // If the presenter is an pEp Sync Error alert view
+            //  - Do not show another pEp Sync Error alert view.
+            //  - Dismiss and present a KeySync wizard if needed.
+            //
+            if currentlyShownViewController is PEPAlertViewController {
+                if viewControllerToPresent is PEPAlertViewController {
+                    return nil
+                } else if viewControllerToPresent is KeySyncWizardViewController {
+                    dismissCurrentlyVisibleViewController(andPresent: viewControllerToPresent)
+                    return viewControllerToPresent
+                }
+                // If the presenter is a KeySync wizard
+                //  - Dismiss it and present whatever is received.
+                //
+            } else if currentlyShownViewController is KeySyncWizardViewController {
                 dismissCurrentlyVisibleViewController(andPresent: viewControllerToPresent)
                 return viewControllerToPresent
+            } else {
+                // If the presenter is not an alert view nor a KeySync wizard, just present whatever is received.
+                currentlyShownViewController.present(viewControllerToPresent, animated: true)
             }
-            // If the presenter is a KeySync wizard
-            //  - Dismiss it and present whatever is received.
-            //
-        } else if currentlyShownViewController is KeySyncWizardViewController {
-            dismissCurrentlyVisibleViewController(andPresent: viewControllerToPresent)
-            return viewControllerToPresent
-        }
-        // If the presenter is not an alert view nor a KeySync wizard, just present whatever is received.
-        DispatchQueue.main.async {
-            currentlyShownViewController.present(viewControllerToPresent, animated: true)
         }
         return viewControllerToPresent
     }
