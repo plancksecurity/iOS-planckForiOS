@@ -14,14 +14,20 @@ import MessageModelForAppExtensions
 import PEPIOSToolboxForAppExtensions
 
 protocol ShareViewModelDelegate: class {
-    /// All documents to be shared have been downloaded, ready to show the compose view.
+    /// All documents to be shared have been downloaded
+    /// (asynchronously), ready to show the compose view.
     func startComposeView(sharedTypes: [SharedType])
 
-    /// User wanted to send, but there were problems creating the outgoing message
+    /// User wanted to send, but there were problems creating the
+    /// outgoing message
     func outgoingMessageCouldNotBeSaved()
 
     /// The user canceled before sending
     func canceledByUser()
+
+    /// If called with a nil `Error`, the message was succesfully sent,
+    /// if not, `error` will contain the error.
+    func messageSent(error: Error?)
 }
 
 class ShareViewModel {
