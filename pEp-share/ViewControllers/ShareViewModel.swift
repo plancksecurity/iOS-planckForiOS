@@ -34,6 +34,10 @@ protocol ShareViewModelDelegate: class {
 class ShareViewModel {
     public weak var shareViewModelDelegate: ShareViewModelDelegate?
 
+    public init(enrcyptAndSendSharing: EnrcyptAndSendSharingProtocol? = nil) {
+        self.enrcyptAndSendSharing = enrcyptAndSendSharing ?? EncryptAndSendSharing()
+    }
+
     /// Load all eligible files from the extension context and inform the delegate when done.
     public func loadInputItems(extensionContext: NSExtensionContext) {
         let sharedData = SharedData()
@@ -155,6 +159,10 @@ class ShareViewModel {
         composeViewModel.composeViewModelEndActionDelegate = self
         return composeViewModel
     }
+
+    // MARK - Private
+
+    private let enrcyptAndSendSharing: EnrcyptAndSendSharingProtocol
 }
 
 extension ShareViewModel {
