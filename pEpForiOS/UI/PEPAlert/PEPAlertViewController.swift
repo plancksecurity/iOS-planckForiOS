@@ -64,9 +64,6 @@ final class PEPAlertViewController: UIViewController {
         pEpAlertViewController.message = message
         pEpAlertViewController.images = image
 
-        pEpAlertViewController.modalPresentationStyle = .overFullScreen
-        pEpAlertViewController.modalTransitionStyle = .crossDissolve
-
         return pEpAlertViewController
     }
 
