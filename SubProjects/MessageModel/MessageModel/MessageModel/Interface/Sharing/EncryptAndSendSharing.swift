@@ -38,6 +38,14 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
                 completion(SendError.internalError)
                 return
             }
+
+            let errorPropagator = ErrorPropagator()
+            let smtpConnection = SmtpConnection(connectInfo: smtpConnectInfo)
+
+            // Login
+            let loginOP = LoginSmtpOperation(smtpConnection: smtpConnection,
+                                             errorContainer: errorPropagator)
+
             completion(SendError.internalError)
         }
     }
