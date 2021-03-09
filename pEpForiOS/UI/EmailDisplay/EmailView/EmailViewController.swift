@@ -157,15 +157,15 @@ extension EmailViewController: UITableViewDataSource {
             setupAttachment(cell: cell, with: row)
             return cell
 
-        case .inlinedAttachment:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageInlinedAttachmentCell else {
+        case .imageAttachment:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? ImageAttachmentCell else {
                 return UITableViewCell()
             }
-            guard let row = vm[indexPath.row] as? EmailViewModel.InlinedAttachmentRow else {
+            guard let row = vm[indexPath.row] as? EmailViewModel.ImageAttachmentRow else {
                 Log.shared.errorAndCrash("Can't get or cast attachment row")
                 return cell
             }
-            setupInlineAttachment(cell: cell, row: row, indexPath: indexPath)
+            setupImageAttachment(cell: cell, row: row, indexPath: indexPath)
             return cell
         }
     }
@@ -198,7 +198,7 @@ extension EmailViewController: UITableViewDelegate {
             return
         }
         let row = vm[indexPath.row]
-        if row.type == .attachment || row.type == .inlinedAttachment {
+        if row.type == .attachment || row.type == .imageAttachment {
             vm.handleDidTapAttachmentRow(at: indexPath)
         }
     }
@@ -345,8 +345,8 @@ extension EmailViewController {
         }
     }
 
-    private func setupInlineAttachment(cell: MessageInlinedAttachmentCell,
-                                       row: EmailViewModel.InlinedAttachmentRow,
+    private func setupImageAttachment(cell: ImageAttachmentCell,
+                                       row: EmailViewModel.ImageAttachmentRow,
                                        indexPath: IndexPath) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
@@ -358,7 +358,7 @@ extension EmailViewController {
                let resizedImage = image.resized(newWidth: cell.frame.width) {
                 imageToShow = resizedImage
             }
-            cell.inlinedImageView?.image = imageToShow
+            cell.imageAttachmentView?.image = imageToShow
             vm.handleImageFetched(forRowAt: indexPath, withHeight: imageToShow.size.height)
             guard let me = self else {
                 Log.shared.lostMySelf()

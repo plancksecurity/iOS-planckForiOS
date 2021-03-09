@@ -51,8 +51,8 @@ class EmailViewModel {
     public weak var delegate: EmailViewModelDelegate?
     private var rows: [EmailRowProtocol]
     private var message: Message
-    private var attachments = [MessageModel.Attachment]()
-    private var inlinedAttachments = [MessageModel.Attachment]()
+//    private var attachments = [MessageModel.Attachment]()
+//    private var inlinedAttachments = [MessageModel.Attachment]()
 
     /// Constructor
     /// - Parameter message: The message to display
@@ -60,8 +60,6 @@ class EmailViewModel {
         self.message = message
         self.delegate = delegate
         self.rows = [EmailRowProtocol]()
-        self.attachments = message.viewableNotInlinedAttachments
-        self.inlinedAttachments = message.viewableInlinedAttachments
         self.setupRows(message: message)
     }
 
@@ -178,7 +176,7 @@ class EmailViewModel {
     ///   - indexPath: The indexPath of the cell that contains the image.
     ///   - height: The height of the image.
     public func handleImageFetched(forRowAt indexPath: IndexPath, withHeight height: CGFloat) {
-        if let row = rows[indexPath.row] as? InlinedAttachmentRow {
+        if let row = rows[indexPath.row] as? ImageAttachmentRow {
             let margin: CGFloat = 20.0
             row.height = height + margin
             rows[indexPath.row] = row
@@ -190,7 +188,7 @@ class EmailViewModel {
 
 extension EmailViewModel {
     enum EmailRowType: String {
-        case sender, subject, body, attachment, inlinedAttachment
+        case sender, subject, body, attachment, imageAttachment
     }
 
     // MARK: Sender
@@ -293,8 +291,8 @@ extension EmailViewModel {
             if type == .attachment {
                 cellIdentifier = "attachmentsCell"
                 height = 120.0
-            } else if type == .inlinedAttachment {
-                cellIdentifier = "inlinedAttachmentCell"
+            } else if type == .imageAttachment {
+                cellIdentifier = "imageAttachmentCell"
             }
         }
 
@@ -358,9 +356,9 @@ extension EmailViewModel {
         }
     }
 
-    class InlinedAttachmentRow: BaseAttachmentRow {
+    class ImageAttachmentRow: BaseAttachmentRow {
         init(attachment: MessageModel.Attachment) {
-            super.init(attachment: attachment, type: .inlinedAttachment)
+            super.init(attachment: attachment, type: .imageAttachment)
         }
     }
 }
@@ -395,11 +393,11 @@ extension EmailViewModel {
         rows.append(bodyRow)
 
         //Inline Attachments
-        let inlineAttachmentRows: [InlinedAttachmentRow] = inlinedAttachments.map { InlinedAttachmentRow(attachment: $0) }
-        rows.append(contentsOf: inlineAttachmentRows)
+        let imageAttachmentRows: [ImageAttachmentRow] = message.viewableInlinedAttachments.map { ImageAttachmentRow(attachment: $0) }
+        rows.append(contentsOf: imageAttachmentRows)
 
         //Non Inlined Attachments
-        let attachmentRows = attachments.map { AttachmentRow(attachment: $0) }
+        let attachmentRows = message.viewableNotInlinedAttachments.map { AttachmentRow(attachment: $0) }
         rows.append(contentsOf: attachmentRows)
     }
 }
