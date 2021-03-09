@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+import PEPIOSToolboxForAppExtensions
+
 public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
     public enum SendError: Error {
         case notImplemented
