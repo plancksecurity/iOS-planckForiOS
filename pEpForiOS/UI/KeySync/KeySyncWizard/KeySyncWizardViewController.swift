@@ -308,3 +308,21 @@ extension KeySyncWizardViewController {
         return isNewGroup ? #imageLiteral(resourceName: "pEpForiOS-icon-sync-2nd-device-synced") : #imageLiteral(resourceName:   "pEpForiOS-icon-sync-3rd-device-synced")
     }
 }
+
+
+extension KeySyncWizardViewController {
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                view.layoutIfNeeded()
+            }
+        }
+    }
+}
