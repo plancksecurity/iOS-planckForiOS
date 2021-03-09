@@ -162,7 +162,7 @@ class ShareViewModel {
 
     // MARK - Private
 
-    private let enrcyptAndSendSharing: EnrcyptAndSendSharingProtocol
+    private let encryptAndSendSharing: EncryptAndSendSharingProtocol
 }
 
 extension ShareViewModel {
