@@ -38,6 +38,7 @@ extension Message {
         return attachments.filter() { $0.isViewable() }
     }
 
+    /// - returns: all attachments that are images. 
     public var viewableImageAttachments: [Attachment] {
         return viewableAttachments().filter{ $0.isInlined && $0.fileName != nil && !$0.isCidContained }
     }
