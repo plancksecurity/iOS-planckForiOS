@@ -13,7 +13,7 @@ import PEPIOSToolboxForAppExtensions
 
 /// The different data types that can be shared, together with their
 /// payload.
-enum SharedType {
+public enum SharedType {
     /// Some general-purpose text (shared as-is),
     /// together with an optional title
     case plainText (NSAttributedString?, String)
