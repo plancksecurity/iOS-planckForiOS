@@ -1,5 +1,5 @@
 //
-//  EnrcyptAndSendSharingProtocol.swift
+//  EncryptAndSendSharingProtocol.swift
 //  MessageModel
 //
 //  Created by Dirk Zimmermann on 09.03.21.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol EnrcyptAndSendSharingProtocol {
+public protocol EncryptAndSendSharingProtocol {
     /// Tries to send the given message directly, invoking the
     /// completion block thereafter. There may be errors.
     func send(message: Message, completion: (Error?) -> ())

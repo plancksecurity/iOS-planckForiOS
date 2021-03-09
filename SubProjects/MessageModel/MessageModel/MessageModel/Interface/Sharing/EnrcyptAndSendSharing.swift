@@ -1,5 +1,5 @@
 //
-//  EnrcyptAndSendSharing.swift
+//  EncryptAndSendSharing.swift
 //  MessageModel
 //
 //  Created by Dirk Zimmermann on 09.03.21.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class EnrcyptAndSendSharing: EnrcyptAndSendSharingProtocol {
+public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
     public enum SendError: Error {
         case notImplemented
     }
