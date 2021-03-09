@@ -28,6 +28,11 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
                 completion(SendError.internalError)
                 return
             }
+            guard let cdAccount = cdMessage.parent?.account else {
+                Log.shared.errorAndCrash(message: "CdMessage without corresponding CdAccount")
+                completion(SendError.internalError)
+                return
+            }
             completion(SendError.internalError)
         }
     }
