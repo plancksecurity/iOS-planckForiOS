@@ -8,6 +8,8 @@
 
 import Foundation
 
+/// Contains the method that a sharing extension can use to immediately send
+/// the message with the attachments the user wants to share by mail.
 public protocol EncryptAndSendSharingProtocol {
     /// Tries to send the given message directly, invoking the
     /// completion block thereafter. There may be errors.
