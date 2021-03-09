@@ -51,8 +51,6 @@ class EmailViewModel {
     public weak var delegate: EmailViewModelDelegate?
     private var rows: [EmailRowProtocol]
     private var message: Message
-//    private var attachments = [MessageModel.Attachment]()
-//    private var inlinedAttachments = [MessageModel.Attachment]()
 
     /// Constructor
     /// - Parameter message: The message to display
