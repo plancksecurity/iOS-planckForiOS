@@ -21,7 +21,7 @@ extension NSAttributedString {
 
             var textColor = UIColor.pEpDarkText
             if #available(iOS 13.0, *) {
-                textColor = .secondaryLabel
+                textColor = .label
             }
             let textAttachment = RecipientTextViewModel.TextAttachment(recipient: identity,
                                                                        textColor: textColor,

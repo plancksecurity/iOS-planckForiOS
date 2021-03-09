@@ -1328,18 +1328,18 @@ extension EmailListViewController {
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-      super.traitCollectionDidChange(previousTraitCollection)
+        super.traitCollectionDidChange(previousTraitCollection)
         guard let thePreviousTraitCollection = previousTraitCollection else {
             // Valid case: optional value from Apple.
             return
         }
 
-      if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-        tableView.reloadData()
-      }
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            tableView.reloadData()
+        }
         if #available(iOS 13.0, *) {
             if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                /// Clear the cache. 
+                /// Clear the cache and get the correct version of the avatar..
                 viewModel?.freeMemory()
                 tableView.reloadData()
             }
