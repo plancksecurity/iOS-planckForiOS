@@ -429,8 +429,8 @@
 		43753CEC222D39B3002EE98B /* ImapFlags+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CEB222D39B3002EE98B /* ImapFlags+Pantomime.swift */; };
 		43753CEE222D3A3E002EE98B /* CdAttachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CED222D3A3E002EE98B /* CdAttachment+Extension.swift */; };
 		437AA507224507A200B5C7A4 /* CdFolder+NonOptionalConvenienceAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437AA506224507A200B5C7A4 /* CdFolder+NonOptionalConvenienceAccessors.swift */; };
-		437B126E25F785B5000CCFBA /* EnrcyptAndSendSharingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B126D25F785B5000CCFBA /* EnrcyptAndSendSharingProtocol.swift */; };
-		437B127225F785D1000CCFBA /* EnrcyptAndSendSharingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B126D25F785B5000CCFBA /* EnrcyptAndSendSharingProtocol.swift */; };
+		437B126E25F785B5000CCFBA /* EncryptAndSendSharingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B126D25F785B5000CCFBA /* EncryptAndSendSharingProtocol.swift */; };
+		437B127225F785D1000CCFBA /* EncryptAndSendSharingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B126D25F785B5000CCFBA /* EncryptAndSendSharingProtocol.swift */; };
 		437B12D525F79E26000CCFBA /* EnrcyptAndSendSharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B12D425F79E26000CCFBA /* EnrcyptAndSendSharing.swift */; };
 		437B12D925F79F74000CCFBA /* EnrcyptAndSendSharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B12D425F79E26000CCFBA /* EnrcyptAndSendSharing.swift */; };
 		4383344423FD78BB004CC422 /* ClientCertificateUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4383344323FD78BB004CC422 /* ClientCertificateUtilTest.swift */; };
@@ -973,7 +973,7 @@
 		43753CEB222D39B3002EE98B /* ImapFlags+Pantomime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ImapFlags+Pantomime.swift"; sourceTree = "<group>"; };
 		43753CED222D3A3E002EE98B /* CdAttachment+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAttachment+Extension.swift"; sourceTree = "<group>"; };
 		437AA506224507A200B5C7A4 /* CdFolder+NonOptionalConvenienceAccessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+NonOptionalConvenienceAccessors.swift"; sourceTree = "<group>"; };
-		437B126D25F785B5000CCFBA /* EnrcyptAndSendSharingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnrcyptAndSendSharingProtocol.swift; sourceTree = "<group>"; };
+		437B126D25F785B5000CCFBA /* EncryptAndSendSharingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptAndSendSharingProtocol.swift; sourceTree = "<group>"; };
 		437B12D425F79E26000CCFBA /* EnrcyptAndSendSharing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnrcyptAndSendSharing.swift; sourceTree = "<group>"; };
 		4383344323FD78BB004CC422 /* ClientCertificateUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateUtilTest.swift; sourceTree = "<group>"; };
 		4383344623FD806D004CC422 /* Certificate_001.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Certificate_001.p12; sourceTree = "<group>"; };
@@ -2165,7 +2165,7 @@
 		437B126C25F78585000CCFBA /* Sharing */ = {
 			isa = PBXGroup;
 			children = (
-				437B126D25F785B5000CCFBA /* EnrcyptAndSendSharingProtocol.swift */,
+				437B126D25F785B5000CCFBA /* EncryptAndSendSharingProtocol.swift */,
 				437B12D425F79E26000CCFBA /* EnrcyptAndSendSharing.swift */,
 			);
 			path = Sharing;
@@ -3009,7 +3009,7 @@
 				434C22A325D69CD200F622DB /* CdAccount+NonOptionalConvenienceAccessors.swift.swift in Sources */,
 				43BDDD0225DD34EE00FC0C68 /* Attachment+ContentID.swift in Sources */,
 				43BDDD8625DD4B2100FC0C68 /* CdAccount+ProviderSpecific.swift in Sources */,
-				437B127225F785D1000CCFBA /* EnrcyptAndSendSharingProtocol.swift in Sources */,
+				437B127225F785D1000CCFBA /* EncryptAndSendSharingProtocol.swift in Sources */,
 				436FD23525DA817800D929B3 /* ClientCertificate.swift in Sources */,
 				434C221D25D699A800F622DB /* RelationshipKeyPath.swift in Sources */,
 				434C235225D6AEB900F622DB /* FetchOlderImapMessagesOperation.swift in Sources */,
@@ -3445,7 +3445,7 @@
 				43062B9224ED3F0100489258 /* TrustwordsLanguage+pEp.swift in Sources */,
 				154660C42333927B008D2137 /* BackgroundTaskManager.swift in Sources */,
 				43F484461E8130A80028BC1A /* CdImapFields+Extension.swift in Sources */,
-				437B126E25F785B5000CCFBA /* EnrcyptAndSendSharingProtocol.swift in Sources */,
+				437B126E25F785B5000CCFBA /* EncryptAndSendSharingProtocol.swift in Sources */,
 				431BAE34246D4F330043490F /* KeyImportUtil.swift in Sources */,
 				B747A7E2234E4B7800508565 /* CdIdentity+SectionTitle.swift in Sources */,
 				15A3B4DB235862B700DB9135 /* CdAccount+SendServiceProvider.swift in Sources */,
