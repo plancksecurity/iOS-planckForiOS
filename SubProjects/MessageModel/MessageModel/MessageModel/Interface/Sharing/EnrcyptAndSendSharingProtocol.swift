@@ -8,12 +8,6 @@
 
 import Foundation
 
-#if EXT_SHARE
-import MessageModelForAppExtensions
-#else
-import MessageModel
-#endif
-
 public protocol EnrcyptAndSendSharingProtocol {
     /// Tries to send the given message directly, invoking the
     /// completion block thereafter. There may be errors.
