@@ -35,7 +35,7 @@ class ShareViewModel {
     public weak var shareViewModelDelegate: ShareViewModelDelegate?
 
     public init(encryptAndSendSharing: EncryptAndSendSharingProtocol? = nil) {
-        self.enrcyptAndSendSharing = encryptAndSendSharing ?? EncryptAndSendSharing()
+        self.encryptAndSendSharing = encryptAndSendSharing ?? EncryptAndSendSharing()
     }
 
     /// Load all eligible files from the extension context and inform the delegate when done.
