@@ -130,7 +130,7 @@ extension KeyChain {
             kSecAttrService as String: serverType,
             kSecAttrAccount as String: key,
             kSecValueData as String: pass.data(using: String.Encoding.utf8)!,
-            kSecAttrAccessGroup: appGroupIdentifier] as [String : Any]
+            kSecAttrAccessGroup as String: appGroupIdentifier] as [String : Any]
 
         SecItemDelete(query as CFDictionary)
 
