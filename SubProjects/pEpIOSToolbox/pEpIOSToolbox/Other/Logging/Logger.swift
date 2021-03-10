@@ -285,6 +285,8 @@ import CocoaLumberjackSwift
         let interpolatedString = String(format: message, arguments: args)
         let interpolatedMessage = "\(filePath):\(fileLine) \(function) \(interpolatedString)"
 
+        //MB: Do not push
+        return
         switch severity {
         case .debug:
             DDLogDebug(interpolatedMessage)

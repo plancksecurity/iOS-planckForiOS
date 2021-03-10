@@ -55,6 +55,8 @@ class EmailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         showExternalContentLabel.text = Localized.showExternalContentText
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 100
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -180,16 +182,19 @@ extension EmailViewController: UITableViewDelegate {
             Log.shared.errorAndCrash("Missing vm")
             return tableView.estimatedRowHeight
         }
-        if let row = vm[indexPath.row] as? AttachmentRowProtocol {
+        if let row = vm[indexPath.row] as? EmailViewModel.AttachmentRow {
             return row.height
         }
+
         if (vm[indexPath.row] as? EmailViewModel.BodyRow)?.htmlBody != nil {
-            return htmlViewerViewController.contentSize.height
+            let htmlHeight = htmlViewerViewController.contentSize.height
+            if htmlHeight > 0 {
+                return htmlHeight
+            } else {
+                return tableView.estimatedRowHeight
+            }
         }
-        if let row = vm[indexPath.row] as? EmailViewModel.BaseAttachmentRow {
-            return row.height
-        }
-        return tableView.rowHeight
+        return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -348,10 +353,6 @@ extension EmailViewController {
     private func setupImageAttachment(cell: ImageAttachmentCell,
                                        row: EmailViewModel.ImageAttachmentRow,
                                        indexPath: IndexPath) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return
-        }
         row.retrieveAttachmentData { [weak self] (_, _, image) in
             var imageToShow = image
             if image.size.width > cell.frame.width,
@@ -359,7 +360,6 @@ extension EmailViewController {
                 imageToShow = resizedImage
             }
             cell.imageAttachmentView?.image = imageToShow
-            vm.handleImageFetched(forRowAt: indexPath, withHeight: imageToShow.size.height)
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
