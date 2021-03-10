@@ -8,9 +8,14 @@
 
 import CoreData
 
-import pEpIOSToolbox
 import PEPObjCAdapterTypes_iOS
 import PEPObjCAdapter_iOS
+
+#if EXT_SHARE
+import PEPIOSToolboxForAppExtensions
+#else
+import pEpIOSToolbox
+#endif
 
 /// Encrypts and SMTPs a given messages.
 class EncryptAndSMTPSendMessageOperation: ConcurrentBaseOperation {
