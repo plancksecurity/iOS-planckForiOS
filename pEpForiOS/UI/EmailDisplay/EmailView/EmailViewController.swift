@@ -55,6 +55,8 @@ class EmailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         showExternalContentLabel.text = Localized.showExternalContentText
+        tableView.estimatedRowHeight = 72
+        tableView.rowHeight = UITableView.automaticDimension
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -180,14 +182,8 @@ extension EmailViewController: UITableViewDelegate {
             Log.shared.errorAndCrash("Missing vm")
             return tableView.estimatedRowHeight
         }
-        if let row = vm[indexPath.row] as? AttachmentRowProtocol {
-            return row.height
-        }
-        if (vm[indexPath.row] as? EmailViewModel.BodyRow)?.htmlBody != nil {
+        if ((vm[indexPath.row] as? EmailViewModel.BodyRow)?.htmlBody != nil) {
             return htmlViewerViewController.contentSize.height
-        }
-        if let row = vm[indexPath.row] as? EmailViewModel.BaseAttachmentRow {
-            return row.height
         }
         return tableView.rowHeight
     }
@@ -348,18 +344,14 @@ extension EmailViewController {
     private func setupImageAttachment(cell: ImageAttachmentCell,
                                        row: EmailViewModel.ImageAttachmentRow,
                                        indexPath: IndexPath) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return
-        }
         row.retrieveAttachmentData { [weak self] (_, _, image) in
+            let sideMargin: CGFloat = 10.0
             var imageToShow = image
             if image.size.width > cell.frame.width,
-               let resizedImage = image.resized(newWidth: cell.frame.width) {
+               let resizedImage = image.resized(newWidth: cell.frame.width - sideMargin) {
                 imageToShow = resizedImage
             }
             cell.imageAttachmentView?.image = imageToShow
-            vm.handleImageFetched(forRowAt: indexPath, withHeight: imageToShow.size.height)
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
