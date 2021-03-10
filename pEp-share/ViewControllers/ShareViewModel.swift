@@ -160,7 +160,7 @@ class ShareViewModel {
         return composeViewModel
     }
 
-    // MARK - Private
+    // MARK: - Private
 
     private let encryptAndSendSharing: EncryptAndSendSharingProtocol
 }
