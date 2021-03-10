@@ -50,7 +50,17 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
                                                             smtpConnection: smtpConnection,
                                                             errorContainer: errorPropagator)
 
-            completion(SendError.internalError)
+            sendOp.addDependency(loginOP)
+            sendOp.completionBlock = {
+                if errorPropagator.hasErrors {
+                    completion(errorPropagator.error)
+                } else {
+                    completion(nil)
+                }
+            }
+
+            let queue = OperationQueue()
+            queue.addOperations([loginOP, sendOp], waitUntilFinished: false)
         }
     }
 }
