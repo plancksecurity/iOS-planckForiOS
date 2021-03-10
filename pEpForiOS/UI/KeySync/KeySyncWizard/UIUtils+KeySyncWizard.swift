@@ -67,7 +67,7 @@ extension UIUtils {
     /// Shows a View Controller, probably a KeySync Wizard or a KeySync error
     ///
     /// - Parameter viewControllerToPresent: The ViewController to present
-    /// - Returns: The viewControllerToPresent, nil if was not presented.
+    /// - Returns: The presented view Controller, nil if was not presented.
     /// Will happen if the presenter is a KeySync error and the view controller to present is also a KeySync error.
     @discardableResult
     private static func show<T: UIViewController>(_ viewControllerToPresent: T) -> T? {
