@@ -22,7 +22,12 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
 
     public func send(message: Message, completion: @escaping (Error?) -> ()) {
         let privateMoc = Stack.shared.newPrivateConcurrentContext
-        privateMoc.perform {
+        privateMoc.perform { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(message: "Lost self")
+                completion(SendError.internalError)
+                return
+            }
             guard let cdMessage = message.cdMessage() else {
                 Log.shared.errorAndCrash(message: "Message without corresponding CdMessage")
                 completion(SendError.internalError)
@@ -59,8 +64,9 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
                 }
             }
 
-            let queue = OperationQueue()
-            queue.addOperations([loginOP, sendOp], waitUntilFinished: false)
+            me.queue.addOperations([loginOP, sendOp], waitUntilFinished: false)
         }
     }
+
+    private let queue = OperationQueue()
 }
