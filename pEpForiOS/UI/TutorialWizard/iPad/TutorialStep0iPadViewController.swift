@@ -43,7 +43,6 @@ class TutorialStep0iPadViewController: TutorialStepViewController {
 extension TutorialStep0iPadViewController {
 
     private func setupTitle() {
-
         let titleText = Localized.welcome
         let attributedString = NSMutableAttributedString(string: titleText, attributes: [
             .font: titleFont,
@@ -56,17 +55,13 @@ extension TutorialStep0iPadViewController {
     }
 
     private func setupSkipTutorial() {
-        var color = UIColor.black
-        if #available(iOS 13.0, *) {
-            color = .secondaryLabel
-        }
-
         let attributes : [NSAttributedString.Key : Any] = [
           .font: font,
-          .foregroundColor: color,
+          .foregroundColor: tutorialTextColor,
           .paragraphStyle: UIDevice.isIpadSmall ? centered : centeredSpaced,
         ]
-        skipTutorial.attributedText = NSMutableAttributedString(string: Localized.skipTutorial, attributes: attributes)
+        skipTutorial.attributedText = NSMutableAttributedString(string: Localized.skipTutorial,
+                                                                attributes: attributes)
     }
 
     private func setupPrivacyStatus() {
@@ -77,6 +72,7 @@ extension TutorialStep0iPadViewController {
             attributedText.addAttributes(textAttributes, range: NSRange(location: range.location + range.length, length: text.count - range.length))
         }
         privacyStatus.attributedText = attributedText
+        privacyStatus.textColor = tutorialTextColor
     }
 
     private func setupPrivacyStatusDescription() {
@@ -91,5 +87,6 @@ extension TutorialStep0iPadViewController {
         let attributedText = NSMutableAttributedString(string:text)
         attributedText.addAttributes(textAttributes, range: text.wholeRange())
         label.attributedText = attributedText
+        label.textColor = tutorialTextColor
     }
 }
