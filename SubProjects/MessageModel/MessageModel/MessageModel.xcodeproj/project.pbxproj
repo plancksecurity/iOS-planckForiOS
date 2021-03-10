@@ -464,6 +464,7 @@
 		439FFD5025F8B6EF001591F6 /* EncryptAndSMTPSendMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA481A221E9518006E8F83 /* EncryptAndSMTPSendMessageOperation.swift */; };
 		439FFD5425F8B73D001591F6 /* CdExtraKeys+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A6DFD2305BBFE006A9ECE /* CdExtraKeys+Convenience.swift */; };
 		439FFD5825F8B76C001591F6 /* PEPUtil+Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A6E002305C11F006A9ECE /* PEPUtil+Encryption.swift */; };
+		439FFD5C25F8B78A001591F6 /* PEPMessage+OriginalHeaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F27500233D133D0069C1E0 /* PEPMessage+OriginalHeaders.swift */; };
 		43A2923722C5039D00ED42B6 /* NSManagedObjectContext+FromObjectID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A2923622C5039D00ED42B6 /* NSManagedObjectContext+FromObjectID.swift */; };
 		43A536E623E4626E0040715D /* SmtpConnectionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A536E523E4626E0040715D /* SmtpConnectionProtocol.swift */; };
 		43A536EA23E474EA0040715D /* ImapConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A536E923E474EA0040715D /* ImapConnectionDelegate.swift */; };
@@ -3029,6 +3030,7 @@
 				43BDDDCE25DD63B300FC0C68 /* TrustManagementUtil.swift in Sources */,
 				436FD2B425DA8C5400D929B3 /* NSManagedObjectContext+Reset.swift in Sources */,
 				43BDDD9A25DD4CCE00FC0C68 /* SmtpConnection.swift in Sources */,
+				439FFD5C25F8B78A001591F6 /* PEPMessage+OriginalHeaders.swift in Sources */,
 				43BDDF6E25DE607B00FC0C68 /* Identity+pEp.swift in Sources */,
 				434C235A25D6B20100F622DB /* EmailConnectInfo.swift in Sources */,
 				436FD24425DA820100D929B3 /* Error+Passphrase.swift in Sources */,
