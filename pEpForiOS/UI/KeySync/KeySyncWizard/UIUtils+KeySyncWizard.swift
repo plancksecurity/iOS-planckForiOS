@@ -19,21 +19,19 @@ extension UIUtils {
     ///   - meFPR: The fingerprints of the user.
     ///   - partnerFPR: The fingerprints of his communication partner.
     ///   - isNewGroup: Indicates if it's a new group or it's joining an existing group
-    ///   - completion: Callback to be executed when the user interacts with keysync wizard buttons.
-    /// - Returns: the view controller of the key sync, if it's presented, nil otherwise.
-    @discardableResult
-    static public func showKeySyncWizard(meFPR: String,
-                                         partnerFPR: String,
-                                         isNewGroup: Bool,
-                                         completion: @escaping (KeySyncWizardViewController.Action) -> Void ) -> KeySyncWizardViewController? {
+    ///   - wizardCallback: Callback to be executed when the user interacts with keysync wizard buttons.
+    ///   - presentationCallback: Callback to executed when the presentation is done.
+    static public func showKeySyncWizard(meFPR: String, partnerFPR: String, isNewGroup: Bool,
+                                         wizardCallback: @escaping (KeySyncWizardViewController.Action) -> Void,
+                                         presentationCallback: @escaping (UIViewController?)->()) {
         guard let pEpSyncWizard = KeySyncWizardViewController.fromStoryboard(meFPR: meFPR,
                                                                              partnerFPR: partnerFPR,
                                                                              isNewGroup: isNewGroup,
-                                                                             completion: completion) else {
+                                                                             completion: wizardCallback) else {
             Log.shared.errorAndCrash("Missing pEpSyncWizard")
-            return nil
+            return
         }
-        return show(pEpSyncWizard)
+        show(pEpSyncWizard, presentationCallback: presentationCallback)
     }
 
     /// Present the alert views, if possible
@@ -67,12 +65,12 @@ extension UIUtils {
     /// Shows a View Controller, probably a KeySync Wizard or a KeySync error
     ///
     /// - Parameter viewControllerToPresent: The ViewController to present
-    /// - Returns: The presented view Controller, nil if was not presented.
+    /// - Returns: The viewControllerToPresent, nil if was not presented.
     /// Will happen if the presenter is a KeySync error and the view controller to present is also a KeySync error.
-    @discardableResult
-    private static func show<T: UIViewController>(_ viewControllerToPresent: T) -> T? {
-        var vcToPresent: T? = viewControllerToPresent
-        DispatchQueue(label: "\(#file)-\(#function)", qos: .userInteractive).sync {
+    private static func show<T: UIViewController>(_ viewControllerToPresent: T,
+                                                   presentationCallback: ((T?)->())? = nil) {
+        DispatchQueue.main.async {
+            var vcToPresent: T? = viewControllerToPresent
             let currentlyShownViewController = UIApplication.currentlyVisibleViewController()
 
             // If the presenter is an pEp Sync Error alert view
@@ -84,19 +82,21 @@ extension UIUtils {
                     vcToPresent = nil
                 } else if viewControllerToPresent is KeySyncWizardViewController {
                     dismissCurrentlyVisibleViewController(andPresent: viewControllerToPresent)
+                    vcToPresent = viewControllerToPresent
                 }
                 // If the presenter is a KeySync wizard
                 //  - Dismiss it and present whatever is received.
                 //
             } else if currentlyShownViewController is KeySyncWizardViewController {
                 dismissCurrentlyVisibleViewController(andPresent: viewControllerToPresent)
+                vcToPresent = viewControllerToPresent
             }
             // If the presenter is not an alert view nor a KeySync wizard, just present whatever is received.
-            if let presentee = vcToPresent {
-                currentlyShownViewController.present(presentee, animated: true)
-            } 
+            if let vc = vcToPresent {
+                currentlyShownViewController.present(vc, animated: true)
+            }
+            presentationCallback?(vcToPresent)
         }
-        return vcToPresent
     }
 
     private static func dismissCurrentlyVisibleViewController(andPresent viewController: UIViewController) {

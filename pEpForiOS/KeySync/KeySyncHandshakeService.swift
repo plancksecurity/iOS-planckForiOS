@@ -54,7 +54,7 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
     public func showHandshake(meFingerprint: String?,
                               partnerFingerprint: String?,
                               isNewGroup: Bool,
-                              completion: ((KeySyncHandshakeResult)->())? = nil) {
+                              completion: ((KeySyncHandshakeResult) -> ())? = nil) {
         guard let meFPR = meFingerprint, let partnerFPR = partnerFingerprint else {
             Log.shared.errorAndCrash("Missing FPRs")
             return
@@ -68,9 +68,8 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            me.pEpSyncWizard = UIUtils.showKeySyncWizard(meFPR: meFPR,
-                                                         partnerFPR: partnerFPR,
-                                                         isNewGroup: isNewGroup) { action in
+
+            UIUtils.showKeySyncWizard(meFPR: meFPR, partnerFPR: partnerFPR, isNewGroup: isNewGroup) { (action) in
                 switch action {
                 case .accept:
                     completion?(.accepted)
@@ -79,6 +78,12 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
                 case .decline:
                     completion?(.rejected)
                 }
+            } presentationCallback: { (vc) in
+                guard let wizard = vc as? KeySyncWizardViewController else {
+                    Log.shared.errorAndCrash("KeySyncWizardViewController not found")
+                    return
+                }
+                me.pEpSyncWizard = wizard
             }
         }
     }
