@@ -50,8 +50,7 @@ extension KeyChain {
             kSecMatchCaseInsensitive as String: kCFBooleanTrue as Any,
             kSecReturnData as String: kCFBooleanTrue as Any,
             kSecAttrService as String: defaultServerType,
-            kSecAttrAccount as String: key,
-            kSecAttrAccessGroup as String: appGroupIdentifier] as [String : Any]
+            kSecAttrAccount as String: key] as [String : Any]
 
         var result: AnyObject?
         let status = withUnsafeMutablePointer(to: &result) {
