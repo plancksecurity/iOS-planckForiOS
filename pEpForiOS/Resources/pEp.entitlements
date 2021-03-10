@@ -8,9 +8,5 @@
 	<array>
 		<string>group.security.pep.pep4ios</string>
 	</array>
-	<key>keychain-access-groups</key>
-	<array>
-		<string>$(AppIdentifierPrefix)security.pEp.keychain</string>
-	</array>
 </dict>
 </plist>

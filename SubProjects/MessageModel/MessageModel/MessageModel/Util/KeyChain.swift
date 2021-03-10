@@ -129,7 +129,8 @@ extension KeyChain {
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly as String,
             kSecAttrService as String: serverType,
             kSecAttrAccount as String: key,
-            kSecValueData as String: pass.data(using: String.Encoding.utf8)!] as [String : Any]
+            kSecValueData as String: pass.data(using: String.Encoding.utf8)!,
+            kSecAttrAccessGroup as String: appGroupIdentifier] as [String : Any]
 
         SecItemDelete(query as CFDictionary)
 
@@ -153,7 +154,8 @@ extension KeyChain {
         let updateQuery = [kSecValueData as String:passwordData] as [String : Any]
 
         let searchQuery = [kSecClass as String:kSecClassGenericPassword as String,
-                           kSecAttrAccount as String:key]
+                           kSecAttrAccount as String:key,
+                           kSecAttrAccessGroup as String: appGroupIdentifier]
         let status = SecItemUpdate(searchQuery as CFDictionary, updateQuery as CFDictionary)
         guard status == noErr else {
             let warn = "Could not update password for \(key), status \(status)"
@@ -165,7 +167,8 @@ extension KeyChain {
 
     @discardableResult static private func delete(key: String) -> Success {
         let deleteQuery = [kSecClass as String:kSecClassGenericPassword as String,
-                           kSecAttrAccount as String:key]
+                           kSecAttrAccount as String:key,
+                           kSecAttrAccessGroup as String: appGroupIdentifier]
         let status = SecItemDelete(deleteQuery as CFDictionary)
         if status != noErr {
             let warn = "Could not delete password for \(key), status \(status)"
