@@ -46,6 +46,10 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
             let loginOP = LoginSmtpOperation(smtpConnection: smtpConnection,
                                              errorContainer: errorPropagator)
 
+            let sendOp = EncryptAndSMTPSendMessageOperation(cdMessageToSendObjectId: cdMessage.objectID,
+                                                            smtpConnection: smtpConnection,
+                                                            errorContainer: errorPropagator)
+
             completion(SendError.internalError)
         }
     }
