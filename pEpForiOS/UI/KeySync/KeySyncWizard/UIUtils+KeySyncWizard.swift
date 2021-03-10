@@ -80,8 +80,8 @@ extension UIUtils {
             //  - Dismiss and present a KeySync wizard if needed.
             //
             if currentlyShownViewController is PEPAlertViewController {
-                vcToPresent = nil
                 if viewControllerToPresent is PEPAlertViewController {
+                    vcToPresent = nil
                 } else if viewControllerToPresent is KeySyncWizardViewController {
                     dismissCurrentlyVisibleViewController(andPresent: viewControllerToPresent)
                 }
