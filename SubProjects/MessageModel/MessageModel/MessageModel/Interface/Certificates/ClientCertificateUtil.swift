@@ -348,8 +348,7 @@ extension ClientCertificateUtil {
 
         let addIdentityAttributes: [CFString : Any] = [kSecReturnPersistentRef: true,
                                                        kSecAttrLabel: uuidLabel,
-                                                       kSecValueRef: theSecIdentity,
-                                                       kSecAttrAccessGroup: appGroupIdentifier]
+                                                       kSecValueRef: theSecIdentity]
 
         var resultRef: CFTypeRef? = nil
         let identityStatus = SecItemAdd(addIdentityAttributes as CFDictionary, &resultRef);
