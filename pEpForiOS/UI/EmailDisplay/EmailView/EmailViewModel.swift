@@ -164,9 +164,11 @@ class EmailViewModel {
             Log.shared.errorAndCrash("attachment out of bounds")
             return
         }
-        if let row = rows[indexPath.row] as? BaseAttachmentRow {
-            show(attachment: row.attachment)
+        guard let row = rows[indexPath.row] as? BaseAttachmentRow else {
+            Log.shared.errorAndCrash("Expected BaseAttachmentRow")
+            return
         }
+        show(attachment: row.attachment)
     }
 
     /// Handle the image has been loaded.
@@ -174,11 +176,13 @@ class EmailViewModel {
     ///   - indexPath: The indexPath of the cell that contains the image.
     ///   - height: The height of the image.
     public func handleImageFetched(forRowAt indexPath: IndexPath, withHeight height: CGFloat) {
-        if let row = rows[indexPath.row] as? ImageAttachmentRow {
-            let margin: CGFloat = 20.0
-            row.height = height + margin
-            rows[indexPath.row] = row
+        guard let row = rows[indexPath.row] as? ImageAttachmentRow else {
+            Log.shared.errorAndCrash("Expected ImageAttachmentRow")
+            return
         }
+        let margin: CGFloat = 20.0
+        row.height = height + margin
+        rows[indexPath.row] = row
     }
 }
 
