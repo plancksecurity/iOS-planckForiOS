@@ -71,6 +71,7 @@ extension UIUtils {
     /// Will happen if the presenter is a KeySync error and the view controller to present is also a KeySync error.
     @discardableResult
     private static func show<T: UIViewController>(_ viewControllerToPresent: T) -> T? {
+        var vcToPresent: T? = viewControllerToPresent
         DispatchQueue(label: "\(#file)-\(#function)", qos: .userInteractive).sync {
             let currentlyShownViewController = UIApplication.currentlyVisibleViewController()
 
@@ -79,23 +80,23 @@ extension UIUtils {
             //  - Dismiss and present a KeySync wizard if needed.
             //
             if currentlyShownViewController is PEPAlertViewController {
+                vcToPresent = nil
                 if viewControllerToPresent is PEPAlertViewController {
-                    return nil
                 } else if viewControllerToPresent is KeySyncWizardViewController {
                     dismissCurrentlyVisibleViewController(andPresent: viewControllerToPresent)
-                    return viewControllerToPresent
                 }
                 // If the presenter is a KeySync wizard
                 //  - Dismiss it and present whatever is received.
                 //
             } else if currentlyShownViewController is KeySyncWizardViewController {
                 dismissCurrentlyVisibleViewController(andPresent: viewControllerToPresent)
-                return viewControllerToPresent
             }
             // If the presenter is not an alert view nor a KeySync wizard, just present whatever is received.
-            currentlyShownViewController.present(viewControllerToPresent, animated: true)
+            if let presentee = vcToPresent {
+                currentlyShownViewController.present(presentee, animated: true)
+            } 
         }
-        return viewControllerToPresent
+        return vcToPresent
     }
 
     private static func dismissCurrentlyVisibleViewController(andPresent viewController: UIViewController) {
