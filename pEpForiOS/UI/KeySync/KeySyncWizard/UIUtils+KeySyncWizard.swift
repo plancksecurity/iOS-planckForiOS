@@ -91,10 +91,9 @@ extension UIUtils {
             } else if currentlyShownViewController is KeySyncWizardViewController {
                 dismissCurrentlyVisibleViewController(andPresent: viewControllerToPresent)
                 return viewControllerToPresent
-            } else {
-                // If the presenter is not an alert view nor a KeySync wizard, just present whatever is received.
-                currentlyShownViewController.present(viewControllerToPresent, animated: true)
             }
+            // If the presenter is not an alert view nor a KeySync wizard, just present whatever is received.
+            currentlyShownViewController.present(viewControllerToPresent, animated: true)
         }
         return viewControllerToPresent
     }
