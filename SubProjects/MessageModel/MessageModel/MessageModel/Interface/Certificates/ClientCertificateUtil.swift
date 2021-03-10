@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+import pEp4iosIntern
+
 public protocol ClientCertificateUtilProtocol {
     /// - Parameters:
     ///   - session: Session to work on. Defaults to main Session.
@@ -346,7 +348,8 @@ extension ClientCertificateUtil {
 
         let addIdentityAttributes: [CFString : Any] = [kSecReturnPersistentRef: true,
                                                        kSecAttrLabel: uuidLabel,
-                                                       kSecValueRef: theSecIdentity]
+                                                       kSecValueRef: theSecIdentity,
+                                                       kSecAttrAccessGroup: appGroupIdentifier]
 
         var resultRef: CFTypeRef? = nil
         let identityStatus = SecItemAdd(addIdentityAttributes as CFDictionary, &resultRef);

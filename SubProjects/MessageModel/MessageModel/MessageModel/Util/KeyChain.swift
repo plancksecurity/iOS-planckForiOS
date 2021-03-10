@@ -8,6 +8,7 @@
 
 import Foundation
 
+import pEp4iosIntern
 import pEpIOSToolbox
 
  /// Abstracts KeyChain ralted issues
@@ -128,7 +129,8 @@ extension KeyChain {
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly as String,
             kSecAttrService as String: serverType,
             kSecAttrAccount as String: key,
-            kSecValueData as String: pass.data(using: String.Encoding.utf8)!] as [String : Any]
+            kSecValueData as String: pass.data(using: String.Encoding.utf8)!,
+            kSecAttrAccessGroup: appGroupIdentifier] as [String : Any]
 
         SecItemDelete(query as CFDictionary)
 
