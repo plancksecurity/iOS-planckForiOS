@@ -4,7 +4,7 @@
 <dict>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>security.pEp.share.background.send</string>
+		<string>security.pep.share.background.send</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en_US</string>
