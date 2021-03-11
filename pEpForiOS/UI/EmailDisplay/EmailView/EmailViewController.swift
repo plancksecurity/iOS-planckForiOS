@@ -55,8 +55,8 @@ class EmailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         showExternalContentLabel.text = Localized.showExternalContentText
-        tableView.estimatedRowHeight = 72
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 100
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -182,10 +182,13 @@ extension EmailViewController: UITableViewDelegate {
             Log.shared.errorAndCrash("Missing vm")
             return tableView.estimatedRowHeight
         }
-        if ((vm[indexPath.row] as? EmailViewModel.BodyRow)?.htmlBody != nil) {
+        if let row = vm[indexPath.row] as? EmailViewModel.AttachmentRow {
+            return row.height
+        }
+        if (vm[indexPath.row] as? EmailViewModel.BodyRow)?.htmlBody != nil {
             return htmlViewerViewController.contentSize.height
         }
-        return tableView.rowHeight
+        return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -345,10 +348,9 @@ extension EmailViewController {
                                        row: EmailViewModel.ImageAttachmentRow,
                                        indexPath: IndexPath) {
         row.retrieveAttachmentData { [weak self] (_, _, image) in
-            let sideMargin: CGFloat = 10.0
             var imageToShow = image
             if image.size.width > cell.frame.width,
-               let resizedImage = image.resized(newWidth: cell.frame.width - sideMargin) {
+               let resizedImage = image.resized(newWidth: cell.frame.width) {
                 imageToShow = resizedImage
             }
             cell.imageAttachmentView?.image = imageToShow
