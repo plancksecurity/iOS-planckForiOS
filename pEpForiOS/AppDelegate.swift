@@ -84,7 +84,9 @@ extension AppDelegate {
 
         Log.shared.logDebugInfo()
 
+        // TODO: Becomes obsolete with BGTaskSchedulerPermittedIdentifiers
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
+
         Appearance.setup()
         setupServices()
         askUserForNotificationPermissions()
@@ -152,6 +154,7 @@ extension AppDelegate {
         messageModelService?.stop()
     }
 
+    // TODO: Becomes obsolete with BGTaskSchedulerPermittedIdentifiers
     func application(_ application: UIApplication, performFetchWithCompletionHandler
         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
