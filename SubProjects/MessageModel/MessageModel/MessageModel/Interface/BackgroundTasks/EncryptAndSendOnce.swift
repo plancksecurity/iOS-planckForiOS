@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
     // Does nothing, but keeps the compiler compiling
@@ -15,4 +16,8 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
 
     public func sendAll() {
     }
+
+    // MARK: Private Member Variables
+
+    private let privateMoc = Stack.shared.newPrivateConcurrentContext
 }
