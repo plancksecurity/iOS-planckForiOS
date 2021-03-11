@@ -87,6 +87,12 @@ extension AppDelegate {
         // TODO: Becomes obsolete with BGTaskSchedulerPermittedIdentifiers
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
 
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundTaskSend,
+                                        using: nil) { task in
+            Log.shared.logInfo(message: "Handling background task \(backgroundTaskSend)")
+            //self.handleAppRefresh(task: task as! BGAppRefreshTask)
+        }
+
         Appearance.setup()
         setupServices()
         askUserForNotificationPermissions()
