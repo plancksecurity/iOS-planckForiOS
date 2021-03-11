@@ -96,8 +96,13 @@ extension AppDelegate {
 
         if #available(iOS 13.0, *) {
             BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundTaskSend,
-                                            using: nil) { task in
-                encryptAndSendAll.sendAll()
+                                            using: nil) { [weak self] task in
+                guard let me = self else {
+                    Log.shared.lostMySelf()
+                    return
+                }
+
+                me.encryptAndSendAll.sendAll()
             }
         }
 
