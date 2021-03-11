@@ -17,7 +17,7 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        if #available(iOS 13, *) {
+        if #available(iOS 13.0, *) {
             view.backgroundColor = .systemBackground
             Appearance.customiseForTutorial(viewController: self)
         }
@@ -39,9 +39,13 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
         tutorialWizard.showDots = true
         tutorialWizard.pageControlTint = .pEpGray
 
-	if #available(iOS 13.0, *) {
-            tutorialWizard.view.backgroundColor = .systemBackground
-            tutorialWizard.pageControlPageIndicatorColor = .systemFill
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                tutorialWizard.pageControlTint = .lightGray
+            } else {
+                tutorialWizard.pageControlPageIndicatorColor = .systemFill
+            }
+
             tutorialWizard.pageControlBackgroundColor = .systemBackground
         } else {
             tutorialWizard.pageControlPageIndicatorColor = .black
