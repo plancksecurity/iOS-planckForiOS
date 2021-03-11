@@ -26,7 +26,6 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
     }
 
     public func send(message: Message, completion: @escaping (Error?) -> ()) {
-        let privateMoc = Stack.shared.newPrivateConcurrentContext
         privateMoc.perform { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(message: "Lost self")
@@ -84,6 +83,8 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
     }
 
     // MARK: Private Member Variables
+
+    private let privateMoc = Stack.shared.newPrivateConcurrentContext
 
     private let queue = OperationQueue()
 
