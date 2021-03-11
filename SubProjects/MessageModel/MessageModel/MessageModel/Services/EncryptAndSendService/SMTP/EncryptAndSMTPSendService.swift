@@ -24,12 +24,14 @@ class EncryptAndSMTPSendService: QueryBasedService<CdMessage>, SendServiceProtoc
     ///   - cdAccount:  Account to encrypt and send messages for.
     ///                - note: MUST life on QueryBasedService's context!
     ///   see Service.init for docs
-    init(backgroundTaskManager: BackgroundTaskManagerProtocol? = nil,
+    init(runOnce: Bool = false,
+         backgroundTaskManager: BackgroundTaskManagerProtocol? = nil,
          cdAccount: CdAccount,
          errorPropagator: ErrorPropagator?) {
         let predicate = CdMessage.PredicateFactory.outgoingMails(in: cdAccount)
 
         super.init(useSerialQueue: true,
+                   runOnce: runOnce,
                    backgroundTaskManager: backgroundTaskManager,
                    predicate: predicate,
                    cacheName: nil,

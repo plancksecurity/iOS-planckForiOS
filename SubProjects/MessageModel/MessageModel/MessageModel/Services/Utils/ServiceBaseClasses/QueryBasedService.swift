@@ -88,6 +88,7 @@ class QueryBasedService<T: NSManagedObject>: OperationBasedService, QueryBasedSe
     ///   - sortDescriptors: used to sort the results.
     ///   - errorPropagator: see Service.init for docs
     init(useSerialQueue: Bool = false,
+         runOnce: Bool = false,
          backgroundTaskManager: BackgroundTaskManagerProtocol? = nil,
          predicate: NSPredicate?,
          cacheName: String? = nil,
@@ -100,6 +101,7 @@ class QueryBasedService<T: NSManagedObject>: OperationBasedService, QueryBasedSe
                                              sortDescriptors: sortDescriptors,
                                              delegate: nil)
         super.init(useSerialQueue: useSerialQueue,
+                   runOnce: runOnce,
                    backgroundTaskManager: backgroundTaskManager,
                    context: moc,
                    errorPropagator: errorPropagator)
