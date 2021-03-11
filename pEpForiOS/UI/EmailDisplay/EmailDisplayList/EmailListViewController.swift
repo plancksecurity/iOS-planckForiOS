@@ -1337,6 +1337,7 @@ extension EmailListViewController {
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
             tableView.reloadData()
         }
+
         if #available(iOS 13.0, *) {
             if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
                 /// Clear the cache and get the correct version of the avatar..

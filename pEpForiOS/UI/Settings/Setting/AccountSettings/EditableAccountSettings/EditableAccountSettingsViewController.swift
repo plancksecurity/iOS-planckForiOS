@@ -287,7 +287,7 @@ extension EditableAccountSettingsViewController: UIPickerViewDelegate {
     }
 }
 
-// MARK: - Accessibility
+// MARK: - Trait Collection
 
 extension EditableAccountSettingsViewController {
 

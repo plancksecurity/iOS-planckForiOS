@@ -195,6 +195,8 @@ extension PEPAlertViewController {
     }
 }
 
+// MARK: - Trait Collection
+
 extension PEPAlertViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

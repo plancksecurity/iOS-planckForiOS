@@ -42,8 +42,9 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
         if #available(iOS 13.0, *) {
             if UITraitCollection.current.userInterfaceStyle == .dark {
                 tutorialWizard.pageControlTint = .lightGray
+                tutorialWizard.pageControlPageIndicatorColor = .white
             } else {
-                tutorialWizard.pageControlPageIndicatorColor = .systemFill
+                tutorialWizard.pageControlPageIndicatorColor = .black
             }
 
             tutorialWizard.pageControlBackgroundColor = .systemBackground
@@ -107,5 +108,32 @@ extension TutorialWizardViewController {
         }
         let endButton = UIBarButtonItem(title: navBarButtonTitle, style: .done, target: self, action: #selector(closeScreen))
         navigationItem.rightBarButtonItem = endButton
+    }
+}
+
+// MARK: - Trait Collection
+
+extension TutorialWizardViewController {
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                if UITraitCollection.current.userInterfaceStyle == .dark {
+                    pageControlTint = .lightGray
+                    pageControlPageIndicatorColor = .white
+                } else {
+                    pageControlPageIndicatorColor = .black
+                }
+                pageControlBackgroundColor = .systemBackground
+
+                view.layoutIfNeeded()
+            }
+        }
     }
 }

@@ -268,7 +268,7 @@ extension AccountSettingsViewController {
     }
 }
 
-// MARK: - Accessibility
+// MARK: - Trait Collection
 
 extension AccountSettingsViewController {
 

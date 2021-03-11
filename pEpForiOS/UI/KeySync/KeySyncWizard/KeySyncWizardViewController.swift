@@ -309,6 +309,7 @@ extension KeySyncWizardViewController {
     }
 }
 
+// MARK: - Trait Collection
 
 extension KeySyncWizardViewController {
 
