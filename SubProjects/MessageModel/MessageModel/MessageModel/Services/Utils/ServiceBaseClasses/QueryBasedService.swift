@@ -88,12 +88,12 @@ class QueryBasedService<T: NSManagedObject>: OperationBasedService, QueryBasedSe
     ///   - sortDescriptors: used to sort the results.
     ///   - errorPropagator: see Service.init for docs
     init(useSerialQueue: Bool = false,
-         runOnce: Bool = false,
          backgroundTaskManager: BackgroundTaskManagerProtocol? = nil,
          predicate: NSPredicate?,
          cacheName: String? = nil,
          sortDescriptors: [NSSortDescriptor],
-         errorPropagator: ErrorPropagator?) {
+         errorPropagator: ErrorPropagator?,
+         runOnce: Bool = false) {
         let moc: NSManagedObjectContext = Stack.shared.changePropagatorContext
         self.qrc = QueryResultsController<T>(predicate: predicate,
                                              context: moc,
