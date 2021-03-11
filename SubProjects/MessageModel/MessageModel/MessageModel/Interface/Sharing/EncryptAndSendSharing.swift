@@ -14,6 +14,7 @@ import CoreData
 #endif
 
 import PEPIOSToolboxForAppExtensions
+import pEp4iosIntern
 
 public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
     public enum SendError: Error {
@@ -62,7 +63,10 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
             sendOp.addDependency(loginOP)
             sendOp.completionBlock = {
                 if errorPropagator.hasErrors {
-                    completion(errorPropagator.error)
+                    if #available(iOS 13.0, *) {
+                    } else {
+                        completion(errorPropagator.error)
+                    }
                 } else {
                     completion(nil)
                 }
@@ -72,5 +76,22 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
         }
     }
 
+    // MARK: Private Member Variables
+
     private let queue = OperationQueue()
+
+    // MARK: Private Functions
+
+    @available(iOS 13.0, *)
+    private func scheduleAppRefresh() {
+        let request = BGAppRefreshTaskRequest(identifier: backgroundTaskSend)
+        // Fetch no earlier than 15 minutes from now
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60)
+
+        do {
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            print("Could not schedule app refresh: \(error)")
+        }
+    }
 }
