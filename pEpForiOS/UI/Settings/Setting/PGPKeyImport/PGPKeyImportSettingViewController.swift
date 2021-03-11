@@ -30,7 +30,7 @@ class PGPKeyImportSettingViewController: UIViewController {
         if #available(iOS 13.0, *) {
             tableView.backgroundColor = UIColor.systemGroupedBackground
         } else {
-            tableView.backgroundColor = .white
+            tableView.backgroundColor = .groupTableViewBackground
         }
         tableView.sectionHeaderHeight = UITableView.automaticDimension
         tableView.estimatedSectionHeaderHeight = 100
@@ -160,7 +160,7 @@ extension PGPKeyImportSettingViewController {
             // SetOwnKeyViewController does not need any preparation
             break
         case .segueImportKeyFromDocuments:
-            guard let vc = segue.destination as? KeyImportViewController else {
+            guard segue.destination is KeyImportViewController else {
                 Log.shared.errorAndCrash("No KeyImportViewController as segue destination")
                 return
             }

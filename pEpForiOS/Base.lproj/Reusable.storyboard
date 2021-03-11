@@ -403,7 +403,7 @@
                                         </constraints>
                                     </stackView>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="USV-ch-gmd" secondAttribute="bottom" id="CCJ-Ga-LuR"/>
                                     <constraint firstAttribute="trailing" secondItem="USV-ch-gmd" secondAttribute="trailing" id="HLq-1K-s9h"/>
@@ -434,6 +434,7 @@
                         <outlet property="alertTitle" destination="kNd-Jx-X9l" id="eVk-uI-1Ci"/>
                         <outlet property="alertTitleTopViewHeightConstraint" destination="4EI-3w-tJx" id="DUD-0J-pcX"/>
                         <outlet property="buttonsStackView" destination="8Bk-30-sb6" id="dhe-o3-OCn"/>
+                        <outlet property="keyInputView" destination="cFd-dO-xyH" id="g3e-ua-XFa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W8j-ep-qHS" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -15,7 +15,8 @@ final class PEPAlertViewController: UIViewController {
     @IBOutlet weak var alertMessage: UILabel!
     @IBOutlet weak var alertImageView: UIImageView!
     @IBOutlet weak var buttonsStackView: UIStackView!
-    
+    @IBOutlet weak var keyInputView: KeyInputView!
+
 
     @IBOutlet weak private var alertImageViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak private var alertTitleTopViewHeightConstraint: NSLayoutConstraint!
@@ -35,6 +36,15 @@ final class PEPAlertViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                keyInputView.backgroundColor = .secondarySystemBackground
+            } else {
+                keyInputView.backgroundColor = .systemBackground
+            }
+        } else {
+            keyInputView.backgroundColor = .white
+        }
         setUp(title: titleString,
               paintPEPInTitle: paintPEPInTitle,
               message: message)
@@ -182,8 +192,13 @@ extension PEPAlertViewController {
             button.setTitle(action.title, for: .normal)
             button.setTitleColor(action.style, for: .normal)
             setUp(alertButton: button, style: viewModel.alertType)
+
             if #available(iOS 13.0, *) {
-                button.backgroundColor = .secondarySystemBackground
+                if UITraitCollection.current.userInterfaceStyle == .dark {
+                    button.backgroundColor = .secondarySystemBackground
+                } else {
+                    button.backgroundColor = .systemBackground
+                }
             } else {
                 button.backgroundColor = .white
             }
