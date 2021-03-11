@@ -61,10 +61,17 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
                                                             errorContainer: errorPropagator)
 
             sendOp.addDependency(loginOP)
-            sendOp.completionBlock = {
+            sendOp.completionBlock = { [weak self] in
                 if errorPropagator.hasErrors {
                     if #available(iOS 13.0, *) {
+                        // fall back to background task
+                        guard let me = self else {
+                            Log.shared.lostMySelf()
+                            return
+                        }
+                        me.scheduleAppSend(completion: completion)
                     } else {
+                        // signal the error
                         completion(errorPropagator.error)
                     }
                 } else {
@@ -83,7 +90,7 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
     // MARK: Private Functions
 
     @available(iOS 13.0, *)
-    private func scheduleAppRefresh() {
+    private func scheduleAppSend(completion: @escaping (Error?) -> ()) {
         let request = BGAppRefreshTaskRequest(identifier: backgroundTaskSend)
         // Fetch no earlier than 15 minutes from now
         request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60)
