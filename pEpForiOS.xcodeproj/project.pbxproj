@@ -336,6 +336,7 @@
 		5B818DC325E3FEC2004D04F0 /* TutorialStep1iPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B818DC225E3FEC2004D04F0 /* TutorialStep1iPadViewController.swift */; };
 		5B884B44257A90FE006B2022 /* EditableAccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B884B43257A90FE006B2022 /* EditableAccountSettingsViewController.swift */; };
 		5B885DB225E7B0350027DD24 /* Tutorial_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B885DB425E7B0350027DD24 /* Tutorial_iPad.storyboard */; };
+		5BA6180025F1475900973829 /* MessageImageAttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA617FF25F1475900973829 /* MessageImageAttachmentCell.swift */; };
 		5BA946232542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA946222542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift */; };
 		5BAAD350257E2658002CACAA /* EditableAccountSettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAAD34F257E2658002CACAA /* EditableAccountSettingsViewModelTest.swift */; };
 		5BB7C73524D2EB3700D5F328 /* UnifiedTrash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C73424D2EB3700D5F328 /* UnifiedTrash.swift */; };
@@ -927,6 +928,7 @@
 		5B885DBC25E7B0770027DD24 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Tutorial_iPad.strings; sourceTree = "<group>"; };
 		5B885DBE25E7B0AC0027DD24 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Tutorial_iPad.strings; sourceTree = "<group>"; };
 		5B885DC025E7B0B70027DD24 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Tutorial_iPad.strings; sourceTree = "<group>"; };
+		5BA617FF25F1475900973829 /* MessageImageAttachmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageImageAttachmentCell.swift; sourceTree = "<group>"; };
 		5BA946222542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPAlertViewController+KeySyncError.swift"; sourceTree = "<group>"; };
 		5BAAD34F257E2658002CACAA /* EditableAccountSettingsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModelTest.swift; sourceTree = "<group>"; };
 		5BB7C73424D2EB3700D5F328 /* UnifiedTrash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedTrash.swift; sourceTree = "<group>"; };
@@ -2522,6 +2524,7 @@
 			isa = PBXGroup;
 			children = (
 				5B5C2A9125D2902C00F9C18A /* MessageAttachmentCell.swift */,
+				5BA617FF25F1475900973829 /* MessageImageAttachmentCell.swift */,
 				220DCE2C1E0AB544002FE716 /* MessageSenderCell.swift */,
 				5BFBB50325D5207900F269C4 /* MessageSubjectCell.swift */,
 				220DCE311E0AB5CC002FE716 /* MessageContentCell.swift */,
@@ -3138,6 +3141,7 @@
 				1521B795241BDFE5000EAE57 /* UIUtils+Compose.swift in Sources */,
 				5BB7C73924D2EC4400D5F328 /* UnifiedSent.swift in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
+				5BA6180025F1475900973829 /* MessageImageAttachmentCell.swift in Sources */,
 				4349E8BB252DCC58000F2BBB /* LiveLogViewModel.swift in Sources */,
 				5B884B44257A90FE006B2022 /* EditableAccountSettingsViewController.swift in Sources */,
 				3705096622CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift in Sources */,
