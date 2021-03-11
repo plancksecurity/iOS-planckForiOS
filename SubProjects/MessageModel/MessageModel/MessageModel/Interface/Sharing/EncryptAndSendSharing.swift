@@ -92,8 +92,8 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
     @available(iOS 13.0, *)
     private func scheduleAppSend(completion: @escaping (Error?) -> ()) {
         let request = BGAppRefreshTaskRequest(identifier: backgroundTaskSend)
-        // Fetch no earlier than 15 minutes from now
-        request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60)
+        // Send immediately, no need to wait
+        request.earliestBeginDate = Date()
 
         do {
             try BGTaskScheduler.shared.submit(request)
