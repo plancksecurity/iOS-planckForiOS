@@ -12,7 +12,8 @@ protocol SendServiceProvider {
 
     /// Returns the Service responsible for sending messages marked for sending.
     func sendService(backgroundTaskManager: BackgroundTaskManagerProtocol?,
-                     errorPropagator: ErrorPropagator) -> SendServiceProtocol?
+                     errorPropagator: ErrorPropagator,
+                     runOnce: Bool) -> SendServiceProtocol?
 }
 
 /// Service that sends all messages to be send after starting it. It creates and manages one
