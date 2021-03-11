@@ -6,9 +6,9 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-if #available(iOS 13.0, *) {
+#if canImport(BackgroundTasks)
     import BackgroundTasks
-}
+#endif
 
 import pEpIOSToolbox
 import MessageModel
