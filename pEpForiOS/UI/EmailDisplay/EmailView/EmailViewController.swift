@@ -152,7 +152,7 @@ extension EmailViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageAttachmentCell else {
                 return UITableViewCell()
             }
-            guard let row = vm[indexPath.row] as? AttachmentRowProtocol else {
+            guard let row = vm[indexPath.row] as? EmailViewModel.BaseAttachmentRow else {
                 Log.shared.errorAndCrash("Can't get or cast attachment row")
                 return cell
             }
@@ -336,7 +336,7 @@ extension EmailViewController {
         }
     }
 
-    private func setupAttachment(cell: MessageAttachmentCell, with row: AttachmentRowProtocol) {
+    private func setupAttachment(cell: MessageAttachmentCell, with row: EmailViewModel.BaseAttachmentRow) {
         row.retrieveAttachmentData { (fileName, fileExtension, image) in
             cell.fileNameLabel.text = fileName
             cell.iconImageView.image = image
@@ -347,18 +347,26 @@ extension EmailViewController {
     private func setupImageAttachment(cell: ImageAttachmentCell,
                                        row: EmailViewModel.ImageAttachmentRow,
                                        indexPath: IndexPath) {
-        row.retrieveAttachmentData { [weak self] (_, _, image) in
-            var imageToShow = image
-            if image.size.width > cell.frame.width,
-               let resizedImage = image.resized(newWidth: cell.frame.width) {
-                imageToShow = resizedImage
+        if let attachment = row.fetchedAttachment {
+            if let image = attachment.icon, image.size.width > cell.frame.size.width {
+                let resizedImage = image.resized(newWidth: cell.frame.width)
+                row.fetchedAttachment?.icon = resizedImage
             }
-            cell.imageAttachmentView?.image = imageToShow
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
+            cell.imageAttachmentView?.image = attachment.icon
+        } else {
+            row.retrieveAttachmentData { [weak self] (_, _, image) in
+                var imageToShow = image
+                if image.size.width > cell.frame.width, let resizedImage = image.resized(newWidth: cell.frame.width) {
+                    row.fetchedAttachment?.icon = resizedImage
+                    imageToShow = resizedImage
+                }
+                cell.imageAttachmentView?.image = imageToShow
+                guard let me = self else {
+                    Log.shared.lostMySelf()
+                    return
+                }
+                me.updateSizeIfLastCell(indexPath: indexPath)
             }
-            me.updateSizeIfLastCell(indexPath: indexPath)
         }
     }
 
