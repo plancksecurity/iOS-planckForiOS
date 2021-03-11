@@ -9,6 +9,10 @@
 import Foundation
 import CoreData
 
+#if canImport(BackgroundTasks)
+    import BackgroundTasks
+#endif
+
 import PEPIOSToolboxForAppExtensions
 
 public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
