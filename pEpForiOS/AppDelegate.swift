@@ -6,6 +6,10 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
+if #available(iOS 13.0, *) {
+    import BackgroundTasks
+}
+
 import pEpIOSToolbox
 import MessageModel
 import pEp4iosIntern
@@ -88,10 +92,12 @@ extension AppDelegate {
         // TODO: Becomes obsolete with BGTaskSchedulerPermittedIdentifiers
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
 
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundTaskSend,
-                                        using: nil) { task in
-            Log.shared.logInfo(message: "Handling background task \(backgroundTaskSend)")
-            //self.handleAppRefresh(task: task as! BGAppRefreshTask)
+        if #available(iOS 13.0, *) {
+            BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundTaskSend,
+                                            using: nil) { task in
+                Log.shared.logInfo(message: "Handling background task \(backgroundTaskSend)")
+                //self.handleAppRefresh(task: task as! BGAppRefreshTask)
+            }
         }
 
         Appearance.setup()
