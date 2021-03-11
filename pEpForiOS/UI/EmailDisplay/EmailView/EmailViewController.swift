@@ -347,25 +347,26 @@ extension EmailViewController {
     private func setupImageAttachment(cell: ImageAttachmentCell,
                                        row: EmailViewModel.ImageAttachmentRow,
                                        indexPath: IndexPath) {
-        if let attachment = row.fetchedAttachment {
-            if let image = attachment.icon, image.size.width > cell.frame.size.width {
-                let resizedImage = image.resized(newWidth: cell.frame.width)
-                row.fetchedAttachment?.icon = resizedImage
+        func set(attachment: EmailViewModel.BaseAttachmentRow.Attachment) {
+            guard var imageToSet = attachment.icon else {
+                Log.shared.errorAndCrash("No image in a ImageAttachmentRow")
+                return
             }
-            cell.imageAttachmentView?.image = attachment.icon
+            if imageToSet.size.width > cell.frame.size.width {
+                imageToSet = imageToSet.resized(newWidth: cell.frame.width) ?? imageToSet
+            }
+            row.fetchedAttachment?.icon = imageToSet
+            cell.imageAttachmentView?.image = imageToSet
+            updateSizeIfLastCell(indexPath: indexPath)
+        }
+
+        if let attachment = row.fetchedAttachment {
+            set(attachment: attachment)
         } else {
-            row.retrieveAttachmentData { [weak self] (_, _, image) in
-                var imageToShow = image
-                if image.size.width > cell.frame.width, let resizedImage = image.resized(newWidth: cell.frame.width) {
-                    row.fetchedAttachment?.icon = resizedImage
-                    imageToShow = resizedImage
+            row.retrieveAttachmentData { (_, _, _) in
+                if let attachment = row.fetchedAttachment {
+                    set(attachment: attachment)
                 }
-                cell.imageAttachmentView?.image = imageToShow
-                guard let me = self else {
-                    Log.shared.lostMySelf()
-                    return
-                }
-                me.updateSizeIfLastCell(indexPath: indexPath)
             }
         }
     }
