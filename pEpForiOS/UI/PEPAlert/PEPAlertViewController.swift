@@ -112,7 +112,7 @@ extension PEPAlertViewController {
         switch alertStyle {
         case .default, .warn, .undo:
             if #available(iOS 13.0, *) {
-                return .label
+                return .secondaryLabel
             } else {
                 return .pEpBlack
             }

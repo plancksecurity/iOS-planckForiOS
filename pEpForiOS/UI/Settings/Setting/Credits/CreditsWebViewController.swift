@@ -43,7 +43,7 @@ class CreditsWebViewController: PEPWebViewController {
 
     private func html() -> String {
         let appVersion = InfoPlist.versionDisplayString() ?? "666"
-        var backgroundColor = UIColor.pEpLightBackground
+        var backgroundColor = UIColor.white
         var fontColor = UIColor.pEpGray
 
         if #available(iOS 13.0, *) {
