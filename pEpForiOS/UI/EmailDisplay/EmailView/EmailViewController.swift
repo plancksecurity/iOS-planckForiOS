@@ -188,11 +188,12 @@ extension EmailViewController: UITableViewDelegate {
 
         if (vm[indexPath.row] as? EmailViewModel.BodyRow)?.htmlBody != nil {
             let htmlHeight = htmlViewerViewController.contentSize.height
-            if htmlHeight > 0 {
+//            if htmlHeight > 0 {
                 return htmlHeight
-            } else {
-                return tableView.estimatedRowHeight
-            }
+//            }
+//            else {
+//                return tableView.rowHeight
+//            }
         }
         return UITableView.automaticDimension
     }
