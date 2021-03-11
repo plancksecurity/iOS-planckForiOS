@@ -99,7 +99,7 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
         do {
             try BGTaskScheduler.shared.submit(request)
         } catch {
-            print("Could not schedule app refresh: \(error)")
+            Log.shared.log(error: error)
         }
     }
 }
