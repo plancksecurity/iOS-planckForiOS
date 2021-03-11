@@ -443,6 +443,7 @@
 		4384D40A243F5245006CCBA2 /* MessagePantomimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384D409243F5245006CCBA2 /* MessagePantomimeTests.swift */; };
 		4389100B25F7D0D500BB2576 /* LoginSmtpOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4826221E9518006E8F83 /* LoginSmtpOperation.swift */; };
 		43894A6025FA660700841509 /* EncryptAndSendOnceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43894A5F25FA660700841509 /* EncryptAndSendOnceProtocol.swift */; };
+		43894A9525FA672C00841509 /* EncryptAndSendOnce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43894A9425FA672C00841509 /* EncryptAndSendOnce.swift */; };
 		4396230D23FD41C2007E9364 /* ClientCertificateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230C23FD41C2007E9364 /* ClientCertificateUtil.swift */; };
 		4396231023FD5079007E9364 /* ClientCertificateUtil+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230F23FD5079007E9364 /* ClientCertificateUtil+Internal.swift */; };
 		439B16A222802A8700201DE5 /* VerifiableAccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */; };
@@ -991,6 +992,7 @@
 		4384D405243F455A006CCBA2 /* MiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscTests.swift; sourceTree = "<group>"; };
 		4384D409243F5245006CCBA2 /* MessagePantomimeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagePantomimeTests.swift; sourceTree = "<group>"; };
 		43894A5F25FA660700841509 /* EncryptAndSendOnceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptAndSendOnceProtocol.swift; sourceTree = "<group>"; };
+		43894A9425FA672C00841509 /* EncryptAndSendOnce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptAndSendOnce.swift; sourceTree = "<group>"; };
 		4396230C23FD41C2007E9364 /* ClientCertificateUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateUtil.swift; sourceTree = "<group>"; };
 		4396230F23FD5079007E9364 /* ClientCertificateUtil+Internal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClientCertificateUtil+Internal.swift"; sourceTree = "<group>"; };
 		439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifiableAccountProtocol.swift; sourceTree = "<group>"; };
@@ -2209,6 +2211,7 @@
 			isa = PBXGroup;
 			children = (
 				43894A5F25FA660700841509 /* EncryptAndSendOnceProtocol.swift */,
+				43894A9425FA672C00841509 /* EncryptAndSendOnce.swift */,
 			);
 			path = BackgroundTasks;
 			sourceTree = "<group>";
@@ -3526,6 +3529,7 @@
 				435F514C222017E8006EB11F /* CdAttachment+Pantomime.swift in Sources */,
 				37FAA37F22EF15D700A06668 /* Account+KeySync.swift in Sources */,
 				43EA4875221E9518006E8F83 /* ImapSyncOperation.swift in Sources */,
+				43894A9525FA672C00841509 /* EncryptAndSendOnce.swift in Sources */,
 				15F274F8233CAEB10069C1E0 /* EncryptAndSendService.swift in Sources */,
 				3A7400BE2492235F00AE6A79 /* CdMessageReference+PredicateFactory.swift in Sources */,
 				43AB6A112248D2E2008E40CC /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift in Sources */,

@@ -34,6 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// This is used to handle OAuth2 requests.
     private let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
+    private let encryptAndSendAll: EncryptAndSendOnceProtocol = EncryptAndSendOnce()
+
     private func setupInitialViewController() -> Bool {
         let folderViews: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
         guard let initialNVC = folderViews.instantiateViewController(withIdentifier: "main.initial.nvc") as? UISplitViewController
@@ -95,7 +97,7 @@ extension AppDelegate {
         if #available(iOS 13.0, *) {
             BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundTaskSend,
                                             using: nil) { task in
-                Log.shared.logInfo(message: "Handling background task \(backgroundTaskSend)")
+                encryptAndSendAll.sendAll()
             }
         }
 
