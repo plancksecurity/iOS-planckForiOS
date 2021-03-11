@@ -69,7 +69,8 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
                             Log.shared.lostMySelf()
                             return
                         }
-                        me.scheduleAppSend(completion: completion)
+                        me.scheduleAppSend()
+                        completion(nil)
                     } else {
                         // signal the error
                         completion(errorPropagator.error)
@@ -90,7 +91,7 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
     // MARK: Private Functions
 
     @available(iOS 13.0, *)
-    private func scheduleAppSend(completion: @escaping (Error?) -> ()) {
+    private func scheduleAppSend() {
         let request = BGAppRefreshTaskRequest(identifier: backgroundTaskSend)
         // Fetch no earlier than 15 minutes from now
         request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60)
