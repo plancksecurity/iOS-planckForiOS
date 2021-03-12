@@ -92,7 +92,7 @@ extension FetchNumberOfNewMailsOperation {
         }
     }
 
-    /// If no new mails exist, the server returns the UID of the last (also locally) existing mail.
+    /// If no new mails exist, the server (might) return the UID of the last (also locally) existing mail.
     /// This method handles this case and filters the existing UID.
     ///
     /// - Parameter uids: uids to validate
@@ -106,8 +106,11 @@ extension FetchNumberOfNewMailsOperation {
                 return
             }
             if let safeUids = uids, safeUids.count != 1 {
-                // We have to validate only if uids.count == 1
-                result = uids
+                // We have to validate only if uids.count == 1.
+                // If its zero, semanticly that is that there are zero new mails.
+                // If its >1, semanticly that is that there are new mails.
+                result = uids ?? []
+                return
             }
             guard let cdFolderToOpen = me.cdFolder() else {
                 Log.shared.errorAndCrash("No folder")
