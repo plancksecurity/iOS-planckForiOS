@@ -160,7 +160,7 @@ extension EmailViewController: UITableViewDataSource {
             return cell
 
         case .imageAttachment:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? ImageAttachmentCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageImageAttachmentCell else {
                 return UITableViewCell()
             }
             guard let row = vm[indexPath.row] as? EmailViewModel.ImageAttachmentRow else {
@@ -344,7 +344,7 @@ extension EmailViewController {
         }
     }
 
-    private func setupImageAttachment(cell: ImageAttachmentCell,
+    private func setupImageAttachment(cell: MessageImageAttachmentCell,
                                        row: EmailViewModel.ImageAttachmentRow,
                                        indexPath: IndexPath) {
         func set(attachment: EmailViewModel.BaseAttachmentRow.Attachment) {
