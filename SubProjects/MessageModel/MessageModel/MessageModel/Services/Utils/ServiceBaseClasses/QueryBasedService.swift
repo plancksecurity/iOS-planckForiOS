@@ -92,8 +92,7 @@ class QueryBasedService<T: NSManagedObject>: OperationBasedService, QueryBasedSe
          predicate: NSPredicate?,
          cacheName: String? = nil,
          sortDescriptors: [NSSortDescriptor],
-         errorPropagator: ErrorPropagator?,
-         runOnce: Bool = false) {
+         errorPropagator: ErrorPropagator?) {
         let moc: NSManagedObjectContext = Stack.shared.changePropagatorContext
         self.qrc = QueryResultsController<T>(predicate: predicate,
                                              context: moc,
@@ -101,7 +100,6 @@ class QueryBasedService<T: NSManagedObject>: OperationBasedService, QueryBasedSe
                                              sortDescriptors: sortDescriptors,
                                              delegate: nil)
         super.init(useSerialQueue: useSerialQueue,
-                   runOnce: runOnce,
                    backgroundTaskManager: backgroundTaskManager,
                    context: moc,
                    errorPropagator: errorPropagator)

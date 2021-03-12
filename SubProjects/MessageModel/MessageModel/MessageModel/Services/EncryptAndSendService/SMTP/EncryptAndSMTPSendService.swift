@@ -26,8 +26,7 @@ class EncryptAndSMTPSendService: QueryBasedService<CdMessage>, SendServiceProtoc
     ///   see Service.init for docs
     init(backgroundTaskManager: BackgroundTaskManagerProtocol? = nil,
          cdAccount: CdAccount,
-         errorPropagator: ErrorPropagator?,
-         runOnce: Bool = false) {
+         errorPropagator: ErrorPropagator?) {
         let predicate = CdMessage.PredicateFactory.outgoingMails(in: cdAccount)
 
         super.init(useSerialQueue: true,
@@ -35,8 +34,7 @@ class EncryptAndSMTPSendService: QueryBasedService<CdMessage>, SendServiceProtoc
                    predicate: predicate,
                    cacheName: nil,
                    sortDescriptors: [NSSortDescriptor(key: "sent", ascending: true)],
-                   errorPropagator: errorPropagator,
-                   runOnce: runOnce)
+                   errorPropagator: errorPropagator)
     }
 
     // MARK: - Overrides
