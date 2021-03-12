@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PZt-VJ-X5t">
-    <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="dark"/>
+    <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -37,7 +37,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="crl-YO-ia8">
                                 <rect key="frame" x="0.0" y="50" width="768" height="974"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TrustManagementEmptyHeaderTableViewCell" id="yMU-X4-4om">
                                         <rect key="frame" x="0.0" y="28" width="768" height="44"/>
@@ -46,6 +46,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TrustManagementTableViewResetCell" rowHeight="250" id="yWq-sT-nzZ" userLabel="TrustManagementCellReset" customClass="TrustManagementResetTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="768" height="250"/>
@@ -89,6 +90,7 @@
                                                                     </constraints>
                                                                 </view>
                                                             </subviews>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <edgeInsets key="layoutMargins" top="0.0" left="8" bottom="0.0" right="8"/>
                                                         </stackView>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iy2-QD-E6O" userLabel="ResetContainer">
@@ -130,7 +132,7 @@
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
-                                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
                                                                 <constraint firstItem="x6I-yN-Uyv" firstAttribute="centerY" secondItem="Iy2-QD-E6O" secondAttribute="centerY" id="Dop-VN-1fD"/>
                                                                 <constraint firstItem="x6I-yN-Uyv" firstAttribute="leading" secondItem="Iy2-QD-E6O" secondAttribute="leading" id="OSP-C3-6BI"/>
@@ -151,6 +153,7 @@
                                                 <constraint firstItem="UaN-mM-Lnb" firstAttribute="leading" secondItem="h4u-4a-ram" secondAttribute="leading" constant="20" symbolic="YES" id="XS6-Xu-KJ5"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                         <accessibility key="accessibilityConfiguration" identifier="trustManagementPartnerCell"/>
                                         <connections>
                                             <outlet property="partnerImageView" destination="gQM-Qw-FTF" id="Wpw-Y6-2It"/>
@@ -264,7 +267,7 @@
                                                                             </connections>
                                                                         </button>
                                                                     </subviews>
-                                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                    <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                                                     <constraints>
                                                                         <constraint firstItem="GVU-Lg-dr3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="0uK-Ys-aO5" secondAttribute="trailing" constant="30" id="R9E-8o-ER8"/>
                                                                         <constraint firstItem="0uK-Ys-aO5" firstAttribute="top" secondItem="Qnu-G6-wXn" secondAttribute="top" id="RBE-TI-zRT"/>
@@ -275,6 +278,7 @@
                                                                     </constraints>
                                                                 </view>
                                                             </subviews>
+                                                            <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                                             <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="8"/>
                                                         </stackView>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a6h-q0-Slk" userLabel="TrustButtonsView">
@@ -299,7 +303,7 @@
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
-                                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                            <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                                             <constraints>
                                                                 <constraint firstItem="sVr-xT-f8t" firstAttribute="top" secondItem="a6h-q0-Slk" secondAttribute="top" id="9SR-Ge-uZn"/>
                                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Q7n-8c-O25" secondAttribute="trailing" constant="10" id="H65-XH-XiP"/>
@@ -349,7 +353,7 @@
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
-                                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                            <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                                             <constraints>
                                                                 <constraint firstItem="6bf-Gd-X5g" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="K85-bq-q6Q" secondAttribute="trailing" constant="8" id="2J3-yf-67v"/>
                                                                 <constraint firstAttribute="bottom" secondItem="K85-bq-q6Q" secondAttribute="bottom" id="IMl-2X-Lrd"/>
@@ -374,6 +378,7 @@
                                                 <constraint firstItem="KMP-lx-Npd" firstAttribute="top" secondItem="PBy-V2-1ZV" secondAttribute="top" priority="999" constant="20" symbolic="YES" id="aD5-dg-Gnz"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                         <accessibility key="accessibilityConfiguration" identifier="trustManagementPartnerCell"/>
                                         <connections>
                                             <outlet property="confirmButton" destination="Q7n-8c-O25" id="XVl-UD-xLe"/>
@@ -497,7 +502,7 @@
                                                                                     </connections>
                                                                                 </button>
                                                                             </subviews>
-                                                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             <constraints>
                                                                                 <constraint firstItem="aT5-52-Wck" firstAttribute="leading" secondItem="Zgr-j1-iGp" secondAttribute="leading" id="8vs-Zk-Z1y"/>
                                                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kDe-b5-usQ" secondAttribute="trailing" constant="8" id="Ehi-FF-utg">
@@ -568,7 +573,7 @@
                                                                             </connections>
                                                                         </button>
                                                                     </subviews>
-                                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <constraints>
                                                                         <constraint firstItem="cAK-ZW-JLu" firstAttribute="centerY" secondItem="cLm-E4-Lx2" secondAttribute="centerY" id="0gq-lB-m92"/>
                                                                         <constraint firstItem="oRh-LC-ph7" firstAttribute="top" secondItem="82G-iU-EVg" secondAttribute="top" id="9Wg-nj-Odh"/>
@@ -601,6 +606,7 @@
                                                 <constraint firstItem="C8m-ac-x3C" firstAttribute="centerX" secondItem="IGB-g2-b9y" secondAttribute="centerX" id="xoC-3C-u52"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                         <accessibility key="accessibilityConfiguration" identifier="trustManagementPartnerCell"/>
                                         <connections>
                                             <outlet property="confirmButton" destination="cAK-ZW-JLu" id="4uk-Mu-lKD"/>
@@ -654,6 +660,9 @@
         <image name="empty-avatar" width="150" height="150"/>
         <image name="pEp-status-yellow_white-border" width="21" height="21"/>
         <image name="pEpForiOS-icon-languagechange" width="100" height="100"/>
+        <systemColor name="secondarySystemBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

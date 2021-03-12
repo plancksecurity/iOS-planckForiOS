@@ -71,10 +71,10 @@ final class TrustManagementTableViewCell: UITableViewCell {
     private func setupView() {
         removeGestureRecognizers()
 
-        var buttonTextcolor : UIColor = .white
+        var buttonTextcolor: UIColor = .white
         if #available(iOS 13.0, *) {
             if UITraitCollection.current.userInterfaceStyle == .dark {
-                buttonTextcolor = UIColor.darkText
+                buttonTextcolor = .lightGray
             }
         }
 

@@ -19,13 +19,20 @@ final class TrustManagementResetTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+
+        var buttonTextcolor: UIColor = .white
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                buttonTextcolor = .lightGray
+            }
+        }
+
+        //Reset Button
+        resetButton.pEpIfyForTrust(backgroundColor: .pEpGrayBackgroundReset, textColor: buttonTextcolor)
         
-           //Reset Button
-           resetButton.pEpIfyForTrust(backgroundColor: .pEpGrayBackgroundReset, textColor: .white)
-        
-           //Reset label
-           resetLabel.text = NSLocalizedString("Reset all p≡p data for this comunication partner:",
-                                               comment: "Reset all p≡p data for this comunication partner:")
+        //Reset label
+        resetLabel.text = NSLocalizedString("Reset all p≡p data for this comunication partner:",
+                                            comment: "Reset all p≡p data for this comunication partner:")
 
     }
 

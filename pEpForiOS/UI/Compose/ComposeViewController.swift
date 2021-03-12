@@ -643,7 +643,7 @@ extension ComposeViewController: SwipeTableViewCellDelegate {
             "ComposeTableView: Label of swipe left. Removing of attachment."
         )
         deleteAction.backgroundColor = SwipeActionDescriptor.trash.color
-        return (orientation == .right ?   [deleteAction] : nil)
+        return (orientation == .right ? [deleteAction] : nil)
     }
 
     func tableView(_ tableView: UITableView,
