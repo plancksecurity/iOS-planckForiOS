@@ -141,19 +141,8 @@ class ShareViewModel {
                 }
 
             case .url(let title, let url):
-                addNewTitleToTheBoday(bodyHtml: bodyHtml, title: nil)
-
-                var linkText = NSAttributedString(string: "<a href=\"\(url)\" style=\"color:\(UIColor.pEpDarkGreenHex); text-decoration: none;\">")
-
-                if let theTitle = title {
-                    linkText = linkText + theTitle
-                } else {
-                    linkText = linkText + NSAttributedString(string: "\(url)")
-                }
-
-                linkText = linkText + "</a>"
-
-                bodyHtml.append(linkText)
+                addNewTitleToTheBoday(bodyHtml: bodyHtml, title: title)
+                bodyHtml.append(NSAttributedString(string: "\(url)"))
 
             default: // TODO: Implement all cases
                 break
