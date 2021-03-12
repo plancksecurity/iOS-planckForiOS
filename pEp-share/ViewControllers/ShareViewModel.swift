@@ -203,7 +203,7 @@ extension ShareViewModel {
             } else if let error = error {
                 Log.shared.log(error: error)
             } else {
-                Log.shared.logError(message: "Error without error. Maybe the url was malformed.")
+                Log.shared.logError(message: "Error without error. Could not read a URL from NSSecureCoding.")
             }
             dispatchGroup.leave()
         }
