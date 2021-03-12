@@ -79,6 +79,14 @@ class ComposeViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
          //An arbitrary value auto resize seems to require for some reason.
         tableView.estimatedRowHeight = 1000
+
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .light {
+                tableView.backgroundColor = .systemBackground
+            }
+        } else {
+            tableView.backgroundColor = .white
+        }
     }
 
     private func setupModel() {

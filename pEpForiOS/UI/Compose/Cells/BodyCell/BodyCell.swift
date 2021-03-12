@@ -25,6 +25,13 @@ class BodyCell: TextViewContainingTableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         textView.font = UIFont.systemFont(ofSize: defaultFontSize)
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .light {
+                backgroundColor = .systemBackground
+            }
+        } else {
+            backgroundColor = .white
+        }
     }
 
     public func setup(with viewModel: BodyCellViewModel) {

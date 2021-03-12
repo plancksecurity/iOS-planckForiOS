@@ -29,6 +29,13 @@ class TrustManagementViewController: UIViewController {
         setup()
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 400
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .light {
+                tableView.backgroundColor = .systemBackground
+            }
+        } else {
+            tableView.backgroundColor = .white
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -465,8 +472,8 @@ extension TrustManagementViewController {
                 } else {
                     tableView.backgroundColor = .secondarySystemBackground
                 }
+                IdentityImageTool.clearCache()
                 tableView.reloadData()
-                view.layoutIfNeeded()
             }
         }
     }

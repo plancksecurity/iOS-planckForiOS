@@ -267,7 +267,7 @@
                                                                             </connections>
                                                                         </button>
                                                                     </subviews>
-                                                                    <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <constraints>
                                                                         <constraint firstItem="GVU-Lg-dr3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="0uK-Ys-aO5" secondAttribute="trailing" constant="30" id="R9E-8o-ER8"/>
                                                                         <constraint firstItem="0uK-Ys-aO5" firstAttribute="top" secondItem="Qnu-G6-wXn" secondAttribute="top" id="RBE-TI-zRT"/>
@@ -278,7 +278,7 @@
                                                                     </constraints>
                                                                 </view>
                                                             </subviews>
-                                                            <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="8"/>
                                                         </stackView>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a6h-q0-Slk" userLabel="TrustButtonsView">
@@ -303,7 +303,7 @@
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
-                                                            <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
                                                                 <constraint firstItem="sVr-xT-f8t" firstAttribute="top" secondItem="a6h-q0-Slk" secondAttribute="top" id="9SR-Ge-uZn"/>
                                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Q7n-8c-O25" secondAttribute="trailing" constant="10" id="H65-XH-XiP"/>
@@ -353,7 +353,7 @@
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
-                                                            <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
                                                                 <constraint firstItem="6bf-Gd-X5g" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="K85-bq-q6Q" secondAttribute="trailing" constant="8" id="2J3-yf-67v"/>
                                                                 <constraint firstAttribute="bottom" secondItem="K85-bq-q6Q" secondAttribute="bottom" id="IMl-2X-Lrd"/>
