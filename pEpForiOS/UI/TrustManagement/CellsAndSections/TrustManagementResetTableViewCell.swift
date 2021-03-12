@@ -23,7 +23,7 @@ final class TrustManagementResetTableViewCell: UITableViewCell {
         var buttonTextcolor: UIColor = .white
         if #available(iOS 13.0, *) {
             if UITraitCollection.current.userInterfaceStyle == .dark {
-                buttonTextcolor = .lightGray
+                buttonTextcolor = .darkText
             }
         }
 
