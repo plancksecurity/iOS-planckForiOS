@@ -150,7 +150,9 @@ extension FetchNumberOfNewMailsOperation {
 extension FetchNumberOfNewMailsOperation {
 
     fileprivate func handleResult(uids: [UInt]?) {
+        Log.shared.info("handleResult uids: %@", uids?.debugDescription ?? "NIL")
         let uids = validateResult(uids: uids)
+        Log.shared.info("validated uids: %@", uids ?? "NIL")
         numNewMailsFetchedBlock?(uids?.count ?? 0)
         waitForBackgroundTasksAndFinish()
     }
@@ -164,6 +166,7 @@ extension FetchNumberOfNewMailsOperation {
 
 class FetchNumberOfNewMailsSyncDelegate: DefaultImapConnectionDelegate {
     override func folderFetchCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+        Log.shared.info("folderFetchCompleted notification?.userInfo?: %@", notification?.userInfo?.debugDescription ?? "NIL")
         guard let op = (errorHandler as? FetchNumberOfNewMailsOperation) else {
             Log.shared.errorAndCrash("No OP")
             return

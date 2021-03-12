@@ -98,7 +98,6 @@ class FetchNumberOfNewMailsService { //BUFF: should inmherit from operationBased
 
 extension FetchNumberOfNewMailsService: ErrorPropagatorSubscriber {
     func error(propagator: ErrorPropagator, error: Error) {
-        Log.shared.errorAndCrash("One of our operations reported this error: %@",
-                                 error.localizedDescription)
+        Log.shared.error("One of our operations reported this error: %@", error.localizedDescription)
     }
 }
