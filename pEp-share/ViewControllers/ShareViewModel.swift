@@ -63,6 +63,7 @@ class ShareViewModel {
                                  itemProvider: itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeURL as String) {
                     foundItemProviders.append(itemProvider)
+                    dispatchGroup.enter()
                     getUrl(dispatchGroup: dispatchGroup,
                            sharedData: sharedData,
                            extensionItem: extensionItem,
@@ -195,21 +196,20 @@ extension ShareViewModel {
                         extensionItem: NSExtensionItem,
                         attributedTitle: NSAttributedString?,
                         itemProvider: NSItemProvider) {
-        // TODO: Does this really "load" the URL as String? Test.
-        itemProvider.loadItem(forTypeIdentifier: kUTTypePlainText as String,
+        let completionHandler: ((NSSecureCoding?, Error?) -> Void) = { item, error in
+            if let theUrl = item as? URL {
+                sharedData.add(itemProvider: itemProvider,
+                               dataWithType: .url(attributedTitle, theUrl))
+            } else if let error = error {
+                Log.shared.log(error: error)
+            } else {
+                Log.shared.logError(message: "Error without error. Maybe the url was malformed.")
+            }
+            dispatchGroup.leave()
+        }
+        itemProvider.loadItem(forTypeIdentifier: kUTTypeURL as String,
                               options: nil,
-                              completionHandler: { item, error in
-                                if let text = item as? String,
-                                   let url = URL(string: text) {
-                                    sharedData.add(itemProvider: itemProvider,
-                                                   dataWithType: .url(attributedTitle, url))
-                                } else if let error = error {
-                                    Log.shared.log(error: error)
-                                } else {
-                                    Log.shared.logError(message: "Error without error. Maybe the url was malformed.")
-                                }
-                                dispatchGroup.leave()
-                              })
+                              completionHandler: completionHandler)
     }
 
     private func loadImage(dispatchGroup: DispatchGroup,
