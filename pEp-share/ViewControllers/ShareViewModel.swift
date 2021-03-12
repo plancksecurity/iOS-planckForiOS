@@ -83,6 +83,8 @@ class ShareViewModel {
                              extensionItem: extensionItem,
                              attributedTitle: attributedTitle,
                              itemProvider: itemProvider)
+                } else {
+                    Log.shared.errorAndCrash(message: "Unsupported NSItemProvider")
                 }
             }
         }
