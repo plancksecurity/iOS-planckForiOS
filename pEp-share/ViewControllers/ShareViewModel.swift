@@ -107,6 +107,16 @@ class ShareViewModel {
 
     /// Creates a `ComposeViewModel.InitData` from shared data, suitable for creating a compose view model.
     public func composeInitData(sharedTypes: [SharedType]) -> ComposeViewModel.InitData {
+        func addNewTitleToTheBoday(bodyHtml: NSMutableAttributedString, title: NSAttributedString?) {
+            if bodyHtml.length > 0 {
+                bodyHtml.append(NSAttributedString(string: "\n\n"))
+            }
+            if let theTitle = title {
+                bodyHtml.append(theTitle)
+                bodyHtml.append(NSAttributedString(string: "\n"))
+            }
+        }
+
         let bodyHtml = NSMutableAttributedString(string: "")
 
         var inlinedAttachments = [Attachment]()
@@ -114,13 +124,7 @@ class ShareViewModel {
         for sharedType in sharedTypes {
             switch sharedType {
             case .image(let title, let image, let imageData, let mimeType):
-                if bodyHtml.length > 0 {
-                    bodyHtml.append(NSAttributedString(string: "\n\n"))
-                }
-                if let theTitle = title {
-                    bodyHtml.append(theTitle)
-                    bodyHtml.append(NSAttributedString(string: "\n"))
-                }
+                addNewTitleToTheBoday(bodyHtml: bodyHtml, title: title)
 
                 let imageWidth: CGFloat = 200.0 // arbitrary, but should fit all devices
 
@@ -135,6 +139,10 @@ class ShareViewModel {
                     bodyHtml.append(attachment.inlinedText(scaleToImageWidth: imageWidth,
                                                            attachmentWidth: imageWidth))
                 }
+
+            case .url(let title, let url):
+                addNewTitleToTheBoday(bodyHtml: bodyHtml, title: title)
+                bodyHtml.append(NSAttributedString(string: "URL: \(url)"))
 
             default: // TODO: Implement all cases
                 break
