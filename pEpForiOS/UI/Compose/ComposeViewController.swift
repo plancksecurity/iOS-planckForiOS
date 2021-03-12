@@ -828,3 +828,21 @@ extension ComposeViewController {
         return keyboardSize.height
     }
 }
+
+extension ComposeViewController {
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                //TODO: update background color of the cells without reloading, we might have content there.
+            }
+        }
+    }
+}

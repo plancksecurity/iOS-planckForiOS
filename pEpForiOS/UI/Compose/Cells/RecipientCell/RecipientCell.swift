@@ -27,19 +27,12 @@ final class RecipientCell: TextViewContainingTableViewCell {
     }
 
     public func setup(with viewModel: RecipientCellViewModel) {
+        super.setup()
         self.viewModel = viewModel
         self.viewModel?.recipientCellViewModelDelegate = self
         recipientTextView?.viewModel = self.viewModel?.recipientTextViewModel()
         title.text = viewModel.type.localizedTitle()
         recipientTextView?.setInitialText()
-
-        if #available(iOS 13.0, *) {
-            if UITraitCollection.current.userInterfaceStyle == .light {
-                contentView.backgroundColor = .systemBackground
-            }
-        } else {
-            contentView.backgroundColor = .white
-        }
     }
 
     private func setFonts() {

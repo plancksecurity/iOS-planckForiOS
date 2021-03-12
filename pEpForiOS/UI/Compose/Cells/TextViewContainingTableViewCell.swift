@@ -19,6 +19,7 @@ class TextViewContainingTableViewCell: UITableViewCell, TextViewContainingTableV
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        setup()
         textView.delegate = self
         textView.adjustsFontForContentSizeCategory = true
     }
@@ -28,5 +29,17 @@ class TextViewContainingTableViewCell: UITableViewCell, TextViewContainingTableV
                                                to: textView.endOfDocument)
         textView.selectedTextRange = rangeAtTheEnd
         textView.becomeFirstResponder()
+    }
+
+    func setup() {
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .light {
+                backgroundColor = .white
+            } else {
+                backgroundColor = .secondarySystemBackground
+            }
+        } else {
+            backgroundColor = .white
+        }
     }
 }
