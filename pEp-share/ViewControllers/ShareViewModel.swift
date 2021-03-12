@@ -156,7 +156,7 @@ class ShareViewModel {
         }
 
         // TODO: Choose a better subject, maybe based on the type of the attachments
-        let subject = NSLocalizedString("Shared by pEp",
+        let subject = NSLocalizedString("Shared by p≡p",
                                         comment: "Standard subject for sharing files")
 
         let initData = ComposeViewModel.InitData(prefilledFrom: defaultAccount.user,
