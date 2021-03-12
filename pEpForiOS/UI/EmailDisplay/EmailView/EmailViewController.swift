@@ -337,10 +337,10 @@ extension EmailViewController {
     }
 
     private func setupAttachment(cell: MessageAttachmentCell, with row: EmailViewModel.BaseAttachmentRow) {
-        row.retrieveAttachmentData { (fileName, fileExtension, image) in
-            cell.fileNameLabel.text = fileName
-            cell.iconImageView.image = image
-            cell.fileExtensionLabel.text = fileExtension
+        row.retrieveAttachmentData { (attachmentData) in
+            cell.fileNameLabel.text = attachmentData.filename
+            cell.iconImageView.image = attachmentData.icon
+            cell.fileExtensionLabel.text = attachmentData.´extension´
         }
     }
 
@@ -363,10 +363,8 @@ extension EmailViewController {
         if let attachment = row.fetchedAttachment {
             set(attachment: attachment)
         } else {
-            row.retrieveAttachmentData { (_, _, _) in
-                if let attachment = row.fetchedAttachment {
-                    set(attachment: attachment)
-                }
+            row.retrieveAttachmentData { (attachmentData) in
+                set(attachment: attachmentData)
             }
         }
     }

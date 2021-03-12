@@ -42,7 +42,7 @@ protocol EmailRowProtocol {
 
 protocol AttachmentRowProtocol: EmailRowProtocol {
     var height: CGFloat { get set }
-    func retrieveAttachmentData(completion: ((String, String, UIImage) -> Void)?)
+    func retrieveAttachmentData(completion: ((EmailViewModel.BaseAttachmentRow.Attachment) -> Void)?)
 }
 
 class EmailViewModel {
@@ -314,8 +314,8 @@ extension EmailViewModel {
         }
 
         /// Retrieve attachment data
-        /// - Parameter completion: The callback to pass the data.
-        public func retrieveAttachmentData(completion: ((String, String, UIImage) -> Void)? = nil) {
+        /// - Parameter completion: The callback to pass the data
+        public func retrieveAttachmentData(completion: ((Attachment) -> Void)? = nil) {
             guard let message = message else {
                 Log.shared.errorAndCrash("Attachment with no Message")
                 return
@@ -323,7 +323,7 @@ extension EmailViewModel {
             if let fetchedAttachment = fetchedAttachment {
                 DispatchQueue.main.async {
                     if let callback = completion {
-                        callback(fetchedAttachment.filename, fetchedAttachment.´extension´ ?? "", fetchedAttachment.icon ?? UIImage())
+                        callback(fetchedAttachment)
                     }
                 }
             } else {
@@ -335,7 +335,7 @@ extension EmailViewModel {
                     me.fetchedAttachment = attachment
                     DispatchQueue.main.async {
                         if let callback = completion {
-                            callback(attachment.filename, attachment.´extension´ ?? "", attachment.icon ?? UIImage())
+                            callback(attachment)
                         }
                     }
                 }
