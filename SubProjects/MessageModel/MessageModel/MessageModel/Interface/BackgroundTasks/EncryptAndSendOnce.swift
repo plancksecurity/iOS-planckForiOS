@@ -38,6 +38,10 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
                                errorPropagator: errorPropagator)
             }
 
+            for sender in allSenders {
+                sender.start()
+            }
+
             completion(EncryptAndSendOnceError.notImplemented)
         }
     }
