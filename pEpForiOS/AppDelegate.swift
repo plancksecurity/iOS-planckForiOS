@@ -165,7 +165,14 @@ extension AppDelegate {
     func application(_ application: UIApplication, performFetchWithCompletionHandler
                         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         if #available(iOS 13.0, *) {
-            Log.shared.warn("BGAppRefreshTask: Should not be called on iOS>=13. Should use BGTaskScheduler instead")
+            // According to Apple docs:
+            //
+            // "Adding a BGTaskSchedulerPermittedIdentifiers key to the
+            // Info.plist disables application(_:performFetchWithCompletionHandler:) and
+            // setMinimumBackgroundFetchInterval(_:) in iOS 13 and later."
+            //
+            // This method is called anyway by the OS. Which is a contradiction imo.
+            Log.shared.warn("BGAppRefreshTask: Should not be called on iOS>=13. Should use BGTaskScheduler defined method instead")
             // Do nothing. We use different API (BGTaskScheduler) for iOS13 and up.
             completionHandler(.failed)
         } else {
