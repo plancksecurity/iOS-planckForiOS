@@ -49,8 +49,14 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
     }
 
     public func cancel() {
-        for sender in allSendersThatCanBeCanceled {
-            sender.stop()
+        let allSenders = allSendersThatCanBeCanceled
+
+        // all senders (SendServiceProtocol) were created on this queue,
+        // so cancel them on it as well
+        privateMoc.perform {
+            for sender in allSenders {
+                sender.stop()
+            }
         }
     }
 
