@@ -34,6 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// This is used to handle OAuth2 requests.
     private let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
+    private let encryptAndSendOnce: EncryptAndSendOnceProtocol = EncryptAndSendOnce()
+
     private func setupInitialViewController() -> Bool {
         let folderViews: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
         guard let initialNVC = folderViews.instantiateViewController(withIdentifier: "main.initial.nvc") as? UISplitViewController
