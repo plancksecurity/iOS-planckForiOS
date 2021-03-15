@@ -9,12 +9,9 @@
 import Foundation
 import CoreData
 
-public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
+public class EncryptAndSendOnce {
     // Does nothing, but keeps the compiler compiling
     public init() {
-    }
-
-    public func sendAll() {
     }
 
     // MARK: Private Member Variables
