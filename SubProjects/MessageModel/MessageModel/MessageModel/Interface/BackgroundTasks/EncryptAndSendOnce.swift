@@ -71,19 +71,36 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
 
         func startBackgroundTask(for client: AnyHashable,
                                  expirationHandler handler: (() -> Void)?) throws {
-            controlQueue.async {
+            controlQueue.async { [weak self] in
+                guard let me = self else {
+                    // Assume this is an error, since there is no UI involved,
+                    // that can go out of scope
+                    Log.shared.lostMySelf()
+                    return
+                }
+                me.runningTasks.add(client)
             }
         }
 
         func endBackgroundTask(for client: AnyHashable) throws {
-            controlQueue.async {
-                // TODO
-                // completion(EncryptAndSendOnceError.notImplemented)
+            controlQueue.async { [weak self] in
+                guard let me = self else {
+                    // Assume this is an error, since there is no UI involved,
+                    // that can go out of scope
+                    Log.shared.lostMySelf()
+                    return
+                }
+                me.runningTasks.remove(client)
+                if me.runningTasks.count == 0 {
+                    // All completed without any error
+                    me.completion(nil)
+                }
             }
         }
 
         private let completion: (_ error: Error?) -> ()
         private let errorPropagator: ErrorContainerProtocol
         private let controlQueue: DispatchQueue
+        private let runningTasks = NSMutableSet()
     }
 }
