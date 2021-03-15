@@ -17,7 +17,7 @@ public protocol EncryptAndSendOnceProtocol {
     /// - parameter completion: Completion block for sending outstanding mails.
     /// If `error` is nil, then all messages have been successfully sent.
     /// Otherwise, an error occurred with at least one message.
-    func sendAllOutstandingMessages(completion: (_ error: Error?) -> ())
+    func sendAllOutstandingMessages(completion: @escaping (_ error: Error?) -> ())
 
     /// Cancels any current sending going on,
     /// triggered by `sendAllOutstandingMessages`.
