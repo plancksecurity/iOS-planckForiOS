@@ -92,8 +92,11 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
                 }
                 me.runningTasks.remove(client)
                 if me.runningTasks.count == 0 {
-                    // All completed without any error
-                    me.completion(nil)
+                    if let theError = me.errorPropagator.error {
+                        me.completion(theError)
+                    } else {
+                        me.completion(nil)
+                    }
                 }
             }
         }
