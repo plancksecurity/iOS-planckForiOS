@@ -33,7 +33,7 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
 
             let allCdAccounts = CdAccount.all(in: me.privateMoc) as? [CdAccount] ?? []
 
-            let allSenders = allCdAccounts.flatMap() {
+            let allSenders = allCdAccounts.compactMap() {
                 $0.sendService(backgroundTaskManager: backgroundTaskManager,
                                errorPropagator: errorPropagator)
             }
