@@ -49,6 +49,9 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
     }
 
     public func cancel() {
+        for sender in allSendersThatCanBeCanceled {
+            sender.stop()
+        }
     }
 
     // MARK: Private Member Variables
