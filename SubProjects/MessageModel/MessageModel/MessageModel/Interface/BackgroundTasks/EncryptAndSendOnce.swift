@@ -43,8 +43,6 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
             for sender in allSenders {
                 sender.start()
             }
-
-            completion(EncryptAndSendOnceError.notImplemented)
         }
     }
 
@@ -70,6 +68,8 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
         }
 
         func endBackgroundTask(for client: AnyHashable) throws {
+            // TODO
+            // completion(EncryptAndSendOnceError.notImplemented)
         }
 
         private let completion: (_ error: Error?) -> ()
