@@ -26,4 +26,10 @@ open class AccountDrivenTestBase: XCTestCase {
         XCTAssertTrue(PEPUtils.pEpClean())
         super.tearDown()
     }
+
+    func testDummyTest() {
+        // Does nothing.
+        // Background: Due to the substring "Test" in the name of this class (or inheriting from XCTestCase, not sure), Xcode considers it a test, but it never gets green as it holds no signle test that is run.
+        // That causes the complete pEp4iOS test suite to never be green (but grey) in success case. Thus we run this dummy test.
+    }
 }
