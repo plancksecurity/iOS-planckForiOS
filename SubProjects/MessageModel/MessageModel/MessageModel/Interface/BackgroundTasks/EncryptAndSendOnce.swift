@@ -9,9 +9,20 @@
 import Foundation
 import CoreData
 
-public class EncryptAndSendOnce {
+public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
+    public enum EncryptAndSendOnceError: Error {
+        case notImplemented
+    }
+
     // Does nothing, but keeps the compiler compiling
     public init() {
+    }
+
+    public func sendAllOutstandingMessages(completion: (_ error: Error?) -> ()) {
+        completion(EncryptAndSendOnceError.notImplemented)
+    }
+
+    public func cancel() {
     }
 
     // MARK: Private Member Variables
