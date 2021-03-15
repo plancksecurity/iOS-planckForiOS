@@ -12,18 +12,15 @@ import Foundation
 /// get informed about errors, when work is finished,
 /// and be able to cancel on request.
 public protocol EncryptAndSendOnceProtocol {
-   /// Sends out all outstanding mails, informing the delegate
-   /// about success or errors.
-   func sendAllOutstandingMessages(delegate: EncryptAndSendOnceDelegate)
+    /// Sends out all outstanding mails, informing the delegate
+    /// about success or errors.
+    /// - parameter completion: Completion block for sending outstanding mails.
+    /// If `error` is nil, then all messages have been successfully sent.
+    /// Otherwise, an error occurred with at least one message.
+    func sendAllOutstandingMessages(completion: (_ error: Error?) -> ())
 
-   /// Cancels any current sending going on,
-   /// triggered by `sendAllOutstandingMessages`.
-   /// No-op if there is currently no sending of mails taking place.
-   func cancel()
-}
-
-public protocol EncryptAndSendOnceDelegate {
-   /// If `error` is nil, then all messages have been successfully sent.
-   /// Otherwise, an error occurred with at least one message.
-   func messageSendingCompleted(error: Error?)
+    /// Cancels any current sending going on,
+    /// triggered by `sendAllOutstandingMessages`.
+    /// No-op if there is currently no sending of mails taking place.
+    func cancel()
 }
