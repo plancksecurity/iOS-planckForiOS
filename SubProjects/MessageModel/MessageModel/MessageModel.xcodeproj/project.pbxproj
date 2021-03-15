@@ -1141,7 +1141,6 @@
 				1574390F229EA5D600E1C337 /* MessageFetchingOperations */,
 				43F9E30B23AB8089003B8A54 /* ExpungeOperation */,
 				1538FD942475841600CA866F /* ImapIdleOperation */,
-				43EA4829221E9518006E8F83 /* FetchNumberOfNewMailsOperation.swift */,
 				43EA481C221E9518006E8F83 /* ImapSyncOperation.swift */,
 				43EA481D221E9518006E8F83 /* UIDCopyOperation.swift */,
 				43EA4825221E9518006E8F83 /* CreateRequiredFoldersOperation.swift */,
@@ -2166,6 +2165,7 @@
 				152105072355FD1E00F30B51 /* CleanupOperation */,
 				152105062355FCF400F30B51 /* IMAPReplicationOperations */,
 				152105052355FCB700F30B51 /* OperationBaseClasses */,
+				43EA4829221E9518006E8F83 /* FetchNumberOfNewMailsOperation.swift */,
 				150C5EEF24A38825005BA3C9 /* CreateIMAPPepFolderOperation.swift */,
 			);
 			path = Operations;

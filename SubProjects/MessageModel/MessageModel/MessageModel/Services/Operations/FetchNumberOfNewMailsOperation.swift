@@ -99,36 +99,33 @@ extension FetchNumberOfNewMailsOperation {
     /// - Returns:  empty array if uids contains only one, locally existing UID,
     ///             the unmodified uids otherwize
     private func validateResult(uids: [UInt]?) ->[UInt]? {
-        var result: [UInt]? = nil
+        var result = [UInt]()
         privateMOC.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            if let safeUids = uids, safeUids.count != 1 {
-                // We have to validate only if uids.count == 1.
-                // If its zero, semanticly that is that there are zero new mails.
-                // If its >1, semanticly that is that there are new mails.
-                result = uids ?? []
+            guard let safeUIDs = uids, safeUIDs.count > 0 else {
+                // Nothing reported back from server, nothing to do ...
                 return
             }
-            guard let cdFolderToOpen = me.cdFolder() else {
+            guard let currentCdFolder = me.cdFolder() else {
                 Log.shared.errorAndCrash("No folder")
                 return
             }
-            guard let theOneAndOnlyUid = uids?.first else {
-                // There are zero mails on server.
-                return
-            }
-            let messageForUidPredicate = CdMessage.PredicateFactory.parentFolder(cdFolderToOpen,
-                                                                                 uid: theOneAndOnlyUid)
-            if let _ = CdMessage.all(predicate: messageForUidPredicate, in: me.privateMOC) {
-                // A message with the given UID exists, thus the server response means
-                // that "there are no new messages". In other words, the server returns the last
-                // UID on server in case no new messages exist on server.
-                result = []
-            } else {
-                result = uids
+            for uid in safeUIDs {
+                let messageForUidPredicate = CdMessage.PredicateFactory.parentFolder(currentCdFolder,
+                                                                                     uid: uid)
+                let existsInLocalStoreAlready = (CdMessage.all(predicate: messageForUidPredicate, in: me.privateMOC) ?? []).count > 0
+                guard !existsInLocalStoreAlready else {
+                    // A message with the given UID exists, thus the server response means
+                    // that "there are no new messages". In other words, the server returns the last
+                    // UID on server in case no new messages exist on server.
+                    //
+                    // TL;DR: The UID is not new to us.
+                    continue
+                }
+                result.append(uid)
             }
         }
 
