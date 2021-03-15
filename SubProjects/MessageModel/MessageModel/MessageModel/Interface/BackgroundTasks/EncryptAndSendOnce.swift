@@ -28,8 +28,9 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
                 Log.shared.lostMySelf()
                 return
             }
-            let backgroundTaskManager = BackgroundTaskManager()
+
             let errorPropagator = ErrorPropagator()
+            let backgroundTaskManager = BackgroundTaskManager(errorPropagator: errorPropagator)
 
             let allCdAccounts = CdAccount.all(in: me.privateMoc) as? [CdAccount] ?? []
 
@@ -56,11 +57,17 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
     // MARK: Private Classes
 
     private class BackgroundTaskManager: BackgroundTaskManagerProtocol {
+        init(errorPropagator: ErrorContainerProtocol) {
+            self.errorPropagator = errorPropagator
+        }
+
         func startBackgroundTask(for client: AnyHashable,
                                  expirationHandler handler: (() -> Void)?) throws {
         }
 
         func endBackgroundTask(for client: AnyHashable) throws {
         }
+
+        private let errorPropagator: ErrorContainerProtocol
     }
 }
