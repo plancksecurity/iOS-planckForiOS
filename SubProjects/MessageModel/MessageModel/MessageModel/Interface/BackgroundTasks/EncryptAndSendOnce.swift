@@ -62,6 +62,7 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
              errorPropagator: ErrorContainerProtocol) {
             self.completion = completion
             self.errorPropagator = errorPropagator
+            controlQueue = DispatchQueue(label: "EncryptAndSendOnceControlQueue")
         }
 
         func startBackgroundTask(for client: AnyHashable,
@@ -73,5 +74,6 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
 
         private let completion: (_ error: Error?) -> ()
         private let errorPropagator: ErrorContainerProtocol
+        private let controlQueue: DispatchQueue
     }
 }
