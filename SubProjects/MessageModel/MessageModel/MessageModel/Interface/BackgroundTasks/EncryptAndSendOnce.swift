@@ -71,11 +71,15 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
 
         func startBackgroundTask(for client: AnyHashable,
                                  expirationHandler handler: (() -> Void)?) throws {
+            controlQueue.async {
+            }
         }
 
         func endBackgroundTask(for client: AnyHashable) throws {
-            // TODO
-            // completion(EncryptAndSendOnceError.notImplemented)
+            controlQueue.async {
+                // TODO
+                // completion(EncryptAndSendOnceError.notImplemented)
+            }
         }
 
         private let completion: (_ error: Error?) -> ()
