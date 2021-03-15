@@ -102,7 +102,17 @@ extension AppDelegate {
                     return
                 }
 
-                // TODO: Send the email
+                task.expirationHandler = {
+                    me.encryptAndSendOnce.cancel()
+                }
+
+                me.encryptAndSendOnce.sendAllOutstandingMessages() { error in
+                    if let theError = error {
+                        Log.shared.log(error: theError)
+                    }
+                    let hasError = error != nil
+                    task.setTaskCompleted(success: hasError)
+                }
             }
         }
 
