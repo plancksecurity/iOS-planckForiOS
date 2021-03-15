@@ -33,7 +33,7 @@ class ImapReplicationService: OperationBasedService {
     ///   - errorPropagator: see Service.init for docs
     init(backgroundTaskManager: BackgroundTaskManagerProtocol? = nil,
          cdAccountObjectID: NSManagedObjectID,
-         errorPropagator: ErrorPropagator? = nil) {
+         errorPropagator: ErrorContainerProtocol? = nil) {
 
         self.pollingMode = .normal
         super.init(useSerialQueue: true,

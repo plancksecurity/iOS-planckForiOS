@@ -12,7 +12,7 @@ protocol SendServiceProvider {
 
     /// Returns the Service responsible for sending messages marked for sending.
     func sendService(backgroundTaskManager: BackgroundTaskManagerProtocol?,
-                     errorPropagator: ErrorPropagator) -> SendServiceProtocol?
+                     errorPropagator: ErrorContainerProtocol) -> SendServiceProtocol?
 }
 
 /// Service that sends all messages to be send after starting it. It creates and manages one
@@ -27,7 +27,7 @@ class EncryptAndSendService: PerAccountService {
 
     override func service(for cdAccount: CdAccount,
                           backgroundTaskManager: BackgroundTaskManagerProtocol,
-                          errorPropagator: ErrorPropagator) -> ServiceProtocol? {
+                          errorPropagator: ErrorContainerProtocol) -> ServiceProtocol? {
         return cdAccount.sendService(backgroundTaskManager: backgroundTaskManager,
                                      errorPropagator: errorPropagator)
     }

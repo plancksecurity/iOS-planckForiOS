@@ -26,7 +26,7 @@ class EncryptAndSMTPSendService: QueryBasedService<CdMessage>, SendServiceProtoc
     ///   see Service.init for docs
     init(backgroundTaskManager: BackgroundTaskManagerProtocol? = nil,
          cdAccount: CdAccount,
-         errorPropagator: ErrorPropagator?) {
+         errorPropagator: ErrorContainerProtocol?) {
         let predicate = CdMessage.PredicateFactory.outgoingMails(in: cdAccount)
 
         super.init(useSerialQueue: true,
