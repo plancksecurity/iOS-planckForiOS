@@ -30,7 +30,8 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
             }
 
             let errorPropagator = ErrorPropagator()
-            let backgroundTaskManager = BackgroundTaskManager(errorPropagator: errorPropagator)
+            let backgroundTaskManager = BackgroundTaskManager(completion: completion,
+                                                              errorPropagator: errorPropagator)
 
             let allCdAccounts = CdAccount.all(in: me.privateMoc) as? [CdAccount] ?? []
 
@@ -57,7 +58,9 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
     // MARK: Private Classes
 
     private class BackgroundTaskManager: BackgroundTaskManagerProtocol {
-        init(errorPropagator: ErrorContainerProtocol) {
+        init(completion: @escaping (_ error: Error?) -> (),
+             errorPropagator: ErrorContainerProtocol) {
+            self.completion = completion
             self.errorPropagator = errorPropagator
         }
 
@@ -68,6 +71,7 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
         func endBackgroundTask(for client: AnyHashable) throws {
         }
 
+        private let completion: (_ error: Error?) -> ()
         private let errorPropagator: ErrorContainerProtocol
     }
 }
