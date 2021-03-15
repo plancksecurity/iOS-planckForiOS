@@ -40,6 +40,8 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
                                errorPropagator: errorPropagator)
             }
 
+            me.allSendersThatCanBeCanceled = allSenders
+
             for sender in allSenders {
                 sender.start()
             }
@@ -52,6 +54,7 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
     // MARK: Private Member Variables
 
     private let privateMoc = Stack.shared.newPrivateConcurrentContext
+    private var allSendersThatCanBeCanceled: [SendServiceProtocol] = []
 
     // MARK: Private Classes
 
