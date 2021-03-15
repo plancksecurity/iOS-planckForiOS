@@ -116,7 +116,8 @@ extension FetchNumberOfNewMailsOperation {
             for uid in safeUIDs {
                 let messageForUidPredicate = CdMessage.PredicateFactory.parentFolder(currentCdFolder,
                                                                                      uid: uid)
-                let existsInLocalStoreAlready = (CdMessage.all(predicate: messageForUidPredicate, in: me.privateMOC) ?? []).count > 0
+                let existsInLocalStoreAlready = (CdMessage.all(predicate: messageForUidPredicate,
+                                                               in: me.privateMOC) ?? []).count > 0
                 guard !existsInLocalStoreAlready else {
                     // A message with the given UID exists, thus the server response means
                     // that "there are no new messages". In other words, the server returns the last
