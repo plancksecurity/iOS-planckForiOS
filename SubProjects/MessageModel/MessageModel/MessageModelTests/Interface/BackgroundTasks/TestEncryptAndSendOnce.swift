@@ -51,6 +51,9 @@ class TestEncryptAndSendOnce: PersistentStoreDrivenTestBase {
             XCTFail()
             return
         }
+
+        let cdMsg = outgoingMessage(from: myself, to: myself, folder: outFolder)
+        moc.saveAndLogErrors()
     }
 
     // MARK: -- Helpers
@@ -64,5 +67,20 @@ class TestEncryptAndSendOnce: PersistentStoreDrivenTestBase {
         return cdFolders.first
     }
 
+    func outgoingMessage(from: CdIdentity, to: CdIdentity, folder: CdFolder) -> CdMessage {
+        let stringData = "test"
 
+        let cdMsg = CdMessage(context: moc)
+
+        cdMsg.uuid = UUID().uuidString + " " + stringData
+        cdMsg.shortMessage = stringData
+        cdMsg.longMessage = stringData
+        cdMsg.longMessageFormatted = stringData
+        cdMsg.sent = Date()
+        cdMsg.from = from
+        cdMsg.addToTo(to)
+        cdMsg.parent = folder
+
+        return cdMsg
+    }
 }
