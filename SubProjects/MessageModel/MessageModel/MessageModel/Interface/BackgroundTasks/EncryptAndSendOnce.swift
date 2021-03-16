@@ -41,6 +41,7 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
 
             for sender in allSenders {
                 sender.start()
+                sender.finish()
             }
         }
     }
