@@ -4,6 +4,7 @@
 <dict>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
+		<string>security.pep.pep4ios.backgroundtaskschedulerid.backgroundfetch</string>
 		<string>security.pep.share.background.send</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>

@@ -12,7 +12,7 @@ import pEpIOSToolbox
 
 /// Fetches UIDs of  new (to us) messages in a given folder and returns its count.
 class FetchNumberOfNewMailsOperation: ImapSyncOperation {
-    typealias CompletionBlock = (_ numNewMails: Int?) -> ()
+    typealias CompletionBlock = (_ numNewMails: Int) -> ()
 
     private var folderToOpen = ImapConnection.defaultInboxName
     private var numNewMailsFetchedBlock: CompletionBlock?
@@ -62,13 +62,13 @@ extension FetchNumberOfNewMailsOperation {
         // Treat Inbox specially, as it is the only mailbox that is mandatorily case-insensitive.
         // Thus we search for
         if folderToOpen.isInboxFolderName() {
-            if let folder = CdFolder.first(attributes:
-                ["folderTypeRawValue": FolderType.inbox.rawValue,   "account": account], in: privateMOC) {
+            if let folder = CdFolder.first(attributes:["folderTypeRawValue": FolderType.inbox.rawValue,
+                                                       "account": account],
+                                           in: privateMOC) {
                 return folder
             }
         }
-        return CdFolder.first(attributes: ["name": folderToOpen, "account": account],
-                              in: privateMOC)
+        return CdFolder.first(attributes: ["name": folderToOpen, "account": account], in: privateMOC)
     }
 
     private func process() {
@@ -92,40 +92,41 @@ extension FetchNumberOfNewMailsOperation {
         }
     }
 
-    /// If no new mails exist, the server returns the UID of the last (also locally) existing mail.
+    /// If no new mails exist, the server (might) return the UID of the last (also locally) existing mail.
     /// This method handles this case and filters the existing UID.
     ///
     /// - Parameter uids: uids to validate
     /// - Returns:  empty array if uids contains only one, locally existing UID,
     ///             the unmodified uids otherwize
     private func validateResult(uids: [UInt]?) ->[UInt]? {
-        var result: [UInt]? = nil
+        var result = [UInt]()
         privateMOC.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            if let safeUids = uids, safeUids.count != 1 {
-                // We have to validate only if uids.count == 1
-                result = uids
+            guard let safeUIDs = uids, safeUIDs.count > 0 else {
+                // Nothing reported back from server, nothing to do ...
+                return
             }
-            guard let cdFolderToOpen = me.cdFolder() else {
+            guard let currentCdFolder = me.cdFolder() else {
                 Log.shared.errorAndCrash("No folder")
                 return
             }
-            guard let theOneAndOnlyUid = uids?.first else {
-                // There are zero mails on server.
-                return
-            }
-            let messageForUidPredicate = CdMessage.PredicateFactory.parentFolder(cdFolderToOpen,
-                                                                                 uid: theOneAndOnlyUid)
-            if let _ = CdMessage.all(predicate: messageForUidPredicate, in: me.privateMOC) {
-                // A message with the given UID exists, thus the server response means
-                // that "there are no new messages". In other words, the server returns the last
-                // UID on server in case no new messages exist on server.
-                result = []
-            } else {
-                result = uids
+            for uid in safeUIDs {
+                let messageForUidPredicate = CdMessage.PredicateFactory.parentFolder(currentCdFolder,
+                                                                                     uid: uid)
+                let existsInLocalStoreAlready = (CdMessage.all(predicate: messageForUidPredicate,
+                                                               in: me.privateMOC) ?? []).count > 0
+                guard !existsInLocalStoreAlready else {
+                    // A message with the given UID exists, thus the server response means
+                    // that "there are no new messages". In other words, the server returns the last
+                    // UID on server in case no new messages exist on server.
+                    //
+                    // TL;DR: The UID is not new to us.
+                    continue
+                }
+                result.append(uid)
             }
         }
 
@@ -147,8 +148,10 @@ extension FetchNumberOfNewMailsOperation {
 extension FetchNumberOfNewMailsOperation {
 
     fileprivate func handleResult(uids: [UInt]?) {
+        Log.shared.info("handleResult uids: %@", uids?.debugDescription ?? "NIL")
         let uids = validateResult(uids: uids)
-        numNewMailsFetchedBlock?(uids?.count)
+        Log.shared.info("validated uids: %@", uids ?? "NIL")
+        numNewMailsFetchedBlock?(uids?.count ?? 0)
         waitForBackgroundTasksAndFinish()
     }
     
@@ -161,6 +164,7 @@ extension FetchNumberOfNewMailsOperation {
 
 class FetchNumberOfNewMailsSyncDelegate: DefaultImapConnectionDelegate {
     override func folderFetchCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
+        Log.shared.info("folderFetchCompleted notification?.userInfo?: %@", notification?.userInfo?.debugDescription ?? "NIL")
         guard let op = (errorHandler as? FetchNumberOfNewMailsOperation) else {
             Log.shared.errorAndCrash("No OP")
             return
