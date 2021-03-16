@@ -12,10 +12,6 @@ import CoreData
 import pEpIOSToolbox
 
 public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
-    public enum EncryptAndSendOnceError: Error {
-        case notImplemented
-    }
-
     // Does nothing, but keeps the compiler compiling
     public init() {
     }
