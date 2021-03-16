@@ -12,5 +12,15 @@ import MessageModel
 
 class TestEncryptAndSendOnce: PersistentStoreDrivenTestBase {
     func testNothingToSend() throws {
+        let sender: EncryptAndSendOnceProtocol = EncryptAndSendOnce()
+
+        let expHaveRun = expectation(description: "expHaveRun")
+
+        sender.sendAllOutstandingMessages() { error in
+            XCTAssertNil(error)
+            expHaveRun.fulfill()
+        }
+
+        waitForExpectations(timeout: TestUtil.waitTime)
     }
 }
