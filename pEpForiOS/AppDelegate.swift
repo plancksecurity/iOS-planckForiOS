@@ -6,9 +6,7 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-#if canImport(BackgroundTasks)
-    import BackgroundTasks
-#endif
+import BackgroundTasks
 
 import pEpIOSToolbox
 import MessageModel
