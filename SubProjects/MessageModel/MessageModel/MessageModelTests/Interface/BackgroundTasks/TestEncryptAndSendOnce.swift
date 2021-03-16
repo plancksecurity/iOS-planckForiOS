@@ -23,4 +23,19 @@ class TestEncryptAndSendOnce: PersistentStoreDrivenTestBase {
 
         waitForExpectations(timeout: TestUtil.waitTime)
     }
+
+    func testNothingToSendAndCancel() throws {
+        let sender: EncryptAndSendOnceProtocol = EncryptAndSendOnce()
+
+        let expHaveRun = expectation(description: "expHaveRun")
+
+        sender.sendAllOutstandingMessages() { error in
+            XCTAssertNil(error)
+            expHaveRun.fulfill()
+        }
+
+        sender.cancel()
+
+        waitForExpectations(timeout: TestUtil.waitTime)
+    }
 }
