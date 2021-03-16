@@ -47,7 +47,12 @@ class TestEncryptAndSendOnce: PersistentStoreDrivenTestBase {
             return
         }
 
-        guard let outFolder = outgoingFolder() else {
+        guard let outFolder = folder(byFolderType: .outbox) else {
+            XCTFail()
+            return
+        }
+
+        guard let sentFolder = folder(byFolderType: .sent) else {
             XCTFail()
             return
         }
@@ -69,11 +74,11 @@ class TestEncryptAndSendOnce: PersistentStoreDrivenTestBase {
 
     // MARK: -- Helpers
 
-    func outgoingFolder() -> CdFolder? {
+    func folder(byFolderType: FolderType) -> CdFolder? {
         guard var cdFolders = cdAccount.folders?.array as? [CdFolder] else {
             return nil
         }
-        cdFolders = cdFolders.filter { $0.folderType == FolderType.outbox }
+        cdFolders = cdFolders.filter { $0.folderType == byFolderType }
 
         return cdFolders.first
     }
