@@ -84,9 +84,6 @@ extension AppDelegate {
 
         Log.shared.logDebugInfo()
 
-        // TODO: Becomes obsolete with BGTaskSchedulerPermittedIdentifiers?
-        application.setMinimumBackgroundFetchInterval(60.0 * 10)
-
         if #available(iOS 13.0, *) {
             BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundTaskSend,
                                             using: nil) { [weak self] task in
