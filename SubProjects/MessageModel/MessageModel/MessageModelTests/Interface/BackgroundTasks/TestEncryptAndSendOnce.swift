@@ -8,7 +8,7 @@
 
 import XCTest
 
-import MessageModel
+@testable import MessageModel
 
 class TestEncryptAndSendOnce: PersistentStoreDrivenTestBase {
     func testNothingToSend() throws {
@@ -41,5 +41,28 @@ class TestEncryptAndSendOnce: PersistentStoreDrivenTestBase {
 
     func testSendMails() throws {
         TestUtil.syncAndWait(testCase: self)
+
+        guard let myself = cdAccount.identity else {
+            XCTFail()
+            return
+        }
+
+        guard let outFolder = outgoingFolder() else {
+            XCTFail()
+            return
+        }
     }
+
+    // MARK: -- Helpers
+
+    func outgoingFolder() -> CdFolder? {
+        guard var cdFolders = cdAccount.folders?.array as? [CdFolder] else {
+            return nil
+        }
+        cdFolders = cdFolders.filter { $0.folderType == FolderType.outbox }
+
+        return cdFolders.first
+    }
+
+
 }
