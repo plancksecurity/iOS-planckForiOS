@@ -39,7 +39,7 @@ class TestEncryptAndSendOnce: PersistentStoreDrivenTestBase {
         waitForExpectations(timeout: TestUtil.waitTime)
     }
 
-    func testSendMails() throws {
+    func testSendMail() throws {
         TestUtil.syncAndWait(testCase: self)
 
         guard let myself = cdAccount.identity else {
