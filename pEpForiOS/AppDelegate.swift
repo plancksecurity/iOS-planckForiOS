@@ -85,6 +85,8 @@ extension AppDelegate {
         Log.shared.logDebugInfo()
 
         if #available(iOS 13.0, *) {
+            // Register background sending of outstanding messages,
+            // used by the sharing extension
             BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundTaskSend,
                                             using: nil) { [weak self] task in
                 guard let me = self else {
@@ -104,9 +106,7 @@ extension AppDelegate {
                     task.setTaskCompleted(success: hasError)
                 }
             }
-        }
 
-        if #available(iOS 13.0, *) {
             Log.shared.info("BGAppRefreshTask: Registering BGTaskScheduler.shared.register(forTaskWithIdentifier: ...")
             BGTaskScheduler.shared.register(forTaskWithIdentifier: Constants.appRefreshTaskBackgroundtaskBackgroundfetchSchedulerid,
                                             using: nil) { [weak self] task in
@@ -120,6 +120,7 @@ extension AppDelegate {
             Log.shared.info("BGAppRefreshTask: we are < iOS13. Fallback to BackgroundFetch ...")
             application.setMinimumBackgroundFetchInterval(60.0 * 2)
         }
+
         Appearance.setup()
         setupServices()
         askUserForNotificationPermissions()
