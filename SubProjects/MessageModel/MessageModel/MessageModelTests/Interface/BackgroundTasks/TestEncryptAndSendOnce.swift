@@ -38,4 +38,8 @@ class TestEncryptAndSendOnce: PersistentStoreDrivenTestBase {
 
         waitForExpectations(timeout: TestUtil.waitTime)
     }
+
+    func testSendMails() throws {
+        TestUtil.syncAndWait(testCase: self)
+    }
 }
