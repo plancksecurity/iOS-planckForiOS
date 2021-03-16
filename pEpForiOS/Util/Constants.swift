@@ -50,7 +50,5 @@ extension Constants {
 extension Constants {
     static let appRefreshTaskBackgroundtaskBackgroundfetchSchedulerid =
         "security.pep.pep4ios.backgroundtaskschedulerid.backgroundfetch"
-
-    static let backgroundTaskSend = "security.pep.pep4ios.share.backgroundtaskschedulerid.send"
 }
 

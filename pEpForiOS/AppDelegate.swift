@@ -12,6 +12,7 @@
 
 import pEpIOSToolbox
 import MessageModel
+import pEp4iosIntern
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
