@@ -22,6 +22,7 @@ public class EncryptAndSendOnce: EncryptAndSendOnceProtocol {
                 // Assume this is an error, since there is no UI involved,
                 // that can go out of scope
                 Log.shared.lostMySelf()
+                completion(nil)
                 return
             }
 
