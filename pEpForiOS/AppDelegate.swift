@@ -189,7 +189,6 @@ extension AppDelegate {
         messageModelService?.stop()
     }
 
-    // TODO: Becomes obsolete with BGTaskSchedulerPermittedIdentifiers?
     func application(_ application: UIApplication, performFetchWithCompletionHandler
                         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         if #available(iOS 13.0, *) {
