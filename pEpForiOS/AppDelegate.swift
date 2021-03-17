@@ -85,7 +85,7 @@ extension AppDelegate {
         if #available(iOS 13.0, *) {
             // Register background sending of outstanding messages,
             // used by the sharing extension
-            BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundTaskSend,
+            let backgroundTaskSendSuccess = BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundTaskSend,
                                             using: nil) { [weak self] task in
                 guard let me = self else {
                     Log.shared.lostMySelf()
@@ -103,6 +103,10 @@ extension AppDelegate {
                     let hasError = error != nil
                     task.setTaskCompleted(success: hasError)
                 }
+            }
+
+            if !backgroundTaskSendSuccess {
+                Log.shared.logError(message: "Could not register bg task\(backgroundTaskSend)")
             }
 
             Log.shared.info("BGAppRefreshTask: Registering BGTaskScheduler.shared.register(forTaskWithIdentifier: ...")
