@@ -8,10 +8,7 @@
 
 import Foundation
 import CoreData
-
-#if canImport(BackgroundTasks)
-    import BackgroundTasks
-#endif
+import BackgroundTasks
 
 import PEPIOSToolboxForAppExtensions
 import pEp4iosIntern
