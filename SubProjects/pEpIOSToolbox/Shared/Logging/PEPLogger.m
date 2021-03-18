@@ -7,7 +7,12 @@
 //
 
 #import "PEPLogger.h"
+
+#if TARGET_OS_IOS
 #import <pEpIOSToolbox/pEpIOSToolbox-Swift.h>
+#else
+#import "PEPToolbox_macOS-Swift.h"
+#endif
 
 @implementation PEPLogger
 

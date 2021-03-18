@@ -18,6 +18,13 @@
 		158A564D24004619003C0D7E /* UIApplication+NavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A564C24004619003C0D7E /* UIApplication+NavigationStack.swift */; };
 		15B21E63260359DC0097927A /* PEPLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 15B21E61260359DC0097927A /* PEPLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		15B21E64260359DC0097927A /* PEPLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B21E62260359DC0097927A /* PEPLogger.m */; };
+		15B220042603B04E0097927A /* PEPToolbox_macOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 15B220032603B04E0097927A /* PEPToolbox_macOS.h */; };
+		15B220062603B04E0097927A /* PEPToolbox_macOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B220052603B04E0097927A /* PEPToolbox_macOS.m */; };
+		15B2200E2603B0660097927A /* libCocoaLumberjack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15B2200D2603B0660097927A /* libCocoaLumberjack.a */; };
+		15B220122603B0AA0097927A /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37954C6D227C90C10099B8D8 /* Log.swift */; };
+		15B220162603B0D60097927A /* PEPLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B21E62260359DC0097927A /* PEPLogger.m */; };
+		15B220172603B0D60097927A /* PEPLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 15B21E61260359DC0097927A /* PEPLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		15B220212603B1930097927A /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A75220091D400EDCE61 /* Logger.swift */; };
 		370DB3CF22804A3600BC929A /* NSSecureCoding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */; };
 		37903EE422FD667700E0AB39 /* String+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37903EE322FD667700E0AB39 /* String+pEp.swift */; };
 		37904562223FA486006DAB3B /* NetworkReachabilityProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */; };
@@ -101,6 +108,10 @@
 		158A564C24004619003C0D7E /* UIApplication+NavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+NavigationStack.swift"; sourceTree = "<group>"; };
 		15B21E61260359DC0097927A /* PEPLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PEPLogger.h; sourceTree = "<group>"; };
 		15B21E62260359DC0097927A /* PEPLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PEPLogger.m; sourceTree = "<group>"; };
+		15B220012603B04E0097927A /* libPEPToolbox_macOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPEPToolbox_macOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		15B220032603B04E0097927A /* PEPToolbox_macOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PEPToolbox_macOS.h; sourceTree = "<group>"; };
+		15B220052603B04E0097927A /* PEPToolbox_macOS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PEPToolbox_macOS.m; sourceTree = "<group>"; };
+		15B2200D2603B0660097927A /* libCocoaLumberjack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libCocoaLumberjack.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSSecureCoding+Extension.swift"; sourceTree = "<group>"; };
 		37903EE322FD667700E0AB39 /* String+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+pEp.swift"; sourceTree = "<group>"; };
 		3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityProtocol.swift; sourceTree = "<group>"; };
@@ -166,6 +177,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		15B21FFF2603B04E0097927A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				15B2200E2603B0660097927A /* libCocoaLumberjack.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		436F1B9E25028B20004426DC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -233,6 +252,24 @@
 			path = DocumentsDirectoryBrowser;
 			sourceTree = "<group>";
 		};
+		15B220022603B04E0097927A /* PEPToolbox_macOS */ = {
+			isa = PBXGroup;
+			children = (
+				15B220032603B04E0097927A /* PEPToolbox_macOS.h */,
+				15B220052603B04E0097927A /* PEPToolbox_macOS.m */,
+			);
+			path = PEPToolbox_macOS;
+			sourceTree = "<group>";
+		};
+		15B220282603B4910097927A /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				37C3C0E72264BF96003E290C /* Modules */,
+				433805B22527443C006DE126 /* Logging */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		3790455D223FA486006DAB3B /* Reachability */ = {
 			isa = PBXGroup;
 			children = (
@@ -274,6 +311,7 @@
 		436F1B9F25028B2E004426DC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				15B2200D2603B0660097927A /* libCocoaLumberjack.a */,
 				43E1A865252B6A1300307A7D /* CocoaLumberjack.framework */,
 				436F1BA025028B2E004426DC /* CocoaLumberjackSwift.framework */,
 			);
@@ -339,6 +377,8 @@
 			isa = PBXGroup;
 			children = (
 				B7911EB621F7358500D7F66F /* pEpIOSToolbox */,
+				15B220022603B04E0097927A /* PEPToolbox_macOS */,
+				15B220282603B4910097927A /* Shared */,
 				B7DB7F58221315BD003968DA /* pEpIOSToolboxTests */,
 				B7911EB521F7358500D7F66F /* Products */,
 				436F1B9F25028B2E004426DC /* Frameworks */,
@@ -350,6 +390,7 @@
 			children = (
 				B7911EB421F7358500D7F66F /* pEpIOSToolbox.framework */,
 				B7DB7F57221315BD003968DA /* pEpIOSToolboxTests.xctest */,
+				15B220012603B04E0097927A /* libPEPToolbox_macOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -357,7 +398,6 @@
 		B7911EB621F7358500D7F66F /* pEpIOSToolbox */ = {
 			isa = PBXGroup;
 			children = (
-				37C3C0E72264BF96003E290C /* Modules */,
 				B70A3A5222005A7600EDCE61 /* Foundation */,
 				B70A3A5322005B9600EDCE61 /* UIKit */,
 				B7DB7FEC221B086A003968DA /* Other */,
@@ -382,7 +422,6 @@
 			children = (
 				15793490246D49C700E2D8D2 /* DocumentsDirectoryBrowser */,
 				3790455D223FA486006DAB3B /* Reachability */,
-				433805B22527443C006DE126 /* Logging */,
 				B75390852212E20500B1FCF9 /* Collection+Extensions.swift */,
 				B7465DCB2211BEE9008A1708 /* Tuple.swift */,
 				B7A46C4F220C1F0C0027CCB5 /* MiscUtil.swift */,
@@ -396,6 +435,15 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		15B21FFD2603B04E0097927A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				15B220172603B0D60097927A /* PEPLogger.h in Headers */,
+				15B220042603B04E0097927A /* PEPToolbox_macOS.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B7911EAF21F7358500D7F66F /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -407,6 +455,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		15B220002603B04E0097927A /* PEPToolbox_macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 15B220072603B04E0097927A /* Build configuration list for PBXNativeTarget "PEPToolbox_macOS" */;
+			buildPhases = (
+				15B21FFD2603B04E0097927A /* Headers */,
+				15B21FFE2603B04E0097927A /* Sources */,
+				15B21FFF2603B04E0097927A /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PEPToolbox_macOS;
+			productName = PEPToolbox_macOS;
+			productReference = 15B220012603B04E0097927A /* libPEPToolbox_macOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		B7911EB321F7358500D7F66F /* pEpIOSToolbox */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B7911EBC21F7358500D7F66F /* Build configuration list for PBXNativeTarget "pEpIOSToolbox" */;
@@ -454,6 +519,9 @@
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "pEp Security SA";
 				TargetAttributes = {
+					15B220002603B04E0097927A = {
+						CreatedOnToolsVersion = 12.4;
+					};
 					B7911EB321F7358500D7F66F = {
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1240;
@@ -479,6 +547,7 @@
 			targets = (
 				B7911EB321F7358500D7F66F /* pEpIOSToolbox */,
 				B7DB7F56221315BD003968DA /* pEpIOSToolboxTests */,
+				15B220002603B04E0097927A /* PEPToolbox_macOS */,
 			);
 		};
 /* End PBXProject section */
@@ -522,6 +591,17 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		15B21FFE2603B04E0097927A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				15B220122603B0AA0097927A /* Log.swift in Sources */,
+				15B220062603B04E0097927A /* PEPToolbox_macOS.m in Sources */,
+				15B220162603B0D60097927A /* PEPLogger.m in Sources */,
+				15B220212603B1930097927A /* Logger.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B7911EB021F7358500D7F66F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -613,6 +693,36 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		15B220082603B04E0097927A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = NQLYU6MGPN;
+				EXECUTABLE_PREFIX = lib;
+				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		15B220092603B04E0097927A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = NQLYU6MGPN;
+				EXECUTABLE_PREFIX = lib;
+				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		B7911EBA21F7358500D7F66F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -835,6 +945,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		15B220072603B04E0097927A /* Build configuration list for PBXNativeTarget "PEPToolbox_macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				15B220082603B04E0097927A /* Debug */,
+				15B220092603B04E0097927A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B7911EAE21F7358500D7F66F /* Build configuration list for PBXProject "pEpIOSToolbox" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
