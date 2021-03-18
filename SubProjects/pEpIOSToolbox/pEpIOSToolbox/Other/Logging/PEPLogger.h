@@ -26,11 +26,21 @@ NS_ASSUME_NONNULL_BEGIN
                     line:(NSInteger)line
                  message:(NSString *)message;
 
++ (void)logErrorAndCrashFilename:(const char *)filename
+                        function:(const char *)function
+                            line:(NSInteger)line
+                         message:(NSString *)message;
 @end
 
 #define LogInfo(...) [PEPLogger logInfoFilename:__FILE__ function:__FUNCTION__ line:__LINE__ message:[NSString stringWithFormat:__VA_ARGS__]];
+
 #define LogWarn(...) [PEPLogger logWarnFilename:__FILE__ function:__FUNCTION__ line:__LINE__ message:[NSString stringWithFormat:__VA_ARGS__]];
+
 #define LogError(...) [PEPLogger logErrorFilename:__FILE__ function:__FUNCTION__ line:__LINE__ message:[NSString stringWithFormat:__VA_ARGS__]];
+
+#define LogError(...) [PEPLogger logErrorFilename:__FILE__ function:__FUNCTION__ line:__LINE__ message:[NSString stringWithFormat:__VA_ARGS__]];
+
+#define LogErrorAndCrash(...) [PEPLogger logErrorAndCrashFilename:__FILE__ function:__FUNCTION__ line:__LINE__ message:[NSString stringWithFormat:__VA_ARGS__]];
 
 NS_ASSUME_NONNULL_END
 
