@@ -7,8 +7,13 @@
 //
 
 import Foundation
-
+#if TARGET_OS_IOS
 import CocoaLumberjackSwift
+#else
+import CocoaLumberjack
+
+#endif
+
 
 @objc public class Logger: NSObject {
     public var verboseLoggingEnabled: Bool = false
