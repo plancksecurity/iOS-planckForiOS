@@ -90,6 +90,7 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
     @available(iOS 13.0, *)
     private func scheduleAppSend(completion: @escaping (Error?) -> ()) {
         let request = BGProcessingTaskRequest(identifier: backgroundTaskSend)
+        request.earliestBeginDate = Date()
         request.requiresNetworkConnectivity = true
 
         do {
