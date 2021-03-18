@@ -177,6 +177,19 @@ import CocoaLumberjackSwift
                 args: [])
     }
 
+    @objc public func logErrorAndCrash(message: String,
+                               function: String = #function,
+                               filePath: String = #file,
+                               fileLine: UInt = #line) {
+        saveLog(message: message,
+                severity: .error,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                args: [])
+        SystemUtils.crash("*** errorAndCrash: \(message) (\(filePath):\(fileLine) \(function))")
+    }
+
     @objc public func logWarn(message: String,
                               function: String = #function,
                               filePath: String = #file,
