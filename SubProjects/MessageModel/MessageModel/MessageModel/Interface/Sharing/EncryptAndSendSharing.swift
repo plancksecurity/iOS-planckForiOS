@@ -95,6 +95,7 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
 
         do {
             try BGTaskScheduler.shared.submit(request)
+            Log.shared.logInfo(message: "Have submitted background task request with identifier\(backgroundTaskSend)")
             completion(nil)
         } catch {
             completion(error)

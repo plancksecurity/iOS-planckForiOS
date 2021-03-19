@@ -87,6 +87,8 @@ extension AppDelegate {
             // used by the sharing extension
             let backgroundTaskSendSuccess = BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundTaskSend,
                                             using: nil) { [weak self] task in
+                Log.shared.logInfo(message: "Start processing background task request with identifier\(backgroundTaskSend)")
+
                 guard let me = self else {
                     Log.shared.lostMySelf()
                     return
