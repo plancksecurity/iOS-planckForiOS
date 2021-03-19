@@ -22,7 +22,7 @@ class AppSettingsTest: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        UserDefaults().removePersistentDomain(forName: appGroupIdentifier)
+        UserDefaults().removePersistentDomain(forName: kAppGroupIdentifier)
     }
 
     func testDefaultAccountSettings() {

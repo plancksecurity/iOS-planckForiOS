@@ -70,7 +70,7 @@ extension CreditsViewController {
     private func copyEngineFiles() {
         let fm = FileManager.default
 
-        guard let containerUrl = fm.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier) else {
+        guard let containerUrl = fm.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier) else {
             Log.shared.logError(message: "Cannot get container URL")
             return
         }

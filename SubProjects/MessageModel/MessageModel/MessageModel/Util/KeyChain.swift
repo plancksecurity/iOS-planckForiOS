@@ -133,7 +133,7 @@ extension KeyChain {
 
         // Save to the app group, except in tests
         if !MiscUtil.isUnitTest() {
-            query[kSecAttrAccessGroup as String] = appGroupIdentifier
+            query[kSecAttrAccessGroup as String] = kAppGroupIdentifier
         }
 
         SecItemDelete(query as CFDictionary)

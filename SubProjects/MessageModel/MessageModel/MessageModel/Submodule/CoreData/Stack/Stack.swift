@@ -84,7 +84,7 @@ extension Stack {
     /// - Returns: File URL for the store with given name
     static private func storeURL(for name: String) -> URL {
         guard let directoryURL =
-            FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier)
+            FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier)
             else {
                 fatalError("No DB, no app, sorry.")
         }
