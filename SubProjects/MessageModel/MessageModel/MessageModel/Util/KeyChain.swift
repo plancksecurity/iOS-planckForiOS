@@ -131,6 +131,7 @@ extension KeyChain {
             kSecAttrAccount as String: key,
             kSecValueData as String: pass.data(using: String.Encoding.utf8)!] as [String : Any]
 
+        // Save to the app group, except in tests
         if !MiscUtil.isUnitTest() {
             query[kSecAttrAccessGroup as String] = appGroupIdentifier
         }
