@@ -7,20 +7,26 @@
 //
 
 import Foundation
-#if TARGET_OS_IOS
+
+#if canImport(CocoaLumberjackSwift)
 import CocoaLumberjackSwift
-#else
+#elseif canImport(CocoaLumberjack_macOS)
+import CocoaLumberjack_macOS
+#elseif canImport(CocoaLumberjack)
 import CocoaLumberjack
-
 #endif
-
 
 @objc public class Logger: NSObject {
     public var verboseLoggingEnabled: Bool = false
 
     public override init() {
         super.init()
-        initLumberjack()
+        if #available(iOS 10, macOS 10.12, *) {
+            initLumberjack()
+        } else {
+            // Our logging requires os_log, which is available in since iOS10 and macOS 10.12.
+            // No fallback available, sorry ...
+        }
     }
 
     /// Logs some info helpful when debugging when in DEBUG configuration. Does nothing otherwize.
@@ -98,11 +104,11 @@ import CocoaLumberjack
                               fileLine: UInt = #line,
                               error: Error) {
         interpolateAndLog(message: "*** errorAndCrash: \(error)",
-            severity: .error,
-            function: function,
-            filePath: filePath,
-            fileLine: fileLine,
-            args: [])
+                          severity: .error,
+                          function: function,
+                          filePath: filePath,
+                          fileLine: fileLine,
+                          args: [])
 
         SystemUtils.crash("*** errorAndCrash: \(error) (\(filePath):\(fileLine) \(function))")
     }
@@ -113,11 +119,11 @@ import CocoaLumberjack
                               fileLine: UInt = #line,
                               message: String) {
         interpolateAndLog(message: "*** errorAndCrash: \(message)",
-            severity: .error,
-            function: function,
-            filePath: filePath,
-            fileLine: fileLine,
-            args: [])
+                          severity: .error,
+                          function: function,
+                          filePath: filePath,
+                          fileLine: fileLine,
+                          args: [])
 
         SystemUtils.crash("*** errorAndCrash: \(message) (\(filePath):\(fileLine) \(function))")
     }
@@ -130,11 +136,11 @@ import CocoaLumberjack
                               _ message: StaticString,
                               _ args: CVarArg...) {
         interpolateAndLog(message: "*** errorAndCrash: \(message)",
-            severity: .error,
-            function: function,
-            filePath: filePath,
-            fileLine: fileLine,
-            args: args)
+                          severity: .error,
+                          function: function,
+                          filePath: filePath,
+                          fileLine: fileLine,
+                          args: args)
 
         let ourString = String(format: "\(message)", arguments: args)
         SystemUtils.crash("*** errorAndCrash: \(ourString) (\(filePath):\(fileLine) \(function))")
@@ -183,9 +189,9 @@ import CocoaLumberjack
     }
 
     @objc public func logErrorAndCrash(message: String,
-                               function: String = #function,
-                               filePath: String = #file,
-                               fileLine: UInt = #line) {
+                                       function: String = #function,
+                                       filePath: String = #file,
+                                       fileLine: UInt = #line) {
         saveLog(message: message,
                 severity: .error,
                 function: function,
@@ -226,6 +232,8 @@ import CocoaLumberjack
 
     private var fileLogger: DDFileLogger?
 
+    @available(iOS 10, *)
+    @available(OSX 10.12, *)
     private func initLumberjack() {
         DDLog.add(DDOSLogger.sharedInstance) // Uses os_log
 
@@ -280,11 +288,11 @@ import CocoaLumberjack
                          args: [CVarArg]) {
         if (severity.shouldBeLoggedIfNotDebug(verbose: verboseLoggingEnabled)) {
             interpolateAndLog(message: message,
-                  severity: severity,
-                  function: function,
-                  filePath: filePath,
-                  fileLine: fileLine,
-                  args: args)
+                              severity: severity,
+                              function: function,
+                              filePath: filePath,
+                              fileLine: fileLine,
+                              args: args)
         }
     }
 
@@ -294,6 +302,7 @@ import CocoaLumberjack
                                    filePath: String = #file,
                                    fileLine: UInt = #line,
                                    args: [CVarArg]) {
+
         // Note that we interpolate _both_ the args _and_ the location info ourselves,
         // instead of letting the logging framework handle it.
         // This is necessary to be compatible with ObjC, who doesn't know about StaticString,
@@ -303,15 +312,49 @@ import CocoaLumberjack
         let interpolatedString = String(format: message, arguments: args)
         let interpolatedMessage = "\(filePath):\(fileLine) \(function) \(interpolatedString)"
 
+        if #available(iOS 10, macOS 10.12, *) {
+        func ddlogMessage(for severty: Severity) -> DDLogMessage {
+            var logLevel = DDLogLevel.verbose
+            var logFlag = DDLogFlag.verbose
+            switch severty {
+            case .info:
+                logFlag = DDLogFlag.info
+                logLevel = DDLogLevel.info
+            case .debug:
+                logFlag = DDLogFlag.debug
+                logLevel = DDLogLevel.debug
+            case .warn:
+                logFlag = DDLogFlag.warning
+                logLevel = DDLogLevel.warning
+            case .error:
+                logFlag = DDLogFlag.error
+                logLevel = DDLogLevel.error
+            }
+            return DDLogMessage(message: interpolatedMessage,
+                                level: logLevel,
+                                flag: logFlag,
+                                context: 0,
+                                file: filePath,
+                                function: function,
+                                line: fileLine,
+                                tag: nil,
+                                options: DDLogMessageOptions.dontCopyMessage,
+                                timestamp: nil)
+        }
+
         switch severity {
         case .debug:
-            DDLogDebug(interpolatedMessage)
+            DDLog.sharedInstance.log(asynchronous: false, message: ddlogMessage(for: .debug))
         case .info:
-            DDLogInfo(interpolatedMessage)
+            DDLog.sharedInstance.log(asynchronous: false, message: ddlogMessage(for: .info))
         case .warn:
-            DDLogWarn(interpolatedMessage)
+            DDLog.sharedInstance.log(asynchronous: false, message: ddlogMessage(for: .warn))
         case .error:
-            DDLogError(interpolatedMessage)
+            DDLog.sharedInstance.log(asynchronous: false, message: ddlogMessage(for: .error))
+        }
+        } else {
+            // Our logging requires os_log, which is available in since iOS10 and macOS 10.12.
+            NSLog(interpolatedString)
         }
     }
 

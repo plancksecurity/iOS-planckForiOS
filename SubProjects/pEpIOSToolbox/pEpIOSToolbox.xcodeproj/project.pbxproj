@@ -20,11 +20,12 @@
 		15B21E64260359DC0097927A /* PEPLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B21E62260359DC0097927A /* PEPLogger.m */; };
 		15B220042603B04E0097927A /* PEPToolbox_macOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 15B220032603B04E0097927A /* PEPToolbox_macOS.h */; };
 		15B220062603B04E0097927A /* PEPToolbox_macOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B220052603B04E0097927A /* PEPToolbox_macOS.m */; };
-		15B2200E2603B0660097927A /* libCocoaLumberjack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15B2200D2603B0660097927A /* libCocoaLumberjack.a */; };
+		15B2200E2603B0660097927A /* libCocoaLumberjack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15B2200D2603B0660097927A /* libCocoaLumberjack.a */; settings = {ATTRIBUTES = (Weak, ); }; };
 		15B220122603B0AA0097927A /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37954C6D227C90C10099B8D8 /* Log.swift */; };
 		15B220162603B0D60097927A /* PEPLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B21E62260359DC0097927A /* PEPLogger.m */; };
 		15B220172603B0D60097927A /* PEPLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 15B21E61260359DC0097927A /* PEPLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		15B220212603B1930097927A /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A75220091D400EDCE61 /* Logger.swift */; };
+		15B2208A2604B2C40097927A /* SystemUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */; };
 		370DB3CF22804A3600BC929A /* NSSecureCoding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370DB3CE22804A3600BC929A /* NSSecureCoding+Extension.swift */; };
 		37903EE422FD667700E0AB39 /* String+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37903EE322FD667700E0AB39 /* String+pEp.swift */; };
 		37904562223FA486006DAB3B /* NetworkReachabilityProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */; };
@@ -266,8 +267,17 @@
 			children = (
 				37C3C0E72264BF96003E290C /* Modules */,
 				433805B22527443C006DE126 /* Logging */,
+				15B220892604B2B60097927A /* Other */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		15B220892604B2B60097927A /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */,
+			);
+			path = Other;
 			sourceTree = "<group>";
 		};
 		3790455D223FA486006DAB3B /* Reachability */ = {
@@ -427,7 +437,6 @@
 				B7A46C4F220C1F0C0027CCB5 /* MiscUtil.swift */,
 				154944CE229A97AA00CC6431 /* SelfReferencingOperation.swift */,
 				B7DB7F512213120B003968DA /* SortedSet.swift */,
-				B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -598,6 +607,7 @@
 				15B220122603B0AA0097927A /* Log.swift in Sources */,
 				15B220062603B04E0097927A /* PEPToolbox_macOS.m in Sources */,
 				15B220162603B0D60097927A /* PEPLogger.m in Sources */,
+				15B2208A2604B2C40097927A /* SystemUtils.swift in Sources */,
 				15B220212603B1930097927A /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -700,7 +710,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				EXECUTABLE_PREFIX = lib;
-				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				HEADER_SEARCH_PATHS = "../../../CocoaLumberjack/Sources/CocoaLumberjack/include/**";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -715,7 +726,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				EXECUTABLE_PREFIX = lib;
-				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				HEADER_SEARCH_PATHS = "../../../CocoaLumberjack/Sources/CocoaLumberjack/include/**";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -784,6 +796,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 6;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -843,6 +856,7 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TARGETED_DEVICE_FAMILY = 6;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
