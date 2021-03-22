@@ -38,10 +38,18 @@ class MigrateKeychainServiceTest: XCTestCase {
     let defaultKeychainGroup = "security.MessageModelTestApp"
     let keychainTargetGroup = "security.test.MessageModelTestApp"
 
+    private func key(index: Int) -> String {
+        return "key_\(index)"
+    }
+
+    private func password(index: Int) -> String {
+        return "password\(index)"
+    }
+
     private func setupKeychainItems() {
         for i in 1...50 {
-            let theKey = "key_\(i)"
-            let thePassword = "password_\(i)"
+            let theKey = key(index: i)
+            let thePassword = password(index: i)
             add(key: theKey, password: thePassword)
             keysAdded[theKey] = thePassword
         }
