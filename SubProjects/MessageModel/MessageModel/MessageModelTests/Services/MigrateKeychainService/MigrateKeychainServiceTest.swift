@@ -16,7 +16,7 @@ class MigrateKeychainServiceTest: XCTestCase {
     override func setUpWithError() throws {
         setupKeychainItems()
 
-        for i in 1...50 {
+        for i in 1...numberOfKeyPasswordPairs {
             query(key: key(index: i),
                   password: password(index: i))
 
@@ -44,6 +44,8 @@ class MigrateKeychainServiceTest: XCTestCase {
 
     static let defaultServerType = "Server"
 
+    let numberOfKeyPasswordPairs = 50
+
     let defaultKeychainGroup = "security.MessageModelTestApp"
     let keychainTargetGroup = "security.test.MessageModelTestApp"
 
@@ -56,7 +58,7 @@ class MigrateKeychainServiceTest: XCTestCase {
     }
 
     private func setupKeychainItems() {
-        for i in 1...50 {
+        for i in 1...numberOfKeyPasswordPairs {
             let theKey = key(index: i)
             let thePassword = password(index: i)
             add(key: theKey, password: thePassword)
