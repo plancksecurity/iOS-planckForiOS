@@ -8,6 +8,14 @@
 
 import Foundation
 
+import pEp4iosIntern
+
 class MigrateKeychainOperation: BaseOperation {
-    
+    let keychainGroupTarget: String
+
+    /// - parameter keychainGroupTarget: The name of the target keychain
+    /// (where to migrate to), `kSharedKeychain` by default.
+    init(keychainGroupTarget: String = kSharedKeychain) {
+        self.keychainGroupTarget = keychainGroupTarget
+    }
 }
