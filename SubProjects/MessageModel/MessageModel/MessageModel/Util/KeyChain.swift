@@ -124,17 +124,13 @@ extension KeyChain {
             Log.shared.warn("%@", warn)
             return false
         }
-        var query = [
+
+        let query = [
             kSecClass as String: kSecClassGenericPassword as String,
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly as String,
             kSecAttrService as String: serverType,
             kSecAttrAccount as String: key,
             kSecValueData as String: pass.data(using: String.Encoding.utf8)!] as [String : Any]
-
-        // Save to the app group, except in tests
-        if !MiscUtil.isUnitTest() {
-            query[kSecAttrAccessGroup as String] = kAppGroupIdentifier
-        }
 
         SecItemDelete(query as CFDictionary)
 
