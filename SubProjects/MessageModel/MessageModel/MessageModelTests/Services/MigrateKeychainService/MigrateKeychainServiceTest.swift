@@ -19,14 +19,6 @@ class MigrateKeychainServiceTest: XCTestCase {
         for i in 1...numberOfKeyPasswordPairs {
             query(key: key(index: i),
                   password: password(index: i))
-
-            query(key: key(index: i),
-                  password: password(index: i),
-                  accessGroup: keychainTargetGroup)
-
-            query(key: key(index: i),
-                  password: password(index: i),
-                  accessGroup: defaultKeychainGroup)
         }
     }
 
