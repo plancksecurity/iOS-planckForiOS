@@ -22,6 +22,10 @@ class MigrateKeychainServiceTest: XCTestCase {
 
             query(key: key(index: i),
                   password: password(index: i),
+                  accessGroup: keychainTargetGroup)
+
+            query(key: key(index: i),
+                  password: password(index: i),
                   accessGroup: defaultKeychainGroup)
         }
     }
