@@ -11,6 +11,8 @@ import XCTest
 @testable import MessageModel
 
 class MigrateKeychainServiceTest: XCTestCase {
+    var keysAdded = [String:String]()
+
     override func setUpWithError() throws {
         setupKeychainItems()
     }
@@ -31,9 +33,15 @@ class MigrateKeychainServiceTest: XCTestCase {
     let keychainTargetGroup = "security.test.MessageModelTestApp"
 
     private func setupKeychainItems() {
+        for i in 1...50 {
+            let theKey = "key_\(i)"
+            let thePassword = "password_\(i)"
+            add(key: theKey, password: thePassword)
+            keysAdded[theKey] = thePassword
+        }
     }
 
-    private func add(key: String, serverType: String = "Server", password: String) {
+    private func add(key: String, password: String, serverType: String = "Server") {
         let query = [
             kSecClass as String: kSecClassGenericPassword as String,
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly as String,
