@@ -29,6 +29,8 @@ class MigrateKeychainServiceTest: XCTestCase {
 
     // MARK: -- Private Helpers
 
+    static let defaultServerType = "Server"
+
     let defaultKeychainGroup = "security.MessageModelTestApp"
     let keychainTargetGroup = "security.test.MessageModelTestApp"
 
@@ -41,13 +43,23 @@ class MigrateKeychainServiceTest: XCTestCase {
         }
     }
 
-    private func add(key: String, password: String, serverType: String = "Server") {
+    private func basicPasswordQuery(key: String,
+                                    password: String,
+                                    serverType: String = MigrateKeychainServiceTest.defaultServerType) -> [String : Any] {
         let query = [
             kSecClass as String: kSecClassGenericPassword as String,
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly as String,
             kSecAttrService as String: serverType,
             kSecAttrAccount as String: key,
             kSecValueData as String: password.data(using: String.Encoding.utf8)!] as [String : Any]
+
+        return query
+    }
+
+    private func add(key: String,
+                     password: String,
+                     serverType: String = MigrateKeychainServiceTest.defaultServerType) {
+        let query = basicPasswordQuery(key: key, password: password)
 
         SecItemDelete(query as CFDictionary)
 
