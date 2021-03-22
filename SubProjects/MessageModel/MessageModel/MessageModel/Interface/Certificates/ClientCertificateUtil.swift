@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-import pEpIOSToolbox
 import pEp4iosIntern
 
 public protocol ClientCertificateUtilProtocol {
@@ -347,14 +346,9 @@ extension ClientCertificateUtil {
 
         let uuidLabel = NSUUID().uuidString
 
-        var addIdentityAttributes: [CFString : Any] = [kSecReturnPersistentRef: true,
+        let addIdentityAttributes: [CFString : Any] = [kSecReturnPersistentRef: true,
                                                        kSecAttrLabel: uuidLabel,
                                                        kSecValueRef: theSecIdentity]
-
-        // Save to the app group, except in tests
-        if !MiscUtil.isUnitTest() {
-            addIdentityAttributes[kSecAttrAccessGroup] = kAppGroupIdentifier
-        }
 
         var resultRef: CFTypeRef? = nil
         let identityStatus = SecItemAdd(addIdentityAttributes as CFDictionary, &resultRef);
