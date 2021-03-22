@@ -129,6 +129,7 @@ class MigrateKeychainServiceTest: XCTestCase {
 
         if status != noErr {
             XCTFail("Could not copy \(key) from \(accessGroup ?? "nil"): \(status)")
+            return
         }
 
         guard let r = result as? Data else {
