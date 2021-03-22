@@ -8,7 +8,15 @@
 
 import Foundation
 
+import pEp4iosIntern
+
 class MigrateKeychainService: OperationBasedService {
+    let keychainGroupTarget: String
+
+    init(keychainGroupTarget: String = kSharedKeychain) {
+        self.keychainGroupTarget = keychainGroupTarget
+    }
+
     override func operations() -> [Operation] {
         return []
     }
