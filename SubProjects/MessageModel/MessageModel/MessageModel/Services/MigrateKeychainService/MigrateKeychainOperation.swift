@@ -10,6 +10,10 @@ import Foundation
 
 import pEp4iosIntern
 
+/// Operation to migrate passwords, certificates from the default keychain
+/// to either the keychain group `kSharedKeychain` or another one,
+/// specified in the constructor.
+/// Used by `MigrateKeychainService`.
 class MigrateKeychainOperation: BaseOperation {
     let keychainGroupTarget: String
 
