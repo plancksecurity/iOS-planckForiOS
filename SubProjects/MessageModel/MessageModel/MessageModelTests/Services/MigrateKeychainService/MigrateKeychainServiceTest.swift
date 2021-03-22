@@ -69,7 +69,7 @@ class MigrateKeychainServiceTest: XCTestCase {
     private func add(key: String,
                      password: String,
                      serverType: String = MigrateKeychainServiceTest.defaultServerType) {
-        let query = basicPasswordQuery(key: key, password: password)
+        let query = basicPasswordQuery(key: key, password: password, serverType: serverType)
         let status = SecItemAdd(query as CFDictionary, nil)
         if status != noErr {
             XCTFail()
@@ -79,7 +79,7 @@ class MigrateKeychainServiceTest: XCTestCase {
     private func remove(key: String,
                         password: String,
                         serverType: String = MigrateKeychainServiceTest.defaultServerType) {
-        let query = basicPasswordQuery(key: key, password: password)
+        let query = basicPasswordQuery(key: key, password: password, serverType: serverType)
         let status = SecItemDelete(query as CFDictionary)
         if status != noErr {
             XCTFail()
@@ -90,7 +90,7 @@ class MigrateKeychainServiceTest: XCTestCase {
                        password: String,
                        accessGroup: String? = nil,
                        serverType: String = MigrateKeychainServiceTest.defaultServerType) {
-        var query = basicPasswordQuery(key: key, password: password)
+        var query = basicPasswordQuery(key: key, password: password, serverType: serverType)
 
         query[kSecMatchCaseInsensitive as String] = kCFBooleanTrue as Any
         query[kSecReturnData as String] = kCFBooleanTrue as Any
