@@ -15,6 +15,12 @@ class MigrateKeychainServiceTest: XCTestCase {
 
     override func setUpWithError() throws {
         setupKeychainItems()
+
+        for i in 1...50 {
+            query(key: key(index: i),
+                  password: password(index: i),
+                  accessGroup: defaultKeychainGroup)
+        }
     }
 
     override func tearDownWithError() throws {
