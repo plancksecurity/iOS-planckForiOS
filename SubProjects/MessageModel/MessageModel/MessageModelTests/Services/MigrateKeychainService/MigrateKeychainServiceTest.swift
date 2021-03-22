@@ -18,6 +18,9 @@ class MigrateKeychainServiceTest: XCTestCase {
 
         for i in 1...50 {
             query(key: key(index: i),
+                  password: password(index: i))
+
+            query(key: key(index: i),
                   password: password(index: i),
                   accessGroup: defaultKeychainGroup)
         }
@@ -119,7 +122,7 @@ class MigrateKeychainServiceTest: XCTestCase {
         }
 
         if status != noErr {
-            XCTFail()
+            XCTFail("Could not copy key \(key): \(status)")
         }
 
         guard let r = result as? Data else {
