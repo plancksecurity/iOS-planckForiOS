@@ -27,8 +27,8 @@ class MigrateKeychainServiceTest: XCTestCase {
 
     // MARK: -- Private Helpers
 
-    let defaultKeychain = "security.MessageModelTestApp"
-    let keychainTarget = "security.test.MessageModelTestApp"
+    let defaultKeychainGroup = "security.MessageModelTestApp"
+    let keychainTargetGroup = "security.test.MessageModelTestApp"
 
     private func setupKeychainItems() {
     }
