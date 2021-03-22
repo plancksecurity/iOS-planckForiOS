@@ -70,9 +70,6 @@ class MigrateKeychainServiceTest: XCTestCase {
                      password: String,
                      serverType: String = MigrateKeychainServiceTest.defaultServerType) {
         let query = basicPasswordQuery(key: key, password: password)
-
-        SecItemDelete(query as CFDictionary)
-
         let status = SecItemAdd(query as CFDictionary, nil)
         if status != noErr {
             XCTFail()
