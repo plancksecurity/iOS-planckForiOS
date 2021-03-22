@@ -2258,6 +2258,7 @@
 		439B16B022802D3800201DE5 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				43ACAA832608A5380013AE20 /* MigrateKeychainService */,
 				152E3C9E231BE34100C1420B /* BackgroundTaskManagerTest.swift */,
 				439B16B122802D3800201DE5 /* VerifiableAccountTest.swift */,
 				B7A1152422C4B55E00FB6E91 /* PrepareAccountForSavingServiceTest.swift */,
@@ -2311,6 +2312,13 @@
 			children = (
 				43ACAA1826089D290013AE20 /* MigrateKeychainService.swift */,
 				43ACAA4F26089FF30013AE20 /* MigrateKeychainOperation.swift */,
+			);
+			path = MigrateKeychainService;
+			sourceTree = "<group>";
+		};
+		43ACAA832608A5380013AE20 /* MigrateKeychainService */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			path = MigrateKeychainService;
 			sourceTree = "<group>";
