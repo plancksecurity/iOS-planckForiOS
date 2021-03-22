@@ -480,6 +480,7 @@
 		43AB6A112248D2E2008E40CC /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A102248D2E2008E40CC /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift */; };
 		43AB6A152248EDC5008E40CC /* FolderInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A142248EDC5008E40CC /* FolderInfoCache.swift */; };
 		43ACAA1926089D290013AE20 /* MigrateKeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ACAA1826089D290013AE20 /* MigrateKeychainService.swift */; };
+		43ACAA5026089FF30013AE20 /* MigrateKeychainOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ACAA4F26089FF30013AE20 /* MigrateKeychainOperation.swift */; };
 		43B1A39C22366D9700C387DE /* AppAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B1A39B22366D9700C387DE /* AppAuth.framework */; };
 		43B1B10C221ED15000DB26AB /* CoreDataPantomimeAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B1B10B221ED15000DB26AB /* CoreDataPantomimeAdapter.swift */; };
 		43B22710242362D9007EB91E /* CdAccount+ProviderSpecific.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B2270F242362D9007EB91E /* CdAccount+ProviderSpecific.swift */; };
@@ -1026,6 +1027,7 @@
 		43AB6A102248D2E2008E40CC /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift"; sourceTree = "<group>"; };
 		43AB6A142248EDC5008E40CC /* FolderInfoCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderInfoCache.swift; sourceTree = "<group>"; };
 		43ACAA1826089D290013AE20 /* MigrateKeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateKeychainService.swift; sourceTree = "<group>"; };
+		43ACAA4F26089FF30013AE20 /* MigrateKeychainOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateKeychainOperation.swift; sourceTree = "<group>"; };
 		43B1A39B22366D9700C387DE /* AppAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43B1B10B221ED15000DB26AB /* CoreDataPantomimeAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataPantomimeAdapter.swift; sourceTree = "<group>"; };
 		43B2270F242362D9007EB91E /* CdAccount+ProviderSpecific.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+ProviderSpecific.swift"; sourceTree = "<group>"; };
@@ -2308,6 +2310,7 @@
 			isa = PBXGroup;
 			children = (
 				43ACAA1826089D290013AE20 /* MigrateKeychainService.swift */,
+				43ACAA4F26089FF30013AE20 /* MigrateKeychainOperation.swift */,
 			);
 			path = MigrateKeychainService;
 			sourceTree = "<group>";
@@ -3365,6 +3368,7 @@
 				154660E223392004008D2137 /* DecryptMessageOperation.swift in Sources */,
 				43EA4863221E9518006E8F83 /* CdAccount+Extension.swift in Sources */,
 				43EA4854221E9518006E8F83 /* ConnectInfo.swift in Sources */,
+				43ACAA5026089FF30013AE20 /* MigrateKeychainOperation.swift in Sources */,
 				158A5E3D23526631002277A6 /* AppendMailsOperation.swift in Sources */,
 				5BD4466324F7DA5F00422594 /* AccountQueryResults.swift in Sources */,
 				43C123EA223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift in Sources */,
