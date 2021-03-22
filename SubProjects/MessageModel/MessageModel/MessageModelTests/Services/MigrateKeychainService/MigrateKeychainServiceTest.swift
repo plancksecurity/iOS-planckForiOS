@@ -42,7 +42,6 @@ class MigrateKeychainServiceTest: XCTestCase {
 
     let numberOfKeyPasswordPairs = 50
 
-    let defaultKeychainGroup = "security.MessageModelTestApp"
     let keychainTargetGroup = "security.test.MessageModelTestApp"
 
     private func key(index: Int) -> String {
