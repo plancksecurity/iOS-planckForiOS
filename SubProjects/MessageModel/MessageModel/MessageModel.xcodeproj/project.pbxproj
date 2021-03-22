@@ -1683,6 +1683,7 @@
 		1574390E229EA4D100E1C337 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				43ACAA1726089D060013AE20 /* MigrateKeychainService */,
 				15326E3024A4DF0A00EA8C9B /* CreatePEPFolderService */,
 				154660BE2333927B008D2137 /* Utils */,
 				159AB565235396A2008AB1F3 /* CleanupServcies */,
@@ -2299,6 +2300,13 @@
 				43D47A51225C767B00E97C5B /* ServerCredentialsInfoCache.swift */,
 			);
 			path = ModelCache;
+			sourceTree = "<group>";
+		};
+		43ACAA1726089D060013AE20 /* MigrateKeychainService */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = MigrateKeychainService;
 			sourceTree = "<group>";
 		};
 		43C123D3223A7FCF00F6A9B2 /* Network */ = {
