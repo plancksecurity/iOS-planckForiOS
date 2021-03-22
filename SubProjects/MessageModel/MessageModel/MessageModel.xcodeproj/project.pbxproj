@@ -481,6 +481,7 @@
 		43AB6A152248EDC5008E40CC /* FolderInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A142248EDC5008E40CC /* FolderInfoCache.swift */; };
 		43ACAA1926089D290013AE20 /* MigrateKeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ACAA1826089D290013AE20 /* MigrateKeychainService.swift */; };
 		43ACAA5026089FF30013AE20 /* MigrateKeychainOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ACAA4F26089FF30013AE20 /* MigrateKeychainOperation.swift */; };
+		43ACAA852608A5620013AE20 /* MigrateKeychainServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ACAA842608A5620013AE20 /* MigrateKeychainServiceTest.swift */; };
 		43B1A39C22366D9700C387DE /* AppAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B1A39B22366D9700C387DE /* AppAuth.framework */; };
 		43B1B10C221ED15000DB26AB /* CoreDataPantomimeAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B1B10B221ED15000DB26AB /* CoreDataPantomimeAdapter.swift */; };
 		43B22710242362D9007EB91E /* CdAccount+ProviderSpecific.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B2270F242362D9007EB91E /* CdAccount+ProviderSpecific.swift */; };
@@ -1028,6 +1029,7 @@
 		43AB6A142248EDC5008E40CC /* FolderInfoCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderInfoCache.swift; sourceTree = "<group>"; };
 		43ACAA1826089D290013AE20 /* MigrateKeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateKeychainService.swift; sourceTree = "<group>"; };
 		43ACAA4F26089FF30013AE20 /* MigrateKeychainOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateKeychainOperation.swift; sourceTree = "<group>"; };
+		43ACAA842608A5620013AE20 /* MigrateKeychainServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateKeychainServiceTest.swift; sourceTree = "<group>"; };
 		43B1A39B22366D9700C387DE /* AppAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43B1B10B221ED15000DB26AB /* CoreDataPantomimeAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataPantomimeAdapter.swift; sourceTree = "<group>"; };
 		43B2270F242362D9007EB91E /* CdAccount+ProviderSpecific.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+ProviderSpecific.swift"; sourceTree = "<group>"; };
@@ -2319,6 +2321,7 @@
 		43ACAA832608A5380013AE20 /* MigrateKeychainService */ = {
 			isa = PBXGroup;
 			children = (
+				43ACAA842608A5620013AE20 /* MigrateKeychainServiceTest.swift */,
 			);
 			path = MigrateKeychainService;
 			sourceTree = "<group>";
@@ -3630,6 +3633,7 @@
 				4355E4D1233C9B63005772D5 /* CdMessageFromPantomimeTest.swift in Sources */,
 				4383344423FD78BB004CC422 /* ClientCertificateUtilTest.swift in Sources */,
 				43F86BA424503E61008961DA /* KeyChainTest.swift in Sources */,
+				43ACAA852608A5620013AE20 /* MigrateKeychainServiceTest.swift in Sources */,
 				43CB60911DA4EB4E0015281E /* IdentityTest.swift in Sources */,
 				490FF8051E795B3900BC15F9 /* TestUtil.swift in Sources */,
 				43B2271224236602007EB91E /* CdAccount+ProviderSpecificTest.swift in Sources */,
