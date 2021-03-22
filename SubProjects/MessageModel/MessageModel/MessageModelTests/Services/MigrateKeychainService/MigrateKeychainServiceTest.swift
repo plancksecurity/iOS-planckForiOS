@@ -17,6 +17,10 @@ class MigrateKeychainServiceTest: XCTestCase {
         setupKeychainItems()
     }
 
+    override func tearDownWithError() throws {
+        removeKeychainItems()
+    }
+
     func testOperation() throws {
         let expFinished = expectation(description: "expFinished")
         let op = MigrateKeychainOperation()
@@ -43,6 +47,12 @@ class MigrateKeychainServiceTest: XCTestCase {
         }
     }
 
+    private func removeKeychainItems() {
+        for (key, password) in keysAdded {
+            remove(key: key, password: password)
+        }
+    }
+
     private func basicPasswordQuery(key: String,
                                     password: String,
                                     serverType: String = MigrateKeychainServiceTest.defaultServerType) -> [String : Any] {
@@ -64,6 +74,16 @@ class MigrateKeychainServiceTest: XCTestCase {
         SecItemDelete(query as CFDictionary)
 
         let status = SecItemAdd(query as CFDictionary, nil)
+        if status != noErr {
+            XCTFail()
+        }
+    }
+
+    private func remove(key: String,
+                        password: String,
+                        serverType: String = MigrateKeychainServiceTest.defaultServerType) {
+        let query = basicPasswordQuery(key: key, password: password)
+        let status = SecItemDelete(query as CFDictionary)
         if status != noErr {
             XCTFail()
         }
