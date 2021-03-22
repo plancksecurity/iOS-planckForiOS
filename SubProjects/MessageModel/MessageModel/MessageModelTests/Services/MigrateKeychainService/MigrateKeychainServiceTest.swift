@@ -85,4 +85,38 @@ class MigrateKeychainServiceTest: XCTestCase {
             XCTFail()
         }
     }
+
+    private func query(key: String,
+                       password: String,
+                       accessGroup: String? = nil,
+                       serverType: String = MigrateKeychainServiceTest.defaultServerType) {
+        var query = basicPasswordQuery(key: key, password: password)
+
+        query[kSecMatchCaseInsensitive as String] = kCFBooleanTrue as Any
+        query[kSecReturnData as String] = kCFBooleanTrue as Any
+
+        if let theGroup = accessGroup {
+            query[kSecAttrAccessGroup as String] = theGroup
+        }
+
+        var result: AnyObject?
+        let status = withUnsafeMutablePointer(to: &result) {
+            SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
+        }
+
+        if status != noErr {
+            XCTFail()
+        }
+
+        guard let r = result as? Data else {
+            XCTFail()
+            return
+        }
+        let str = String(data: r, encoding: String.Encoding.utf8)
+        guard let theStr = str else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(str, password, "key \(key) has \(theStr) stored, not the expected \(password)")
+    }
 }
