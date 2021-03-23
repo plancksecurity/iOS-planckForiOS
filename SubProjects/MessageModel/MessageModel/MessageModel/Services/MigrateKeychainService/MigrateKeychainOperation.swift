@@ -40,6 +40,11 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
     // MARK: - Private
 
     private func migrate() {
+        let allTheKeys = genericPasswordKeys()
+        print("*** \(allTheKeys)")
+    }
+
+    private func genericPasswordKeys() -> [String] {
         let query: [String : Any] = [
             kSecClass as String: kSecClassGenericPassword as String,
             kSecReturnAttributes as String: kCFBooleanTrue as Any,
@@ -58,18 +63,16 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
 
         guard let theResults = result as? [[String:AnyObject]] else {
             Log.shared.logWarn(message: "Cannot cast to [[String:AnyObject]]")
-            return
+            return []
         }
 
         let keysAnyObject = theResults.map { $0["acct"] }
 
         guard let theKeys = keysAnyObject as? [String] else {
             Log.shared.logWarn(message: "The \"acct\" keychain key could not be cast to String")
-            return
+            return []
         }
 
-        for dict in theResults {
-            print("*** \(dict)")
-        }
+        return theKeys
     }
 }
