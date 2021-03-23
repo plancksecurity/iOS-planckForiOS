@@ -94,21 +94,22 @@ git clone https://pep-security.lu/gitlab/iOS/AppAuth-iOS.git
 git clone https://pep-security.lu/gitlab/misc/ldns.git
 git clone https://pep-security.lu/gitlab/misc/sqlite.git
 
-git clone https://gitea.pep.foundation/pep.foundation/Pantomime.git
-git clone https://gitea.pep.foundation/pEp.foundation/pEpEngine
-git clone https://gitea.pep.foundation/pep.foundation/pEpObjCAdapter.git
+git clone http://pep-security.lu/gitlab/iOS/sequoia4ios.git
+pushd sequoia4ios
+sh build.sh
+popd
 
 git clone https://gitea.pep.foundation/pEp.foundation/libAccountSettings
 pushd libAccountSettings
 git checkout tag_for_1.1.300
 popd
 
-git clone https://pep-security.lu/gitlab/iOS/pep4ios.git
+git clone http://pep-security.lu/gitlab/iOS/pep-toolbox.git
+git clone https://gitea.pep.foundation/pep.foundation/Pantomime.git
+git clone https://gitea.pep.foundation/pEp.foundation/pEpEngine
+git clone https://gitea.pep.foundation/pep.foundation/pEpObjCAdapter.git
 
-git clone http://pep-security.lu/gitlab/iOS/sequoia4ios.git
-pushd sequoia4ios
-sh build.sh
-popd
+git clone https://pep-security.lu/gitlab/iOS/pep4ios.git
 ```
 
 ### Build Project

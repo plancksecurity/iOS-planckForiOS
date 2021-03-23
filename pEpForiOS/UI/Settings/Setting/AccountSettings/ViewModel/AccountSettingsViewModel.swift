@@ -54,6 +54,11 @@ final class AccountSettingsViewModel {
     private lazy var folderSyncService = FetchImapFoldersService()
     private var accountSettingsHelper: AccountSettingsHelper?
 
+    /// If the pEp Sync is enabled for the account.
+    public var isPEPSyncEnabled: Bool {
+        return account.pEpSyncEnabled
+    }
+
     /// Constructor
     /// - Parameters:
     ///   - account: The account to configure the account settings view model.
@@ -66,21 +71,6 @@ final class AccountSettingsViewModel {
         includeInUnifiedFolders = account.isIncludedInUnifiedFolders
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         self.generateSections()
-    }
-
-    /// Indicates throught the callback if the keysync is enabled for the account.
-    /// - Parameter completion: Callback that retrieves if it's enabled.
-    /// - Returns: True if it is enabled.
-    public func isPEPSyncEnabled(completion: @escaping (Bool) -> ()) {
-        account.isKeySyncEnabled(errorCallback: { (_) in
-            DispatchQueue.main.async {
-                completion(false)
-            }
-        }) { (isEnabled) in
-            DispatchQueue.main.async {
-                completion(isEnabled)
-            }
-        }
     }
 
     /// Retrieves the EditableAccountSettingsViewModel
@@ -235,17 +225,7 @@ extension AccountSettingsViewModel {
     /// If the action fails, the undo method from delegate will be
     /// called and an error will be shown.
     public func pEpSync(enable: Bool) {
-        account.setKeySyncEnabled(enable: enable,
-                                  errorCallback: { [weak self] error in
-                                    DispatchQueue.main.async {
-                                        guard let me = self else {
-                                            // UI, this can happen
-                                            return
-                                        }
-                                        me.delegate?.undoPEPSyncToggle()
-                                        me.delegate?.showAlert(error: AccountSettingsError.failToModifyAccountPEPSync)
-                                    }
-            }, successCallback: {})
+        account.pEpSyncEnabled = enable
     }
 
     /// Indicates if pep synd has to be grayed out.
@@ -281,10 +261,10 @@ extension AccountSettingsViewModel {
 extension AccountSettingsViewModel {
 
     private enum AccountSettingsError: Error, LocalizedError {
-        case accountNotFound, failToModifyAccountPEPSync
+        case accountNotFound
         var errorDescription: String? {
             switch self {
-            case .accountNotFound, .failToModifyAccountPEPSync:
+            case .accountNotFound:
                 return NSLocalizedString("Something went wrong, please try again later", comment: "AccountSettings viewModel: no account error")
             }
         }
@@ -483,21 +463,9 @@ extension AccountSettingsViewModel {
 
 extension AccountSettingsViewModel {
     
-    /// Request if key sync is enabled for the current account
-    /// The callbacks will be executed in the main thread.
-    /// - Parameters:
-    ///   - errorCallback: The error callback
-    ///   - successCallback: The success callback
-    public func isKeySyncEnabled(errorCallback: @escaping (Error) -> (), successCallback: @escaping (Bool) -> ()) {
-        account.isKeySyncEnabled(errorCallback: { (error) in
-            DispatchQueue.main.async {
-                errorCallback(error)
-            }
-        }) { (value) in
-            DispatchQueue.main.async {
-                successCallback(value)
-            }
-        }
+    /// Whether or not pEp Sync is enabled for the current account.
+    public func isKeySyncEnabled() -> Bool {
+        return account.pEpSyncEnabled
     }
 }
 
