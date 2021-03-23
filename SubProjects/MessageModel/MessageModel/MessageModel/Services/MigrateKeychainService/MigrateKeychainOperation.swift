@@ -9,6 +9,7 @@
 import Foundation
 
 import pEp4iosIntern
+import pEpIOSToolbox
 
 /// Operation to migrate passwords, certificates from the default keychain
 /// to either the keychain group `kSharedKeychain` or another one,
@@ -43,5 +44,15 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
             kSecReturnData as String: kCFBooleanTrue as Any,
             kSecAttrService as String: KeyChain.defaultServerType,
             kSecMatchLimit as String: kSecMatchLimitAll]
+
+        var result: AnyObject?
+        let status = withUnsafeMutablePointer(to: &result) {
+            SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
+        }
+
+        if status != noErr {
+            let warn = "Could not enumerate keychain items, status \(status)"
+            Log.shared.warn("%@", warn)
+        }
     }
 }
