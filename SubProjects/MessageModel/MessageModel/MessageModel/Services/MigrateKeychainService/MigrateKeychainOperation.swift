@@ -52,7 +52,20 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
     }
 
     private func saveToTarget(key: String, password: String) {
-        print("*** save \(key): \(password)")
+        let query: [String : Any] = [
+            kSecClass as String: kSecClassGenericPassword as String,
+            kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly as String,
+            kSecAttrService as String: KeyChain.defaultServerType,
+            kSecAttrAccount as String: key,
+            kSecValueData as String: password.data(using: String.Encoding.utf8)!,
+            kSecAttrAccessGroup as String: keychainGroupTarget]
+
+        SecItemDelete(query as CFDictionary)
+
+        let status = SecItemAdd(query as CFDictionary, nil)
+        if status != noErr {
+            Log.shared.logWarn(message: "Could not save password for \(key), status \(status)")
+        }
     }
 
     private func genericPasswordKeys() -> [String] {
@@ -68,8 +81,7 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
         }
 
         if status != noErr {
-            let warn = "Could not enumerate keychain items, status \(status)"
-            Log.shared.warn("%@", warn)
+            Log.shared.logWarn(message: "Could not enumerate keychain items, status \(status)")
         }
 
         guard let theResults = result as? [[String:AnyObject]] else {
