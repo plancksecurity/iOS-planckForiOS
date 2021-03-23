@@ -68,14 +68,21 @@ class MigrateKeychainServiceTest: XCTestCase {
     }
 
     private func basicPasswordQuery(key: String,
-                                    password: String,
+                                    password: String?,
                                     serverType: String = MigrateKeychainServiceTest.defaultServerType) -> [String : Any] {
-        let query = [
+        var query = [
             kSecClass as String: kSecClassGenericPassword as String,
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly as String,
             kSecAttrService as String: serverType,
-            kSecAttrAccount as String: key,
-            kSecValueData as String: password.data(using: String.Encoding.utf8)!] as [String : Any]
+            kSecAttrAccount as String: key] as [String : Any]
+
+        if let thePassword = password {
+            if let passwordData = thePassword.data(using: String.Encoding.utf8) {
+                query[kSecValueData as String] = passwordData
+            } else {
+                XCTFail()
+            }
+        }
 
         return query
     }
@@ -100,8 +107,9 @@ class MigrateKeychainServiceTest: XCTestCase {
         }
     }
 
+    /// - Note: A `password == nil` means that this query should yield an element not found.
     private func query(key: String,
-                       password: String,
+                       password: String?,
                        accessGroup: String? = nil,
                        serverType: String = MigrateKeychainServiceTest.defaultServerType) {
         var query = basicPasswordQuery(key: key, password: password, serverType: serverType)
@@ -118,20 +126,24 @@ class MigrateKeychainServiceTest: XCTestCase {
             SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
         }
 
-        if status != noErr {
-            XCTFail("Could not copy \(key) from \(accessGroup ?? "nil"): \(status)")
-            return
-        }
+        if let thePassword = password {
+            if status != noErr {
+                XCTFail("Could not copy \(key) from \(accessGroup ?? "nil"): \(status)")
+                return
+            }
 
-        guard let r = result as? Data else {
-            XCTFail()
-            return
+            guard let r = result as? Data else {
+                XCTFail()
+                return
+            }
+            let str = String(data: r, encoding: String.Encoding.utf8)
+            guard let theStr = str else {
+                XCTFail()
+                return
+            }
+            XCTAssertEqual(str, thePassword, "key \(key) has \(theStr) stored, not the expected \(thePassword)")
+        } else {
+            XCTAssertEqual(status, errSecItemNotFound)
         }
-        let str = String(data: r, encoding: String.Encoding.utf8)
-        guard let theStr = str else {
-            XCTFail()
-            return
-        }
-        XCTAssertEqual(str, password, "key \(key) has \(theStr) stored, not the expected \(password)")
     }
 }
