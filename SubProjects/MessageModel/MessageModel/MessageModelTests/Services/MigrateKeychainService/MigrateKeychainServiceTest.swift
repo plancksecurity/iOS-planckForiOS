@@ -36,7 +36,7 @@ class MigrateKeychainServiceTest: XCTestCase {
         waitForExpectations(timeout: TestUtil.waitTime)
     }
 
-    // MARK: -- Private Helpers
+    // MARK: - Private Helpers
 
     static let defaultServerType = "Server"
 
