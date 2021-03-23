@@ -17,10 +17,9 @@ class MigrateKeychainServiceTest: XCTestCase {
         setupKeychainItems()
 
         for i in 1...numberOfKeyPasswordPairs {
-            // Expectation: All created entries exist in the "app" keychain
+            // Expectation: All created entries exist (somewhere in the default)
             query(key: key(index: i),
-                  password: password(index: i),
-                  accessGroup: keychainTargetSource)
+                  password: password(index: i))
         }
 
         for i in 1...numberOfKeyPasswordPairs {
@@ -70,7 +69,6 @@ class MigrateKeychainServiceTest: XCTestCase {
 
     let numberOfKeyPasswordPairs = 50
 
-    let keychainTargetSource = "security.MessageModelTestApp"
     let keychainTargetGroup = "group.security.pep.test.pep4ios"
 
     private func key(index: Int) -> String {
