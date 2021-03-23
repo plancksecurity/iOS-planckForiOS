@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 import BackgroundTasks
 
-import PEPIOSToolboxForAppExtensions
+import pEpIOSToolboxForExtensions
 import pEp4iosIntern
 
 public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {

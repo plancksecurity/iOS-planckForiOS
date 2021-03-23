@@ -8,7 +8,7 @@
 
 import UIKit
 
-import PEPIOSToolboxForAppExtensions
+import pEpIOSToolboxForExtensions
 
 final class ShareViewController: UIViewController {
     var vm = ShareViewModel()

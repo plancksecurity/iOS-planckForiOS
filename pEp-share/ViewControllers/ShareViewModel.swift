@@ -11,7 +11,7 @@ import UIKit
 import MobileCoreServices
 
 import MessageModelForAppExtensions
-import PEPIOSToolboxForAppExtensions
+import pEpIOSToolboxForExtensions
 
 protocol ShareViewModelDelegate: class {
     /// All documents to be shared have been downloaded

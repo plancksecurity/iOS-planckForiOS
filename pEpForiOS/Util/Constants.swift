@@ -7,7 +7,7 @@
 //
 
 #if EXT_SHARE
-import PEPIOSToolboxForAppExtensions
+import pEpIOSToolboxForExtensions
 #else
 import pEpIOSToolbox
 #endif

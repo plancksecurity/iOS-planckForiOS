@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-import PEPIOSToolboxForAppExtensions
+import pEpIOSToolboxForExtensions
 
 /// The different data types that can be shared, together with their
 /// payload.
