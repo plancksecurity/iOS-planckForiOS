@@ -104,6 +104,7 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                 let group = DispatchGroup()
                 // spex: call myself() for all accounts
                 for cdAccount in cdAccounts {
+                    let pEpSyncEnabledForCurrentAccount = cdAccount.pEpSyncEnabled
                     guard let identity = cdAccount.identity else {
                         Log.shared.errorAndCrash("Account without identity!")
                         return
@@ -118,7 +119,7 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                             Log.shared.errorAndCrash(error: error)
                         }
                     } successCallback: { (_) in
-                        guard cdAccount.pEpSyncEnabled else {
+                        guard pEpSyncEnabledForCurrentAccount else {
                             group.leave()
                             return // continue with next account
                         }
