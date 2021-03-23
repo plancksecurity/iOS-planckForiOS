@@ -42,7 +42,7 @@ class MigrateKeychainServiceTest: XCTestCase {
 
     func testOperation() throws {
         let expFinished = expectation(description: "expFinished")
-        let op = MigrateKeychainOperation()
+        let op = MigrateKeychainOperation(keychainGroupTarget: keychainTargetGroup)
         op.completionBlock = {
             expFinished.fulfill()
         }
