@@ -14,12 +14,32 @@ import pEp4iosIntern
 /// to either the keychain group `kSharedKeychain` or another one,
 /// specified in the constructor.
 /// Used by `MigrateKeychainService`.
-class MigrateKeychainOperation: BaseOperation {
+class MigrateKeychainOperation: ConcurrentBaseOperation {
     let keychainGroupTarget: String
+    let queue: DispatchQueue
 
     /// - parameter keychainGroupTarget: The name of the target keychain
     /// (where to migrate to), `kSharedKeychain` by default.
     init(keychainGroupTarget: String = kSharedKeychain) {
         self.keychainGroupTarget = keychainGroupTarget
+        self.queue = DispatchQueue(label: "MigrateKeychainOperationQueue")
+    }
+
+    override func main() {
+        queue.async { [weak self] in
+            guard let me = self else {
+                // could happen, don't interpret that as an error
+                return
+            }
+            me.migrate()
+        }
+    }
+
+    // MARK: - Private
+
+    //TODO: Must match KeyChain.defaultServerType
+    static private let defaultServerType = "Server"
+
+    private func migrate() {
     }
 }
