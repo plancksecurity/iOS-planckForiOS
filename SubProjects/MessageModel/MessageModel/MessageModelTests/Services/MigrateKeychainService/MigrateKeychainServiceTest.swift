@@ -17,6 +17,7 @@ class MigrateKeychainServiceTest: XCTestCase {
         setupKeychainItems()
 
         for i in 1...numberOfKeyPasswordPairs {
+            // Expectation: All created entries exist
             query(key: key(index: i),
                   password: password(index: i))
         }
@@ -24,6 +25,12 @@ class MigrateKeychainServiceTest: XCTestCase {
 
     override func tearDownWithError() throws {
         removeKeychainItems()
+
+        for i in 1...numberOfKeyPasswordPairs {
+            // Expectation: All entries deleted
+            query(key: key(index: i),
+                  password: nil)
+        }
     }
 
     func testOperation() throws {
