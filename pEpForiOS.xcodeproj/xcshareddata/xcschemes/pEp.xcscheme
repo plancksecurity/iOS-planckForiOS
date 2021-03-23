@@ -28,6 +28,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "19FF46011B8B4CF400B43179"
+               BuildableName = "CocoaLumberjack.framework"
+               BlueprintName = "CocoaLumberjack"
+               ReferencedContainer = "container:../CocoaLumberjack/Lumberjack.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "343AAA531E83463400F9D36E"
                BuildableName = "AppAuth.framework"
                BlueprintName = "AppAuth_iOS"
@@ -112,10 +126,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3AE6870024FFA5ED00B416ED"
-               BuildableName = "pEp4iosIntern.framework"
-               BlueprintName = "pEp4iosIntern"
-               ReferencedContainer = "container:../pep_for_ios_intern/pEp4iosIntern/pEp4iosIntern.xcodeproj">
+               BlueprintIdentifier = "B7911EB321F7358500D7F66F"
+               BuildableName = "pEpIOSToolbox.framework"
+               BlueprintName = "pEpIOSToolbox"
+               ReferencedContainer = "container:../pep-toolbox/pEpIOSToolbox.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -126,10 +140,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B7911EB321F7358500D7F66F"
-               BuildableName = "pEpIOSToolbox.framework"
-               BlueprintName = "pEpIOSToolbox"
-               ReferencedContainer = "container:SubProjects/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
+               BlueprintIdentifier = "3AE6870024FFA5ED00B416ED"
+               BuildableName = "pEp4iosIntern.framework"
+               BlueprintName = "pEp4iosIntern"
+               ReferencedContainer = "container:../pep_for_ios_intern/pEp4iosIntern/pEp4iosIntern.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -232,6 +246,20 @@
          </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B7DB7F56221315BD003968DA"
+               BuildableName = "pEpIOSToolboxTests.xctest"
+               BlueprintName = "pEpIOSToolboxTests"
+               ReferencedContainer = "container:../pep-toolbox/pEpIOSToolbox.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
             buildForRunning = "NO"
             buildForProfiling = "NO"
             buildForArchiving = "NO"
@@ -314,16 +342,6 @@
                BuildableName = "MessageModelTests.xctest"
                BlueprintName = "MessageModelTests"
                ReferencedContainer = "container:SubProjects/MessageModel/MessageModel/MessageModel.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B7DB7F56221315BD003968DA"
-               BuildableName = "pEpIOSToolboxTests.xctest"
-               BlueprintName = "pEpIOSToolboxTests"
-               ReferencedContainer = "container:SubProjects/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
