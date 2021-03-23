@@ -61,6 +61,13 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
             return
         }
 
+        let keysAnyObject = theResults.map { $0["acct"] }
+
+        guard let theKeys = keysAnyObject as? [String] else {
+            Log.shared.logWarn(message: "The \"acct\" keychain key could not be cast to String")
+            return
+        }
+
         for dict in theResults {
             print("*** \(dict)")
         }
