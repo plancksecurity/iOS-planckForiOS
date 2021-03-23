@@ -17,7 +17,7 @@ class MigrateKeychainServiceTest: XCTestCase {
         setupKeychainItems()
 
         for i in 1...numberOfKeyPasswordPairs {
-            // Expectation: All created entries exist
+            // Expectation: All created entries exist (somewhere in the default)
             query(key: key(index: i),
                   password: password(index: i))
         }
