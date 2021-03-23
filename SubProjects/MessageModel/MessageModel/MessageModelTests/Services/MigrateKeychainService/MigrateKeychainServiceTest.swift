@@ -157,9 +157,6 @@ class MigrateKeychainServiceTest: XCTestCase {
             }
             XCTAssertEqual(str, thePassword, "key \(key) has \(theStr) stored, not the expected \(thePassword)")
         } else {
-            // XCTAssertEqual failed: ("-34018") is not equal to ("-25300")
-            // -34018 is errSecMissingEntitlement
-            // So not possible to test?
             XCTAssertEqual(status, errSecItemNotFound)
         }
     }
