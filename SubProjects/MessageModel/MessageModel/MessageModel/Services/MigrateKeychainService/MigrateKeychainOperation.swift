@@ -55,5 +55,14 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
             let warn = "Could not enumerate keychain items, status \(status)"
             Log.shared.warn("%@", warn)
         }
+
+        guard let theResults = result as? [NSDictionary] else {
+            Log.shared.logWarn(message: "Cannot cast to [NSDictionary]")
+            return
+        }
+
+        for dict in theResults {
+            print("*** \(dict)")
+        }
     }
 }
