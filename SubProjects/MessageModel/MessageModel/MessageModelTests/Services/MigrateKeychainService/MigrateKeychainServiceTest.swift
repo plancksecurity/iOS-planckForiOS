@@ -21,6 +21,13 @@ class MigrateKeychainServiceTest: XCTestCase {
             query(key: key(index: i),
                   password: password(index: i))
         }
+
+        for i in 1...numberOfKeyPasswordPairs {
+            // Expectation: No entries in the target keychain
+            query(key: key(index: i),
+                  password: nil,
+                  accessGroup: keychainTargetGroup)
+        }
     }
 
     override func tearDownWithError() throws {
