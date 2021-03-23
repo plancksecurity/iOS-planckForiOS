@@ -41,7 +41,18 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
 
     private func migrate() {
         let allTheKeys = genericPasswordKeys()
-        print("*** \(allTheKeys)")
+
+        for theKey in allTheKeys {
+            guard let thePassword = KeyChain.password(key: theKey) else {
+                Log.shared.logWarn(message: "Cannot get the password for \(theKey)")
+                return
+            }
+            saveToTarget(key: theKey, password: thePassword)
+        }
+    }
+
+    private func saveToTarget(key: String, password: String) {
+        print("*** save \(key): \(password)")
     }
 
     private func genericPasswordKeys() -> [String] {
