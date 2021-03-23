@@ -56,8 +56,8 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
             Log.shared.warn("%@", warn)
         }
 
-        guard let theResults = result as? [NSDictionary] else {
-            Log.shared.logWarn(message: "Cannot cast to [NSDictionary]")
+        guard let theResults = result as? [[String:AnyObject]] else {
+            Log.shared.logWarn(message: "Cannot cast to [[String:AnyObject]]")
             return
         }
 
