@@ -42,7 +42,7 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
     private func migrate() {
         let query: [String : Any] = [
             kSecClass as String: kSecClassGenericPassword as String,
-            kSecReturnData as String: kCFBooleanTrue as Any,
+            kSecReturnAttributes as String: kCFBooleanTrue as Any,
             kSecAttrService as String: KeyChain.defaultServerType,
             kSecMatchLimit as String: kSecMatchLimitAll]
 
