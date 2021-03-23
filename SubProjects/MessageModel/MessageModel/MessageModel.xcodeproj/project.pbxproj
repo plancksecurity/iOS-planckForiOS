@@ -541,6 +541,7 @@
 		154D173E2373330E001FDF78 /* SimpleOperationsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperationsTest.swift; sourceTree = "<group>"; };
 		154F0A7E208512BF00C77D72 /* 0.0.32.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 0.0.32.xcdatamodel; sourceTree = "<group>"; };
 		15524C51232E42E9000B5E26 /* UpdateIdentitiesAddressBookIdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateIdentitiesAddressBookIdService.swift; sourceTree = "<group>"; };
+		155A0646260A061900FF2754 /* 1.1.255.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.1.255.xcdatamodel; sourceTree = "<group>"; };
 		155FE55E228B4F8E003D3E68 /* CdImapFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdImapFields.swift; sourceTree = "<group>"; };
 		155FE560228B4FBE003D3E68 /* CdImapFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdImapFlags.swift; sourceTree = "<group>"; };
 		155FE562228B4FE1003D3E68 /* CdKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdKey.swift; sourceTree = "<group>"; };
@@ -3444,6 +3445,7 @@
 		1587D135204570BA002C2157 /* MessageModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				155A0646260A061900FF2754 /* 1.1.255.xcdatamodel */,
 				5B3BFC6324DAF07200B99FA6 /* 1.1.205.xcdatamodel */,
 				B7B22617246BFB7E009D5374 /* 1.1.100.xcdatamodel */,
 				43607DEC2400201300FA66B8 /* 1.0.913.xcdatamodel */,
@@ -3457,7 +3459,7 @@
 				154F0A7E208512BF00C77D72 /* 0.0.32.xcdatamodel */,
 				1587D136204570BA002C2157 /* pEpForiOS.xcdatamodel */,
 			);
-			currentVersion = 5B3BFC6324DAF07200B99FA6 /* 1.1.205.xcdatamodel */;
+			currentVersion = 155A0646260A061900FF2754 /* 1.1.255.xcdatamodel */;
 			path = MessageModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
