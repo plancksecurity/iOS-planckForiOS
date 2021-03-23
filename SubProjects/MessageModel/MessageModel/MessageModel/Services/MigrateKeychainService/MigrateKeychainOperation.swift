@@ -52,12 +52,17 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
     }
 
     private func saveToTarget(key: String, password: String) {
+        guard let thePassword = password.data(using: String.Encoding.utf8) else {
+            Log.shared.logWarn(message: "Could not create password data for \(key)")
+            return
+        }
+
         let query: [String : Any] = [
             kSecClass as String: kSecClassGenericPassword as String,
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly as String,
             kSecAttrService as String: KeyChain.defaultServerType,
             kSecAttrAccount as String: key,
-            kSecValueData as String: password.data(using: String.Encoding.utf8)!,
+            kSecValueData as String: thePassword,
             kSecAttrAccessGroup as String: keychainGroupTarget]
 
         SecItemDelete(query as CFDictionary)
