@@ -168,16 +168,8 @@ extension AccountSettingsViewController : UITableViewDataSource {
                 return UITableViewCell()
             }
             dequeuedCell.configure(with: row, isGrayedOut : !vm.isPEPSyncGrayedOut())
-            vm.isKeySyncEnabled(errorCallback: { [weak self] (error) in
-                guard let me = self else {
-                    // Valid case. We might have been dismissed.
-                    return
-                }
-                dequeuedCell.switchItem.isOn = false
-                me.showAlert(error: error)
-            }) { (value) in
-                dequeuedCell.switchItem.isOn = value
-            }
+            dequeuedCell.switchItem.isOn = vm.isKeySyncEnabled()
+            
             return dequeuedCell
         case .reset:
             let dequeuedCell = dequeue(with: row, type: AccountSettingsDangerousTableViewCell.self)

@@ -37,21 +37,7 @@ class CreatePepIMAPFolderService: OperationBasedService {
             }
 
             for cdAccount in cdAccounts {
-                var isKeySyncEnabled = false
-                let group = DispatchGroup()
-                group.enter()
-
-                cdAccount.isKeySyncEnabled(errorCallback: { _ in
-                    isKeySyncEnabled = false
-                    group.leave()
-                }) { enabled in
-                    isKeySyncEnabled = enabled
-                    group.leave()
-                }
-
-                group.wait()
-
-                guard isKeySyncEnabled else {
+                guard cdAccount.pEpSyncEnabled else {
                     // We are not supposed to use pEp Sync with this account, thus we must not
                     // create a pEp folder.
                     // Nothing to do

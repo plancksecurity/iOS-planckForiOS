@@ -98,20 +98,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "151606FC257A401000DD42E0"
-               BuildableName = "libPEPObjCAdapterTypes_iOS.a"
-               BlueprintName = "PEPObjCAdapterTypes_iOS"
-               ReferencedContainer = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "B7E0502C1EB2491E006EC1EC"
                BuildableName = "libAccountSettingsAdapter.a"
                BlueprintName = "AccountSettingsAdapter"
@@ -144,6 +130,20 @@
                BuildableName = "pEp4iosIntern.framework"
                BlueprintName = "pEp4iosIntern"
                ReferencedContainer = "container:../pep_for_ios_intern/pEp4iosIntern/pEp4iosIntern.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "151606FC257A401000DD42E0"
+               BuildableName = "libPEPObjCAdapterTypes_iOS.a"
+               BlueprintName = "PEPObjCAdapterTypes_iOS"
+               ReferencedContainer = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry

@@ -87,27 +87,50 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                 Log.shared.errorAndCrash("No keySyncStateProvider")
                 return
             }
+            do {
+                try PEPSession().disableAllSyncChannels()
+            } catch {
+                Log.shared.errorAndCrash("disableAllSyncChannels failed with error: %@",
+                                         error.localizedDescription)
+            }
             me.moc.performAndWait {
                 guard
                     let cdAccounts = try? me.qrc.getResults(),
                     cdAccounts.count > 0  else {
-                        // Do not start KeySync if no accounts are setup.
-                        // spex: "have at least one account configured"
-                        return
+                    // Do not start KeySync if no accounts are setup.
+                    // spex: "have at least one account configured"
+                    return
                 }
                 let group = DispatchGroup()
                 // spex: call myself() for all accounts
                 for cdAccount in cdAccounts {
-                    if let pEpUser = cdAccount.identity?.pEpIdentity() {
-                        group.enter()
-                        PEPSession().mySelf(pEpUser, errorCallback: { (error) in
+                    guard let identity = cdAccount.identity else {
+                        Log.shared.errorAndCrash("Account without identity!")
+                        return
+                    }
+                    let pEpUser = identity.pEpIdentity()
+                    group.enter()
+                    PEPSession().mySelf(pEpUser) { (error) in
+                        defer { group.leave() }
+                        if error.isPassphraseError {
+                            Log.shared.log(error: error)
+                        } else {
+                            Log.shared.errorAndCrash(error: error)
+                        }
+                    } successCallback: { (_) in
+                        guard cdAccount.pEpSyncEnabled else {
+                            group.leave()
+                            return // continue with next account
+                        }
+                        PEPSession().enableSync(for: pEpUser) { (error) in
+                            defer { group.leave() }
                             if error.isPassphraseError {
                                 Log.shared.log(error: error)
                             } else {
                                 Log.shared.errorAndCrash(error: error)
                             }
-                            group.leave()
-                        }) { (_) in
+                        } successCallback: {
+                            // successfully enabled. Nothing left todo.
                             group.leave()
                         }
                     }
@@ -163,8 +186,8 @@ extension KeySyncService: QueryResultsControllerDelegate {
     }
 
     func queryResultsControllerDidChangeObjectAt(indexPath: IndexPath?,
-        forChangeType changeType: NSFetchedResultsChangeType,
-        newIndexPath: IndexPath?) {
+                                                 forChangeType changeType: NSFetchedResultsChangeType,
+                                                 newIndexPath: IndexPath?) {
         switch changeType {
         case .delete:
             // Nothing to do.
