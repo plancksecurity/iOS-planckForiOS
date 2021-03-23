@@ -33,6 +33,7 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
                 return
             }
             me.migrate()
+            me.markAsFinished()
         }
     }
 
