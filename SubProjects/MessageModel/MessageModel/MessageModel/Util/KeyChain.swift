@@ -14,7 +14,7 @@ import pEpIOSToolbox
  /// Abstracts KeyChain ralted issues
 class KeyChain {
     typealias Success = Bool
-    static private let defaultServerType = "Server"
+    static let defaultServerType = "Server"
 }
 
 // MARK: - Passphrase For New Keys

@@ -38,7 +38,7 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
     // MARK: - Private
 
     //TODO: Must match KeyChain.defaultServerType
-    static private let defaultServerType = "Server"
+    static private let defaultServerType = KeyChain.defaultServerType
 
     private func migrate() {
     }
