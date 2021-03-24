@@ -212,12 +212,16 @@ class MigrateKeychainServiceTest: XCTestCase {
                                                                   password: password))
     }
 
-    func numberOfCertificates(groupName: String) -> Int {
-        let query: [CFString : Any] = [kSecClass: kSecClassIdentity,
+    func numberOfCertificates(groupName: String?) -> Int {
+        var query: [CFString : Any] = [kSecClass: kSecClassIdentity,
                                        kSecMatchLimit: kSecMatchLimitAll,
                                        kSecReturnRef: true,
-                                       kSecReturnAttributes: true,
-                                       kSecAttrAccessGroup: groupName]
+                                       kSecReturnAttributes: true]
+
+        if let theGroupName = groupName {
+            query[kSecAttrAccessGroup] = theGroupName
+        }
+
         var resultRef: CFTypeRef? = nil
         let identityStatus = SecItemCopyMatching(query as CFDictionary, &resultRef)
 
