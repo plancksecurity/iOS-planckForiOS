@@ -54,11 +54,28 @@ class MigrateKeychainServiceTest: XCTestCase {
 
     func testOperation() throws {
         let expFinished = expectation(description: "expFinished")
+
         let op = MigrateKeychainOperation(keychainGroupTarget: keychainTargetGroup)
         op.completionBlock = {
             expFinished.fulfill()
         }
         op.start()
+
+        waitForExpectations(timeout: TestUtil.waitTime)
+
+        verifyEndConditions()
+    }
+
+    func testService() throws {
+        let expFinished = expectation(description: "expFinished")
+
+        let service = MigrateKeychainService(keychainGroupTarget: keychainTargetGroup)
+        service.finishBlock = {
+            expFinished.fulfill()
+        }
+        service.start()
+        service.finish()
+
         waitForExpectations(timeout: TestUtil.waitTime)
 
         verifyEndConditions()
