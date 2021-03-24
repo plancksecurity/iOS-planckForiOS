@@ -39,10 +39,12 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
     }
 
     // MARK: - Private
+
     private func migrateCertificates() {
         let util = ClientCertificateUtil()
 
         let identityPairs = util.listExisting()
+
         for (uuidLabel, secIndentity) in identityPairs {
             let addIdentityAttributes: [CFString : Any] = [kSecReturnPersistentRef: true,
                                                            kSecAttrLabel: uuidLabel,
