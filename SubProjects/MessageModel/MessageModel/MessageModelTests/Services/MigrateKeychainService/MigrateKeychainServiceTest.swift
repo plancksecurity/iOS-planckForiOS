@@ -61,22 +61,7 @@ class MigrateKeychainServiceTest: XCTestCase {
         op.start()
         waitForExpectations(timeout: TestUtil.waitTime)
 
-        for i in 1...numberOfKeyPasswordPairs {
-            // Expectation: All created entries exist (somewhere in the default)
-            query(key: key(index: i),
-                  password: password(index: i))
-        }
-
-        for i in 1...numberOfKeyPasswordPairs {
-            // Expectation: All created entries exist specifically in the target
-            query(key: key(index: i),
-                  password: password(index: i),
-                  accessGroup: keychainTargetGroup)
-        }
-
-        // Verify that all certificates now exist in the target group
-        XCTAssertEqual(numberOfCertificates(groupName: nil), certificatesAdded.count)
-        XCTAssertEqual(numberOfCertificates(groupName: keychainTargetGroup), certificatesAdded.count)
+        verifyEndConditions()
     }
 
     // MARK: - Private Helpers
@@ -131,6 +116,25 @@ class MigrateKeychainServiceTest: XCTestCase {
             let removeStatus = SecItemDelete(removeQuery as CFDictionary)
             XCTAssertEqual(removeStatus, errSecSuccess)
         }
+    }
+
+    private func verifyEndConditions() {
+        for i in 1...numberOfKeyPasswordPairs {
+            // Expectation: All created entries exist (somewhere in the default)
+            query(key: key(index: i),
+                  password: password(index: i))
+        }
+
+        for i in 1...numberOfKeyPasswordPairs {
+            // Expectation: All created entries exist specifically in the target
+            query(key: key(index: i),
+                  password: password(index: i),
+                  accessGroup: keychainTargetGroup)
+        }
+
+        // Verify that all certificates now exist in the target group
+        XCTAssertEqual(numberOfCertificates(groupName: nil), certificatesAdded.count)
+        XCTAssertEqual(numberOfCertificates(groupName: keychainTargetGroup), certificatesAdded.count)
     }
 
     private func basicPasswordQuery(key: String,
