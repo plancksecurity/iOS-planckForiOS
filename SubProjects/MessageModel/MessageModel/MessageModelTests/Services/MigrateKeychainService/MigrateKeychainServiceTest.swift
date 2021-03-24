@@ -174,4 +174,9 @@ class MigrateKeychainServiceTest: XCTestCase {
             XCTAssertEqual(status, errSecItemNotFound)
         }
     }
+
+    private func storeCertificate(filename: String, password: String) {
+        XCTAssertTrue(ClientCertificatesTestUtil.storeCertificate(filename: filename,
+                                                                  password: password))
+    }
 }
