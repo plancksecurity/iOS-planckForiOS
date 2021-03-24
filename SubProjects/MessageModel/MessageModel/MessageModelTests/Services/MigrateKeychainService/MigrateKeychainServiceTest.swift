@@ -74,6 +74,7 @@ class MigrateKeychainServiceTest: XCTestCase {
                   accessGroup: keychainTargetGroup)
         }
 
+        // Verify that all certificates now exist in the target group
         XCTAssertEqual(numberOfCertificates(groupName: nil), certificatesAdded.count)
         XCTAssertEqual(numberOfCertificates(groupName: keychainTargetGroup), certificatesAdded.count)
     }
