@@ -14,7 +14,7 @@ class MigrateKeychainServiceTest: XCTestCase {
     var keysAdded = [String:String]()
 
     override func setUpWithError() throws {
-        setupKeychainItems()
+        setupKeychainPasswords()
 
         for i in 1...numberOfKeyPasswordPairs {
             // Expectation: All created entries exist (somewhere in the default)
@@ -31,7 +31,7 @@ class MigrateKeychainServiceTest: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        removeKeychainItems()
+        removeKeychainPasswords()
 
         for i in 1...numberOfKeyPasswordPairs {
             // Expectation: All entries deleted
@@ -79,7 +79,7 @@ class MigrateKeychainServiceTest: XCTestCase {
         return "password\(index)"
     }
 
-    private func setupKeychainItems() {
+    private func setupKeychainPasswords() {
         for i in 1...numberOfKeyPasswordPairs {
             let theKey = key(index: i)
             let thePassword = password(index: i)
@@ -88,7 +88,7 @@ class MigrateKeychainServiceTest: XCTestCase {
         }
     }
 
-    private func removeKeychainItems() {
+    private func removeKeychainPasswords() {
         for (key, password) in keysAdded {
             remove(key: key, password: password)
         }
