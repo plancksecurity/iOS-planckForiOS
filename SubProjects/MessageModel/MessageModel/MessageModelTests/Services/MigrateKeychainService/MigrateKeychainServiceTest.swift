@@ -15,6 +15,7 @@ class MigrateKeychainServiceTest: XCTestCase {
 
     override func setUpWithError() throws {
         setupKeychainPasswords()
+        setupClientCertificates()
 
         for i in 1...numberOfKeyPasswordPairs {
             // Expectation: All created entries exist (somewhere in the default)
@@ -32,12 +33,16 @@ class MigrateKeychainServiceTest: XCTestCase {
 
     override func tearDownWithError() throws {
         removeKeychainPasswords()
+        removeClientCertificates()
 
         for i in 1...numberOfKeyPasswordPairs {
             // Expectation: All entries deleted
             query(key: key(index: i),
                   password: nil)
         }
+
+        let clientUtil = ClientCertificateUtil()
+        XCTAssertEqual(clientUtil.listExisting().count, 0)
     }
 
     func testOperation() throws {
@@ -92,6 +97,24 @@ class MigrateKeychainServiceTest: XCTestCase {
         for (key, password) in keysAdded {
             remove(key: key, password: password)
         }
+    }
+
+    private func setupClientCertificates() {
+        let certUtil = ClientCertificateUtil()
+
+        storeCertificate(filename: "Certificate_001.p12", password: "uiae")
+        storeCertificate(filename: "Certificate_002.p12", password: "uiae")
+        storeCertificate(filename: "Certificate_003.p12", password: "uiae")
+
+        XCTAssertEqual(certUtil.listCertificates().count, 3)
+    }
+
+    private func removeClientCertificates() {
+        let query: [CFString : Any] = [kSecClass: kSecClassIdentity,
+                                       kSecMatchLimit: kSecMatchLimitAll]
+        let deleteStatus = SecItemDelete(query as CFDictionary)
+
+        XCTAssertEqual(deleteStatus, errSecSuccess)
     }
 
     private func basicPasswordQuery(key: String,
