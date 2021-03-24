@@ -211,4 +211,29 @@ class MigrateKeychainServiceTest: XCTestCase {
         XCTAssertTrue(ClientCertificatesTestUtil.storeCertificate(filename: filename,
                                                                   password: password))
     }
+
+    func numberOfCertificates(groupName: String) -> Int {
+        let query: [CFString : Any] = [kSecClass: kSecClassIdentity,
+                                       kSecMatchLimit: kSecMatchLimitAll,
+                                       kSecReturnRef: true,
+                                       kSecReturnAttributes: true,
+                                       kSecAttrAccessGroup: groupName]
+        var resultRef: CFTypeRef? = nil
+        let identityStatus = SecItemCopyMatching(query as CFDictionary, &resultRef)
+
+        XCTAssertEqual(identityStatus, errSecSuccess)
+
+        guard let theResult = resultRef else {
+            XCTFail()
+            return -1
+        }
+
+        guard CFGetTypeID(theResult) == CFArrayGetTypeID() else {
+            XCTFail()
+            return -1
+        }
+
+        let resultArray = theResult as! NSArray
+        return resultArray.count
+    }
 }
