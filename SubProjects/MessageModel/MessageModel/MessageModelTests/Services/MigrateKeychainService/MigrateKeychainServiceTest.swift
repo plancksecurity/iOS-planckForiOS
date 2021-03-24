@@ -110,11 +110,16 @@ class MigrateKeychainServiceTest: XCTestCase {
     }
 
     private func removeClientCertificates() {
-        let query: [CFString : Any] = [kSecClass: kSecClassIdentity,
-                                       kSecMatchLimit: kSecMatchLimitAll]
-        let deleteStatus = SecItemDelete(query as CFDictionary)
+        let util = ClientCertificateUtil()
 
-        XCTAssertEqual(deleteStatus, errSecSuccess)
+        let identityPairs = util.listExisting()
+        for (uuidLabel, secIndentity) in identityPairs {
+            let removeQuery: [CFString : Any] = [kSecAttrLabel: uuidLabel,
+                                                 kSecValueRef: secIndentity]
+
+            let removeStatus = SecItemDelete(removeQuery as CFDictionary)
+            XCTAssertEqual(removeStatus, errSecSuccess)
+        }
     }
 
     private func basicPasswordQuery(key: String,
