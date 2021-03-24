@@ -1,5 +1,5 @@
 //
-//  TestEncryptAndSendOnce.swift
+//  EncryptAndSendOnceTest.swift
 //  MessageModelTests
 //
 //  Created by Dirk Zimmermann on 16.03.21.
@@ -10,7 +10,7 @@ import XCTest
 
 @testable import MessageModel
 
-class TestEncryptAndSendOnce: PersistentStoreDrivenTestBase {
+class EncryptAndSendOnceTest: PersistentStoreDrivenTestBase {
     func testNothingToSend() throws {
         let sender: EncryptAndSendOnceProtocol = EncryptAndSendOnce()
 

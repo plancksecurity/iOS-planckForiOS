@@ -617,7 +617,7 @@
 		43F86BA424503E61008961DA /* KeyChainTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F86BA224503E61008961DA /* KeyChainTest.swift */; };
 		43F86BA624504B95008961DA /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc in Resources */ = {isa = PBXBuildFile; fileRef = 43F86BA524504B95008961DA /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc */; };
 		43F86BA824504C00008961DA /* MessageHeapBufferOverflow.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43F86BA724504C00008961DA /* MessageHeapBufferOverflow.txt */; };
-		43FC08C32600CC180056C23A /* TestEncryptAndSendOnce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FC08C22600CC180056C23A /* TestEncryptAndSendOnce.swift */; };
+		43FC08C32600CC180056C23A /* EncryptAndSendOnceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FC08C22600CC180056C23A /* EncryptAndSendOnceTest.swift */; };
 		43FFEE4723E17B2F005FE498 /* String+InboxFolderName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FFEE4623E17B2F005FE498 /* String+InboxFolderName.swift */; };
 		490FF7FE1E795B1500BC15F9 /* Int16+ImapFlagBits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490FF7FD1E795B1500BC15F9 /* Int16+ImapFlagBits.swift */; };
 		490FF8051E795B3900BC15F9 /* TestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490FF8021E795B3900BC15F9 /* TestUtil.swift */; };
@@ -1125,7 +1125,7 @@
 		43F86BA224503E61008961DA /* KeyChainTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyChainTest.swift; sourceTree = "<group>"; };
 		43F86BA524504B95008961DA /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc"; sourceTree = "<group>"; };
 		43F86BA724504C00008961DA /* MessageHeapBufferOverflow.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageHeapBufferOverflow.txt; sourceTree = "<group>"; };
-		43FC08C22600CC180056C23A /* TestEncryptAndSendOnce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestEncryptAndSendOnce.swift; sourceTree = "<group>"; };
+		43FC08C22600CC180056C23A /* EncryptAndSendOnceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptAndSendOnceTest.swift; sourceTree = "<group>"; };
 		43FFEE4623E17B2F005FE498 /* String+InboxFolderName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+InboxFolderName.swift"; sourceTree = "<group>"; };
 		490FF7FD1E795B1500BC15F9 /* Int16+ImapFlagBits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int16+ImapFlagBits.swift"; sourceTree = "<group>"; };
 		490FF8021E795B3900BC15F9 /* TestUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtil.swift; sourceTree = "<group>"; };
@@ -2517,7 +2517,7 @@
 		43FC08C12600CBEB0056C23A /* BackgroundTasks */ = {
 			isa = PBXGroup;
 			children = (
-				43FC08C22600CC180056C23A /* TestEncryptAndSendOnce.swift */,
+				43FC08C22600CC180056C23A /* EncryptAndSendOnceTest.swift */,
 			);
 			path = BackgroundTasks;
 			sourceTree = "<group>";
@@ -3644,7 +3644,7 @@
 				15ECD7061F5430C1002889B8 /* Message+TestUtils.swift in Sources */,
 				B7A1152522C4B55E00FB6E91 /* PrepareAccountForSavingServiceTest.swift in Sources */,
 				490FF8081E795B6C00BC15F9 /* Int16+FlagBitsTest.swift in Sources */,
-				43FC08C32600CC180056C23A /* TestEncryptAndSendOnce.swift in Sources */,
+				43FC08C32600CC180056C23A /* EncryptAndSendOnceTest.swift in Sources */,
 				153E4E4F1F5039C00021CBD8 /* PersistentStoreDrivenTestBase.swift in Sources */,
 				154D173023732FF7001FDF78 /* LoginImapOperationTest.swift in Sources */,
 				152881B422E1D7D000BBE7AE /* CdFolder+VirtualMailboxTest.swift in Sources */,
