@@ -43,7 +43,21 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
         let util = ClientCertificateUtil()
 
         let identityPairs = util.listExisting()
-        for (uuid, indentity) in identityPairs {
+        for (uuidLabel, secIndentity) in identityPairs {
+            let addIdentityAttributes: [CFString : Any] = [kSecReturnPersistentRef: true,
+                                                           kSecAttrLabel: uuidLabel,
+                                                           kSecValueRef: secIndentity,
+                                                           kSecAttrAccessGroup: keychainGroupTarget]
+
+            var resultRef: CFTypeRef? = nil
+            let identityStatus = SecItemAdd(addIdentityAttributes as CFDictionary, &resultRef);
+            if identityStatus != errSecSuccess {
+                if identityStatus == errSecDuplicateItem {
+                    Log.shared.logWarn(message: "Client certificate already exists: \(uuidLabel)")
+                } else {
+                    Log.shared.logError(message: "Could not migrate client certificate: \(uuidLabel)")
+                }
+            }
         }
     }
 
