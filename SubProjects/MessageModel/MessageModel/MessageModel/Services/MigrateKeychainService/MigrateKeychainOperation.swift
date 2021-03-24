@@ -32,14 +32,14 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
                 // could happen, don't interpret that as an error
                 return
             }
-            me.migrate()
+            me.migratePasswords()
             me.markAsFinished()
         }
     }
 
     // MARK: - Private
 
-    private func migrate() {
+    private func migratePasswords() {
         let allTheKeys = genericPasswordKeys()
 
         for theKey in allTheKeys {
