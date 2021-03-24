@@ -12,6 +12,7 @@ import XCTest
 
 class MigrateKeychainServiceTest: XCTestCase {
     var keysAdded = [String:String]()
+    var certificatesAdded = [String]()
 
     override func setUpWithError() throws {
         setupKeychainPasswords()
@@ -29,6 +30,9 @@ class MigrateKeychainServiceTest: XCTestCase {
                   password: nil,
                   accessGroup: keychainTargetGroup)
         }
+
+        let certUtil = ClientCertificateUtil()
+        XCTAssertEqual(certUtil.listExisting().count, certificatesAdded.count)
     }
 
     override func tearDownWithError() throws {
@@ -100,13 +104,13 @@ class MigrateKeychainServiceTest: XCTestCase {
     }
 
     private func setupClientCertificates() {
-        let certUtil = ClientCertificateUtil()
+        let certificateFilenames = ["Certificate_001.p12", "Certificate_002.p12", "Certificate_003.p12"]
 
-        storeCertificate(filename: "Certificate_001.p12", password: "uiae")
-        storeCertificate(filename: "Certificate_002.p12", password: "uiae")
-        storeCertificate(filename: "Certificate_003.p12", password: "uiae")
+        for certFilename in certificateFilenames {
+            storeCertificate(filename: certFilename, password: "uiae")
+        }
 
-        XCTAssertEqual(certUtil.listCertificates().count, 3)
+        certificatesAdded = certificateFilenames
     }
 
     private func removeClientCertificates() {
