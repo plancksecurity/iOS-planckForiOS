@@ -23,6 +23,6 @@ class MigrateKeychainService: OperationBasedService {
     }
 
     override func operations() -> [Operation] {
-        return []
+        return [MigrateKeychainOperation(keychainGroupTarget: keychainGroupTarget)]
     }
 }
