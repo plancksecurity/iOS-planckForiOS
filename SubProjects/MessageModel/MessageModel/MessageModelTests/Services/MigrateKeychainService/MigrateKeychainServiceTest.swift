@@ -231,7 +231,14 @@ class MigrateKeychainServiceTest: XCTestCase {
         var resultRef: CFTypeRef? = nil
         let identityStatus = SecItemCopyMatching(query as CFDictionary, &resultRef)
 
-        XCTAssertEqual(identityStatus, errSecSuccess)
+        if identityStatus == errSecItemNotFound {
+            return 0
+        }
+
+        guard identityStatus == errSecSuccess else {
+            XCTFail()
+            return -1
+        }
 
         guard let theResult = resultRef else {
             XCTFail()
