@@ -46,6 +46,15 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
         let identityPairs = util.listExisting()
 
         for (uuidLabel, secIndentity) in identityPairs {
+            let removeQuery: [CFString : Any] = [kSecAttrLabel: uuidLabel,
+                                                 kSecValueRef: secIndentity,
+                                                 kSecAttrAccessGroup: keychainGroupTarget]
+
+            let removeStatus = SecItemDelete(removeQuery as CFDictionary)
+            if removeStatus != errSecSuccess {
+                Log.shared.logError(message: "Could not delete client certificate \(uuidLabel)")
+            }
+
             let addQuery: [CFString : Any] = [kSecReturnPersistentRef: true,
                                               kSecAttrLabel: uuidLabel,
                                               kSecValueRef: secIndentity,
