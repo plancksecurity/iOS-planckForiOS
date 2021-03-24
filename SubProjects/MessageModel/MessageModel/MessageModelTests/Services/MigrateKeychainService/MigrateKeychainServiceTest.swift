@@ -33,6 +33,9 @@ class MigrateKeychainServiceTest: XCTestCase {
 
         let certUtil = ClientCertificateUtil()
         XCTAssertEqual(certUtil.listExisting().count, certificatesAdded.count)
+
+        XCTAssertEqual(numberOfCertificates(groupName: nil), certificatesAdded.count)
+        XCTAssertEqual(numberOfCertificates(groupName: keychainTargetGroup), 0)
     }
 
     override func tearDownWithError() throws {
@@ -70,6 +73,9 @@ class MigrateKeychainServiceTest: XCTestCase {
                   password: password(index: i),
                   accessGroup: keychainTargetGroup)
         }
+
+        XCTAssertEqual(numberOfCertificates(groupName: nil), certificatesAdded.count)
+        XCTAssertEqual(numberOfCertificates(groupName: keychainTargetGroup), certificatesAdded.count)
     }
 
     // MARK: - Private Helpers
