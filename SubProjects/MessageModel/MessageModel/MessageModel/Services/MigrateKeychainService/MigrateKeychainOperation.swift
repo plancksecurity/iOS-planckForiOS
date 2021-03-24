@@ -47,8 +47,7 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
 
         for (uuidLabel, secIndentity) in identityPairs {
             let removeQuery: [CFString : Any] = [kSecAttrLabel: uuidLabel,
-                                                 kSecValueRef: secIndentity,
-                                                 kSecAttrAccessGroup: keychainGroupTarget]
+                                                 kSecValueRef: secIndentity]
 
             let removeStatus = SecItemDelete(removeQuery as CFDictionary)
             if removeStatus != errSecSuccess {
