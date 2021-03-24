@@ -33,11 +33,19 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
                 return
             }
             me.migratePasswords()
+            me.migrateCertificates()
             me.markAsFinished()
         }
     }
 
     // MARK: - Private
+    private func migrateCertificates() {
+        let util = ClientCertificateUtil()
+
+        let identityPairs = util.listExisting()
+        for (uuid, indentity) in identityPairs {
+        }
+    }
 
     private func migratePasswords() {
         let allTheKeys = genericPasswordKeys()
