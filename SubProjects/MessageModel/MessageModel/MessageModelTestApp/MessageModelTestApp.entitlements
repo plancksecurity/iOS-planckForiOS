@@ -6,5 +6,9 @@
 	<array>
 		<string>group.security.pep.test.pep4ios</string>
 	</array>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(AppIdentifierPrefix)security.pep.test.keychain</string>
+	</array>
 </dict>
 </plist>

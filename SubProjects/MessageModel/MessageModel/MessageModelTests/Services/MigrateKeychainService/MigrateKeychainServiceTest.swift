@@ -87,7 +87,7 @@ class MigrateKeychainServiceTest: XCTestCase {
 
     let numberOfKeyPasswordPairs = 50
 
-    let keychainTargetGroup = "group.security.pep.test.pep4ios"
+    let keychainTargetGroup = "security.pep.test.keychain"
 
     private func key(index: Int) -> String {
         return "key_\(index)"
