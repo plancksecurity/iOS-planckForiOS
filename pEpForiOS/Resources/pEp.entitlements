@@ -10,7 +10,7 @@
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)security.pEp.keychain</string>
+		<string>$(AppIdentifierPrefix)security.pep.keychain</string>
 	</array>
 </dict>
 </plist>
