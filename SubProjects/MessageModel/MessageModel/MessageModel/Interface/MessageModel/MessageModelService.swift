@@ -11,6 +11,7 @@ import Foundation
 import PEPObjCAdapterTypes_iOS
 import PEPObjCAdapter_iOS
 import pEpIOSToolbox
+import pEp4iosIntern
 
 public protocol MessageModelServiceProtocol: ServiceProtocol {
 
@@ -99,7 +100,7 @@ extension MessageModelService {
                                passphraseProvider: PassphraseProviderProtocol) {
         //###
         // Servcies that run only once when the app starts
-        onetimeServices = []
+        onetimeServices = [MigrateKeychainService(keychainGroupTarget: kSharedKeychain)]
 
         //###
         // Servcies that run while the app is running (Send, decrypt, replicate, ...)
