@@ -199,7 +199,6 @@ class MigrateKeychainServiceTest: XCTestCase {
         }
 
         let status = SecItemAdd(query as CFDictionary, nil)
-        // -34018 errSecMissingEntitlement
         if status != noErr {
             XCTFail()
         }
