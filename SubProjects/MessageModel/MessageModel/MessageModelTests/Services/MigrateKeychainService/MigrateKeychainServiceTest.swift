@@ -150,6 +150,13 @@ class MigrateKeychainServiceTest: XCTestCase {
         }
 
         for i in 1...numberOfKeyPasswordPairs {
+            // Expectation: No entry in the source anymore
+            query(key: key(index: i),
+                  password: nil,
+                  accessGroup: keychainSourceGroup)
+        }
+
+        for i in 1...numberOfKeyPasswordPairs {
             // Expectation: All created entries exist specifically in the target
             query(key: key(index: i),
                   password: password(index: i),
