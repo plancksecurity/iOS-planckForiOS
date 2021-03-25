@@ -234,7 +234,9 @@ class MigrateKeychainServiceTest: XCTestCase {
             }
             XCTAssertEqual(str, thePassword, "key \(key) has \(theStr) stored, not the expected \(thePassword)")
         } else {
-            XCTAssertEqual(status, errSecItemNotFound)
+            if status != noErr {
+                XCTAssertEqual(status, errSecItemNotFound)
+            }
         }
     }
 
