@@ -16,7 +16,9 @@ class ClientCertificatesTestUtil {
     /// - Parameters:
     ///   - filename: The bundle resource representing the certificate data
     ///   - password: The password to unlock the certificate
-    static func storeCertificate(filename: String, password: String) -> Bool {
+    static func storeCertificate(filename: String,
+                                 password: String,
+                                 storeFn: (Data, String) throws -> () = ClientCertificateUtil().storeCertificate) -> Bool {
         let testBundle = Bundle(for: ClientCertificatesTestUtil.self)
         guard let url = testBundle.url(forResource: filename,
                                        withExtension: nil) else {
