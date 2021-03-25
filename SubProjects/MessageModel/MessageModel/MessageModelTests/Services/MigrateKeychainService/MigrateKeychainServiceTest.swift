@@ -8,6 +8,8 @@
 
 import XCTest
 
+import pEp4iosIntern
+
 @testable import MessageModel
 
 class MigrateKeychainServiceTest: XCTestCase {
@@ -87,7 +89,7 @@ class MigrateKeychainServiceTest: XCTestCase {
 
     let numberOfKeyPasswordPairs = 50
 
-    let keychainTargetGroup = "security.pep.test.keychain"
+    let keychainTargetGroup = kTeamId + ".security.pep.test.keychain"
 
     private func key(index: Int) -> String {
         return "key_\(index)"
