@@ -33,10 +33,12 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
                 return
             }
 
-            if me.havePasswordsInMainBundle() {
-                me.migratePasswords()
-                me.migrateCertificates()
+            if !me.havePasswordsInMainBundle() {
+                Log.shared.logWarn(message: "No passwords in the default app group")
             }
+
+            me.migratePasswords()
+            me.migrateCertificates()
 
             me.markAsFinished()
         }
