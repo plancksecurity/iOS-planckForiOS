@@ -33,10 +33,7 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
                 return
             }
 
-            let bundleIdentifier =  Bundle.main.bundleIdentifier
-            let passwords = me.genericPasswordKeys(accessGroup: bundleIdentifier)
-
-            if passwords.count > 0 {
+            if me.havePasswordsInMainBundle() {
                 me.migratePasswords()
                 me.migrateCertificates()
             }
@@ -46,6 +43,12 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
     }
 
     // MARK: - Private
+
+    private func havePasswordsInMainBundle() -> Bool {
+        let bundleIdentifier =  Bundle.main.bundleIdentifier
+        let passwords = genericPasswordKeys(accessGroup: bundleIdentifier)
+        return passwords.count > 0
+    }
 
     private func migratePasswords() {
         let allTheKeys = genericPasswordKeys()
