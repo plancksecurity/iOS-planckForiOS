@@ -21,13 +21,20 @@ class MigrateKeychainServiceTest: XCTestCase {
         setupClientCertificates()
 
         for i in 1...numberOfKeyPasswordPairs {
-            // Expectation: All created entries exist (somewhere)
+            // Expectation: All created password entries exist (somewhere)
             query(key: key(index: i),
                   password: password(index: i))
         }
 
         for i in 1...numberOfKeyPasswordPairs {
-            // Expectation: No entries in the target keychain
+            // Expectation: All created password entries exist in the source
+            query(key: key(index: i),
+                  password: password(index: i),
+                  accessGroup: keychainTargetGroup)
+        }
+
+        for i in 1...numberOfKeyPasswordPairs {
+            // Expectation: No password entries in the target keychain
             query(key: key(index: i),
                   password: nil,
                   accessGroup: keychainTargetGroup)
@@ -144,20 +151,20 @@ class MigrateKeychainServiceTest: XCTestCase {
 
     private func verifyEndConditions() {
         for i in 1...numberOfKeyPasswordPairs {
-            // Expectation: All created entries exist (somewhere)
+            // Expectation: All created password entries exist (somewhere)
             query(key: key(index: i),
                   password: password(index: i))
         }
 
         for i in 1...numberOfKeyPasswordPairs {
-            // Expectation: No entry in the source anymore
+            // Expectation: No password entry in the source anymore
             query(key: key(index: i),
                   password: nil,
                   accessGroup: keychainSourceGroup)
         }
 
         for i in 1...numberOfKeyPasswordPairs {
-            // Expectation: All created entries exist specifically in the target
+            // Expectation: All created password entries exist specifically in the target
             query(key: key(index: i),
                   password: password(index: i),
                   accessGroup: keychainTargetGroup)
