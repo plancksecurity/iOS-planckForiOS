@@ -8,6 +8,7 @@
 
 import Foundation
 
+import pEpIOSToolbox
 import pEp4iosIntern
 
 /// Service to migrate passwords, certificates from the default keychain
@@ -23,6 +24,11 @@ class MigrateKeychainService: OperationBasedService {
     }
 
     override func operations() -> [Operation] {
-        return [MigrateKeychainOperation(keychainGroupTarget: keychainGroupTarget)]
+        guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
+            Log.shared.errorAndCrash(message: "No bundle identifier")
+            return []
+        }
+        return [MigrateKeychainOperation(keychainGroupSource: bundleIdentifier,
+                                         keychainGroupTarget: keychainGroupTarget)]
     }
 }

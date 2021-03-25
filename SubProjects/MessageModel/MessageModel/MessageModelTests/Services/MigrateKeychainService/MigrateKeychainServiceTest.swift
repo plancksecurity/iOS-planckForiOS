@@ -59,7 +59,8 @@ class MigrateKeychainServiceTest: XCTestCase {
     func testOperation() throws {
         let expFinished = expectation(description: "expFinished")
 
-        let op = MigrateKeychainOperation(keychainGroupTarget: keychainTargetGroup)
+        let op = MigrateKeychainOperation(keychainGroupSource: bundleIdentifier,
+                                          keychainGroupTarget: keychainTargetGroup)
         op.completionBlock = {
             expFinished.fulfill()
         }
@@ -184,7 +185,7 @@ class MigrateKeychainServiceTest: XCTestCase {
 
     private func add(key: String,
                      password: String,
-                     serverType: String = MigrateKeychainServiceTest.defaultServerType
+                     serverType: String = MigrateKeychainServiceTest.defaultServerType,
                      accessGroup: String? = nil) {
         var query = basicPasswordQuery(key: key, password: password, serverType: serverType)
 

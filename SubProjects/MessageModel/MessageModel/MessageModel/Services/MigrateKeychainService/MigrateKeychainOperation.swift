@@ -16,12 +16,14 @@ import pEpIOSToolbox
 /// specified in the constructor.
 /// Used by `MigrateKeychainService`.
 class MigrateKeychainOperation: ConcurrentBaseOperation {
+    let keychainGroupSource: String
     let keychainGroupTarget: String
     let queue: DispatchQueue
 
     /// - parameter keychainGroupTarget: The name of the target keychain
     /// (where to migrate to), `kSharedKeychain` by default.
-    init(keychainGroupTarget: String = kSharedKeychain) {
+    init(keychainGroupSource: String, keychainGroupTarget: String = kSharedKeychain) {
+        self.keychainGroupSource = keychainGroupSource
         self.keychainGroupTarget = keychainGroupTarget
         self.queue = DispatchQueue(label: "MigrateKeychainOperationQueue")
     }
@@ -43,10 +45,10 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
     // MARK: - Private
 
     private func migratePasswords() {
-        let allTheKeys = genericPasswordKeys()
+        let allTheKeys = genericPasswordKeys(accessGroup: keychainGroupSource)
 
         for theKey in allTheKeys {
-            guard let thePassword = KeyChain.password(key: theKey) else {
+            guard let thePassword = password(key: theKey, accessGroup: keychainGroupSource) else {
                 Log.shared.logWarn(message: "Cannot get the password for \(theKey)")
                 return
             }
@@ -115,6 +117,33 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
             // -34018: errSecMissingEntitlement
             Log.shared.logWarn(message: "Could not save password for \(key), status \(status)")
         }
+    }
+
+    func password(key: String, accessGroup: String) -> String? {
+        let query: [String : Any] = [
+            kSecClass as String: kSecClassGenericPassword as String,
+            kSecMatchCaseInsensitive as String: kCFBooleanTrue as Any,
+            kSecReturnData as String: kCFBooleanTrue as Any,
+            kSecAttrService as String: KeyChain.defaultServerType,
+            kSecAttrAccount as String: key,
+            kSecAttrAccessGroup as String: accessGroup]
+
+        var result: AnyObject?
+        let status = withUnsafeMutablePointer(to: &result) {
+            SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
+        }
+
+        if status != noErr {
+            let warn = "Could not get password for \(key), status \(status)"
+            Log.shared.warn("%@", warn)
+        }
+        guard let r = result as? Data else {
+            let warn = "No password found for \(key)"
+            Log.shared.warn("%@", warn)
+            return nil
+        }
+        let str = String(data: r, encoding: String.Encoding.utf8)
+        return str
     }
 
     private func genericPasswordKeys(accessGroup: String? = nil) -> [String] {
