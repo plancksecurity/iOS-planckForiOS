@@ -65,12 +65,10 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
             let removeQuery: [CFString : Any] = [kSecAttrLabel: uuidLabel,
                                                  kSecValueRef: secIndentity]
 
-            /*
             let removeStatus = SecItemDelete(removeQuery as CFDictionary)
             if removeStatus != errSecSuccess {
                 Log.shared.logError(message: "Could not delete client certificate \(uuidLabel)")
             }
-             */
 
             let addQuery: [CFString : Any] = [kSecReturnPersistentRef: true,
                                               kSecAttrLabel: uuidLabel,
@@ -102,12 +100,10 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
             kSecAttrAccount as String: key,
             kSecValueData as String: thePassword]
 
-        /*
         let statusDelete = SecItemDelete(queryAll as CFDictionary)
         if statusDelete != noErr {
             Log.shared.logWarn(message: "Could not delete (old) password for \(key), status \(statusDelete)")
         }
-         */
 
         var queryTargetGroup = queryAll
         queryTargetGroup[kSecAttrAccessGroup as String] = keychainGroupTarget
