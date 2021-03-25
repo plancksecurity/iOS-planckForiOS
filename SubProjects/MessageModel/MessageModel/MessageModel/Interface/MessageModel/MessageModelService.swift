@@ -100,7 +100,7 @@ extension MessageModelService {
                                passphraseProvider: PassphraseProviderProtocol) {
         //###
         // Servcies that run only once when the app starts
-        onetimeServices = [MigrateKeychainService(keychainGroupTarget: kTeamId + "." + kSharedKeychain)]
+        onetimeServices = [MigrateKeychainService(keychainGroupTarget: "\(kTeamId).\(kSharedKeychain)")]
 
         //###
         // Servcies that run while the app is running (Send, decrypt, replicate, ...)
