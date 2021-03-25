@@ -40,6 +40,18 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
 
     // MARK: - Private
 
+    private func migratePasswords() {
+        let allTheKeys = genericPasswordKeys()
+
+        for theKey in allTheKeys {
+            guard let thePassword = KeyChain.password(key: theKey) else {
+                Log.shared.logWarn(message: "Cannot get the password for \(theKey)")
+                return
+            }
+            saveToTarget(key: theKey, password: thePassword)
+        }
+    }
+
     private func migrateCertificates() {
         let util = ClientCertificateUtil()
 
@@ -68,18 +80,6 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
                     Log.shared.logError(message: "Could not migrate client certificate: \(uuidLabel)")
                 }
             }
-        }
-    }
-
-    private func migratePasswords() {
-        let allTheKeys = genericPasswordKeys()
-
-        for theKey in allTheKeys {
-            guard let thePassword = KeyChain.password(key: theKey) else {
-                Log.shared.logWarn(message: "Cannot get the password for \(theKey)")
-                return
-            }
-            saveToTarget(key: theKey, password: thePassword)
         }
     }
 
