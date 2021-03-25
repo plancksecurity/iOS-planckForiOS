@@ -110,12 +110,16 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
         }
     }
 
-    private func genericPasswordKeys() -> [String] {
-        let query: [String : Any] = [
+    private func genericPasswordKeys(accessGroup: String? = nil) -> [String] {
+        var query: [String : Any] = [
             kSecClass as String: kSecClassGenericPassword as String,
             kSecReturnAttributes as String: kCFBooleanTrue as Any,
             kSecAttrService as String: KeyChain.defaultServerType,
             kSecMatchLimit as String: kSecMatchLimitAll]
+
+        if let theAccessGroup = accessGroup {
+            query[kSecAttrAccessGroup as String] = theAccessGroup
+        }
 
         var result: AnyObject?
         let status = withUnsafeMutablePointer(to: &result) {
