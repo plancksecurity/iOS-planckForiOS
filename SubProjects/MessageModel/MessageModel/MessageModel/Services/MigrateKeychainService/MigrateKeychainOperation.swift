@@ -32,8 +32,15 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
                 // could happen, don't interpret that as an error
                 return
             }
-            me.migratePasswords()
-            me.migrateCertificates()
+
+            let bundleIdentifier =  Bundle.main.bundleIdentifier
+            let passwords = me.genericPasswordKeys(accessGroup: bundleIdentifier)
+
+            if passwords.count > 0 {
+                me.migratePasswords()
+                me.migrateCertificates()
+            }
+
             me.markAsFinished()
         }
     }
