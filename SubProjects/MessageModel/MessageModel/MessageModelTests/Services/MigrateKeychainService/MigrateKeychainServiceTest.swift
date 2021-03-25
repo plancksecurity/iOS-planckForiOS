@@ -89,7 +89,10 @@ class MigrateKeychainServiceTest: XCTestCase {
 
     let numberOfKeyPasswordPairs = 50
 
-    let keychainTargetGroup = kTeamId + ".security.pep.test.keychain"
+    /// - Note: This must match a defined keychain ID in the app under test.
+    let keychainTargetGroupBase = "security.pep.test.keychain"
+
+    let keychainTargetGroup = kTeamId + "." + keychainTargetGroupBase
 
     private func key(index: Int) -> String {
         return "key_\(index)"
