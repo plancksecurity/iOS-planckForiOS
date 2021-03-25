@@ -6,8 +6,8 @@
 	<array/>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)security.pep.test.keychain1</string>
 		<string>$(AppIdentifierPrefix)security.pep.test.keychain2</string>
+		<string>$(AppIdentifierPrefix)security.pep.test.keychain1</string>
 	</array>
 </dict>
 </plist>
