@@ -17,6 +17,8 @@ class MigrateKeychainServiceTest: XCTestCase {
     var certificatesAdded = [String]()
 
     override func setUpWithError() throws {
+        bundleIdentifier = Bundle.main.bundleIdentifier
+
         setupKeychainPasswords()
         setupClientCertificates()
 
@@ -92,6 +94,9 @@ class MigrateKeychainServiceTest: XCTestCase {
     /// - Note: The suffix must match a defined keychain ID in the app under test.
     let keychainTargetGroup = "\(kTeamId).security.pep.test.keychain"
 
+    /// Will be set by setup.
+    var bundleIdentifier: String!
+
     private func key(index: Int) -> String {
         return "key_\(index)"
     }
@@ -104,7 +109,7 @@ class MigrateKeychainServiceTest: XCTestCase {
         for i in 1...numberOfKeyPasswordPairs {
             let theKey = key(index: i)
             let thePassword = password(index: i)
-            add(key: theKey, password: thePassword)
+            add(key: theKey, password: thePassword, accessGroup: bundleIdentifier)
             keysAdded[theKey] = thePassword
         }
     }
@@ -179,8 +184,14 @@ class MigrateKeychainServiceTest: XCTestCase {
 
     private func add(key: String,
                      password: String,
-                     serverType: String = MigrateKeychainServiceTest.defaultServerType) {
-        let query = basicPasswordQuery(key: key, password: password, serverType: serverType)
+                     serverType: String = MigrateKeychainServiceTest.defaultServerType
+                     accessGroup: String? = nil) {
+        var query = basicPasswordQuery(key: key, password: password, serverType: serverType)
+
+        if let theGroup = accessGroup {
+            query[kSecAttrAccessGroup as String] = theGroup
+        }
+
         let status = SecItemAdd(query as CFDictionary, nil)
         if status != noErr {
             XCTFail()
