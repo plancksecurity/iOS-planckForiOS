@@ -17,7 +17,12 @@ class MigrateKeychainServiceTest: XCTestCase {
     var certificatesAdded = [String]()
 
     override func setUpWithError() throws {
-        bundleIdentifier = Bundle.main.bundleIdentifier
+        guard let theBundleId = Bundle.main.bundleIdentifier else {
+            XCTFail("no Bundle.main.bundleIdentifier defined")
+            throw NSError()
+        }
+
+        bundleIdentifier = "\(kTeamId).\(theBundleId)"
 
         setupKeychainPasswords()
         setupClientCertificates()
