@@ -17,13 +17,6 @@ class MigrateKeychainServiceTest: XCTestCase {
     var certificatesAdded = [String]()
 
     override func setUpWithError() throws {
-        guard let theBundleId = Bundle.main.bundleIdentifier else {
-            XCTFail("no Bundle.main.bundleIdentifier defined")
-            throw NSError()
-        }
-
-        bundleIdentifier = "\(kTeamId).\(theBundleId)"
-
         setupKeychainPasswords()
         setupClientCertificates()
 
@@ -64,7 +57,7 @@ class MigrateKeychainServiceTest: XCTestCase {
     func testOperation() throws {
         let expFinished = expectation(description: "expFinished")
 
-        let op = MigrateKeychainOperation(keychainGroupSource: bundleIdentifier,
+        let op = MigrateKeychainOperation(keychainGroupSource: keychainSourceGroup,
                                           keychainGroupTarget: keychainTargetGroup)
         op.completionBlock = {
             expFinished.fulfill()
@@ -97,11 +90,11 @@ class MigrateKeychainServiceTest: XCTestCase {
 
     let numberOfKeyPasswordPairs = 50
 
-    /// - Note: The suffix must match a defined keychain ID in the app under test.
-    let keychainTargetGroup = "\(kTeamId).security.pep.test.keychain"
+    /// - Note: The suffix must match the first defined keychain ID in the app under test.
+    let keychainSourceGroup = "\(kTeamId).security.pep.test.keychain1"
 
-    /// Will be set by setup.
-    var bundleIdentifier: String!
+    /// - Note: The suffix must match any other than the first defined keychain ID in the app under test.
+    let keychainTargetGroup = "\(kTeamId).security.pep.test.keychain2"
 
     private func key(index: Int) -> String {
         return "key_\(index)"
@@ -115,7 +108,7 @@ class MigrateKeychainServiceTest: XCTestCase {
         for i in 1...numberOfKeyPasswordPairs {
             let theKey = key(index: i)
             let thePassword = password(index: i)
-            add(key: theKey, password: thePassword, accessGroup: bundleIdentifier)
+            add(key: theKey, password: thePassword, accessGroup: keychainSourceGroup)
             keysAdded[theKey] = thePassword
         }
     }
