@@ -34,6 +34,11 @@ public final class MessageModelService {
 
     /// Holds all Services that:
     /// * are supposed to be started whenever the app is started or comming to foreground
+    /// * are supposed to run only once
+    private var onetimeServices = [ServiceProtocol]()
+
+    /// Holds all Services that:
+    /// * are supposed to be started whenever the app is started or comming to foreground
     /// * are supposed to finish running tasks and not to restart when app goes to background
     private var runtimeServices = [ServiceProtocol]()
 
@@ -93,6 +98,10 @@ extension MessageModelService {
                                usePEPFolderProvider: UsePEPFolderProviderProtocol,
                                passphraseProvider: PassphraseProviderProtocol) {
         //###
+        // Servcies that run only once when the app starts
+        onetimeServices = []
+
+        //###
         // Servcies that run while the app is running (Send, decrypt, replicate, ...)
         let decryptService = DecryptService(backgroundTaskManager: backgroundTaskManager,
                                             errorPropagator: errorPropagator)
@@ -136,6 +145,10 @@ extension MessageModelService: ServiceProtocol {
                 return
             }
             // Forward service calls
+            me.onetimeServices.forEach {
+                $0.start()
+                $0.finish()
+            }
             me.runtimeServices.forEach { $0.start() }
         }
     }
