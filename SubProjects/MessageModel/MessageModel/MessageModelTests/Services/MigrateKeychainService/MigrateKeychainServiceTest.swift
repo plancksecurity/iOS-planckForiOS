@@ -21,7 +21,7 @@ class MigrateKeychainServiceTest: XCTestCase {
         setupClientCertificates()
 
         for i in 1...numberOfKeyPasswordPairs {
-            // Expectation: All created entries exist (somewhere in the default)
+            // Expectation: All created entries exist (somewhere)
             query(key: key(index: i),
                   password: password(index: i))
         }
@@ -144,7 +144,7 @@ class MigrateKeychainServiceTest: XCTestCase {
 
     private func verifyEndConditions() {
         for i in 1...numberOfKeyPasswordPairs {
-            // Expectation: All created entries exist (somewhere in the default)
+            // Expectation: All created entries exist (somewhere)
             query(key: key(index: i),
                   password: password(index: i))
         }
