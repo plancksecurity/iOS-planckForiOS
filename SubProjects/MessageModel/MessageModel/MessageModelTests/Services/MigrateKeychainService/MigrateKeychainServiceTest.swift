@@ -30,7 +30,7 @@ class MigrateKeychainServiceTest: XCTestCase {
             // Expectation: All created password entries exist in the source
             query(key: key(index: i),
                   password: password(index: i),
-                  accessGroup: keychainTargetGroup)
+                  accessGroup: keychainSourceGroup)
         }
 
         for i in 1...numberOfKeyPasswordPairs {
