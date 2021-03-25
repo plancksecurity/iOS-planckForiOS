@@ -40,9 +40,6 @@ class MigrateKeychainServiceTest: XCTestCase {
                   accessGroup: keychainTargetGroup)
         }
 
-        let certUtil = ClientCertificateUtil()
-        XCTAssertEqual(certUtil.listExisting().count, certificatesAdded.count)
-
         XCTAssertEqual(numberOfCertificates(groupName: nil), certificatesAdded.count)
         XCTAssertEqual(numberOfCertificates(groupName: keychainSourceGroup), certificatesAdded.count)
         XCTAssertEqual(numberOfCertificates(groupName: keychainTargetGroup), 0)
