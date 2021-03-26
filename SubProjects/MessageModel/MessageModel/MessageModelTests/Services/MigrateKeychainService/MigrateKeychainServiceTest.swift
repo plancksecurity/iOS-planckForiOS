@@ -82,7 +82,8 @@ class MigrateKeychainServiceTest: XCTestCase {
     func testService() throws {
         let expFinished = expectation(description: "expFinished")
 
-        let service = MigrateKeychainService(keychainGroupTarget: keychainTargetGroup)
+        let service = MigrateKeychainService(keychainGroupSource: keychainSourceGroup,
+                                             keychainGroupTarget: keychainTargetGroup)
         service.finishBlock = {
             expFinished.fulfill()
         }

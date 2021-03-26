@@ -15,20 +15,18 @@ import pEp4iosIntern
 /// to either the keychain group `kSharedKeychain` or another one,
 /// specified in the constructor.
 class MigrateKeychainService: OperationBasedService {
+    let keychainGroupSource: String
     let keychainGroupTarget: String
 
     /// - parameter keychainGroupTarget: The name of the target keychain
     /// (where to migrate to), `kSharedKeychain` by default.
-    init(keychainGroupTarget: String = kSharedKeychain) {
+    init(keychainGroupSource: String, keychainGroupTarget: String = kSharedKeychain) {
+        self.keychainGroupSource = keychainGroupSource
         self.keychainGroupTarget = keychainGroupTarget
     }
 
     override func operations() -> [Operation] {
-        guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
-            Log.shared.errorAndCrash(message: "No bundle identifier")
-            return []
-        }
-        return [MigrateKeychainOperation(keychainGroupSource: bundleIdentifier,
+        return [MigrateKeychainOperation(keychainGroupSource: keychainGroupSource,
                                          keychainGroupTarget: keychainGroupTarget)]
     }
 }

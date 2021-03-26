@@ -100,7 +100,12 @@ extension MessageModelService {
                                passphraseProvider: PassphraseProviderProtocol) {
         //###
         // Servcies that run only once when the app starts
-        onetimeServices = [MigrateKeychainService(keychainGroupTarget: "\(kTeamId).\(kSharedKeychain)")]
+        if let bundleIdentifier = Bundle.main.bundleIdentifier {
+            onetimeServices = [MigrateKeychainService(keychainGroupSource: "\(kTeamId).\(bundleIdentifier)",
+                                                      keychainGroupTarget: "\(kTeamId).\(kSharedKeychain)")]
+        } else {
+            Log.shared.errorAndCrash(message: "No bundle identifier")
+        }
 
         //###
         // Servcies that run while the app is running (Send, decrypt, replicate, ...)
