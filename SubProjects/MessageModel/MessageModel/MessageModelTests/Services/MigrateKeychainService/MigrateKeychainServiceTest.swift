@@ -121,7 +121,10 @@ class MigrateKeychainServiceTest: XCTestCase {
         for i in 1...numberOfKeyPasswordPairs {
             let theKey = key(index: i)
             let thePassword = password(index: i)
-            add(key: theKey, password: thePassword, accessGroup: keychainSourceGroup)
+
+            // Add them to the default keychain, whatever that is
+            add(key: theKey, password: thePassword, accessGroup: nil)
+
             keysAdded[theKey] = thePassword
         }
     }
