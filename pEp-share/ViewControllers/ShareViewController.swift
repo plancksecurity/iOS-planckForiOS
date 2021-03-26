@@ -71,3 +71,9 @@ extension ShareViewController {
         navigationController?.pushViewController(composeVC, animated: false)
     }
 }
+
+extension ShareViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        Log.shared.logInfo(message: "dismissed")
+    }
+}
