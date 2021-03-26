@@ -112,7 +112,6 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
 
         let status = SecItemAdd(queryTargetGroup as CFDictionary, nil)
         if status != noErr && status != errSecDuplicateItem {
-            // -34018: errSecMissingEntitlement
             Log.shared.logWarn(message: "Could not save password for \(key), status \(status)")
         }
     }
