@@ -40,8 +40,13 @@ class MigrateKeychainServiceTest: XCTestCase {
                   accessGroup: keychainTargetGroup)
         }
 
+        // Expectation: All certificates are in the keychain, somewhere
         XCTAssertEqual(numberOfCertificates(groupName: nil), certificatesAdded.count)
+
+        // Expectation: All certificates are in the default (source) keychain
         XCTAssertEqual(numberOfCertificates(groupName: keychainSourceGroup), certificatesAdded.count)
+
+        // Expectation: No certificates are in the target keychain
         XCTAssertEqual(numberOfCertificates(groupName: keychainTargetGroup), 0)
     }
 
