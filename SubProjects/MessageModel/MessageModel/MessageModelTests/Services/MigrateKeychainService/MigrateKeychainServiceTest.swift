@@ -59,6 +59,9 @@ class MigrateKeychainServiceTest: XCTestCase {
         XCTAssertEqual(clientUtil.listExisting().count, 0)
     }
 
+    func testNothing() throws {
+    }
+
     func testOperation() throws {
         let expFinished = expectation(description: "expFinished")
 
