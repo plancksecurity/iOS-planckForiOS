@@ -190,13 +190,18 @@ extension ClientCertificateUtil: ClientCertificateUtilProtocol {
 extension ClientCertificateUtil {
     /// - Returns: An array of client identities (`SecIdentity`) stored in the keychain,
     /// together with their label (which in our case is used as an UUID).
-    func listExisting() -> [(String, SecIdentity)] {
+    func listExisting(accessGroup: String? = nil) -> [(String, SecIdentity)] {
         var result = [(String, SecIdentity)]()
 
-        let query: [CFString : Any] = [kSecClass: kSecClassIdentity,
+        var query: [CFString : Any] = [kSecClass: kSecClassIdentity,
                                        kSecMatchLimit: kSecMatchLimitAll,
                                        kSecReturnRef: true,
                                        kSecReturnAttributes: true]
+
+        if let theAccessGroup = accessGroup {
+            query[kSecAttrAccessGroup] = theAccessGroup
+        }
+
         var resultRef: CFTypeRef? = nil
         let identityStatus = SecItemCopyMatching(query as CFDictionary, &resultRef)
 
