@@ -99,7 +99,8 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly as String,
             kSecAttrService as String: KeyChain.defaultServerType,
             kSecAttrAccount as String: key,
-            kSecValueData as String: thePassword]
+            kSecValueData as String: thePassword,
+            kSecAttrAccessGroup as String: keychainGroupSource]
 
         let statusDelete = SecItemDelete(queryAll as CFDictionary)
         if statusDelete != noErr {
