@@ -52,7 +52,7 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
                 Log.shared.logWarn(message: "Cannot get the password for \(theKey)")
                 return
             }
-            saveToTarget(key: theKey, password: thePassword)
+            saveToTargetAndDelete(key: theKey, password: thePassword)
         }
     }
 
@@ -87,7 +87,7 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
         }
     }
 
-    private func saveToTarget(key: String, password: String) {
+    private func saveToTargetAndDelete(key: String, password: String) {
         guard let thePassword = password.data(using: String.Encoding.utf8) else {
             Log.shared.logWarn(message: "Could not create password data for \(key)")
             return
