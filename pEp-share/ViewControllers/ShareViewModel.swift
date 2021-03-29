@@ -257,8 +257,17 @@ extension ShareViewModel {
                           extensionItem: NSExtensionItem,
                           attributedTitle: NSAttributedString?,
                           itemProvider: NSItemProvider) {
-        // TODO: - not yet implemented
-        Log.shared.debug("DEV: load PDF element is not yet implemented!")
+        itemProvider.loadItem(forTypeIdentifier: kUTTypeData as String,
+                              options: nil,
+                              completionHandler: { item, error in
+                                if let data = item as? Data {
+                                    sharedData.add(itemProvider: itemProvider,
+                                                   dataWithType: .file(attributedTitle, data))
+                                } else if let error = error {
+                                    Log.shared.log(error: error)
+                                }
+                                dispatchGroup.leave()
+                              })
     }
 }
 
