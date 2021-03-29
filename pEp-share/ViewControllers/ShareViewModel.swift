@@ -144,6 +144,11 @@ class ShareViewModel {
                 addNewTitleToTheBoday(bodyHtml: bodyHtml, title: title)
                 bodyHtml.append(NSAttributedString(string: "\(url)"))
 
+            case .plainText(let title, let text):
+                addNewTitleToTheBoday(bodyHtml: bodyHtml, title: title)
+                bodyHtml.append(NSAttributedString(string: text))
+                break
+
             default: // TODO: Implement all cases
                 break
             }
