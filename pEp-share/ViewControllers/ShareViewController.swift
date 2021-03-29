@@ -16,8 +16,6 @@ final class ShareViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        Appearance.setup()
-
         guard let context = extensionContext else {
             Log.shared.errorAndCrash(message: "Lost extension context!")
             return
