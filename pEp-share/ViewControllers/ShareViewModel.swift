@@ -53,7 +53,17 @@ class ShareViewModel {
             }
             for itemProvider in itemProviders {
                 let attributedTitle = extensionItem.attributedTitle
-                if itemProvider.hasItemConformingToTypeIdentifier(kUTTypePlainText as String) {
+
+                // images
+                if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeImage as String) {
+                    foundItemProviders.append(itemProvider)
+                    dispatchGroup.enter()
+                    loadImage(dispatchGroup: dispatchGroup,
+                              sharedData: sharedData,
+                              extensionItem: extensionItem,
+                              attributedTitle: attributedTitle,
+                              itemProvider: itemProvider)
+                } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypePlainText as String) {
                     foundItemProviders.append(itemProvider)
                     dispatchGroup.enter()
                     getPlainText(dispatchGroup: dispatchGroup,
@@ -69,14 +79,6 @@ class ShareViewModel {
                            extensionItem: extensionItem,
                            attributedTitle: attributedTitle,
                            itemProvider: itemProvider)
-                } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeImage as String) {
-                    foundItemProviders.append(itemProvider)
-                    dispatchGroup.enter()
-                    loadImage(dispatchGroup: dispatchGroup,
-                              sharedData: sharedData,
-                              extensionItem: extensionItem,
-                              attributedTitle: attributedTitle,
-                              itemProvider: itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeFileURL as String) {
                     foundItemProviders.append(itemProvider)
                     loadFile(dispatchGroup: dispatchGroup,
