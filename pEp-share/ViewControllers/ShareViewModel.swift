@@ -64,6 +64,7 @@ class ShareViewModel {
                               itemProvider: itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeFileURL as String) {
                     foundItemProviders.append(itemProvider)
+                    dispatchGroup.enter()
                     loadFile(dispatchGroup: dispatchGroup,
                              sharedData: sharedData,
                              extensionItem: extensionItem,
