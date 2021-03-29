@@ -70,14 +70,6 @@ class ShareViewModel {
                              extensionItem: extensionItem,
                              attributedTitle: attributedTitle,
                              itemProvider: itemProvider)
-                } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypePlainText as String) {
-                    foundItemProviders.append(itemProvider)
-                    dispatchGroup.enter()
-                    getPlainText(dispatchGroup: dispatchGroup,
-                                 sharedData: sharedData,
-                                 extensionItem: extensionItem,
-                                 attributedTitle: attributedTitle,
-                                 itemProvider: itemProvider)
                 } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeURL as String) {
                     foundItemProviders.append(itemProvider)
                     dispatchGroup.enter()
@@ -86,6 +78,14 @@ class ShareViewModel {
                            extensionItem: extensionItem,
                            attributedTitle: attributedTitle,
                            itemProvider: itemProvider)
+                } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypePlainText as String) {
+                    foundItemProviders.append(itemProvider)
+                    dispatchGroup.enter()
+                    getPlainText(dispatchGroup: dispatchGroup,
+                                 sharedData: sharedData,
+                                 extensionItem: extensionItem,
+                                 attributedTitle: attributedTitle,
+                                 itemProvider: itemProvider)
                 } else {
                     Log.shared.errorAndCrash(message: "Unsupported NSItemProvider")
                 }
