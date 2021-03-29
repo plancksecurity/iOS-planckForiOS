@@ -188,7 +188,6 @@ extension ShareViewModel {
                               extensionItem: NSExtensionItem,
                               attributedTitle: NSAttributedString?,
                               itemProvider: NSItemProvider) {
-        // TODO: Do we really have to "load" a simple text? Test.
         itemProvider.loadItem(forTypeIdentifier: kUTTypePlainText as String,
                               options: nil,
                               completionHandler: { item, error in
