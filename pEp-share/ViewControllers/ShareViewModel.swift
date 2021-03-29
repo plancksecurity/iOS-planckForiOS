@@ -257,12 +257,14 @@ extension ShareViewModel {
                           extensionItem: NSExtensionItem,
                           attributedTitle: NSAttributedString?,
                           itemProvider: NSItemProvider) {
-        itemProvider.loadItem(forTypeIdentifier: kUTTypeData as String,
+        itemProvider.loadItem(forTypeIdentifier: kUTTypeFileURL as String,
                               options: nil,
                               completionHandler: { item, error in
-                                if let data = item as? Data {
+                                if let fileUrl = item as? URL {
+                                    /*
                                     sharedData.add(itemProvider: itemProvider,
                                                    dataWithType: .file(attributedTitle, data))
+                                     */
                                 } else if let error = error {
                                     Log.shared.log(error: error)
                                 }
