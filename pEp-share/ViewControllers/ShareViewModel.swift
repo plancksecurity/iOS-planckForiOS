@@ -186,6 +186,8 @@ class ShareViewModel {
     // MARK: - Private
 
     private let encryptAndSendSharing: EncryptAndSendSharingProtocol
+
+    private let internalQueue = DispatchQueue(label: "ShareViewModelInternalQueue")
 }
 
 extension ShareViewModel {
@@ -259,16 +261,31 @@ extension ShareViewModel {
                           itemProvider: NSItemProvider) {
         itemProvider.loadItem(forTypeIdentifier: kUTTypeFileURL as String,
                               options: nil,
-                              completionHandler: { item, error in
+                              completionHandler: { [weak self] item, error in
                                 if let fileUrl = item as? URL {
-                                    /*
-                                    sharedData.add(itemProvider: itemProvider,
-                                                   dataWithType: .file(attributedTitle, data))
-                                     */
+                                    guard let me = self else {
+                                        // assume ok, user moved on
+                                        dispatchGroup.leave()
+                                        return
+                                    }
+                                    // It's not clear whether we are guaranteed to land
+                                    // in a background thread with completion, so use our own
+                                    me.internalQueue.async {
+                                        do {
+                                            let data = try Data(contentsOf: fileUrl)
+                                            sharedData.add(itemProvider: itemProvider,
+                                                           dataWithType: .file(attributedTitle, data))
+                                        } catch {
+                                            Log.shared.log(error: error)
+                                        }
+                                        dispatchGroup.leave()
+                                    }
                                 } else if let error = error {
                                     Log.shared.log(error: error)
+                                } else {
+                                    // no data loading was triggered, since we have no url
+                                    dispatchGroup.leave()
                                 }
-                                dispatchGroup.leave()
                               })
     }
 }
