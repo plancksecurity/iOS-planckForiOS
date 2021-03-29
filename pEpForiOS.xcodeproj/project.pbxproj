@@ -393,6 +393,7 @@
 		439C62412611BFD8001893BD /* SharedAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 439C62402611BFCF001893BD /* SharedAssets.xcassets */; };
 		439C62432611BFD9001893BD /* SharedAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 439C62402611BFCF001893BD /* SharedAssets.xcassets */; };
 		439C62D82611D41F001893BD /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69E3981E30F80E0022959E /* Appearance.swift */; };
+		439C633D2611E55C001893BD /* NavigationControllerWithAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C633C2611E55C001893BD /* NavigationControllerWithAppearance.swift */; };
 		439EA1542472797B005D6C9A /* KeyImportViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439EA1532472797B005D6C9A /* KeyImportViewModelTest.swift */; };
 		43A0B2CF214006FC00FB779D /* ReplyUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0B2CE214006FC00FB779D /* ReplyUtilTests.swift */; };
 		43A469FA21513B10002E1036 /* PEPSwipeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A469F921513B10002E1036 /* PEPSwipeTableViewCell.swift */; };
@@ -1032,6 +1033,7 @@
 		43985D092044296D0080FA9A /* OAuthAuthorizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthAuthorizer.swift; sourceTree = "<group>"; };
 		43993C2F2357587700FE311E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		439C62402611BFCF001893BD /* SharedAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = SharedAssets.xcassets; sourceTree = "<group>"; };
+		439C633C2611E55C001893BD /* NavigationControllerWithAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationControllerWithAppearance.swift; sourceTree = "<group>"; };
 		439EA1532472797B005D6C9A /* KeyImportViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportViewModelTest.swift; sourceTree = "<group>"; };
 		43A0B2CE214006FC00FB779D /* ReplyUtilTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyUtilTests.swift; sourceTree = "<group>"; };
 		43A469F921513B10002E1036 /* PEPSwipeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPSwipeTableViewCell.swift; sourceTree = "<group>"; };
@@ -2012,6 +2014,7 @@
 				3A503A9E253737B20070AB6A /* ShareViewController.swift */,
 				4300CF6225ECEF98003DBEB4 /* SharedData.swift */,
 				4300CF6625ECF4F4003DBEB4 /* ShareViewModel.swift */,
+				439C633C2611E55C001893BD /* NavigationControllerWithAppearance.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -3161,6 +3164,7 @@
 				434C1AF325D419C100F622DB /* SwipeActionDescriptor.swift in Sources */,
 				434A6C5125D2A3A700179335 /* CellViewModel.swift in Sources */,
 				434C19D125D3E1BF00F622DB /* DocumentAttachmentPickerViewModel.swift in Sources */,
+				439C633D2611E55C001893BD /* NavigationControllerWithAppearance.swift in Sources */,
 				434A6C5225D2A3AA00179335 /* TextViewContainingTableViewCell.swift in Sources */,
 				434A6C6625D2A3CF00179335 /* RecipientCell.swift in Sources */,
 				434C19FA25D3E68E00F622DB /* ComposeHelpers.swift in Sources */,
