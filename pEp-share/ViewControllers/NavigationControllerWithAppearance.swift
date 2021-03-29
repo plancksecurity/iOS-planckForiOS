@@ -10,5 +10,8 @@ import Foundation
 import UIKit
 
 class NavigationControllerWithAppearance: UINavigationController {
-    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        Appearance.setup()
+    }
 }
