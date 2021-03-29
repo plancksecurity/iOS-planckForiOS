@@ -54,7 +54,6 @@ class ShareViewModel {
             for itemProvider in itemProviders {
                 let attributedTitle = extensionItem.attributedTitle
 
-                // images
                 if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeImage as String) {
                     foundItemProviders.append(itemProvider)
                     dispatchGroup.enter()
