@@ -118,6 +118,12 @@ class ShareViewModel {
 }
 
 extension ShareViewModel {
+    /// Errors that can occurr during message/model creations
+    private enum MessageCreationError: Error {
+        /// There is no account that can be used.
+        case noAccount
+    }
+
     /// Creates a `ComposeViewModel.InitData` from shared data, suitable for creating a compose view model.
     private func composeInitData(sharedTypes: [SharedType]) -> ComposeViewModel.InitData {
         func addNewTitleToTheBody(bodyHtml: NSMutableAttributedString, title: NSAttributedString?) {
