@@ -110,6 +110,14 @@ class ShareViewModel {
         dispatchGroup.notify(queue: DispatchQueue.main, work: finishWorkItem)
     }
 
+    // MARK: - Private
+
+    private let encryptAndSendSharing: EncryptAndSendSharingProtocol
+
+    private let internalQueue = DispatchQueue(label: "ShareViewModelInternalQueue")
+}
+
+extension ShareViewModel {
     /// Creates a `ComposeViewModel.InitData` from shared data, suitable for creating a compose view model.
     private func composeInitData(sharedTypes: [SharedType]) -> ComposeViewModel.InitData {
         func addNewTitleToTheBody(bodyHtml: NSMutableAttributedString, title: NSAttributedString?) {
@@ -193,14 +201,6 @@ class ShareViewModel {
         return composeViewModel
     }
 
-    // MARK: - Private
-
-    private let encryptAndSendSharing: EncryptAndSendSharingProtocol
-
-    private let internalQueue = DispatchQueue(label: "ShareViewModelInternalQueue")
-}
-
-extension ShareViewModel {
     private func getPlainText(dispatchGroup: DispatchGroup,
                               sharedData: SharedData,
                               extensionItem: NSExtensionItem,
