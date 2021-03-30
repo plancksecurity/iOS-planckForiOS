@@ -27,7 +27,7 @@ final class ShareViewController: UIViewController {
     }
 }
 
-// MARK: - Private ShareViewModelDelegate
+// MARK: - Private ShareViewModelDelegate and Helpers
 
 extension ShareViewController: ShareViewModelDelegate {
     /// The possible errors this extension can give to the hosting app.
@@ -56,22 +56,23 @@ extension ShareViewController: ShareViewModelDelegate {
         }
 
         if let theError = error {
-            let title = NSLocalizedString("Error", comment: "Sharing extension error title")
-            let message = NSLocalizedString("Message could not be sent",
-                                            comment: "Sharing extension message send error")
-            func cancelRequest() {
-                extensionContext?.cancelRequest(withError: theError)
-            }
-            UIUtils.showAlertWithOnlyPositiveButton(title: title,
-                                                    message: message,
-                                                    completion: cancelRequest)
+            extensionContext?.cancelRequest(withError: theError)
         } else {
             extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
         }
     }
 
     func noAccount() {
-        extensionContext?.cancelRequest(withError: SharingError.noAccount)
+        func cancelRequest() {
+            extensionContext?.cancelRequest(withError: SharingError.noAccount)
+        }
+
+        let title = NSLocalizedString("Error", comment: "Sharing extension error title")
+        let message = NSLocalizedString("No Account found",
+                                        comment: "Sharing extension has no account")
+        UIUtils.showAlertWithOnlyPositiveButton(title: title,
+                                                message: message,
+                                                completion: cancelRequest)
     }
 
     func messageIsBeingSent() {
