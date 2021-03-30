@@ -152,7 +152,16 @@ class ShareViewModel {
                 bodyHtml.append(NSAttributedString(string: text))
                 break
 
-            case .file(let title, let mimeType, let data):
+            case .file(let title, let mimeType, let fileData):
+                addNewTitleToTheBoday(bodyHtml: bodyHtml, title: title)
+                let session = Session()
+                session.performAndWait() {
+                    let attachment = Attachment(data: fileData,
+                                                mimeType: mimeType,
+                                                contentDisposition: .attachment,
+                                                session: session)
+                    nonInlinedAttachments.append(attachment)
+                }
                 break
             }
         }
