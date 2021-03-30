@@ -151,7 +151,7 @@ class ShareViewModel {
                 bodyHtml.append(NSAttributedString(string: text))
                 break
 
-            case .file(let title, let data):
+            case .file(let title, let mimeType, let data):
                 break
             }
         }
@@ -269,13 +269,16 @@ extension ShareViewModel {
                                         dispatchGroup.leave()
                                         return
                                     }
+
+                                    let mimeType = MimeTypeUtils.mimeType(fromURL: fileUrl)
+
                                     // It's not clear whether we are guaranteed to land
                                     // in a background thread with completion, so use our own
                                     me.internalQueue.async {
                                         do {
                                             let data = try Data(contentsOf: fileUrl)
                                             sharedData.add(itemProvider: itemProvider,
-                                                           dataWithType: .file(attributedTitle, data))
+                                                           dataWithType: .file(attributedTitle, mimeType, data))
                                         } catch {
                                             Log.shared.log(error: error)
                                         }

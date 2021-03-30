@@ -29,9 +29,8 @@ public enum SharedType {
     /// Will get inlined in the message.
     case image (NSAttributedString?, UIImage, Data, String)
 
-    /// A general file, not getting inlined,
-    /// together with an optional title
-    case file (NSAttributedString?, Data)
+    /// A general file, not getting inlined, together with an optional title and its mime type
+    case file (NSAttributedString?, String, Data)
 }
 
 /// Stores items shared by the user, complete with their types and the  data (once loaded).
