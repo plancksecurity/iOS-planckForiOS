@@ -109,7 +109,7 @@ class ShareViewModel {
 
     /// Creates a `ComposeViewModel.InitData` from shared data, suitable for creating a compose view model.
     public func composeInitData(sharedTypes: [SharedType]) -> ComposeViewModel.InitData {
-        func addNewTitleToTheBoday(bodyHtml: NSMutableAttributedString, title: NSAttributedString?) {
+        func addNewTitleToTheBody(bodyHtml: NSMutableAttributedString, title: NSAttributedString?) {
             if bodyHtml.length > 0 {
                 bodyHtml.append(NSAttributedString(string: "\n\n"))
             }
@@ -127,7 +127,7 @@ class ShareViewModel {
         for sharedType in sharedTypes {
             switch sharedType {
             case .image(let title, let image, let imageData, let mimeType):
-                addNewTitleToTheBoday(bodyHtml: bodyHtml, title: title)
+                addNewTitleToTheBody(bodyHtml: bodyHtml, title: title)
 
                 let imageWidth: CGFloat = 200.0 // arbitrary, but should fit all devices
 
@@ -144,16 +144,16 @@ class ShareViewModel {
                 }
 
             case .url(let title, let url):
-                addNewTitleToTheBoday(bodyHtml: bodyHtml, title: title)
+                addNewTitleToTheBody(bodyHtml: bodyHtml, title: title)
                 bodyHtml.append(NSAttributedString(string: "\(url)"))
 
             case .plainText(let title, let text):
-                addNewTitleToTheBoday(bodyHtml: bodyHtml, title: title)
+                addNewTitleToTheBody(bodyHtml: bodyHtml, title: title)
                 bodyHtml.append(NSAttributedString(string: text))
                 break
 
             case .file(let title, let mimeType, let fileData):
-                addNewTitleToTheBoday(bodyHtml: bodyHtml, title: title)
+                addNewTitleToTheBody(bodyHtml: bodyHtml, title: title)
                 let session = Session()
                 session.performAndWait() {
                     let attachment = Attachment(data: fileData,
