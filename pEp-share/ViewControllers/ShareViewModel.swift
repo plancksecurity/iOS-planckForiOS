@@ -242,8 +242,8 @@ extension ShareViewModel {
                               completionHandler: { item, error in
                                 if let imgUrl = item as? URL,
                                    let imgData = try? Data(contentsOf: imgUrl),
-                                   let img = UIImage(data: imgData),
-                                   let mimeType = itemProvider.supportedMimeTypeForInlineAttachment() {
+                                   let img = UIImage(data: imgData) {
+                                    let mimeType = itemProvider.supportedMimeTypeForInlineAttachment() ?? MimeTypeUtils.mimeType(fromURL: imgUrl)
                                     sharedData.add(itemProvider: itemProvider,
                                                    dataWithType: .image(attributedTitle,
                                                                         img,
