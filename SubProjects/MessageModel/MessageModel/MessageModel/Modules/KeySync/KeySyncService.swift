@@ -87,12 +87,20 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                 Log.shared.errorAndCrash("No keySyncStateProvider")
                 return
             }
-            do {
-                try PEPSession().disableAllSyncChannels()
-            } catch {
-                Log.shared.errorAndCrash("disableAllSyncChannels failed with error: %@",
-                                         error.localizedDescription)
-            }
+            // Intentionally commented out.
+            //
+            // Background: the implementation here is correctly following the new spec (see
+            // IOS-2735), but due to known Engine issues we get crashes calling it on a grouped
+            // device.
+            //
+            // Comment back in after those issues are fixed in Engine.
+            //
+            //            do {
+            //                try PEPSession().disableAllSyncChannels()
+            //            } catch {
+            //                Log.shared.errorAndCrash("disableAllSyncChannels failed with error: %@",
+            //                                         error.localizedDescription)
+            //            }
             me.moc.performAndWait {
                 guard
                     let cdAccounts = try? me.qrc.getResults(),
