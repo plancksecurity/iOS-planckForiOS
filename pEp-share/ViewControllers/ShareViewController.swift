@@ -67,7 +67,9 @@ extension ShareViewController: ShareViewModelDelegate {
     }
 
     func messageIsBeingSent() {
-        viewBusyState = view.displayAsBusy()
+        if let theView = navigationController?.view {
+            viewBusyState = theView.displayAsBusy()
+        }
     }
 }
 
