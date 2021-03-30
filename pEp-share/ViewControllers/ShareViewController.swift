@@ -12,6 +12,7 @@ import pEpIOSToolboxForExtensions
 
 final class ShareViewController: UIViewController {
     var vm = ShareViewModel()
+    var viewBusyState: ViewBusyState?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +50,11 @@ extension ShareViewController: ShareViewModelDelegate {
     }
 
     func messageSent(error: Error?) {
+        if let theViewBusyState = viewBusyState {
+            view.stopDisplayingAsBusy(viewBusyState: theViewBusyState)
+            viewBusyState = nil
+        }
+
         if let theError = error {
             extensionContext?.cancelRequest(withError: theError)
         } else {
@@ -61,7 +67,7 @@ extension ShareViewController: ShareViewModelDelegate {
     }
 
     func messageIsBeingSent() {
-        // TODO
+        viewBusyState = view.displayAsBusy()
     }
 }
 
