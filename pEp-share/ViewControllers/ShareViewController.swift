@@ -59,6 +59,10 @@ extension ShareViewController: ShareViewModelDelegate {
     func noAccount() {
         extensionContext?.cancelRequest(withError: SharingError.noAccount)
     }
+
+    func messageIsBeingSent() {
+        // TODO
+    }
 }
 
 // MARK: - Private Extension

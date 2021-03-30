@@ -32,6 +32,10 @@ protocol ShareViewModelDelegate: class {
 
     /// No account has yet been set up, sharing is impossible.
     func noAccount()
+
+    /// User has tapped "Send", nothing to do now except wait for success or error.
+    /// In response, prevent further UI actions (like tapping "Send" directly again), maybe display some animation.
+    func messageIsBeingSent()
 }
 
 class ShareViewModel {
