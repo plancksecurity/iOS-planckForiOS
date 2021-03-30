@@ -122,6 +122,7 @@ class ShareViewModel {
         let bodyHtml = NSMutableAttributedString(string: "")
 
         var inlinedAttachments = [Attachment]()
+        var nonInlinedAttachments = [Attachment]()
 
         for sharedType in sharedTypes {
             switch sharedType {
@@ -170,7 +171,7 @@ class ShareViewModel {
                                                  subject: subject,
                                                  bodyHtml: NSAttributedString(attributedString: bodyHtml),
                                                  inlinedAttachments: inlinedAttachments,
-                                                 nonInlinedAttachments: [])
+                                                 nonInlinedAttachments: nonInlinedAttachments)
         return initData
     }
 
