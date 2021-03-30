@@ -102,8 +102,15 @@ class ShareViewModel {
                 return
             }
 
-            let composeVM = me.composeViewModel(sharedTypes: sharedData.allSharedTypes())
-            me.shareViewModelDelegate?.startComposeView(composeViewModel: composeVM)
+            do {
+                let composeVM = try me.composeViewModel(sharedTypes: sharedData.allSharedTypes())
+                me.shareViewModelDelegate?.startComposeView(composeViewModel: composeVM)
+            } catch MessageCreationError.noAccount {
+                me.shareViewModelDelegate?.noAccount()
+            } catch {
+                Log.shared.errorAndCrash(error: error)
+                me.shareViewModelDelegate?.canceledByUser()
+            }
         }
 
         // let the dispatch group call us when all is done
