@@ -31,6 +31,7 @@ final class ShareViewController: UIViewController {
 extension ShareViewController: ShareViewModelDelegate {
     /// The possible errors this extension can give to the hosting app.
     enum SharingError: Error {
+        case noAccount
         case userCanceled
         case messageCouldNotBeSaved
     }
@@ -53,6 +54,10 @@ extension ShareViewController: ShareViewModelDelegate {
         } else {
             extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
         }
+    }
+
+    func noAccount() {
+        extensionContext?.cancelRequest(withError: SharingError.noAccount)
     }
 }
 

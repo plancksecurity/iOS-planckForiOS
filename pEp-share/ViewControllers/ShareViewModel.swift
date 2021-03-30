@@ -29,6 +29,9 @@ protocol ShareViewModelDelegate: class {
     /// If called with a nil `Error`, the message was succesfully sent,
     /// if not, `error` will contain the error.
     func messageSent(error: Error?)
+
+    /// No account has yet been set up, sharing is impossible.
+    func noAccount()
 }
 
 class ShareViewModel {
