@@ -59,7 +59,7 @@
 "WAK-KE-bk0.text" = "p≡p verwendet ein Datenschutzstatus-Symbol, um anzuzeigen, wie sicher eine Kommunikation ist";
 
 /* Class = "UILabel"; text = "If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle."; ObjectID = "wF1-W3-tf3"; */
-"wF1-W3-tf3.text" = "Wenn die Trustwords nicht korrekt sind, kann es um eine man-in-the-middle Attacke handeln.";
+"wF1-W3-tf3.text" = "Wenn die Trustwords nicht korrekt sind, kann es sich um eine man-in-the-middle Attacke handeln.";
 
 /* Class = "UILabel"; text = "Welcome to the p≡p Tutorial"; ObjectID = "XKD-ea-9Kh"; */
 "XKD-ea-9Kh.text" = "Willkommen im p≡p Tutorial";
