@@ -111,7 +111,7 @@ class ShareViewModel {
     }
 
     /// Creates a `ComposeViewModel.InitData` from shared data, suitable for creating a compose view model.
-    public func composeInitData(sharedTypes: [SharedType]) -> ComposeViewModel.InitData {
+    private func composeInitData(sharedTypes: [SharedType]) -> ComposeViewModel.InitData {
         func addNewTitleToTheBody(bodyHtml: NSMutableAttributedString, title: NSAttributedString?) {
             if bodyHtml.length > 0 {
                 bodyHtml.append(NSAttributedString(string: "\n\n"))
