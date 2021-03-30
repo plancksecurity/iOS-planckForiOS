@@ -127,7 +127,7 @@ extension TutorialStepViewController {
         static let someTrustwords = NSLocalizedString("OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER", comment: "Some trustwords")
         static let confirmButton = NSLocalizedString("Confirm", comment: "Confirm correct trustwords/PGP fingerprint")
         static let declineButton = NSLocalizedString("Decline", comment: "Incorrect trustwords/PGP fingerprint")
-        static let privacyStatusIconExplanation = NSLocalizedString("When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication parner.", comment: "Privacy status explanation Label")
+        static let privacyStatusIconExplanation = NSLocalizedString("When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication partner.", comment: "Privacy status explanation Label")
         static let confirmTrustwordsExplanation = NSLocalizedString("When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted.", comment: "Confirm Trustwords explanation Label")
 
         // Step 3
