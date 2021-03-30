@@ -125,8 +125,8 @@ extension ShareViewModel {
     }
 
     /// Creates a compose VM from the given shared data.
-    private func composeViewModel(sharedTypes: [SharedType]) -> ComposeViewModel {
-        let initData = composeInitData(sharedTypes: sharedTypes)
+    private func composeViewModel(sharedTypes: [SharedType]) throws -> ComposeViewModel {
+        let initData = try composeInitData(sharedTypes: sharedTypes)
         let composeVMState = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
         let composeViewModel = ComposeViewModel(state: composeVMState,
                                                 offerToSaveDraftOnCancel: false)
@@ -135,7 +135,7 @@ extension ShareViewModel {
     }
 
     /// Creates a `ComposeViewModel.InitData` from shared data, suitable for creating a compose view model.
-    private func composeInitData(sharedTypes: [SharedType]) -> ComposeViewModel.InitData {
+    private func composeInitData(sharedTypes: [SharedType]) throws -> ComposeViewModel.InitData {
         func addNewTitleToTheBody(bodyHtml: NSMutableAttributedString, title: NSAttributedString?) {
             if bodyHtml.length > 0 {
                 bodyHtml.append(NSAttributedString(string: "\n\n"))
@@ -195,9 +195,7 @@ extension ShareViewModel {
         }
 
         guard let defaultAccount = Account.defaultAccount() else {
-            // TODO: Indicate the error to the user (UI)
-            Log.shared.errorAndCrash(message: "Sharing extension needs an account to send from")
-            return ComposeViewModel.InitData()
+            throw MessageCreationError.noAccount
         }
 
         let initData = ComposeViewModel.InitData(prefilledFrom: defaultAccount.user,
