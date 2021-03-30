@@ -83,35 +83,6 @@ extension AppDelegate {
         Log.shared.logDebugInfo()
 
         if #available(iOS 13.0, *) {
-            // Register background sending of outstanding messages,
-            // used by the sharing extension
-            Log.shared.logInfo(message: "BGProcessingTaskRequest: Registering BGTaskScheduler.shared.register(forTaskWithIdentifier: \(kBackgroundTaskSend)")
-            let backgroundTaskSendSuccess = BGTaskScheduler.shared.register(forTaskWithIdentifier: kBackgroundTaskSend,
-                                            using: nil) { [weak self] task in
-                Log.shared.logInfo(message: "Start processing BGProcessingTaskRequest \(kBackgroundTaskSend)")
-
-                guard let me = self else {
-                    Log.shared.lostMySelf()
-                    return
-                }
-
-                task.expirationHandler = {
-                    me.encryptAndSendOnce.cancel()
-                }
-
-                me.encryptAndSendOnce.sendAllOutstandingMessages() { error in
-                    if let theError = error {
-                        Log.shared.log(error: theError)
-                    }
-                    let hasError = error != nil
-                    task.setTaskCompleted(success: hasError)
-                }
-            }
-
-            if !backgroundTaskSendSuccess {
-                Log.shared.logError(message: "Could not register bg task\(kBackgroundTaskSend)")
-            }
-
             Log.shared.info("BGAppRefreshTask: Registering BGTaskScheduler.shared.register(forTaskWithIdentifier: ...")
             BGTaskScheduler.shared.register(forTaskWithIdentifier: Constants.appRefreshTaskBackgroundtaskBackgroundfetchSchedulerid,
                                             using: nil) { [weak self] task in

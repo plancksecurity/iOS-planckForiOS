@@ -5,7 +5,6 @@
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>security.pep.pep4ios.backgroundtaskschedulerid.backgroundfetch</string>
-		<string>security.pep.pep4ios.share.backgroundtaskschedulerid.send</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en_US</string>

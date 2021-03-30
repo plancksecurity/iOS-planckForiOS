@@ -57,19 +57,10 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
                                                             errorContainer: errorPropagator)
 
             sendOp.addDependency(loginOP)
-            sendOp.completionBlock = { [weak self] in
+            sendOp.completionBlock = {
                 if errorPropagator.hasErrors {
-                    if #available(iOS 13.0, *) {
-                        // fall back to background task
-                        guard let me = self else {
-                            Log.shared.lostMySelf()
-                            return
-                        }
-                        me.scheduleAppSend(completion: completion)
-                    } else {
-                        // signal the error
-                        completion(errorPropagator.error)
-                    }
+                    // signal the error
+                    completion(errorPropagator.error)
                 } else {
                     completion(nil)
                 }
@@ -84,20 +75,4 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
     private let privateMoc = Stack.shared.newPrivateConcurrentContext
 
     private let queue = OperationQueue()
-
-    // MARK: Private Functions
-
-    @available(iOS 13.0, *)
-    private func scheduleAppSend(completion: @escaping (Error?) -> ()) {
-        let request = BGProcessingTaskRequest(identifier: kBackgroundTaskSend)
-        request.requiresNetworkConnectivity = true
-
-        do {
-            try BGTaskScheduler.shared.submit(request)
-            Log.shared.logInfo(message: "BGProcessingTaskRequest(identifier: \(kBackgroundTaskSend))")
-            completion(nil)
-        } catch {
-            completion(error)
-        }
-    }
 }
