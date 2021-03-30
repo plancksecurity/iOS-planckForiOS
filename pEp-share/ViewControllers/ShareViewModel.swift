@@ -151,7 +151,7 @@ class ShareViewModel {
                 bodyHtml.append(NSAttributedString(string: text))
                 break
 
-            default: // TODO: Implement all cases
+            case .file(let title, let data):
                 break
             }
         }
