@@ -450,6 +450,7 @@
 		439B16AD22802B6B00201DE5 /* VerifiableAccountIMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16A822802B6B00201DE5 /* VerifiableAccountIMAP.swift */; };
 		439B16B222802D3800201DE5 /* VerifiableAccountTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16B122802D3800201DE5 /* VerifiableAccountTest.swift */; };
 		439B16B622802F0600201DE5 /* TestDataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16B422802F0600201DE5 /* TestDataBase.swift */; };
+		439C66BD26137405001893BD /* AccountVerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */; };
 		439CAC832562AC220043077E /* KeySyncStateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CAC822562AC220043077E /* KeySyncStateProvider.swift */; };
 		439CAC8B2562ADF40043077E /* MessageID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CAC8A2562ADF40043077E /* MessageID.swift */; };
 		439CAC902562AEA70043077E /* ServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CAC8F2562AEA70043077E /* ServiceProtocol.swift */; };
@@ -3101,6 +3102,7 @@
 				434C232725D6A24400F622DB /* FetchMessagesInImapFolderOperation.swift in Sources */,
 				434C24B325D6D3C300F622DB /* FolderType+IMAP.swift in Sources */,
 				434C236625D6B93A00F622DB /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift in Sources */,
+				439C66BD26137405001893BD /* AccountVerificationResult.swift in Sources */,
 				436FD21925DA806E00D929B3 /* Attachment+SessionAware.swift in Sources */,
 				434C218C25D696F700F622DB /* MessageModel.xcdatamodeld in Sources */,
 				434C227225D69BA100F622DB /* MessageID.swift in Sources */,
