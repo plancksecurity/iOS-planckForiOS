@@ -42,7 +42,16 @@ extension ShareViewController: ShareViewModelDelegate {
     }
 
     func outgoingMessageCouldNotBeSaved() {
-        extensionContext?.cancelRequest(withError: SharingError.messageCouldNotBeSaved)
+        func cancelRequest() {
+            extensionContext?.cancelRequest(withError: SharingError.messageCouldNotBeSaved)
+        }
+
+        let title = NSLocalizedString("Error", comment: "Sharing extension error title")
+        let message = NSLocalizedString("Could not save the message for sending",
+                                        comment: "Sharing extension could not save a message")
+        UIUtils.showAlertWithOnlyPositiveButton(title: title,
+                                                message: message,
+                                                completion: cancelRequest)
     }
 
     func canceledByUser() {
