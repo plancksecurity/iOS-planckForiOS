@@ -124,6 +124,16 @@ extension ShareViewModel {
         case noAccount
     }
 
+    /// Creates a compose VM from the given shared data.
+    private func composeViewModel(sharedTypes: [SharedType]) -> ComposeViewModel {
+        let initData = composeInitData(sharedTypes: sharedTypes)
+        let composeVMState = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
+        let composeViewModel = ComposeViewModel(state: composeVMState,
+                                                offerToSaveDraftOnCancel: false)
+        composeViewModel.composeViewModelEndActionDelegate = self
+        return composeViewModel
+    }
+
     /// Creates a `ComposeViewModel.InitData` from shared data, suitable for creating a compose view model.
     private func composeInitData(sharedTypes: [SharedType]) -> ComposeViewModel.InitData {
         func addNewTitleToTheBody(bodyHtml: NSMutableAttributedString, title: NSAttributedString?) {
@@ -195,16 +205,6 @@ extension ShareViewModel {
                                                  inlinedAttachments: inlinedAttachments,
                                                  nonInlinedAttachments: nonInlinedAttachments)
         return initData
-    }
-
-    /// Creates a compose VM from the given shared data.
-    private func composeViewModel(sharedTypes: [SharedType]) -> ComposeViewModel {
-        let initData = composeInitData(sharedTypes: sharedTypes)
-        let composeVMState = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
-        let composeViewModel = ComposeViewModel(state: composeVMState,
-                                                offerToSaveDraftOnCancel: false)
-        composeViewModel.composeViewModelEndActionDelegate = self
-        return composeViewModel
     }
 
     private func getPlainText(dispatchGroup: DispatchGroup,
