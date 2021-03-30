@@ -398,6 +398,7 @@
 		439C663526136D3A001893BD /* DisplayUserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152130531FD00B7A00688DF2 /* DisplayUserError.swift */; };
 		439C666C26136DF5001893BD /* OAuthAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43985D092044296D0080FA9A /* OAuthAuthorizer.swift */; };
 		439C66A326136E72001893BD /* OAuth2AuthorizationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438052881FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift */; };
+		439C66A526136EC5001893BD /* OAuth2ConfigurationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431C6E031FE7A85200E23BE0 /* OAuth2ConfigurationProtocol.swift */; };
 		439EA1542472797B005D6C9A /* KeyImportViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439EA1532472797B005D6C9A /* KeyImportViewModelTest.swift */; };
 		43A0B2CF214006FC00FB779D /* ReplyUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0B2CE214006FC00FB779D /* ReplyUtilTests.swift */; };
 		43A469FA21513B10002E1036 /* PEPSwipeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A469F921513B10002E1036 /* PEPSwipeTableViewCell.swift */; };
@@ -3249,6 +3250,7 @@
 				434A6C6125D2A3C500179335 /* TextAttachment.swift in Sources */,
 				434C19B425D3DC3F00F622DB /* AppSettings.swift in Sources */,
 				434C19F725D3E64D00F622DB /* HtmlConversions.swift in Sources */,
+				439C66A526136EC5001893BD /* OAuth2ConfigurationProtocol.swift in Sources */,
 				434C1AAF25D4103400F622DB /* UrlClickHandlerProtocol.swift in Sources */,
 				434A6C5325D2A3AF00179335 /* AccountCell.swift in Sources */,
 				43C4156525EE5CA50071C608 /* Attachment+InlinedImage.swift in Sources */,
