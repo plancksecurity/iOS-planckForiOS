@@ -168,7 +168,6 @@ extension ComposeViewModel {
 
         /// Used by the sharing extension, which is all about attachments.
         init(prefilledFrom: Identity? = nil,
-             subject: String,
              bodyHtml: NSAttributedString,
              inlinedAttachments: [Attachment],
              nonInlinedAttachments: [Attachment]) {
@@ -182,7 +181,6 @@ extension ComposeViewModel {
             self.prefilledTos = []
             self.prefilledCCs = []
             self.prefilledBCCs = []
-            self.subject = subject
         }
 
         mutating private func setupInitialSubject() {
