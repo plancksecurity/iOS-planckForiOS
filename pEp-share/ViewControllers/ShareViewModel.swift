@@ -289,7 +289,7 @@ extension ShareViewModel {
 
                                     let mimeType = MimeTypeUtils.mimeType(fromURL: fileUrl)
 
-                                    // It's not clear whether we are guaranteed to land
+                                    // It's not clear whether we are _guaranteed_ to land
                                     // in a background thread with completion, so use our own
                                     me.internalQueue.async {
                                         do {
