@@ -184,7 +184,7 @@ class ShareViewModel {
     }
 
     /// Creates a compose VM from the given shared data.
-    public func composeViewModel(sharedTypes: [SharedType]) -> ComposeViewModel {
+    private func composeViewModel(sharedTypes: [SharedType]) -> ComposeViewModel {
         let initData = composeInitData(sharedTypes: sharedTypes)
         let composeVMState = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
         let composeViewModel = ComposeViewModel(state: composeVMState,
