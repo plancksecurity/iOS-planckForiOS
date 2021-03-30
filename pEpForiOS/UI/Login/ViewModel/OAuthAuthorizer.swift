@@ -6,6 +6,7 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
+import UIKit
 import Foundation
 
 #if EXT_SHARE
