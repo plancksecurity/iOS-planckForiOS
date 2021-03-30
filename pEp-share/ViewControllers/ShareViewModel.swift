@@ -281,7 +281,12 @@ extension ShareViewModel {
                                         return
                                     }
 
-                                    let filename = fileUrl.fileName()
+                                    var filename = fileUrl.fileName()
+                                    let fileExt = fileUrl.pathExtension
+                                    if !fileExt.isEmpty {
+                                        filename = "\(filename).\(fileExt)"
+                                    }
+
                                     let mimeType = MimeTypeUtils.mimeType(fromURL: fileUrl)
 
                                     // It's not clear whether we are guaranteed to land
