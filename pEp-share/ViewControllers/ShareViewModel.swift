@@ -312,7 +312,11 @@ extension ShareViewModel: ComposeViewModelFinalActionDelegate {
     func userWantsToSend(message: Message) {
         encryptAndSendSharing.send(message: message) { [weak self] error in
             guard let me = self else {
-                Log.shared.lostMySelf()
+                // While this should not happen during normal usage,
+                // let's not crash the app because of it.
+                // At least we tried to send out something, and the extension
+                // was already canceled.
+                Log.shared.logWarn(message: "Lost self in encryptAndSendSharing callback")
                 return
             }
             me.shareViewModelDelegate?.messageSent(error: error)
