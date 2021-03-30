@@ -152,12 +152,13 @@ class ShareViewModel {
                 bodyHtml.append(NSAttributedString(string: text))
                 break
 
-            case .file(let title, let mimeType, let fileData):
+            case .file(let title, let filename, let mimeType, let fileData):
                 addNewTitleToTheBody(bodyHtml: bodyHtml, title: title)
                 let session = Session()
                 session.performAndWait() {
                     let attachment = Attachment(data: fileData,
                                                 mimeType: mimeType,
+                                                fileName: filename,
                                                 contentDisposition: .attachment,
                                                 session: session)
                     nonInlinedAttachments.append(attachment)
@@ -280,6 +281,7 @@ extension ShareViewModel {
                                         return
                                     }
 
+                                    let filename = fileUrl.fileName()
                                     let mimeType = MimeTypeUtils.mimeType(fromURL: fileUrl)
 
                                     // It's not clear whether we are guaranteed to land
@@ -288,7 +290,9 @@ extension ShareViewModel {
                                         do {
                                             let data = try Data(contentsOf: fileUrl)
                                             sharedData.add(itemProvider: itemProvider,
-                                                           dataWithType: .file(attributedTitle, mimeType, data))
+                                                           dataWithType: .file(attributedTitle,
+                                                                               filename,  mimeType,
+                                                                               data))
                                         } catch {
                                             Log.shared.log(error: error)
                                         }
