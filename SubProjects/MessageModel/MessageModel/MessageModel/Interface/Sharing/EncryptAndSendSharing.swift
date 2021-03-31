@@ -48,7 +48,6 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
             let errorPropagator = ErrorPropagator()
             let smtpConnection = SmtpConnection(connectInfo: smtpConnectInfo)
 
-            // Login
             let loginImapOP = LoginSmtpOperation(smtpConnection: smtpConnection,
                                                  errorContainer: errorPropagator)
 
