@@ -9,7 +9,7 @@
 import UIKit
 
 #if EXT_SHARE
-import pEpIOSToolboxForExtensions
+import PEPIOSToolboxForAppExtensions
 #else
 import pEpIOSToolbox
 #endif
