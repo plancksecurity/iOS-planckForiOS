@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import UIKit
 
 /// This introduce a line break by replacing the first space with a line break.
 class TwoLinesButton : UIButton {
