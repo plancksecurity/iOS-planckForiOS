@@ -404,7 +404,6 @@
 		439C66AB26136F98001893BD /* OAuth2Type+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */; };
 		439C66AD26136FD0001893BD /* OAuth2Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0444B20077323007BCE3F /* OAuth2Configuration.swift */; };
 		439C66AF2613700C001893BD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D3BECB20F8F7330043E05D /* LoginViewController.swift */; };
-		439C66B1261371A6001893BD /* AnimatedPlaceholderTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */; };
 		439EA1542472797B005D6C9A /* KeyImportViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439EA1532472797B005D6C9A /* KeyImportViewModelTest.swift */; };
 		43A0B2CF214006FC00FB779D /* ReplyUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0B2CE214006FC00FB779D /* ReplyUtilTests.swift */; };
 		43A469FA21513B10002E1036 /* PEPSwipeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A469F921513B10002E1036 /* PEPSwipeTableViewCell.swift */; };
@@ -3185,7 +3184,6 @@
 				434C19B125D3DA2000F622DB /* Attachment+DefaultFilename.swift in Sources */,
 				434C1AED25D4163A00F622DB /* UILabel+Extension.swift in Sources */,
 				434C1ADE25D413ED00F622DB /* TrustManagementResetTableViewCell.swift in Sources */,
-				439C66B1261371A6001893BD /* AnimatedPlaceholderTextfield.swift in Sources */,
 				434C19F425D3E61B00F622DB /* NSAttributedString+Html.swift in Sources */,
 				434C1A9C25D40DEE00F622DB /* URL+MailTo.swift in Sources */,
 				434A6C6E25D2A3DC00179335 /* RecipientTextViewModel+TextAttachment.swift in Sources */,
