@@ -397,7 +397,6 @@
 		439C659426135008001893BD /* UIView+ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FC62215C57F003968DA /* UIView+ActivityIndicator.swift */; };
 		439C663526136D3A001893BD /* DisplayUserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152130531FD00B7A00688DF2 /* DisplayUserError.swift */; };
 		439C666C26136DF5001893BD /* OAuthAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43985D092044296D0080FA9A /* OAuthAuthorizer.swift */; };
-		439C66A326136E72001893BD /* OAuth2AuthorizationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438052881FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift */; };
 		439EA1542472797B005D6C9A /* KeyImportViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439EA1532472797B005D6C9A /* KeyImportViewModelTest.swift */; };
 		43A0B2CF214006FC00FB779D /* ReplyUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0B2CE214006FC00FB779D /* ReplyUtilTests.swift */; };
 		43A469FA21513B10002E1036 /* PEPSwipeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A469F921513B10002E1036 /* PEPSwipeTableViewCell.swift */; };
@@ -3163,7 +3162,6 @@
 				434C1AF925D4260B00F622DB /* ReplyUtil.swift in Sources */,
 				434C1A9F25D40E4F00F622DB /* UIUtils+Compose.swift in Sources */,
 				439C666C26136DF5001893BD /* OAuthAuthorizer.swift in Sources */,
-				439C66A326136E72001893BD /* OAuth2AuthorizationProtocol.swift in Sources */,
 				434A6C4C25D2A39F00179335 /* ComposeViewModel.swift in Sources */,
 				434C1AA225D40EC200F622DB /* UINavigationController+Extensions.swift in Sources */,
 				43BDE04825DE7F6100FC0C68 /* buffer.c in Sources */,
