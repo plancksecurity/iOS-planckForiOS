@@ -623,6 +623,7 @@
 		43FD3F3726148A4C0032F809 /* FolderInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A142248EDC5008E40CC /* FolderInfoCache.swift */; };
 		43FD3F3B26148A810032F809 /* CdFolder+VirtualMailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6097F2248BCBD0008B900 /* CdFolder+VirtualMailbox.swift */; };
 		43FD3F3F26148AD70032F809 /* OutlookO365SpecificInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B2271324237131007EB91E /* OutlookO365SpecificInformation.swift */; };
+		43FD3F4326148B1D0032F809 /* PEPDecryptFlags+ReUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A6E0F23073DB0006A9ECE /* PEPDecryptFlags+ReUpload.swift */; };
 		43FFEE4723E17B2F005FE498 /* String+InboxFolderName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FFEE4623E17B2F005FE498 /* String+InboxFolderName.swift */; };
 		490FF7FE1E795B1500BC15F9 /* Int16+ImapFlagBits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490FF7FD1E795B1500BC15F9 /* Int16+ImapFlagBits.swift */; };
 		490FF8051E795B3900BC15F9 /* TestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490FF8021E795B3900BC15F9 /* TestUtil.swift */; };
@@ -3060,6 +3061,7 @@
 				436FD26025DA831000D929B3 /* Server+SessionAware.swift in Sources */,
 				434C227325D69BAA00F622DB /* CdHeaderField+Extensions.swift in Sources */,
 				436FD25025DA827300D929B3 /* Color+pEp.swift in Sources */,
+				43FD3F4326148B1D0032F809 /* PEPDecryptFlags+ReUpload.swift in Sources */,
 				43BDDDA225DD4D4900FC0C68 /* SmtpSendError.swift in Sources */,
 				434C22A325D69CD200F622DB /* CdAccount+NonOptionalConvenienceAccessors.swift.swift in Sources */,
 				43BDDD0225DD34EE00FC0C68 /* Attachment+ContentID.swift in Sources */,
