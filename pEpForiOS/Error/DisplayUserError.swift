@@ -8,11 +8,7 @@
 
 import Foundation
 
-#if EXT_SHARE
-import MessageModelForAppExtensions
-#else
 import MessageModel
-#endif
 
 /// Error to display to the user.
 /// The multiple errors reported from different layers can and should be clustered here to not
