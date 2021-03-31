@@ -8,11 +8,7 @@
 
 import UIKit
 
-#if EXT_SHARE
-import pEpIOSToolboxForExtensions
-#else
 import pEpIOSToolbox
-#endif
 
 @IBDesignable
 /// TextField with animated placeholder (moves above TextField).
