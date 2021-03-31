@@ -69,7 +69,13 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
 
             loginImapOp.addDependency(sendOp)
 
-            loginImapOp.completionBlock = {
+            let appendOp = AppendMailsOperation(context: nil,
+                                                errorContainer: errorPropagator,
+                                                imapConnection: imapConnection)
+
+            appendOp.addDependency(loginImapOp)
+
+            appendOp.completionBlock = {
                 if errorPropagator.hasErrors {
                     // signal the error
                     completion(errorPropagator.error)
