@@ -61,7 +61,13 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
                                                             errorContainer: errorPropagator)
 
             sendOp.addDependency(loginImapOP)
-            sendOp.completionBlock = {
+
+            let loginSmtpOp = LoginSmtpOperation(smtpConnection: smtpConnection,
+                                                 errorContainer: errorPropagator)
+
+            loginSmtpOp.addDependency(sendOp)
+
+            loginSmtpOp.completionBlock = {
                 if errorPropagator.hasErrors {
                     // signal the error
                     completion(errorPropagator.error)
@@ -70,7 +76,8 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
                 }
             }
 
-            me.queue.addOperations([loginImapOP, sendOp], waitUntilFinished: false)
+            me.queue.addOperations([loginImapOP, sendOp, loginSmtpOp],
+                                   waitUntilFinished: false)
         }
     }
 
