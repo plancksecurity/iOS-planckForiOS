@@ -620,7 +620,6 @@
 		43F86BA824504C00008961DA /* MessageHeapBufferOverflow.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43F86BA724504C00008961DA /* MessageHeapBufferOverflow.txt */; };
 		43FC08C32600CC180056C23A /* EncryptAndSendOnceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FC08C22600CC180056C23A /* EncryptAndSendOnceTest.swift */; };
 		43FD3CC826145DC00032F809 /* QualifyServerIsLocalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153DDF2E25ADD41C008F645F /* QualifyServerIsLocalService.swift */; };
-		43FD3CCC26145E020032F809 /* QualifyServerIsLocalServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153DDF2D25ADD41C008F645F /* QualifyServerIsLocalServiceProtocol.swift */; };
 		43FFEE4723E17B2F005FE498 /* String+InboxFolderName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FFEE4623E17B2F005FE498 /* String+InboxFolderName.swift */; };
 		490FF7FE1E795B1500BC15F9 /* Int16+ImapFlagBits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490FF7FD1E795B1500BC15F9 /* Int16+ImapFlagBits.swift */; };
 		490FF8051E795B3900BC15F9 /* TestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490FF8021E795B3900BC15F9 /* TestUtil.swift */; };
@@ -3099,7 +3098,6 @@
 				434C236E25D6BFE100F622DB /* ConnectInfo.swift in Sources */,
 				434C235E25D6B6EB00F622DB /* CdServer+NonOptionalConvenienceAccessors.swift in Sources */,
 				434C217D25D6965300F622DB /* CdAccount.swift in Sources */,
-				43FD3CCC26145E020032F809 /* QualifyServerIsLocalServiceProtocol.swift in Sources */,
 				434C236225D6B73200F622DB /* AuthMethod.swift in Sources */,
 				43BDDDC225DD62A500FC0C68 /* KeyGeneratorService.swift in Sources */,
 				434C232725D6A24400F622DB /* FetchMessagesInImapFolderOperation.swift in Sources */,
