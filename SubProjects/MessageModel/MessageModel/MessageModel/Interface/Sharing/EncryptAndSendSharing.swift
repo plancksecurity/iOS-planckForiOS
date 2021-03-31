@@ -49,14 +49,14 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
             let smtpConnection = SmtpConnection(connectInfo: smtpConnectInfo)
 
             // Login
-            let loginOP = LoginSmtpOperation(smtpConnection: smtpConnection,
-                                             errorContainer: errorPropagator)
+            let loginImapOP = LoginSmtpOperation(smtpConnection: smtpConnection,
+                                                 errorContainer: errorPropagator)
 
             let sendOp = EncryptAndSMTPSendMessageOperation(cdMessageToSendObjectId: cdMessage.objectID,
                                                             smtpConnection: smtpConnection,
                                                             errorContainer: errorPropagator)
 
-            sendOp.addDependency(loginOP)
+            sendOp.addDependency(loginImapOP)
             sendOp.completionBlock = {
                 if errorPropagator.hasErrors {
                     // signal the error
@@ -66,7 +66,7 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
                 }
             }
 
-            me.queue.addOperations([loginOP, sendOp], waitUntilFinished: false)
+            me.queue.addOperations([loginImapOP, sendOp], waitUntilFinished: false)
         }
     }
 
