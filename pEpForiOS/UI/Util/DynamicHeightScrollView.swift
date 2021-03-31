@@ -8,11 +8,7 @@
 
 import UIKit
 
-#if EXT_SHARE
-import pEpIOSToolboxForExtensions
-#else
 import pEpIOSToolbox
-#endif
 
 protocol DynamicHeightScrollViewDelegate: class {
     /// Bottom constraint of the scroll view. Used to change the hegiht of the scrollView, modifying the constant
