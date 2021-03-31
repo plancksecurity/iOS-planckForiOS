@@ -70,7 +70,7 @@ extension ShareViewController: ShareViewModelDelegate {
             }
 
             let title = NSLocalizedString("Error", comment: "Sharing extension error title")
-            let message = String(format: NSLocalizedString("Could not send:\n\n%1@",
+            let message = String(format: NSLocalizedString("Could not send:\n%1@",
                                                            comment: "Sharing extension has no account"),
                                  theError.localizedDescription)
             UIUtils.showAlertWithOnlyPositiveButton(title: title,
