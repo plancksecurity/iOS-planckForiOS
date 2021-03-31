@@ -65,7 +65,17 @@ extension ShareViewController: ShareViewModelDelegate {
         }
 
         if let theError = error {
-            extensionContext?.cancelRequest(withError: theError)
+            func cancelRequest() {
+                extensionContext?.cancelRequest(withError: theError)
+            }
+
+            let title = NSLocalizedString("Error", comment: "Sharing extension error title")
+            let message = String(format: NSLocalizedString("Could not send: %1@",
+                                                           comment: "Sharing extension has no account"),
+                                 theError.localizedDescription)
+            UIUtils.showAlertWithOnlyPositiveButton(title: title,
+                                                    message: message,
+                                                    completion: cancelRequest)
         } else {
             extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
         }
