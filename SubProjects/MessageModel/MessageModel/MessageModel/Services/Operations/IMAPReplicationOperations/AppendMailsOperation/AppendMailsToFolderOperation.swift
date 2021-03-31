@@ -11,7 +11,12 @@ import CoreData
 import PantomimeFramework
 import PEPObjCAdapterTypes_iOS
 import PEPObjCAdapter_iOS
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 /// Operation for storing mails in any type of IMAP folder.
 class AppendMailsToFolderOperation: ImapSyncOperation {
