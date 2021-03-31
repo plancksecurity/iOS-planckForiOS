@@ -402,7 +402,6 @@
 		439C66A726136EF1001893BD /* OAuth2Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43306EC11FE129840045DD00 /* OAuth2Type.swift */; };
 		439C66A926136F59001893BD /* OAuth2Type+VerifiableAccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43236E642459891B00D8318D /* OAuth2Type+VerifiableAccountType.swift */; };
 		439C66AB26136F98001893BD /* OAuth2Type+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */; };
-		439C66AD26136FD0001893BD /* OAuth2Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0444B20077323007BCE3F /* OAuth2Configuration.swift */; };
 		439EA1542472797B005D6C9A /* KeyImportViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439EA1532472797B005D6C9A /* KeyImportViewModelTest.swift */; };
 		43A0B2CF214006FC00FB779D /* ReplyUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0B2CE214006FC00FB779D /* ReplyUtilTests.swift */; };
 		43A469FA21513B10002E1036 /* PEPSwipeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A469F921513B10002E1036 /* PEPSwipeTableViewCell.swift */; };
@@ -3272,7 +3271,6 @@
 				43BDE05A25DE821C00FC0C68 /* inlines.c in Sources */,
 				4300CF6325ECEF98003DBEB4 /* SharedData.swift in Sources */,
 				434C19CE25D3E13E00F622DB /* TextViewInTableViewScrollUtil.swift in Sources */,
-				439C66AD26136FD0001893BD /* OAuth2Configuration.swift in Sources */,
 				434C1AD525D4133400F622DB /* Color+PrivacyStatusDescription.swift in Sources */,
 				43BDE04B25DE7FA800FC0C68 /* houdini_html_u.c in Sources */,
 			);
