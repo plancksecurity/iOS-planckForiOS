@@ -135,6 +135,8 @@ extension AppDelegate {
         Log.shared.info("applicationDidEnterBackground")
         Session.main.commit()
         messageModelService?.finish()
+        // Make sure we do not permanently disable auto locking
+        UIApplication.shared.enableAutoLockingDevice()
         if #available(iOS 13.0, *) {
             scheduleAppRefresh()
         }
@@ -165,6 +167,8 @@ extension AppDelegate {
     /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
         messageModelService?.stop()
+        // Make sure we do not permanently disable auto locking
+        UIApplication.shared.enableAutoLockingDevice()
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
