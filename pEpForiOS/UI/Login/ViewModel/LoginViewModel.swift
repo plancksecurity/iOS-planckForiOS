@@ -9,13 +9,7 @@
 import Foundation
 
 import MessageModel
-
-#if EXT_SHARE
-import pEpIOSToolboxForExtensions
-#else
 import pEpIOSToolbox
-#endif
-
 import PantomimeFramework
 
 // MARK: - OAuth2Parameters
