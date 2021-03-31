@@ -44,6 +44,11 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
                 completion(SendError.internalError)
                 return
             }
+            guard let imapConnectInfo = cdAccount.imapConnectInfo else {
+                Log.shared.errorAndCrash(message: "CdAccount without ImapConnectInfo")
+                completion(SendError.internalError)
+                return
+            }
 
             let errorPropagator = ErrorPropagator()
             let smtpConnection = SmtpConnection(connectInfo: smtpConnectInfo)
