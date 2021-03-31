@@ -619,7 +619,6 @@
 		43F86BA624504B95008961DA /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc in Resources */ = {isa = PBXBuildFile; fileRef = 43F86BA524504B95008961DA /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc */; };
 		43F86BA824504C00008961DA /* MessageHeapBufferOverflow.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43F86BA724504C00008961DA /* MessageHeapBufferOverflow.txt */; };
 		43FC08C32600CC180056C23A /* EncryptAndSendOnceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FC08C22600CC180056C23A /* EncryptAndSendOnceTest.swift */; };
-		43FD3CC826145DC00032F809 /* QualifyServerIsLocalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153DDF2E25ADD41C008F645F /* QualifyServerIsLocalService.swift */; };
 		43FFEE4723E17B2F005FE498 /* String+InboxFolderName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FFEE4623E17B2F005FE498 /* String+InboxFolderName.swift */; };
 		490FF7FE1E795B1500BC15F9 /* Int16+ImapFlagBits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490FF7FD1E795B1500BC15F9 /* Int16+ImapFlagBits.swift */; };
 		490FF8051E795B3900BC15F9 /* TestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490FF8021E795B3900BC15F9 /* TestUtil.swift */; };
@@ -3179,7 +3178,6 @@
 				43BDDD7E25DD42F200FC0C68 /* ProviderSpecificInformationProtocol.swift in Sources */,
 				43BDDDCA25DD634B00FC0C68 /* Message+FakeMessage.swift in Sources */,
 				436FD22125DA80C300D929B3 /* Identity+SessionAware.swift in Sources */,
-				43FD3CC826145DC00032F809 /* QualifyServerIsLocalService.swift in Sources */,
 				434C221525D6998200F622DB /* CdMessageReference.swift in Sources */,
 				434C219F25D6976C00F622DB /* Account+Fetching.swift in Sources */,
 				434C19E625D3E4CD00F622DB /* Account.swift in Sources */,
