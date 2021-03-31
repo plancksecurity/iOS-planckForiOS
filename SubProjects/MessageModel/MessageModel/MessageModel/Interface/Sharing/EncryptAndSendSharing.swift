@@ -84,7 +84,7 @@ public class EncryptAndSendSharing: EncryptAndSendSharingProtocol {
                 }
             }
 
-            me.queue.addOperations([loginImapOP, sendOp, loginImapOp],
+            me.queue.addOperations([loginImapOP, sendOp, loginImapOp, appendOp],
                                    waitUntilFinished: false)
         }
     }
