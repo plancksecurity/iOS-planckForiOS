@@ -8,11 +8,7 @@
 
 import Foundation
 
-#if EXT_SHARE
-import MessageModelForAppExtensions
-#else
 import MessageModel
-#endif
 
 /**
  The error that gets delegated when there was no error during authorization, but
