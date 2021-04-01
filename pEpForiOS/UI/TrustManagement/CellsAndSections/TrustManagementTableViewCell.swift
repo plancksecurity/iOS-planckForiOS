@@ -70,13 +70,7 @@ final class TrustManagementTableViewCell: UITableViewCell {
     /// Setup the view with the row data.
     private func setupView() {
         removeGestureRecognizers()
-
-        var buttonTextcolor: UIColor = .white
-        if #available(iOS 13.0, *) {
-            if UITraitCollection.current.userInterfaceStyle == .dark {
-                buttonTextcolor = .darkText
-            }
-        }
+        let buttonTextcolor: UIColor = .white
 
         let gesture = UITapGestureRecognizer(target: self, action: #selector(trustwordsLabelPressed))
         trustwordsLabel.addGestureRecognizer(gesture)
@@ -84,15 +78,21 @@ final class TrustManagementTableViewCell: UITableViewCell {
         //Confirm Button
         let confirmTitle = NSLocalizedString("Confirm", comment: "Confirm correct trustwords/PGP fingerprint")
         confirmButton.setTitle(confirmTitle, for: .normal)
-        confirmButton.pEpIfyForTrust(backgroundColor: .pEpGreen, textColor: .white)
 
         //Decline Button
         let declineTitle = NSLocalizedString("Decline", comment: "Incorrect trustwords/PGP fingerprint")
         declineButton.setTitle(declineTitle, for: .normal)
-        declineButton.pEpIfyForTrust(backgroundColor: .pEpRed, textColor: .white)
 
         //Reset Button
-        resetButton.pEpIfyForTrust(backgroundColor: .pEpGrayBackgroundReset, textColor: buttonTextcolor)
+        if #available(iOS 13.0, *), UITraitCollection.current.userInterfaceStyle == .dark {
+            resetButton.pEpIfyForTrust(backgroundColor: .systemGray2, textColor: .label)
+            confirmButton.pEpIfyForTrust(backgroundColor: .pEpGreen, textColor: .label)
+            declineButton.pEpIfyForTrust(backgroundColor: .pEpRed, textColor: .label)
+        } else {
+            resetButton.pEpIfyForTrust(backgroundColor: .pEpGrayBackgroundReset, textColor: buttonTextcolor)
+            confirmButton.pEpIfyForTrust(backgroundColor: .pEpGreen, textColor: buttonTextcolor)
+            declineButton.pEpIfyForTrust(backgroundColor: .pEpRed, textColor: .white)
+        }
 
         //Reset label
         resetLabel.text = NSLocalizedString("Reset all p≡p data for this comunication partner:",
