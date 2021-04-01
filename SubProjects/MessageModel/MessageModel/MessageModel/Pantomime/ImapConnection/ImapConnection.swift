@@ -205,7 +205,7 @@ class ImapConnection: ImapConnectionProtocol {
 
     func fetchUidsForNewMessages() throws {
         let folder = try openFolder(updateExistsCount: false)
-        folder.fetchUidsForNewMailsIgnoringMessages(withHeaderDefined: [kPepHeaderAutoConsume])
+        folder.fetchUidsForNewMails()
     }
 
     func syncMessages(firstUID: UInt, lastUID: UInt, updateExistsCount: Bool = false) throws {

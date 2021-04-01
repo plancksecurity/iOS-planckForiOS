@@ -37,6 +37,11 @@ final class KeySyncWizardViewController: PEPPageViewControllerBase {
     /// All the `init`s exist soley to be able to set the transitionStyle.
     required init?(coder aDecoder: NSCoder) {
         self.init()
+        UIApplication.shared.disableAutoLockingDevice()
+    }
+
+    deinit {
+        UIApplication.shared.enableAutoLockingDevice()
     }
 
     // MARK: -

@@ -21,6 +21,8 @@ public protocol MessageModelServiceProtocol: ServiceProtocol {
     ///                              Passes nil if we could not figure out whether or not
     ///                              there are new emails.
     func checkForNewMails_old(completionHandler: @escaping (_ numNewMails: Int?) -> ()) //BUFF: must change to new service
+    /// Finnihses a current checkForNewMails process as soon as possible
+    func cancelCheckForNewMails_old()
 }
 
 public final class MessageModelService {
@@ -73,6 +75,10 @@ extension MessageModelService: MessageModelServiceProtocol {
         //BUFF: tmp solution to get rid of ReplicationService. Make new service.
         newMailsService = FetchNumberOfNewMailsService()
         newMailsService?.start(completionBlock: completionHandler)
+    }
+
+    public func cancelCheckForNewMails_old() {
+        newMailsService?.stop()
     }
 }
 
