@@ -66,6 +66,15 @@ public class Account: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         }
     }
 
+    public var pEpSyncEnabled: Bool {
+        get {
+            cdObject.pEpSyncEnabled
+        }
+        set {
+            cdObject.pEpSyncEnabled = newValue
+        }
+    }
+
     public var rootFolders: [Folder] {
         let cdAccount = cdObject
         var cdFolders = cdAccount.folders?.array as? [CdFolder] ?? []

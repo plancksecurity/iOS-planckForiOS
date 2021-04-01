@@ -13,20 +13,17 @@ import pEpIOSToolbox
 
 /// Figures out the number of new (to us) messages in Inbox, taking all verified accounts
 /// into account.
-class FetchNumberOfNewMailsService {
+class FetchNumberOfNewMailsService { //BUFF: should inmherit from operationBasedService
     private var imapConnectionCache: ImapConnectionCache
     private let context: NSManagedObjectContext
     private let workerQueue = DispatchQueue(
         label: "NetworkService", qos: .background, target: nil)
     private let backgroundQueue = OperationQueue()
-    private var errorContainer: ErrorContainerProtocol?
 
     init(imapConnectionDataCache: ImapConnectionCache? = nil,
-         context: NSManagedObjectContext? = nil,
-         errorContainer: ErrorContainerProtocol? = ErrorPropagator()) {
+         context: NSManagedObjectContext? = nil) {
         self.context = context ?? Stack.shared.newPrivateConcurrentContext
         self.imapConnectionCache = imapConnectionDataCache ?? ImapConnectionCache()
-        self.errorContainer = errorContainer
     }
 
     /// Starts the service
@@ -42,11 +39,7 @@ class FetchNumberOfNewMailsService {
             }
             me.context.performAndWait {
                 let numNewMails = me.numberOfNewMails()
-                if me.errorContainer?.hasErrors ?? false {
-                    completionBlock(nil)
-                } else {
-                    completionBlock(numNewMails)
-                }
+                completionBlock(numNewMails)
             }
         }
     }
@@ -79,16 +72,16 @@ class FetchNumberOfNewMailsService {
     }
 
     private func numberOfNewMails() -> Int {
-        let theErrorContainer = ErrorPropagator()
-        errorContainer = theErrorContainer
         let cis = gatherConnectInfos()
         var result = 0
         for connectInfo in cis {
+            let errorContainer = ErrorPropagator(subscriber: self)
             let imapSyncConnection = imapConnectionCache.imapConnection(for: connectInfo)
             let loginOp = LoginImapOperation(parentName: #function,
-                                             errorContainer: theErrorContainer,
+                                             errorContainer: errorContainer,
                                              imapConnection: imapSyncConnection)
-            let fetchNumNewMailsOp = FetchNumberOfNewMailsOperation(imapConnection: imapSyncConnection) {
+            let fetchNumNewMailsOp = FetchNumberOfNewMailsOperation(errorContainer: errorContainer,
+                                                                    imapConnection: imapSyncConnection) {
                 (numNewMails: Int?) in
                 if let safeNewMails = numNewMails {
                     result += safeNewMails
@@ -100,5 +93,11 @@ class FetchNumberOfNewMailsService {
         backgroundQueue.waitUntilAllOperationsAreFinished()
 
         return result
+    }
+}
+
+extension FetchNumberOfNewMailsService: ErrorPropagatorSubscriber {
+    func error(propagator: ErrorPropagator, error: Error) {
+        Log.shared.error("One of our operations reported this error: %@", error.localizedDescription)
     }
 }

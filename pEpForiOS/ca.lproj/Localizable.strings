@@ -1003,9 +1003,6 @@
 /* Secure & Trusted Description Label - Step 1 */
 "When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted" = "Quan es confirmi que les paraules de confiança són correctes i es fa el cop de mà, la comunicació serà completament segura i de confiança";
 
-/* Privacy status explanation Label */
-"When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication parner." = "Quan feu clic a la icona de l'estat de privadesa de la barra superior, arribareu a Handshake, on podreu verificar el vostre pare de comunicació.";
-
 /* Confirm Trustwords explanation Label */
 "When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted." = "Quan confirmeu que les paraules de confiança del vostre soci de comunicació són correctes, la vostra comunicació serà completament segura & amp; De confiança.";
 

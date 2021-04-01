@@ -7,6 +7,7 @@
 //
 
 import WebKit
+import pEpIOSToolbox
 
 class CreditsWebViewController: PEPWebViewController {
 

@@ -18,7 +18,7 @@ class ErrorHandler: LoginViewModelLoginErrorDelegate {
     }
 }
 
-class LoginViewModelTests: AccountDrivenTestBase {
+class LoginViewModelTests: XCTestCase {
     class TestVerifiableAccount: VerifiableAccountProtocol {
 
         var accountType: VerifiableAccount.AccountType = VerifiableAccount.AccountType.other
@@ -75,8 +75,8 @@ class LoginViewModelTests: AccountDrivenTestBase {
         }
 
         func save(completion: @escaping (Result<Void, Error>) -> ()) {
+            XCTFail("Not expected to be called")
         }
-
     }
 
     /// This tests makes sense only if the server settings 
