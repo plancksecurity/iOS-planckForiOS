@@ -270,7 +270,12 @@ extension AnimatedPlaceholderTextfield {
                 if let backgroundColorWithTextCopy  = backgroundColorWithText?.copy() as? UIColor {
                     backgroundColorWithText = backgroundColorWithTextCopy
                 }
+
+                if let textColorWithTextCopy = textColorWithText?.copy() as? UIColor {
+                    textColorWithText = textColorWithTextCopy
+                }
                 layoutIfNeeded()
+
             }
         }
     }
