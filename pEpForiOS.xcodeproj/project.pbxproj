@@ -3106,7 +3106,6 @@
 				5BB7C73924D2EC4400D5F328 /* UnifiedSent.swift in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
 				5BA6180025F1475900973829 /* MessageImageAttachmentCell.swift in Sources */,
-				4349E8BB252DCC58000F2BBB /* LiveLogViewModel.swift in Sources */,
 				5B884B44257A90FE006B2022 /* EditableAccountSettingsViewController.swift in Sources */,
 				3705096622CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift in Sources */,
 				49C34AF620E4F649009D11CC /* CellDetailTransition.swift in Sources */,
