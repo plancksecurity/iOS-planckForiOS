@@ -30,6 +30,10 @@ class AnimatedPlaceholderTextfield: UITextField {
     var borderColor: UIColor? {
         didSet {
             layer.borderColor = borderColor?.cgColor
+            //In dark mode, the text and border color should be the same.
+            if #available(iOS 13.0, *), UITraitCollection.current.userInterfaceStyle == .dark {
+                layer.borderColor = UIColor.label.cgColor
+            }
         }
     }
 
@@ -178,6 +182,10 @@ extension AnimatedPlaceholderTextfield {
                 return
         }
         backgroundColor = text.isEmpty ? originalBackgroundColor : newBackgroundColor
+
+        if #available(iOS 13.0, *), UITraitCollection.current.userInterfaceStyle == .dark {
+            backgroundColor = text.isEmpty ? originalBackgroundColor : UIColor.secondarySystemBackground
+        }
     }
 
     private func updateTextFieldTextColor() {
@@ -187,6 +195,9 @@ extension AnimatedPlaceholderTextfield {
             return
         }
         textColor = text.isEmpty ? originalTextColor : newTextColor
+        if #available(iOS 13.0, *), UITraitCollection.current.userInterfaceStyle == .dark {
+            textColor = text.isEmpty ? originalTextColor : UIColor.label
+        }
     }
 
     private func addPlaceholderLabel() {
@@ -238,6 +249,29 @@ extension AnimatedPlaceholderTextfield {
                 return
             }
             me.superview?.layoutIfNeeded()
+        }
+    }
+}
+
+extension AnimatedPlaceholderTextfield {
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                if let borderColorCopy = borderColor?.copy() as? UIColor {
+                    borderColor = borderColorCopy
+                }
+                if let backgroundColorWithTextCopy  = backgroundColorWithText?.copy() as? UIColor {
+                    backgroundColorWithText = backgroundColorWithTextCopy
+                }
+                layoutIfNeeded()
+            }
         }
     }
 }
