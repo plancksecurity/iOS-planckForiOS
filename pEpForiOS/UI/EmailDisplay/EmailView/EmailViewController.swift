@@ -369,12 +369,13 @@ extension EmailViewController {
         }
     }
 
+    /// Update table view size in case the indexPath corresponds to the last cell.
+    /// - Parameter indexPath: The indexPath of the cell to evaluate
     private func updateSizeIfLastCell(indexPath: IndexPath) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-
         if indexPath.row == vm.numberOfRows - 1 {
             tableView.updateSize()
         }
