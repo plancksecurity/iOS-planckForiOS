@@ -896,7 +896,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="vyg-Er-oRi" secondAttribute="bottom" constant="6" id="j3d-n0-tR7"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="addButton" destination="72y-xv-Hmb" id="OT3-oE-kog"/>
                                             <outlet property="textView" destination="xFb-xh-IFK" id="PCr-9w-aSE"/>
@@ -940,6 +940,7 @@
                                                 <constraint firstItem="N5S-Np-kP0" firstAttribute="leading" secondItem="DlH-OY-EPo" secondAttribute="leading" constant="20" symbolic="YES" id="w8B-Yh-zrV"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="ccBccLabel" destination="ZpG-yk-ifY" id="H81-2G-614"/>
                                         </connections>
@@ -985,7 +986,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="xjm-lu-3Yv" secondAttribute="trailing" id="dpc-bS-tHl"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="subjectLabel" destination="bCM-fK-pFW" id="IOr-sq-2tv"/>
                                             <outlet property="textView" destination="NJk-bb-UTk" id="xE2-zi-Z8x"/>
@@ -1030,7 +1031,7 @@
                                                 <constraint firstItem="Hap-9N-D4T" firstAttribute="top" secondItem="qub-II-51O" secondAttribute="top" id="im8-ez-GT1"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="textView" destination="UT1-CG-S0m" id="qa0-m8-jQB"/>
                                         </connections>
@@ -1068,6 +1069,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="7AF-wt-e0B" secondAttribute="trailing" constant="20" symbolic="YES" id="ony-7B-OMD"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="textView" destination="7AF-wt-e0B" id="MV3-dR-cE3"/>
                                         </connections>

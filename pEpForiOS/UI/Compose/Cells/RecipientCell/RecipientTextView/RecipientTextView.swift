@@ -175,5 +175,10 @@ extension RecipientTextView: RecipientTextViewModelDelegate {
         createe.append(NSAttributedString(string: recipient))
         attributedText = NSAttributedString(attributedString: createe)
         viewModel?.handleDidEndEditing(range: selectedRange, of: attributedText)
+        if #available(iOS 13.0, *) {
+            textColor = .label
+        } else {
+            // Fallback on earlier versions: nothing to do.
+        }
     }
 }

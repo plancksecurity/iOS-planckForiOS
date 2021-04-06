@@ -27,7 +27,6 @@ final class RecipientCell: TextViewContainingTableViewCell {
     }
 
     public func setup(with viewModel: RecipientCellViewModel) {
-        super.setup()
         self.viewModel = viewModel
         self.viewModel?.recipientCellViewModelDelegate = self
         recipientTextView?.viewModel = self.viewModel?.recipientTextViewModel()

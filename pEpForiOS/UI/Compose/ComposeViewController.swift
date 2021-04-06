@@ -57,6 +57,16 @@ class ComposeViewController: UIViewController {
             me.doOnce = nil
         }
         registerForNotifications()
+
+        if #available(iOS 13.0, *) {
+            if traitCollection.userInterfaceStyle == .dark {
+                tableView.backgroundColor = .secondarySystemBackground
+            } else {
+                tableView.backgroundColor = .white
+            }
+        }  else {
+            tableView.backgroundColor = .white
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -81,9 +91,7 @@ class ComposeViewController: UIViewController {
         tableView.estimatedRowHeight = 1000
 
         if #available(iOS 13.0, *) {
-            if UITraitCollection.current.userInterfaceStyle == .light {
-                tableView.backgroundColor = .systemBackground
-            }
+            tableView.backgroundColor = .systemBackground
         } else {
             tableView.backgroundColor = .white
         }
@@ -841,8 +849,15 @@ extension ComposeViewController {
 
         if #available(iOS 13.0, *) {
             if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                //TODO: update background color of the cells without reloading, we might have content there.
+                // Do not reload. There might be content written!
+                if traitCollection.userInterfaceStyle == .dark {
+                    tableView.backgroundColor = .secondarySystemBackground
+                } else {
+                    tableView.backgroundColor = .white
+                }
             }
+        } else {
+            tableView.backgroundColor = .white
         }
     }
 }
