@@ -310,14 +310,14 @@ final class TrustManagementViewModel {
         rows[indexPath.row].forceRed = false
         trustManagementUtil.undoMisstrustOrTrust(for: row.handshakeCombination.partnerIdentity,
                                                  fingerprint: row.fingerprint) { [weak self] _ in
-                                                    DispatchQueue.main.async {
-                                                        guard let me = self else {
-                                                            // UI, can happen
-                                                            return
-                                                        }
-                                                        // Note that the message is reevaluated regardless of errors
-                                                        me.reevaluateMessage(forRowAt: indexPath)
-                                                    }
+            DispatchQueue.main.async {
+                guard let me = self else {
+                    // UI, can happen
+                    return
+                }
+                // Note that the message is reevaluated regardless of errors
+                me.reevaluateMessage(forRowAt: indexPath)
+            }
         }
     }
     
@@ -335,7 +335,7 @@ final class TrustManagementViewModel {
                                             }
                                             me.reevaluateMessage(forRowAt: indexPath)
                                         }
-        })
+                                       })
     }
 
     /// - returns: the available languages.
