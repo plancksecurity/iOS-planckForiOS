@@ -93,7 +93,19 @@ extension SuggestTableViewController {
         cell.nameLabel.text = row.name
         cell.emailLabel.text = row.email
         vm.pEpRatingIcon(for: row) { (icon) in
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                guard me.tableView.indexPath(for: cell) == indexPath else {
+                    // The cell setup(cell:withDataFor:) has been called for has already been reused
+                    // for representing the data of another indepath while computing the icon.
+                    // The computed pEpRatingIcon belonds to the data of the indexpath of the cell
+                    // before reusing it.
+                    // Don't set the wrong 
+                    return
+                }
                 cell.pEpStatusImageView.image = icon
             }
         }
