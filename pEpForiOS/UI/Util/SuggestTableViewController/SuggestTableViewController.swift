@@ -100,9 +100,10 @@ extension SuggestTableViewController {
                 }
                 guard me.tableView.indexPath(for: cell) == indexPath else {
                     // The cell setup(cell:withDataFor:) has been called for has already been reused
-                    // while computing the icon.
+                    // for representing the data of another indepath while computing the icon.
                     // The computed pEpRatingIcon belonds to the data of the indexpath of the cell
                     // before reusing it.
+                    // Don't set the wrong 
                     return
                 }
                 cell.pEpStatusImageView.image = icon
