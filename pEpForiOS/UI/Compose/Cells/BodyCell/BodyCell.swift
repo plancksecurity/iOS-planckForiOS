@@ -158,23 +158,3 @@ extension BodyCell {
         viewModel?.handleUserClickedSelectDocument()
     }
 }
-
-// MARK: - Trait Collection
-
-//extension BodyCell {
-//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-//        super.traitCollectionDidChange(previousTraitCollection)
-//        if #available(iOS 13.0, *) {
-//            if previousTraitCollection?.userInterfaceStyle == .dark {
-//                backgroundColor = .systemBackground
-//                contentView.backgroundColor = .systemBackground
-//            } else {
-//                backgroundColor = .white
-//                contentView.backgroundColor = .white
-//            }
-//        } else {
-//            backgroundColor = .white
-//            contentView.backgroundColor = .white
-//        }
-//    }
-//}
