@@ -82,6 +82,18 @@ extension SuggestTableViewController {
 extension SuggestTableViewController {
 
     private func setup(cell: ContactCell, withDataFor indexPath: IndexPath) {
+        if #available(iOS 13.0, *) {
+            if traitCollection.userInterfaceStyle == .light {
+                cell.backgroundColor = .white
+                cell.contentView.backgroundColor = .white
+            } else {
+                cell.backgroundColor = .secondarySystemBackground
+                cell.contentView.backgroundColor = .secondarySystemBackground
+
+            }
+        } else {
+            cell.backgroundColor = .white
+        }
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
@@ -95,6 +107,36 @@ extension SuggestTableViewController {
         vm.pEpRatingIcon(for: row) { (icon) in
             DispatchQueue.main.async {
                 cell.pEpStatusImageView.image = icon
+            }
+        }
+    }
+}
+
+// MARK: - Trait Collection
+
+extension SuggestTableViewController {
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                if traitCollection.userInterfaceStyle == .dark {
+                    tableView.visibleCells.forEach({
+                        $0.backgroundColor = .secondarySystemBackground
+                        $0.contentView.backgroundColor = .secondarySystemBackground
+
+                    })
+                } else {
+                    tableView.visibleCells.forEach({
+                        $0.backgroundColor = .white
+                        $0.contentView.backgroundColor = .white
+                    })
+                }
             }
         }
     }
