@@ -382,6 +382,7 @@
 		438052891FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438052881FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift */; };
 		4380528B1FE3E2E800ACF729 /* OAuth2AuthorizationURLHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380528A1FE3E2E800ACF729 /* OAuth2AuthorizationURLHandlerProtocol.swift */; };
 		4388A0E22008F813008CB98D /* (null) in Sources */ = {isa = PBXBuildFile; };
+		43959CFE261C85CA00410108 /* UILayout+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3B019024B46CFC00FBB4B5 /* UILayout+Extension.swift */; };
 		4395CDEE20AAC909003FC5F1 /* UIImageExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */; };
 		4395CDF020AAD0D7003FC5F1 /* icon_001.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4395CDEF20AAD0D6003FC5F1 /* icon_001.gif */; };
 		43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E261CBD0BC900A7FC3C /* AppDelegate.swift */; };
@@ -3218,6 +3219,7 @@
 				434A6C4E25D2A3A400179335 /* ComposeViewModel+InitData.swift in Sources */,
 				434A6C6525D2A3CB00179335 /* NSAttributedString+BodyTextUtils.swift in Sources */,
 				434C1ACC25D4123900F622DB /* PEPUIAlertAction.swift in Sources */,
+				43959CFE261C85CA00410108 /* UILayout+Extension.swift in Sources */,
 				434C1AC925D4121900F622DB /* PEPAlertViewModel.swift in Sources */,
 				434A6C5A25D2A3B800179335 /* AttachmentViewModel.swift in Sources */,
 				434C1B7425D5123A00F622DB /* NothingSelectedViewController.swift in Sources */,
@@ -3537,7 +3539,6 @@
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
 				434C1AB825D410F400F622DB /* SecureWebViewUrlClickHandlerProtocol.swift in Sources */,
 				5BA6180025F1475900973829 /* MessageImageAttachmentCell.swift in Sources */,
-				4349E8BB252DCC58000F2BBB /* LiveLogViewModel.swift in Sources */,
 				5B884B44257A90FE006B2022 /* EditableAccountSettingsViewController.swift in Sources */,
 				3705096622CF688F00CB73D6 /* KeySyncHandshakeViewModel.swift in Sources */,
 				49C34AF620E4F649009D11CC /* CellDetailTransition.swift in Sources */,
