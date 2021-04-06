@@ -77,7 +77,7 @@ extension UIViewController {
             let badgeView = UIView()
             badgeView.translatesAutoresizingMaskIntoConstraints = false
             badgeView.heightAnchor.constraint(
-                greaterThanOrEqualToConstant: minimumHitTestDimension).isActive = true
+                greaterThanOrEqualToConstant: minimumHitTestDimension).usingPriority(.almostRequired).isActive = true
             badgeView.addSubview(imgView)
 
             let imagePadding: CGFloat = 10
@@ -86,7 +86,7 @@ extension UIViewController {
             imgView.centerYAnchor.constraint(equalTo: badgeView.centerYAnchor).isActive = true
             imgView.heightAnchor.constraint(lessThanOrEqualTo: badgeView.heightAnchor,
                                             constant: -imagePadding).isActive = true
-            imgView.heightAnchor.constraint(greaterThanOrEqualToConstant: imgViewHeight).isActive = true
+            imgView.heightAnchor.constraint(greaterThanOrEqualToConstant: imgViewHeight).usingPriority(.almostRequired).isActive = true
 
             imgView.widthAnchor.constraint(lessThanOrEqualTo: badgeView.widthAnchor,
                                            constant: -imagePadding).isActive = true

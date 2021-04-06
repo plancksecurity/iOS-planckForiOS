@@ -27,4 +27,9 @@ final class ContactCell: UITableViewCell {
             nameLabel.text = contact?.displayString ?? String()
         }
     }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        pEpStatusImageView.image = nil
+    }
 }
