@@ -41,8 +41,12 @@ protocol EmailRowProtocol {
 //MARK: - AttachmentRowProtocol
 
 protocol AttachmentRowProtocol: EmailRowProtocol {
-    var height: CGFloat { get set }
-    func retrieveAttachmentData(completion: ((EmailViewModel.BaseAttachmentRow.Attachment) -> Void)?)
+    var height: CGFloat { get }
+    func retrieveAttachmentData(completion: (() -> Void)?)
+    var filename: String { get }
+    var fileExtension: String? { get }
+    var icon: UIImage? { get }
+    var isImage: Bool { get }
 }
 
 class EmailViewModel {
@@ -132,7 +136,7 @@ class EmailViewModel {
             return url.pathExtension == "pEp12" || url.pathExtension == "pfx"
         }
 
-        let defaultFileName = MessageModel.Attachment.defaultFilename
+        let defaultFileName = Attachment.defaultFilename
         attachment.saveToTmpDirectory(defaultFilename: attachment.fileName ?? defaultFileName) { [weak self] (url) in
             guard let url = url else {
                 Log.shared.errorAndCrash("No Local URL")
@@ -272,71 +276,36 @@ extension EmailViewModel {
 
     /// Do NOT instanciate this class directly, use a subclass instead.
     class BaseAttachmentRow: AttachmentRowProtocol {
+        fileprivate var attachment: Attachment
+        private let queue: OperationQueue = {
+            var createe = OperationQueue()
+            createe.qualityOfService = .userInitiated
+            return createe
+        }()
 
-        /// Attachment, in the context of EmailViewModel.
-        /// Do not confuse with MMO's Attachment.
-        public struct Attachment {
-            var filename: String = ""
-            var ´extension´: String? // extension is a keyword, we need quotation marks
-            var icon: UIImage?
-            var isImage: Bool = false
-        }
+        public fileprivate(set) var cellIdentifier = ""
+        public private(set) var filename = ""
+        public private(set) var fileExtension: String?
+        public private(set)  var icon: UIImage?
+        public private(set) var isImage = false
+        public fileprivate(set) var height: CGFloat = 0.0
+        public var type: EmailViewModel.EmailRowType
 
-        public var height: CGFloat = 0.0
-        public private(set) var cellIdentifier: String = ""
-        public private(set) var type: EmailViewModel.EmailRowType
-
-        //Used to handle selection event.
-        public private(set) var attachment: MessageModel.Attachment
-        // Used to display.
-        public var fetchedAttachment: Attachment?
-        public private(set) var operationQueue: OperationQueue
-        private var message: Message?
-
-        init(attachment: MessageModel.Attachment, type: EmailViewModel.EmailRowType) {
-            self.operationQueue = OperationQueue()
-            self.operationQueue.qualityOfService = .userInitiated
+        init(attachment: Attachment, type: EmailViewModel.EmailRowType) {
             self.attachment = attachment
             self.type = type
-            guard let message = attachment.message else {
-                Log.shared.errorAndCrash("Attachment with no Message")
-                return
-            }
-            self.message = message
-
-            if type == .attachment {
-                cellIdentifier = "attachmentsCell"
-                height = 120.0
-            } else if type == .imageAttachment {
-                cellIdentifier = "imageAttachmentCell"
-            }
             retrieveAttachmentData()
         }
 
         /// Retrieve attachment data
         /// - Parameter completion: The callback to pass the data
-        public func retrieveAttachmentData(completion: ((Attachment) -> Void)? = nil) {
-            guard let message = message else {
-                Log.shared.errorAndCrash("Attachment with no Message")
-                return
-            }
-            if let fetchedAttachment = fetchedAttachment {
-                DispatchQueue.main.async {
-                    if let callback = completion {
-                        callback(fetchedAttachment)
-                    }
-                }
+        public func retrieveAttachmentData(completion: (() -> Void)? = nil) {
+            if icon != nil {
+                completion?()
             } else {
-                retrieveAttachmentFromMessage(message: message) { [weak self] (attachment) in
-                    guard let me = self else {
-                        Log.shared.errorAndCrash("Lost myself")
-                        return
-                    }
-                    me.fetchedAttachment = attachment
+                loadAttachmentDataFromDisk() {
                     DispatchQueue.main.async {
-                        if let callback = completion {
-                            callback(attachment)
-                        }
+                        completion?()
                     }
                 }
             }
@@ -345,43 +314,54 @@ extension EmailViewModel {
         /// Retrieve attachment from message
         ///
         /// - Parameters:
-        ///   - message: The message to get the attachment
         ///   - completion: The completion block to execute when the attachment is obtained.
-        private func retrieveAttachmentFromMessage(message: Message, completion: @escaping (BaseAttachmentRow.Attachment) -> ()) {
-            let attachmentViewOperation = AttachmentViewOperation(attachment: attachment) { (container) in
-                let defaultFileName = MessageModel.Attachment.defaultFilename
+        private func loadAttachmentDataFromDisk(completion: @escaping () -> ()) {
+            let attachmentViewOperation = AttachmentViewOperation(attachment: attachment) { [weak self] (container) in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+
+                let defaultFileName = Attachment.defaultFilename
                 switch container {
                 case .imageAttachment(let attachment, let image):
-                    let safeAttachment = attachment.safeForSession(Session.main)
-                    Session.main.performAndWait {
-                        let fileName = safeAttachment.fileName ?? defaultFileName
-                        let attachmentToReturn = BaseAttachmentRow.Attachment(filename: fileName, ´extension´: safeAttachment.mimeType, icon: image, isImage: true)
-                        completion(attachmentToReturn)
-                    }
+                    me.filename = attachment.fileName ?? defaultFileName
+                    me.fileExtension = attachment.mimeType
+                    me.icon = image
+                    me.isImage = true
+                    completion()
                 case .docAttachment(let attachment):
-                    let safeAttachment = attachment.safeForSession(.main)
-                    Session.main.performAndWait {
-                        let (name, finalExt) = safeAttachment.fileName?.splitFileExtension() ?? (defaultFileName, nil)
-                        let dic = UIDocumentInteractionController()
-                        dic.name = safeAttachment.fileName
-                        let attachmentToReturn = BaseAttachmentRow.Attachment(filename: name, ´extension´: finalExt, icon: dic.icons.first, isImage: false)
-                        completion(attachmentToReturn)
-                    }
+                    let (name, finalExt) = attachment.fileName?.splitFileExtension() ?? (defaultFileName, nil)
+                    me.filename = name
+                    me.fileExtension = finalExt
+
+                    let dic = UIDocumentInteractionController()
+                    dic.name = attachment.fileName
+                    me.icon = dic.icons.first
+
+                    me.isImage = false
+                    completion()
+                case .none:
+                    Log.shared.errorAndCrash("This should never happen :-/")
+                    completion()
                 }
             }
-            operationQueue.addOperation(attachmentViewOperation)
+            queue.addOperation(attachmentViewOperation)
         }
     }
 
     class AttachmentRow: BaseAttachmentRow {
-        init(attachment: MessageModel.Attachment) {
+        init(attachment: Attachment) {
             super.init(attachment: attachment, type: .attachment)
+            cellIdentifier = "attachmentsCell"
+            height = 120.0
         }
     }
 
     class ImageAttachmentRow: BaseAttachmentRow {
-        init(attachment: MessageModel.Attachment) {
+        init(attachment: Attachment) {
             super.init(attachment: attachment, type: .imageAttachment)
+            cellIdentifier = "imageAttachmentCell"
         }
     }
 }

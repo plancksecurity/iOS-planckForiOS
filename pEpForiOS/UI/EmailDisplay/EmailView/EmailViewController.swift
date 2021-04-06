@@ -337,35 +337,29 @@ extension EmailViewController {
     }
 
     private func setupAttachment(cell: MessageAttachmentCell, with row: EmailViewModel.BaseAttachmentRow) {
-        row.retrieveAttachmentData { (attachmentData) in
-            cell.fileNameLabel.text = attachmentData.filename
-            cell.iconImageView.image = attachmentData.icon
-            cell.fileExtensionLabel.text = attachmentData.´extension´
+        row.retrieveAttachmentData { () in
+            cell.fileNameLabel.text = row.filename
+            cell.iconImageView.image = row.icon
+            cell.fileExtensionLabel.text = row.fileExtension
         }
     }
 
     private func setupImageAttachment(cell: MessageImageAttachmentCell,
-                                       row: EmailViewModel.ImageAttachmentRow,
-                                       indexPath: IndexPath) {
-        func set(attachment: EmailViewModel.BaseAttachmentRow.Attachment) {
-            guard var imageToSet = attachment.icon else {
+                                      row: EmailViewModel.ImageAttachmentRow,
+                                      indexPath: IndexPath) {
+        func setupCellFromRowData() {
+            guard var image = row.icon else {
                 Log.shared.errorAndCrash("No image in a ImageAttachmentRow")
                 return
             }
-            if imageToSet.size.width > cell.frame.size.width {
-                imageToSet = imageToSet.resized(newWidth: cell.frame.width) ?? imageToSet
+            if image.size.width > cell.frame.size.width {
+                image = image.resized(newWidth: cell.frame.width) ?? image
             }
-            row.fetchedAttachment?.icon = imageToSet
-            cell.imageAttachmentView?.image = imageToSet
+            cell.imageAttachmentView?.image = image
             updateSizeIfLastCell(indexPath: indexPath)
         }
-
-        if let attachment = row.fetchedAttachment {
-            set(attachment: attachment)
-        } else {
-            row.retrieveAttachmentData { (attachmentData) in
-                set(attachment: attachmentData)
-            }
+        row.retrieveAttachmentData() {
+            setupCellFromRowData()
         }
     }
 
