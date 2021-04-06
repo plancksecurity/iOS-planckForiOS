@@ -67,10 +67,22 @@ final class TrustManagementTableViewCell: UITableViewCell {
     
     // MARK: - Private
     
+    private func setupButtons() {
+        //Buttons
+        if #available(iOS 13.0, *), UITraitCollection.current.userInterfaceStyle == .dark {
+            resetButton.pEpIfyForTrust(backgroundColor: .systemGray2, textColor: .label)
+            confirmButton.pEpIfyForTrust(backgroundColor: .pEpGreen, textColor: .label)
+            declineButton.pEpIfyForTrust(backgroundColor: .pEpRed, textColor: .label)
+        } else {
+            resetButton.pEpIfyForTrust(backgroundColor: .pEpGrayBackgroundReset, textColor: .white)
+            confirmButton.pEpIfyForTrust(backgroundColor: .pEpGreen, textColor: .white)
+            declineButton.pEpIfyForTrust(backgroundColor: .pEpRed, textColor: .white)
+        }
+    }
+
     /// Setup the view with the row data.
     private func setupView() {
         removeGestureRecognizers()
-        let buttonTextcolor: UIColor = .white
 
         let gesture = UITapGestureRecognizer(target: self, action: #selector(trustwordsLabelPressed))
         trustwordsLabel.addGestureRecognizer(gesture)
@@ -83,16 +95,7 @@ final class TrustManagementTableViewCell: UITableViewCell {
         let declineTitle = NSLocalizedString("Decline", comment: "Incorrect trustwords/PGP fingerprint")
         declineButton.setTitle(declineTitle, for: .normal)
 
-        //Reset Button
-        if #available(iOS 13.0, *), UITraitCollection.current.userInterfaceStyle == .dark {
-            resetButton.pEpIfyForTrust(backgroundColor: .systemGray2, textColor: .label)
-            confirmButton.pEpIfyForTrust(backgroundColor: .pEpGreen, textColor: .label)
-            declineButton.pEpIfyForTrust(backgroundColor: .pEpRed, textColor: .label)
-        } else {
-            resetButton.pEpIfyForTrust(backgroundColor: .pEpGrayBackgroundReset, textColor: buttonTextcolor)
-            confirmButton.pEpIfyForTrust(backgroundColor: .pEpGreen, textColor: buttonTextcolor)
-            declineButton.pEpIfyForTrust(backgroundColor: .pEpRed, textColor: .white)
-        }
+        setupButtons()
 
         //Reset label
         resetLabel.text = NSLocalizedString("Reset all p≡p data for this comunication partner:",

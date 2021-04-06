@@ -473,6 +473,7 @@ extension TrustManagementViewController {
                     tableView.backgroundColor = .secondarySystemBackground
                 }
                 IdentityImageTool.clearCache()
+                loadView()
                 tableView.reloadData()
             }
         }
