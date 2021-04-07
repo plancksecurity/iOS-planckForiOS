@@ -12,7 +12,7 @@ from os.path import isfile, join, splitext
 # The engine source directory
 ENGINE_BASE_DIR = '../pEpEngine'
 
-SYNC_DIR_GENERATED = join(ENGINE_BASE_DIR, 'sync/generated')
+SYNC_DIR_GENERATED = join(ENGINE_BASE_DIR, 'codegen/generated')
 ASN_DIR_GENERATED = join(ENGINE_BASE_DIR, 'asn.1')
 DES_DIR = join(ENGINE_BASE_DIR, 'build-mac')
 DEST_ASN_LIST = join(DES_DIR, 'generated-files-asn1.txt')
@@ -50,7 +50,7 @@ def generate_sync_files():
     """Generates the engine's sync files"""
     with Pushd(ENGINE_BASE_DIR):
         commands = [
-            ['gmake', '-C', 'sync'],
+            ['gmake', '-C', 'codegen'],
             ['gmake', '-C', 'asn.1', 'Sync.c', 'Distribution.c']
         ]
         for cmd in commands:
