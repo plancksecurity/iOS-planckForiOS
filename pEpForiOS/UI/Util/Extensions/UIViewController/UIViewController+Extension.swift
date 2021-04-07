@@ -29,10 +29,12 @@ extension UIViewController {
         return traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     }
 
-    // As this screen might be rendered in a split view, the title view is not centered to the device
-    // width but the view controller's width. That's why we need to adjust the title view position
-    // in that case.
+    /// As this screen might be rendered in a split view, the title view is not centered to the device
+    /// width but the view controller's width. That's why we need to adjust the title view position
+    /// in that case.
+    /// - Note: When running in the extension target, nothing is adjusted.
     func adjustTitleViewPositionIfNeeded() {
+        #if !EXT_SHARE // Ignore completely when running in the extension
         //reset previous transformations if any
         navigationItem.titleView?.transform = .identity
         if UIDevice.isIpad && UIDevice.isLandscape {
@@ -42,6 +44,7 @@ extension UIViewController {
             navigationItem.titleView?.transform =
                 CGAffineTransform.identity.translatedBy(x: deltaX, y: 0)
         }
+        #endif
     }
     
     /// Puts the privacy rating or pEp logo into the navigation item or removes it.
