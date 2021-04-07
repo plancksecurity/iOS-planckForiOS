@@ -134,9 +134,11 @@ extension TutorialWizardViewController {
                     pageControlTint = .lightGray
                     pageControlPageIndicatorColor = .white
                     pageControlBackgroundColor = .secondarySystemBackground
+                    view.backgroundColor = .secondarySystemBackground
                 } else {
                     pageControlPageIndicatorColor = .black
                     pageControlBackgroundColor = .white
+                    view.backgroundColor = .white
                 }
 
                 view.layoutIfNeeded()
