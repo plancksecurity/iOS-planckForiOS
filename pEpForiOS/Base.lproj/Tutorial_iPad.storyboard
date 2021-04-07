@@ -66,10 +66,13 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="GPP-hZ-kRJ" userLabel="DeclineButton" customClass="TrustwordsButton" customModule="pEpForiOS" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="50.5" width="86" height="36"/>
+                                                        <rect key="frame" x="20" y="50.5" width="86" height="26"/>
                                                         <accessibility key="accessibilityConfiguration" label="wrongButton">
                                                             <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
                                                         </accessibility>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="26" id="S09-rV-YzY"/>
+                                                        </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                         <state key="normal" title="Decline"/>
                                                         <userDefinedRuntimeAttributes>
@@ -91,7 +94,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="gP8-zr-vel" userLabel="ConfirmButton" customClass="TrustwordsButton" customModule="pEpForiOS" customModuleProvider="target">
-                                                        <rect key="frame" x="128" y="50.5" width="89" height="36"/>
+                                                        <rect key="frame" x="128" y="50.5" width="89" height="26"/>
                                                         <accessibility key="accessibilityConfiguration" label="confirmButton">
                                                             <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
                                                         </accessibility>
@@ -123,6 +126,7 @@
                                                 <constraints>
                                                     <constraint firstItem="U0K-gs-rcW" firstAttribute="top" secondItem="4so-ip-7EI" secondAttribute="top" constant="20" id="3Et-Dd-6py"/>
                                                     <constraint firstItem="GPP-hZ-kRJ" firstAttribute="centerY" secondItem="gP8-zr-vel" secondAttribute="centerY" id="8fH-Tv-6aA"/>
+                                                    <constraint firstItem="gP8-zr-vel" firstAttribute="height" secondItem="GPP-hZ-kRJ" secondAttribute="height" id="EPW-Er-SLZ"/>
                                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="gP8-zr-vel" secondAttribute="trailing" constant="20" symbolic="YES" id="Q9y-Fn-62F"/>
                                                     <constraint firstItem="U0K-gs-rcW" firstAttribute="leading" secondItem="4so-ip-7EI" secondAttribute="leading" constant="20" id="Rm9-Ka-dhJ"/>
                                                     <constraint firstAttribute="height" constant="100" id="Tqa-Wy-zsx"/>
