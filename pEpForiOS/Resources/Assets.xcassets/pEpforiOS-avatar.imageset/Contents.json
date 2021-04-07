@@ -3,6 +3,26 @@
     {
       "filename" : "pEpforiOS-avatar.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "light"
+        }
+      ],
+      "filename" : "pEpforiOS-avatar-1.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "pEpforiOS-avatar-darkmode.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
