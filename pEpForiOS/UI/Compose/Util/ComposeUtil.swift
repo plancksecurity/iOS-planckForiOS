@@ -179,7 +179,7 @@ struct ComposeUtil {
         //BUFF: !!!
 
         //Replace white font with black font.
-        var mutableBodyText = NSMutableAttributedString(attributedString: state.bodyText)
+        let mutableBodyText = NSMutableAttributedString(attributedString: state.bodyText)
         var attributes = state.bodyText.attributes(at: 0, effectiveRange: nil)
         attributes[.foregroundColor] = UIColor.black
         mutableBodyText.setAttributes(attributes, range: state.bodyText.wholeRange())
