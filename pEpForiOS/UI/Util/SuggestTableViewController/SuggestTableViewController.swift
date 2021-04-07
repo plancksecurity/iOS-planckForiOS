@@ -93,6 +93,7 @@ extension SuggestTableViewController {
             }
         } else {
             cell.backgroundColor = .white
+            cell.contentView.backgroundColor = .white
         }
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
