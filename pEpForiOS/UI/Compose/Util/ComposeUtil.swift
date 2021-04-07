@@ -177,7 +177,14 @@ struct ComposeUtil {
         //!!!: DIRTY ALARM!
         //!!!: ADAM:
         //BUFF: !!!
-        let body = state.bodyText.toHtml(inlinedAttachments: inlinedAttachments) //!!!: ADAM: Bad! method called toHtml returns plaintext
+
+        //Replace white font with black font.
+        var mutableBodyText = NSMutableAttributedString(attributedString: state.bodyText)
+        var attributes = state.bodyText.attributes(at: 0, effectiveRange: nil)
+        attributes[.foregroundColor] = UIColor.black
+        mutableBodyText.setAttributes(attributes, range: state.bodyText.wholeRange())
+
+        let body = mutableBodyText.toHtml(inlinedAttachments: inlinedAttachments) //!!!: ADAM: Bad! method called toHtml returns plaintext
         let bodyPlainText = body.plainText
         let bodyHtml = body.html ?? ""
         message.shortMessage = state.subject
