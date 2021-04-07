@@ -22,9 +22,10 @@ class TutorialStep2iPhoneViewController: TutorialStepViewController {
     @IBOutlet private weak var trustwordsContainer: UIView!
 
     public override func configureView() {
+        setBackgroundColor()
         setupHandshakeTitle()
         setupPrivacyStatusExplanationLabel()
-        setupcCnfirmTrustwordsExplanationLabel()
+        setupcConfirmTrustwordsExplanationLabel()
         setupButtons()
         setupTrustwordsContainer()
         setupTrustwordsLabel()
@@ -54,7 +55,7 @@ extension TutorialStep2iPhoneViewController {
 
     }
 
-    private func setupcCnfirmTrustwordsExplanationLabel() {
+    private func setupcConfirmTrustwordsExplanationLabel() {
         confirmTrustwordsExplanationLabel.font = font
         confirmTrustwordsExplanationLabel.text = Localized.confirmTrustwordsExplanation
         confirmTrustwordsExplanationLabel.textColor = tutorialTextColor

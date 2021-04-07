@@ -31,6 +31,7 @@
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ar9-Ed-5vv">
                                                 <rect key="frame" x="0.0" y="20" width="493.5" height="79"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                                                 <string key="text">When you click on the Privacy Status icon in the top bar, you will get to the Handshake, where you can verify your communication partner. </string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
@@ -38,7 +39,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="ar9-Ed-5vv" firstAttribute="leading" secondItem="OL0-Yc-PA4" secondAttribute="leading" id="8IL-07-D2g"/>
                                             <constraint firstItem="ar9-Ed-5vv" firstAttribute="top" secondItem="OL0-Yc-PA4" secondAttribute="top" constant="20" symbolic="YES" id="Cft-fF-iuB"/>
@@ -152,7 +153,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <accessibility key="accessibilityConfiguration">
                                             <accessibilityTraits key="traits" notEnabled="YES"/>
                                         </accessibility>
@@ -173,7 +174,7 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="bOX-Qh-50l"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="2o1-qD-hhQ" firstAttribute="centerX" secondItem="bOX-Qh-50l" secondAttribute="centerX" id="BI0-Re-ZcS"/>
                             <constraint firstItem="2o1-qD-hhQ" firstAttribute="height" secondItem="1lb-dh-yBv" secondAttribute="height" multiplier="0.75" id="XJG-2O-Ctm"/>
@@ -253,7 +254,7 @@
                                                 <rect key="frame" x="23" y="248" width="466" height="41"/>
                                             </imageView>
                                         </subviews>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="pNJ-JN-sBn" firstAttribute="centerX" secondItem="bmN-FN-09g" secondAttribute="centerX" id="8TN-jb-pYM"/>
                                             <constraint firstItem="9mT-gP-Xde" firstAttribute="top" secondItem="aOU-4f-otX" secondAttribute="bottom" constant="35" id="Bm3-lB-YYL"/>
@@ -275,7 +276,7 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ZNf-h2-Dnv"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Q6B-2p-slq" firstAttribute="centerX" secondItem="ZNf-h2-Dnv" secondAttribute="centerX" id="PNE-dg-B2H"/>
                             <constraint firstItem="Q6B-2p-slq" firstAttribute="leading" secondItem="ZNf-h2-Dnv" secondAttribute="centerX" multiplier="0.5" id="SPf-Ga-NDH"/>
@@ -381,7 +382,7 @@
                                                 </constraints>
                                             </imageView>
                                         </subviews>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="bzG-oh-3x7" firstAttribute="leading" secondItem="J6v-Nk-vqJ" secondAttribute="leading" id="OCk-5X-9rr"/>
                                             <constraint firstItem="dR7-LM-eX1" firstAttribute="centerX" secondItem="J6v-Nk-vqJ" secondAttribute="centerX" id="Pju-C2-chM"/>
@@ -396,7 +397,7 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6b8-1C-6wd"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="31V-WD-T5I" firstAttribute="leading" secondItem="6b8-1C-6wd" secondAttribute="centerX" multiplier="0.5" id="6Uc-UW-10j" userLabel="StackView Leading"/>
                             <constraint firstItem="31V-WD-T5I" firstAttribute="height" secondItem="6xy-jm-QAH" secondAttribute="height" multiplier="0.75" id="BXU-Ha-OtN"/>
@@ -567,7 +568,7 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="NIF-fI-iGg"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="agI-vP-FZm" firstAttribute="height" secondItem="2Td-BF-FHz" secondAttribute="height" multiplier="0.75" id="Sam-Zd-Rbf"/>
                             <constraint firstItem="agI-vP-FZm" firstAttribute="centerX" secondItem="NIF-fI-iGg" secondAttribute="centerX" id="X37-tI-5mT"/>
@@ -620,6 +621,9 @@
         <image name="pEpForIOS-iPad-tutorial-graphic4-darkmode" width="58" height="58"/>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="secondarySystemBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -18,8 +18,14 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
         super.viewDidLoad()
         setupView()
         if #available(iOS 13.0, *) {
-            view.backgroundColor = .systemBackground
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                view.backgroundColor = .secondarySystemBackground
+            } else {
+                view.backgroundColor = .white
+            }
             Appearance.customiseForTutorial(viewController: self)
+        } else {
+            view.backgroundColor = .white
         }
     }
 
@@ -43,11 +49,11 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
             if UITraitCollection.current.userInterfaceStyle == .dark {
                 tutorialWizard.pageControlTint = .lightGray
                 tutorialWizard.pageControlPageIndicatorColor = .white
+                tutorialWizard.pageControlBackgroundColor = .secondarySystemBackground
             } else {
                 tutorialWizard.pageControlPageIndicatorColor = .black
+                tutorialWizard.pageControlBackgroundColor = .white
             }
-
-            tutorialWizard.pageControlBackgroundColor = .systemBackground
         } else {
             tutorialWizard.pageControlPageIndicatorColor = .black
             tutorialWizard.pageControlBackgroundColor = .white
@@ -127,10 +133,11 @@ extension TutorialWizardViewController {
                 if UITraitCollection.current.userInterfaceStyle == .dark {
                     pageControlTint = .lightGray
                     pageControlPageIndicatorColor = .white
+                    pageControlBackgroundColor = .secondarySystemBackground
                 } else {
                     pageControlPageIndicatorColor = .black
+                    pageControlBackgroundColor = .white
                 }
-                pageControlBackgroundColor = .systemBackground
 
                 view.layoutIfNeeded()
             }

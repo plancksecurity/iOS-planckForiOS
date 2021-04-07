@@ -24,6 +24,7 @@ class TutorialStep0iPhoneViewController: TutorialStepViewController {
     @IBOutlet private weak var topbarImageView: UIImageView!
 
     public override func configureView() {
+        setBackgroundColor()
         setupTitleLabel()
         setupSkipTutorialLabel()
         setupPrivacyStatusLabel()

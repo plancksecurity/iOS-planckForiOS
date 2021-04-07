@@ -14,6 +14,7 @@ class TutorialStep3iPadViewController: TutorialStepViewController {
     @IBOutlet private weak var commonDenominatorLabel: UILabel!
 
     public override func configureView() {
+        setBackgroundColor()
         setupTitleLabel()
         setupExplanationLabel()
         setupCommonDenominatorLabel()

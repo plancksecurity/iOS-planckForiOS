@@ -20,6 +20,7 @@ class TutorialStep1iPadViewController: TutorialStepViewController {
     @IBOutlet private weak var mistrustedDescription: UILabel!
 
     public override func configureView() {
+        setBackgroundColor()
         setupLabels()
     }
 }

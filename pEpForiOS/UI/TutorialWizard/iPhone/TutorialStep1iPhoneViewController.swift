@@ -17,6 +17,7 @@ class TutorialStep1iPhoneViewController: TutorialStepViewController {
     @IBOutlet private weak var mistrustedDescription: UILabel!
     
     public override func configureView() {
+        setBackgroundColor()
         setupSecureLabel()
         setupSecureDescriptionLabel()
         setupSecureAndTrustedLabel()

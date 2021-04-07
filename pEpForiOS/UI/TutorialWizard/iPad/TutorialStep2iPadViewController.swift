@@ -18,6 +18,7 @@ class TutorialStep2iPadViewController : TutorialStepViewController {
     @IBOutlet private weak var confirmTrustwordsExplanation: UILabel!
 
     public override func configureView() {
+        setBackgroundColor()
         setupHandshakeTitle()
         setupTrustwordsLabel()
         setupTrustButtons()

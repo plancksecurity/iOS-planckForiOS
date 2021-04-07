@@ -162,8 +162,21 @@ extension TutorialStepViewController {
 
         if #available(iOS 13.0, *) {
             if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                configureView()
                 view.layoutIfNeeded()
             }
+        }
+    }
+
+    func setBackgroundColor() {
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .light {
+                view.backgroundColor = .white
+            } else {
+                view.backgroundColor = .secondarySystemBackground
+            }
+        } else {
+            view.backgroundColor = .white
         }
     }
 }

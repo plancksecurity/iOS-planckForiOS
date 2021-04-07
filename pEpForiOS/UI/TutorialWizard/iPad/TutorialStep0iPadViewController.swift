@@ -26,6 +26,7 @@ class TutorialStep0iPadViewController: TutorialStepViewController {
     @IBOutlet private weak var stackViewHeight: NSLayoutConstraint!
 
     public override func configureView() {
+        setBackgroundColor()
         setupLabels()
     }
 
