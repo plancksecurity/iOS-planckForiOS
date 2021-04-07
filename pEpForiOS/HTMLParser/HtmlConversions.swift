@@ -81,7 +81,7 @@ public class HtmlConversions {
                                                         "‹" : ""])
     }
 
-    public func citationVerticalLineToBlockquote(aString: NSAttributedString) -> (plainText: String, attribString: NSAttributedString) {
+    public func citationVerticalLineToBlockquote(_ aString: NSAttributedString) -> (plainText: String, attribString: NSAttributedString) {
 
         let mutattribstring = NSMutableAttributedString(attributedString: aString.replacingOccurrences(ofWith: [" " : "Ψ",
                                                                                                                 " " : ""]))

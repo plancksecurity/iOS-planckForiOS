@@ -29,10 +29,12 @@ extension NSAttributedString {
         let htmlDocAttribKey: [NSAttributedString.DocumentAttributeKey : Any] = [NSAttributedString.DocumentAttributeKey.documentType: NSAttributedString.DocumentType.html,
                                                                                  NSAttributedString.DocumentAttributeKey.characterEncoding: encodingUtf8]
 
+        // Remove font color. The receiver should define that to its needs (e.g. for supporting dark & light mode)
+        let mutableMe = NSMutableAttributedString(attributedString: self)
+        mutableMe.removeFontColorAttributes()
         // conversion NSTextAttachment with image to <img src.../> html tag with cid:{cid}
-
         let htmlConv = HtmlConversions()
-        let plainTextAndHtml = htmlConv.citationVerticalLineToBlockquote(aString: self)
+        let plainTextAndHtml = htmlConv.citationVerticalLineToBlockquote(mutableMe)
         let plainText = plainTextAndHtml.plainText
 
         let mutableAttribString = NSMutableAttributedString(attributedString: plainTextAndHtml.attribString)
