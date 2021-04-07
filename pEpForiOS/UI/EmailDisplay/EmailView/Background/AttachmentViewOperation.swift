@@ -13,9 +13,10 @@ import pEpIOSToolbox
 /// Operation to get the Attachments view.
 /// Loads all attachments of the given message from disk and creates AttachmentContainers for it
 class AttachmentViewOperation: Operation {
+
     enum AttachmentContainer {
-        case imageAttachment(Attachment, UIImage)
-        case docAttachment(Attachment)
+        case imageAttachment(attachment: Attachment, image: UIImage)
+        case docAttachment(attachment: Attachment)
     }
 
     private var attachment: Attachment
@@ -26,9 +27,10 @@ class AttachmentViewOperation: Operation {
     /// Constructor
     ///
     /// - Parameters:
-    ///   - attachment: The attachment to perform the operation.
+    ///   - attachment: The attachment to perform the operation for.
     ///   - completionBlock: The completion block. Will be dispatched on main queue. 
-    init(attachment: Attachment, completionBlock: @escaping((AttachmentContainer) -> Void)) {
+    init(attachment: Attachment,
+         completionBlock: @escaping((AttachmentContainer?) -> Void)) {
         self.attachment = attachment
         super.init()
         self.completionBlock = { [weak self] in
@@ -36,20 +38,20 @@ class AttachmentViewOperation: Operation {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            guard let container = me.container else {
-                Log.shared.errorAndCrash("No container")
-                return
+            defer {
+                DispatchQueue.main.async { completionBlock(me.container) }
             }
-            DispatchQueue.main.async {
-                completionBlock(container)
+            guard let _ = me.container else {
+                Log.shared.errorAndCrash("No container. Looks like we failed.")
+                return
             }
         }
     }
 
     override func main() {
-        let mainSession = Session.main
-        let safeAttachment = attachment.safeForSession(mainSession)
-        mainSession.performAndWait { [weak self] in
+        let session = Session()
+        let safeAttachment = attachment.safeForSession(session)
+        session.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
@@ -58,11 +60,18 @@ class AttachmentViewOperation: Operation {
             if let mimeType = safeAttachment.mimeType {
                 isImage = MimeTypeUtils.isImage(mimeType: mimeType)
             }
-            if isImage, let imageData = safeAttachment.data,
-               let image = UIImage.image(gifData: imageData) ?? UIImage(data: imageData) {
-                me.container = .imageAttachment(safeAttachment, image)
+            if isImage {
+                guard let imageData = safeAttachment.data,
+                      let image = UIImage.image(gifData: imageData) ?? UIImage(data: imageData)
+                else {
+                    Log.shared.errorAndCrash("No image!")
+                    return
+                }
+                // We intentionally do _not_ use safeAttachment here but the one passed by the client.
+                me.container = .imageAttachment(attachment: me.attachment, image: image)
             } else {
-                me.container = .docAttachment(safeAttachment)
+                // We intentionally do _not_ use safeAttachment here but the one passed by the client.
+                me.container = .docAttachment(attachment: me.attachment)
             }
         }
     }
