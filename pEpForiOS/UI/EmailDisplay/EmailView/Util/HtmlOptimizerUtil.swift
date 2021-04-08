@@ -75,13 +75,6 @@ extension HtmlOptimizerUtil {
         // Build HTML tweak
 
         let styleAutodetectLightOrDarkMode = """
-            @media (prefers-color-scheme: light) {
-                body {
-                        background: white;
-                        color: #393939;
-                    }
-            }
-
             @media (prefers-color-scheme: dark) {
                 body {
                     color: #eee;
