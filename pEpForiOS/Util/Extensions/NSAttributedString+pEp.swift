@@ -14,7 +14,7 @@ extension NSAttributedString {
 
     public func textAttachments(range: NSRange? = nil) -> [BodyCellViewModel.TextAttachment] {
         let theRange = range ?? NSMakeRange(0, length)
-        var allAttachments = [TextAttachment]()
+        var allAttachments = [BodyCellViewModel.TextAttachment]()
         if theRange.location != NSNotFound {
             enumerateAttribute(
                 NSAttributedString.Key.attachment, in: theRange,
