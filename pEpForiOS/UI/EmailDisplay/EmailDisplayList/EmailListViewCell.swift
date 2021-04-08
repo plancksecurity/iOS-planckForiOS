@@ -234,7 +234,7 @@ extension EmailListViewCell {
     private func setBackgroundSelectionColor() {
         if #available(iOS 13.0, *) {
             if UITraitCollection.current.userInterfaceStyle == .dark {
-                originalBackgroundSelectionColor = UIColor.systemGray5.withAlphaComponent(0.5)
+                originalBackgroundSelectionColor = UIColor.systemGray5
             } else {
                 originalBackgroundSelectionColor = UIColor.pEpGreen.withAlphaComponent(0.2)
             }

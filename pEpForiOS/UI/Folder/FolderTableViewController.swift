@@ -51,6 +51,7 @@ class FolderTableViewController: UITableViewController {
                     return
                 }
                 vm.handleAppereanceChanged()
+                Appearance.configureSelectedBackgroundViewForPep(tableViewCell: UITableViewCell.appearance())
                 tableView.reloadData()
             }
         }
@@ -161,6 +162,7 @@ class FolderTableViewController: UITableViewController {
             Log.shared.errorAndCrash("No subfolder cell found")
             return UITableViewCell()
         }
+        Appearance.configureSelectedBackgroundViewForPep(tableViewCell: cell)
 
         // Setup cell: padding, indentation, texts, colors, separator, chevron, etc.
         cell.indentationLevel = min(fcvm.indentationLevel, vm.maxIndentationLevel)

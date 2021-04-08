@@ -57,9 +57,14 @@ class Appearance {
     }
 
     public static func configureSelectedBackgroundViewForPep(tableViewCell: UITableViewCell) {
+        var backgroundColor: UIColor
+        if #available(iOS 13.0, *) {
+             backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.systemGray5 : UIColor.pEpGreen.withAlphaComponent(0.2)
+        } else {
+            backgroundColor = UIColor.pEpGreen.withAlphaComponent(0.2)
+        }
         let tableViewCellSelectedbackgroundView = UIView()
-        tableViewCellSelectedbackgroundView.backgroundColor =
-            UIColor.pEpGreen.withAlphaComponent(0.2)
+        tableViewCellSelectedbackgroundView.backgroundColor = backgroundColor
         tableViewCell.selectedBackgroundView = tableViewCellSelectedbackgroundView
     }
 
