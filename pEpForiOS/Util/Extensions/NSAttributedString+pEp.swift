@@ -10,57 +10,9 @@ import Foundation
 import pEpIOSToolbox
 import MessageModel
 
-//BUFF: //!!!: Clean up (seperate topics, nest and rename delegate. Is actually no delegat. Move fitting stuff to toolbox.
-class ToMarkdownDelegate: NSAttributedStringParsingDelegate {
-    var attachments = [Attachment]()
-
-    private lazy var mimeUtils = MimeTypeUtils()
-    
-    func stringFor(attachment: NSTextAttachment) -> String? {
-        guard
-            let textAttachment = attachment as? TextAttachment,
-            let attachment = textAttachment.attachment
-            else {
-                return nil
-        }
-
-        var result: String? = nil
-        // Attachments in compose MUST be on a private Session, as they are in invalid state
-        // (message == nil) and thus must not be seen nor saved on other Sessions.
-        attachment.session.performAndWait { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            guard let mimeType = attachment.mimeType else {
-                result = nil
-                return
-            }
-
-            me.attachments.append(attachment)
-            let count = me.attachments.count
-
-            let theID = UUID().uuidString + "@pretty.Easy.privacy"
-            let theExt = me.mimeUtils?.fileExtension(fromMimeType: mimeType) ?? "jpg"
-            let cidBase = "attached-inline-image-\(count)-\(theExt)-\(theID)"
-            let cidSrc = "cid:\(cidBase)"
-            let cidUrl = "cid://\(cidBase)"
-            attachment.fileName = cidUrl
-
-            let alt = String.localizedStringWithFormat(
-                NSLocalizedString("Attached Image %1$d (%2$@)",
-                                  comment: "Alt text for image attachment in markdown. Placeholders: Attachment number, extension."),
-                count, theExt)
-
-            result = "![\(alt)](\(cidSrc))"
-        }
-        return result
-    }
-}
-
 extension NSAttributedString {
 
-    public func textAttachments(range: NSRange? = nil) -> [TextAttachment] {
+    public func textAttachments(range: NSRange? = nil) -> [BodyCellViewModel.TextAttachment] {
         let theRange = range ?? NSMakeRange(0, length)
         var allAttachments = [TextAttachment]()
         if theRange.location != NSNotFound {
@@ -68,7 +20,7 @@ extension NSAttributedString {
                 NSAttributedString.Key.attachment, in: theRange,
                 options: NSAttributedString.EnumerationOptions(rawValue: 0)) {
                     value, range, stop in
-                    if let attachment = value as? TextAttachment {
+                if let attachment = value as? BodyCellViewModel.TextAttachment {
                         allAttachments.append(attachment)
                     }
             }
@@ -77,7 +29,7 @@ extension NSAttributedString {
         return allAttachments
     }
 
-    public func textAttachments(string: String) -> [TextAttachment] {
+    public func textAttachments(string: String) -> [BodyCellViewModel.TextAttachment] {
         return textAttachments(range: NSMakeRange(0, string.count))
     }
 
@@ -98,6 +50,9 @@ extension NSAttributedString {
         return allAttachments
     }
 
+    /// Removes (plain)text from the attributed string. Used for getting NSTextAttchments only
+    /// which is considered the only thing left.
+    /// - Returns: A string with all text removed. Assumed a string containing only NSTextAttachments.
     public func plainTextRemoved() -> NSAttributedString {
         var attachments: [NSTextAttachment] = textAttachments()
         attachments.append(contentsOf: recipientTextAttachments())
@@ -132,39 +87,5 @@ extension NSAttributedString {
                                             length: createe.length)
         )
         return createe
-    }
-
-    /// Concatenates two attributed strings.
-    ///
-    /// - Parameters:
-    ///   - lhs: first string
-    ///   - rhs: string to concatenate to first string
-    /// - Returns: lhs + rhs concatenated
-    static public func +(lhs: NSAttributedString, rhs: NSAttributedString) -> NSAttributedString {
-        let result = NSMutableAttributedString()
-        result.append(lhs)
-        result.append(rhs)
-        return result
-    }
-}
-
-extension NSAttributedString {
-    static public func boldAttributedString(from string: String) -> NSAttributedString {
-        return attributedString(from: string, textStyle: .callout)
-    }
-
-    static public func normalAttributedString(from string: String) -> NSAttributedString {
-        return attributedString(from: string, textStyle: .body)
-    }
-
-    static private func attributedString(from string: String,
-                                         textStyle: UIFont.TextStyle) -> NSAttributedString {
-        let attrs:[NSAttributedString.Key: Any]
-        if #available(iOS 13.0, *) {
-            attrs = [.font: UIFont.preferredFont(forTextStyle: textStyle), .foregroundColor: UIColor.label]
-        } else {
-            attrs = [.font: UIFont.preferredFont(forTextStyle: textStyle)]
-        }
-        return NSAttributedString(string: string, attributes: attrs)
     }
 }

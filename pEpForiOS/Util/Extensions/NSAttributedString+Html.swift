@@ -46,13 +46,13 @@ extension NSAttributedString {
             .enumerateAttribute(
                 .attachment,
                 in: mutableAttribString.wholeRange()) { (value, range, stop) in
-                    if let textAttachment = value as? TextAttachment {
-                        let delegate = ToMarkdownDelegate()
+                if let textAttachment = value as? BodyCellViewModel.TextAttachment {
                         if idx < inlinedAttachments.count {
                             textAttachment.attachment = inlinedAttachments[idx]
                             idx += 1
-                            if let stringForTextAttachment = delegate.stringFor(attachment: textAttachment) { //BUFF: !!! HERE
-                                if delegate.attachments.count > 0 {
+                            let cidInfo = textAttachment.cidInfo()
+                            if let stringForTextAttachment = cidInfo.cidString {
+                                if cidInfo.attachment != nil {
                                     images[range] = stringForTextAttachment.cleanAttachments
                                 }
                             }
