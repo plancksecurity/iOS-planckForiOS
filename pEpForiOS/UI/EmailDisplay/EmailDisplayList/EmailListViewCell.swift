@@ -72,7 +72,7 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        originalBackgroundSelectionColor = selectedBackgroundView?.backgroundColor
+        setBackgroundSelectionColor()
         contactImageView.applyContactImageCornerRadius()
         resetToDefault()
     }
@@ -228,6 +228,32 @@ extension EmailListViewCell {
             return " "
         } else {
             return possiblyEmptyString
+        }
+    }
+
+    private func setBackgroundSelectionColor() {
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                originalBackgroundSelectionColor = UIColor.systemGray5.withAlphaComponent(0.5)
+            } else {
+                originalBackgroundSelectionColor = UIColor.pEpGreen.withAlphaComponent(0.2)
+            }
+        } else {
+            originalBackgroundSelectionColor = UIColor.pEpGreen.withAlphaComponent(0.2)
+        }
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                setBackgroundSelectionColor()
+            }
         }
     }
 }
