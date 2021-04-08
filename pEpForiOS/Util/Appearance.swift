@@ -51,7 +51,7 @@ class Appearance {
 
         if #available(iOS 13, *) {
             UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor.systemBackground
-            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.label
+            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.pEpGreen
             UISearchBar.appearance().backgroundColor = UIColor.systemBackground
         }
     }
