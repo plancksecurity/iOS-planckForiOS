@@ -104,13 +104,12 @@ extension String {
         let options: [NSAttributedString.DocumentReadingOptionKey : Any] =
             [.documentType : NSAttributedString.DocumentType.html]
 
-        guard let attribString = try? NSAttributedString(data: htmlData ?? Data(),
-                                                   options: options,
-                                                   documentAttributes: nil) else {
-                                                    return NSAttributedString(string: "")
+        guard var string = try? NSAttributedString(data: htmlData ?? Data(),
+                                                         options: options,
+                                                         documentAttributes: nil)
+        else {
+            return NSAttributedString.normalAttributedString(from: "")
         }
-
-        var string = NSAttributedString(attributedString: attribString)
 
         let patternFindImageMarkdownSyntax = "(?:!\\[(.*?)\\]\\((.*?)\\))"
         for match in string.string.find(pattern: patternFindImageMarkdownSyntax) {
@@ -130,7 +129,7 @@ extension String {
             }
             if let attachment = attachmentDelegate?.imageAttachment(src: src, alt: alt) {
                 guard let image = attachment.image else { return string }
-                let textAttachment = TextAttachment()
+                let textAttachment = BodyCellViewModel.TextAttachment()
                 textAttachment.image = image
                 textAttachment.attachment = attachment
                 let imageString = NSAttributedString(attachment: textAttachment)
@@ -144,7 +143,7 @@ extension String {
             }
         }
 
-        return string
+        return string.normalAttributedString()
     }
 
     public func replaceMarkdownImageSyntaxToHtmlSyntax() -> String {

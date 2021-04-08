@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+import pEpIOSToolbox
+
 /// Conversions between Html -> NSAttributedString
 /// and NSAttributedString -> Html
 /// with <blockquote> tags and keep and display quotation levels
