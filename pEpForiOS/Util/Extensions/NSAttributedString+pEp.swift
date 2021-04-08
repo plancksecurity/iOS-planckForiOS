@@ -10,6 +10,7 @@ import Foundation
 import pEpIOSToolbox
 import MessageModel
 
+//BUFF: //!!!: Clean up (seperate topics, nest and rename delegate. Is actually no delegat. Move fitting stuff to toolbox.
 class ToMarkdownDelegate: NSAttributedStringParsingDelegate {
     var attachments = [Attachment]()
 
@@ -147,20 +148,23 @@ extension NSAttributedString {
     }
 }
 
-extension NSMutableAttributedString {
-    @discardableResult public func bold(_ text:String) -> NSMutableAttributedString {
-        let attrs:[NSAttributedString.Key: Any] =
-            [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .callout)]
-
-        let boldString = NSMutableAttributedString(string: text, attributes: attrs)
-        self.append(boldString)
-        return self
+extension NSAttributedString {
+    static public func boldAttributedString(from string: String) -> NSAttributedString {
+        return attributedString(from: string, textStyle: .callout)
     }
 
-    @discardableResult public func normal(_ text: String) -> NSMutableAttributedString {
-        let attrs:[NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .body)]
-        let normal =  NSMutableAttributedString(string: text, attributes: attrs)
-        self.append(normal)
-        return self
+    static public func normalAttributedString(from string: String) -> NSAttributedString {
+        return attributedString(from: string, textStyle: .body)
+    }
+
+    static private func attributedString(from string: String,
+                                         textStyle: UIFont.TextStyle) -> NSAttributedString {
+        let attrs:[NSAttributedString.Key: Any]
+        if #available(iOS 13.0, *) {
+            attrs = [.font: UIFont.preferredFont(forTextStyle: textStyle), .foregroundColor: UIColor.label]
+        } else {
+            attrs = [.font: UIFont.preferredFont(forTextStyle: textStyle)]
+        }
+        return NSAttributedString(string: string, attributes: attrs)
     }
 }
