@@ -70,11 +70,12 @@ final class EmailListViewController: UIViewController {
     private let refreshController = UIRefreshControl()
 
     // MARK: - Life Cycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         subscribeForKeyboardNotifications()
         edgesForExtendedLayout = .all
+        setSeparator()
 
         doOnce = { [weak self] in
             guard let me = self else {
@@ -1342,6 +1343,7 @@ extension EmailListViewController {
             if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
                 /// Clear the cache and get the correct version of the avatar..
                 viewModel?.freeMemory()
+                setSeparator()
                 tableView.reloadData()
             }
         }
@@ -1422,5 +1424,20 @@ extension EmailListViewController {
         composeVc.viewModel = composeVM
         let presenterVc = UIApplication.currentlyVisibleViewController()
         presenterVc.present(composeNavigationController, animated: true)
+    }
+}
+
+extension EmailListViewController {
+
+    private func setSeparator() {
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                tableView.separatorColor = UIColor.pEpSeparator
+            } else {
+                tableView.separatorColor = .opaqueSeparator
+            }
+        } else {
+            // Fallback on earlier versions
+        }
     }
 }
