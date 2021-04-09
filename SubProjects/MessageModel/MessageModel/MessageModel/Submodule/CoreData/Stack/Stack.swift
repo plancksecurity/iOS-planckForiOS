@@ -336,13 +336,9 @@ extension Stack {
 
     // MARK: - Defaults
 
-    static private var defaultName: String {
-        guard let bundleId = Bundle.main.bundleIdentifier else {
-            /// There is nothing we can do.
-            fatalError()
-        }
-        return bundleId
-    }
+    // TODO: Hard-coded (instead of Bundle.main.bundleIdentifier)
+    // in order to coincide with the sharing extension
+    static private var defaultName = "security.pEp"
 
     static private var defaultURL: URL {
         return storeURL(for: defaultName)
