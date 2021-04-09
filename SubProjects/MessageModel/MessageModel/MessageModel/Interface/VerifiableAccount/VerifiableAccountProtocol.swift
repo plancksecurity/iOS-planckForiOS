@@ -59,7 +59,7 @@ public protocol VerifiableAccountProtocol {
 
     // MARK: - VerifiableAccountProtocol (data)
 
-    var accountType: AccountType { get set }
+    var accountType: VerifiableAccount.AccountType { get set }
 
     /// The email address of the account. Used for logging in to the servers.
     var address: String? { get set }
