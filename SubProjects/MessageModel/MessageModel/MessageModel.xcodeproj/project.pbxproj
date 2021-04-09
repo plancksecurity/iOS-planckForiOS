@@ -509,6 +509,7 @@
 		43BDDD0E25DD36F700FC0C68 /* Message+IMAP+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4813221E9518006E8F83 /* Message+IMAP+Internal.swift */; };
 		43BDDD7225DD424400FC0C68 /* Message+FakeMessage+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CACE22562CB1B0043077E /* Message+FakeMessage+Internal.swift */; };
 		43BDDD7625DD427600FC0C68 /* CdMessage+FakeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152701882294537900197378 /* CdMessage+FakeMessage.swift */; };
+		43BDDD7A25DD42C600FC0C68 /* Folder+VirtualMailbox+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47F5221E9518006E8F83 /* Folder+VirtualMailbox+Internal.swift */; };
 		43BDDD7E25DD42F200FC0C68 /* ProviderSpecificInformationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47F8221E9518006E8F83 /* ProviderSpecificInformationProtocol.swift */; };
 		43BDDD8E25DD4BDC00FC0C68 /* VerifiableAccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */; };
 		43BDDD9225DD4BEC00FC0C68 /* VerifiableAccountIMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16A822802B6B00201DE5 /* VerifiableAccountIMAP.swift */; };
@@ -3104,6 +3105,7 @@
 				43FD3F33261485000032F809 /* AppendMailsToFolderOperation.swift in Sources */,
 				434C233625D6A2AA00F622DB /* ImapSyncOperation.swift in Sources */,
 				43BDDF6325DE5EF400FC0C68 /* Identity+AddessBook.swift in Sources */,
+				43BDDD7A25DD42C600FC0C68 /* Folder+VirtualMailbox+Internal.swift in Sources */,
 				43BDDDDE25DD64FA00FC0C68 /* AddressBook.swift in Sources */,
 				434C21A325D6977200F622DB /* CdAccount+FetchedResultsController.swift in Sources */,
 				434C219425D6972500F622DB /* CdFolder.swift in Sources */,
