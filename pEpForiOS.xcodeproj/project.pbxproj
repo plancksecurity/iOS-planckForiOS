@@ -205,8 +205,6 @@
 		43038EA2246D897F008FC36E /* KeyImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43038EA1246D897F008FC36E /* KeyImportViewController.swift */; };
 		4307D5DA23575853004569C4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4307D5D823575853004569C4 /* InfoPlist.strings */; };
 		430D73651E9CBD4E00EA6FA9 /* AttachmentViewOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430D73641E9CBD4E00EA6FA9 /* AttachmentViewOperation.swift */; };
-		4311A2D62620833F005CF839 /* AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311A2D52620833F005CF839 /* AccountType.swift */; };
-		4311A2D826208358005CF839 /* AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311A2D52620833F005CF839 /* AccountType.swift */; };
 		4313A54C25E7C1D9001E6767 /* NothingSelected.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 433404CD2379789600E785F1 /* NothingSelected.storyboard */; };
 		4313A54F25E7C1E1001E6767 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 151DE7E01FC5D3E200CDC273 /* Settings.storyboard */; };
 		4313A55225E7C1F7001E6767 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */; };
@@ -901,7 +899,6 @@
 		4307D5E123575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Thread.strings; sourceTree = "<group>"; };
 		4307D5E223575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		430D73641E9CBD4E00EA6FA9 /* AttachmentViewOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentViewOperation.swift; sourceTree = "<group>"; };
-		4311A2D52620833F005CF839 /* AccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountType.swift; sourceTree = "<group>"; };
 		4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OAuth2Type+Extension.swift"; sourceTree = "<group>"; };
 		431BB9441E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = PorpoiseGalaxy_HubbleFraile_960.jpg; sourceTree = "<group>"; };
 		431C2B161F387C4100D87FFD /* LoginViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
@@ -2703,7 +2700,6 @@
 				43985D092044296D0080FA9A /* OAuthAuthorizer.swift */,
 				B74F81011EB0E20000519FCC /* LoginViewModel.swift */,
 				B72C7BAB2395198D0013B12E /* AccountTypeSelectorViewModel.swift */,
-				4311A2D52620833F005CF839 /* AccountType.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -3213,7 +3209,6 @@
 				434A6C4D25D2A3A100179335 /* ComposeViewModel+Factory.swift in Sources */,
 				434A6C7225D2A3E200179335 /* RecipientCellViewModel.swift in Sources */,
 				434A6C6D25D2A3D900179335 /* NSAttributedString+RecipientTextUtils.swift in Sources */,
-				4311A2D826208358005CF839 /* AccountType.swift in Sources */,
 				434C1B3D25D42D5400F622DB /* NSString+Markdown.m in Sources */,
 				434C19CA25D3E11D00F622DB /* MediaAttachmentPickerProvider.swift in Sources */,
 				434C1A7725D40A2F00F622DB /* ContactCell.swift in Sources */,
@@ -3502,7 +3497,6 @@
 				152A39DD21905C3E00D9F8E4 /* AccountCell.swift in Sources */,
 				152295572302F7E200204FD3 /* ExtraKeysSettingViewModel.swift in Sources */,
 				5BA946232542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift in Sources */,
-				4311A2D62620833F005CF839 /* AccountType.swift in Sources */,
 				B7DB7FDC221ADDBD003968DA /* UIImageView+Extension.swift in Sources */,
 				5BB7C74724D85A3B00D5F328 /* PEPWebviewController.swift in Sources */,
 				43306EC21FE129840045DD00 /* OAuth2Type.swift in Sources */,
