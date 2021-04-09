@@ -10,7 +10,7 @@ import Foundation
 
 extension Account {
     /// Wraps `CdAccount.accountType`.
-    public var accountType: VerifiableAccount.AccountType {
+    public var accountType: AccountType {
         return cdObject.accountType
     }
 }
