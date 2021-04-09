@@ -199,7 +199,6 @@
 		430CDA852296BC7A00AAC37F /* CdMessage+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CDA842296BC7A00AAC37F /* CdMessage+KeySync.swift */; };
 		430CDA892296BEFC00AAC37F /* CdMessageCreation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CDA882296BEFC00AAC37F /* CdMessageCreation.swift */; };
 		4311A2E62620846F005CF839 /* AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311A2E52620846F005CF839 /* AccountType.swift */; };
-		4311A2ED26208525005CF839 /* AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311A2E52620846F005CF839 /* AccountType.swift */; };
 		43123FB7225368170038D72C /* MessageInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FB6225368170038D72C /* MessageInfoCache.swift */; };
 		43123FB9225369660038D72C /* CdMessage+NonOptionalConvenienceAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FB8225369660038D72C /* CdMessage+NonOptionalConvenienceAccessors.swift */; };
 		43123FBD225374030038D72C /* CdFolder+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FBC225374030038D72C /* CdFolder+IMAP.swift */; };
@@ -3076,7 +3075,6 @@
 				43BDDDA625DD4D7E00FC0C68 /* PrepareAccountForSavingService.swift in Sources */,
 				434C21A425D6978000F622DB /* CdAccount+PredicateFactory.swift in Sources */,
 				43BDDC4725DC213800FC0C68 /* KeySyncStateProvider.swift in Sources */,
-				4311A2ED26208525005CF839 /* AccountType.swift in Sources */,
 				43BDDDCE25DD63B300FC0C68 /* TrustManagementUtil.swift in Sources */,
 				436FD2B425DA8C5400D929B3 /* NSManagedObjectContext+Reset.swift in Sources */,
 				43FD3F3726148A4C0032F809 /* FolderInfoCache.swift in Sources */,
