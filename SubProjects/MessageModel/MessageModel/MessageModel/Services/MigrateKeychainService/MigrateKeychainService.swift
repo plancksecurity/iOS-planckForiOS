@@ -14,6 +14,8 @@ import pEp4iosIntern
 /// Service to migrate passwords, certificates from the default keychain
 /// to either the keychain group `kSharedKeychain` or another one,
 /// specified in the constructor.
+/// - Note: Is only supposed to run once during app execution, which is configured
+/// in the constructor.
 class MigrateKeychainService: OperationBasedService {
     let keychainGroupSource: String
     let keychainGroupTarget: String
@@ -23,6 +25,7 @@ class MigrateKeychainService: OperationBasedService {
     init(keychainGroupSource: String, keychainGroupTarget: String = kSharedKeychain) {
         self.keychainGroupSource = keychainGroupSource
         self.keychainGroupTarget = keychainGroupTarget
+        super.init(runOnce: true)
     }
 
     override func operations() -> [Operation] {

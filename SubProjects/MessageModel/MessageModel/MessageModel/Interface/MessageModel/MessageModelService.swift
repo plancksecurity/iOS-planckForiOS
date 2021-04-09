@@ -151,10 +151,7 @@ extension MessageModelService: ServiceProtocol {
                 return
             }
             // Forward service calls
-            me.onetimeServices.forEach {
-                $0.start()
-                $0.finish()
-            }
+            me.onetimeServices.forEach { $0.start() }
             me.runtimeServices.forEach { $0.start() }
         }
     }
