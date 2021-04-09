@@ -21,7 +21,7 @@ class ErrorHandler: LoginViewModelLoginErrorDelegate {
 class LoginViewModelTests: XCTestCase {
     class TestVerifiableAccount: VerifiableAccountProtocol {
 
-        var accountType: VerifiableAccount.AccountType = VerifiableAccount.AccountType.other
+        var accountType = AccountType.other
         var loginNameIMAP: String?
 
         var loginNameSMTP: String?
