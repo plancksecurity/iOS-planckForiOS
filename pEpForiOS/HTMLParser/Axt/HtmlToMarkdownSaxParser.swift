@@ -10,13 +10,9 @@ import Foundation
 
 #if EXT_SHARE
 import MessageModelForAppExtensions
-#else
-import MessageModel
-#endif
-
-#if EXT_SHARE
 import pEpIOSToolboxForExtensions
 #else
+import MessageModel
 import pEpIOSToolbox
 #endif
 
