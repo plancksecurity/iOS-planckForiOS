@@ -14,6 +14,7 @@ class TutorialStep3iPadViewController: TutorialStepViewController {
     @IBOutlet private weak var commonDenominatorLabel: UILabel!
 
     public override func configureView() {
+        setBackgroundColor()
         setupTitleLabel()
         setupExplanationLabel()
         setupCommonDenominatorLabel()
@@ -22,15 +23,18 @@ class TutorialStep3iPadViewController: TutorialStepViewController {
     private func setupTitleLabel() {
         privacyStatusLabel.text = Localized.privacyStatusTitle
         privacyStatusLabel.font = titleFont
+        privacyStatusLabel.textColor = tutorialTextColor
     }
 
     private func setupExplanationLabel() {
         explanationLabel.text = Localized.privacyStatusExplanation
         explanationLabel.font = font
+        explanationLabel.textColor = tutorialTextColor
     }
 
     private func setupCommonDenominatorLabel() {
         commonDenominatorLabel.text = Localized.commonDenominator
         commonDenominatorLabel.font = font
+        commonDenominatorLabel.textColor = tutorialTextColor
     }
 }

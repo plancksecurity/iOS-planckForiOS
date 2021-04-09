@@ -12,7 +12,6 @@ import MessageModel
 import pEpIOSToolbox
 
 extension IdentityImageTool {
-
     /// Key for the identity image cache dictionary.
     // Created to avoid accessing Identity's from a wrong queue.
     struct IdentityKey: Hashable {
@@ -74,6 +73,10 @@ class IdentityImageTool {
         IdentityImageTool.imageCache.removeAll()
     }
 
+    static func clearCache() {
+        IdentityImageTool.imageCache.removeAll()
+    }
+
     func cachedIdentityImage(for key: IdentityKey) -> UIImage? {
         guard let cache = IdentityImageTool.imageCache[key] else {
             return nil
@@ -91,8 +94,22 @@ class IdentityImageTool {
 
     func identityImage(for identityKey: IdentityKey,
                        imageSize: CGSize = CGSize.defaultAvatarSize,
-                       textColor: UIColor = UIColor.white,
+                       textColor: UIColor? = nil,
                        backgroundColor: UIColor = UIColor(hexString: "#c8c7cc")) -> UIImage? {
+
+        /// If the text color is passed by parameter, let's use it.
+        /// Otherwise, evaluate if dark mode is on: in that case use pEpBlack, else, white.
+        var textColorToSet = UIColor.white
+        if textColor == nil {
+            if #available(iOS 13.0, *) {
+                if UITraitCollection.current.userInterfaceStyle == .dark {
+                    textColorToSet = UIColor.pEpBlack
+                } else {
+                    textColorToSet = UIColor.white
+                }
+            }
+        }
+
         if let cachedImage = cachedIdentityImage(for: identityKey) {
             // We have the image in cache. Return it.
             return cachedImage
@@ -114,7 +131,7 @@ class IdentityImageTool {
             if let nameInitials = identityKey.userName?.initials() {
                 image = identityImageFromName(initials: nameInitials,
                 size: imageSize,
-                textColor: textColor,
+                textColor: textColorToSet,
                 imageBackgroundColor: backgroundColor)
             } else {
                 image = UIImage(named: "pEpforiOS-avatar")

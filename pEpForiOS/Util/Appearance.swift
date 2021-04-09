@@ -22,7 +22,7 @@ class Appearance {
             // iOS 13 ignores the navigation bar tint color in some cases,
             // therefore we use the new appearance API to customise explicitly.
             let normalNavigationBar = UINavigationBar.appearance()
-            normalNavigationBar.standardAppearance = navigationBarAppearanceDefault(color: .black)
+            normalNavigationBar.standardAppearance = navigationBarAppearanceDefault(color: UIColor.label)
         } else {
             UINavigationBar.appearance().backgroundColor = .white
             UINavigationBar.appearance().titleTextAttributes = titleTextAttributes()
@@ -48,12 +48,23 @@ class Appearance {
         setAlertControllerTintColor(.pEpGreen)
 
         Appearance.configureSelectedBackgroundViewForPep(tableViewCell: UITableViewCell.appearance())
+
+        if #available(iOS 13, *) {
+            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor.systemBackground
+            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.pEpGreen
+            UISearchBar.appearance().backgroundColor = UIColor.systemBackground
+        }
     }
 
     public static func configureSelectedBackgroundViewForPep(tableViewCell: UITableViewCell) {
+        var backgroundColor: UIColor
+        if #available(iOS 13.0, *) {
+             backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.systemGray5 : UIColor.pEpGreen.withAlphaComponent(0.2)
+        } else {
+            backgroundColor = UIColor.pEpGreen.withAlphaComponent(0.2)
+        }
         let tableViewCellSelectedbackgroundView = UIView()
-        tableViewCellSelectedbackgroundView.backgroundColor =
-            UIColor.pEpGreen.withAlphaComponent(0.2)
+        tableViewCellSelectedbackgroundView.backgroundColor = backgroundColor
         tableViewCell.selectedBackgroundView = tableViewCellSelectedbackgroundView
     }
 

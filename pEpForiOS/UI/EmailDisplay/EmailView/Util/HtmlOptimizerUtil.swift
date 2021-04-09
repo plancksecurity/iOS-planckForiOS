@@ -74,6 +74,15 @@ extension HtmlOptimizerUtil {
 
         // Build HTML tweak
 
+        let styleAutodetectLightOrDarkMode = """
+            @media (prefers-color-scheme: dark) {
+                body {
+                    color: #eee;
+                    background: #121212;
+                }
+            }
+        """
+
         let styleBodyOptimize = """
         body {
         font-family: "San Francisco" !important;
@@ -106,6 +115,7 @@ extension HtmlOptimizerUtil {
         let tweak = """
         \(scaleToFitHtml)
         <style>
+        \(styleAutodetectLightOrDarkMode)
         \(styleBodyOptimize)
         \(styleTableOptimize)
 

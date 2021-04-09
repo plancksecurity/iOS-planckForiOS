@@ -18,6 +18,7 @@ class TutorialStep2iPadViewController : TutorialStepViewController {
     @IBOutlet private weak var confirmTrustwordsExplanation: UILabel!
 
     public override func configureView() {
+        setBackgroundColor()
         setupHandshakeTitle()
         setupTrustwordsLabel()
         setupTrustButtons()
@@ -28,11 +29,13 @@ class TutorialStep2iPadViewController : TutorialStepViewController {
     private func setupHandshakeTitle() {
         handshakeTitle.font = titleFont
         handshakeTitle.text = Localized.handshake
+        handshakeTitle.textColor = tutorialTextColor
     }
 
     private func setupTrustwordsLabel() {
         trustwords.font = smallFont
         trustwords.text = Localized.someTrustwords
+        trustwords.textColor = tutorialTextColor
     }
 
     private func setupTrustButtons() {
@@ -43,10 +46,12 @@ class TutorialStep2iPadViewController : TutorialStepViewController {
     private func setupPrivacyStatusExplanationLabel() {
         privacyStatusExplanation.font = font
         privacyStatusExplanation.text = Localized.privacyStatusIconExplanation
+        privacyStatusExplanation.textColor = tutorialTextColor
     }
 
     private func setupcCnfirmTrustwordsExplanationLabel() {
         confirmTrustwordsExplanation.font = font
         confirmTrustwordsExplanation.text = Localized.confirmTrustwordsExplanation
+        confirmTrustwordsExplanation.textColor = tutorialTextColor
     }
 }

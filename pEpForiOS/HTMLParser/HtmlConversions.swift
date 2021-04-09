@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+import pEpIOSToolbox
+
 /// Conversions between Html -> NSAttributedString
 /// and NSAttributedString -> Html
 /// with <blockquote> tags and keep and display quotation levels
@@ -81,7 +83,7 @@ public class HtmlConversions {
                                                         "‹" : ""])
     }
 
-    public func citationVerticalLineToBlockquote(aString: NSAttributedString) -> (plainText: String, attribString: NSAttributedString) {
+    public func citationVerticalLineToBlockquote(_ aString: NSAttributedString) -> (plainText: String, attribString: NSAttributedString) {
 
         let mutattribstring = NSMutableAttributedString(attributedString: aString.replacingOccurrences(ofWith: [" " : "Ψ",
                                                                                                                 " " : ""]))

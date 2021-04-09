@@ -109,6 +109,10 @@ public class FolderSectionViewModel {
         }
     }
 
+    public func handleAppereanceChanged() {
+        IdentityImageTool.clearCache()
+    }
+
     public var type: String {
         return "Email"
     }

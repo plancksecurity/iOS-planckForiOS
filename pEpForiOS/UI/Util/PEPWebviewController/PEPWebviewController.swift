@@ -36,6 +36,8 @@ class PEPWebViewController: UIViewController {
         prefs.javaScriptEnabled = false
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
         webView.navigationDelegate = self
+        webView.isOpaque = false
+        webView.backgroundColor = UIColor.clear
         view = webView
     }
 }

@@ -1,0 +1,32 @@
+{
+  "images" : [
+    {
+      "filename" : "pEpForIOS-Asset-iPad-Tutorial-1b.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "light"
+        }
+      ],
+      "filename" : "pEpForIOS-Asset-iPad-Tutorial-1b-1.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "pEpForIOS-iPad-tutorial-graphic2-darkmode.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

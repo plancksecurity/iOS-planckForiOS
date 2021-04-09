@@ -17,10 +17,8 @@ protocol LoginViewControllerDelegate: class  {
 
 final class LoginViewController: UIViewController {
 
-
     @IBOutlet weak var leadingZero: NSLayoutConstraint!
-    weak var delegate: LoginViewControllerDelegate?
-
+    public weak var delegate: LoginViewControllerDelegate?
 
     @IBOutlet private weak var pepSyncLabel: UILabel!
     @IBOutlet private weak var syncStackView: UIStackView!
@@ -46,13 +44,11 @@ final class LoginViewController: UIViewController {
     @IBOutlet weak var centerX: NSLayoutConstraint!
     @IBOutlet weak var manualSetupWidth: NSLayoutConstraint!
 
-
-
     var viewModel: LoginViewModel?
-    var offerManualSetup = false
+    private var offerManualSetup = false
 
     @IBOutlet weak var pepSyncLeadingBiggerThan: NSLayoutConstraint!
-    var isCurrentlyVerifying = false {
+    private var isCurrentlyVerifying = false {
         didSet {
             updateView()
         }
@@ -621,3 +617,18 @@ extension LoginViewController {
     }
 }
 
+extension LoginViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                view.layoutIfNeeded()
+            }
+        }
+    }
+}

@@ -8,13 +8,12 @@
 
 import Foundation
 
-extension String {
-    /// Create NSAttributedString with preffered default font face and size attributes (default option)
-    /// - Parameter withDefaultFont: use preferred UIFont for body text
-    func attribString(withDefaultFont: Bool = true) -> NSAttributedString {
-        let attributes = [NSAttributedString.Key.font : UIFont.preferredFont(forTextStyle: .body)]
+import pEpIOSToolbox
 
-        return NSAttributedString(string: self,
-                                  attributes: withDefaultFont ? attributes : [:])
+extension String {
+
+    /// Create NSAttributedString
+    func attributedString() -> NSAttributedString {
+        return NSAttributedString.normalAttributedString(from: self)
     }
 }

@@ -19,17 +19,46 @@ final class TrustManagementResetTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-           //Reset Button
-           resetButton.pEpIfyForTrust(backgroundColor: .pEpGrayBackgroundReset, textColor: .white)
-        
-           //Reset label
-           resetLabel.text = NSLocalizedString("Reset all p≡p data for this comunication partner:",
-                                               comment: "Reset all p≡p data for this comunication partner:")
-
+        setupResetButton()
     }
 
     @IBAction private func resetButtonPressed() {
         delegate?.resetButtonPressed(on: self)
+    }
+}
+
+extension TrustManagementResetTableViewCell {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                setupResetButton()
+                layoutIfNeeded()
+            }
+        }
+    }
+
+    private func setupResetButton() {
+        var buttonTextcolor: UIColor = .white
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                buttonTextcolor = .darkText
+            }
+        }
+
+        //Reset Button
+        if #available(iOS 13.0, *) {
+            resetButton.pEpIfyForTrust(backgroundColor: .systemGray2, textColor: .label)
+        } else {
+            resetButton.pEpIfyForTrust(backgroundColor: .pEpGrayBackgroundReset, textColor: buttonTextcolor)
+        }
+        //Reset label
+        resetLabel.text = NSLocalizedString("Reset all p≡p data for this comunication partner:",
+                                            comment: "Reset all p≡p data for this comunication partner:")
     }
 }

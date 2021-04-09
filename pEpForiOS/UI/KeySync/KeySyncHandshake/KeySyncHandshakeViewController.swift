@@ -15,72 +15,112 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     static let storyboardId = "KeySyncHandshakeViewController"
 
-    @IBOutlet weak var trustwordsView: UIView! {
+    @IBOutlet private weak var trustwordsView: UIView! {
         didSet {
-            trustwordsView.backgroundColor = .white
+            if #available(iOS 13.0, *) {
+                trustwordsView.backgroundColor = .systemBackground
+            } else {
+                trustwordsView.backgroundColor = .white
+            }
             trustwordsView.layer.borderColor = UIColor.pEpGreyLines.cgColor
             trustwordsView.layer.cornerRadius = 3
             trustwordsView.layer.borderWidth = 1
         }
     }
-    @IBOutlet weak var trustwordsLabel: UILabel! {
+
+    @IBOutlet private weak var trustwordsLabel: UILabel! {
         didSet {
             trustwordsLabel.setPEPFont(style: .body, weight: .regular)
-            trustwordsLabel.backgroundColor = .white
+            if #available(iOS 13.0, *) {
+                trustwordsLabel.backgroundColor = .clear
+                trustwordsLabel.textColor = .label
+            } else {
+                trustwordsLabel.backgroundColor = .white
+            }
         }
     }
-    @IBOutlet weak var contentView: KeyInputView! {
+
+    @IBOutlet private weak var contentView: KeyInputView! {
         didSet {
-            contentView.backgroundColor = .pEpGreyBackground
+            if #available(iOS 13.0, *) {
+                contentView.backgroundColor = .systemGray6
+            } else {
+                contentView.backgroundColor = .pEpGreyBackground
+            }
+
             let languangePicker = UIPickerView()
             languangePicker.dataSource = self
             languangePicker.delegate = self
             contentView.inputView = languangePicker
         }
     }
-    @IBOutlet weak var alertTitle: UILabel! {
+
+    @IBOutlet private weak var alertTitle: UILabel! {
         didSet {
-            let alertTittle = NSLocalizedString("p≡p Sync", comment: "keySync handshake alert title")
+            let titleText = NSLocalizedString("p≡p Sync", comment: "keySync handshake alert title")
             alertTitle.font = UIFont.pepFont(style: .body, weight: .semibold)
-            alertTitle.attributedText = alertTittle.paintPEPToPEPColour()
+            alertTitle.attributedText = titleText.paintPEPToPEPColour()
         }
     }
-    @IBOutlet weak var message: UILabel! {
+
+    @IBOutlet private weak var message: UILabel! {
         didSet {
             message.font = UIFont.pepFont(style: .footnote, weight: .regular)
             message.text = viewModel.getMessage()
         }
     }
-    @IBOutlet weak var accept: UIButton! {
+
+    @IBOutlet private weak var accept: UIButton! {
         didSet {
             setFont(button: accept)
             accept.setTitleColor(.pEpGreen, for: .normal)
             accept.setTitle(NSLocalizedString("Confirm",
                                               comment: "accept hand shake confirm button"), for: .normal)
-            accept.backgroundColor = .pEpGreyBackground
+            if #available(iOS 13.0, *) {
+                accept.backgroundColor = .systemGray6
+            } else {
+                accept.backgroundColor = .pEpGreyBackground
+            }
         }
     }
-    @IBOutlet weak var decline: UIButton! {
+
+    @IBOutlet private weak var decline: UIButton! {
         didSet {
             setFont(button: decline)
             decline.setTitleColor(.pEpRed, for: .normal)
             decline.setTitle(NSLocalizedString("Reject",
                                                comment: "reject hand shake button"), for: .normal)
-            decline.backgroundColor = .pEpGreyBackground
+            if #available(iOS 13.0, *) {
+                decline.backgroundColor = .systemGray6
+
+            } else {
+                decline.backgroundColor = .pEpGreyBackground
+            }
+
         }
     }
-    @IBOutlet weak var cancel: UIButton! {
+
+    @IBOutlet private weak var cancel: UIButton! {
         didSet {
             setFont(button: cancel)
             cancel.setTitleColor(.pEpGreyText, for: .normal)
             cancel.setTitle(NSLocalizedString("Not Now",
                                               comment: "not now button"), for: .normal)
-            cancel.backgroundColor = .pEpGreyBackground
+            if #available(iOS 13.0, *) {
+                cancel.backgroundColor = .systemGray6
+            } else {
+                cancel.backgroundColor = .pEpGreyBackground
+            }
         }
     }
-    @IBOutlet weak var buttonsView: UIView! {
+
+    @IBOutlet private weak var buttonsView: UIView! {
         didSet {
-            buttonsView.backgroundColor = .pEpGreyButtonLines
+            if #available(iOS 13.0, *) {
+                buttonsView.backgroundColor = UIColor.separator
+            } else {
+                buttonsView.backgroundColor = .pEpGreyButtonLines
+            }
         }
     }
 
@@ -112,18 +152,17 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
 
     private func setFont(button: UIButton) {
-        button.titleLabel?.font = UIFont.pepFont(style: .body,
-                                                 weight: .regular)
+        button.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
     }
 
-    @IBAction func didPress(_ sender: UIButton) {
+    @IBAction private func didPress(_ sender: UIButton) {
         guard let action = pressedAction(tag: sender.tag) else {
             return
         }
         viewModel.handle(action: action)
     }
 
-    @IBAction func didLongPressWords(_ sender: UILongPressGestureRecognizer) {
+    @IBAction private func didLongPressWords(_ sender: UILongPressGestureRecognizer) {
         guard sender.state == .began else {
             return
         }

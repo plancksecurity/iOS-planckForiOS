@@ -15,34 +15,47 @@ import pEpIOSToolbox
 class TutorialStepViewController: UIViewController {
     private var shouldUpdateLayoutDueRotation: Bool = false
 
-    var left : NSMutableParagraphStyle {
+    var tutorialTextColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor.label
+        } else {
+            return UIColor.black
+        }
+    }
+
+    var left: NSMutableParagraphStyle {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .left
         return paragraphStyle
     }
 
-    var centered : NSMutableParagraphStyle {
+    var centered: NSMutableParagraphStyle {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
         return paragraphStyle
     }
 
-    var centeredSpaced : NSMutableParagraphStyle {
+    var centeredSpaced: NSMutableParagraphStyle {
         let paragraphStyle = centered
         paragraphStyle.lineSpacing = 6
         return paragraphStyle
     }
 
-    var textAttributes : [NSAttributedString.Key : Any] {
+    var textAttributes: [NSAttributedString.Key : Any] {
         var style: NSParagraphStyle = centeredSpaced
         if UIDevice.isIphone && UIDevice.isLandscape {
             style = left
         } else if UIDevice.isIpadSmall {
             style = centered
         }
+
+        var foregroundColor = UIColor(white: 24.0 / 255.0, alpha: 1.0)
+        if #available(iOS 13.0, *) {
+            foregroundColor = .secondaryLabel
+        }
         return [
             .font: font,
-            .foregroundColor: UIColor(white: 24.0 / 255.0, alpha: 1.0),
+            .foregroundColor: foregroundColor,
             .paragraphStyle: style
         ]
     }
@@ -56,7 +69,7 @@ class TutorialStepViewController: UIViewController {
         return UIFont.systemFont(ofSize: 14.0, weight: .regular)
     }
     
-    var smallFont : UIFont {
+    var smallFont: UIFont {
         if UIDevice.isIpad {
             return UIFont.systemFont(ofSize: 11.0, weight: .regular)
         } else if UIDevice.isSmall {
@@ -66,7 +79,7 @@ class TutorialStepViewController: UIViewController {
     }
     
 
-    var titleFont : UIFont {
+    var titleFont: UIFont {
         if UIDevice.isIpad {
             return UIFont.systemFont(ofSize: 42.0, weight: .regular)
         } else if UIDevice.isSmall {
@@ -134,5 +147,36 @@ extension TutorialStepViewController {
         static let commonDenominator = NSLocalizedString("In this case the Privacy Status of the message is Secure, because this is the lowest common denominator of the two communication partners.", comment: "Privacy Status - Common Denominator Explanation")
         static let privacyStatusTitle = NSLocalizedString("Privacy Status", comment: "Privacy Status Label")
         static let privacyStatusExplanation = NSLocalizedString("The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:", comment: "Privacy Status Explanation")
+    }
+}
+
+// MARK: - Trait Collection
+
+extension TutorialStepViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                configureView()
+                view.layoutIfNeeded()
+            }
+        }
+    }
+
+    func setBackgroundColor() {
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .light {
+                view.backgroundColor = .white
+            } else {
+                view.backgroundColor = .secondarySystemBackground
+            }
+        } else {
+            view.backgroundColor = .white
+        }
     }
 }

@@ -18,8 +18,14 @@ extension NSAttributedString {
         -> (newString: NSAttributedString,  attachment: RecipientTextViewModel.TextAttachment) {
             let margin: CGFloat = 20.0
             let attrText = NSMutableAttributedString(attributedString: self)
+
+            var textColor = UIColor.pEpDarkText
+            if #available(iOS 13.0, *) {
+                textColor = .label
+            }
             let textAttachment = RecipientTextViewModel.TextAttachment(recipient: identity,
-                                                                 maxWidth: maxWidth - margin)
+                                                                       textColor: textColor,
+                                                                       maxWidth: maxWidth - margin)
             let attachString = NSAttributedString(attachment: textAttachment)
             attrText.replaceCharacters(in: selectedRange, with: attachString)
             let pepFont = UIFont.pepFont(style: .body, weight: .regular)
