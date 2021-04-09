@@ -8,6 +8,8 @@
 
 import Foundation
 
+import pEpIOSToolbox
+
 extension String {
     /**
      Extracts pure text from HTML, useful for creating snippets of a mail.
