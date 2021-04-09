@@ -617,6 +617,7 @@
 		43FD3F2F261484AF0032F809 /* AppendMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A5E3C23526630002277A6 /* AppendMailsOperation.swift */; };
 		43FD3F33261485000032F809 /* AppendMailsToFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA481B221E9518006E8F83 /* AppendMailsToFolderOperation.swift */; };
 		43FD3F3726148A4C0032F809 /* FolderInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A142248EDC5008E40CC /* FolderInfoCache.swift */; };
+		43FD3F3B26148A810032F809 /* CdFolder+VirtualMailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6097F2248BCBD0008B900 /* CdFolder+VirtualMailbox.swift */; };
 		43FD3F4326148B1D0032F809 /* PEPDecryptFlags+ReUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A6E0F23073DB0006A9ECE /* PEPDecryptFlags+ReUpload.swift */; };
 		43FFEE4723E17B2F005FE498 /* String+InboxFolderName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FFEE4623E17B2F005FE498 /* String+InboxFolderName.swift */; };
 		490FF7FE1E795B1500BC15F9 /* Int16+ImapFlagBits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490FF7FD1E795B1500BC15F9 /* Int16+ImapFlagBits.swift */; };
@@ -3203,6 +3204,7 @@
 				434C249725D6CE8E00F622DB /* Int16+ImapFlagBits.swift in Sources */,
 				434C22AF25D69EF300F622DB /* CdMessage+Fake.swift in Sources */,
 				439FFD5425F8B73D001591F6 /* CdExtraKeys+Convenience.swift in Sources */,
+				43FD3F3B26148A810032F809 /* CdFolder+VirtualMailbox.swift in Sources */,
 				434C222525D699EA00F622DB /* CdMessage+IMAP.swift in Sources */,
 				434C21B825D6980300F622DB /* CdServer+Extensions.swift in Sources */,
 				434C24BB25D6D63E00F622DB /* Notification+CWServiceClientNotificationParsing.swift in Sources */,
