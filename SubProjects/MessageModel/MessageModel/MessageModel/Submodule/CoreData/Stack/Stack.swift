@@ -336,9 +336,11 @@ extension Stack {
 
     // MARK: - Defaults
 
-    // TODO: Hard-coded (instead of Bundle.main.bundleIdentifier)
-    // in order to coincide with the sharing extension
-    static private var defaultName = "security.pEp"
+    /// Must be hard-coded (instead of using the dynamic Bundle.main.bundleIdentifier
+    /// as before) to ensure that both app and extension (which would have different bundle identifiers)
+    /// use the same value. Must be "security.pEp" to be backwards-compatible with previous versions
+    /// of the app where the bundle identifier was used.
+    static private var defaultName = kDatabaseName
 
     static private var defaultURL: URL {
         return storeURL(for: defaultName)
