@@ -66,7 +66,6 @@ extension SettingsTableViewController {
             view.backgroundColor = UIColor.systemGroupedBackground
         } else {
             view.backgroundColor = .groupTableViewBackground
-            // Nothing to do.
         }
     }
     /// Prepares and returns the swipe tableview cell, with the corresponding color and title.
