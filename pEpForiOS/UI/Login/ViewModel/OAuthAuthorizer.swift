@@ -51,7 +51,7 @@ class OAuthAuthorizer {
 
     func authorize(authorizer: OAuth2AuthorizationProtocol,
                    emailAddress: String,
-                   accountType: AccountType,
+                   accountType: VerifiableAccount.AccountType,
                    viewController: UIViewController) {
         currentAuthorizer = authorizer
         let oauthType = OAuth2Type(accountType: accountType)

@@ -11,7 +11,7 @@ import Foundation
 import MessageModel
 
 extension OAuth2Type {
-    init?(accountType: AccountType) {
+    init?(accountType: VerifiableAccount.AccountType) {
         switch accountType {
         case .gmail:
             self = .google
