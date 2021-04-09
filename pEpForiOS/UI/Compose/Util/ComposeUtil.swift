@@ -174,6 +174,19 @@ struct ComposeUtil {
 
         let message = Message.newOutgoingMessage(session: session)
         message.parent = outbox
+
+        message.pEpProtected = state.pEpProtection
+        if !state.pEpProtection {
+            let unprotectedRating = Rating.unencrypted
+            message.setOriginalRatingHeader(rating: unprotectedRating)
+            message.pEpRatingInt = unprotectedRating.toInt()
+        } else {
+            message.setOriginalRatingHeader(rating: state.rating)
+            message.pEpRatingInt = state.rating.toInt()
+        }
+
+        message.imapFlags.seen = imapSeenState(forMessageToSend: message)
+
         message.from = from
         message.replaceTo(with: state.toRecipients)
         message.replaceCc(with: state.ccRecipients)
@@ -193,17 +206,6 @@ struct ComposeUtil {
         message.longMessage = bodyPlainText
         message.longMessageFormatted = !bodyHtml.isEmpty ? bodyHtml : nil
         message.replaceAttachments(with: inlinedAttachments + nonInlinedAttachments)
-        message.pEpProtected = state.pEpProtection
-        if !state.pEpProtection {
-            let unprotectedRating = Rating.unencrypted
-            message.setOriginalRatingHeader(rating: unprotectedRating)
-            message.pEpRatingInt = unprotectedRating.toInt()
-        } else {
-            message.setOriginalRatingHeader(rating: state.rating)
-            message.pEpRatingInt = state.rating.toInt()
-        }
-
-        message.imapFlags.seen = imapSeenState(forMessageToSend: message)
 
         return message
     }
