@@ -198,6 +198,7 @@
 		430CDA5D22952CC200AAC37F /* PEPMessageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CDA5C22952CC200AAC37F /* PEPMessageUtil.swift */; };
 		430CDA852296BC7A00AAC37F /* CdMessage+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CDA842296BC7A00AAC37F /* CdMessage+KeySync.swift */; };
 		430CDA892296BEFC00AAC37F /* CdMessageCreation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CDA882296BEFC00AAC37F /* CdMessageCreation.swift */; };
+		4311A2E62620846F005CF839 /* AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311A2E52620846F005CF839 /* AccountType.swift */; };
 		43123FB7225368170038D72C /* MessageInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FB6225368170038D72C /* MessageInfoCache.swift */; };
 		43123FB9225369660038D72C /* CdMessage+NonOptionalConvenienceAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FB8225369660038D72C /* CdMessage+NonOptionalConvenienceAccessors.swift */; };
 		43123FBD225374030038D72C /* CdFolder+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FBC225374030038D72C /* CdFolder+IMAP.swift */; };
@@ -918,6 +919,7 @@
 		430CDA5C22952CC200AAC37F /* PEPMessageUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPMessageUtil.swift; sourceTree = "<group>"; };
 		430CDA842296BC7A00AAC37F /* CdMessage+KeySync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+KeySync.swift"; sourceTree = "<group>"; };
 		430CDA882296BEFC00AAC37F /* CdMessageCreation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdMessageCreation.swift; sourceTree = "<group>"; };
+		4311A2E52620846F005CF839 /* AccountType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountType.swift; sourceTree = "<group>"; };
 		43123FB6225368170038D72C /* MessageInfoCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageInfoCache.swift; sourceTree = "<group>"; };
 		43123FB8225369660038D72C /* CdMessage+NonOptionalConvenienceAccessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+NonOptionalConvenienceAccessors.swift"; sourceTree = "<group>"; };
 		43123FBC225374030038D72C /* CdFolder+IMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+IMAP.swift"; sourceTree = "<group>"; };
@@ -2245,6 +2247,7 @@
 		439B16A022802A8700201DE5 /* VerifiableAccount */ = {
 			isa = PBXGroup;
 			children = (
+				4311A2E52620846F005CF839 /* AccountType.swift */,
 				43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */,
 				439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */,
 				439B16A522802B6B00201DE5 /* VerifiableAccount.swift */,
@@ -3506,6 +3509,7 @@
 				43F484461E8130A80028BC1A /* CdImapFields+Extension.swift in Sources */,
 				431BAE34246D4F330043490F /* KeyImportUtil.swift in Sources */,
 				B747A7E2234E4B7800508565 /* CdIdentity+SectionTitle.swift in Sources */,
+				4311A2E62620846F005CF839 /* AccountType.swift in Sources */,
 				15A3B4DB235862B700DB9135 /* CdAccount+SendServiceProvider.swift in Sources */,
 				439CACED2562CEB10043077E /* FolderType+FolderName.swift in Sources */,
 				439CACDB2562CA7A0043077E /* Message+FakeMessage.swift in Sources */,
