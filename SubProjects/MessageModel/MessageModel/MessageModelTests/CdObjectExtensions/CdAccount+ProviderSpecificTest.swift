@@ -14,7 +14,7 @@ import CoreData
 class CdAccount_ProviderSpecificTest: XCTestCase {
     func testAccountType() {
         // input -> expected output
-        let accountTypes = [AccountType.gmail:AccountType.gmail,
+        let accountTypes = [AccountType.gmail:VerifiableAccount.AccountType.gmail,
                             .o365:.o365,
                             .outlook:.o365,
                             .icloud:.icloud]
