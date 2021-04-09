@@ -22,10 +22,12 @@ class MigrateKeychainService: OperationBasedService {
 
     /// - parameter keychainGroupTarget: The name of the target keychain
     /// (where to migrate to), `kSharedKeychain` by default.
-    init(keychainGroupSource: String, keychainGroupTarget: String = kSharedKeychain) {
+    init(keychainGroupSource: String,
+         keychainGroupTarget: String = kSharedKeychain,
+         backgroundTaskManager: BackgroundTaskManagerProtocol? = nil) {
         self.keychainGroupSource = keychainGroupSource
         self.keychainGroupTarget = keychainGroupTarget
-        super.init(runOnce: true)
+        super.init(runOnce: true, backgroundTaskManager: backgroundTaskManager)
     }
 
     override func operations() -> [Operation] {

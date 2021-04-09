@@ -72,7 +72,7 @@ class MigrateKeychainServiceTest: XCTestCase {
         op.completionBlock = {
             expFinished.fulfill()
         }
-        op.start()
+        op.start() // no finish needed, since it's run once
 
         waitForExpectations(timeout: TestUtil.waitTime)
 
@@ -82,13 +82,12 @@ class MigrateKeychainServiceTest: XCTestCase {
     func testService() throws {
         let expFinished = expectation(description: "expFinished")
 
+        let backgroundTaskManager = MigrationBackgroundTaskManager(expectationOnFinish: expFinished)
+
         let service = MigrateKeychainService(keychainGroupSource: keychainSourceGroup,
-                                             keychainGroupTarget: keychainTargetGroup)
-        service.finishBlock = {
-            expFinished.fulfill()
-        }
+                                             keychainGroupTarget: keychainTargetGroup,
+                                             backgroundTaskManager: backgroundTaskManager)
         service.start()
-        service.finish()
 
         waitForExpectations(timeout: TestUtil.waitTime)
 
@@ -310,5 +309,21 @@ class MigrateKeychainServiceTest: XCTestCase {
 
         let resultArray = theResult as! NSArray
         return resultArray.count
+    }
+}
+
+private class MigrationBackgroundTaskManager: BackgroundTaskManagerProtocol {
+    init(expectationOnFinish: XCTestExpectation) {
+        self.expectationOnFinish = expectationOnFinish
+    }
+
+    private let expectationOnFinish: XCTestExpectation
+
+    func startBackgroundTask(for client: AnyHashable,
+                             expirationHandler handler: (()->Void)? = nil) throws {
+    }
+
+    func endBackgroundTask(for client: AnyHashable) throws {
+        expectationOnFinish.fulfill()
     }
 }
