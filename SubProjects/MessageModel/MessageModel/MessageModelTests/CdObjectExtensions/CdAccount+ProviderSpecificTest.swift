@@ -14,7 +14,7 @@ import CoreData
 class CdAccount_ProviderSpecificTest: XCTestCase {
     func testAccountType() {
         // input -> expected output
-        let accountTypes = [VerifiableAccount.AccountType.gmail:VerifiableAccount.AccountType.gmail,
+        let accountTypes = [AccountType.gmail:VerifiableAccount.AccountType.gmail,
                             .o365:.o365,
                             .outlook:.o365,
                             .icloud:.icloud]
@@ -33,7 +33,7 @@ class CdAccount_ProviderSpecificTest: XCTestCase {
     // MARK - Helpers
 
     private func createFakeAccount(moc: NSManagedObjectContext,
-                                   accountType: VerifiableAccount.AccountType) -> CdAccount {
+                                   accountType: AccountType) -> CdAccount {
         let verifier = VerifiableAccount.verifiableAccount(for: accountType)
 
         let cdIdentity = CdIdentity(context: moc)
