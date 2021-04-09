@@ -512,7 +512,6 @@
 		43BDDD7A25DD42C600FC0C68 /* Folder+VirtualMailbox+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47F5221E9518006E8F83 /* Folder+VirtualMailbox+Internal.swift */; };
 		43BDDD7E25DD42F200FC0C68 /* ProviderSpecificInformationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47F8221E9518006E8F83 /* ProviderSpecificInformationProtocol.swift */; };
 		43BDDD8225DD4AE300FC0C68 /* GmailSpecificInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47F7221E9518006E8F83 /* GmailSpecificInformation.swift */; };
-		43BDDD8625DD4B2100FC0C68 /* CdAccount+ProviderSpecific.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B2270F242362D9007EB91E /* CdAccount+ProviderSpecific.swift */; };
 		43BDDD8E25DD4BDC00FC0C68 /* VerifiableAccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */; };
 		43BDDD9225DD4BEC00FC0C68 /* VerifiableAccountIMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16A822802B6B00201DE5 /* VerifiableAccountIMAP.swift */; };
 		43BDDD9625DD4C6F00FC0C68 /* VerifiableAccountSMTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16A622802B6B00201DE5 /* VerifiableAccountSMTP.swift */; };
@@ -3059,7 +3058,6 @@
 				43BDDDA225DD4D4900FC0C68 /* SmtpSendError.swift in Sources */,
 				434C22A325D69CD200F622DB /* CdAccount+NonOptionalConvenienceAccessors.swift.swift in Sources */,
 				43BDDD0225DD34EE00FC0C68 /* Attachment+ContentID.swift in Sources */,
-				43BDDD8625DD4B2100FC0C68 /* CdAccount+ProviderSpecific.swift in Sources */,
 				437B127225F785D1000CCFBA /* EncryptAndSendSharingProtocol.swift in Sources */,
 				436FD23525DA817800D929B3 /* ClientCertificate.swift in Sources */,
 				434C221D25D699A800F622DB /* RelationshipKeyPath.swift in Sources */,
