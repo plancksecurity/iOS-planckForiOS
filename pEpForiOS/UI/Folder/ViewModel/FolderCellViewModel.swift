@@ -121,7 +121,7 @@ public class FolderCellViewModel {
     /// - Returns: True if its child or decendent. 
     public func isAncestorOf(fcvm: FolderCellViewModel) -> Bool {
         if let childFolder = fcvm.folder as? Folder, let parentFolder = folder as? Folder {
-            if childFolder.account.accountType != AccountType.gmail {
+            if childFolder.account.accountType != VerifiableAccount.AccountType.gmail {
                 if requiredFolderTypes.contains(childFolder.folderType) {
                     return false
                 }

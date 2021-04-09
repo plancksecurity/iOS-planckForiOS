@@ -22,9 +22,9 @@ class AccountTypeSelectorViewModel {
     public weak var delegate: AccountTypeSelectorViewModelDelegate?
 
     /// list of providers to show
-    private var accountTypes = [AccountType]()
+    private var accountTypes = [VerifiableAccount.AccountType]()
 
-    var chosenAccountType: AccountType = .other
+    var chosenAccountType: VerifiableAccount.AccountType = .other
 
     init(clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
         self.clientCertificateUtil = clientCertificateUtil ?? ClientCertificateUtil()
@@ -37,7 +37,7 @@ class AccountTypeSelectorViewModel {
         }
     }
 
-    subscript(index: Int) -> AccountType {
+    subscript(index: Int) -> VerifiableAccount.AccountType {
         return accountTypes[index]
     }
     
@@ -57,7 +57,7 @@ class AccountTypeSelectorViewModel {
         }
     }
 
-    public func accountType(row: Int) -> AccountType {
+    public func accountType(row: Int) -> VerifiableAccount.AccountType {
         guard row < accountTypes.count else {
             Log.shared.errorAndCrash("Index out of range")
             return .other
@@ -76,7 +76,7 @@ class AccountTypeSelectorViewModel {
 
     /// returns the text corresponding to the provider
     /// - Parameter provider: provider to obtain it's text
-    public func fileNameOrText(provider: AccountType) -> String {
+    public func fileNameOrText(provider: VerifiableAccount.AccountType) -> String {
         switch provider {
         case .gmail:
             return "asset-Google"
