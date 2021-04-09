@@ -615,6 +615,7 @@
 		43F86BA824504C00008961DA /* MessageHeapBufferOverflow.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43F86BA724504C00008961DA /* MessageHeapBufferOverflow.txt */; };
 		43FD3F2F261484AF0032F809 /* AppendMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A5E3C23526630002277A6 /* AppendMailsOperation.swift */; };
 		43FD3F33261485000032F809 /* AppendMailsToFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA481B221E9518006E8F83 /* AppendMailsToFolderOperation.swift */; };
+		43FD3F3726148A4C0032F809 /* FolderInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A142248EDC5008E40CC /* FolderInfoCache.swift */; };
 		43FD3F4326148B1D0032F809 /* PEPDecryptFlags+ReUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A6E0F23073DB0006A9ECE /* PEPDecryptFlags+ReUpload.swift */; };
 		43FFEE4723E17B2F005FE498 /* String+InboxFolderName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FFEE4623E17B2F005FE498 /* String+InboxFolderName.swift */; };
 		490FF7FE1E795B1500BC15F9 /* Int16+ImapFlagBits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490FF7FD1E795B1500BC15F9 /* Int16+ImapFlagBits.swift */; };
@@ -3071,6 +3072,7 @@
 				4311A2ED26208525005CF839 /* AccountType.swift in Sources */,
 				43BDDDCE25DD63B300FC0C68 /* TrustManagementUtil.swift in Sources */,
 				436FD2B425DA8C5400D929B3 /* NSManagedObjectContext+Reset.swift in Sources */,
+				43FD3F3726148A4C0032F809 /* FolderInfoCache.swift in Sources */,
 				43BDDD9A25DD4CCE00FC0C68 /* SmtpConnection.swift in Sources */,
 				439FFD5C25F8B78A001591F6 /* PEPMessage+OriginalHeaders.swift in Sources */,
 				43BDDF6E25DE607B00FC0C68 /* Identity+pEp.swift in Sources */,
