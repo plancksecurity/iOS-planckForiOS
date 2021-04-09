@@ -100,9 +100,6 @@ sh build.sh
 popd
 
 git clone https://gitea.pep.foundation/pEp.foundation/libAccountSettings
-pushd libAccountSettings
-git checkout tag_for_1.1.300
-popd
 
 git clone http://pep-security.lu/gitlab/iOS/pep-toolbox.git
 git clone https://gitea.pep.foundation/pep.foundation/Pantomime.git
