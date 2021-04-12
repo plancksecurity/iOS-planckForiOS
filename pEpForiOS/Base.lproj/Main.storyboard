@@ -491,11 +491,11 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </tableViewCellContentView>
                                             </tableViewCell>
-                                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="senderCell" rowHeight="100" id="5C0-BM-OjH" customClass="MessageSenderCell" customModule="pEpForiOS" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="71.5" width="375" height="100"/>
+                                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="senderCell" rowHeight="85" id="5C0-BM-OjH" customClass="MessageSenderCell" customModule="pEpForiOS" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="71.5" width="375" height="85"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5C0-BM-OjH" id="314-rf-9fH">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="85"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Sender" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eqy-26-Dp7" userLabel="From Label">
@@ -511,53 +511,38 @@
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="rmZ-U1-WwU">
-                                                            <rect key="frame" x="0.0" y="55.5" width="375" height="36.5"/>
-                                                            <color key="backgroundColor" systemColor="systemGreenColor"/>
-                                                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="L7N-Xx-MRt">
-                                                                <size key="itemSize" width="80" height="30"/>
-                                                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                            </collectionViewFlowLayout>
-                                                            <cells>
-                                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="recipientCollectionViewCell" id="98G-Yi-ppd" customClass="RecipientCollectionViewCell" customModule="pEpForiOS" customModuleProvider="target">
-                                                                    <rect key="frame" x="0.0" y="3.5" width="80" height="30"/>
-                                                                    <autoresizingMask key="autoresizingMask"/>
-                                                                    <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="cnp-hw-e9I">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="80" height="30"/>
-                                                                        <autoresizingMask key="autoresizingMask"/>
-                                                                        <subviews>
-                                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AFv-Oq-15y">
-                                                                                <rect key="frame" x="17" y="0.0" width="46" height="30"/>
-                                                                                <state key="normal" title="Button"/>
-                                                                            </button>
-                                                                        </subviews>
-                                                                        <color key="backgroundColor" systemColor="systemPinkColor"/>
-                                                                        <constraints>
-                                                                            <constraint firstItem="AFv-Oq-15y" firstAttribute="centerY" secondItem="cnp-hw-e9I" secondAttribute="centerY" id="AOc-79-zMP"/>
-                                                                            <constraint firstItem="AFv-Oq-15y" firstAttribute="centerX" secondItem="cnp-hw-e9I" secondAttribute="centerX" id="fSG-dg-cMS"/>
-                                                                        </constraints>
-                                                                    </collectionViewCellContentView>
-                                                                    <connections>
-                                                                        <outlet property="recipientButton" destination="AFv-Oq-15y" id="5Lw-V0-Vet"/>
-                                                                    </connections>
-                                                                </collectionViewCell>
-                                                            </cells>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IWQ-gd-akg" userLabel="To:2">
+                                                            <rect key="frame" x="20" y="60" width="17.5" height="26"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="rmZ-U1-WwU" customClass="MyCollectionView" customModule="pEpForiOS" customModuleProvider="target">
+                                                            <rect key="frame" x="41.5" y="60" width="333.5" height="26"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="26" id="cel-aR-Ei2"/>
+                                                            </constraints>
+                                                            <viewLayoutGuide key="contentLayoutGuide" id="8dX-yJ-waR"/>
+                                                            <viewLayoutGuide key="frameLayoutGuide" id="aVH-Au-t3n"/>
+                                                            <collectionViewLayout key="collectionViewLayout" id="4A2-mi-I4B"/>
+                                                            <cells/>
                                                         </collectionView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
+                                                        <constraint firstItem="rmZ-U1-WwU" firstAttribute="centerY" secondItem="IWQ-gd-akg" secondAttribute="centerY" id="2Eg-yQ-HSl"/>
                                                         <constraint firstItem="Eqy-26-Dp7" firstAttribute="leading" secondItem="314-rf-9fH" secondAttribute="leading" constant="20" symbolic="YES" id="6Al-fu-ZbR"/>
                                                         <constraint firstItem="pYF-SV-znm" firstAttribute="trailing" secondItem="Eqy-26-Dp7" secondAttribute="trailing" id="6V5-Vn-ACS"/>
-                                                        <constraint firstAttribute="bottom" secondItem="rmZ-U1-WwU" secondAttribute="bottom" constant="8" id="ETy-dC-Vni"/>
                                                         <constraint firstItem="pYF-SV-znm" firstAttribute="leading" secondItem="Eqy-26-Dp7" secondAttribute="leading" id="FXh-U5-MWi"/>
-                                                        <constraint firstItem="rmZ-U1-WwU" firstAttribute="top" secondItem="pYF-SV-znm" secondAttribute="bottom" constant="8" id="HQu-fe-8BC"/>
                                                         <constraint firstItem="pYF-SV-znm" firstAttribute="top" secondItem="Eqy-26-Dp7" secondAttribute="bottom" constant="6" id="XvJ-YS-ULR"/>
                                                         <constraint firstAttribute="topMargin" secondItem="Eqy-26-Dp7" secondAttribute="top" id="aKP-0F-mAI"/>
                                                         <constraint firstAttribute="trailing" secondItem="rmZ-U1-WwU" secondAttribute="trailing" id="c4C-ag-fe1"/>
+                                                        <constraint firstItem="IWQ-gd-akg" firstAttribute="top" secondItem="Eqy-26-Dp7" secondAttribute="bottom" constant="33" id="h7o-9f-K9i"/>
+                                                        <constraint firstItem="rmZ-U1-WwU" firstAttribute="top" secondItem="IWQ-gd-akg" secondAttribute="top" id="hHH-x3-Wot"/>
+                                                        <constraint firstItem="rmZ-U1-WwU" firstAttribute="leading" secondItem="IWQ-gd-akg" secondAttribute="trailing" constant="4" id="iNq-nh-FD4"/>
+                                                        <constraint firstItem="IWQ-gd-akg" firstAttribute="leading" secondItem="pYF-SV-znm" secondAttribute="leading" id="kxN-Wi-Zwk"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="Eqy-26-Dp7" secondAttribute="trailing" constant="8" id="l8J-ta-BS6"/>
-                                                        <constraint firstItem="rmZ-U1-WwU" firstAttribute="leading" secondItem="314-rf-9fH" secondAttribute="leading" id="srA-0a-2vW"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
@@ -567,7 +552,7 @@
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="senderSubjectCell" rowHeight="66" id="dOn-lF-8Mt" userLabel="subjectCell" customClass="MessageSubjectCell" customModule="pEpForiOS" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="171.5" width="375" height="66"/>
+                                                <rect key="frame" x="0.0" y="156.5" width="375" height="66"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dOn-lF-8Mt" id="kkm-Hl-To6">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="66"/>
@@ -616,7 +601,7 @@
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderBodyCell" rowHeight="200" id="2zG-Ta-cbU" userLabel="bodyCell" customClass="MessageBodyCell" customModule="pEpForiOS" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="237.5" width="375" height="200"/>
+                                                <rect key="frame" x="0.0" y="222.5" width="375" height="200"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2zG-Ta-cbU" id="Ycu-dg-7E7">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
@@ -652,7 +637,7 @@
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="imageAttachmentCell" rowHeight="100" id="Yj1-FN-tP6" userLabel="imageAttachmementCell" customClass="MessageImageAttachmentCell" customModule="pEpForiOS" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="437.5" width="375" height="100"/>
+                                                <rect key="frame" x="0.0" y="422.5" width="375" height="100"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Yj1-FN-tP6" id="33c-ei-bOD">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
@@ -675,7 +660,7 @@
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="attachmentsCell" rowHeight="100" id="bpv-tb-oFI" userLabel="attachmentCell" customClass="MessageAttachmentCell" customModule="pEpForiOS" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="537.5" width="375" height="100"/>
+                                                <rect key="frame" x="0.0" y="522.5" width="375" height="100"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bpv-tb-oFI" id="zbr-eQ-xVn">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
@@ -1191,9 +1176,6 @@
         </systemColor>
         <systemColor name="systemGreenColor">
             <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemPinkColor">
-            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

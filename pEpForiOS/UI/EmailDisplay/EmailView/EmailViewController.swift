@@ -15,7 +15,7 @@ protocol EmailViewControllerDelegate: class {
 
 class EmailViewController: UIViewController {
 
-    var numberOfRecipients = 0
+    private var recipients = [String]()
 
     public var viewModel: EmailViewModel? {
         didSet {
@@ -324,7 +324,7 @@ extension EmailViewController {
         let attributes = [NSAttributedString.Key.font: font,
                           NSAttributedString.Key.foregroundColor: UIColor.lightGray]
         cell.toLabel?.attributedText = NSAttributedString(string: subtitle, attributes: attributes)
-        numberOfRecipients = row.toDestinataries2.count
+        recipients = row.toDestinataries2
         cell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self)
 
     }
@@ -394,17 +394,44 @@ This may affect the privacy status of the message.
 // MARK: - UICollectionViewDataSource && UICollectionViewDelegate
 
 extension EmailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    func collectionView(_ collectionView: UICollectionView,
-        numberOfItemsInSection section: Int) -> Int {
-        return numberOfRecipients
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return recipients.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recipientCollectionViewCell", for: indexPath)
 
-        return cell
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recipientCollectionViewCell", for: indexPath) as? RecipientCollectionViewCell {
+            let recipient = recipients[indexPath.row]
+            cell.configure(withText: recipient)
+            return cell
+        }
+
+        Log.shared.errorAndCrash("Can't get UICollectionViewCell")
+        return UICollectionViewCell()
     }
+}
+
+
+// MARK: - UICollectionViewDelegateFlowLayout
+
+extension EmailViewController: UICollectionViewDelegateFlowLayout {
+
+    /// Make cell size == collection view size
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let text = recipients[indexPath.row]
+        let button = UIButton(type: .custom)
+        button.setTitle(text, for: .normal)
+        button.sizeToFit()
+
+        return button.frame.size
+    }
+
+}
+
+
+class MyCollectionView: UICollectionView {
+
 }
