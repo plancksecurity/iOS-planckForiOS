@@ -164,7 +164,7 @@ extension ShareViewModel {
 
         for sharedType in sharedTypes {
             switch sharedType {
-            case .image(let title, let image, let imageData, let mimeType):
+            case .image(let title, let filename, let image, let imageData, let mimeType):
                 addNewTitleToTheBody(bodyHtml: bodyHtml, title: title)
 
                 let imageWidth: CGFloat = 200.0 // arbitrary, but should fit all devices
@@ -173,6 +173,7 @@ extension ShareViewModel {
                 session.performAndWait() {
                     let attachment = Attachment(data: imageData,
                                                 mimeType: mimeType,
+                                                fileName: filename,
                                                 image: image,
                                                 contentDisposition: .inline,
                                                 session: session)
@@ -267,8 +268,10 @@ extension ShareViewModel {
                                    let imgData = try? Data(contentsOf: imgUrl),
                                    let img = UIImage(data: imgData) {
                                     let mimeType = itemProvider.supportedMimeTypeForInlineAttachment() ?? MimeTypeUtils.mimeType(fromURL: imgUrl)
+                                    let filename = imgUrl.fileName(includingExtension: true)
                                     sharedData.add(itemProvider: itemProvider,
                                                    dataWithType: .image(attributedTitle,
+                                                                        filename,
                                                                         img,
                                                                         imgData,
                                                                         mimeType))

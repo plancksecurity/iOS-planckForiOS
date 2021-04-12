@@ -20,11 +20,11 @@ public enum SharedType {
     /// A simple URL (shared as-is, nothing gets loaded), together with an optional title
     case url (NSAttributedString?, URL)
 
-    /// Image with optional titile, loaded image, the corresponding data, and the mime type,
-    /// together with an optional title
+    /// Image with optional titile, original filename, loaded image, the corresponding data,
+    /// and the mime type.
     ///
     /// Will get inlined in the message.
-    case image (NSAttributedString?, UIImage, Data, String)
+    case image (NSAttributedString?, String, UIImage, Data, String)
 
     /// A general file, not getting inlined, together with an optional title, its mime type,
     /// the original filename, and the data.
