@@ -62,15 +62,6 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
         let identityPairs = util.listExisting(accessGroup: keychainGroupSource)
 
         for (uuidLabel, secIndentity) in identityPairs {
-            let removeQuery: [CFString : Any] = [kSecAttrLabel: uuidLabel,
-                                                 kSecValueRef: secIndentity,
-                                                 kSecAttrAccessGroup: keychainGroupSource]
-
-            let removeStatus = SecItemDelete(removeQuery as CFDictionary)
-            if removeStatus != errSecSuccess {
-                Log.shared.logError(message: "Could not delete client certificate \(uuidLabel)")
-            }
-
             let addQuery: [CFString : Any] = [kSecReturnPersistentRef: true,
                                               kSecAttrLabel: uuidLabel,
                                               kSecValueRef: secIndentity,
@@ -78,11 +69,21 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
 
             var resultRef: CFTypeRef? = nil
             let identityStatus = SecItemAdd(addQuery as CFDictionary, &resultRef);
-            if identityStatus != errSecSuccess {
+            if identityStatus == errSecSuccess {
+                let removeQuery: [CFString : Any] = [kSecAttrLabel: uuidLabel,
+                                                     kSecValueRef: secIndentity,
+                                                     kSecAttrAccessGroup: keychainGroupSource]
+
+                let removeStatus = SecItemDelete(removeQuery as CFDictionary)
+                if removeStatus != errSecSuccess {
+                    Log.shared.logError(message: "Could not delete client certificate \(uuidLabel)")
+                }
+            }
+            else {
                 if identityStatus == errSecDuplicateItem {
-                    Log.shared.logWarn(message: "Client certificate already exists: \(uuidLabel)")
+                    Log.shared.logWarn(message: "Client certificate already exists in target keychain: \(uuidLabel)")
                 } else {
-                    Log.shared.logError(message: "Could not migrate client certificate: \(uuidLabel)")
+                    Log.shared.logError(message: "Could not add client certificate to target keychain: \(uuidLabel)")
                 }
             }
         }
