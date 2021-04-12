@@ -71,13 +71,10 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
                 Log.shared.logError(message: "Could not delete client certificate \(uuidLabel)")
             }
 
-            let addQuery: [CFString : Any] = [kSecReturnPersistentRef: true,
-                                              kSecAttrLabel: uuidLabel,
-                                              kSecValueRef: secIndentity,
-                                              kSecAttrAccessGroup: keychainGroupTarget]
+            var addQuery = removeQuery
+            addQuery[kSecAttrAccessGroup] = keychainGroupTarget
 
-            var resultRef: CFTypeRef? = nil
-            let identityStatus = SecItemAdd(addQuery as CFDictionary, &resultRef);
+            let identityStatus = SecItemAdd(addQuery as CFDictionary, nil);
             if identityStatus != errSecSuccess {
                 if identityStatus == errSecDuplicateItem {
                     Log.shared.logWarn(message: "Client certificate already exists: \(uuidLabel)")
