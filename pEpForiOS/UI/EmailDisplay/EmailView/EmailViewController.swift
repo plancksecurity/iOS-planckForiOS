@@ -321,6 +321,17 @@ extension EmailViewController {
         let attributes = [NSAttributedString.Key.font: font,
                           NSAttributedString.Key.foregroundColor: UIColor.lightGray]
         cell.toLabel?.attributedText = NSAttributedString(string: subtitle, attributes: attributes)
+
+        row.toDestinataries2.forEach { (dest) in
+            let recipient = UIButton()
+            recipient.titleLabel?.font = UIFont.pepFont(style: .caption1, weight: .regular)
+            recipient.titleLabel?.adjustsFontForContentSizeCategory = true
+            recipient.titleLabel?.numberOfLines = 0
+            recipient.backgroundColor = UIColor.clear
+            recipient.titleLabel?.textColor = UIColor.red
+            recipient.setTitle(dest, for: .normal)
+            cell.toRecipientsStackView.addArrangedSubview(recipient)
+        }
     }
 
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {
