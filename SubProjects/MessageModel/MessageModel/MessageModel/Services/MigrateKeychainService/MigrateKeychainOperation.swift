@@ -59,9 +59,9 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
     private func migrateCertificates() {
         let util = ClientCertificateUtil()
 
-        let identityPairs = util.listExisting(accessGroup: keychainGroupSource)
+        let identityPairsSource = util.listExisting(accessGroup: keychainGroupSource)
 
-        for (uuidLabel, secIndentity) in identityPairs {
+        for (uuidLabel, secIndentity) in identityPairsSource {
             let removeQuery: [CFString : Any] = [kSecAttrLabel: uuidLabel,
                                                  kSecValueRef: secIndentity,
                                                  kSecAttrAccessGroup: keychainGroupSource]
