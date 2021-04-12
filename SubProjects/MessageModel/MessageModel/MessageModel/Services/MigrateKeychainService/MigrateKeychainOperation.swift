@@ -95,7 +95,7 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
             return
         }
 
-        let queryAll: [String : Any] = [
+        let queryPassword: [String : Any] = [
             kSecClass as String: kSecClassGenericPassword as String,
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly as String,
             kSecAttrService as String: KeyChain.defaultServerType,
@@ -103,12 +103,12 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
             kSecValueData as String: thePassword,
             kSecAttrAccessGroup as String: keychainGroupSource]
 
-        let statusDelete = SecItemDelete(queryAll as CFDictionary)
+        let statusDelete = SecItemDelete(queryPassword as CFDictionary)
         if statusDelete != noErr {
             Log.shared.logWarn(message: "Could not delete (old) password for \(key), status \(statusDelete)")
         }
 
-        var queryTargetGroup = queryAll
+        var queryTargetGroup = queryPassword
         queryTargetGroup[kSecAttrAccessGroup as String] = keychainGroupTarget
 
         let status = SecItemAdd(queryTargetGroup as CFDictionary, nil)
