@@ -200,7 +200,6 @@ extension EmailListViewCell {
                                            weight: fontWeight)
         subjectLabel.font = UIFont.pepFont(style: .subheadline,
                                            weight: fontWeight)
-
         summaryLabel.font = UIFont.pepFont(style: .subheadline,
                                            weight: fontWeight)
         dateLabel.font = UIFont.pepFont(style: .subheadline,
