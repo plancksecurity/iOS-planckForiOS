@@ -71,8 +71,7 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
                 Log.shared.logError(message: "Could not delete client certificate \(uuidLabel)")
             }
 
-            var addQuery = removeQuery
-            addQuery[kSecAttrAccessGroup] = keychainGroupTarget
+            let addQuery = removeQuery
 
             let addStatus = SecItemAdd(addQuery as CFDictionary, nil);
             if addStatus != errSecSuccess {
