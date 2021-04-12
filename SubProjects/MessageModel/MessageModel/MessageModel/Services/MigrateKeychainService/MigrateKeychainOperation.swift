@@ -74,9 +74,9 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
             var addQuery = removeQuery
             addQuery[kSecAttrAccessGroup] = keychainGroupTarget
 
-            let identityStatus = SecItemAdd(addQuery as CFDictionary, nil);
-            if identityStatus != errSecSuccess {
-                if identityStatus == errSecDuplicateItem {
+            let addStatus = SecItemAdd(addQuery as CFDictionary, nil);
+            if addStatus != errSecSuccess {
+                if addStatus == errSecDuplicateItem {
                     Log.shared.logWarn(message: "Client certificate already exists: \(uuidLabel)")
                 } else {
                     Log.shared.logError(message: "Could not migrate client certificate: \(uuidLabel)")
