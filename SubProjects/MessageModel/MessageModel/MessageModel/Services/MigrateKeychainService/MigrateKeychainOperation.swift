@@ -95,7 +95,7 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
             return
         }
 
-        let queryPassword: [String : Any] = [
+        let queryBase: [String : Any] = [
             kSecClass as String: kSecClassGenericPassword as String,
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly as String,
             kSecAttrService as String: KeyChain.defaultServerType,
@@ -103,16 +103,17 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
             kSecValueData as String: thePassword,
             kSecAttrAccessGroup as String: keychainGroupSource]
 
-        let statusDelete = SecItemDelete(queryPassword as CFDictionary)
-        if statusDelete != noErr {
-            Log.shared.logWarn(message: "Could not delete (old) password for \(key), status \(statusDelete)")
-        }
+        var queryAddToTargetGroup = queryBase
+        queryAddToTargetGroup[kSecAttrAccessGroup as String] = keychainGroupTarget
 
-        var queryTargetGroup = queryPassword
-        queryTargetGroup[kSecAttrAccessGroup as String] = keychainGroupTarget
+        let status = SecItemAdd(queryAddToTargetGroup as CFDictionary, nil)
+        if status == noErr || status == errSecDuplicateItem {
+            let statusDelete = SecItemDelete(queryBase as CFDictionary)
+            if statusDelete != noErr {
+                Log.shared.logWarn(message: "Could not delete (old) password for \(key), status \(statusDelete)")
+            }
 
-        let status = SecItemAdd(queryTargetGroup as CFDictionary, nil)
-        if status != noErr && status != errSecDuplicateItem {
+        } else {
             Log.shared.logWarn(message: "Could not save password for \(key), status \(status)")
         }
     }
