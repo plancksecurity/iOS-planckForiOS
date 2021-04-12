@@ -499,34 +499,63 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Sender" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eqy-26-Dp7" userLabel="From Label">
-                                                            <rect key="frame" x="20" y="11" width="331" height="16"/>
+                                                            <rect key="frame" x="20" y="11" width="331" height="11"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="To: Recipients" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pYF-SV-znm" userLabel="To Label">
-                                                            <rect key="frame" x="20" y="33" width="331" height="14.5"/>
+                                                            <rect key="frame" x="20" y="28" width="331" height="14.5"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IWQ-gd-akg" userLabel="To:2">
-                                                            <rect key="frame" x="20" y="60" width="17.5" height="26"/>
+                                                            <rect key="frame" x="20" y="55" width="17.5" height="30"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="rmZ-U1-WwU" customClass="MyCollectionView" customModule="pEpForiOS" customModuleProvider="target">
-                                                            <rect key="frame" x="41.5" y="60" width="333.5" height="26"/>
+                                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="rmZ-U1-WwU" customClass="CustomCollectionView" customModule="pEpForiOS" customModuleProvider="target">
+                                                            <rect key="frame" x="41.5" y="55" width="333.5" height="30"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="26" id="cel-aR-Ei2"/>
+                                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="cel-aR-Ei2"/>
                                                             </constraints>
                                                             <viewLayoutGuide key="contentLayoutGuide" id="8dX-yJ-waR"/>
                                                             <viewLayoutGuide key="frameLayoutGuide" id="aVH-Au-t3n"/>
                                                             <collectionViewLayout key="collectionViewLayout" id="4A2-mi-I4B"/>
-                                                            <cells/>
+                                                            <cells>
+                                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="recipientCollectionViewCell" id="umQ-ag-JIW" customClass="RecipientCollectionViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="120" height="22"/>
+                                                                    <autoresizingMask key="autoresizingMask"/>
+                                                                    <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="vgC-wF-mr2">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="22"/>
+                                                                        <autoresizingMask key="autoresizingMask"/>
+                                                                        <subviews>
+                                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mJs-9w-th0">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="120" height="22"/>
+                                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                                                <state key="normal" title="mb@pep.security">
+                                                                                    <color key="titleColor" systemColor="secondaryLabelColor"/>
+                                                                                </state>
+                                                                            </button>
+                                                                        </subviews>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="bottom" secondItem="mJs-9w-th0" secondAttribute="bottom" id="4Wd-GU-pmj"/>
+                                                                            <constraint firstItem="mJs-9w-th0" firstAttribute="leading" secondItem="vgC-wF-mr2" secondAttribute="leading" id="Fk0-hW-rFj"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="mJs-9w-th0" secondAttribute="trailing" id="dR4-f1-YLI"/>
+                                                                            <constraint firstItem="mJs-9w-th0" firstAttribute="top" secondItem="vgC-wF-mr2" secondAttribute="top" id="fdf-Gf-RYz"/>
+                                                                        </constraints>
+                                                                    </collectionViewCellContentView>
+                                                                    <size key="customSize" width="120" height="22"/>
+                                                                    <connections>
+                                                                        <outlet property="recipientButton" destination="mJs-9w-th0" id="hfl-pb-XGE"/>
+                                                                    </connections>
+                                                                </collectionViewCell>
+                                                            </cells>
                                                         </collectionView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -543,6 +572,7 @@
                                                         <constraint firstItem="rmZ-U1-WwU" firstAttribute="leading" secondItem="IWQ-gd-akg" secondAttribute="trailing" constant="4" id="iNq-nh-FD4"/>
                                                         <constraint firstItem="IWQ-gd-akg" firstAttribute="leading" secondItem="pYF-SV-znm" secondAttribute="leading" id="kxN-Wi-Zwk"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="Eqy-26-Dp7" secondAttribute="trailing" constant="8" id="l8J-ta-BS6"/>
+                                                        <constraint firstAttribute="bottom" secondItem="rmZ-U1-WwU" secondAttribute="bottom" id="wWX-VL-NAO"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>

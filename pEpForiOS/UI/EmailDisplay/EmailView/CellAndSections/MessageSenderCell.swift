@@ -13,7 +13,7 @@ class MessageSenderCell: UITableViewCell {
 
     @IBOutlet public weak var fromLabel: UILabel!
     @IBOutlet public weak var toLabel: UILabel!
-    @IBOutlet public weak var collectionView: MyCollectionView!
+    @IBOutlet public weak var collectionView: CustomCollectionView!
 
     public func setCollectionViewDataSourceDelegate(dataSourceDelegate: UICollectionViewDataSource & UICollectionViewDelegate) {
         collectionView.delegate = dataSourceDelegate
@@ -22,15 +22,10 @@ class MessageSenderCell: UITableViewCell {
     }
 
     func setLayout() {
-        let flowLayout = MyCollectionViewFlowLayout()
+        let flowLayout = LeftAlignedCollectionViewFlowLayout()
+        flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         flowLayout.scrollDirection = .horizontal
-        flowLayout.itemSize = CGSize(width: collectionView.frame.width / 2 - 10,
-                                     height: collectionView.frame.width / 2 - 10)
+        flowLayout.estimatedItemSize = CGSize(width: frame.size.width, height: 30)
         collectionView.setCollectionViewLayout(flowLayout, animated: true)
     }
-}
-
-
-class MyCollectionViewFlowLayout: UICollectionViewFlowLayout {
-
 }

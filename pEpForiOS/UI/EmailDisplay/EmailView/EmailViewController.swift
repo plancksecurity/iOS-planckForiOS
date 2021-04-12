@@ -15,6 +15,7 @@ protocol EmailViewControllerDelegate: class {
 
 class EmailViewController: UIViewController {
 
+    /// The email addresses of the recipients
     private var recipients = [String]()
 
     public var viewModel: EmailViewModel? {
@@ -325,6 +326,8 @@ extension EmailViewController {
                           NSAttributedString.Key.foregroundColor: UIColor.lightGray]
         cell.toLabel?.attributedText = NSAttributedString(string: subtitle, attributes: attributes)
         recipients = row.toDestinataries2
+        recipients.append(contentsOf: row.toDestinataries2)
+        recipients.append(contentsOf: row.toDestinataries2)
         cell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self)
 
     }
@@ -404,6 +407,7 @@ extension EmailViewController: UICollectionViewDelegate, UICollectionViewDataSou
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recipientCollectionViewCell", for: indexPath) as? RecipientCollectionViewCell {
             let recipient = recipients[indexPath.row]
             cell.configure(withText: recipient)
+
             return cell
         }
 
@@ -412,26 +416,53 @@ extension EmailViewController: UICollectionViewDelegate, UICollectionViewDataSou
     }
 }
 
-
 // MARK: - UICollectionViewDelegateFlowLayout
 
-extension EmailViewController: UICollectionViewDelegateFlowLayout {
+extension EmailViewController {
 
-    /// Make cell size == collection view size
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         let text = recipients[indexPath.row]
         let button = UIButton(type: .custom)
         button.setTitle(text, for: .normal)
+        button.titleLabel?.font = UIFont.pepFont(style: .caption1, weight: .regular)
         button.sizeToFit()
 
         return button.frame.size
     }
-
 }
 
+class LeftAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
-class MyCollectionView: UICollectionView {
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        let attributes = super.layoutAttributesForElements(in: rect)
 
+        var leftMargin = sectionInset.left
+        var maxY: CGFloat = -1.0
+        attributes?.forEach { layoutAttribute in
+            if layoutAttribute.frame.origin.y >= maxY {
+                leftMargin = sectionInset.left
+            }
+
+            layoutAttribute.frame.origin.x = leftMargin
+
+            leftMargin += layoutAttribute.frame.width + minimumInteritemSpacing
+            maxY = max(layoutAttribute.frame.maxY , maxY)
+        }
+
+        return attributes
+    }
+}
+
+class CustomCollectionView: UICollectionView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if !(__CGSizeEqualToSize(bounds.size,self.intrinsicContentSize)){
+            self.invalidateIntrinsicContentSize()
+        }
+    }
+    override var intrinsicContentSize: CGSize {
+        return contentSize
+    }
 }
