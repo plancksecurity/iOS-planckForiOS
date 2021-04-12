@@ -68,8 +68,8 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
                                               kSecAttrAccessGroup: keychainGroupTarget]
 
             var resultRef: CFTypeRef? = nil
-            let identityStatus = SecItemAdd(addQuery as CFDictionary, &resultRef);
-            if identityStatus == errSecSuccess {
+            let addStatus = SecItemAdd(addQuery as CFDictionary, &resultRef);
+            if addStatus == errSecSuccess {
                 let removeQuery: [CFString : Any] = [kSecAttrLabel: uuidLabel,
                                                      kSecValueRef: secIndentity,
                                                      kSecAttrAccessGroup: keychainGroupSource]
@@ -80,7 +80,7 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
                 }
             }
             else {
-                if identityStatus == errSecDuplicateItem {
+                if addStatus == errSecDuplicateItem {
                     Log.shared.logWarn(message: "Client certificate already exists in target keychain: \(uuidLabel)")
                 } else {
                     Log.shared.logError(message: "Could not add client certificate to target keychain: \(uuidLabel)")
