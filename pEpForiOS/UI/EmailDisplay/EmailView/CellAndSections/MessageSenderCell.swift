@@ -7,9 +7,20 @@
 //
 
 import UIKit
+import pEpIOSToolbox
 
 class MessageSenderCell: UITableViewCell {
+
     @IBOutlet public weak var fromLabel: UILabel!
     @IBOutlet public weak var toLabel: UILabel!
-    @IBOutlet public weak var toRecipientsStackView: UIStackView!
+    @IBOutlet public weak var collectionView: UICollectionView!
+
+    public func setCollectionViewDataSourceDelegate(dataSourceDelegate: UICollectionViewDataSource & UICollectionViewDelegate) {
+        collectionView.delegate = dataSourceDelegate
+        collectionView.dataSource = dataSourceDelegate
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.itemSize = CGSize(width: 80, height: 30)
+        collectionView.layout
+        collectionView.reloadData()
+    }
 }

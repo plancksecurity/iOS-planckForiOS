@@ -15,6 +15,8 @@ protocol EmailViewControllerDelegate: class {
 
 class EmailViewController: UIViewController {
 
+    var numberOfRecipients = 0
+
     public var viewModel: EmailViewModel? {
         didSet {
             viewModel?.delegate = self
@@ -313,6 +315,7 @@ extension EmailViewController {
         }
     }
 
+
     private func setupSender(cell: MessageSenderCell, with row: EmailViewModel.SenderRow) {
         let font = UIFont.pepFont(style: .footnote, weight: .semibold)
         cell.fromLabel.font = font
@@ -321,17 +324,9 @@ extension EmailViewController {
         let attributes = [NSAttributedString.Key.font: font,
                           NSAttributedString.Key.foregroundColor: UIColor.lightGray]
         cell.toLabel?.attributedText = NSAttributedString(string: subtitle, attributes: attributes)
+        numberOfRecipients = row.toDestinataries2.count
+        cell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self)
 
-        row.toDestinataries2.forEach { (dest) in
-            let recipient = UIButton()
-            recipient.titleLabel?.font = UIFont.pepFont(style: .caption1, weight: .regular)
-            recipient.titleLabel?.adjustsFontForContentSizeCategory = true
-            recipient.titleLabel?.numberOfLines = 0
-            recipient.backgroundColor = UIColor.clear
-            recipient.titleLabel?.textColor = UIColor.red
-            recipient.setTitle(dest, for: .normal)
-            cell.toRecipientsStackView.addArrangedSubview(recipient)
-        }
     }
 
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {
@@ -393,5 +388,23 @@ extension EmailViewController {
 By showing external content, your privacy may be invaded.
 This may affect the privacy status of the message.
 """, comment: "external content label text")
+    }
+}
+
+// MARK: - UICollectionViewDataSource && UICollectionViewDelegate
+
+extension EmailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    func collectionView(_ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int) -> Int {
+        return numberOfRecipients
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recipientCollectionViewCell", for: indexPath)
+
+        return cell
     }
 }
