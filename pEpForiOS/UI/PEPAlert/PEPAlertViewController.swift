@@ -15,7 +15,8 @@ final class PEPAlertViewController: UIViewController {
     @IBOutlet weak var alertMessage: UILabel!
     @IBOutlet weak var alertImageView: UIImageView!
     @IBOutlet weak var buttonsStackView: UIStackView!
-    
+    @IBOutlet weak var keyInputView: KeyInputView!
+
 
     @IBOutlet weak private var alertImageViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak private var alertTitleTopViewHeightConstraint: NSLayoutConstraint!
@@ -35,6 +36,15 @@ final class PEPAlertViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                keyInputView.backgroundColor = .secondarySystemBackground
+            } else {
+                keyInputView.backgroundColor = .systemBackground
+            }
+        } else {
+            keyInputView.backgroundColor = .white
+        }
         setUp(title: titleString,
               paintPEPInTitle: paintPEPInTitle,
               message: message)
@@ -100,14 +110,22 @@ extension PEPAlertViewController {
         case .warn:
             return .pEpRed
         case .undo:
-            return .pEpBlack
+            if #available(iOS 13.0, *) {
+                return .label
+            } else {
+                return .pEpBlack
+            }
         }
     }
 
     public var secondaryColor: UIColor {
         switch alertStyle {
         case .default, .warn, .undo:
-            return .pEpBlack
+            if #available(iOS 13.0, *) {
+                return .secondaryLabel
+            } else {
+                return .pEpBlack
+            }
         }
     }
 }
@@ -141,7 +159,6 @@ extension PEPAlertViewController {
             alertImageView.removeFromSuperview()
             return
         }
-
         alertImageView.animationImages = images
         alertImageView.animationDuration = 2.6
         alertImageView.startAnimating()
@@ -175,12 +192,39 @@ extension PEPAlertViewController {
             button.setTitle(action.title, for: .normal)
             button.setTitleColor(action.style, for: .normal)
             setUp(alertButton: button, style: viewModel.alertType)
-            button.backgroundColor = .white
+
+            if #available(iOS 13.0, *) {
+                if UITraitCollection.current.userInterfaceStyle == .dark {
+                    button.backgroundColor = .secondarySystemBackground
+                } else {
+                    button.backgroundColor = .systemBackground
+                }
+            } else {
+                button.backgroundColor = .white
+            }
             button.tag = viewModel.alertActionsCount
             button.addTarget(self, action: #selector(didPress(sender:)), for: .touchUpInside)
             viewModel.add(action: action)
             buttonsStackView.addArrangedSubview(button)
+        }
+    }
+}
 
+// MARK: - Trait Collection
+
+extension PEPAlertViewController {
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                view.layoutIfNeeded()
+            }
         }
     }
 }

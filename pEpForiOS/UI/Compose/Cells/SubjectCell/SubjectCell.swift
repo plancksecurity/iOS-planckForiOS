@@ -9,6 +9,7 @@
 import UIKit
 
 final class SubjectCell: TextViewContainingTableViewCell {
+
     static let reuseId = "SubjectCell"
 
     @IBOutlet weak var subjectLabel: UILabel!
@@ -16,6 +17,7 @@ final class SubjectCell: TextViewContainingTableViewCell {
     private var viewModel: SubjectCellViewModel?
 
     public func setup(with viewModel: SubjectCellViewModel) {
+
         self.viewModel = viewModel
         setStyle()
         textView.text = viewModel.content

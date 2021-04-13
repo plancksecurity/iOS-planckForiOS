@@ -23,6 +23,14 @@ final class KeySyncWizardViewController: PEPPageViewControllerBase {
     static let storyboardId = "KeySyncWizardViewController"
     private(set) var isNewGroup = true
 
+    private var style: UIColor = {
+        if #available(iOS 13.0, *) {
+            return .label
+        } else {
+            return .pEpTextDark
+        }
+    }()
+
     // MARK: - Life Cycle
 
     /// All the `init`s exist soley to be able to set the transitionStyle.
@@ -130,43 +138,44 @@ extension KeySyncWizardViewController {
 
     private func introView(isNewGroup: Bool,
                            pageCompletion: @escaping (Action) -> Void)
-        -> PEPAlertViewController? {
+    -> PEPAlertViewController? {
 
-            let keySyncIntroTitle = completeTitle()
-            let keySyncIntroMessage = introMessage(isNewGroup: isNewGroup)
-            let keySyncIntroImage = isNewGroup ? #imageLiteral(resourceName: "pEpForiOS-icon-sync-2nd-device") : #imageLiteral(resourceName: "pEpForiOS-icon-sync-3rd-device")
 
-            guard let introView =
+        let keySyncIntroTitle = completeTitle()
+        let keySyncIntroMessage = introMessage(isNewGroup: isNewGroup)
+        let keySyncIntroImage = isNewGroup ? #imageLiteral(resourceName: "pEpForiOS-icon-sync-2nd-device") : #imageLiteral(resourceName: "pEpForiOS-icon-sync-3rd-device")
+
+        guard let introView =
                 PEPAlertViewController.fromStoryboard(title: keySyncIntroTitle,
                                                       message: keySyncIntroMessage,
                                                       paintPEPInTitle: true,
                                                       image: [keySyncIntroImage],
                                                       viewModel: PEPAlertViewModel(alertType: .pEpSyncWizard)) else {
-                                                        return nil
-            }
+            return nil
+        }
 
-            let notNowButtonTitle = NSLocalizedString("Not Now",
-                                                      comment: "keySyncWizard intro view Not Now button title")
-            let introNotNowAction = PEPUIAlertAction(title: notNowButtonTitle,
-                                                     style: .pEpGreyText,
-                                                     handler: { [weak self] alert in
-                                                        pageCompletion(.cancel)
-                                                        self?.dismiss()
-            })
+        let notNowButtonTitle = NSLocalizedString("Not Now",
+                                                  comment: "keySyncWizard intro view Not Now button title")
+        let introNotNowAction = PEPUIAlertAction(title: notNowButtonTitle,
+                                                 style: .pEpGreyText,
+                                                 handler: { [weak self] alert in
+                                                    pageCompletion(.cancel)
+                                                    self?.dismiss()
+                                                 })
 
-            let nextButtonTitle = NSLocalizedString("Next",
-                                                    comment: "keySyncWizard intro view Next button title")
-            let introNextAction = PEPUIAlertAction(title: nextButtonTitle,
-                                                   style: .pEpTextDark,
-                                                   handler: { [weak self] alert in
-                                                    self?.goToNextView()
-            })
+        let nextButtonTitle = NSLocalizedString("Next",
+                                                comment: "keySyncWizard intro view Next button title")
+        let introNextAction = PEPUIAlertAction(title: nextButtonTitle,
+                                               style: style,
+                                               handler: { [weak self] alert in
+                                                self?.goToNextView()
+                                               })
 
 
-            introView.add(action: introNotNowAction)
-            introView.add(action: introNextAction)
+        introView.add(action: introNotNowAction)
+        introView.add(action: introNextAction)
 
-            return introView
+        return introView
     }
 
     private func trustWordsView(meFPR: String,
@@ -228,7 +237,7 @@ extension KeySyncWizardViewController {
             let animationCanceButtonlTitle = NSLocalizedString("Cancel",
                                                               comment: "keySyncWizard animation view cancel button title")
             let animationCancelAction = PEPUIAlertAction(title: animationCanceButtonlTitle,
-                                                        style: .pEpTextDark,
+                                                        style: style,
                                                         handler: { [weak self] alert in
                                                             pageCompletion(.cancel)
                                                             self?.dismiss()
@@ -239,7 +248,6 @@ extension KeySyncWizardViewController {
 
     private func completionView(isNewGroup: Bool,
                                 pageCompletion: @escaping (Action) -> Void) -> PEPAlertViewController? {
-
         let completionTitle = completeTitle()
         let completionMessage = completeMessage(isNewGroup: isNewGroup)
         let completionImage = completeImage(isNewGroup: isNewGroup)
@@ -263,7 +271,7 @@ extension KeySyncWizardViewController {
         let completionOKTitle = NSLocalizedString("OK",
                                                    comment: "keySyncWizard completion view OK button title")
         let completionOKlAction = PEPUIAlertAction(title: completionOKTitle,
-                                                   style: .pEpTextDark,
+                                                   style: style,
                                                    handler: { [weak self] alert in
                                                     self?.dismiss()
         })
@@ -303,5 +311,24 @@ extension KeySyncWizardViewController {
 
     private func completeImage(isNewGroup: Bool) -> UIImage {
         return isNewGroup ? #imageLiteral(resourceName: "pEpForiOS-icon-sync-2nd-device-synced") : #imageLiteral(resourceName:   "pEpForiOS-icon-sync-3rd-device-synced")
+    }
+}
+
+// MARK: - Trait Collection
+
+extension KeySyncWizardViewController {
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                view.layoutIfNeeded()
+            }
+        }
     }
 }

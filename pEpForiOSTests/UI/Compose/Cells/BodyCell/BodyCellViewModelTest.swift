@@ -553,7 +553,7 @@ class BodyCellViewModelTest: XCTestCase {
             return NSAttributedString()
         }
         attachment.contentDisposition = .inline
-        let textAttachment = TextAttachment()
+        let textAttachment = BodyCellViewModel.TextAttachment()
         textAttachment.image = image
         textAttachment.attachment = attachment
         let imageString = NSAttributedString(attachment: textAttachment)

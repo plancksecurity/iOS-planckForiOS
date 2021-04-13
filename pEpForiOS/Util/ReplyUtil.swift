@@ -18,14 +18,14 @@ public struct ReplyUtil {
         let footerPlainText = footer(for: message)
 
         guard let quotedText = quotedText(for: message) else {
-            return "\n\n\(footerPlainText)".attribString()
+            return "\n\n\(footerPlainText)".attributedString()
         }
         let citationPlainText = citationHeaderForMessage(message)
         
-        return "\n\n".attribString()
-            + footer(for: message).attribString()
+        return "\n\n".attributedString()
+            + footer(for: message).attributedString()
             + "\n\n"
-            + citationPlainText.attribString()
+            + citationPlainText.attributedString()
             + "\n\n"
             + quotedText
     }
@@ -131,7 +131,7 @@ public struct ReplyUtil {
     static private func extractMessageTextToQuote(from message: Message) -> NSAttributedString? {
         let textToQuote = message.longMessage ?? nil
         guard let formatted = message.longMessageFormatted else {
-            return NSAttributedString(string: textToQuote ?? "")
+            return NSAttributedString.normalAttributedString(from: textToQuote ?? "")
         }
         return formatted.htmlToAttributedString(deleteInlinePictures: true,
                                                 attachmentDelegate: nil)

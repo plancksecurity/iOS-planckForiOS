@@ -260,17 +260,28 @@ extension AccountSettingsViewController {
     }
 }
 
-// MARK: - Accessibility
+// MARK: - Trait Collection
 
 extension AccountSettingsViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-      super.traitCollectionDidChange(previousTraitCollection)
-        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+        if thePreviousTraitCollection.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
             tableView.reloadData()
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                tableView.reloadData()
+            }
         }
     }
 }
+
 
 // MARK: - OAuthAuthorizerDelegate
 

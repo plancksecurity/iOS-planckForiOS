@@ -9,7 +9,7 @@
 import MessageModel
 import pEpIOSToolbox
 
-protocol BodyCellViewModelResultDelegate: class {
+public protocol BodyCellViewModelResultDelegate: class {
 
     func bodyCellViewModelUserWantsToAddMedia(_ vm: BodyCellViewModel)
     func bodyCellViewModelUserWantsToAddDocument(_ vm: BodyCellViewModel)
@@ -21,11 +21,11 @@ protocol BodyCellViewModelResultDelegate: class {
                            bodyAttributedString: NSAttributedString)
 }
 
-protocol BodyCellViewModelDelegate: class {
+public protocol BodyCellViewModelDelegate: class {
     func insert(text: NSAttributedString)
 }
 
-class BodyCellViewModel: CellViewModel {
+public class BodyCellViewModel: CellViewModel {
     var maxTextattachmentWidth: CGFloat = 100.0 // arbitrary non-null value
     public weak var resultDelegate: BodyCellViewModelResultDelegate?
     public weak var delegate: BodyCellViewModelDelegate?

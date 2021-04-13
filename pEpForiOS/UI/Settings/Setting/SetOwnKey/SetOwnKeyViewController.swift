@@ -45,9 +45,19 @@ class SetOwnKeyViewController: UIViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
       super.traitCollectionDidChange(previousTraitCollection)
-      if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-        configureView(for: traitCollection)
-      }
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if thePreviousTraitCollection.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            configureView(for: traitCollection)
+        }
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                loadView()
+            }
+        }
     }
     
     private func configureView(for traitCollection: UITraitCollection) {
@@ -73,8 +83,7 @@ class SetOwnKeyViewController: UIViewController {
     // MARK: - Private
 
     private func convertTopEp(button: UIButton) {
-        button.backgroundColor = .white
-        button.tintColor = .white
         button.setTitleColor(.pEpGreen, for: .normal)
+        button.backgroundColor = .clear
     }
 }

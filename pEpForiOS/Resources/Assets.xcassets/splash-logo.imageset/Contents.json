@@ -3,6 +3,26 @@
     {
       "filename" : "splash-logo.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "light"
+        }
+      ],
+      "filename" : "splash-logo-1.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "pEpForIOS-Login-0-darkmode-logo.png",
+      "idiom" : "universal"
     }
   ],
   "info" : {

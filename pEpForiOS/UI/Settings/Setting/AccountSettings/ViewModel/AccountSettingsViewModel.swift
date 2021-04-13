@@ -202,12 +202,16 @@ extension AccountSettingsViewModel {
             }
             switch result {
             case .success():
-                me.delegate?.setLoadingView(visible: false)
+                DispatchQueue.main.async {
+                    me.delegate?.setLoadingView(visible: false)
+                }
             case .failure(let error):
-                me.delegate?.setLoadingView(visible: false)
-                me.delegate?.showAlert(error: error)
-                Log.shared.errorAndCrash("Fail to reset identity, with error %@ ",
-                                         error.localizedDescription)
+                DispatchQueue.main.async {
+                    me.delegate?.setLoadingView(visible: false)
+                    me.delegate?.showAlert(error: error)
+                    Log.shared.errorAndCrash("Fail to reset identity, with error %@ ",
+                                             error.localizedDescription)
+                }
             }
         }
     }

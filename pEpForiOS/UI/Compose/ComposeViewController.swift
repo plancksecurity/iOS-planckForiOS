@@ -57,6 +57,16 @@ class ComposeViewController: UIViewController {
             me.doOnce = nil
         }
         registerForNotifications()
+
+        if #available(iOS 13.0, *) {
+            if traitCollection.userInterfaceStyle == .dark {
+                tableView.backgroundColor = .secondarySystemBackground
+            } else {
+                tableView.backgroundColor = .white
+            }
+        }  else {
+            tableView.backgroundColor = .white
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -79,6 +89,12 @@ class ComposeViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
          //An arbitrary value auto resize seems to require for some reason.
         tableView.estimatedRowHeight = 1000
+
+        if #available(iOS 13.0, *) {
+            tableView.backgroundColor = .systemBackground
+        } else {
+            tableView.backgroundColor = .white
+        }
     }
 
     private func setupModel() {
@@ -643,7 +659,7 @@ extension ComposeViewController: SwipeTableViewCellDelegate {
             "ComposeTableView: Label of swipe left. Removing of attachment."
         )
         deleteAction.backgroundColor = SwipeActionDescriptor.trash.color
-        return (orientation == .right ?   [deleteAction] : nil)
+        return (orientation == .right ? [deleteAction] : nil)
     }
 
     func tableView(_ tableView: UITableView,
@@ -818,5 +834,30 @@ extension ComposeViewController {
         }
 
         return keyboardSize.height
+    }
+}
+
+extension ComposeViewController {
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                // Do not reload. There might be content written!
+                if traitCollection.userInterfaceStyle == .dark {
+                    tableView.backgroundColor = .secondarySystemBackground
+                } else {
+                    tableView.backgroundColor = .white
+                }
+            }
+        } else {
+            tableView.backgroundColor = .white
+        }
     }
 }

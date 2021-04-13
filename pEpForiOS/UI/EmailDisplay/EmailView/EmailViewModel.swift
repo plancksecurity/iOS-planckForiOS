@@ -240,7 +240,7 @@ extension EmailViewModel {
                 guard let message = message else {
                     let cantDecryptMessage = NSLocalizedString("This message could not be decrypted.",
                                                                comment: "content that is shown for undecryptable messages")
-                    finalText.normal(cantDecryptMessage)
+                    finalText.append(NSAttributedString.normalAttributedString(from: cantDecryptMessage))
                     return
                 }
                 if message.underAttack {
@@ -251,19 +251,19 @@ extension EmailViewModel {
                             comment: "Disabled attachments for a message with status 'under attack'. " +
                                 "Placeholders: Title, explanation, suggestion."),
                         status.title, status.explanation, status.suggestion)
-                    finalText.bold(messageString)
+                    finalText.append(NSAttributedString.boldAttributedString(from: messageString))
                 }
                 if let text = message.longMessage?.trimmed() {
-                    finalText.normal(text)
+                    finalText.append(NSAttributedString.normalAttributedString(from: text))
                 } else if let text = message.longMessageFormatted?.attributedStringHtmlToMarkdown() {
-                    finalText.normal(text)
+                    finalText.append(NSAttributedString.normalAttributedString(from: text))
                 } else if rating.isUnDecryptable() {
                     let cantDecryptMessage = NSLocalizedString("This message could not be decrypted.",
                                                                comment: "content that is shown for undecryptable messages")
-                    finalText.normal(cantDecryptMessage)
+                    finalText.append(NSAttributedString.normalAttributedString(from: cantDecryptMessage))
                 } else {
                     // Empty body
-                    finalText.normal("")
+                    finalText.append(NSAttributedString.normalAttributedString(from: ""))
                 }
                 DispatchQueue.main.async {
                     completion(finalText)
