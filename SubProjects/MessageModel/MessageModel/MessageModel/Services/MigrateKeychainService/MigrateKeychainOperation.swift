@@ -66,25 +66,28 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
                                                  kSecValueRef: secIndentity,
                                                  kSecAttrAccessGroup: keychainGroupSource]
 
-            let removeStatus = SecItemDelete(removeQuery as CFDictionary)
-            if removeStatus != errSecSuccess {
-                Log.shared.logError(message: "Could not delete client certificate \(uuidLabel)")
-            }
-
-            let removeStatusStandAlone = SecItemDelete([kSecValueRef: secIndentity] as CFDictionary)
-            if removeStatusStandAlone != errSecSuccess {
-                Log.shared.logError(message: "Could not delete stand-alone client id for \(uuidLabel)")
-            }
-
             var addQuery = removeQuery
             addQuery[kSecAttrAccessGroup] = keychainGroupTarget
 
             let addStatus = SecItemAdd(addQuery as CFDictionary, nil);
-            if addStatus != errSecSuccess {
-                if addStatus == errSecDuplicateItem {
-                    Log.shared.logWarn(message: "Client certificate already exists: \(uuidLabel)")
-                } else {
-                    Log.shared.logError(message: "Could not migrate client certificate: \(uuidLabel)")
+            if addStatus == errSecSuccess || addStatus == errSecDuplicateItem {
+                // Delete only on successful add
+                let removeStatus = SecItemDelete(removeQuery as CFDictionary)
+                if removeStatus != errSecSuccess {
+                    Log.shared.logError(message: "Could not delete client certificate \(uuidLabel) from \(keychainGroupSource)")
+                }
+
+                let removeStatusStandAlone = SecItemDelete([kSecValueRef: secIndentity] as CFDictionary)
+                if removeStatusStandAlone != errSecSuccess {
+                    Log.shared.logError(message: "Could not delete stand-alone client id for \(uuidLabel) from \(keychainGroupSource)")
+                }
+            } else {
+                if addStatus != errSecSuccess {
+                    if addStatus == errSecDuplicateItem {
+                        Log.shared.logWarn(message: "Client certificate already exists: \(uuidLabel)")
+                    } else {
+                        Log.shared.logError(message: "Could not migrate client certificate: \(uuidLabel)")
+                    }
                 }
             }
         }
@@ -109,6 +112,7 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
 
         let status = SecItemAdd(queryAddToTargetGroup as CFDictionary, nil)
         if status == noErr || status == errSecDuplicateItem {
+            // Delete only on successful add
             let statusDelete = SecItemDelete(queryBase as CFDictionary)
             if statusDelete != noErr {
                 Log.shared.logWarn(message: "Could not delete (old) password for \(key), status \(statusDelete)")
