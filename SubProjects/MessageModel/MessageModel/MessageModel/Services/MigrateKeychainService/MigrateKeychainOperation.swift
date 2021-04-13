@@ -66,23 +66,22 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
                                                  kSecValueRef: secIndentity,
                                                  kSecAttrAccessGroup: keychainGroupSource]
 
+            let removeStatus = SecItemDelete(removeQuery as CFDictionary)
+            if removeStatus != errSecSuccess {
+                Log.shared.logError(message: "Could not delete client certificate \(uuidLabel) from \(keychainGroupSource)")
+            }
+
+            let queryRemoveStatusStandAlone = [kSecValueRef: secIndentity] as CFDictionary
+            let removeStatusStandAlone = SecItemDelete(queryRemoveStatusStandAlone)
+            if removeStatusStandAlone != errSecSuccess {
+                Log.shared.logError(message: "Could not delete stand-alone client id for \(uuidLabel) from \(keychainGroupSource)")
+            }
+
             var addQuery = removeQuery
             addQuery[kSecAttrAccessGroup] = keychainGroupTarget
 
             let addStatus = SecItemAdd(addQuery as CFDictionary, nil);
-            if addStatus == errSecSuccess || addStatus == errSecDuplicateItem {
-                // Delete only on successful add
-                let removeStatus = SecItemDelete(removeQuery as CFDictionary)
-                if removeStatus != errSecSuccess {
-                    Log.shared.logError(message: "Could not delete client certificate \(uuidLabel) from \(keychainGroupSource)")
-                }
-
-                let queryRemoveStatusStandAlone = [kSecValueRef: secIndentity] as CFDictionary
-                let removeStatusStandAlone = SecItemDelete(queryRemoveStatusStandAlone)
-                if removeStatusStandAlone != errSecSuccess {
-                    Log.shared.logError(message: "Could not delete stand-alone client id for \(uuidLabel) from \(keychainGroupSource)")
-                }
-            } else {
+            if addStatus != errSecSuccess && addStatus != errSecDuplicateItem {
                 if addStatus != errSecSuccess {
                     if addStatus == errSecDuplicateItem {
                         Log.shared.logWarn(message: "Client certificate already exists: \(uuidLabel)")
