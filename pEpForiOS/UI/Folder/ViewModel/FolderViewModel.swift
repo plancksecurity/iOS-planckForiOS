@@ -75,6 +75,9 @@ public class FolderViewModel {
         return items.count
     }
 
+    public func handleAppereanceChanged() {
+        items.forEach({$0.handleAppereanceChanged()})
+    }
 
     /// Instantiates a folder hierarchy model with:
     /// One section per account

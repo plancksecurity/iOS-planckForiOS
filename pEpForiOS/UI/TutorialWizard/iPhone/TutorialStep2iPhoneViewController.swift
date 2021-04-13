@@ -13,7 +13,6 @@ import pEpIOSToolbox
 
 class TutorialStep2iPhoneViewController: TutorialStepViewController {
     
-    @IBOutlet private weak var secureLabel: UILabel!
     @IBOutlet private weak var truswordsLabel: UILabel!
     @IBOutlet private weak var confirmButton: UIButton!
     @IBOutlet private weak var declineButton: UIButton!
@@ -23,13 +22,13 @@ class TutorialStep2iPhoneViewController: TutorialStepViewController {
     @IBOutlet private weak var trustwordsContainer: UIView!
 
     public override func configureView() {
+        setBackgroundColor()
         setupHandshakeTitle()
         setupPrivacyStatusExplanationLabel()
-        setupcCnfirmTrustwordsExplanationLabel()
+        setupcConfirmTrustwordsExplanationLabel()
         setupButtons()
         setupTrustwordsContainer()
         setupTrustwordsLabel()
-        secureLabel.font = font
     }
 }
 
@@ -40,21 +39,26 @@ extension TutorialStep2iPhoneViewController {
     private func setupTrustwordsLabel() {
         truswordsLabel.font = smallFont
         truswordsLabel.text = Localized.someTrustwords
+        truswordsLabel.textColor = tutorialTextColor
     }
     
     private func setupHandshakeTitle() {
         handshakeTitle.font = titleFont
         handshakeTitle.text = Localized.handshake
+        handshakeTitle.textColor = tutorialTextColor
     }
 
     private func setupPrivacyStatusExplanationLabel() {
         privacyStatusExplanationLabel.font = font
         privacyStatusExplanationLabel.text = Localized.privacyStatusIconExplanation
+        privacyStatusExplanationLabel.textColor = tutorialTextColor
+
     }
 
-    private func setupcCnfirmTrustwordsExplanationLabel() {
+    private func setupcConfirmTrustwordsExplanationLabel() {
         confirmTrustwordsExplanationLabel.font = font
         confirmTrustwordsExplanationLabel.text = Localized.confirmTrustwordsExplanation
+        confirmTrustwordsExplanationLabel.textColor = tutorialTextColor
     }
     
     private func setupButtons() {

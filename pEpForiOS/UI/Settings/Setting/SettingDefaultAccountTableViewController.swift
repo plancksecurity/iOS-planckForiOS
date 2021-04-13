@@ -17,7 +17,15 @@ class SettingDefaultAccountTableViewController: UITableViewController {
     var allAccounts: [Account] {
         return Account.all()
     }
-    
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if #available(iOS 13.0, *) {
+            tableView.backgroundColor = .systemGroupedBackground
+        } else {
+            tableView.backgroundColor = .groupTableViewBackground
+        }
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         showNavigationBar()

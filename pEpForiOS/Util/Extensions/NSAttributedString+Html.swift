@@ -34,10 +34,12 @@ extension NSAttributedString {
         let htmlDocAttribKey: [NSAttributedString.DocumentAttributeKey : Any] = [NSAttributedString.DocumentAttributeKey.documentType: NSAttributedString.DocumentType.html,
                                                                                  NSAttributedString.DocumentAttributeKey.characterEncoding: encodingUtf8]
 
+        // Remove font color. The receiver should define that to its needs (e.g. for supporting dark & light mode)
+        let mutableMe = NSMutableAttributedString(attributedString: self)
+        mutableMe.removeFontColorAttributes()
         // conversion NSTextAttachment with image to <img src.../> html tag with cid:{cid}
-
         let htmlConv = HtmlConversions()
-        let plainTextAndHtml = htmlConv.citationVerticalLineToBlockquote(aString: self)
+        let plainTextAndHtml = htmlConv.citationVerticalLineToBlockquote(mutableMe)
         let plainText = plainTextAndHtml.plainText
 
         let mutableAttribString = NSMutableAttributedString(attributedString: plainTextAndHtml.attribString)
@@ -49,13 +51,13 @@ extension NSAttributedString {
             .enumerateAttribute(
                 .attachment,
                 in: mutableAttribString.wholeRange()) { (value, range, stop) in
-                    if let textAttachment = value as? TextAttachment {
-                        let delegate = ToMarkdownDelegate()
+                if let textAttachment = value as? BodyCellViewModel.TextAttachment {
                         if idx < inlinedAttachments.count {
                             textAttachment.attachment = inlinedAttachments[idx]
                             idx += 1
-                            if let stringForTextAttachment = delegate.stringFor(attachment: textAttachment) { //BUFF: !!! HERE
-                                if delegate.attachments.count > 0 {
+                            let cidInfo = textAttachment.cidInfo()
+                            if let stringForTextAttachment = cidInfo.cidString {
+                                if cidInfo.attachment != nil {
                                     images[range] = stringForTextAttachment.cleanAttachments
                                 }
                             }

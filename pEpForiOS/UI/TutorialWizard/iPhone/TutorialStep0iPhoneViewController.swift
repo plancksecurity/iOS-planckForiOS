@@ -24,6 +24,7 @@ class TutorialStep0iPhoneViewController: TutorialStepViewController {
     @IBOutlet private weak var topbarImageView: UIImageView!
 
     public override func configureView() {
+        setBackgroundColor()
         setupTitleLabel()
         setupSkipTutorialLabel()
         setupPrivacyStatusLabel()
@@ -39,11 +40,12 @@ class TutorialStep0iPhoneViewController: TutorialStepViewController {
 extension TutorialStep0iPhoneViewController {
     
     private func setupTitleLabel() {
-        let titleText = NSLocalizedString("Welcome to the p≡p Tutorial", comment: "Welcome to the p≡p Tutorial - Step 0")
+        let titleText = Localized.welcome
+
         let attributedString = NSMutableAttributedString(string: titleText, attributes: [
             .paragraphStyle: centeredSpaced,
             .font: titleFont,
-            .foregroundColor: UIColor.black,
+            .foregroundColor: tutorialTextColor,
             .kern: 0.36
         ])
         if let range = titleText.nsRange(of: "p≡p") {
@@ -53,17 +55,17 @@ extension TutorialStep0iPhoneViewController {
     }
     
     private func setupSkipTutorialLabel() {
-        let text = NSLocalizedString("You can close this tutorial anytime with the Skip button.", comment: "Tutorial First text")
+        let text = Localized.skipTutorial
         let attributes : [NSAttributedString.Key : Any] = [
           .font: font,
-          .foregroundColor: UIColor.black,
+          .foregroundColor: tutorialTextColor,
           .paragraphStyle: centeredSpaced,
           .kern: 0.2]
         skipTutorialLabel.attributedText = NSMutableAttributedString(string:text, attributes: attributes)
     }
     
     private func setupPrivacyStatusLabel() {
-        let text = NSLocalizedString("p≡p uses a Privacy Status icon to indicate how secure your communication is.", comment: "Tutorial Second text")
+        let text = Localized.privacyStatus
         let attributedText = NSMutableAttributedString(string:text)
         if let range = text.nsRange(of: "p≡p") {
             attributedText.addAttributes([.font: font, .foregroundColor: UIColor.pEpGreen], range: range)
@@ -74,15 +76,16 @@ extension TutorialStep0iPhoneViewController {
         }
 
         privacyStatusLabel.attributedText = attributedText
+        privacyStatusLabel.textColor = tutorialTextColor
     }
     
     private func setupPrivacyStatusShownLabel() {
-        let text = NSLocalizedString("This Privacy Status is shown as an icon the user´s avatars:", comment: "Tutorial Third text")
+        let text = Localized.privacyStatusDescription
         set(text, on: privacyStatusShownLabel)
     }
     
     private func setupTopbarLabel() {
-        let text = NSLocalizedString("And in the top bar when you open or write an email:", comment: "Tutorial Fourth text")
+        let text = Localized.topbar
         set(text, on: topbarLabel)
     }
     
@@ -91,5 +94,6 @@ extension TutorialStep0iPhoneViewController {
         attributedText.addAttributes(textAttributes, range: NSRange(location: 0, length: text.count))
         label.textAlignment = UIDevice.isLandscape ? .left : .center
         label.attributedText = attributedText
+        label.textColor = tutorialTextColor
     }
 }

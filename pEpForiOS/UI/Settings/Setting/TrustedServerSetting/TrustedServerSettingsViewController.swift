@@ -38,6 +38,12 @@ class TrustedServerSettingsViewController: UIViewController {
 
         title = NSLocalizedString("Store Messages Securely", comment: "Store Messages Securely Title")
         viewModel.delegate = self
+
+        if #available(iOS 13.0, *) {
+            tableView.backgroundColor = .systemGroupedBackground
+        } else {
+            tableView.backgroundColor = .groupTableViewBackground
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

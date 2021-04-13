@@ -43,7 +43,6 @@ class EmailListViewModel: EmailDisplayViewModel {
 
     }
     private var emailDetailViewModel: EmailDetailViewModel?
-    private let contactImageTool = IdentityImageTool()
 
     private var lastSearchTerm = ""
     private var updatesEnabled = true
@@ -268,7 +267,7 @@ class EmailListViewModel: EmailDisplayViewModel {
 
      /// Call in case of out-of-memory alert
     func freeMemory() {
-        contactImageTool.clearCache()
+        IdentityImageTool.clearCache()
     }
 
     /// Update LastLookAt of the folder to show.

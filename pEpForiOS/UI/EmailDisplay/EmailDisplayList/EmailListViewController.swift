@@ -70,11 +70,12 @@ final class EmailListViewController: UIViewController {
     private let refreshController = UIRefreshControl()
 
     // MARK: - Life Cycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         subscribeForKeyboardNotifications()
         edgesForExtendedLayout = .all
+        setSeparator()
 
         doOnce = { [weak self] in
             guard let me = self else {
@@ -167,7 +168,14 @@ final class EmailListViewController: UIViewController {
     }
 
     private func setupRefreshControl() {
-        refreshController.tintColor = UIColor.pEpGreen
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .light {
+                refreshController.tintColor = UIColor.pEpGreen
+            }
+        } else {
+            refreshController.tintColor = UIColor.pEpGreen
+        }
+
         refreshController.addTarget(self, action: #selector(refreshView), for: .valueChanged)
         // Apples default UIRefreshControl implementation is buggy when using a UITableView in a
         // UIViewController (instead of a UITableViewController). The UI freaks out while
@@ -1321,10 +1329,24 @@ extension EmailListViewController {
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-      super.traitCollectionDidChange(previousTraitCollection)
-      if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-        tableView.reloadData()
-      }
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            tableView.reloadData()
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                /// Clear the cache and get the correct version of the avatar..
+                viewModel?.freeMemory()
+                setSeparator()
+                tableView.reloadData()
+            }
+        }
     }
 }
 
@@ -1402,5 +1424,20 @@ extension EmailListViewController {
         composeVc.viewModel = composeVM
         let presenterVc = UIApplication.currentlyVisibleViewController()
         presenterVc.present(composeNavigationController, animated: true)
+    }
+}
+
+extension EmailListViewController {
+
+    private func setSeparator() {
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                tableView.separatorColor = UIColor.pEpSeparator
+            } else {
+                tableView.separatorColor = .opaqueSeparator
+            }
+        } else {
+            // Fallback on earlier versions
+        }
     }
 }

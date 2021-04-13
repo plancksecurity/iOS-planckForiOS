@@ -122,7 +122,6 @@ class EditableAccountSettingsViewModel {
         do {
             let validated = try validateInput()
             update(input: validated)
-            delegate?.setLoadingView(visible: false)
         } catch {
             delegate?.setLoadingView(visible: false)
             delegate?.showAlert(error: error)

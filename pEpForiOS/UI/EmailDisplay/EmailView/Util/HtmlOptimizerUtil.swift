@@ -74,6 +74,17 @@ extension HtmlOptimizerUtil {
 
         // Build HTML tweak
 
+        // Optimize for dark mode _only_ if no colors are defined (to avoid issues with drak
+        // font-color on dark background if the HTML defines font-color but not background).
+        let styleAutodetectLightOrDarkMode = html.contains("color:") ? "" : """
+            @media (prefers-color-scheme: dark) {
+                body {
+                    color: #eee;
+                    background: #121212;
+                }
+            }
+        """
+
         let styleBodyOptimize = """
         body {
         font-family: "San Francisco" !important;
@@ -106,6 +117,7 @@ extension HtmlOptimizerUtil {
         let tweak = """
         \(scaleToFitHtml)
         <style>
+        \(styleAutodetectLightOrDarkMode)
         \(styleBodyOptimize)
         \(styleTableOptimize)
 

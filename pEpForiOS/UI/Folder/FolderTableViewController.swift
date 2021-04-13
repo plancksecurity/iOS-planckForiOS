@@ -33,6 +33,30 @@ class FolderTableViewController: UITableViewController {
         updateRefreshControl()
     }
 
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+        if thePreviousTraitCollection.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            tableView.reloadData()
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                guard let vm = folderVM else {
+                    Log.shared.errorAndCrash("VM not found")
+                    return
+                }
+                vm.handleAppereanceChanged()
+                Appearance.configureSelectedBackgroundViewForPep(tableViewCell: UITableViewCell.appearance())
+                tableView.reloadData()
+            }
+        }
+    }
+
     // MARK: - Setup
 
     private func setup() {
@@ -138,6 +162,7 @@ class FolderTableViewController: UITableViewController {
             Log.shared.errorAndCrash("No subfolder cell found")
             return UITableViewCell()
         }
+        Appearance.configureSelectedBackgroundViewForPep(tableViewCell: cell)
 
         // Setup cell: padding, indentation, texts, colors, separator, chevron, etc.
         cell.indentationLevel = min(fcvm.indentationLevel, vm.maxIndentationLevel)
@@ -146,7 +171,13 @@ class FolderTableViewController: UITableViewController {
         cell.padding = fcvm.padding
         cell.titleLabel.text = fcvm.title
         cell.titleLabel.setPEPFont(style: .body, weight: .regular)
-        cell.titleLabel?.textColor = fcvm.isSelectable ? .black : .pEpGray
+
+        if #available(iOS 13.0, *) {
+            cell.titleLabel?.textColor = fcvm.isSelectable ? .label : .tertiaryLabel
+        } else {
+            cell.titleLabel?.textColor = fcvm.isSelectable ? .black : .pEpGray
+        }
+
         cell.unreadMailsLabel.font = UIFont.pepFont(style: .body, weight: .regular)
         let numUnreadMails = fcvm.numUnreadMails
         cell.unreadMailsLabel.text = numUnreadMails > 0 ? String(numUnreadMails) : ""

@@ -27,6 +27,14 @@ class EditSignatureViewController: UIViewController {
         title = NSLocalizedString("Signature", comment: "Edit Signature title")
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let indexPath = IndexPath(row: 0, section: 0)
+        if let cell = tableView.cellForRow(at: indexPath) as? SignatureTableViewCell {
+            cell.textView.becomeFirstResponder()
+        }
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         guard let vm = viewModel else {
@@ -40,6 +48,9 @@ class EditSignatureViewController: UIViewController {
         let indexPath = IndexPath(row: 0, section: 0)
         if let cell = tableView.cellForRow(at: indexPath) as? SignatureTableViewCell {
             cell.textView.text = ""
+            /// Update textview height.
+            textViewDidChange(cell.textView)
+            cell.textView.becomeFirstResponder()
             guard let vm = viewModel else {
                 Log.shared.errorAndCrash("No VM")
                 return

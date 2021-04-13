@@ -17,8 +17,15 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        if #available(iOS 13, *) {
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                view.backgroundColor = .secondarySystemBackground
+            } else {
+                view.backgroundColor = .white
+            }
             Appearance.customiseForTutorial(viewController: self)
+        } else {
+            view.backgroundColor = .white
         }
     }
 
@@ -37,8 +44,20 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
         tutorialWizard.isScrollEnable = true
         tutorialWizard.showDots = true
         tutorialWizard.pageControlTint = .pEpGray
-        tutorialWizard.pageControlPageIndicatorColor = .black
-        tutorialWizard.pageControlBackgroundColor = .white
+
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                tutorialWizard.pageControlTint = .lightGray
+                tutorialWizard.pageControlPageIndicatorColor = .white
+                tutorialWizard.pageControlBackgroundColor = .secondarySystemBackground
+            } else {
+                tutorialWizard.pageControlPageIndicatorColor = .black
+                tutorialWizard.pageControlBackgroundColor = .white
+            }
+        } else {
+            tutorialWizard.pageControlPageIndicatorColor = .black
+            tutorialWizard.pageControlBackgroundColor = .white
+        }
         let navigationController = UINavigationController(rootViewController: tutorialWizard)
         DispatchQueue.main.async { [weak viewController] in
             navigationController.modalPresentationStyle = .fullScreen
@@ -78,7 +97,7 @@ extension TutorialWizardViewController {
         }
         return result
     }
-    
+
     /// Close the tutorial.
     @objc private func closeScreen() {
         dismiss(animated: true)
@@ -95,5 +114,35 @@ extension TutorialWizardViewController {
         }
         let endButton = UIBarButtonItem(title: navBarButtonTitle, style: .done, target: self, action: #selector(closeScreen))
         navigationItem.rightBarButtonItem = endButton
+    }
+}
+
+// MARK: - Trait Collection
+
+extension TutorialWizardViewController {
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                if UITraitCollection.current.userInterfaceStyle == .dark {
+                    pageControlTint = .lightGray
+                    pageControlPageIndicatorColor = .white
+                    pageControlBackgroundColor = .secondarySystemBackground
+                    view.backgroundColor = .secondarySystemBackground
+                } else {
+                    pageControlPageIndicatorColor = .black
+                    pageControlBackgroundColor = .white
+                    view.backgroundColor = .white
+                }
+
+                view.layoutIfNeeded()
+            }
+        }
     }
 }

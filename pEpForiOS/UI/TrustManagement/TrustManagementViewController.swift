@@ -22,7 +22,7 @@ class TrustManagementViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var optionsButton: UIBarButtonItem!
 
-    var viewModel : TrustManagementViewModel? {
+    var viewModel: TrustManagementViewModel? {
         didSet {
             viewModel?.delegate = self
         }
@@ -84,6 +84,7 @@ extension TrustManagementViewController {
     private func setup() {
         registerForNotifications()
         setLeftBarButton()
+        setBackgroundColor()
     }
 }
 
@@ -316,7 +317,7 @@ extension TrustManagementViewController: TrustManagementTableViewCellDelegate, T
 // MARK: - Cell configuration
 
 extension TrustManagementViewController {
-    
+
     /// This method configures the layout for the provided cell.
     /// We use 2 different cells: one for the split view the other for iphone portrait view.
     /// The layout is different, so different UI structures are used.
@@ -325,6 +326,7 @@ extension TrustManagementViewController {
     ///   - cell: The cell to be configured.
     ///   - indexPath: The indexPath of the row, to get the trustwords.
     private func setupCell(_ cell: TrustManagementTableViewCell, forRowAt indexPath: IndexPath) {
+        setBackgroundColor(on: cell)
         // After all async calls have returend the cell size need update
         let updateSizeGroup = DispatchGroup()
         guard let row = viewModel?.rows[indexPath.row] else {
@@ -399,6 +401,7 @@ extension TrustManagementViewController {
     }
 
     private func setupCell(_ cell: TrustManagementResetTableViewCell, forRowAt indexPath: IndexPath) {
+        setBackgroundColor(on: cell)
         // After all async calls have returend the cell size need update
         let updateSizeGroup = DispatchGroup()
            guard let row = viewModel?.rows[indexPath.row] else {
@@ -430,5 +433,52 @@ extension TrustManagementViewController {
             identifier = onlyMasterCellIdentifier
         }
         return identifier
+    }
+}
+
+// MARK: - Trait Collection
+
+extension TrustManagementViewController {
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                setBackgroundColor()
+                IdentityImageTool.clearCache()
+                loadView() //Needed to re-load reset button.
+                tableView.reloadData()
+            }
+        }
+    }
+}
+
+// MARK: - Background Color
+
+extension TrustManagementViewController {
+
+    private func setBackgroundColor() {
+        setBackgroundColor(onView: tableView)
+    }
+
+    private func setBackgroundColor(on cell: UITableViewCell) {
+        setBackgroundColor(onView: cell)
+    }
+
+    private func setBackgroundColor(onView view: UIView) {
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .light {
+                view.backgroundColor = .white
+            } else {
+                view.backgroundColor = .secondarySystemBackground
+            }
+        } else {
+            view.backgroundColor = .white
+        }
     }
 }
