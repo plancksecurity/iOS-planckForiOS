@@ -32,7 +32,7 @@ extension Attachment {
             return NSAttributedString()
         }
 
-        let textAttachment = TextAttachment()
+        let textAttachment = BodyCellViewModel.TextAttachment()
         textAttachment.image = scaledImage
         textAttachment.attachment = self
         textAttachment.bounds = CGRect.rect(withWidth: attachmentWidth,
