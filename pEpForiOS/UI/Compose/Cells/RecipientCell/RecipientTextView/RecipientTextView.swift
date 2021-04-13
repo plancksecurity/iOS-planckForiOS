@@ -35,14 +35,6 @@ class RecipientTextView: UITextView {
 
 extension RecipientTextView: UITextViewDelegate {
 
-    private func setTextColor() {
-        if #available(iOS 13.0, *) {
-            textColor = .label
-        } else {
-            // Fallback on earlier versions
-        }
-    }
-
     public func textViewDidBeginEditing(_ textView: UITextView) {
         reportWidthChange()
         viewModel?.handleDidBeginEditing(text: textView.text)
@@ -61,7 +53,7 @@ extension RecipientTextView: UITextViewDelegate {
         }
         if vm.isAddressDeliminator(str: text) {
             let result = vm.handleAddressDelimiterTyped(range: range, of: textView.attributedText)
-            setTextColor()
+            setLabelTextColor()
             return result
         }
         let hasSelection = !(selectedTextRange?.isEmpty ?? true)
