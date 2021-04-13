@@ -114,7 +114,7 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
                 Log.shared.logWarn(message: "Could not delete (old) password for \(key), status \(statusDelete)")
             }
         } else {
-            Log.shared.logWarn(message: "Could not save password for \(key), status \(status)")
+            Log.shared.logWarn(message: "Could not save password for \(key) to \(keychainGroupTarget), status \(status)")
         }
     }
 
