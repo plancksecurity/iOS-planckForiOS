@@ -91,9 +91,9 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
         // layouted, leading to a smaller cell than usual.
         summaryLabel.text = " "
         summaryLabel.font = UIFont.pepFont(style: .subheadline, weight: .regular)
-        addressLabel.font = UIFont.pepFont(style: .body, weight: .regular)
+        addressLabel.font = UIFont.pepFont(style: .body, weight: viewModel.isSeen ? .regular : .bold)
         addressLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.displayedUsername)
-        subjectLabel.font = UIFont.pepFont(style: .subheadline, weight: .regular)
+        subjectLabel.font = UIFont.pepFont(style: .subheadline, weight: viewModel.isSeen ? .regular : .bold)
         subjectLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.subject)
 
         viewModel.bodyPeekCompletion = { [weak self] bodyPeek in
@@ -195,7 +195,7 @@ extension EmailListViewCell {
     private func setupLabels(seen: Bool) {
         let fontWeight: UIFont.Weight = seen
             ? .regular
-            : .semibold
+            : .bold
         addressLabel.font = UIFont.pepFont(style: .body,
                                            weight: fontWeight)
         subjectLabel.font = UIFont.pepFont(style: .subheadline,
