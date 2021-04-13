@@ -329,7 +329,7 @@ extension EmailViewController {
     }
 
     private func setupSender(cell: MessageSenderCell, with row: EmailViewModel.SenderRow) {
-        func display(labels: [UILabel]) {
+        func display(labels: [UIButton]) {
             let containerWidth = cell.toContainer.frame.size.width
 
             var currentOriginX: CGFloat = 0
@@ -358,48 +358,44 @@ extension EmailViewController {
         cell.fromLabel.font = font
         cell.fromLabel.text = row.from
         cell.toContainer.subviews.forEach({$0.removeFromSuperview()})
-        var recipientLabels = [UILabel]()
+        var recipientLabels = [UIButton]()
         var textsToShow = [NSLocalizedString("To:", comment: "To: - To label")]
         textsToShow.append(contentsOf: row.recipients)
         textsToShow.forEach { (to) in
-            let recipientLabel = UILabel()
-            recipientLabel.text = to
-            recipientLabel.adjustsFontSizeToFitWidth = true
-            recipientLabel.setContentHuggingPriority(.required, for: .horizontal)
-            recipientLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+            let recipientButton = UIButton(type: .custom)
+            recipientButton.isUserInteractionEnabled = true
+            recipientButton.setTitle(to, for: .normal)
+            recipientButton.titleLabel?.adjustsFontSizeToFitWidth = true
+            recipientButton.setContentHuggingPriority(.required, for: .horizontal)
+            recipientButton.setContentCompressionResistancePriority(.required, for: .horizontal)
             if #available(iOS 13.0, *) {
-                recipientLabel.textColor = .secondaryLabel
+                recipientButton.setTitleColor(.secondaryLabel, for: .normal)
+                recipientButton.setTitleColor(.tertiaryLabel, for: .highlighted)
+                recipientButton.setTitleColor(.tertiaryLabel, for: .selected)
             } else {
-                recipientLabel.textColor = .lightGray
+                recipientButton.setTitleColor(.lightGray, for: .normal)
+                recipientButton.setTitleColor(.darkGray, for: .highlighted)
+                recipientButton.setTitleColor(.darkGray, for: .selected)
             }
-            recipientLabel.font = font
-            recipientLabel.textAlignment = .natural
-            recipientLabel.sizeToFit()
-            recipientLabelHeight = recipientLabel.frame.height
+            recipientButton.titleLabel?.font = font
+            recipientButton.titleLabel?.textAlignment = .natural
+            recipientButton.sizeToFit()
+            recipientLabelHeight = recipientButton.frame.height
 
-            recipientLabel.frame.size.width = recipientLabel.intrinsicContentSize.width + recipientLabelPadding
-            recipientLabel.frame.size.height = recipientLabelHeight
+            recipientButton.frame.size.width = recipientButton.intrinsicContentSize.width + recipientLabelPadding
+            recipientButton.frame.size.height = recipientLabelHeight
+            recipientButton.addTarget(self, action: #selector(addressButtonPressed), for: .touchUpInside)
 
-            let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
-            longPressRecognizer.numberOfTouchesRequired = 1
-            longPressRecognizer.minimumPressDuration = 1.5
-            recipientLabel.isUserInteractionEnabled = true
-            recipientLabel.addGestureRecognizer(longPressRecognizer)
-
-            cell.toContainer.addSubview(recipientLabel)
-            cell.toContainer.bringSubviewToFront(recipientLabel)
-            recipientLabels.append(recipientLabel)
+            cell.toContainer.addSubview(recipientButton)
+            cell.toContainer.bringSubviewToFront(recipientButton)
+            recipientLabels.append(recipientButton)
         }
         display(labels: recipientLabels)
     }
 
 
-    @objc func longPressed(sender: UILongPressGestureRecognizer) {
-        guard let label = sender.view as? UILabel else {
-            Log.shared.error("The sender is not a UILabel, which is unexpected")
-            return
-        }
-        guard let address = label.text, address.isProbablyValidEmail() else {
+    @objc func addressButtonPressed(button: UIButton) {
+        guard let address = button.titleLabel?.text, address.isProbablyValidEmail() else {
             // Valid case, nothing to do:
             return
         }
