@@ -18,6 +18,11 @@ class EmailViewController: UIViewController {
     /// The email addresses of the recipients
     private var recipients = [String]()
 
+    private var recipientLabelHeight: CGFloat = 15
+    private let recipientLabelPadding: CGFloat = 2
+    private let recipientLabelSpacingX: CGFloat = 2
+    private let recipientLabelSpacingY: CGFloat = 2
+
     public var viewModel: EmailViewModel? {
         didSet {
             viewModel?.delegate = self
@@ -317,6 +322,7 @@ extension EmailViewController {
     }
 
     private func setupSender(cell: MessageSenderCell, with row: EmailViewModel.SenderRow) {
+
         let font = UIFont.pepFont(style: .footnote, weight: .semibold)
         cell.fromLabel.font = font
         cell.fromLabel.text = row.from
@@ -325,26 +331,61 @@ extension EmailViewController {
                           NSAttributedString.Key.foregroundColor: UIColor.lightGray]
         cell.toLabel?.attributedText = NSAttributedString(string: subtitle, attributes: attributes)
 
-        var tos = row.to2
-        tos.append(contentsOf: tos)
-        tos.append(contentsOf: tos)
-        tos.forEach { (to) in
+        var recipientLabels = [UILabel]()
+        var textsToShow = [NSLocalizedString("To:", comment: "To: - prefix")]
+        textsToShow.append(contentsOf: row.recipients)
+        textsToShow.forEach { (to) in
             let recipientLabel = UILabel()
             recipientLabel.text = to
             recipientLabel.adjustsFontSizeToFitWidth = true
             recipientLabel.setContentHuggingPriority(.required, for: .horizontal)
             recipientLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
             if #available(iOS 13.0, *) {
-                recipientLabel.textColor = .secondaryLabel
+                recipientLabel.textColor = .lightGray
             } else {
                 recipientLabel.textColor = .lightGray
             }
-            recipientLabel.font = UIFont.pepFont(style: .caption1, weight: .regular)
+            recipientLabel.font = font
             recipientLabel.textAlignment = .natural
             recipientLabel.sizeToFit()
+            recipientLabelHeight = recipientLabel.frame.height
+
+            recipientLabel.frame.size.width = recipientLabel.intrinsicContentSize.width + recipientLabelPadding
+            recipientLabel.frame.size.height = recipientLabelHeight
+
             cell.toContainer.addSubview(recipientLabel)
+            recipientLabels.append(recipientLabel)
+            displayTagLabels(cell: cell, tagLabels: recipientLabels)
         }
     }
+
+    func displayTagLabels(cell: MessageSenderCell, tagLabels: [UILabel]) {
+
+        let containerWidth = cell.toContainer.frame.size.width
+
+        var currentOriginX: CGFloat = 0
+        var currentOriginY: CGFloat = 0
+
+        tagLabels.forEach { label in
+
+            // if current X + label width is be greater than container view width
+            //  "move to next row"
+            if currentOriginX + label.frame.width > containerWidth {
+                currentOriginX = 0
+                currentOriginY += recipientLabelHeight + recipientLabelSpacingY
+            }
+
+            // set the frame origin
+            label.frame.origin.x = currentOriginX
+            label.frame.origin.y = currentOriginY
+
+            // increment current X by btn width + spacing
+            currentOriginX += label.frame.width + recipientLabelSpacingX
+        }
+        // update container view height
+        cell.containerHeightConstraint.constant = currentOriginY + recipientLabelHeight
+    }
+
 
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {
         cell.subjectLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)

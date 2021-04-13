@@ -204,7 +204,7 @@ extension EmailViewModel {
         var cellIdentifier: String = "senderCell"
         var from: String
         var to: String
-        var to2: [String]
+        var recipients: [String]
 
     }
 
@@ -385,7 +385,7 @@ extension EmailViewModel {
             tempTo.append(recepient)
         }
         let toDestinataries = NSLocalizedString("To:", comment: "Email field title") + tempTo.joined(separator: ", ")
-        let senderRow = SenderRow(from: from, to: toDestinataries, to2: message.allRecipients.map({$0.address}))
+        let senderRow = SenderRow(from: from, to: toDestinataries, recipients: message.allRecipients.map({$0.address}))
         rows.append(senderRow)
 
         //Subject
