@@ -6,8 +6,15 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
+import UIKit
+
+#if EXT_SHARE
+import MessageModelForAppExtensions
+import pEpIOSToolboxForExtensions
+#else
 import MessageModel
 import pEpIOSToolbox
+#endif
 
 // MARK: - InitData
 
@@ -115,23 +122,23 @@ extension ComposeViewModel {
         /// - Parameters:
         ///   - prefilledTo: The To: field to prefill
         ///   - prefilledFrom: The From: field to prefill
-        ///   - om: The original message
+        ///   - originalMessage: The original message
         ///   - composeMode: The compose mode.
         init(prefilledTo: Identity? = nil,
              prefilledFrom: Identity? = nil,
-             originalMessage om: Message? = nil,
+             originalMessage: Message? = nil,
              composeMode: ComposeUtil.ComposeMode? = nil) {
 
             // We are cloning the message to get a clone off the attachments and the
             // longMessageFormatted updated with the CID:s of the cloned attachments.
             // We use it for settingus up and delete afterwards.
-            let cloneMessage = om?.cloneWithZeroUID(session: Session.main)
+            let cloneMessage = originalMessage?.cloneWithZeroUID(session: Session.main)
             self.composeMode = composeMode ?? ComposeUtil.ComposeMode.normal
             if let prefilledTo = prefilledTo {
                 self.prefilledTos = cloneMessage == nil ? [prefilledTo] : nil
             }
             self.prefilledFrom = prefilledFrom
-            self.originalMessage = om
+            self.originalMessage = originalMessage
             self.inlinedAttachments = ComposeUtil.initialAttachments(composeMode: self.composeMode,
                                                                      contentDisposition: .inline,
                                                                      originalMessage: cloneMessage)
@@ -153,6 +160,23 @@ extension ComposeViewModel {
             self.prefilledBCCs = mailto.bccs
             self.subject = mailto.subject
             self.bodyPlaintext = mailto.body
+        }
+
+        /// Used by the sharing extension, which is all about attachments.
+        init(prefilledFrom: Identity? = nil,
+             bodyHtml: NSAttributedString,
+             inlinedAttachments: [Attachment],
+             nonInlinedAttachments: [Attachment]) {
+            self.prefilledFrom = prefilledFrom
+
+            self.bodyHtml = bodyHtml
+            self.inlinedAttachments = inlinedAttachments
+            self.nonInlinedAttachments = nonInlinedAttachments
+
+            self.composeMode = .normal
+            self.prefilledTos = []
+            self.prefilledCCs = []
+            self.prefilledBCCs = []
         }
 
         mutating private func setupInitialSubject() {

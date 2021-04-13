@@ -6,9 +6,13 @@
 //  Copyright © 2019 p≡p Security S.A. All rights reserved.
 //
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+import pEpIOSToolboxForExtensions
+#else
 import MessageModel
-
 import pEpIOSToolbox
+#endif
 
 // MARK: - AppSettings+KeySyncDeviceGroupStateChangeNotification
 

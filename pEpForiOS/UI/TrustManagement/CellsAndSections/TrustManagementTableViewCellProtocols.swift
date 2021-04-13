@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Delegate to notify the events in the cell.
 protocol TrustManagementResetTableViewCellDelegate: class {

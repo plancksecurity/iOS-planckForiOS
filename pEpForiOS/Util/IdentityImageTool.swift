@@ -8,8 +8,14 @@
 
 import UIKit
 import AddressBook
+
+#if EXT_SHARE
+import MessageModelForAppExtensions
+import pEpIOSToolboxForExtensions
+#else
 import MessageModel
 import pEpIOSToolbox
+#endif
 
 extension IdentityImageTool {
     /// Key for the identity image cache dictionary.

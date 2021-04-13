@@ -92,7 +92,7 @@ class QueryBasedService<T: NSManagedObject>: OperationBasedService, QueryBasedSe
          predicate: NSPredicate?,
          cacheName: String? = nil,
          sortDescriptors: [NSSortDescriptor],
-         errorPropagator: ErrorPropagator?) {
+         errorPropagator: ErrorContainerProtocol?) {
         let moc: NSManagedObjectContext = Stack.shared.changePropagatorContext
         self.qrc = QueryResultsController<T>(predicate: predicate,
                                              context: moc,

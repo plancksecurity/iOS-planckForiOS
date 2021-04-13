@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Inx-yX-Bxh">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller With Appearance-->
+        <scene sceneID="IMi-9E-PmP">
+            <objects>
+                <navigationController id="Inx-yX-Bxh" customClass="NavigationControllerWithAppearance" customModule="pEp_share" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="TL1-Os-ztq">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Hss-n5-N2C" kind="relationship" relationship="rootViewController" id="rOY-Z6-z7t"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9WT-ft-qWc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-810" y="88"/>
+        </scene>
+        <!--Share View Controller-->
+        <scene sceneID="28Y-04-tGD">
+            <objects>
+                <viewController id="Hss-n5-N2C" customClass="ShareViewController" customModule="pEp_share" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" opaque="NO" contentMode="scaleToFill" id="Ll2-6p-uiE">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sFW-j2-qjB">
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                            </containerView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="AYh-KY-7e9"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="AYh-KY-7e9" firstAttribute="trailing" secondItem="sFW-j2-qjB" secondAttribute="trailing" id="CKc-QE-h6S"/>
+                            <constraint firstItem="sFW-j2-qjB" firstAttribute="top" secondItem="AYh-KY-7e9" secondAttribute="top" id="bOy-B7-Cq1"/>
+                            <constraint firstItem="AYh-KY-7e9" firstAttribute="bottom" secondItem="sFW-j2-qjB" secondAttribute="bottom" id="huj-Tg-5mp"/>
+                            <constraint firstItem="sFW-j2-qjB" firstAttribute="leading" secondItem="AYh-KY-7e9" secondAttribute="leading" id="o4J-Xd-wkv"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="piX-1c-Etx"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9D9-va-pgX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="133" y="88"/>
+        </scene>
+    </scenes>
+</document>

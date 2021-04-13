@@ -6,8 +6,13 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+import pEpIOSToolboxForExtensions
+#else
 import MessageModel
 import pEpIOSToolbox
+#endif
 
 protocol ComposeViewModelDelegate: class {
 
@@ -56,6 +61,19 @@ protocol ComposeViewModelDelegate: class {
     func dismiss()
 }
 
+/// Contains messages about cancelation and send.
+protocol ComposeViewModelFinalActionDelegate: class {
+    /// The user requested the mail to be sent.
+    func userWantsToSend(message: Message)
+
+    /// The user opted to send, but there were (internal)
+    /// problems creating the message.
+    func couldNotCreateOutgoingMessage()
+
+    /// The user canceled the composing of the mail.
+    func canceled()
+}
+
 class ComposeViewModel {
     weak var delegate: ComposeViewModelDelegate? {
         didSet {
@@ -63,8 +81,16 @@ class ComposeViewModel {
                                             protectionEnabled: state.pEpProtection)
         }
     }
+
+    /// Signals having sent or canceled.
+    weak var composeViewModelEndActionDelegate: ComposeViewModelFinalActionDelegate?
+
     public private(set) var sections = [ComposeViewModel.Section]()
     public private(set) var state: ComposeViewModelState
+
+    /// During normal execution, the app will ask the user to save a draft on cancel,
+    /// which is not wanted when sharing a file.
+    public let offerToSaveDraftOnCancel: Bool
 
     private var suggestionsVM: SuggestViewModel?
     private var lastRowWithSuggestions: IndexPath?
@@ -103,28 +129,23 @@ class ComposeViewModel {
     /// would thus crash if anone commits the main session.
     private let session = Session()
 
-    init(composeMode: ComposeUtil.ComposeMode? = nil,
-         prefilledTo: Identity? = nil,
-         prefilledFrom: Identity? = nil,
-         originalMessage: Message? = nil) {
-        let initData = InitData(prefilledTo: prefilledTo, prefilledFrom: prefilledFrom, originalMessage: originalMessage, composeMode: composeMode)
-        self.state = ComposeViewModelState(initData: initData)
+    init(state: ComposeViewModelState, offerToSaveDraftOnCancel: Bool = true) {
+        self.state = state
+        self.offerToSaveDraftOnCancel = offerToSaveDraftOnCancel
         self.state.delegate = self
         setup()
     }
 
-    
-    init(mailTo: Mailto) {
-        let initData = InitData(mailto: mailTo)
-        self.state = ComposeViewModelState(initData: initData)
-        self.state.delegate = self
-        setup()
-    }
-    
-    init(state : ComposeViewModelState) {
-        self.state = state
-        self.state.delegate = self
-        setup()
+    convenience init(composeMode: ComposeUtil.ComposeMode? = nil,
+         prefilledTo: Identity? = nil,
+         prefilledFrom: Identity? = nil,
+         originalMessage: Message? = nil) {
+        let initData = InitData(prefilledTo: prefilledTo,
+                                prefilledFrom: prefilledFrom,
+                                originalMessage: originalMessage,
+                                composeMode: composeMode)
+        let state = ComposeViewModelState(initData: initData)
+        self.init(state: state)
     }
 
     public func handleDidReAppear() {
@@ -173,24 +194,29 @@ class ComposeViewModel {
         state.pEpProtection = protected
     }
 
-    public func handleUserClickedSendButton() {
+    public func handleUserClickedCancelButton() {
+        composeViewModelEndActionDelegate?.canceled()
+    }
 
+    public func handleUserClickedSendButton() {
         let safeState = state.makeSafe(forSession: Session.main)
-        let sendClosure = { [weak self] in
+        let sendClosure: (() -> Message?) = { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
-                return
+                return nil
             }
+
             guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
                 Log.shared.warn("No message for sending")
-                return
+                return nil
             }
+
             msg.sent = Date()
             msg.session.commit()
 
             guard let data = me.state.initData else {
                 Log.shared.errorAndCrash("No data")
-                return
+                return msg
             }
             if data.isDrafts {
                 // From user perspective, we have edited a drafted message and will send it.
@@ -198,6 +224,8 @@ class ComposeViewModel {
                 // delete the original, previously drafted one.
                 me.deleteOriginalMessage()
             }
+
+            return msg
         }
 
         showAlertFordwardingLessSecureIfRequired(forState: safeState) { [weak self] (accepted) in
@@ -208,8 +236,14 @@ class ComposeViewModel {
             guard accepted else {
                 return
             }
-            sendClosure()
+            let msg = sendClosure()
             me.delegate?.dismiss()
+
+            if let theMsg = msg {
+                me.composeViewModelEndActionDelegate?.userWantsToSend(message: theMsg)
+            } else {
+                me.composeViewModelEndActionDelegate?.couldNotCreateOutgoingMessage()
+            }
         }
     }
 
@@ -644,7 +678,11 @@ extension ComposeViewModel {
     }
 
     public var showCancelActions: Bool {
-        return existsDirtyCell() || state.edited
+        if offerToSaveDraftOnCancel {
+            return existsDirtyCell() || state.edited
+        } else {
+            return false
+        }
     }
 
     public var deleteActionTitle: String {

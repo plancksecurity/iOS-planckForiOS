@@ -9,7 +9,12 @@
 import Foundation
 
 import PantomimeFramework
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 protocol VerifiableAccountIMAPDelegate: class {
     func verified(verifier: VerifiableAccountIMAP,

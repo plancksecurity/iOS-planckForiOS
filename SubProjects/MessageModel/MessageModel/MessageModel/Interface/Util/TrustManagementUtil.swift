@@ -8,7 +8,12 @@
 
 import PEPObjCAdapterTypes_iOS
 import PEPObjCAdapter_iOS
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 /// Util that contains all handshake related actions.
 public protocol TrustManagementUtilProtocol: class {

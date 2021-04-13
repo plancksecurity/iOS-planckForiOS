@@ -15,7 +15,7 @@ import pEpIOSToolbox
 extension CdAccount: SendServiceProvider {
 
     func sendService(backgroundTaskManager: BackgroundTaskManagerProtocol? = nil,
-                     errorPropagator: ErrorPropagator) -> SendServiceProtocol? {
+                     errorPropagator: ErrorContainerProtocol) -> SendServiceProtocol? {
         // Currently we do support SMTP only. When you are about to implement other protocols
         // (e.g. Acitve Sync), this var MUST return the appropriate service for the protocol.
         if let _ = server(type: .smtp) {

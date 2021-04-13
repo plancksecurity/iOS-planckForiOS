@@ -7,7 +7,12 @@
 //
 
 import UIKit
+
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
 
 extension String {
     static let textAttachmentCharacter: UInt32 = 65532

@@ -8,8 +8,13 @@
 import Foundation
 import Contacts
 import Photos
-import pEpIOSToolbox
+import UIKit
 
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
+import pEpIOSToolbox
+#endif
 
 public struct Capability {
     public static let media = Media()

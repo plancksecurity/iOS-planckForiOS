@@ -85,7 +85,7 @@ class Service: ServiceProtocol {
     private(set) var lastCommand = Command.none
 
     let backgroundTaskManager: BackgroundTaskManagerProtocol
-    let errorPropagator: ErrorPropagator
+    let errorPropagator: ErrorContainerProtocol
 
     /// The job to be done when running the Service
     var startBlock: (()->Void)?
@@ -119,7 +119,7 @@ class Service: ServiceProtocol {
          startBlock: (()->Void)? = nil,
          finishBlock: (()->Void)? = nil,
          stopBlock: (()->Void)? = nil,
-         errorPropagator: ErrorPropagator? = nil) {
+         errorPropagator: ErrorContainerProtocol? = nil) {
         self.startBlock = startBlock
         self.finishBlock = finishBlock
         self.stopBlock = stopBlock

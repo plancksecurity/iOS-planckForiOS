@@ -8,7 +8,11 @@
 
 import UIKit
 
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 /// View Controller to handle the HandshakeView.
 class TrustManagementViewController: UIViewController {

@@ -6,7 +6,13 @@
 //  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
+import UIKit
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 // MARK: - UIUtils+Alerts
 

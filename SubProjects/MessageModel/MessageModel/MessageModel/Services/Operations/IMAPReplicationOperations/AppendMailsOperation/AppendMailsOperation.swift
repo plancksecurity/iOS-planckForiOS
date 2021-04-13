@@ -10,7 +10,12 @@ import CoreData
 
 import PEPObjCAdapterTypes_iOS
 import PEPObjCAdapter_iOS
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 /// IMAP Appends all mails that need append for one account.
 /// - note: the operations MUST NOT run concurrently. Thus we are using a serial queue.

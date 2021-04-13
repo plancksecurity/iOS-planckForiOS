@@ -6,9 +6,13 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+import pEpIOSToolboxForExtensions
+#else
 import MessageModel
-
 import pEpIOSToolbox
+#endif
 
 class AttachmentViewModel: CellViewModel {
     /// - note: Before crafting a message to send, this is a dangling Attachment! (message == nil).

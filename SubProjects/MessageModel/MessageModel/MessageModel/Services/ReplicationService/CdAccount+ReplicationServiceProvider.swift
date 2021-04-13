@@ -15,7 +15,7 @@ import pEpIOSToolbox
 extension CdAccount: ReplicationServiceProvider {
 
     func replicationService(backgroundTaskManager: BackgroundTaskManagerProtocol? = nil,
-                            errorPropagator: ErrorPropagator) -> ReplicationServiceProtocol? {
+                            errorPropagator: ErrorContainerProtocol) -> ReplicationServiceProtocol? {
         // Currently we do support IMAP only. When you are about to implement other protocols
         // (e.g. Acitve Sync), this var MUST return the appropriate service for the protocol.
         if let _ = server(type: .imap) {

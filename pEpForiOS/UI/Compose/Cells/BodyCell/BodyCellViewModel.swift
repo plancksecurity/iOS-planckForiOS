@@ -6,8 +6,15 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
+import UIKit
+
+#if EXT_SHARE
+import MessageModelForAppExtensions
+import pEpIOSToolboxForExtensions
+#else
 import MessageModel
 import pEpIOSToolbox
+#endif
 
 public protocol BodyCellViewModelResultDelegate: class {
 
@@ -124,31 +131,16 @@ extension BodyCellViewModel {
 
 extension BodyCellViewModel {
     public func inline(attachment: Attachment) {
-        guard let image = attachment.image else {
-            Log.shared.errorAndCrash("No image")
-            return
-        }
         attachment.session.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
             }
             attachment.contentDisposition = .inline
-            // Workaround: If the image has a higher resolution than that, UITextView has serious
-            // performance issues (delay typing).
-            guard let scaledImage = image.resized(newWidth: me.maxTextattachmentWidth / 2,
-                                                  useAlpha: false)
-                else {
-                    Log.shared.errorAndCrash("Error resizing")
-                    return
-            }
-            let textAttachment = TextAttachment()
-            textAttachment.image = scaledImage
-            textAttachment.attachment = attachment
+
             let margin: CGFloat = 10.0
-            textAttachment.bounds = CGRect.rect(withWidth: me.maxTextattachmentWidth - margin,
-                                                ratioOf: scaledImage.size)
-            let imageString = NSAttributedString(attachment: textAttachment)
+            let imageString = attachment.inlinedText(scaleToImageWidth: me.maxTextattachmentWidth / 2,
+                                                     attachmentWidth: me.maxTextattachmentWidth - margin)
 
             me.delegate?.insert(text: imageString)
             me.inlinedAttachments.append(attachment)

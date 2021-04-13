@@ -6,8 +6,14 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import pEpIOSToolbox
 import CoreData
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
+import pEpIOSToolbox
+#endif
+
 import PEPObjCAdapterTypes_iOS
 import PEPObjCAdapter_iOS
 
