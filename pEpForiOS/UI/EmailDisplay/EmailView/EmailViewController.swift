@@ -15,6 +15,9 @@ protocol EmailViewControllerDelegate: class {
 
 class EmailViewController: UIViewController {
 
+    /// The email addresses of the recipients
+    private var recipients = [String]()
+
     public var viewModel: EmailViewModel? {
         didSet {
             viewModel?.delegate = self
@@ -321,6 +324,26 @@ extension EmailViewController {
         let attributes = [NSAttributedString.Key.font: font,
                           NSAttributedString.Key.foregroundColor: UIColor.lightGray]
         cell.toLabel?.attributedText = NSAttributedString(string: subtitle, attributes: attributes)
+
+        var tos = row.to2
+        tos.append(contentsOf: tos)
+        tos.append(contentsOf: tos)
+        tos.forEach { (to) in
+            let recipientLabel = UILabel()
+            recipientLabel.text = to
+            recipientLabel.adjustsFontSizeToFitWidth = true
+            recipientLabel.setContentHuggingPriority(.required, for: .horizontal)
+            recipientLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+            if #available(iOS 13.0, *) {
+                recipientLabel.textColor = .secondaryLabel
+            } else {
+                recipientLabel.textColor = .lightGray
+            }
+            recipientLabel.font = UIFont.pepFont(style: .caption1, weight: .regular)
+            recipientLabel.textAlignment = .natural
+            recipientLabel.sizeToFit()
+            cell.toContainer.addSubview(recipientLabel)
+        }
     }
 
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {
