@@ -8,7 +8,7 @@
 
 import UIKit
 import QuickLook
-
+import ContactsUI
 import pEpIOSToolbox
 
 // Represents the a list of mails showing one mail with all details in full screen.
@@ -699,6 +699,15 @@ extension EmailDetailViewController: EmailViewControllerDelegate {
         previewController.dataSource = self
         previewController.delegate = self
         present(previewController, animated: true, completion: nil)
+    }
+
+    func openContacts(controller: CNContactViewController) {
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default) //UIImage.init(named: "transparent.png")
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.view.backgroundColor = .clear
+
+        navigationController?.pushViewController(controller, animated: true)
     }
 }
 

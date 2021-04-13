@@ -8,9 +8,11 @@
 
 import pEpIOSToolbox
 import QuickLook
+import ContactsUI
 
 protocol EmailViewControllerDelegate: class {
     func openQLPreviewController(toShowDocumentWithUrl url: URL)
+    func openContacts(controller: CNContactViewController)
 }
 
 class EmailViewController: UIViewController {
@@ -380,6 +382,7 @@ extension EmailViewController {
 
             let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
             longPressRecognizer.numberOfTouchesRequired = 1
+            longPressRecognizer.minimumPressDuration = 1.5
             recipientLabel.isUserInteractionEnabled = true
             recipientLabel.addGestureRecognizer(longPressRecognizer)
 
@@ -401,7 +404,12 @@ extension EmailViewController {
             return
         }
 
-        
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+
+        vm.handleLongPressOnEmailAddress(emailAddress: address)
     }
 
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {
@@ -463,5 +471,19 @@ extension EmailViewController {
 By showing external content, your privacy may be invaded.
 This may affect the privacy status of the message.
 """, comment: "external content label text")
+    }
+}
+
+
+// MARK: - CNContactViewController
+
+extension EmailViewController: CNContactViewControllerDelegate {
+
+    func show(contact: CNContact) {
+        let contactViewController = CNContactViewController(forUnknownContact: contact)
+        contactViewController.hideNavigationBarIfSplitViewShown()
+        contactViewController.hidesBottomBarWhenPushed = true
+        contactViewController.delegate = self
+        delegate?.openContacts(controller: contactViewController)
     }
 }

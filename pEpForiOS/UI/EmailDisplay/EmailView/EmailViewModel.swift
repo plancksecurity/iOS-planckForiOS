@@ -10,6 +10,7 @@ import Foundation
 import QuickLook.QLPreviewItem
 import MessageModel
 import pEpIOSToolbox
+import Contacts
 
 /// Delegate to comunicate with Email View.
 protocol EmailViewModelDelegate: class {
@@ -28,6 +29,9 @@ protocol EmailViewModelDelegate: class {
     func hideLoadingView()
     /// Informs the viewModel is ready to provide external content.
     func showExternalContent()
+
+    //TODO:!
+    func show(contact: CNContact)
 }
 
 //MARK: - EmailRowProtocol
@@ -406,3 +410,36 @@ extension EmailViewModel {
         rows.append(contentsOf: attachmentRows)
     }
 }
+
+extension EmailViewModel {
+
+    func contactValue(emailAddress: String) -> CNContact {
+      let identity = Identity(address: emailAddress)
+      let contact = CNMutableContact()
+        if let userName = identity.userName {
+            contact.givenName = userName
+        }
+      contact.emailAddresses = [CNLabeledValue(label: CNLabelWork, value: emailAddress as NSString)]
+
+//        let identityImageTool = IdentityImageTool()
+//        let identityKey = IdentityImageTool.IdentityKey(identity: identity)
+//        if let image = identityImageTool.cachedIdentityImage(for: identityKey){
+//            let imageData = image.jpegData(compressionQuality: 1)
+//            contact.imageData = imageData
+//        } else {
+//            let image = identityImageTool.identityImage(for: identityKey)
+//            let imageData = image?.jpegData(compressionQuality: 1)
+//            contact.imageData = imageData
+//        }
+
+      return contact.copy() as! CNContact
+    }
+
+    public func handleLongPressOnEmailAddress(emailAddress: String) {
+        let contact = contactValue(emailAddress: emailAddress)
+        delegate?.show(contact: contact)
+    }
+}
+
+
+
