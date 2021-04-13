@@ -480,7 +480,7 @@ This may affect the privacy status of the message.
 extension EmailViewController: CNContactViewControllerDelegate {
 
     func show(contact: CNContact) {
-        let contactViewController = CNContactViewController(forUnknownContact: contact)
+        let contactViewController = CNContactViewController(forNewContact: contact)
         contactViewController.hideNavigationBarIfSplitViewShown()
         contactViewController.hidesBottomBarWhenPushed = true
         contactViewController.delegate = self
