@@ -10,7 +10,6 @@ import UIKit
 
 class MessageSenderCell: UITableViewCell {
     @IBOutlet public weak var fromLabel: UILabel!
-    @IBOutlet public weak var toLabel: UILabel!
     @IBOutlet public weak var toContainer: UIView!
-    @IBOutlet weak var containerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet public weak var containerHeightConstraint: NSLayoutConstraint!
 }

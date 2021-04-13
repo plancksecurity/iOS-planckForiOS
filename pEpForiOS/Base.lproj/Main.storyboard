@@ -498,21 +498,14 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="72"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Sender" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eqy-26-Dp7" userLabel="From Label">
-                                                            <rect key="frame" x="20" y="11" width="331" height="16"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Sender" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eqy-26-Dp7" userLabel="From Label">
+                                                            <rect key="frame" x="20" y="11" width="331" height="32"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="To: Recipients" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pYF-SV-znm" userLabel="To Label">
-                                                            <rect key="frame" x="20" y="33" width="331" height="14.5"/>
-                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                                            <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Gf-5X-0ZV">
-                                                            <rect key="frame" x="20" y="55" width="331" height="17"/>
+                                                            <rect key="frame" x="20" y="51" width="331" height="17"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="17" id="3Rc-0v-v4N"/>
@@ -521,23 +514,19 @@
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
+                                                        <constraint firstItem="7Gf-5X-0ZV" firstAttribute="top" secondItem="Eqy-26-Dp7" secondAttribute="bottom" constant="8" id="0Ra-hk-HoL"/>
                                                         <constraint firstItem="Eqy-26-Dp7" firstAttribute="leading" secondItem="314-rf-9fH" secondAttribute="leading" constant="20" symbolic="YES" id="6Al-fu-ZbR"/>
-                                                        <constraint firstItem="pYF-SV-znm" firstAttribute="trailing" secondItem="Eqy-26-Dp7" secondAttribute="trailing" id="6V5-Vn-ACS"/>
-                                                        <constraint firstAttribute="bottom" secondItem="7Gf-5X-0ZV" secondAttribute="bottom" id="92o-LY-zKr"/>
-                                                        <constraint firstItem="pYF-SV-znm" firstAttribute="leading" secondItem="Eqy-26-Dp7" secondAttribute="leading" id="FXh-U5-MWi"/>
-                                                        <constraint firstItem="pYF-SV-znm" firstAttribute="top" secondItem="Eqy-26-Dp7" secondAttribute="bottom" constant="6" id="XvJ-YS-ULR"/>
+                                                        <constraint firstAttribute="bottom" secondItem="7Gf-5X-0ZV" secondAttribute="bottom" constant="4" id="92o-LY-zKr"/>
                                                         <constraint firstAttribute="topMargin" secondItem="Eqy-26-Dp7" secondAttribute="top" id="aKP-0F-mAI"/>
                                                         <constraint firstAttribute="trailing" secondItem="7Gf-5X-0ZV" secondAttribute="trailing" constant="24" id="iq2-RX-ww9"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="Eqy-26-Dp7" secondAttribute="trailing" constant="8" id="l8J-ta-BS6"/>
-                                                        <constraint firstItem="7Gf-5X-0ZV" firstAttribute="top" secondItem="pYF-SV-znm" secondAttribute="bottom" constant="7.5" id="rk9-iT-gIy"/>
-                                                        <constraint firstItem="7Gf-5X-0ZV" firstAttribute="leading" secondItem="pYF-SV-znm" secondAttribute="leading" id="vtZ-P4-rn8"/>
+                                                        <constraint firstItem="7Gf-5X-0ZV" firstAttribute="leading" secondItem="Eqy-26-Dp7" secondAttribute="leading" id="yPr-i4-QkQ"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
                                                     <outlet property="containerHeightConstraint" destination="3Rc-0v-v4N" id="pGi-f3-url"/>
                                                     <outlet property="fromLabel" destination="Eqy-26-Dp7" id="l9M-nb-Bzp"/>
                                                     <outlet property="toContainer" destination="7Gf-5X-0ZV" id="dMx-O6-efT"/>
-                                                    <outlet property="toLabel" destination="pYF-SV-znm" id="QaU-r9-52O"/>
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="senderSubjectCell" rowHeight="66" id="dOn-lF-8Mt" userLabel="subjectCell" customClass="MessageSubjectCell" customModule="pEpForiOS" customModuleProvider="target">

@@ -15,9 +15,6 @@ protocol EmailViewControllerDelegate: class {
 
 class EmailViewController: UIViewController {
 
-    /// The email addresses of the recipients
-    private var recipients = [String]()
-
     private var recipientLabelHeight: CGFloat = 15
     private let recipientLabelPadding: CGFloat = 2
     private let recipientLabelSpacingX: CGFloat = 2
@@ -86,7 +83,15 @@ class EmailViewController: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         guard let thePreviousTraitCollection = previousTraitCollection else {
             // Valid case. Optional param.
+            tableView.reloadData()
             return
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                tableView.reloadData()
+                return
+            }
         }
 
         /// If size classes change, we need to reload.
@@ -322,17 +327,37 @@ extension EmailViewController {
     }
 
     private func setupSender(cell: MessageSenderCell, with row: EmailViewModel.SenderRow) {
+        func display(labels: [UILabel]) {
+            let containerWidth = cell.toContainer.frame.size.width
+
+            var currentOriginX: CGFloat = 0
+            var currentOriginY: CGFloat = 0
+
+            labels.forEach { label in
+                // if current origin X + label width is be greater than the container view width
+                // move the label to next row
+                if currentOriginX + label.frame.width > containerWidth {
+                    currentOriginX = 0
+                    currentOriginY += recipientLabelHeight + recipientLabelSpacingY
+                }
+
+                // set the frame origin
+                label.frame.origin.x = currentOriginX
+                label.frame.origin.y = currentOriginY
+
+                // increment current X by btn width + spacing
+                currentOriginX += label.frame.width + recipientLabelSpacingX
+            }
+            // update container view height
+            cell.containerHeightConstraint.constant = currentOriginY + recipientLabelHeight
+        }
 
         let font = UIFont.pepFont(style: .footnote, weight: .semibold)
         cell.fromLabel.font = font
         cell.fromLabel.text = row.from
-        let subtitle = row.to
-        let attributes = [NSAttributedString.Key.font: font,
-                          NSAttributedString.Key.foregroundColor: UIColor.lightGray]
-        cell.toLabel?.attributedText = NSAttributedString(string: subtitle, attributes: attributes)
-
+        cell.toContainer.subviews.forEach({$0.removeFromSuperview()})
         var recipientLabels = [UILabel]()
-        var textsToShow = [NSLocalizedString("To:", comment: "To: - prefix")]
+        var textsToShow = [NSLocalizedString("To:", comment: "To: - To label")]
         textsToShow.append(contentsOf: row.recipients)
         textsToShow.forEach { (to) in
             let recipientLabel = UILabel()
@@ -341,7 +366,7 @@ extension EmailViewController {
             recipientLabel.setContentHuggingPriority(.required, for: .horizontal)
             recipientLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
             if #available(iOS 13.0, *) {
-                recipientLabel.textColor = .lightGray
+                recipientLabel.textColor = .secondaryLabel
             } else {
                 recipientLabel.textColor = .lightGray
             }
@@ -353,39 +378,31 @@ extension EmailViewController {
             recipientLabel.frame.size.width = recipientLabel.intrinsicContentSize.width + recipientLabelPadding
             recipientLabel.frame.size.height = recipientLabelHeight
 
+            let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
+            longPressRecognizer.numberOfTouchesRequired = 1
+            recipientLabel.isUserInteractionEnabled = true
+            recipientLabel.addGestureRecognizer(longPressRecognizer)
+
             cell.toContainer.addSubview(recipientLabel)
+            cell.toContainer.bringSubviewToFront(recipientLabel)
             recipientLabels.append(recipientLabel)
-            displayTagLabels(cell: cell, tagLabels: recipientLabels)
         }
+        display(labels: recipientLabels)
     }
 
-    func displayTagLabels(cell: MessageSenderCell, tagLabels: [UILabel]) {
 
-        let containerWidth = cell.toContainer.frame.size.width
-
-        var currentOriginX: CGFloat = 0
-        var currentOriginY: CGFloat = 0
-
-        tagLabels.forEach { label in
-
-            // if current X + label width is be greater than container view width
-            //  "move to next row"
-            if currentOriginX + label.frame.width > containerWidth {
-                currentOriginX = 0
-                currentOriginY += recipientLabelHeight + recipientLabelSpacingY
-            }
-
-            // set the frame origin
-            label.frame.origin.x = currentOriginX
-            label.frame.origin.y = currentOriginY
-
-            // increment current X by btn width + spacing
-            currentOriginX += label.frame.width + recipientLabelSpacingX
+    @objc func longPressed(sender: UILongPressGestureRecognizer) {
+        guard let label = sender.view as? UILabel else {
+            Log.shared.error("The sender is not a UILabel, which is unexpected")
+            return
         }
-        // update container view height
-        cell.containerHeightConstraint.constant = currentOriginY + recipientLabelHeight
-    }
+        guard let address = label.text, address.isProbablyValidEmail() else {
+            // Valid case, nothing to do:
+            return
+        }
 
+        
+    }
 
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {
         cell.subjectLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
