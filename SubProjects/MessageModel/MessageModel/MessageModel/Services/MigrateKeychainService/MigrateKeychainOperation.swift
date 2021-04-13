@@ -77,7 +77,9 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
                     Log.shared.logError(message: "Could not delete client certificate \(uuidLabel) from \(keychainGroupSource)")
                 }
 
-                let removeStatusStandAlone = SecItemDelete([kSecValueRef: secIndentity] as CFDictionary)
+                let queryRemoveStatusStandAlone = [kSecValueRef: secIndentity,
+                                                   kSecAttrAccessGroup: keychainGroupSource] as CFDictionary
+                let removeStatusStandAlone = SecItemDelete(queryRemoveStatusStandAlone)
                 if removeStatusStandAlone != errSecSuccess {
                     Log.shared.logError(message: "Could not delete stand-alone client id for \(uuidLabel) from \(keychainGroupSource)")
                 }
