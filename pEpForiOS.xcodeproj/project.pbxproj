@@ -210,7 +210,7 @@
 		4313A55225E7C1F7001E6767 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */; };
 		4313A55525E7C1FC001E6767 /* FolderViews.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 151DE7E61FC5D41600CDC273 /* FolderViews.storyboard */; };
 		4313A55625E7C203001E6767 /* Reusable.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 155F2DA020530798001B4B1C /* Reusable.storyboard */; };
-		4313A55925E7C209001E6767 /* Tutorial.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4398176B2418EDB200C8AB84 /* Tutorial.storyboard */; };
+		4313A55925E7C209001E6767 /* Tutorial_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4398176B2418EDB200C8AB84 /* Tutorial_iPhone.storyboard */; };
 		4313A55A25E7C20E001E6767 /* Thread.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 491B656020CFE0FD00C2ADDA /* Thread.storyboard */; };
 		4313A55D25E7C214001E6767 /* Certificates.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A2119E624125AC60030C3E4 /* Certificates.storyboard */; };
 		4315E4C3201242BB00F68763 /* OAuth2Type+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */; };
@@ -261,7 +261,7 @@
 		434A6C5A25D2A3B800179335 /* AttachmentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39A721905C3D00D9F8E4 /* AttachmentViewModel.swift */; };
 		434A6C5D25D2A3BE00179335 /* AttachmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 152A39A821905C3D00D9F8E4 /* AttachmentCell.xib */; };
 		434A6C5E25D2A3C200179335 /* BodyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39AE21905C3D00D9F8E4 /* BodyCell.swift */; };
-		434A6C6125D2A3C500179335 /* TextAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39AF21905C3D00D9F8E4 /* TextAttachment.swift */; };
+		434A6C6125D2A3C500179335 /* BodyCellViewModel+TextAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39AF21905C3D00D9F8E4 /* BodyCellViewModel+TextAttachment.swift */; };
 		434A6C6225D2A3C800179335 /* BodyCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39B021905C3D00D9F8E4 /* BodyCellViewModel.swift */; };
 		434A6C6525D2A3CB00179335 /* NSAttributedString+BodyTextUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39B121905C3D00D9F8E4 /* NSAttributedString+BodyTextUtils.swift */; };
 		434A6C6625D2A3CF00179335 /* RecipientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39BB21905C3D00D9F8E4 /* RecipientCell.swift */; };
@@ -377,6 +377,7 @@
 		435C626A25FB5D75000A4E04 /* MessageModelForAppExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 434C1DD425D5834400F622DB /* MessageModelForAppExtensions.framework */; };
 		435C626B25FB5D75000A4E04 /* MessageModelForAppExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 434C1DD425D5834400F622DB /* MessageModelForAppExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		436F1BA425028B8A004426DC /* CocoaLumberjackSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 436F1BA225028B7D004426DC /* CocoaLumberjackSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4375B2EC2625855A0049A0C0 /* KeyInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705096B22DC8C1800CB73D6 /* KeyInputView.swift */; };
 		437E9BA9237AFB7F00E9A847 /* UIStoryboard+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437E9BA8237AFB7F00E9A847 /* UIStoryboard+Constants.swift */; };
 		438052871FE3E1B100ACF729 /* OAuth2AuthorizationFactoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438052861FE3E1B100ACF729 /* OAuth2AuthorizationFactoryProtocol.swift */; };
 		438052891FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438052881FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift */; };
@@ -3024,7 +3025,7 @@
 				4313A55625E7C203001E6767 /* Reusable.storyboard in Resources */,
 				434A6C1325D2A08F00179335 /* AccountCreation.storyboard in Resources */,
 				439C62432611BFD9001893BD /* SharedAssets.xcassets in Resources */,
-				4313A55925E7C209001E6767 /* Tutorial.storyboard in Resources */,
+				4313A55925E7C209001E6767 /* Tutorial_iPhone.storyboard in Resources */,
 				4313A54F25E7C1E1001E6767 /* Settings.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3227,6 +3228,7 @@
 				434C1AF625D41A3300F622DB /* Constants+Support.swift in Sources */,
 				434C19DD25D3E35E00F622DB /* SuggestViewModel.swift in Sources */,
 				434C1A3D25D400D500F622DB /* Constants.swift in Sources */,
+				4375B2EC2625855A0049A0C0 /* KeyInputView.swift in Sources */,
 				43BDE04525DE7F0800FC0C68 /* houdini_href_e.c in Sources */,
 				434A6C5925D2A3B500179335 /* AttachmentCell.swift in Sources */,
 				434C19C425D3E09C00F622DB /* String+PEPSignature.swift in Sources */,
@@ -3245,7 +3247,7 @@
 				434C1A0625D3F0AD00F622DB /* AXHTMLParser.m in Sources */,
 				434C1A7A25D40A9800F622DB /* UIViewController+Extension.swift in Sources */,
 				434C19FD25D3E6BA00F622DB /* String+HTML.swift in Sources */,
-				434A6C6125D2A3C500179335 /* TextAttachment.swift in Sources */,
+				434A6C6125D2A3C500179335 /* BodyCellViewModel+TextAttachment.swift in Sources */,
 				434C19B425D3DC3F00F622DB /* AppSettings.swift in Sources */,
 				434C19F725D3E64D00F622DB /* HtmlConversions.swift in Sources */,
 				434C1AAF25D4103400F622DB /* UrlClickHandlerProtocol.swift in Sources */,
