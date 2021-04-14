@@ -24,31 +24,36 @@ extension RecipientButton {
     /// - Returns: The recipient button configured
     static func with(text: String) -> RecipientButton {
         let recipientButton = RecipientButton(type: .custom)
-        recipientButton.isUserInteractionEnabled = true
-        recipientButton.setTitle(text, for: .normal)
-        recipientButton.titleLabel?.adjustsFontSizeToFitWidth = true
-        recipientButton.contentHorizontalAlignment = .left
-        recipientButton.setContentHuggingPriority(.required, for: .horizontal)
-        recipientButton.setContentCompressionResistancePriority(.required, for: .horizontal)
-        /// Get rid of paddings
-        recipientButton.contentEdgeInsets = UIEdgeInsets(top: .leastNormalMagnitude,
-                                                         left: .leastNormalMagnitude,
-                                                         bottom: .leastNormalMagnitude,
-                                                         right: .leastNormalMagnitude)
-
-        if #available(iOS 13.0, *) {
-            recipientButton.setTitleColor(.secondaryLabel, for: .normal)
-            recipientButton.setTitleColor(.tertiaryLabel, for: .highlighted)
-            recipientButton.setTitleColor(.tertiaryLabel, for: .selected)
-        } else {
-            recipientButton.setTitleColor(.lightGray, for: .normal)
-            recipientButton.setTitleColor(.darkGray, for: .highlighted)
-            recipientButton.setTitleColor(.darkGray, for: .selected)
-        }
-        recipientButton.titleLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
-        recipientButton.titleLabel?.textAlignment = .natural
-        recipientButton.sizeToFit()
-
+        recipientButton.setup(text: text)
         return recipientButton
+    }
+
+    func setup(text: String, color: UIColor? = nil) {
+        isUserInteractionEnabled = true
+        setTitle(text, for: .normal)
+        titleLabel?.adjustsFontSizeToFitWidth = true
+        contentHorizontalAlignment = .left
+        setContentHuggingPriority(.required, for: .horizontal)
+        setContentCompressionResistancePriority(.required, for: .horizontal)
+        /// Get rid of paddings
+        contentEdgeInsets = UIEdgeInsets(top: .leastNormalMagnitude,
+                                         left: .leastNormalMagnitude,
+                                         bottom: .leastNormalMagnitude,
+                                         right: .leastNormalMagnitude)
+
+        if let color = color {
+            setTitleColor(color, for: .normal)
+        } else if #available(iOS 13.0, *) {
+            setTitleColor(.secondaryLabel, for: .normal)
+            setTitleColor(.tertiaryLabel, for: .highlighted)
+            setTitleColor(.tertiaryLabel, for: .selected)
+        } else {
+            setTitleColor(.lightGray, for: .normal)
+            setTitleColor(.darkGray, for: .highlighted)
+            setTitleColor(.darkGray, for: .selected)
+        }
+        titleLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
+        titleLabel?.textAlignment = .natural
+        sizeToFit()
     }
 }

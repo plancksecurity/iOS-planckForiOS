@@ -363,8 +363,13 @@ extension EmailViewController {
             cell.containerHeightConstraint.constant = currentOriginY + recipientButtonHeight
         }
         //Setup from label
-        cell.fromLabel.font = UIFont.pepFont(style: .footnote, weight: .semibold)
-        cell.fromLabel.text = row.from
+        if #available(iOS 13.0, *) {
+            cell.fromButton.setup(text: row.from, color: .label)
+        } else {
+            cell.fromButton.setup(text: row.from, color: .black)
+        }
+        cell.fromButton.isUserInteractionEnabled = row.from.isProbablyValidEmail()
+        cell.fromButton.addTarget(self, action: #selector(addressButtonPressed), for: .touchUpInside)
 
         //Setup to recipeints
         cell.toContainer.subviews.forEach({$0.removeFromSuperview()})

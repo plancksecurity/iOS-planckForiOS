@@ -9,7 +9,7 @@
 import UIKit
 
 class MessageSenderCell: UITableViewCell {
-    @IBOutlet public weak var fromLabel: UILabel!
+    @IBOutlet public weak var fromButton: RecipientButton!
     @IBOutlet public weak var toContainer: UIView!
     @IBOutlet public weak var containerHeightConstraint: NSLayoutConstraint!
 }

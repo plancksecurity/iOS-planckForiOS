@@ -498,12 +498,10 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="72"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Sender" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eqy-26-Dp7" userLabel="From Label">
-                                                            <rect key="frame" x="20" y="11" width="331" height="29"/>
-                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a3c-x4-5k4" userLabel="From Button" customClass="RecipientButton" customModule="pEpForiOS" customModuleProvider="target">
+                                                            <rect key="frame" x="20" y="20.5" width="49" height="19.5"/>
+                                                            <state key="normal" title="Sender"/>
+                                                        </button>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Gf-5X-0ZV">
                                                             <rect key="frame" x="20" y="48" width="335" height="20"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -514,18 +512,18 @@
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
-                                                        <constraint firstItem="7Gf-5X-0ZV" firstAttribute="top" secondItem="Eqy-26-Dp7" secondAttribute="bottom" constant="8" id="0Ra-hk-HoL"/>
-                                                        <constraint firstItem="Eqy-26-Dp7" firstAttribute="leading" secondItem="314-rf-9fH" secondAttribute="leading" constant="20" symbolic="YES" id="6Al-fu-ZbR"/>
                                                         <constraint firstAttribute="bottom" secondItem="7Gf-5X-0ZV" secondAttribute="bottom" constant="4" id="92o-LY-zKr"/>
-                                                        <constraint firstAttribute="topMargin" secondItem="Eqy-26-Dp7" secondAttribute="top" id="aKP-0F-mAI"/>
+                                                        <constraint firstItem="a3c-x4-5k4" firstAttribute="top" secondItem="314-rf-9fH" secondAttribute="top" constant="20.5" id="9Z5-pj-A29"/>
+                                                        <constraint firstItem="7Gf-5X-0ZV" firstAttribute="top" secondItem="a3c-x4-5k4" secondAttribute="bottom" constant="8" id="HQt-DJ-Nse"/>
+                                                        <constraint firstItem="7Gf-5X-0ZV" firstAttribute="leading" secondItem="a3c-x4-5k4" secondAttribute="leading" id="JEg-pF-Sxi"/>
+                                                        <constraint firstItem="a3c-x4-5k4" firstAttribute="leading" secondItem="314-rf-9fH" secondAttribute="leading" constant="20" symbolic="YES" id="Yfi-0C-jVc"/>
+                                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="a3c-x4-5k4" secondAttribute="trailing" constant="8" id="b9e-Dp-npI"/>
                                                         <constraint firstAttribute="trailing" secondItem="7Gf-5X-0ZV" secondAttribute="trailing" constant="20" id="iq2-RX-ww9"/>
-                                                        <constraint firstAttribute="trailingMargin" secondItem="Eqy-26-Dp7" secondAttribute="trailing" constant="8" id="l8J-ta-BS6"/>
-                                                        <constraint firstItem="7Gf-5X-0ZV" firstAttribute="leading" secondItem="Eqy-26-Dp7" secondAttribute="leading" id="yPr-i4-QkQ"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
                                                     <outlet property="containerHeightConstraint" destination="3Rc-0v-v4N" id="pGi-f3-url"/>
-                                                    <outlet property="fromLabel" destination="Eqy-26-Dp7" id="l9M-nb-Bzp"/>
+                                                    <outlet property="fromButton" destination="a3c-x4-5k4" id="iVC-9a-UkD"/>
                                                     <outlet property="toContainer" destination="7Gf-5X-0ZV" id="dMx-O6-efT"/>
                                                 </connections>
                                             </tableViewCell>
