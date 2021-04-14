@@ -373,38 +373,7 @@ extension EmailViewModel {
     }
 }
 
-//MARK:- Private
-
-extension EmailViewModel {
-
-    private func setupRows(message: Message) {
-        /// The order of rows will be the order of cells in the screen.
-        /// Sender
-        guard let from = message.from?.displayString else {
-            Log.shared.errorAndCrash("From identity not found.")
-            return
-        }
-        let senderRow = SenderRow(from: from, recipients: message.allRecipients.map({$0.address}))
-        rows.append(senderRow)
-
-        //Subject
-        let title = message.shortMessage
-        let subjectRow = SubjectRow(title: title ?? "", date: message.sent?.fullString())
-        rows.append(subjectRow)
-
-        //Body
-        let bodyRow = BodyRow(htmlBody: htmlBody, message: message)
-        rows.append(bodyRow)
-
-        //Image Attachments
-        let imageAttachmentRows: [ImageAttachmentRow] = message.viewableImageAttachments.map { ImageAttachmentRow(attachment: $0) }
-        rows.append(contentsOf: imageAttachmentRows)
-
-        //Non Inlined Attachments
-        let attachmentRows = message.viewableNotInlinedAttachments.map { AttachmentRow(attachment: $0) }
-        rows.append(contentsOf: attachmentRows)
-    }
-}
+//MARK:- CNContact
 
 extension EmailViewModel {
 
@@ -437,5 +406,38 @@ extension EmailViewModel {
         } else {
             delegate.showAddNewContact(contact: contact)
         }
+    }
+}
+
+//MARK:- Private
+
+extension EmailViewModel {
+
+    private func setupRows(message: Message) {
+        /// The order of rows will be the order of cells in the screen.
+        /// Sender
+        guard let from = message.from?.displayString else {
+            Log.shared.errorAndCrash("From identity not found.")
+            return
+        }
+        let senderRow = SenderRow(from: from, recipients: message.allRecipients.map({$0.address}))
+        rows.append(senderRow)
+
+        //Subject
+        let title = message.shortMessage
+        let subjectRow = SubjectRow(title: title ?? "", date: message.sent?.fullString())
+        rows.append(subjectRow)
+
+        //Body
+        let bodyRow = BodyRow(htmlBody: htmlBody, message: message)
+        rows.append(bodyRow)
+
+        //Image Attachments
+        let imageAttachmentRows: [ImageAttachmentRow] = message.viewableImageAttachments.map { ImageAttachmentRow(attachment: $0) }
+        rows.append(contentsOf: imageAttachmentRows)
+
+        //Non Inlined Attachments
+        let attachmentRows = message.viewableNotInlinedAttachments.map { AttachmentRow(attachment: $0) }
+        rows.append(contentsOf: attachmentRows)
     }
 }
