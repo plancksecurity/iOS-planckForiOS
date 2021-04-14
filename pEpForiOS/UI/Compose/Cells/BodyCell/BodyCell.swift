@@ -103,6 +103,7 @@ extension BodyCell {
     func textViewDidBeginEditing(_ textView: UITextView) {
         viewModel?.maxTextattachmentWidth = textView.bounds.width
         setupContextMenu()
+        textView.setLabelTextColor()
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {
