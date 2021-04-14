@@ -8,14 +8,13 @@
 
 import Foundation
 
-
 /// Handle mailto: URLs here.
 extension URL {
     static let schemeMailto = "mailto:"
 
-    /// Primitive addess parser.
+    /// Primitive address parser.
     ///
-    /// Exapmle supported URLs:
+    /// Example supported URLs:
     /// "mailto:someone@example.com",
     /// "mailto:someone@example.com?cc=someone_else@example.com&subject=This%20is%20the%20subject&body=This%20is%20the%20body"
     ///

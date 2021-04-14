@@ -17,7 +17,7 @@ protocol ReplicationServiceProvider {
 
     /// Returns the Service responsible for syncing server and local store.
     func replicationService(backgroundTaskManager: BackgroundTaskManagerProtocol?,
-                            errorPropagator: ErrorPropagator) -> ReplicationServiceProtocol?
+                            errorPropagator: ErrorContainerProtocol) -> ReplicationServiceProtocol?
 }
 
 /// Every ReplicationService:
@@ -37,7 +37,7 @@ class ReplicationService: PerAccountService {
 
     override func service(for cdAccount: CdAccount,
                           backgroundTaskManager: BackgroundTaskManagerProtocol? = nil,
-                          errorPropagator: ErrorPropagator) -> ServiceProtocol? {
+                          errorPropagator: ErrorContainerProtocol) -> ServiceProtocol? {
         return cdAccount.replicationService(backgroundTaskManager: backgroundTaskManager,
                                             errorPropagator: errorPropagator)
     }

@@ -85,7 +85,7 @@ class OperationBasedService: Service, OperationBasedServiceProtocol {
          runOnce: Bool = false,
          backgroundTaskManager: BackgroundTaskManagerProtocol? = nil,
          context: NSManagedObjectContext? = nil,
-         errorPropagator: ErrorPropagator? = nil) {
+         errorPropagator: ErrorContainerProtocol? = nil) {
         self.runOnce = runOnce
         self.privateMoc = context ?? Stack.shared.newPrivateConcurrentContext
         super.init(backgroundTaskManager: backgroundTaskManager,

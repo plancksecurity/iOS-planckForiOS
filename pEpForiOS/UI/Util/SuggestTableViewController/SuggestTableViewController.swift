@@ -6,8 +6,13 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 /// Suggests a list of Identities that fit to a given sarch string
 class SuggestTableViewController: UITableViewController {

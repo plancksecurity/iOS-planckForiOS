@@ -7,8 +7,15 @@
 //
 
 import Foundation
-import pEpIOSToolbox
+import UIKit
+
+#if EXT_SHARE
+import MessageModelForAppExtensions
+import pEpIOSToolboxForExtensions
+#else
 import MessageModel
+import pEpIOSToolbox
+#endif
 
 extension NSAttributedString {
 

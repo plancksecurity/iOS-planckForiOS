@@ -11,6 +11,7 @@ import Foundation
 import PEPObjCAdapterTypes_iOS
 import PEPObjCAdapter_iOS
 import pEpIOSToolbox
+import pEp4iosIntern
 
 public protocol MessageModelServiceProtocol: ServiceProtocol {
 
@@ -31,6 +32,11 @@ public final class MessageModelService {
     // Service
 
     private let backgroundTaskManager = BackgroundTaskManager()
+
+    /// Holds all Services that:
+    /// * are supposed to be started whenever the app is started or comming to foreground
+    /// * are supposed to run only once
+    private var onetimeServices = [ServiceProtocol]()
 
     /// Holds all Services that:
     /// * are supposed to be started whenever the app is started or comming to foreground
@@ -93,6 +99,15 @@ extension MessageModelService {
                                usePEPFolderProvider: UsePEPFolderProviderProtocol,
                                passphraseProvider: PassphraseProviderProtocol) {
         //###
+        // Servcies that run only once when the app starts
+        if let bundleIdentifier = Bundle.main.bundleIdentifier {
+            onetimeServices = [MigrateKeychainService(keychainGroupSource: "\(kTeamId).\(bundleIdentifier)",
+                                                      keychainGroupTarget: "\(kTeamId).\(kSharedKeychain)")]
+        } else {
+            Log.shared.errorAndCrash(message: "No bundle identifier")
+        }
+
+        //###
         // Servcies that run while the app is running (Send, decrypt, replicate, ...)
         let decryptService = DecryptService(backgroundTaskManager: backgroundTaskManager,
                                             errorPropagator: errorPropagator)
@@ -136,6 +151,7 @@ extension MessageModelService: ServiceProtocol {
                 return
             }
             // Forward service calls
+            me.onetimeServices.forEach { $0.start() }
             me.runtimeServices.forEach { $0.start() }
         }
     }

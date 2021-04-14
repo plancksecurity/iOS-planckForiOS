@@ -7,7 +7,13 @@
 //
 
 import Foundation
+import UIKit
+
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
 
 extension ComposeViewModel {
 

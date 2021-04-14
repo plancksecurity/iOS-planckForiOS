@@ -8,8 +8,13 @@
 
 import CoreData
 
-import pEpIOSToolbox
 import PantomimeFramework
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
+import pEpIOSToolbox
+#endif
 
 extension CdAccount {
     private func connectInfos() -> [EmailConnectInfo] {

@@ -8,7 +8,11 @@
 
 import Foundation
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
 
 extension Attachment {
     static public let defaultFilename = NSLocalizedString("unnamed",

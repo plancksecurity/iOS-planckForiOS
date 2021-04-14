@@ -15,7 +15,7 @@ protocol PerAccountServiceAbstractProtocol: ServiceProtocol {
     /// You MUST override this method and return Service[Protocol] of your need for the given account
     func service(for cdAccount: CdAccount,
                  backgroundTaskManager: BackgroundTaskManagerProtocol,
-                 errorPropagator: ErrorPropagator) -> ServiceProtocol?
+                 errorPropagator: ErrorContainerProtocol) -> ServiceProtocol?
 }
 /// Base class for umbrella services that crerates a specific service for each account.
 /// This base class handles the complete lifecycle and state. It monitors CoreData for existing
@@ -83,7 +83,7 @@ class PerAccountService: QueryBasedService<CdAccount>, PerAccountServiceAbstract
 
     func service(for cdAccount: CdAccount,
                  backgroundTaskManager: BackgroundTaskManagerProtocol,
-                 errorPropagator: ErrorPropagator) -> ServiceProtocol? {
+                 errorPropagator: ErrorContainerProtocol) -> ServiceProtocol? {
         fatalError("must be overridden")
     }
 }
