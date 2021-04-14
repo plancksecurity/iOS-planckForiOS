@@ -701,7 +701,7 @@ extension EmailDetailViewController: EmailViewControllerDelegate {
         present(previewController, animated: true, completion: nil)
     }
 
-    func openContacts(controller: CNContactViewController) {
+    func showContactsViewController(controller: CNContactViewController) {
         navigationController?.pushViewController(controller, animated: true)
     }
 }

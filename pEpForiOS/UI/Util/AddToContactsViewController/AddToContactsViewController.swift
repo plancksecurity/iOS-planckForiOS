@@ -22,7 +22,7 @@ class AddToContactsViewController: UIViewController {
     /// Currently only email is supported.
     var emailAddress: String?
 
-    private var contactVC: CNContactViewController?
+    var contactVC: CNContactViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,15 +30,17 @@ class AddToContactsViewController: UIViewController {
     }
 
     func setupContactVc() {
-        guard let address = emailAddress else {
-            Log.shared.errorAndCrash("No data to add?")
-            dismiss(animated: false)
-            return
+        if contactVC == nil {
+            guard let address = emailAddress else {
+                Log.shared.errorAndCrash("No data to add?")
+                dismiss(animated: false)
+                return
+            }
+            let newContact = CNMutableContact()
+            newContact.emailAddresses.append(CNLabeledValue(label: CNLabelHome,
+                                                            value: address as NSString))
+            contactVC = CNContactViewController(forUnknownContact: newContact)
         }
-        let newContact = CNMutableContact()
-        newContact.emailAddresses.append(CNLabeledValue(label: CNLabelHome,
-                                                        value: address as NSString))
-        contactVC = CNContactViewController(forUnknownContact: newContact)
         guard let contactVC = contactVC else {
             Log.shared.errorAndCrash("Missing contactVC")
             return

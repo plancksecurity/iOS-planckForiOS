@@ -7,6 +7,7 @@
 //
 
 import Contacts
+import ContactsUI
 import CoreData
 
 #if EXT_SHARE
@@ -159,7 +160,8 @@ extension AddressBook {
              CNContactMiddleNameKey as CNKeyDescriptor,
              CNContactEmailAddressesKey as CNKeyDescriptor,
              CNContactNicknameKey as CNKeyDescriptor,
-             CNContactFormatter.descriptorForRequiredKeys(for: .fullName)])
+             CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
+             CNContactViewController.descriptorForRequiredKeys()])
     }
 
     static private func contactThumbnailFetchRequest() -> [CNKeyDescriptor] {

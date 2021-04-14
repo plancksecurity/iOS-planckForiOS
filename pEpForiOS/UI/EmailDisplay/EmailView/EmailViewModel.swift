@@ -451,8 +451,8 @@ extension EmailViewModel {
             return
         }
         let contacts = AddressBook.searchContacts(searchterm: address)
-        if contacts.count > 0 {
-            delegate.showEditContact(contact: contact)
+        if let contactToEdit = contacts.first {
+            delegate.showEditContact(contact: contactToEdit)
         } else {
             delegate.showAddNewContact(contact: contact)
         }

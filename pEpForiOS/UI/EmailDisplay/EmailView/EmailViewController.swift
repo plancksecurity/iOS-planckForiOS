@@ -12,7 +12,7 @@ import ContactsUI
 
 protocol EmailViewControllerDelegate: class {
     func openQLPreviewController(toShowDocumentWithUrl url: URL)
-    func openContacts(controller: CNContactViewController)
+    func showContactsViewController(controller: CNContactViewController)
 }
 
 class EmailViewController: UIViewController {
@@ -300,13 +300,7 @@ extension EmailViewController: EmailViewModelDelegate {
     }
 
     private func show(contactViewController: CNContactViewController) {
-        contactViewController.hideNavigationBarIfSplitViewShown()
-        contactViewController.hidesBottomBarWhenPushed = true
-        contactViewController.delegate = self
-        contactViewController.allowsActions = false
-        contactViewController.view.tintColor = UIColor.pEpDarkGreen
-        delegate?.openContacts(controller: contactViewController)
-
+        UIUtils.presentContactViewController(viewController: contactViewController)
     }
 
 }
