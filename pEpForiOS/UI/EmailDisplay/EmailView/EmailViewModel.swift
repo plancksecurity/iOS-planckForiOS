@@ -420,7 +420,7 @@ extension EmailViewModel {
             Log.shared.errorAndCrash("From identity not found.")
             return
         }
-        let senderRow = SenderRow(from: from, recipients: message.allRecipients.map({$0.address}))
+        let senderRow = SenderRow(from: from, recipients: message.allRecipientsOrdered.map({$0.address}))
         rows.append(senderRow)
 
         //Subject

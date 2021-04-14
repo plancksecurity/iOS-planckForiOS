@@ -73,11 +73,14 @@ class EmailViewController: UIViewController {
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         if UIDevice.isIpad {
             documentInteractionController.dismissMenu(animated: false)
         }
         splitViewController?.preferredDisplayMode = .allVisible
-        coordinator.animate(alongsideTransition: nil)
+        coordinator.animate(alongsideTransition: nil) { _ in
+            self.tableView.reloadData()
+        }
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -91,13 +94,7 @@ class EmailViewController: UIViewController {
         if #available(iOS 13.0, *) {
             if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
                 tableView.reloadData()
-                return
             }
-        }
-
-        /// If size classes change, we need to reload.
-        if ((traitCollection.verticalSizeClass != thePreviousTraitCollection.verticalSizeClass) || (traitCollection.horizontalSizeClass != thePreviousTraitCollection.horizontalSizeClass)) {
-            tableView.reloadData()
         }
     }
 

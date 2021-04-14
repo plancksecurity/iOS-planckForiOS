@@ -499,16 +499,16 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Sender" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eqy-26-Dp7" userLabel="From Label">
-                                                            <rect key="frame" x="20" y="11" width="331" height="32"/>
+                                                            <rect key="frame" x="20" y="11" width="331" height="29"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="13"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Gf-5X-0ZV">
-                                                            <rect key="frame" x="20" y="51" width="331" height="17"/>
+                                                            <rect key="frame" x="20" y="48" width="335" height="20"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="17" id="3Rc-0v-v4N"/>
+                                                                <constraint firstAttribute="height" constant="20" id="3Rc-0v-v4N"/>
                                                             </constraints>
                                                         </view>
                                                     </subviews>
@@ -518,7 +518,7 @@
                                                         <constraint firstItem="Eqy-26-Dp7" firstAttribute="leading" secondItem="314-rf-9fH" secondAttribute="leading" constant="20" symbolic="YES" id="6Al-fu-ZbR"/>
                                                         <constraint firstAttribute="bottom" secondItem="7Gf-5X-0ZV" secondAttribute="bottom" constant="4" id="92o-LY-zKr"/>
                                                         <constraint firstAttribute="topMargin" secondItem="Eqy-26-Dp7" secondAttribute="top" id="aKP-0F-mAI"/>
-                                                        <constraint firstAttribute="trailing" secondItem="7Gf-5X-0ZV" secondAttribute="trailing" constant="24" id="iq2-RX-ww9"/>
+                                                        <constraint firstAttribute="trailing" secondItem="7Gf-5X-0ZV" secondAttribute="trailing" constant="20" id="iq2-RX-ww9"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="Eqy-26-Dp7" secondAttribute="trailing" constant="8" id="l8J-ta-BS6"/>
                                                         <constraint firstItem="7Gf-5X-0ZV" firstAttribute="leading" secondItem="Eqy-26-Dp7" secondAttribute="leading" id="yPr-i4-QkQ"/>
                                                     </constraints>
