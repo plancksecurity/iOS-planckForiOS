@@ -389,7 +389,7 @@ extension EmailViewController {
         display(recipientButtons)
     }
 
-    @objc func addressButtonPressed(button: UIButton) {
+    @objc private func addressButtonPressed(button: UIButton) {
         guard let address = button.titleLabel?.text, address.isProbablyValidEmail() else {
             // Valid case, nothing to do:
             return
