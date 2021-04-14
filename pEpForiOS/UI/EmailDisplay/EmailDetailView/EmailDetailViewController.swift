@@ -700,10 +700,6 @@ extension EmailDetailViewController: EmailViewControllerDelegate {
         previewController.delegate = self
         present(previewController, animated: true, completion: nil)
     }
-
-    func showContactsViewController(controller: CNContactViewController) {
-        navigationController?.pushViewController(controller, animated: true)
-    }
 }
 
 // MARK: - QLPreviewControllerDataSource

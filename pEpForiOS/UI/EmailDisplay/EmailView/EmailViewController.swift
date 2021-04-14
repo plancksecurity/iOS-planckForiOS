@@ -12,7 +12,6 @@ import ContactsUI
 
 protocol EmailViewControllerDelegate: class {
     func openQLPreviewController(toShowDocumentWithUrl url: URL)
-    func showContactsViewController(controller: CNContactViewController)
 }
 
 class EmailViewController: UIViewController {
@@ -465,11 +464,4 @@ By showing external content, your privacy may be invaded.
 This may affect the privacy status of the message.
 """, comment: "external content label text")
     }
-}
-
-
-// MARK: - CNContactViewController
-
-extension EmailViewController: CNContactViewControllerDelegate {
-
 }
