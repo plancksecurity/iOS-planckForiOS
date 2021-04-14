@@ -16,10 +16,10 @@ protocol EmailViewControllerDelegate: class {
 
 class EmailViewController: UIViewController {
 
-    private var recipientLabelHeight: CGFloat = 15
-    private let recipientLabelPadding: CGFloat = 0
-    private let recipientLabelSpacingX: CGFloat = 2
-    private let recipientLabelSpacingY: CGFloat = 0
+    // Will be calculated on runtime
+    private var recipientButtonHeight: CGFloat = 0
+    // Fixed distance between recipient buttons
+    private let recipientButtonSpacingX: CGFloat = 2
 
     public var viewModel: EmailViewModel? {
         didSet {
@@ -301,7 +301,6 @@ extension EmailViewController: EmailViewModelDelegate {
     private func show(contactViewController: CNContactViewController) {
         UIUtils.presentContactViewController(viewController: contactViewController)
     }
-
 }
 
 //MARK: - Private
@@ -353,7 +352,7 @@ extension EmailViewController {
                 // move the label to next row
                 if currentOriginX + button.frame.width > containerWidth {
                     currentOriginX = 0
-                    currentOriginY += recipientLabelHeight + recipientLabelSpacingY
+                    currentOriginY += recipientButtonHeight
                 }
 
                 // set the frame origin
@@ -361,10 +360,10 @@ extension EmailViewController {
                 button.frame.origin.y = currentOriginY
 
                 // increment current X by btn width + spacing
-                currentOriginX += button.frame.width + recipientLabelSpacingX
+                currentOriginX += button.frame.width + recipientButtonSpacingX
             }
             // update container view height
-            cell.containerHeightConstraint.constant = currentOriginY + recipientLabelHeight
+            cell.containerHeightConstraint.constant = currentOriginY + recipientButtonHeight
         }
         //Setup from label
         cell.fromLabel.font = UIFont.pepFont(style: .footnote, weight: .semibold)
@@ -378,9 +377,9 @@ extension EmailViewController {
         textsToShow.append(contentsOf: row.recipients)
         textsToShow.forEach { (textToShow) in
             let recipientButton = RecipientButton.with(text: textToShow)
-            recipientLabelHeight = recipientButton.frame.height
-            recipientButton.frame.size.width = recipientButton.intrinsicContentSize.width + recipientLabelPadding
-            recipientButton.frame.size.height = recipientLabelHeight
+            recipientButtonHeight = recipientButton.frame.height
+            recipientButton.frame.size.width = recipientButton.intrinsicContentSize.width
+            recipientButton.frame.size.height = recipientButtonHeight
             // 'To:' shouldn't be tappable.
             recipientButton.isUserInteractionEnabled = textToShow != toText
             recipientButton.addTarget(self, action: #selector(addressButtonPressed), for: .touchUpInside)
@@ -395,12 +394,10 @@ extension EmailViewController {
             // Valid case, nothing to do:
             return
         }
-
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-
         vm.handleAddressButtonPressed(address: address)
     }
 
