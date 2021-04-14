@@ -391,6 +391,19 @@ extension EmailViewModel {
         return cncontact
     }
 
+
+    /// Handle sender button with username pressed
+    /// - Parameter username: The username pressed
+    public func handleUsernameButtonPressed(username: String) {
+        if username == message.from?.displayString {
+            if let address = message.from?.address {
+                handleAddressButtonPressed(address: address)
+            }
+        }
+    }
+
+    /// Handle recipient button with username pressed
+    /// - Parameter address: The email address
     public func handleAddressButtonPressed(address: String) {
         guard let contact = contactValue(address: address) else {
             Log.shared.errorAndCrash("Contact is nil")

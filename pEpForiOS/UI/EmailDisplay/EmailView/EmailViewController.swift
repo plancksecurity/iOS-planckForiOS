@@ -368,7 +368,6 @@ extension EmailViewController {
         } else {
             cell.fromButton.setup(text: row.from, color: .black)
         }
-        cell.fromButton.isUserInteractionEnabled = row.from.isProbablyValidEmail()
         cell.fromButton.addTarget(self, action: #selector(addressButtonPressed), for: .touchUpInside)
 
         //Setup to recipeints
@@ -392,7 +391,7 @@ extension EmailViewController {
     }
 
     @objc private func addressButtonPressed(button: UIButton) {
-        guard let address = button.titleLabel?.text, address.isProbablyValidEmail() else {
+        guard let text = button.titleLabel?.text else {
             // Valid case, nothing to do:
             return
         }
@@ -400,7 +399,11 @@ extension EmailViewController {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-        vm.handleAddressButtonPressed(address: address)
+        if text.isProbablyValidEmail() {
+            vm.handleAddressButtonPressed(address: text)
+        } else {
+            vm.handleUsernameButtonPressed(username: text)
+        }
     }
 
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {
