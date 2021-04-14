@@ -8,7 +8,12 @@
 //
 
 import UIKit
+
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
 
 final class ContactCell: UITableViewCell {
     static let reuseId = "ContactCell"

@@ -9,7 +9,11 @@
 import Foundation
 import UIKit
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
 
 public protocol HtmlToAttributedTextSaxParserAttachmentDelegate: class {
     func imageAttachment(src: String?, alt: String?) -> Attachment?

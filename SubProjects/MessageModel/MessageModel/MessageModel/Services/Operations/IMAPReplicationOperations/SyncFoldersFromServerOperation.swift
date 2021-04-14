@@ -9,7 +9,12 @@
 import CoreData
 
 import PantomimeFramework
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 /// It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
 /// Therefore it behaves as a concurrent operation, handling the state itself.

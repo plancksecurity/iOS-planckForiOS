@@ -217,6 +217,154 @@
 		433E743F225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433E743E225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift */; };
 		4348FBAE25D1505F00059282 /* Not_a_certificate.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 4348FBAD25D1505F00059282 /* Not_a_certificate.p12 */; };
 		43495984239E509300CF1E12 /* CdFolder+SyncFolderMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43495983239E509300CF1E12 /* CdFolder+SyncFolderMode.swift */; };
+		434A6CE625D2BF1B00179335 /* MessageModelForAppExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 434A6CE425D2BF1B00179335 /* MessageModelForAppExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		434A6CEA25D2BF1B00179335 /* MessageModelForAppExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 434A6CE225D2BF1B00179335 /* MessageModelForAppExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		434A6D5B25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 434A6D5A25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a */; };
+		434C19E625D3E4CD00F622DB /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
+		434C19ED25D3E57B00F622DB /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CB609F1DA4EBB60015281E /* Message.swift */; };
+		434C217825D6964600F622DB /* MessageModelObjectProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645A52239183B009532BE /* MessageModelObjectProtocol.swift */; };
+		434C217C25D6964B00F622DB /* ManagedObjectWrapperProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645A722391871009532BE /* ManagedObjectWrapperProtocol.swift */; };
+		434C217D25D6965300F622DB /* CdAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE460761DB7B1D2008D63C6 /* CdAccount.swift */; };
+		434C217E25D6965B00F622DB /* Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0E11DAE7A49007C98B8 /* Identity.swift */; };
+		434C217F25D6966400F622DB /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
+		434C218025D6966D00F622DB /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15795C0822C60ECB00010938 /* Session.swift */; };
+		434C218425D6968A00F622DB /* CdAccount+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155FE569228B50D8003D3E68 /* CdAccount+Extensions.swift */; };
+		434C218825D6969300F622DB /* MessageModelObjectUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BC7AFA22283E2D0047267A /* MessageModelObjectUtils.swift */; };
+		434C218C25D696F700F622DB /* MessageModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1587D135204570BA002C2157 /* MessageModel.xcdatamodeld */; };
+		434C219025D6972000F622DB /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CB609E1DA4EBB60015281E /* Folder.swift */; };
+		434C219425D6972500F622DB /* CdFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE4607A1DB7B283008D63C6 /* CdFolder.swift */; };
+		434C219525D6972B00F622DB /* UnappendableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15293835224E1C6D00CAE126 /* UnappendableArray.swift */; };
+		434C219625D6973500F622DB /* CdServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE460881DB7B4D6008D63C6 /* CdServer.swift */; };
+		434C219725D6973E00F622DB /* Server+ServerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645B1223A9E9F009532BE /* Server+ServerType.swift */; };
+		434C219B25D6975900F622DB /* CdFolder+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47FE221E9518006E8F83 /* CdFolder+Extension.swift */; };
+		434C219F25D6976C00F622DB /* Account+Fetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E61A5F2271B513000DF876 /* Account+Fetching.swift */; };
+		434C21A325D6977200F622DB /* CdAccount+FetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B64965F25C82D570028B9ED /* CdAccount+FetchedResultsController.swift */; };
+		434C21A425D6978000F622DB /* CdAccount+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECFB762462B93C004842D6 /* CdAccount+PredicateFactory.swift */; };
+		434C21A825D697B700F622DB /* FolderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E9BC611DB5181800AD2352 /* FolderType.swift */; };
+		434C21AC25D697C000F622DB /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE4608D1DB7B5FC008D63C6 /* Query.swift */; };
+		434C21B025D697D800F622DB /* CdServer+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152F09662126D27E001BCF20 /* CdServer+PredicateFactory.swift */; };
+		434C21B425D697F100F622DB /* CdIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE4607E1DB7B2FF008D63C6 /* CdIdentity.swift */; };
+		434C21B825D6980300F622DB /* CdServer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F835251F386DE400FCE887 /* CdServer+Extensions.swift */; };
+		434C21BC25D6980E00F622DB /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE4608F1DB7B5FC008D63C6 /* Stack.swift */; };
+		434C21BD25D6981700F622DB /* CoreDataEntityAttributeNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CCE2C42225BCE5004A8306 /* CoreDataEntityAttributeNames.swift */; };
+		434C21BE25D6981C00F622DB /* CdMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE460801DB7B355008D63C6 /* CdMessage.swift */; };
+		434C21C225D6984500F622DB /* CdAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE460781DB7B211008D63C6 /* CdAttachment.swift */; };
+		434C21C625D6985D00F622DB /* CdServerCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8D228E1DBA0A26000BDE79 /* CdServerCredentials.swift */; };
+		434C21CA25D6987100F622DB /* CdExtraKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A6DFB2305B887006A9ECE /* CdExtraKey.swift */; };
+		434C21CE25D698D000F622DB /* CdKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155FE562228B4FE1003D3E68 /* CdKey.swift */; };
+		434C21D225D698DE00F622DB /* String+InboxFolderName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FFEE4623E17B2F005FE498 /* String+InboxFolderName.swift */; };
+		434C21D625D698E500F622DB /* CdMessage+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15865A8320318E2D00F7A4B5 /* CdMessage+PredicateFactory.swift */; };
+		434C21DA25D6990800F622DB /* CdHeaderField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE4607C1DB7B2D4008D63C6 /* CdHeaderField.swift */; };
+		434C220D25D6996A00F622DB /* CdImapFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155FE55E228B4F8E003D3E68 /* CdImapFields.swift */; };
+		434C221125D6996F00F622DB /* CdImapFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155FE560228B4FBE003D3E68 /* CdImapFlags.swift */; };
+		434C221525D6998200F622DB /* CdMessageReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155FE566228B5027003D3E68 /* CdMessageReference.swift */; };
+		434C221925D6999500F622DB /* CdMessageKeyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155FE564228B5005003D3E68 /* CdMessageKeyword.swift */; };
+		434C221D25D699A800F622DB /* RelationshipKeyPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374A8AE5224E2D16001914D5 /* RelationshipKeyPath.swift */; };
+		434C222125D699CA00F622DB /* MimeTypeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4814221E9518006E8F83 /* MimeTypeUtils.swift */; };
+		434C222525D699EA00F622DB /* CdMessage+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FC1225388FB0038D72C /* CdMessage+IMAP.swift */; };
+		434C222625D699EF00F622DB /* CdMessagePredicateFactory+Imap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47EF221E9518006E8F83 /* CdMessagePredicateFactory+Imap.swift */; };
+		434C222A25D69A0900F622DB /* PEPRating+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C0CBF222939A10025C6B5 /* PEPRating+Extension.swift */; };
+		434C222E25D69A1B00F622DB /* PEPUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705098822DF279B00CB73D6 /* PEPUtils.swift */; };
+		434C223225D69A2E00F622DB /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C9A4724E3FC9700007A3D /* Rating.swift */; };
+		434C223625D69A3400F622DB /* CdIdentity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C0CCC222942DE0025C6B5 /* CdIdentity+pEp.swift */; };
+		434C223A25D69A5600F622DB /* Rating+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C9A4924E3FE0B00007A3D /* Rating+pEp.swift */; };
+		434C223E25D69A6F00F622DB /* CdIdentity+UserID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151747E722DDD48C00180F8E /* CdIdentity+UserID.swift */; };
+		434C224225D69A7500F622DB /* CdIdentity+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155FE56F228B51E0003D3E68 /* CdIdentity+Extensions.swift */; };
+		434C224325D69A7C00F622DB /* PEPUtil+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435F511F221FF750006EB11F /* PEPUtil+Internal.swift */; };
+		434C224725D69A9700F622DB /* CdMessage+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CC1222D247D002EE98B /* CdMessage+pEp.swift */; };
+		434C224B25D69A9E00F622DB /* ContentTypeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370DB3D02281795000BC929A /* ContentTypeUtils.swift */; };
+		434C224C25D69AA800F622DB /* MimeTypeUtils+MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A06494252330D5002F15D0 /* MimeTypeUtils+MimeType.swift */; };
+		434C225025D69AC400F622DB /* CWIMAPMessage+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4355E4CE233C98C0005772D5 /* CWIMAPMessage+pEp.swift */; };
+		434C225425D69AE000F622DB /* PEPIdentity+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43062B8B24ED177E00489258 /* PEPIdentity+Pantomime.swift */; };
+		434C225825D69B0900F622DB /* PEPMessage+PGPMime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A981A324E57C6900830603 /* PEPMessage+PGPMime.swift */; };
+		434C225C25D69B2800F622DB /* ContentDispositionType+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CDD222D2DA7002EE98B /* ContentDispositionType+Conversion.swift */; };
+		434C226025D69B3C00F622DB /* String+Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CAD8A2562D5BF0043077E /* String+Attachment.swift */; };
+		434C226425D69B5000F622DB /* CdIdentity+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EA8E001FA8A45E00D4084A /* CdIdentity+PredicateFactory.swift */; };
+		434C226825D69B6300F622DB /* CdMessage+NonOptionalConvenienceAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FB8225369660038D72C /* CdMessage+NonOptionalConvenienceAccessors.swift */; };
+		434C226C25D69B7400F622DB /* CdMessage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155FE571228B526E003D3E68 /* CdMessage+Extensions.swift */; };
+		434C227025D69B9100F622DB /* MessageID+UUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433C51D41E6828AE00272E19 /* MessageID+UUID.swift */; };
+		434C227125D69B9900F622DB /* CdMessage+PEPMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CDA4E2293FE6100AAC37F /* CdMessage+PEPMessage.swift */; };
+		434C227225D69BA100F622DB /* MessageID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CAC8A2562ADF40043077E /* MessageID.swift */; };
+		434C227325D69BAA00F622DB /* CdHeaderField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155FE56D228B51A8003D3E68 /* CdHeaderField+Extensions.swift */; };
+		434C227725D69BB900F622DB /* CdHeaderField+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECFB7A2462C9B2004842D6 /* CdHeaderField+PredicateFactory.swift */; };
+		434C227B25D69BCC00F622DB /* CdMessageReference+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7400BD2492235F00AE6A79 /* CdMessageReference+PredicateFactory.swift */; };
+		434C227F25D69BDE00F622DB /* CdAttachment+PEPAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A6E152307468F006A9ECE /* CdAttachment+PEPAttachment.swift */; };
+		434C228325D69BF800F622DB /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0DF1DAE78BE007C98B8 /* Attachment.swift */; };
+		434C228725D69C2800F622DB /* Attachment+ContentDispositionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645B3223AA049009532BE /* Attachment+ContentDispositionType.swift */; };
+		434C228B25D69C3000F622DB /* CdAttachment+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155FE56B228B5164003D3E68 /* CdAttachment+Extensions.swift */; };
+		434C228F25D69C4000F622DB /* CdAttachment+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECFB782462C690004842D6 /* CdAttachment+PredicateFactory.swift */; };
+		434C229325D69C5600F622DB /* Attachment+ContentDispositionType+PEPContentDisposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CDA4C2293FBB300AAC37F /* Attachment+ContentDispositionType+PEPContentDisposition.swift */; };
+		434C229725D69C9700F622DB /* MutableOrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0E51DAE8BE7007C98B8 /* MutableOrderedSet.swift */; };
+		434C229B25D69CAC00F622DB /* CdAttachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CED222D3A3E002EE98B /* CdAttachment+Extension.swift */; };
+		434C229F25D69CBF00F622DB /* CdKey+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A6E05B1E57725C005BEE69 /* CdKey+Extension.swift */; };
+		434C22A325D69CD200F622DB /* CdAccount+NonOptionalConvenienceAccessors.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A0E2248D228008E40CC /* CdAccount+NonOptionalConvenienceAccessors.swift.swift */; };
+		434C22A725D69EC900F622DB /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A102248D2E2008E40CC /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift */; };
+		434C22AB25D69EE000F622DB /* CdAccount+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C12407223A9DEA00F6A9B2 /* CdAccount+pEp.swift */; };
+		434C22AF25D69EF300F622DB /* CdMessage+Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3A254224E473B004CAC84 /* CdMessage+Fake.swift */; };
+		434C22B725D69F4E00F622DB /* CdFolder+NonOptionalConvenienceAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437AA506224507A200B5C7A4 /* CdFolder+NonOptionalConvenienceAccessors.swift */; };
+		434C22D325D6A05500F622DB /* CdMessage+Clone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3A243224E2BED004CAC84 /* CdMessage+Clone.swift */; };
+		434C22D725D6A06D00F622DB /* CdImapFlags+Clone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3A245224E2DBA004CAC84 /* CdImapFlags+Clone.swift */; };
+		434C22DB25D6A07400F622DB /* CdKey+Clone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3A24B224E3AE7004CAC84 /* CdKey+Clone.swift */; };
+		434C22DF25D6A0B000F622DB /* CdImapFields+Clone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3A247224E2F02004CAC84 /* CdImapFields+Clone.swift */; };
+		434C22E325D6A0C100F622DB /* CdHeaderField+Clone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3A24F224E4280004CAC84 /* CdHeaderField+Clone.swift */; };
+		434C22E725D6A0DB00F622DB /* CdAttachment+Clone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3A249224E35D3004CAC84 /* CdAttachment+Clone.swift */; };
+		434C22EB25D6A0FA00F622DB /* Server+Tranport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645B5223AA169009532BE /* Server+Tranport.swift */; };
+		434C22EF25D6A10F00F622DB /* FetchOlderImapMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153DDF3C25ADD43D008F645F /* FetchOlderImapMessagesService.swift */; };
+		434C22F325D6A11300F622DB /* FetchMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153DDF3B25ADD43D008F645F /* FetchMessagesService.swift */; };
+		434C22F725D6A12B00F622DB /* CdFolder+ImapFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15795B9E22C0F48F00010938 /* CdFolder+ImapFolder.swift */; };
+		434C22FB25D6A14C00F622DB /* CdMessagePredicateFactory+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4367342E22F18462005FC567 /* CdMessagePredicateFactory+KeySync.swift */; };
+		434C22FF25D6A16100F622DB /* CdFolder+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F0F7B32136F68A002BE853 /* CdFolder+PredicateFactory.swift */; };
+		434C230325D6A17600F622DB /* CdFolder+SyncFolderMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43495983239E509300CF1E12 /* CdFolder+SyncFolderMode.swift */; };
+		434C230725D6A18600F622DB /* ImapConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47E8221E9518006E8F83 /* ImapConnection.swift */; };
+		434C230B25D6A19C00F622DB /* ImapConnectionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B6BE1823E43BCE00E3A60B /* ImapConnectionProtocol.swift */; };
+		434C230F25D6A1AC00F622DB /* ImapConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A536E923E474EA0040715D /* ImapConnectionDelegate.swift */; };
+		434C231325D6A1C800F622DB /* CdMessage+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CDA842296BC7A00AAC37F /* CdMessage+KeySync.swift */; };
+		434C231725D6A1DE00F622DB /* FetchServiceBaseClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153DDF3A25ADD43D008F645F /* FetchServiceBaseClass.swift */; };
+		434C231B25D6A1EF00F622DB /* Folder+Imap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47F1221E9518006E8F83 /* Folder+Imap.swift */; };
+		434C231F25D6A21300F622DB /* CdFolder+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FBC225374030038D72C /* CdFolder+IMAP.swift */; };
+		434C232325D6A22E00F622DB /* ErrorPropagator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA483E221E9518006E8F83 /* ErrorPropagator.swift */; };
+		434C232725D6A24400F622DB /* FetchMessagesInImapFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4822221E9518006E8F83 /* FetchMessagesInImapFolderOperation.swift */; };
+		434C233225D6A29300F622DB /* BaseImapFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D7565023AB9F2F000F915F /* BaseImapFolderOperation.swift */; };
+		434C233625D6A2AA00F622DB /* ImapSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA481C221E9518006E8F83 /* ImapSyncOperation.swift */; };
+		434C233A25D6A2CC00F622DB /* DefaultImapConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15078BB223883D280075C7B4 /* DefaultImapConnectionDelegate.swift */; };
+		434C233E25D6A2E400F622DB /* ImapSyncOperationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4840221E9518006E8F83 /* ImapSyncOperationError.swift */; };
+		434C234225D6A2FB00F622DB /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4844221E9518006E8F83 /* NetworkError.swift */; };
+		434C234625D6A32A00F622DB /* ConcurrentBaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4821221E9518006E8F83 /* ConcurrentBaseOperation.swift */; };
+		434C234A25D6AC5D00F622DB /* BaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4828221E9518006E8F83 /* BaseOperation.swift */; };
+		434C234E25D6AE8200F622DB /* BackgroundError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4843221E9518006E8F83 /* BackgroundError.swift */; };
+		434C235225D6AEB900F622DB /* FetchOlderImapMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123C2223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift */; };
+		434C235625D6B1AB00F622DB /* CdAccount+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4808221E9518006E8F83 /* CdAccount+Extension.swift */; };
+		434C235A25D6B20100F622DB /* EmailConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47EB221E9518006E8F83 /* EmailConnectInfo.swift */; };
+		434C235E25D6B6EB00F622DB /* CdServer+NonOptionalConvenienceAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433E7439225B76E000B84CD9 /* CdServer+NonOptionalConvenienceAccessors.swift */; };
+		434C236225D6B73200F622DB /* AuthMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CADC02563B9B50043077E /* AuthMethod.swift */; };
+		434C236625D6B93A00F622DB /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433E743E225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift */; };
+		434C236A25D6B95700F622DB /* LoginImapOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA482A221E9518006E8F83 /* LoginImapOperation.swift */; };
+		434C236E25D6BFE100F622DB /* ConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47F9221E9518006E8F83 /* ConnectInfo.swift */; };
+		434C237225D6BFF700F622DB /* AccountInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D47A4D225C729900E97C5B /* AccountInfoCache.swift */; };
+		434C237625D6C00800F622DB /* ServerCredentialsInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D47A51225C767B00E97C5B /* ServerCredentialsInfoCache.swift */; };
+		434C237A25D6C02800F622DB /* NSManagedObjectContext+FromObjectID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A2923622C5039D00ED42B6 /* NSManagedObjectContext+FromObjectID.swift */; };
+		434C237E25D6C03E00F622DB /* CdAccount+Trusted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15679F012292CAD90051DCC3 /* CdAccount+Trusted.swift */; };
+		434C238225D6C05400F622DB /* OAuth2AccessTokenProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153DDF4A25ADD455008F645F /* OAuth2AccessTokenProtocol.swift */; };
+		434C247425D6C97700F622DB /* OAuth2AccessToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153DDF4925ADD455008F645F /* OAuth2AccessToken.swift */; };
+		434C247825D6C99C00F622DB /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4352FA261DC7A1C20081161A /* KeyChain.swift */; };
+		434C247C25D6C9C900F622DB /* PantomimeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C7A88F2387EF9500C47364 /* PantomimeStore.swift */; };
+		434C248025D6C9DA00F622DB /* CoreDataPantomimeAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B1B10B221ED15000DB26AB /* CoreDataPantomimeAdapter.swift */; };
+		434C248425D6C9FA00F622DB /* CdMessage+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47FB221E9518006E8F83 /* CdMessage+Pantomime.swift */; };
+		434C248F25D6CE4A00F622DB /* CdImapFlags+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4807221E9518006E8F83 /* CdImapFlags+Pantomime.swift */; };
+		434C249325D6CE6D00F622DB /* CdImapFlags+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F484431E8130180028BC1A /* CdImapFlags+Extension.swift */; };
+		434C249725D6CE8E00F622DB /* Int16+ImapFlagBits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490FF7FD1E795B1500BC15F9 /* Int16+ImapFlagBits.swift */; };
+		434C249B25D6CEAC00F622DB /* CdMessage+Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A3B4D82358497F00DB9135 /* CdMessage+Factory.swift */; };
+		434C249F25D6CEC900F622DB /* CdAttachment+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435F514B222017E8006EB11F /* CdAttachment+Pantomime.swift */; };
+		434C24A325D6CEF100F622DB /* CdMessage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4810221E9518006E8F83 /* CdMessage+Extension.swift */; };
+		434C24A725D6CF1B00F622DB /* ImapFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1535D074223AB4BF008F0ACC /* ImapFlags.swift */; };
+		434C24AB25D6D34B00F622DB /* ImapFlagsUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E74C6B1E38B38C00A2F7A6 /* ImapFlagsUtility.swift */; };
+		434C24AF25D6D37A00F622DB /* CdFolder+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435F5133221FFF3A006EB11F /* CdFolder+Pantomime.swift */; };
+		434C24B325D6D3C300F622DB /* FolderType+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4801221E9518006E8F83 /* FolderType+IMAP.swift */; };
+		434C24B725D6D3F100F622DB /* ImapFlags+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CEB222D39B3002EE98B /* ImapFlags+Pantomime.swift */; };
+		434C24BB25D6D63E00F622DB /* Notification+CWServiceClientNotificationParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA480F221E9518006E8F83 /* Notification+CWServiceClientNotificationParsing.swift */; };
+		434C24BF25D6D7CC00F622DB /* Persistable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15795C0322C60E3400010938 /* Persistable.swift */; };
+		434C24C325D6DB2B00F622DB /* SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15795C0622C60E9B00010938 /* SessionAware.swift */; };
+		434C24C725D6DD0D00F622DB /* Account+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E39FC522551DBB0016A1C4 /* Account+SessionAware.swift */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -250,11 +398,37 @@
 		4368309F22F9682A0005880D /* DeleteOldSyncMailsOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4368309E22F9682A0005880D /* DeleteOldSyncMailsOperationTest.swift */; };
 		436C9A4824E3FC9700007A3D /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C9A4724E3FC9700007A3D /* Rating.swift */; };
 		436C9A4A24E3FE0B00007A3D /* Rating+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C9A4924E3FE0B00007A3D /* Rating+pEp.swift */; };
+		436FD21925DA806E00D929B3 /* Attachment+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E39FCB22551E990016A1C4 /* Attachment+SessionAware.swift */; };
+		436FD21D25DA809D00D929B3 /* Folder+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E39FC722551E2D0016A1C4 /* Folder+SessionAware.swift */; };
+		436FD22125DA80C300D929B3 /* Identity+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E39FCE22551EE20016A1C4 /* Identity+SessionAware.swift */; };
+		436FD22525DA80EB00D929B3 /* ImapFlags+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E39FD222551F5F0016A1C4 /* ImapFlags+SessionAware.swift */; };
+		436FD22925DA810E00D929B3 /* Message+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E39FC322551D650016A1C4 /* Message+SessionAware.swift */; };
+		436FD22D25DA813800D929B3 /* ExtraKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1522955B2302F99900204FD3 /* ExtraKey.swift */; };
+		436FD23125DA814E00D929B3 /* ExtraKey+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1522955D2302FB3400204FD3 /* ExtraKey+SessionAware.swift */; };
+		436FD23525DA817800D929B3 /* ClientCertificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A569724058E5D003C0D7E /* ClientCertificate.swift */; };
+		436FD23925DA819900D929B3 /* ClientCertificcate+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A569924059026003C0D7E /* ClientCertificcate+SessionAware.swift */; };
+		436FD24425DA820100D929B3 /* Error+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A715B252B5B6F00436FCF /* Error+Passphrase.swift */; };
+		436FD24825DA822A00D929B3 /* NSError+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A715A252B5B6F00436FCF /* NSError+Passphrase.swift */; };
+		436FD24C25DA825100D929B3 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9818524E5382900830603 /* Color.swift */; };
+		436FD25025DA827300D929B3 /* Color+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9818724E5393300830603 /* Color+pEp.swift */; };
+		436FD25425DA82A200D929B3 /* PEPSession+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4360AA1922281B7100E62E5A /* PEPSession+Extensions.swift */; };
+		436FD25825DA82CB00D929B3 /* ServerCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8D22901DBA164E000BDE79 /* ServerCredentials.swift */; };
+		436FD25C25DA82E000D929B3 /* ServerCredentials+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E39FD022551F0F0016A1C4 /* ServerCredentials+SessionAware.swift */; };
+		436FD26025DA831000D929B3 /* Server+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E39FC922551E630016A1C4 /* Server+SessionAware.swift */; };
+		436FD29525DA8B2200D929B3 /* CdServerCredentials+KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155FE573228B52D4003D3E68 /* CdServerCredentials+KeyChain.swift */; };
+		436FD2A025DA8B5A00D929B3 /* KeyChain+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587D166204DA3C2002C2157 /* KeyChain+Extensions.swift */; };
+		436FD2A425DA8B8900D929B3 /* ClientCertificateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230C23FD41C2007E9364 /* ClientCertificateUtil.swift */; };
+		436FD2A825DA8BB600D929B3 /* ClientCertificateUtil+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230F23FD5079007E9364 /* ClientCertificateUtil+Internal.swift */; };
+		436FD2AC25DA8BEC00D929B3 /* CdClientCertificate+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43607DF5240031FE00FA66B8 /* CdClientCertificate+Extension.swift */; };
+		436FD2B025DA8C1C00D929B3 /* CdClientCertificate+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A318596246C308A00EE3D4D /* CdClientCertificate+PredicateFactory.swift */; };
+		436FD2B425DA8C5400D929B3 /* NSManagedObjectContext+Reset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D576432535B02C00968745 /* NSManagedObjectContext+Reset.swift */; };
 		43753CC2222D247D002EE98B /* CdMessage+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CC1222D247D002EE98B /* CdMessage+pEp.swift */; };
 		43753CDE222D2DA7002EE98B /* ContentDispositionType+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CDD222D2DA7002EE98B /* ContentDispositionType+Conversion.swift */; };
 		43753CEC222D39B3002EE98B /* ImapFlags+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CEB222D39B3002EE98B /* ImapFlags+Pantomime.swift */; };
 		43753CEE222D3A3E002EE98B /* CdAttachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CED222D3A3E002EE98B /* CdAttachment+Extension.swift */; };
 		437AA507224507A200B5C7A4 /* CdFolder+NonOptionalConvenienceAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437AA506224507A200B5C7A4 /* CdFolder+NonOptionalConvenienceAccessors.swift */; };
+		437B127225F785D1000CCFBA /* EncryptAndSendSharingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B126D25F785B5000CCFBA /* EncryptAndSendSharingProtocol.swift */; };
+		437B12D925F79F74000CCFBA /* EncryptAndSendSharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B12D425F79E26000CCFBA /* EncryptAndSendSharing.swift */; };
 		4383344423FD78BB004CC422 /* ClientCertificateUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4383344323FD78BB004CC422 /* ClientCertificateUtilTest.swift */; };
 		4384D3F8243F2DAE006CCBA2 /* CdMessage+PantomimeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384D3F7243F2DAE006CCBA2 /* CdMessage+PantomimeTest.swift */; };
 		4384D3FA243F2FD6006CCBA2 /* UnencryptedHTMLMail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4384D3F9243F2FD6006CCBA2 /* UnencryptedHTMLMail.txt */; };
@@ -265,6 +439,7 @@
 		4384D404243F3714006CCBA2 /* PGPMimeMail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4384D403243F3714006CCBA2 /* PGPMimeMail.txt */; };
 		4384D406243F455A006CCBA2 /* MiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384D405243F455A006CCBA2 /* MiscTests.swift */; };
 		4384D40A243F5245006CCBA2 /* MessagePantomimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384D409243F5245006CCBA2 /* MessagePantomimeTests.swift */; };
+		4389100B25F7D0D500BB2576 /* LoginSmtpOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4826221E9518006E8F83 /* LoginSmtpOperation.swift */; };
 		4396230D23FD41C2007E9364 /* ClientCertificateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230C23FD41C2007E9364 /* ClientCertificateUtil.swift */; };
 		4396231023FD5079007E9364 /* ClientCertificateUtil+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230F23FD5079007E9364 /* ClientCertificateUtil+Internal.swift */; };
 		439B16A222802A8700201DE5 /* VerifiableAccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */; };
@@ -284,11 +459,16 @@
 		439CADC12563B9B50043077E /* AuthMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CADC02563B9B50043077E /* AuthMethod.swift */; };
 		439CADD72563BD0F0043077E /* Message+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CADD62563BD0F0043077E /* Message+IMAP.swift */; };
 		439CAE5A2563C9C50043077E /* Folder+VirtualMailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CAE592563C9C50043077E /* Folder+VirtualMailbox.swift */; };
+		439FFD5025F8B6EF001591F6 /* EncryptAndSMTPSendMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA481A221E9518006E8F83 /* EncryptAndSMTPSendMessageOperation.swift */; };
+		439FFD5425F8B73D001591F6 /* CdExtraKeys+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A6DFD2305BBFE006A9ECE /* CdExtraKeys+Convenience.swift */; };
+		439FFD5825F8B76C001591F6 /* PEPUtil+Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A6E002305C11F006A9ECE /* PEPUtil+Encryption.swift */; };
+		439FFD5C25F8B78A001591F6 /* PEPMessage+OriginalHeaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F27500233D133D0069C1E0 /* PEPMessage+OriginalHeaders.swift */; };
 		43A2923722C5039D00ED42B6 /* NSManagedObjectContext+FromObjectID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A2923622C5039D00ED42B6 /* NSManagedObjectContext+FromObjectID.swift */; };
 		43A536E623E4626E0040715D /* SmtpConnectionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A536E523E4626E0040715D /* SmtpConnectionProtocol.swift */; };
 		43A536EA23E474EA0040715D /* ImapConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A536E923E474EA0040715D /* ImapConnectionDelegate.swift */; };
 		43A676A2246D3A81004639FE /* KeyImportUtilProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A676A1246D3A81004639FE /* KeyImportUtilProtocol.swift */; };
 		43A6E05C1E57725C005BEE69 /* CdKey+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A6E05B1E57725C005BEE69 /* CdKey+Extension.swift */; };
+		43A7661A260A136600E67592 /* pEpIOSToolboxForExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A76619260A136600E67592 /* pEpIOSToolboxForExtensions.framework */; };
 		43A9818024E52FF700830603 /* Identity+pEpIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9817F24E52FF700830603 /* Identity+pEpIdentity.swift */; };
 		43A9818624E5382900830603 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9818524E5382900830603 /* Color.swift */; };
 		43A9818824E5393300830603 /* Color+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9818724E5393300830603 /* Color+pEp.swift */; };
@@ -297,6 +477,9 @@
 		43AB6A0F2248D228008E40CC /* CdAccount+NonOptionalConvenienceAccessors.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A0E2248D228008E40CC /* CdAccount+NonOptionalConvenienceAccessors.swift.swift */; };
 		43AB6A112248D2E2008E40CC /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A102248D2E2008E40CC /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift */; };
 		43AB6A152248EDC5008E40CC /* FolderInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A142248EDC5008E40CC /* FolderInfoCache.swift */; };
+		43ACAA1926089D290013AE20 /* MigrateKeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ACAA1826089D290013AE20 /* MigrateKeychainService.swift */; };
+		43ACAA5026089FF30013AE20 /* MigrateKeychainOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ACAA4F26089FF30013AE20 /* MigrateKeychainOperation.swift */; };
+		43ACAA852608A5620013AE20 /* MigrateKeychainServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ACAA842608A5620013AE20 /* MigrateKeychainServiceTest.swift */; };
 		43B1A39C22366D9700C387DE /* AppAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B1A39B22366D9700C387DE /* AppAuth.framework */; };
 		43B1B10C221ED15000DB26AB /* CoreDataPantomimeAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B1B10B221ED15000DB26AB /* CoreDataPantomimeAdapter.swift */; };
 		43B22710242362D9007EB91E /* CdAccount+ProviderSpecific.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B2270F242362D9007EB91E /* CdAccount+ProviderSpecific.swift */; };
@@ -310,6 +493,51 @@
 		43BC0E65235764D800125E01 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43BC0E63235764D800125E01 /* InfoPlist.strings */; };
 		43BC0E68235764D800125E01 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43BC0E66235764D800125E01 /* InfoPlist.strings */; };
 		43BC0E6B235764D800125E01 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43BC0E69235764D800125E01 /* Localizable.strings */; };
+		43BDDC4325DC208900FC0C68 /* DeviceGroupState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6AD22ABF368002B59AB /* DeviceGroupState.swift */; };
+		43BDDC4725DC213800FC0C68 /* KeySyncStateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CAC822562AC220043077E /* KeySyncStateProvider.swift */; };
+		43BDDC4B25DC218400FC0C68 /* MessageModelConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43062BA324EE9CD400489258 /* MessageModelConfig.swift */; };
+		43BDDCBF25DD0CC000FC0C68 /* Message+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD8401023F6B91D00DCDE53 /* Message+pEp.swift */; };
+		43BDDCC325DD2ABB00FC0C68 /* Message+pEp_Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA480D221E9518006E8F83 /* Message+pEp_Internal.swift */; };
+		43BDDCC725DD2B1C00FC0C68 /* Attachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47FC221E9518006E8F83 /* Attachment+Extension.swift */; };
+		43BDDCCB25DD2B7500FC0C68 /* Attachment+clone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37688A6E23018ADC00A561C1 /* Attachment+clone.swift */; };
+		43BDDCFE25DD349D00FC0C68 /* Message+clone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37688A72230307D000A561C1 /* Message+clone.swift */; };
+		43BDDD0225DD34EE00FC0C68 /* Attachment+ContentID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CACE72562CCD50043077E /* Attachment+ContentID.swift */; };
+		43BDDD0625DD355400FC0C68 /* Message+Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1517B8D0236AFA8B00A42F52 /* Message+Factory.swift */; };
+		43BDDD0A25DD367000FC0C68 /* Message+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CADD62563BD0F0043077E /* Message+IMAP.swift */; };
+		43BDDD0E25DD36F700FC0C68 /* Message+IMAP+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4813221E9518006E8F83 /* Message+IMAP+Internal.swift */; };
+		43BDDD7225DD424400FC0C68 /* Message+FakeMessage+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CACE22562CB1B0043077E /* Message+FakeMessage+Internal.swift */; };
+		43BDDD7625DD427600FC0C68 /* CdMessage+FakeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152701882294537900197378 /* CdMessage+FakeMessage.swift */; };
+		43BDDD7A25DD42C600FC0C68 /* Folder+VirtualMailbox+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47F5221E9518006E8F83 /* Folder+VirtualMailbox+Internal.swift */; };
+		43BDDD7E25DD42F200FC0C68 /* ProviderSpecificInformationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47F8221E9518006E8F83 /* ProviderSpecificInformationProtocol.swift */; };
+		43BDDD8225DD4AE300FC0C68 /* GmailSpecificInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47F7221E9518006E8F83 /* GmailSpecificInformation.swift */; };
+		43BDDD8625DD4B2100FC0C68 /* CdAccount+ProviderSpecific.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B2270F242362D9007EB91E /* CdAccount+ProviderSpecific.swift */; };
+		43BDDD8A25DD4B9000FC0C68 /* VerifiableAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16A522802B6B00201DE5 /* VerifiableAccount.swift */; };
+		43BDDD8E25DD4BDC00FC0C68 /* VerifiableAccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */; };
+		43BDDD9225DD4BEC00FC0C68 /* VerifiableAccountIMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16A822802B6B00201DE5 /* VerifiableAccountIMAP.swift */; };
+		43BDDD9625DD4C6F00FC0C68 /* VerifiableAccountSMTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439B16A622802B6B00201DE5 /* VerifiableAccountSMTP.swift */; };
+		43BDDD9A25DD4CCE00FC0C68 /* SmtpConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4839221E9518006E8F83 /* SmtpConnection.swift */; };
+		43BDDD9E25DD4D0A00FC0C68 /* SmtpConnectionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A536E523E4626E0040715D /* SmtpConnectionProtocol.swift */; };
+		43BDDDA225DD4D4900FC0C68 /* SmtpSendError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435F5121221FF80F006EB11F /* SmtpSendError.swift */; };
+		43BDDDA625DD4D7E00FC0C68 /* PrepareAccountForSavingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A1152222C3CA3F00FB6E91 /* PrepareAccountForSavingService.swift */; };
+		43BDDDAA25DD4DC000FC0C68 /* FetchImapFoldersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153DDF3D25ADD43D008F645F /* FetchImapFoldersService.swift */; };
+		43BDDDAE25DD4DFC00FC0C68 /* SyncFoldersFromServerOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA482B221E9518006E8F83 /* SyncFoldersFromServerOperation.swift */; };
+		43BDDDB225DD4E4E00FC0C68 /* PantomimeFolderAttribute+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47F6221E9518006E8F83 /* PantomimeFolderAttribute+Extensions.swift */; };
+		43BDDDB625DD615E00FC0C68 /* CreateRequiredFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4825221E9518006E8F83 /* CreateRequiredFoldersOperation.swift */; };
+		43BDDDBA25DD619C00FC0C68 /* FolderType+FolderName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CACEC2562CEB10043077E /* FolderType+FolderName.swift */; };
+		43BDDDBE25DD61D100FC0C68 /* CreateIMAPPepFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150C5EEF24A38825005BA3C9 /* CreateIMAPPepFolderOperation.swift */; };
+		43BDDDC225DD62A500FC0C68 /* KeyGeneratorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37855650229D305800AACFD2 /* KeyGeneratorService.swift */; };
+		43BDDDC625DD62F100FC0C68 /* UsePEPFolderProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15326E2E24A4C45B00EA8C9B /* UsePEPFolderProviderProtocol.swift */; };
+		43BDDDCA25DD634B00FC0C68 /* Message+FakeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439CACDA2562CA7A0043077E /* Message+FakeMessage.swift */; };
+		43BDDDCE25DD63B300FC0C68 /* TrustManagementUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */; };
+		43BDDDD225DD641100FC0C68 /* Identity+pEpIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9817F24E52FF700830603 /* Identity+pEpIdentity.swift */; };
+		43BDDDD625DD645000FC0C68 /* String+Fingerprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D79923F3117D009DACAA /* String+Fingerprint.swift */; };
+		43BDDDDA25DD649400FC0C68 /* Identity+ResetTrust.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A6B7B9233BC18100CAC6E3 /* Identity+ResetTrust.swift */; };
+		43BDDDDE25DD64FA00FC0C68 /* AddressBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A2EF11E829C4600878837 /* AddressBook.swift */; };
+		43BDDF6325DE5EF400FC0C68 /* Identity+AddessBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B854E3232D3D9400DB8FB1 /* Identity+AddessBook.swift */; };
+		43BDDF6725DE5FCE00FC0C68 /* Identity+Fetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1F4EF2459CD5F00070DCC /* Identity+Fetching.swift */; };
+		43BDDF6E25DE607B00FC0C68 /* Identity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6A522ABDA3A002B59AB /* Identity+pEp.swift */; };
+		43BDDF7225DE60FB00FC0C68 /* RatingReEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532CE7A23184130005DBC39 /* RatingReEvaluator.swift */; };
+		43BDEC6025E3FC4200FC0C68 /* Notification+KeySyncState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C7A8892385A28B00C47364 /* Notification+KeySyncState.swift */; };
 		43C123C7223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123C2223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift */; };
 		43C123EA223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */; };
 		43C123EC223A7FCF00F6A9B2 /* AccountVerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */; };
@@ -381,10 +609,18 @@
 		43F484441E8130180028BC1A /* CdImapFlags+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F484431E8130180028BC1A /* CdImapFlags+Extension.swift */; };
 		43F484461E8130A80028BC1A /* CdImapFields+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F484451E8130A80028BC1A /* CdImapFields+Extension.swift */; };
 		43F609802248BCBD0008B900 /* CdFolder+VirtualMailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6097F2248BCBD0008B900 /* CdFolder+VirtualMailbox.swift */; };
+		43F7E3E725DBD22F00B924F3 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F7E3E625DBD22F00B924F3 /* libz.tbd */; };
+		43F7E3EC25DBD26C00B924F3 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F7E3EB25DBD26C00B924F3 /* libiconv.tbd */; };
 		43F86BA324503E61008961DA /* Keychain+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F86BA124503E61008961DA /* Keychain+TestUtils.swift */; };
 		43F86BA424503E61008961DA /* KeyChainTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F86BA224503E61008961DA /* KeyChainTest.swift */; };
 		43F86BA624504B95008961DA /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc in Resources */ = {isa = PBXBuildFile; fileRef = 43F86BA524504B95008961DA /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc */; };
 		43F86BA824504C00008961DA /* MessageHeapBufferOverflow.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43F86BA724504C00008961DA /* MessageHeapBufferOverflow.txt */; };
+		43FD3F2F261484AF0032F809 /* AppendMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A5E3C23526630002277A6 /* AppendMailsOperation.swift */; };
+		43FD3F33261485000032F809 /* AppendMailsToFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA481B221E9518006E8F83 /* AppendMailsToFolderOperation.swift */; };
+		43FD3F3726148A4C0032F809 /* FolderInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A142248EDC5008E40CC /* FolderInfoCache.swift */; };
+		43FD3F3B26148A810032F809 /* CdFolder+VirtualMailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6097F2248BCBD0008B900 /* CdFolder+VirtualMailbox.swift */; };
+		43FD3F3F26148AD70032F809 /* OutlookO365SpecificInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B2271324237131007EB91E /* OutlookO365SpecificInformation.swift */; };
+		43FD3F4326148B1D0032F809 /* PEPDecryptFlags+ReUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A6E0F23073DB0006A9ECE /* PEPDecryptFlags+ReUpload.swift */; };
 		43FFEE4723E17B2F005FE498 /* String+InboxFolderName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FFEE4623E17B2F005FE498 /* String+InboxFolderName.swift */; };
 		490FF7FE1E795B1500BC15F9 /* Int16+ImapFlagBits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490FF7FD1E795B1500BC15F9 /* Int16+ImapFlagBits.swift */; };
 		490FF8051E795B3900BC15F9 /* TestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490FF8021E795B3900BC15F9 /* TestUtil.swift */; };
@@ -441,6 +677,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		434A6CE725D2BF1B00179335 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 43CB60791DA4EB4E0015281E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 434A6CE125D2BF1B00179335;
+			remoteInfo = MessageModelForAppExtensions;
+		};
 		43CB608D1DA4EB4E0015281E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 43CB60791DA4EB4E0015281E /* Project object */;
@@ -456,6 +699,20 @@
 			remoteInfo = MessageModelTestApp;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		434A6CEB25D2BF1B00179335 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				434A6CEA25D2BF1B00179335 /* MessageModelForAppExtensions.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1506E8D925ADEE5C00909821 /* QualifyServerIsLocalServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalServiceTest.swift; sourceTree = "<group>"; };
@@ -680,6 +937,10 @@
 		433E743E225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift"; sourceTree = "<group>"; };
 		4348FBAD25D1505F00059282 /* Not_a_certificate.p12 */ = {isa = PBXFileReference; lastKnownFileType = text; path = Not_a_certificate.p12; sourceTree = "<group>"; };
 		43495983239E509300CF1E12 /* CdFolder+SyncFolderMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+SyncFolderMode.swift"; sourceTree = "<group>"; };
+		434A6CE225D2BF1B00179335 /* MessageModelForAppExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MessageModelForAppExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		434A6CE425D2BF1B00179335 /* MessageModelForAppExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageModelForAppExtensions.h; sourceTree = "<group>"; };
+		434A6CE525D2BF1B00179335 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		434A6D5A25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libPEPObjCAdapter_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdMessageTest.swift; sourceTree = "<group>"; };
 		434DC0D41DAE72D4007C98B8 /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		434DC0D61DAE7407007C98B8 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -721,6 +982,8 @@
 		43753CEB222D39B3002EE98B /* ImapFlags+Pantomime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ImapFlags+Pantomime.swift"; sourceTree = "<group>"; };
 		43753CED222D3A3E002EE98B /* CdAttachment+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAttachment+Extension.swift"; sourceTree = "<group>"; };
 		437AA506224507A200B5C7A4 /* CdFolder+NonOptionalConvenienceAccessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+NonOptionalConvenienceAccessors.swift"; sourceTree = "<group>"; };
+		437B126D25F785B5000CCFBA /* EncryptAndSendSharingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptAndSendSharingProtocol.swift; sourceTree = "<group>"; };
+		437B12D425F79E26000CCFBA /* EncryptAndSendSharing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptAndSendSharing.swift; sourceTree = "<group>"; };
 		4383344323FD78BB004CC422 /* ClientCertificateUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateUtilTest.swift; sourceTree = "<group>"; };
 		4383344623FD806D004CC422 /* Certificate_001.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Certificate_001.p12; sourceTree = "<group>"; };
 		4384D3F7243F2DAE006CCBA2 /* CdMessage+PantomimeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+PantomimeTest.swift"; sourceTree = "<group>"; };
@@ -756,6 +1019,7 @@
 		43A536E923E474EA0040715D /* ImapConnectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImapConnectionDelegate.swift; sourceTree = "<group>"; };
 		43A676A1246D3A81004639FE /* KeyImportUtilProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyImportUtilProtocol.swift; sourceTree = "<group>"; };
 		43A6E05B1E57725C005BEE69 /* CdKey+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdKey+Extension.swift"; sourceTree = "<group>"; };
+		43A76619260A136600E67592 /* pEpIOSToolboxForExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = pEpIOSToolboxForExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43A9817F24E52FF700830603 /* Identity+pEpIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Identity+pEpIdentity.swift"; sourceTree = "<group>"; };
 		43A9818524E5382900830603 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		43A9818724E5393300830603 /* Color+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+pEp.swift"; sourceTree = "<group>"; };
@@ -764,6 +1028,9 @@
 		43AB6A0E2248D228008E40CC /* CdAccount+NonOptionalConvenienceAccessors.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAccount+NonOptionalConvenienceAccessors.swift.swift"; sourceTree = "<group>"; };
 		43AB6A102248D2E2008E40CC /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift"; sourceTree = "<group>"; };
 		43AB6A142248EDC5008E40CC /* FolderInfoCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderInfoCache.swift; sourceTree = "<group>"; };
+		43ACAA1826089D290013AE20 /* MigrateKeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateKeychainService.swift; sourceTree = "<group>"; };
+		43ACAA4F26089FF30013AE20 /* MigrateKeychainOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateKeychainOperation.swift; sourceTree = "<group>"; };
+		43ACAA842608A5620013AE20 /* MigrateKeychainServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateKeychainServiceTest.swift; sourceTree = "<group>"; };
 		43B1A39B22366D9700C387DE /* AppAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43B1B10B221ED15000DB26AB /* CoreDataPantomimeAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataPantomimeAdapter.swift; sourceTree = "<group>"; };
 		43B2270F242362D9007EB91E /* CdAccount+ProviderSpecific.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+ProviderSpecific.swift"; sourceTree = "<group>"; };
@@ -777,6 +1044,7 @@
 		43BC0E64235764D800125E01 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		43BC0E67235764D800125E01 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		43BC0E6A235764D800125E01 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		43BDDB4625DC1C6700FC0C68 /* PEPIOSToolboxForAppExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PEPIOSToolboxForAppExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43C123C2223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchOlderImapMessagesOperation.swift; sourceTree = "<group>"; };
 		43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalOperation.swift; sourceTree = "<group>"; };
 		43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountVerificationResult.swift; sourceTree = "<group>"; };
@@ -852,6 +1120,8 @@
 		43F484431E8130180028BC1A /* CdImapFlags+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdImapFlags+Extension.swift"; sourceTree = "<group>"; };
 		43F484451E8130A80028BC1A /* CdImapFields+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdImapFields+Extension.swift"; sourceTree = "<group>"; };
 		43F6097F2248BCBD0008B900 /* CdFolder+VirtualMailbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+VirtualMailbox.swift"; sourceTree = "<group>"; };
+		43F7E3E625DBD22F00B924F3 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
+		43F7E3EB25DBD26C00B924F3 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/lib/libiconv.tbd; sourceTree = DEVELOPER_DIR; };
 		43F86BA124503E61008961DA /* Keychain+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Keychain+TestUtils.swift"; sourceTree = "<group>"; };
 		43F86BA224503E61008961DA /* KeyChainTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyChainTest.swift; sourceTree = "<group>"; };
 		43F86BA524504B95008961DA /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc"; sourceTree = "<group>"; };
@@ -916,6 +1186,17 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		434A6CDF25D2BF1B00179335 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				43A7661A260A136600E67592 /* pEpIOSToolboxForExtensions.framework in Frameworks */,
+				43F7E3EC25DBD26C00B924F3 /* libiconv.tbd in Frameworks */,
+				43F7E3E725DBD22F00B924F3 /* libz.tbd in Frameworks */,
+				434A6D5B25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		43CB607E1DA4EB4E0015281E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -977,6 +1258,7 @@
 				439CACD42562C95C0043077E /* Pantomime */,
 				153DDF3925ADD43D008F645F /* FetchImap */,
 				153DDF4825ADD455008F645F /* OAuth2 */,
+				437B126C25F78585000CCFBA /* Sharing */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -1405,6 +1687,7 @@
 		1574390E229EA4D100E1C337 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				43ACAA1726089D060013AE20 /* MigrateKeychainService */,
 				15326E3024A4DF0A00EA8C9B /* CreatePEPFolderService */,
 				154660BE2333927B008D2137 /* Utils */,
 				159AB565235396A2008AB1F3 /* CleanupServcies */,
@@ -1850,6 +2133,32 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		4348B7BD261DAE8B000D6FA9 /* MessageModelForAppExtentions */ = {
+			isa = PBXGroup;
+			children = (
+				4348B7BE261DAE97000D6FA9 /* Interface */,
+			);
+			path = MessageModelForAppExtentions;
+			sourceTree = "<group>";
+		};
+		4348B7BE261DAE97000D6FA9 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				437B126D25F785B5000CCFBA /* EncryptAndSendSharingProtocol.swift */,
+				437B12D425F79E26000CCFBA /* EncryptAndSendSharing.swift */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		434A6CE325D2BF1B00179335 /* MessageModelForAppExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				434A6CE425D2BF1B00179335 /* MessageModelForAppExtensions.h */,
+				434A6CE525D2BF1B00179335 /* Info.plist */,
+			);
+			path = MessageModelForAppExtensions;
+			sourceTree = "<group>";
+		};
 		43598DF51DA7F74F00EAD0B7 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
@@ -1880,6 +2189,13 @@
 				433E743E225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift */,
 			);
 			path = Accessors;
+			sourceTree = "<group>";
+		};
+		437B126C25F78585000CCFBA /* Sharing */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Sharing;
 			sourceTree = "<group>";
 		};
 		4383344223FD7891004CC422 /* Certificates */ = {
@@ -1948,6 +2264,7 @@
 		439B16B022802D3800201DE5 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				43ACAA832608A5380013AE20 /* MigrateKeychainService */,
 				152E3C9E231BE34100C1420B /* BackgroundTaskManagerTest.swift */,
 				439B16B122802D3800201DE5 /* VerifiableAccountTest.swift */,
 				B7A1152422C4B55E00FB6E91 /* PrepareAccountForSavingServiceTest.swift */,
@@ -1996,6 +2313,23 @@
 			path = ModelCache;
 			sourceTree = "<group>";
 		};
+		43ACAA1726089D060013AE20 /* MigrateKeychainService */ = {
+			isa = PBXGroup;
+			children = (
+				43ACAA1826089D290013AE20 /* MigrateKeychainService.swift */,
+				43ACAA4F26089FF30013AE20 /* MigrateKeychainOperation.swift */,
+			);
+			path = MigrateKeychainService;
+			sourceTree = "<group>";
+		};
+		43ACAA832608A5380013AE20 /* MigrateKeychainService */ = {
+			isa = PBXGroup;
+			children = (
+				43ACAA842608A5620013AE20 /* MigrateKeychainServiceTest.swift */,
+			);
+			path = MigrateKeychainService;
+			sourceTree = "<group>";
+		};
 		43C123D3223A7FCF00F6A9B2 /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -2015,10 +2349,12 @@
 		43CB60781DA4EB4E0015281E = {
 			isa = PBXGroup;
 			children = (
+				4348B7BD261DAE8B000D6FA9 /* MessageModelForAppExtentions */,
 				43CB60841DA4EB4E0015281E /* MessageModel */,
 				43CB608F1DA4EB4E0015281E /* MessageModelTests */,
 				B751B99322D4D5100018DE0D /* MessageModelTestApp */,
 				15A91EBC25BB357A00D33EAB /* system.db */,
+				434A6CE325D2BF1B00179335 /* MessageModelForAppExtensions */,
 				43CB60831DA4EB4E0015281E /* Products */,
 				B7DB7FA322147000003968DA /* Frameworks */,
 				4303EA41253826A8006151D3 /* Recovered References */,
@@ -2031,6 +2367,7 @@
 				43CB60821DA4EB4E0015281E /* MessageModel.framework */,
 				43CB608B1DA4EB4E0015281E /* MessageModelTests.xctest */,
 				B751B99222D4D5100018DE0D /* OfferCapabilitiesToUnitTests.app */,
+				434A6CE225D2BF1B00179335 /* MessageModelForAppExtensions.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2344,6 +2681,11 @@
 		B7DB7FA322147000003968DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43A76619260A136600E67592 /* pEpIOSToolboxForExtensions.framework */,
+				43BDDB4625DC1C6700FC0C68 /* PEPIOSToolboxForAppExtensions.framework */,
+				43F7E3EB25DBD26C00B924F3 /* libiconv.tbd */,
+				43F7E3E625DBD22F00B924F3 /* libz.tbd */,
+				434A6D5A25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a */,
 				15160B3D257A598100DD42E0 /* libiconv.tbd */,
 				15160B3C257A597B00DD42E0 /* libz.tbd */,
 				15160D39257A950700DD42E0 /* libPEPObjCAdapter_iOS.a */,
@@ -2387,6 +2729,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		434A6CDD25D2BF1B00179335 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				434A6CE625D2BF1B00179335 /* MessageModelForAppExtensions.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		43CB607F1DA4EB4E0015281E /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -2398,6 +2748,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		434A6CE125D2BF1B00179335 /* MessageModelForAppExtensions */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 434A6CEE25D2BF1B00179335 /* Build configuration list for PBXNativeTarget "MessageModelForAppExtensions" */;
+			buildPhases = (
+				434A6CDD25D2BF1B00179335 /* Headers */,
+				434A6CDE25D2BF1B00179335 /* Sources */,
+				434A6CDF25D2BF1B00179335 /* Frameworks */,
+				434A6CE025D2BF1B00179335 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MessageModelForAppExtensions;
+			productName = MessageModelForAppExtensions;
+			productReference = 434A6CE225D2BF1B00179335 /* MessageModelForAppExtensions.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		43CB60811DA4EB4E0015281E /* MessageModel */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43CB60961DA4EB4E0015281E /* Build configuration list for PBXNativeTarget "MessageModel" */;
@@ -2447,10 +2815,12 @@
 				B751B98E22D4D5100018DE0D /* Sources */,
 				B751B98F22D4D5100018DE0D /* Frameworks */,
 				B751B99022D4D5100018DE0D /* Resources */,
+				434A6CEB25D2BF1B00179335 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				434A6CE825D2BF1B00179335 /* PBXTargetDependency */,
 			);
 			name = OfferCapabilitiesToUnitTests;
 			productName = MessageModelTestApp;
@@ -2467,6 +2837,9 @@
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "pEp Security S.A.";
 				TargetAttributes = {
+					434A6CE125D2BF1B00179335 = {
+						CreatedOnToolsVersion = 12.4;
+					};
 					43CB60811DA4EB4E0015281E = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = NQLYU6MGPN;
@@ -2507,11 +2880,19 @@
 				43CB60811DA4EB4E0015281E /* MessageModel */,
 				43CB608A1DA4EB4E0015281E /* MessageModelTests */,
 				B751B99122D4D5100018DE0D /* OfferCapabilitiesToUnitTests */,
+				434A6CE125D2BF1B00179335 /* MessageModelForAppExtensions */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		434A6CE025D2BF1B00179335 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		43CB60801DA4EB4E0015281E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2644,6 +3025,240 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		434A6CDE25D2BF1B00179335 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				434C237625D6C00800F622DB /* ServerCredentialsInfoCache.swift in Sources */,
+				43BDDDB225DD4E4E00FC0C68 /* PantomimeFolderAttribute+Extensions.swift in Sources */,
+				434C24C325D6DB2B00F622DB /* SessionAware.swift in Sources */,
+				434C21D625D698E500F622DB /* CdMessage+PredicateFactory.swift in Sources */,
+				434C21CA25D6987100F622DB /* CdExtraKey.swift in Sources */,
+				43BDDD8E25DD4BDC00FC0C68 /* VerifiableAccountProtocol.swift in Sources */,
+				434C24C725D6DD0D00F622DB /* Account+SessionAware.swift in Sources */,
+				434C232325D6A22E00F622DB /* ErrorPropagator.swift in Sources */,
+				43BDDCC725DD2B1C00FC0C68 /* Attachment+Extension.swift in Sources */,
+				434C22AB25D69EE000F622DB /* CdAccount+pEp.swift in Sources */,
+				434C219B25D6975900F622DB /* CdFolder+Extension.swift in Sources */,
+				434C228B25D69C3000F622DB /* CdAttachment+Extensions.swift in Sources */,
+				434C217F25D6966400F622DB /* Server.swift in Sources */,
+				43BDDDD625DD645000FC0C68 /* String+Fingerprint.swift in Sources */,
+				43BDDDDA25DD649400FC0C68 /* Identity+ResetTrust.swift in Sources */,
+				434C24A325D6CEF100F622DB /* CdMessage+Extension.swift in Sources */,
+				434C234625D6A32A00F622DB /* ConcurrentBaseOperation.swift in Sources */,
+				434C231725D6A1DE00F622DB /* FetchServiceBaseClass.swift in Sources */,
+				43BDDD9E25DD4D0A00FC0C68 /* SmtpConnectionProtocol.swift in Sources */,
+				434C230725D6A18600F622DB /* ImapConnection.swift in Sources */,
+				436FD26025DA831000D929B3 /* Server+SessionAware.swift in Sources */,
+				434C227325D69BAA00F622DB /* CdHeaderField+Extensions.swift in Sources */,
+				436FD25025DA827300D929B3 /* Color+pEp.swift in Sources */,
+				43FD3F4326148B1D0032F809 /* PEPDecryptFlags+ReUpload.swift in Sources */,
+				43BDDDA225DD4D4900FC0C68 /* SmtpSendError.swift in Sources */,
+				434C22A325D69CD200F622DB /* CdAccount+NonOptionalConvenienceAccessors.swift.swift in Sources */,
+				43BDDD0225DD34EE00FC0C68 /* Attachment+ContentID.swift in Sources */,
+				43BDDD8625DD4B2100FC0C68 /* CdAccount+ProviderSpecific.swift in Sources */,
+				437B127225F785D1000CCFBA /* EncryptAndSendSharingProtocol.swift in Sources */,
+				436FD23525DA817800D929B3 /* ClientCertificate.swift in Sources */,
+				434C221D25D699A800F622DB /* RelationshipKeyPath.swift in Sources */,
+				434C235225D6AEB900F622DB /* FetchOlderImapMessagesOperation.swift in Sources */,
+				434C223625D69A3400F622DB /* CdIdentity+pEp.swift in Sources */,
+				434C22D325D6A05500F622DB /* CdMessage+Clone.swift in Sources */,
+				439FFD5025F8B6EF001591F6 /* EncryptAndSMTPSendMessageOperation.swift in Sources */,
+				436FD2A025DA8B5A00D929B3 /* KeyChain+Extensions.swift in Sources */,
+				434C226825D69B6300F622DB /* CdMessage+NonOptionalConvenienceAccessors.swift in Sources */,
+				436FD2A425DA8B8900D929B3 /* ClientCertificateUtil.swift in Sources */,
+				436FD2B025DA8C1C00D929B3 /* CdClientCertificate+PredicateFactory.swift in Sources */,
+				434C22EF25D6A10F00F622DB /* FetchOlderImapMessagesService.swift in Sources */,
+				43BDDDA625DD4D7E00FC0C68 /* PrepareAccountForSavingService.swift in Sources */,
+				434C21A425D6978000F622DB /* CdAccount+PredicateFactory.swift in Sources */,
+				43BDDC4725DC213800FC0C68 /* KeySyncStateProvider.swift in Sources */,
+				43BDDDCE25DD63B300FC0C68 /* TrustManagementUtil.swift in Sources */,
+				436FD2B425DA8C5400D929B3 /* NSManagedObjectContext+Reset.swift in Sources */,
+				43FD3F3726148A4C0032F809 /* FolderInfoCache.swift in Sources */,
+				43BDDD9A25DD4CCE00FC0C68 /* SmtpConnection.swift in Sources */,
+				439FFD5C25F8B78A001591F6 /* PEPMessage+OriginalHeaders.swift in Sources */,
+				43BDDF6E25DE607B00FC0C68 /* Identity+pEp.swift in Sources */,
+				434C235A25D6B20100F622DB /* EmailConnectInfo.swift in Sources */,
+				436FD24425DA820100D929B3 /* Error+Passphrase.swift in Sources */,
+				434C228725D69C2800F622DB /* Attachment+ContentDispositionType.swift in Sources */,
+				434C231F25D6A21300F622DB /* CdFolder+IMAP.swift in Sources */,
+				436FD29525DA8B2200D929B3 /* CdServerCredentials+KeyChain.swift in Sources */,
+				434C248025D6C9DA00F622DB /* CoreDataPantomimeAdapter.swift in Sources */,
+				434C222A25D69A0900F622DB /* PEPRating+Extension.swift in Sources */,
+				434C249B25D6CEAC00F622DB /* CdMessage+Factory.swift in Sources */,
+				43BDDC4B25DC218400FC0C68 /* MessageModelConfig.swift in Sources */,
+				434C22E725D6A0DB00F622DB /* CdAttachment+Clone.swift in Sources */,
+				434C24AF25D6D37A00F622DB /* CdFolder+Pantomime.swift in Sources */,
+				4389100B25F7D0D500BB2576 /* LoginSmtpOperation.swift in Sources */,
+				434C21D225D698DE00F622DB /* String+InboxFolderName.swift in Sources */,
+				434C219625D6973500F622DB /* CdServer.swift in Sources */,
+				434C236E25D6BFE100F622DB /* ConnectInfo.swift in Sources */,
+				434C235E25D6B6EB00F622DB /* CdServer+NonOptionalConvenienceAccessors.swift in Sources */,
+				434C217D25D6965300F622DB /* CdAccount.swift in Sources */,
+				434C236225D6B73200F622DB /* AuthMethod.swift in Sources */,
+				43BDDDC225DD62A500FC0C68 /* KeyGeneratorService.swift in Sources */,
+				434C232725D6A24400F622DB /* FetchMessagesInImapFolderOperation.swift in Sources */,
+				434C24B325D6D3C300F622DB /* FolderType+IMAP.swift in Sources */,
+				434C236625D6B93A00F622DB /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift in Sources */,
+				436FD21925DA806E00D929B3 /* Attachment+SessionAware.swift in Sources */,
+				434C218C25D696F700F622DB /* MessageModel.xcdatamodeld in Sources */,
+				434C227225D69BA100F622DB /* MessageID.swift in Sources */,
+				43FD3F33261485000032F809 /* AppendMailsToFolderOperation.swift in Sources */,
+				434C233625D6A2AA00F622DB /* ImapSyncOperation.swift in Sources */,
+				43BDDF6325DE5EF400FC0C68 /* Identity+AddessBook.swift in Sources */,
+				43BDDD7A25DD42C600FC0C68 /* Folder+VirtualMailbox+Internal.swift in Sources */,
+				43BDDDDE25DD64FA00FC0C68 /* AddressBook.swift in Sources */,
+				434C21A325D6977200F622DB /* CdAccount+FetchedResultsController.swift in Sources */,
+				434C219425D6972500F622DB /* CdFolder.swift in Sources */,
+				434C247C25D6C9C900F622DB /* PantomimeStore.swift in Sources */,
+				43FD3F3F26148AD70032F809 /* OutlookO365SpecificInformation.swift in Sources */,
+				434C223E25D69A6F00F622DB /* CdIdentity+UserID.swift in Sources */,
+				434C22FB25D6A14C00F622DB /* CdMessagePredicateFactory+KeySync.swift in Sources */,
+				43BDDD9225DD4BEC00FC0C68 /* VerifiableAccountIMAP.swift in Sources */,
+				434C24B725D6D3F100F622DB /* ImapFlags+Pantomime.swift in Sources */,
+				434C22F725D6A12B00F622DB /* CdFolder+ImapFolder.swift in Sources */,
+				434C222625D699EF00F622DB /* CdMessagePredicateFactory+Imap.swift in Sources */,
+				434C224B25D69A9E00F622DB /* ContentTypeUtils.swift in Sources */,
+				43BDDF6725DE5FCE00FC0C68 /* Identity+Fetching.swift in Sources */,
+				43BDDF7225DE60FB00FC0C68 /* RatingReEvaluator.swift in Sources */,
+				434C222125D699CA00F622DB /* MimeTypeUtils.swift in Sources */,
+				43BDDD0E25DD36F700FC0C68 /* Message+IMAP+Internal.swift in Sources */,
+				43BDDD9625DD4C6F00FC0C68 /* VerifiableAccountSMTP.swift in Sources */,
+				434C217E25D6965B00F622DB /* Identity.swift in Sources */,
+				434C24BF25D6D7CC00F622DB /* Persistable.swift in Sources */,
+				434C229F25D69CBF00F622DB /* CdKey+Extension.swift in Sources */,
+				436FD24825DA822A00D929B3 /* NSError+Passphrase.swift in Sources */,
+				43BDDCCB25DD2B7500FC0C68 /* Attachment+clone.swift in Sources */,
+				434C235625D6B1AB00F622DB /* CdAccount+Extension.swift in Sources */,
+				434C249325D6CE6D00F622DB /* CdImapFlags+Extension.swift in Sources */,
+				434C231B25D6A1EF00F622DB /* Folder+Imap.swift in Sources */,
+				434C237E25D6C03E00F622DB /* CdAccount+Trusted.swift in Sources */,
+				434C249F25D6CEC900F622DB /* CdAttachment+Pantomime.swift in Sources */,
+				434C217C25D6964B00F622DB /* ManagedObjectWrapperProtocol.swift in Sources */,
+				43BDDDAE25DD4DFC00FC0C68 /* SyncFoldersFromServerOperation.swift in Sources */,
+				437B12D925F79F74000CCFBA /* EncryptAndSendSharing.swift in Sources */,
+				436FD22925DA810E00D929B3 /* Message+SessionAware.swift in Sources */,
+				434C226025D69B3C00F622DB /* String+Attachment.swift in Sources */,
+				434C21C625D6985D00F622DB /* CdServerCredentials.swift in Sources */,
+				43BDDD8A25DD4B9000FC0C68 /* VerifiableAccount.swift in Sources */,
+				434C224325D69A7C00F622DB /* PEPUtil+Internal.swift in Sources */,
+				434C22B725D69F4E00F622DB /* CdFolder+NonOptionalConvenienceAccessors.swift in Sources */,
+				434C236A25D6B95700F622DB /* LoginImapOperation.swift in Sources */,
+				43BDDD0A25DD367000FC0C68 /* Message+IMAP.swift in Sources */,
+				434C21C225D6984500F622DB /* CdAttachment.swift in Sources */,
+				43BDDCBF25DD0CC000FC0C68 /* Message+pEp.swift in Sources */,
+				434C218025D6966D00F622DB /* Session.swift in Sources */,
+				434C233225D6A29300F622DB /* BaseImapFolderOperation.swift in Sources */,
+				434C227025D69B9100F622DB /* MessageID+UUID.swift in Sources */,
+				434C237225D6BFF700F622DB /* AccountInfoCache.swift in Sources */,
+				434C218425D6968A00F622DB /* CdAccount+Extensions.swift in Sources */,
+				434C225825D69B0900F622DB /* PEPMessage+PGPMime.swift in Sources */,
+				434C226C25D69B7400F622DB /* CdMessage+Extensions.swift in Sources */,
+				439FFD5825F8B76C001591F6 /* PEPUtil+Encryption.swift in Sources */,
+				434C229725D69C9700F622DB /* MutableOrderedSet.swift in Sources */,
+				434C21B425D697F100F622DB /* CdIdentity.swift in Sources */,
+				436FD25425DA82A200D929B3 /* PEPSession+Extensions.swift in Sources */,
+				434C248425D6C9FA00F622DB /* CdMessage+Pantomime.swift in Sources */,
+				434C22E325D6A0C100F622DB /* CdHeaderField+Clone.swift in Sources */,
+				434C230F25D6A1AC00F622DB /* ImapConnectionDelegate.swift in Sources */,
+				436FD25825DA82CB00D929B3 /* ServerCredentials.swift in Sources */,
+				434C219525D6972B00F622DB /* UnappendableArray.swift in Sources */,
+				434C230325D6A17600F622DB /* CdFolder+SyncFolderMode.swift in Sources */,
+				436FD22D25DA813800D929B3 /* ExtraKey.swift in Sources */,
+				436FD2A825DA8BB600D929B3 /* ClientCertificateUtil+Internal.swift in Sources */,
+				434C221925D6999500F622DB /* CdMessageKeyword.swift in Sources */,
+				43BDDDAA25DD4DC000FC0C68 /* FetchImapFoldersService.swift in Sources */,
+				434C230B25D6A19C00F622DB /* ImapConnectionProtocol.swift in Sources */,
+				434C228F25D69C4000F622DB /* CdAttachment+PredicateFactory.swift in Sources */,
+				43BDDCC325DD2ABB00FC0C68 /* Message+pEp_Internal.swift in Sources */,
+				434C21BC25D6980E00F622DB /* Stack.swift in Sources */,
+				436FD23925DA819900D929B3 /* ClientCertificcate+SessionAware.swift in Sources */,
+				43BDDD0625DD355400FC0C68 /* Message+Factory.swift in Sources */,
+				43BDDD7E25DD42F200FC0C68 /* ProviderSpecificInformationProtocol.swift in Sources */,
+				43BDDDCA25DD634B00FC0C68 /* Message+FakeMessage.swift in Sources */,
+				436FD22125DA80C300D929B3 /* Identity+SessionAware.swift in Sources */,
+				43FD3F2F261484AF0032F809 /* AppendMailsOperation.swift in Sources */,
+				434C221525D6998200F622DB /* CdMessageReference.swift in Sources */,
+				434C219F25D6976C00F622DB /* Account+Fetching.swift in Sources */,
+				434C19E625D3E4CD00F622DB /* Account.swift in Sources */,
+				434C238225D6C05400F622DB /* OAuth2AccessTokenProtocol.swift in Sources */,
+				43BDDDBA25DD619C00FC0C68 /* FolderType+FolderName.swift in Sources */,
+				434C229B25D69CAC00F622DB /* CdAttachment+Extension.swift in Sources */,
+				43BDDD7625DD427600FC0C68 /* CdMessage+FakeMessage.swift in Sources */,
+				43BDEC6025E3FC4200FC0C68 /* Notification+KeySyncState.swift in Sources */,
+				434C227B25D69BCC00F622DB /* CdMessageReference+PredicateFactory.swift in Sources */,
+				434C22DF25D6A0B000F622DB /* CdImapFields+Clone.swift in Sources */,
+				434C227F25D69BDE00F622DB /* CdAttachment+PEPAttachment.swift in Sources */,
+				434C224225D69A7500F622DB /* CdIdentity+Extensions.swift in Sources */,
+				434C224C25D69AA800F622DB /* MimeTypeUtils+MimeType.swift in Sources */,
+				434C21A825D697B700F622DB /* FolderType.swift in Sources */,
+				43BDDC4325DC208900FC0C68 /* DeviceGroupState.swift in Sources */,
+				434C21AC25D697C000F622DB /* Query.swift in Sources */,
+				43BDDCFE25DD349D00FC0C68 /* Message+clone.swift in Sources */,
+				434C225C25D69B2800F622DB /* ContentDispositionType+Conversion.swift in Sources */,
+				434C234E25D6AE8200F622DB /* BackgroundError.swift in Sources */,
+				434C21CE25D698D000F622DB /* CdKey.swift in Sources */,
+				434C248F25D6CE4A00F622DB /* CdImapFlags+Pantomime.swift in Sources */,
+				436FD25C25DA82E000D929B3 /* ServerCredentials+SessionAware.swift in Sources */,
+				43BDDDB625DD615E00FC0C68 /* CreateRequiredFoldersOperation.swift in Sources */,
+				434C247425D6C97700F622DB /* OAuth2AccessToken.swift in Sources */,
+				434C223A25D69A5600F622DB /* Rating+pEp.swift in Sources */,
+				434C249725D6CE8E00F622DB /* Int16+ImapFlagBits.swift in Sources */,
+				434C22AF25D69EF300F622DB /* CdMessage+Fake.swift in Sources */,
+				439FFD5425F8B73D001591F6 /* CdExtraKeys+Convenience.swift in Sources */,
+				43FD3F3B26148A810032F809 /* CdFolder+VirtualMailbox.swift in Sources */,
+				434C222525D699EA00F622DB /* CdMessage+IMAP.swift in Sources */,
+				434C21B825D6980300F622DB /* CdServer+Extensions.swift in Sources */,
+				434C24BB25D6D63E00F622DB /* Notification+CWServiceClientNotificationParsing.swift in Sources */,
+				434C233E25D6A2E400F622DB /* ImapSyncOperationError.swift in Sources */,
+				43BDDD7225DD424400FC0C68 /* Message+FakeMessage+Internal.swift in Sources */,
+				434C22DB25D6A07400F622DB /* CdKey+Clone.swift in Sources */,
+				434C234225D6A2FB00F622DB /* NetworkError.swift in Sources */,
+				434C22D725D6A06D00F622DB /* CdImapFlags+Clone.swift in Sources */,
+				434C224725D69A9700F622DB /* CdMessage+pEp.swift in Sources */,
+				434C21BD25D6981700F622DB /* CoreDataEntityAttributeNames.swift in Sources */,
+				434C225425D69AE000F622DB /* PEPIdentity+Pantomime.swift in Sources */,
+				434C21DA25D6990800F622DB /* CdHeaderField.swift in Sources */,
+				434C231325D6A1C800F622DB /* CdMessage+KeySync.swift in Sources */,
+				434C226425D69B5000F622DB /* CdIdentity+PredicateFactory.swift in Sources */,
+				436FD21D25DA809D00D929B3 /* Folder+SessionAware.swift in Sources */,
+				434C227725D69BB900F622DB /* CdHeaderField+PredicateFactory.swift in Sources */,
+				434C19ED25D3E57B00F622DB /* Message.swift in Sources */,
+				434C233A25D6A2CC00F622DB /* DefaultImapConnectionDelegate.swift in Sources */,
+				434C218825D6969300F622DB /* MessageModelObjectUtils.swift in Sources */,
+				434C22F325D6A11300F622DB /* FetchMessagesService.swift in Sources */,
+				43BDDDD225DD641100FC0C68 /* Identity+pEpIdentity.swift in Sources */,
+				434C219725D6973E00F622DB /* Server+ServerType.swift in Sources */,
+				434C22EB25D6A0FA00F622DB /* Server+Tranport.swift in Sources */,
+				434C227125D69B9900F622DB /* CdMessage+PEPMessage.swift in Sources */,
+				434C217825D6964600F622DB /* MessageModelObjectProtocol.swift in Sources */,
+				434C225025D69AC400F622DB /* CWIMAPMessage+pEp.swift in Sources */,
+				436FD24C25DA825100D929B3 /* Color.swift in Sources */,
+				434C234A25D6AC5D00F622DB /* BaseOperation.swift in Sources */,
+				434C22FF25D6A16100F622DB /* CdFolder+PredicateFactory.swift in Sources */,
+				434C24A725D6CF1B00F622DB /* ImapFlags.swift in Sources */,
+				434C219025D6972000F622DB /* Folder.swift in Sources */,
+				436FD23125DA814E00D929B3 /* ExtraKey+SessionAware.swift in Sources */,
+				434C229325D69C5600F622DB /* Attachment+ContentDispositionType+PEPContentDisposition.swift in Sources */,
+				436FD22525DA80EB00D929B3 /* ImapFlags+SessionAware.swift in Sources */,
+				434C21BE25D6981C00F622DB /* CdMessage.swift in Sources */,
+				434C228325D69BF800F622DB /* Attachment.swift in Sources */,
+				436FD2AC25DA8BEC00D929B3 /* CdClientCertificate+Extension.swift in Sources */,
+				434C222E25D69A1B00F622DB /* PEPUtils.swift in Sources */,
+				434C223225D69A2E00F622DB /* Rating.swift in Sources */,
+				434C220D25D6996A00F622DB /* CdImapFields.swift in Sources */,
+				43BDDDC625DD62F100FC0C68 /* UsePEPFolderProviderProtocol.swift in Sources */,
+				434C22A725D69EC900F622DB /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift in Sources */,
+				434C221125D6996F00F622DB /* CdImapFlags.swift in Sources */,
+				43BDDDBE25DD61D100FC0C68 /* CreateIMAPPepFolderOperation.swift in Sources */,
+				434C21B025D697D800F622DB /* CdServer+PredicateFactory.swift in Sources */,
+				434C237A25D6C02800F622DB /* NSManagedObjectContext+FromObjectID.swift in Sources */,
+				434C247825D6C99C00F622DB /* KeyChain.swift in Sources */,
+				434C24AB25D6D34B00F622DB /* ImapFlagsUtility.swift in Sources */,
+				43BDDD8225DD4AE300FC0C68 /* GmailSpecificInformation.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		43CB607D1DA4EB4E0015281E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2765,6 +3380,7 @@
 				154660E223392004008D2137 /* DecryptMessageOperation.swift in Sources */,
 				43EA4863221E9518006E8F83 /* CdAccount+Extension.swift in Sources */,
 				43EA4854221E9518006E8F83 /* ConnectInfo.swift in Sources */,
+				43ACAA5026089FF30013AE20 /* MigrateKeychainOperation.swift in Sources */,
 				158A5E3D23526631002277A6 /* AppendMailsOperation.swift in Sources */,
 				5BD4466324F7DA5F00422594 /* AccountQueryResults.swift in Sources */,
 				155A0719260A16A000FF2754 /* Accoount+KeyReset.swift in Sources */,
@@ -2855,6 +3471,7 @@
 				43EA4894221E9518006E8F83 /* ImapSyncOperationError.swift in Sources */,
 				43EA4856221E9518006E8F83 /* CdMessage+Pantomime.swift in Sources */,
 				435F5122221FF80F006EB11F /* SmtpSendError.swift in Sources */,
+				43ACAA1926089D290013AE20 /* MigrateKeychainService.swift in Sources */,
 				43EA4874221E9518006E8F83 /* AppendMailsToFolderOperation.swift in Sources */,
 				434DC0E61DAE8BE7007C98B8 /* MutableOrderedSet.swift in Sources */,
 				B7DFEA50225365080080A2BA /* DisplayableFolderProtocol.swift in Sources */,
@@ -3016,6 +3633,7 @@
 				4355E4D1233C9B63005772D5 /* CdMessageFromPantomimeTest.swift in Sources */,
 				4383344423FD78BB004CC422 /* ClientCertificateUtilTest.swift in Sources */,
 				43F86BA424503E61008961DA /* KeyChainTest.swift in Sources */,
+				43ACAA852608A5620013AE20 /* MigrateKeychainServiceTest.swift in Sources */,
 				43CB60911DA4EB4E0015281E /* IdentityTest.swift in Sources */,
 				490FF8051E795B3900BC15F9 /* TestUtil.swift in Sources */,
 				43B2271224236602007EB91E /* CdAccount+ProviderSpecificTest.swift in Sources */,
@@ -3059,6 +3677,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		434A6CE825D2BF1B00179335 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 434A6CE125D2BF1B00179335 /* MessageModelForAppExtensions */;
+			targetProxy = 434A6CE725D2BF1B00179335 /* PBXContainerItemProxy */;
+		};
 		43CB608E1DA4EB4E0015281E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 43CB60811DA4EB4E0015281E /* MessageModel */;
@@ -3115,6 +3738,79 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		434A6CEC25D2BF1B00179335 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = NQLYU6MGPN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				INFOPLIST_FILE = MessageModelForAppExtensions/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = security.pep.MessageModel.MessageModelForAppExtensions;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) EXT_SHARE";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		434A6CED25D2BF1B00179335 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = NQLYU6MGPN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				INFOPLIST_FILE = MessageModelForAppExtensions/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = security.pep.MessageModel.MessageModelForAppExtensions;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) EXT_SHARE";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		43CB60941DA4EB4E0015281E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3344,6 +4040,7 @@
 		B751B9A122D4D5110018DE0D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -3372,6 +4069,7 @@
 		B751B9A222D4D5110018DE0D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -3399,6 +4097,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		434A6CEE25D2BF1B00179335 /* Build configuration list for PBXNativeTarget "MessageModelForAppExtensions" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				434A6CEC25D2BF1B00179335 /* Debug */,
+				434A6CED25D2BF1B00179335 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		43CB607C1DA4EB4E0015281E /* Build configuration list for PBXProject "MessageModel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -11,7 +11,6 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
-
 public protocol FolderViewModelDelegate: class {
 
     /// Inform the VC to insert rows in the givven indexpaths

@@ -7,13 +7,22 @@
 //
 
 import UIKit
-import MessageModel
-import SwipeCellKit
 import Photos
-import pEpIOSToolbox
 import ContactsUI
 
+import SwipeCellKit
+
+#if EXT_SHARE
+import MessageModelForAppExtensions
+import pEpIOSToolboxForExtensions
+#else
+import MessageModel
+import pEpIOSToolbox
+#endif
+
 class ComposeViewController: UIViewController {
+    public static let storyboardId = "ComposeViewController"
+
     @IBOutlet var sendButton: UIBarButtonItem!
     @IBOutlet var tableView: UITableView!
 
@@ -129,6 +138,7 @@ class ComposeViewController: UIViewController {
         } else {
             dismiss()
         }
+        viewModel?.handleUserClickedCancelButton()
     }
 
     @IBAction func send() {

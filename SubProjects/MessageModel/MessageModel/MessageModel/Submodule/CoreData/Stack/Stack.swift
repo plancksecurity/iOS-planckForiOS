@@ -84,7 +84,7 @@ extension Stack {
     /// - Returns: File URL for the store with given name
     static private func storeURL(for name: String) -> URL {
         guard let directoryURL =
-            FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier)
+            FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier)
             else {
                 fatalError("No DB, no app, sorry.")
         }
@@ -336,13 +336,11 @@ extension Stack {
 
     // MARK: - Defaults
 
-    static private var defaultName: String {
-        guard let bundleId = Bundle.main.bundleIdentifier else {
-            /// There is nothing we can do.
-            fatalError()
-        }
-        return bundleId
-    }
+    /// Must be hard-coded (instead of using the dynamic Bundle.main.bundleIdentifier
+    /// as before) to ensure that both app and extension (which would have different bundle identifiers)
+    /// use the same value. Must be "security.pEp" to be backwards-compatible with previous versions
+    /// of the app where the bundle identifier was used.
+    static private var defaultName = kDatabaseName
 
     static private var defaultURL: URL {
         return storeURL(for: defaultName)

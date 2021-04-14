@@ -832,7 +832,7 @@
         <!--Compose View Controller-->
         <scene sceneID="BVZ-8z-ixe">
             <objects>
-                <viewController id="DOo-Ic-R82" customClass="ComposeViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ComposeViewController" id="DOo-Ic-R82" customClass="ComposeViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="OKf-s1-NBE">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

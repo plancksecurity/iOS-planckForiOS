@@ -8,12 +8,13 @@
 
 import Foundation
 
+import pEp4iosIntern
 import pEpIOSToolbox
 
  /// Abstracts KeyChain ralted issues
 class KeyChain {
     typealias Success = Bool
-    static private let defaultServerType = "Server"
+    static let defaultServerType = "Server"
 }
 
 // MARK: - Passphrase For New Keys
@@ -123,6 +124,7 @@ extension KeyChain {
             Log.shared.warn("%@", warn)
             return false
         }
+
         let query = [
             kSecClass as String: kSecClassGenericPassword as String,
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly as String,

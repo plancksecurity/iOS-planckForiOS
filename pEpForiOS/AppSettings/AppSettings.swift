@@ -8,8 +8,14 @@
 
 import Foundation
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+import pEpIOSToolboxForExtensions
+#else
 import MessageModel
 import pEpIOSToolbox
+#endif
+
 import pEp4iosIntern
 
 // MARK: - Keys
@@ -73,7 +79,7 @@ public final class AppSettings: KeySyncStateProvider {
 extension AppSettings {
 
     static private var userDefaults: UserDefaults = {
-        guard let appGroupDefaults = UserDefaults.init(suiteName: appGroupIdentifier) else {
+        guard let appGroupDefaults = UserDefaults.init(suiteName: kAppGroupIdentifier) else {
             Log.shared.errorAndCrash("Could not find app group defaults")
             return UserDefaults.standard
         }

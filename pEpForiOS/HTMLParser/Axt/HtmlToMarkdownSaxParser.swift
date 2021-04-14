@@ -7,8 +7,14 @@
 //
 
 import Foundation
-import pEpIOSToolbox
+
+#if EXT_SHARE
+import MessageModelForAppExtensions
+import pEpIOSToolboxForExtensions
+#else
 import MessageModel
+import pEpIOSToolbox
+#endif
 
 public protocol MarkdownImageDelegate: class {
     /** Let the delegate rewrite the src and alt of images */

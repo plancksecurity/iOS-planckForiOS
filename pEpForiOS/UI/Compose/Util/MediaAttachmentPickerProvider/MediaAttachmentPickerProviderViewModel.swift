@@ -6,9 +6,16 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
+import Photos
+import UIKit
+
+#if EXT_SHARE
+import MessageModelForAppExtensions
+import pEpIOSToolboxForExtensions
+#else
 import MessageModel
 import pEpIOSToolbox
-import Photos
+#endif
 
 protocol MediaAttachmentPickerProviderViewModelResultDelegate: class {
 

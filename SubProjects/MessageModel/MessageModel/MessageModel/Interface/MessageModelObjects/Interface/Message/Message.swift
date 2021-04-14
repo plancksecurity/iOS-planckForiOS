@@ -9,7 +9,11 @@
 import Foundation
 import CoreData
 
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 public class Message: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
 

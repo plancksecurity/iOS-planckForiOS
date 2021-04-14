@@ -6,9 +6,11 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
+import BackgroundTasks
+
 import pEpIOSToolbox
 import MessageModel
-import BackgroundTasks
+import pEp4iosIntern
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -92,6 +94,7 @@ extension AppDelegate {
             Log.shared.info("BGAppRefreshTask: we are < iOS13. Fallback to BackgroundFetch ...")
             application.setMinimumBackgroundFetchInterval(60.0 * 2)
         }
+
         Appearance.setup()
         setupServices()
         askUserForNotificationPermissions()

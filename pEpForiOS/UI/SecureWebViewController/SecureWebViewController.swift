@@ -7,17 +7,12 @@
 //
 
 import WebKit
+
 import pEpIOSToolbox
 
 protocol SecureWebViewControllerDelegate: class {
     /// Called on content size changes while content is loaded.
     func didFinishLoading()
-}
-
-protocol SecureWebViewUrlClickHandlerProtocol: class {
-    /// Called whenever a mailto:// URL has been clicked by the user.
-    /// - Parameter url: The mailto:// URL
-    func didClickOn(mailToUrlLink url: URL)
 }
 
 /// Webview that does not:
