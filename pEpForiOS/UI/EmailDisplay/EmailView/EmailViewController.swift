@@ -288,6 +288,27 @@ extension EmailViewController: EmailViewModelDelegate {
         removeExternalContentView()
         tableView.reloadData()
     }
+
+    func showAddNewContact(contact: CNContact) {
+        let contactViewController = CNContactViewController(forNewContact: contact)
+        show(contactViewController: contactViewController)
+    }
+
+    func showEditContact(contact: CNContact) {
+        let contactViewController = CNContactViewController(for: contact)
+        show(contactViewController: contactViewController)
+    }
+
+    private func show(contactViewController: CNContactViewController) {
+        contactViewController.hideNavigationBarIfSplitViewShown()
+        contactViewController.hidesBottomBarWhenPushed = true
+        contactViewController.delegate = self
+        contactViewController.allowsActions = false
+        contactViewController.view.tintColor = UIColor.pEpDarkGreen
+        delegate?.openContacts(controller: contactViewController)
+
+    }
+
 }
 
 //MARK: - Private
@@ -457,12 +478,4 @@ This may affect the privacy status of the message.
 
 extension EmailViewController: CNContactViewControllerDelegate {
 
-    func show(contact: CNContact) {
-        let contactViewController = CNContactViewController(forNewContact: contact)
-        contactViewController.hideNavigationBarIfSplitViewShown()
-        contactViewController.hidesBottomBarWhenPushed = true
-        contactViewController.delegate = self
-        delegate?.openContacts(controller: contactViewController)
-    }
 }
-

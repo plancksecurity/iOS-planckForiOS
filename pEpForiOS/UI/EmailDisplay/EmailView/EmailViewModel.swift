@@ -29,9 +29,12 @@ protocol EmailViewModelDelegate: class {
     func hideLoadingView()
     /// Informs the viewModel is ready to provide external content.
     func showExternalContent()
-
-    //TODO:!
-    func show(contact: CNContact)
+    /// Show 'Add new contact' view
+    /// - Parameter contact: The contact to add
+    func showAddNewContact(contact: CNContact)
+    /// Show 'Edit contact' view
+    /// - Parameter contact: The contact to edit
+    func showEditContact(contact: CNContact)
 }
 
 //MARK: - EmailRowProtocol
@@ -413,33 +416,45 @@ extension EmailViewModel {
 
 extension EmailViewModel {
 
-    func contactValue(address: String) -> CNContact {
-      let identity = Identity(address: address)
-      let contact = CNMutableContact()
+    private func contactValue(address: String) -> CNContact? {
+        let identity = Identity(address: address)
+        let contact = CNMutableContact()
         if let userName = identity.userName {
             contact.givenName = userName
         }
-      contact.emailAddresses = [CNLabeledValue(label: CNLabelWork, value: address as NSString)]
+        contact.emailAddresses = [CNLabeledValue(label: CNLabelHome, value: address as NSString)]
 
-//        let identityImageTool = IdentityImageTool()
-//        let identityKey = IdentityImageTool.IdentityKey(identity: identity)
-//        if let image = identityImageTool.cachedIdentityImage(for: identityKey){
-//            let imageData = image.jpegData(compressionQuality: 1)
-//            contact.imageData = imageData
-//        } else {
-//            let image = identityImageTool.identityImage(for: identityKey)
-//            let imageData = image?.jpegData(compressionQuality: 1)
-//            contact.imageData = imageData
-//        }
-
-      return contact.copy() as! CNContact
+        let identityImageTool = IdentityImageTool()
+        let identityKey = IdentityImageTool.IdentityKey(identity: identity)
+        if let image = identityImageTool.cachedIdentityImage(for: identityKey) {
+            let imageData = image.jpegData(compressionQuality: 1)
+            contact.imageData = imageData
+        } else {
+            let image = identityImageTool.identityImage(for: identityKey)
+            let imageData = image?.jpegData(compressionQuality: 1)
+            contact.imageData = imageData
+        }
+        guard let cncontact = contact.copy() as? CNContact else {
+            Log.shared.errorAndCrash("Can't cast contact")
+            return nil
+        }
+        return cncontact
     }
 
     public func handleAddressButtonPressed(address: String) {
-        let contact = contactValue(address: address)
-        delegate?.show(contact: contact)
+        guard let contact = contactValue(address: address) else {
+            Log.shared.errorAndCrash("Contact is nil")
+            return
+        }
+        guard let delegate = delegate else {
+            Log.shared.errorAndCrash("Delegate is nil")
+            return
+        }
+        let contacts = AddressBook.searchContacts(searchterm: address)
+        if contacts.count > 0 {
+            delegate.showEditContact(contact: contact)
+        } else {
+            delegate.showAddNewContact(contact: contact)
+        }
     }
 }
-
-
-
