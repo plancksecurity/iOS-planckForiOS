@@ -210,9 +210,7 @@ extension EmailViewModel {
         var type: EmailViewModel.EmailRowType = .sender
         var cellIdentifier: String = "senderCell"
         var from: String
-        var to: String
         var recipients: [String]
-
     }
 
     // MARK: Subject
@@ -386,13 +384,7 @@ extension EmailViewModel {
             Log.shared.errorAndCrash("From identity not found.")
             return
         }
-        var tempTo: [String] = []
-        message.allRecipients.forEach { (recepient) in
-            let recepient = recepient.address
-            tempTo.append(recepient)
-        }
-        let toDestinataries = NSLocalizedString("To:", comment: "Email field title") + tempTo.joined(separator: ", ")
-        let senderRow = SenderRow(from: from, to: toDestinataries, recipients: message.allRecipients.map({$0.address}))
+        let senderRow = SenderRow(from: from, recipients: message.allRecipients.map({$0.address}))
         rows.append(senderRow)
 
         //Subject

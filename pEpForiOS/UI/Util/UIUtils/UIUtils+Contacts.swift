@@ -7,7 +7,6 @@
 //
 
 import UIKit
-
 import ContactsUI
 
 #if EXT_SHARE
@@ -63,6 +62,8 @@ extension UIUtils {
     ///
     /// - Parameters:
     ///   - url: url to show custom actions for
+    ///   - rect: The sourceRect to show the action sheet in iPad.
+    ///   - view: The sourceView to show the action sheet in iPad.
     static public func showActionSheetWithContactOptions(forUrl url: URL,
                                                             at rect: CGRect,
                                                             at view: UIView) {
@@ -79,4 +80,3 @@ extension UIUtils {
                                              at: view)
     }
 }
-
