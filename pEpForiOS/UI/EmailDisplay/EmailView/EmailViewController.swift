@@ -18,9 +18,9 @@ protocol EmailViewControllerDelegate: class {
 class EmailViewController: UIViewController {
 
     private var recipientLabelHeight: CGFloat = 15
-    private let recipientLabelPadding: CGFloat = 2
+    private let recipientLabelPadding: CGFloat = 0
     private let recipientLabelSpacingX: CGFloat = 2
-    private let recipientLabelSpacingY: CGFloat = 2
+    private let recipientLabelSpacingY: CGFloat = 0
 
     public var viewModel: EmailViewModel? {
         didSet {
@@ -329,70 +329,52 @@ extension EmailViewController {
     }
 
     private func setupSender(cell: MessageSenderCell, with row: EmailViewModel.SenderRow) {
-        func display(labels: [UIButton]) {
+        func display(_ buttons: [UIButton]) {
             let containerWidth = cell.toContainer.frame.size.width
-
             var currentOriginX: CGFloat = 0
             var currentOriginY: CGFloat = 0
 
-            labels.forEach { label in
+            buttons.forEach { button in
                 // if current origin X + label width is be greater than the container view width
                 // move the label to next row
-                if currentOriginX + label.frame.width > containerWidth {
+                if currentOriginX + button.frame.width > containerWidth {
                     currentOriginX = 0
                     currentOriginY += recipientLabelHeight + recipientLabelSpacingY
                 }
 
                 // set the frame origin
-                label.frame.origin.x = currentOriginX
-                label.frame.origin.y = currentOriginY
+                button.frame.origin.x = currentOriginX
+                button.frame.origin.y = currentOriginY
 
                 // increment current X by btn width + spacing
-                currentOriginX += label.frame.width + recipientLabelSpacingX
+                currentOriginX += button.frame.width + recipientLabelSpacingX
             }
             // update container view height
             cell.containerHeightConstraint.constant = currentOriginY + recipientLabelHeight
         }
-
-        let font = UIFont.pepFont(style: .footnote, weight: .semibold)
-        cell.fromLabel.font = font
+        //Setup from label
+        cell.fromLabel.font = UIFont.pepFont(style: .footnote, weight: .semibold)
         cell.fromLabel.text = row.from
-        cell.toContainer.subviews.forEach({$0.removeFromSuperview()})
-        var recipientLabels = [UIButton]()
-        var textsToShow = [NSLocalizedString("To:", comment: "To: - To label")]
-        textsToShow.append(contentsOf: row.recipients)
-        textsToShow.forEach { (to) in
-            let recipientButton = UIButton(type: .custom)
-            recipientButton.isUserInteractionEnabled = true
-            recipientButton.setTitle(to, for: .normal)
-            recipientButton.titleLabel?.adjustsFontSizeToFitWidth = true
-            recipientButton.setContentHuggingPriority(.required, for: .horizontal)
-            recipientButton.setContentCompressionResistancePriority(.required, for: .horizontal)
-            if #available(iOS 13.0, *) {
-                recipientButton.setTitleColor(.secondaryLabel, for: .normal)
-                recipientButton.setTitleColor(.tertiaryLabel, for: .highlighted)
-                recipientButton.setTitleColor(.tertiaryLabel, for: .selected)
-            } else {
-                recipientButton.setTitleColor(.lightGray, for: .normal)
-                recipientButton.setTitleColor(.darkGray, for: .highlighted)
-                recipientButton.setTitleColor(.darkGray, for: .selected)
-            }
-            recipientButton.titleLabel?.font = font
-            recipientButton.titleLabel?.textAlignment = .natural
-            recipientButton.sizeToFit()
-            recipientLabelHeight = recipientButton.frame.height
 
+        //Setup to recipeints
+        cell.toContainer.subviews.forEach({$0.removeFromSuperview()})
+        var recipientButtons = [UIButton]()
+        let toText = NSLocalizedString("To:", comment: "To: - To label")
+        var textsToShow = [toText]
+        textsToShow.append(contentsOf: row.recipients)
+        textsToShow.forEach { (textToShow) in
+            let recipientButton = RecipientButton.with(text: textToShow)
+            recipientLabelHeight = recipientButton.frame.height
             recipientButton.frame.size.width = recipientButton.intrinsicContentSize.width + recipientLabelPadding
             recipientButton.frame.size.height = recipientLabelHeight
+            // 'To:' shouldn't be tappable.
+            recipientButton.isUserInteractionEnabled = textToShow != toText
             recipientButton.addTarget(self, action: #selector(addressButtonPressed), for: .touchUpInside)
-
             cell.toContainer.addSubview(recipientButton)
-            cell.toContainer.bringSubviewToFront(recipientButton)
-            recipientLabels.append(recipientButton)
+            recipientButtons.append(recipientButton)
         }
-        display(labels: recipientLabels)
+        display(recipientButtons)
     }
-
 
     @objc func addressButtonPressed(button: UIButton) {
         guard let address = button.titleLabel?.text, address.isProbablyValidEmail() else {
@@ -405,7 +387,7 @@ extension EmailViewController {
             return
         }
 
-        vm.handleLongPressOnEmailAddress(emailAddress: address)
+        vm.handleAddressButtonPressed(address: address)
     }
 
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {
@@ -483,3 +465,4 @@ extension EmailViewController: CNContactViewControllerDelegate {
         delegate?.openContacts(controller: contactViewController)
     }
 }
+

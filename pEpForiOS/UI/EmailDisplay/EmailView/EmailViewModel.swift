@@ -413,13 +413,13 @@ extension EmailViewModel {
 
 extension EmailViewModel {
 
-    func contactValue(emailAddress: String) -> CNContact {
-      let identity = Identity(address: emailAddress)
+    func contactValue(address: String) -> CNContact {
+      let identity = Identity(address: address)
       let contact = CNMutableContact()
         if let userName = identity.userName {
             contact.givenName = userName
         }
-      contact.emailAddresses = [CNLabeledValue(label: CNLabelWork, value: emailAddress as NSString)]
+      contact.emailAddresses = [CNLabeledValue(label: CNLabelWork, value: address as NSString)]
 
 //        let identityImageTool = IdentityImageTool()
 //        let identityKey = IdentityImageTool.IdentityKey(identity: identity)
@@ -435,8 +435,8 @@ extension EmailViewModel {
       return contact.copy() as! CNContact
     }
 
-    public func handleLongPressOnEmailAddress(emailAddress: String) {
-        let contact = contactValue(emailAddress: emailAddress)
+    public func handleAddressButtonPressed(address: String) {
+        let contact = contactValue(address: address)
         delegate?.show(contact: contact)
     }
 }
