@@ -415,17 +415,6 @@ extension EmailViewModel {
             contact.givenName = userName
         }
         contact.emailAddresses = [CNLabeledValue(label: CNLabelHome, value: address as NSString)]
-
-        let identityImageTool = IdentityImageTool()
-        let identityKey = IdentityImageTool.IdentityKey(identity: identity)
-        if let image = identityImageTool.cachedIdentityImage(for: identityKey) {
-            let imageData = image.jpegData(compressionQuality: 1)
-            contact.imageData = imageData
-        } else {
-            let image = identityImageTool.identityImage(for: identityKey)
-            let imageData = image?.jpegData(compressionQuality: 1)
-            contact.imageData = imageData
-        }
         guard let cncontact = contact.copy() as? CNContact else {
             Log.shared.errorAndCrash("Can't cast contact")
             return nil
