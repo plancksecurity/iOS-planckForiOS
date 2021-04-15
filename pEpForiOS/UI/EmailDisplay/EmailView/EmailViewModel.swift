@@ -29,16 +29,10 @@ protocol EmailViewModelDelegate: class {
     func hideLoadingView()
     /// Informs the viewModel is ready to provide external content.
     func showExternalContent()
-    /// Show 'Add new contact' view
-    /// - Parameter contact: The contact to add
-    func showAddNewContact(contact: CNContact)
-    /// Show 'Edit contact' view
-    /// - Parameter contact: The contact to edit
-    func showEditContact(contact: CNContact)
-    /// Show Contact not found
-    func showContactNotFound()
 
-    func showActionSheet(actionSheetController: UIAlertController)
+    /// Show the contact view controller for the contact passed
+    /// - Parameter contact: The contact to set
+    func showContactViewController(contact: CNContact)
 }
 
 //MARK: - EmailRowProtocol
@@ -396,7 +390,6 @@ extension EmailViewModel {
 extension EmailViewModel {
 
     private func contactValue(address: String) -> CNContact? {
-        let identity = Identity(address: address)
         let contact = CNMutableContact()
         contact.emailAddresses = [CNLabeledValue(label: CNLabelHome, value: address as NSString)]
         guard let cnContact = contact.copy() as? CNContact else {
@@ -409,59 +402,12 @@ extension EmailViewModel {
     /// Handle recipient button with username pressed
     /// - Parameter address: The email address
     public func handleAddressButtonPressed(address: String) {
-        showContactActionSheet(address: address)
-    }
-
-    private func cancelAction() -> UIAlertAction {
-        let cancelActionTitle = NSLocalizedString("Cancel", comment: "Action Sheet - cancel button title")
-        return UIUtils.action(cancelActionTitle, .cancel)
-    }
-
-    private func createNewContact(address: String) -> UIAlertAction {
-        let addTitle = NSLocalizedString("Create new Contact", comment: "Action Sheet - Create new Contact option")
-        return UIUtils.action(addTitle, .default) { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            guard let contact = me.contactValue(address: address) else {
-                Log.shared.errorAndCrash("Contact is nil")
-                return
-            }
-            guard let delegate = me.delegate else {
-                Log.shared.errorAndCrash("Delegate is nil")
-                return
-            }
-            delegate.showAddNewContact(contact: contact)
+        guard let contact = contactValue(address: address) else {
+            Log.shared.errorAndCrash("Contact is nil")
+            return
         }
-    }
 
-    private func addToExistingContact(address: String) -> UIAlertAction {
-        let addTitle = NSLocalizedString("Add to existing contact", comment: "Action Sheet - Add to existing contact")
-        return UIUtils.action(addTitle, .default) {  [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            guard let delegate = me.delegate else {
-                Log.shared.errorAndCrash("Delegate is nil")
-                return
-            }
-            let contacts = AddressBook.searchContacts(searchterm: address)
-            if let contactToEdit = contacts.first {
-                delegate.showEditContact(contact: contactToEdit)
-            } else {
-                delegate.showContactNotFound()
-            }
-        }
-    }
-
-    private func showContactActionSheet(address: String) {
-        let actionSheetController = UIUtils.actionSheet()
-        actionSheetController.addAction(cancelAction())
-        actionSheetController.addAction(createNewContact(address: address))
-        actionSheetController.addAction(addToExistingContact(address: address))
-        delegate?.showActionSheet(actionSheetController: actionSheetController)
+        delegate?.showContactViewController(contact: contact)
     }
 }
 
