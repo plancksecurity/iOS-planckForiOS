@@ -28,7 +28,11 @@ extension RecipientButton {
         return recipientButton
     }
 
-    func setup(text: String, color: UIColor? = nil) {
+    /// Setup the recipient button with the text and colors passed by parameters.
+    /// - Parameters:
+    ///   - text: The text of the button
+    ///   - color: The title color. If nil, default values will be used. 
+    public func setup(text: String, color: UIColor? = nil) {
         isUserInteractionEnabled = true
         setTitle(text, for: .normal)
         titleLabel?.adjustsFontSizeToFitWidth = true
