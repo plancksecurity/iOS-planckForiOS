@@ -26,6 +26,11 @@ class SuggestTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         UIHelper.variableCellHeightsTableView(self.tableView)
+        registerForNotifications()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -109,5 +114,38 @@ extension SuggestTableViewController {
                 cell.pEpStatusImageView.image = icon
             }
         }
+    }
+}
+
+extension SuggestTableViewController {
+
+    private func registerForNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleKeyboardDidShow),
+                                               name: UIResponder.keyboardDidShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleKeyboardDidHide),
+                                               name: UIResponder.keyboardDidHideNotification,
+                                               object: nil)
+    }
+
+    @objc
+    private func handleKeyboardDidShow(notification: NSNotification) {
+        let margin: CGFloat = 74.0
+        tableView.contentInset.bottom = keyBoardHeight(notification: notification) + margin
+    }
+
+    @objc
+    private func handleKeyboardDidHide(notification: NSNotification) {
+        tableView.contentInset.bottom = 0.0
+    }
+
+    private func keyBoardHeight(notification: NSNotification) -> CGFloat {
+        guard let keyboardSize = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+                return 0
+        }
+
+        return keyboardSize.height
     }
 }
