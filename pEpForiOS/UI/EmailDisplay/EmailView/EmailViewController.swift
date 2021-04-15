@@ -232,14 +232,6 @@ extension EmailViewController: UIPopoverPresentationControllerDelegate, UIPopove
 
 extension EmailViewController: EmailViewModelDelegate {
 
-    func showActionSheet(actionSheetController: UIAlertController) {
-        present(actionSheetController, animated: true)
-    }
-    func showContactNotFound() {
-        let errorString = NSLocalizedString("The address was not found in the Address Book.", comment: "Address not found error")
-        UIUtils.showAlertWithOnlyPositiveButton(title: NSLocalizedString("It's not possible to edit a contact", comment: "alert error title"), message: errorString)
-    }
-
     func showQuickLookOfAttachment(quickLookItem: QLPreviewItem) {
         guard let url = quickLookItem.previewItemURL else {
             Log.shared.errorAndCrash("QL item is not an URL")
@@ -287,6 +279,7 @@ extension EmailViewController: EmailViewModelDelegate {
         removeExternalContentView()
         tableView.reloadData()
     }
+
     func showContactViewController(contact: CNContact) {
         let contactViewController = CNContactViewController(forUnknownContact: contact)
         show(contactViewController: contactViewController)

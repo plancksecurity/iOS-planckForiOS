@@ -29,7 +29,6 @@ protocol EmailViewModelDelegate: class {
     func hideLoadingView()
     /// Informs the viewModel is ready to provide external content.
     func showExternalContent()
-
     /// Show the contact view controller for the contact passed
     /// - Parameter contact: The contact to set
     func showContactViewController(contact: CNContact)
