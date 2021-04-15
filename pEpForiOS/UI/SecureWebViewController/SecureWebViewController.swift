@@ -360,6 +360,3 @@ extension UISplitViewController {
         }
     }
 }
-
-// MARK: !! EXTREMELY DIRTY HACK !! ( END )
-// MARK: -
