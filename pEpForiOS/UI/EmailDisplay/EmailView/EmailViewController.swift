@@ -16,11 +16,6 @@ protocol EmailViewControllerDelegate: class {
 
 class EmailViewController: UIViewController {
 
-    // Will be calculated on runtime
-    private var recipientButtonHeight: CGFloat = 0
-    // Fixed distance between recipient buttons
-    private let recipientButtonSpacingX: CGFloat = 2
-
     public var viewModel: EmailViewModel? {
         didSet {
             viewModel?.delegate = self
@@ -130,7 +125,7 @@ extension EmailViewController: UITableViewDataSource {
         let row = vm[indexPath.row]
         switch row.type {
         case .sender:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageSenderCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageSenderAndRecipientsCell else {
                 return UITableViewCell()
             }
             guard let row = vm[indexPath.row] as? EmailViewModel.SenderRow else {
@@ -237,6 +232,14 @@ extension EmailViewController: UIPopoverPresentationControllerDelegate, UIPopove
 
 extension EmailViewController: EmailViewModelDelegate {
 
+    func showActionSheet(actionSheetController: UIAlertController) {
+        present(actionSheetController, animated: true)
+    }
+    func showContactNotFound() {
+        let errorString = NSLocalizedString("The address was not found in the Address Book.", comment: "Address not found error")
+        UIUtils.showAlertWithOnlyPositiveButton(title: NSLocalizedString("It's not possible to edit a contact", comment: "alert error title"), message: errorString)
+    }
+
     func showQuickLookOfAttachment(quickLookItem: QLPreviewItem) {
         guard let url = quickLookItem.previewItemURL else {
             Log.shared.errorAndCrash("QL item is not an URL")
@@ -338,72 +341,8 @@ extension EmailViewController {
         }
     }
 
-    private func setupSender(cell: MessageSenderCell, with row: EmailViewModel.SenderRow) {
-        func display(_ buttons: [UIButton]) {
-            let containerWidth = cell.toContainer.frame.size.width
-            var currentOriginX: CGFloat = 0
-            var currentOriginY: CGFloat = 0
-
-            buttons.forEach { button in
-                // if current origin X + label width is be greater than the container view width
-                // move the label to next row
-                if currentOriginX + button.frame.width > containerWidth {
-                    currentOriginX = 0
-                    currentOriginY += recipientButtonHeight
-                }
-
-                // set the frame origin
-                button.frame.origin.x = currentOriginX
-                button.frame.origin.y = currentOriginY
-
-                // increment current X by btn width + spacing
-                currentOriginX += button.frame.width + recipientButtonSpacingX
-            }
-            // update container view height
-            cell.containerHeightConstraint.constant = currentOriginY + recipientButtonHeight
-        }
-        //Setup from label
-        if #available(iOS 13.0, *) {
-            cell.fromButton.setup(text: row.from, color: .label)
-        } else {
-            cell.fromButton.setup(text: row.from, color: .black)
-        }
-        cell.fromButton.addTarget(self, action: #selector(addressButtonPressed), for: .touchUpInside)
-
-        //Setup to recipeints
-        cell.toContainer.subviews.forEach({$0.removeFromSuperview()})
-        var recipientButtons = [UIButton]()
-        let toText = NSLocalizedString("To:", comment: "To: - To label")
-        var textsToShow = [toText]
-        textsToShow.append(contentsOf: row.recipients)
-        textsToShow.forEach { (textToShow) in
-            let recipientButton = RecipientButton.with(text: textToShow)
-            recipientButtonHeight = recipientButton.frame.height
-            recipientButton.frame.size.width = recipientButton.intrinsicContentSize.width
-            recipientButton.frame.size.height = recipientButtonHeight
-            // 'To:' shouldn't be tappable.
-            recipientButton.isUserInteractionEnabled = textToShow != toText
-            recipientButton.addTarget(self, action: #selector(addressButtonPressed), for: .touchUpInside)
-            cell.toContainer.addSubview(recipientButton)
-            recipientButtons.append(recipientButton)
-        }
-        display(recipientButtons)
-    }
-
-    @objc private func addressButtonPressed(button: UIButton) {
-        guard let text = button.titleLabel?.text else {
-            // Valid case, nothing to do:
-            return
-        }
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return
-        }
-        if text.isProbablyValidEmail() {
-            vm.handleAddressButtonPressed(address: text)
-        } else {
-            vm.handleUsernameButtonPressed(username: text)
-        }
+    private func setupSender(cell: MessageSenderAndRecipientsCell, with row: EmailViewModel.SenderRow) {
+        cell.setup(fromVM: row.fromVM, tosVM: row.toVMs)
     }
 
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {

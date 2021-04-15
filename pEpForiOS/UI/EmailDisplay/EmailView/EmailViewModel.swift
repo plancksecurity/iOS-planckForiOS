@@ -35,6 +35,10 @@ protocol EmailViewModelDelegate: class {
     /// Show 'Edit contact' view
     /// - Parameter contact: The contact to edit
     func showEditContact(contact: CNContact)
+    /// Show Contact not found
+    func showContactNotFound()
+
+    func showActionSheet(actionSheetController: UIAlertController)
 }
 
 //MARK: - EmailRowProtocol
@@ -200,6 +204,20 @@ class EmailViewModel {
 //MARK: - Email Rows
 
 extension EmailViewModel {
+
+    class RecipientButtonViewModel {
+        public private(set) var title: String
+        public private(set) var identity: Identity
+        public private(set) var action: () -> Void
+
+        //Action
+        init(identity: Identity, action: @escaping () -> Void) {
+            self.identity = identity
+            self.title = identity.displayString
+            self.action = action
+        }
+    }
+
     enum EmailRowType: String {
         case sender, subject, body, attachment, imageAttachment
     }
@@ -209,8 +227,8 @@ extension EmailViewModel {
     struct SenderRow: EmailRowProtocol {
         var type: EmailViewModel.EmailRowType = .sender
         var cellIdentifier: String = "senderCell"
-        var from: String
-        var recipients: [String]
+        var fromVM: RecipientButtonViewModel
+        var toVMs: [RecipientButtonViewModel]
     }
 
     // MARK: Subject
@@ -380,45 +398,70 @@ extension EmailViewModel {
     private func contactValue(address: String) -> CNContact? {
         let identity = Identity(address: address)
         let contact = CNMutableContact()
-        if let userName = identity.userName {
-            contact.givenName = userName
-        }
         contact.emailAddresses = [CNLabeledValue(label: CNLabelHome, value: address as NSString)]
-        guard let cncontact = contact.copy() as? CNContact else {
+        guard let cnContact = contact.copy() as? CNContact else {
             Log.shared.errorAndCrash("Can't cast contact")
             return nil
         }
-        return cncontact
-    }
-
-
-    /// Handle sender button with username pressed
-    /// - Parameter username: The username pressed
-    public func handleUsernameButtonPressed(username: String) {
-        if username == message.from?.displayString {
-            if let address = message.from?.address {
-                handleAddressButtonPressed(address: address)
-            }
-        }
+        return cnContact
     }
 
     /// Handle recipient button with username pressed
     /// - Parameter address: The email address
     public func handleAddressButtonPressed(address: String) {
-        guard let contact = contactValue(address: address) else {
-            Log.shared.errorAndCrash("Contact is nil")
-            return
-        }
-        guard let delegate = delegate else {
-            Log.shared.errorAndCrash("Delegate is nil")
-            return
-        }
-        let contacts = AddressBook.searchContacts(searchterm: address)
-        if let contactToEdit = contacts.first {
-            delegate.showEditContact(contact: contactToEdit)
-        } else {
+        showContactActionSheet(address: address)
+    }
+
+    private func cancelAction() -> UIAlertAction {
+        let cancelActionTitle = NSLocalizedString("Cancel", comment: "Action Sheet - cancel button title")
+        return UIUtils.action(cancelActionTitle, .cancel)
+    }
+
+    private func createNewContact(address: String) -> UIAlertAction {
+        let addTitle = NSLocalizedString("Create new Contact", comment: "Action Sheet - Create new Contact option")
+        return UIUtils.action(addTitle, .default) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard let contact = me.contactValue(address: address) else {
+                Log.shared.errorAndCrash("Contact is nil")
+                return
+            }
+            guard let delegate = me.delegate else {
+                Log.shared.errorAndCrash("Delegate is nil")
+                return
+            }
             delegate.showAddNewContact(contact: contact)
         }
+    }
+
+    private func addToExistingContact(address: String) -> UIAlertAction {
+        let addTitle = NSLocalizedString("Add to existing contact", comment: "Action Sheet - Add to existing contact")
+        return UIUtils.action(addTitle, .default) {  [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard let delegate = me.delegate else {
+                Log.shared.errorAndCrash("Delegate is nil")
+                return
+            }
+            let contacts = AddressBook.searchContacts(searchterm: address)
+            if let contactToEdit = contacts.first {
+                delegate.showEditContact(contact: contactToEdit)
+            } else {
+                delegate.showContactNotFound()
+            }
+        }
+    }
+
+    private func showContactActionSheet(address: String) {
+        let actionSheetController = UIUtils.actionSheet()
+        actionSheetController.addAction(cancelAction())
+        actionSheetController.addAction(createNewContact(address: address))
+        actionSheetController.addAction(addToExistingContact(address: address))
+        delegate?.showActionSheet(actionSheetController: actionSheetController)
     }
 }
 
@@ -429,11 +472,28 @@ extension EmailViewModel {
     private func setupRows(message: Message) {
         /// The order of rows will be the order of cells in the screen.
         /// Sender
-        guard let from = message.from?.displayString else {
+        guard let from = message.from else {
             Log.shared.errorAndCrash("From identity not found.")
             return
         }
-        let senderRow = SenderRow(from: from, recipients: message.allRecipientsOrdered.map({$0.address}))
+
+        let fromVM = RecipientButtonViewModel(identity: from) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.handleAddressButtonPressed(address: from.address)
+        }
+        let tosVM: [RecipientButtonViewModel] = message.allRecipientsOrdered.map({
+                                                                                    let identity: Identity = $0
+                                                                                    return RecipientButtonViewModel(identity: identity) { [weak self] in
+                                                                                        guard let me = self else {
+                                                                                            Log.shared.errorAndCrash("Lost myself")
+                                                                                            return
+                                                                                        }
+                                                                                        me.handleAddressButtonPressed(address: identity.address)
+                                                                                    }})
+        let senderRow = SenderRow(fromVM: fromVM, toVMs: tosVM)
         rows.append(senderRow)
 
         //Subject

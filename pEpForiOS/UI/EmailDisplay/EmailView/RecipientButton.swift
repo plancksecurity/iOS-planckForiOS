@@ -10,6 +10,7 @@ import Foundation
 
 class RecipientButton: UIButton {
 
+    private var callbackAction: (() -> Void)? = nil
     override var intrinsicContentSize: CGSize {
         return titleLabel?.intrinsicContentSize ?? .zero
     }
@@ -22,9 +23,9 @@ extension RecipientButton {
     /// Instanciate a recipient button with the text passed by parameter
     /// - Parameter text: The text to display
     /// - Returns: The recipient button configured
-    static func with(text: String) -> RecipientButton {
+    static func with(text: String, action: (() -> Void)? = nil) -> RecipientButton {
         let recipientButton = RecipientButton(type: .custom)
-        recipientButton.setup(text: text)
+        recipientButton.setup(text: text, action: action)
         return recipientButton
     }
 
@@ -32,7 +33,9 @@ extension RecipientButton {
     /// - Parameters:
     ///   - text: The text of the button
     ///   - color: The title color. If nil, default values will be used. 
-    public func setup(text: String, color: UIColor? = nil) {
+    public func setup(text: String, color: UIColor? = nil, action: (() -> Void)? = nil) {
+        self.callbackAction = action
+        addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         isUserInteractionEnabled = true
         setTitle(text, for: .normal)
         titleLabel?.adjustsFontSizeToFitWidth = true
@@ -59,5 +62,11 @@ extension RecipientButton {
         titleLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
         titleLabel?.textAlignment = .natural
         sizeToFit()
+    }
+
+    @objc private func buttonPressed() {
+        if let action = callbackAction {
+            action()
+        }
     }
 }
