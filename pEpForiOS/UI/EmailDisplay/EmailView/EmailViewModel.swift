@@ -198,12 +198,15 @@ class EmailViewModel {
 
 extension EmailViewModel {
 
-    class RecipientButtonViewModel {
+    struct RecipientButtonViewModel {
         public private(set) var title: String
         public private(set) var identity: Identity
         public private(set) var action: () -> Void
 
-        //Action
+        /// Constructor
+        /// - Parameters:
+        ///   - identity: The identity represented by the button
+        ///   - action: The action to be executed
         init(identity: Identity, action: @escaping () -> Void) {
             self.identity = identity
             self.title = identity.displayString
@@ -405,7 +408,6 @@ extension EmailViewModel {
             Log.shared.errorAndCrash("Contact is nil")
             return
         }
-
         delegate?.showContactViewController(contact: contact)
     }
 }

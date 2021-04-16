@@ -12,7 +12,7 @@ class MessageSenderAndRecipientsCell: UITableViewCell {
     // Will be calculated on runtime
     private var recipientButtonHeight: CGFloat = 0
     // Fixed distance between recipient buttons
-    private let recipientButtonSpacingX: CGFloat = 2
+    private let recipientButtonSpacingX: CGFloat = 4
 
     @IBOutlet private weak var fromButton: RecipientButton!
     @IBOutlet private weak var toContainer: UIView!

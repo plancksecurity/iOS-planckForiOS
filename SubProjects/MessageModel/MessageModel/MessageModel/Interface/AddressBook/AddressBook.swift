@@ -7,7 +7,6 @@
 //
 
 import Contacts
-import ContactsUI
 import CoreData
 
 #if EXT_SHARE
