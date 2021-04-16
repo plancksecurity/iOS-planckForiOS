@@ -384,19 +384,9 @@ extension EmailViewModel {
     }
 }
 
-//MARK:- CNContact
+//MARK:- Contact
 
 extension EmailViewModel {
-
-    private func contactValue(address: String) -> CNContact? {
-        let contact = CNMutableContact()
-        contact.emailAddresses = [CNLabeledValue(label: CNLabelHome, value: address as NSString)]
-        guard let cnContact = contact.copy() as? CNContact else {
-            Log.shared.errorAndCrash("Can't cast contact")
-            return nil
-        }
-        return cnContact
-    }
 
     /// Handle recipient button with username pressed
     /// - Parameter identity: The identity to populate the contact view.

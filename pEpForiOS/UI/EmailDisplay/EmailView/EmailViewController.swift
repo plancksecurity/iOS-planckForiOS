@@ -8,7 +8,6 @@
 
 import pEpIOSToolbox
 import QuickLook
-import ContactsUI
 
 protocol EmailViewControllerDelegate: class {
     func openQLPreviewController(toShowDocumentWithUrl url: URL)

@@ -1,5 +1,5 @@
 //
-//  UIUtil+Contacts.swift
+//  UIUtils+Contacts.swift
 //  pEp
 //
 //  Created by Andreas Buff on 13.03.20.
@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import ContactsUI
 
 #if EXT_SHARE
 import MessageModelForAppExtensions
