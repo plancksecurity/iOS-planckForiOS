@@ -29,9 +29,6 @@ protocol EmailViewModelDelegate: class {
     func hideLoadingView()
     /// Informs the viewModel is ready to provide external content.
     func showExternalContent()
-    /// Show the contact view controller for the contact passed
-    /// - Parameter contact: The contact to set
-    func showContactViewController(contact: CNContact)
 }
 
 //MARK: - EmailRowProtocol
@@ -402,13 +399,9 @@ extension EmailViewModel {
     }
 
     /// Handle recipient button with username pressed
-    /// - Parameter address: The email address
-    public func handleAddressButtonPressed(address: String) {
-        guard let contact = contactValue(address: address) else {
-            Log.shared.errorAndCrash("Contact is nil")
-            return
-        }
-        delegate?.showContactViewController(contact: contact)
+    /// - Parameter identity: The identity to populate the contact view.
+    public func handleAddressButtonPressed(identity: Identity) {
+        UIUtils.presentAddToContactsView(for: identity)
     }
 }
 
@@ -424,22 +417,8 @@ extension EmailViewModel {
             return
         }
 
-        let fromVM = RecipientButtonViewModel(identity: from) { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.handleAddressButtonPressed(address: from.address)
-        }
-        let tosVM: [RecipientButtonViewModel] = message.allRecipientsOrdered.map({
-                                                                                    let identity: Identity = $0
-                                                                                    return RecipientButtonViewModel(identity: identity) { [weak self] in
-                                                                                        guard let me = self else {
-                                                                                            Log.shared.errorAndCrash("Lost myself")
-                                                                                            return
-                                                                                        }
-                                                                                        me.handleAddressButtonPressed(address: identity.address)
-                                                                                    }})
+        let fromVM = getRecipientButtonViewModel(identity: from)
+        let tosVM: [RecipientButtonViewModel] = message.allRecipientsOrdered.map({ return getRecipientButtonViewModel(identity: $0) })
         let senderRow = SenderRow(fromVM: fromVM, toVMs: tosVM)
         rows.append(senderRow)
 
@@ -459,5 +438,15 @@ extension EmailViewModel {
         //Non Inlined Attachments
         let attachmentRows = message.viewableNotInlinedAttachments.map { AttachmentRow(attachment: $0) }
         rows.append(contentsOf: attachmentRows)
+    }
+
+    private func getRecipientButtonViewModel(identity: Identity) -> RecipientButtonViewModel {
+        return RecipientButtonViewModel(identity: identity) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.handleAddressButtonPressed(identity: identity)
+        }
     }
 }

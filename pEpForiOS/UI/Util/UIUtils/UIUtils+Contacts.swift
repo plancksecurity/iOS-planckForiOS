@@ -21,23 +21,6 @@ import pEpIOSToolbox
 
 extension UIUtils {
 
-    /// Modally presents a "Add to Contacts" view or "Edit contact" view
-    ///
-    /// - Parameters:
-    ///   - viewController: the contact view controller to present.
-    static func presentContactViewController(viewController: CNContactViewController) {
-        let storyboard = UIStoryboard(name: Constants.reusableStoryboard, bundle: nil)
-        guard let contactsViewController = storyboard.instantiateViewController(withIdentifier:
-                                                                                    AddToContactsViewController.storyboardId) as? AddToContactsViewController else {
-            Log.shared.errorAndCrash("Missing required data")
-            return
-        }
-        contactsViewController.contactVC = viewController
-        let navigationController = UINavigationController(rootViewController: contactsViewController)
-        let presenterVc = UIApplication.currentlyVisibleViewController()
-        presenterVc.present(navigationController, animated: true, completion: nil)
-    }
-
     /// Modally presents a "Add to Contacts" view for a given contact.
     ///
     /// - Parameters:

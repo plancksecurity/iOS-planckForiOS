@@ -280,15 +280,6 @@ extension EmailViewController: EmailViewModelDelegate {
         removeExternalContentView()
         tableView.reloadData()
     }
-
-    func showContactViewController(contact: CNContact) {
-        let contactViewController = CNContactViewController(forUnknownContact: contact)
-        show(contactViewController: contactViewController)
-    }
-
-    private func show(contactViewController: CNContactViewController) {
-        UIUtils.presentContactViewController(viewController: contactViewController)
-    }
 }
 
 //MARK: - Private
