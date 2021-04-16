@@ -50,15 +50,32 @@ extension RecipientButton {
 
         if let color = color {
             setTitleColor(color, for: .normal)
-        } else if #available(iOS 13.0, *) {
-            setTitleColor(.secondaryLabel, for: .normal)
-            setTitleColor(.tertiaryLabel, for: .highlighted)
-            setTitleColor(.tertiaryLabel, for: .selected)
+            if #available(iOS 13.0, *) {
+                if UITraitCollection.current.userInterfaceStyle == .dark {
+                    setTitleColor(UIColor.secondaryLabel, for: .highlighted)
+                    setTitleColor(UIColor.secondaryLabel, for: .selected)
+                } else {
+                    setTitleColor(UIColor.darkGray, for: .highlighted)
+                    setTitleColor(UIColor.darkGray, for: .selected)
+                }
+
+            } else {
+                setTitleColor(UIColor.darkGray, for: .highlighted)
+                setTitleColor(UIColor.darkGray, for: .selected)
+            }
         } else {
-            setTitleColor(.lightGray, for: .normal)
-            setTitleColor(.darkGray, for: .highlighted)
-            setTitleColor(.darkGray, for: .selected)
+            if #available(iOS 13.0, *) {
+                setTitleColor(.secondaryLabel, for: .normal)
+                setTitleColor(.label, for: .highlighted)
+                setTitleColor(.label, for: .selected)
+            } else {
+                // iOS 12
+                setTitleColor(.black, for: .normal)
+                setTitleColor(.darkGray, for: .highlighted)
+                setTitleColor(.darkGray, for: .selected)
+            }
         }
+
         titleLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
         titleLabel?.textAlignment = .natural
         sizeToFit()
