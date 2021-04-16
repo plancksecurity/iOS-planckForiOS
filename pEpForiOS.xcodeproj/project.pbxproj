@@ -161,7 +161,7 @@
 		15F136F624B62A4900A7F810 /* UserInputProvider+PassphraseProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F136F524B62A4900A7F810 /* UserInputProvider+PassphraseProviderProtocol.swift */; };
 		15FB60532437410600398391 /* HtmlOptimizerUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FB60522437410600398391 /* HtmlOptimizerUtil.swift */; };
 		15FE1F761FE122D900CC2D97 /* CreditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FE1F751FE122D900CC2D97 /* CreditsViewController.swift */; };
-		220DCE2E1E0AB544002FE716 /* MessageSenderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE2C1E0AB544002FE716 /* MessageSenderCell.swift */; };
+		220DCE2E1E0AB544002FE716 /* MessageSenderAndRecipientsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE2C1E0AB544002FE716 /* MessageSenderAndRecipientsCell.swift */; };
 		220DCE2F1E0AB544002FE716 /* MessageData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 220DCE2D1E0AB544002FE716 /* MessageData.plist */; };
 		220DCE351E0AB5CC002FE716 /* MessageContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE311E0AB5CC002FE716 /* MessageContentCell.swift */; };
 		222B35581DF96389007A1F82 /* Capability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35571DF96389007A1F82 /* Capability.swift */; };
@@ -842,7 +842,7 @@
 		15F136F524B62A4900A7F810 /* UserInputProvider+PassphraseProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInputProvider+PassphraseProviderProtocol.swift"; sourceTree = "<group>"; };
 		15FB60522437410600398391 /* HtmlOptimizerUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlOptimizerUtil.swift; sourceTree = "<group>"; };
 		15FE1F751FE122D900CC2D97 /* CreditsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsViewController.swift; sourceTree = "<group>"; };
-		220DCE2C1E0AB544002FE716 /* MessageSenderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSenderCell.swift; sourceTree = "<group>"; };
+		220DCE2C1E0AB544002FE716 /* MessageSenderAndRecipientsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSenderAndRecipientsCell.swift; sourceTree = "<group>"; };
 		220DCE2D1E0AB544002FE716 /* MessageData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MessageData.plist; sourceTree = "<group>"; };
 		220DCE311E0AB5CC002FE716 /* MessageContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageContentCell.swift; sourceTree = "<group>"; };
 		222B35571DF96389007A1F82 /* Capability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Capability.swift; sourceTree = "<group>"; };
@@ -2753,7 +2753,7 @@
 			children = (
 				5B5C2A9125D2902C00F9C18A /* MessageAttachmentCell.swift */,
 				5BA617FF25F1475900973829 /* MessageImageAttachmentCell.swift */,
-				220DCE2C1E0AB544002FE716 /* MessageSenderCell.swift */,
+				220DCE2C1E0AB544002FE716 /* MessageSenderAndRecipientsCell.swift */,
 				5BFBB50325D5207900F269C4 /* MessageSubjectCell.swift */,
 				220DCE311E0AB5CC002FE716 /* MessageContentCell.swift */,
 				5B5C2A9B25D2918800F9C18A /* AttachmentCellBackgroundView.swift */,
@@ -3358,7 +3358,7 @@
 				5BE35AA424913B4700AC605C /* SettingsViewModel.swift in Sources */,
 				B7A50746224CD27A007B988F /* FilterViewModel.swift in Sources */,
 				5B5C2A9C25D2918800F9C18A /* AttachmentCellBackgroundView.swift in Sources */,
-				220DCE2E1E0AB544002FE716 /* MessageSenderCell.swift in Sources */,
+				220DCE2E1E0AB544002FE716 /* MessageSenderAndRecipientsCell.swift in Sources */,
 				5BEB568F25E6997300304A38 /* TrustwordsButton.swift in Sources */,
 				B7DB7FD8221AD3BB003968DA /* UITableView+Extension.swift in Sources */,
 				8B69E3991E30F80E0022959E /* Appearance.swift in Sources */,
