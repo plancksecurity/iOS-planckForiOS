@@ -1,5 +1,5 @@
 //
-//  UIUtil+Contacts.swift
+//  UIUtils+Contacts.swift
 //  pEp
 //
 //  Created by Andreas Buff on 13.03.20.
@@ -23,8 +23,6 @@ extension UIUtils {
     ///
     /// - Parameters:
     ///   - contact: contact to show "Add to Contacts" view for
-    ///   - viewController:  presenting view controller
-    ///   - appConfig: AppConfig to forward
     static func presentAddToContactsView(for contact: Identity) {
         let storyboard = UIStoryboard(name: Constants.reusableStoryboard, bundle: nil)
         guard let contactVc = storyboard.instantiateViewController(withIdentifier:
@@ -45,8 +43,8 @@ extension UIUtils {
     ///
     /// - Parameters:
     ///   - url: url to show custom actions for
-    ///   - viewController: viewcontroller to present action view controllers on (if requiered)
-    ///   - appConfig: AppConfig to forward to potentionally created viewControllers
+    ///   - rect: The sourceRect to show the action sheet in iPad.
+    ///   - view: The sourceView to show the action sheet in iPad.
     static public func showActionSheetWithContactOptions(forUrl url: URL,
                                                             at rect: CGRect,
                                                             at view: UIView) {
@@ -63,4 +61,3 @@ extension UIUtils {
                                              at: view)
     }
 }
-
