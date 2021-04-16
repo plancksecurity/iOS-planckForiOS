@@ -1126,6 +1126,9 @@
 /* Secure & Trusted Description Label - Step 1 */
 "When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted" = "Wenn bestätigt wird, dass die Trustwords korrekt sind und der Handshake abgeschlossen wird, ist die Kommunikation vollständig sicher und vertrauenswürdig";
 
+/* Privacy status explanation Label */
+"When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication partner." = "Beim clicken auf das Datenschutzsymbol wird der Handshake geöffnet, wo die Trustwords mit dem Kommunikationspartner verglichen werden können.";
+
 /* Confirm Trustwords explanation Label */
 "When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted." = "Wenn die Trustwords mit denen vom Kommunikationspartner übereinstimmen, ist Ihre Kommunikation vollständig Sicher & Vertrauenswürdig.";
 
