@@ -193,6 +193,23 @@ class EmailViewModel {
 //MARK: - Email Rows
 
 extension EmailViewModel {
+
+    struct RecipientButtonViewModel {
+        public private(set) var title: String
+        public private(set) var identity: Identity
+        public private(set) var action: () -> Void
+
+        /// Constructor
+        /// - Parameters:
+        ///   - identity: The identity represented by the button
+        ///   - action: The action to be executed
+        init(identity: Identity, action: @escaping () -> Void) {
+            self.identity = identity
+            self.title = identity.displayString
+            self.action = action
+        }
+    }
+
     enum EmailRowType: String {
         case sender, subject, body, attachment, imageAttachment
     }
@@ -202,8 +219,8 @@ extension EmailViewModel {
     struct SenderRow: EmailRowProtocol {
         var type: EmailViewModel.EmailRowType = .sender
         var cellIdentifier: String = "senderCell"
-        var from: String
-        var to: String
+        var fromVM: RecipientButtonViewModel
+        var toVMs: [RecipientButtonViewModel]
     }
 
     // MARK: Subject
@@ -366,6 +383,17 @@ extension EmailViewModel {
     }
 }
 
+//MARK:- Contact
+
+extension EmailViewModel {
+
+    /// Handle recipient button with username pressed
+    /// - Parameter identity: The identity to populate the contact view.
+    public func handleAddressButtonPressed(identity: Identity) {
+        UIUtils.presentAddToContactsView(for: identity)
+    }
+}
+
 //MARK:- Private
 
 extension EmailViewModel {
@@ -373,17 +401,14 @@ extension EmailViewModel {
     private func setupRows(message: Message) {
         /// The order of rows will be the order of cells in the screen.
         /// Sender
-        guard let from = message.from?.displayString else {
+        guard let from = message.from else {
             Log.shared.errorAndCrash("From identity not found.")
             return
         }
-        var tempTo: [String] = []
-        message.allRecipients.forEach { (recepient) in
-            let recepient = recepient.address
-            tempTo.append(recepient)
-        }
-        let toDestinataries = NSLocalizedString("To:", comment: "Email field title") + tempTo.joined(separator: ", ")
-        let senderRow = SenderRow(from: from, to: toDestinataries)
+
+        let fromVM = getRecipientButtonViewModel(identity: from)
+        let tosVM: [RecipientButtonViewModel] = message.allRecipientsOrdered.map({ return getRecipientButtonViewModel(identity: $0) })
+        let senderRow = SenderRow(fromVM: fromVM, toVMs: tosVM)
         rows.append(senderRow)
 
         //Subject
@@ -402,5 +427,15 @@ extension EmailViewModel {
         //Non Inlined Attachments
         let attachmentRows = message.viewableNotInlinedAttachments.map { AttachmentRow(attachment: $0) }
         rows.append(contentsOf: attachmentRows)
+    }
+
+    private func getRecipientButtonViewModel(identity: Identity) -> RecipientButtonViewModel {
+        return RecipientButtonViewModel(identity: identity) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.handleAddressButtonPressed(identity: identity)
+        }
     }
 }
