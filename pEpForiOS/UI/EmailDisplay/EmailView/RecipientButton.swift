@@ -24,7 +24,7 @@ extension RecipientButton {
     /// - Parameter text: The text to display
     /// - Returns: The recipient button configured
     static func with(text: String, action: (() -> Void)? = nil) -> RecipientButton {
-        let recipientButton = RecipientButton(type: .custom)
+        let recipientButton = RecipientButton(type: .system)
         recipientButton.setup(text: text, action: action)
         return recipientButton
     }
@@ -38,10 +38,10 @@ extension RecipientButton {
         addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         isUserInteractionEnabled = true
         setTitle(text, for: .normal)
-        titleLabel?.adjustsFontSizeToFitWidth = true
+        titleLabel?.adjustsFontSizeToFitWidth = false
         contentHorizontalAlignment = .left
-        setContentHuggingPriority(.required, for: .horizontal)
-        setContentCompressionResistancePriority(.required, for: .horizontal)
+        titleLabel?.numberOfLines = 1
+        titleLabel?.lineBreakMode = .byTruncatingTail
         /// Get rid of paddings
         contentEdgeInsets = UIEdgeInsets(top: .leastNormalMagnitude,
                                          left: .leastNormalMagnitude,
