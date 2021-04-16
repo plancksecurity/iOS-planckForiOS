@@ -21,6 +21,7 @@ class EmailViewController: UIViewController {
             viewModel?.delegate = self
         }
     }
+
     public weak var delegate: EmailViewControllerDelegate?
 
     private var htmlViewerViewControllerExists = false

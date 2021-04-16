@@ -160,8 +160,7 @@ extension AddressBook {
              CNContactMiddleNameKey as CNKeyDescriptor,
              CNContactEmailAddressesKey as CNKeyDescriptor,
              CNContactNicknameKey as CNKeyDescriptor,
-             CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
-             CNContactViewController.descriptorForRequiredKeys()])
+             CNContactFormatter.descriptorForRequiredKeys(for: .fullName)])
     }
 
     static private func contactThumbnailFetchRequest() -> [CNKeyDescriptor] {
