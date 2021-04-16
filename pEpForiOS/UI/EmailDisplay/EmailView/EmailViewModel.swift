@@ -10,7 +10,6 @@ import Foundation
 import QuickLook.QLPreviewItem
 import MessageModel
 import pEpIOSToolbox
-import Contacts
 
 /// Delegate to comunicate with Email View.
 protocol EmailViewModelDelegate: class {

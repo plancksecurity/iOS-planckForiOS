@@ -19,7 +19,6 @@ import pEpIOSToolbox
 // MARK: - UIUtil+Contacts
 
 extension UIUtils {
-
     /// Modally presents a "Add to Contacts" view for a given contact.
     ///
     /// - Parameters:

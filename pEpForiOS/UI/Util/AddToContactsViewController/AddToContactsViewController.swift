@@ -39,7 +39,6 @@ class AddToContactsViewController: UIViewController {
         newContact.emailAddresses.append(CNLabeledValue(label: CNLabelHome,
                                                         value: address as NSString))
         contactVC = CNContactViewController(forUnknownContact: newContact)
-
         guard let contactVC = contactVC else {
             Log.shared.errorAndCrash("Missing contactVC")
             return
