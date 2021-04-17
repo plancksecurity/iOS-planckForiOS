@@ -20,6 +20,7 @@ class EmailViewController: UIViewController {
             viewModel?.delegate = self
         }
     }
+
     public weak var delegate: EmailViewControllerDelegate?
 
     private var htmlViewerViewControllerExists = false
@@ -67,23 +68,28 @@ class EmailViewController: UIViewController {
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         if UIDevice.isIpad {
             documentInteractionController.dismissMenu(animated: false)
         }
         splitViewController?.preferredDisplayMode = .allVisible
-        coordinator.animate(alongsideTransition: nil)
+        coordinator.animate(alongsideTransition: nil) { _ in
+            self.tableView.reloadData()
+        }
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         guard let thePreviousTraitCollection = previousTraitCollection else {
             // Valid case. Optional param.
+            tableView.reloadData()
             return
         }
 
-        /// If size classes change, we need to reload.
-        if ((traitCollection.verticalSizeClass != thePreviousTraitCollection.verticalSizeClass) || (traitCollection.horizontalSizeClass != thePreviousTraitCollection.horizontalSizeClass)) {
-            tableView.reloadData()
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                tableView.reloadData()
+            }
         }
     }
 
@@ -119,7 +125,7 @@ extension EmailViewController: UITableViewDataSource {
         let row = vm[indexPath.row]
         switch row.type {
         case .sender:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageSenderCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageSenderAndRecipientsCell else {
                 return UITableViewCell()
             }
             guard let row = vm[indexPath.row] as? EmailViewModel.SenderRow else {
@@ -313,14 +319,8 @@ extension EmailViewController {
         }
     }
 
-    private func setupSender(cell: MessageSenderCell, with row: EmailViewModel.SenderRow) {
-        let font = UIFont.pepFont(style: .footnote, weight: .semibold)
-        cell.fromLabel.font = font
-        cell.fromLabel.text = row.from
-        let subtitle = row.to
-        let attributes = [NSAttributedString.Key.font: font,
-                          NSAttributedString.Key.foregroundColor: UIColor.lightGray]
-        cell.toLabel?.attributedText = NSAttributedString(string: subtitle, attributes: attributes)
+    private func setupSender(cell: MessageSenderAndRecipientsCell, with row: EmailViewModel.SenderRow) {
+        cell.setup(fromVM: row.fromVM, tosVM: row.toVMs)
     }
 
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {

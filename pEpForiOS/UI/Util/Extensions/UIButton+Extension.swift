@@ -37,7 +37,6 @@ extension UIButton {
         setTitle(placeholder, for: .normal)
     }
 
-
     static func backButton(with text: String) -> UIButton {
         let image = UIImage(named: "arrow-rgt-active")
         let tintedimage = image?.withRenderingMode(.alwaysTemplate)

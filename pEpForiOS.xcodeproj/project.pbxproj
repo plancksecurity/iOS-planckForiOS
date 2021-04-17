@@ -161,7 +161,7 @@
 		15F136F624B62A4900A7F810 /* UserInputProvider+PassphraseProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F136F524B62A4900A7F810 /* UserInputProvider+PassphraseProviderProtocol.swift */; };
 		15FB60532437410600398391 /* HtmlOptimizerUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FB60522437410600398391 /* HtmlOptimizerUtil.swift */; };
 		15FE1F761FE122D900CC2D97 /* CreditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FE1F751FE122D900CC2D97 /* CreditsViewController.swift */; };
-		220DCE2E1E0AB544002FE716 /* MessageSenderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE2C1E0AB544002FE716 /* MessageSenderCell.swift */; };
+		220DCE2E1E0AB544002FE716 /* MessageSenderAndRecipientsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE2C1E0AB544002FE716 /* MessageSenderAndRecipientsCell.swift */; };
 		220DCE2F1E0AB544002FE716 /* MessageData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 220DCE2D1E0AB544002FE716 /* MessageData.plist */; };
 		220DCE351E0AB5CC002FE716 /* MessageContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE311E0AB5CC002FE716 /* MessageContentCell.swift */; };
 		222B35581DF96389007A1F82 /* Capability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35571DF96389007A1F82 /* Capability.swift */; };
@@ -489,6 +489,7 @@
 		5BB7C73B24D2EC6300D5F328 /* UnifiedInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C73A24D2EC6300D5F328 /* UnifiedInbox.swift */; };
 		5BB7C74524D82B6300D5F328 /* Constants+Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C74424D82B6300D5F328 /* Constants+Support.swift */; };
 		5BB7C74724D85A3B00D5F328 /* PEPWebviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C74624D85A3A00D5F328 /* PEPWebviewController.swift */; };
+		5BBD1D1026270319009D9D8A /* RecipientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBD1D0F26270319009D9D8A /* RecipientButton.swift */; };
 		5BBE80CB24B733C0008DE0E5 /* AccountSettingsDangerousTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80C624B733BF008DE0E5 /* AccountSettingsDangerousTableViewCell.swift */; };
 		5BBE80CC24B733C0008DE0E5 /* AccountSettingsOAuthTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80C724B733BF008DE0E5 /* AccountSettingsOAuthTableViewCell.swift */; };
 		5BBE80CD24B733C0008DE0E5 /* AccountSettingsSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80C824B733BF008DE0E5 /* AccountSettingsSwitchTableViewCell.swift */; };
@@ -841,7 +842,7 @@
 		15F136F524B62A4900A7F810 /* UserInputProvider+PassphraseProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInputProvider+PassphraseProviderProtocol.swift"; sourceTree = "<group>"; };
 		15FB60522437410600398391 /* HtmlOptimizerUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlOptimizerUtil.swift; sourceTree = "<group>"; };
 		15FE1F751FE122D900CC2D97 /* CreditsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsViewController.swift; sourceTree = "<group>"; };
-		220DCE2C1E0AB544002FE716 /* MessageSenderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSenderCell.swift; sourceTree = "<group>"; };
+		220DCE2C1E0AB544002FE716 /* MessageSenderAndRecipientsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSenderAndRecipientsCell.swift; sourceTree = "<group>"; };
 		220DCE2D1E0AB544002FE716 /* MessageData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MessageData.plist; sourceTree = "<group>"; };
 		220DCE311E0AB5CC002FE716 /* MessageContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageContentCell.swift; sourceTree = "<group>"; };
 		222B35571DF96389007A1F82 /* Capability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Capability.swift; sourceTree = "<group>"; };
@@ -1125,6 +1126,7 @@
 		5BB7C73A24D2EC6300D5F328 /* UnifiedInbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedInbox.swift; sourceTree = "<group>"; };
 		5BB7C74424D82B6300D5F328 /* Constants+Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constants+Support.swift"; sourceTree = "<group>"; };
 		5BB7C74624D85A3A00D5F328 /* PEPWebviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPWebviewController.swift; sourceTree = "<group>"; };
+		5BBD1D0F26270319009D9D8A /* RecipientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientButton.swift; sourceTree = "<group>"; };
 		5BBE80C624B733BF008DE0E5 /* AccountSettingsDangerousTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSettingsDangerousTableViewCell.swift; path = pEpForiOS/UI/Settings/Setting/AccountSettings/Cells/AccountSettingsDangerousTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		5BBE80C724B733BF008DE0E5 /* AccountSettingsOAuthTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSettingsOAuthTableViewCell.swift; path = pEpForiOS/UI/Settings/Setting/AccountSettings/Cells/AccountSettingsOAuthTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		5BBE80C824B733BF008DE0E5 /* AccountSettingsSwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSettingsSwitchTableViewCell.swift; path = pEpForiOS/UI/Settings/Setting/AccountSettings/Cells/AccountSettingsSwitchTableViewCell.swift; sourceTree = SOURCE_ROOT; };
@@ -1780,6 +1782,7 @@
 			isa = PBXGroup;
 			children = (
 				B74F37CC24ADD2B00083501B /* EmailViewController.swift */,
+				5BBD1D0F26270319009D9D8A /* RecipientButton.swift */,
 				5B5C2A9E25D293F300F9C18A /* EmailViewModel.swift */,
 				B70D32B1205BD3E80094A92A /* CellAndSections */,
 				430D73601E9CBD0600EA6FA9 /* Background */,
@@ -2750,7 +2753,7 @@
 			children = (
 				5B5C2A9125D2902C00F9C18A /* MessageAttachmentCell.swift */,
 				5BA617FF25F1475900973829 /* MessageImageAttachmentCell.swift */,
-				220DCE2C1E0AB544002FE716 /* MessageSenderCell.swift */,
+				220DCE2C1E0AB544002FE716 /* MessageSenderAndRecipientsCell.swift */,
 				5BFBB50325D5207900F269C4 /* MessageSubjectCell.swift */,
 				220DCE311E0AB5CC002FE716 /* MessageContentCell.swift */,
 				5B5C2A9B25D2918800F9C18A /* AttachmentCellBackgroundView.swift */,
@@ -3355,7 +3358,7 @@
 				5BE35AA424913B4700AC605C /* SettingsViewModel.swift in Sources */,
 				B7A50746224CD27A007B988F /* FilterViewModel.swift in Sources */,
 				5B5C2A9C25D2918800F9C18A /* AttachmentCellBackgroundView.swift in Sources */,
-				220DCE2E1E0AB544002FE716 /* MessageSenderCell.swift in Sources */,
+				220DCE2E1E0AB544002FE716 /* MessageSenderAndRecipientsCell.swift in Sources */,
 				5BEB568F25E6997300304A38 /* TrustwordsButton.swift in Sources */,
 				B7DB7FD8221AD3BB003968DA /* UITableView+Extension.swift in Sources */,
 				8B69E3991E30F80E0022959E /* Appearance.swift in Sources */,
@@ -3550,6 +3553,7 @@
 				152A39E821905C3E00D9F8E4 /* RecipientCellViewModel.swift in Sources */,
 				152A39CE21905C3E00D9F8E4 /* ComposeHelpers.swift in Sources */,
 				43985D0A2044296D0080FA9A /* OAuthAuthorizer.swift in Sources */,
+				5BBD1D1026270319009D9D8A /* RecipientButton.swift in Sources */,
 				49691B1520D7FD0200CA9367 /* MessageViewModelConfigurable.swift in Sources */,
 				5BE35A9A249139DD00AC605C /* AccountSettingsViewController.swift in Sources */,
 				3705096822CF6AD100CB73D6 /* KeySyncHandshakeViewController.swift in Sources */,
