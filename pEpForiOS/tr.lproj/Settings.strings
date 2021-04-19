@@ -40,7 +40,7 @@
 /* Class = "UILabel"; text = "Title"; ObjectID = "Pdx-rN-QPm"; */
 "Pdx-rN-QPm.text" = "Başlık";
 
-/* Class = "UILabel"; text = "Title"; ObjectID = "Pgw-uY-8FO"; */
+/* Class = "UILabel"; text = "PGP Key Import"; ObjectID = "Pgw-uY-8FO"; */
 "Pgw-uY-8FO.text" = "Başlık";
 
 /* Class = "UILabel"; text = "set_own_key Error"; ObjectID = "ujL-Pa-uXD"; Note = "Don't localize this"; */
