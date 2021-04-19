@@ -251,9 +251,8 @@ extension ShareViewModel {
                                 if let text = item as? String {
                                     sharedData.add(itemProvider: itemProvider,
                                                    dataWithType: .plainText(attributedTitle, text))
-                                } else if let theError = error {
-                                    Log.shared.log(error: theError)
-                                    me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: theError)
+                                } else {
+                                    me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: error)
                                 }
                                 dispatchGroup.leave()
                               })
@@ -274,12 +273,8 @@ extension ShareViewModel {
             if let theUrl = item as? URL {
                 sharedData.add(itemProvider: itemProvider,
                                dataWithType: .url(attributedTitle, theUrl))
-            } else if let theError = error {
-                Log.shared.log(error: theError)
-                me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: theError)
             } else {
-                Log.shared.logError(message: "Error without error. Could not read a URL from NSSecureCoding.")
-                me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: nil)
+                me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: error)
             }
             dispatchGroup.leave()
         }
@@ -313,9 +308,8 @@ extension ShareViewModel {
                                                                         img,
                                                                         imgData,
                                                                         mimeType))
-                                } else if let theError = error {
-                                    Log.shared.log(error: theError)
-                                    me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: theError)
+                                } else {
+                                    me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: error)
                                 }
                                 dispatchGroup.leave()
                               })
@@ -360,12 +354,8 @@ extension ShareViewModel {
                                         }
                                         dispatchGroup.leave()
                                     }
-                                } else if let theError = error {
-                                    Log.shared.log(error: theError)
-                                    me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: theError)
                                 } else {
-                                    me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: nil)
-                                    // no data loading was triggered, since we have no url
+                                    me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: error)
                                     dispatchGroup.leave()
                                 }
                               })
