@@ -17,8 +17,7 @@ extension Array where Element == Folder {
                 let idx2 = FolderType.displayOrder.firstIndex(of: second.folderType) else {
                     return false
             }
-            return idx1 < idx2
+            return idx1 == idx2 ? first.realName < second.realName :  idx1 < idx2
         }
     }
-
 }
