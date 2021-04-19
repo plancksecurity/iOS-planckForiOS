@@ -101,6 +101,9 @@
 "Attach media" = "Attacher un média";
 
 /* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
+"Attached Image (%1$@)" = "Image jointe (%1$@)";
+
+/* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
 "Attached Image %1$d (%2$@)" = "Image jointe %1$d (%2$@)";
 
 /* title attachments filter cell */
@@ -1125,6 +1128,9 @@
 
 /* Secure & Trusted Description Label - Step 1 */
 "When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted" = "Lorsque les Trustwords sont confirmés comme étant corrects et que la prise de contact est effectuée, la communication est entièrement sécurisée et approuvée";
+
+/* Privacy status explanation Label */
+"When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication partner." = "Lorsque vous cliquez sur l'icône Statut de confidentialité dans la barre supérieure, vous accédez à Handshake, où vous pouvez vérifier votre partenaire de communication.";
 
 /* Confirm Trustwords explanation Label */
 "When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted." = "Lorsque vous confirmez que les Trustwords de votre partenaire de communication sont corrects, votre communication sera complètement sécurisée & et fiable.";
