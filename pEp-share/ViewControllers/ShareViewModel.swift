@@ -75,7 +75,8 @@ class ShareViewModel {
                 } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeFileURL as String) {
                     foundItemProviders.append(itemProvider)
                     dispatchGroup.enter()
-                    loadFile(dispatchGroup: dispatchGroup,
+                    loadFile(utiString: kUTTypeFileURL as String,
+                             dispatchGroup: dispatchGroup,
                              sharedData: sharedData,
                              extensionItem: extensionItem,
                              attributedTitle: attributedTitle,
@@ -99,11 +100,12 @@ class ShareViewModel {
                 } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeContent as String) {
                     foundItemProviders.append(itemProvider)
                     dispatchGroup.enter()
-                    loadFileFromData(dispatchGroup: dispatchGroup,
-                                     sharedData: sharedData,
-                                     extensionItem: extensionItem,
-                                     attributedTitle: attributedTitle,
-                                     itemProvider: itemProvider)
+                    loadFile(utiString: kUTTypeContent as String,
+                             dispatchGroup: dispatchGroup,
+                             sharedData: sharedData,
+                             extensionItem: extensionItem,
+                             attributedTitle: attributedTitle,
+                             itemProvider: itemProvider)
                 } else {
                     shareViewModelDelegate?.attachmentTypeNotSupported()
                 }
@@ -293,12 +295,13 @@ extension ShareViewModel {
                               })
     }
 
-    private func loadFile(dispatchGroup: DispatchGroup,
+    private func loadFile(utiString: String,
+                          dispatchGroup: DispatchGroup,
                           sharedData: SharedData,
                           extensionItem: NSExtensionItem,
                           attributedTitle: NSAttributedString?,
                           itemProvider: NSItemProvider) {
-        itemProvider.loadItem(forTypeIdentifier: kUTTypeFileURL as String,
+        itemProvider.loadItem(forTypeIdentifier: utiString,
                               options: nil,
                               completionHandler: { [weak self] item, error in
                                 if let fileUrl = item as? URL {
@@ -330,31 +333,6 @@ extension ShareViewModel {
                                         }
                                         dispatchGroup.leave()
                                     }
-                                } else if let error = error {
-                                    Log.shared.log(error: error)
-                                } else {
-                                    // no data loading was triggered, since we have no url
-                                    dispatchGroup.leave()
-                                }
-                              })
-    }
-
-    private func loadFileFromData(dispatchGroup: DispatchGroup,
-                                  sharedData: SharedData,
-                                  extensionItem: NSExtensionItem,
-                                  attributedTitle: NSAttributedString?,
-                                  itemProvider: NSItemProvider) {
-        itemProvider.loadItem(forTypeIdentifier: kUTTypeContent as String,
-                              options: nil,
-                              completionHandler: { [weak self] item, error in
-                                if let data = item as? Data {
-                                    guard let me = self else {
-                                        // assume ok, user moved on
-                                        dispatchGroup.leave()
-                                        return
-                                    }
-
-                                    dispatchGroup.leave()
                                 } else if let error = error {
                                     Log.shared.log(error: error)
                                 } else {
