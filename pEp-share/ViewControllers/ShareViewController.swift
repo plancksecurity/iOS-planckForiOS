@@ -115,7 +115,7 @@ extension ShareViewController: ShareViewModelDelegate {
                                                 completion: cancelRequest)
     }
 
-    func errorLoadingOrProcessingAttachment(error: Error?) {
+    func attachmentCouldNotBeLoaded(error: Error?) {
         func cancelRequest() {
             extensionContext?.cancelRequest(withError: SharingError.attachmetCouldNotBeLoaded)
         }

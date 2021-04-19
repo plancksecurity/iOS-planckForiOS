@@ -40,8 +40,9 @@ protocol ShareViewModelDelegate: class {
     /// This type of attachment is not (yet) supported
     func attachmentTypeNotSupported()
 
-    /// An error ocurred when trying to fetch the attachment.
-    func errorLoadingOrProcessingAttachment(error: Error?)
+    /// An error ocurred when trying to fetch the attachment, or during processing (i.e., there were problems
+    /// with the data).
+    func attachmentCouldNotBeLoaded(error: Error?)
 }
 
 class ShareViewModel {
@@ -252,7 +253,7 @@ extension ShareViewModel {
                                                    dataWithType: .plainText(attributedTitle, text))
                                 } else if let theError = error {
                                     Log.shared.log(error: theError)
-                                    me.shareViewModelDelegate?.errorLoadingOrProcessingAttachment(error: theError)
+                                    me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: theError)
                                 }
                                 dispatchGroup.leave()
                               })
@@ -275,10 +276,10 @@ extension ShareViewModel {
                                dataWithType: .url(attributedTitle, theUrl))
             } else if let theError = error {
                 Log.shared.log(error: theError)
-                me.shareViewModelDelegate?.errorLoadingOrProcessingAttachment(error: theError)
+                me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: theError)
             } else {
                 Log.shared.logError(message: "Error without error. Could not read a URL from NSSecureCoding.")
-                me.shareViewModelDelegate?.errorLoadingOrProcessingAttachment(error: nil)
+                me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: nil)
             }
             dispatchGroup.leave()
         }
@@ -314,7 +315,7 @@ extension ShareViewModel {
                                                                         mimeType))
                                 } else if let theError = error {
                                     Log.shared.log(error: theError)
-                                    me.shareViewModelDelegate?.errorLoadingOrProcessingAttachment(error: theError)
+                                    me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: theError)
                                 }
                                 dispatchGroup.leave()
                               })
@@ -355,15 +356,15 @@ extension ShareViewModel {
                                                                                data))
                                         } catch {
                                             Log.shared.log(error: error)
-                                            me.shareViewModelDelegate?.errorLoadingOrProcessingAttachment(error: error)
+                                            me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: error)
                                         }
                                         dispatchGroup.leave()
                                     }
                                 } else if let theError = error {
                                     Log.shared.log(error: theError)
-                                    me.shareViewModelDelegate?.errorLoadingOrProcessingAttachment(error: theError)
+                                    me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: theError)
                                 } else {
-                                    me.shareViewModelDelegate?.errorLoadingOrProcessingAttachment(error: nil)
+                                    me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: nil)
                                     // no data loading was triggered, since we have no url
                                     dispatchGroup.leave()
                                 }
