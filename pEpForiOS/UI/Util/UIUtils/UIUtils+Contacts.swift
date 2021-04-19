@@ -30,6 +30,9 @@ extension UIUtils {
             Log.shared.errorAndCrash("Missing required data")
             return
         }
+        if let username = contact.userName {
+            contactVc.userName = username
+        }
         contactVc.emailAddress = contact.address
         let navigationController = UINavigationController(rootViewController: contactVc)
         let presenterVc = UIApplication.currentlyVisibleViewController()
