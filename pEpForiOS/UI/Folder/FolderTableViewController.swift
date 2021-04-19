@@ -31,6 +31,7 @@ class FolderTableViewController: UITableViewController {
         showNextViewIfNeeded()
         showEmptyDetailViewIfNeeded()
         updateRefreshControl()
+        folderVM?.refreshFolderList()
     }
 
 
