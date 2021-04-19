@@ -96,6 +96,14 @@ class ShareViewModel {
                                  extensionItem: extensionItem,
                                  attributedTitle: attributedTitle,
                                  itemProvider: itemProvider)
+                } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeAudioVisual) {
+                    foundItemProviders.append(itemProvider)
+                    dispatchGroup.enter()
+                    loadMovie(dispatchGroup: dispatchGroup,
+                              sharedData: sharedData,
+                              extensionItem: extensionItem,
+                              attributedTitle: attributedTitle,
+                              itemProvider: itemProvider)
                 } else {
                     shareViewModelDelegate?.attachmentTypeNotSupported()
                 }
@@ -125,6 +133,8 @@ class ShareViewModel {
     }
 
     // MARK: - Private
+
+    private let kUTTypeAudioVisual = "public.audiovisual-​content"
 
     private let encryptAndSendSharing: EncryptAndSendSharingProtocol
 
@@ -328,6 +338,32 @@ extension ShareViewModel {
                                     // no data loading was triggered, since we have no url
                                     dispatchGroup.leave()
                                 }
+                              })
+    }
+
+    private func loadMovie(dispatchGroup: DispatchGroup,
+                           sharedData: SharedData,
+                           extensionItem: NSExtensionItem,
+                           attributedTitle: NSAttributedString?,
+                           itemProvider: NSItemProvider) {
+        itemProvider.loadItem(forTypeIdentifier: kUTTypeAudioVisual,
+                              options: nil,
+                              completionHandler: { item, error in
+                                if let imgUrl = item as? URL,
+                                   let imgData = try? Data(contentsOf: imgUrl),
+                                   let img = UIImage(data: imgData) {
+                                    let mimeType = itemProvider.supportedMimeTypeForInlineAttachment() ?? MimeTypeUtils.mimeType(fromURL: imgUrl)
+                                    let filename = imgUrl.fileName(includingExtension: true)
+                                    sharedData.add(itemProvider: itemProvider,
+                                                   dataWithType: .image(attributedTitle,
+                                                                        filename,
+                                                                        img,
+                                                                        imgData,
+                                                                        mimeType))
+                                } else if let error = error {
+                                    Log.shared.log(error: error)
+                                }
+                                dispatchGroup.leave()
                               })
     }
 }
