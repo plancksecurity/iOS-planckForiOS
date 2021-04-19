@@ -115,25 +115,32 @@ extension KeySyncService {
     private func showHandshakeAndHandleResult(inBetween me: PEPIdentity,
                                               and partner: PEPIdentity,
                                               isNewGroup: Bool) {
-        handshakeHandler?.showHandshake(meFingerprint: me.fingerPrint,
-                                        partnerFingerprint: partner.fingerPrint,
-                                        isNewGroup: isNewGroup) {
-                                            [weak self] result in
-                                            if result == .cancel || result == .rejected {
-                                                self?.fastPollingDelegate?.disableFastPolling()
-                                            }
-                                            PEPSession().deliver(result.pEpSyncHandshakeResult(),
-                                                                 identitiesSharing: [me, partner],
-                                                                 errorCallback: { (error: Error) in
-                                                                    if error.isPassphraseError {
-                                                                        Log.shared.error("Error delivering handshake result: %@",
-                                                                                                 error.localizedDescription)
-                                                                    } else {
-                                                                        Log.shared.errorAndCrash("%@", error.localizedDescription)
-                                                                    }
-                                            }) {
-                                                // Caller doesn't care about the result
-                                            }
+        DispatchQueue.main.async { [weak self] in
+            guard let strongSelf = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+
+            strongSelf.handshakeHandler?.showHandshake(meFingerprint: me.fingerPrint,
+                                                       partnerFingerprint: partner.fingerPrint,
+                                                       isNewGroup: isNewGroup) {
+                [weak self] result in
+                if result == .cancel || result == .rejected {
+                    self?.fastPollingDelegate?.disableFastPolling()
+                }
+                PEPSession().deliver(result.pEpSyncHandshakeResult(),
+                                     identitiesSharing: [me, partner],
+                                     errorCallback: { (error: Error) in
+                                        if error.isPassphraseError {
+                                            Log.shared.error("Error delivering handshake result: %@",
+                                                             error.localizedDescription)
+                                        } else {
+                                            Log.shared.errorAndCrash("%@", error.localizedDescription)
+                                        }
+                                     }) {
+                    // Caller doesn't care about the result
+                }
+                                                       }
         }
     }
 
