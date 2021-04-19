@@ -113,6 +113,23 @@ extension ShareViewController: ShareViewModelDelegate {
                                                 message: message,
                                                 completion: cancelRequest)
     }
+
+    func errorLoadingOrProcessingAttachment(error: Error?) {
+        func cancelRequest() {
+            extensionContext?.cancelRequest(withError: SharingError.attachmentTypeNotSupported)
+        }
+
+        var message = NSLocalizedString("The attachment could not be loaded",
+                                        comment: "Sharing extension could not load or process the attachment")
+        let title = NSLocalizedString("Error", comment: "Sharing extension error title")
+        if let theError = error {
+            message = String(format: NSLocalizedString("The attachment could not be loaded:\n%1@",
+                                                       comment: "Sharing extension could not load or process the attachment"), theError.localizedDescription)
+        }
+        UIUtils.showAlertWithOnlyPositiveButton(title: title,
+                                                message: message,
+                                                completion: cancelRequest)
+    }
 }
 
 // MARK: - Private Extension

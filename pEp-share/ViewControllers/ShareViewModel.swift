@@ -39,6 +39,9 @@ protocol ShareViewModelDelegate: class {
 
     /// This type of attachment is not (yet) supported
     func attachmentTypeNotSupported()
+
+    /// An error ocurred when trying to fetch the attachment.
+    func errorLoadingOrProcessingAttachment(error: Error?)
 }
 
 class ShareViewModel {
@@ -237,12 +240,19 @@ extension ShareViewModel {
                               itemProvider: NSItemProvider) {
         itemProvider.loadItem(forTypeIdentifier: kUTTypePlainText as String,
                               options: nil,
-                              completionHandler: { item, error in
+                              completionHandler: { [weak self] item, error in
+                                guard let me = self else {
+                                    // assume user somehow canceled early
+                                    dispatchGroup.leave()
+                                    return
+                                }
+
                                 if let text = item as? String {
                                     sharedData.add(itemProvider: itemProvider,
                                                    dataWithType: .plainText(attributedTitle, text))
-                                } else if let error = error {
-                                    Log.shared.log(error: error)
+                                } else if let theError = error {
+                                    Log.shared.log(error: theError)
+                                    me.shareViewModelDelegate?.errorLoadingOrProcessingAttachment(error: theError)
                                 }
                                 dispatchGroup.leave()
                               })
@@ -253,14 +263,22 @@ extension ShareViewModel {
                         extensionItem: NSExtensionItem,
                         attributedTitle: NSAttributedString?,
                         itemProvider: NSItemProvider) {
-        let completionHandler: ((NSSecureCoding?, Error?) -> Void) = { item, error in
+        let completionHandler: ((NSSecureCoding?, Error?) -> Void) = { [weak self] item, error in
+            guard let me = self else {
+                // assume user somehow canceled early
+                dispatchGroup.leave()
+                return
+            }
+
             if let theUrl = item as? URL {
                 sharedData.add(itemProvider: itemProvider,
                                dataWithType: .url(attributedTitle, theUrl))
-            } else if let error = error {
-                Log.shared.log(error: error)
+            } else if let theError = error {
+                Log.shared.log(error: theError)
+                me.shareViewModelDelegate?.errorLoadingOrProcessingAttachment(error: theError)
             } else {
                 Log.shared.logError(message: "Error without error. Could not read a URL from NSSecureCoding.")
+                me.shareViewModelDelegate?.errorLoadingOrProcessingAttachment(error: nil)
             }
             dispatchGroup.leave()
         }
@@ -276,7 +294,13 @@ extension ShareViewModel {
                            itemProvider: NSItemProvider) {
         itemProvider.loadItem(forTypeIdentifier: kUTTypeImage as String,
                               options: nil,
-                              completionHandler: { item, error in
+                              completionHandler: { [weak self] item, error in
+                                guard let me = self else {
+                                    // assume user somehow canceled early
+                                    dispatchGroup.leave()
+                                    return
+                                }
+
                                 if let imgUrl = item as? URL,
                                    let imgData = try? Data(contentsOf: imgUrl),
                                    let img = UIImage(data: imgData) {
@@ -288,8 +312,9 @@ extension ShareViewModel {
                                                                         img,
                                                                         imgData,
                                                                         mimeType))
-                                } else if let error = error {
-                                    Log.shared.log(error: error)
+                                } else if let theError = error {
+                                    Log.shared.log(error: theError)
+                                    me.shareViewModelDelegate?.errorLoadingOrProcessingAttachment(error: theError)
                                 }
                                 dispatchGroup.leave()
                               })
@@ -304,13 +329,13 @@ extension ShareViewModel {
         itemProvider.loadItem(forTypeIdentifier: utiString,
                               options: nil,
                               completionHandler: { [weak self] item, error in
-                                if let fileUrl = item as? URL {
-                                    guard let me = self else {
-                                        // assume ok, user moved on
-                                        dispatchGroup.leave()
-                                        return
-                                    }
+                                guard let me = self else {
+                                    // assume ok, user moved on
+                                    dispatchGroup.leave()
+                                    return
+                                }
 
+                                if let fileUrl = item as? URL {
                                     var filename = fileUrl.fileName()
                                     let fileExt = fileUrl.pathExtension
                                     if !fileExt.isEmpty {
@@ -330,12 +355,15 @@ extension ShareViewModel {
                                                                                data))
                                         } catch {
                                             Log.shared.log(error: error)
+                                            me.shareViewModelDelegate?.errorLoadingOrProcessingAttachment(error: error)
                                         }
                                         dispatchGroup.leave()
                                     }
-                                } else if let error = error {
-                                    Log.shared.log(error: error)
+                                } else if let theError = error {
+                                    Log.shared.log(error: theError)
+                                    me.shareViewModelDelegate?.errorLoadingOrProcessingAttachment(error: theError)
                                 } else {
+                                    me.shareViewModelDelegate?.errorLoadingOrProcessingAttachment(error: nil)
                                     // no data loading was triggered, since we have no url
                                     dispatchGroup.leave()
                                 }
