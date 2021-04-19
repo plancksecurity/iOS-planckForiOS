@@ -35,6 +35,8 @@ extension ShareViewController: ShareViewModelDelegate {
         case noAccount
         case userCanceled
         case messageCouldNotBeSaved
+        case attachmentTypeNotSupported
+        case attachmetCouldNotBeLoaded
     }
 
     func startComposeView(composeViewModel: ComposeViewModel) {
@@ -98,6 +100,36 @@ extension ShareViewController: ShareViewModelDelegate {
         if let theView = navigationController?.view {
             viewBusyState = theView.displayAsBusy()
         }
+    }
+
+    func attachmentTypeNotSupported() {
+        func cancelRequest() {
+            extensionContext?.cancelRequest(withError: SharingError.attachmentTypeNotSupported)
+        }
+
+        let title = NSLocalizedString("Error", comment: "Sharing extension error title")
+        let message = NSLocalizedString("This type of attachment is not (yet) supported",
+                                        comment: "Sharing extension cannot detect the type of the attachment, cannot load it")
+        UIUtils.showAlertWithOnlyPositiveButton(title: title,
+                                                message: message,
+                                                completion: cancelRequest)
+    }
+
+    func attachmentCouldNotBeLoaded(error: Error?) {
+        func cancelRequest() {
+            extensionContext?.cancelRequest(withError: SharingError.attachmetCouldNotBeLoaded)
+        }
+
+        var message = NSLocalizedString("The attachment could not be loaded",
+                                        comment: "Sharing extension could not load or process the attachment")
+        let title = NSLocalizedString("Error", comment: "Sharing extension error title")
+        if let theError = error {
+            message = String(format: NSLocalizedString("The attachment could not be loaded:\n%1@",
+                                                       comment: "Sharing extension could not load or process the attachment"), theError.localizedDescription)
+        }
+        UIUtils.showAlertWithOnlyPositiveButton(title: title,
+                                                message: message,
+                                                completion: cancelRequest)
     }
 }
 

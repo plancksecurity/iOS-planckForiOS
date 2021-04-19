@@ -36,6 +36,13 @@ protocol ShareViewModelDelegate: class {
     /// User has tapped "Send", nothing to do now except wait for success or error.
     /// In response, prevent further UI actions (like tapping "Send" directly again), maybe display some animation.
     func messageIsBeingSent()
+
+    /// This type of attachment is not (yet) supported
+    func attachmentTypeNotSupported()
+
+    /// An error ocurred when trying to fetch the attachment, or during processing (i.e., there were problems
+    /// with the data).
+    func attachmentCouldNotBeLoaded(error: Error?)
 }
 
 class ShareViewModel {
@@ -72,7 +79,8 @@ class ShareViewModel {
                 } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeFileURL as String) {
                     foundItemProviders.append(itemProvider)
                     dispatchGroup.enter()
-                    loadFile(dispatchGroup: dispatchGroup,
+                    loadFile(utiString: kUTTypeFileURL as String,
+                             dispatchGroup: dispatchGroup,
                              sharedData: sharedData,
                              extensionItem: extensionItem,
                              attributedTitle: attributedTitle,
@@ -93,8 +101,17 @@ class ShareViewModel {
                                  extensionItem: extensionItem,
                                  attributedTitle: attributedTitle,
                                  itemProvider: itemProvider)
+                } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeContent as String) {
+                    foundItemProviders.append(itemProvider)
+                    dispatchGroup.enter()
+                    loadFile(utiString: kUTTypeContent as String,
+                             dispatchGroup: dispatchGroup,
+                             sharedData: sharedData,
+                             extensionItem: extensionItem,
+                             attributedTitle: attributedTitle,
+                             itemProvider: itemProvider)
                 } else {
-                    Log.shared.errorAndCrash(message: "Unsupported NSItemProvider")
+                    shareViewModelDelegate?.attachmentTypeNotSupported()
                 }
             }
         }
@@ -224,12 +241,18 @@ extension ShareViewModel {
                               itemProvider: NSItemProvider) {
         itemProvider.loadItem(forTypeIdentifier: kUTTypePlainText as String,
                               options: nil,
-                              completionHandler: { item, error in
+                              completionHandler: { [weak self] item, error in
+                                guard let me = self else {
+                                    // assume user somehow canceled early
+                                    dispatchGroup.leave()
+                                    return
+                                }
+
                                 if let text = item as? String {
                                     sharedData.add(itemProvider: itemProvider,
                                                    dataWithType: .plainText(attributedTitle, text))
-                                } else if let error = error {
-                                    Log.shared.log(error: error)
+                                } else {
+                                    me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: error)
                                 }
                                 dispatchGroup.leave()
                               })
@@ -240,14 +263,18 @@ extension ShareViewModel {
                         extensionItem: NSExtensionItem,
                         attributedTitle: NSAttributedString?,
                         itemProvider: NSItemProvider) {
-        let completionHandler: ((NSSecureCoding?, Error?) -> Void) = { item, error in
+        let completionHandler: ((NSSecureCoding?, Error?) -> Void) = { [weak self] item, error in
+            guard let me = self else {
+                // assume user somehow canceled early
+                dispatchGroup.leave()
+                return
+            }
+
             if let theUrl = item as? URL {
                 sharedData.add(itemProvider: itemProvider,
                                dataWithType: .url(attributedTitle, theUrl))
-            } else if let error = error {
-                Log.shared.log(error: error)
             } else {
-                Log.shared.logError(message: "Error without error. Could not read a URL from NSSecureCoding.")
+                me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: error)
             }
             dispatchGroup.leave()
         }
@@ -263,7 +290,13 @@ extension ShareViewModel {
                            itemProvider: NSItemProvider) {
         itemProvider.loadItem(forTypeIdentifier: kUTTypeImage as String,
                               options: nil,
-                              completionHandler: { item, error in
+                              completionHandler: { [weak self] item, error in
+                                guard let me = self else {
+                                    // assume user somehow canceled early
+                                    dispatchGroup.leave()
+                                    return
+                                }
+
                                 if let imgUrl = item as? URL,
                                    let imgData = try? Data(contentsOf: imgUrl),
                                    let img = UIImage(data: imgData) {
@@ -275,28 +308,29 @@ extension ShareViewModel {
                                                                         img,
                                                                         imgData,
                                                                         mimeType))
-                                } else if let error = error {
-                                    Log.shared.log(error: error)
+                                } else {
+                                    me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: error)
                                 }
                                 dispatchGroup.leave()
                               })
     }
 
-    private func loadFile(dispatchGroup: DispatchGroup,
+    private func loadFile(utiString: String,
+                          dispatchGroup: DispatchGroup,
                           sharedData: SharedData,
                           extensionItem: NSExtensionItem,
                           attributedTitle: NSAttributedString?,
                           itemProvider: NSItemProvider) {
-        itemProvider.loadItem(forTypeIdentifier: kUTTypeFileURL as String,
+        itemProvider.loadItem(forTypeIdentifier: utiString,
                               options: nil,
                               completionHandler: { [weak self] item, error in
-                                if let fileUrl = item as? URL {
-                                    guard let me = self else {
-                                        // assume ok, user moved on
-                                        dispatchGroup.leave()
-                                        return
-                                    }
+                                guard let me = self else {
+                                    // assume ok, user moved on
+                                    dispatchGroup.leave()
+                                    return
+                                }
 
+                                if let fileUrl = item as? URL {
                                     var filename = fileUrl.fileName()
                                     let fileExt = fileUrl.pathExtension
                                     if !fileExt.isEmpty {
@@ -316,13 +350,12 @@ extension ShareViewModel {
                                                                                data))
                                         } catch {
                                             Log.shared.log(error: error)
+                                            me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: error)
                                         }
                                         dispatchGroup.leave()
                                     }
-                                } else if let error = error {
-                                    Log.shared.log(error: error)
                                 } else {
-                                    // no data loading was triggered, since we have no url
+                                    me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: error)
                                     dispatchGroup.leave()
                                 }
                               })
