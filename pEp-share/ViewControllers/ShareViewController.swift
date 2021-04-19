@@ -36,6 +36,7 @@ extension ShareViewController: ShareViewModelDelegate {
         case userCanceled
         case messageCouldNotBeSaved
         case attachmentTypeNotSupported
+        case attachmetCouldNotBeLoaded
     }
 
     func startComposeView(composeViewModel: ComposeViewModel) {
@@ -116,7 +117,7 @@ extension ShareViewController: ShareViewModelDelegate {
 
     func errorLoadingOrProcessingAttachment(error: Error?) {
         func cancelRequest() {
-            extensionContext?.cancelRequest(withError: SharingError.attachmentTypeNotSupported)
+            extensionContext?.cancelRequest(withError: SharingError.attachmetCouldNotBeLoaded)
         }
 
         var message = NSLocalizedString("The attachment could not be loaded",
