@@ -36,6 +36,9 @@ protocol ShareViewModelDelegate: class {
     /// User has tapped "Send", nothing to do now except wait for success or error.
     /// In response, prevent further UI actions (like tapping "Send" directly again), maybe display some animation.
     func messageIsBeingSent()
+
+    /// This type of attachment is not (yet) supported
+    func attachmentTypeNotSupported()
 }
 
 class ShareViewModel {
@@ -94,7 +97,7 @@ class ShareViewModel {
                                  attributedTitle: attributedTitle,
                                  itemProvider: itemProvider)
                 } else {
-                    Log.shared.errorAndCrash(message: "Unsupported NSItemProvider")
+                    shareViewModelDelegate?.attachmentTypeNotSupported()
                 }
             }
         }

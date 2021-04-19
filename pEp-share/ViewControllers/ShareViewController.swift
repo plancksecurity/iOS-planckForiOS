@@ -35,6 +35,7 @@ extension ShareViewController: ShareViewModelDelegate {
         case noAccount
         case userCanceled
         case messageCouldNotBeSaved
+        case attachmentTypeNotSupported
     }
 
     func startComposeView(composeViewModel: ComposeViewModel) {
@@ -98,6 +99,19 @@ extension ShareViewController: ShareViewModelDelegate {
         if let theView = navigationController?.view {
             viewBusyState = theView.displayAsBusy()
         }
+    }
+
+    func attachmentTypeNotSupported() {
+        func cancelRequest() {
+            extensionContext?.cancelRequest(withError: SharingError.attachmentTypeNotSupported)
+        }
+
+        let title = NSLocalizedString("Error", comment: "Sharing extension error title")
+        let message = NSLocalizedString("This type of attachment is not (yet) supported",
+                                        comment: "Sharing extension cannot detect the type of the attachment, cannot load it")
+        UIUtils.showAlertWithOnlyPositiveButton(title: title,
+                                                message: message,
+                                                completion: cancelRequest)
     }
 }
 
