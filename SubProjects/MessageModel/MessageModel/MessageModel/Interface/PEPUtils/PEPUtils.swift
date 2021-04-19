@@ -29,7 +29,7 @@ public class PEPUtils {
 
         let fileManager = FileManager.default
 
-        if !fileManager.fileExists(atPath: homeString) {
+        guard fileManager.fileExists(atPath: homeString) else {
             // Might happen if engine was never used.
             return true
         }

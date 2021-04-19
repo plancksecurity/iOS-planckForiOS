@@ -55,6 +55,8 @@ class EmailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         showExternalContentLabel.text = Localized.showExternalContentText
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 100
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -70,6 +72,19 @@ class EmailViewController: UIViewController {
         }
         splitViewController?.preferredDisplayMode = .allVisible
         coordinator.animate(alongsideTransition: nil)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case. Optional param.
+            return
+        }
+
+        /// If size classes change, we need to reload.
+        if ((traitCollection.verticalSizeClass != thePreviousTraitCollection.verticalSizeClass) || (traitCollection.horizontalSizeClass != thePreviousTraitCollection.horizontalSizeClass)) {
+            tableView.reloadData()
+        }
     }
 
     // MARK: - IBActions
@@ -131,17 +146,28 @@ extension EmailViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
-            setupBody(cell: cell, with: row)
+            setupBody(cell: cell, with: row, indexPath: indexPath)
             return cell
         case .attachment:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageAttachmentCell else {
                 return UITableViewCell()
             }
-            guard let row = vm[indexPath.row] as? AttachmentRowProtocol else {
+            guard let row = vm[indexPath.row] as? EmailViewModel.BaseAttachmentRow else {
                 Log.shared.errorAndCrash("Can't get or cast attachment row")
                 return cell
             }
             setupAttachment(cell: cell, with: row)
+            return cell
+
+        case .imageAttachment:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageImageAttachmentCell else {
+                return UITableViewCell()
+            }
+            guard let row = vm[indexPath.row] as? EmailViewModel.ImageAttachmentRow else {
+                Log.shared.errorAndCrash("Can't get or cast attachment row")
+                return cell
+            }
+            setupImageAttachment(cell: cell, row: row, indexPath: indexPath)
             return cell
         }
     }
@@ -156,13 +182,13 @@ extension EmailViewController: UITableViewDelegate {
             Log.shared.errorAndCrash("Missing vm")
             return tableView.estimatedRowHeight
         }
-        if let row = vm[indexPath.row] as? AttachmentRowProtocol {
+        if let row = vm[indexPath.row] as? EmailViewModel.AttachmentRow {
             return row.height
         }
         if (vm[indexPath.row] as? EmailViewModel.BodyRow)?.htmlBody != nil {
             return htmlViewerViewController.contentSize.height
         }
-        return tableView.rowHeight
+        return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -171,7 +197,7 @@ extension EmailViewController: UITableViewDelegate {
             return
         }
         let row = vm[indexPath.row]
-        if row.type == .attachment {
+        if row.type == .attachment || row.type == .imageAttachment {
             vm.handleDidTapAttachmentRow(at: indexPath)
         }
     }
@@ -257,7 +283,7 @@ extension EmailViewController {
         showExternalContentView.isHidden = true
     }
 
-    private func setupBody(cell: MessageBodyCell, with row: EmailViewModel.BodyRow) {
+    private func setupBody(cell: MessageBodyCell, with row: EmailViewModel.BodyRow, indexPath: IndexPath) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("Missing vm")
             return
@@ -282,7 +308,7 @@ extension EmailViewController {
                 cell.contentText.attributedText = body
                 cell.contentText.dataDetectorTypes = .link
                 cell.contentText.delegate = me.clickHandler
-                me.tableView.updateSize()
+                me.updateSizeIfLastCell(indexPath: indexPath)
             }
         }
     }
@@ -310,11 +336,42 @@ extension EmailViewController {
         }
     }
 
-    private func setupAttachment(cell: MessageAttachmentCell, with row: AttachmentRowProtocol) {
-        row.retrieveAttachmentData { (fileName, fileExtension, image) in
-            cell.fileNameLabel.text = fileName
-            cell.iconImageView.image = image
-            cell.fileExtensionLabel.text = fileExtension
+    private func setupAttachment(cell: MessageAttachmentCell, with row: EmailViewModel.BaseAttachmentRow) {
+        row.retrieveAttachmentData { () in
+            cell.fileNameLabel.text = row.filename
+            cell.iconImageView.image = row.icon
+            cell.fileExtensionLabel.text = row.fileExtension
+        }
+    }
+
+    private func setupImageAttachment(cell: MessageImageAttachmentCell,
+                                      row: EmailViewModel.ImageAttachmentRow,
+                                      indexPath: IndexPath) {
+        func setupCellFromRowData() {
+            guard var image = row.icon else {
+                Log.shared.errorAndCrash("No image in a ImageAttachmentRow")
+                return
+            }
+            if image.size.width > cell.frame.size.width {
+                image = image.resized(newWidth: cell.frame.width) ?? image
+            }
+            cell.imageAttachmentView?.image = image
+            updateSizeIfLastCell(indexPath: indexPath)
+        }
+        row.retrieveAttachmentData() {
+            setupCellFromRowData()
+        }
+    }
+
+    /// Update table view size in case the indexPath corresponds to the last cell.
+    /// - Parameter indexPath: The indexPath of the cell to evaluate
+    private func updateSizeIfLastCell(indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        if indexPath.row == vm.numberOfRows - 1 {
+            tableView.updateSize()
         }
     }
 }

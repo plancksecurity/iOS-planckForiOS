@@ -4,6 +4,9 @@
 /* Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion. */
 "\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n%1$@\n\n%2$@\n\n%3$@\n\nAnhänge sind deaktiviert.\n\n";
 
+/* external content label text */
+"\nBy showing external content, your privacy may be invaded.\nThis may affect the privacy status of the message.\n" = "\nWenn externe Inhalte angezeigt werden, ist der Datenschutz ihrer Nachricht nicht mehr gewährleistet.\nDies hat Auswirkungen auf den Datenschutzstatus.\n";
+
 /* No privacy status explanation
    No privacy status suggestion */
 "-" = "-";
@@ -352,7 +355,7 @@
 "If enabled, message subjects are also protected." = "Schützt den Betreff, wenn aktiviert.";
 
 /* Secure & Trusted Description Label - Step 1 */
-"If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle." = "Wenn die Trustwords nicht korrekt sind, kann es um eine man-in-the-middle Attacke handeln.";
+"If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle." = "Wenn die Trustwords nicht korrekt sind, kann es sich um eine man-in-the-middle Attacke handeln.";
 
 /* Privacy status suggestion */
 "If this message was addressed to you, please inform the sender that you don't have the key." = "Falls diese Nachricht an Sie gerichtet war. Bitte teilen Sie dem Absender mit, dass Sie den Schlüssel nicht haben.";
@@ -407,6 +410,9 @@
 
 /* Please enter a valid Gmail address.Fail to log in, email does not match account type */
 "Invalid Address" = "Ungültige Adresse";
+
+/* Client certificate import: File does not look like a certificate title */
+"Invalid Certificate" = "Zertifikat ungültig";
 
 /* Invalid input for email address */
 "Invalid email address: %1$@" = "Ungültige E-Mail-Adresse: %1$@";
@@ -904,6 +910,9 @@
 /* Client certificate import: corrupted file error alert message */
 "The file could not be imported" = "Die Datei konnte nicht importiert werden";
 
+/* Client certificate import: File does not look like a certificate */
+"The file could not be imported as a certificate" = "Diese Datei kann nicht als Zertifikat importiert werden";
+
 /* Message when asking user for confirmation about importing keys */
 "The fingerprint of the selected key is:\n%1$@\n%2$@\n\nImport and use this key?" = "Der Fingerabdruck des gewählten Schlüssels ist:\n%1$@\n%2$@\n\nSoll dieser Schlüssel importiert und verwendet werden?";
 
@@ -1118,7 +1127,7 @@
 "When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted" = "Wenn bestätigt wird, dass die Trustwords korrekt sind und der Handshake abgeschlossen wird, ist die Kommunikation vollständig sicher und vertrauenswürdig";
 
 /* Privacy status explanation Label */
-"When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication parner." = "Wenn Sie in der Leiste oben auf das Datenschutzstatus-Symbol klicken, gelangen Sie zum Handshake, wo Sie Ihren Kommunikationspartner überprüfen können.";
+"When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication partner." = "Beim clicken auf das Datenschutzsymbol wird der Handshake geöffnet, wo die Trustwords mit dem Kommunikationspartner verglichen werden können.";
 
 /* Confirm Trustwords explanation Label */
 "When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted." = "Wenn die Trustwords mit denen vom Kommunikationspartner übereinstimmen, ist Ihre Kommunikation vollständig Sicher & Vertrauenswürdig.";

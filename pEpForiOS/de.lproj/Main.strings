@@ -1,3 +1,9 @@
+/* Class = "UILabel"; text = "Date"; ObjectID = "1Wv-cJ-cSu"; */
+"1Wv-cJ-cSu.text" = "Datum";
+
+/* Class = "UILabel"; text = "Subject"; ObjectID = "7WS-qg-fiH"; */
+"7WS-qg-fiH.text" = "Betreff";
+
 /* Class = "UILabel"; text = "Date"; ObjectID = "a1D-BW-3Rd"; */
 "a1D-BW-3Rd.text" = "Datum";
 
@@ -19,6 +25,12 @@
 /* Class = "UIViewController"; title = "Move to Account"; ObjectID = "EmS-3d-sKb"; */
 "EmS-3d-sKb.title" = "Zu Konto verschieben";
 
+/* Class = "UILabel"; text = "Sender"; ObjectID = "Eqy-26-Dp7"; */
+"Eqy-26-Dp7.text" = "Absender";
+
+/* Class = "UILabel"; text = "just some placeholder text for storyboard"; ObjectID = "GZX-Q2-Z5a"; */
+"GZX-Q2-Z5a.text" = "just some placeholder text for storyboard";
+
 /* Class = "UILabel"; text = "Subject jlkfj glkafj kal jfa slfaj alsjf aslj fsajk"; ObjectID = "ha5-Vd-x3U"; */
 "ha5-Vd-x3U.text" = "Betreff jlkfj glkafj kal jfa slfaj alsjf aslj fsajk";
 
@@ -28,8 +40,14 @@
 /* Class = "UILabel"; text = "Sender sfasflask jfhsajfkas fjksaj"; ObjectID = "KTi-T9-Inm"; */
 "KTi-T9-Inm.text" = "Absender sfasflask jfhsajfkas fjksaj";
 
+/* Class = "UIButton"; normalTitle = "Show External Content"; ObjectID = "kwH-Mw-szw"; */
+"kwH-Mw-szw.normalTitle" = "Externe Inhalte anzeigen";
+
 /* Class = "UILabel"; text = "Title"; ObjectID = "OLo-8A-CCo"; */
 "OLo-8A-CCo.text" = "Titel";
+
+/* Class = "UILabel"; text = "To: Recipients"; ObjectID = "pYF-SV-znm"; */
+"pYF-SV-znm.text" = "An: Empfänger";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "riI-qM-PeJ"; */
 "riI-qM-PeJ.text" = "Titel";

@@ -1117,9 +1117,6 @@
 /* Secure & Trusted Description Label - Step 1 */
 "When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted" = "Wanneer wordt bevestigd dat de Vertrouwenswoorden correct zijn en de Handdruk is voltooid, zal de communicatie volledig veilig en vertrouwd zijn";
 
-/* Privacy status explanation Label */
-"When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication parner." = "Wanneer u op het pictogram Privacy Status in de bovenbalk klikt, komt u bij Handshake, waar u uw communicatiepartner kunt verifiëren.";
-
 /* Confirm Trustwords explanation Label */
 "When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted." = "Wanneer je bevestigt dat de Trustwords van je communicatiepartner correct zijn, zal je communicatie volledig Veilig & Vertrouwd zijn.";
 

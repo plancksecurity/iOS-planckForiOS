@@ -26,6 +26,11 @@ class SuggestTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         UIHelper.variableCellHeightsTableView(self.tableView)
+        registerForNotifications()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -93,9 +98,54 @@ extension SuggestTableViewController {
         cell.nameLabel.text = row.name
         cell.emailLabel.text = row.email
         vm.pEpRatingIcon(for: row) { (icon) in
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                guard me.tableView.indexPath(for: cell) == indexPath else {
+                    // The cell setup(cell:withDataFor:) has been called for has already been reused
+                    // for representing the data of another indepath while computing the icon.
+                    // The computed pEpRatingIcon belonds to the data of the indexpath of the cell
+                    // before reusing it.
+                    // Don't set the wrong 
+                    return
+                }
                 cell.pEpStatusImageView.image = icon
             }
         }
+    }
+}
+
+extension SuggestTableViewController {
+
+    private func registerForNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleKeyboardDidShow),
+                                               name: UIResponder.keyboardDidShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleKeyboardDidHide),
+                                               name: UIResponder.keyboardDidHideNotification,
+                                               object: nil)
+    }
+
+    @objc
+    private func handleKeyboardDidShow(notification: NSNotification) {
+        let margin: CGFloat = 74.0
+        tableView.contentInset.bottom = keyBoardHeight(notification: notification) + margin
+    }
+
+    @objc
+    private func handleKeyboardDidHide(notification: NSNotification) {
+        tableView.contentInset.bottom = 0.0
+    }
+
+    private func keyBoardHeight(notification: NSNotification) -> CGFloat {
+        guard let keyboardSize = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+                return 0
+        }
+
+        return keyboardSize.height
     }
 }

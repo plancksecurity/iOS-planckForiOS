@@ -73,6 +73,9 @@
 /* Class = "UILabel"; text = "Title"; ObjectID = "xiv-OD-YNL"; */
 "xiv-OD-YNL.text" = "Titre";
 
+/* Class = "UITextView"; text = "Signature"; ObjectID = "xYO-T2-bDx"; */
+"xYO-T2-bDx.text" = "Signature";
+
 /* Class = "UILabel"; text = "p≡p Sync"; ObjectID = "yCf-X7-gtF"; */
 "yCf-X7-gtF.text" = "p≡p Sync";
 

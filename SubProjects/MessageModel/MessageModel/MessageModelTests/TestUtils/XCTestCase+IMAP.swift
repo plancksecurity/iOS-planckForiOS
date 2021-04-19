@@ -80,8 +80,7 @@ extension XCTestCase {
         let expNumMails = expectation(description: "expNumMails")
         var numMails: Int?
         let fetchNumMailsOp = FetchNumberOfNewMailsService(imapConnectionDataCache: nil,
-                                                           context: context,
-                                                           errorContainer: errorContainer)
+                                                           context: context)
         fetchNumMailsOp.start() { theNumMails in
             numMails = theNumMails
             expNumMails.fulfill()
