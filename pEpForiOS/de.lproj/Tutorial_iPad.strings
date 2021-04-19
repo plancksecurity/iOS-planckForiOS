@@ -38,19 +38,19 @@
 "heq-V2-xIW.text" = "Sicher";
 
 /* Class = "UILabel"; text = "When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted. "; ObjectID = "hJ8-DF-7GD"; */
-"hJ8-DF-7GD.text" = "Wenn die Trustwords übereinstimmen können Sie diese bestätigen. Damit ist ihr Kommunikationspartner Sicher & Vertrauenswürdig. ";
+"hJ8-DF-7GD.text" = "Wenn die Trustwords übereinstimmen können Sie diese bestätigen. Damit wird die Kommunikation mit diesem Kontakt sicher & vertrauenswürdig. ";
 
 /* Class = "UILabel"; text = "Secure & Trusted"; ObjectID = "jEv-gJ-y1l"; */
-"jEv-gJ-y1l.text" = "Sicher & Vertrauenswürdig";
+"jEv-gJ-y1l.text" = "Sicher & vertrauenswürdig";
 
 /* Class = "UILabel"; text = "When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted"; ObjectID = "O0Z-cV-J1j"; */
-"O0Z-cV-J1j.text" = "Wenn die Trustwords mittels Handshake bestätigt wurden, wird die Kommunikation sicher & vertrauenswürdig";
+"O0Z-cV-J1j.text" = "Wenn die Trustwords mittels Handshake bestätigt wurden, wird die Kommunikation mit diesem Kontakt sicher & vertrauenswürdig";
 
 /* Class = "UILabel"; text = "This Privacy Status Icon is shown as an Icon the user's avatar"; ObjectID = "omd-1g-ZCM"; */
 "omd-1g-ZCM.text" = "Dieses Datenschutzstatus-Symbol wird als Symbol für den Avatar des Benutzers angezeigt";
 
 /* Class = "UILabel"; text = "When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted. "; ObjectID = "pNJ-JN-sBn"; */
-"pNJ-JN-sBn.text" = "Wenn die Trustwords übereinstimmen können Sie diese bestätigen. Damit ist ihr Kommunikationspartner Sicher & Vertrauenswürdig. ";
+"pNJ-JN-sBn.text" = "Wenn die Trustwords übereinstimmen können Sie diese bestätigen. Damit wird die Kommunikation mit diesem Kontakt sicher & vertrauenswürdig. ";
 
 /* Class = "UILabel"; text = "You can close this tutorial anytime with the Skip button."; ObjectID = "r2a-vJ-S4B"; */
 "r2a-vJ-S4B.text" = "Sie können dieses Tutorial jederzeit mit der Schaltfläche Überspringen beenden.";

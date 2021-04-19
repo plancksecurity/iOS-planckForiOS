@@ -1,5 +1,5 @@
 /* Class = "UILabel"; text = "Privacy Status"; ObjectID = "2dW-Vn-WjN"; */
-"2dW-Vn-WjN.text" = "Protection de la vie privée";
+"2dW-Vn-WjN.text" = "Statut de confidentialité";
 
 /* Class = "UIButton"; accessibilityLabel = "confirmButton"; ObjectID = "4fD-jL-4Gx"; */
 "4fD-jL-4Gx.accessibilityLabel" = "confirmButton";
@@ -14,7 +14,7 @@
 "8Xq-lc-6Jt.normalTitle" = "Rejeter";
 
 /* Class = "UILabel"; text = "This Privacy Status Icon is shown as an Icon the user's avatar"; ObjectID = "B9p-Ah-ajI"; */
-"B9p-Ah-ajI.text" = "Cette icône d'état de confidentialité est affichée sous forme d'icône, l'avatar de l'utilisateur";
+"B9p-Ah-ajI.text" = "Ce statut de confidentialité est affiché sous forme d'icône des avatars de l'utilisateur";
 
 /* Class = "UILabel"; text = "In this case the Privacy Status of the message is Secure, because this is the lowest common denominator of the two communication partners."; ObjectID = "E7G-lq-Zvz"; */
 "E7G-lq-Zvz.text" = "Dans ce cas, le statut de confidentialité du message est sécurisé, car il s'agit du plus petit dénominateur commun des deux partenaires de communication.";
@@ -23,13 +23,13 @@
 "EdT-Qp-2PC.text" = "OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER";
 
 /* Class = "UILabel"; text = "When you click on the Privacy Status icon in the top bar, you will get to the Handshake, where you can verify your communication partner. "; ObjectID = "i1p-j1-tYp"; */
-"i1p-j1-tYp.text" = "Lorsque vous cliquez sur l'icône État de confidentialité dans la barre supérieure, vous accédez à la poignée de main, où vous pouvez vérifier votre partenaire de communication. ";
+"i1p-j1-tYp.text" = "Lorsque vous cliquez sur l'icône État de confidentialité dans la barre supérieure, vous accédez au Handshake, où vous pouvez vérifier votre partenaire de communication. ";
 
 /* Class = "UILabel"; text = "Handshake"; ObjectID = "ICO-LI-a2E"; */
 "ICO-LI-a2E.text" = "Handshake";
 
 /* Class = "UILabel"; text = "When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted. "; ObjectID = "lMo-1v-V01"; */
-"lMo-1v-V01.text" = "Lorsque vous confirmez que les Trustwords de votre partenaire de communication sont corrects, votre communication sera complètement sécurisée & et authentique. ";
+"lMo-1v-V01.text" = "Lorsque vous confirmez que les Trustwords de votre partenaire de communication sont corrects, votre communication sera complètement sécurisée & et fiable. ";
 
 /* Class = "UILabel"; text = "Secure"; ObjectID = "N7R-0r-VFh"; */
 "N7R-0r-VFh.text" = "Sécurisé";
@@ -38,28 +38,25 @@
 "Ogr-uB-snW.text" = "Suspect";
 
 /* Class = "UILabel"; text = "When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted"; ObjectID = "qWE-M6-upt"; */
-"qWE-M6-upt.text" = "Lorsque les Trustwords sont confirmés comme étant corrects et que la prise de contact est effectuée, la communication est entièrement sécurisée et authentique";
+"qWE-M6-upt.text" = "Lorsque les Turstwords sont confirmés comme étant corrects et que la prise de contact est effectuée, votre communication sera complètement sécurisée et approuvée";
 
 /* Class = "UILabel"; text = "You can close this tutorial anytime with the Skip button."; ObjectID = "RKC-QV-5yv"; */
-"RKC-QV-5yv.text" = "Vous pouvez fermer ce didacticiel à tout moment avec le bouton Ignorer.";
+"RKC-QV-5yv.text" = "Vous pouvez fermer ce tutoriel à tout moment à l'aide du bouton Sauter.";
 
 /* Class = "UILabel"; text = "The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:"; ObjectID = "rLc-J2-pmo"; */
 "rLc-J2-pmo.text" = "L'icône dans la barre supérieure reflète l'état de confidentialité du message, qui est le plus petit dénominateur commun le plus bas de tous les partenaires de communication de ce message, par exemple :";
 
 /* Class = "UILabel"; text = "With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact."; ObjectID = "rM7-ay-vaT"; */
-"rM7-ay-vaT.text" = "Avec ce statut de confidentialité, toutes les communications sont sécurisées, mais pour confirmer que votre contact est vraiment la personne que vous connaissez, vous devez comparer Trustwords avec ce contact.";
+"rM7-ay-vaT.text" = "Avec ce statut de confidentialité, toutes les communications sont sécurisées, mais pour confirmer que votre contact est vraiment la personne que vous connaissez, vous devez comparer les Trustwords avec ce contact.";
 
 /* Class = "UILabel"; text = "Secure & Trusted"; ObjectID = "s5s-sx-Dv7"; */
 "s5s-sx-Dv7.text" = "Sécurisé & Authentique";
 
-/* Class = "UILabel"; text = "Secure"; ObjectID = "V9f-sY-x1Q"; */
-"V9f-sY-x1Q.text" = "Sécurisé";
-
 /* Class = "UILabel"; text = "p≡p uses a Privacy Status icon to indicate how secure your communication is"; ObjectID = "WAK-KE-bk0"; */
-"WAK-KE-bk0.text" = "p≡p utilise une icône d'état de confidentialité pour indiquer à quel point votre communication est sécurisée";
+"WAK-KE-bk0.text" = "p≡p utilise une icône d'état de confidentialité pour indiquer le degré de sécurité de votre communication";
 
 /* Class = "UILabel"; text = "If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle."; ObjectID = "wF1-W3-tf3"; */
-"wF1-W3-tf3.text" = "Si les Trustwords ne sont pas corrects, il pourrait y avoir une attaque de l'homme du milieu.";
+"wF1-W3-tf3.text" = "Si les mots de confiance ne sont pas corrects, il pourrait y avoir une attaque par un \"man-in-the-middle\".";
 
 /* Class = "UILabel"; text = "Welcome to the p≡p Tutorial"; ObjectID = "XKD-ea-9Kh"; */
 "XKD-ea-9Kh.text" = "Bienvenue dans le didacticiel p≡p";

@@ -1,0 +1,9 @@
+/* Sharing extension could not save a message */
+"Could not save the message for sending" = "Die Nachricht konnte nicht zum Senden gespeichert werden";
+
+/* Sharing extension has no account */
+"Could not send:\n%1@" = "Konnte nicht gesendet werden:\n%1@";
+
+/* Sharing extension has no account */
+"No Account found" = "Kein Konto gefunden";
+

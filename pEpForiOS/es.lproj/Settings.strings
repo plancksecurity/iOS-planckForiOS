@@ -52,7 +52,7 @@
 /* Class = "UILabel"; text = "Title"; ObjectID = "Pdx-rN-QPm"; */
 "Pdx-rN-QPm.text" = "Título";
 
-/* Class = "UILabel"; text = "Title"; ObjectID = "Pgw-uY-8FO"; */
+/* Class = "UILabel"; text = "PGP Key Import"; ObjectID = "Pgw-uY-8FO"; */
 "Pgw-uY-8FO.text" = "Título";
 
 /* Class = "UILabel"; text = "Use a passphrase for new keys"; ObjectID = "Ppr-kD-hKR"; */
