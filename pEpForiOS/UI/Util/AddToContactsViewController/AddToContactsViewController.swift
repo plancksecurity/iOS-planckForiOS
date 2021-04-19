@@ -18,9 +18,10 @@ import pEpIOSToolbox
 /// Represents ContactsUI for "add a contact" to the system address book
 class AddToContactsViewController: UIViewController {
     static let storyboardId = "AddToContactsViewController"
+
     /// Known data of the contact.
-    /// Currently only email is supported.
     var emailAddress: String?
+    var userName: String?
 
     private var contactVC: CNContactViewController?
 
@@ -38,6 +39,9 @@ class AddToContactsViewController: UIViewController {
         let newContact = CNMutableContact()
         newContact.emailAddresses.append(CNLabeledValue(label: CNLabelHome,
                                                         value: address as NSString))
+        if let userName = userName {
+            newContact.givenName = userName
+        }
         contactVC = CNContactViewController(forUnknownContact: newContact)
         guard let contactVC = contactVC else {
             Log.shared.errorAndCrash("Missing contactVC")
