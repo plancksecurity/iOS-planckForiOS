@@ -96,6 +96,14 @@ class ShareViewModel {
                                  extensionItem: extensionItem,
                                  attributedTitle: attributedTitle,
                                  itemProvider: itemProvider)
+                } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeContent as String) {
+                    foundItemProviders.append(itemProvider)
+                    dispatchGroup.enter()
+                    loadFileFromData(dispatchGroup: dispatchGroup,
+                                     sharedData: sharedData,
+                                     extensionItem: extensionItem,
+                                     attributedTitle: attributedTitle,
+                                     itemProvider: itemProvider)
                 } else {
                     shareViewModelDelegate?.attachmentTypeNotSupported()
                 }
@@ -322,6 +330,31 @@ extension ShareViewModel {
                                         }
                                         dispatchGroup.leave()
                                     }
+                                } else if let error = error {
+                                    Log.shared.log(error: error)
+                                } else {
+                                    // no data loading was triggered, since we have no url
+                                    dispatchGroup.leave()
+                                }
+                              })
+    }
+
+    private func loadFileFromData(dispatchGroup: DispatchGroup,
+                                  sharedData: SharedData,
+                                  extensionItem: NSExtensionItem,
+                                  attributedTitle: NSAttributedString?,
+                                  itemProvider: NSItemProvider) {
+        itemProvider.loadItem(forTypeIdentifier: kUTTypeContent as String,
+                              options: nil,
+                              completionHandler: { [weak self] item, error in
+                                if let data = item as? Data {
+                                    guard let me = self else {
+                                        // assume ok, user moved on
+                                        dispatchGroup.leave()
+                                        return
+                                    }
+
+                                    dispatchGroup.leave()
                                 } else if let error = error {
                                     Log.shared.log(error: error)
                                 } else {
