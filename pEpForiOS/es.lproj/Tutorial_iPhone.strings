@@ -52,9 +52,6 @@
 /* Class = "UILabel"; text = "Secure & Trusted"; ObjectID = "s5s-sx-Dv7"; */
 "s5s-sx-Dv7.text" = "Seguro & de confianza";
 
-/* Class = "UILabel"; text = "Secure"; ObjectID = "V9f-sY-x1Q"; */
-"V9f-sY-x1Q.text" = "Segura";
-
 /* Class = "UILabel"; text = "p≡p uses a Privacy Status icon to indicate how secure your communication is"; ObjectID = "WAK-KE-bk0"; */
 "WAK-KE-bk0.text" = "p≡p usa un ícono de Estado de Privacidad para indicar qué tan segura es su comunicación";
 
