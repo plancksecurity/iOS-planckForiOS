@@ -216,34 +216,6 @@
                ReferencedContainer = "container:pEpForiOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B7DB7F56221315BD003968DA"
-               BuildableName = "pEpIOSToolboxTests.xctest"
-               BlueprintName = "pEpIOSToolboxTests"
-               ReferencedContainer = "container:../pep-toolbox/pEpIOSToolbox.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B72A64D71EC0525500F71131"
-               BuildableName = "AccountSettingsAdapterTests.xctest"
-               BlueprintName = "AccountSettingsAdapterTests"
-               ReferencedContainer = "container:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -280,10 +252,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43980E391CBD0BCA00A7FC3C"
-               BuildableName = "pEpForiOSTests.xctest"
-               BlueprintName = "pEpForiOSTests"
-               ReferencedContainer = "container:pEpForiOS.xcodeproj">
+               BlueprintIdentifier = "B72A64D71EC0525500F71131"
+               BuildableName = "AccountSettingsAdapterTests.xctest"
+               BlueprintName = "AccountSettingsAdapterTests"
+               ReferencedContainer = "container:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43FBB76B1FC6D9630057A3BD"
+               BuildableName = "ldns-xcodeTests.xctest"
+               BlueprintName = "ldns-xcodeTests"
+               ReferencedContainer = "container:../ldns/xcode/ldns-xcode/ldns-xcode.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -310,20 +292,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "64415E161BE94FCB00F6CBB2"
-               BuildableName = "pEpObjCAdapterTests.xctest"
-               BlueprintName = "pEpObjCAdapterTests"
-               ReferencedContainer = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
+               BlueprintIdentifier = "3AE6870924FFA5ED00B416ED"
+               BuildableName = "pEp4iosInternTests.xctest"
+               BlueprintName = "pEp4iosInternTests"
+               ReferencedContainer = "container:../pep_for_ios_intern/pEp4iosIntern/pEp4iosIntern.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4E81CD4825C19DD4009F140D"
-               BuildableName = "PEPObjCAdapterTypesTests_iOS.xctest"
-               BlueprintName = "PEPObjCAdapterTypesTests_iOS"
-               ReferencedContainer = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
+               BlueprintIdentifier = "43980E391CBD0BCA00A7FC3C"
+               BuildableName = "pEpForiOSTests.xctest"
+               BlueprintName = "pEpForiOSTests"
+               ReferencedContainer = "container:pEpForiOS.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -340,10 +322,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B72A64D71EC0525500F71131"
-               BuildableName = "AccountSettingsAdapterTests.xctest"
-               BlueprintName = "AccountSettingsAdapterTests"
-               ReferencedContainer = "container:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
+               BlueprintIdentifier = "4E81CD4825C19DD4009F140D"
+               BuildableName = "PEPObjCAdapterTypesTests_iOS.xctest"
+               BlueprintName = "PEPObjCAdapterTypesTests_iOS"
+               ReferencedContainer = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "64415E161BE94FCB00F6CBB2"
+               BuildableName = "pEpObjCAdapterTests.xctest"
+               BlueprintName = "pEpObjCAdapterTests"
+               ReferencedContainer = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
