@@ -44,7 +44,6 @@
 		15146C91237F07EF00D69495 /* PEPPageViewControllerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15146C90237F07EF00D69495 /* PEPPageViewControllerBase.swift */; };
 		15147EF7237EBE2A003989FE /* AppSettings+KeySyncDeviceGroupStateChangeNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15147EF6237EBE2A003989FE /* AppSettings+KeySyncDeviceGroupStateChangeNotification.swift */; };
 		151671A3262EFDE200E99CE5 /* pEpIOSToolboxForExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1516719F262EFDE100E99CE5 /* pEpIOSToolboxForExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		151671B0262EFFC000E99CE5 /* MessageModelForAppExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1516719D262EFDBD00E99CE5 /* MessageModelForAppExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		15175CEC205929FB00A8D9D0 /* CidHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15175CEB205929FB00A8D9D0 /* CidHandler.swift */; };
 		151AD7AD219D74C700FC36FF /* ComposeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151AD7AC219D74C700FC36FF /* ComposeViewModelTest.swift */; };
 		151C67FF2418158B00481F75 /* SFUIText-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 151C67FC2418158B00481F75 /* SFUIText-Semibold.ttf */; };
@@ -428,6 +427,7 @@
 		43D2133B2237CABD00C060A1 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43800D981D112A2A00821E34 /* libxml2.tbd */; };
 		43DC6308262DCC8A0017D1BD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43DC6306262DCC8A0017D1BD /* Localizable.strings */; };
 		43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */; };
+		43E60263262F0E8100232FE6 /* MessageModelForAppExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43E60261262F0E8100232FE6 /* MessageModelForAppExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43E657D11F3C33C30014CBEC /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E657D01F3C33C30014CBEC /* String+HTML.swift */; };
 		43E657E01F3C74030014CBEC /* AXHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 43E657DD1F3C72360014CBEC /* AXHTMLParser.m */; };
 		43E657E71F3CAB310014CBEC /* HtmlToMarkdownSaxParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E657E61F3CAB310014CBEC /* HtmlToMarkdownSaxParser.swift */; };
@@ -615,7 +615,7 @@
 				B710526C24168481007148E8 /* AppAuth.framework in Embed Frameworks */,
 				1512133224166C7B009B7C88 /* PantomimeFramework.framework in Embed Frameworks */,
 				1512133E24166CE0009B7C88 /* ldns_xcode.framework in Embed Frameworks */,
-				151671B0262EFFC000E99CE5 /* MessageModelForAppExtensions.framework in Embed Frameworks */,
+				43E60263262F0E8100232FE6 /* MessageModelForAppExtensions.framework in Embed Frameworks */,
 				154272B62537387000DD333E /* pEp4iosIntern.framework in Embed Frameworks */,
 				B710526F241684AB007148E8 /* MessageModel.framework in Embed Frameworks */,
 				B710526924168474007148E8 /* pEpIOSToolbox.framework in Embed Frameworks */,
@@ -658,7 +658,6 @@
 		15146C8B237F006F00D69495 /* KeySyncWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncWizardViewController.swift; sourceTree = "<group>"; };
 		15146C90237F07EF00D69495 /* PEPPageViewControllerBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPPageViewControllerBase.swift; sourceTree = "<group>"; };
 		15147EF6237EBE2A003989FE /* AppSettings+KeySyncDeviceGroupStateChangeNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+KeySyncDeviceGroupStateChangeNotification.swift"; sourceTree = "<group>"; };
-		1516719D262EFDBD00E99CE5 /* MessageModelForAppExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageModelForAppExtensions.framework; path = "../../../../Library/Developer/Xcode/DerivedData/pEpForiOS-cvmzenmcimtlkhhkjvpbxrfptqfc/Build/Products/Debug-iphoneos/MessageModelForAppExtensions.framework"; sourceTree = "<group>"; };
 		1516719F262EFDE100E99CE5 /* pEpIOSToolboxForExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = pEpIOSToolboxForExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		15175CEB205929FB00A8D9D0 /* CidHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CidHandler.swift; sourceTree = "<group>"; };
 		1517DABA23FD7F88005BAE97 /* pEpForiOS-icon.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "pEpForiOS-icon.pdf"; sourceTree = "<group>"; };
@@ -1050,6 +1049,8 @@
 		43DC6307262DCC8A0017D1BD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateThreadListDelegate.swift; sourceTree = "<group>"; };
 		43E52A40262DCC8D006490D2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		43E60228262F08A700232FE6 /* MessageModelForAppExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageModelForAppExtensions.framework; path = "../../../../Library/Developer/Xcode/DerivedData/pEpForiOS-cvmzenmcimtlkhhkjvpbxrfptqfc/Build/Products/Debug-iphoneos/MessageModelForAppExtensions.framework"; sourceTree = "<group>"; };
+		43E60261262F0E8100232FE6 /* MessageModelForAppExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MessageModelForAppExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43E657D01F3C33C30014CBEC /* String+HTML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+HTML.swift"; sourceTree = "<group>"; };
 		43E657DC1F3C72360014CBEC /* AXHTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AXHTMLParser.h; sourceTree = "<group>"; };
 		43E657DD1F3C72360014CBEC /* AXHTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AXHTMLParser.m; sourceTree = "<group>"; };
@@ -2207,7 +2208,6 @@
 		43980E1A1CBD0BC900A7FC3C = {
 			isa = PBXGroup;
 			children = (
-				1516719D262EFDBD00E99CE5 /* MessageModelForAppExtensions.framework */,
 				43980E251CBD0BC900A7FC3C /* pEpForiOS */,
 				43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */,
 				3A503A9D253737B20070AB6A /* pEp-share */,
@@ -2491,6 +2491,8 @@
 		495560841E7150ED0016579E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43E60261262F0E8100232FE6 /* MessageModelForAppExtensions.framework */,
+				43E60228262F08A700232FE6 /* MessageModelForAppExtensions.framework */,
 				1516719F262EFDE100E99CE5 /* pEpIOSToolboxForExtensions.framework */,
 				436F1BA225028B7D004426DC /* CocoaLumberjackSwift.framework */,
 				4320294B252C8E4E00986C44 /* CocoaLumberjack.framework */,
