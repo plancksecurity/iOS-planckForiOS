@@ -66,7 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        Log.shared.errorAndCrash("applicationDidReceiveMemoryWarning")
+        Log.shared.error("applicationDidReceiveMemoryWarning")
     }
 
     func application(_ application: UIApplication,
