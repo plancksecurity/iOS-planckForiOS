@@ -12,6 +12,7 @@ import pEpIOSToolbox
 
 final class SettingsTableViewController: UITableViewController {
 
+    weak var delegate: SettingChangeDelegate? = nil
     static let storyboardId = "SettingsTableViewController"
     private weak var activityIndicatorView: UIActivityIndicatorView?
 
@@ -390,6 +391,7 @@ extension SettingsTableViewController {
                     Log.shared.error("SegueIdentifier: segueEditAccount - Early quit! Requirements not met.")
                     return
             }
+            destination.delegate = delegate
             destination.viewModel = AccountSettingsViewModel(account: account)
 
         case .segueShowSettingDefaultAccount,

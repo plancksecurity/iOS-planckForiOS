@@ -11,6 +11,7 @@ import pEpIOSToolbox
 import MessageModel
 
 class FolderTableViewController: UITableViewController {
+
     var folderVM: FolderViewModel?
     // Indicates if it's needed to lead the user to a new screen,
     // the email list or the new account, for example.
@@ -92,7 +93,7 @@ class FolderTableViewController: UITableViewController {
     }
     
     @objc private func showSettingsViewController() {
-        UIUtils.showSettings()
+        UIUtils.showSettings(delegate: self)
     }
 
     @objc func draftsPreviewTapped(sender: UILongPressGestureRecognizer) {
@@ -477,5 +478,14 @@ extension FolderTableViewController : FolderViewModelDelegate {
 
     func deleteRowsAtIndexPaths(indexPaths: [IndexPath]) {
         tableView.deleteRows(at: indexPaths)
+    }
+}
+
+// MARK:- SettingChangeDelegate
+
+extension FolderTableViewController: SettingChangeDelegate {
+
+    func didChange() {
+        tableView.reloadData()
     }
 }

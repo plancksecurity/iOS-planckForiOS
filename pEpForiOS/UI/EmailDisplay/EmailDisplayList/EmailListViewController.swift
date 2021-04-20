@@ -321,7 +321,7 @@ final class EmailListViewController: UIViewController {
     }
 
     @objc private func showSettingsViewController() {
-        UIUtils.showSettings()
+        UIUtils.showSettings(delegate: self)
     }
 
     @IBAction private func editButtonPressed() {
@@ -1402,5 +1402,14 @@ extension EmailListViewController {
         composeVc.viewModel = composeVM
         let presenterVc = UIApplication.currentlyVisibleViewController()
         presenterVc.present(composeNavigationController, animated: true)
+    }
+}
+
+// MARK:- SettingChangeDelegate
+
+extension EmailListViewController: SettingChangeDelegate {
+
+    func didChange() {
+        tableView.reloadData()
     }
 }

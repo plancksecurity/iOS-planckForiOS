@@ -12,11 +12,12 @@ import pEpIOSToolbox
 
 extension UIUtils {
 
-    static public func showSettings() {
+    static public func showSettings(delegate: SettingChangeDelegate) {
         guard let vc = UIStoryboard.init(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: SettingsTableViewController.storyboardId) as? SettingsTableViewController else {
             Log.shared.errorAndCrash("No controller")
             return
         }
+        vc.delegate = delegate
         let presenterVc = UIApplication.currentlyVisibleViewController()
         presenterVc.navigationController?.pushViewController(vc, animated: true)
     }

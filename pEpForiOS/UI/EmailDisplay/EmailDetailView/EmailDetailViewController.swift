@@ -356,7 +356,7 @@ extension EmailDetailViewController {
     @objc
     private func showSettingsViewController() {
         splitViewController?.preferredDisplayMode = .allVisible
-        UIUtils.showSettings()
+        UIUtils.showSettings(delegate: self)
     }
 
     private func setupEmailViewController(forRowAt indexPath: IndexPath) -> EmailViewController? {
@@ -901,5 +901,14 @@ extension EmailDetailViewController: QLPreviewControllerDelegate {
             }
             UIUtils.showComposeView(from: mailto)
         }
+    }
+}
+
+// MARK:- SettingChangeDelegate
+
+extension EmailDetailViewController: SettingChangeDelegate {
+
+    func didChange() {
+        collectionView.reloadData()
     }
 }

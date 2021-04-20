@@ -19,6 +19,7 @@ final class AccountSettingsViewController: UIViewController {
     private let oauthViewModel = OAuthAuthorizer()
 
     var viewModel: AccountSettingsViewModel? = nil
+    weak var delegate: SettingChangeDelegate? = nil
 
     override var collapsedBehavior: CollapsedSplitViewBehavior {
         return .needed
@@ -302,7 +303,7 @@ extension AccountSettingsViewController: OAuthAuthorizerDelegate {
     }
 }
 
-// MARK: - EditableAccountSettingsDelegate
+// MARK: - SettingChangeDelegate
 
 extension AccountSettingsViewController: SettingChangeDelegate {
     func didChange() {
@@ -312,6 +313,7 @@ extension AccountSettingsViewController: SettingChangeDelegate {
         if let account = viewModel?.account {
             viewModel = AccountSettingsViewModel(account: account, delegate: self)
             tableView.reloadData()
+            delegate?.didChange()
         }
     }
 }
