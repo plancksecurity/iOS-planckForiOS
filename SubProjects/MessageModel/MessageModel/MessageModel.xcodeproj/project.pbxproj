@@ -560,6 +560,7 @@
 		43E3A250224E4280004CAC84 /* CdHeaderField+Clone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3A24F224E4280004CAC84 /* CdHeaderField+Clone.swift */; };
 		43E3A255224E473B004CAC84 /* CdMessage+Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3A254224E473B004CAC84 /* CdMessage+Fake.swift */; };
 		43E5A91A23A298DE007ABAAE /* ImapExpungeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E5A91923A298DE007ABAAE /* ImapExpungeOperation.swift */; };
+		43E60004262EEAE700232FE6 /* AppAuth4Ext_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43E60003262EEAE700232FE6 /* AppAuth4Ext_iOS.framework */; };
 		43E74C6C1E38B38C00A2F7A6 /* ImapFlagsUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E74C6B1E38B38C00A2F7A6 /* ImapFlagsUtility.swift */; };
 		43E9BC621DB5181800AD2352 /* FolderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E9BC611DB5181800AD2352 /* FolderType.swift */; };
 		43EA4845221E9518006E8F83 /* ImapConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA47E8221E9518006E8F83 /* ImapConnection.swift */; };
@@ -1071,6 +1072,7 @@
 		43E3A24F224E4280004CAC84 /* CdHeaderField+Clone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdHeaderField+Clone.swift"; sourceTree = "<group>"; };
 		43E3A254224E473B004CAC84 /* CdMessage+Fake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+Fake.swift"; sourceTree = "<group>"; };
 		43E5A91923A298DE007ABAAE /* ImapExpungeOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImapExpungeOperation.swift; sourceTree = "<group>"; };
+		43E60003262EEAE700232FE6 /* AppAuth4Ext_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppAuth4Ext_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43E74C6B1E38B38C00A2F7A6 /* ImapFlagsUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapFlagsUtility.swift; sourceTree = "<group>"; };
 		43E9BC611DB5181800AD2352 /* FolderType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderType.swift; sourceTree = "<group>"; };
 		43EA47E8221E9518006E8F83 /* ImapConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapConnection.swift; sourceTree = "<group>"; };
@@ -1190,6 +1192,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43E60004262EEAE700232FE6 /* AppAuth4Ext_iOS.framework in Frameworks */,
 				43A7661A260A136600E67592 /* pEpIOSToolboxForExtensions.framework in Frameworks */,
 				43F7E3EC25DBD26C00B924F3 /* libiconv.tbd in Frameworks */,
 				43F7E3E725DBD22F00B924F3 /* libz.tbd in Frameworks */,
@@ -2681,6 +2684,7 @@
 		B7DB7FA322147000003968DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43E60003262EEAE700232FE6 /* AppAuth4Ext_iOS.framework */,
 				43A76619260A136600E67592 /* pEpIOSToolboxForExtensions.framework */,
 				43BDDB4625DC1C6700FC0C68 /* PEPIOSToolboxForAppExtensions.framework */,
 				43F7E3EB25DBD26C00B924F3 /* libiconv.tbd */,
