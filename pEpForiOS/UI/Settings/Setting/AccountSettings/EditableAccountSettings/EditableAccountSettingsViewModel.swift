@@ -177,6 +177,7 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
                 DispatchQueue.main.async {
                     me.delegate?.setLoadingView(visible: false)
                     me.changeDelegate?.didChange()
+                    me.postSettingsDidChanged()
                     me.delegate?.dismissYourself()
                 }
             }
@@ -196,6 +197,11 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
                 }
             }
         }
+    }
+
+    private func postSettingsDidChanged() {
+        let name = Notification.Name.pEpSettingsChanged
+        NotificationCenter.default.post(name:name, object: self, userInfo: nil)
     }
 }
 

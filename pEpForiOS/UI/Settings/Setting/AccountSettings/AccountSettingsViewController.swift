@@ -32,12 +32,20 @@ final class AccountSettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(pEpSettingsChanged),
+                                               name: .pEpSettingsChanged,
+                                               object: nil)
         tableView.register(PEPHeaderView.self, forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
         UIHelper.variableContentHeight(tableView)
         viewModel?.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
         oauthViewModel.delegate = self
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -313,5 +321,14 @@ extension AccountSettingsViewController: SettingChangeDelegate {
             viewModel = AccountSettingsViewModel(account: account, delegate: self)
             tableView.reloadData()
         }
+    }
+}
+
+//MARK: - pEp Settings Changed
+
+extension AccountSettingsViewController {
+
+    @objc func pEpSettingsChanged() {
+        tableView.reloadData()
     }
 }

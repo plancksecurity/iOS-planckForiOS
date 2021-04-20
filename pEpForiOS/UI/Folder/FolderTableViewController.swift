@@ -23,6 +23,10 @@ class FolderTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initialConfig()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(pEpSettingsChanged),
+                                               name: .pEpSettingsChanged,
+                                               object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -477,5 +481,14 @@ extension FolderTableViewController : FolderViewModelDelegate {
 
     func deleteRowsAtIndexPaths(indexPaths: [IndexPath]) {
         tableView.deleteRows(at: indexPaths)
+    }
+}
+
+//MARK: - pEp Settings Changed
+
+extension FolderTableViewController {
+
+    @objc func pEpSettingsChanged() {
+        tableView.reloadData()
     }
 }
