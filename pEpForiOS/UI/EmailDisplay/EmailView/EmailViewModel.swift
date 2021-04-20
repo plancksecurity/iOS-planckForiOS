@@ -71,7 +71,6 @@ class EmailViewModel {
         self.setupRows(message: message)
     }
 
-
     private var shouldHideExternalContent: Bool = true
 
     // Indicates if the External Content View has to be shown.
