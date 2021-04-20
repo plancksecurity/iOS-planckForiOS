@@ -398,6 +398,11 @@ This may affect the privacy status of the message.
 extension EmailViewController {
 
     @objc func pEpSettingsChanged() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.resetRows()
         tableView.reloadData()
     }
 }
