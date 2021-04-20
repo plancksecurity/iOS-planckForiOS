@@ -315,7 +315,7 @@
         <!--Alert View Controller-->
         <scene sceneID="Xge-Qw-SEe">
             <objects>
-                <viewController storyboardIdentifier="PEPAlertViewController" id="SRk-tz-hg8" customClass="PEPAlertViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PEPAlertViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="SRk-tz-hg8" customClass="PEPAlertViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gej-yb-5Yw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
