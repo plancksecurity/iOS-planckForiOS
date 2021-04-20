@@ -141,9 +141,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "343AAA531E83463400F9D36E"
-               BuildableName = "AppAuth.framework"
-               BlueprintName = "AppAuth_iOS"
+               BlueprintIdentifier = "439F2AC3262EE202003F400F"
+               BuildableName = "AppAuth4Ext_iOS.framework"
+               BlueprintName = "AppAuth4Ext_iOS"
                ReferencedContainer = "container:../AppAuth-iOS/AppAuth.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
