@@ -183,7 +183,6 @@ class EmailDetailViewController: UIViewController {
 extension EmailDetailViewController {
 
     private func setup() {
-        collectionView.scrollsToTop = false
         viewModel?.delegate = self
         setupCollectionView()
         doOnce = { [weak self] in
@@ -191,6 +190,7 @@ extension EmailDetailViewController {
                 Log.shared.lostMySelf()
                 return
             }
+            me.collectionView.scrollsToTop = false
             me.viewModel?.startMonitoring()
             me.collectionView.reloadData()
             me.doOnce = nil
