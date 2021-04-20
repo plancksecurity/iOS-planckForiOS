@@ -43,6 +43,10 @@
 		15146C8C237F006F00D69495 /* KeySyncWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15146C8B237F006F00D69495 /* KeySyncWizardViewController.swift */; };
 		15146C91237F07EF00D69495 /* PEPPageViewControllerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15146C90237F07EF00D69495 /* PEPPageViewControllerBase.swift */; };
 		15147EF7237EBE2A003989FE /* AppSettings+KeySyncDeviceGroupStateChangeNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15147EF6237EBE2A003989FE /* AppSettings+KeySyncDeviceGroupStateChangeNotification.swift */; };
+		151670EE262EF5A500E99CE5 /* MessageModelForAppExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 434A6CF525D2BF8B00179335 /* MessageModelForAppExtensions.framework */; };
+		151670EF262EF5A500E99CE5 /* MessageModelForAppExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 434A6CF525D2BF8B00179335 /* MessageModelForAppExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		151670F0262EF5A500E99CE5 /* pEpIOSToolboxForExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A766CF260A1ED400E67592 /* pEpIOSToolboxForExtensions.framework */; };
+		151670F1262EF5A500E99CE5 /* pEpIOSToolboxForExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43A766CF260A1ED400E67592 /* pEpIOSToolboxForExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		15175CEC205929FB00A8D9D0 /* CidHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15175CEB205929FB00A8D9D0 /* CidHandler.swift */; };
 		151AD7AD219D74C700FC36FF /* ComposeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151AD7AC219D74C700FC36FF /* ComposeViewModelTest.swift */; };
 		151C67FF2418158B00481F75 /* SFUIText-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 151C67FC2418158B00481F75 /* SFUIText-Semibold.ttf */; };
@@ -375,7 +379,6 @@
 		4356FFE721354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356FFE621354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift */; };
 		4356FFEC21356CB600804089 /* ReplyAllPossibleCheckerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356FFEB21356CB600804089 /* ReplyAllPossibleCheckerTest.swift */; };
 		435C626A25FB5D75000A4E04 /* MessageModelForAppExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 434C1DD425D5834400F622DB /* MessageModelForAppExtensions.framework */; };
-		435C626B25FB5D75000A4E04 /* MessageModelForAppExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 434C1DD425D5834400F622DB /* MessageModelForAppExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		436F1BA425028B8A004426DC /* CocoaLumberjackSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 436F1BA225028B7D004426DC /* CocoaLumberjackSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4375B2EC2625855A0049A0C0 /* KeyInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705096B22DC8C1800CB73D6 /* KeyInputView.swift */; };
 		437E9BA9237AFB7F00E9A847 /* UIStoryboard+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437E9BA8237AFB7F00E9A847 /* UIStoryboard+Constants.swift */; };
@@ -401,7 +404,6 @@
 		43A0B2CF214006FC00FB779D /* ReplyUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0B2CE214006FC00FB779D /* ReplyUtilTests.swift */; };
 		43A469FA21513B10002E1036 /* PEPSwipeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A469F921513B10002E1036 /* PEPSwipeTableViewCell.swift */; };
 		43A766D1260A1EDC00E67592 /* pEpIOSToolboxForExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A766CF260A1ED400E67592 /* pEpIOSToolboxForExtensions.framework */; };
-		43A766D2260A1EDC00E67592 /* pEpIOSToolboxForExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43A766CF260A1ED400E67592 /* pEpIOSToolboxForExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43A9818C24E53BFF00830603 /* Color+PrivacyStatusDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9818B24E53BFF00830603 /* Color+PrivacyStatusDescription.swift */; };
 		43A9818E24E53CF800830603 /* Color+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9818D24E53CF800830603 /* Color+UI.swift */; };
 		43B0444C20077323007BCE3F /* OAuth2Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0444B20077323007BCE3F /* OAuth2Configuration.swift */; };
@@ -605,28 +607,18 @@
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		435C626C25FB5D76000A4E04 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				43A766D2260A1EDC00E67592 /* pEpIOSToolboxForExtensions.framework in Embed Frameworks */,
-				435C626B25FB5D75000A4E04 /* MessageModelForAppExtensions.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		43D213292237BE4B00C060A1 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				151670F1262EF5A500E99CE5 /* pEpIOSToolboxForExtensions.framework in Embed Frameworks */,
 				436F1BA425028B8A004426DC /* CocoaLumberjackSwift.framework in Embed Frameworks */,
 				4320294D252C8E4E00986C44 /* CocoaLumberjack.framework in Embed Frameworks */,
 				B710526C24168481007148E8 /* AppAuth.framework in Embed Frameworks */,
 				1512133224166C7B009B7C88 /* PantomimeFramework.framework in Embed Frameworks */,
+				151670EF262EF5A500E99CE5 /* MessageModelForAppExtensions.framework in Embed Frameworks */,
 				1512133E24166CE0009B7C88 /* ldns_xcode.framework in Embed Frameworks */,
 				154272B62537387000DD333E /* pEp4iosIntern.framework in Embed Frameworks */,
 				B710526F241684AB007148E8 /* MessageModel.framework in Embed Frameworks */,
@@ -1231,10 +1223,12 @@
 			files = (
 				B710526524168400007148E8 /* SwipeCellKit.framework in Frameworks */,
 				1512133524166C95009B7C88 /* libAccountSettingsAdapter.a in Frameworks */,
+				151670F0262EF5A500E99CE5 /* pEpIOSToolboxForExtensions.framework in Frameworks */,
 				4320294C252C8E4E00986C44 /* CocoaLumberjack.framework in Frameworks */,
 				154272B52537387000DD333E /* pEp4iosIntern.framework in Frameworks */,
 				B710526824168474007148E8 /* pEpIOSToolbox.framework in Frameworks */,
 				1512133124166C7B009B7C88 /* PantomimeFramework.framework in Frameworks */,
+				151670EE262EF5A500E99CE5 /* MessageModelForAppExtensions.framework in Frameworks */,
 				1512133D24166CE0009B7C88 /* ldns_xcode.framework in Frameworks */,
 				43D2133B2237CABD00C060A1 /* libxml2.tbd in Frameworks */,
 				B710526E241684AB007148E8 /* MessageModel.framework in Frameworks */,
@@ -2898,7 +2892,6 @@
 				3A503A98253737B20070AB6A /* Sources */,
 				3A503A99253737B20070AB6A /* Frameworks */,
 				3A503A9A253737B20070AB6A /* Resources */,
-				435C626C25FB5D76000A4E04 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
