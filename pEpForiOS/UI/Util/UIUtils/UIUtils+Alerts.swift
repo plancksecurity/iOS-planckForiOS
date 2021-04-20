@@ -170,6 +170,8 @@ extension UIUtils {
             pepAlertViewController.add(action: cancelAction)
         }
         pepAlertViewController.add(action: positiveAction)
+        pepAlertViewController.modalPresentationStyle = .overFullScreen
+        pepAlertViewController.modalTransitionStyle = .crossDissolve
         return pepAlertViewController
     }
 }
