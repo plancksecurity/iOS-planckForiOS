@@ -183,6 +183,7 @@ class EmailDetailViewController: UIViewController {
 extension EmailDetailViewController {
 
     private func setup() {
+        collectionView.scrollsToTop = false
         viewModel?.delegate = self
         setupCollectionView()
         doOnce = { [weak self] in
