@@ -188,6 +188,7 @@
 		3A2119E1241251A80030C3E4 /* ClientCertificateManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2119E0241251A70030C3E4 /* ClientCertificateManagementTableViewCell.swift */; };
 		3A2119E424125AC60030C3E4 /* Certificates.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A2119E624125AC60030C3E4 /* Certificates.storyboard */; };
 		3A503A9F253737B20070AB6A /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A503A9E253737B20070AB6A /* ShareViewController.swift */; };
+		3A503AA2253737B20070AB6A /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A503AA0253737B20070AB6A /* MainInterface.storyboard */; };
 		3A503AA6253737B20070AB6A /* pEp-share.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3A503A9C253737B20070AB6A /* pEp-share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3A796BA9242CC26100083BB5 /* HtmlConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BA8242CC26100083BB5 /* HtmlConversions.swift */; };
 		3A796BAB242CC31F00083BB5 /* NSAttributedString+Html.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A796BAA242CC31F00083BB5 /* NSAttributedString+Html.swift */; };
@@ -427,6 +428,7 @@
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
 		43D1900E2513734400A36973 /* SettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D1900D2513734400A36973 /* SettingsViewModelTest.swift */; };
 		43D2133B2237CABD00C060A1 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43800D981D112A2A00821E34 /* libxml2.tbd */; };
+		43DC6308262DCC8A0017D1BD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43DC6306262DCC8A0017D1BD /* Localizable.strings */; };
 		43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */; };
 		43E657D11F3C33C30014CBEC /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E657D01F3C33C30014CBEC /* String+HTML.swift */; };
 		43E657E01F3C74030014CBEC /* AXHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 43E657DD1F3C72360014CBEC /* AXHTMLParser.m */; };
@@ -3026,12 +3028,14 @@
 				434A6C1625D2A17900179335 /* TrustManagement.storyboard in Resources */,
 				4313A55225E7C1F7001E6767 /* LaunchScreen.storyboard in Resources */,
 				4313A54C25E7C1D9001E6767 /* NothingSelected.storyboard in Resources */,
+				3A503AA2253737B20070AB6A /* MainInterface.storyboard in Resources */,
 				4313A55A25E7C20E001E6767 /* Thread.storyboard in Resources */,
 				4313A55525E7C1FC001E6767 /* FolderViews.storyboard in Resources */,
 				4313A55D25E7C214001E6767 /* Certificates.storyboard in Resources */,
 				434A6C1225D2A08800179335 /* Main.storyboard in Resources */,
 				434A6C5D25D2A3BE00179335 /* AttachmentCell.xib in Resources */,
 				4313A55625E7C203001E6767 /* Reusable.storyboard in Resources */,
+				43DC6308262DCC8A0017D1BD /* Localizable.strings in Resources */,
 				434A6C1325D2A08F00179335 /* AccountCreation.storyboard in Resources */,
 				439C62432611BFD9001893BD /* SharedAssets.xcassets in Resources */,
 				4313A55925E7C209001E6767 /* Tutorial_iPhone.storyboard in Resources */,
