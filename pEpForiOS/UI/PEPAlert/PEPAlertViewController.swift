@@ -22,7 +22,6 @@ final class PEPAlertViewController: UIViewController {
     @IBOutlet weak var buttonsStackView: UIStackView!
     @IBOutlet weak var keyInputView: KeyInputView!
 
-
     @IBOutlet weak private var alertImageViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak private var alertTitleTopViewHeightConstraint: NSLayoutConstraint!
     
