@@ -11,6 +11,6 @@ import Foundation
 extension Notification.Name {
 
     /// Notification name to inform settings have changed.
-    static public let pEpSettingsChanged = Notification.Name("security.pEp.pEpSettingChanged")
+    static public let pEpSettingsChanged = Notification.Name("security.pEp.pEpSettingsChanged")
 
 }

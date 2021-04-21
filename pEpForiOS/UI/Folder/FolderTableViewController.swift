@@ -37,6 +37,10 @@ class FolderTableViewController: UITableViewController {
         updateRefreshControl()
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     // MARK: - Setup
 
     private func setup() {
