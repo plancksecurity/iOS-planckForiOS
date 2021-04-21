@@ -134,6 +134,50 @@ extension EmailViewController: UITableViewDataSource {
             }
             setupSender(cell: cell, with: row)
             return cell
+        case .from2:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageRecipientCell2 else {
+                return UITableViewCell()
+            }
+            guard let row = vm[indexPath.row] as? EmailViewModel.FromRow2 else {
+                Log.shared.errorAndCrash("Can't get or cast sender row")
+                return cell
+            }
+            setupSender2(cell: cell, with: [row.fromVM], type: row.type)
+            return cell
+
+        case .sender2:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageRecipientCell2 else {
+                return UITableViewCell()
+            }
+            guard let row = vm[indexPath.row] as? EmailViewModel.ToRow2 else {
+                Log.shared.errorAndCrash("Can't get or cast sender row")
+                return cell
+            }
+            setupSender2(cell: cell, with: row.recipientVMs, type: row.type)
+            return cell
+
+        case .cc2:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageRecipientCell2 else {
+                return UITableViewCell()
+            }
+            guard let row = vm[indexPath.row] as? EmailViewModel.CCRow2 else {
+                Log.shared.errorAndCrash("Can't get or cast sender row")
+                return cell
+            }
+            setupSender2(cell: cell, with: row.recipientVMs, type: row.type)
+            return cell
+
+        case .bcc2:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageRecipientCell2 else {
+                return UITableViewCell()
+            }
+            guard let row = vm[indexPath.row] as? EmailViewModel.BCCRow2 else {
+                Log.shared.errorAndCrash("Can't get or cast sender row")
+                return cell
+            }
+            setupSender2(cell: cell, with: row.recipientVMs, type: row.type)
+            return cell
+
         case .subject:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageSubjectCell else {
                 return UITableViewCell()
@@ -317,6 +361,14 @@ extension EmailViewController {
                 me.updateSizeIfLastCell(indexPath: indexPath)
             }
         }
+    }
+
+    //MB:- refactor
+
+    private func setupSender2(cell: MessageRecipientCell2,
+                              with recipientVMs: [EmailViewModel.RecipientCellViewModel],
+                              type: EmailViewModel.EmailRowType) {
+        cell.setup(recipientsVMs: recipientVMs, type: type)
     }
 
     private func setupSender(cell: MessageSenderAndRecipientsCell, with row: EmailViewModel.SenderRow) {

@@ -451,6 +451,25 @@ extension Message {
         return recipients.uniques
     }
 
+    //MB:----- Refactor
+
+    /// Returns the Tos recipients, already deduped.
+    public var tos: [Identity] {
+        return to.allObjects.uniques
+    }
+
+    /// Returns the CCs recipients, already deduped.
+    public var ccs: [Identity] {
+        return cc.allObjects.uniques
+    }
+
+    /// Returns the BCCs recipients, already deduped.
+    public var bccs: [Identity] {
+        return bcc.allObjects.uniques
+    }
+
+    //------
+
     public var allIdentities: Set<Identity> {
         var recipients = allRecipients
         if let fro = from {

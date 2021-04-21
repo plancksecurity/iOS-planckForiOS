@@ -18,8 +18,8 @@ class MessageSenderAndRecipientsCell: UITableViewCell {
     @IBOutlet private weak var toContainer: UIView!
     @IBOutlet private weak var containerHeightConstraint: NSLayoutConstraint!
 
-    public func setup(fromVM: EmailViewModel.RecipientButtonViewModel,
-                      tosVM: [EmailViewModel.RecipientButtonViewModel]) {
+    public func setup(fromVM: EmailViewModel.RecipientCellViewModel,
+                      tosVM: [EmailViewModel.RecipientCellViewModel]) {
         func display(_ buttons: [RecipientButton]) {
             let containerWidth = toContainer.frame.size.width
             var currentOriginX: CGFloat = 0
@@ -44,9 +44,14 @@ class MessageSenderAndRecipientsCell: UITableViewCell {
             containerHeightConstraint.constant = currentOriginY + recipientButtonHeight
         }
         if #available(iOS 13.0, *) {
-            fromButton.setup(text: fromVM.title, color: .label, action: fromVM.action)
+            if let action = fromVM.action {
+                fromButton.setup(text: fromVM.title, color: .label, action: action)
+            }
+
         } else {
-            fromButton.setup(text: fromVM.title, color: .black, action: fromVM.action)
+            if let action = fromVM.action {
+                fromButton.setup(text: fromVM.title, color: .black, action: action)
+            }
         }
         toContainer.subviews.forEach({$0.removeFromSuperview()})
         let toText = NSLocalizedString("To:", comment: "To: - To label")
@@ -71,3 +76,4 @@ class MessageSenderAndRecipientsCell: UITableViewCell {
         display(buttons)
     }
 }
+

@@ -194,24 +194,31 @@ class EmailViewModel {
 
 extension EmailViewModel {
 
-    struct RecipientButtonViewModel {
+    struct RecipientCellViewModel {
+
         public private(set) var title: String
-        public private(set) var identity: Identity
-        public private(set) var action: () -> Void
+        public private(set) var identity: Identity?
+        public private(set) var action: (() -> Void)?
 
         /// Constructor
         /// - Parameters:
         ///   - identity: The identity represented by the button
         ///   - action: The action to be executed
-        init(identity: Identity, action: @escaping () -> Void) {
+        init(identity: Identity?, action: (() -> Void)?) {
             self.identity = identity
-            self.title = identity.displayString
+            self.title = identity?.displayString ?? ""
             self.action = action
+        }
+
+        /// Constructor
+        /// - Parameter title: The title of the button
+        init(title: String) {
+            self.title = title
         }
     }
 
     enum EmailRowType: String {
-        case sender, subject, body, attachment, imageAttachment
+        case bcc2, cc2, sender2, from2, sender, subject, body, attachment, imageAttachment
     }
 
     // MARK: Sender
@@ -219,8 +226,32 @@ extension EmailViewModel {
     struct SenderRow: EmailRowProtocol {
         var type: EmailViewModel.EmailRowType = .sender
         var cellIdentifier: String = "senderCell"
-        var fromVM: RecipientButtonViewModel
-        var toVMs: [RecipientButtonViewModel]
+        var fromVM: RecipientCellViewModel
+        var toVMs: [RecipientCellViewModel]
+    }
+
+    struct FromRow2: EmailRowProtocol {
+        var type: EmailViewModel.EmailRowType = .from2
+        var cellIdentifier: String = "recipientCell2"
+        var fromVM: RecipientCellViewModel
+    }
+
+    struct ToRow2: EmailRowProtocol {
+        var type: EmailViewModel.EmailRowType = .sender2
+        var cellIdentifier: String = "recipientCell2"
+        var recipientVMs: [RecipientCellViewModel]
+    }
+
+    struct CCRow2: EmailRowProtocol {
+        var type: EmailViewModel.EmailRowType = .cc2
+        var cellIdentifier: String = "recipientCell2"
+        var recipientVMs: [RecipientCellViewModel]
+    }
+
+    struct BCCRow2: EmailRowProtocol {
+        var type: EmailViewModel.EmailRowType = .bcc2
+        var cellIdentifier: String = "recipientCell2"
+        var recipientVMs: [RecipientCellViewModel]
     }
 
     // MARK: Subject
@@ -398,18 +429,60 @@ extension EmailViewModel {
 
 extension EmailViewModel {
 
+
     private func setupRows(message: Message) {
+        func cellViewModels(from identities: [Identity]) -> [RecipientCellViewModel] {
+            return identities.map({ return cellViewModel(identity: $0) })
+        }
+
+        func cellViewModel(identity: Identity) -> RecipientCellViewModel {
+            return RecipientCellViewModel(identity: identity) { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                me.handleAddressButtonPressed(identity: identity)
+            }
+        }
+
         /// The order of rows will be the order of cells in the screen.
         /// Sender
         guard let from = message.from else {
             Log.shared.errorAndCrash("From identity not found.")
             return
         }
-
-        let fromVM = getRecipientButtonViewModel(identity: from)
-        let tosVM: [RecipientButtonViewModel] = message.allRecipientsOrdered.map({ return getRecipientButtonViewModel(identity: $0) })
+        let fromVM = cellViewModel(identity: from)
+        let tosVM: [RecipientCellViewModel] = message.allRecipientsOrdered.map({ return cellViewModel(identity: $0) })
         let senderRow = SenderRow(fromVM: fromVM, toVMs: tosVM)
         rows.append(senderRow)
+
+        //MB:----- refactor.
+
+        // From:
+        let fromVM2 = cellViewModel(identity: from)
+        let fromRow2 = FromRow2(fromVM: fromVM2)
+        rows.append(fromRow2)
+
+        // To:
+        let toRecipientsVMs = cellViewModels(from: message.tos)
+        let toToRow2 = ToRow2(recipientVMs: toRecipientsVMs)
+        rows.append(toToRow2)
+
+        // CC:
+        let ccRecipientsVMs = cellViewModels(from: message.ccs)
+        if !ccRecipientsVMs.isEmpty {
+            let ccToRow2 = CCRow2(recipientVMs: ccRecipientsVMs)
+            rows.append(ccToRow2)
+        }
+
+        // BCC:
+        let bccRecipientsVMs = cellViewModels(from: message.bccs)
+        if !bccRecipientsVMs.isEmpty {
+            let bccToRow2 = BCCRow2(recipientVMs: bccRecipientsVMs)
+            rows.append(bccToRow2)
+        }
+
+        //MB:----- end refactor.
 
         //Subject
         let title = message.shortMessage
@@ -427,15 +500,5 @@ extension EmailViewModel {
         //Non Inlined Attachments
         let attachmentRows = message.viewableNotInlinedAttachments.map { AttachmentRow(attachment: $0) }
         rows.append(contentsOf: attachmentRows)
-    }
-
-    private func getRecipientButtonViewModel(identity: Identity) -> RecipientButtonViewModel {
-        return RecipientButtonViewModel(identity: identity) { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.handleAddressButtonPressed(identity: identity)
-        }
     }
 }
