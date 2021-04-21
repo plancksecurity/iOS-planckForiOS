@@ -71,12 +71,6 @@ class EmailViewModel {
         return EmailViewModel(message: message)
     }
 
-    /// Regenerate rows
-    public func resetRows() {
-        self.rows = [EmailRowProtocol]()
-        self.setupRows(message: message)
-    }
-
     private var shouldHideExternalContent: Bool = true
 
     // Indicates if the External Content View has to be shown.
