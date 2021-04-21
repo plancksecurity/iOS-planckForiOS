@@ -402,7 +402,8 @@ extension EmailViewController {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-        vm.resetRows()
+        /// The delegate will be assing in didSet
+        viewModel = vm.copy()
         tableView.reloadData()
     }
 }
