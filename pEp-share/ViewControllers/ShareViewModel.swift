@@ -241,6 +241,7 @@ extension ShareViewModel {
 
         var allAttachments = inlinedAttachments
         allAttachments.append(contentsOf: nonInlinedAttachments)
+        // will throw and pass to upper layers if maximum attachment size exceeded
         try checkAttachmentSize(attachments: allAttachments)
 
         let initData = ComposeViewModel.InitData(prefilledFrom: defaultAccount.user,
@@ -254,6 +255,9 @@ extension ShareViewModel {
         var totalAttachmentSize = 0
         for attach in attachments {
             totalAttachmentSize += attach.size ?? 0
+        }
+        if totalAttachmentSize > ShareViewModel.maximumAttachmentSize * 1024 * 1024 {
+            throw MessageCreationError.attachmentLimitExceeded
         }
     }
 
