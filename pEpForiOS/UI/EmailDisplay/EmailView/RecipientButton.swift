@@ -35,19 +35,23 @@ extension RecipientButton {
     ///   - color: The title color. If nil, default values will be used. 
     public func setup(text: String, color: UIColor? = nil, action: (() -> Void)? = nil) {
         self.callbackAction = action
-        addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         isUserInteractionEnabled = true
-        setTitle(text, for: .normal)
-        titleLabel?.adjustsFontSizeToFitWidth = false
         contentHorizontalAlignment = .left
-        titleLabel?.numberOfLines = 1
-        titleLabel?.lineBreakMode = .byTruncatingTail
+        addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+        setTitle(text, for: .normal)
+
         /// Get rid of paddings
         contentEdgeInsets = UIEdgeInsets(top: .leastNormalMagnitude,
                                          left: .leastNormalMagnitude,
                                          bottom: .leastNormalMagnitude,
                                          right: .leastNormalMagnitude)
+        titleLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
+        titleLabel?.textAlignment = .natural
+        setTitleColor(color)
+        sizeToFit()
+    }
 
+    private func setTitleColor(_ color: UIColor?) {
         if let color = color {
             setTitleColor(color, for: .normal)
             if #available(iOS 13.0, *) {
@@ -75,11 +79,9 @@ extension RecipientButton {
                 setTitleColor(.darkGray, for: .selected)
             }
         }
-
-        titleLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
-        titleLabel?.textAlignment = .natural
-        sizeToFit()
     }
+
+
 
     @objc private func buttonPressed() {
         if let action = callbackAction {
