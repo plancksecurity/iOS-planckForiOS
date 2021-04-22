@@ -60,8 +60,9 @@ protocol ComposeViewModelDelegate: class {
                             positiveButtonAction: @escaping () -> Void)
     func dismiss()
 
-    /// When running inside the sharing extension, and only then,
-    /// Inform the user that the combined attachment sizes exceeds a limit, and the mail won't be sent.
+    /// When running inside the sharing extension,
+    /// Inform the user that the combined attachment sizes
+    /// exceeds a limit, and the mail won't be sent.
     func maximumAttachmentSizeHasBeenExceeded()
 }
 
