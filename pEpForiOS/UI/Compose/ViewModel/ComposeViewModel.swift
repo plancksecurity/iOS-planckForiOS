@@ -228,11 +228,6 @@ class ComposeViewModel {
             return msg
         }
 
-        if safeState.exceedsAttachmentSize() {
-            // TODO: Inform the VC, which should inform the user
-            return
-        }
-
         showAlertFordwardingLessSecureIfRequired(forState: safeState) { [weak self] (accepted) in
             guard let me = self else {
                 Log.shared.lostMySelf()
