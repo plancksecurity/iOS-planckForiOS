@@ -150,6 +150,10 @@ extension ShareViewModel {
     private enum MessageCreationError: Error {
         /// There is no account that can be used.
         case noAccount
+
+        /// The combined size of the attachments exceed a certain limit that would likely
+        /// lead to memory related crashes, due the 120 MB heap restriction for extensions
+        case attachmentLimitExceeded
     }
 
     /// Creates a compose VM from the given shared data.
