@@ -236,11 +236,22 @@ extension ShareViewModel {
             throw MessageCreationError.noAccount
         }
 
+        var allAttachments = inlinedAttachments
+        allAttachments.append(contentsOf: nonInlinedAttachments)
+        try checkAttachmentSize(attachments: allAttachments)
+
         let initData = ComposeViewModel.InitData(prefilledFrom: defaultAccount.user,
                                                  bodyHtml: NSAttributedString(attributedString: bodyHtml),
                                                  inlinedAttachments: inlinedAttachments,
                                                  nonInlinedAttachments: nonInlinedAttachments)
         return initData
+    }
+
+    private func checkAttachmentSize(attachments: [Attachment]) throws {
+        var totalAttachmentSize = 0
+        for attach in attachments {
+            totalAttachmentSize += attach.size ?? 0
+        }
     }
 
     private func getPlainText(dispatchGroup: DispatchGroup,
