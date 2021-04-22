@@ -160,6 +160,14 @@ extension ComposeViewModel {
             validateForSending()
         }
 
+        /// If the total attachments' size is too big, there may be problems
+        /// with SMTP servers, and problems in the sharing extension,
+        /// which limits total heap usage to 120 MB.
+        /// - Returns: If the total size of the attachments stays within limits, or not.
+        public func exceedsAttachmentSize() -> Bool {
+            return false
+        }
+
         private func setup() {
             guard let initData = initData else {
                 Log.shared.errorAndCrash("No data")
