@@ -43,6 +43,11 @@ protocol ShareViewModelDelegate: class {
     /// An error ocurred when trying to fetch the attachment, or during processing (i.e., there were problems
     /// with the data).
     func attachmentCouldNotBeLoaded(error: Error?)
+
+    /// The combined size of the attachments exceed a certain limit that would likely
+    /// lead to memory related crashes, due the 120 MB heap restriction for extensions.
+    /// Inform the user and cancel the extension.
+    func attachmentLimitExceeded()
 }
 
 class ShareViewModel {

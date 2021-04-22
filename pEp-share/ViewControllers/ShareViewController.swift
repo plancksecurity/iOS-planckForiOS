@@ -37,6 +37,7 @@ extension ShareViewController: ShareViewModelDelegate {
         case messageCouldNotBeSaved
         case attachmentTypeNotSupported
         case attachmetCouldNotBeLoaded
+        case attachmentLimitExceeded
     }
 
     func startComposeView(composeViewModel: ComposeViewModel) {
@@ -127,6 +128,19 @@ extension ShareViewController: ShareViewModelDelegate {
             message = String(format: NSLocalizedString("The attachment could not be loaded:\n%1@",
                                                        comment: "Sharing extension could not load or process the attachment"), theError.localizedDescription)
         }
+        UIUtils.showAlertWithOnlyPositiveButton(title: title,
+                                                message: message,
+                                                completion: cancelRequest)
+    }
+
+    func attachmentLimitExceeded() {
+        func cancelRequest() {
+            extensionContext?.cancelRequest(withError: SharingError.attachmentLimitExceeded)
+        }
+
+        let message = NSLocalizedString("The file is too big to send via email. The maximum file size is 20 MB",
+                                        comment: "Sharing extension: Attachment(s) too big")
+        let title = NSLocalizedString("Error", comment: "Sharing extension: Error title")
         UIUtils.showAlertWithOnlyPositiveButton(title: title,
                                                 message: message,
                                                 completion: cancelRequest)
