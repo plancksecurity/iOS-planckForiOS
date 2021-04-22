@@ -388,11 +388,6 @@ extension ComposeViewController: ComposeViewModelDelegate {
    func dismiss() {
         dismiss(animated: true, completion: nil)
     }
-
-    func maximumAttachmentSizeHasBeenExceeded() {
-        // TODO
-        UIUtils.showAlertWithOnlyPositiveButton(title: "", message: "")
-    }
 }
 
 // MARK: - SegueHandlerType
