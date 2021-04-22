@@ -59,6 +59,11 @@ protocol ComposeViewModelDelegate: class {
                             cancelButtonAction: @escaping () -> Void,
                             positiveButtonAction: @escaping () -> Void)
     func dismiss()
+
+    /// When running inside the sharing extension,
+    /// Inform the user that the combined attachment sizes
+    /// exceeds a limit, and the mail won't be sent.
+    func maximumAttachmentSizeHasBeenExceeded()
 }
 
 /// Contains messages about cancelation and send.
@@ -229,7 +234,7 @@ class ComposeViewModel {
         }
 
         if safeState.exceedsAttachmentSize() {
-            // TODO: Inform the VC, which should inform the user
+            delegate?.maximumAttachmentSizeHasBeenExceeded()
             return
         }
 
