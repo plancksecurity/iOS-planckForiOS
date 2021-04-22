@@ -138,8 +138,9 @@ extension ShareViewController: ShareViewModelDelegate {
             extensionContext?.cancelRequest(withError: SharingError.attachmentLimitExceeded)
         }
 
-        let message = NSLocalizedString("The file is too big to send via email. The maximum file size is 20 MB",
-                                        comment: "Sharing extension: Attachment(s) too big")
+        let message = String(format: NSLocalizedString("The file is too big to send via email. The maximum file size is %1d MB",
+                                        comment: "Sharing extension: Attachment(s) too big"),
+                             ShareViewModel.maximumAttachmentSize)
         let title = NSLocalizedString("Error", comment: "Sharing extension: Error title")
         UIUtils.showAlertWithOnlyPositiveButton(title: title,
                                                 message: message,
