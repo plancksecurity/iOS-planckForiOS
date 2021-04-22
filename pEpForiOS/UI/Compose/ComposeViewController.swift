@@ -754,6 +754,9 @@ extension ComposeViewController {
     func jumpToNextField(command: UIKeyCommand) {
 
         func currentFirstResponder(inSubviewsOf view: UIView) -> UIView? {
+            if view.isFirstResponder {
+                return view
+            }
             if view.subviews.isEmpty {
                 return nil
             }
@@ -767,7 +770,7 @@ extension ComposeViewController {
             return nil
         }
 
-        guard let currentResponder = currentFirstResponder(inSubviewsOf: tableView) else {
+        guard let currentResponder = currentFirstResponder(inSubviewsOf: view) else {
             // No cell is currently focused. So there is no "next cell" to set focus to.
             // Do nothing.
             return
