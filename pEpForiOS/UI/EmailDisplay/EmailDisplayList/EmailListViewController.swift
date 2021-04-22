@@ -76,7 +76,10 @@ final class EmailListViewController: UIViewController {
         subscribeForKeyboardNotifications()
         edgesForExtendedLayout = .all
         setSeparator()
-
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(pEpSettingsChanged),
+                                               name: .pEpSettingsChanged,
+                                               object: nil)
         doOnce = { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
@@ -1439,5 +1442,13 @@ extension EmailListViewController {
         } else {
             // Fallback on earlier versions
         }
+    }
+}
+//MARK: - pEp Settings Changed
+
+extension EmailListViewController {
+
+    @objc func pEpSettingsChanged() {
+        tableView.reloadData()
     }
 }
