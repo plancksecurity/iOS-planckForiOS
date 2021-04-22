@@ -165,19 +165,7 @@ extension ComposeViewModel {
         /// which limits total heap usage to 120 MB.
         /// - Returns: If the total size of the attachments stays within limits, or not.
         public func exceedsAttachmentSize() -> Bool {
-            var totalSize = 0
-
-            for attch in inlinedAttachments {
-                totalSize += attch.size ?? 0
-            }
-
-            for attch in nonInlinedAttachments {
-                totalSize += attch.size ?? 0
-            }
-
-            let maximumAllowedSizeInMegabytes = 20
-
-            return totalSize < maximumAllowedSizeInMegabytes * 1024 * 1024
+            return false
         }
 
         private func setup() {
