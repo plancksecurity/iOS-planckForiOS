@@ -55,6 +55,10 @@ class EmailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(pEpSettingsChanged),
+                                               name: .pEpSettingsChanged,
+                                               object: nil)
         showExternalContentLabel.text = Localized.showExternalContentText
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 100
@@ -91,6 +95,10 @@ class EmailViewController: UIViewController {
                 tableView.reloadData()
             }
         }
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - IBActions
@@ -434,5 +442,20 @@ extension EmailViewController {
 By showing external content, your privacy may be invaded.
 This may affect the privacy status of the message.
 """, comment: "external content label text")
+    }
+}
+
+//MARK: - pEp Settings Changed
+
+extension EmailViewController {
+
+    @objc func pEpSettingsChanged() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        /// The delegate will be assing in didSet
+        viewModel = vm.copy()
+        tableView.reloadData()
     }
 }

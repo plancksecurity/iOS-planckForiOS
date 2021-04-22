@@ -24,6 +24,10 @@ public protocol MessageModelServiceProtocol: ServiceProtocol {
     func checkForNewMails_old(completionHandler: @escaping (_ numNewMails: Int?) -> ()) //BUFF: must change to new service
     /// Finnihses a current checkForNewMails process as soon as possible
     func cancelCheckForNewMails_old()
+
+    /// Tries to free as much memory as possible. Call in case of low memory
+    /// (applicationDidReceiveMemoryWarning() or such)
+    func freeMemory()
 }
 
 public final class MessageModelService {
@@ -85,6 +89,10 @@ extension MessageModelService: MessageModelServiceProtocol {
 
     public func cancelCheckForNewMails_old() {
         newMailsService?.stop()
+    }
+
+    public func freeMemory() {
+        PEPSession.cleanup()
     }
 }
 

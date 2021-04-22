@@ -58,11 +58,17 @@ class EmailViewModel {
 
     /// Constructor
     /// - Parameter message: The message to display
-    public init(message: Message, delegate: EmailViewModelDelegate) {
+    public init(message: Message, delegate: EmailViewModelDelegate? = nil) {
         self.message = message
         self.delegate = delegate
         self.rows = [EmailRowProtocol]()
         self.setupRows(message: message)
+    }
+
+    /// Retrieve a copy of itself. Does not keep the delegate.
+    /// - Returns: The copy of instance
+    public func copy() -> EmailViewModel {
+        return EmailViewModel(message: message)
     }
 
     private var shouldHideExternalContent: Bool = true

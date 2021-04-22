@@ -66,7 +66,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        Log.shared.error("applicationDidReceiveMemoryWarning")
+        Log.shared.warn("applicationDidReceiveMemoryWarning")
+        IdentityImageTool.clearCache()
+        messageModelService?.freeMemory()
     }
 
     func application(_ application: UIApplication,
