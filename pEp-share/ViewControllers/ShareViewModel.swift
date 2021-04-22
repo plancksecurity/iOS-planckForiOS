@@ -51,7 +51,7 @@ protocol ShareViewModelDelegate: class {
 }
 
 class ShareViewModel {
-    /// Maximum size of all attachments, in MB
+    /// Maximum allowed size of all attachments, in MB
     public static let maximumAttachmentSize = 20
 
     public weak var shareViewModelDelegate: ShareViewModelDelegate?
