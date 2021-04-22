@@ -136,6 +136,8 @@ class ShareViewModel {
                 me.shareViewModelDelegate?.startComposeView(composeViewModel: composeVM)
             } catch MessageCreationError.noAccount {
                 me.shareViewModelDelegate?.noAccount()
+            } catch MessageCreationError.attachmentLimitExceeded {
+                me.shareViewModelDelegate?.attachmentLimitExceeded()
             } catch {
                 Log.shared.errorAndCrash(error: error)
                 me.shareViewModelDelegate?.canceledByUser()
