@@ -38,6 +38,7 @@ class ComposeViewController: UIViewController {
         return DocumentAttachmentPickerViewController(
             viewModel: viewModel?.documentAttachmentPickerViewModel())
     }()
+    
     private var isInitialFocusSet = false
     private var scrollUtil = TextViewInTableViewScrollUtil()
     private var doOnce: (()->())?
@@ -47,6 +48,10 @@ class ComposeViewController: UIViewController {
             // Make sure we are the delegate. Always.
             viewModel?.delegate = self
         }
+    }
+
+    override var keyCommands: [UIKeyCommand]? {
+        return KeyCommandsProvider.commands
     }
 
     // MARK: - Life Cycle
@@ -691,6 +696,110 @@ extension ComposeViewController: SwipeTableViewCellDelegate {
 // MARK: - First Responder / Focus
 
 extension ComposeViewController {
+
+    //BUFF:
+
+    private struct KeyCommandsProvider {
+        fileprivate static let commands: [UIKeyCommand] = {
+            let tabForward = UIKeyCommand(input: "\t",
+                                          modifierFlags: [],
+                                          action: #selector(jumpToNextField(command:)))
+            let tabBackward = UIKeyCommand(input: "\t",
+                                           modifierFlags: .shift,
+                                           action: #selector(jumpToPreviousField(command:)))
+            return [tabForward, tabBackward]
+        }()
+    }
+
+    private func setFocusToNextCell(currentCell: UITableViewCell) {
+        guard let idxPathOfCurrentlyFocusedCell = tableView.indexPath(for: currentCell) else {
+            Log.shared.errorAndCrash("`currentCell` is not known to tableview")
+            return
+        }
+        let nextRowInSameSection = idxPathOfCurrentlyFocusedCell.row + 1
+        let nextRowExistsInSection = nextRowInSameSection < tableView.numberOfRows(inSection: idxPathOfCurrentlyFocusedCell.section)
+        var nextCellIndex: IndexPath? = nil
+        if nextRowExistsInSection {
+            nextCellIndex = IndexPath(row: nextRowInSameSection, section: idxPathOfCurrentlyFocusedCell.section)
+        } else {
+            // Try next section
+            let firstRowInNextSectionIdx = IndexPath(row: 0, section: idxPathOfCurrentlyFocusedCell.section + 1)
+            let rowExists = firstRowInNextSectionIdx.section < tableView.numberOfSections &&
+                firstRowInNextSectionIdx.row < tableView.numberOfRows(inSection: firstRowInNextSectionIdx.section)
+            if rowExists {
+                nextCellIndex = firstRowInNextSectionIdx
+            }
+        }
+        guard let next = nextCellIndex else {
+            // There is no next cell.
+            return
+        }
+        guard let nextCell = tableView.cellForRow(at: next) else {
+            Log.shared.errorAndCrash("Unexpected! According to our previous computations, a cell must exists for this indexPath")
+            return
+        }
+        if let focusableCell = nextCell as? TextViewContainingTableViewCell {
+            focusableCell.setFocus()
+        } else {
+            // The next cell is not focuable. Skip forward (recurse)
+            setFocusToNextCell(currentCell: nextCell)
+        }
+    }
+
+    private func setFocusToPreviousCell(currentCell: UITableViewCell) {
+        fatalError("unimplemented stub")
+    }
+
+    @objc
+    func jumpToNextField(command: UIKeyCommand) {
+
+        func currentFirstResponder(inSubviewsOf view: UIView) -> UIView? {
+            if view.subviews.isEmpty {
+                return nil
+            }
+            for subview in view.subviews {
+                if subview.isFirstResponder {
+                    return subview
+                } else if let recursedFound = currentFirstResponder(inSubviewsOf: subview){
+                    return recursedFound
+                }
+            }
+            return nil
+        }
+
+        guard let currentResponder = currentFirstResponder(inSubviewsOf: tableView) else {
+            // No cell is currently focused. So there is no "next cell" to set focus to.
+            // Do nothing.
+            return
+        }
+        // Current first responder is assumed a UITextView. This func figures out the cell owning the textview.
+        func findSuperViewThatIsACell(of view: UIView) -> UITableViewCell? {
+
+            if let cell = view as? UITableViewCell {
+                return cell
+            }
+            guard let superview = view.superview else {
+                // End recursion. We are on the top of the view hirarchy
+                return nil
+            }
+            if let cell = superview as? UITableViewCell {
+                return cell
+            }
+            return findSuperViewThatIsACell(of: superview)
+        }
+        if let focusedCell = findSuperViewThatIsACell(of: currentResponder) {
+            setFocusToNextCell(currentCell: focusedCell)
+        } else {
+            Log.shared.info("No cell is currently focused. So there is no \"next cell\" to set focus to.")
+            // Do nothing.
+        }
+    }
+
+    @objc
+    func jumpToPreviousField(command: UIKeyCommand) {
+        fatalError("unimplemented stub")
+    }
+    //
 
     private func setInitialFocus() {
         guard !isInitialFocusSet else {
