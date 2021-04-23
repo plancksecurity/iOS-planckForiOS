@@ -713,6 +713,7 @@ extension ComposeViewController {
 
     private func setFocusToNextCell(currentCell: UITableViewCell) {
 
+        // Finds the first next section that contains rows
         func indexOfNextSectionContainingRows(from currentSectionIndex: Int) -> Int? {
             let nextSectionIndex = currentSectionIndex + 1
             let nextSectionExists = nextSectionIndex < tableView.numberOfSections
@@ -769,33 +770,54 @@ extension ComposeViewController {
     }
 
     private func setFocusToPreviousCell(currentCell: UITableViewCell) {
+
+        // Finds the first previous section that contains rows
+        func indexOfPreviousSectionContainingRows(from currentSectionIndex: Int) -> Int? {
+            let previousSectionIndex = currentSectionIndex - 1
+            let previousSectionExists =
+                previousSectionIndex < tableView.numberOfSections && previousSectionIndex >= 0
+            guard previousSectionExists else {
+                // There is no next section.
+                return nil
+            }
+            let numRowsInPreviousSection = tableView.numberOfRows(inSection: previousSectionIndex)
+            if numRowsInPreviousSection > 0 {
+                return previousSectionIndex
+            } else {
+                // The section does not have any rows. Try next section (recurse)
+                return indexOfPreviousSectionContainingRows(from: previousSectionIndex)
+            }
+        }
+
         guard let idxPathOfCurrentlyFocusedCell = tableView.indexPath(for: currentCell) else {
             Log.shared.errorAndCrash("`currentCell` is not known to tableview")
             return
         }
         let previosRowInSameSection = idxPathOfCurrentlyFocusedCell.row - 1
-        let previousRowExistsInSection = previosRowInSameSection < tableView.numberOfRows(inSection: idxPathOfCurrentlyFocusedCell.section) && previosRowInSameSection >= 0
+        let previousRowExistsInSection =
+            previosRowInSameSection < tableView.numberOfRows(inSection: idxPathOfCurrentlyFocusedCell.section)
+            && previosRowInSameSection >= 0
         var previousCellIndex: IndexPath? = nil
         if previousRowExistsInSection {
             previousCellIndex = IndexPath(row: previosRowInSameSection,
                                           section: idxPathOfCurrentlyFocusedCell.section)
         } else {
             // Try previous section section
-            let previousSection = idxPathOfCurrentlyFocusedCell.section - 1
-            let sectionExists =
-                previousSection >= 0 && previousSection < tableView.numberOfSections
-            guard sectionExists else {
-                Log.shared.info("there is no previous section, thus there is no previous field to set focus to")
+            guard let previousSectionIdx =
+                    indexOfPreviousSectionContainingRows(from: idxPathOfCurrentlyFocusedCell.section)
+            else {
+                // There is no further section which contains rows, thus there is nothing to set
+                // next focus to.
                 return
             }
-            let lastRowInPreviousSection = tableView.numberOfRows(inSection: previousSection) - 1
+            let lastRowInPreviousSection = tableView.numberOfRows(inSection: previousSectionIdx) - 1
             let rowExists = lastRowInPreviousSection >= 0
             guard rowExists else {
                 Log.shared.info("there are no rows in previous section, thus there is no previous field to set focus to")
                 return
             }
             let lastRowInPreviousSectionIdx = IndexPath(row: lastRowInPreviousSection,
-                                                        section: previousSection)
+                                                        section: previousSectionIdx)
             previousCellIndex = lastRowInPreviousSectionIdx
         }
         guard let previous = previousCellIndex else {
