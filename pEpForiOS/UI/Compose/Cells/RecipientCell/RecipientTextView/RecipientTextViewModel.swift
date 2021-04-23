@@ -110,8 +110,11 @@ public class RecipientTextViewModel {
     }
 
     private func removeRecipientAttachment(attachment: TextAttachment) {
-        recipientAttachments = recipientAttachments
-            .filter { $0.recipient.address != attachment.recipient.address }
+        var copy = recipientAttachments
+        if let index = copy.firstIndex(where: { $0.recipient.address == attachment.recipient.address }) {
+            copy.remove(at: index)
+            self.recipientAttachments = copy
+        }
     }
 
      @discardableResult private func tryGenerateValidAddressAndUpdateStatus(range: NSRange,
@@ -183,3 +186,5 @@ public class RecipientTextViewModel {
         }
     }
 }
+
+
