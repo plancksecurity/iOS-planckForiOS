@@ -18,7 +18,7 @@ import pEp4iosIntern
 class MigrateKeychainService: OperationBasedService {
     private let keychainGroupSource: String
     private let keychainGroupTarget: String
-    private let completionBlock: (()->())?
+    var completionBlock: (()->())?
 
     /// - parameter keychainGroupSource: The name of the source keychain  (where to migrate from)
     /// - parameter keychainGroupTarget: The name of the target keychain (where to migrate to),

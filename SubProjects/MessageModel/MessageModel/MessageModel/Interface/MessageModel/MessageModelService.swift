@@ -37,10 +37,7 @@ public final class MessageModelService {
 
     private let backgroundTaskManager = BackgroundTaskManager()
 
-    /// Holds all Services that:
-    /// * are supposed to be started whenever the app is started or comming to foreground
-    /// * are supposed to run only once
-    private var onetimeServices = [ServiceProtocol]()
+    private var migrateKeychainService: MigrateKeychainService?
 
     /// Holds all Services that:
     /// * are supposed to be started whenever the app is started or comming to foreground
@@ -109,10 +106,10 @@ extension MessageModelService {
         //###
         // Servcies that run only once when the app starts
         if let bundleIdentifier = Bundle.main.bundleIdentifier {
-            onetimeServices = [MigrateKeychainService(keychainGroupSource: "\(kTeamId).\(bundleIdentifier)",
-                                                      keychainGroupTarget: "\(kTeamId).\(kSharedKeychain)")]
+            migrateKeychainService = MigrateKeychainService(keychainGroupSource: "\(kTeamId).\(bundleIdentifier)",
+                                                             keychainGroupTarget: "\(kTeamId).\(kSharedKeychain)")
         } else {
-            Log.shared.errorAndCrash(message: "No bundle identifier")
+            Log.shared.errorAndCrash(message: "No bundle identifier -> no MigrateKeychainService!")
         }
 
         //###
@@ -158,9 +155,16 @@ extension MessageModelService: ServiceProtocol {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
+            guard let keyChainMigrationService = me.migrateKeychainService else {
+                me.runtimeServices.forEach { $0.start() }
+                return
+            }
             // Forward service calls
-            me.onetimeServices.forEach { $0.start() }
-            me.runtimeServices.forEach { $0.start() }
+            keyChainMigrationService.completionBlock = {
+                // Start services that potetionally use the key chain after migration.
+                me.runtimeServices.forEach { $0.start() }
+            }
+            keyChainMigrationService.start()
         }
     }
 
