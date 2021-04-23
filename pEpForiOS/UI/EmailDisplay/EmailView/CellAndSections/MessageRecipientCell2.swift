@@ -11,6 +11,15 @@ import pEpIOSToolbox
 
 class MessageRecipientCell2: UITableViewCell {
 
+    private var minHeight: CGFloat? = 16.0
+
+    override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
+        let size = super.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: horizontalFittingPriority, verticalFittingPriority: verticalFittingPriority)
+        guard let minHeight = minHeight else { return size }
+        let expectedHeight = collectionView.collectionViewLayout.collectionViewContentSize.height
+        return CGSize(width: size.width, height: max(expectedHeight, minHeight))
+    }
+
     private var recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]?
 
     @IBOutlet private weak var collectionView: UICollectionView!
@@ -49,6 +58,7 @@ extension MessageRecipientCell2 {
     private func setVMs(_ type: EmailViewModel.EmailRowType, _ recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
         switch type {
         case .from2:
+            self.minHeight = 30.0
             self.recipientCollectionViewCellViewModels = recipientCollectionViewCellViewModels
         case .to2:
             setToRecipientCollectionViewCellViewModels(recipientCollectionViewCellViewModels)

@@ -459,10 +459,10 @@ extension EmailViewModel {
             Log.shared.errorAndCrash("From identity not found.")
             return
         }
-        let fromVM = getRecipientCollectionViewCellViewModel(identity: from)
-        let tosVM: [RecipientCollectionViewCellViewModel] = message.allRecipientsOrdered.map({ return getRecipientCollectionViewCellViewModel(identity: $0) })
-        let senderRow = SenderRow(fromVM: fromVM, toVMs: tosVM)
-        rows.append(senderRow)
+//        let fromVM = getRecipientCollectionViewCellViewModel(identity: from)
+//        let tosVM: [RecipientCollectionViewCellViewModel] = message.allRecipientsOrdered.map({ return getRecipientCollectionViewCellViewModel(identity: $0) })
+//        let senderRow = SenderRow(fromVM: fromVM, toVMs: tosVM)
+//        rows.append(senderRow)
 
         // From:
         let fromVM2 = getRecipientCollectionViewCellViewModel(identity: from)

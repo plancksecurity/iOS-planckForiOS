@@ -479,20 +479,27 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="req-zi-fdO">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="SId-vz-C31">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="582.5"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hwJ-Yz-Z5J">
+                                        <rect key="frame" x="67.5" y="0.0" width="240" height="16"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="16" id="siE-y8-Wmx"/>
+                                        </constraints>
+                                    </view>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="30" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="SId-vz-C31">
+                                        <rect key="frame" x="0.0" y="16" width="375" height="566.5"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Show email Scene empty cell" id="txe-9M-aC3">
-                                                <rect key="frame" x="0.0" y="28" width="375" height="43.5"/>
+                                                <rect key="frame" x="0.0" y="28" width="375" height="30"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="txe-9M-aC3" id="QjJ-V2-D7h">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </tableViewCellContentView>
                                             </tableViewCell>
                                             <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="recipientCell2" rowHeight="30" id="Zjs-ta-aiF" userLabel="recipientCell2" customClass="MessageRecipientCell2" customModule="pEpForiOS" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="71.5" width="375" height="30"/>
+                                                <rect key="frame" x="0.0" y="58" width="375" height="30"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Zjs-ta-aiF" id="075-hv-ST0">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
@@ -555,7 +562,7 @@
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="senderCell" rowHeight="72" id="5C0-BM-OjH" customClass="MessageSenderAndRecipientsCell" customModule="pEpForiOS" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="101.5" width="375" height="72"/>
+                                                <rect key="frame" x="0.0" y="88" width="375" height="72"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5C0-BM-OjH" id="314-rf-9fH">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="72"/>
@@ -592,7 +599,7 @@
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="senderSubjectCell" rowHeight="66" id="dOn-lF-8Mt" userLabel="subjectCell" customClass="MessageSubjectCell" customModule="pEpForiOS" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="173.5" width="375" height="66"/>
+                                                <rect key="frame" x="0.0" y="160" width="375" height="66"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dOn-lF-8Mt" id="kkm-Hl-To6">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="66"/>
@@ -641,7 +648,7 @@
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderBodyCell" rowHeight="200" id="2zG-Ta-cbU" userLabel="bodyCell" customClass="MessageBodyCell" customModule="pEpForiOS" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="239.5" width="375" height="200"/>
+                                                <rect key="frame" x="0.0" y="226" width="375" height="200"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2zG-Ta-cbU" id="Ycu-dg-7E7">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
@@ -677,7 +684,7 @@
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="imageAttachmentCell" rowHeight="100" id="Yj1-FN-tP6" userLabel="imageAttachmementCell" customClass="MessageImageAttachmentCell" customModule="pEpForiOS" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="439.5" width="375" height="100"/>
+                                                <rect key="frame" x="0.0" y="426" width="375" height="100"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Yj1-FN-tP6" id="33c-ei-bOD">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
@@ -700,7 +707,7 @@
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="attachmentsCell" rowHeight="100" id="bpv-tb-oFI" userLabel="attachmentCell" customClass="MessageAttachmentCell" customModule="pEpForiOS" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="539.5" width="375" height="100"/>
+                                                <rect key="frame" x="0.0" y="526" width="375" height="100"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bpv-tb-oFI" id="zbr-eQ-xVn">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
@@ -828,7 +835,6 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="1gM-RO-PE9" firstAttribute="leading" secondItem="req-zi-fdO" secondAttribute="leading" id="IGw-8E-52s"/>
-                                    <constraint firstItem="SId-vz-C31" firstAttribute="top" secondItem="req-zi-fdO" secondAttribute="top" id="RGf-Al-eQg"/>
                                     <constraint firstAttribute="bottom" secondItem="1gM-RO-PE9" secondAttribute="bottom" id="YkA-OU-bWG"/>
                                     <constraint firstAttribute="trailing" secondItem="1gM-RO-PE9" secondAttribute="trailing" id="brZ-Fd-4nS"/>
                                     <constraint firstAttribute="trailing" secondItem="SId-vz-C31" secondAttribute="trailing" id="dDU-Nr-Jt2"/>

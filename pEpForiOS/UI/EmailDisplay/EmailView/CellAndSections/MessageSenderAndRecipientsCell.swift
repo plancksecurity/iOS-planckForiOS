@@ -8,6 +8,7 @@
 
 import UIKit
 
+//TODO: rm this.
 class MessageSenderAndRecipientsCell: UITableViewCell {
     // Will be calculated on runtime
     private var recipientButtonHeight: CGFloat = 0
