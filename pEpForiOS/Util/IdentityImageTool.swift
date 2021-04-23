@@ -53,7 +53,6 @@ extension IdentityImageTool {
         let image: UIImage
         let cnContactHasBeenTakenIntoAccount: Bool
     }
-
 }
 
 class IdentityImageTool {
@@ -74,6 +73,14 @@ class IdentityImageTool {
             }
         }
     }
+
+    // MARK: - Life Cycle
+
+    deinit {
+        clearCache()
+    }
+
+    // MARK: - API
 
     func clearCache() {
         IdentityImageTool.imageCache.removeAll()
@@ -126,7 +133,7 @@ class IdentityImageTool {
         if let addressBookID = identityKey.addressBookId {
             // Get image from system AddressBook if any
             if let contact = AddressBook.contactBy(addressBookID: addressBookID),
-                let imgData = contact.thumbnailImageData {
+               let imgData = contact.thumbnailImageData {
                 image = UIImage(data: imgData)
             }
             contactHasBeenCheckedForImage = true
@@ -136,9 +143,9 @@ class IdentityImageTool {
             // We couldn't find an image, so we create one with the initials.
             if let nameInitials = identityKey.userName?.initials() {
                 image = identityImageFromName(initials: nameInitials,
-                size: imageSize,
-                textColor: textColorToSet,
-                imageBackgroundColor: backgroundColor)
+                                              size: imageSize,
+                                              textColor: textColorToSet,
+                                              imageBackgroundColor: backgroundColor)
             } else {
                 image = UIImage(named: "pEpforiOS-avatar")
             }
@@ -150,6 +157,12 @@ class IdentityImageTool {
         }
         return image
     }
+}
+
+// MARK: - Private
+
+extension IdentityImageTool {
+
 
     private func drawBackground(ctx: CGContext, size: CGSize, color: UIColor) {
         let r = CGRect(origin: CGPoint(x: 0, y: 0), size: size)

@@ -76,7 +76,9 @@ extension HtmlOptimizerUtil {
 
         // Optimize for dark mode _only_ if no colors are defined (to avoid issues with drak
         // font-color on dark background if the HTML defines font-color but not background).
-        let styleAutodetectLightOrDarkMode = html.contains("color:") ? "" : """
+        let htmlDefinesColors = html.contains("color:")
+        let htmlIsCreatedByPep4iOS = html.contains("Cocoa HTML Writer")
+        let styleAutodetectLightOrDarkMode = (htmlDefinesColors && !htmlIsCreatedByPep4iOS) ? "" : """
             @media (prefers-color-scheme: dark) {
                 body {
                     color: #eee;
