@@ -11,7 +11,7 @@ import pEpIOSToolbox
 
 class MessageRecipientCell2: UITableViewCell {
 
-    private var minHeight: CGFloat? = 16.0
+    private var minHeight: CGFloat? = 20.0
 
     override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
         let size = super.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: horizontalFittingPriority, verticalFittingPriority: verticalFittingPriority)
@@ -60,7 +60,6 @@ extension MessageRecipientCell2 {
     private func setVMs(_ type: EmailViewModel.EmailRowType, _ recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
         switch type {
         case .from2:
-            self.minHeight = 30.0
             self.recipientCollectionViewCellViewModels = recipientCollectionViewCellViewModels
         case .to2:
             setToRecipientCollectionViewCellViewModels(recipientCollectionViewCellViewModels)
@@ -77,9 +76,13 @@ extension MessageRecipientCell2 {
         collectionView.scrollsToTop = false
         let layout = LeftAlignedCollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 2
-        layout.minimumLineSpacing = 4
+        layout.minimumLineSpacing = 2
         collectionView.collectionViewLayout = layout
         collectionView.reloadData()
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 4, left: 0, bottom: 0, right: 0)
     }
 }
 
@@ -92,13 +95,12 @@ extension MessageRecipientCell2: UICollectionViewDelegate {
             Log.shared.errorAndCrash("Error setting up cell")
             return collectionView.dequeueReusableCell(withReuseIdentifier: RecipientCollectionViewCell.cellId, for: indexPath)
         }
-
-        guard let vm = recipientCollectionViewCellViewModels else {
+        guard let recipientCollectionViewCellViewModels = recipientCollectionViewCellViewModels else {
             Log.shared.errorAndCrash("VMs not found")
             return cell
         }
-
-        cell.setup(cellVM: vm[indexPath.row])
+        let collectionViewCellViewModel = recipientCollectionViewCellViewModels[indexPath.row]
+        cell.setup(with: collectionViewCellViewModel)
         return cell
     }
 }
@@ -108,11 +110,11 @@ extension MessageRecipientCell2: UICollectionViewDelegate {
 extension MessageRecipientCell2: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let vms = recipientCollectionViewCellViewModels else {
+        guard let recipientCollectionViewCellViewModels = recipientCollectionViewCellViewModels else {
             Log.shared.errorAndCrash("The cell can not have zero recipients")
             return 0
         }
-        return vms.count
+        return recipientCollectionViewCellViewModels.count
     }
 }
 

@@ -13,9 +13,9 @@ class RecipientCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var recipientButton: RecipientButton!
     public static let cellId = "recipientCellId"
 
-    func setup(cellVM: EmailViewModel.RecipientCollectionViewCellViewModel) {
+    func setup(with collectionViewCellViewModel: EmailViewModel.RecipientCollectionViewCellViewModel) {
         var color: UIColor = .darkText
-        switch cellVM.rowType {
+        switch collectionViewCellViewModel.rowType {
         case .to2, .cc2, .bcc2:
             if #available(iOS 13.0, *) {
                 color = .secondaryLabel
@@ -31,6 +31,6 @@ class RecipientCollectionViewCell: UICollectionViewCell {
         default:
             Log.shared.errorAndCrash("Row type not supported")
         }
-        recipientButton.setup(text: cellVM.title, color: color, action: cellVM.action)
+        recipientButton.setup(text: collectionViewCellViewModel.title, color: color, action: collectionViewCellViewModel.action)
     }
 }
