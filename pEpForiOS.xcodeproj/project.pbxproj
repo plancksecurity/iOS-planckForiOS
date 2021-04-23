@@ -515,6 +515,7 @@
 		5BF39DA8257A737A00A00A96 /* AccountSettingsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF39DA7257A737A00A00A96 /* AccountSettingsHelper.swift */; };
 		5BF449F4240827F500B23E50 /* TutorialStep0iPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF449F3240827F500B23E50 /* TutorialStep0iPhoneViewController.swift */; };
 		5BF505FE253EFBA50051FBD3 /* MailtoTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD917E1252DD64D0092B30F /* MailtoTest.swift */; };
+		5BF90036262F2517005B08D4 /* NSNotificationName+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF90035262F2517005B08D4 /* NSNotificationName+Settings.swift */; };
 		5BF9B3D723FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF9B3D623FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift */; };
 		5BFBB20825D2A87700F269C4 /* EmailViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFBB20725D2A87700F269C4 /* EmailViewModelTest.swift */; };
 		5BFBB21625D2B46300F269C4 /* test01_internal_cert.pEp12 in Resources */ = {isa = PBXBuildFile; fileRef = 5BFBB21025D2AAD500F269C4 /* test01_internal_cert.pEp12 */; };
@@ -1148,6 +1149,7 @@
 		5BF39DA2257A71AC00A00A96 /* EditableAccountSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModel.swift; sourceTree = "<group>"; };
 		5BF39DA7257A737A00A00A96 /* AccountSettingsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsHelper.swift; sourceTree = "<group>"; };
 		5BF449F3240827F500B23E50 /* TutorialStep0iPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep0iPhoneViewController.swift; sourceTree = "<group>"; };
+		5BF90035262F2517005B08D4 /* NSNotificationName+Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotificationName+Settings.swift"; sourceTree = "<group>"; };
 		5BF9B3D623FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementResetTableViewCell.swift; sourceTree = "<group>"; };
 		5BFBB20725D2A87700F269C4 /* EmailViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailViewModelTest.swift; sourceTree = "<group>"; };
 		5BFBB20F25D2AAC000F269C4 /* random.docx */ = {isa = PBXFileReference; lastKnownFileType = file; path = random.docx; sourceTree = "<group>"; };
@@ -1664,6 +1666,7 @@
 				5BE35AA324913B4700AC605C /* SettingsViewModel.swift */,
 				1521B78C241BDAD3000EAE57 /* UIUtils+Settings.swift */,
 				15874BAF2127493E00A3A4A6 /* Setting */,
+				5BF90035262F2517005B08D4 /* NSNotificationName+Settings.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -3445,6 +3448,7 @@
 				5B2F7E63240D25CF004DDFA2 /* TutorialStepViewController.swift in Sources */,
 				5BBE80CF24B733C0008DE0E5 /* AccountSettingsTableViewCell.swift in Sources */,
 				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,
+				5BF90036262F2517005B08D4 /* NSNotificationName+Settings.swift in Sources */,
 				37F615CF238BE584001AAE48 /* ManualAccountSetupView.swift in Sources */,
 				5B3B019124B46CFC00FBB4B5 /* UILayout+Extension.swift in Sources */,
 				15D4399C216E698E00EB3933 /* AccountPickerViewModel.swift in Sources */,
