@@ -150,10 +150,10 @@ extension EmailViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
-            setupSender2(cell: cell, with: [row.fromVM], type: row.type)
+            setupRecipient2(cell: cell, with: [row.fromVM], type: row.type)
             return cell
 
-        case .sender2:
+        case .to2:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageRecipientCell2 else {
                 return UITableViewCell()
             }
@@ -161,7 +161,7 @@ extension EmailViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
-            setupSender2(cell: cell, with: row.recipientVMs, type: row.type)
+            setupRecipient2(cell: cell, with: row.recipientCollectionViewCellViewModels, type: row.type)
             return cell
 
         case .cc2:
@@ -172,7 +172,7 @@ extension EmailViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
-            setupSender2(cell: cell, with: row.recipientVMs, type: row.type)
+            setupRecipient2(cell: cell, with: row.recipientCollectionViewCellViewModels, type: row.type)
             return cell
 
         case .bcc2:
@@ -183,7 +183,7 @@ extension EmailViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
-            setupSender2(cell: cell, with: row.recipientVMs, type: row.type)
+            setupRecipient2(cell: cell, with: row.recipientCollectionViewCellViewModels, type: row.type)
             return cell
 
         case .subject:
@@ -240,6 +240,7 @@ extension EmailViewController: UITableViewDelegate {
             Log.shared.errorAndCrash("Missing vm")
             return tableView.estimatedRowHeight
         }
+
         if let row = vm[indexPath.row] as? EmailViewModel.AttachmentRow {
             return row.height
         }
@@ -373,10 +374,10 @@ extension EmailViewController {
 
     //MB:- refactor
 
-    private func setupSender2(cell: MessageRecipientCell2,
-                              with recipientVMs: [EmailViewModel.RecipientCellViewModel],
+    private func setupRecipient2(cell: MessageRecipientCell2,
+                              with recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel],
                               type: EmailViewModel.EmailRowType) {
-        cell.setup(recipientsVMs: recipientVMs, type: type)
+        cell.setup(recipientsCellVMs: recipientsCellVMs, type: type)
     }
 
     private func setupSender(cell: MessageSenderAndRecipientsCell, with row: EmailViewModel.SenderRow) {

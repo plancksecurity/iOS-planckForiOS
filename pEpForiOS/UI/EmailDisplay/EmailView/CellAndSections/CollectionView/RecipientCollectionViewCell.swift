@@ -12,7 +12,7 @@ class RecipientCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var recipientButton: RecipientButton!
     public static let cellId = "recipientCellId"
 
-    func setup(cellVM: EmailViewModel.RecipientCellViewModel) {
+    func setup(cellVM: EmailViewModel.RecipientCollectionViewCellViewModel) {
         recipientButton.setup(text: cellVM.title, action: cellVM.action)
     }
 }

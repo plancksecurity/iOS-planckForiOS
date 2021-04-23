@@ -18,8 +18,8 @@ class MessageSenderAndRecipientsCell: UITableViewCell {
     @IBOutlet private weak var toContainer: UIView!
     @IBOutlet private weak var containerHeightConstraint: NSLayoutConstraint!
 
-    public func setup(fromVM: EmailViewModel.RecipientCellViewModel,
-                      tosVM: [EmailViewModel.RecipientCellViewModel]) {
+    public func setup(fromVM: EmailViewModel.RecipientCollectionViewCellViewModel,
+                      tosVM: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
         func display(_ buttons: [RecipientButton]) {
             let containerWidth = toContainer.frame.size.width
             var currentOriginX: CGFloat = 0

@@ -11,12 +11,12 @@ import pEpIOSToolbox
 
 class MessageRecipientCell2: UITableViewCell {
 
-    private var recipientVMs: [EmailViewModel.RecipientCellViewModel]?
+    private var recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]?
 
     @IBOutlet private weak var collectionView: UICollectionView!
 
-    public func setup(recipientsVMs: [EmailViewModel.RecipientCellViewModel], type: EmailViewModel.EmailRowType) {
-        setVMs(type, recipientsVMs)
+    public func setup(recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel], type: EmailViewModel.EmailRowType) {
+        setVMs(type, recipientsCellVMs)
         setupCollectionView()
     }
 }
@@ -25,38 +25,37 @@ class MessageRecipientCell2: UITableViewCell {
 
 extension MessageRecipientCell2 {
 
-    private func setToViewModels(_ recipientsVMs: [EmailViewModel.RecipientCellViewModel]) {
+    private func setToRecipientCollectionViewCellViewModels(_ recipientsVMs: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
         let to = NSLocalizedString("To:", comment: "To: - To label")
-        setVM(to, recipientsVMs)
+        set(to, recipientsVMs)
     }
 
-    private func setCCViewModels(_ recipientsVMs: [EmailViewModel.RecipientCellViewModel]) {
+    private func setCCRecipientCollectionViewCellViewModels(_ recipientsVMs: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
         let cc = NSLocalizedString("Cc:", comment: "Cc: - Cc label")
-        setVM(cc, recipientsVMs)
+        set(cc, recipientsVMs)
     }
 
-    private func setBCCViewModels(_ recipientsVMs: [EmailViewModel.RecipientCellViewModel]) {
+    private func setBCCRecipientCollectionViewCellViewModels(_ recipientsVMs: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
         let bcc = NSLocalizedString("BCc:", comment: "BCc: - BCc label")
-        setVM(bcc, recipientsVMs)
+        set(bcc, recipientsVMs)
     }
 
-    private func setVM(_ text: String, _ recipientsVMs: [EmailViewModel.RecipientCellViewModel]) {
-        let baseVM = EmailViewModel.RecipientCellViewModel(title: text)
-        var cellViewModels = [baseVM]
-        cellViewModels.append(contentsOf: recipientsVMs)
-        self.recipientVMs = cellViewModels
+    private func set(_ text: String, _ recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
+        var cellViewModels = [EmailViewModel.RecipientCollectionViewCellViewModel(title: text)]
+        cellViewModels.append(contentsOf: recipientsCellVMs)
+        self.recipientCollectionViewCellViewModels = cellViewModels
     }
 
-    private func setVMs(_ type: EmailViewModel.EmailRowType, _ recipientsVMs: [EmailViewModel.RecipientCellViewModel]) {
+    private func setVMs(_ type: EmailViewModel.EmailRowType, _ recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
         switch type {
         case .from2:
-            self.recipientVMs = recipientsVMs
-        case .sender2:
-            setToViewModels(recipientsVMs)
+            self.recipientCollectionViewCellViewModels = recipientCollectionViewCellViewModels
+        case .to2:
+            setToRecipientCollectionViewCellViewModels(recipientCollectionViewCellViewModels)
         case .cc2:
-            setCCViewModels(recipientsVMs)
+            setCCRecipientCollectionViewCellViewModels(recipientCollectionViewCellViewModels)
         case .bcc2:
-            setBCCViewModels(recipientsVMs)
+            setBCCRecipientCollectionViewCellViewModels(recipientCollectionViewCellViewModels)
         default:
             Log.shared.errorAndCrash("Email Row type not supported")
         }
@@ -82,7 +81,7 @@ extension MessageRecipientCell2: UICollectionViewDelegate {
             return collectionView.dequeueReusableCell(withReuseIdentifier: RecipientCollectionViewCell.cellId, for: indexPath)
         }
 
-        guard let vm = recipientVMs else {
+        guard let vm = recipientCollectionViewCellViewModels else {
             Log.shared.errorAndCrash("VMs not found")
             return cell
         }
@@ -97,7 +96,7 @@ extension MessageRecipientCell2: UICollectionViewDelegate {
 extension MessageRecipientCell2: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let vms = recipientVMs else {
+        guard let vms = recipientCollectionViewCellViewModels else {
             Log.shared.errorAndCrash("The cell can not have zero recipients")
             return 0
         }
@@ -113,7 +112,7 @@ extension MessageRecipientCell2: UICollectionViewDelegateFlowLayout {
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
 
-        guard let vm = recipientVMs else {
+        guard let vm = recipientCollectionViewCellViewModels else {
             Log.shared.errorAndCrash("VMs not found")
             return .zero
         }
@@ -126,3 +125,4 @@ extension MessageRecipientCell2: UICollectionViewDelegateFlowLayout {
         return recipientButton.frame.size
     }
 }
+
