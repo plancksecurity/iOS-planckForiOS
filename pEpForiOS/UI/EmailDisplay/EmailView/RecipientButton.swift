@@ -37,7 +37,7 @@ extension RecipientButton {
     ///   - color: The title color. If nil, default values will be used. 
     public func setup(text: String, color: UIColor? = nil, action: (() -> Void)? = nil) {
         self.callbackAction = action
-        isUserInteractionEnabled = true
+        isUserInteractionEnabled = action != nil
         contentHorizontalAlignment = .left
         addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         setTitle(text, for: .normal)
