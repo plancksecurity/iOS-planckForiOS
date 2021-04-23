@@ -712,6 +712,22 @@ extension ComposeViewController {
     }
 
     private func setFocusToNextCell(currentCell: UITableViewCell) {
+
+        func indexOfNextSectionContainingRows(from currentSectionIndex: Int) -> Int? {
+            let nextSectionIndex = currentSectionIndex + 1
+            let nextSectionExists = nextSectionIndex < tableView.numberOfSections
+            guard nextSectionExists else {
+                // There is no next section.
+                return nil
+            }
+            let numRowsInNextSection = tableView.numberOfRows(inSection: nextSectionIndex)
+            if numRowsInNextSection > 0 {
+                return nextSectionIndex
+            } else {
+                // The section does not have any rows. Try next section (recurse)
+                return indexOfNextSectionContainingRows(from: nextSectionIndex)
+            }
+        }
         guard let idxPathOfCurrentlyFocusedCell = tableView.indexPath(for: currentCell) else {
             Log.shared.errorAndCrash("`currentCell` is not known to tableview")
             return
@@ -723,7 +739,13 @@ extension ComposeViewController {
             nextCellIndex = IndexPath(row: nextRowInSameSection, section: idxPathOfCurrentlyFocusedCell.section)
         } else {
             // Try next section
-            let firstRowInNextSectionIdx = IndexPath(row: 0, section: idxPathOfCurrentlyFocusedCell.section + 1)
+            guard let indexOfNextSection = indexOfNextSectionContainingRows(from: idxPathOfCurrentlyFocusedCell.section)
+            else {
+                // There is no further section which contains rows, thus there is nothing to set
+                // next focus to.
+                return
+            }
+            let firstRowInNextSectionIdx = IndexPath(row: 0, section: indexOfNextSection)
             let rowExists = firstRowInNextSectionIdx.section < tableView.numberOfSections &&
                 firstRowInNextSectionIdx.row < tableView.numberOfRows(inSection: firstRowInNextSectionIdx.section)
             if rowExists {
