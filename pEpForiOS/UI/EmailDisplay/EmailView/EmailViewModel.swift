@@ -464,8 +464,6 @@ extension EmailViewModel {
         let senderRow = SenderRow(fromVM: fromVM, toVMs: tosVM)
         rows.append(senderRow)
 
-        //MB:----- refactor.
-
         // From:
         let fromVM2 = getRecipientCollectionViewCellViewModel(identity: from)
         let fromRow2 = FromRow2(fromVM: fromVM2)
@@ -489,8 +487,6 @@ extension EmailViewModel {
             let bccToRow2 = BCCRow2(recipientCollectionViewCellViewModels: bccRecipientsVMs)
             rows.append(bccToRow2)
         }
-
-        //MB:----- end refactor.
 
         //Subject
         let title = message.shortMessage

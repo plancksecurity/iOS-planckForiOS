@@ -372,8 +372,6 @@ extension EmailViewController {
         }
     }
 
-    //MB:- refactor
-
     private func setupRecipient2(cell: MessageRecipientCell2,
                               with recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel],
                               type: EmailViewModel.EmailRowType) {
