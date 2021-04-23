@@ -18,6 +18,8 @@ class RecipientButton: UIButton {
 
 extension RecipientButton {
 
+    //TODO: remove this ´with´ method.
+
     /// Constructor
     ///
     /// Instanciate a recipient button with the text passed by parameter
@@ -25,7 +27,7 @@ extension RecipientButton {
     /// - Returns: The recipient button configured
     static func with(text: String, action: (() -> Void)? = nil) -> RecipientButton {
         let recipientButton = RecipientButton(type: .system)
-        recipientButton.setup(text: text, action: action)
+        recipientButton.setup(text: text, color: .yellow, action: action)
         return recipientButton
     }
 
@@ -47,45 +49,29 @@ extension RecipientButton {
                                          right: .leastNormalMagnitude)
         titleLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
         titleLabel?.textAlignment = .natural
-        setTitleColor(color)
+        if let titleColor = color {
+            setTitleColor(titleColor)
+        }
         sizeToFit()
     }
 
-    private func setTitleColor(_ color: UIColor?) {
-        if let color = color {
-            setTitleColor(color, for: .normal)
-            if #available(iOS 13.0, *) {
-                if UITraitCollection.current.userInterfaceStyle == .dark {
-                    setTitleColor(UIColor.secondaryLabel, for: .highlighted)
-                    setTitleColor(UIColor.secondaryLabel, for: .selected)
-                } else {
-                    setTitleColor(UIColor.darkGray, for: .highlighted)
-                    setTitleColor(UIColor.darkGray, for: .selected)
-                }
-
+    private func setTitleColor(_ color: UIColor) {
+        setTitleColor(color, for: .normal)
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                setTitleColor(UIColor.secondaryLabel, for: [.highlighted, .selected])
             } else {
-                setTitleColor(UIColor.darkGray, for: .highlighted)
-                setTitleColor(UIColor.darkGray, for: .selected)
+                setTitleColor(UIColor.darkGray, for: [.highlighted, .selected])
             }
         } else {
-            if #available(iOS 13.0, *) {
-                setTitleColor(.secondaryLabel, for: .normal)
-                setTitleColor(.label, for: .highlighted)
-                setTitleColor(.label, for: .selected)
-            } else {
-                // iOS 12
-                setTitleColor(.black, for: .normal)
-                setTitleColor(.darkGray, for: .highlighted)
-                setTitleColor(.darkGray, for: .selected)
-            }
+            setTitleColor(UIColor.darkGray, for: [.highlighted, .selected])
         }
     }
-
-
 
     @objc private func buttonPressed() {
         if let action = callbackAction {
             action()
         }
     }
+
 }

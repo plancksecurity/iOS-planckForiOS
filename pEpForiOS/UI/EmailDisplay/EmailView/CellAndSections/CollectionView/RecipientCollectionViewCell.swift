@@ -7,12 +7,30 @@
 //
 
 import Foundation
+import pEpIOSToolbox
 
 class RecipientCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var recipientButton: RecipientButton!
     public static let cellId = "recipientCellId"
 
     func setup(cellVM: EmailViewModel.RecipientCollectionViewCellViewModel) {
-        recipientButton.setup(text: cellVM.title, action: cellVM.action)
+        var color: UIColor = .darkText
+        switch cellVM.rowType {
+        case .to2, .cc2, .bcc2:
+            if #available(iOS 13.0, *) {
+                color = .secondaryLabel
+            } else {
+                color = .lightGray
+            }
+        case .from2:
+            if #available(iOS 13.0, *) {
+                color = .label
+            } else {
+                color = .darkText
+            }
+        default:
+            Log.shared.errorAndCrash("Row type not supported")
+        }
+        recipientButton.setup(text: cellVM.title, color: color, action: cellVM.action)
     }
 }

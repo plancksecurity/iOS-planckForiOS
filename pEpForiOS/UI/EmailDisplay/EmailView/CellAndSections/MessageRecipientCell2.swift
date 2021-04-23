@@ -36,21 +36,23 @@ extension MessageRecipientCell2 {
 
     private func setToRecipientCollectionViewCellViewModels(_ recipientsVMs: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
         let to = NSLocalizedString("To:", comment: "To: - To label")
-        set(to, recipientsVMs)
+        set(to, recipientsVMs, rowType: .to2)
     }
 
     private func setCCRecipientCollectionViewCellViewModels(_ recipientsVMs: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
         let cc = NSLocalizedString("Cc:", comment: "Cc: - Cc label")
-        set(cc, recipientsVMs)
+        set(cc, recipientsVMs, rowType: .cc2)
     }
 
     private func setBCCRecipientCollectionViewCellViewModels(_ recipientsVMs: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
         let bcc = NSLocalizedString("BCc:", comment: "BCc: - BCc label")
-        set(bcc, recipientsVMs)
+        set(bcc, recipientsVMs, rowType: .bcc2)
     }
 
-    private func set(_ text: String, _ recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
-        var cellViewModels = [EmailViewModel.RecipientCollectionViewCellViewModel(title: text)]
+    private func set(_ text: String,
+                     _ recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel],
+                     rowType: EmailViewModel.EmailRowType) {
+        var cellViewModels = [EmailViewModel.RecipientCollectionViewCellViewModel(title: text, rowType: rowType)]
         cellViewModels.append(contentsOf: recipientsCellVMs)
         self.recipientCollectionViewCellViewModels = cellViewModels
     }
