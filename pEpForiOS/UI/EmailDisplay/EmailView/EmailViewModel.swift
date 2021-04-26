@@ -230,6 +230,7 @@ extension EmailViewModel {
         init(title: String, rowType: EmailViewModel.EmailRowType, action: (() -> Void)? = nil) {
             self.rowType = rowType
             self.title = title
+            self.action = action
         }
     }
 

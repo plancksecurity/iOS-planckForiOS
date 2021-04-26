@@ -8,6 +8,9 @@
 
 import Foundation
 import pEpIOSToolbox
+protocol MessageRecipientCell2Delegate: class {
+    func displayAllRecipients()
+}
 
 class MessageRecipientCell2: UITableViewCell {
     private var minHeight: CGFloat? = 20.0
@@ -16,11 +19,14 @@ class MessageRecipientCell2: UITableViewCell {
 
     private var displayAll = false
 
+    public weak var delegate : MessageRecipientCell2Delegate?
     private var recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]?
 
     // 1
     public func setup(viewModels: [EmailViewModel.RecipientCollectionViewCellViewModel],
-                      type: EmailViewModel.EmailRowType) {
+                      type: EmailViewModel.EmailRowType,
+                      shouldDisplayAll: Bool) {
+        self.displayAll = shouldDisplayAll
         setRecipientCollectionViewCellViewModels(type, viewModels)
         setupCollectionView()
     }
@@ -104,8 +110,7 @@ extension MessageRecipientCell2 {
                     Log.shared.errorAndCrash("Lost myself")
                     return
                 }
-                me.displayAll = true
-                me.setup(viewModels: recipientsCellVMs, type: rowType)
+                me.delegate?.displayAllRecipients()
             }
             cellsViewModelsToSet.append(andMoreCellViewModel)
         }
