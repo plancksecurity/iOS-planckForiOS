@@ -448,25 +448,26 @@ extension SettingsTableViewController {
                                                           message: comment,
                                                           paintPEPInTitle: false,
                                                           viewModel: PEPAlertViewModel(alertType: .pEpSyncWizard))
-        let cancelAction = PEPUIAlertAction(title: NSLocalizedString("Cancel",
-                                                                     comment: "keysync alert leave device group cancel"),
-                                            style: .pEpDarkText) { [weak self] _ in
-                                                guard let me = self else {
-                                                    Log.shared.lostMySelf()
-                                                    return
-                                                }
-                                                //Switch status needs to be reversed
-                                                me.tableView.reloadData()
-                                                alert?.dismiss()
+        var style: UIColor = .pEpDarkText
+        if #available(iOS 13.0, *) {
+            style = .label
         }
-
+        let cancelActionTitle = NSLocalizedString("Cancel", comment: "keysync alert leave device group cancel")
+        let cancelAction = PEPUIAlertAction(title: cancelActionTitle, style: style) { [weak self] _ in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            //Switch status needs to be reversed
+            me.tableView.reloadData()
+            alert?.dismiss()
+        }
         alert?.add(action: cancelAction)
 
-        let disableAction = PEPUIAlertAction(title: NSLocalizedString("Disable",
-                                                                      comment: "keysync alert leave device group disable"),
-                                             style: .pEpDarkText) { _ in
-                                                action(newValue)
-                                                alert?.dismiss()
+        let disableActionTitle = NSLocalizedString("Disable", comment: "keysync alert leave device group disable")
+        let disableAction = PEPUIAlertAction(title:disableActionTitle, style: style) { _ in
+            action(newValue)
+            alert?.dismiss()
         }
         alert?.add(action: disableAction)
         return alert
