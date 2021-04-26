@@ -9,20 +9,34 @@
 import Foundation
 import pEpIOSToolbox
 protocol MessageRecipientCell2Delegate: class {
-    func displayAllRecipients()
+    func displayAllRecipients(rowType: EmailViewModel.EmailRowType)
 }
 
 class MessageRecipientCell2: UITableViewCell {
     private var minHeight: CGFloat? = 20.0
     @IBOutlet private weak var collectionView: UICollectionView!
 
-    public var viewModel = MessageRecipientCell2ViewModel()
+    public let viewModel = MessageRecipientCell2ViewModel()
 
     public func setup(viewModels: [EmailViewModel.RecipientCollectionViewCellViewModel],
                       type: EmailViewModel.EmailRowType,
                       shouldDisplayAll: Bool) {
         setupViewModel(shouldDisplayAll, type, viewModels)
         setupCollectionView()
+    }
+}
+
+// MARK: - ViewModel
+
+extension MessageRecipientCell2 {
+
+    private func setupViewModel(_ shouldDisplayAll: Bool,
+                                _ rowType: EmailViewModel.EmailRowType,
+                                _ recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
+        viewModel.setup(shouldDisplayAll: shouldDisplayAll,
+                        containerWidth: collectionView.frame.size.width,
+                        rowType: rowType,
+                        recipientCollectionViewCellViewModels: recipientCollectionViewCellViewModels)
     }
 }
 
@@ -88,7 +102,6 @@ extension MessageRecipientCell2: UICollectionViewDelegateFlowLayout {
             Log.shared.errorAndCrash("VMs not found")
             return .zero
         }
-
         return vm[indexPath.row].size
     }
 }
@@ -105,17 +118,5 @@ extension MessageRecipientCell2 {
         guard let minHeight = minHeight else { return size }
         let expectedHeight = collectionView.collectionViewLayout.collectionViewContentSize.height
         return CGSize(width: size.width, height: max(expectedHeight, minHeight))
-    }
-}
-
-// MARK: - ViewModel
-
-extension MessageRecipientCell2 {
-
-    private func setupViewModel(_ shouldDisplayAll: Bool, _ type: EmailViewModel.EmailRowType, _ viewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
-        viewModel.setup(displayAll: shouldDisplayAll,
-                        containerWidth: collectionView.frame.size.width,
-                        type: type,
-                        viewModels: viewModels)
     }
 }

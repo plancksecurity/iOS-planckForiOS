@@ -23,7 +23,9 @@ class EmailViewController: UIViewController {
 
     public weak var delegate: EmailViewControllerDelegate?
     private var shouldDisplayAllRecipients = false
-
+    private var shouldDisplayAll: [EmailViewModel.EmailRowType: Bool] = [EmailViewModel.EmailRowType.to2: false,
+                                                                         EmailViewModel.EmailRowType.cc2: false,
+                                                                         EmailViewModel.EmailRowType.bcc2: false]
     private var htmlViewerViewControllerExists = false
     private var busyState: ViewBusyState?
     private lazy var documentInteractionController = UIDocumentInteractionController()
@@ -377,7 +379,8 @@ extension EmailViewController {
                               with recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel],
                               type: EmailViewModel.EmailRowType) {
         cell.viewModel.delegate = self
-        cell.setup(viewModels: recipientsCellVMs, type: type, shouldDisplayAll: shouldDisplayAllRecipients)
+        var shouldDisplay = shouldDisplayAll[type] ?? false
+        cell.setup(viewModels: recipientsCellVMs, type: type, shouldDisplayAll:shouldDisplay)
     }
 
     private func setupSender(cell: MessageSenderAndRecipientsCell, with row: EmailViewModel.SenderRow) {
@@ -461,9 +464,11 @@ extension EmailViewController {
     }
 }
 
+// MARK: - MessageRecipientCell2Delegate
+
 extension EmailViewController: MessageRecipientCell2Delegate {
-    func displayAllRecipients() {
-        shouldDisplayAllRecipients = true
+    func displayAllRecipients(rowType: EmailViewModel.EmailRowType) {
+        shouldDisplayAll[rowType] = true
         tableView.reloadData()
     }
 }

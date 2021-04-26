@@ -11,10 +11,20 @@ import pEpIOSToolbox
 
 class MessageRecipientCell2ViewModel {
 
+    /// The width of the container of the recipients
     private var containerWidth: CGFloat = 0.0
-    private var displayAll = false
+
+    /// Indicates if all the recipients should be shown.
+    /// If false, only the recipients that fit in one line will be shown with, a button to see the rest of them.
+    private var shouldDisplayAll = false
+
+    /// Delegate to communicate that the button to see more has been pressed
     public weak var delegate : MessageRecipientCell2Delegate?
+
+    /// The collection view cell view models ('To' cell, recipients cell and 1 more cell).
     public var recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]?
+
+    // The email row type
     private var rowType : EmailViewModel.EmailRowType = .from2
 
     public func recipientCollectionViewCellViewModelToSet(_ text: String,
@@ -35,7 +45,7 @@ class MessageRecipientCell2ViewModel {
         for (index, cellvm) in recipientsCellVMs.enumerated() {
             // Would the next cell exceed the container width?
             // If so, separate the surplus.
-            if currentOriginX + cellvm.size.width > containerWidth && !displayAll {
+            if currentOriginX + cellvm.size.width > containerWidth && !shouldDisplayAll {
                 // would exceed the line
                 let surplus = recipientsCellVMs[index..<recipientsCellVMs.count]
                 surplusCellsVM.append(contentsOf: surplus)
@@ -55,7 +65,7 @@ class MessageRecipientCell2ViewModel {
                     Log.shared.errorAndCrash("Lost myself")
                     return
                 }
-                me.delegate?.displayAllRecipients()
+                me.delegate?.displayAllRecipients(rowType: rowType)
             }
             cellsViewModelsToSet.append(andMoreCellViewModel)
         }
@@ -63,9 +73,9 @@ class MessageRecipientCell2ViewModel {
         return cellsViewModelsToSet
     }
 
-    public func setRecipientCollectionViewCellViewModels(_ type: EmailViewModel.EmailRowType,
+    private func setRecipientCollectionViewCellViewModels(_ rowType: EmailViewModel.EmailRowType,
                                                          _ recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
-        switch type {
+        switch rowType {
         case .from2:
             self.recipientCollectionViewCellViewModels = recipientCollectionViewCellViewModels
         case .to2:
@@ -97,18 +107,31 @@ class MessageRecipientCell2ViewModel {
     private func set(_ text: String,
                      _ recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel],
                      rowType: EmailViewModel.EmailRowType) {
-        self.recipientCollectionViewCellViewModels = recipientCollectionViewCellViewModelToSet(text, recipientsCellVMs,
-                                                                                               rowType: rowType,
-                                                                                               containerWidth: containerWidth)
+        recipientCollectionViewCellViewModels = recipientCollectionViewCellViewModelToSet(text,
+                                                                                          recipientsCellVMs,
+                                                                                          rowType: rowType,
+                                                                                          containerWidth: containerWidth)
     }
 }
 
+//MARK:- Setup
+
 extension MessageRecipientCell2ViewModel {
-    
-    public func setup(displayAll: Bool, containerWidth: CGFloat, type: EmailViewModel.EmailRowType, viewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
-        self.displayAll = displayAll
+
+    /// Setup the MessageRecipientCellViewModel
+    ///
+    /// - Parameters:
+    ///   - shouldDisplayAll: Indicates if all the recipients should be shown.
+    ///   - containerWidth: The width of the container of the recipients.
+    ///   - rowType: The type of the row.
+    ///   - recipientCollectionViewCellViewModels: The recipients
+    public func setup(shouldDisplayAll: Bool,
+                      containerWidth: CGFloat,
+                      rowType: EmailViewModel.EmailRowType,
+                      recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
+        self.shouldDisplayAll = shouldDisplayAll
         self.containerWidth = containerWidth
-        self.rowType = type
-        setRecipientCollectionViewCellViewModels(type, viewModels)
+        self.rowType = rowType
+        setRecipientCollectionViewCellViewModels(rowType, recipientCollectionViewCellViewModels)
     }
 }
