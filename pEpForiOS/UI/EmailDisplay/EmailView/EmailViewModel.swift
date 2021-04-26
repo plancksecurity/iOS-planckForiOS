@@ -203,6 +203,12 @@ extension EmailViewModel {
     // Represents a Recipient in the collection view.
     struct RecipientCollectionViewCellViewModel {
 
+        public var size: CGSize {
+            let recipientButton = RecipientButton(type: .system)
+            recipientButton.setup(text: title, action: action)
+            return recipientButton.frame.size
+        }
+
         public private(set) var title: String
         public private(set) var identity: Identity?
         public private(set) var action: (() -> Void)?

@@ -10,22 +10,16 @@ import Foundation
 import pEpIOSToolbox
 
 class MessageRecipientCell2: UITableViewCell {
-
     private var minHeight: CGFloat? = 20.0
-
-    override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
-        let size = super.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: horizontalFittingPriority, verticalFittingPriority: verticalFittingPriority)
-        guard let minHeight = minHeight else { return size }
-        let expectedHeight = collectionView.collectionViewLayout.collectionViewContentSize.height
-        return CGSize(width: size.width, height: max(expectedHeight, minHeight))
-    }
-
-    private var recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]?
 
     @IBOutlet private weak var collectionView: UICollectionView!
 
-    public func setup(recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel], type: EmailViewModel.EmailRowType) {
-        setVMs(type, recipientsCellVMs)
+    private var recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]?
+
+    // 1
+    public func setup(viewModels: [EmailViewModel.RecipientCollectionViewCellViewModel],
+                      type: EmailViewModel.EmailRowType) {
+        setRecipientCollectionViewCellViewModels(type, viewModels)
         setupCollectionView()
     }
 }
@@ -33,31 +27,9 @@ class MessageRecipientCell2: UITableViewCell {
 // MARK: - Setup
 
 extension MessageRecipientCell2 {
-
-    private func setToRecipientCollectionViewCellViewModels(_ recipientsVMs: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
-        let to = NSLocalizedString("To:", comment: "To: - To label")
-        set(to, recipientsVMs, rowType: .to2)
-    }
-
-    private func setCCRecipientCollectionViewCellViewModels(_ recipientsVMs: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
-        let cc = NSLocalizedString("Cc:", comment: "Cc: - Cc label")
-        set(cc, recipientsVMs, rowType: .cc2)
-    }
-
-    private func setBCCRecipientCollectionViewCellViewModels(_ recipientsVMs: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
-        let bcc = NSLocalizedString("BCc:", comment: "BCc: - BCc label")
-        set(bcc, recipientsVMs, rowType: .bcc2)
-    }
-
-    private func set(_ text: String,
-                     _ recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel],
-                     rowType: EmailViewModel.EmailRowType) {
-        var cellViewModels = [EmailViewModel.RecipientCollectionViewCellViewModel(title: text, rowType: rowType)]
-        cellViewModels.append(contentsOf: recipientsCellVMs)
-        self.recipientCollectionViewCellViewModels = cellViewModels
-    }
-
-    private func setVMs(_ type: EmailViewModel.EmailRowType, _ recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
+    // 2
+    private func setRecipientCollectionViewCellViewModels(_ type: EmailViewModel.EmailRowType,
+                                                          _ recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
         switch type {
         case .from2:
             self.recipientCollectionViewCellViewModels = recipientCollectionViewCellViewModels
@@ -70,6 +42,53 @@ extension MessageRecipientCell2 {
         default:
             Log.shared.errorAndCrash("Email Row type not supported")
         }
+    }
+
+    // 3
+    private func setToRecipientCollectionViewCellViewModels(_ recipientsVMs: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
+        let to = RecipientCellViewModel.FieldType.to.localizedTitle()
+        set(to, recipientsVMs, rowType: .to2)
+    }
+
+    private func setCCRecipientCollectionViewCellViewModels(_ recipientsVMs: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
+        let cc = RecipientCellViewModel.FieldType.cc.localizedTitle()
+        set(cc, recipientsVMs, rowType: .cc2)
+    }
+
+    private func setBCCRecipientCollectionViewCellViewModels(_ recipientsVMs: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
+        let bcc = RecipientCellViewModel.FieldType.bcc.localizedTitle()
+        set(bcc, recipientsVMs, rowType: .bcc2)
+    }
+
+    // 4
+    private func set(_ text: String,
+                     _ recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel],
+                     rowType: EmailViewModel.EmailRowType) {
+        var cellViewModels = [EmailViewModel.RecipientCollectionViewCellViewModel(title: text, rowType: rowType)]
+
+        cellViewModels.append(recipientsCellVMs)
+        //Check if buttons will exceed 1 line
+        let containerWidth = collectionView.frame.size.width
+        var currentOriginX: CGFloat = 0
+
+        var surplusCellsVM = [EmailViewModel.RecipientCollectionViewCellViewModel]()
+        var cellsVMToAppend = [EmailViewModel.RecipientCollectionViewCellViewModel]()
+
+        for (index, cellvm) in cellViewModels.enumerated() {
+            // Would the next cell exceed the container width?
+            // If so, separate the surplus.
+            if currentOriginX + cellvm.size.width > containerWidth {
+                // would exceed the line
+                let surplus = cellViewModels[index..<cellViewModels.count - 1]
+                surplusCellsVM.append(contentsOf: surplus)
+                break
+            } else {
+                currentOriginX += cellvm.size.width
+                cellsVMToAppend.append(cellvm)
+            }
+        }
+        cellViewModels.append(contentsOf: cellsVMToAppend)
+        self.recipientCollectionViewCellViewModels = cellsVMToAppend
     }
 
     private func setupCollectionView() {
@@ -131,12 +150,22 @@ extension MessageRecipientCell2: UICollectionViewDelegateFlowLayout {
             return .zero
         }
 
-        let title = vm[indexPath.row].title
-        let action = vm[indexPath.row].action
-        let recipientButton = RecipientButton(type: .system)
-        recipientButton.setup(text: title, action: action)
+        return vm[indexPath.row].size
+    }
+}
 
-        return recipientButton.frame.size
+// MARK: - UIConstraintBasedLayoutFittingSize
+
+extension MessageRecipientCell2 {
+
+    override func systemLayoutSizeFitting(_ targetSize: CGSize,
+                                          withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority,
+                                          verticalFittingPriority: UILayoutPriority) -> CGSize {
+        let size = super.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: horizontalFittingPriority,
+                                                 verticalFittingPriority: verticalFittingPriority)
+        guard let minHeight = minHeight else { return size }
+        let expectedHeight = collectionView.collectionViewLayout.collectionViewContentSize.height
+        return CGSize(width: size.width, height: max(expectedHeight, minHeight))
     }
 }
 

@@ -375,7 +375,7 @@ extension EmailViewController {
     private func setupRecipient2(cell: MessageRecipientCell2,
                               with recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel],
                               type: EmailViewModel.EmailRowType) {
-        cell.setup(recipientsCellVMs: recipientsCellVMs, type: type)
+        cell.setup(viewModels: recipientsCellVMs, type: type)
     }
 
     private func setupSender(cell: MessageSenderAndRecipientsCell, with row: EmailViewModel.SenderRow) {
