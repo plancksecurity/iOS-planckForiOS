@@ -465,7 +465,7 @@ extension SettingsTableViewController {
         alert?.add(action: cancelAction)
 
         let disableActionTitle = NSLocalizedString("Disable", comment: "keysync alert leave device group disable")
-        let disableAction = PEPUIAlertAction(title:disableActionTitle, style: style) { _ in
+        let disableAction = PEPUIAlertAction(title: disableActionTitle, style: style) { _ in
             action(newValue)
             alert?.dismiss()
         }
