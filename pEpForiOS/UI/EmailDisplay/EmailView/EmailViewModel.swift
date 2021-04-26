@@ -218,7 +218,7 @@ extension EmailViewModel {
         /// - Parameters:
         ///   - identity: The identity represented by the button
         ///   - action: The action to be executed
-        init(identity: Identity?, rowType: EmailViewModel.EmailRowType, action: (() -> Void)?) {
+        init(identity: Identity?, rowType: EmailViewModel.EmailRowType, action: (() -> Void)? = nil) {
             self.identity = identity
             self.title = identity?.displayString ?? ""
             self.action = action
@@ -227,7 +227,7 @@ extension EmailViewModel {
 
         /// Constructor
         /// - Parameter title: The title of the button
-        init(title: String, rowType: EmailViewModel.EmailRowType) {
+        init(title: String, rowType: EmailViewModel.EmailRowType, action: (() -> Void)? = nil) {
             self.rowType = rowType
             self.title = title
         }
@@ -466,10 +466,6 @@ extension EmailViewModel {
             Log.shared.errorAndCrash("From identity not found.")
             return
         }
-//        let fromVM = getRecipientCollectionViewCellViewModel(identity: from)
-//        let tosVM: [RecipientCollectionViewCellViewModel] = message.allRecipientsOrdered.map({ return getRecipientCollectionViewCellViewModel(identity: $0) })
-//        let senderRow = SenderRow(fromVM: fromVM, toVMs: tosVM)
-//        rows.append(senderRow)
 
         // From:
         let fromVM2 = getRecipientCollectionViewCellViewModel(identity: from, rowType: .from2)

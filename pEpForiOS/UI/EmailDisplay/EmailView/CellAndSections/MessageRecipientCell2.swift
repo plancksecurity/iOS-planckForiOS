@@ -14,6 +14,8 @@ class MessageRecipientCell2: UITableViewCell {
 
     @IBOutlet private weak var collectionView: UICollectionView!
 
+    private var displayAll = false
+
     private var recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]?
 
     // 1
@@ -64,9 +66,13 @@ extension MessageRecipientCell2 {
     private func set(_ text: String,
                      _ recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel],
                      rowType: EmailViewModel.EmailRowType) {
-        var cellViewModels = [EmailViewModel.RecipientCollectionViewCellViewModel(title: text, rowType: rowType)]
 
-        cellViewModels.append(recipientsCellVMs)
+        // The cells View Models To Set include: the recipient Type (to/cc/bcc), the the recipients that can be shown and the '& X more" if necessary.
+
+        //'To' button, for example.
+        let recipientTypeCellViewModel = EmailViewModel.RecipientCollectionViewCellViewModel(title: text, rowType: rowType)
+        var cellsViewModelsToSet = [recipientTypeCellViewModel]
+
         //Check if buttons will exceed 1 line
         let containerWidth = collectionView.frame.size.width
         var currentOriginX: CGFloat = 0
@@ -74,12 +80,13 @@ extension MessageRecipientCell2 {
         var surplusCellsVM = [EmailViewModel.RecipientCollectionViewCellViewModel]()
         var cellsVMToAppend = [EmailViewModel.RecipientCollectionViewCellViewModel]()
 
-        for (index, cellvm) in cellViewModels.enumerated() {
+        //Recipients buttons
+        for (index, cellvm) in recipientsCellVMs.enumerated() {
             // Would the next cell exceed the container width?
             // If so, separate the surplus.
-            if currentOriginX + cellvm.size.width > containerWidth {
+            if currentOriginX + cellvm.size.width > containerWidth && !displayAll {
                 // would exceed the line
-                let surplus = cellViewModels[index..<cellViewModels.count - 1]
+                let surplus = recipientsCellVMs[index..<recipientsCellVMs.count]
                 surplusCellsVM.append(contentsOf: surplus)
                 break
             } else {
@@ -87,8 +94,22 @@ extension MessageRecipientCell2 {
                 cellsVMToAppend.append(cellvm)
             }
         }
-        cellViewModels.append(contentsOf: cellsVMToAppend)
-        self.recipientCollectionViewCellViewModels = cellsVMToAppend
+        cellsViewModelsToSet.append(contentsOf: cellsVMToAppend)
+
+        if !surplusCellsVM.isEmpty {
+            //'& X more' button.
+            let andMoreButtonTitle = NSLocalizedString("& \(surplusCellsVM.count) more", comment: "and X more button title")
+            let andMoreCellViewModel = EmailViewModel.RecipientCollectionViewCellViewModel(title: andMoreButtonTitle, rowType: rowType) { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                me.displayAll = true
+                me.setup(viewModels: recipientsCellVMs, type: rowType)
+            }
+            cellsViewModelsToSet.append(andMoreCellViewModel)
+        }
+        self.recipientCollectionViewCellViewModels = cellsViewModelsToSet
     }
 
     private func setupCollectionView() {
@@ -168,4 +189,3 @@ extension MessageRecipientCell2 {
         return CGSize(width: size.width, height: max(expectedHeight, minHeight))
     }
 }
-
