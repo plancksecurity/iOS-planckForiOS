@@ -11,10 +11,11 @@ import pEpIOSToolbox
 
 class MessageRecipientCell2ViewModel {
 
-    public var containerWidth: CGFloat = 0.0
-    public var displayAll = false
+    private var containerWidth: CGFloat = 0.0
+    private var displayAll = false
     public weak var delegate : MessageRecipientCell2Delegate?
     public var recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]?
+    private var rowType : EmailViewModel.EmailRowType = .from2
 
     public func recipientCollectionViewCellViewModelToSet(_ text: String,
                      _ recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel],
@@ -96,6 +97,18 @@ class MessageRecipientCell2ViewModel {
     private func set(_ text: String,
                      _ recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel],
                      rowType: EmailViewModel.EmailRowType) {
-        self.recipientCollectionViewCellViewModels = recipientCollectionViewCellViewModelToSet(text, recipientsCellVMs, rowType: rowType, containerWidth: containerWidth)
+        self.recipientCollectionViewCellViewModels = recipientCollectionViewCellViewModelToSet(text, recipientsCellVMs,
+                                                                                               rowType: rowType,
+                                                                                               containerWidth: containerWidth)
+    }
+}
+
+extension MessageRecipientCell2ViewModel {
+    
+    public func setup(displayAll: Bool, containerWidth: CGFloat, type: EmailViewModel.EmailRowType, viewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
+        self.displayAll = displayAll
+        self.containerWidth = containerWidth
+        self.rowType = type
+        setRecipientCollectionViewCellViewModels(type, viewModels)
     }
 }

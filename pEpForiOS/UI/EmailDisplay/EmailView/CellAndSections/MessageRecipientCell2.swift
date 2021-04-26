@@ -113,8 +113,9 @@ extension MessageRecipientCell2 {
 extension MessageRecipientCell2 {
 
     private func setupViewModel(_ shouldDisplayAll: Bool, _ type: EmailViewModel.EmailRowType, _ viewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
-        viewModel.displayAll = shouldDisplayAll
-        viewModel.containerWidth = collectionView.frame.size.width
-        viewModel.setRecipientCollectionViewCellViewModels(type, viewModels)
+        viewModel.setup(displayAll: shouldDisplayAll,
+                        containerWidth: collectionView.frame.size.width,
+                        type: type,
+                        viewModels: viewModels)
     }
 }
