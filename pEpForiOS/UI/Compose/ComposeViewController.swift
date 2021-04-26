@@ -857,28 +857,6 @@ extension ComposeViewController {
         return nil
     }
 
-    /// Finds and returns the first superview (of the given view) in the view hirarchy that is of
-    /// type UITableViewCell.
-    /// Use case:
-    /// You have a UITextfield and need to know which UITableViewCell owns it (e.g. you have the current firstResponder, who is considered a UITextView, and need the cell to figure out the next field to jump to)
-    /// - Parameter view: view to go up in view hirarchy for
-    /// - Returns:      the first UITableViewCell found going up the view-hirarchy.
-    ///             `   nil` if none could be found.
-    private func findSuperviewThatIsACell(of view: UIView) -> UITableViewCell? {
-
-        if let cell = view as? UITableViewCell {
-            return cell
-        }
-        guard let superview = view.superview else {
-            // End recursion. We are on the top of the view hirarchy
-            return nil
-        }
-        if let cell = superview as? UITableViewCell {
-            return cell
-        }
-        return findSuperviewThatIsACell(of: superview)
-    }
-
     @objc
     func jumpToNextField(command: UIKeyCommand) {
         guard let currentResponder = currentFirstResponder(inSubviewsOf: view) else {
@@ -886,7 +864,8 @@ extension ComposeViewController {
             // Do nothing.
             return
         }
-        if let focusedCell = findSuperviewThatIsACell(of: currentResponder) {
+        // Find the cell holding the UITextview
+        if let focusedCell = currentResponder.superviewOfClass(ofClass: UITableViewCell.self) {
             setFocusToNextCell(currentCell: focusedCell)
         } else {
             Log.shared.info("No cell is currently focused. So there is no \"next cell\" to set focus to.")
@@ -901,7 +880,8 @@ extension ComposeViewController {
             // Do nothing.
             return
         }
-        if let focusedCell = findSuperviewThatIsACell(of: currentResponder) {
+        // Find the cell holding the textView
+        if let focusedCell = currentResponder.superviewOfClass(ofClass: UITableViewCell.self) {
             setFocusToPreviousCell(currentCell: focusedCell)
         } else {
             Log.shared.info("No cell is currently focused. So there is no \"next cell\" to set focus to.")
