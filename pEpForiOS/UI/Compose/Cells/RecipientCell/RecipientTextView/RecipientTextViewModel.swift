@@ -110,12 +110,8 @@ public class RecipientTextViewModel {
     }
 
     private func removeRecipientAttachment(attachment: TextAttachment) {
-        var copy = recipientAttachments
         /// In case there are more than one recipient with the same email address the deletion is only on one of them.
-        if let index = copy.firstIndex(where: { $0.recipient.address == attachment.recipient.address }) {
-            copy.remove(at: index)
-            self.recipientAttachments = copy
-        }
+        recipientAttachments = recipientAttachments.filter({$0 != attachment})
     }
 
      @discardableResult private func tryGenerateValidAddressAndUpdateStatus(range: NSRange,
