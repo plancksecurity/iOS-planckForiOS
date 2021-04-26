@@ -379,7 +379,7 @@ extension EmailViewController {
                               with recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel],
                               type: EmailViewModel.EmailRowType) {
         cell.viewModel.delegate = self
-        var shouldDisplay = shouldDisplayAll[type] ?? false
+        let shouldDisplay = shouldDisplayAll[type] ?? false
         cell.setup(viewModels: recipientsCellVMs, type: type, shouldDisplayAll:shouldDisplay)
     }
 

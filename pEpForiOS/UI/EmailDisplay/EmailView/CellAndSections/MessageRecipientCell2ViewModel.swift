@@ -27,6 +27,14 @@ class MessageRecipientCell2ViewModel {
     // The email row type
     private var rowType : EmailViewModel.EmailRowType = .from2
 
+    /// Get the recipient collection view cells to set.
+    /// - Parameters:
+    ///   - text: The text of the EmailViewRowType ("To:", "CC:", "BCC:", for example).
+    ///   - recipientsCellVMs: The Cell View Model of the recipients.
+    ///   - rowType: The email row type.
+    ///   - containerWidth: The width of the container
+    ///
+    /// - Returns:The recipient collection view cells to set.
     public func recipientCollectionViewCellViewModelToSet(_ text: String,
                      _ recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel],
                      rowType: EmailViewModel.EmailRowType,
@@ -35,30 +43,38 @@ class MessageRecipientCell2ViewModel {
         let recipientTypeCellViewModel = EmailViewModel.RecipientCollectionViewCellViewModel(title: text, rowType: rowType)
         var cellsViewModelsToSet = [recipientTypeCellViewModel]
 
+
+        let and10MoreButtonTitle = NSLocalizedString("& 10 more", comment: "and X more button title")
+        let and10MoreCellViewModel = EmailViewModel.RecipientCollectionViewCellViewModel(title: and10MoreButtonTitle, rowType: rowType)
+
+
         //Check if buttons will exceed 1 line
         var currentOriginX: CGFloat = 0
 
         var surplusCellsVM = [EmailViewModel.RecipientCollectionViewCellViewModel]()
-        var cellsVMToAppend = [EmailViewModel.RecipientCollectionViewCellViewModel]()
+        var recipientCellsToSet = [EmailViewModel.RecipientCollectionViewCellViewModel]()
 
-        //Recipients buttons
-        for (index, cellvm) in recipientsCellVMs.enumerated() {
+        let interItemSpacing: CGFloat = 2.0
+
+        //Recipients
+        for (index, cellVM) in recipientsCellVMs.enumerated() {
+            let minInterItemSpacing: CGFloat = CGFloat(index) * interItemSpacing
             // Would the next cell exceed the container width?
             // If so, separate the surplus.
-            if currentOriginX + cellvm.size.width > containerWidth && !shouldDisplayAll {
-                // would exceed the line
+            if (currentOriginX + cellVM.size.width + and10MoreCellViewModel.size.width + minInterItemSpacing) > containerWidth && !shouldDisplayAll {
+                // The next items would exceed the line.
                 let surplus = recipientsCellVMs[index..<recipientsCellVMs.count]
                 surplusCellsVM.append(contentsOf: surplus)
                 break
             } else {
-                currentOriginX += cellvm.size.width
-                cellsVMToAppend.append(cellvm)
+                currentOriginX += cellVM.size.width
+                recipientCellsToSet.append(cellVM)
             }
         }
-        cellsViewModelsToSet.append(contentsOf: cellsVMToAppend)
+        cellsViewModelsToSet.append(contentsOf: recipientCellsToSet)
 
+        //'& X more' button.
         if !surplusCellsVM.isEmpty {
-            //'& X more' button.
             let andMoreButtonTitle = NSLocalizedString("& \(surplusCellsVM.count) more", comment: "and X more button title")
             let andMoreCellViewModel = EmailViewModel.RecipientCollectionViewCellViewModel(title: andMoreButtonTitle, rowType: rowType) { [weak self] in
                 guard let me = self else {
@@ -69,7 +85,6 @@ class MessageRecipientCell2ViewModel {
             }
             cellsViewModelsToSet.append(andMoreCellViewModel)
         }
-
         return cellsViewModelsToSet
     }
 
