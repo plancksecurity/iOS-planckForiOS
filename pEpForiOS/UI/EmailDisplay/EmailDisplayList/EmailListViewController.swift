@@ -1430,6 +1430,7 @@ extension EmailListViewController {
     }
 }
 
+
 extension EmailListViewController {
 
     private func setSeparator() {
@@ -1444,6 +1445,7 @@ extension EmailListViewController {
         }
     }
 }
+
 //MARK: - pEp Settings Changed
 
 extension EmailListViewController {
