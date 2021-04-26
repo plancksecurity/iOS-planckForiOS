@@ -110,7 +110,6 @@ public class RecipientTextViewModel {
     }
 
     private func removeRecipientAttachment(attachment: TextAttachment) {
-        /// In case there are more than one recipient with the same email address the deletion is only on one of them.
         recipientAttachments = recipientAttachments.filter({$0 != attachment})
     }
 
