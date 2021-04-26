@@ -376,7 +376,7 @@ extension EmailViewController {
     private func setupRecipient2(cell: MessageRecipientCell2,
                               with recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel],
                               type: EmailViewModel.EmailRowType) {
-        cell.delegate = self
+        cell.viewModel.delegate = self
         cell.setup(viewModels: recipientsCellVMs, type: type, shouldDisplayAll: shouldDisplayAllRecipients)
     }
 
