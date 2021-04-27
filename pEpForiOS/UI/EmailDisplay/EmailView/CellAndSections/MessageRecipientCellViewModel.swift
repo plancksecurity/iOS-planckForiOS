@@ -1,5 +1,5 @@
 //
-//  MessageRecipientCell2ViewModel.swift
+//  MessageRecipientCellViewModel.swift
 //  pEp
 //
 //  Created by Martín Brude on 26/4/21.
@@ -9,7 +9,7 @@
 import Foundation
 import pEpIOSToolbox
 
-class MessageRecipientCell2ViewModel {
+class MessageRecipientCellViewModel {
 
     /// The width of the container of the recipients
     private var containerWidth: CGFloat = 0.0
@@ -19,13 +19,13 @@ class MessageRecipientCell2ViewModel {
     private var shouldDisplayAll = false
 
     /// Delegate to communicate that the button to see more has been pressed
-    public weak var delegate : MessageRecipientCell2Delegate?
+    public weak var delegate : MessageRecipientCellDelegate?
 
     /// The collection view cell view models ('To' cell, recipients cell and 1 more cell).
     public var recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]?
 
     // The email row type
-    private var rowType : EmailViewModel.EmailRowType = .from2
+    private var rowType : EmailViewModel.EmailRowType = .from
 
     /// Get the recipient collection view cells to set.
     /// - Parameters:
@@ -91,13 +91,13 @@ class MessageRecipientCell2ViewModel {
     private func setRecipientCollectionViewCellViewModels(_ rowType: EmailViewModel.EmailRowType,
                                                          _ recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
         switch rowType {
-        case .from2:
+        case .from:
             self.recipientCollectionViewCellViewModels = recipientCollectionViewCellViewModels
-        case .to2:
+        case .to:
             setToRecipientCollectionViewCellViewModels(recipientCollectionViewCellViewModels)
-        case .cc2:
+        case .cc:
             setCCRecipientCollectionViewCellViewModels(recipientCollectionViewCellViewModels)
-        case .bcc2:
+        case .bcc:
             setBCCRecipientCollectionViewCellViewModels(recipientCollectionViewCellViewModels)
         default:
             Log.shared.errorAndCrash("Email Row type not supported")
@@ -106,17 +106,17 @@ class MessageRecipientCell2ViewModel {
 
     private func setToRecipientCollectionViewCellViewModels(_ recipientsVMs: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
         let to = RecipientCellViewModel.FieldType.to.localizedTitle()
-        set(to, recipientsVMs, rowType: .to2)
+        set(to, recipientsVMs, rowType: .to)
     }
 
     private func setCCRecipientCollectionViewCellViewModels(_ recipientsVMs: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
         let cc = RecipientCellViewModel.FieldType.cc.localizedTitle()
-        set(cc, recipientsVMs, rowType: .cc2)
+        set(cc, recipientsVMs, rowType: .cc)
     }
 
     private func setBCCRecipientCollectionViewCellViewModels(_ recipientsVMs: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
         let bcc = RecipientCellViewModel.FieldType.bcc.localizedTitle()
-        set(bcc, recipientsVMs, rowType: .bcc2)
+        set(bcc, recipientsVMs, rowType: .bcc)
     }
 
     private func set(_ text: String,
@@ -131,7 +131,7 @@ class MessageRecipientCell2ViewModel {
 
 //MARK:- Setup
 
-extension MessageRecipientCell2ViewModel {
+extension MessageRecipientCellViewModel {
 
     /// Setup the MessageRecipientCellViewModel
     ///

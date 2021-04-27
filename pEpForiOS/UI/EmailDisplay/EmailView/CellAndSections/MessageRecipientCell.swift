@@ -1,5 +1,5 @@
 //
-//  MessageRecipientCell2.swift
+//  MessageRecipientCell.swift
 //  pEp
 //
 //  Created by Martín Brude on 21/4/21.
@@ -8,15 +8,15 @@
 
 import Foundation
 import pEpIOSToolbox
-protocol MessageRecipientCell2Delegate: class {
+protocol MessageRecipientCellDelegate: class {
     func displayAllRecipients(rowType: EmailViewModel.EmailRowType)
 }
 
-class MessageRecipientCell2: UITableViewCell {
+class MessageRecipientCell: UITableViewCell {
     private var minHeight: CGFloat? = 20.0
     @IBOutlet private weak var collectionView: UICollectionView!
 
-    public let viewModel = MessageRecipientCell2ViewModel()
+    public let viewModel = MessageRecipientCellViewModel()
 
     public func setup(viewModels: [EmailViewModel.RecipientCollectionViewCellViewModel],
                       type: EmailViewModel.EmailRowType,
@@ -28,7 +28,7 @@ class MessageRecipientCell2: UITableViewCell {
 
 // MARK: - ViewModel
 
-extension MessageRecipientCell2 {
+extension MessageRecipientCell {
 
     private func setupViewModel(_ shouldDisplayAll: Bool,
                                 _ rowType: EmailViewModel.EmailRowType,
@@ -42,7 +42,7 @@ extension MessageRecipientCell2 {
 
 // MARK: - Collection View
 
-extension MessageRecipientCell2 {
+extension MessageRecipientCell {
 
     private func setupCollectionView() {
         collectionView.scrollsToTop = false
@@ -60,7 +60,7 @@ extension MessageRecipientCell2 {
 
 // MARK: - UICollectionViewDelegate
 
-extension MessageRecipientCell2: UICollectionViewDelegate {
+extension MessageRecipientCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecipientCollectionViewCell.cellId,
                                                             for: indexPath) as? RecipientCollectionViewCell else {
@@ -79,7 +79,7 @@ extension MessageRecipientCell2: UICollectionViewDelegate {
 
 // MARK: - UICollectionViewDataSource
 
-extension MessageRecipientCell2: UICollectionViewDataSource {
+extension MessageRecipientCell: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let recipientCollectionViewCellViewModels = viewModel.recipientCollectionViewCellViewModels else {
@@ -92,7 +92,7 @@ extension MessageRecipientCell2: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegateFlowLayout
 
-extension MessageRecipientCell2: UICollectionViewDelegateFlowLayout {
+extension MessageRecipientCell: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
@@ -108,7 +108,7 @@ extension MessageRecipientCell2: UICollectionViewDelegateFlowLayout {
 
 // MARK: - UIConstraintBasedLayoutFittingSize
 
-extension MessageRecipientCell2 {
+extension MessageRecipientCell {
 
     override func systemLayoutSizeFitting(_ targetSize: CGSize,
                                           withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority,
