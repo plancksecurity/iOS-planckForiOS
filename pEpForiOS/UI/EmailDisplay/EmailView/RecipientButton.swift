@@ -9,11 +9,7 @@
 import Foundation
 
 class RecipientButton: UIButton {
-
-    private var callbackAction: (() -> Void)? = nil
-    override var intrinsicContentSize: CGSize {
-        return titleLabel?.intrinsicContentSize ?? .zero
-    }
+   private var callbackAction: (() -> Void)? = nil
 }
 
 extension RecipientButton {

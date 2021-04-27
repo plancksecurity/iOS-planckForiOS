@@ -25,7 +25,7 @@ class MessageRecipientCellViewModel {
     public var recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]?
 
     // The email row type
-    private var rowType : EmailViewModel.EmailRowType = .from
+    private var rowType: EmailViewModel.EmailRowType = .from
 
     /// Get the recipient collection view cells to set.
     /// - Parameters:
@@ -61,7 +61,9 @@ class MessageRecipientCellViewModel {
             let minInterItemSpacing: CGFloat = CGFloat(index) * interItemSpacing
             // Would the next cell exceed the container width?
             // If so, separate the surplus.
-            if (currentOriginX + cellVM.size.width + and10MoreCellViewModel.size.width + minInterItemSpacing) > containerWidth && !shouldDisplayAll {
+
+
+            if (currentOriginX + cellVM.size.width + and10MoreCellViewModel.size.width + minInterItemSpacing) > containerWidth && !shouldDisplayAll && recipientCellsToSet.count >= 1 {
                 // The next items would exceed the line.
                 let surplus = recipientsCellVMs[index..<recipientsCellVMs.count]
                 surplusCellsVM.append(contentsOf: surplus)
