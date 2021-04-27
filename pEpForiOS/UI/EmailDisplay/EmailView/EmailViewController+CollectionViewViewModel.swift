@@ -12,6 +12,12 @@ import pEpIOSToolbox
 extension EmailViewModel {
 
     struct CollectionViewViewModel {
+        /// The width of the container of the recipients
+        public var containerWidth: CGFloat = 0.0
+
+        /// Indicates if all the recipients should be shown.
+        /// If false, only the recipients that fit in one line will be shown with, a button to see the rest of them.
+        public var shouldDisplayAllRecipients = false
 
         /// Delegate to communicate that the button to see more has been pressed
         public weak var delegate : MessageRecipientCellDelegate?
@@ -30,9 +36,7 @@ extension EmailViewModel {
         /// - Returns:The recipient collection view cells to set.
         public func recipientCollectionViewCellViewModelToSet(_ text: String,
                          _ recipientsCellVMs: [EmailViewModel.CollectionViewCellViewModel],
-                         rowType: EmailViewModel.EmailRowType,
-                         containerWidth: CGFloat,
-                         shouldDisplayAllRecipients: Bool) -> [EmailViewModel.CollectionViewCellViewModel] {
+                         rowType: EmailViewModel.EmailRowType) -> [EmailViewModel.CollectionViewCellViewModel] {
             //'To' button, for example.
             let recipientTypeCellViewModel = EmailViewModel.CollectionViewCellViewModel(title: text, rowType: rowType)
             var cellsViewModelsToSet = [recipientTypeCellViewModel]

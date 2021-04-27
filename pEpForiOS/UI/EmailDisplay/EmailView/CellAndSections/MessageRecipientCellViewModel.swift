@@ -14,59 +14,46 @@ class MessageRecipientCellViewModel {
 
     /// The collection view cell view models ('To' cell, recipients cell and 1 more cell).
     public var collectionViewCellViewModels: [EmailViewModel.CollectionViewCellViewModel]?
-
     private var collectionViewViewModel: EmailViewModel.CollectionViewViewModel?
-
-    /// The width of the container of the recipients
-    private var containerWidth: CGFloat = 0.0
-
-    /// Indicates if all the recipients should be shown.
-    /// If false, only the recipients that fit in one line will be shown with, a button to see the rest of them.
-    private var shouldDisplayAllRecipients = false
 
     // The email row type
     private var rowType: EmailViewModel.EmailRowType = .from
 
-    private func setRecipientCollectionViewCellViewModels(_ rowType: EmailViewModel.EmailRowType,
-                                                         _ recipientCollectionViewCellViewModels: [EmailViewModel.CollectionViewCellViewModel]) {
+    private func setCollectionViewCellViewModels(_ rowType: EmailViewModel.EmailRowType,
+                                                 _ collectionViewCellViewModels: [EmailViewModel.CollectionViewCellViewModel]) {
         switch rowType {
         case .from:
-            self.collectionViewCellViewModels = recipientCollectionViewCellViewModels
+            self.collectionViewCellViewModels = collectionViewCellViewModels
         case .to:
-            setToRecipientCollectionViewCellViewModels(recipientCollectionViewCellViewModels)
+            setToRecipientCollectionViewCellViewModels(collectionViewCellViewModels)
         case .cc:
-            setCCRecipientCollectionViewCellViewModels(recipientCollectionViewCellViewModels)
+            setCCRecipientCollectionViewCellViewModels(collectionViewCellViewModels)
         case .bcc:
-            setBCCRecipientCollectionViewCellViewModels(recipientCollectionViewCellViewModels)
+            setBCCRecipientCollectionViewCellViewModels(collectionViewCellViewModels)
         default:
             Log.shared.errorAndCrash("Email Row type not supported")
         }
     }
 
-    private func setToRecipientCollectionViewCellViewModels(_ recipientsVMs: [EmailViewModel.CollectionViewCellViewModel]) {
+    private func setToRecipientCollectionViewCellViewModels(_ collectionViewCellsVMs: [EmailViewModel.CollectionViewCellViewModel]) {
         let to = RecipientCellViewModel.FieldType.to.localizedTitle()
-        set(to, recipientsVMs, rowType: .to)
+        set(to, collectionViewCellsVMs, rowType: .to)
     }
 
-    private func setCCRecipientCollectionViewCellViewModels(_ recipientsVMs: [EmailViewModel.CollectionViewCellViewModel]) {
+    private func setCCRecipientCollectionViewCellViewModels(_ collectionViewCellsVMs: [EmailViewModel.CollectionViewCellViewModel]) {
         let cc = RecipientCellViewModel.FieldType.cc.localizedTitle()
-        set(cc, recipientsVMs, rowType: .cc)
+        set(cc, collectionViewCellsVMs, rowType: .cc)
     }
 
-    private func setBCCRecipientCollectionViewCellViewModels(_ recipientsVMs: [EmailViewModel.CollectionViewCellViewModel]) {
+    private func setBCCRecipientCollectionViewCellViewModels(_ collectionViewCellsVMs: [EmailViewModel.CollectionViewCellViewModel]) {
         let bcc = RecipientCellViewModel.FieldType.bcc.localizedTitle()
-        set(bcc, recipientsVMs, rowType: .bcc)
+        set(bcc, collectionViewCellsVMs, rowType: .bcc)
     }
 
     private func set(_ text: String,
-                     _ recipientsCellVMs: [EmailViewModel.CollectionViewCellViewModel],
+                     _ collectionViewCellsVMs: [EmailViewModel.CollectionViewCellViewModel],
                      rowType: EmailViewModel.EmailRowType) {
-        collectionViewCellViewModels
-            = collectionViewViewModel?.recipientCollectionViewCellViewModelToSet(text,
-                                                                                 recipientsCellVMs,
-                                                                                 rowType: rowType,
-                                                                                 containerWidth: containerWidth,
-                                                                                 shouldDisplayAllRecipients: shouldDisplayAllRecipients)
+        collectionViewCellViewModels = collectionViewViewModel?.recipientCollectionViewCellViewModelToSet(text, collectionViewCellsVMs, rowType: rowType)
     }
 }
 
@@ -86,10 +73,10 @@ extension MessageRecipientCellViewModel {
                       rowType: EmailViewModel.EmailRowType,
                       recipientCollectionViewCellViewModels: [EmailViewModel.CollectionViewCellViewModel],
                       delegate: MessageRecipientCellDelegate) {
-        self.shouldDisplayAllRecipients = shouldDisplayAllRecipients
-        self.containerWidth = containerWidth
         self.rowType = rowType
         self.collectionViewViewModel = EmailViewModel.CollectionViewViewModel(delegate: delegate)
-        setRecipientCollectionViewCellViewModels(rowType, recipientCollectionViewCellViewModels)
+        self.collectionViewViewModel?.shouldDisplayAllRecipients = shouldDisplayAllRecipients
+        self.collectionViewViewModel?.containerWidth = containerWidth
+        setCollectionViewCellViewModels(rowType, recipientCollectionViewCellViewModels)
     }
 }

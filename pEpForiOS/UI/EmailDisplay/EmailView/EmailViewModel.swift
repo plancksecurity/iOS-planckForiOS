@@ -249,19 +249,19 @@ extension EmailViewModel {
     struct ToRow: EmailRowProtocol {
         var type: EmailViewModel.EmailRowType = .to
         var cellIdentifier: String = "messageRecipientCell"
-        var collectionViewCellViewModels: [CollectionViewCellViewModel]
+        var tosViewModels: [CollectionViewCellViewModel]
     }
 
     struct CCRow: EmailRowProtocol {
         var type: EmailViewModel.EmailRowType = .cc
         var cellIdentifier: String = "messageRecipientCell"
-        var collectionViewCellViewModels: [CollectionViewCellViewModel]
+        var ccsViewModels: [CollectionViewCellViewModel]
     }
 
     struct BCCRow: EmailRowProtocol {
         var type: EmailViewModel.EmailRowType = .bcc
         var cellIdentifier: String = "messageRecipientCell"
-        var collectionViewCellViewModels: [CollectionViewCellViewModel]
+        var bccsViewModels: [CollectionViewCellViewModel]
     }
 
     // MARK: Subject
@@ -468,20 +468,20 @@ extension EmailViewModel {
 
         // To:
         let toRecipientsVMs = cellViewModels(from: message.tos, rowType: .to)
-        let toRow = ToRow(collectionViewCellViewModels: toRecipientsVMs)
+        let toRow = ToRow(tosViewModels: toRecipientsVMs)
         rows.append(toRow)
 
         // CC:
         let ccRecipientsVMs = cellViewModels(from: message.ccs, rowType: .cc)
         if !ccRecipientsVMs.isEmpty {
-            let ccRow = CCRow(collectionViewCellViewModels: ccRecipientsVMs)
+            let ccRow = CCRow(ccsViewModels: ccRecipientsVMs)
             rows.append(ccRow)
         }
 
         // BCC:
         let bccRecipientsVMs = cellViewModels(from: message.bccs, rowType: .bcc)
         if !bccRecipientsVMs.isEmpty {
-            let bccRow = BCCRow(collectionViewCellViewModels: bccRecipientsVMs)
+            let bccRow = BCCRow(bccsViewModels: bccRecipientsVMs)
             rows.append(bccRow)
         }
 
