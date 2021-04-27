@@ -13,17 +13,19 @@ extension EmailViewModel {
 
     struct CollectionViewViewModel {
         /// The width of the container of the recipients
-        public var containerWidth: CGFloat = 0.0
+        private var containerWidth: CGFloat = 0.0
 
         /// Indicates if all the recipients should be shown.
         /// If false, only the recipients that fit in one line will be shown with, a button to see the rest of them.
-        public var shouldDisplayAllRecipients = false
+        private var shouldDisplayAllRecipients = false
 
         /// Delegate to communicate that the button to see more has been pressed
         public weak var delegate : MessageRecipientCellDelegate?
 
-        init(delegate: MessageRecipientCellDelegate) {
+        init(delegate: MessageRecipientCellDelegate, shouldDisplayAllRecipients: Bool, containerWidth: CGFloat) {
             self.delegate = delegate
+            self.shouldDisplayAllRecipients = shouldDisplayAllRecipients
+            self.containerWidth = containerWidth
         }
 
         /// Get the recipient collection view cells to set.

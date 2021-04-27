@@ -18,7 +18,35 @@ class MessageRecipientCellViewModel {
 
     // The email row type
     private var rowType: EmailViewModel.EmailRowType = .from
+}
 
+//MARK:- Setup
+
+extension MessageRecipientCellViewModel {
+
+    /// Setup the MessageRecipientCellViewModel
+    ///
+    /// - Parameters:
+    ///   - shouldDisplayAllRecipients: Indicates if all the recipients should be shown.
+    ///   - containerWidth: The width of the container of the recipients.
+    ///   - rowType: The type of the row.
+    ///   - recipientCollectionViewCellViewModels: The recipients
+    public func setup(shouldDisplayAllRecipients: Bool,
+                      containerWidth: CGFloat,
+                      rowType: EmailViewModel.EmailRowType,
+                      recipientCollectionViewCellViewModels: [EmailViewModel.CollectionViewCellViewModel],
+                      delegate: MessageRecipientCellDelegate) {
+        self.rowType = rowType
+        self.collectionViewViewModel = EmailViewModel.CollectionViewViewModel(delegate: delegate,
+                                                                              shouldDisplayAllRecipients: shouldDisplayAllRecipients,
+                                                                              containerWidth: containerWidth)
+        setCollectionViewCellViewModels(rowType, recipientCollectionViewCellViewModels)
+    }
+}
+
+//MARK:- Private
+
+extension MessageRecipientCellViewModel {
     private func setCollectionViewCellViewModels(_ rowType: EmailViewModel.EmailRowType,
                                                  _ collectionViewCellViewModels: [EmailViewModel.CollectionViewCellViewModel]) {
         switch rowType {
@@ -54,29 +82,5 @@ class MessageRecipientCellViewModel {
                      _ collectionViewCellsVMs: [EmailViewModel.CollectionViewCellViewModel],
                      rowType: EmailViewModel.EmailRowType) {
         collectionViewCellViewModels = collectionViewViewModel?.recipientCollectionViewCellViewModelToSet(text, collectionViewCellsVMs, rowType: rowType)
-    }
-}
-
-//MARK:- Setup
-
-extension MessageRecipientCellViewModel {
-
-    /// Setup the MessageRecipientCellViewModel
-    ///
-    /// - Parameters:
-    ///   - shouldDisplayAllRecipients: Indicates if all the recipients should be shown.
-    ///   - containerWidth: The width of the container of the recipients.
-    ///   - rowType: The type of the row.
-    ///   - recipientCollectionViewCellViewModels: The recipients
-    public func setup(shouldDisplayAllRecipients: Bool,
-                      containerWidth: CGFloat,
-                      rowType: EmailViewModel.EmailRowType,
-                      recipientCollectionViewCellViewModels: [EmailViewModel.CollectionViewCellViewModel],
-                      delegate: MessageRecipientCellDelegate) {
-        self.rowType = rowType
-        self.collectionViewViewModel = EmailViewModel.CollectionViewViewModel(delegate: delegate)
-        self.collectionViewViewModel?.shouldDisplayAllRecipients = shouldDisplayAllRecipients
-        self.collectionViewViewModel?.containerWidth = containerWidth
-        setCollectionViewCellViewModels(rowType, recipientCollectionViewCellViewModels)
     }
 }

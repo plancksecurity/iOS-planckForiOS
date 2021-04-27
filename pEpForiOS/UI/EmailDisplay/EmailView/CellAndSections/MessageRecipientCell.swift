@@ -85,11 +85,11 @@ extension MessageRecipientCell: UICollectionViewDelegate {
 extension MessageRecipientCell: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let recipientCollectionViewCellViewModels = viewModel.collectionViewCellViewModels else {
+        guard let collectionViewCellViewModels = viewModel.collectionViewCellViewModels else {
             Log.shared.errorAndCrash("The cell can not have zero recipients")
             return 0
         }
-        return recipientCollectionViewCellViewModels.count
+        return collectionViewCellViewModels.count
     }
 }
 
