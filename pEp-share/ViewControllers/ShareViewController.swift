@@ -51,7 +51,7 @@ extension ShareViewController: ShareViewModelDelegate {
 
         let title = NSLocalizedString("Error", comment: "Sharing extension: Error title")
         let message = NSLocalizedString("Could not save the message for sending",
-                                        comment: "Sharing extension: Eould not save the message")
+                                        comment: "Sharing extension: Could not save the message")
         UIUtils.showAlertWithOnlyPositiveButton(title: title,
                                                 message: message,
                                                 completion: cancelRequest)
