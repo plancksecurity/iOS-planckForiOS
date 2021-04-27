@@ -61,8 +61,6 @@ class MessageRecipientCellViewModel {
             let minInterItemSpacing: CGFloat = CGFloat(index) * interItemSpacing
             // Would the next cell exceed the container width?
             // If so, separate the surplus.
-
-
             if (currentOriginX + cellVM.size.width + and10MoreCellViewModel.size.width + minInterItemSpacing) > containerWidth && !shouldDisplayAll && recipientCellsToSet.count >= 1 {
                 // The next items would exceed the line.
                 let surplus = recipientsCellVMs[index..<recipientsCellVMs.count]
