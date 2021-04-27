@@ -9,14 +9,17 @@
 import Foundation
 import pEpIOSToolbox
 
+// View Model of the Message Recipient TableViewCell.
 class MessageRecipientCellViewModel {
+
+    private var collectionViewViewModel: EmailViewModel.RecipientCollectionViewViewModel?
 
     /// The width of the container of the recipients
     private var containerWidth: CGFloat = 0.0
 
     /// Indicates if all the recipients should be shown.
     /// If false, only the recipients that fit in one line will be shown with, a button to see the rest of them.
-    private var shouldDisplayAll = false
+    private var shouldDisplayAllRecipients = false
 
     /// Delegate to communicate that the button to see more has been pressed
     public weak var delegate : MessageRecipientCellDelegate?
@@ -26,67 +29,6 @@ class MessageRecipientCellViewModel {
 
     // The email row type
     private var rowType: EmailViewModel.EmailRowType = .from
-
-    /// Get the recipient collection view cells to set.
-    /// - Parameters:
-    ///   - text: The text of the EmailViewRowType ("To:", "CC:", "BCC:", for example).
-    ///   - recipientsCellVMs: The Cell View Model of the recipients.
-    ///   - rowType: The email row type.
-    ///   - containerWidth: The width of the container
-    ///
-    /// - Returns:The recipient collection view cells to set.
-    public func recipientCollectionViewCellViewModelToSet(_ text: String,
-                     _ recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel],
-                     rowType: EmailViewModel.EmailRowType,
-                     containerWidth: CGFloat) -> [EmailViewModel.RecipientCollectionViewCellViewModel] {
-        //'To' button, for example.
-        let recipientTypeCellViewModel = EmailViewModel.RecipientCollectionViewCellViewModel(title: text, rowType: rowType)
-        var cellsViewModelsToSet = [recipientTypeCellViewModel]
-
-
-        //Simulate a 'More' button with two digits.
-        let and10MoreButtonTitle = NSLocalizedString("& 10 more", comment: "and X more button title")
-        let and10MoreCellViewModel = EmailViewModel.RecipientCollectionViewCellViewModel(title: and10MoreButtonTitle, rowType: rowType)
-
-        //Check if buttons will exceed 1 line
-        var currentOriginX: CGFloat = 0
-
-        var surplusCellsVM = [EmailViewModel.RecipientCollectionViewCellViewModel]()
-        var recipientCellsToSet = [EmailViewModel.RecipientCollectionViewCellViewModel]()
-
-        let interItemSpacing: CGFloat = 2.0
-
-        //Recipients
-        for (index, cellVM) in recipientsCellVMs.enumerated() {
-            let minInterItemSpacing: CGFloat = CGFloat(index) * interItemSpacing
-            // Would the next cell exceed the container width?
-            // If so, separate the surplus.
-            if (currentOriginX + cellVM.size.width + and10MoreCellViewModel.size.width + minInterItemSpacing) > containerWidth && !shouldDisplayAll && recipientCellsToSet.count >= 1 {
-                // The next items would exceed the line.
-                let surplus = recipientsCellVMs[index..<recipientsCellVMs.count]
-                surplusCellsVM.append(contentsOf: surplus)
-                break
-            } else {
-                currentOriginX += cellVM.size.width
-                recipientCellsToSet.append(cellVM)
-            }
-        }
-        cellsViewModelsToSet.append(contentsOf: recipientCellsToSet)
-
-        //'& X more' button.
-        if !surplusCellsVM.isEmpty {
-            let andMoreButtonTitle = NSLocalizedString("& \(surplusCellsVM.count) more", comment: "and X more button title")
-            let andMoreCellViewModel = EmailViewModel.RecipientCollectionViewCellViewModel(title: andMoreButtonTitle, rowType: rowType) { [weak self] in
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost myself")
-                    return
-                }
-                me.delegate?.displayAllRecipients(rowType: rowType)
-            }
-            cellsViewModelsToSet.append(andMoreCellViewModel)
-        }
-        return cellsViewModelsToSet
-    }
 
     private func setRecipientCollectionViewCellViewModels(_ rowType: EmailViewModel.EmailRowType,
                                                          _ recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
@@ -122,10 +64,11 @@ class MessageRecipientCellViewModel {
     private func set(_ text: String,
                      _ recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel],
                      rowType: EmailViewModel.EmailRowType) {
-        recipientCollectionViewCellViewModels = recipientCollectionViewCellViewModelToSet(text,
-                                                                                          recipientsCellVMs,
-                                                                                          rowType: rowType,
-                                                                                          containerWidth: containerWidth)
+        recipientCollectionViewCellViewModels
+            = collectionViewViewModel?.recipientCollectionViewCellViewModelToSet(text,
+                                                                                 recipientsCellVMs,
+                                                                                 rowType: rowType,
+                                                                                 containerWidth: containerWidth, shouldDisplayAllRecipients: shouldDisplayAllRecipients)
     }
 }
 
@@ -136,17 +79,19 @@ extension MessageRecipientCellViewModel {
     /// Setup the MessageRecipientCellViewModel
     ///
     /// - Parameters:
-    ///   - shouldDisplayAll: Indicates if all the recipients should be shown.
+    ///   - shouldDisplayAllRecipients: Indicates if all the recipients should be shown.
     ///   - containerWidth: The width of the container of the recipients.
     ///   - rowType: The type of the row.
     ///   - recipientCollectionViewCellViewModels: The recipients
-    public func setup(shouldDisplayAll: Bool,
+    public func setup(shouldDisplayAllRecipients: Bool,
                       containerWidth: CGFloat,
                       rowType: EmailViewModel.EmailRowType,
-                      recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
-        self.shouldDisplayAll = shouldDisplayAll
+                      recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel],
+                      delegate: MessageRecipientCellDelegate) {
+        self.shouldDisplayAllRecipients = shouldDisplayAllRecipients
         self.containerWidth = containerWidth
         self.rowType = rowType
+        self.collectionViewViewModel = EmailViewModel.RecipientCollectionViewViewModel(delegate: delegate)
         setRecipientCollectionViewCellViewModels(rowType, recipientCollectionViewCellViewModels)
     }
 }

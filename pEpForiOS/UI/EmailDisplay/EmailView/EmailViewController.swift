@@ -22,7 +22,7 @@ class EmailViewController: UIViewController {
     }
 
     public weak var delegate: EmailViewControllerDelegate?
-    private var shouldDisplayAllRecipients = false
+
     private var shouldDisplayAll: [EmailViewModel.EmailRowType: Bool] = [EmailViewModel.EmailRowType.to: false,
                                                                          EmailViewModel.EmailRowType.cc: false,
                                                                          EmailViewModel.EmailRowType.bcc: false]
@@ -369,8 +369,8 @@ extension EmailViewController {
                                 with recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel],
                                 type: EmailViewModel.EmailRowType) {
         cell.viewModel.delegate = self
-        let shouldDisplay = shouldDisplayAll[type] ?? false
-        cell.setup(viewModels: recipientsCellVMs, type: type, shouldDisplayAll:shouldDisplay)
+        let shouldDisplayRecipients = shouldDisplayAll[type] ?? false
+        cell.setup(viewModels: recipientsCellVMs, type: type, shouldDisplayAllRecipients: shouldDisplayRecipients, delegate: self)
     }
 
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {

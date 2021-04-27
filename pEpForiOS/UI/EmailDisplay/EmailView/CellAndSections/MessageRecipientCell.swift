@@ -20,8 +20,9 @@ class MessageRecipientCell: UITableViewCell {
 
     public func setup(viewModels: [EmailViewModel.RecipientCollectionViewCellViewModel],
                       type: EmailViewModel.EmailRowType,
-                      shouldDisplayAll: Bool) {
-        setupViewModel(shouldDisplayAll, type, viewModels)
+                      shouldDisplayAllRecipients: Bool,
+                      delegate: MessageRecipientCellDelegate) {
+        setupViewModel(shouldDisplayAllRecipients, type, viewModels, delegate)
         setupCollectionView()
     }
 }
@@ -30,13 +31,15 @@ class MessageRecipientCell: UITableViewCell {
 
 extension MessageRecipientCell {
 
-    private func setupViewModel(_ shouldDisplayAll: Bool,
+    private func setupViewModel(_ shouldDisplayAllRecipients: Bool,
                                 _ rowType: EmailViewModel.EmailRowType,
-                                _ recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel]) {
-        viewModel.setup(shouldDisplayAll: shouldDisplayAll,
+                                _ recipientCollectionViewCellViewModels: [EmailViewModel.RecipientCollectionViewCellViewModel],
+                                _ delegate: MessageRecipientCellDelegate) {
+        viewModel.setup(shouldDisplayAllRecipients: shouldDisplayAllRecipients,
                         containerWidth: collectionView.frame.size.width,
                         rowType: rowType,
-                        recipientCollectionViewCellViewModels: recipientCollectionViewCellViewModels)
+                        recipientCollectionViewCellViewModels: recipientCollectionViewCellViewModels,
+                        delegate: delegate)
     }
 }
 
