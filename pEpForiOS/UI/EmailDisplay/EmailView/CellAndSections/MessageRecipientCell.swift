@@ -102,7 +102,13 @@ extension MessageRecipientCell: UICollectionViewDelegateFlowLayout {
             Log.shared.errorAndCrash("VMs not found")
             return .zero
         }
-        return vm[indexPath.row].size
+        let size = vm[indexPath.row].size
+        let margin = CGFloat(8.0)
+        let maxSize = CGSize(width: collectionView.frame.size.width - margin, height: size.height)
+        if maxSize.width < size.width {
+            return maxSize
+        }
+        return size
     }
 }
 
