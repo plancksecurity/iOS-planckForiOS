@@ -8,7 +8,7 @@
 "0uK-Ys-aO5.text" = "OUTDISTANCE BLAH BLAH2 BLAH3 BLAH4 BLAH5";
 
 /* Class = "UILabel"; text = "In order to make communication Secure & Trusted, you will have to compare the Trustwords bellow with your communication partner."; ObjectID = "5xj-yI-46H"; */
-"5xj-yI-46H.text" = "Afin de sécuriser la communication & authentique, vous devrez comparer les Trustwords avec votre partenaire de communication.";
+"5xj-yI-46H.text" = "Afin de sécuriser la communication comme fiable, vous devrez comparer les Trustwords avec votre partenaire de communication.";
 
 /* Class = "UIButton"; normalTitle = "Reset"; ObjectID = "6bf-Gd-X5g"; */
 "6bf-Gd-X5g.normalTitle" = "Réinitialiser";
