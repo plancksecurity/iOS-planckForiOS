@@ -467,19 +467,19 @@ extension EmailViewModel {
         rows.append(fromRow)
 
         // To:
-        let toRecipientsVMs = cellViewModels(from: message.tos, rowType: .to)
+        let toRecipientsVMs = cellViewModels(from: message.uniqueTos, rowType: .to)
         let toRow = ToRow(tosViewModels: toRecipientsVMs)
         rows.append(toRow)
 
         // CC:
-        let ccRecipientsVMs = cellViewModels(from: message.ccs, rowType: .cc)
+        let ccRecipientsVMs = cellViewModels(from: message.uniqueCcs, rowType: .cc)
         if !ccRecipientsVMs.isEmpty {
             let ccRow = CCRow(ccsViewModels: ccRecipientsVMs)
             rows.append(ccRow)
         }
 
         // BCC:
-        let bccRecipientsVMs = cellViewModels(from: message.bccs, rowType: .bcc)
+        let bccRecipientsVMs = cellViewModels(from: message.uniqueBccs, rowType: .bcc)
         if !bccRecipientsVMs.isEmpty {
             let bccRow = BCCRow(bccsViewModels: bccRecipientsVMs)
             rows.append(bccRow)

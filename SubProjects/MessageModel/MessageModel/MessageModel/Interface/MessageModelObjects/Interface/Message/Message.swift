@@ -444,28 +444,6 @@ extension Message {
         return recipients
     }
 
-    /// Returns all the recipients, already deduped.
-    //!!!: MARTIN: this might has to be removed when IOS-2541 is done as we won't need all recipients in a single collection.
-    public var allRecipientsOrdered: [Identity] {
-        let recipients = to.allObjects + cc.allObjects + bcc.allObjects
-        return recipients.uniques
-    }
-
-    /// Returns the Tos recipients, already deduped.
-    public var tos: [Identity] {
-        return to.allObjects.uniques
-    }
-
-    /// Returns the CCs recipients, already deduped.
-    public var ccs: [Identity] {
-        return cc.allObjects.uniques
-    }
-
-    /// Returns the BCCs recipients, already deduped.
-    public var bccs: [Identity] {
-        return bcc.allObjects.uniques
-    }
-
     public var allIdentities: Set<Identity> {
         var recipients = allRecipients
         if let fro = from {
