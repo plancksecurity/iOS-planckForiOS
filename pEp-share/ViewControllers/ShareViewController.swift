@@ -126,7 +126,7 @@ extension ShareViewController: ShareViewModelDelegate {
         let title = NSLocalizedString("Error", comment: "Sharing extension: Error title")
         if let theError = error {
             message = String(format: NSLocalizedString("The attachment could not be loaded:\n%1@",
-                                                       comment: "Sharing extension: Eould not load or process the attachment"), theError.localizedDescription)
+                                                       comment: "Sharing extension: Could not load or process the attachment"), theError.localizedDescription)
         }
         UIUtils.showAlertWithOnlyPositiveButton(title: title,
                                                 message: message,
