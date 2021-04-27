@@ -44,9 +44,9 @@ class MessageRecipientCellViewModel {
         var cellsViewModelsToSet = [recipientTypeCellViewModel]
 
 
+        //Use '10' only to simulate a two digits button
         let and10MoreButtonTitle = NSLocalizedString("& 10 more", comment: "and X more button title")
         let and10MoreCellViewModel = EmailViewModel.RecipientCollectionViewCellViewModel(title: and10MoreButtonTitle, rowType: rowType)
-
 
         //Check if buttons will exceed 1 line
         var currentOriginX: CGFloat = 0

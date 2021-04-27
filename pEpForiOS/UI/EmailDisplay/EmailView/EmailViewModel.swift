@@ -235,17 +235,10 @@ extension EmailViewModel {
     }
 
     enum EmailRowType: String {
-        case bcc, cc, to, from, sender, subject, body, attachment, imageAttachment
+        case bcc, cc, to, from, subject, body, attachment, imageAttachment
     }
 
-    // MARK: Sender
-
-    struct SenderRow: EmailRowProtocol {
-        var type: EmailViewModel.EmailRowType = .sender
-        var cellIdentifier: String = "senderCell"
-        var fromVM: RecipientCollectionViewCellViewModel
-        var toVMs: [RecipientCollectionViewCellViewModel]
-    }
+    // MARK: Recipients
 
     struct FromRow: EmailRowProtocol {
         var type: EmailViewModel.EmailRowType = .from
