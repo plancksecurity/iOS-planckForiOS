@@ -1045,7 +1045,7 @@
 "Undo Trust Confirmation" = "Vertrauensbestätigung rückgängig machen";
 
 /* Action name to be suggested at the moment of revert */
-"Undo Trust Rejection" = "Vertrauens-Ablehnung rückgängig machen";
+"Undo Trust Rejection" = "Vertrauensablehnung rückgängig machen";
 
 /* read button in slide-left menu */
 "Unflag" = "Markierung entfernen";
