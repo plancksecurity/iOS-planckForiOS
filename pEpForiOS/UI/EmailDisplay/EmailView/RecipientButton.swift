@@ -18,19 +18,6 @@ class RecipientButton: UIButton {
 
 extension RecipientButton {
 
-    //TODO: remove this ´with´ method.
-
-    /// Constructor
-    ///
-    /// Instanciate a recipient button with the text passed by parameter
-    /// - Parameter text: The text to display
-    /// - Returns: The recipient button configured
-    static func with(text: String, action: (() -> Void)? = nil) -> RecipientButton {
-        let recipientButton = RecipientButton(type: .system)
-        recipientButton.setup(text: text, color: .yellow, action: action)
-        return recipientButton
-    }
-
     /// Setup the recipient button with the text and colors passed by parameters.
     /// - Parameters:
     ///   - text: The text of the button
@@ -73,5 +60,4 @@ extension RecipientButton {
             action()
         }
     }
-
 }
