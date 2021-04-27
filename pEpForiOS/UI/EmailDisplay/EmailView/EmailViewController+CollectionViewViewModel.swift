@@ -11,7 +11,7 @@ import pEpIOSToolbox
 
 extension EmailViewModel {
 
-    struct RecipientCollectionViewViewModel {
+    struct CollectionViewViewModel {
 
         /// Delegate to communicate that the button to see more has been pressed
         public weak var delegate : MessageRecipientCellDelegate?
@@ -29,23 +29,23 @@ extension EmailViewModel {
         ///
         /// - Returns:The recipient collection view cells to set.
         public func recipientCollectionViewCellViewModelToSet(_ text: String,
-                         _ recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel],
+                         _ recipientsCellVMs: [EmailViewModel.CollectionViewCellViewModel],
                          rowType: EmailViewModel.EmailRowType,
                          containerWidth: CGFloat,
-                         shouldDisplayAllRecipients: Bool) -> [EmailViewModel.RecipientCollectionViewCellViewModel] {
+                         shouldDisplayAllRecipients: Bool) -> [EmailViewModel.CollectionViewCellViewModel] {
             //'To' button, for example.
-            let recipientTypeCellViewModel = EmailViewModel.RecipientCollectionViewCellViewModel(title: text, rowType: rowType)
+            let recipientTypeCellViewModel = EmailViewModel.CollectionViewCellViewModel(title: text, rowType: rowType)
             var cellsViewModelsToSet = [recipientTypeCellViewModel]
 
             //Simulate a 'More' button with two digits.
             let and10MoreButtonTitle = NSLocalizedString("& 10 more", comment: "and X more button title - this will only be used to compute a size.")
-            let and10MoreCellViewModel = EmailViewModel.RecipientCollectionViewCellViewModel(title: and10MoreButtonTitle, rowType: rowType)
+            let and10MoreCellViewModel = EmailViewModel.CollectionViewCellViewModel(title: and10MoreButtonTitle, rowType: rowType)
 
             //Check if buttons will exceed 1 line
             var currentOriginX: CGFloat = 0
 
-            var surplusCellsVM = [EmailViewModel.RecipientCollectionViewCellViewModel]()
-            var recipientCellsToSet = [EmailViewModel.RecipientCollectionViewCellViewModel]()
+            var surplusCellsVM = [EmailViewModel.CollectionViewCellViewModel]()
+            var recipientCellsToSet = [EmailViewModel.CollectionViewCellViewModel]()
 
             let interItemSpacing: CGFloat = 2.0
 
@@ -71,7 +71,7 @@ extension EmailViewModel {
                 // TODO: add a good description.
                 // TODO: Check with Dirk dynamic localization.
                 let andMoreButtonTitle = NSLocalizedString("& \(surplusCellsVM.count) more", comment: "and X more button title")
-                let andMoreCellViewModel = EmailViewModel.RecipientCollectionViewCellViewModel(title: andMoreButtonTitle, rowType: rowType) {
+                let andMoreCellViewModel = EmailViewModel.CollectionViewCellViewModel(title: andMoreButtonTitle, rowType: rowType) {
                     guard let delegate = delegate else {
                         Log.shared.errorAndCrash("Delegate is missing")
                         return

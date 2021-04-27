@@ -201,7 +201,7 @@ class EmailViewModel {
 extension EmailViewModel {
 
     // Represents a Recipient in the collection view.
-    struct RecipientCollectionViewCellViewModel {
+    struct CollectionViewCellViewModel {
 
         public var size: CGSize {
             let recipientButton = RecipientButton(type: .system)
@@ -243,25 +243,25 @@ extension EmailViewModel {
     struct FromRow: EmailRowProtocol {
         var type: EmailViewModel.EmailRowType = .from
         var cellIdentifier: String = "messageRecipientCell"
-        var fromVM: RecipientCollectionViewCellViewModel
+        var fromVM: CollectionViewCellViewModel
     }
 
     struct ToRow: EmailRowProtocol {
         var type: EmailViewModel.EmailRowType = .to
         var cellIdentifier: String = "messageRecipientCell"
-        var recipientCollectionViewCellViewModels: [RecipientCollectionViewCellViewModel]
+        var collectionViewCellViewModels: [CollectionViewCellViewModel]
     }
 
     struct CCRow: EmailRowProtocol {
         var type: EmailViewModel.EmailRowType = .cc
         var cellIdentifier: String = "messageRecipientCell"
-        var recipientCollectionViewCellViewModels: [RecipientCollectionViewCellViewModel]
+        var collectionViewCellViewModels: [CollectionViewCellViewModel]
     }
 
     struct BCCRow: EmailRowProtocol {
         var type: EmailViewModel.EmailRowType = .bcc
         var cellIdentifier: String = "messageRecipientCell"
-        var recipientCollectionViewCellViewModels: [RecipientCollectionViewCellViewModel]
+        var collectionViewCellViewModels: [CollectionViewCellViewModel]
     }
 
     // MARK: Subject
@@ -440,12 +440,12 @@ extension EmailViewModel {
 extension EmailViewModel {
 
     private func setupRows(message: Message) {
-        func cellViewModels(from identities: [Identity], rowType: EmailViewModel.EmailRowType) -> [RecipientCollectionViewCellViewModel] {
+        func cellViewModels(from identities: [Identity], rowType: EmailViewModel.EmailRowType) -> [CollectionViewCellViewModel] {
             return identities.map({ return getRecipientCollectionViewCellViewModel(identity: $0, rowType: rowType) })
         }
 
-        func getRecipientCollectionViewCellViewModel(identity: Identity, rowType: EmailViewModel.EmailRowType) -> RecipientCollectionViewCellViewModel {
-            return RecipientCollectionViewCellViewModel(identity: identity, rowType: rowType) { [weak self] in
+        func getRecipientCollectionViewCellViewModel(identity: Identity, rowType: EmailViewModel.EmailRowType) -> CollectionViewCellViewModel {
+            return CollectionViewCellViewModel(identity: identity, rowType: rowType) { [weak self] in
                 guard let me = self else {
                     Log.shared.errorAndCrash("Lost myself")
                     return
@@ -468,20 +468,20 @@ extension EmailViewModel {
 
         // To:
         let toRecipientsVMs = cellViewModels(from: message.tos, rowType: .to)
-        let toRow = ToRow(recipientCollectionViewCellViewModels: toRecipientsVMs)
+        let toRow = ToRow(collectionViewCellViewModels: toRecipientsVMs)
         rows.append(toRow)
 
         // CC:
         let ccRecipientsVMs = cellViewModels(from: message.ccs, rowType: .cc)
         if !ccRecipientsVMs.isEmpty {
-            let ccRow = CCRow(recipientCollectionViewCellViewModels: ccRecipientsVMs)
+            let ccRow = CCRow(collectionViewCellViewModels: ccRecipientsVMs)
             rows.append(ccRow)
         }
 
         // BCC:
         let bccRecipientsVMs = cellViewModels(from: message.bccs, rowType: .bcc)
         if !bccRecipientsVMs.isEmpty {
-            let bccRow = BCCRow(recipientCollectionViewCellViewModels: bccRecipientsVMs)
+            let bccRow = BCCRow(collectionViewCellViewModels: bccRecipientsVMs)
             rows.append(bccRow)
         }
 

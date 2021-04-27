@@ -154,7 +154,7 @@ extension EmailViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
-            setupRecipient(cell: cell, with: row.recipientCollectionViewCellViewModels, type: row.type)
+            setupRecipient(cell: cell, with: row.collectionViewCellViewModels, type: row.type)
             return cell
 
         case .cc:
@@ -165,7 +165,7 @@ extension EmailViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
-            setupRecipient(cell: cell, with: row.recipientCollectionViewCellViewModels, type: row.type)
+            setupRecipient(cell: cell, with: row.collectionViewCellViewModels, type: row.type)
             return cell
 
         case .bcc:
@@ -176,7 +176,7 @@ extension EmailViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
-            setupRecipient(cell: cell, with: row.recipientCollectionViewCellViewModels, type: row.type)
+            setupRecipient(cell: cell, with: row.collectionViewCellViewModels, type: row.type)
             return cell
 
         case .subject:
@@ -366,9 +366,9 @@ extension EmailViewController {
     }
 
     private func setupRecipient(cell: MessageRecipientCell,
-                                with recipientsCellVMs: [EmailViewModel.RecipientCollectionViewCellViewModel],
+                                with recipientsCellVMs: [EmailViewModel.CollectionViewCellViewModel],
                                 type: EmailViewModel.EmailRowType) {
-        cell.viewModel.delegate = self
+//        cell.viewModel.delegate = self
         let shouldDisplayRecipients = shouldDisplayAll[type] ?? false
         cell.setup(viewModels: recipientsCellVMs, type: type, shouldDisplayAllRecipients: shouldDisplayRecipients, delegate: self)
     }

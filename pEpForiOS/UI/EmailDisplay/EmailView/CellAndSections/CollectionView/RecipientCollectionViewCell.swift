@@ -13,7 +13,7 @@ class RecipientCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var recipientButton: RecipientButton!
     public static let cellId = "recipientCellId"
 
-    func setup(with collectionViewCellViewModel: EmailViewModel.RecipientCollectionViewCellViewModel) {
+    func setup(with collectionViewCellViewModel: EmailViewModel.CollectionViewCellViewModel) {
         var color: UIColor = .darkText
         switch collectionViewCellViewModel.rowType {
         case .to, .cc, .bcc:
