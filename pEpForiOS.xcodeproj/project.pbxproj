@@ -504,7 +504,7 @@
 		5BC4E60724113659008C01ED /* TutorialStep2iPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4E60624113659008C01ED /* TutorialStep2iPhoneViewController.swift */; };
 		5BC8C72325ADDAF1000AAC7A /* TwoLinesButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC8C72225ADDAF1000AAC7A /* TwoLinesButton.swift */; };
 		5BC9F1E226385974002377B6 /* EmailViewController+CollectionViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC9F1E126385974002377B6 /* EmailViewController+CollectionViewViewModel.swift */; };
-		5BC9F1E6263888C3002377B6 /* Message+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC9F1E5263888C3002377B6 /* Message+Extension.swift */; };
+		5BC9F1E6263888C3002377B6 /* Message+Recipients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC9F1E5263888C3002377B6 /* Message+Recipients.swift */; };
 		5BCFE663252470F4001323C3 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCFE662252470F4001323C3 /* ComposeViewController.swift */; };
 		5BD4466024F65DE300422594 /* EmailListViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4465F24F65DE300422594 /* EmailListViewController+Keyboard.swift */; };
 		5BE35A9A249139DD00AC605C /* AccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */; };
@@ -1145,7 +1145,7 @@
 		5BC4E60624113659008C01ED /* TutorialStep2iPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep2iPhoneViewController.swift; sourceTree = "<group>"; };
 		5BC8C72225ADDAF1000AAC7A /* TwoLinesButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoLinesButton.swift; sourceTree = "<group>"; };
 		5BC9F1E126385974002377B6 /* EmailViewController+CollectionViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailViewController+CollectionViewViewModel.swift"; sourceTree = "<group>"; };
-		5BC9F1E5263888C3002377B6 /* Message+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+Extension.swift"; sourceTree = "<group>"; };
+		5BC9F1E5263888C3002377B6 /* Message+Recipients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+Recipients.swift"; sourceTree = "<group>"; };
 		5BCFE662252470F4001323C3 /* ComposeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		5BD4465F24F65DE300422594 /* EmailListViewController+Keyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EmailListViewController+Keyboard.swift"; sourceTree = "<group>"; };
 		5BD917E1252DD64D0092B30F /* MailtoTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailtoTest.swift; sourceTree = "<group>"; };
@@ -2390,7 +2390,7 @@
 				155475632137FD96005A52D0 /* FolderType+Extensions.swift */,
 				15D7D991219B154000A1A2B9 /* Attachment+Extensions.swift */,
 				433E7437225B564400B84CD9 /* Account+Extension.swift */,
-				5BC9F1E5263888C3002377B6 /* Message+Extension.swift */,
+				5BC9F1E5263888C3002377B6 /* Message+Recipients.swift */,
 				1543B6A722ABDAAE002B59AB /* Identity+pEp.swift */,
 				154660D32334E2FC008D2137 /* Message+SecurityBadge.swift */,
 			);
@@ -3609,7 +3609,7 @@
 				43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */,
 				4902244F20E50488000E8D7C /* ThreadNavigationDelegate.swift in Sources */,
 				152A39E621905C3E00D9F8E4 /* RecipientTextViewModel+TextAttachment.swift in Sources */,
-				5BC9F1E6263888C3002377B6 /* Message+Extension.swift in Sources */,
+				5BC9F1E6263888C3002377B6 /* Message+Recipients.swift in Sources */,
 				5BEAECB525370C3E0082AAC6 /* String+Mailto.swift in Sources */,
 				B7D1EEC81E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift in Sources */,
 				43269D272552ABE9001E18C6 /* String+PEPSignature.swift in Sources */,

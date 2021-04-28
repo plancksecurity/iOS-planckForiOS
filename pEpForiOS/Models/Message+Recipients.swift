@@ -1,5 +1,5 @@
 //
-//  Message+Extension.swift
+//  Message+Recipients.swift
 //  pEp
 //
 //  Created by Martín Brude on 27/4/21.
