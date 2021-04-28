@@ -16,30 +16,18 @@ class MessageRecipientCell: UITableViewCell {
     private var minHeight: CGFloat? = 20.0
     @IBOutlet private weak var collectionView: UICollectionView!
 
-    public let viewModel = MessageRecipientCellViewModel()
+    private let viewModel = MessageRecipientCellViewModel()
 
     public func setup(viewModels: [EmailViewModel.CollectionViewCellViewModel],
-                      type: EmailViewModel.EmailRowType,
+                      rowType: EmailViewModel.EmailRowType,
                       shouldDisplayAllRecipients: Bool,
                       delegate: MessageRecipientCellDelegate) {
-        setupViewModel(shouldDisplayAllRecipients, type, viewModels, delegate)
-        setupCollectionView()
-    }
-}
-
-// MARK: - ViewModel
-
-extension MessageRecipientCell {
-
-    private func setupViewModel(_ shouldDisplayAllRecipients: Bool,
-                                _ rowType: EmailViewModel.EmailRowType,
-                                _ recipientCollectionViewCellViewModels: [EmailViewModel.CollectionViewCellViewModel],
-                                _ delegate: MessageRecipientCellDelegate) {
         viewModel.setup(shouldDisplayAllRecipients: shouldDisplayAllRecipients,
                         containerWidth: collectionView.frame.size.width,
                         rowType: rowType,
-                        recipientCollectionViewCellViewModels: recipientCollectionViewCellViewModels,
+                        recipientCollectionViewCellViewModels: viewModels,
                         delegate: delegate)
+        setupCollectionView()
     }
 }
 
@@ -70,11 +58,11 @@ extension MessageRecipientCell: UICollectionViewDelegate {
             Log.shared.errorAndCrash("Error setting up cell")
             return collectionView.dequeueReusableCell(withReuseIdentifier: RecipientCollectionViewCell.cellId, for: indexPath)
         }
-        guard let recipientCollectionViewCellViewModels = viewModel.collectionViewCellViewModels else {
+        guard let viewModels = viewModel.collectionViewCellViewModels else {
             Log.shared.errorAndCrash("VMs not found")
             return cell
         }
-        let collectionViewCellViewModel = recipientCollectionViewCellViewModels[indexPath.row]
+        let collectionViewCellViewModel = viewModels[indexPath.row]
         cell.setup(with: collectionViewCellViewModel)
         return cell
     }
@@ -85,11 +73,11 @@ extension MessageRecipientCell: UICollectionViewDelegate {
 extension MessageRecipientCell: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let collectionViewCellViewModels = viewModel.collectionViewCellViewModels else {
+        guard let viewModels = viewModel.collectionViewCellViewModels else {
             Log.shared.errorAndCrash("The cell can not have zero recipients")
             return 0
         }
-        return collectionViewCellViewModels.count
+        return viewModels.count
     }
 }
 
@@ -107,6 +95,7 @@ extension MessageRecipientCell: UICollectionViewDelegateFlowLayout {
         }
         let size = vm[indexPath.row].size
         let margin = CGFloat(8.0)
+        // The item max width is the the collection view width minus the margin.
         let maxSize = CGSize(width: collectionView.frame.size.width - margin, height: size.height)
         if maxSize.width < size.width {
             return maxSize

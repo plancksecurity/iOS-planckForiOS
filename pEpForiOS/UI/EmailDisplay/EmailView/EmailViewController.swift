@@ -143,7 +143,7 @@ extension EmailViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
-            setupRecipient(cell: cell, with: [row.fromVM], type: row.type)
+            setupRecipient(cell: cell, with: [row.fromVM], rowType: row.type)
             return cell
         case .to:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageRecipientCell else {
@@ -153,7 +153,7 @@ extension EmailViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
-            setupRecipient(cell: cell, with: row.tosViewModels, type: row.type)
+            setupRecipient(cell: cell, with: row.tosViewModels, rowType: row.type)
             return cell
 
         case .cc:
@@ -164,7 +164,7 @@ extension EmailViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
-            setupRecipient(cell: cell, with: row.ccsViewModels, type: row.type)
+            setupRecipient(cell: cell, with: row.ccsViewModels, rowType: row.type)
             return cell
 
         case .bcc:
@@ -175,7 +175,7 @@ extension EmailViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
-            setupRecipient(cell: cell, with: row.bccsViewModels, type: row.type)
+            setupRecipient(cell: cell, with: row.bccsViewModels, rowType: row.type)
             return cell
 
         case .subject:
@@ -365,10 +365,10 @@ extension EmailViewController {
     }
 
     private func setupRecipient(cell: MessageRecipientCell,
-                                with collectionViewCellsViewModels: [EmailViewModel.CollectionViewCellViewModel],
-                                type: EmailViewModel.EmailRowType) {
-        let shouldDisplayAllRecipients = shouldDisplayAll[type] ?? false
-        cell.setup(viewModels: collectionViewCellsViewModels, type: type, shouldDisplayAllRecipients: shouldDisplayAllRecipients, delegate: self)
+                                with cellsViewModels: [EmailViewModel.CollectionViewCellViewModel],
+                                rowType: EmailViewModel.EmailRowType) {
+        let shouldDisplayAllRecipients = shouldDisplayAll[rowType] ?? false
+        cell.setup(viewModels: cellsViewModels, rowType: rowType, shouldDisplayAllRecipients: shouldDisplayAllRecipients, delegate: self)
     }
 
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {

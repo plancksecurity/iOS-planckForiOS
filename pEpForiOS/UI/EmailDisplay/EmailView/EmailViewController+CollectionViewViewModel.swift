@@ -74,9 +74,8 @@ extension EmailViewModel {
 
             //'& X more' button.
             if !surplusCellsVM.isEmpty {
-                // TODO: add a good description.
-                // TODO: Check with Dirk dynamic localization.
-                let andMoreButtonTitle = NSLocalizedString("& \(surplusCellsVM.count) more", comment: "and X more button title")
+                let format = NSLocalizedString("& %1$@ more", comment: "Indicate there are more recipients that will be shown when the user taps this button.")
+                let andMoreButtonTitle = String.localizedStringWithFormat(format, "\(surplusCellsVM.count)")
                 let andMoreCellViewModel = EmailViewModel.CollectionViewCellViewModel(title: andMoreButtonTitle, rowType: rowType) {
                     guard let delegate = delegate else {
                         Log.shared.errorAndCrash("Delegate is missing")
