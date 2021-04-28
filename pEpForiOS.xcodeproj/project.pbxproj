@@ -503,7 +503,7 @@
 		5BC4E601240FF156008C01ED /* TutorialStep1iPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4E600240FF155008C01ED /* TutorialStep1iPhoneViewController.swift */; };
 		5BC4E60724113659008C01ED /* TutorialStep2iPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4E60624113659008C01ED /* TutorialStep2iPhoneViewController.swift */; };
 		5BC8C72325ADDAF1000AAC7A /* TwoLinesButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC8C72225ADDAF1000AAC7A /* TwoLinesButton.swift */; };
-		5BC9F1E226385974002377B6 /* EmailViewController+CollectionViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC9F1E126385974002377B6 /* EmailViewController+CollectionViewViewModel.swift */; };
+		5BC9F1E226385974002377B6 /* EmailViewModel+CollectionViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC9F1E126385974002377B6 /* EmailViewModel+CollectionViewViewModel.swift */; };
 		5BC9F1E6263888C3002377B6 /* Message+Recipients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC9F1E5263888C3002377B6 /* Message+Recipients.swift */; };
 		5BCFE663252470F4001323C3 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCFE662252470F4001323C3 /* ComposeViewController.swift */; };
 		5BD4466024F65DE300422594 /* EmailListViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4465F24F65DE300422594 /* EmailListViewController+Keyboard.swift */; };
@@ -1144,7 +1144,7 @@
 		5BC4E600240FF155008C01ED /* TutorialStep1iPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep1iPhoneViewController.swift; sourceTree = "<group>"; };
 		5BC4E60624113659008C01ED /* TutorialStep2iPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep2iPhoneViewController.swift; sourceTree = "<group>"; };
 		5BC8C72225ADDAF1000AAC7A /* TwoLinesButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoLinesButton.swift; sourceTree = "<group>"; };
-		5BC9F1E126385974002377B6 /* EmailViewController+CollectionViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailViewController+CollectionViewViewModel.swift"; sourceTree = "<group>"; };
+		5BC9F1E126385974002377B6 /* EmailViewModel+CollectionViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailViewModel+CollectionViewViewModel.swift"; sourceTree = "<group>"; };
 		5BC9F1E5263888C3002377B6 /* Message+Recipients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+Recipients.swift"; sourceTree = "<group>"; };
 		5BCFE662252470F4001323C3 /* ComposeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		5BD4465F24F65DE300422594 /* EmailListViewController+Keyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EmailListViewController+Keyboard.swift"; sourceTree = "<group>"; };
@@ -1793,7 +1793,7 @@
 				B74F37CC24ADD2B00083501B /* EmailViewController.swift */,
 				5BBD1D0F26270319009D9D8A /* RecipientButton.swift */,
 				5B5C2A9E25D293F300F9C18A /* EmailViewModel.swift */,
-				5BC9F1E126385974002377B6 /* EmailViewController+CollectionViewViewModel.swift */,
+				5BC9F1E126385974002377B6 /* EmailViewModel+CollectionViewViewModel.swift */,
 				B70D32B1205BD3E80094A92A /* CellAndSections */,
 				430D73601E9CBD0600EA6FA9 /* Background */,
 				4323FE871E83E502006785E1 /* Util */,
@@ -3463,7 +3463,7 @@
 				43A469FA21513B10002E1036 /* PEPSwipeTableViewCell.swift in Sources */,
 				00BEC89720B85FD300A36E60 /* NothingSelectedViewController.swift in Sources */,
 				431C6E041FE7A85200E23BE0 /* OAuth2ConfigurationProtocol.swift in Sources */,
-				5BC9F1E226385974002377B6 /* EmailViewController+CollectionViewViewModel.swift in Sources */,
+				5BC9F1E226385974002377B6 /* EmailViewModel+CollectionViewViewModel.swift in Sources */,
 				1541D7ED1FC81D4200D52A5D /* URL+Extensions.swift in Sources */,
 				152A39D421905C3E00D9F8E4 /* SubjectCell.swift in Sources */,
 				5B1C1432259A25B2006DB2A1 /* UILabel+Extension.swift in Sources */,
