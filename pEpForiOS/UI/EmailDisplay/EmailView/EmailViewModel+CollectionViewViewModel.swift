@@ -11,7 +11,14 @@ import pEpIOSToolbox
 
 extension EmailViewModel {
 
-    struct CollectionViewViewModel {
+    struct RecipientsCollectionViewViewModel {
+
+        /// The collection view cell view models ('To' cell, recipients cell and 1 more cell).
+        public var collectionViewCellViewModels: [EmailViewModel.CollectionViewCellViewModel]?
+
+        // The email row type
+        private var rowType: EmailViewModel.EmailRowType = .from
+
         /// The width of the container of the recipients
         private var containerWidth: CGFloat = 0.0
 
@@ -22,10 +29,21 @@ extension EmailViewModel {
         /// Delegate to communicate that the button to see more has been pressed
         public weak var delegate : MessageRecipientCellDelegate?
 
-        init(delegate: MessageRecipientCellDelegate, shouldDisplayAllRecipients: Bool, containerWidth: CGFloat) {
+        /// Constructor
+        ///
+        /// - Parameters:
+        ///   - delegate: The delegate to inform when the user pressed the '& X more button'
+        ///   - shouldDisplayAllRecipients: Indicates if all the user has to be shown.
+        ///   - containerWidth: The width of the container view.
+        ///   - rowType: The type of the row.
+        ///   - recipientCollectionViewCellViewModels: The cells view models.
+        init(delegate: MessageRecipientCellDelegate, shouldDisplayAllRecipients: Bool, containerWidth: CGFloat,
+             rowType: EmailViewModel.EmailRowType, recipientCollectionViewCellViewModels: [EmailViewModel.CollectionViewCellViewModel]) {
+            self.rowType = rowType
             self.delegate = delegate
             self.shouldDisplayAllRecipients = shouldDisplayAllRecipients
             self.containerWidth = containerWidth
+            setCollectionViewCellViewModels(rowType, recipientCollectionViewCellViewModels)
         }
 
         /// Get the recipient collection view cells to set.
@@ -87,5 +105,32 @@ extension EmailViewModel {
             }
             return cellsViewModelsToSet
         }
+    }
+}
+
+//MARK:- Private
+
+extension EmailViewModel.RecipientsCollectionViewViewModel {
+    private mutating func setCollectionViewCellViewModels(_ rowType: EmailViewModel.EmailRowType,
+                                                 _ collectionViewCellViewModels: [EmailViewModel.CollectionViewCellViewModel]) {
+        switch rowType {
+        case .from:
+            self.collectionViewCellViewModels = collectionViewCellViewModels
+        case .to:
+            set(RecipientCellViewModel.FieldType.to.localizedTitle(), collectionViewCellViewModels, rowType: rowType)
+        case .cc:
+            set(RecipientCellViewModel.FieldType.cc.localizedTitle(), collectionViewCellViewModels, rowType: rowType)
+        case .bcc:
+            set(RecipientCellViewModel.FieldType.bcc.localizedTitle(), collectionViewCellViewModels, rowType: rowType)
+
+        default:
+            Log.shared.errorAndCrash("Email Row type not supported")
+        }
+    }
+
+    private mutating func set(_ text: String,
+                     _ collectionViewCellsVMs: [EmailViewModel.CollectionViewCellViewModel],
+                     rowType: EmailViewModel.EmailRowType) {
+        collectionViewCellViewModels = recipientCollectionViewCellViewModelToSet(text, collectionViewCellsVMs, rowType: rowType)
     }
 }

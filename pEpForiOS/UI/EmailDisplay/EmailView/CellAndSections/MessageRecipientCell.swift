@@ -58,7 +58,7 @@ extension MessageRecipientCell: UICollectionViewDelegate {
             Log.shared.errorAndCrash("Error setting up cell")
             return collectionView.dequeueReusableCell(withReuseIdentifier: RecipientCollectionViewCell.cellId, for: indexPath)
         }
-        guard let viewModels = viewModel.collectionViewCellViewModels else {
+        guard let viewModels = viewModel.collectionViewViewModel?.collectionViewCellViewModels else {
             Log.shared.errorAndCrash("VMs not found")
             return cell
         }
@@ -73,7 +73,7 @@ extension MessageRecipientCell: UICollectionViewDelegate {
 extension MessageRecipientCell: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let viewModels = viewModel.collectionViewCellViewModels else {
+        guard let viewModels = viewModel.collectionViewViewModel?.collectionViewCellViewModels else {
             Log.shared.errorAndCrash("The cell can not have zero recipients")
             return 0
         }
@@ -89,7 +89,7 @@ extension MessageRecipientCell: UICollectionViewDelegateFlowLayout {
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
 
-        guard let vm = viewModel.collectionViewCellViewModels else {
+        guard let vm = viewModel.collectionViewViewModel?.collectionViewCellViewModels else {
             Log.shared.errorAndCrash("VMs not found")
             return .zero
         }
