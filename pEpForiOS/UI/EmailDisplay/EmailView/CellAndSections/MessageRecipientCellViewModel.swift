@@ -15,7 +15,6 @@ class MessageRecipientCellViewModel {
     /// The collection view cell view models ('To' cell, recipients cell and 1 more cell).
     public var collectionViewCellViewModels: [EmailViewModel.CollectionViewCellViewModel]?
     private var collectionViewViewModel: EmailViewModel.CollectionViewViewModel?
-
     // The email row type
     private var rowType: EmailViewModel.EmailRowType = .from
 }
@@ -53,29 +52,15 @@ extension MessageRecipientCellViewModel {
         case .from:
             self.collectionViewCellViewModels = collectionViewCellViewModels
         case .to:
-            setToRecipientCollectionViewCellViewModels(collectionViewCellViewModels)
+            set(RecipientCellViewModel.FieldType.to.localizedTitle(), collectionViewCellViewModels, rowType: rowType)
         case .cc:
-            setCCRecipientCollectionViewCellViewModels(collectionViewCellViewModels)
+            set(RecipientCellViewModel.FieldType.cc.localizedTitle(), collectionViewCellViewModels, rowType: rowType)
         case .bcc:
-            setBCCRecipientCollectionViewCellViewModels(collectionViewCellViewModels)
+            set(RecipientCellViewModel.FieldType.bcc.localizedTitle(), collectionViewCellViewModels, rowType: rowType)
+
         default:
             Log.shared.errorAndCrash("Email Row type not supported")
         }
-    }
-
-    private func setToRecipientCollectionViewCellViewModels(_ collectionViewCellsVMs: [EmailViewModel.CollectionViewCellViewModel]) {
-        let to = RecipientCellViewModel.FieldType.to.localizedTitle()
-        set(to, collectionViewCellsVMs, rowType: .to)
-    }
-
-    private func setCCRecipientCollectionViewCellViewModels(_ collectionViewCellsVMs: [EmailViewModel.CollectionViewCellViewModel]) {
-        let cc = RecipientCellViewModel.FieldType.cc.localizedTitle()
-        set(cc, collectionViewCellsVMs, rowType: .cc)
-    }
-
-    private func setBCCRecipientCollectionViewCellViewModels(_ collectionViewCellsVMs: [EmailViewModel.CollectionViewCellViewModel]) {
-        let bcc = RecipientCellViewModel.FieldType.bcc.localizedTitle()
-        set(bcc, collectionViewCellsVMs, rowType: .bcc)
     }
 
     private func set(_ text: String,
