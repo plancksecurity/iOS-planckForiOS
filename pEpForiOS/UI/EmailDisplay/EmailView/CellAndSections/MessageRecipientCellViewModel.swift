@@ -11,9 +11,9 @@ import pEpIOSToolbox
 
 // View Model of the Message Recipient TableViewCell.
 class MessageRecipientCellViewModel {
-    
+
     public var collectionViewViewModel: EmailViewModel.RecipientsCollectionViewViewModel?
-    
+
     /// Setup the MessageRecipientCellViewModel
     ///
     /// - Parameters:

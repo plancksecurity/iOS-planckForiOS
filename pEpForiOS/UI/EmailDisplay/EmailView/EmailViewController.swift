@@ -80,8 +80,8 @@ class EmailViewController: UIViewController {
             documentInteractionController.dismissMenu(animated: false)
         }
         splitViewController?.preferredDisplayMode = .allVisible
-        coordinator.animate(alongsideTransition: nil) { _ in
-            self.tableView.reloadData()
+        coordinator.animate(alongsideTransition: nil) { context in
+            self.reloadTableView()
         }
     }
 
@@ -89,14 +89,20 @@ class EmailViewController: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         guard let thePreviousTraitCollection = previousTraitCollection else {
             // Valid case. Optional param.
-            tableView.reloadData()
+            reloadTableView()
             return
         }
-
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            reloadTableView()
+            return
+        }
         if #available(iOS 13.0, *) {
             if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                tableView.reloadData()
+                reloadTableView()
             }
+        }
+        if previousTraitCollection?.horizontalSizeClass != traitCollection.horizontalSizeClass || previousTraitCollection?.verticalSizeClass != traitCollection.verticalSizeClass {
+            reloadTableView()
         }
     }
 
@@ -322,7 +328,7 @@ extension EmailViewController: EmailViewModelDelegate {
 
     func showExternalContent() {
         removeExternalContentView()
-        tableView.reloadData()
+        reloadTableView()
     }
 }
 
@@ -368,7 +374,10 @@ extension EmailViewController {
                                 with cellsViewModels: [EmailViewModel.CollectionViewCellViewModel],
                                 rowType: EmailViewModel.EmailRowType) {
         let shouldDisplayAllRecipients = shouldDisplayAll[rowType] ?? false
-        cell.setup(viewModels: cellsViewModels, rowType: rowType, shouldDisplayAllRecipients: shouldDisplayAllRecipients, delegate: self)
+        cell.setup(viewModels: cellsViewModels,
+                   rowType: rowType,
+                   shouldDisplayAllRecipients: shouldDisplayAllRecipients,
+                   delegate: self)
     }
 
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {
@@ -455,4 +464,13 @@ extension EmailViewController: MessageRecipientCellDelegate {
         shouldDisplayAll[rowType] = true
         tableView.reloadData()
     }
+}
+
+// MARK: - Private
+
+extension EmailViewController {
+    private func reloadTableView() {
+        tableView.reloadData()
+    }
+
 }

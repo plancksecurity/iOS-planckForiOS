@@ -14,6 +14,10 @@ protocol MessageRecipientCellDelegate: class {
 
 class MessageRecipientCell: UITableViewCell {
     private var minHeight: CGFloat? = 20.0
+
+    // We can't use the container width itself as it's not configured yet.
+    private let containerWidth = UIScreen.main.bounds.width - 50
+
     @IBOutlet private weak var collectionView: UICollectionView!
 
     private let viewModel = MessageRecipientCellViewModel()
@@ -22,8 +26,9 @@ class MessageRecipientCell: UITableViewCell {
                       rowType: EmailViewModel.EmailRowType,
                       shouldDisplayAllRecipients: Bool,
                       delegate: MessageRecipientCellDelegate) {
+        let screenWidth = containerWidth
         viewModel.setup(shouldDisplayAllRecipients: shouldDisplayAllRecipients,
-                        containerWidth: collectionView.frame.size.width,
+                        containerWidth: screenWidth,
                         rowType: rowType,
                         recipientCollectionViewCellViewModels: viewModels,
                         delegate: delegate)
@@ -40,6 +45,7 @@ extension MessageRecipientCell {
         let layout = LeftAlignedCollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 2
         layout.minimumLineSpacing = 2
+        collectionView.collectionViewLayout.invalidateLayout()
         collectionView.collectionViewLayout = layout
         collectionView.reloadData()
     }
@@ -96,7 +102,7 @@ extension MessageRecipientCell: UICollectionViewDelegateFlowLayout {
         let size = vm[indexPath.row].size
         let margin = CGFloat(8.0)
         // The item max width is the the collection view width minus the margin.
-        let maxSize = CGSize(width: collectionView.frame.size.width - margin, height: size.height)
+        let maxSize = CGSize(width: containerWidth - margin, height: size.height)
         if maxSize.width < size.width {
             return maxSize
         }

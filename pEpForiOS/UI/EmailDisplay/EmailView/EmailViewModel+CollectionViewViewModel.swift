@@ -20,11 +20,11 @@ extension EmailViewModel {
         private var rowType: EmailViewModel.EmailRowType = .from
 
         /// The width of the container of the recipients
-        private var containerWidth: CGFloat = 0.0
+        public var containerWidth: CGFloat = 0.0
 
         /// Indicates if all the recipients should be shown.
         /// If false, only the recipients that fit in one line will be shown with, a button to see the rest of them.
-        private var shouldDisplayAllRecipients = false
+        public private(set) var shouldDisplayAllRecipients = false
 
         /// Delegate to communicate that the button to see more has been pressed
         public weak var delegate : MessageRecipientCellDelegate?
@@ -78,13 +78,14 @@ extension EmailViewModel {
                 let minInterItemSpacing: CGFloat = CGFloat(index) * interItemSpacing
                 // Would the next cell exceed the container width?
                 // If so, separate the surplus.
-                if (currentOriginX + cellVM.size.width + and10MoreCellViewModel.size.width + minInterItemSpacing) > containerWidth && !shouldDisplayAllRecipients && recipientCellsToSet.count >= 1 {
+                let andMoreCellViewModelWidth = index != 0 ? and10MoreCellViewModel.size.width : 0
+                if (currentOriginX + cellVM.size.width + andMoreCellViewModelWidth + minInterItemSpacing) > containerWidth && !shouldDisplayAllRecipients && recipientCellsToSet.count >= 1 {
                     // The next items would exceed the line.
                     let surplus = recipientsCellVMs[index..<recipientsCellVMs.count]
                     surplusCellsVM.append(contentsOf: surplus)
                     break
                 } else {
-                    currentOriginX += cellVM.size.width
+                    currentOriginX += cellVM.size.width + minInterItemSpacing
                     recipientCellsToSet.append(cellVM)
                 }
             }
