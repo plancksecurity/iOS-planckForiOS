@@ -81,7 +81,7 @@ class EmailViewController: UIViewController {
         }
         splitViewController?.preferredDisplayMode = .allVisible
         coordinator.animate(alongsideTransition: nil) { context in
-            self.reloadTableView()
+            self.tableView.reloadData()
         }
     }
 
@@ -89,20 +89,21 @@ class EmailViewController: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         guard let thePreviousTraitCollection = previousTraitCollection else {
             // Valid case. Optional param.
-            reloadTableView()
+            tableView.reloadData()
             return
         }
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            reloadTableView()
+            tableView.reloadData()
             return
         }
         if #available(iOS 13.0, *) {
             if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                reloadTableView()
+                tableView.reloadData()
             }
         }
-        if previousTraitCollection?.horizontalSizeClass != traitCollection.horizontalSizeClass || previousTraitCollection?.verticalSizeClass != traitCollection.verticalSizeClass {
-            reloadTableView()
+        if ((traitCollection.verticalSizeClass != thePreviousTraitCollection.verticalSizeClass)
+            || (traitCollection.horizontalSizeClass != thePreviousTraitCollection.horizontalSizeClass)) {
+            tableView.reloadData()
         }
     }
 
@@ -328,7 +329,7 @@ extension EmailViewController: EmailViewModelDelegate {
 
     func showExternalContent() {
         removeExternalContentView()
-        reloadTableView()
+        tableView.reloadData()
     }
 }
 
@@ -464,13 +465,4 @@ extension EmailViewController: MessageRecipientCellDelegate {
         shouldDisplayAll[rowType] = true
         tableView.reloadData()
     }
-}
-
-// MARK: - Private
-
-extension EmailViewController {
-    private func reloadTableView() {
-        tableView.reloadData()
-    }
-
 }
