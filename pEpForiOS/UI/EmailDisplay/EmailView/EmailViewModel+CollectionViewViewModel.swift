@@ -63,7 +63,8 @@ extension EmailViewModel {
 
             //Simulate a 'More' button with two digits.
             let and10MoreButtonTitle = NSLocalizedString("& 10 more", comment: "and X more button title - this will only be used to compute a size.")
-            let and10MoreCellViewModel = EmailViewModel.CollectionViewCellViewModel(title: and10MoreButtonTitle, rowType: rowType)
+            var and10MoreCellViewModel: EmailViewModel.CollectionViewCellViewModel?
+                = EmailViewModel.CollectionViewCellViewModel(title: and10MoreButtonTitle, rowType: rowType)
 
             //Check if buttons will exceed 1 line
             var currentOriginX: CGFloat = 0
@@ -75,21 +76,19 @@ extension EmailViewModel {
 
             //Recipients
             for (index, cellVM) in recipientsCellVMs.enumerated() {
-                let minInterItemSpacing: CGFloat = CGFloat(index) * interItemSpacing
                 // Would the next cell exceed the container width?
                 // If so, separate the surplus.
 
-                // check if if it is the first as it can not be '& 1 more'
-                let andMoreCellViewModelWidth = index != 0 ? and10MoreCellViewModel.size.width : 0
-
                 //Evaluate if the width of the cells exceeds the container width.
-                if (currentOriginX + cellVM.size.width + andMoreCellViewModelWidth + minInterItemSpacing) > containerWidth && !shouldDisplayAllRecipients && recipientCellsToSet.count >= 1 {
+                if (currentOriginX + cellVM.size.width + interItemSpacing) > containerWidth && !shouldDisplayAllRecipients {
                     // The next items would exceed the line.
                     let surplus = recipientsCellVMs[index..<recipientsCellVMs.count]
                     surplusCellsVM.append(contentsOf: surplus)
+                    currentOriginX += and10MoreCellViewModel?.size.width ?? 0.0
+                    and10MoreCellViewModel = nil
                     break
                 } else {
-                    currentOriginX += cellVM.size.width + minInterItemSpacing
+                    currentOriginX += cellVM.size.width + interItemSpacing
                     recipientCellsToSet.append(cellVM)
                 }
             }

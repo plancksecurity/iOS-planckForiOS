@@ -378,7 +378,8 @@ extension EmailViewController {
         cell.setup(viewModels: cellsViewModels,
                    rowType: rowType,
                    shouldDisplayAllRecipients: shouldDisplayAllRecipients,
-                   delegate: self)
+                   delegate: self,
+                   viewWidth: view.bounds.width)
     }
 
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {

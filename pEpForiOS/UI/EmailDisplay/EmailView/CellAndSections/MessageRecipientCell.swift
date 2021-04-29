@@ -22,9 +22,10 @@ class MessageRecipientCell: UITableViewCell {
     public func setup(viewModels: [EmailViewModel.CollectionViewCellViewModel],
                       rowType: EmailViewModel.EmailRowType,
                       shouldDisplayAllRecipients: Bool,
-                      delegate: MessageRecipientCellDelegate) {
+                      delegate: MessageRecipientCellDelegate,
+                      viewWidth: CGFloat) {
         viewModel.setup(shouldDisplayAllRecipients: shouldDisplayAllRecipients,
-                        containerWidth: collectionView.frame.width,
+                        containerWidth: viewWidth - 40,
                         rowType: rowType,
                         viewModels: viewModels,
                         delegate: delegate)
@@ -32,17 +33,15 @@ class MessageRecipientCell: UITableViewCell {
     }
 }
 
-
-
 // MARK: - Collection View
 
 extension MessageRecipientCell {
 
     private func setupCollectionView() {
-        collectionView.scrollsToTop = false
         let layout = LeftAlignedCollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 2
         layout.minimumLineSpacing = 2
+        collectionView.scrollsToTop = false
         collectionView.collectionViewLayout.invalidateLayout()
         collectionView.collectionViewLayout = layout
         collectionView.isScrollEnabled = false
