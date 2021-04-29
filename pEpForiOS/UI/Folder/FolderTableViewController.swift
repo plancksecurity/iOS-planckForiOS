@@ -506,6 +506,18 @@ extension FolderTableViewController {
             return tableView.sectionHeaderHeight
         }
     }
+
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let header = view as? UITableViewHeaderFooterView {
+            if let subview = header.subviews.first?.subviews.first {
+                if #available(iOS 13.0, *) {
+                    subview.backgroundColor = .systemBackground
+                } else {
+                    subview.backgroundColor = .white
+                }
+            }
+        }
+    }
 }
 
 // MARK:- FolderViewModelDelegate
