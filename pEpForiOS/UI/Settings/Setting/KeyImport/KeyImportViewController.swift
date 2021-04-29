@@ -79,7 +79,7 @@ extension KeyImportViewController: KeyImportViewModelDelegate {
 
     func showConfirmSetOwnKey(keys: [KeyImportViewModel.KeyDetails]) {
         func userAccepted() {
-            viewModel.setOwnKeys(keys: keys)
+            viewModel.handleUserConfirmedSetOwnKeys(keys: keys)
         }
 
         func userCanceled() {
