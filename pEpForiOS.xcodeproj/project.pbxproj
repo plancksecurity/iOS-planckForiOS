@@ -245,6 +245,7 @@
 		43425EDB1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43425EDA1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift */; };
 		43425EDD1FE3DF3B004A2728 /* OAuth2Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43425EDC1FE3DF3B004A2728 /* OAuth2Provider.swift */; };
 		43425EDF1FE3E052004A2728 /* OAuth2ProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43425EDE1FE3E052004A2728 /* OAuth2ProviderFactory.swift */; };
+		4345C5C4263AE37A00ED8079 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AD0E0A023E4659F006FFED3 /* Assets.xcassets */; };
 		43498CDB200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43498CDA200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift */; };
 		43498CDD200D0790006DC947 /* LoginViewModelOAuth2ErrorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43498CDC200D0790006DC947 /* LoginViewModelOAuth2ErrorDelegate.swift */; };
 		434A6C1225D2A08800179335 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E2A1CBD0BC900A7FC3C /* Main.storyboard */; };
@@ -392,8 +393,6 @@
 		439817592418ED2000C8AB84 /* TrustManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4398175B2418ED2000C8AB84 /* TrustManagement.storyboard */; };
 		439817692418EDB200C8AB84 /* Tutorial_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4398176B2418EDB200C8AB84 /* Tutorial_iPhone.storyboard */; };
 		43985D0A2044296D0080FA9A /* OAuthAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43985D092044296D0080FA9A /* OAuthAuthorizer.swift */; };
-		439C62412611BFD8001893BD /* SharedAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 439C62402611BFCF001893BD /* SharedAssets.xcassets */; };
-		439C62432611BFD9001893BD /* SharedAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 439C62402611BFCF001893BD /* SharedAssets.xcassets */; };
 		439C62D82611D41F001893BD /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69E3981E30F80E0022959E /* Appearance.swift */; };
 		439C633D2611E55C001893BD /* NavigationControllerWithAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C633C2611E55C001893BD /* NavigationControllerWithAppearance.swift */; };
 		439C659426135008001893BD /* UIView+ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FC62215C57F003968DA /* UIView+ActivityIndicator.swift */; };
@@ -1031,7 +1030,6 @@
 		4398177A2418F06A00C8AB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TrustManagement.strings; sourceTree = "<group>"; };
 		43985D092044296D0080FA9A /* OAuthAuthorizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthAuthorizer.swift; sourceTree = "<group>"; };
 		43993C2F2357587700FE311E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		439C62402611BFCF001893BD /* SharedAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = SharedAssets.xcassets; sourceTree = "<group>"; };
 		439C633C2611E55C001893BD /* NavigationControllerWithAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationControllerWithAppearance.swift; sourceTree = "<group>"; };
 		439EA1532472797B005D6C9A /* KeyImportViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportViewModelTest.swift; sourceTree = "<group>"; };
 		43A0B2CE214006FC00FB779D /* ReplyUtilTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyUtilTests.swift; sourceTree = "<group>"; };
@@ -1564,7 +1562,6 @@
 				1517DABA23FD7F88005BAE97 /* pEpForiOS-icon.pdf */,
 				1543B6A322AACD69002B59AB /* secret.xcconfig */,
 				3AD0E0A023E4659F006FFED3 /* Assets.xcassets */,
-				439C62402611BFCF001893BD /* SharedAssets.xcassets */,
 				4388A0E02008AF61008CB98D /* public.xcconfig */,
 			);
 			path = Resources;
@@ -3028,8 +3025,8 @@
 				4313A55625E7C203001E6767 /* Reusable.storyboard in Resources */,
 				43DC6308262DCC8A0017D1BD /* Localizable.strings in Resources */,
 				434A6C1325D2A08F00179335 /* AccountCreation.storyboard in Resources */,
-				439C62432611BFD9001893BD /* SharedAssets.xcassets in Resources */,
 				4313A55925E7C209001E6767 /* Tutorial_iPhone.storyboard in Resources */,
+				4345C5C4263AE37A00ED8079 /* Assets.xcassets in Resources */,
 				4313A54F25E7C1E1001E6767 /* Settings.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3047,7 +3044,6 @@
 				432E80FE2191AF5100359879 /* UniversLTStd-Bold.otf in Resources */,
 				5B885DB225E7B0350027DD24 /* Tutorial_iPad.storyboard in Resources */,
 				4307D5DA23575853004569C4 /* InfoPlist.strings in Resources */,
-				439C62412611BFD8001893BD /* SharedAssets.xcassets in Resources */,
 				37F615CC238BE51F001AAE48 /* ManualAccountSetupView.xib in Resources */,
 				439817592418ED2000C8AB84 /* TrustManagement.storyboard in Resources */,
 				151DE7E41FC5D41600CDC273 /* FolderViews.storyboard in Resources */,
