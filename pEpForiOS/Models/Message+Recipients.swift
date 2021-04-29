@@ -26,7 +26,8 @@ extension Message {
     }
 
     /// Returns all the recipients, already deduped.
-    public var allRecipientsOrdered: [Identity] {
+    /// The order is TOs, CCs and BCCs. Inside these groups, the order will neither change.
+    public var allRecipients: [Identity] {
         return uniqueTos + uniqueCcs + uniqueBccs
     }
 }
