@@ -147,6 +147,7 @@ class ComposeViewController: UIViewController {
     }
 
     @IBAction func send() {
+        view.endEditing(true)
         updateBodyState()
         viewModel?.handleUserClickedSendButton()
     }
