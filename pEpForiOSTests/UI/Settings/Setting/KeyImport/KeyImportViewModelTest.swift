@@ -107,9 +107,9 @@ class KeyImportViewModelTest: XCTestCase {
                                                       showSetOwnKeySuccessExpectation: nil)
         vm.delegate = delegate
 
-        vm.setOwnKeys(keys: [KeyImportViewModel.KeyDetails(address: "address",
-                                                           fingerprint: "fingerprint",
-                                                           userName: "username")])
+        vm.handleUserConfirmedSetOwnKeys(keys: [KeyImportViewModel.KeyDetails(address: "address",
+                                                                              fingerprint: "fingerprint",
+                                                                              userName: "username")])
 
         wait(for: [showErrorExpectation], timeout: TestUtil.waitTimeLocal)
     }
@@ -124,9 +124,9 @@ class KeyImportViewModelTest: XCTestCase {
                                                       showSetOwnKeySuccessExpectation: showSetOwnKeySuccessExpectation)
         vm.delegate = delegate
 
-        vm.setOwnKeys(keys: [KeyImportViewModel.KeyDetails(address: "address",
-                                                           fingerprint: "fingerprint",
-                                                           userName: "username")])
+        vm.handleUserConfirmedSetOwnKeys(keys: [KeyImportViewModel.KeyDetails(address: "address",
+                                                                              fingerprint: "fingerprint",
+                                                                              userName: "username")])
 
         wait(for: [showSetOwnKeySuccessExpectation], timeout: TestUtil.waitTimeLocal)
     }
