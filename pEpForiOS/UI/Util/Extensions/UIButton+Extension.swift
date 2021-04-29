@@ -60,4 +60,14 @@ extension UIButton {
     public func setPEPFont(style: UIFont.TextStyle, weight: UIFont.Weight) {
         titleLabel?.setPEPFont(style: style, weight: weight)
     }
+
+    /// Set title color for multiples states
+    /// - Parameters:
+    ///   - color: The text color to set
+    ///   - states: The states that will show the title color passed
+    public func setTitleColor(_ color: UIColor?, for states: [UIControl.State]) {
+        states.forEach { (state) in
+            setTitleColor(color, for: state)
+        }
+    }
 }
