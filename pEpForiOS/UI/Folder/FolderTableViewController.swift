@@ -474,12 +474,11 @@ extension FolderTableViewController {
         header?.sectionButton.setImage(arrow, for: .normal)
         header?.sectionButton.contentHorizontalAlignment = .trailing
         header?.sectionButton.contentVerticalAlignment = .top
-        header?.sectionButton.imageView?.transform = CGAffineTransform.rotate90Degress()
-
         guard let vm = folderVM, let safeHeader = header else {
             Log.shared.errorAndCrash("No header or no VM.")
             return header
         }
+        header?.sectionButton.imageView?.transform = vm[section].isCollapsed ? .identity : CGAffineTransform.rotate90Degress()
 
         if vm[section].sectionHeaderHidden {
             return nil
