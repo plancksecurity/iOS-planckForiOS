@@ -466,4 +466,11 @@ extension EmailViewController: MessageRecipientCellDelegate {
         shouldDisplayAll[rowType] = true
         tableView.reloadData()
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // This workaround prevents a wrong layout in the collection view of the recipient fields.
+        // For some unknown reason it seems to layout the cells in a container of the size of what's in the IB, ignoring the real device dimensions.
+        tableView.reloadData()
+    }
 }

@@ -24,8 +24,9 @@ class MessageRecipientCell: UITableViewCell {
                       shouldDisplayAllRecipients: Bool,
                       delegate: MessageRecipientCellDelegate,
                       viewWidth: CGFloat) {
+        let margin: CGFloat = 40.0
         viewModel.setup(shouldDisplayAllRecipients: shouldDisplayAllRecipients,
-                        containerWidth: viewWidth - 40,
+                        containerWidth: viewWidth - margin,
                         rowType: rowType,
                         viewModels: viewModels,
                         delegate: delegate)

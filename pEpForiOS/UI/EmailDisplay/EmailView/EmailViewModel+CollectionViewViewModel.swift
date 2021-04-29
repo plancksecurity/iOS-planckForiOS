@@ -80,7 +80,7 @@ extension EmailViewModel {
                 // If so, separate the surplus.
 
                 //Evaluate if the width of the cells exceeds the container width.
-                if (currentOriginX + cellVM.size.width + interItemSpacing) > containerWidth && !shouldDisplayAllRecipients {
+                if (currentOriginX + cellVM.size.width + interItemSpacing) > containerWidth && !shouldDisplayAllRecipients && index > 0 {
                     // The next items would exceed the line.
                     let surplus = recipientsCellVMs[index..<recipientsCellVMs.count]
                     surplusCellsVM.append(contentsOf: surplus)
