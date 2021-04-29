@@ -101,6 +101,9 @@
 "Attach media" = "Attacher un média";
 
 /* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
+"Attached Image (%1$@)" = "Image jointe (%1$@)";
+
+/* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
 "Attached Image %1$d (%2$@)" = "Image jointe %1$d (%2$@)";
 
 /* title attachments filter cell */
@@ -164,10 +167,10 @@
 "Client Certificate" = "Certificat client";
 
 /* privacyStatusDescription yellow */
-"Communication with this contact will be completely Secure & Trusted by comparing the following Trustwords with your contact, for example by making a phone call." = "La communication avec ce contact sera complètement sécurisée & approuvé en comparant les Trustwords avec votre contact, par exemple en passant un appel téléphonique.";
+"Communication with this contact will be completely Secure & Trusted by comparing the following Trustwords with your contact, for example by making a phone call." = "La communication avec ce contact sera complètement sécurisée et fiable en comparant les Trustwords avec votre contact, par exemple en passant un appel téléphonique.";
 
 /* Privacy status suggestion */
-"Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Réaliser un handshake avec votre partenaire de communication. Le handshake n’est nécessaire qu’une seule fois par partenaire et assure une communication de confiance et sécurisée.";
+"Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Réaliser un Handshake avec votre partenaire de communication. Le Handshake n’est nécessaire qu’une seule fois par partenaire et assure une communication sécurisée et fiable.";
 
 /* accept hand shake sync button */
 "Confirm" = "Accepter";
@@ -233,7 +236,7 @@
 "Disable p≡p Sync" = "Désactiver la synchronisation p≡p";
 
 /* possible private status action */
-"Disable Protection" = "Désactivez la protection";
+"Disable Protection" = "Désactiver la protection";
 
 /* ComposeTableView: button to decide to discharge changes made on a drafted mail. */
 "Discharge changes" = "ignorer les modifications";
@@ -313,11 +316,11 @@
 "Finish" = "Terminer";
 
 /* read button in slide-left menu */
-"Flag" = "drapeau";
+"Flag" = "Marquer";
 
 /* Title for Flagged filter
    title unread filter cell */
-"Flagged" = "Signalé";
+"Flagged" = "Marqué";
 
 /* FoldersView */
 "Folders" = "Dossiers";
@@ -355,7 +358,7 @@
 "If enabled, message subjects are also protected." = "Si cette option est activée, les sujets des messages sont également protégés.";
 
 /* Secure & Trusted Description Label - Step 1 */
-"If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle." = "Si les Trustwords ne sont pas corrects, il pourrait y avoir une attaque de l'homme du milieu.";
+"If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle." = "Si les Trustwords ne sont pas corrects, il pourrait être une attaque de type « intermédiaire ».";
 
 /* Privacy status suggestion */
 "If this message was addressed to you, please inform the sender that you don't have the key." = "Si ce message vous était adressé. Veuillez informer l'expéditeur que vous n'avez pas la clé.";
@@ -379,7 +382,7 @@
 "Import date" = "Date de l'import";
 
 /* Privacy status explanation */
-"In order to make the communication with this communication partner Secure & Trusted, you will have to compare the Trustwords below with this communication partner and ensure they match yours." = "Afin de sécuriser et marquer comme fiable la communication avec ce partenaire de communication, vous devrez comparer les Trustwords ci-dessous avec ce partenaire de communication et vous assurer qu'ils correspondent aux vôtres.";
+"In order to make the communication with this communication partner Secure & Trusted, you will have to compare the Trustwords below with this communication partner and ensure they match yours." = "Afin de marquer la communication avec ce partenaire de communication comme sécurisée et fiable, vous devrez comparer les Trustwords ci-dessous avec ce partenaire de communication et vous assurer qu'ils correspondent aux vôtres.";
 
 /* Privacy Status - Common Denominator Explanation */
 "In this case the Privacy Status of the message is Secure, because this is the lowest common denominator of the two communication partners." = "Dans ce cas, le statut de confidentialité du message est sécurisé, car il s'agit du plus petit dénominateur commun des deux partenaires de communication.";
@@ -468,7 +471,7 @@
 "Make sure the privacy status for each communication partner listed is at least secure" = "Assurez-vous que l'état de confidentialité de chaque partenaire de communication répertorié est au moins sécurisé";
 
 /* privacyStatusDescription yellow */
-"Make this communication partner secure & trusted by comparing the trustwords below with your partner, for example by making a phone call" = "Rendez ce partenaire de communication sécurisé et fiable en comparant les Trustwords ci-dessous avec eux, par exemple en passant un appel téléphonique";
+"Make this communication partner secure & trusted by comparing the trustwords below with your partner, for example by making a phone call" = "Rendez ce partenaire de communication comme sécurisé et fiable en comparant les Trustwords ci-dessous avec eux, par exemple en passant un appel téléphonique";
 
 /* manual */
 "Manual configuration" = "Configuration manuelle";
@@ -529,7 +532,7 @@
 "No account found with the given email." = "Aucun compte trouvé avec l'e-mail donné.";
 
 /* Privacy status suggestion */
-"No action needed!" = "Pas d'action requise !";
+"No action needed!" = "Aucune action n'est nécessaire !";
 
 /* No client certificate exists alert title */
 "No Client Certificate" = "Aucun certificat client";
@@ -724,7 +727,7 @@
 "Re-establish the connection with your communication partner and try to complete another handshake." = "Rétablissez la connexion avec votre partenaire de communication et essayez de terminer un autre handshake.";
 
 /* read button in slide-left menu */
-"Read" = "Lire";
+"Read" = "Lis";
 
 /* decline hand shake sync button */
 "Reject" = "Rejeter";
@@ -781,7 +784,7 @@
 
 /* Privacy status title
    privacyStatusTitle green */
-"Secure & Trusted" = "Sécurisé & Authentique";
+"Secure & Trusted" = "Sécurisé et fiable";
 
 /* Alert title before trusting an account */
 "Security Alert" = "Alerte de sécurité";
@@ -947,7 +950,7 @@
 "This contact is completely trusted. All communication will be with the maximum level of privacy." = "Ce contact est totalement fiable. Toutes les communications se feront avec le niveau maximum de confidentialité.";
 
 /* privacyStatusDescription red */
-"This contact is mistrusted and might be an attack by a man-in-the-middle." = "Ce contact n'est plus de confiance et pourrait être une attaque d'un homme du milieu.";
+"This contact is mistrusted and might be an attack by a man-in-the-middle." = "Ce contact n'est plus de confiance et pourrait être une attaque de type intermédiaire.";
 
 /* Privacy status title */
 "This contact is mistrusted. If you rejected the Trustwords accidentally, you could reset the p≡p data." = "Ce contact n'est plus de confiance. Si vous rejetez accidentellement les Trustwords, vous pouvez réinitialiser les données p≡p.";
@@ -1033,7 +1036,7 @@
 "Tutorial" = "Tutoriel";
 
 /* Privacy status title */
-"Under Attack" = "Falsifié";
+"Under Attack" = "Manipulé";
 
 /* Undo trust change verification button title */
 "Undo" = "Annuler";
@@ -1045,7 +1048,7 @@
 "Undo Trust Rejection" = "Annuler le rejet de la confiance";
 
 /* read button in slide-left menu */
-"Unflag" = "Désignaler";
+"Unflag" = "Enlever marquage";
 
 /* Displayed attachment filename if unknown */
 "unknown" = "Indéterminé";
@@ -1124,10 +1127,13 @@
 "Welcome to the p≡p Tutorial" = "Bienvenue dans le didacticiel p≡p";
 
 /* Secure & Trusted Description Label - Step 1 */
-"When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted" = "Lorsque les Trustwords sont confirmés comme étant corrects et que la prise de contact est effectuée, la communication est entièrement sécurisée et approuvée";
+"When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted" = "Lorsque les Trustwords sont confirmés comme étant corrects et que la prise de contact est effectuée, la communication est entièrement sécurisée et fiable";
+
+/* Privacy status explanation Label */
+"When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication partner." = "Lorsque vous cliquez sur l'icône Statut de confidentialité dans la barre supérieure, vous accédez à Handshake, où vous pouvez vérifier votre partenaire de communication.";
 
 /* Confirm Trustwords explanation Label */
-"When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted." = "Lorsque vous confirmez que les Trustwords de votre partenaire de communication sont corrects, votre communication sera complètement sécurisée & et fiable.";
+"When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted." = "Lorsque vous confirmez que les Trustwords de votre partenaire de communication sont corrects, votre communication sera complètement sécurisée et fiable.";
 
 /* Title for attachments filter */
 "With attachments" = "Avec pièces jointes";

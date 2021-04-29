@@ -42,19 +42,19 @@ extension UIUtils {
     ///   - error: The key sync error
     ///   - completion: The callback to be executed when the user interacts with the error alert view buttons.
     public static func showKeySyncErrorView(isNewGroup: Bool, error: Error?, completion: ((KeySyncErrorResponse) -> ())? = nil) {
-        let keySyncErrorViewController = PEPAlertViewController.getKeySyncErrorViewController(isNewGroup: isNewGroup) { (action) in
-            switch action {
-            case .tryAgain:
-                completion?(.tryAgain)
-            case .notNow:
-                completion?(.notNow)
-            }
-        }
-        guard let keySyncErrorView = keySyncErrorViewController else {
-            Log.shared.errorAndCrash("KeySyncErrorView cant be instanciated")
-            return
-        }
         DispatchQueue.main.async {
+            let keySyncErrorViewController = PEPAlertViewController.getKeySyncErrorViewController(isNewGroup: isNewGroup) { (action) in
+                switch action {
+                case .tryAgain:
+                    completion?(.tryAgain)
+                case .notNow:
+                    completion?(.notNow)
+                }
+            }
+            guard let keySyncErrorView = keySyncErrorViewController else {
+                Log.shared.errorAndCrash("KeySyncErrorView cant be instanciated")
+                return
+            }
             UIUtils.show(keySyncErrorView)
         }
     }

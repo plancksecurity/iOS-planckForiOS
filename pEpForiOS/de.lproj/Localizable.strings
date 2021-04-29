@@ -101,6 +101,9 @@
 "Attach media" = "Foto / Video anhängen";
 
 /* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
+"Attached Image (%1$@)" = "Angehängtes Bild (%1$@)";
+
+/* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
 "Attached Image %1$d (%2$@)" = "Angehängtes Bild %1$d (%2$@)";
 
 /* title attachments filter cell */
@@ -164,10 +167,10 @@
 "Client Certificate" = "Client-Zertifikat";
 
 /* privacyStatusDescription yellow */
-"Communication with this contact will be completely Secure & Trusted by comparing the following Trustwords with your contact, for example by making a phone call." = "Die Kommunikation mit diesem Kontakt ist Sicher & Vertrauenswürdig, nachdem Sie die folgenden Trustwords mit Ihrem Kontakt vergleichen, z. B. indem Sie einen Anruf tätigen.";
+"Communication with this contact will be completely Secure & Trusted by comparing the following Trustwords with your contact, for example by making a phone call." = "Die Kommunikation mit diesem Kontakt wird sicher & vertrauenswürdig, nachdem Sie die folgenden Trustwords mit Ihrem Kontakt vergleichen, z. B. indem Sie einen Anruf tätigen.";
 
 /* Privacy status suggestion */
-"Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Führen Sie einen Handshake mit dem Kommunikationspartner durch. Ein Handshake wird nur einmal pro Kommunikationspartner benötigt und stellt die Vertrauenswürdigkeit sicher.";
+"Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Führen Sie einen Handshake mit dem Kommunikationspartner durch. Ein Handshake wird nur einmal pro Kontaktadresse benötigt und stellt die Vertrauenswürdigkeit sicher.";
 
 /* accept hand shake sync button */
 "Confirm" = "Bestätigen";
@@ -349,7 +352,7 @@
 "iCloud" = "iCloud";
 
 /* Trusted Server Setting Section Footer */
-"If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!" = "Wenn deaktiviert, werden Nachrichten entschlüsselt auf dem Server gespeichert.\n\nNur ausschalten wenn der Server tatsächlich vertrauenswürdig ist!";
+"If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!" = "Falls deaktiviert, werden die Nachrichten entschlüsselt auf dem Server gespeichert.\n\nNur ausschalten wenn der Server tatsächlich vertrauenswürdig ist!";
 
 /* Tableview section footer */
 "If enabled, message subjects are also protected." = "Schützt den Betreff, wenn aktiviert.";
@@ -379,7 +382,7 @@
 "Import date" = "Importdatum";
 
 /* Privacy status explanation */
-"In order to make the communication with this communication partner Secure & Trusted, you will have to compare the Trustwords below with this communication partner and ensure they match yours." = "Um die Kommunikation mit diesem Kommunikationspartner Sicher & Vertrauenswürdig zu machen, müssen Sie die folgenden Trustwords mit diesem Kommunikationspartner vergleichen und sicherstellen, dass sie mit Ihren übereinstimmen.";
+"In order to make the communication with this communication partner Secure & Trusted, you will have to compare the Trustwords below with this communication partner and ensure they match yours." = "Um die Kommunikation mit diesem Kontakt sicher & vertrauenswürdig zu machen, müssen Sie die folgenden Trustwords mit diesem Kontakt vergleichen und sicherstellen, dass sie mit Ihren übereinstimmen.";
 
 /* Privacy Status - Common Denominator Explanation */
 "In this case the Privacy Status of the message is Secure, because this is the lowest common denominator of the two communication partners." = "In diesem Fall ist der Datenschutzstatus der Nachricht sicher, da dies der kleinste gemeinsame Nenner der beiden Kommunikationspartner ist.";
@@ -468,7 +471,7 @@
 "Make sure the privacy status for each communication partner listed is at least secure" = "Stellen Sie sicher, dass der Datenschutzstatus für jeden Kommunikationspartner mindestens Sicher ist";
 
 /* privacyStatusDescription yellow */
-"Make this communication partner secure & trusted by comparing the trustwords below with your partner, for example by making a phone call" = "Machen Sie diesen Kommunikationspartner sicher und vertrauenswürdig, indem Sie die folgenden Trustwords mit dem Kommunikationspartner vergleichen, z. B. indem Sie einen Anruf tätigen";
+"Make this communication partner secure & trusted by comparing the trustwords below with your partner, for example by making a phone call" = "Machen Sie diesen Kontakt sicher und vertrauenswürdig, indem Sie die folgenden Trustwords mit dem Kontakt vergleichen, z. B. indem Sie einen Anruf tätigen";
 
 /* manual */
 "Manual configuration" = "Manuelle Konfiguration";
@@ -781,7 +784,7 @@
 
 /* Privacy status title
    privacyStatusTitle green */
-"Secure & Trusted" = "Sicher & Vertrauenswürdig";
+"Secure & Trusted" = "Sicher & vertrauenswürdig";
 
 /* Alert title before trusting an account */
 "Security Alert" = "Sicherheitshinweis";
@@ -941,16 +944,16 @@
 "This communication partner is secure and trusted" = "Dieser Kommunikationspartner ist sicher & vertrauenswürdig";
 
 /* Privacy status explanation */
-"This contact is completely trusted. All communication will be the maximum level of privacy." = "Dieser Kontakt ist absolut vertrauenswürdig. Die gesamte Kommunikation bietet ein Höchstmaß an Datenschutz.";
+"This contact is completely trusted. All communication will be the maximum level of privacy." = "Dieser Kontakt ist vertrauenswürdig. Die gesamte Kommunikation bietet ein Höchstmaß an Datenschutz.";
 
 /* privacyStatusDescription green */
-"This contact is completely trusted. All communication will be with the maximum level of privacy." = "Dieser Kontakt ist absolut vertrauenswürdig. Die gesamte Kommunikation bietet ein Höchstmaß an Datenschutz.";
+"This contact is completely trusted. All communication will be with the maximum level of privacy." = "Dieser Kontakt ist vertrauenswürdig. Die gesamte Kommunikation bietet ein Höchstmaß an Datenschutz.";
 
 /* privacyStatusDescription red */
 "This contact is mistrusted and might be an attack by a man-in-the-middle." = "Dieser Kontakt ist nicht vertrauenswürdig und es könnte sich um eine man-in-the-middle Attacke handeln.";
 
 /* Privacy status title */
-"This contact is mistrusted. If you rejected the Trustwords accidentally, you could reset the p≡p data." = "Dieser Kontakt ist nicht vertrauenswürdig. Wenn Sie die Trustwords versehentlich abgelehnt haben, können Sie die p≡p-Daten für diesen Kommunikationspartner zurücksetzen.";
+"This contact is mistrusted. If you rejected the Trustwords accidentally, you could reset the p≡p data." = "Dieser Kontakt ist nicht vertrauenswürdig. Wenn Sie die Trustwords versehentlich abgelehnt haben, können Sie die p≡p-Daten für diesen Kontakt zurücksetzen.";
 
 /* Alert message before trusting an account */
 "This is a public cloud account. Your data will be exposed. Are you sure you want to configure this as trusted?" = "Dies ist ein öffentliches Cloud-Konto. Ihre Daten werden unverschlüsselt gespeichert. Möchten Sie das Konto wirklich als vertrauenswürdig konfigurieren?";
@@ -968,7 +971,7 @@
 "This message does not contain enough information to determine if it is secure." = "Über diese Nachricht liegen nicht genügend Informationen vor, um überprüfen zu können, ob sie sicher übertragen wurde.";
 
 /* Privacy status explanation */
-"This message has a communication partner that has previously been marked as mistrusted." = "Diese Nachricht enthält einen Kommunikationspartner, der zuvor als nicht vertrauenswürdig markiert wurde.";
+"This message has a communication partner that has previously been marked as mistrusted." = "Diese Nachricht enthält einen Kontakt, der zuvor als nicht vertrauenswürdig markiert wurde.";
 
 /* Privacy status suggestion */
 "This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p." = "Diese Nachricht besitzt keine zuverlässige Verschlüsselung oder keine digitale Signatur. Bitten Sie Ihren Kommunikationspartner, eine bessere Verschlüsselungslösung zu verwenden oder p≡p zu installieren.";
@@ -983,7 +986,7 @@
 "This message is not secure and has been tampered with." = "Diese Nachricht ist nicht sicher und wurde manipuliert.";
 
 /* Privacy status explanation */
-"This message is secure and trusted." = "Dieser Nachricht ist sicher & vertrauenswürdig.";
+"This message is secure and trusted." = "Diese Nachricht ist sicher & vertrauenswürdig.";
 
 /* Privacy status explanation */
 "This message is secure but you still need to verify the identity of your communication partner." = "Diese Nachricht ist sicher, aber Sie sollten die Identität Ihres Kommunikationspartners prüfen.";
@@ -1042,7 +1045,7 @@
 "Undo Trust Confirmation" = "Vertrauensbestätigung rückgängig machen";
 
 /* Action name to be suggested at the moment of revert */
-"Undo Trust Rejection" = "Vertrauens-Ablehnung rückgängig machen";
+"Undo Trust Rejection" = "Vertrauensablehnung rückgängig machen";
 
 /* read button in slide-left menu */
 "Unflag" = "Markierung entfernen";
@@ -1130,7 +1133,7 @@
 "When you click on the Privacy Status icon in the top bar, you will get to Handshake, where you can verify your communication partner." = "Beim clicken auf das Datenschutzsymbol wird der Handshake geöffnet, wo die Trustwords mit dem Kommunikationspartner verglichen werden können.";
 
 /* Confirm Trustwords explanation Label */
-"When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted." = "Wenn die Trustwords mit denen vom Kommunikationspartner übereinstimmen, ist Ihre Kommunikation vollständig Sicher & Vertrauenswürdig.";
+"When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted." = "Wenn Sie bestätigen, dass die Trustwords mit denen vom Kontakt übereinstimmen, wird Ihre Kommunikation vollständig sicher & vertrauenswürdig.";
 
 /* Title for attachments filter */
 "With attachments" = "Mit Anhängen";

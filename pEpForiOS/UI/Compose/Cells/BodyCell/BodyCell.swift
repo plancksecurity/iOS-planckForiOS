@@ -42,6 +42,7 @@ class BodyCell: TextViewContainingTableViewCell {
         } else {
             textView.text = text
         }
+        textView.setLabelTextColor()
         vm.handleTextChange(newText: textView.text, newAttributedText: textView.attributedText)
     }
 
