@@ -15,9 +15,6 @@ protocol MessageRecipientCellDelegate: class {
 class MessageRecipientCell: UITableViewCell {
     private var minHeight: CGFloat? = 20.0
 
-    // We can't use the container width itself as it's not configured yet.
-    private let containerWidth = UIScreen.main.bounds.width - 50
-
     @IBOutlet private weak var collectionView: UICollectionView!
 
     private let viewModel = MessageRecipientCellViewModel()
@@ -26,15 +23,16 @@ class MessageRecipientCell: UITableViewCell {
                       rowType: EmailViewModel.EmailRowType,
                       shouldDisplayAllRecipients: Bool,
                       delegate: MessageRecipientCellDelegate) {
-        let screenWidth = containerWidth
         viewModel.setup(shouldDisplayAllRecipients: shouldDisplayAllRecipients,
-                        containerWidth: screenWidth,
+                        containerWidth: collectionView.frame.width,
                         rowType: rowType,
-                        recipientCollectionViewCellViewModels: viewModels,
+                        viewModels: viewModels,
                         delegate: delegate)
         setupCollectionView()
     }
 }
+
+
 
 // MARK: - Collection View
 
@@ -47,6 +45,7 @@ extension MessageRecipientCell {
         layout.minimumLineSpacing = 2
         collectionView.collectionViewLayout.invalidateLayout()
         collectionView.collectionViewLayout = layout
+        collectionView.isScrollEnabled = false
         collectionView.reloadData()
     }
 
@@ -80,7 +79,7 @@ extension MessageRecipientCell: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let viewModels = viewModel.collectionViewViewModel?.collectionViewCellViewModels else {
-            Log.shared.errorAndCrash("The cell can not have zero recipients")
+//            Log.shared.errorAndCrash("The cell can not have zero recipients")
             return 0
         }
         return viewModels.count
@@ -102,7 +101,7 @@ extension MessageRecipientCell: UICollectionViewDelegateFlowLayout {
         let size = vm[indexPath.row].size
         let margin = CGFloat(8.0)
         // The item max width is the the collection view width minus the margin.
-        let maxSize = CGSize(width: containerWidth - margin, height: size.height)
+        let maxSize = CGSize(width: collectionView.bounds.width - margin, height: size.height)
         if maxSize.width < size.width {
             return maxSize
         }

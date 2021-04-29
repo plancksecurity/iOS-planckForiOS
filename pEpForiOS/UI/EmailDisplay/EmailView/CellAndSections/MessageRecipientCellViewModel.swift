@@ -24,12 +24,12 @@ class MessageRecipientCellViewModel {
     public func setup(shouldDisplayAllRecipients: Bool,
                       containerWidth: CGFloat,
                       rowType: EmailViewModel.EmailRowType,
-                      recipientCollectionViewCellViewModels: [EmailViewModel.CollectionViewCellViewModel],
+                      viewModels: [EmailViewModel.CollectionViewCellViewModel],
                       delegate: MessageRecipientCellDelegate) {
-        self.collectionViewViewModel = EmailViewModel.RecipientsCollectionViewViewModel(delegate: delegate,
-                                                                                        shouldDisplayAllRecipients: shouldDisplayAllRecipients,
-                                                                                        containerWidth: containerWidth,
-                                                                                        rowType: rowType,
-                                                                                        recipientCollectionViewCellViewModels: recipientCollectionViewCellViewModels)
+        collectionViewViewModel = EmailViewModel.RecipientsCollectionViewViewModel(delegate: delegate,
+                                                                                   shouldDisplayAllRecipients: shouldDisplayAllRecipients,
+                                                                                   containerWidth: containerWidth,
+                                                                                   rowType: rowType,
+                                                                                   viewModels: viewModels)
     }
 }

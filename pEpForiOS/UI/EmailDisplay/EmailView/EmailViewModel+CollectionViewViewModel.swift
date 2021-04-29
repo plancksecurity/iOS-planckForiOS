@@ -36,14 +36,14 @@ extension EmailViewModel {
         ///   - shouldDisplayAllRecipients: Indicates if all the user has to be shown.
         ///   - containerWidth: The width of the container view.
         ///   - rowType: The type of the row.
-        ///   - recipientCollectionViewCellViewModels: The cells view models.
+        ///   - viewModels: The cells view models.
         init(delegate: MessageRecipientCellDelegate, shouldDisplayAllRecipients: Bool, containerWidth: CGFloat,
-             rowType: EmailViewModel.EmailRowType, recipientCollectionViewCellViewModels: [EmailViewModel.CollectionViewCellViewModel]) {
+             rowType: EmailViewModel.EmailRowType, viewModels: [EmailViewModel.CollectionViewCellViewModel]) {
             self.rowType = rowType
             self.delegate = delegate
             self.shouldDisplayAllRecipients = shouldDisplayAllRecipients
             self.containerWidth = containerWidth
-            setCollectionViewCellViewModels(rowType, recipientCollectionViewCellViewModels)
+            setCollectionViewCellViewModels(rowType, viewModels)
         }
 
         /// Get the recipient collection view cells to set.
@@ -78,7 +78,11 @@ extension EmailViewModel {
                 let minInterItemSpacing: CGFloat = CGFloat(index) * interItemSpacing
                 // Would the next cell exceed the container width?
                 // If so, separate the surplus.
+
+                // check if if it is the first as it can not be '& 1 more'
                 let andMoreCellViewModelWidth = index != 0 ? and10MoreCellViewModel.size.width : 0
+
+                //Evaluate if the width of the cells exceeds the container width.
                 if (currentOriginX + cellVM.size.width + andMoreCellViewModelWidth + minInterItemSpacing) > containerWidth && !shouldDisplayAllRecipients && recipientCellsToSet.count >= 1 {
                     // The next items would exceed the line.
                     let surplus = recipientsCellVMs[index..<recipientsCellVMs.count]
