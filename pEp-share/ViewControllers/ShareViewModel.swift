@@ -375,7 +375,8 @@ extension ShareViewModel {
                                             let data = try Data(contentsOf: fileUrl)
                                             sharedData.add(itemProvider: itemProvider,
                                                            dataWithType: .file(attributedTitle,
-                                                                               filename,  mimeType,
+                                                                               filename,
+                                                                               mimeType,
                                                                                data))
                                         } catch {
                                             Log.shared.log(error: error)
