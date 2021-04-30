@@ -467,8 +467,16 @@ final class EmailListViewController: UIViewController {
     }
 
     @objc private func showCompose() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
         dismissAndPerform {
-            UIUtils.showComposeView(from: nil)
+            if let address = vm.accountOwnerAddress {
+                UIUtils.showComposeView(from: address)
+            } else {
+                UIUtils.showComposeView(from: nil)
+            }
         }
     }
 
