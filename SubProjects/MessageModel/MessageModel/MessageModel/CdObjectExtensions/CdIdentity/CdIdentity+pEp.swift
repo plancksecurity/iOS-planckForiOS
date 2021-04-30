@@ -31,12 +31,18 @@ extension CdIdentity {
      See ENGINE-409, ENGINE-355.
      */
     func canInvokeHandshakeAction(completion: @escaping (Bool)->Void) {
-        if isMySelf {
-            completion(false)
-            return
-        }
-        pEpColor { (color) in
-            completion(color == .yellow || color == .green)
+        managedObjectContext?.perform { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            if me.isMySelf {
+                completion(false)
+                return
+            }
+            me.pEpColor { (color) in
+                completion(color == .yellow || color == .green)
+            }
         }
     }
 
