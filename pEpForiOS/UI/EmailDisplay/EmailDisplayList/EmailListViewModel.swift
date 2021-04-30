@@ -83,6 +83,16 @@ class EmailListViewModel: EmailDisplayViewModel {
         }
     }
 
+
+    public var accountOwnerAddress: String? {
+        get {
+            if let folder = folderToShow as? Folder {
+                return folder.account.user.address
+            }
+            return nil
+        }
+    }
+
     public let folderToShow: DisplayableFolderProtocol
 
     public var folderName: String {
