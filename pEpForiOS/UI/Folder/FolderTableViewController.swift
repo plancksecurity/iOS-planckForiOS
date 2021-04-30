@@ -465,6 +465,10 @@ extension FolderTableViewController {
             header = CollapsibleTableViewHeader(reuseIdentifier: "header")
         }
 
+        func setFoldingArrowState(isCollapsed collapseState: Bool) {
+            header?.sectionButton.imageView?.transform = collapseState ? .identity : CGAffineTransform.rotate90Degress()
+        }
+
         // Transparent button to collapse/expand the section.
         header?.sectionButton.section = section
         header?.sectionButton.addTarget(self,
@@ -478,7 +482,8 @@ extension FolderTableViewController {
             Log.shared.errorAndCrash("No header or no VM.")
             return header
         }
-        header?.sectionButton.imageView?.transform = vm[section].isCollapsed ? .identity : CGAffineTransform.rotate90Degress()
+
+        setFoldingArrowState(isCollapsed: vm[section].isCollapsed)
 
         if vm[section].sectionHeaderHidden {
             return nil
@@ -487,6 +492,7 @@ extension FolderTableViewController {
         safeHeader.configure(viewModel: vm[section], section: section)
         return header
     }
+
 
     override func tableView(_ tableView: UITableView,
                             heightForFooterInSection section: Int) -> CGFloat {
