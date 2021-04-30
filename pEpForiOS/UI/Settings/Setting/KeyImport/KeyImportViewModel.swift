@@ -136,7 +136,7 @@ class KeyImportViewModel {
     }
 
     /// Sets the given key as own and informs the delegate about success or error.
-    public func setOwnKeys(keys: [KeyImportViewModel.KeyDetails]) {
+    public func handleUserConfirmedSetOwnKeys(keys: [KeyImportViewModel.KeyDetails]) {
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
             guard let me = self else {
                 return // The handling VC can go out of scope
