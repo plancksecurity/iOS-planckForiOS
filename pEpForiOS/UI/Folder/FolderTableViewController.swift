@@ -508,10 +508,14 @@ extension FolderTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        //In iOS13+, the UITableViewHeaderFooterView contains a subview that is a _UITableViewHeaderFooterViewBackground which has a subview that have a wrong background color (gray).
+        // In iOS12, is the first subview (also _UITableViewHeaderFooterViewBackground) which has the gray background color.
         if let header = view as? UITableViewHeaderFooterView {
-            if let subview = header.subviews.first?.subviews.first {
+            if let subview = header.subviews.first {
                 if #available(iOS 13.0, *) {
-                    subview.backgroundColor = .systemBackground
+                    if let subsubview = subview.subviews.first {
+                        subsubview.backgroundColor = .systemBackground
+                    }
                 } else {
                     subview.backgroundColor = .white
                 }
