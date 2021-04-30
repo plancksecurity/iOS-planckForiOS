@@ -9,25 +9,10 @@
 import Foundation
 
 class RecipientButton: UIButton {
-
-    private var callbackAction: (() -> Void)? = nil
-    override var intrinsicContentSize: CGSize {
-        return titleLabel?.intrinsicContentSize ?? .zero
-    }
+   private var callbackAction: (() -> Void)? = nil
 }
 
 extension RecipientButton {
-
-    /// Constructor
-    ///
-    /// Instanciate a recipient button with the text passed by parameter
-    /// - Parameter text: The text to display
-    /// - Returns: The recipient button configured
-    static func with(text: String, action: (() -> Void)? = nil) -> RecipientButton {
-        let recipientButton = RecipientButton(type: .system)
-        recipientButton.setup(text: text, action: action)
-        return recipientButton
-    }
 
     /// Setup the recipient button with the text and colors passed by parameters.
     /// - Parameters:
@@ -35,50 +20,35 @@ extension RecipientButton {
     ///   - color: The title color. If nil, default values will be used. 
     public func setup(text: String, color: UIColor? = nil, action: (() -> Void)? = nil) {
         self.callbackAction = action
-        addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-        isUserInteractionEnabled = true
-        setTitle(text, for: .normal)
-        titleLabel?.adjustsFontSizeToFitWidth = false
+        isUserInteractionEnabled = action != nil
         contentHorizontalAlignment = .left
-        titleLabel?.numberOfLines = 1
-        titleLabel?.lineBreakMode = .byTruncatingTail
+        addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+        setTitle(text, for: .normal)
+
         /// Get rid of paddings
         contentEdgeInsets = UIEdgeInsets(top: .leastNormalMagnitude,
                                          left: .leastNormalMagnitude,
                                          bottom: .leastNormalMagnitude,
                                          right: .leastNormalMagnitude)
-
-        if let color = color {
-            setTitleColor(color, for: .normal)
-            if #available(iOS 13.0, *) {
-                if UITraitCollection.current.userInterfaceStyle == .dark {
-                    setTitleColor(UIColor.secondaryLabel, for: .highlighted)
-                    setTitleColor(UIColor.secondaryLabel, for: .selected)
-                } else {
-                    setTitleColor(UIColor.darkGray, for: .highlighted)
-                    setTitleColor(UIColor.darkGray, for: .selected)
-                }
-
-            } else {
-                setTitleColor(UIColor.darkGray, for: .highlighted)
-                setTitleColor(UIColor.darkGray, for: .selected)
-            }
-        } else {
-            if #available(iOS 13.0, *) {
-                setTitleColor(.secondaryLabel, for: .normal)
-                setTitleColor(.label, for: .highlighted)
-                setTitleColor(.label, for: .selected)
-            } else {
-                // iOS 12
-                setTitleColor(.black, for: .normal)
-                setTitleColor(.darkGray, for: .highlighted)
-                setTitleColor(.darkGray, for: .selected)
-            }
-        }
-
         titleLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
         titleLabel?.textAlignment = .natural
+        if let titleColor = color {
+            setTitleColor(titleColor)
+        }
         sizeToFit()
+    }
+
+    private func setTitleColor(_ color: UIColor) {
+        setTitleColor(color, for: .normal)
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                setTitleColor(UIColor.secondaryLabel, for: [.highlighted, .selected])
+            } else {
+                setTitleColor(UIColor.darkGray, for: [.highlighted, .selected])
+            }
+        } else {
+            setTitleColor(UIColor.darkGray, for: [.highlighted, .selected])
+        }
     }
 
     @objc private func buttonPressed() {
