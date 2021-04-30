@@ -472,7 +472,7 @@ final class EmailListViewController: UIViewController {
             return
         }
         dismissAndPerform {
-            if let address = vm.accountOwnerAddress {
+            if let address = vm.emailAddress {
                 UIUtils.showComposeView(from: address)
             } else {
                 UIUtils.showComposeView(from: nil)

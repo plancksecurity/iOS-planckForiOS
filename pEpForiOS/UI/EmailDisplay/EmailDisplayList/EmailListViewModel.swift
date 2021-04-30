@@ -83,8 +83,8 @@ class EmailListViewModel: EmailDisplayViewModel {
         }
     }
 
-
-    public var accountOwnerAddress: String? {
+    /// The email address 
+    public var emailAddress: String? {
         get {
             if let folder = folderToShow as? Folder {
                 return folder.account.user.address
