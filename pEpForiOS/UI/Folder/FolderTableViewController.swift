@@ -381,10 +381,10 @@ extension FolderTableViewController {
 
         // Toogle section visibility.
         if vm.hiddenSections.contains(section) {
-            sender.imageView?.transform = CGAffineTransform.rotate90Degress()
+            setFoldingArrowState(isCollapsed: false, to: sender)
             vm.handleCollapsingSectionStateChanged(forAccountInSection: section, isCollapsed: false)
         } else {
-            sender.imageView?.transform = .identity
+            setFoldingArrowState(isCollapsed: true, to: sender)
             vm.handleCollapsingSectionStateChanged(forAccountInSection: section, isCollapsed: true)
         }
     }
@@ -465,10 +465,6 @@ extension FolderTableViewController {
             header = CollapsibleTableViewHeader(reuseIdentifier: "header")
         }
 
-        func setFoldingArrowState(isCollapsed collapseState: Bool) {
-            header?.sectionButton.imageView?.transform = collapseState ? .identity : CGAffineTransform.rotate90Degress()
-        }
-
         // Transparent button to collapse/expand the section.
         header?.sectionButton.section = section
         header?.sectionButton.addTarget(self,
@@ -483,7 +479,11 @@ extension FolderTableViewController {
             return header
         }
 
-        setFoldingArrowState(isCollapsed: vm[section].isCollapsed)
+        guard let sectionButton = header?.sectionButton else {
+            Log.shared.errorAndCrash("Section button is missing")
+            return header
+        }
+        setFoldingArrowState(isCollapsed: vm[section].isCollapsed, to: sectionButton)
 
         if vm[section].sectionHeaderHidden {
             return nil
@@ -493,6 +493,10 @@ extension FolderTableViewController {
         return header
     }
 
+
+    func setFoldingArrowState(isCollapsed: Bool, to button: SectionButton) {
+        button.imageView?.transform = isCollapsed ? .identity : CGAffineTransform.rotate90Degress()
+    }
 
     override func tableView(_ tableView: UITableView,
                             heightForFooterInSection section: Int) -> CGFloat {
