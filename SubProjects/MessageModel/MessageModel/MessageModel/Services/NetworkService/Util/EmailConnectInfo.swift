@@ -9,7 +9,12 @@
 import CoreData
 
 import PantomimeFramework
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 extension ConnectionTransport {
     init?(fromInt: Int?) {
