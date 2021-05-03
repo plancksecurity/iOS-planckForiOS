@@ -8,7 +8,11 @@
 
 import CoreData
 
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 /// This is the base for concurrent `NSOperation`s, that is operations that handle asynchronicity
 /// themselves, and are typically not finished when `main()` ends. Instead, they spawn their own
