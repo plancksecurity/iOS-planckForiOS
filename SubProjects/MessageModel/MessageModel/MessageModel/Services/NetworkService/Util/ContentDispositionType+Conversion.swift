@@ -9,7 +9,12 @@
 import PEPObjCAdapterTypes_iOS
 import PEPObjCAdapter_iOS
 import PantomimeFramework
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 extension PEPContentDisposition {
     var contentDisponitionType: Attachment.ContentDispositionType {
