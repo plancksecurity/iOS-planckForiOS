@@ -112,6 +112,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4329CA572238FCBF007D377E"
+               BuildableName = "PantomimeFramework.framework"
+               BlueprintName = "PantomimeFramework"
+               ReferencedContainer = "container:../Pantomime/PantomimeFramework/PantomimeFramework.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "B7911EB321F7358500D7F66F"
                BuildableName = "pEpIOSToolbox.framework"
                BlueprintName = "pEpIOSToolbox"
@@ -144,20 +158,6 @@
                BuildableName = "libPEPObjCAdapter_iOS.a"
                BlueprintName = "PEPObjCAdapter_iOS"
                ReferencedContainer = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4329CA572238FCBF007D377E"
-               BuildableName = "PantomimeFramework.framework"
-               BlueprintName = "PantomimeFramework"
-               ReferencedContainer = "container:../Pantomime/PantomimeFramework/PantomimeFramework.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
