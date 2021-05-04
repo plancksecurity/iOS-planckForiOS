@@ -14,6 +14,8 @@ class RecipientTextView: UITextView {
         didSet {
             viewModel?.delegate = self
             delegate = self
+            addDragInteraction()
+            addDropInteraction()
         }
     }
 
@@ -30,8 +32,6 @@ class RecipientTextView: UITextView {
         }
     }
 }
-
-// MARK: - UITextViewDelegate
 
 extension RecipientTextView: UITextViewDelegate {
 
@@ -181,5 +181,52 @@ extension RecipientTextView: RecipientTextViewModelDelegate {
         } else {
             // Fallback on earlier versions: nothing to do.
         }
+    }
+}
+
+// MARK: - Drag & Drop
+
+extension RecipientTextView {
+
+    func addDragInteraction() {
+        let interaction = UIDragInteraction(delegate: self)
+        interaction.isEnabled = true
+        addInteraction(interaction)
+    }
+    func addDropInteraction() {
+        let interaction = UIDropInteraction(delegate: self)
+        addInteraction(interaction)
+    }
+}
+
+extension RecipientTextView: UIDragInteractionDelegate {
+
+    func dragInteraction(_ interaction: UIDragInteraction, itemsForBeginning session: UIDragSession) -> [UIDragItem] {
+        let point = session.location(in: self)
+        guard let textAttachment = textAttachment(at: point) as? RecipientTextViewModel.TextAttachment else {
+            Log.shared.errorAndCrash("Item not found")
+            return [UIDragItem]()
+        }
+        let provider = NSItemProvider(object: textAttachment.recipient.address as NSString)
+        let dragItem = UIDragItem(itemProvider: provider)
+        return [dragItem]
+    }
+}
+
+extension RecipientTextView: UIDropInteractionDelegate {
+    func dropInteraction(_ interaction: UIDropInteraction, sessionDidUpdate session: UIDropSession) -> UIDropProposal {
+        return UIDropProposal(operation: .move)
+    }
+
+    func dropInteraction(_ interaction: UIDropInteraction, performDrop session: UIDropSession) {
+        session.loadObjects(ofClass: NSString.self) { objects in
+            objects.forEach { object in
+                print(object)
+            }
+        }
+    }
+
+    func dragInteraction(_ interaction: UIDragInteraction, sessionAllowsMoveOperation session: UIDragSession) -> Bool {
+        return true
     }
 }
