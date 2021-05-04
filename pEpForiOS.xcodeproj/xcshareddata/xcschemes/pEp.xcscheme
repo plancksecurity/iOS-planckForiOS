@@ -168,9 +168,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43CB60811DA4EB4E0015281E"
-               BuildableName = "MessageModel.framework"
-               BlueprintName = "MessageModel"
+               BlueprintIdentifier = "434A6CE125D2BF1B00179335"
+               BuildableName = "MessageModelForAppExtensions.framework"
+               BlueprintName = "MessageModelForAppExtensions"
                ReferencedContainer = "container:SubProjects/MessageModel/MessageModel/MessageModel.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -182,9 +182,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "434A6CE125D2BF1B00179335"
-               BuildableName = "MessageModelForAppExtensions.framework"
-               BlueprintName = "MessageModelForAppExtensions"
+               BlueprintIdentifier = "43CB60811DA4EB4E0015281E"
+               BuildableName = "MessageModel.framework"
+               BlueprintName = "MessageModel"
                ReferencedContainer = "container:SubProjects/MessageModel/MessageModel/MessageModel.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
