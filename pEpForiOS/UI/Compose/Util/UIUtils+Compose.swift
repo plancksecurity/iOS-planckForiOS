@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MessageModel
 
 #if EXT_SHARE
 import pEpIOSToolboxForExtensions
@@ -19,19 +20,33 @@ import pEpIOSToolbox
 extension UIUtils {
 
     static public func showComposeView(from mailto: Mailto?) {
+        let viewModel = ComposeViewModel.from(mailTo: mailto)
+        showCompose(composeViewModel: viewModel)
+    }
+
+    /// Show compose view and prefill the From field with the email address passed by parameter.
+    ///
+    /// - Parameter address: The email address. If it's invalid, the From field will be empty.
+    static public func showComposeView(from address: String) {
+        let viewModel = ComposeViewModel.init(prefilledFromAddress: address)
+        showCompose(composeViewModel: viewModel)
+    }
+
+    static private func showCompose(composeViewModel: ComposeViewModel) {
         DispatchQueue.main.async {
             let storyboard = UIStoryboard(name: Constants.mainStoryboard, bundle: nil)
             guard
                 let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
-                    Constants.composeSceneStoryboardId) as? UINavigationController,
+                                                                                        Constants.composeSceneStoryboardId) as? UINavigationController,
                 let composeVc = composeNavigationController.rootViewController
                     as? ComposeViewController
-                else {
-                    Log.shared.errorAndCrash("Missing required data")
-                    return
+            else {
+                Log.shared.errorAndCrash("Missing required data")
+                return
             }
-            composeVc.viewModel = ComposeViewModel.from(mailTo: mailto)
+            composeVc.viewModel = composeViewModel
             UIUtils.show(navigationController: composeNavigationController)
         }
     }
 }
+
