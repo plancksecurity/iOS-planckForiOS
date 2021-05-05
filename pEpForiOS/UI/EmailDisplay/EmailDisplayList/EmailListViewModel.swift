@@ -83,7 +83,9 @@ class EmailListViewModel: EmailDisplayViewModel {
         }
     }
 
-    /// The email address 
+    /// The email address of the account that contains the folder.
+    ///
+    /// If it's Unified folder, returns nil.
     public var emailAddress: String? {
         get {
             if let folder = folderToShow as? Folder {
