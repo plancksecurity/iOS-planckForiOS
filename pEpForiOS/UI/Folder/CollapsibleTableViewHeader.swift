@@ -75,6 +75,7 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         if #available(iOS 13.0, *) {
             tintColor = UIColor.systemBackground
         } else {
+            contentView.backgroundColor = UIColor.white
             tintColor = UIColor.white
         }
 
