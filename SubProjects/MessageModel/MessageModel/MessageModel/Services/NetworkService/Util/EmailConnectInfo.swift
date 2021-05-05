@@ -141,13 +141,15 @@ class EmailConnectInfo: ConnectInfo {
         #if EXT_SHARE
         // In the sharing extension, decoding `MessageModel.OAuth2AccessToken`
         // would lead to an error, so map it the correct class.
-        // This could happen if the token gets written by the app, and the
+        // This happens if the token gets written by the app, and the
         // extension tries to read.
         NSKeyedUnarchiver.setClass(OAuth2AccessToken.classForCoder(),
                                    forClassName: "MessageModel.OAuth2AccessToken")
         #else
         // In the app, map `MessageModelForExtensions.OAuth2AccessToken"`
         // to the known class.
+        // This could happin in the case the extension has to deal with a token
+        // refresh, and updates it, and then the app wants to read it.
         NSKeyedUnarchiver.setClass(OAuth2AccessToken.classForCoder(),
                                    forClassName: "MessageModelForExtensions.OAuth2AccessToken")
         #endif
