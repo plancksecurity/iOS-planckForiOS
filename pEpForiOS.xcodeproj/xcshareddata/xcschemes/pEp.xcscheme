@@ -182,6 +182,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43CDF0622642799B00E8E944"
+               BuildableName = "AppAuthForExtensions.framework"
+               BlueprintName = "AppAuthForExtensions"
+               ReferencedContainer = "container:../AppAuth-iOS/AppAuth.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "434A6CE125D2BF1B00179335"
                BuildableName = "MessageModelForAppExtensions.framework"
                BlueprintName = "MessageModelForAppExtensions"
