@@ -126,6 +126,10 @@ class EmailConnectInfo: ConnectInfo {
     func accessToken() -> OAuth2AccessTokenProtocol? {
         if authMethod == .saslXoauth2,
             let payload = loginPassword {
+            #if EXT_SHARE
+            NSKeyedUnarchiver.setClass(OAuth2AccessToken.classForCoder(),
+                                       forClassName: "MessageModel.OAuth2AccessToken")
+            #endif
             return OAuth2AccessToken.from(base64Encoded: payload) as? OAuth2AccessTokenProtocol
         } else {
             return nil
