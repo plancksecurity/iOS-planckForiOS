@@ -24,7 +24,14 @@ extension UIUtils {
         showCompose(composeViewModel: viewModel)
     }
 
+    /// Show compose view and prefill the From field with the email address passed by parameter.
+    ///
+    /// - Parameter address: The email address. It must be valid, otherwise will not present the compose view.
     static public func showComposeView(from address: String) {
+        guard String.emailRegex.matchesWhole(string: address) else {
+            Log.shared.errorAndCrash("Invalid email address")
+            return
+        }
         let viewModel = ComposeViewModel.init(prefilledFromAddress: address)
         showCompose(composeViewModel: viewModel)
     }
