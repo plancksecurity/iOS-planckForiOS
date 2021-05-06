@@ -42,6 +42,7 @@ extension RecipientTextView: UITextViewDelegate {
 
     public func textViewDidBeginEditing(_ textView: UITextView) {
         reportWidthChange()
+        setLabelTextColor()
         viewModel?.handleDidBeginEditing(text: textView.text)
     }
 
