@@ -80,9 +80,11 @@ extension EncryptAndSMTPSendMessageOperation {
                                             me.waitForBackgroundTasksAndFinish()
                                             return
                                         }
-                                        Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
-                                        me.handle(error: BackgroundError.GeneralError.illegalState(info:
-                                            "##\nError: \(error)\nencrypting message: \(cdMessage)\n##"))
+                                        Log.shared.error("Error encrypting: %@", "\(error)")
+                                        me.privateMOC.performAndWait {
+                                            me.handle(error: BackgroundError.GeneralError.illegalState(info:
+                                                                                                        "##\nError: \(error)\nencrypting message: \(cdMessage)\n##"))
+                                        }
                                     } else if error.domain == PEPObjCAdapterErrorDomain {
                                         Log.shared.errorAndCrash("Unexpected ")
                                         me.handle(error: BackgroundError.GeneralError.illegalState(info:
