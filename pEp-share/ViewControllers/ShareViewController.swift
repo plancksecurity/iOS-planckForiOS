@@ -37,6 +37,7 @@ extension ShareViewController: ShareViewModelDelegate {
         case messageCouldNotBeSaved
         case attachmentTypeNotSupported
         case attachmetCouldNotBeLoaded
+        case attachmentLimitExceeded
     }
 
     func startComposeView(composeViewModel: ComposeViewModel) {
@@ -48,9 +49,9 @@ extension ShareViewController: ShareViewModelDelegate {
             extensionContext?.cancelRequest(withError: SharingError.messageCouldNotBeSaved)
         }
 
-        let title = NSLocalizedString("Error", comment: "Sharing extension error title")
+        let title = NSLocalizedString("Error", comment: "Sharing extension: Error title")
         let message = NSLocalizedString("Could not save the message for sending",
-                                        comment: "Sharing extension could not save a message")
+                                        comment: "Sharing extension: Could not save the message")
         UIUtils.showAlertWithOnlyPositiveButton(title: title,
                                                 message: message,
                                                 completion: cancelRequest)
@@ -71,9 +72,9 @@ extension ShareViewController: ShareViewModelDelegate {
                 extensionContext?.cancelRequest(withError: theError)
             }
 
-            let title = NSLocalizedString("Error", comment: "Sharing extension error title")
+            let title = NSLocalizedString("Error", comment: "Sharing extension: Error title")
             let message = String(format: NSLocalizedString("Could not send:\n%1@",
-                                                           comment: "Sharing extension has no account"),
+                                                           comment: "Sharing extension: Could not send the message"),
                                  theError.localizedDescription)
             UIUtils.showAlertWithOnlyPositiveButton(title: title,
                                                     message: message,
@@ -88,9 +89,9 @@ extension ShareViewController: ShareViewModelDelegate {
             extensionContext?.cancelRequest(withError: SharingError.noAccount)
         }
 
-        let title = NSLocalizedString("Error", comment: "Sharing extension error title")
+        let title = NSLocalizedString("Error", comment: "Sharing extension: Error title")
         let message = NSLocalizedString("No Account found",
-                                        comment: "Sharing extension has no account")
+                                        comment: "Sharing extension: No account found")
         UIUtils.showAlertWithOnlyPositiveButton(title: title,
                                                 message: message,
                                                 completion: cancelRequest)
@@ -107,9 +108,9 @@ extension ShareViewController: ShareViewModelDelegate {
             extensionContext?.cancelRequest(withError: SharingError.attachmentTypeNotSupported)
         }
 
-        let title = NSLocalizedString("Error", comment: "Sharing extension error title")
+        let title = NSLocalizedString("Error", comment: "Sharing extension: Error title")
         let message = NSLocalizedString("This type of attachment is not (yet) supported",
-                                        comment: "Sharing extension cannot detect the type of the attachment, cannot load it")
+                                        comment: "Sharing extension: Cannot detect the type of the attachment, cannot load it")
         UIUtils.showAlertWithOnlyPositiveButton(title: title,
                                                 message: message,
                                                 completion: cancelRequest)
@@ -121,12 +122,26 @@ extension ShareViewController: ShareViewModelDelegate {
         }
 
         var message = NSLocalizedString("The attachment could not be loaded",
-                                        comment: "Sharing extension could not load or process the attachment")
-        let title = NSLocalizedString("Error", comment: "Sharing extension error title")
+                                        comment: "Sharing extension: Could not load or process the attachment")
+        let title = NSLocalizedString("Error", comment: "Sharing extension: Error title")
         if let theError = error {
             message = String(format: NSLocalizedString("The attachment could not be loaded:\n%1@",
-                                                       comment: "Sharing extension could not load or process the attachment"), theError.localizedDescription)
+                                                       comment: "Sharing extension: Could not load or process the attachment"), theError.localizedDescription)
         }
+        UIUtils.showAlertWithOnlyPositiveButton(title: title,
+                                                message: message,
+                                                completion: cancelRequest)
+    }
+
+    func attachmentLimitExceeded() {
+        func cancelRequest() {
+            extensionContext?.cancelRequest(withError: SharingError.attachmentLimitExceeded)
+        }
+
+        let message = String(format: NSLocalizedString("The file is too big to send via email. The maximum file size is %1d MB",
+                                        comment: "Sharing extension: Attachment(s) too big"),
+                             ShareViewModel.maximumAttachmentSize)
+        let title = NSLocalizedString("Error", comment: "Sharing extension: Error title")
         UIUtils.showAlertWithOnlyPositiveButton(title: title,
                                                 message: message,
                                                 completion: cancelRequest)
