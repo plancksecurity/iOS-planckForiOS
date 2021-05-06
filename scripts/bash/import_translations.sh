@@ -1,6 +1,6 @@
 #!/bin/bash
 
-languages="en de fr es ca tr nl sk"
+languages="en"
 
 translationdir=../pEp-Translate/
 
