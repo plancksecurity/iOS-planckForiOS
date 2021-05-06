@@ -20,8 +20,22 @@ extension CdAccount {
             return NSPredicate(format: "identity.address like[c] %@", address)
         }
 
+        /// - Returns: The predicate to filter accounts that should be included in 'Unified Folders'
         static func isInUnified() -> NSPredicate {
             return NSPredicate(format: "%K = true",  CdAccount.AttributeName.includeFoldersInUnifiedFolders)
+        }
+
+        /// - Returns: The predicate to filter active accounts
+        static func isActive() -> NSPredicate {
+            return NSPredicate(format: "%K = true",  CdAccount.AttributeName.isActive)
+        }
+
+        /// - Returns: The predicate to filter active accounts that should be included in 'Unified Folders'
+        static func isInUnifiedAndActive() -> NSPredicate {
+            var predicates = [NSPredicate]()
+            predicates.append(isActive())
+            predicates.append(isInUnified())
+            return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         }
     }
 }

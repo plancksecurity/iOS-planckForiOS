@@ -98,7 +98,7 @@ final class SettingsViewModel {
     /// Wrapper method to know if there is no accounts associated.
     /// Returns: True if there are no accounts.
     public func noAccounts() -> Bool {
-        return Account.all().count <= 0
+        return Account.all(onlyActiveAccounts: false).count <= 0
     }
     
     /// Wrapper method to know if the device is in a group.
@@ -121,7 +121,7 @@ final class SettingsViewModel {
     /// Returns the account setted at the the row of the provided indexPath
     /// - Parameter indexPath: The index path to get the account
     public func account(at indexPath : IndexPath) -> Account? {
-        let accounts = Account.all()
+        let accounts = Account.all(onlyActiveAccounts: false)
         if accounts.count > indexPath.row {
             return accounts[indexPath.row]
         }
@@ -175,7 +175,7 @@ extension SettingsViewModel {
         var rows = [SettingsRowProtocol]()
         switch type {
         case .accounts:
-            Account.all().forEach { (acc) in
+            Account.all(onlyActiveAccounts: false).forEach { (acc) in
                 var accountRow = ActionRow(identifier: .account, title: acc.user.address,
                                            isDangerous: false)
                 accountRow.action = { [weak self] in

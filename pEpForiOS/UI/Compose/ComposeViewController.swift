@@ -89,7 +89,25 @@ class ComposeViewController: UIViewController {
         navigationController?.title = title
         tableView.hideSeperatorForEmptyCells()
         setupRecipientSuggestionsTableViewController()
-        viewModel?.handleDidReAppear()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleDidReAppear()
+
+        if vm.hasNoActiveAccounts {
+            let title = NSLocalizedString("No active account is setup", comment: "Alert view title - No active account is setup, so it's not possible to compose a message ")
+            let message = NSLocalizedString("Impossible to compose a new message", comment: "")
+            UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message, style: .default) { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                me.dismiss(animated: true) {
+                    me.dismiss()
+                }
+            }
+        }
     }
 
     deinit {

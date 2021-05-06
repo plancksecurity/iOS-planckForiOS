@@ -64,14 +64,19 @@ extension Account {
         return MessageModelObjectUtils.getAccount(fromCdAccount: cdAccount)
     }
 
-    /// Returns all Accouts in DB.
-    ///
-    /// - note: The client is responsible for correct usage! defaults to main session!
+    /// Returns all active Accouts in DB.
+    /// To get also the inactive ones, pass false to the paramenter onlyActiveAccounts.
     ///
     /// - Parameters:
+    ///   - onlyActiveAccounts: Indicates if the accounts to be retrieved must be active.
     ///   - session: Session to work with. Defaults to main session!
-    /// - Returns: All accounts in DB.
-    public static func all(in session: Session = Session.main) -> [Account] {
+    /// - Returns: All (active) accounts in DB.
+    public static func all(onlyActiveAccounts: Bool = true, in session: Session = Session.main) -> [Account] {
+        if onlyActiveAccounts {
+            let predicate = CdAccount.PredicateFactory.isActive()
+            let cdAccounts = CdAccount.all(predicate: predicate, in: session.moc) as? [CdAccount] ?? []
+            return cdAccounts.map { $0.account() }
+        }
         let cdAccounts = CdAccount.all(in: session.moc) as? [CdAccount] ?? []
         return cdAccounts.map { $0.account() }
     }

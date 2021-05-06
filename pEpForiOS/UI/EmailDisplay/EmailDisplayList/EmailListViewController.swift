@@ -117,9 +117,15 @@ final class EmailListViewController: UIViewController {
         if !vm.showLoginView {
             doOnce?()
         }
+
         updateFilterText()
         updateEditButton()
         vm.updateLastLookAt()
+
+        if vm.showFoldersView {
+            navigationController?.popViewController(animated: true)
+            return
+        }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

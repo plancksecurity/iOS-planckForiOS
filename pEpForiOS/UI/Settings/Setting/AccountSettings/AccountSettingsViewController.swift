@@ -171,6 +171,14 @@ extension AccountSettingsViewController : UITableViewDataSource {
             dequeuedCell.switchItem.isOn = vm.isKeySyncEnabled()
             
             return dequeuedCell
+        case .accountActivation:
+            let dequeuedCell = dequeue(with: row, type: AccountSettingsSwitchTableViewCell.self)
+            guard let row = row as? AccountSettingsViewModel.SwitchRow else {
+                Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
+                return UITableViewCell()
+            }
+            dequeuedCell.configure(with: row)
+            return dequeuedCell
         case .reset:
             let dequeuedCell = dequeue(with: row, type: AccountSettingsDangerousTableViewCell.self)
             guard let row = row as? AccountSettingsViewModel.ActionRow else {
@@ -226,10 +234,6 @@ extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
 
     func showAlert(error: Error) {
         UIUtils.show(error: error)
-    }
-
-    func undoPEPSyncToggle() {
-        keySyncSwitch.setOn(!keySyncSwitch.isOn, animated: true)
     }
 }
 

@@ -79,6 +79,15 @@ public class Account: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         }
     }
 
+    public var isActive: Bool {
+        get {
+            cdObject.isActive
+        }
+        set {
+            cdObject.isActive = newValue
+        }
+    }
+
     public var rootFolders: [Folder] {
         let cdAccount = cdObject
         var cdFolders = cdAccount.folders?.array as? [CdFolder] ?? []
@@ -172,7 +181,7 @@ extension Account {
 extension Account {
 
     public static func countAllForUnified() -> Int {
-        let isInUnifiedPredicate = CdAccount.PredicateFactory.isInUnified()
+        let isInUnifiedPredicate = CdAccount.PredicateFactory.isInUnifiedAndActive()
         return CdAccount.count(predicate: isInUnifiedPredicate)
     }
 }

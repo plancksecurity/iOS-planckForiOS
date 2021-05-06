@@ -224,6 +224,10 @@ class EmailListViewModel: EmailDisplayViewModel {
         return Account.all().isEmpty
     }
 
+    public var showFoldersView: Bool {
+        return Account.all().isEmpty
+    }
+
     public func isReplyAllPossible(forRowAt indexPath: IndexPath) -> Bool {
         guard
             let replyAllPossible = replyAllPossibleChecker(forItemAt: indexPath)?.isReplyAllPossible()

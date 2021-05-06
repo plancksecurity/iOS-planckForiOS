@@ -73,19 +73,6 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
         waitForExpectations(timeout: TestUtil.waitTime)
     }
 
-    func testUndoPEPSyncToggle() {
-        let undoPEPSyncToggleExpectation = expectation(description: "undoPEPSyncToggle")
-        let delegate = MockedAccountSettingsViewModelDelegate(testCase: self,
-                                                              undoPEPSyncToggleExpectation: undoPEPSyncToggleExpectation)
-
-        let accountSettingsViewModel = AccountSettingsViewModel(account: account, delegate: delegate)
-        viewModel = accountSettingsViewModel
-
-        viewModel.pEpSync(enable: true)
-        delegate.undoPEPSyncToggle()
-        waitForExpectations(timeout: TestUtil.waitTime)
-    }
-
     func testHandleOauth2Reauth() {
         let td = TestData()
         let account = td.createVerifiableAccountSettings().account()
@@ -109,19 +96,16 @@ class MockedAccountSettingsViewModelDelegate : AccountSettingsViewModelDelegate,
     var showErrorAlertExpectation: XCTestExpectation?
     var showLoadingViewExpectation: XCTestExpectation?
     var hideLoadingViewExpectation: XCTestExpectation?
-    var undoPEPSyncToggleExpectation: XCTestExpectation?
     var didChangeExpectation: XCTestExpectation?
 
     init(testCase: XCTestCase,
          showErrorAlertExpectation: XCTestExpectation? = nil,
          showLoadingViewExpectation: XCTestExpectation? = nil,
          hideLoadingViewExpectation: XCTestExpectation? = nil,
-         undoPEPSyncToggleExpectation: XCTestExpectation? = nil,
          didChangeExpectation: XCTestExpectation? = nil) {
         self.showErrorAlertExpectation = showErrorAlertExpectation
         self.showLoadingViewExpectation = showLoadingViewExpectation
         self.hideLoadingViewExpectation = hideLoadingViewExpectation
-        self.undoPEPSyncToggleExpectation = undoPEPSyncToggleExpectation
         self.didChangeExpectation = didChangeExpectation
     }
 
@@ -143,13 +127,6 @@ class MockedAccountSettingsViewModelDelegate : AccountSettingsViewModelDelegate,
         if showErrorAlertExpectation != nil {
             showErrorAlertExpectation?.fulfill()
             showErrorAlertExpectation = nil
-        }
-    }
-
-    func undoPEPSyncToggle() {
-        if undoPEPSyncToggleExpectation != nil {
-            undoPEPSyncToggleExpectation?.fulfill()
-            undoPEPSyncToggleExpectation = nil
         }
     }
 

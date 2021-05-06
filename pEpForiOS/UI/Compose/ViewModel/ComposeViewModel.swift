@@ -113,6 +113,11 @@ class ComposeViewModel {
         return idxSubject
     }
 
+    /// Indicates if there are no active accounts. 
+    public var hasNoActiveAccounts: Bool {
+        return Account.all().count == 0
+    }
+
     /// IndexPath of "Body" VM
     private var indexPathBodyVm: IndexPath {
         let bodySection = section(for: .body)

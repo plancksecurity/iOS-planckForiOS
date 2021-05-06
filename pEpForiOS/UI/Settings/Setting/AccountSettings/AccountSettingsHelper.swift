@@ -46,6 +46,8 @@ public struct AccountSettingsHelper {
             return NSLocalizedString("Password", comment: "Password label in account settings")
         case .pepSync:
             return NSLocalizedString("p≡p Sync", comment: "pEp sync label in account settings")
+        case .accountActivation:
+            return NSLocalizedString("Account Activation", comment: "Account Activation label in account settings")
         case .reset:
             return NSLocalizedString("Reset", comment: "Reset label in account settings")
         case .server:

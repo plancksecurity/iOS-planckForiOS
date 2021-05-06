@@ -1,14 +1,15 @@
-////
-////  AccountSettingsViewModel.swift
-////  pEp
-////
-////  Created by Martin Brude on 13/05/2020.
-////  Copyright © 2020 p≡p Security S.A. All rights reserved.
-////
+//
+//  AccountSettingsViewModel.swift
+//  pEp
+//
+//  Created by Martin Brude on 13/05/2020.
+//  Copyright © 2020 p≡p Security S.A. All rights reserved.
+//
 
 import Foundation
 import MessageModel
 import pEpIOSToolbox
+import PantomimeFramework
 
 ///Delegate protocol to communicate to the Account Settings View Controller
 protocol AccountSettingsViewModelDelegate: class {
@@ -16,8 +17,6 @@ protocol AccountSettingsViewModelDelegate: class {
     func setLoadingView(visible: Bool)
     /// Shows an alert
     func showAlert(error: Error)
-    /// Undo the last Pep Sync Change
-    func undoPEPSyncToggle()
     ///Informs changes in account Settings
     func didChange()
 }
@@ -59,6 +58,10 @@ final class AccountSettingsViewModel {
         return account.pEpSyncEnabled
     }
 
+    /// Holding both the data of the current account in verification,
+    /// and also the implementation of the verification.
+    private var verifiableAccount: VerifiableAccountProtocol?
+
     /// Constructor
     /// - Parameters:
     ///   - account: The account to configure the account settings view model.
@@ -70,6 +73,14 @@ final class AccountSettingsViewModel {
         self.delegate = delegate
         includeInUnifiedFolders = account.isIncludedInUnifiedFolders
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
+
+        if isOAuth2 {
+            if let payload = account.imapServer?.credentials.password ?? account.smtpServer?.credentials.password,
+               let token = OAuth2AccessToken.from(base64Encoded: payload) as? OAuth2AccessTokenProtocol {
+                accessToken = token
+            }
+        }
+
         self.generateSections()
     }
 
@@ -98,6 +109,7 @@ extension AccountSettingsViewModel {
         case signature
         case includeInUnified
         case pepSync
+        case accountActivation
         case reset
         case server
         case port
@@ -232,20 +244,19 @@ extension AccountSettingsViewModel {
         account.pEpSyncEnabled = enable
     }
 
+    public func handleAccountActivationSwitchChanged(to newValue: Bool) {
+        if newValue {
+            account.isActive = newValue
+            account.session.commit()
+        } else {
+            verifyAccount()
+        }
+    }
+
     /// Indicates if pep synd has to be grayed out.
     /// - Returns: True if it is.
     public func isPEPSyncGrayedOut() -> Bool {
         return KeySyncUtil.isInDeviceGroup
-    }
-
-    public func row(for type: AccountSettingsViewModel.RowType) -> Int {
-        var rowNumber = 0
-        sections.forEach { (section) in
-            if let index = section.rows.firstIndex(where: {$0.type == type}) {
-                rowNumber = index
-            }
-        }
-        return rowNumber
     }
 }
 
@@ -340,6 +351,8 @@ extension AccountSettingsViewModel {
         case .certificate:
             Log.shared.errorAndCrash("Invalid row type for AccountSettings")
             return ""
+        case .accountActivation:
+            return NSLocalizedString("Account Activation", comment: "pEp sync label in account settings")
         }
     }
 
@@ -409,6 +422,20 @@ extension AccountSettingsViewModel {
                 }, cellIdentifier: AccountSettingsHelper.CellsIdentifiers.switchCell)
             rows.append(pepSyncRow)
 
+            // Account Activation
+            let accountActivationRow = SwitchRow(type: .accountActivation,
+                                                 title: rowTitle(for: .accountActivation),
+                                                 isOn: account.isActive,
+                                                 action: { [weak self] (isActive) in
+                                                    guard let me = self else {
+                                                        // Valid case. We might have been dismissed.
+                                                        return
+                                                    }
+                                                    me.handleAccountActivationSwitchChanged(to: isActive)
+
+                                                 }, cellIdentifier: AccountSettingsHelper.CellsIdentifiers.switchCell)
+            rows.append(accountActivationRow)
+
             // reset
             let resetRow = ActionRow(type: .reset, title: rowTitle(for: .reset), cellIdentifier: AccountSettingsHelper.CellsIdentifiers.dangerousCell)
             rows.append(resetRow)
@@ -473,6 +500,16 @@ extension AccountSettingsViewModel {
     }
 }
 
+// MARK: - Account Activation
+
+extension AccountSettingsViewModel {
+
+    /// Whether or not pEp Sync is enabled for the current account.
+    public func isActive() -> Bool {
+        return account.isActive
+    }
+}
+
 // MARK: - Loading
 
 extension AccountSettingsViewModel {
@@ -492,5 +529,93 @@ extension AccountSettingsViewModel {
 extension AccountSettingsViewModel: SettingChangeDelegate {
     func didChange() {
         delegate?.didChange()
+    }
+}
+
+// MARK: - VerifiableAccountDelegate
+
+extension AccountSettingsViewModel: VerifiableAccountDelegate {
+
+    public func didEndVerification(result: Result<Void, Error>) {
+        switch result {
+        case .success:
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                me.account.isActive = false
+                me.account.session.commit()
+                me.didChange()
+                me.delegate?.setLoadingView(visible: false)
+            }
+        case .failure(let error):
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    //Valid case: the view might be dismissed.
+                    return
+                }
+                me.delegate?.setLoadingView(visible: false)
+                if let imapError = error as? ImapSyncOperationError {
+                    me.delegate?.showAlert(error: imapError)
+                } else if let smtpError = error as? SmtpSendError {
+                    me.delegate?.showAlert(error: smtpError)
+                } else {
+                    Log.shared.errorAndCrash(error: error)
+                }
+                me.delegate?.didChange()
+            }
+        }
+    }
+}
+
+// MARK: -  Verify Account
+
+extension AccountSettingsViewModel {
+
+    private func verifyAccount() {
+        delegate?.setLoadingView(visible: true)
+        verifiableAccount = VerifiableAccount.verifiableAccount(for: account.accountType)
+        verifiableAccount?.verifiableAccountDelegate = self
+        guard let imapServer = account.imapServer,
+              let smtpServer = account.smtpServer else {
+            Log.shared.errorAndCrash("Missing value")
+            return
+        }
+        verifiableAccount?.userName = account.user.userName
+        verifiableAccount?.address = account.user.address
+        verifiableAccount?.loginNameIMAP = imapServer.credentials.loginName
+        verifiableAccount?.loginNameSMTP = smtpServer.credentials.loginName
+        if isOAuth2 {
+            if self.accessToken == nil {
+                Log.shared.errorAndCrash("Have to do OAUTH2, but lacking current token")
+            }
+            verifiableAccount?.authMethod = .saslXoauth2
+            verifiableAccount?.accessToken = accessToken
+            // OAUTH2 trumps any password
+            verifiableAccount?.password = nil
+        } else {
+            verifiableAccount?.password = imapServer.credentials.password
+        }
+        verifiableAccount?.serverIMAP = imapServer.address
+        verifiableAccount?.portIMAP = imapServer.port
+        verifiableAccount?.serverSMTP = smtpServer.address
+        verifiableAccount?.portSMTP = UInt16(smtpServer.port)
+        if let imapTransport = Server.Transport(fromString: imapServer.transport.asString()) {
+            verifiableAccount?.transportIMAP = ConnectionTransport(transport: imapTransport)
+        }
+        if let smtpTransport = Server.Transport(fromString: smtpServer.transport.asString()) {
+            verifiableAccount?.transportSMTP = ConnectionTransport(transport: smtpTransport)
+        }
+        if let clientCertificate = account.imapServer?.credentials.clientCertificate {
+            verifiableAccount?.clientCertificate = clientCertificate
+        }
+        do {
+            try verifiableAccount?.verify()
+        } catch {
+            delegate?.setLoadingView(visible: false)
+            delegate?.didChange()
+            delegate?.showAlert(error: LoginViewController.LoginError.noConnectData)
+        }
     }
 }
