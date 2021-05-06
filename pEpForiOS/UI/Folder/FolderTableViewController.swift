@@ -518,11 +518,12 @@ extension FolderTableViewController {
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         // In iOS12, the first subview (_UITableViewHeaderFooterViewBackground) has a gray background.
-        //TODO: Remove this when iOS 12 support is dropped.
-        if ProcessInfo().operatingSystemVersion.majorVersion == 12 {
+        // Remove this when iOS 12 support is dropped.
+        guard #available(iOS 13, *) else {
             if let header = view as? UITableViewHeaderFooterView, let subview = header.subviews.first {
                 subview.backgroundColor = .white
             }
+            return
         }
     }
 }
