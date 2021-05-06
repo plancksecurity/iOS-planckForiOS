@@ -381,10 +381,10 @@ extension FolderTableViewController {
 
         // Toogle section visibility.
         if vm.hiddenSections.contains(section) {
-            sender.imageView?.transform = CGAffineTransform.rotate90Degress()
+            setFoldingArrowState(isCollapsed: false, to: sender)
             vm.handleCollapsingSectionStateChanged(forAccountInSection: section, isCollapsed: false)
         } else {
-            sender.imageView?.transform = .identity
+            setFoldingArrowState(isCollapsed: true, to: sender)
             vm.handleCollapsingSectionStateChanged(forAccountInSection: section, isCollapsed: true)
         }
     }
@@ -474,12 +474,16 @@ extension FolderTableViewController {
         header?.sectionButton.setImage(arrow, for: .normal)
         header?.sectionButton.contentHorizontalAlignment = .trailing
         header?.sectionButton.contentVerticalAlignment = .top
-        header?.sectionButton.imageView?.transform = CGAffineTransform.rotate90Degress()
-
         guard let vm = folderVM, let safeHeader = header else {
             Log.shared.errorAndCrash("No header or no VM.")
             return header
         }
+
+        guard let sectionButton = header?.sectionButton else {
+            Log.shared.errorAndCrash("Section button is missing")
+            return header
+        }
+        setFoldingArrowState(isCollapsed: vm[section].isCollapsed, to: sectionButton)
 
         if vm[section].sectionHeaderHidden {
             return nil
@@ -487,6 +491,11 @@ extension FolderTableViewController {
 
         safeHeader.configure(viewModel: vm[section], section: section)
         return header
+    }
+
+
+    func setFoldingArrowState(isCollapsed: Bool, to button: SectionButton) {
+        button.imageView?.transform = isCollapsed ? .identity : CGAffineTransform.rotate90Degress()
     }
 
     override func tableView(_ tableView: UITableView,
