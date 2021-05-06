@@ -1,0 +1,305 @@
+/* No privacy status explanation
+   No privacy status suggestion */
+"-" = "-";
+
+/* Reply to single contact, with date. Placeholders: Name, date. */
+"%1$@ wrote on %2$@:" = "%1$@ a écrit sur %2$@ :";
+
+/* Reply to single contact, without date. Placeholder: Name. */
+"%1$@ wrote:" = "%1$@ a écrit :";
+
+/* Insert document in message text context menu */
+"Add Document" = "Ajouter un document";
+
+/* Attach photo/video (message text context menu) */
+"Add Photo/Video" = "Ajouter une photo/vidéo";
+
+/* UIUtils.showActionSheetWithContactOptions.button.title Add to Contacts */
+"Add to Contacts" = "Ajouter aux contacts";
+
+/* Archive button in slide-left menu */
+"Archive" = "Archiver";
+
+/* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
+"Attached Image (%1$@)" = "Image jointe (%1$@)";
+
+/* Compose field title */
+"BCC:" = "BCC :";
+
+/* Privacy status title */
+"Broken" = "Cassé";
+
+/* Cancel
+   Cancel button title of pEp protection toggle action sheet
+   Cancel trust change to be undone
+   compose email cancel
+   Default cancel button text
+   OK button title
+   TrustManagementView: trustword language selector cancel button label
+   UIUtils.showActionSheetWithContactOptions.button.title Cancel */
+"Cancel" = "Annuler";
+
+/* Privacy status title */
+"Cannot Decrypt" = "Impossible de déchiffrer";
+
+/* Compose field title */
+"CC:" = "CC :";
+
+/* privacyStatusDescription yellow */
+"Communication with this contact will be completely Secure & Trusted by comparing the following Trustwords with your contact, for example by making a phone call." = "La communication avec ce contact sera complètement sécurisée et fiable en comparant les Trustwords avec votre contact, par exemple en passant un appel téléphonique.";
+
+/* Privacy status suggestion */
+"Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Effectuez un Handshake avec votre partenaire de communication. Le Handshake n'est nécessaire qu'une seule fois par partenaire et garantira une communication sécurisée et fiable.";
+
+/* Confirm correct trustwords/PGP fingerprint */
+"Confirm" = "Confirmer";
+
+/* Confirm less secure answering message alert title */
+"Confirm Answer" = "Confirmer la réponse";
+
+/* Confirm less secure forwarding message alert title */
+"Confirm Forward" = "Confirmer le transfert";
+
+/* UIUtils.showActionSheetWithContactOptions.button.title Copy Email */
+"Copy Email" = "Copier le courriel";
+
+/* Sharing extension could not save a message */
+"Could not save the message for sending" = "Impossible de sauvegarder le message pour l'envoyer";
+
+/* Sharing extension has no account */
+"Could not send:\n%1@" = "Impossible d'envoyer :\n%1@";
+
+/* Incorrect trustwords/PGP fingerprint */
+"Decline" = "Rejeter";
+
+/* compose email delete
+   ComposeTableView: button to decide to delete a message from Outbox after making changes. */
+"Delete" = "Supprimer";
+
+/* ComposeTableView: button to decide to delete changes made on a drafted mail. */
+"Delete Changes" = "Supprimer les modifications";
+
+/* Device field, reporting issue */
+"Device" = "Appareil";
+
+/* Disable Protection
+   Disable Protection button title of pEp protection toggle action sheet */
+"Disable Protection" = "Désactiver la protection";
+
+/* Enable Protection
+   Enable Protection button title of pEp protection toggle action sheet */
+"Enable Protection" = "Activer la protection";
+
+/* Sharing extension error title */
+"Error" = "Erreur";
+
+/* No comment provided by engineer. */
+"Error casting" = "Erreur lors de la diffusion";
+
+/* read button in slide-left menu */
+"Flag" = "Marquer";
+
+/* Title of account picker when composing a message */
+"From:" = "De :";
+
+/* Contact Support - Mail subject */
+"Help" = "Aide";
+
+/* Privacy status suggestion */
+"If this message was addressed to you, please inform the sender that you don't have the key." = "Si ce message a été adressé a vous, veuillez informer l'expéditeur que vous n'avez pas la clé.";
+
+/* Privacy status explanation */
+"In order to make the communication with this communication partner Secure & Trusted, you will have to compare the Trustwords below with this communication partner and ensure they match yours." = "Afin de marquer la communication avec ce partenaire de communication comme sécurisée et fiable, vous devrez comparer les Trustwords ci-dessous avec ce partenaire de communication et vous assurer qu'ils correspondent aux vôtres.";
+
+/* ComposeTableView: button to decide to Discharge changes made on a mail in outbox. */
+"Keep in Outbox" = "Conserver dans la boîte d'envoi";
+
+/* TrustManagementView Back Button Title */
+"Message" = "Message";
+
+/* Privacy status title */
+"Mistrusted" = "Suspect";
+
+/* more button in slide-left menu */
+"More" = "Plus";
+
+/* File name used for videos the user attaches. */
+"Movie" = "Film";
+
+/* UIUtils.showActionSheetWithContactOptions.button.title New Mail Message */
+"New Mail Message" = "Nouveau message électronique";
+
+/* 'No' button to confirm less secure email sent */
+"NO" = "NON";
+
+/* Sharing extension has no account */
+"No Account found" = "Aucun compte trouvé";
+
+/* Privacy status suggestion */
+"No action needed!" = "Aucune action n'est nécessaire !";
+
+/* Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions. */
+"No Permissions" = "Pas de permissions";
+
+/* Default message in detail view when nothing has been selected */
+"Nothing Selected" = "Aucune sélection";
+
+/* Default positive button text
+   OK button title */
+"OK" = "OK";
+
+/* Options */
+"Options" = "Options";
+
+/* Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions. */
+"p≡p has no permissions to access \nthe Photo Gallery. You can grand permissions in Settings App." = "p≡p n'est pas autorisé à accéder\nla galerie de photos. Vous pouvez accorder une autorisation dans les paramètres de l'application.";
+
+/* Privacy status suggestion */
+"Please add the necessary information." = "Veuillez ajouter les informations nécessaires.";
+
+/* Privacy status suggestion */
+"Please ask your communication partner to use an encryption solution or install p≡p." = "Veuillez demander à votre partenaire de communication d'utiliser une solution de chiffrement ou d'installer p≡p.";
+
+/* Privacy status suggestion */
+"Re-establish the connection with your communication partner and try to complete another handshake." = "Rétablissez la connexion avec votre partenaire de communication et essayez de terminer un autre handshake.";
+
+/* read button in slide-left menu */
+"Read" = "Lis";
+
+/* ComposeTableView: Label of swipe left. Removing of attachment. */
+"Remove" = "Enlever";
+
+/* read button in slide-left menu */
+"Reply" = "Répondre";
+
+/* Reset all p≡p data for this comunication partner: */
+"Reset all p≡p data for this comunication partner:" = "Réinitialisez toutes les données p≡p pour ce partenaire de communication :";
+
+/* ComposeTableView: button to decide to save changes made on a drafted mail. */
+"Save changes" = "Sauvegarder les changements";
+
+/* compose email save */
+"Save Draft" = "Enregistrer le brouillon";
+
+/* No comment provided by engineer. */
+"scroll-to-caret-on-edit" = "scroll-to-caret-on-edit";
+
+/* Privacy status title */
+"Secure" = "Sécurisée";
+
+/* Privacy status title */
+"Secure & Trusted" = "Sécurisé et fiable";
+
+/* pEp mail signature. Newlines will be added by app */
+"sent with p≡p" = "envoyé avec p≡p";
+
+/* Privacy status suggestion */
+"Separately verify the content of this message with your communication partner." = "Vérifiez séparément le contenu de ce message avec votre partenaire de communication.";
+
+/* Reply to unknown sender with date */
+"Someone wrote on %1$@:" = "Quelqu'un a écrit sur %1$@ :";
+
+/* Reply to unknown sender without date */
+"Someone wrote:" = "Quelqu'un a écrit :";
+
+/* Sharing extension could not load or process the attachment */
+"The attachment could not be loaded" = "Le fichier joint n'a pas pu être chargé";
+
+/* Sharing extension could not load or process the attachment */
+"The attachment could not be loaded:\n%1@" = "Le fichier joint n'a pas pu être chargé :\n%1@";
+
+/* Privacy status explanation */
+"This contact is completely trusted. All communication will be the maximum level of privacy." = "Ce contact est totalement fiable. Toute communication aura le niveau maximum de confidentialité.";
+
+/* privacyStatusDescription green */
+"This contact is completely trusted. All communication will be with the maximum level of privacy." = "Ce contact est totalement fiable. Toutes les communications se feront avec le niveau maximum de confidentialité.";
+
+/* privacyStatusDescription red */
+"This contact is mistrusted and might be an attack by a man-in-the-middle." = "Ce contact n'est plus de confiance et pourrait être une attaque de type intermédiaire.";
+
+/* Privacy status title */
+"This contact is mistrusted. If you rejected the Trustwords accidentally, you could reset the p≡p data." = "Ce contact n'est plus de confiance. Si vous rejetez accidentellement les Trustwords, vous pouvez réinitialiser les données p≡p.";
+
+/* Privacy status explanation */
+"This message cannot be decrypted because the key is not available." = "La clef pour déchiffrer le message n'est pas disponible.";
+
+/* Privacy status explanation */
+"This message cannot be decrypted." = "Ce message ne peut pas être déchiffré.";
+
+/* Privacy status explanation */
+"This message does not contain enough information to determine if it is secure." = "Les données de sécurité sont insuffisantes pour garantir la confidentialité ou l'authenticité du message.";
+
+/* Privacy status explanation */
+"This message has a communication partner that has previously been marked as mistrusted." = "Un des correspondants de ce message a été précédemment reconnu comme suspect.";
+
+/* Privacy status suggestion */
+"This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p." = "Ce message n'a ni cryptage fiable ni signature. Demandez à votre partenaire de communication de mettre à niveau sa solution de chiffrement ou d'installer p≡p.";
+
+/* Privacy status explanation */
+"This message has unreliable protection" = "Ce message n'a pas de protection fiable";
+
+/* Privacy status explanation */
+"This message is not secure and has been tampered with." = "Les données de sécurité sont inconsistantes. Il semble que ce message soit falsifié.";
+
+/* Privacy status explanation */
+"This message is secure and trusted." = "Ce message est sécurisé et fiable.";
+
+/* Privacy status explanation */
+"This message is secure but you still need to verify the identity of your communication partner." = "Ce message est securisé mais vous devez encore vérifier l'identité de votre correspondant pour le faire fiable.";
+
+/* Privacy status explanation */
+"This message is unsecure." = "Ce message n'est pas sécurisé.";
+
+/* Sharing extension cannot detect the type of the attachment, cannot load it */
+"This type of attachment is not (yet) supported" = "Ce type de fichier n'est pas (encore) pris en charge";
+
+/* Compose field title */
+"To:" = "A :";
+
+/* Trash button in slide-left menu */
+"Trash" = "Corbeille";
+
+/* Privacy status title */
+"Under Attack" = "Manipulé";
+
+/* Undo trust change verification button title */
+"Undo" = "Annuler";
+
+/* Action name to be suggested at the moment of revert */
+"Undo Trust Confirmation" = "Annuler la confirmation de la confiance";
+
+/* Action name to be suggested at the moment of revert */
+"Undo Trust Rejection" = "Annuler le rejet de la confiance";
+
+/* read button in slide-left menu */
+"Unflag" = "Enlever marquage";
+
+/* Privacy status title
+   privacyStatusDescription no_color */
+"Unknown" = "Inconnu";
+
+/* Privacy status explanation
+   Privacy status suggestion */
+"Unknown." = "Inconnu.";
+
+/* file name used for unnamed attachments */
+"unnamed" = "anonyme";
+
+/* unread button in slide-left menu */
+"Unread" = "Non lu";
+
+/* Privacy status title */
+"Unreliable Security" = "Securité non fiable";
+
+/* Privacy status title */
+"Unsecure" = "Non-sécurisé";
+
+/* 'Yes' button to confirm less secure email sent */
+"YES" = "OUI";
+
+/* Confirm less secure answer message alert body */
+"You are about to answer a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Vous êtes sur le point de transférer un message sécurisé de façon non-securisée. Si vous décidez de continuer, vous prenez le risque de divulguer des informations confidentielles ?";
+
+/* Confirm less secure forwarding message alert body */
+"You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Vous êtes sur le point de transférer un message sécurisé de façon non-securisée. Si vous décidez de continuer, vous prenez le risque de divulguer des informations confidentielles. Êtes-vous sûr de vouloir continuer ?";
+

@@ -1,0 +1,45 @@
+/* Class = "UILabel"; text = "Please select which certificate you would like to use:"; ObjectID = "43K-i7-nBj"; */
+"43K-i7-nBj.text" = "Seleccione el certificado que desea utilizar:";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "bMB-bi-vvg"; */
+"bMB-bi-vvg.text" = "Etiqueta";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "bP7-By-IPD"; */
+"bP7-By-IPD.normalTitle" = "Cancelar";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Cy2-FQ-sUK"; */
+"Cy2-FQ-sUK.text" = "Etiqueta";
+
+/* Class = "UILabel"; text = "p≡p Sync"; ObjectID = "DEp-6Y-fcV"; */
+"DEp-6Y-fcV.text" = "p≡p Sync";
+
+/* Class = "UILabel"; text = "Please select the type of account you would like to set up with p≡p"; ObjectID = "fLS-EM-fbk"; */
+"fLS-EM-fbk.text" = "Por favor seleccione el tipo de cuenta que desea configurar con p≡p";
+
+/* Class = "UIButton"; normalTitle = "Sign In"; ObjectID = "i7a-Xk-Hbw"; */
+"i7a-Xk-Hbw.normalTitle" = "Iniciar sesión";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "jp7-tC-8UK"; */
+"jp7-tC-8UK.text" = "Etiqueta";
+
+/* Class = "UILabel"; text = "Select Certificate"; ObjectID = "jrd-fZ-xRk"; */
+"jrd-fZ-xRk.text" = "Seleccione el certificado";
+
+/* Class = "UIButton"; normalTitle = "Manual Setup"; ObjectID = "JT1-ND-6bH"; */
+"JT1-ND-6bH.normalTitle" = "Configuración Manual";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "Sub-2j-OvV"; */
+"Sub-2j-OvV.normalTitle" = "Cancelar";
+
+/* Class = "UIButton"; normalTitle = "Add Certificate"; ObjectID = "Tm4-05-7M1"; */
+"Tm4-05-7M1.normalTitle" = "Añadir Certificado";
+
+/* Class = "UIButton"; normalTitle = "Back"; ObjectID = "Veu-lx-Whc"; */
+"Veu-lx-Whc.normalTitle" = "Atrás";
+
+/* Class = "UIButton"; normalTitle = "Sign In"; ObjectID = "wIi-CI-cLC"; */
+"wIi-CI-cLC.normalTitle" = "Iniciar sesión";
+
+/* Class = "UILabel"; text = "Welcome to p≡p"; ObjectID = "YOK-e7-Ke7"; */
+"YOK-e7-Ke7.text" = "Bienvenido a p≡p";
+

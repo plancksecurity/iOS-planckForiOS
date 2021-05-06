@@ -1,0 +1,66 @@
+/* Class = "UILabel"; text = "Privacy Status"; ObjectID = "2dW-Vn-WjN"; */
+"2dW-Vn-WjN.text" = "Privacy Status";
+
+/* Class = "UIButton"; accessibilityLabel = "confirmButton"; ObjectID = "4fD-jL-4Gx"; */
+"4fD-jL-4Gx.accessibilityLabel" = "confirmButton";
+
+/* Class = "UIButton"; normalTitle = "Confirm"; ObjectID = "4fD-jL-4Gx"; */
+"4fD-jL-4Gx.normalTitle" = "Bevestigen";
+
+/* Class = "UIButton"; accessibilityLabel = "wrongButton"; ObjectID = "8Xq-lc-6Jt"; */
+"8Xq-lc-6Jt.accessibilityLabel" = "wrongButton";
+
+/* Class = "UIButton"; normalTitle = "Decline"; ObjectID = "8Xq-lc-6Jt"; */
+"8Xq-lc-6Jt.normalTitle" = "Afwijzen";
+
+/* Class = "UILabel"; text = "This Privacy Status Icon is shown as an Icon the user's avatar"; ObjectID = "B9p-Ah-ajI"; */
+"B9p-Ah-ajI.text" = "Deze Privacy Status wordt weergegeven als een icoontje op de avatar van de gebruiker";
+
+/* Class = "UILabel"; text = "In this case the Privacy Status of the message is Secure, because this is the lowest common denominator of the two communication partners."; ObjectID = "E7G-lq-Zvz"; */
+"E7G-lq-Zvz.text" = "In dit geval is de Privacy Status van het bericht Veilig, omdat dit de laagste gemene deler is van de twee communicatiepartners.";
+
+/* Class = "UILabel"; text = "OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER"; ObjectID = "EdT-Qp-2PC"; */
+"EdT-Qp-2PC.text" = "OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER";
+
+/* Class = "UILabel"; text = "When you click on the Privacy Status icon in the top bar, you will get to the Handshake, where you can verify your communication partner. "; ObjectID = "i1p-j1-tYp"; */
+"i1p-j1-tYp.text" = "Wanneer u op het pictogram Privacy Status in de bovenbalk klikt, komt u bij de Handshake, waar u uw communicatiepartner kunt verifiëren. ";
+
+/* Class = "UILabel"; text = "Handshake"; ObjectID = "ICO-LI-a2E"; */
+"ICO-LI-a2E.text" = "Handdruk";
+
+/* Class = "UILabel"; text = "When you confirm that the Trustwords of your communication partner are correct, your communication will be completely Secure & Trusted. "; ObjectID = "lMo-1v-V01"; */
+"lMo-1v-V01.text" = "Wanneer je bevestigt dat de Vertrouwenswoorden van je communicatiepartner correct zijn, zal je communicatie volledig Veilig & Vertrouwd zijn. ";
+
+/* Class = "UILabel"; text = "Secure"; ObjectID = "N7R-0r-VFh"; */
+"N7R-0r-VFh.text" = "Veilig";
+
+/* Class = "UILabel"; text = "Mistrusted"; ObjectID = "Ogr-uB-snW"; */
+"Ogr-uB-snW.text" = "Niet Vertrouwd";
+
+/* Class = "UILabel"; text = "When the Trustwords are confirmed to be correct and the Handshake is done, the communication will be completely secure and trusted"; ObjectID = "qWE-M6-upt"; */
+"qWE-M6-upt.text" = "Wanneer wordt bevestigd dat de Vertrouwenswoorden correct zijn en de Handdruk is voltooid, zal de communicatie volledig veilig en vertrouwd zijn";
+
+/* Class = "UILabel"; text = "You can close this tutorial anytime with the Skip button."; ObjectID = "RKC-QV-5yv"; */
+"RKC-QV-5yv.text" = "Je kunt deze tutorial op elk moment sluiten met de Skip knop.";
+
+/* Class = "UILabel"; text = "The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:"; ObjectID = "rLc-J2-pmo"; */
+"rLc-J2-pmo.text" = "Het icoon in de bovenste balk geeft de Privacy Status van het bericht weer, wat de laagste gemene deler is van alle communicatiepartners van dat bericht, bijvoorbeeld:";
+
+/* Class = "UILabel"; text = "With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact."; ObjectID = "rM7-ay-vaT"; */
+"rM7-ay-vaT.text" = "Met deze Privacy Status is alle communicatie Veilig, maar om te bevestigen dat je contactpersoon echt de persoon is die u kent, moet je Vertrouwenswoorden met deze contactpersoon vergelijken.";
+
+/* Class = "UILabel"; text = "Secure & Trusted"; ObjectID = "s5s-sx-Dv7"; */
+"s5s-sx-Dv7.text" = "Veilig & Vertrouwd";
+
+/* Class = "UILabel"; text = "p≡p uses a Privacy Status icon to indicate how secure your communication is"; ObjectID = "WAK-KE-bk0"; */
+"WAK-KE-bk0.text" = "p≡p gebruikt een Privacy Status icoon om aan te geven hoe veilig je communicatie is";
+
+/* Class = "UILabel"; text = "If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle."; ObjectID = "wF1-W3-tf3"; */
+"wF1-W3-tf3.text" = "Als de Vertrouwenswoorden niet correct zijn, kan er een aanval van een tussenpersoon zijn.";
+
+/* Class = "UILabel"; text = "Welcome to the p≡p Tutorial"; ObjectID = "XKD-ea-9Kh"; */
+"XKD-ea-9Kh.text" = "Welkom bij de p≡p Tutorial";
+
+/* Class = "UILabel"; text = "And in the top bar when you open or write an email:"; ObjectID = "ZDk-Zf-Xez"; */
+"ZDk-Zf-Xez.text" = "En in de bovenste balk wanneer je een e-mail opent of schrijft:";
+

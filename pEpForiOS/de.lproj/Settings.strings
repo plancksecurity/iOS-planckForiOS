@@ -1,0 +1,81 @@
+/* Class = "UILabel"; text = "Detail"; ObjectID = "0Qq-nB-Xso"; */
+"0Qq-nB-Xso.text" = "Detail";
+
+/* Class = "UILabel"; text = "OAuth2 Reauthorization"; ObjectID = "2dH-l3-cvY"; */
+"2dH-l3-cvY.text" = "OAuth2 Reautorisierung";
+
+/* Class = "UIViewController"; title = "Extra Keys"; ObjectID = "4fP-ku-UtU"; */
+"4fP-ku-UtU.title" = "Extra Schlüssel";
+
+/* Class = "UILabel"; text = "Detail"; ObjectID = "4Ql-jN-Oal"; */
+"4Ql-jN-Oal.text" = "Detail";
+
+/* Class = "UILabel"; text = "Email"; ObjectID = "7Lp-ph-4lC"; */
+"7Lp-ph-4lC.text" = "E-Mail";
+
+/* Class = "UILabel"; text = "Fingerprint"; ObjectID = "8ib-BO-jFp"; */
+"8ib-BO-jFp.text" = "Fingerabdruck";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "409-SW-yds"; */
+"409-SW-yds.text" = "Name";
+
+/* Class = "UILabel"; text = "Label  akjsfhaj ksfas fsdahfkajsdf kashf akjdhf jkasdf asf kjsfkasf ajshf ahkfs jashf kjasdhkf jakhf"; ObjectID = "Ag8-Qj-N8l"; */
+"Ag8-Qj-N8l.text" = "Label  akjsfhaj ksfas fsdahfkajsdf kashf akjdhf jkasdf asf kjsfkasf ajshf ahkfs jashf kjasdhkf jakhf";
+
+/* Class = "UILabel"; text = "Reset"; ObjectID = "d1b-kd-zmh"; */
+"d1b-kd-zmh.text" = "Zurücksetzen";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "D99-2G-2i2"; */
+"D99-2G-2i2.text" = "Titel";
+
+/* Class = "UILabel"; text = "Verbose Logging"; ObjectID = "fGY-OS-V4W"; */
+"fGY-OS-V4W.text" = "Ausführliche Protokollierung";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "GAd-Jm-sFz"; */
+"GAd-Jm-sFz.text" = "Titel";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "hHr-Jq-PRg"; */
+"hHr-Jq-PRg.text" = "Titel";
+
+/* Class = "UIButton"; normalTitle = "add fingerprint"; ObjectID = "J2v-Vi-URg"; */
+"J2v-Vi-URg.normalTitle" = "Fingerabdruck hinzufügen";
+
+/* Class = "UITextField"; text = "John Appleseed"; ObjectID = "jWl-U8-Gg3"; */
+"jWl-U8-Gg3.text" = "John Appleseed";
+
+/* Class = "UITextField"; text = "John Appleseed"; ObjectID = "kdZ-UO-KYC"; */
+"kdZ-UO-KYC.text" = "John Appleseed";
+
+/* Class = "UIButton"; normalTitle = "Set Own Key"; ObjectID = "lzc-xZ-iKm"; */
+"lzc-xZ-iKm.normalTitle" = "Eigenen Schlüssel festlegen";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "Pdx-rN-QPm"; */
+"Pdx-rN-QPm.text" = "Titel";
+
+/* Class = "UILabel"; text = "PGP Key Import"; ObjectID = "Pgw-uY-8FO"; */
+"Pgw-uY-8FO.text" = "PGP Schlüsselimport";
+
+/* Class = "UILabel"; text = "Use a passphrase for new keys"; ObjectID = "Ppr-kD-hKR"; */
+"Ppr-kD-hKR.text" = "Verwende Passphrase für neue Schlüssel";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "s0a-c5-T0Q"; */
+"s0a-c5-T0Q.text" = "Name";
+
+/* Class = "UILabel"; text = "set_own_key Error"; ObjectID = "ujL-Pa-uXD"; Note = "Don't localize this"; */
+"ujL-Pa-uXD.text" = "set_own_key Fehler";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "vjp-2e-dTM"; */
+"vjp-2e-dTM.text" = "Titel";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "wy0-sZ-Zan"; */
+"wy0-sZ-Zan.text" = "Beschriftung";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "xiv-OD-YNL"; */
+"xiv-OD-YNL.text" = "Titel";
+
+/* Class = "UITextView"; text = "Signature"; ObjectID = "xYO-T2-bDx"; */
+"xYO-T2-bDx.text" = "Signatur";
+
+/* Class = "UILabel"; text = "p≡p Sync"; ObjectID = "yCf-X7-gtF"; */
+"yCf-X7-gtF.text" = "p≡p Sync";
+

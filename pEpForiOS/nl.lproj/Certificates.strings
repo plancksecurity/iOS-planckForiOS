@@ -1,0 +1,18 @@
+/* Class = "UILabel"; text = "Please enter the password of the certificate to import it:"; ObjectID = "BA2-UM-djD"; */
+"BA2-UM-djD.text" = "Voer het wachtwoord van het certificaat in om het te importeren:";
+
+/* Class = "UIViewController"; title = "Client Certificate"; ObjectID = "boI-fd-aGT"; */
+"boI-fd-aGT.title" = "Client Certificaat";
+
+/* Class = "UIButton"; normalTitle = "OK"; ObjectID = "foX-Ql-WX3"; */
+"foX-Ql-WX3.normalTitle" = "OK";
+
+/* Class = "UILabel"; text = "Password"; ObjectID = "G8X-CZ-ulG"; */
+"G8X-CZ-ulG.text" = "Password";
+
+/* Class = "UILabel"; text = "Client Certificate"; ObjectID = "Pbs-UB-tuc"; */
+"Pbs-UB-tuc.text" = "Client Certificaat";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "yyB-Tl-NaX"; */
+"yyB-Tl-NaX.normalTitle" = "Annuleren";
+

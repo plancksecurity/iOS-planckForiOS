@@ -1,0 +1,60 @@
+/* Class = "UILabel"; text = "Detail"; ObjectID = "0Qq-nB-Xso"; */
+"0Qq-nB-Xso.text" = "Detall";
+
+/* Class = "UIViewController"; title = "Extra Keys"; ObjectID = "4fP-ku-UtU"; */
+"4fP-ku-UtU.title" = "Claus addicionals";
+
+/* Class = "UILabel"; text = "Detail"; ObjectID = "4Ql-jN-Oal"; */
+"4Ql-jN-Oal.text" = "Detall";
+
+/* Class = "UILabel"; text = "Email"; ObjectID = "7Lp-ph-4lC"; */
+"7Lp-ph-4lC.text" = "Correu electrònic";
+
+/* Class = "UILabel"; text = "Fingerprint"; ObjectID = "8ib-BO-jFp"; */
+"8ib-BO-jFp.text" = "Empremta digital";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "409-SW-yds"; */
+"409-SW-yds.text" = "Nom";
+
+/* Class = "UILabel"; text = "Label  akjsfhaj ksfas fsdahfkajsdf kashf akjdhf jkasdf asf kjsfkasf ajshf ahkfs jashf kjasdhkf jakhf"; ObjectID = "Ag8-Qj-N8l"; */
+"Ag8-Qj-N8l.text" = "Etiqueta akjsfhaj ksfas fsdahfkajsdf kashf akjdhf jkasdf asf kjsfkasf ajshf ahkfs jashf kjasdhkf jakhf";
+
+/* Class = "UILabel"; text = "Reset"; ObjectID = "d1b-kd-zmh"; */
+"d1b-kd-zmh.text" = "Reset";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "D99-2G-2i2"; */
+"D99-2G-2i2.text" = "Títol";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "GAd-Jm-sFz"; */
+"GAd-Jm-sFz.text" = "Títol";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "hHr-Jq-PRg"; */
+"hHr-Jq-PRg.text" = "Títol";
+
+/* Class = "UIButton"; normalTitle = "add fingerprint"; ObjectID = "J2v-Vi-URg"; */
+"J2v-Vi-URg.normalTitle" = "afegir empremta digital";
+
+/* Class = "UIButton"; normalTitle = "Set Own Key"; ObjectID = "lzc-xZ-iKm"; */
+"lzc-xZ-iKm.normalTitle" = "Definiu la clau pròpia";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "Pdx-rN-QPm"; */
+"Pdx-rN-QPm.text" = "Títol";
+
+/* Class = "UILabel"; text = "PGP Key Import"; ObjectID = "Pgw-uY-8FO"; */
+"Pgw-uY-8FO.text" = "Títol";
+
+/* Class = "UILabel"; text = "set_own_key Error"; ObjectID = "ujL-Pa-uXD"; Note = "Don't localize this"; */
+"ujL-Pa-uXD.text" = "Error set_own_key";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "vjp-2e-dTM"; */
+"vjp-2e-dTM.text" = "Títol";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "wy0-sZ-Zan"; */
+"wy0-sZ-Zan.text" = "Etiqueta";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "xiv-OD-YNL"; */
+"xiv-OD-YNL.text" = "Títol";
+
+/* Class = "UILabel"; text = "p≡p Sync"; ObjectID = "yCf-X7-gtF"; */
+"yCf-X7-gtF.text" = "p≡p Sync";
+

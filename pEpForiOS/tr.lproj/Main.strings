@@ -1,0 +1,42 @@
+/* Class = "UILabel"; text = "Date"; ObjectID = "a1D-BW-3Rd"; */
+"a1D-BW-3Rd.text" = "Tarih";
+
+/* Class = "UINavigationItem"; title = "Inbox"; ObjectID = "aP4-ia-HTP"; */
+"aP4-ia-HTP.title" = "Gelen Kutusu";
+
+/* Class = "UILabel"; text = "From:"; ObjectID = "Asq-Vx-nQs"; */
+"Asq-Vx-nQs.text" = "Kimden:";
+
+/* Class = "UILabel"; text = "Subject:"; ObjectID = "bCM-fK-pFW"; */
+"bCM-fK-pFW.text" = "Konu:";
+
+/* Class = "UIBarButtonItem"; title = "Send"; ObjectID = "d2A-SO-1Ce"; */
+"d2A-SO-1Ce.title" = "Gönder";
+
+/* Class = "UILabel"; text = "To:"; ObjectID = "DES-F8-7zn"; */
+"DES-F8-7zn.text" = "Kime:";
+
+/* Class = "UIViewController"; title = "Move to Account"; ObjectID = "EmS-3d-sKb"; */
+"EmS-3d-sKb.title" = "Hesaba Taşı";
+
+/* Class = "UILabel"; text = "Subject jlkfj glkafj kal jfa slfaj alsjf aslj fsajk"; ObjectID = "ha5-Vd-x3U"; */
+"ha5-Vd-x3U.text" = "Konu jlkfj glkafj kal jfa slfaj alsjf aslj fsajk";
+
+/* Class = "UIBarButtonItem"; title = "Cancel"; ObjectID = "ijh-vj-Bee"; */
+"ijh-vj-Bee.title" = "Vazgeç";
+
+/* Class = "UILabel"; text = "Sender sfasflask jfhsajfkas fjksaj"; ObjectID = "KTi-T9-Inm"; */
+"KTi-T9-Inm.text" = "Gönderen sfasflask jfhsajfkas fjksaj";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "OLo-8A-CCo"; */
+"OLo-8A-CCo.text" = "Başlık";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "riI-qM-PeJ"; */
+"riI-qM-PeJ.text" = "Başlık";
+
+/* Class = "UILabel"; text = "Summary"; ObjectID = "Tbi-dG-KCA"; */
+"Tbi-dG-KCA.text" = "özet";
+
+/* Class = "UILabel"; text = "Cc/Bcc:"; ObjectID = "ZpG-yk-ifY"; */
+"ZpG-yk-ifY.text" = "Cc / Bcc:";
+
