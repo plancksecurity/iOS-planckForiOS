@@ -36,6 +36,9 @@ protocol AccountSettingsRowProtocol {
 /// View Model for Account Settings View Controller
 final class AccountSettingsViewModel {
 
+    public weak var delegate: AccountSettingsViewModelDelegate?
+
+    /// Items to be displayed in a Account Settings View Controller
     /// If there was OAUTH2 for this account, here is a current token.
     /// This trumps both the `originalPassword` and a password given by the user
     /// via the UI.
@@ -46,12 +49,11 @@ final class AccountSettingsViewModel {
     private(set) var includeInUnifiedFolders: Bool
     private let isOAuth2: Bool
     private(set) var account: Account
-    public weak var delegate: AccountSettingsViewModelDelegate?
-    /// Items to be displayed in a Account Settings View Controller
     private(set) var sections: [Section] = [Section]()
     private let oauthViewModel = OAuthAuthorizer()
     private lazy var folderSyncService = FetchImapFoldersService()
     private var accountSettingsHelper: AccountSettingsHelper?
+
 
     /// If the pEp Sync is enabled for the account.
     public var isPEPSyncEnabled: Bool {
@@ -68,7 +70,6 @@ final class AccountSettingsViewModel {
     ///   - delegate: The delegate to communicate to the View Controller.
     init(account: Account, delegate: AccountSettingsViewModelDelegate? = nil) {
         accountSettingsHelper = AccountSettingsHelper(account: account)
-
         self.account = account
         self.delegate = delegate
         includeInUnifiedFolders = account.isIncludedInUnifiedFolders
@@ -513,6 +514,7 @@ extension AccountSettingsViewModel {
 // MARK: - Loading
 
 extension AccountSettingsViewModel {
+
     public func setLoadingView(visible: Bool) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
@@ -527,6 +529,7 @@ extension AccountSettingsViewModel {
 // MARK: - AccountSettingsDelegate
 
 extension AccountSettingsViewModel: SettingChangeDelegate {
+
     func didChange() {
         delegate?.didChange()
     }
