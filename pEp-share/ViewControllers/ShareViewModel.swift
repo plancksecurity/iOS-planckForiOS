@@ -43,9 +43,17 @@ protocol ShareViewModelDelegate: class {
     /// An error ocurred when trying to fetch the attachment, or during processing (i.e., there were problems
     /// with the data).
     func attachmentCouldNotBeLoaded(error: Error?)
+
+    /// The combined size of the attachments exceed a certain limit that would likely
+    /// lead to memory related crashes, due the 120 MB heap restriction for extensions.
+    /// Inform the user and cancel the extension.
+    func attachmentLimitExceeded()
 }
 
 class ShareViewModel {
+    /// Maximum allowed size of all attachments, in MB
+    public static let maximumAttachmentSize = 7
+
     public weak var shareViewModelDelegate: ShareViewModelDelegate?
 
     public init(encryptAndSendSharing: EncryptAndSendSharingProtocol? = nil) {
@@ -128,6 +136,8 @@ class ShareViewModel {
                 me.shareViewModelDelegate?.startComposeView(composeViewModel: composeVM)
             } catch MessageCreationError.noAccount {
                 me.shareViewModelDelegate?.noAccount()
+            } catch MessageCreationError.attachmentLimitExceeded {
+                me.shareViewModelDelegate?.attachmentLimitExceeded()
             } catch {
                 Log.shared.errorAndCrash(error: error)
                 me.shareViewModelDelegate?.canceledByUser()
@@ -150,6 +160,10 @@ extension ShareViewModel {
     private enum MessageCreationError: Error {
         /// There is no account that can be used.
         case noAccount
+
+        /// The combined size of the attachments exceed a certain limit that would likely
+        /// lead to memory related crashes, due the 120 MB heap restriction for extensions
+        case attachmentLimitExceeded
     }
 
     /// Creates a compose VM from the given shared data.
@@ -227,11 +241,26 @@ extension ShareViewModel {
             throw MessageCreationError.noAccount
         }
 
+        var allAttachments = inlinedAttachments
+        allAttachments.append(contentsOf: nonInlinedAttachments)
+        // will throw and pass to upper layers if maximum attachment size exceeded
+        try checkAttachmentSize(attachments: allAttachments)
+
         let initData = ComposeViewModel.InitData(prefilledFrom: defaultAccount.user,
                                                  bodyHtml: NSAttributedString(attributedString: bodyHtml),
                                                  inlinedAttachments: inlinedAttachments,
                                                  nonInlinedAttachments: nonInlinedAttachments)
         return initData
+    }
+
+    private func checkAttachmentSize(attachments: [Attachment]) throws {
+        var totalAttachmentSize = 0
+        for attach in attachments {
+            totalAttachmentSize += attach.size ?? 0
+        }
+        if totalAttachmentSize > ShareViewModel.maximumAttachmentSize * 1024 * 1024 {
+            throw MessageCreationError.attachmentLimitExceeded
+        }
     }
 
     private func getPlainText(dispatchGroup: DispatchGroup,
@@ -346,7 +375,8 @@ extension ShareViewModel {
                                             let data = try Data(contentsOf: fileUrl)
                                             sharedData.add(itemProvider: itemProvider,
                                                            dataWithType: .file(attributedTitle,
-                                                                               filename,  mimeType,
+                                                                               filename,
+                                                                               mimeType,
                                                                                data))
                                         } catch {
                                             Log.shared.log(error: error)
