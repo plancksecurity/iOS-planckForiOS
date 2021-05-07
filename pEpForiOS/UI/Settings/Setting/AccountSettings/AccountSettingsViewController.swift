@@ -13,7 +13,6 @@ import pEpIOSToolbox
 
 final class AccountSettingsViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
-    @IBOutlet private weak var keySyncSwitch: UISwitch!
 
     // MARK: - Variables
     private let oauthViewModel = OAuthAuthorizer()
@@ -45,6 +44,7 @@ final class AccountSettingsViewController: UIViewController {
         showNavigationBar()
         title = NSLocalizedString("Account", comment: "Account view title")
         navigationController?.navigationController?.setToolbarHidden(true, animated: false)
+        updateEditButtonState()
     }
     
     enum SegueIdentifier: String {
@@ -327,6 +327,15 @@ extension AccountSettingsViewController: SettingChangeDelegate {
         if let account = viewModel?.account {
             viewModel = AccountSettingsViewModel(account: account, delegate: self)
             tableView.reloadData()
+            updateEditButtonState()
         }
+    }
+
+    func updateEditButtonState() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        navigationItem.rightBarButtonItem?.isEnabled = vm.isActive()
     }
 }
