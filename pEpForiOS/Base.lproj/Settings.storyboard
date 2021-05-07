@@ -1209,12 +1209,54 @@
                                             <outlet property="titleLabel" destination="Xul-Ch-Bgm" id="ZGK-Kv-VMD"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="addAccountCell" id="4yp-cZ-aKn" userLabel="Add Account cell" customClass="AddAccountTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="90.333332061767578" width="414" height="44.333332061767578"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4yp-cZ-aKn" id="PCv-f2-UvV">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44.333332061767578"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" preservesSuperviewLayoutMargins="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bXi-8j-rfN">
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44.333333333333336"/>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="0tw-yL-M0e"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <inset key="contentEdgeInsets" minX="25" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                    <inset key="titleEdgeInsets" minX="25" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                    <state key="normal" title="Add Account" image="button-add">
+                                                        <color key="titleColor" systemColor="labelColor"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="addAccountButtonPressed" destination="4yp-cZ-aKn" eventType="touchUpInside" id="aaK-wA-4fr"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="bXi-8j-rfN" secondAttribute="bottom" id="6yR-ai-ooF"/>
+                                                <constraint firstItem="bXi-8j-rfN" firstAttribute="leading" secondItem="PCv-f2-UvV" secondAttribute="leading" id="JG2-8O-0QT"/>
+                                                <constraint firstAttribute="trailing" secondItem="bXi-8j-rfN" secondAttribute="trailing" id="L7o-a2-jvh"/>
+                                                <constraint firstItem="bXi-8j-rfN" firstAttribute="top" secondItem="PCv-f2-UvV" secondAttribute="top" id="Uzy-o7-vXY"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="addAccountButton" destination="bXi-8j-rfN" id="WeP-yq-KA4"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </prototypes>
                                 <sections/>
+                                <connections>
+                                    <outlet property="dataSource" destination="eRR-TY-1ak" id="qOI-ic-Xbz"/>
+                                    <outlet property="delegate" destination="eRR-TY-1ak" id="dge-2I-w03"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="xOc-Ka-ZFq" id="S5H-RB-7w0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V8K-AD-3Pj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1225,6 +1267,7 @@
         <segue reference="D3B-Zt-U43"/>
     </inferredMetricsTieBreakers>
     <resources>
+        <image name="button-add" width="22" height="22"/>
         <image name="clearTextfield" width="16" height="16"/>
         <systemColor name="groupTableViewBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

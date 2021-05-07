@@ -10,10 +10,11 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
-
-protocol NoActivatedAccountDelegate: class {
+protocol NoActivatedAccountDelegate: AnyObject {
     /// Informs the VC that has to dismiss
     func dismissYourself()
+    /// Show new account flow
+    func showAccountSetupView()
 }
 
 /// Protocol that represents the basic data in a row.
@@ -22,14 +23,35 @@ protocol NoActivatedAccountRowProtocol {
     var type : NoActivatedAccountViewModel.RowType { get }
     /// The title of the row.
     var title: String { get }
-    /// Returns the cell identifier based on the index path.
-    var cellIdentifier: String { get }
 }
 
 struct NoActivatedAccountViewModel {
 
-    /// Items to be displayed in a SettingsTableViewController
+    typealias ActionBlock = (() -> Void)
+    typealias SwitchBlock = ((Bool) -> Void)
+
+    /// Items to be displayed in a NoActivatedAccountViewController
     private (set) var items: [Section] = [Section]()
+
+    public weak var delegate: NoActivatedAccountDelegate?
+
+    /// Indicates if the view should be dismissed.
+    public var shouldDismiss: Bool {
+        return Account.countAll() > 0
+    }
+
+    init() {
+        generateSections()
+    }
+
+    public func handleAddAccountButtonPressed() {
+        delegate?.showAccountSetupView()
+    }
+}
+
+//MARK: - enum & structs
+
+extension NoActivatedAccountViewModel {
 
     public enum SectionType : String, CaseIterable {
         case accounts
@@ -38,10 +60,10 @@ struct NoActivatedAccountViewModel {
     /// Identifies semantically the type of row.
     public enum RowType : String, CaseIterable {
         case account
-        case addNew
+        case addNewAccount
     }
 
-    /// Struct that represents a section in SettingsTableViewController
+    /// Struct that represents a section in NoActivatedAccountViewController
     public struct Section: Equatable {
         /// Title of the section
         var title: String
@@ -57,14 +79,28 @@ struct NoActivatedAccountViewModel {
         }
     }
 
-    /// Indicates if the view should be dismissed.
-    public var shouldDismiss: Bool {
-        return Account.countAll() > 0
+    /// Struct that is used to perform an action. represents a ActionRow in NoActivatedAccountViewController
+    public struct ActionRow: NoActivatedAccountRowProtocol {
+        //The row type
+        var type: NoActivatedAccountViewModel.RowType
+        /// The title of the row.
+        var title: String
+        /// Block that will be executed when action cell is pressed
+        var action: ActionBlock?
     }
 
-    init() {
-        self.generateSections()
+    /// Struct that is used to show and interact with a switch. represents a SwitchRow in settingsTableViewController
+    public struct SwitchRow: NoActivatedAccountRowProtocol {
+        //The row type
+        var type: NoActivatedAccountViewModel.RowType
+        //The title of the swith row
+        var title: String
+        /// action to be executed when switch toggle
+        var action: SwitchBlock
     }
+}
+
+extension NoActivatedAccountViewModel {
 
     private mutating func generateSections() {
         NoActivatedAccountViewModel.SectionType.allCases.forEach { (type) in
@@ -85,7 +121,7 @@ struct NoActivatedAccountViewModel {
     private func sectionTitle(type: SectionType) -> String {
         switch type {
         case .accounts:
-            return NSLocalizedString("Accounts", comment: "Tableview section  header: Accounts")
+            return NSLocalizedString("Accounts", comment: "Tableview section  header: Accounts").uppercased()
         }
     }
 
@@ -101,13 +137,14 @@ struct NoActivatedAccountViewModel {
 
     /// This method generates all the rows for the section type passed
     /// - Parameter type: The type of the section to generate the rows.
-    /// - Returns: An array with the settings rows. Every setting row must conform the NoActivatedAccountViewModelRowProtocol.
+    /// - Returns: The rows. Every one must conform the NoActivatedAccountViewModelRowProtocol.
     private func generateRows(type: SectionType) -> [NoActivatedAccountRowProtocol] {
         var rows = [NoActivatedAccountRowProtocol]()
         switch type {
         case .accounts:
             Account.all(onlyActiveAccounts: false).forEach { (acc) in
-                let accountRow = ActionRow(type: .account, cellIdentifier: "", title: acc.user.address) {
+                let accountRow = SwitchRow(type: .account,
+                                           title: acc.user.address) { [weak self] in
                     guard let me = self else {
                         Log.shared.errorAndCrash("Lost myself")
                         return
@@ -119,35 +156,19 @@ struct NoActivatedAccountViewModel {
             return rows
         }
     }
+
+    /// Handle the account activation
+    ///
+    /// - Parameter account: The account to activate
     private func handleAccountIsActivated(account: Account) {
+        //Activate
         account.isActive = true
         account.session.commit()
+        //Notify
         NotificationCenter.default.post(name: .pEpSettingsChanged,
                                         object: self,
                                         userInfo: nil)
-        delegate?.dismiss()
-
-    }
-}
-
-extension NoActivatedAccountViewModel {
-
-    typealias ActionBlock = (() -> Void)
-
-    /// Identifies semantically the type of row.
-    public enum RowIdentifier: String {
-        case account
-        case addAccount
-    }
-
-    /// Struct that is used to perform an action. represents a ActionRow in NoActivatedAccountViewController
-    public struct ActionRow: NoActivatedAccountRowProtocol {
-        var type: NoActivatedAccountViewModel.RowType
-        /// Cell identifier
-        var cellIdentifier: String
-        /// The type of the row.
-        var title: String
-        /// Block that will be executed when action cell is pressed
-        var action: ActionBlock?
+        //Dismiss
+        delegate?.dismissYourself()
     }
 }

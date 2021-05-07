@@ -481,6 +481,7 @@
 		5B884B44257A90FE006B2022 /* EditableAccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B884B43257A90FE006B2022 /* EditableAccountSettingsViewController.swift */; };
 		5B885B202645634800BB72CD /* NoActivatedAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B885B1F2645634600BB72CD /* NoActivatedAccountViewController.swift */; };
 		5B885B222645637900BB72CD /* NoActivatedAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B885B212645637900BB72CD /* NoActivatedAccountViewModel.swift */; };
+		5B885B292645BC4D00BB72CD /* AddAccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B885B282645BC4D00BB72CD /* AddAccountTableViewCell.swift */; };
 		5B885DB225E7B0350027DD24 /* Tutorial_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B885DB425E7B0350027DD24 /* Tutorial_iPad.storyboard */; };
 		5BA6180025F1475900973829 /* MessageImageAttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA617FF25F1475900973829 /* MessageImageAttachmentCell.swift */; };
 		5BA946232542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA946222542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift */; };
@@ -1118,6 +1119,7 @@
 		5B884B43257A90FE006B2022 /* EditableAccountSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewController.swift; sourceTree = "<group>"; };
 		5B885B1F2645634600BB72CD /* NoActivatedAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoActivatedAccountViewController.swift; sourceTree = "<group>"; };
 		5B885B212645637900BB72CD /* NoActivatedAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoActivatedAccountViewModel.swift; sourceTree = "<group>"; };
+		5B885B282645BC4D00BB72CD /* AddAccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountTableViewCell.swift; sourceTree = "<group>"; };
 		5B885DB325E7B0350027DD24 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Tutorial_iPad.storyboard; sourceTree = "<group>"; };
 		5B885DB625E7B03A0027DD24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Tutorial_iPad.strings; sourceTree = "<group>"; };
 		5B885DB825E7B0410027DD24 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Tutorial_iPad.strings; sourceTree = "<group>"; };
@@ -2618,6 +2620,7 @@
 			isa = PBXGroup;
 			children = (
 				5B885B1F2645634600BB72CD /* NoActivatedAccountViewController.swift */,
+				5B885B282645BC4D00BB72CD /* AddAccountTableViewCell.swift */,
 				5B885B212645637900BB72CD /* NoActivatedAccountViewModel.swift */,
 			);
 			path = ActiveAccounts;
@@ -3561,6 +3564,7 @@
 				152A39DB21905C3E00D9F8E4 /* CellViewModel.swift in Sources */,
 				15944A30239802D5006B133B /* EmailDetailViewController.swift in Sources */,
 				155050F01FE82356009CEAD2 /* UserNotificationTool.swift in Sources */,
+				5B885B292645BC4D00BB72CD /* AddAccountTableViewCell.swift in Sources */,
 				4351C2D21F4441190053381F /* html.c in Sources */,
 				152A39DE21905C3E00D9F8E4 /* AccountCellViewModel.swift in Sources */,
 				49D3BECC20F8F7330043E05D /* LoginViewController.swift in Sources */,
