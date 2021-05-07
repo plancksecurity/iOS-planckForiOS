@@ -228,6 +228,20 @@ extension AccountSettingsViewController : UITableViewDataSource {
 // MARK: - ViewModel Delegate
 
 extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
+    func showCantDeactivateAccountAlert() {
+        let title = NSLocalizedString("Can't deactivate account", comment: "Alert view title - Can't deactivate account")
+        let messsage = NSLocalizedString("You must have at least one active account", comment: "Alert view message - Can't deactivate account explanation")
+        UIUtils.showAlertWithOnlyPositiveButton(title: title,
+                                                message: messsage,
+                                                style: .warn) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.didChange()
+        }
+    }
+
     func setLoadingView(visible: Bool) {
         LoadingInterface.setLoadingView(visible: visible)
     }

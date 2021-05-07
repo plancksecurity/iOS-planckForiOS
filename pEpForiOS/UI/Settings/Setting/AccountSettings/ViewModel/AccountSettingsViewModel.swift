@@ -19,6 +19,8 @@ protocol AccountSettingsViewModelDelegate: class {
     func showAlert(error: Error)
     ///Informs changes in account Settings
     func didChange()
+    ///Informs changes in account Settings
+    func showCantDeactivateAccountAlert()
 }
 
 /// Protocol that represents the basic data in a row.
@@ -245,12 +247,20 @@ extension AccountSettingsViewModel {
         account.pEpSyncEnabled = enable
     }
 
+    /// Handle the new account activation state.
+    ///
+    /// - Parameter newValue: The state to set.
     public func handleAccountActivationSwitchChanged(to newValue: Bool) {
         if newValue {
             account.isActive = newValue
             account.session.commit()
             postSettingsDidChanged()
         } else {
+            // Can not deactivate the last active account.
+            guard Account.all().count > 1 else {
+                delegate?.showCantDeactivateAccountAlert()
+                return
+            }
             verifyAccount()
         }
     }
