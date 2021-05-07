@@ -249,6 +249,7 @@ extension AccountSettingsViewModel {
         if newValue {
             account.isActive = newValue
             account.session.commit()
+            postSettingsDidChanged()
         } else {
             verifyAccount()
         }
