@@ -13,7 +13,7 @@ import pEpIOSToolbox
 extension UIUtils {
     /// Modally presents a "Drafts Preview"
     static public func presentDraftsPreview() {
-        let sb = UIStoryboard(name: Constants.reusableStoryboard, bundle: nil)
+        let sb = UIStoryboard(name: Constants.mainStoryboard, bundle: nil)
         guard let vc = sb.instantiateViewController(withIdentifier: EmailListViewController.storyboardId) as? EmailListViewController else {
             Log.shared.errorAndCrash("EmailListViewController needed to presentDraftsPreview is not available!")
                 return
