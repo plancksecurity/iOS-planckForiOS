@@ -547,9 +547,13 @@ extension AccountSettingsViewModel: VerifiableAccountDelegate {
                     Log.shared.errorAndCrash("Lost myself")
                     return
                 }
+                if AppSettings.shared.defaultAccount == me.account.user.address {
+                    AppSettings.shared.defaultAccount = nil
+                }
                 me.account.isActive = false
                 me.account.session.commit()
                 me.didChange()
+                me.postSettingsDidChanged()
                 me.delegate?.setLoadingView(visible: false)
             }
         case .failure(let error):
@@ -620,5 +624,10 @@ extension AccountSettingsViewModel {
             delegate?.didChange()
             delegate?.showAlert(error: LoginViewController.LoginError.noConnectData)
         }
+    }
+
+    private func postSettingsDidChanged() {
+        let name = Notification.Name.pEpSettingsChanged
+        NotificationCenter.default.post(name:name, object: self, userInfo: nil)
     }
 }

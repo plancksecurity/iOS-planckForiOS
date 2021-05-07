@@ -25,6 +25,11 @@ final class SettingsTableViewController: UITableViewController {
         UIHelper.variableCellHeightsTableView(tableView)
         UIHelper.variableSectionHeadersHeightTableView(tableView)
         addExtraKeysEditabilityToggleGesture()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(pEpSettingsChanged),
+                                               name: .pEpSettingsChanged,
+                                               object: nil)
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -34,6 +39,10 @@ final class SettingsTableViewController: UITableViewController {
         navigationController?.setToolbarHidden(true, animated: false)
         showEmptyDetailViewIfApplicable(message: NSLocalizedString("Please choose a setting",
                                                                    comment: "No setting has been selected yet in the settings VC"))
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - Extra Keys
@@ -503,5 +512,14 @@ extension SettingsTableViewController: SwitchCellDelegate {
         } else {
             row.action(newValue)
         }
+    }
+}
+
+extension SettingsTableViewController {
+
+    // workaround to avoid naming conflicts.
+    @objc private func pEpSettingsChanged() {
+        viewModel = SettingsViewModel(delegate: self)
+        tableView.reloadData()
     }
 }
