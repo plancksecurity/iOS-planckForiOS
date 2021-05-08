@@ -482,6 +482,7 @@
 		5B885B202645634800BB72CD /* NoActivatedAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B885B1F2645634600BB72CD /* NoActivatedAccountViewController.swift */; };
 		5B885B222645637900BB72CD /* NoActivatedAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B885B212645637900BB72CD /* NoActivatedAccountViewModel.swift */; };
 		5B885B292645BC4D00BB72CD /* AddAccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B885B282645BC4D00BB72CD /* AddAccountTableViewCell.swift */; };
+		5B885B2B2645C43D00BB72CD /* UIUtils+NoAccounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B885B2A2645C43D00BB72CD /* UIUtils+NoAccounts.swift */; };
 		5B885DB225E7B0350027DD24 /* Tutorial_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B885DB425E7B0350027DD24 /* Tutorial_iPad.storyboard */; };
 		5BA6180025F1475900973829 /* MessageImageAttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA617FF25F1475900973829 /* MessageImageAttachmentCell.swift */; };
 		5BA946232542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA946222542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift */; };
@@ -1120,6 +1121,7 @@
 		5B885B1F2645634600BB72CD /* NoActivatedAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoActivatedAccountViewController.swift; sourceTree = "<group>"; };
 		5B885B212645637900BB72CD /* NoActivatedAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoActivatedAccountViewModel.swift; sourceTree = "<group>"; };
 		5B885B282645BC4D00BB72CD /* AddAccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountTableViewCell.swift; sourceTree = "<group>"; };
+		5B885B2A2645C43D00BB72CD /* UIUtils+NoAccounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+NoAccounts.swift"; sourceTree = "<group>"; };
 		5B885DB325E7B0350027DD24 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Tutorial_iPad.storyboard; sourceTree = "<group>"; };
 		5B885DB625E7B03A0027DD24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Tutorial_iPad.strings; sourceTree = "<group>"; };
 		5B885DB825E7B0410027DD24 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Tutorial_iPad.strings; sourceTree = "<group>"; };
@@ -1378,6 +1380,7 @@
 				1521B796241BE026000EAE57 /* UIUtils+ActivityIndicator.swift */,
 				1521B798241BE086000EAE57 /* UIUtils+Contacts.swift */,
 				434C1AA525D40F3B00F622DB /* UIUtils+DraftsPreview.swift */,
+				5B885B2A2645C43D00BB72CD /* UIUtils+NoAccounts.swift */,
 			);
 			path = UIUtils;
 			sourceTree = "<group>";
@@ -3550,6 +3553,7 @@
 				152A39DD21905C3E00D9F8E4 /* AccountCell.swift in Sources */,
 				152295572302F7E200204FD3 /* ExtraKeysSettingViewModel.swift in Sources */,
 				5BA946232542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift in Sources */,
+				5B885B2B2645C43D00BB72CD /* UIUtils+NoAccounts.swift in Sources */,
 				B7DB7FDC221ADDBD003968DA /* UIImageView+Extension.swift in Sources */,
 				5BB7C74724D85A3B00D5F328 /* PEPWebviewController.swift in Sources */,
 				43306EC21FE129840045DD00 /* OAuth2Type.swift in Sources */,

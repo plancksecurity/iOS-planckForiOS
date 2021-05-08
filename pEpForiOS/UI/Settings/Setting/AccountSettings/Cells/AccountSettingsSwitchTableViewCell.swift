@@ -58,6 +58,10 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
         switchItem.onTintColor = .pEpGreen
     }
 
+    public func configure(with row: NoActivatedAccountViewModel.SwitchRow) {
+        print("")
+    }
+
     @IBAction func switchChanged(_ sender: UISwitch) {
         guard let row = row else {
             //This should never happen

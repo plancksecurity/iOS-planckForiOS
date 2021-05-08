@@ -40,6 +40,9 @@ extension Constants {
     /// Name of Storyboard that contains KeySyncWizardViewController.
     static let keySyncWizardStoryboard = "Reusable"
 
+    /// Name of Storyboard that contains KeySyncWizardViewController.
+    static let settingsStoryboard = "Settings"
+
     struct XibNames {
         static let loadingInterface = "LoadingInterface"
     }

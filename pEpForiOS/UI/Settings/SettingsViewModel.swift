@@ -211,7 +211,7 @@ extension SettingsViewModel {
             rows.append(generateNavigationRow(type: .pgpKeyImport, isDangerous: false))
             rows.append(generateSwitchRow(type: .unsecureReplyWarningEnabled,
                                           isDangerous: false,
-                                          isOn: AppSettings.shared.unsecureReplyWarningEnabled) {  [weak self]
+                                          isOn: AppSettings.shared.unsecureReplyWarningEnabled) { [weak self]
                 (value) in
                 AppSettings.shared.unsecureReplyWarningEnabled = value
                 guard let me = self else {

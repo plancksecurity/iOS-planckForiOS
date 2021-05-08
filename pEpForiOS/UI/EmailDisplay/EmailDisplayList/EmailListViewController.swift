@@ -126,6 +126,9 @@ final class EmailListViewController: UIViewController {
             navigationController?.popViewController(animated: true)
             return
         }
+
+        ///MB:-
+        UIUtils.presentNoActivatedAccountView()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

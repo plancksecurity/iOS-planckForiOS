@@ -378,14 +378,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="D99-2G-2i2">
-                                                    <rect key="frame" x="20" y="7.6666666666666643" width="28.333333333333332" height="17"/>
+                                                    <rect key="frame" x="20" y="7.9999999999999982" width="33" height="20.333333333333332"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4Ql-jN-Oal">
-                                                    <rect key="frame" x="19.999999999999996" y="26.999999999999996" width="32.666666666666664" height="14.333333333333334"/>
+                                                    <rect key="frame" x="20" y="28.333333333333332" width="35" height="15.666666666666666"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <nil key="textColor"/>
@@ -1157,7 +1157,7 @@
         <!--No Activated Account View Controller-->
         <scene sceneID="u9y-dE-tYa">
             <objects>
-                <viewController id="eRR-TY-1ak" customClass="NoActivatedAccountViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NoActivatedAccountViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="eRR-TY-1ak" customClass="NoActivatedAccountViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="uOu-QD-1Oe"/>
                         <viewControllerLayoutGuide type="bottom" id="a1i-YO-HXn"/>
@@ -1185,8 +1185,8 @@
                                                         <action selector="switchChanged:" destination="89V-FK-aS4" eventType="valueChanged" id="udy-1J-fUe"/>
                                                     </connections>
                                                 </switch>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="p≡p Sync" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xul-Ch-Bgm">
-                                                    <rect key="frame" x="20.000000000000004" y="11.999999999999998" width="61.333333333333343" height="17.333333333333329"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="mb@pep.security" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xul-Ch-Bgm">
+                                                    <rect key="frame" x="19.999999999999993" y="11.999999999999998" width="113.33333333333331" height="17.333333333333329"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>

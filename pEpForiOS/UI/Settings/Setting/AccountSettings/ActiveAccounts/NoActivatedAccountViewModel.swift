@@ -143,18 +143,24 @@ extension NoActivatedAccountViewModel {
         switch type {
         case .accounts:
             Account.all(onlyActiveAccounts: false).forEach { (acc) in
-                let accountRow = SwitchRow(type: .account,
-                                           title: acc.user.address) { [weak self] in
-                    guard let me = self else {
-                        Log.shared.errorAndCrash("Lost myself")
-                        return
-                    }
-                    handleAccountIsActivated(account: account)
-                }
+                let accountRow = getSwitchRow(account: acc)
                 rows.append(accountRow)
             }
             return rows
         }
+    }
+
+    private func getSwitchRow(account: Account) -> SwitchRow {
+        return SwitchRow(type: .account, title: "") { value in
+
+        }
+//        return SwitchRow(type: .account, title: account.user.address) { [weak self] value in
+//            guard let me = self else {
+//                Log.shared.errorAndCrash("Lost myself")
+//                return
+//            }
+//            me.handleAccountIsActivated(account: account)
+//        }
     }
 
     /// Handle the account activation

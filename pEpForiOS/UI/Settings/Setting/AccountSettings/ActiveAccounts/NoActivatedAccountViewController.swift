@@ -11,6 +11,8 @@ import pEpIOSToolbox
 
 class NoActivatedAccountViewController: UIViewController {
 
+    public static let storyboardId = "NoActivatedAccountViewController"
+
     @IBOutlet private weak var tableView: UITableView!
 
     private var viewModel = NoActivatedAccountViewModel()
@@ -25,6 +27,7 @@ class NoActivatedAccountViewController: UIViewController {
 }
 
 extension NoActivatedAccountViewController: UITableViewDelegate, UITableViewDataSource {
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.items.count
     }
@@ -38,12 +41,13 @@ extension NoActivatedAccountViewController: UITableViewDelegate, UITableViewData
         switch row.type {
         case .account:
             if let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: AccountSettingsSwitchTableViewCell.identifier, for: indexPath) as? AccountSettingsSwitchTableViewCell, let switchRow = row as? NoActivatedAccountViewModel.SwitchRow {
-                dequeuedCell.configure(with: row)
+                //MB:-!
+//                dequeuedCell.configure(with: row)
                 cell = dequeuedCell
             }
         case .addNewAccount:
-            if let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: "addAccountCell", for: indexPath) as? AddAccountTableViewCell {
-                dequeuedCell.configure()
+            if let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: "addAccountCell", for: indexPath) as? AddAccountTableViewCell, let row = row as? NoActivatedAccountViewModel.ActionRow {
+                dequeuedCell.configure(row: row)
                 cell = dequeuedCell
             }
 
@@ -52,4 +56,3 @@ extension NoActivatedAccountViewController: UITableViewDelegate, UITableViewData
     }
 
 }
-
