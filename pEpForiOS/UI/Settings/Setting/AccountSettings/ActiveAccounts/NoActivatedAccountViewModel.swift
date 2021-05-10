@@ -25,7 +25,7 @@ protocol NoActivatedAccountRowProtocol {
     var title: String { get }
 }
 
-struct NoActivatedAccountViewModel {
+class NoActivatedAccountViewModel {
 
     typealias ActionBlock = (() -> Void)
     typealias SwitchBlock = ((Bool) -> Void)
@@ -33,6 +33,7 @@ struct NoActivatedAccountViewModel {
     /// Items to be displayed in a NoActivatedAccountViewController
     private (set) var items: [Section] = [Section]()
 
+    /// Delegate to communicate with NoActivatedAccountViewController
     public weak var delegate: NoActivatedAccountDelegate?
 
     /// Indicates if the view should be dismissed.
@@ -40,12 +41,12 @@ struct NoActivatedAccountViewModel {
         return Account.countAll() > 0
     }
 
-    init() {
+    /// Constructor
+    /// 
+    /// - Parameter delegate: The delegate to communicate to VC.
+    init(delegate: NoActivatedAccountDelegate) {
         generateSections()
-    }
-
-    public func handleAddAccountButtonPressed() {
-        delegate?.showAccountSetupView()
+        self.delegate = delegate
     }
 }
 
@@ -79,7 +80,7 @@ extension NoActivatedAccountViewModel {
         }
     }
 
-    /// Struct that is used to perform an action. represents a ActionRow in NoActivatedAccountViewController
+    /// Struct that is used to perform an action. Represents a ActionRow in NoActivatedAccountViewController
     public struct ActionRow: NoActivatedAccountRowProtocol {
         //The row type
         var type: NoActivatedAccountViewModel.RowType
@@ -89,20 +90,26 @@ extension NoActivatedAccountViewModel {
         var action: ActionBlock?
     }
 
-    /// Struct that is used to show and interact with a switch. represents a SwitchRow in settingsTableViewController
+    /// Struct that is used to show and interact with a switch. Represents a SwitchRow in NoActivatedAccountViewController
     public struct SwitchRow: NoActivatedAccountRowProtocol {
         //The row type
         var type: NoActivatedAccountViewModel.RowType
         //The title of the swith row
         var title: String
+        /// Value of the switch
+        var isOn: Bool
         /// action to be executed when switch toggle
         var action: SwitchBlock
     }
 }
 
+//MARK: - Private
+
 extension NoActivatedAccountViewModel {
 
-    private mutating func generateSections() {
+    //MARK: - Sections
+
+    private func generateSections() {
         NoActivatedAccountViewModel.SectionType.allCases.forEach { (type) in
             items.append(sectionForType(sectionType: type))
         }
@@ -135,6 +142,7 @@ extension NoActivatedAccountViewModel {
         }
     }
 
+    //MARK: - Rows
     /// This method generates all the rows for the section type passed
     /// - Parameter type: The type of the section to generate the rows.
     /// - Returns: The rows. Every one must conform the NoActivatedAccountViewModelRowProtocol.
@@ -142,39 +150,43 @@ extension NoActivatedAccountViewModel {
         var rows = [NoActivatedAccountRowProtocol]()
         switch type {
         case .accounts:
-            Account.all(onlyActiveAccounts: false).forEach { (acc) in
+            let inactiveAcccounts = Account.all(onlyActiveAccounts: false).filter({$0.isActive})
+
+            /// Switch rows
+            inactiveAcccounts.forEach { (acc) in
                 let accountRow = getSwitchRow(account: acc)
                 rows.append(accountRow)
             }
+
+            /// Action rows
+            let title = NSLocalizedString("Add account", comment: "No Activated Account - Add account button")
+            let actionRow = ActionRow(type: .addNewAccount, title: title) { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                me.delegate?.showAccountSetupView()
+            }
+            rows.append(actionRow)
             return rows
         }
     }
 
     private func getSwitchRow(account: Account) -> SwitchRow {
-        return SwitchRow(type: .account, title: "") { value in
-
+        return SwitchRow(type: .account, title: account.user.address, isOn: false) { [weak self] value in
+            //Activate
+            account.isActive = true
+            account.session.commit()
+            //Notify
+            NotificationCenter.default.post(name: .pEpSettingsChanged,
+                                            object: self,
+                                            userInfo: nil)
+            //Dismiss
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.delegate?.dismissYourself()
         }
-//        return SwitchRow(type: .account, title: account.user.address) { [weak self] value in
-//            guard let me = self else {
-//                Log.shared.errorAndCrash("Lost myself")
-//                return
-//            }
-//            me.handleAccountIsActivated(account: account)
-//        }
-    }
-
-    /// Handle the account activation
-    ///
-    /// - Parameter account: The account to activate
-    private func handleAccountIsActivated(account: Account) {
-        //Activate
-        account.isActive = true
-        account.session.commit()
-        //Notify
-        NotificationCenter.default.post(name: .pEpSettingsChanged,
-                                        object: self,
-                                        userInfo: nil)
-        //Dismiss
-        delegate?.dismissYourself()
     }
 }

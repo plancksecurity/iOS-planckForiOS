@@ -22,6 +22,8 @@ extension Constants {
     /// holds the ViewController, which the ViewController has no knowledge of.
     static let composeSceneStoryboardId = "ReplyNavigation"
 
+    static let accountCreationNavigation = "accountCreationNavigationController"
+
     /// Name of the Main Storyboard
     static let mainStoryboard = "Main"
 
@@ -42,6 +44,9 @@ extension Constants {
 
     /// Name of Storyboard that contains KeySyncWizardViewController.
     static let settingsStoryboard = "Settings"
+
+    /// Name of Storyboard that contains Account Creation.
+    static let accountCreationStoryboard = "AccountCreation"
 
     struct XibNames {
         static let loadingInterface = "LoadingInterface"

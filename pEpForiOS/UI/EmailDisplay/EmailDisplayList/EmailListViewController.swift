@@ -126,9 +126,6 @@ final class EmailListViewController: UIViewController {
             navigationController?.popViewController(animated: true)
             return
         }
-
-        ///MB:-
-        UIUtils.presentNoActivatedAccountView()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -517,16 +514,10 @@ final class EmailListViewController: UIViewController {
             Log.shared.errorAndCrash("We should have a model here")
             return
         }
-        vm.isFilterEnabled = !vm.isFilterEnabled
-        if vm.isFilterEnabled {
-            let flexibleSpace = createFlexibleBarButtonItem()
-            toolbarItems?.insert(textFilterButton, at: 1)
-            toolbarItems?.insert(flexibleSpace, at: 1)
-        } else {
-            toolbarItems?.remove(at: 1)
-            toolbarItems?.remove(at: 1)
-        }
-        updateFilterButton()
+        ///MB:-
+        UIUtils.presentNoActivatedAccountView()
+
+//
     }
 
     private func updateFilterButton() {

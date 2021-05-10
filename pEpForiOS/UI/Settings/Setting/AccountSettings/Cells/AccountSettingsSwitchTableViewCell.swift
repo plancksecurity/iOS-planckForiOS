@@ -59,7 +59,7 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
     }
 
     public func configure(with row: NoActivatedAccountViewModel.SwitchRow) {
-        print("")
+        switchItem.isOn = row.isOn
     }
 
     @IBAction func switchChanged(_ sender: UISwitch) {
