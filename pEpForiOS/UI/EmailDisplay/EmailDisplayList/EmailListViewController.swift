@@ -514,10 +514,16 @@ final class EmailListViewController: UIViewController {
             Log.shared.errorAndCrash("We should have a model here")
             return
         }
-        ///MB:-
-        UIUtils.presentNoActivatedAccountView()
-
-//
+        vm.isFilterEnabled = !vm.isFilterEnabled
+        if vm.isFilterEnabled {
+            let flexibleSpace = createFlexibleBarButtonItem()
+            toolbarItems?.insert(textFilterButton, at: 1)
+            toolbarItems?.insert(flexibleSpace, at: 1)
+        } else {
+            toolbarItems?.remove(at: 1)
+            toolbarItems?.remove(at: 1)
+        }
+        updateFilterButton()
     }
 
     private func updateFilterButton() {

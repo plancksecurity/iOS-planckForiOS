@@ -1157,7 +1157,7 @@
         <!--No Activated Account View Controller-->
         <scene sceneID="u9y-dE-tYa">
             <objects>
-                <viewController storyboardIdentifier="NoActivatedAccountViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="eRR-TY-1ak" customClass="NoActivatedAccountViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NoActivatedAccountViewController" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="eRR-TY-1ak" customClass="NoActivatedAccountViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="uOu-QD-1Oe"/>
                         <viewControllerLayoutGuide type="bottom" id="a1i-YO-HXn"/>

@@ -19,12 +19,7 @@ class NoActivatedAccountViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("Accounts", comment: "Title View - Accounts")
-        navigationController?.setNavigationBarHidden(true, animated: false)
-        tableView.register(PEPHeaderView.self, forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
-        UIHelper.variableContentHeight(tableView)
-        UIHelper.variableCellHeightsTableView(tableView)
-        UIHelper.variableSectionHeadersHeightTableView(tableView)
+        setup()
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -75,14 +70,21 @@ extension NoActivatedAccountViewController: NoActivatedAccountDelegate {
     }
 
     func showAccountSetupView() {
-        let accountCreationStoryboard = UIStoryboard(name: Constants.accountCreationStoryboard, bundle: nil)
-        guard
-            let navigationController = accountCreationStoryboard.instantiateViewController(withIdentifier: Constants.accountCreationNavigation) as? UINavigationController
-        else {
-            Log.shared.errorAndCrash("Problem!")
-            return
-        }
-        print(navigationController)
 
+
+    }
+}
+
+//MARK: - Private
+
+extension NoActivatedAccountViewController {
+
+    private func setup() {
+        title = NSLocalizedString("Accounts", comment: "Title View - Accounts")
+        tableView.register(PEPHeaderView.self, forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
+        UIHelper.variableContentHeight(tableView)
+        UIHelper.variableCellHeightsTableView(tableView)
+        UIHelper.variableSectionHeadersHeightTableView(tableView)
+        navigationItem.setHidesBackButton(true, animated: true)
     }
 }
