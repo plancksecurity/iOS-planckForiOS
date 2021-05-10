@@ -284,12 +284,8 @@ extension Stack {
 
 extension NSManagedObjectContext {
 
-    /// Synchronously saves itself and alr other required contexts.
+    /// Saves itself and all other required contexts.
     func saveAndLogErrors() {
-        internalSaveAndLogErrors()
-    }
-
-    private func internalSaveAndLogErrors(alreadyCleanedDanglingObjects: Bool = false) {
         if !hasChanges {
             return
         }
@@ -310,28 +306,7 @@ extension NSManagedObjectContext {
                 }
             }
         } catch {
-            Log.shared.error(error: error)
-            guard !alreadyCleanedDanglingObjects else {
-                return
-            }
-            var cleanedUpSomething = false
-            let allImapFields: [CdImapFields] = (CdImapFields.all(in: self) as? [CdImapFields]) ?? []
-            for cdImapField in allImapFields {
-                if cdImapField.message == nil ||
-                    cdImapField.localFlags == nil ||
-                    cdImapField.serverFlags == nil
-                {
-                    Log.shared.errorAndCrash("Dangling object found! Find where this was created and fix it please!")
-                    self.delete(cdImapField)
-                    cleanedUpSomething = true
-                    continue
-                }
-            }
-            if cleanedUpSomething {
-                // We found a dangling object potentionally causing the throw and deleted it.
-                // Lets try again!
-                internalSaveAndLogErrors(alreadyCleanedDanglingObjects: true)
-            }
+            Log.shared.errorAndCrash(error: error)
         }
     }
 
