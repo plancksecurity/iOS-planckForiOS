@@ -16,6 +16,7 @@ import pEpIOSToolbox
 /// * `start()`
 /// * optionally `stop()` or `finish()`
 class EncryptAndSMTPSendService: QueryBasedService<CdMessage>, SendServiceProtocol {
+    weak private var encryptionErrorDelegate: EncryptionErrorDelegate?
 
     /// Creates a ready to go SMTP Encrypt and Send Service
     ///
@@ -26,9 +27,10 @@ class EncryptAndSMTPSendService: QueryBasedService<CdMessage>, SendServiceProtoc
     ///   see Service.init for docs
     init(backgroundTaskManager: BackgroundTaskManagerProtocol? = nil,
          cdAccount: CdAccount,
+         encryptionErrorDelegate: EncryptionErrorDelegate? = nil,
          errorPropagator: ErrorContainerProtocol?) {
         let predicate = CdMessage.PredicateFactory.outgoingMails(in: cdAccount)
-
+        self.encryptionErrorDelegate = encryptionErrorDelegate
         super.init(useSerialQueue: true,
                    backgroundTaskManager: backgroundTaskManager,
                    predicate: predicate,
@@ -72,7 +74,8 @@ class EncryptAndSMTPSendService: QueryBasedService<CdMessage>, SendServiceProtoc
             for cdMsg in cdMessagesToSend {
                 let sendOp = EncryptAndSMTPSendMessageOperation(cdMessageToSendObjectId: cdMsg.objectID,
                                                                 smtpConnection: smtpConnection,
-                                                                errorContainer: me.errorPropagator)
+                                                                errorContainer: me.errorPropagator,
+                                                                encryptionErrorDelegate: encryptionErrorDelegate)
                 createes.append(sendOp)
             }
             // Add error handler
