@@ -147,9 +147,10 @@ extension AppendMailsToFolderOperation {
                                             me.handleNextMessage()
                                             return
                                         }
-                                        Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
-                                        me.handle(error: BackgroundError.GeneralError.illegalState(info:
-                                            "##\nError: \(error)\nencrypting message: \(cdMessage)\n##"))
+                                        Log.shared.info("Error decrypting: %@", "\(error)")
+                                        me.privateMOC.perform {
+                                            me.handleEncryptionError(cdMessage: cdMessage)
+                                        }
                                     } else if error.domain == PEPObjCAdapterErrorDomain {
                                         Log.shared.errorAndCrash("Unexpected ")
                                         me.handle(error: BackgroundError.GeneralError.illegalState(info:
@@ -232,6 +233,23 @@ extension CdMessage {
             return false
         }
         return flags.flagIsSet(flag: .sourceModified)
+    }
+}
+
+// MARK: - Encryption Error Handling
+extension AppendMailsToFolderOperation {
+
+    private func handleEncryptionError(cdMessage: CdMessage) {
+        cdMessage.pEpRating = Int16(PEPRating.unencrypted.rawValue)
+        storeLocallyOnlyToAvoidAppendingUnencrypted(cdMessage: cdMessage)
+        // Avoid deleting locally stored msg in `markLastMessageAsFinished`
+        lastHandledMessageObjectID = nil
+        handleNextMessage()
+    }
+
+    private func storeLocallyOnlyToAvoidAppendingUnencrypted(cdMessage: CdMessage) {
+        cdMessage.uid = Int32(CdMessage.uidFakeResponsivenes)
+        privateMOC.saveAndLogErrors()
     }
 }
 
