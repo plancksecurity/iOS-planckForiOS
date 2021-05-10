@@ -14,7 +14,6 @@ public protocol SessionProtocol {
     func performAndWait(block: @escaping ()->())
     func commit()
     func rollback()
-//    static func saveToDisk()
 }
 
 public struct Session {
@@ -58,8 +57,4 @@ extension Session: SessionProtocol {
     public func rollback() {
         moc.rollback()
     }
-
-//    static public func saveToDisk() {
-//        Stack.shared.saveToDisk()
-//    }
 }

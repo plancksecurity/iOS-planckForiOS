@@ -284,7 +284,7 @@ extension Stack {
 
 extension NSManagedObjectContext {
 
-    /// Synchronously saves itself and alr other required contexts.
+    /// Saves itself and all other required contexts.
     func saveAndLogErrors() {
         if !hasChanges {
             return

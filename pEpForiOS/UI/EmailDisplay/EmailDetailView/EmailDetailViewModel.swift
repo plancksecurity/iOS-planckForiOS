@@ -43,6 +43,7 @@ class EmailDetailViewModel: EmailDisplayViewModel {
         createe.maxConcurrentOperationCount = 1
         return createe
     }()
+    private let trustManagementUtil = TrustManagementUtil()
 
     weak var selectionChangeDelegate: EmailDetailViewModelSelectionChangeDelegate?
 
@@ -191,7 +192,7 @@ class EmailDetailViewModel: EmailDisplayViewModel {
             completion(false)
             return
         }
-        TrustManagementUtil().handshakeCombinations(message: message) { (handshakeCombos) in
+        trustManagementUtil.handshakeCombinations(message: message) { (handshakeCombos) in
             completion(handshakeCombos.isEmpty ? false : true)
         }
     }

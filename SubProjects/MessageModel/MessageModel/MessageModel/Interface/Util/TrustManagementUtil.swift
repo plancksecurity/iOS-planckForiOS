@@ -317,8 +317,10 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
             groupHandshakeAction.notify(queue: DispatchQueue.main) {
                 var combinations = [HandshakeCombination]()
                 for ownId in ownIdentitiesWithKeys {
+                    let safeOwnId = ownId.safeForSession(Session.main)
                     for partnerId in handshakableIdentities {
-                        let combination = HandshakeCombination(ownIdentity: ownId, partnerIdentity: partnerId)
+                        let safePartnerId = partnerId.safeForSession(Session.main)
+                        let combination = HandshakeCombination(ownIdentity: safeOwnId, partnerIdentity: safePartnerId)
                         combinations.append(combination)
                     }
                 }
@@ -330,15 +332,21 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
 
     public func handshakeCombinations(message: Message,
                                       completion: @escaping ([HandshakeCombination])->Void) {
-        let me = message.parent.account.user
-        guard let from = message.from else {
-            Log.shared.errorAndCrash("Mail from no one?")
-            completion([])
-            return
+        message.session.perform { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            let accountUser = message.parent.account.user
+            guard let from = message.from else {
+                Log.shared.errorAndCrash("Mail from no one?")
+                completion([])
+                return
+            }
+            let to = Set(message.to.allObjects.filter { !$0.isMySelf }) // I am in with `me` already
+            let identities = [accountUser, from] + Array(to)
+            me.handshakeCombinations(identities: identities, completion: completion)
         }
-        let to = Set(message.to.allObjects.filter { !$0.isMySelf }) // I am in with `me` already
-        let identities = [me, from] + Array(to)
-        handshakeCombinations(identities: identities, completion: completion)
     }
 }
 
@@ -350,8 +358,10 @@ extension TrustManagementUtil {
         public let partnerIdentity: Identity
 
         public func hash(into hasher: inout Hasher) {
-            hasher.combine(ownIdentity)
-            hasher.combine(partnerIdentity)
+            let safeOwnIdentity = ownIdentity.safeForSession(Session.main)
+            let safePartnerIdentity = ownIdentity.safeForSession(Session.main)
+            hasher.combine(safeOwnIdentity)
+            hasher.combine(safePartnerIdentity)
         }
     }
 }
