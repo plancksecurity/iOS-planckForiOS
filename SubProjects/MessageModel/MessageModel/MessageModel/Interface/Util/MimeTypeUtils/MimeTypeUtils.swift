@@ -9,7 +9,11 @@
 import Foundation
 import MobileCoreServices
 
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 //!!!: Must move to Interface. Refactor.
 public class MimeTypeUtils {

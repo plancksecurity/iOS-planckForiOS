@@ -7,7 +7,13 @@
 //
 
 import Foundation
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
+
 protocol MessageRecipientCellDelegate: class {
     func displayAllRecipients(rowType: EmailViewModel.EmailRowType)
 }

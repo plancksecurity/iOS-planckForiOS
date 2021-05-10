@@ -13,7 +13,12 @@ import PantomimeFramework
 import PEPObjCAdapterTypes_iOS
 import PEPObjCAdapter_iOS
 import PEPObjCAdapterTypes_iOS
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 //!!!: Clean up! 1) Loads of topics mixed here. 2) Loads of public methods that expose CoreData.
 

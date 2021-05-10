@@ -12,7 +12,12 @@ import CoreData
 import PantomimeFramework
 import PEPObjCAdapterTypes_iOS
 import PEPObjCAdapter_iOS
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 // MARK: - Internal
 

@@ -7,7 +7,12 @@
 //
 
 import Foundation
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 // View Model of the Message Recipient TableViewCell.
 class MessageRecipientCellViewModel {

@@ -8,7 +8,12 @@
 
 import PEPObjCAdapterTypes_iOS
 import PEPObjCAdapter_iOS
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 extension CdAccount {
     func server(with type: Server.ServerType) -> CdServer? {

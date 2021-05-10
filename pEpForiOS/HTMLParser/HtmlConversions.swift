@@ -9,7 +9,11 @@
 import Foundation
 import UIKit
 
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 /// Conversions between Html -> NSAttributedString
 /// and NSAttributedString -> Html

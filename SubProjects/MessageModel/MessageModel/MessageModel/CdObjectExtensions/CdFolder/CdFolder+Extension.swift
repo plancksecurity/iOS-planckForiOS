@@ -8,7 +8,11 @@
 
 import CoreData
 
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 //!!!: looks OK, does not use non-CD Folder afaics. Sort to different files though (predicates, IMAP, all topics mixed here).
 //!!!: check visibility!
