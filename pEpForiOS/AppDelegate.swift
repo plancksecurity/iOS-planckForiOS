@@ -19,7 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// The model
     private var messageModelService: MessageModelServiceProtocol?
 
-    private var errorSubscriber = ErrorSubscriber()
+    private let errorSubscriber = ErrorSubscriber()
+
+    private let encryptionErrorHandler = EncryptionErrorHandler()
     
     /// Error Handler bubble errors up to the UI
     private lazy var errorPropagator: ErrorPropagator = {
@@ -52,7 +54,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                   keySyncServiceHandshakeHandler: KeySyncHandshakeService(),
                                                   keySyncStateProvider: AppSettings.shared,
                                                   usePEPFolderProvider: AppSettings.shared,
-                                                  passphraseProvider: userInputProvider)
+                                                  passphraseProvider: userInputProvider,
+                                                  encryptionErrorDelegate: encryptionErrorHandler)
     }
 
     private func askUserForNotificationPermissions() {

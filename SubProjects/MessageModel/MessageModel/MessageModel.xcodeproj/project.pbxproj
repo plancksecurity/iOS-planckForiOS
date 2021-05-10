@@ -83,6 +83,8 @@
 		154D173F2373330E001FDF78 /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154D173E2373330E001FDF78 /* SimpleOperationsTest.swift */; };
 		15524C52232E42EA000B5E26 /* UpdateIdentitiesAddressBookIdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15524C51232E42E9000B5E26 /* UpdateIdentitiesAddressBookIdService.swift */; };
 		155A0719260A16A000FF2754 /* Accoount+KeyReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155A0718260A16A000FF2754 /* Accoount+KeyReset.swift */; };
+		155E5B38264921630051A65E /* EncryptionErrorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155E5B37264921630051A65E /* EncryptionErrorDelegate.swift */; };
+		155E5B3F264921CA0051A65E /* EncryptionErrorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155E5B37264921630051A65E /* EncryptionErrorDelegate.swift */; };
 		155FE55F228B4F8E003D3E68 /* CdImapFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155FE55E228B4F8E003D3E68 /* CdImapFields.swift */; };
 		155FE561228B4FBE003D3E68 /* CdImapFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155FE560228B4FBE003D3E68 /* CdImapFlags.swift */; };
 		155FE563228B4FE1003D3E68 /* CdKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155FE562228B4FE1003D3E68 /* CdKey.swift */; };
@@ -800,6 +802,7 @@
 		15524C51232E42E9000B5E26 /* UpdateIdentitiesAddressBookIdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateIdentitiesAddressBookIdService.swift; sourceTree = "<group>"; };
 		155A0646260A061900FF2754 /* 1.1.255.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.1.255.xcdatamodel; sourceTree = "<group>"; };
 		155A0718260A16A000FF2754 /* Accoount+KeyReset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Accoount+KeyReset.swift"; sourceTree = "<group>"; };
+		155E5B37264921630051A65E /* EncryptionErrorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionErrorDelegate.swift; sourceTree = "<group>"; };
 		155FE55E228B4F8E003D3E68 /* CdImapFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdImapFields.swift; sourceTree = "<group>"; };
 		155FE560228B4FBE003D3E68 /* CdImapFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdImapFlags.swift; sourceTree = "<group>"; };
 		155FE562228B4FE1003D3E68 /* CdKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdKey.swift; sourceTree = "<group>"; };
@@ -1245,6 +1248,7 @@
 		15175E4C221D59DD00C91DB8 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				155E5B36264921420051A65E /* DecisionProviders */,
 				5B88A19E2406C1A4003240B8 /* Util */,
 				B7F6F47A234CDB2C003DF84A /* QueryResults */,
 				1543B68E22AAB06A002B59AB /* KeySync */,
@@ -1626,6 +1630,14 @@
 				15466132233B41FB008D2137 /* Message+PredicateFactory.swift */,
 			);
 			path = PredicateFactory;
+			sourceTree = "<group>";
+		};
+		155E5B36264921420051A65E /* DecisionProviders */ = {
+			isa = PBXGroup;
+			children = (
+				155E5B37264921630051A65E /* EncryptionErrorDelegate.swift */,
+			);
+			path = DecisionProviders;
 			sourceTree = "<group>";
 		};
 		155FE568228B5092003D3E68 /* CdObjects */ = {
@@ -3131,6 +3143,7 @@
 				434C217C25D6964B00F622DB /* ManagedObjectWrapperProtocol.swift in Sources */,
 				43BDDDAE25DD4DFC00FC0C68 /* SyncFoldersFromServerOperation.swift in Sources */,
 				437B12D925F79F74000CCFBA /* EncryptAndSendSharing.swift in Sources */,
+				155E5B3F264921CA0051A65E /* EncryptionErrorDelegate.swift in Sources */,
 				436FD22925DA810E00D929B3 /* Message+SessionAware.swift in Sources */,
 				434C226025D69B3C00F622DB /* String+Attachment.swift in Sources */,
 				434C21C625D6985D00F622DB /* CdServerCredentials.swift in Sources */,
@@ -3369,6 +3382,7 @@
 				15175ECE221DC39300C91DB8 /* QueryResultsControllerDelegate.swift in Sources */,
 				152701892294537900197378 /* CdMessage+FakeMessage.swift in Sources */,
 				158A6DFE2305BBFE006A9ECE /* CdExtraKeys+Convenience.swift in Sources */,
+				155E5B38264921630051A65E /* EncryptionErrorDelegate.swift in Sources */,
 				43E74C6C1E38B38C00A2F7A6 /* ImapFlagsUtility.swift in Sources */,
 				434DC0E21DAE7A49007C98B8 /* Identity.swift in Sources */,
 				154660E223392004008D2137 /* DecryptMessageOperation.swift in Sources */,

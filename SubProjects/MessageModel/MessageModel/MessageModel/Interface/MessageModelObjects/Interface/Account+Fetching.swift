@@ -61,7 +61,7 @@ extension Account {
     /// - Returns: the found Account if any, nil otherwize
     public static func by(address: String, in session: Session = Session.main) -> Account? {
         let moc = session.moc
-        guard let cdAccount = CdAccount.searchAccount(withAddress: address, context: moc) else {
+        guard let cdAccount = CdAccount.by(address: address, context: moc) else {
             // Nothing found
             return nil
         }
