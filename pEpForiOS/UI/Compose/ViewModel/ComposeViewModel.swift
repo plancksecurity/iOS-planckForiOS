@@ -211,10 +211,7 @@ class ComposeViewModel {
     }
 
     public func handleUserClickedSendButton() {
-        // Dirty hack. Works around a mess in Session.main, caused by creating and using of
-        //messageToSend in/for TrustmanagementVC (which is supposed to use an independent Session
-        // but leaves leftovers that makes commiting the Session impossible).
-        Session.main.rollback()
+        rollbackMainSession()
         let safeState = state.makeSafe(forSession: Session.main)
         let sendClosure: (() -> Message?) = { [weak self] in
             guard let me = self else {
@@ -744,7 +741,19 @@ extension ComposeViewModel {
         return NSLocalizedString("Cancel", comment: "compose email cancel")
     }
 
+    //!!!: Dirty hack. Works around a mess in Session.main, caused by creating and using of
+    //messageToSend in/for TrustmanagementVC (which is supposed to use an independent Session
+    // but leaves leftovers that makes commiting the Session impossible).
+    private func rollbackMainSession() {
+        Session.main.rollback()
+    }
+
+    public func handleDeleteActionTriggered() {
+        rollbackMainSession()
+    }
+
     public func handleSaveActionTriggered() {
+        rollbackMainSession()
         guard let data = state.initData else {
             Log.shared.errorAndCrash("No data")
             return
