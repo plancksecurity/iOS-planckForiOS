@@ -156,7 +156,7 @@ struct ComposeUtil {
         return message
 
     }
-//BUFF: recipientsOnly obsolete
+
     /// Creates a message from the given ComposeView State
     ///
     /// - Parameter state: state to get data from
