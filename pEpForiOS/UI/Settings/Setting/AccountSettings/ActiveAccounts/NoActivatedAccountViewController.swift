@@ -66,12 +66,11 @@ extension NoActivatedAccountViewController: UITableViewDelegate, UITableViewData
 extension NoActivatedAccountViewController: NoActivatedAccountDelegate {
 
     func dismissYourself() {
-        dismiss(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 
     func showAccountSetupView() {
-
-
+        UIUtils.presentSetupAccount(loginDelegate: self)
     }
 }
 
@@ -88,3 +87,13 @@ extension NoActivatedAccountViewController {
         navigationItem.setHidesBackButton(true, animated: true)
     }
 }
+
+//MARK: - Login
+
+extension NoActivatedAccountViewController: LoginViewControllerDelegate {
+
+    func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController) {
+        navigationController?.popViewController(animated: true)
+    }
+}
+

@@ -12,6 +12,8 @@ import pEpIOSToolbox
 
 final class AccountTypeSelectorViewController: UIViewController {
 
+    static let storyboardId = "AccountTypeSelectorViewController"
+    
     var viewModel = AccountTypeSelectorViewModel()
     var delegate: AccountTypeSelectorViewModelDelegate?
     var loginDelegate: LoginViewControllerDelegate?

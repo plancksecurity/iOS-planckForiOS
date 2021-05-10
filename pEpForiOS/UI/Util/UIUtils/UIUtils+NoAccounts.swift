@@ -24,6 +24,25 @@ extension UIUtils {
             presenterVc.navigationController?.pushViewController(noActivatedAccountViewController, animated: true)
         }
     }
+
+    /// Modally presents a "No Activated Account ViewController"
+    static public func presentSetupAccount(loginDelegate: LoginViewControllerDelegate) {
+        DispatchQueue.main.async {
+            let accountCreationStoryboard = UIStoryboard(name: Constants.accountCreationStoryboard, bundle: nil)
+            guard let accountCreationVC = accountCreationStoryboard.instantiateViewController(withIdentifier: AccountTypeSelectorViewController.storyboardId) as? AccountTypeSelectorViewController else {
+                Log.shared.errorAndCrash("AccountTypeSelectorViewController is not available!")
+                return
+            }
+            accountCreationVC.hidesBottomBarWhenPushed = true
+            let presenterVc = UIApplication.currentlyVisibleViewController()
+
+            let nav = UINavigationController(rootViewController: accountCreationVC)
+
+            nav.modalTransitionStyle = .coverVertical
+            nav.modalPresentationStyle = .fullScreen
+            accountCreationVC.loginDelegate = loginDelegate
+
+            presenterVc.present(nav, animated: true, completion: nil)
+        }
+    }
 }
-
-
