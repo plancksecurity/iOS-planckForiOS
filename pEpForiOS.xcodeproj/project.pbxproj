@@ -420,6 +420,8 @@
 		43C4156225EE5BD80071C608 /* Attachment+InlinedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C4156125EE5BD80071C608 /* Attachment+InlinedImage.swift */; };
 		43C4156525EE5CA50071C608 /* Attachment+InlinedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C4156125EE5BD80071C608 /* Attachment+InlinedImage.swift */; };
 		43C415C725EE687A0071C608 /* NSItemProvider+MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C415C625EE687A0071C608 /* NSItemProvider+MimeType.swift */; };
+		43C9112626454538005B9CDE /* AppAuthForExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C9112526454538005B9CDE /* AppAuthForExtensions.framework */; };
+		43C9112726454538005B9CDE /* AppAuthForExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43C9112526454538005B9CDE /* AppAuthForExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -624,6 +626,7 @@
 				1512133E24166CE0009B7C88 /* ldns_xcode.framework in Embed Frameworks */,
 				43E60263262F0E8100232FE6 /* MessageModelForAppExtensions.framework in Embed Frameworks */,
 				154272B62537387000DD333E /* pEp4iosIntern.framework in Embed Frameworks */,
+				43C9112726454538005B9CDE /* AppAuthForExtensions.framework in Embed Frameworks */,
 				B710526F241684AB007148E8 /* MessageModel.framework in Embed Frameworks */,
 				B710526924168474007148E8 /* pEpIOSToolbox.framework in Embed Frameworks */,
 				B710526624168400007148E8 /* SwipeCellKit.framework in Embed Frameworks */,
@@ -1046,6 +1049,7 @@
 		43B10C7F1EC2EE7F003E849F /* CppDummy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CppDummy.cpp; sourceTree = "<group>"; };
 		43C4156125EE5BD80071C608 /* Attachment+InlinedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Attachment+InlinedImage.swift"; sourceTree = "<group>"; };
 		43C415C625EE687A0071C608 /* NSItemProvider+MimeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSItemProvider+MimeType.swift"; sourceTree = "<group>"; };
+		43C9112526454538005B9CDE /* AppAuthForExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppAuthForExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43C98ABF219C22E8006418B0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/AccountCreation.strings; sourceTree = "<group>"; };
 		43C98AC0219C22E8006418B0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Settings.strings; sourceTree = "<group>"; };
 		43C98AC2219C275E006418B0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1238,6 +1242,7 @@
 				1512133D24166CE0009B7C88 /* ldns_xcode.framework in Frameworks */,
 				43D2133B2237CABD00C060A1 /* libxml2.tbd in Frameworks */,
 				B710526E241684AB007148E8 /* MessageModel.framework in Frameworks */,
+				43C9112626454538005B9CDE /* AppAuthForExtensions.framework in Frameworks */,
 				B710526B24168481007148E8 /* AppAuth.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2510,6 +2515,7 @@
 		495560841E7150ED0016579E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43C9112526454538005B9CDE /* AppAuthForExtensions.framework */,
 				43E60261262F0E8100232FE6 /* MessageModelForAppExtensions.framework */,
 				43E60228262F08A700232FE6 /* MessageModelForAppExtensions.framework */,
 				1516719F262EFDE100E99CE5 /* pEpIOSToolboxForExtensions.framework */,

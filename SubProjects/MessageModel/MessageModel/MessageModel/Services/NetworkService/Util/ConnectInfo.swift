@@ -7,7 +7,12 @@
 //
 
 import CoreData
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 class ConnectInfo: Hashable {
     let account: AccountInfoCache

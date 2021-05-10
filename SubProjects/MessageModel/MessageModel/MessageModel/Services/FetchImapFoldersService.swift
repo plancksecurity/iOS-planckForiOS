@@ -1,5 +1,10 @@
-import pEpIOSToolbox
 import CoreData
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
+import pEpIOSToolbox
+#endif
 
 public class FetchImapFoldersService {
 

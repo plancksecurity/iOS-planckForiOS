@@ -8,7 +8,12 @@
 
 import CoreData
 
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
+
 import PantomimeFramework
 
 /// This class bridges calls from Pantomime CWIMAPFolder to our persistant layer.

@@ -6,8 +6,13 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import pEpIOSToolbox
 import CoreData
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
+import pEpIOSToolbox
+#endif
 
 /// Base class for operations that directly communicate with the imapConnection (and thus indirectly with Pantomime).
 /// Subclass if (and ONLY IF) you are an ImapConnectionDelegate.

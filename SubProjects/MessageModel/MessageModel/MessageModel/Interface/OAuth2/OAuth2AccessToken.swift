@@ -8,7 +8,11 @@
 
 import Foundation
 
+#if EXT_SHARE
+import AppAuthForExtensions
+#else
 import AppAuth
+#endif
 
 /**
  Result of an OAuth2 authorization request. Persist this, and use it anytime you need
