@@ -25,7 +25,7 @@ extension KeySyncService: PEPSendMessageDelegate {
         let moc = Stack.shared.newPrivateConcurrentContext
         moc.performAndWait {
             guard
-                let cdFromAccount = CdAccount.searchAccount(withAddress: address, context: moc)
+                let cdFromAccount = CdAccount.by(address: address, context: moc)
             else {
                 foundAccount = false
                 return
@@ -37,7 +37,7 @@ extension KeySyncService: PEPSendMessageDelegate {
 
             // For every recipient, try to look up the corresponding account.
             let recipientsAccounts = recipients.compactMap {
-                CdAccount.searchAccount(withAddress: $0.address, context: moc)
+                CdAccount.by(address: $0.address, context: moc)
             }
 
             if recipientsAccounts.count == recipients.count {

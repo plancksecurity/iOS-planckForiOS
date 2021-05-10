@@ -37,7 +37,7 @@ public class Account: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
     public init(user: Identity, servers: [Server], session: Session = Session.main) {
 
         let moc = session.moc
-        let existingOrNewCdAccount = CdAccount.searchAccount(withAddress: user.address,
+        let existingOrNewCdAccount = CdAccount.by(address: user.address,
                                               context: moc) ?? CdAccount(context: moc)
         // Assure isMySelf is set //???: why?
         existingOrNewCdAccount.identity = Identity(identity: user).cdObject

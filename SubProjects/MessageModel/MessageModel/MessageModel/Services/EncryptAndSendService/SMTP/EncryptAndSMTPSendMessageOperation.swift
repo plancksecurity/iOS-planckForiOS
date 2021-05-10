@@ -22,13 +22,18 @@ class EncryptAndSMTPSendMessageOperation: ConcurrentBaseOperation {
     private var smtpConnection: SmtpConnectionProtocol
     private var cdMessage: CdMessage? = nil
     private let cdMessageToSendObjectId: NSManagedObjectID
+    weak private var encryptionErrorDelegate: EncryptionErrorDelegate?
+
+    // MARK: - API
 
     init(parentName: String = #file + #function,
          cdMessageToSendObjectId: NSManagedObjectID,
          smtpConnection: SmtpConnectionProtocol,
-         errorContainer: ErrorContainerProtocol = ErrorPropagator()) {
+         errorContainer: ErrorContainerProtocol = ErrorPropagator(),
+         encryptionErrorDelegate: EncryptionErrorDelegate? = nil) {
         self.cdMessageToSendObjectId = cdMessageToSendObjectId
         self.smtpConnection = smtpConnection
+        self.encryptionErrorDelegate = encryptionErrorDelegate
         super.init(parentName: parentName, errorContainer: errorContainer)
     }
 
@@ -38,7 +43,13 @@ class EncryptAndSMTPSendMessageOperation: ConcurrentBaseOperation {
             return
         }
         smtpConnection.delegate = self
-        sendMessage()
+        privateMOC.perform { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.perform()
+        }
     }
 }
 
@@ -46,59 +57,50 @@ class EncryptAndSMTPSendMessageOperation: ConcurrentBaseOperation {
 
 extension EncryptAndSMTPSendMessageOperation {
 
-    private func sendMessage() {
-        privateMOC.perform { [weak self] in
+    private func perform() {
+        cdMessage = privateMOC.object(with: cdMessageToSendObjectId) as? CdMessage
+        guard let cdMessage = cdMessage else {
+            Log.shared.errorAndCrash("No msg to send")
+            let error = BackgroundError.CoreDataError.couldNotFindMessage(info: "No message for ObjectId: \(cdMessageToSendObjectId)")
+            handle(error: error)
+            return
+        }
+        cdMessage.pEpRating = Int16(PEPRating.undefined.rawValue)
+        cdMessage.sent = Date()
+        let pEpMsg = cdMessage.pEpMessage()
+
+        guard !cdMessage.isAutoConsumable else {
+            // The Engine asked us to send this message (by calling the send callback).
+            // Thus the Engine has crafted this message. Do not pass to the Engine again.
+            // Simply send out.
+            send(pEpMessage: pEpMsg)
+            return
+        }
+        let extraKeys = CdExtraKey.fprsOfAllExtraKeys(in: privateMOC)
+        PEPUtils.encrypt(pEpMessage: pEpMsg,
+                         encryptionFormat: cdMessage.pEpProtected ? .PEP : .none,
+                         extraKeys: extraKeys,
+                         errorCallback:
+                            { [weak self] (error) in
+                                // ERROR
+                                guard let me = self else {
+                                    Log.shared.errorAndCrash("Lost myself")
+                                    return
+                                }
+                                me.privateMOC.perform {
+                                    me.handleEncryptionError(error: error as NSError)
+                                }
+                            })
+        { [weak self] (_, encryptedMessageToSend) in
+            // SUCCESS
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            me.cdMessage = me.privateMOC.object(with: me.cdMessageToSendObjectId) as? CdMessage
-            guard let cdMessage = me.cdMessage else {
-                Log.shared.errorAndCrash("No msg to send")
-                let error = BackgroundError.CoreDataError.couldNotFindMessage(info: "No message for ObjectId: \(me.cdMessageToSendObjectId)")
-                me.handle(error: error)
-                return
-            }
-            cdMessage.sent = Date()
-            let pEpMsg = cdMessage.pEpMessage()
-
-            if cdMessage.isAutoConsumable {
-                // The Engine asked us to send this message (by calling the send callback).
-                // Thus the Engine has crafted this message. Do not pass to the Engine again.
-                // Simply send out.
-                me.send(pEpMessage: pEpMsg)
-            } else {
-                let extraKeys = CdExtraKey.fprsOfAllExtraKeys(in: me.privateMOC)
-                PEPUtils.encrypt(pEpMessage: pEpMsg,
-                                 encryptionFormat: cdMessage.pEpProtected ? .PEP : .none,
-                                 extraKeys: extraKeys, errorCallback: { (error) in
-                                    let error = error as NSError
-                                    if error.domain == PEPObjCAdapterEngineStatusErrorDomain {
-                                        if error.isPassphraseError {
-                                            // The adapter is responsible to ask for passphrase. We are not.
-                                            Log.shared.error("Passphrase error trying to encrypt a message")
-                                            me.waitForBackgroundTasksAndFinish()
-                                            return
-                                        }
-                                        Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
-                                        me.handle(error: BackgroundError.GeneralError.illegalState(info:
-                                            "##\nError: \(error)\nencrypting message: \(cdMessage)\n##"))
-                                    } else if error.domain == PEPObjCAdapterErrorDomain {
-                                        Log.shared.errorAndCrash("Unexpected ")
-                                        me.handle(error: BackgroundError.GeneralError.illegalState(info:
-                                            "We do not exept this error domain to show up here: \(error)"))
-                                    } else {
-                                        Log.shared.errorAndCrash("Unhandled error domain: %@", "\(error.domain)")
-                                        me.handle(error: BackgroundError.GeneralError.illegalState(info:
-                                            "Unhandled error domain: \(error.domain)"))
-                                    }
-                }) { (_, encryptedMessageToSend) in
-                    me.backgroundQueue.addOperation {
-                        me.privateMOC.perform {
-                            me.setOriginalRatingHeader(unencryptedCdMessage: cdMessage)
-                            me.send(pEpMessage: encryptedMessageToSend)
-                        }
-                    }
+            me.backgroundQueue.addOperation {
+                me.privateMOC.perform {
+                    me.setOriginalRatingHeader(unencryptedCdMessage: cdMessage)
+                    me.send(pEpMessage: encryptedMessageToSend)
                 }
             }
         }
@@ -130,10 +132,10 @@ extension EncryptAndSMTPSendMessageOperation {
                 let sentFolder = CdFolder.by(folderType: .sent,
                                              account: cdAccount,
                                              context: me.privateMOC)
-                else {
-                    Log.shared.errorAndCrash("Problem moving last message")
-                    me.waitForBackgroundTasksAndFinish()
-                    return
+            else {
+                Log.shared.errorAndCrash("Problem moving last message")
+                me.waitForBackgroundTasksAndFinish()
+                return
             }
 
             guard !cdMessage.isAutoConsumable else {
@@ -144,11 +146,17 @@ extension EncryptAndSMTPSendMessageOperation {
                 me.privateMOC.saveAndLogErrors()
                 return
             }
-            let rating = blockingGetOutgoingMessageRating(for: cdMessage)
 
             cdMessage.parent = sentFolder
             cdMessage.imap?.localFlags?.flagSeen = true
-            cdMessage.pEpRating = Int16(rating.rawValue)
+            if cdMessage.pEpRating == PEPRating.undefined.rawValue {
+                // We MUST NOT set outgoing rating if the rating has already been defined as
+                // unencrypted by handling encryption errors!
+                // Backgound: this may cause showing yellow or green for a message that could not
+                // be encrypted!
+                // See IOS-2823
+                cdMessage.pEpRating = Int16(blockingGetOutgoingMessageRating(for: cdMessage).rawValue)
+            }
 
             cdMessage.createFakeMessage(context: me.privateMOC)
 
@@ -180,6 +188,118 @@ extension EncryptAndSMTPSendMessageOperation {
             return .undefined
         }
         return rating
+    }
+}
+
+// MARK: - Encryption Error Handling
+
+extension EncryptAndSMTPSendMessageOperation {
+
+    private func handleEncryptionError(error: NSError) {
+        if error.domain == PEPObjCAdapterEngineStatusErrorDomain ||
+            error.domain == PEPObjCAdapterErrorDomain
+        {
+            if error.isPassphraseError {
+                // The adapter is responsible to ask for passphrase. We are not.
+                Log.shared.error("Passphrase error trying to encrypt a message")
+                waitForBackgroundTasksAndFinish()
+                return
+            }
+            Log.shared.error("Error encrypting: %@", "\(error)")
+            makeSureMessageWithColorIsNotSentOutUnencryptedWithoutNotice()
+        } else {
+            Log.shared.errorAndCrash("Unhandled error domain: %@", "\(error.domain)")
+            handle(error: BackgroundError.GeneralError.illegalState(info: "Unhandled error domain: \(error.domain)"))
+        }
+    }
+
+    private func makeSureMessageWithColorIsNotSentOutUnencryptedWithoutNotice() {
+        guard let delegate = encryptionErrorDelegate else {
+            Log.shared.info("No delegate set")
+            moveToDrafts()
+            return
+        }
+        guard let msg = cdMessage else {
+            Log.shared.errorAndCrash("No message!")
+            moveToDrafts()
+            return
+        }
+        var rating: PEPRating? = nil
+        let group = DispatchGroup()
+        group.enter()
+        msg.outgoingMessageRating { (rtg) in
+            rating = rtg
+            group.leave()
+        }
+        group.wait()
+        guard let outgoingMsgRating = rating else {
+            Log.shared.errorAndCrash("No rating!")
+            moveToDrafts()
+            return
+        }
+        let outgoingColor = PEPSession().color(from: outgoingMsgRating)
+        guard outgoingColor == .green || outgoingColor == .yellow else {
+            // Is unprotected mail. Send out unencrypted without bothering.
+            sendUnencrypted()
+            return
+        }
+        // Message was yellow or green but could not be encrypted.
+        // Ask the responsible person what to do now and act according to the returend decision.
+        delegate.handleCouldNotEncrypt() { [weak self] sendUnencrypted in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.privateMOC.perform {
+                if sendUnencrypted {
+                    //                        me.cdMessage?.pEpProtected = false
+                    me.sendUnencrypted()
+                } else {
+                    me.moveToDrafts()
+                }
+            }
+        }
+    }
+
+    /// Move the message to drafts folder. Probably because we had an issue encrypting.
+    private func moveToDrafts() {
+        privateMOC.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+
+            defer { me.waitForBackgroundTasksAndFinish() }
+
+            guard let cdMessageToMove = me.cdMessage,
+                  let cdAccount = cdMessageToMove.parent?.account
+            else {
+                Log.shared.errorAndCrash("Missing required data!")
+                return
+            }
+            let draftsFolder = CdFolder.by(folderType: .drafts,
+                                           account: cdAccount,
+                                           context: me.privateMOC)
+            cdMessageToMove.parent = draftsFolder
+            me.privateMOC.saveAndLogErrors()
+        }
+    }
+
+    private func sendUnencrypted() {
+        backgroundQueue.addOperation { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.privateMOC.perform {
+                me.cdMessage?.pEpRating = Int16(PEPRating.unencrypted.rawValue)
+                guard let unencryptedMessage = me.cdMessage?.pEpMessage() else {
+                    Log.shared.errorAndCrash("No Message")
+                    return
+                }
+                me.send(pEpMessage: unencryptedMessage)
+            }
+        }
     }
 }
 
