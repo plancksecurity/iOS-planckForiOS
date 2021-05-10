@@ -2356,12 +2356,12 @@
 		43CB60781DA4EB4E0015281E = {
 			isa = PBXGroup;
 			children = (
-				4348B7BD261DAE8B000D6FA9 /* MessageModelForAppExtentions */,
 				43CB60841DA4EB4E0015281E /* MessageModel */,
+				4348B7BD261DAE8B000D6FA9 /* MessageModelForAppExtentions */,
 				43CB608F1DA4EB4E0015281E /* MessageModelTests */,
 				B751B99322D4D5100018DE0D /* MessageModelTestApp */,
-				15A91EBC25BB357A00D33EAB /* system.db */,
 				434A6CE325D2BF1B00179335 /* MessageModelForAppExtensions */,
+				15A91EBC25BB357A00D33EAB /* system.db */,
 				43CB60831DA4EB4E0015281E /* Products */,
 				B7DB7FA322147000003968DA /* Frameworks */,
 				4303EA41253826A8006151D3 /* Recovered References */,
