@@ -211,6 +211,10 @@ class ComposeViewModel {
     }
 
     public func handleUserClickedSendButton() {
+        // Dirty hack. Works around a mess in Session.main, caused by creating and using of
+        //messageToSend in/for TrustmanagementVC (which is supposed to use an independent Session
+        // but leaves leftovers that makes commiting the Session impossible).
+        Session.main.rollback()
         let safeState = state.makeSafe(forSession: Session.main)
         let sendClosure: (() -> Message?) = { [weak self] in
             guard let me = self else {
