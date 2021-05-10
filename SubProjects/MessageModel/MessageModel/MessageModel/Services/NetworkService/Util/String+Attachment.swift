@@ -8,7 +8,11 @@
 
 import Foundation
 
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 extension String {
     public func firstMatch(pattern: String, rangeNumber: Int = 1) -> String? {

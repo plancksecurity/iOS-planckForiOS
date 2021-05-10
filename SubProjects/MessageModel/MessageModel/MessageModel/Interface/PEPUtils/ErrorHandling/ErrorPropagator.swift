@@ -8,7 +8,11 @@
 
 import Foundation
 
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 /// Conform to this if you want to be a subscriber of ErrorPropagator.
 public protocol ErrorPropagatorSubscriber: class {

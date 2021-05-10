@@ -7,11 +7,12 @@
 //
 
 import UIKit
-import MessageModel
 
 #if EXT_SHARE
+import MessageModelForAppExtensions
 import pEpIOSToolboxForExtensions
 #else
+import MessageModel
 import pEpIOSToolbox
 #endif
 

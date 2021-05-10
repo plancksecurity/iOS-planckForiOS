@@ -716,8 +716,6 @@ extension ComposeViewController: SwipeTableViewCellDelegate {
 
 extension ComposeViewController {
 
-    //BUFF:
-
     private struct KeyCommandsProvider {
         fileprivate static let commands: [UIKeyCommand] = {
             let tabForward = UIKeyCommand(input: "\t",
@@ -907,7 +905,6 @@ extension ComposeViewController {
             // Do nothing.
         }
     }
-    //
 
     private func setInitialFocus() {
         guard !isInitialFocusSet else {

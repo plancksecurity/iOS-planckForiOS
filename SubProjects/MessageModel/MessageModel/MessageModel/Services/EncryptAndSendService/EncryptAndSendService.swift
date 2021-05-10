@@ -12,6 +12,7 @@ protocol SendServiceProvider {
 
     /// Returns the Service responsible for sending messages marked for sending.
     func sendService(backgroundTaskManager: BackgroundTaskManagerProtocol?,
+                     encryptionErrorDelegate: EncryptionErrorDelegate?,
                      errorPropagator: ErrorContainerProtocol) -> SendServiceProtocol?
 }
 
@@ -22,13 +23,32 @@ protocol SendServiceProvider {
 /// * `start()`
 /// * optionally `stop()` or `finish()`
 class EncryptAndSendService: PerAccountService {
+    weak private var encryptionErrorDelegate: EncryptionErrorDelegate?
+
+    required init(backgroundTaskManager: BackgroundTaskManagerProtocol? = nil,
+                  encryptionErrorDelegate: EncryptionErrorDelegate? = nil,
+                  errorPropagator: ErrorPropagator?) {
+        self.encryptionErrorDelegate = encryptionErrorDelegate
+        super.init(backgroundTaskManager: backgroundTaskManager, errorPropagator: errorPropagator)
+    }
 
     // MARK: - PerAccountServiceAbstractProtocol
 
     override func service(for cdAccount: CdAccount,
                           backgroundTaskManager: BackgroundTaskManagerProtocol,
                           errorPropagator: ErrorContainerProtocol) -> ServiceProtocol? {
+        return service(for: cdAccount,
+                       backgroundTaskManager: backgroundTaskManager,
+                       encryptionErrorDelegate: encryptionErrorDelegate,
+                       errorPropagator: errorPropagator)
+    }
+
+    func service(for cdAccount: CdAccount,
+                 backgroundTaskManager: BackgroundTaskManagerProtocol,
+                 encryptionErrorDelegate: EncryptionErrorDelegate? = nil,
+                 errorPropagator: ErrorContainerProtocol) -> ServiceProtocol? {
         return cdAccount.sendService(backgroundTaskManager: backgroundTaskManager,
+                                     encryptionErrorDelegate: encryptionErrorDelegate,
                                      errorPropagator: errorPropagator)
     }
 }

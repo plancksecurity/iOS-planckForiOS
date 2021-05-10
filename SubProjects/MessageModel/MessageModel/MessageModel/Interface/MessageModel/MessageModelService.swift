@@ -61,7 +61,8 @@ public final class MessageModelService {
                 keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol? = nil,
                 keySyncStateProvider: KeySyncStateProvider,
                 usePEPFolderProvider: UsePEPFolderProviderProtocol,
-                passphraseProvider: PassphraseProviderProtocol) {
+                passphraseProvider: PassphraseProviderProtocol,
+                encryptionErrorDelegate: EncryptionErrorDelegate) {
         // Mega ugly, MUST go away. Fix with Stack update.
         // Touch Stack once to assure it sets up the mainContext on the main queue
         let _ = Stack.shared
@@ -73,7 +74,8 @@ public final class MessageModelService {
                       keySyncServiceHandshakeHandler: keySyncServiceHandshakeHandler,
                       keySyncStateProvider: keySyncStateProvider,
                       usePEPFolderProvider: usePEPFolderProvider,
-                      passphraseProvider: passphraseProvider)
+                      passphraseProvider: passphraseProvider,
+                      encryptionErrorDelegate: encryptionErrorDelegate)
     }
 }
 
@@ -105,7 +107,8 @@ extension MessageModelService {
                                keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol? = nil,
                                keySyncStateProvider: KeySyncStateProvider,
                                usePEPFolderProvider: UsePEPFolderProviderProtocol,
-                               passphraseProvider: PassphraseProviderProtocol) {
+                               passphraseProvider: PassphraseProviderProtocol,
+                               encryptionErrorDelegate: EncryptionErrorDelegate) {
         //###
         // Servcies that run only once when the app starts
         if let bundleIdentifier = Bundle.main.bundleIdentifier {
@@ -120,6 +123,7 @@ extension MessageModelService {
         let decryptService = DecryptService(backgroundTaskManager: backgroundTaskManager,
                                             errorPropagator: errorPropagator)
         let encryptAndSendService = EncryptAndSendService(backgroundTaskManager: backgroundTaskManager,
+                                                          encryptionErrorDelegate: encryptionErrorDelegate,
                                                           errorPropagator: errorPropagator)
         let replicationService = ReplicationService(backgroundTaskManager: backgroundTaskManager,
                                                        errorPropagator: errorPropagator)

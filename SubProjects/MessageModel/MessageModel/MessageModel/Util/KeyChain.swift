@@ -9,7 +9,12 @@
 import Foundation
 
 import pEp4iosIntern
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
  /// Abstracts KeyChain ralted issues
 class KeyChain {

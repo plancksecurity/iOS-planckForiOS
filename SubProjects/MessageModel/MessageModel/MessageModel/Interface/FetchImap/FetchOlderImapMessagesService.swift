@@ -6,8 +6,11 @@
 ////  Copyright © 2017 p≡p Security S.A. All rights reserved.
 ////
 
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
-
+#endif
 
 public final class FetchOlderImapMessagesService: FetchServiceBaseClass {
 
