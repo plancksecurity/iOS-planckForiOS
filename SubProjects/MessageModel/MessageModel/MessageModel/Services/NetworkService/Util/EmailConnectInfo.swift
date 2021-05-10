@@ -9,7 +9,12 @@
 import CoreData
 
 import PantomimeFramework
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 extension ConnectionTransport {
     init?(fromInt: Int?) {
@@ -121,9 +126,32 @@ class EmailConnectInfo: ConnectInfo {
     func accessToken() -> OAuth2AccessTokenProtocol? {
         if authMethod == .saslXoauth2,
             let payload = loginPassword {
+            handleClassMappingsForNSKeyedUnarchiver()
             return OAuth2AccessToken.from(base64Encoded: payload) as? OAuth2AccessTokenProtocol
         } else {
             return nil
         }
+    }
+
+    /// Handle the case where a `MessageModel.OAuth2AccessToken` gets stored by the app,
+    /// but we're running in the extension and it would be `MessageModelForExtension.OAuth2AccessToken`,
+    /// which can't be found.
+    /// This is achived by giving `NSKeyedUnarchiver` a class mapping.
+    func handleClassMappingsForNSKeyedUnarchiver() {
+        #if EXT_SHARE
+        // In the sharing extension, decoding `MessageModel.OAuth2AccessToken`
+        // would lead to an error, so map it the correct class.
+        // This happens if the token gets written by the app, and the
+        // extension tries to read.
+        NSKeyedUnarchiver.setClass(OAuth2AccessToken.classForCoder(),
+                                   forClassName: "MessageModel.OAuth2AccessToken")
+        #else
+        // In the app, map `MessageModelForExtensions.OAuth2AccessToken"`
+        // to the known class.
+        // This could happin in the case the extension has to deal with a token
+        // refresh, and updates it, and then the app wants to read it.
+        NSKeyedUnarchiver.setClass(OAuth2AccessToken.classForCoder(),
+                                   forClassName: "MessageModelForExtensions.OAuth2AccessToken")
+        #endif
     }
 }

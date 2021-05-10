@@ -8,7 +8,12 @@
 
 import CoreData
 
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
+
 import PantomimeFramework
 
 /// A `CWFolder`/`CWIMAPFolder` that is backed by core data. Use on the main thread.

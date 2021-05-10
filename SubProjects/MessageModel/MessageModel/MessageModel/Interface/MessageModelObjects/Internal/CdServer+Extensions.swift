@@ -8,7 +8,11 @@
 
 import Foundation
 
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 extension CdServer {
     var serverType: Server.ServerType {

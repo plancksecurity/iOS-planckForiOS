@@ -56,8 +56,17 @@ extension Message {
     static func pEpRating(message: Message,
                           completion: @escaping (PEPRating)->Void) {
         switch message.parent.folderType {
-        case .outbox, .drafts:
+        case .outbox:
             return message.outgoingMessageRating(completion: completion)
+        case .drafts:
+            // In case we have en error while encrypting, the outgoingMessageRating might be
+            // yellow/green but due to the error while encrypting the message is actually unencrypted.
+            // Thus we show outgoingMessageRating only if no rating has been defined yet.
+            if message.cdObject.pEpRating == PEPRating.undefined.rawValue {
+                message.outgoingMessageRating(completion: completion)
+            } else {
+                completion(PEPUtils.pEpRatingFromInt(message.pEpRatingInt))
+            }
         case .all, .archive, .inbox, .normal, .sent, .spam, .flagged, .trash:
             completion(PEPUtils.pEpRatingFromInt(message.pEpRatingInt))
         case .pEpSync:

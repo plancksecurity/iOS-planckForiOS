@@ -165,7 +165,7 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
             SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
         }
 
-        if status != noErr {
+        if status != noErr && status != errSecItemNotFound {
             Log.shared.logWarn(message: "Could not enumerate keychain items, status \(status)")
         }
 

@@ -150,6 +150,16 @@ class ComposeViewModel {
         self.init(state: state)
     }
 
+    convenience init(prefilledFromAddress: String) {
+        let prefilledFrom = Identity(address: prefilledFromAddress)
+        let initData = InitData(prefilledTo: nil,
+                                prefilledFrom: prefilledFrom,
+                                originalMessage: nil,
+                                composeMode: nil)
+        let state = ComposeViewModelState(initData: initData)
+        self.init(state: state)
+    }
+
     public func handleDidReAppear() {
         state.validate()
     }

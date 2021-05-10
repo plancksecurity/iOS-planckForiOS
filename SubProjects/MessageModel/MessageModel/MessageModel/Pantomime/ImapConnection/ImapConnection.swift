@@ -9,7 +9,13 @@
 import PEPObjCAdapterTypes_iOS
 import PEPObjCAdapter_iOS
 import PantomimeFramework
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
+
 import CoreData
 
 // MARK: - ImapState

@@ -8,7 +8,11 @@
 
 import CoreData
 
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 extension Account {
     public struct Fetch {
@@ -57,15 +61,11 @@ extension Account {
     /// - Returns: the found Account if any, nil otherwize
     public static func by(address: String, in session: Session = Session.main) -> Account? {
         let moc = session.moc
-        var account: Account? = nil
-        moc.performAndWait {
-            guard let cdAccount = CdAccount.searchAccount(withAddress: address, context: moc) else {
-                // Doesnt exist.
-                return
-            }
-            account = MessageModelObjectUtils.getAccount(fromCdAccount: cdAccount, context: moc)
+        guard let cdAccount = CdAccount.by(address: address, context: moc) else {
+            // Nothing found
+            return nil
         }
-        return account
+        return MessageModelObjectUtils.getAccount(fromCdAccount: cdAccount)
     }
 
     /// Returns all Accouts in DB.

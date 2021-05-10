@@ -8,7 +8,11 @@
 
 import CoreData
 
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 extension CdAccount {
 
@@ -31,15 +35,11 @@ extension CdAccount {
     }
 
     func account() -> Account {
-      return MessageModelObjectUtils.getAccount(fromCdAccount: self)
+        return MessageModelObjectUtils.getAccount(fromCdAccount: self)
     }
-}
 
-// MARK: - Private
-
-extension CdAccount {
-    static func searchAccount(withAddress address: String, //BUFF: that is very wrongin multiple ways: 1) predicate factory not used. 2) bad naming 3) I am sure we already have a mthod to get CdAccount by address 4) is in section PRIVATE
-                              context: NSManagedObjectContext) -> CdAccount? {
+    static func by(address: String,
+                   context: NSManagedObjectContext) -> CdAccount? {
         let moc = context
         let p = CdAccount.PredicateFactory.by(address: address)
         let cdAcc = CdAccount.first(predicate: p, in: moc)
