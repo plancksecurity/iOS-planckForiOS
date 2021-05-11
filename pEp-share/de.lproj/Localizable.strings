@@ -63,10 +63,10 @@
 /* UIUtils.showActionSheetWithContactOptions.button.title Copy Email */
 "Copy Email" = "E-Mail kopieren";
 
-/* Sharing extension could not save a message */
+/* Sharing extension: Could not save the message */
 "Could not save the message for sending" = "Die Nachricht konnte nicht zum Senden gespeichert werden";
 
-/* Sharing extension has no account */
+/* Sharing extension: Could not send the message */
 "Could not send:\n%1@" = "Konnte nicht gesendet werden:\n%1@";
 
 /* Incorrect trustwords/PGP fingerprint */
@@ -90,7 +90,7 @@
    Enable Protection button title of pEp protection toggle action sheet */
 "Enable Protection" = "Schutz aktivieren";
 
-/* Sharing extension error title */
+/* Sharing extension: Error title */
 "Error" = "Fehler";
 
 /* No comment provided by engineer. */
@@ -132,7 +132,7 @@
 /* 'No' button to confirm less secure email sent */
 "NO" = "NEIN";
 
-/* Sharing extension has no account */
+/* Sharing extension: No account found */
 "No Account found" = "Kein Konto gefunden";
 
 /* Privacy status suggestion */
@@ -202,10 +202,10 @@
 /* Reply to unknown sender without date */
 "Someone wrote:" = "Jemand schrieb:";
 
-/* Sharing extension could not load or process the attachment */
+/* Sharing extension: Could not load or process the attachment */
 "The attachment could not be loaded" = "Der Anhang konnte nicht geladen werden";
 
-/* Sharing extension could not load or process the attachment */
+/* Sharing extension: Could not load or process the attachment */
 "The attachment could not be loaded:\n%1@" = "Der Anhang konnte nicht geladen werden:\n%1@";
 
 /* Privacy status explanation */
@@ -250,7 +250,7 @@
 /* Privacy status explanation */
 "This message is unsecure." = "Diese Nachricht ist unsicher.";
 
-/* Sharing extension cannot detect the type of the attachment, cannot load it */
+/* Sharing extension: Cannot detect the type of the attachment, cannot load it */
 "This type of attachment is not (yet) supported" = "Diese Art von Anhang wird (noch) nicht unterstützt";
 
 /* Compose field title */
