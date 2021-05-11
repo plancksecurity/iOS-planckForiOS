@@ -389,7 +389,7 @@ extension EmailViewController {
     }
 
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {
-        cell.subjectLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
+        cell.subjectLabel?.font = UIFont.pepFont(style: .headline, weight: .semibold)
         cell.subjectLabel?.text = row.title
         if let date = row.date {
             cell.dateLabel.font = UIFont.pepFont(style: .footnote, weight: .semibold)
