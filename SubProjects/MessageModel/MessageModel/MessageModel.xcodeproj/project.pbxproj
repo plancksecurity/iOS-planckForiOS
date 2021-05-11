@@ -429,8 +429,8 @@
 		43753CEC222D39B3002EE98B /* ImapFlags+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CEB222D39B3002EE98B /* ImapFlags+Pantomime.swift */; };
 		43753CEE222D3A3E002EE98B /* CdAttachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CED222D3A3E002EE98B /* CdAttachment+Extension.swift */; };
 		437AA507224507A200B5C7A4 /* CdFolder+NonOptionalConvenienceAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437AA506224507A200B5C7A4 /* CdFolder+NonOptionalConvenienceAccessors.swift */; };
-		437B127225F785D1000CCFBA /* EncryptAndSendSharingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B126D25F785B5000CCFBA /* EncryptAndSendSharingProtocol.swift */; };
-		437B12D925F79F74000CCFBA /* EncryptAndSendSharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437B12D425F79E26000CCFBA /* EncryptAndSendSharing.swift */; };
+		437FF358264A65D200D70D9B /* EncryptAndSendSharingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437FF356264A65D100D70D9B /* EncryptAndSendSharingProtocol.swift */; };
+		437FF359264A65D200D70D9B /* EncryptAndSendSharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437FF357264A65D100D70D9B /* EncryptAndSendSharing.swift */; };
 		4383344423FD78BB004CC422 /* ClientCertificateUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4383344323FD78BB004CC422 /* ClientCertificateUtilTest.swift */; };
 		4384D3F8243F2DAE006CCBA2 /* CdMessage+PantomimeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384D3F7243F2DAE006CCBA2 /* CdMessage+PantomimeTest.swift */; };
 		4384D3FA243F2FD6006CCBA2 /* UnencryptedHTMLMail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4384D3F9243F2FD6006CCBA2 /* UnencryptedHTMLMail.txt */; };
@@ -986,8 +986,8 @@
 		43753CEB222D39B3002EE98B /* ImapFlags+Pantomime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ImapFlags+Pantomime.swift"; sourceTree = "<group>"; };
 		43753CED222D3A3E002EE98B /* CdAttachment+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAttachment+Extension.swift"; sourceTree = "<group>"; };
 		437AA506224507A200B5C7A4 /* CdFolder+NonOptionalConvenienceAccessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+NonOptionalConvenienceAccessors.swift"; sourceTree = "<group>"; };
-		437B126D25F785B5000CCFBA /* EncryptAndSendSharingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptAndSendSharingProtocol.swift; sourceTree = "<group>"; };
-		437B12D425F79E26000CCFBA /* EncryptAndSendSharing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptAndSendSharing.swift; sourceTree = "<group>"; };
+		437FF356264A65D100D70D9B /* EncryptAndSendSharingProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptAndSendSharingProtocol.swift; sourceTree = "<group>"; };
+		437FF357264A65D100D70D9B /* EncryptAndSendSharing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptAndSendSharing.swift; sourceTree = "<group>"; };
 		4383344323FD78BB004CC422 /* ClientCertificateUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateUtilTest.swift; sourceTree = "<group>"; };
 		4383344623FD806D004CC422 /* Certificate_001.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Certificate_001.p12; sourceTree = "<group>"; };
 		4384D3F7243F2DAE006CCBA2 /* CdMessage+PantomimeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+PantomimeTest.swift"; sourceTree = "<group>"; };
@@ -2146,26 +2146,10 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		4348B7BD261DAE8B000D6FA9 /* MessageModelForAppExtentions */ = {
-			isa = PBXGroup;
-			children = (
-				4348B7BE261DAE97000D6FA9 /* Interface */,
-			);
-			path = MessageModelForAppExtentions;
-			sourceTree = "<group>";
-		};
-		4348B7BE261DAE97000D6FA9 /* Interface */ = {
-			isa = PBXGroup;
-			children = (
-				437B126D25F785B5000CCFBA /* EncryptAndSendSharingProtocol.swift */,
-				437B12D425F79E26000CCFBA /* EncryptAndSendSharing.swift */,
-			);
-			path = Interface;
-			sourceTree = "<group>";
-		};
 		434A6CE325D2BF1B00179335 /* MessageModelForAppExtensions */ = {
 			isa = PBXGroup;
 			children = (
+				437FF355264A65D100D70D9B /* Interface */,
 				434A6CE425D2BF1B00179335 /* MessageModelForAppExtensions.h */,
 				434A6CE525D2BF1B00179335 /* Info.plist */,
 			);
@@ -2202,6 +2186,15 @@
 				433E743E225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift */,
 			);
 			path = Accessors;
+			sourceTree = "<group>";
+		};
+		437FF355264A65D100D70D9B /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				437FF356264A65D100D70D9B /* EncryptAndSendSharingProtocol.swift */,
+				437FF357264A65D100D70D9B /* EncryptAndSendSharing.swift */,
+			);
+			path = Interface;
 			sourceTree = "<group>";
 		};
 		4383344223FD7891004CC422 /* Certificates */ = {
@@ -2356,7 +2349,6 @@
 			isa = PBXGroup;
 			children = (
 				43CB60841DA4EB4E0015281E /* MessageModel */,
-				4348B7BD261DAE8B000D6FA9 /* MessageModelForAppExtentions */,
 				43CB608F1DA4EB4E0015281E /* MessageModelTests */,
 				B751B99322D4D5100018DE0D /* MessageModelTestApp */,
 				434A6CE325D2BF1B00179335 /* MessageModelForAppExtensions */,
@@ -3057,13 +3049,13 @@
 				434C230725D6A18600F622DB /* ImapConnection.swift in Sources */,
 				436FD26025DA831000D929B3 /* Server+SessionAware.swift in Sources */,
 				434C227325D69BAA00F622DB /* CdHeaderField+Extensions.swift in Sources */,
+				437FF359264A65D200D70D9B /* EncryptAndSendSharing.swift in Sources */,
 				436FD25025DA827300D929B3 /* Color+pEp.swift in Sources */,
 				43FD3F4326148B1D0032F809 /* PEPDecryptFlags+ReUpload.swift in Sources */,
 				43BDDDA225DD4D4900FC0C68 /* SmtpSendError.swift in Sources */,
 				434C22A325D69CD200F622DB /* CdAccount+NonOptionalConvenienceAccessors.swift.swift in Sources */,
 				43BDDD0225DD34EE00FC0C68 /* Attachment+ContentID.swift in Sources */,
 				43BDDD8625DD4B2100FC0C68 /* CdAccount+ProviderSpecific.swift in Sources */,
-				437B127225F785D1000CCFBA /* EncryptAndSendSharingProtocol.swift in Sources */,
 				436FD23525DA817800D929B3 /* ClientCertificate.swift in Sources */,
 				434C221D25D699A800F622DB /* RelationshipKeyPath.swift in Sources */,
 				434C235225D6AEB900F622DB /* FetchOlderImapMessagesOperation.swift in Sources */,
@@ -3142,7 +3134,6 @@
 				434C249F25D6CEC900F622DB /* CdAttachment+Pantomime.swift in Sources */,
 				434C217C25D6964B00F622DB /* ManagedObjectWrapperProtocol.swift in Sources */,
 				43BDDDAE25DD4DFC00FC0C68 /* SyncFoldersFromServerOperation.swift in Sources */,
-				437B12D925F79F74000CCFBA /* EncryptAndSendSharing.swift in Sources */,
 				155E5B3F264921CA0051A65E /* EncryptionErrorDelegate.swift in Sources */,
 				436FD22925DA810E00D929B3 /* Message+SessionAware.swift in Sources */,
 				434C226025D69B3C00F622DB /* String+Attachment.swift in Sources */,
@@ -3207,6 +3198,7 @@
 				434C21CE25D698D000F622DB /* CdKey.swift in Sources */,
 				434C248F25D6CE4A00F622DB /* CdImapFlags+Pantomime.swift in Sources */,
 				436FD25C25DA82E000D929B3 /* ServerCredentials+SessionAware.swift in Sources */,
+				437FF358264A65D200D70D9B /* EncryptAndSendSharingProtocol.swift in Sources */,
 				43BDDDB625DD615E00FC0C68 /* CreateRequiredFoldersOperation.swift in Sources */,
 				434C247425D6C97700F622DB /* OAuth2AccessToken.swift in Sources */,
 				434C223A25D69A5600F622DB /* Rating+pEp.swift in Sources */,
