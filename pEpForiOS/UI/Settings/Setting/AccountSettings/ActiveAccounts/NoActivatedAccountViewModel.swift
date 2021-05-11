@@ -36,11 +36,6 @@ class NoActivatedAccountViewModel {
     /// Delegate to communicate with NoActivatedAccountViewController
     public weak var delegate: NoActivatedAccountDelegate?
 
-    /// Indicates if the view should be dismissed.
-    public var shouldDismiss: Bool {
-        return Account.countAll() > 0
-    }
-
     /// Constructor
     /// 
     /// - Parameter delegate: The delegate to communicate to VC.
@@ -54,6 +49,7 @@ class NoActivatedAccountViewModel {
 
 extension NoActivatedAccountViewModel {
 
+    /// Identifies the sections
     public enum SectionType : String, CaseIterable {
         case accounts
     }
@@ -143,6 +139,7 @@ extension NoActivatedAccountViewModel {
     }
 
     //MARK: - Rows
+
     /// This method generates all the rows for the section type passed
     /// - Parameter type: The type of the section to generate the rows.
     /// - Returns: The rows. Every one must conform the NoActivatedAccountViewModelRowProtocol.
@@ -150,7 +147,7 @@ extension NoActivatedAccountViewModel {
         var rows = [NoActivatedAccountRowProtocol]()
         switch type {
         case .accounts:
-            let inactiveAcccounts = Account.all(onlyActiveAccounts: false).filter({$0.isActive})
+            let inactiveAcccounts = Account.all(onlyActiveAccounts: false).filter({!$0.isActive})
 
             /// Switch rows
             inactiveAcccounts.forEach { (acc) in
