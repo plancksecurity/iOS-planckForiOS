@@ -97,16 +97,19 @@ class MockedAccountSettingsViewModelDelegate : AccountSettingsViewModelDelegate,
     var showLoadingViewExpectation: XCTestExpectation?
     var hideLoadingViewExpectation: XCTestExpectation?
     var didChangeExpectation: XCTestExpectation?
+    var showCantDeactivateAccountAlertExpectation: XCTestExpectation?
 
     init(testCase: XCTestCase,
          showErrorAlertExpectation: XCTestExpectation? = nil,
          showLoadingViewExpectation: XCTestExpectation? = nil,
          hideLoadingViewExpectation: XCTestExpectation? = nil,
-         didChangeExpectation: XCTestExpectation? = nil) {
+         didChangeExpectation: XCTestExpectation? = nil,
+         showCantDeactivateAccountAlertExpectation: XCTestExpectation? = nil) {
         self.showErrorAlertExpectation = showErrorAlertExpectation
         self.showLoadingViewExpectation = showLoadingViewExpectation
         self.hideLoadingViewExpectation = hideLoadingViewExpectation
         self.didChangeExpectation = didChangeExpectation
+        self.showCantDeactivateAccountAlertExpectation = showCantDeactivateAccountAlertExpectation
     }
 
     func setLoadingView(visible: Bool) {
@@ -134,6 +137,13 @@ class MockedAccountSettingsViewModelDelegate : AccountSettingsViewModelDelegate,
         if didChangeExpectation != nil {
             didChangeExpectation?.fulfill()
             didChangeExpectation = nil
+        }
+    }
+
+    func showCantDeactivateAccountAlert() {
+        if showCantDeactivateAccountAlertExpectation != nil {
+            showCantDeactivateAccountAlertExpectation.fulfill()
+            showCantDeactivateAccountAlertExpectation = nil
         }
     }
 }

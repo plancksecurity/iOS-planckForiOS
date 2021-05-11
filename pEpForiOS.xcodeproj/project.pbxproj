@@ -466,6 +466,7 @@
 		5B3B019124B46CFC00FBB4B5 /* UILayout+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3B019024B46CFC00FBB4B5 /* UILayout+Extension.swift */; };
 		5B3B019524B49DD700FBB4B5 /* AccountSettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3B019424B49DD700FBB4B5 /* AccountSettingsViewModelTest.swift */; };
 		5B3C13BF23D8AF2E00FC0A53 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */; };
+		5B41344E264A9A0500B395A1 /* NoActivatedAccountViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41344D264A9A0500B395A1 /* NoActivatedAccountViewModelTest.swift */; };
 		5B41C6082418F15100C268CE /* TutorialStep3iPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41C6072418F15100C268CE /* TutorialStep3iPhoneViewController.swift */; };
 		5B41F9CF25CD517700E55EDF /* MockAppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41F9CE25CD517700E55EDF /* MockAppSettings.swift */; };
 		5B4A718A252CC4A500436FCF /* Mailto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A7189252CC4A500436FCF /* Mailto.swift */; };
@@ -1109,6 +1110,7 @@
 		5B3B019024B46CFC00FBB4B5 /* UILayout+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILayout+Extension.swift"; sourceTree = "<group>"; };
 		5B3B019424B49DD700FBB4B5 /* AccountSettingsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModelTest.swift; sourceTree = "<group>"; };
 		5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		5B41344D264A9A0500B395A1 /* NoActivatedAccountViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoActivatedAccountViewModelTest.swift; sourceTree = "<group>"; };
 		5B41C6072418F15100C268CE /* TutorialStep3iPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep3iPhoneViewController.swift; sourceTree = "<group>"; };
 		5B41F9CE25CD517700E55EDF /* MockAppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAppSettings.swift; sourceTree = "<group>"; };
 		5B4A7189252CC4A500436FCF /* Mailto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mailto.swift; sourceTree = "<group>"; };
@@ -1713,6 +1715,7 @@
 				B7C7E3102334E028009ABFFE /* TrustSetting */,
 				43EC75AA2164C24800048CFE /* SetOwnKey */,
 				15874BB02127493E00A3A4A6 /* SettingDefaultAccountTableViewController.swift */,
+				5B885B232645637F00BB72CD /* NoActivatedAccounts */,
 				15874BB62127493E00A3A4A6 /* AccountSettings */,
 				15874BBE2127493E00A3A4A6 /* TrustedServerSetting */,
 				152295552302F73400204FD3 /* ExtraKeysSetting */,
@@ -1723,7 +1726,6 @@
 		15874BB62127493E00A3A4A6 /* AccountSettings */ = {
 			isa = PBXGroup;
 			children = (
-				5B885B232645637F00BB72CD /* ActiveAccounts */,
 				5B09DB4625B71247005D8125 /* SettingChangeDelegate.swift */,
 				5BF39DA7257A737A00A00A96 /* AccountSettingsHelper.swift */,
 				B7CE922C24E3F9F700B5A874 /* EditSignature */,
@@ -1781,6 +1783,7 @@
 				43D1900D2513734400A36973 /* SettingsViewModelTest.swift */,
 				1546CBFD252B5D3A00A7AA7D /* Credits */,
 				439EA15224727966005D6C9A /* KeyImport */,
+				5B41344C264A99D500B395A1 /* NoActivatedAccounts */,
 				37A710E2233B7A96001FEAF0 /* AccountSettings */,
 				37F272ED237075A8005C51AA /* EditableAccountSettings */,
 				158A6E2D230D53C7006A9ECE /* ExtraKeysSetting */,
@@ -2588,6 +2591,23 @@
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
+		5B41344B264A997200B395A1 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				5B885B282645BC4D00BB72CD /* AddAccountTableViewCell.swift */,
+				5BCDB4FC26494D81006F1DEE /* NoActivatedAccountSwitchCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		5B41344C264A99D500B395A1 /* NoActivatedAccounts */ = {
+			isa = PBXGroup;
+			children = (
+				5B41344D264A9A0500B395A1 /* NoActivatedAccountViewModelTest.swift */,
+			);
+			path = NoActivatedAccounts;
+			sourceTree = "<group>";
+		};
 		5B56E35D25E7C39D00B0AB42 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
@@ -2630,15 +2650,14 @@
 			path = SF;
 			sourceTree = "<group>";
 		};
-		5B885B232645637F00BB72CD /* ActiveAccounts */ = {
+		5B885B232645637F00BB72CD /* NoActivatedAccounts */ = {
 			isa = PBXGroup;
 			children = (
-				5B885B1F2645634600BB72CD /* NoActivatedAccountViewController.swift */,
-				5B885B282645BC4D00BB72CD /* AddAccountTableViewCell.swift */,
-				5BCDB4FC26494D81006F1DEE /* NoActivatedAccountSwitchCell.swift */,
 				5B885B212645637900BB72CD /* NoActivatedAccountViewModel.swift */,
+				5B885B1F2645634600BB72CD /* NoActivatedAccountViewController.swift */,
+				5B41344B264A997200B395A1 /* Cells */,
 			);
-			path = ActiveAccounts;
+			path = NoActivatedAccounts;
 			sourceTree = "<group>";
 		};
 		5BB7C73324D2EB2300D5F328 /* Unified Folders */ = {
@@ -3707,6 +3726,7 @@
 				5BAAD350257E2658002CACAA /* EditableAccountSettingsViewModelTest.swift in Sources */,
 				1574D07D2114696B00FEDC93 /* URL+MailToTest.swift in Sources */,
 				3705095D22CF4AC900CB73D6 /* KeySyncHandshakeViewModelTest.swift in Sources */,
+				5B41344E264A9A0500B395A1 /* NoActivatedAccountViewModelTest.swift in Sources */,
 				4356FFEC21356CB600804089 /* ReplyAllPossibleCheckerTest.swift in Sources */,
 				153D4A422540380200AE8A4E /* ExtraKey+TestUtils.swift in Sources */,
 				3A7F89C1252B4FDA00A38460 /* EmailListViewModel+DraftsPreviewTests.swift in Sources */,
