@@ -366,7 +366,13 @@ extension EmailViewController {
                 cell.contentText.attributedText = body
                 cell.contentText.dataDetectorTypes = .link
                 cell.contentText.delegate = me.clickHandler
-                me.updateSizeIfLastCell(indexPath: indexPath)
+                // We have to update size (not `updateSizeIfLastCell()`) here even if we are not
+                // the last cell. `row.body` is async and the completion block might be called
+                // after loding the last row (e.g. some attachment), which will lead to the
+                // bodyRowTextview size never updated and thus invisible for the user. The backside
+                // is that we might call `updateSize()` twice, once after oading the last attachment
+                // row, once here. See IOS-2832.
+                me.tableView.updateSize()
             }
         }
     }

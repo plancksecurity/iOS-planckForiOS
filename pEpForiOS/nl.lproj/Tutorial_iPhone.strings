@@ -43,7 +43,7 @@
 /* Class = "UILabel"; text = "You can close this tutorial anytime with the Skip button."; ObjectID = "RKC-QV-5yv"; */
 "RKC-QV-5yv.text" = "Je kunt deze tutorial op elk moment sluiten met de Skip knop.";
 
-/* Class = "UILabel"; text = "The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:"; ObjectID = "rLc-J2-pmo"; */
+/* Class = "UILabel"; text = "The icon in the top bar reflects the Privacy Status of the message, which is the lowest common denominator of all communication partners of that message, for example:"; ObjectID = "rLc-J2-pmo"; */
 "rLc-J2-pmo.text" = "Het icoon in de bovenste balk geeft de Privacy Status van het bericht weer, wat de laagste gemene deler is van alle communicatiepartners van dat bericht, bijvoorbeeld:";
 
 /* Class = "UILabel"; text = "With this Privacy Status all communication is Secure, but to confirm that your contact is really the person you know, you should compare Trustwords with this contact."; ObjectID = "rM7-ay-vaT"; */
