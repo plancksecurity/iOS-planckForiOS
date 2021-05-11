@@ -2146,14 +2146,12 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		4348B7BD261DAE8B000D6FA9 /* MessageModelForAppExtensions */ = {
+		4348B7BD261DAE8B000D6FA9 /* MessageModelForAppExtentions */ = {
 			isa = PBXGroup;
 			children = (
-				434A6CE425D2BF1B00179335 /* MessageModelForAppExtensions.h */,
-				434A6CE525D2BF1B00179335 /* Info.plist */,
 				4348B7BE261DAE97000D6FA9 /* Interface */,
 			);
-			path = MessageModelForAppExtensions;
+			path = MessageModelForAppExtentions;
 			sourceTree = "<group>";
 		};
 		4348B7BE261DAE97000D6FA9 /* Interface */ = {
@@ -2163,6 +2161,15 @@
 				437B12D425F79E26000CCFBA /* EncryptAndSendSharing.swift */,
 			);
 			path = Interface;
+			sourceTree = "<group>";
+		};
+		434A6CE325D2BF1B00179335 /* MessageModelForAppExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				434A6CE425D2BF1B00179335 /* MessageModelForAppExtensions.h */,
+				434A6CE525D2BF1B00179335 /* Info.plist */,
+			);
+			path = MessageModelForAppExtensions;
 			sourceTree = "<group>";
 		};
 		43598DF51DA7F74F00EAD0B7 /* CoreData */ = {
@@ -2348,10 +2355,11 @@
 		43CB60781DA4EB4E0015281E = {
 			isa = PBXGroup;
 			children = (
-				4348B7BD261DAE8B000D6FA9 /* MessageModelForAppExtensions */,
 				43CB60841DA4EB4E0015281E /* MessageModel */,
+				4348B7BD261DAE8B000D6FA9 /* MessageModelForAppExtentions */,
 				43CB608F1DA4EB4E0015281E /* MessageModelTests */,
 				B751B99322D4D5100018DE0D /* MessageModelTestApp */,
+				434A6CE325D2BF1B00179335 /* MessageModelForAppExtensions */,
 				15A91EBC25BB357A00D33EAB /* system.db */,
 				43CB60831DA4EB4E0015281E /* Products */,
 				B7DB7FA322147000003968DA /* Frameworks */,

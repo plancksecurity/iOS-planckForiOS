@@ -211,6 +211,7 @@ class ComposeViewModel {
     }
 
     public func handleUserClickedSendButton() {
+        rollbackMainSession()
         let safeState = state.makeSafe(forSession: Session.main)
         let sendClosure: (() -> Message?) = { [weak self] in
             guard let me = self else {
@@ -740,7 +741,19 @@ extension ComposeViewModel {
         return NSLocalizedString("Cancel", comment: "compose email cancel")
     }
 
+    //!!!: Dirty hack. Works around a mess in Session.main, caused by creating and using of
+    //messageToSend in/for TrustmanagementVC (which is supposed to use an independent Session
+    // but leaves leftovers that makes commiting the Session impossible).
+    private func rollbackMainSession() {
+        Session.main.rollback()
+    }
+
+    public func handleDeleteActionTriggered() {
+        rollbackMainSession()
+    }
+
     public func handleSaveActionTriggered() {
+        rollbackMainSession()
         guard let data = state.initData else {
             Log.shared.errorAndCrash("No data")
             return
@@ -785,13 +798,15 @@ extension ComposeViewModel {
     }
 
     func trustManagementViewModel() -> TrustManagementViewModel? {
-        guard let message = ComposeUtil.messageToSend(withDataFrom: state, recipientsOnly: true) else {
+
+        guard let message = ComposeUtil.messageForTrustManagement(withDataFrom: state) else {
             Log.shared.errorAndCrash("No message")
             return nil
         }
-        let messageSafe = message.safeForSession(Session.main)
-        return TrustManagementViewModel(message: messageSafe,
+        // Do not store message (persistRatingChangesForMessage). Would result in a meesage in Outbox and thus unwanted sending
+        return TrustManagementViewModel(message: message,
                                         pEpProtectionModifyable: true,
+                                        persistRatingChangesForMessage: false,
                                         protectionStateChangeDelegate: self)
     }
 }
