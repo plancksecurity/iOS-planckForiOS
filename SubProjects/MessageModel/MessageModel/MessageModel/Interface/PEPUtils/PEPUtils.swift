@@ -81,9 +81,9 @@ public class PEPUtils {
 
         PEPSession().rating(for: savePepIdentity, errorCallback: { (error) in
             if error.isPassphraseError {
-                Log.shared.log(error: error)
+                Log.shared.info("Passphrase not accepted / known")
             } else {
-                Log.shared.errorAndCrash(error: error)
+                Log.shared.error(error: error)
             }
             completion(.undefined)
         }) { (rating) in
