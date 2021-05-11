@@ -27,23 +27,23 @@ class NoActivatedAccountViewController: UIViewController {
             Log.shared.errorAndCrash("pEpHeaderView doesn't exist!")
             return nil
         }
-        headerView.title = viewModel.items[section].title.uppercased()
+        headerView.title = viewModel.sections[section].title.uppercased()
         return headerView
     }
 
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return viewModel.items[section].footer
+        return viewModel.sections[section].footer
     }
 }
 
 extension NoActivatedAccountViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.items[section].rows.count
+        return viewModel.sections[section].rows.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let row = viewModel.items[indexPath.section].rows[indexPath.row]
+        let row = viewModel.sections[indexPath.section].rows[indexPath.row]
         switch row.type {
         case .account:
             if let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: NoActivatedAccountSwitchCell.identifier, for: indexPath) as? NoActivatedAccountSwitchCell, let switchRow = row as? NoActivatedAccountViewModel.SwitchRow {

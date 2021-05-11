@@ -142,7 +142,7 @@ class MockedAccountSettingsViewModelDelegate : AccountSettingsViewModelDelegate,
 
     func showCantDeactivateAccountAlert() {
         if showCantDeactivateAccountAlertExpectation != nil {
-            showCantDeactivateAccountAlertExpectation.fulfill()
+            showCantDeactivateAccountAlertExpectation?.fulfill()
             showCantDeactivateAccountAlertExpectation = nil
         }
     }

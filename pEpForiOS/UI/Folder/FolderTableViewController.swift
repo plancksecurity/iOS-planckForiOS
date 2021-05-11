@@ -38,7 +38,6 @@ class FolderTableViewController: UITableViewController {
         folderVM?.refreshFolderList()
     }
 
-
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         guard let thePreviousTraitCollection = previousTraitCollection else {

@@ -31,7 +31,7 @@ class NoActivatedAccountViewModel {
     typealias SwitchBlock = ((Bool) -> Void)
 
     /// Items to be displayed in a NoActivatedAccountViewController
-    private (set) var items: [Section] = [Section]()
+    public private(set) var sections: [Section] = [Section]()
 
     /// Delegate to communicate with NoActivatedAccountViewController
     public weak var delegate: NoActivatedAccountDelegate?
@@ -61,7 +61,7 @@ extension NoActivatedAccountViewModel {
     }
 
     /// Struct that represents a section in NoActivatedAccountViewController
-    public struct Section: Equatable {
+    public struct Section {
         /// Title of the section
         var title: String
         /// footer of the section
@@ -70,15 +70,11 @@ extension NoActivatedAccountViewModel {
         var rows: [NoActivatedAccountRowProtocol]
         /// type of the section
         var type: SectionType
-
-        static func == (lhs: NoActivatedAccountViewModel.Section, rhs: NoActivatedAccountViewModel.Section) -> Bool {
-            return (lhs.title == rhs.title && lhs.footer == rhs.footer)
-        }
     }
 
     /// Struct that is used to perform an action. Represents a ActionRow in NoActivatedAccountViewController
     public struct ActionRow: NoActivatedAccountRowProtocol {
-        //The row type
+        /// The row type
         var type: NoActivatedAccountViewModel.RowType
         /// The title of the row.
         var title: String
@@ -88,9 +84,9 @@ extension NoActivatedAccountViewModel {
 
     /// Struct that is used to show and interact with a switch. Represents a SwitchRow in NoActivatedAccountViewController
     public struct SwitchRow: NoActivatedAccountRowProtocol {
-        //The row type
+        /// The row type
         var type: NoActivatedAccountViewModel.RowType
-        //The title of the swith row
+        /// The title of the swith row
         var title: String
         /// Value of the switch
         var isOn: Bool
@@ -107,7 +103,7 @@ extension NoActivatedAccountViewModel {
 
     private func generateSections() {
         NoActivatedAccountViewModel.SectionType.allCases.forEach { (type) in
-            items.append(sectionForType(sectionType: type))
+            sections.append(sectionForType(sectionType: type))
         }
     }
 
@@ -148,7 +144,6 @@ extension NoActivatedAccountViewModel {
         switch type {
         case .accounts:
             let inactiveAcccounts = Account.all(onlyActiveAccounts: false).filter({!$0.isActive})
-
             /// Switch rows
             inactiveAcccounts.forEach { (acc) in
                 let accountRow = getSwitchRow(account: acc)
@@ -165,10 +160,19 @@ extension NoActivatedAccountViewModel {
                 me.delegate?.showAccountSetupView()
             }
             rows.append(actionRow)
+
+            guard inactiveAcccounts.count > 0 else {
+                Log.shared.errorAndCrash("There should be at least one inactive account")
+                return rows
+            }
+
             return rows
         }
     }
 
+    /// Generate the switch row. 
+    /// - Parameter account: The account to generate the row for.
+    /// - Returns: The row, already configured.
     private func getSwitchRow(account: Account) -> SwitchRow {
         return SwitchRow(type: .account, title: account.user.address, isOn: false) { [weak self] value in
             //Activate
