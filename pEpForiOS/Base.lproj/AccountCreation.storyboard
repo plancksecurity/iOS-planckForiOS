@@ -257,6 +257,13 @@
                                                         <exclude reference="ZbO-0c-3dY"/>
                                                         <exclude reference="gcy-u5-Tla"/>
                                                         <exclude reference="pyt-nn-P8S"/>
+                                                        <exclude reference="2QJ-46-7hU"/>
+                                                        <exclude reference="4m8-Sq-LOv"/>
+                                                        <exclude reference="JEJ-Cy-LII"/>
+                                                        <exclude reference="POP-in-VWm"/>
+                                                        <exclude reference="V7N-wS-UD5"/>
+                                                        <exclude reference="gEw-K5-789"/>
+                                                        <exclude reference="rMC-LK-qvO"/>
                                                         <exclude reference="2nN-cq-k1r"/>
                                                         <exclude reference="4Ir-75-hKW"/>
                                                         <exclude reference="A1z-ZF-Oud"/>
@@ -265,13 +272,6 @@
                                                         <exclude reference="m83-IL-ein"/>
                                                         <exclude reference="nhb-lJ-cSW"/>
                                                         <exclude reference="vkY-dl-N9H"/>
-                                                        <exclude reference="2QJ-46-7hU"/>
-                                                        <exclude reference="4m8-Sq-LOv"/>
-                                                        <exclude reference="JEJ-Cy-LII"/>
-                                                        <exclude reference="POP-in-VWm"/>
-                                                        <exclude reference="V7N-wS-UD5"/>
-                                                        <exclude reference="gEw-K5-789"/>
-                                                        <exclude reference="rMC-LK-qvO"/>
                                                     </mask>
                                                 </variation>
                                                 <variation key="heightClass=compact">
@@ -279,12 +279,12 @@
                                                         <include reference="5uB-dW-SXj"/>
                                                         <include reference="ZbO-0c-3dY"/>
                                                         <include reference="pyt-nn-P8S"/>
-                                                        <include reference="UM3-1o-nc6"/>
-                                                        <include reference="a6a-3J-tBh"/>
-                                                        <include reference="m83-IL-ein"/>
                                                         <include reference="4m8-Sq-LOv"/>
                                                         <include reference="POP-in-VWm"/>
                                                         <include reference="rMC-LK-qvO"/>
+                                                        <include reference="UM3-1o-nc6"/>
+                                                        <include reference="a6a-3J-tBh"/>
+                                                        <include reference="m83-IL-ein"/>
                                                     </mask>
                                                 </variation>
                                                 <variation key="heightClass=regular">
@@ -296,11 +296,11 @@
                                                         <include reference="Lrs-na-E4z"/>
                                                         <include reference="m0g-pS-2jx"/>
                                                         <include reference="88a-wW-ARz"/>
-                                                        <include reference="nhb-lJ-cSW"/>
-                                                        <include reference="vkY-dl-N9H"/>
                                                         <include reference="JEJ-Cy-LII"/>
                                                         <include reference="V7N-wS-UD5"/>
                                                         <include reference="gEw-K5-789"/>
+                                                        <include reference="nhb-lJ-cSW"/>
+                                                        <include reference="vkY-dl-N9H"/>
                                                     </mask>
                                                 </variation>
                                                 <variation key="widthClass=compact">
@@ -893,7 +893,7 @@
         <!--Account Type Selector View Controller-->
         <scene sceneID="V9w-WW-Gu0">
             <objects>
-                <viewController id="L5l-QH-yd0" customClass="AccountTypeSelectorViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AccountTypeSelectorViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="L5l-QH-yd0" customClass="AccountTypeSelectorViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vCs-pa-EKN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
