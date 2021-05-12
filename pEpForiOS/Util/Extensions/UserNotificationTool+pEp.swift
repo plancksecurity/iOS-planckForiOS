@@ -24,13 +24,14 @@ extension UserNotificationTool {
                                       comment:
                 "Title for notification show on lock screen for *one* new mail")
         } else {
-            title = NSLocalizedString("\(numMails) new messages received",
-                comment:
-                "Title for notification show on lock screen for new mails")
+            title = String(format: NSLocalizedString("%1d new messages received",
+                                                     comment:
+                                                        "Title for notification show on lock screen for new mails"),
+                           numMails)
         }
         let body = NSLocalizedString("Slide for more",
                                      comment:
-            "Body for notifications show on lock screen for new mail(s)")
+                                        "Body for notifications show on lock screen for new mail(s)")
         post(title: title, body: body, batch: numMails)
     }
 }
