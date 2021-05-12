@@ -220,6 +220,7 @@ extension TrustManagementViewModel {
 final class TrustManagementViewModel {
     weak public var delegate : TrustManagementViewModelDelegate?
     weak public var protectionStateChangeDelegate: TrustmanagementProtectionStateChangeDelegate?
+    private let persistRatingChangesForMessage: Bool
     public var pEpProtected : Bool {
         didSet {
             protectionStateChangeDelegate?.protectionStateChanged(to: pEpProtected)
@@ -243,13 +244,16 @@ final class TrustManagementViewModel {
     ///   - handshakeUtil: The tool to interact with the engine. It provides a default instance. The parameter is used for testing purposes.
     public init(message : Message,
                 pEpProtectionModifyable: Bool,
-                delegate : TrustManagementViewModelDelegate? = nil,
+                persistRatingChangesForMessage: Bool = true,
+                delegate: TrustManagementViewModelDelegate? = nil,
                 protectionStateChangeDelegate: TrustmanagementProtectionStateChangeDelegate? = nil,
                 trustManagementUtil: TrustManagementUtilProtocol? = nil) {
         self.message = message
         self.trustManagementUtil = trustManagementUtil ?? TrustManagementUtil()
-        self.pEpProtected = message.pEpProtected
+        let safeMessage = message.safeForSession(Session.main)
+        self.pEpProtected = safeMessage.pEpProtected
         self.shouldShowOptionsButton = pEpProtectionModifyable
+        self.persistRatingChangesForMessage = persistRatingChangesForMessage
         self.delegate = delegate
         self.protectionStateChangeDelegate = protectionStateChangeDelegate
         setupRows()
@@ -411,7 +415,8 @@ final class TrustManagementViewModel {
                 // Valid case. We might have been dismissed already.
                 return
             }
-            RatingReEvaluator.reevaluate(message: me.message) {
+            RatingReEvaluator.reevaluate(message: me.message,
+                                         storeMessageWhenDone: me.persistRatingChangesForMessage) {
                 DispatchQueue.main.async {
                     me.delegate?.dataChanged(forRowAt: indexPath)
                 }

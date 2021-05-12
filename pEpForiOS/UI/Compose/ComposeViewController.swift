@@ -698,8 +698,6 @@ extension ComposeViewController: SwipeTableViewCellDelegate {
 
 extension ComposeViewController {
 
-    //BUFF:
-
     private struct KeyCommandsProvider {
         fileprivate static let commands: [UIKeyCommand] = {
             let tabForward = UIKeyCommand(input: "\t",
@@ -889,7 +887,6 @@ extension ComposeViewController {
             // Do nothing.
         }
     }
-    //
 
     private func setInitialFocus() {
         guard !isInitialFocusSet else {
@@ -959,6 +956,7 @@ extension ComposeViewController {
             Log.shared.errorAndCrash("No VM")
             return UIAlertAction()
         }
+        vm.handleDeleteActionTriggered()
         let text = vm.deleteActionTitle
         let action = UIUtils.action(text, .destructive) { [weak self] in
             guard let me = self else {

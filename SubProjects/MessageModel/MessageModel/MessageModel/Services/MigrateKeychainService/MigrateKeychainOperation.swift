@@ -165,12 +165,17 @@ class MigrateKeychainOperation: ConcurrentBaseOperation {
             SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
         }
 
-        if status != noErr {
+        if status != noErr && status != errSecItemNotFound {
             Log.shared.logWarn(message: "Could not enumerate keychain items, status \(status)")
         }
 
-        guard let theResults = result as? [[String:AnyObject]] else {
-            Log.shared.logWarn(message: "Cannot cast to [[String:AnyObject]]")
+        guard let noneNil = result else {
+            Log.shared.info("No password keys found. We assume the Key Chain has already been migrated, thus the old one is empty.")
+            return []
+        }
+
+        guard let theResults = noneNil as? [[String:AnyObject]] else {
+            Log.shared.errorAndCrash(message: "Cannot cast to [[String:AnyObject]]")
             return []
         }
 

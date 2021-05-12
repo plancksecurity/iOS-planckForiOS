@@ -76,7 +76,7 @@ class MessageModelTests: PersistentStoreDrivenTestBase {
         let account = SecretTestData().createWorkingAccount()
         account.session.commit()
 
-        guard let cdAcc = CdAccount.searchAccount(withAddress: account.user.address, context: moc) else {
+        guard let cdAcc = CdAccount.by(address: account.user.address, context: moc) else {
             XCTFail()
             return
         }

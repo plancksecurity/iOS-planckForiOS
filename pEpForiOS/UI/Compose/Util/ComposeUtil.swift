@@ -148,10 +148,16 @@ struct ComposeUtil {
         return composeMode == .forward || isInDraftsOrOutbox
     }
 
+    // Creates a message from the given ComposeView State on a new, independent Session
+    static public func messageForTrustManagement(withDataFrom state: ComposeViewModel.ComposeViewModelState) -> Message? {
+        let session = Session()
+        let safeState = state.makeSafe(forSession: session)
+        let message = messageToSend(withDataFrom: safeState, recipientsOnly: true)
+        return message
+
+    }
+
     /// Creates a message from the given ComposeView State
-    ///
-    /// - note: MUST NOT be used on the main Session. For the maion Session, use
-    ///         messageToSend(withDataFrom:) instead.
     ///
     /// - Parameter state: state to get data from
     /// - Parameter recipientsOnly: the returned message holds recipients only (no attachments, body, ...)
@@ -160,50 +166,60 @@ struct ComposeUtil {
                                      recipientsOnly: Bool = false) -> Message? {
         guard
             let from = state.from,
-            let session = state.from?.session,
-            let account = Account.by(address: from.address, in: session)?.safeForSession(session),
-            let outbox = Folder.by(account: account, folderType: .outbox)?.safeForSession(session)
+            let session = state.from?.session
         else {
             Log.shared.errorAndCrash("Invalid state")
             return nil
         }
+        var result: Message? = nil
+        session.performAndWait {
+            guard
+                let account = Account.by(address: from.address, in: session)?.safeForSession(session),
+                let outbox = Folder.by(account: account, folderType: .outbox)?.safeForSession(session)
+            else {
+                Log.shared.errorAndCrash("Invalid state")
+                return
+            }
 
-        let message = Message.newOutgoingMessage(session: session)
-        message.parent = outbox
+            let message = Message.newOutgoingMessage(session: session)
+            message.parent = outbox
 
-        message.pEpProtected = state.pEpProtection
-        if !state.pEpProtection {
-            let unprotectedRating = Rating.unencrypted
-            message.setOriginalRatingHeader(rating: unprotectedRating)
-            message.pEpRatingInt = unprotectedRating.toInt()
-        } else {
-            message.setOriginalRatingHeader(rating: state.rating)
-            message.pEpRatingInt = state.rating.toInt()
+            message.pEpProtected = state.pEpProtection
+            if !state.pEpProtection {
+                let unprotectedRating = Rating.unencrypted
+                message.setOriginalRatingHeader(rating: unprotectedRating)
+                message.pEpRatingInt = unprotectedRating.toInt()
+            } else {
+                message.setOriginalRatingHeader(rating: state.rating)
+                message.pEpRatingInt = state.rating.toInt()
+            }
+
+            message.imapFlags.seen = imapSeenState(forMessageToSend: message)
+
+            message.from = from
+            message.replaceTo(with: state.toRecipients)
+            message.replaceCc(with: state.ccRecipients)
+            message.replaceBcc(with: state.bccRecipients)
+            guard !recipientsOnly else {
+                result = message
+                return
+            }
+            let inlinedAttachments = Attachment.makeSafe(state.inlinedAttachments, forSession: session)
+            let nonInlinedAttachments = Attachment.makeSafe(state.nonInlinedAttachments, forSession: session)
+            //!!!: DIRTY ALARM!
+            //!!!: ADAM:
+            //BUFF: !!!
+            let body = state.bodyText.toHtml(inlinedAttachments: inlinedAttachments) //!!!: ADAM: Bad! method called toHtml returns plaintext
+            let bodyPlainText = body.plainText
+            let bodyHtml = body.html ?? ""
+            message.shortMessage = state.subject
+            message.longMessage = bodyPlainText
+            message.longMessageFormatted = !bodyHtml.isEmpty ? bodyHtml : nil
+            message.replaceAttachments(with: inlinedAttachments + nonInlinedAttachments)
+            result = message
         }
 
-        message.imapFlags.seen = imapSeenState(forMessageToSend: message)
-
-        message.from = from
-        message.replaceTo(with: state.toRecipients)
-        message.replaceCc(with: state.ccRecipients)
-        message.replaceBcc(with: state.bccRecipients)
-        guard !recipientsOnly else {
-            return message
-        }
-        let inlinedAttachments = Attachment.makeSafe(state.inlinedAttachments, forSession: session)
-        let nonInlinedAttachments = Attachment.makeSafe(state.nonInlinedAttachments, forSession: session)
-        //!!!: DIRTY ALARM!
-        //!!!: ADAM:
-        //BUFF: !!!
-        let body = state.bodyText.toHtml(inlinedAttachments: inlinedAttachments) //!!!: ADAM: Bad! method called toHtml returns plaintext
-        let bodyPlainText = body.plainText
-        let bodyHtml = body.html ?? ""
-        message.shortMessage = state.subject
-        message.longMessage = bodyPlainText
-        message.longMessageFormatted = !bodyHtml.isEmpty ? bodyHtml : nil
-        message.replaceAttachments(with: inlinedAttachments + nonInlinedAttachments)
-
-        return message
+        return result
     }
 
     static private func imapSeenState(forMessageToSend msg: Message) -> Bool {

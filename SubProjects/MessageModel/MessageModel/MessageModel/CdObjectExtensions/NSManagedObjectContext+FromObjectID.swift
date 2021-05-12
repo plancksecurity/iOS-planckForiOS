@@ -9,7 +9,11 @@
 import Foundation
 import CoreData
 
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 extension NSManagedObjectContext {
     /// Turns the given `NSManagedObjectID` into a valid `CdAccount`.

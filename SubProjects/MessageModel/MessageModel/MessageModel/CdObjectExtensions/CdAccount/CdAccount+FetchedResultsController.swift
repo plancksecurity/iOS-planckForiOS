@@ -7,7 +7,11 @@
 //
 
 import Foundation
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 import CoreData
 
 extension CdAccount {

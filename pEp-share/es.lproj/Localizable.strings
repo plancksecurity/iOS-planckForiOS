@@ -1,9 +1,9 @@
-/* Sharing extension could not save a message */
+/* Sharing extension: Could not save the message */
 "Could not save the message for sending" = "Could not save the message for sending";
 
-/* Sharing extension has no account */
+/* Sharing extension: Could not send the message */
 "Could not send:\n%1@" = "Could not send:\n%1@";
 
-/* Sharing extension has no account */
+/* Sharing extension: No account found */
 "No Account found" = "No Account found";
 

@@ -22,14 +22,21 @@ final class ContactCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
 
+    override func awakeFromNib() {
+        pEpStatusImageView.image = nil
+        super.awakeFromNib()
+    }
+
     var contact: Identity? {
         didSet {
-            nameLabel.text = contact?.displayString ?? String()
+            nameLabel.text = contact?.displayString ?? ""
         }
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
         pEpStatusImageView.image = nil
+        nameLabel.text = nil
+        emailLabel.text = nil
     }
 }

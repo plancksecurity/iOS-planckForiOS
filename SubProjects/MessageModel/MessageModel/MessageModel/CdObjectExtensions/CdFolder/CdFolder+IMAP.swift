@@ -8,7 +8,11 @@
 
 import Foundation
 import CoreData
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 /// IMAP related methods.
 extension CdFolder {

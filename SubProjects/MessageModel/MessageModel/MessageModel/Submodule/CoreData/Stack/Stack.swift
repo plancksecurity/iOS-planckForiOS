@@ -7,7 +7,12 @@
 
 import CoreData
 
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
+
 import pEp4iosIntern
 
 /// Our Core Data Stack
@@ -279,7 +284,7 @@ extension Stack {
 
 extension NSManagedObjectContext {
 
-    /// Synchronously saves itself and alr other required contexts.
+    /// Saves itself and all other required contexts.
     func saveAndLogErrors() {
         if !hasChanges {
             return
