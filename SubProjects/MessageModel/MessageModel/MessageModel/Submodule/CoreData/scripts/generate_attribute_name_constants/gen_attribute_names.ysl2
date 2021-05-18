@@ -2,36 +2,42 @@
 include yslt.yml2
 
 tstylesheet  {
-// CdMessage+Constants.swift
 
-template "/model/entity", "text" {
-
+template "/" {
     ||
- 
-    extension «@name» {
+    // Generated file. DO NOT ALTER MANUALLY!
+    //
+    // CoreDataEntityAttributeNames.swift
+    //
+    
+    `` apply "/model/entity", 0
+    ||
+}
 
+template "/model/entity" {
+    ||
+    extension «@name» {
         /// All attribute names as constant String
         struct AttributeName {
-            `` apply "attribute", mode="propertyNameConstants"
+            `` apply "attribute"
         }
 
         /// All relationship names as constant String
         struct RelationshipName {
-            `` apply "relationship", mode="propertyNameConstants"
+            `` apply "relationship"
         }
     }
+
     ||
 }
 
 // NAME CONSTANTS FOR ATTRIBUTES AND RELATIONSHIPS
 
-template "attribute", mode="propertyNameConstants" {
+template "attribute" {
 |> static let «@name» = "«@name»"
 }
 
-template "relationship", mode="propertyNameConstants" {
+template "relationship" {
 |> static let «@name» = "«@name»"
 }
-
-template "text()";
 }

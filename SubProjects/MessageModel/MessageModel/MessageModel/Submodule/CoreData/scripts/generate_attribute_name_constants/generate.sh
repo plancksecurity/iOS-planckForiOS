@@ -17,13 +17,7 @@ OUTPUT_FILE="${OUTPUT_DIR}/CoreDataEntityAttributeNames.swift"
 ####################
 # cleanup
 rm -rf ${TMP_DIR}
-
-####################
-# Write header
-echo "//\
-// Generated file. DO NOT ALTER MANUALLY!\
-//" \
-> ${OUTPUT_FILE}
+rm ${OUTPUT_FILE}
 
 ####################
 # mk dirs

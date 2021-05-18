@@ -1,7 +1,9 @@
-//// Generated file. DO NOT ALTER MANUALLY!//
+// Generated file. DO NOT ALTER MANUALLY!
+//
+// CoreDataEntityAttributeNames.swift
+//
 
 extension CdAccount {
-
     /// All attribute names as constant String
     struct AttributeName {
         static let includeFoldersInUnifiedFolders = "includeFoldersInUnifiedFolders"
@@ -17,7 +19,6 @@ extension CdAccount {
 }
 
 extension CdAttachment {
-
     /// All attribute names as constant String
     struct AttributeName {
         static let assetUrl = "assetUrl"
@@ -34,7 +35,6 @@ extension CdAttachment {
 }
 
 extension CdClientCertificate {
-
     /// All attribute names as constant String
     struct AttributeName {
         static let importDate = "importDate"
@@ -49,7 +49,6 @@ extension CdClientCertificate {
 }
 
 extension CdExtraKey {
-
     /// All attribute names as constant String
     struct AttributeName {
     }
@@ -60,7 +59,6 @@ extension CdExtraKey {
 }
 
 extension CdFolder {
-
     /// All attribute names as constant String
     struct AttributeName {
         static let existsCount = "existsCount"
@@ -85,7 +83,6 @@ extension CdFolder {
 }
 
 extension CdHeaderField {
-
     /// All attribute names as constant String
     struct AttributeName {
         static let name = "name"
@@ -99,7 +96,6 @@ extension CdHeaderField {
 }
 
 extension CdIdentity {
-
     /// All attribute names as constant String
     struct AttributeName {
         static let address = "address"
@@ -123,7 +119,6 @@ extension CdIdentity {
 }
 
 extension CdImapFields {
-
     /// All attribute names as constant String
     struct AttributeName {
         static let contentType = "contentType"
@@ -140,7 +135,6 @@ extension CdImapFields {
 }
 
 extension CdImapFlags {
-
     /// All attribute names as constant String
     struct AttributeName {
         static let flagAnswered = "flagAnswered"
@@ -159,7 +153,6 @@ extension CdImapFlags {
 }
 
 extension CdKey {
-
     /// All attribute names as constant String
     struct AttributeName {
         static let fingerprint = "fingerprint"
@@ -172,7 +165,6 @@ extension CdKey {
 }
 
 extension CdMessage {
-
     /// All attribute names as constant String
     struct AttributeName {
         static let comments = "comments"
@@ -210,7 +202,6 @@ extension CdMessage {
 }
 
 extension CdMessageKeyword {
-
     /// All attribute names as constant String
     struct AttributeName {
         static let keyword = "keyword"
@@ -223,7 +214,6 @@ extension CdMessageKeyword {
 }
 
 extension CdMessageReference {
-
     /// All attribute names as constant String
     struct AttributeName {
         static let reference = "reference"
@@ -237,7 +227,6 @@ extension CdMessageReference {
 }
 
 extension CdServer {
-
     /// All attribute names as constant String
     struct AttributeName {
         static let address = "address"
@@ -259,7 +248,6 @@ extension CdServer {
 }
 
 extension CdServerCredentials {
-
     /// All attribute names as constant String
     struct AttributeName {
         static let key = "key"
@@ -272,4 +260,5 @@ extension CdServerCredentials {
         static let servers = "servers"
     }
 }
+
 
