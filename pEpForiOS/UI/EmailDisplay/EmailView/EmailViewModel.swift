@@ -235,7 +235,21 @@ extension EmailViewModel {
     }
 
     enum EmailRowType: String {
-        case bcc, cc, to, from, subject, body, attachment, imageAttachment
+        case header, bcc, cc, to, from, subject, body, attachment, imageAttachment
+    }
+
+    // MARK: Header
+
+    struct HeaderRow: EmailRowProtocol {
+        var type: EmailViewModel.EmailRowType = .header
+        var cellIdentifier: String = "messageHeaderCell"
+        var fromVM: CollectionViewCellViewModel
+        var tosViewModels: [CollectionViewCellViewModel]
+        var ccsViewModels: [CollectionViewCellViewModel]
+        var bccsViewModels: [CollectionViewCellViewModel]
+        var date: String
+        var image: UIImage?
+        var viewModel: MessageHeaderCellViewModel
     }
 
     // MARK: Recipients
@@ -270,7 +284,6 @@ extension EmailViewModel {
         var type: EmailViewModel.EmailRowType = .subject
         var cellIdentifier: String = "senderSubjectCell"
         var title: String
-        var date: String?
     }
 
     // MARK: Body
@@ -461,33 +474,22 @@ extension EmailViewModel {
             return
         }
 
-        // From:
         let fromVM = getRecipientCollectionViewCellViewModel(identity: from, rowType: .from)
-        let fromRow = FromRow(fromVM: fromVM)
-        rows.append(fromRow)
-
-        // To:
         let toRecipientsVMs = cellViewModels(from: message.uniqueTos, rowType: .to)
-        let toRow = ToRow(tosViewModels: toRecipientsVMs)
-        rows.append(toRow)
-
-        // CC:
         let ccRecipientsVMs = cellViewModels(from: message.uniqueCcs, rowType: .cc)
-        if !ccRecipientsVMs.isEmpty {
-            let ccRow = CCRow(ccsViewModels: ccRecipientsVMs)
-            rows.append(ccRow)
-        }
-
-        // BCC:
         let bccRecipientsVMs = cellViewModels(from: message.uniqueBccs, rowType: .bcc)
-        if !bccRecipientsVMs.isEmpty {
-            let bccRow = BCCRow(bccsViewModels: bccRecipientsVMs)
-            rows.append(bccRow)
-        }
+        let headerCellViewModel = MessageHeaderCellViewModel(displayedImageIdentity: from)
+        let headerRow = HeaderRow(fromVM: fromVM,
+                                  tosViewModels: toRecipientsVMs,
+                                  ccsViewModels: ccRecipientsVMs,
+                                  bccsViewModels: bccRecipientsVMs,
+                                  date: message.sent?.fullString() ?? "",
+                                  viewModel: headerCellViewModel)
+        rows.append(headerRow)
 
         //Subject
         let title = message.shortMessage
-        let subjectRow = SubjectRow(title: title ?? "", date: message.sent?.fullString())
+        let subjectRow = SubjectRow(title: title ?? "")
         rows.append(subjectRow)
 
         //Body

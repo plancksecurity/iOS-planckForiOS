@@ -48,18 +48,15 @@ extension EmailViewModel {
 
         /// Get the recipient collection view cells to set.
         /// - Parameters:
-        ///   - text: The text of the EmailViewRowType ("To:", "CC:", "BCC:", for example).
         ///   - recipientsCellVMs: The Cell View Model of the recipients.
         ///   - rowType: The email row type.
         ///   - containerWidth: The width of the container
         ///
         /// - Returns:The recipient collection view cells to set.
-        public func recipientCollectionViewCellViewModelToSet(_ text: String,
+        public func recipientCollectionViewCellViewModelToSet(
                          _ recipientsCellVMs: [EmailViewModel.CollectionViewCellViewModel],
                          rowType: EmailViewModel.EmailRowType) -> [EmailViewModel.CollectionViewCellViewModel] {
-            //'To' button, for example.
-            let recipientTypeCellViewModel = EmailViewModel.CollectionViewCellViewModel(title: text, rowType: rowType)
-            var cellsViewModelsToSet = [recipientTypeCellViewModel]
+            var cellsViewModelsToSet = [EmailViewModel.CollectionViewCellViewModel]()
 
             //Simulate a 'More' button with two digits.
             let and10MoreButtonTitle = NSLocalizedString("& 10 more", comment: "and X more button title - this will only be used to compute a size.")
@@ -121,20 +118,20 @@ extension EmailViewModel.RecipientsCollectionViewViewModel {
         case .from:
             self.collectionViewCellViewModels = collectionViewCellViewModels
         case .to:
-            set(RecipientCellViewModel.FieldType.to.localizedTitle(), collectionViewCellViewModels, rowType: rowType)
+            set(collectionViewCellViewModels, rowType: rowType)
         case .cc:
-            set(RecipientCellViewModel.FieldType.cc.localizedTitle(), collectionViewCellViewModels, rowType: rowType)
+            set(collectionViewCellViewModels, rowType: rowType)
         case .bcc:
-            set(RecipientCellViewModel.FieldType.bcc.localizedTitle(), collectionViewCellViewModels, rowType: rowType)
+            set(collectionViewCellViewModels, rowType: rowType)
 
         default:
             Log.shared.errorAndCrash("Email Row type not supported")
         }
     }
 
-    private mutating func set(_ text: String,
+    private mutating func set(
                      _ collectionViewCellsVMs: [EmailViewModel.CollectionViewCellViewModel],
                      rowType: EmailViewModel.EmailRowType) {
-        collectionViewCellViewModels = recipientCollectionViewCellViewModelToSet(text, collectionViewCellsVMs, rowType: rowType)
+        collectionViewCellViewModels = recipientCollectionViewCellViewModelToSet(collectionViewCellsVMs, rowType: rowType)
     }
 }

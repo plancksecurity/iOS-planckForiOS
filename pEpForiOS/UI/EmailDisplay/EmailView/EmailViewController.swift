@@ -9,7 +9,7 @@
 import pEpIOSToolbox
 import QuickLook
 
-protocol EmailViewControllerDelegate: class {
+protocol EmailViewControllerDelegate: AnyObject {
     func openQLPreviewController(toShowDocumentWithUrl url: URL)
 }
 
@@ -142,6 +142,17 @@ extension EmailViewController: UITableViewDataSource {
         let cellIdentifier = vm.cellIdentifier(for: indexPath)
         let row = vm[indexPath.row]
         switch row.type {
+        case .header:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageHeaderCell else {
+                return UITableViewCell()
+            }
+            guard let row = vm[indexPath.row] as? EmailViewModel.HeaderRow else {
+                Log.shared.errorAndCrash("Can't get or cast sender row")
+                return cell
+            }
+            setupHeader(cell: cell, row: row)
+            return cell
+
         case .from:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageRecipientCell else {
                 return UITableViewCell()
@@ -377,10 +388,25 @@ extension EmailViewController {
         }
     }
 
+    private func setupHeader(cell: MessageHeaderCell, row: EmailViewModel.HeaderRow) {
+
+        cell.setup(fromViewModel: row.fromVM,
+                   toViewModels: row.tosViewModels,
+                   ccViewModels: row.ccsViewModels,
+                   bccViewModels: row.bccsViewModels,
+                   date: row.date,
+                   viewModel: row.viewModel,
+                   rowType: row.type,
+                   shouldDisplayAll: shouldDisplayAll,
+                   delegate: self,
+                   viewWidth: view.bounds.width)
+    }
+
     private func setupRecipient(cell: MessageRecipientCell,
                                 with cellsViewModels: [EmailViewModel.CollectionViewCellViewModel],
                                 rowType: EmailViewModel.EmailRowType) {
         let shouldDisplayAllRecipients = shouldDisplayAll[rowType] ?? false
+
         cell.setup(viewModels: cellsViewModels,
                    rowType: rowType,
                    shouldDisplayAllRecipients: shouldDisplayAllRecipients,
@@ -391,14 +417,6 @@ extension EmailViewController {
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {
         cell.subjectLabel?.font = UIFont.pepFont(style: .headline, weight: .semibold)
         cell.subjectLabel?.text = row.title
-        if let date = row.date {
-            cell.dateLabel.font = UIFont.pepFont(style: .footnote, weight: .semibold)
-            cell.dateLabel.text = date
-            cell.dateLabel.isHidden = false
-        } else {
-            cell.dateLabel.text = nil
-            cell.dateLabel.isHidden = true
-        }
     }
 
     private func setupAttachment(cell: MessageAttachmentCell, with row: EmailViewModel.BaseAttachmentRow) {

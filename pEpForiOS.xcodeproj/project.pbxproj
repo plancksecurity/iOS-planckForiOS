@@ -458,6 +458,8 @@
 		5B09DB4725B71247005D8125 /* SettingChangeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B09DB4625B71247005D8125 /* SettingChangeDelegate.swift */; };
 		5B0B339D24AC85E800CABD0B /* UIUtils+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */; };
 		5B0B339F24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0B339E24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift */; };
+		5B102FAB2652A1F400A758D2 /* MessageHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B102FAA2652A1F400A758D2 /* MessageHeaderCell.swift */; };
+		5B102FAD2652AF3400A758D2 /* MessageHeaderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B102FAC2652AF3400A758D2 /* MessageHeaderCellViewModel.swift */; };
 		5B1C0E1823FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */; };
 		5B1C1432259A25B2006DB2A1 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C1431259A25B2006DB2A1 /* UILabel+Extension.swift */; };
 		5B2F7E63240D25CF004DDFA2 /* TutorialStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */; };
@@ -1096,6 +1098,8 @@
 		5B09DB4625B71247005D8125 /* SettingChangeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingChangeDelegate.swift; sourceTree = "<group>"; };
 		5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+Passphrase.swift"; sourceTree = "<group>"; };
 		5B0B339E24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGPKeyImportSettingSwitchTableViewCell.swift; sourceTree = "<group>"; };
+		5B102FAA2652A1F400A758D2 /* MessageHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHeaderCell.swift; sourceTree = "<group>"; };
+		5B102FAC2652AF3400A758D2 /* MessageHeaderCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHeaderCellViewModel.swift; sourceTree = "<group>"; };
 		5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCellProtocols.swift; sourceTree = "<group>"; };
 		5B1C1431259A25B2006DB2A1 /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepViewController.swift; sourceTree = "<group>"; };
@@ -2783,6 +2787,8 @@
 				5B5C2A9125D2902C00F9C18A /* MessageAttachmentCell.swift */,
 				5BA617FF25F1475900973829 /* MessageImageAttachmentCell.swift */,
 				5BEB20E426304DF500CB01C3 /* MessageRecipientCell.swift */,
+				5B102FAA2652A1F400A758D2 /* MessageHeaderCell.swift */,
+				5B102FAC2652AF3400A758D2 /* MessageHeaderCellViewModel.swift */,
 				5B6E7EF12636FCBF00936190 /* MessageRecipientCellViewModel.swift */,
 				5BFBB50325D5207900F269C4 /* MessageSubjectCell.swift */,
 				220DCE311E0AB5CC002FE716 /* MessageContentCell.swift */,
@@ -3461,6 +3467,7 @@
 				37816544230EC73900B967E3 /* PEPAlertViewModel.swift in Sources */,
 				43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */,
 				4351C2C81F4441190053381F /* blocks.c in Sources */,
+				5B102FAD2652AF3400A758D2 /* MessageHeaderCellViewModel.swift in Sources */,
 				5BEB569225E69BEE00304A38 /* TutorialStep2iPadViewController.swift in Sources */,
 				3A796BAB242CC31F00083BB5 /* NSAttributedString+Html.swift in Sources */,
 				3A796BA9242CC26100083BB5 /* HtmlConversions.swift in Sources */,
@@ -3486,6 +3493,7 @@
 				1521B799241BE086000EAE57 /* UIUtils+Contacts.swift in Sources */,
 				B7CE922E24E3FC7600B5A874 /* EditSignatureViewController.swift in Sources */,
 				5B2F7E63240D25CF004DDFA2 /* TutorialStepViewController.swift in Sources */,
+				5B102FAB2652A1F400A758D2 /* MessageHeaderCell.swift in Sources */,
 				5BBE80CF24B733C0008DE0E5 /* AccountSettingsTableViewCell.swift in Sources */,
 				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,
 				5BF90036262F2517005B08D4 /* NSNotificationName+Settings.swift in Sources */,
