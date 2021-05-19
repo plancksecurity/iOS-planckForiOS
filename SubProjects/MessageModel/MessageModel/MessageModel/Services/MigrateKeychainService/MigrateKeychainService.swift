@@ -38,13 +38,7 @@ class MigrateKeychainService: OperationBasedService {
     override func operations() -> [Operation] {
         let migrationOP = MigrateKeychainOperation(keychainGroupSource: keychainGroupSource,
                                                    keychainGroupTarget: keychainGroupTarget)
-        migrationOP.completionBlock = { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.completionBlock?()
-        }
+        migrationOP.completionBlock = completionBlock
 
         return [migrationOP]
     }
