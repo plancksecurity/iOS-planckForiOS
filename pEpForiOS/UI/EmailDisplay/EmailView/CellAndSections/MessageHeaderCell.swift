@@ -85,30 +85,24 @@ class MessageHeaderCell: UITableViewCell {
                         ccViewModels: ccViewModels,
                         bccViewModels: bccViewModels,
                         delegate: delegate)
-        setupCollectionViews()
+
+        [fromCollectionView, tosCollectionView, ccsCollectionView, bccsCollectionView].forEach { cv in
+            guard let alignedFlowLayout = cv?.collectionViewLayout as? AlignedCollectionViewFlowLayout else {
+                Log.shared.errorAndCrash("AlignedCollectionViewFlowLayout not found")
+                return
+            }
+
+            alignedFlowLayout.horizontalAlignment = .left
+            alignedFlowLayout.verticalAlignment = .top
+            alignedFlowLayout.minimumInteritemSpacing = 2
+            alignedFlowLayout.minimumLineSpacing = 2
+        }
     }
 }
 
 // MARK: - Collection View
 
 extension MessageHeaderCell {
-
-    private func commonSetup(collectionView: UICollectionView) {
-        let layout = LeftAlignedCollectionViewFlowLayout()
-        layout.minimumInteritemSpacing = 2
-        layout.minimumLineSpacing = 2
-        collectionView.scrollsToTop = false
-        collectionView.collectionViewLayout.invalidateLayout()
-        collectionView.collectionViewLayout = layout
-        collectionView.isScrollEnabled = false
-        collectionView.reloadData()
-    }
-
-    private func setupCollectionViews() {
-        [fromCollectionView, tosCollectionView, ccsCollectionView, bccsCollectionView].forEach { cv in
-            commonSetup(collectionView: cv)
-        }
-    }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 4, left: 0, bottom: 0, right: 0)
@@ -255,39 +249,44 @@ extension MessageHeaderCell: UICollectionViewDelegateFlowLayout {
     }
 }
 
-// MARK: - UIConstraintBasedLayoutFittingSize
+//// MARK: - UIConstraintBasedLayoutFittingSize
+//
+//extension MessageHeaderCell {
 
-extension MessageHeaderCell {
-
-    override func systemLayoutSizeFitting(_ targetSize: CGSize,
-                                          withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority,
-                                          verticalFittingPriority: UILayoutPriority) -> CGSize {
-        let size = super.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: horizontalFittingPriority, verticalFittingPriority: verticalFittingPriority)
-        var bccExpectedHeight: CGFloat = 0.0
-        var ccExpectedHeight: CGFloat = 0.0
-        let fromExpectedHeight = fromCollectionView.collectionViewLayout.collectionViewContentSize.height
-        let toExpectedHeight = tosCollectionView.collectionViewLayout.collectionViewContentSize.height
-        if hasBCCRecipients {
-            bccExpectedHeight = bccsCollectionView.collectionViewLayout.collectionViewContentSize.height
-        }
-        if hasCCRecipients {
-            ccExpectedHeight = ccsCollectionView.collectionViewLayout.collectionViewContentSize.height
-        }
-        let dateLabelExpectedHeight = dateLabel.bounds.size.height
-        let expectatedTotalHeight = fromExpectedHeight + toExpectedHeight + ccExpectedHeight + bccExpectedHeight + dateLabelExpectedHeight
-        return CGSize(width: size.width, height: expectatedTotalHeight)
-    }
-
-    private var hasBCCRecipients: Bool {
-        // Bigger than 1 because we have the 'BCC:' vm.
-        return viewModel?.bccsCollectionViewViewModel?.collectionViewCellViewModels?.count ?? 0 > 1
-    }
-
-    private var hasCCRecipients: Bool {
-        // Bigger than 1 because we have the 'CC:' vm.
-        return viewModel?.ccsCollectionViewViewModel?.collectionViewCellViewModels?.count ?? 0 > 1
-    }
-}
+//    override func systemLayoutSizeFitting(_ targetSize: CGSize,
+//                                          withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority,
+//                                          verticalFittingPriority: UILayoutPriority) -> CGSize {
+//        let size = super.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: horizontalFittingPriority, verticalFittingPriority: verticalFittingPriority)
+//        var bccExpectedHeight: CGFloat = 0.0
+//        var ccExpectedHeight: CGFloat = 0.0
+//        let fromExpectedHeight = fromCollectionView.collectionViewLayout.collectionViewContentSize.height
+//        let toExpectedHeight = tosCollectionView.collectionViewLayout.collectionViewContentSize.height
+//        if hasBCCRecipients {
+//            bccExpectedHeight = bccsCollectionView.collectionViewLayout.collectionViewContentSize.height
+//        }
+//        if hasCCRecipients {
+//            ccExpectedHeight = ccsCollectionView.collectionViewLayout.collectionViewContentSize.height
+//        }
+//        let dateLabelExpectedHeight = dateLabel.bounds.size.height
+//        let expectatedTotalHeight = fromExpectedHeight + toExpectedHeight + ccExpectedHeight + bccExpectedHeight + dateLabelExpectedHeight + 30
+//        return CGSize(width: size.width, height: expectatedTotalHeight)
+//    }
+//
+//    private var hasBCCRecipients: Bool {
+//        guard let cvcvms = viewModel?.bccsCollectionViewViewModel?.collectionViewCellViewModels else {
+//            return false
+//        }
+//        return cvcvms.count > 0
+//    }
+//
+//    private var hasCCRecipients: Bool {
+//        guard let cvcvms = viewModel?.ccsCollectionViewViewModel?.collectionViewCellViewModels else {
+//            return false
+//        }
+//
+//        return cvcvms.count > 0
+//    }
+//}
 
 extension MessageHeaderCell {
     
