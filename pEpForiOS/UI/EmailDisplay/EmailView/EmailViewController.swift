@@ -64,7 +64,7 @@ class EmailViewController: UIViewController {
                                                object: nil)
         showExternalContentLabel.text = Localized.showExternalContentText
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 100
+        tableView.estimatedRowHeight = 180
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -196,6 +196,29 @@ extension EmailViewController: UITableViewDataSource {
             return cell
         }
     }
+
+//    func tableView(_ tableView: UITableView,
+//                            didDisplay cell: UITableViewCell,
+//                            forRowAt indexPath: IndexPath) {
+//        if isLastRow(indexPath: indexPath) {
+//            DispatchQueue.main.async { [weak self] in
+//                guard let me = self else {
+//                    // Valid case. We might have been dismissed already.
+//                    return
+//                }
+//                me.didFinishLoading()
+//            }
+//        }
+//    }
+//
+//    private func isLastRow(indexPath: IndexPath) -> Bool {
+//        guard let vm = viewModel else {
+//            Log.shared.errorAndCrash("No VM")
+//            return false
+//        }
+//
+//        return indexPath.row == vm.numberOfRows - 1
+//    }
 }
 
 //MARK: - UITableViewDelegate
