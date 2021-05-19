@@ -15,7 +15,7 @@ import pEpIOSToolbox
 extension KeySyncService: PEPSendMessageDelegate {
 
     func send(_ message: PEPMessage) -> PEPStatus {
-            guard let address = message.from?.address else {
+        guard let address = message.from?.address else {
             return PEPStatus.illegalValue
         }
 
@@ -25,10 +25,10 @@ extension KeySyncService: PEPSendMessageDelegate {
         let moc = Stack.shared.newPrivateConcurrentContext
         moc.performAndWait {
             guard
-                let cdFromAccount = CdAccount.searchAccount(withAddress: address, context: moc)
-                else {
-                    foundAccount = false
-                    return
+                let cdFromAccount = CdAccount.by(address: address, context: moc)
+            else {
+                foundAccount = false
+                return
             }
 
             // Gather all recipients into one array.
@@ -37,7 +37,7 @@ extension KeySyncService: PEPSendMessageDelegate {
 
             // For every recipient, try to look up the corresponding account.
             let recipientsAccounts = recipients.compactMap {
-                CdAccount.searchAccount(withAddress: $0.address, context: moc)
+                CdAccount.by(address: $0.address, context: moc)
             }
 
             if recipientsAccounts.count == recipients.count {
@@ -121,9 +121,9 @@ extension KeySyncService: PEPSendMessageDelegate {
         guard let cdOutFolder = CdFolder.by(folderType: .outbox,
                                             account: senderCdAccount,
                                             context: moc)
-            else {
-                Log.shared.errorAndCrash("No outbox")
-                return .unknownError
+        else {
+            Log.shared.errorAndCrash("No outbox")
+            return .unknownError
         }
 
         // Put the message into the outbox so it will be sent out later by an SMTP service.

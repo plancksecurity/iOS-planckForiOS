@@ -105,9 +105,10 @@ class ComposeViewModel {
         let subjectSection = section(for: .subject)
         guard
             let vm = subjectSection?.rows.first,
-            let idxSubject = indexPath(for: vm) else {
-                Log.shared.errorAndCrash("No Subject?")
-                return IndexPath(row: 0, section: 0)
+            let idxSubject = indexPath(for: vm)
+        else {
+            Log.shared.errorAndCrash("No Subject?")
+            return IndexPath(row: 0, section: 0)
         }
         return idxSubject
     }
@@ -117,9 +118,10 @@ class ComposeViewModel {
         let bodySection = section(for: .body)
         guard
             let vm = bodySection?.rows.first,
-            let body = indexPath(for: vm) else {
-                Log.shared.errorAndCrash("No body")
-                return IndexPath(row: 0, section: 0)
+            let body = indexPath(for: vm)
+        else {
+            Log.shared.errorAndCrash("No body")
+            return IndexPath(row: 0, section: 0)
         }
         return body
     }
@@ -137,13 +139,23 @@ class ComposeViewModel {
     }
 
     convenience init(composeMode: ComposeUtil.ComposeMode? = nil,
-         prefilledTo: Identity? = nil,
-         prefilledFrom: Identity? = nil,
-         originalMessage: Message? = nil) {
+                     prefilledTo: Identity? = nil,
+                     prefilledFrom: Identity? = nil,
+                     originalMessage: Message? = nil) {
         let initData = InitData(prefilledTo: prefilledTo,
                                 prefilledFrom: prefilledFrom,
                                 originalMessage: originalMessage,
                                 composeMode: composeMode)
+        let state = ComposeViewModelState(initData: initData)
+        self.init(state: state)
+    }
+
+    convenience init(prefilledFromAddress: String) {
+        let prefilledFrom = Identity(address: prefilledFromAddress)
+        let initData = InitData(prefilledTo: nil,
+                                prefilledFrom: prefilledFrom,
+                                originalMessage: nil,
+                                composeMode: nil)
         let state = ComposeViewModelState(initData: initData)
         self.init(state: state)
     }
@@ -163,7 +175,7 @@ class ComposeViewModel {
             return indexPathToVm
         } else if state.subject.isEmpty || state.subject.isOnlyWhiteSpace(){
             if let composeMode = state.initData?.composeMode,
-                (composeMode == .replyFrom || composeMode == .replyAll) {
+               (composeMode == .replyFrom || composeMode == .replyAll) {
                 // When replying a mail we always want the cursor in body, even the subject is empty
                 return indexPathBodyVm            }
             // Use case: open compose by clicking mailto: link
@@ -199,6 +211,7 @@ class ComposeViewModel {
     }
 
     public func handleUserClickedSendButton() {
+        rollbackMainSession()
         let safeState = state.makeSafe(forSession: Session.main)
         let sendClosure: (() -> Message?) = { [weak self] in
             guard let me = self else {
@@ -313,11 +326,11 @@ extension ComposeViewModel {
         guard
             let composeMode = state.initData?.composeMode,
             composeMode != .normal
-            else {
-                // The message is not forwarded or answered, not our use case ...
-                // ... nothing to do
-                completion(true)
-                return
+        else {
+            // The message is not forwarded or answered, not our use case ...
+            // ... nothing to do
+            completion(true)
+            return
         }
         guard let originalMessage = state.initData?.originalMessage else {
             Log.shared.errorAndCrash("Invalid state: Forward && not having an original message")
@@ -360,11 +373,11 @@ extension ComposeViewModel {
             if pEpRating.hasLessSecurePepColor(than: originalRating) {
                 // Forwarded mesasge is less secure than original message. Warn the user.
                 me.delegate?.showTwoButtonAlert(withTitle: title,
-                                             message: message,
-                                             cancelButtonText: NSLocalizedString("NO", comment: "'No' button to confirm less secure email sent"),
-                                             positiveButtonText: NSLocalizedString("YES", comment: "'Yes' button to confirm less secure email sent"),
-                                             cancelButtonAction: { completion(false) },
-                                             positiveButtonAction: { completion(true) })
+                                                message: message,
+                                                cancelButtonText: NSLocalizedString("NO", comment: "'No' button to confirm less secure email sent"),
+                                                positiveButtonText: NSLocalizedString("YES", comment: "'Yes' button to confirm less secure email sent"),
+                                                cancelButtonAction: { completion(false) },
+                                                positiveButtonAction: { completion(true) })
             } else {
                 completion(true)
             }
@@ -545,9 +558,9 @@ extension ComposeViewModel {
         guard
             let section = section(for: .attachments),
             let rows = section.rows as? [AttachmentViewModel]
-            else {
-                Log.shared.errorAndCrash("Only attachments can be removed by the user")
-                return
+        else {
+            Log.shared.errorAndCrash("Only attachments can be removed by the user")
+            return
         }
         // Remove from section
         var newAttachmentVMs = [AttachmentViewModel]()
@@ -606,9 +619,9 @@ extension ComposeViewModel: SuggestViewModelResultDelegate {
         guard
             let idxPath = lastRowWithSuggestions,
             let recipientVM = sections[idxPath.section].rows[idxPath.row] as? RecipientCellViewModel
-            else {
-                Log.shared.errorAndCrash("No row VM")
-                return
+        else {
+            Log.shared.errorAndCrash("No row VM")
+            return
         }
         recipientVM.add(recipient: identity)
     }
@@ -693,11 +706,11 @@ extension ComposeViewModel {
         let title: String
         if data.isDrafts {
             title = NSLocalizedString("Delete Changes", comment:
-                "ComposeTableView: button to decide to delete changes made on a drafted mail.")
+                                        "ComposeTableView: button to decide to delete changes made on a drafted mail.")
         } else if data.isOutbox {
             title = NSLocalizedString("Delete", comment:
-                "ComposeTableView: button to decide to delete a message from Outbox after " +
-                "making changes.")
+                                        "ComposeTableView: button to decide to delete a message from Outbox after " +
+                                        "making changes.")
         } else {
             title = NSLocalizedString("Delete", comment: "compose email delete")
         }
@@ -712,7 +725,7 @@ extension ComposeViewModel {
         let title: String
         if data.isDrafts {
             title = NSLocalizedString("Save changes", comment:
-                "ComposeTableView: button to decide to save changes made on a drafted mail.")
+                                        "ComposeTableView: button to decide to save changes made on a drafted mail.")
         } else {
             title = NSLocalizedString("Save Draft", comment: "compose email save")
         }
@@ -721,14 +734,26 @@ extension ComposeViewModel {
 
     public var keepInOutboxActionTitle: String {
         return NSLocalizedString("Keep in Outbox", comment:
-            "ComposeTableView: button to decide to Discharge changes made on a mail in outbox.")
+                                    "ComposeTableView: button to decide to Discharge changes made on a mail in outbox.")
     }
 
     public var cancelActionTitle: String {
         return NSLocalizedString("Cancel", comment: "compose email cancel")
     }
 
+    //!!!: Dirty hack. Works around a mess in Session.main, caused by creating and using of
+    //messageToSend in/for TrustmanagementVC (which is supposed to use an independent Session
+    // but leaves leftovers that makes commiting the Session impossible).
+    private func rollbackMainSession() {
+        Session.main.rollback()
+    }
+
+    public func handleDeleteActionTriggered() {
+        rollbackMainSession()
+    }
+
     public func handleSaveActionTriggered() {
+        rollbackMainSession()
         guard let data = state.initData else {
             Log.shared.errorAndCrash("No data")
             return
@@ -773,13 +798,15 @@ extension ComposeViewModel {
     }
 
     func trustManagementViewModel() -> TrustManagementViewModel? {
-        guard let message = ComposeUtil.messageToSend(withDataFrom: state, recipientsOnly: true) else {
+
+        guard let message = ComposeUtil.messageForTrustManagement(withDataFrom: state) else {
             Log.shared.errorAndCrash("No message")
             return nil
         }
-        let messageSafe = message.safeForSession(Session.main)
-        return TrustManagementViewModel(message: messageSafe,
+        // Do not store message (persistRatingChangesForMessage). Would result in a meesage in Outbox and thus unwanted sending
+        return TrustManagementViewModel(message: message,
                                         pEpProtectionModifyable: true,
+                                        persistRatingChangesForMessage: false,
                                         protectionStateChangeDelegate: self)
     }
 }
@@ -838,7 +865,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         suggestionsVM?.updateSuggestion(searchString: newText.cleanAttachments)
     }
 
-// MARK: - Add Contact
+    // MARK: - Add Contact
 
     func addContactTapped() {
         delegate?.showContactsPicker()
@@ -848,9 +875,9 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         guard
             let idxPath = lastRowWithSuggestions,
             let recipientVM = sections[idxPath.section].rows[idxPath.row] as? RecipientCellViewModel
-            else {
-                Log.shared.errorAndCrash("No row VM")
-                return
+        else {
+            Log.shared.errorAndCrash("No row VM")
+            return
         }
         let contactIdentity = Identity(address: address, userID: nil,
                                        addressBookID: addressBookID,

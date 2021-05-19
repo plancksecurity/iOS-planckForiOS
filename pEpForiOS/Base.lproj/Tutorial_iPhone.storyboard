@@ -161,10 +161,10 @@
                                         <exclude reference="HNu-qm-BcU"/>
                                         <exclude reference="MW3-d8-hoO"/>
                                         <exclude reference="ygN-LP-LkL"/>
-                                        <exclude reference="pQw-5W-1ot"/>
                                         <exclude reference="6bf-a2-AZf"/>
                                         <exclude reference="VNi-K5-8JM"/>
                                         <exclude reference="o2L-S9-KDX"/>
+                                        <exclude reference="pQw-5W-1ot"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=compact">
@@ -173,7 +173,6 @@
                                         <include reference="MW3-d8-hoO"/>
                                         <exclude reference="uxU-8x-K6K"/>
                                         <exclude reference="ygN-LP-LkL"/>
-                                        <include reference="pQw-5W-1ot"/>
                                         <include reference="6bf-a2-AZf"/>
                                         <exclude reference="ltZ-7S-WJU"/>
                                         <exclude reference="w0p-iB-mbO"/>
@@ -182,6 +181,7 @@
                                         <exclude reference="nBB-sF-5JH"/>
                                         <include reference="o2L-S9-KDX"/>
                                         <exclude reference="oVo-PP-BOQ"/>
+                                        <include reference="pQw-5W-1ot"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -404,6 +404,7 @@
                                 <exclude reference="H7i-Xe-y6J"/>
                                 <exclude reference="OrJ-o4-veH"/>
                                 <exclude reference="i5A-Ut-39k"/>
+                                <exclude reference="3UK-f1-Rsj"/>
                                 <exclude reference="5BM-qb-jeo"/>
                                 <exclude reference="bRv-qP-Fd6"/>
                                 <exclude reference="fzK-gZ-gqY"/>
@@ -421,7 +422,6 @@
                                 <exclude reference="MS1-XZ-VhU"/>
                                 <exclude reference="VAp-d8-7hj"/>
                                 <exclude reference="s6u-pb-jBv"/>
-                                <exclude reference="3UK-f1-Rsj"/>
                                 <exclude reference="0jI-HD-TDc"/>
                                 <exclude reference="Brv-MI-ZoN"/>
                             </mask>
@@ -441,6 +441,7 @@
                             <mask key="constraints">
                                 <include reference="H7i-Xe-y6J"/>
                                 <include reference="OrJ-o4-veH"/>
+                                <include reference="3UK-f1-Rsj"/>
                                 <exclude reference="7MZ-VX-S6F"/>
                                 <exclude reference="8oZ-xv-dfs"/>
                                 <exclude reference="gdQ-dc-ejE"/>
@@ -458,7 +459,6 @@
                                 <include reference="MS1-XZ-VhU"/>
                                 <exclude reference="mgS-Qv-8LE"/>
                                 <exclude reference="mp1-Oi-yyk"/>
-                                <include reference="3UK-f1-Rsj"/>
                                 <include reference="Brv-MI-ZoN"/>
                             </mask>
                         </variation>
@@ -491,6 +491,7 @@
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="constraints">
                                 <exclude reference="Q6T-es-K2u"/>
+                                <exclude reference="3UK-f1-Rsj"/>
                                 <exclude reference="7MZ-VX-S6F"/>
                                 <exclude reference="8oZ-xv-dfs"/>
                                 <include reference="bRv-qP-Fd6"/>
@@ -499,7 +500,6 @@
                                 <include reference="hKh-6F-csZ"/>
                                 <include reference="1K7-r3-AOS"/>
                                 <exclude reference="mp1-Oi-yyk"/>
-                                <exclude reference="3UK-f1-Rsj"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
@@ -512,6 +512,7 @@
                                 <include reference="OrJ-o4-veH"/>
                                 <include reference="i5A-Ut-39k"/>
                                 <exclude reference="lrQ-Uc-Szq"/>
+                                <include reference="3UK-f1-Rsj"/>
                                 <exclude reference="7MZ-VX-S6F"/>
                                 <exclude reference="8oZ-xv-dfs"/>
                                 <exclude reference="bRv-qP-Fd6"/>
@@ -529,7 +530,6 @@
                                 <include reference="BgP-yO-oKN"/>
                                 <exclude reference="FVf-d8-32H"/>
                                 <exclude reference="mp1-Oi-yyk"/>
-                                <include reference="3UK-f1-Rsj"/>
                                 <include reference="0jI-HD-TDc"/>
                                 <include reference="Brv-MI-ZoN"/>
                             </mask>
@@ -780,7 +780,7 @@
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rLc-J2-pmo" userLabel="Explanation">
                                         <rect key="frame" x="41" y="0.0" width="178" height="117"/>
-                                        <string key="text">The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:</string>
+                                        <string key="text">The icon in the top bar reflects the Privacy Status of the message, which is the lowest common denominator of all communication partners of that message, for example:</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>

@@ -110,8 +110,7 @@ public class RecipientTextViewModel {
     }
 
     private func removeRecipientAttachment(attachment: TextAttachment) {
-        recipientAttachments = recipientAttachments
-            .filter { $0.recipient.address != attachment.recipient.address }
+        recipientAttachments = recipientAttachments.filter({$0 != attachment})
     }
 
      @discardableResult private func tryGenerateValidAddressAndUpdateStatus(range: NSRange,
@@ -183,3 +182,5 @@ public class RecipientTextViewModel {
         }
     }
 }
+
+

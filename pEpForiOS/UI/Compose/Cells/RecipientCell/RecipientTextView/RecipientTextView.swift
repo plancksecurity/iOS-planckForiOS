@@ -7,7 +7,12 @@
 //
 
 import UIKit
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 class RecipientTextView: UITextView {
     public var viewModel: RecipientTextViewModel? {
@@ -37,6 +42,7 @@ extension RecipientTextView: UITextViewDelegate {
 
     public func textViewDidBeginEditing(_ textView: UITextView) {
         reportWidthChange()
+        setLabelTextColor()
         viewModel?.handleDidBeginEditing(text: textView.text)
     }
 

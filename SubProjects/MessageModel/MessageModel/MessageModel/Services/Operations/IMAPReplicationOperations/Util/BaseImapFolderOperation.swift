@@ -9,7 +9,11 @@
 import Foundation
 import CoreData
 
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 /// Base for an operation that needs to open an IMAP folder to do its work.
 class BaseImapFolderOperation: ImapSyncOperation {

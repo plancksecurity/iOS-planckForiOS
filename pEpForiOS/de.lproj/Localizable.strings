@@ -1,11 +1,5 @@
-/* client certificate provider key */
-"\n            Client\n            Certificate\n            " = "\n            Client\n            Zertifikat\n            ";
-
 /* Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion. */
 "\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n" = "\n%1$@\n\n%2$@\n\n%3$@\n\nAnhänge sind deaktiviert.\n\n";
-
-/* external content label text */
-"\nBy showing external content, your privacy may be invaded.\nThis may affect the privacy status of the message.\n" = "\nWenn externe Inhalte angezeigt werden, ist der Datenschutz ihrer Nachricht nicht mehr gewährleistet.\nDies hat Auswirkungen auf den Datenschutzstatus.\n";
 
 /* No privacy status explanation
    No privacy status suggestion */
@@ -519,7 +513,8 @@
 /* keySyncWizard intro view Next button title */
 "Next" = "Weiter";
 
-/* Alert button while client certificate is importing: Try again? No */
+/* Alert button while client certificate is importing: Try again? No
+   Cancel button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted? */
 "No" = "Nein";
 
 /* 'No' button to confirm less secure email sent */
@@ -1045,7 +1040,7 @@
 "Undo Trust Confirmation" = "Vertrauensbestätigung rückgängig machen";
 
 /* Action name to be suggested at the moment of revert */
-"Undo Trust Rejection" = "Vertrauens-Ablehnung rückgängig machen";
+"Undo Trust Rejection" = "Vertrauensablehnung rückgängig machen";
 
 /* read button in slide-left menu */
 "Unflag" = "Markierung entfernen";
@@ -1150,7 +1145,8 @@
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Falsche Trustwords";
 
-/* Alert button while client certificate is importing: Try again? Yes */
+/* Alert button while client certificate is importing: Try again? Yes
+   Positive button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted? */
 "Yes" = "Ja";
 
 /* 'Yes' button to confirm less secure email sent */

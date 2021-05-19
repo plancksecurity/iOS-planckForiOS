@@ -21,8 +21,11 @@ protocol RatingReEvaluatorProtocol {
     /// Reevaluates the pEp rating of the given message and saves it.
     /// - Parameters:
     ///   - message: message to re-evaluate rating for. Must be save to use on `Session.main`.
+    ///   - storeMessageWhenDone: if true, the given message is persisted after setting the new rating
     ///   - completion: called when done reevaluating. I quaranteed to be called on the main queue.
-    static func reevaluate(message: Message, completion:  @escaping ()->Void)
+    static func reevaluate(message: Message,
+                           storeMessageWhenDone: Bool,
+                           completion:  @escaping ()->Void)
 }
 
 public class RatingReEvaluator {
@@ -33,7 +36,9 @@ public class RatingReEvaluator {
 
 extension RatingReEvaluator: RatingReEvaluatorProtocol {
     
-    static public func reevaluate(message: Message, completion:  @escaping ()->Void) {
+    static public func reevaluate(message: Message,
+                                  storeMessageWhenDone: Bool = true, //BUFF: needless?
+                                  completion:  @escaping ()->Void) {
         let pEpMessage = message.cdObject.pEpMessage()
         if pEpMessage.direction == .outgoing {
             PEPSession().outgoingRating(for: pEpMessage, errorCallback: { (error) in
@@ -44,7 +49,13 @@ extension RatingReEvaluator: RatingReEvaluatorProtocol {
                 }
                 completion()
             }) { (rating) in
-                storeNewRating(pEpRating: rating, to: message.cdObject, completion: completion)
+                if storeMessageWhenDone {
+                    storeNewRating(pEpRating: rating,
+                                   to: message.cdObject,
+                                   completion: completion)
+                } else {
+                    completion()
+                }
             }
         } else {
             let keys = message.cdObject.keysFromDecryption?.array as? [String]
@@ -60,7 +71,13 @@ extension RatingReEvaluator: RatingReEvaluatorProtocol {
                 }
                 completion()
             }) { (newRating) in
-                storeNewRating(pEpRating: newRating, to: message.cdObject, completion: completion)
+                if storeMessageWhenDone {
+                    storeNewRating(pEpRating: newRating,
+                                   to: message.cdObject,
+                                   completion: completion)
+                } else {
+                    completion()
+                }
             }
         }
     }
@@ -70,9 +87,10 @@ extension RatingReEvaluator: RatingReEvaluatorProtocol {
 
 extension RatingReEvaluator {
     static private func storeNewRating(pEpRating: PEPRating,
-                                  to cdMessage: CdMessage,
-                                  completion:  @escaping ()->Void) {
-        DispatchQueue.main.async {
+                                       to cdMessage: CdMessage,
+                                       completion:  @escaping ()->Void) {
+        let moc = cdMessage.managedObjectContext
+        moc?.perform {
             cdMessage.pEpRating = Int16(pEpRating.rawValue)
             cdMessage.managedObjectContext?.saveAndLogErrors()
             completion()

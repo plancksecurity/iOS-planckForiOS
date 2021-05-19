@@ -7,7 +7,12 @@
 //
 
 import Foundation
+
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
 
 class MessageAttachmentCell: UITableViewCell {
    @IBOutlet weak var attachmentView: AttachmentCellBackgroundView!
