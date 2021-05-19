@@ -11,21 +11,21 @@ import Foundation
 /// Someone on client side that can provide us with passphrases in cases we need one.
 public protocol PassphraseProviderProtocol: class {
 
-    /// We need a passphrase to do our job. If you can provice it as the input parameter of the
-    /// completion block, pass `nil`there otherwize.
+    /// We need a passphrase to do our job. If you can, provide it as the input parameter of the
+    /// completion block, pass `nil` otherwize.
     /// - Parameter completion: call this to return the passphrase or `nil` if you can not provide
     ///                         it for some reason.
     func showEnterPassphrase(triggeredWhilePEPSync: Bool,
                              completion: @escaping (String?)->Void)
 
-    /// The known passphrases do not work, but we need a valid passphrase to do our job. If you can
-    /// provice it as the input parameter of the completion block, pass `nil`there otherwize.
+    /// The known passphrases do not work, but we need a valid passphrase to do our job. If you can,
+    /// provide it as the input parameter of the completion block, otherwize pass `nil`.
     /// - Parameter completion: call this to return the passphrase or `nil` if you can not provide
     ///                         it for some reason.
     func showWrongPassphrase(completion: @escaping (String?)->Void)
 
     /// We received an invalid passphrase, it's too long.
-    /// We need a valid passphrase to do our job. If you can provice it as the input parameter of
+    /// We need a valid passphrase to do our job. If you can, provide it as the input parameter of
     /// the completion block, pass `nil`there otherwize.
     /// - Parameter completion: call this to return the passphrase or `nil` if you can not provide
     ///                         it for some reason.

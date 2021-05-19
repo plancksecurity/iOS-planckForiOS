@@ -14,24 +14,32 @@ import pEp4iosIntern
 /// Service to migrate passwords, certificates from the default keychain
 /// to either the keychain group `kSharedKeychain` or another one,
 /// specified in the constructor.
-/// - Note: Is only supposed to run once during app execution, which is configured
-/// in the constructor.
+/// Runs exactly once after calling `start()`
 class MigrateKeychainService: OperationBasedService {
-    let keychainGroupSource: String
-    let keychainGroupTarget: String
+    private let keychainGroupSource: String
+    private let keychainGroupTarget: String
+    var completionBlock: (()->())?
 
-    /// - parameter keychainGroupTarget: The name of the target keychain
-    /// (where to migrate to), `kSharedKeychain` by default.
+    /// - parameter keychainGroupSource: The name of the source keychain  (where to migrate from)
+    /// - parameter keychainGroupTarget: The name of the target keychain (where to migrate to),
+    /// `kSharedKeychain` by default.
+    /// - parameter backgroundTaskManager: custom backgroundTaskManager can be passed here
+    /// - parameter completionBlock: called when the service is done
     init(keychainGroupSource: String,
          keychainGroupTarget: String = kSharedKeychain,
-         backgroundTaskManager: BackgroundTaskManagerProtocol? = nil) {
+         backgroundTaskManager: BackgroundTaskManagerProtocol? = nil,
+         completionBlock: (()->())? = nil) {
         self.keychainGroupSource = keychainGroupSource
         self.keychainGroupTarget = keychainGroupTarget
+        self.completionBlock = completionBlock
         super.init(runOnce: true, backgroundTaskManager: backgroundTaskManager)
     }
 
     override func operations() -> [Operation] {
-        return [MigrateKeychainOperation(keychainGroupSource: keychainGroupSource,
-                                         keychainGroupTarget: keychainGroupTarget)]
+        let migrationOP = MigrateKeychainOperation(keychainGroupSource: keychainGroupSource,
+                                                   keychainGroupTarget: keychainGroupTarget)
+        migrationOP.completionBlock = completionBlock
+
+        return [migrationOP]
     }
 }
