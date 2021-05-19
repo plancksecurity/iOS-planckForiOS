@@ -514,7 +514,6 @@
 		5BE35A9A249139DD00AC605C /* AccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */; };
 		5BE35AA424913B4700AC605C /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35AA324913B4700AC605C /* SettingsViewModel.swift */; };
 		5BEAECB525370C3E0082AAC6 /* String+Mailto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEAECB425370C3E0082AAC6 /* String+Mailto.swift */; };
-		5BEB20E526304DF500CB01C3 /* MessageRecipientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB20E426304DF500CB01C3 /* MessageRecipientCell.swift */; };
 		5BEB20E9263084E100CB01C3 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB20E8263084E100CB01C3 /* LeftAlignedCollectionViewFlowLayout.swift */; };
 		5BEB212A2630955D00CB01C3 /* RecipientCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB21292630955D00CB01C3 /* RecipientCollectionViewCell.swift */; };
 		5BEB568B25E68C0E00304A38 /* TrustwordsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB568A25E68C0E00304A38 /* TrustwordsContainerView.swift */; };
@@ -1161,7 +1160,6 @@
 		5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewController.swift; sourceTree = "<group>"; };
 		5BE35AA324913B4700AC605C /* SettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		5BEAECB425370C3E0082AAC6 /* String+Mailto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Mailto.swift"; sourceTree = "<group>"; };
-		5BEB20E426304DF500CB01C3 /* MessageRecipientCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRecipientCell.swift; sourceTree = "<group>"; };
 		5BEB20E8263084E100CB01C3 /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		5BEB21292630955D00CB01C3 /* RecipientCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientCollectionViewCell.swift; sourceTree = "<group>"; };
 		5BEB568A25E68C0E00304A38 /* TrustwordsContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustwordsContainerView.swift; sourceTree = "<group>"; };
@@ -2786,7 +2784,6 @@
 				5BEB20EC263084F100CB01C3 /* CollectionView */,
 				5B5C2A9125D2902C00F9C18A /* MessageAttachmentCell.swift */,
 				5BA617FF25F1475900973829 /* MessageImageAttachmentCell.swift */,
-				5BEB20E426304DF500CB01C3 /* MessageRecipientCell.swift */,
 				5B102FAA2652A1F400A758D2 /* MessageHeaderCell.swift */,
 				5B102FAC2652AF3400A758D2 /* MessageHeaderCellViewModel.swift */,
 				5B6E7EF12636FCBF00936190 /* MessageRecipientCellViewModel.swift */,
@@ -3451,7 +3448,6 @@
 				5BB7C73524D2EB3700D5F328 /* UnifiedTrash.swift in Sources */,
 				222B35581DF96389007A1F82 /* Capability.swift in Sources */,
 				0033C07F20D7EBD500224E61 /* ThreadedEmailViewModel+UpdateThreadDelegate.swift in Sources */,
-				5BEB20E526304DF500CB01C3 /* MessageRecipientCell.swift in Sources */,
 				15175CEC205929FB00A8D9D0 /* CidHandler.swift in Sources */,
 				3A2119DF2412515D0030C3E4 /* DynamicHeightScrollView.swift in Sources */,
 				152A39CB21905C3E00D9F8E4 /* DocumentAttachmentPickerViewModel.swift in Sources */,

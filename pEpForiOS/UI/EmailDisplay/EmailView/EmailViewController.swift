@@ -23,9 +23,9 @@ class EmailViewController: UIViewController {
 
     public weak var delegate: EmailViewControllerDelegate?
 
-    private var shouldDisplayAll: [EmailViewModel.EmailRowType: Bool] = [EmailViewModel.EmailRowType.to: false,
-                                                                         EmailViewModel.EmailRowType.cc: false,
-                                                                         EmailViewModel.EmailRowType.bcc: false]
+    private var shouldDisplayAll: [EmailViewModel.RecipientType: Bool] = [EmailViewModel.RecipientType.to: false,
+                                                                          EmailViewModel.RecipientType.cc: false,
+                                                                          EmailViewModel.RecipientType.bcc: false]
     private var htmlViewerViewControllerExists = false
     private var busyState: ViewBusyState?
     private lazy var documentInteractionController = UIDocumentInteractionController()
@@ -151,49 +151,6 @@ extension EmailViewController: UITableViewDataSource {
                 return cell
             }
             setupHeader(cell: cell, row: row)
-            return cell
-
-        case .from:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageRecipientCell else {
-                return UITableViewCell()
-            }
-            guard let row = vm[indexPath.row] as? EmailViewModel.FromRow else {
-                Log.shared.errorAndCrash("Can't get or cast sender row")
-                return cell
-            }
-            setupRecipient(cell: cell, with: [row.fromVM], rowType: row.type)
-            return cell
-        case .to:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageRecipientCell else {
-                return UITableViewCell()
-            }
-            guard let row = vm[indexPath.row] as? EmailViewModel.ToRow else {
-                Log.shared.errorAndCrash("Can't get or cast sender row")
-                return cell
-            }
-            setupRecipient(cell: cell, with: row.tosViewModels, rowType: row.type)
-            return cell
-
-        case .cc:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageRecipientCell else {
-                return UITableViewCell()
-            }
-            guard let row = vm[indexPath.row] as? EmailViewModel.CCRow else {
-                Log.shared.errorAndCrash("Can't get or cast sender row")
-                return cell
-            }
-            setupRecipient(cell: cell, with: row.ccsViewModels, rowType: row.type)
-            return cell
-
-        case .bcc:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageRecipientCell else {
-                return UITableViewCell()
-            }
-            guard let row = vm[indexPath.row] as? EmailViewModel.BCCRow else {
-                Log.shared.errorAndCrash("Can't get or cast sender row")
-                return cell
-            }
-            setupRecipient(cell: cell, with: row.bccsViewModels, rowType: row.type)
             return cell
 
         case .subject:
@@ -402,18 +359,6 @@ extension EmailViewController {
                    viewWidth: view.bounds.width)
     }
 
-    private func setupRecipient(cell: MessageRecipientCell,
-                                with cellsViewModels: [EmailViewModel.CollectionViewCellViewModel],
-                                rowType: EmailViewModel.EmailRowType) {
-        let shouldDisplayAllRecipients = shouldDisplayAll[rowType] ?? false
-
-        cell.setup(viewModels: cellsViewModels,
-                   rowType: rowType,
-                   shouldDisplayAllRecipients: shouldDisplayAllRecipients,
-                   delegate: self,
-                   viewWidth: view.bounds.width)
-    }
-
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {
         cell.subjectLabel?.font = UIFont.pepFont(style: .headline, weight: .semibold)
         cell.subjectLabel?.text = row.title
@@ -483,11 +428,11 @@ extension EmailViewController {
     }
 }
 
-// MARK: - MessageRecipientCellDelegate
+// MARK: - MessageHeaderCellDelegate
 
-extension EmailViewController: MessageRecipientCellDelegate {
-    func displayAllRecipients(rowType: EmailViewModel.EmailRowType) {
-        shouldDisplayAll[rowType] = true
+extension EmailViewController: MessageHeaderCellDelegate {
+    func displayAllRecipients(recipientType: EmailViewModel.RecipientType) {
+        shouldDisplayAll[recipientType] = true
         tableView.reloadData()
     }
 

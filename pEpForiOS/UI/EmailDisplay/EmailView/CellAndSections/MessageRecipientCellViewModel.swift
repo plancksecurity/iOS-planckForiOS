@@ -14,6 +14,10 @@ import pEpIOSToolboxForExtensions
 import pEpIOSToolbox
 #endif
 
+protocol MessageHeaderCellDelegate: AnyObject {
+    func displayAllRecipients(recipientType: EmailViewModel.RecipientType)
+}
+
 // View Model of the Message Recipient TableViewCell.
 class MessageRecipientCellViewModel {
 
@@ -24,17 +28,17 @@ class MessageRecipientCellViewModel {
     /// - Parameters:
     ///   - shouldDisplayAllRecipients: Indicates if all the recipients should be shown.
     ///   - containerWidth: The width of the container of the recipients.
-    ///   - rowType: The type of the row.
+    ///   - recipientType: The recipient type.
     ///   - recipientCollectionViewCellViewModels: The recipients
     public func setup(shouldDisplayAllRecipients: Bool,
                       containerWidth: CGFloat,
-                      rowType: EmailViewModel.EmailRowType,
+                      recipientType: EmailViewModel.RecipientType,
                       viewModels: [EmailViewModel.CollectionViewCellViewModel],
-                      delegate: MessageRecipientCellDelegate) {
+                      delegate: MessageHeaderCellDelegate) {
         collectionViewViewModel = EmailViewModel.RecipientsCollectionViewViewModel(delegate: delegate,
                                                                                    shouldDisplayAllRecipients: shouldDisplayAllRecipients,
                                                                                    containerWidth: containerWidth,
-                                                                                   rowType: rowType,
+                                                                                   recipientType: recipientType,
                                                                                    viewModels: viewModels)
     }
 }

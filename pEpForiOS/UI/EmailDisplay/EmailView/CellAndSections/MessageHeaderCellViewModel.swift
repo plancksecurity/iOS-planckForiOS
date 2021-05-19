@@ -50,39 +50,39 @@ class MessageHeaderCellViewModel {
     ///   - containerWidth: The width of the container of the recipients.
     ///   - rowType: The type of the row.
     ///   - recipientCollectionViewCellViewModels: The recipients
-    public func setup(shouldDisplayAll: [EmailViewModel.EmailRowType: Bool],
+    public func setup(shouldDisplayAll: [EmailViewModel.RecipientType: Bool],
                       containerWidth: CGFloat,
                       rowType: EmailViewModel.EmailRowType,
                       fromViewModel: EmailViewModel.CollectionViewCellViewModel,
                       toViewModels: [EmailViewModel.CollectionViewCellViewModel],
                       ccViewModels: [EmailViewModel.CollectionViewCellViewModel],
                       bccViewModels: [EmailViewModel.CollectionViewCellViewModel],
-                      delegate: MessageRecipientCellDelegate) {
+                      delegate: MessageHeaderCellDelegate) {
 
 
-        // From is never collapsed (it's always one).
+        // From is never collapsed (it's always one). 
         fromCollectionViewViewModel = EmailViewModel.RecipientsCollectionViewViewModel(delegate: delegate,
                                                                                        shouldDisplayAllRecipients: true,
                                                                                        containerWidth: containerWidth,
-                                                                                       rowType: .from,
+                                                                                       recipientType: .from,
                                                                                        viewModels: [fromViewModel])
 
         tosCollectionViewViewModel = EmailViewModel.RecipientsCollectionViewViewModel(delegate: delegate,
-                                                                                       shouldDisplayAllRecipients: shouldDisplayAll[.to] ?? false,
+                                                                                      shouldDisplayAllRecipients: shouldDisplayAll[.to] ?? false,
                                                                                       containerWidth: containerWidth,
-                                                                                      rowType: .to,
+                                                                                      recipientType: .to,
                                                                                       viewModels: toViewModels)
 
         ccsCollectionViewViewModel = EmailViewModel.RecipientsCollectionViewViewModel(delegate: delegate,
                                                                                       shouldDisplayAllRecipients: shouldDisplayAll[.cc] ?? false,
                                                                                       containerWidth: containerWidth,
-                                                                                      rowType: .cc,
+                                                                                      recipientType: .cc,
                                                                                       viewModels: ccViewModels)
 
         bccsCollectionViewViewModel = EmailViewModel.RecipientsCollectionViewViewModel(delegate: delegate,
                                                                                       shouldDisplayAllRecipients: shouldDisplayAll[.bcc] ?? false,
                                                                                       containerWidth: containerWidth,
-                                                                                      rowType: .bcc,
+                                                                                      recipientType: .bcc,
                                                                                       viewModels: bccViewModels)
 
     }

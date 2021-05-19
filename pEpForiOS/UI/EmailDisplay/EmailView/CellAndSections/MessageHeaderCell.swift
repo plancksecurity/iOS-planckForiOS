@@ -50,8 +50,8 @@ class MessageHeaderCell: UITableViewCell {
                       date: String?,
                       viewModel: MessageHeaderCellViewModel,
                       rowType: EmailViewModel.EmailRowType,
-                      shouldDisplayAll: [EmailViewModel.EmailRowType: Bool],
-                      delegate: MessageRecipientCellDelegate,
+                      shouldDisplayAll: [EmailViewModel.RecipientType: Bool],
+                      delegate: MessageHeaderCellDelegate,
                       viewWidth: CGFloat) {
         bccContainer.isHidden = bccViewModels.isEmpty
         ccContainer.isHidden = ccViewModels.isEmpty

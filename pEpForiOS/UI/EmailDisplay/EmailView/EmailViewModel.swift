@@ -12,7 +12,7 @@ import MessageModel
 import pEpIOSToolbox
 
 /// Delegate to comunicate with Email View.
-protocol EmailViewModelDelegate: class {
+protocol EmailViewModelDelegate: AnyObject {
     /// Show the item
     /// - Parameter quickLookItem: The quick look item to show. Could be the url of a document.
     func showQuickLookOfAttachment(quickLookItem: QLPreviewItem)
@@ -212,30 +212,34 @@ extension EmailViewModel {
         public private(set) var title: String
         public private(set) var identity: Identity?
         public private(set) var action: (() -> Void)?
-        public private(set) var rowType: EmailViewModel.EmailRowType
+        public private(set) var recipientType: EmailViewModel.RecipientType
 
         /// Constructor
         /// - Parameters:
         ///   - identity: The identity represented by the button
         ///   - action: The action to be executed
-        init(identity: Identity?, rowType: EmailViewModel.EmailRowType, action: (() -> Void)? = nil) {
+        init(identity: Identity?, recipientType: EmailViewModel.RecipientType, action: (() -> Void)? = nil) {
             self.identity = identity
             self.title = identity?.displayString ?? ""
             self.action = action
-            self.rowType = rowType
+            self.recipientType = recipientType
         }
 
         /// Constructor
         /// - Parameter title: The title of the button
-        init(title: String, rowType: EmailViewModel.EmailRowType, action: (() -> Void)? = nil) {
-            self.rowType = rowType
+        init(title: String, recipientType: EmailViewModel.RecipientType, action: (() -> Void)? = nil) {
+            self.recipientType = recipientType
             self.title = title
             self.action = action
         }
     }
 
     enum EmailRowType: String {
-        case header, bcc, cc, to, from, subject, body, attachment, imageAttachment
+        case header, subject, body, attachment, imageAttachment
+    }
+
+    enum RecipientType: String {
+        case from, to, cc, bcc
     }
 
     // MARK: Header
@@ -250,32 +254,6 @@ extension EmailViewModel {
         var date: String
         var image: UIImage?
         var viewModel: MessageHeaderCellViewModel
-    }
-
-    // MARK: Recipients
-
-    struct FromRow: EmailRowProtocol {
-        var type: EmailViewModel.EmailRowType = .from
-        var cellIdentifier: String = "messageRecipientCell"
-        var fromVM: CollectionViewCellViewModel
-    }
-
-    struct ToRow: EmailRowProtocol {
-        var type: EmailViewModel.EmailRowType = .to
-        var cellIdentifier: String = "messageRecipientCell"
-        var tosViewModels: [CollectionViewCellViewModel]
-    }
-
-    struct CCRow: EmailRowProtocol {
-        var type: EmailViewModel.EmailRowType = .cc
-        var cellIdentifier: String = "messageRecipientCell"
-        var ccsViewModels: [CollectionViewCellViewModel]
-    }
-
-    struct BCCRow: EmailRowProtocol {
-        var type: EmailViewModel.EmailRowType = .bcc
-        var cellIdentifier: String = "messageRecipientCell"
-        var bccsViewModels: [CollectionViewCellViewModel]
     }
 
     // MARK: Subject
@@ -453,12 +431,12 @@ extension EmailViewModel {
 extension EmailViewModel {
 
     private func setupRows(message: Message) {
-        func cellViewModels(from identities: [Identity], rowType: EmailViewModel.EmailRowType) -> [CollectionViewCellViewModel] {
-            return identities.map({ return getRecipientCollectionViewCellViewModel(identity: $0, rowType: rowType) })
+        func cellViewModels(from identities: [Identity], recipientType: EmailViewModel.RecipientType) -> [CollectionViewCellViewModel] {
+            return identities.map({ return getRecipientCollectionViewCellViewModel(identity: $0, recipientType: recipientType) })
         }
 
-        func getRecipientCollectionViewCellViewModel(identity: Identity, rowType: EmailViewModel.EmailRowType) -> CollectionViewCellViewModel {
-            return CollectionViewCellViewModel(identity: identity, rowType: rowType) { [weak self] in
+        func getRecipientCollectionViewCellViewModel(identity: Identity, recipientType: EmailViewModel.RecipientType) -> CollectionViewCellViewModel {
+            return CollectionViewCellViewModel(identity: identity, recipientType: recipientType) { [weak self] in
                 guard let me = self else {
                     Log.shared.errorAndCrash("Lost myself")
                     return
@@ -474,10 +452,10 @@ extension EmailViewModel {
             return
         }
 
-        let fromVM = getRecipientCollectionViewCellViewModel(identity: from, rowType: .from)
-        let toRecipientsVMs = cellViewModels(from: message.uniqueTos, rowType: .to)
-        let ccRecipientsVMs = cellViewModels(from: message.uniqueCcs, rowType: .cc)
-        let bccRecipientsVMs = cellViewModels(from: message.uniqueBccs, rowType: .bcc)
+        let fromVM = getRecipientCollectionViewCellViewModel(identity: from, recipientType: .from)
+        let toRecipientsVMs = cellViewModels(from: message.uniqueTos, recipientType: .to)
+        let ccRecipientsVMs = cellViewModels(from: message.uniqueCcs, recipientType: .cc)
+        let bccRecipientsVMs = cellViewModels(from: message.uniqueBccs, recipientType: .bcc)
         let headerCellViewModel = MessageHeaderCellViewModel(displayedImageIdentity: from)
         let headerRow = HeaderRow(fromVM: fromVM,
                                   tosViewModels: toRecipientsVMs,
