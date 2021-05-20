@@ -1068,3 +1068,11 @@ extension ComposeViewController {
         }
     }
 }
+
+// MARK: - TrustmanagementRatingChangedDelegate
+
+extension ComposeViewController: TrustmanagementRatingChangedDelegate {
+    func ratingMayHaveChanged() {
+        // TODO
+    }
+}
