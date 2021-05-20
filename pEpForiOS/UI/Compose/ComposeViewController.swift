@@ -421,7 +421,6 @@ extension ComposeViewController: SegueHandlerType {
                 Log.shared.error("Message not found")
                 return
             }
-            trustManagementViewModel.ratingDelegate = self
             destination.viewModel = trustManagementViewModel
         }
     }
@@ -1067,13 +1066,5 @@ extension ComposeViewController {
         } else {
             tableView.backgroundColor = .white
         }
-    }
-}
-
-// MARK: - TrustmanagementRatingChangedDelegate
-
-extension ComposeViewController: TrustmanagementRatingChangedDelegate {
-    func ratingMayHaveChanged() {
-        viewModel?.reevaluatePepRating()
     }
 }

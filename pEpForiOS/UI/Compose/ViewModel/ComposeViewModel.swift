@@ -164,10 +164,6 @@ class ComposeViewModel {
         state.validate()
     }
 
-    public func reevaluatePepRating() {
-        state.reevaluatePepRating()
-    }
-
     public func viewModel(for indexPath: IndexPath) -> CellViewModel {
         return sections[indexPath.section].rows[indexPath.row]
     }
@@ -808,10 +804,13 @@ extension ComposeViewModel {
             return nil
         }
         // Do not store message (persistRatingChangesForMessage). Would result in a meesage in Outbox and thus unwanted sending
-        return TrustManagementViewModel(message: message,
-                                        pEpProtectionModifyable: true,
-                                        persistRatingChangesForMessage: false,
-                                        protectionStateChangeDelegate: self)
+        let trustVM = TrustManagementViewModel(message: message,
+                                               pEpProtectionModifyable: true,
+                                               persistRatingChangesForMessage: false,
+                                               protectionStateChangeDelegate: self)
+        trustVM.ratingDelegate = self
+
+        return trustVM
     }
 }
 
@@ -958,5 +957,13 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
             }
             me.delegate?.contentChanged(inRowAt: idxPath)
         }
+    }
+}
+
+// MARK: - TrustmanagementRatingChangedDelegate
+
+extension ComposeViewModel: TrustmanagementRatingChangedDelegate {
+    func ratingMayHaveChanged() {
+        state.reevaluatePepRating()
     }
 }
