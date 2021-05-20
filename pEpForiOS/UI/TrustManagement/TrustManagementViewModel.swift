@@ -35,7 +35,7 @@ protocol TrustmanagementProtectionStateChangeDelegate: AnyObject {
 protocol TrustmanagementRatingChangedDelegate: AnyObject {
     /// The rating of the underlying  message may have changed, the receiver may want to
     /// reevaluate it
-    func ratingChanged()
+    func ratingMayHaveChanged()
 }
 
 extension TrustManagementViewModel {
@@ -431,6 +431,7 @@ final class TrustManagementViewModel {
                                          storeMessageWhenDone: me.persistRatingChangesForMessage) {
                 DispatchQueue.main.async {
                     me.delegate?.dataChanged(forRowAt: indexPath)
+                    me.ratingDelegate?.ratingMayHaveChanged()
                 }
             }
         }
