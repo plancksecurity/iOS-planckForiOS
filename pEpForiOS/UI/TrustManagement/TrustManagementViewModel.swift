@@ -226,8 +226,13 @@ extension TrustManagementViewModel {
 /// View Model to handle the TrustManagementViewModel views.
 final class TrustManagementViewModel {
     weak public var delegate : TrustManagementViewModelDelegate?
+
+    weak public var ratingDelegate: TrustmanagementRatingChangedDelegate?
+
     weak public var protectionStateChangeDelegate: TrustmanagementProtectionStateChangeDelegate?
+
     private let persistRatingChangesForMessage: Bool
+
     public var pEpProtected : Bool {
         didSet {
             protectionStateChangeDelegate?.protectionStateChanged(to: pEpProtected)
