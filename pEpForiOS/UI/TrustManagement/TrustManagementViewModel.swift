@@ -31,6 +31,13 @@ protocol TrustmanagementProtectionStateChangeDelegate: AnyObject {
     func protectionStateChanged(to newValue: Bool)
 }
 
+/// Informs interested parties of changes in the rating of the underlying message.
+protocol TrustmanagementRatingChangedDelegate: AnyObject {
+    /// The rating of the underlying  message may have changed, the receiver may want to
+    /// reevaluate it
+    func ratingChanged()
+}
+
 extension TrustManagementViewModel {
     /// The item that represents the handshake partner
     public class Row {
