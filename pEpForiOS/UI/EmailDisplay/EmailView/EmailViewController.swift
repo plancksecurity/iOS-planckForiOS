@@ -142,6 +142,23 @@ extension EmailViewController: UITableViewDataSource {
         let cellIdentifier = vm.cellIdentifier(for: indexPath)
         let row = vm[indexPath.row]
         switch row.type {
+        case .headerRow2:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageHeaderCell2 else {
+                Log.shared.errorAndCrash("Cell not found")
+                return UITableViewCell()
+            }
+            cell.layoutIfNeeded()
+
+            let vc = UIStoryboard.init(name: Constants.mainStoryboard, bundle: nil).instantiateViewController(withIdentifier: "lala")
+
+            addChild(vc)
+            cell.contentView.addSubview(vc.view)
+            cell.pin(view: vc.view)
+
+            vc.didMove(toParent: self)
+            vc.view.layoutIfNeeded()
+            return cell
+
         case .from:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageRecipientCell else {
                 return UITableViewCell()

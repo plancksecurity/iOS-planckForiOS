@@ -235,7 +235,7 @@ extension EmailViewModel {
     }
 
     enum EmailRowType: String {
-        case bcc, cc, to, from, subject, body, attachment, imageAttachment
+        case bcc, cc, to, from, subject, body, attachment, imageAttachment, headerRow2
     }
 
     // MARK: Recipients
@@ -262,6 +262,11 @@ extension EmailViewModel {
         var type: EmailViewModel.EmailRowType = .bcc
         var cellIdentifier: String = "messageRecipientCell"
         var bccsViewModels: [CollectionViewCellViewModel]
+    }
+
+    struct HeaderRow2: EmailRowProtocol {
+        var type: EmailViewModel.EmailRowType = .headerRow2
+        var cellIdentifier: String = "messageHeaderCell2"
     }
 
     // MARK: Subject
@@ -465,6 +470,10 @@ extension EmailViewModel {
         let fromVM = getRecipientCollectionViewCellViewModel(identity: from, rowType: .from)
         let fromRow = FromRow(fromVM: fromVM)
         rows.append(fromRow)
+
+        // HeaderRow2
+        let row = HeaderRow2(type: .headerRow2, cellIdentifier: "messageHeaderCell2")
+        rows.append(row)
 
         // To:
         let toRecipientsVMs = cellViewModels(from: message.uniqueTos, rowType: .to)
