@@ -259,6 +259,7 @@ final class TrustManagementViewModel {
                 persistRatingChangesForMessage: Bool = true,
                 delegate: TrustManagementViewModelDelegate? = nil,
                 protectionStateChangeDelegate: TrustmanagementProtectionStateChangeDelegate? = nil,
+                ratingDelegate: TrustmanagementRatingChangedDelegate? = nil,
                 trustManagementUtil: TrustManagementUtilProtocol? = nil) {
         self.message = message
         self.trustManagementUtil = trustManagementUtil ?? TrustManagementUtil()
@@ -267,6 +268,7 @@ final class TrustManagementViewModel {
         self.shouldShowOptionsButton = pEpProtectionModifyable
         self.persistRatingChangesForMessage = persistRatingChangesForMessage
         self.delegate = delegate
+        self.ratingDelegate = ratingDelegate
         self.protectionStateChangeDelegate = protectionStateChangeDelegate
         setupRows()
     }

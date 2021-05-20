@@ -804,13 +804,11 @@ extension ComposeViewModel {
             return nil
         }
         // Do not store message (persistRatingChangesForMessage). Would result in a meesage in Outbox and thus unwanted sending
-        let trustVM = TrustManagementViewModel(message: message,
-                                               pEpProtectionModifyable: true,
-                                               persistRatingChangesForMessage: false,
-                                               protectionStateChangeDelegate: self)
-        trustVM.ratingDelegate = self
-
-        return trustVM
+        return TrustManagementViewModel(message: message,
+                                        pEpProtectionModifyable: true,
+                                        persistRatingChangesForMessage: false,
+                                        protectionStateChangeDelegate: self,
+                                        ratingDelegate: self)
     }
 }
 
