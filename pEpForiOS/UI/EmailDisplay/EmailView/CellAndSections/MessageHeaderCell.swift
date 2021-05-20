@@ -15,12 +15,21 @@ import pEpIOSToolboxForExtensions
 import pEpIOSToolbox
 #endif
 
+protocol MessageHeaderCellDelegate: AnyObject {
+    func displayAllRecipients(recipientType: EmailViewModel.RecipientType)
+}
+
 class MessageHeaderCell: UITableViewCell {
 
     private static let emptyContactImage = UIImage(named: "empty-avatar")
 
     private var viewModel: MessageHeaderCellViewModel?
     private var minHeight: CGFloat? = 80.0
+
+    @IBOutlet private weak var bccContainerHeight: NSLayoutConstraint!
+    @IBOutlet private weak var ccContainerHeight: NSLayoutConstraint!
+    @IBOutlet private weak var toContainerHeight: NSLayoutConstraint!
+    @IBOutlet private weak var fromCollectionViewHeight: NSLayoutConstraint!
 
     @IBOutlet weak var ccContainer: UIView!
     @IBOutlet weak var bccContainer: UIView!
@@ -53,9 +62,14 @@ class MessageHeaderCell: UITableViewCell {
                       shouldDisplayAll: [EmailViewModel.RecipientType: Bool],
                       delegate: MessageHeaderCellDelegate,
                       viewWidth: CGFloat) {
+
+        self.viewModel = viewModel
+
+        //Collection view containers
         bccContainer.isHidden = bccViewModels.isEmpty
         ccContainer.isHidden = ccViewModels.isEmpty
 
+        //Labels
         if let date = date {
             setupRecipientLabel(label: dateLabel, text: date)
             dateLabel.isHidden = false
@@ -67,7 +81,7 @@ class MessageHeaderCell: UITableViewCell {
         setupRecipientLabel(label: ccLabel, text: RecipientCellViewModel.FieldType.cc.localizedTitle())
         setupRecipientLabel(label: bccLabel, text: RecipientCellViewModel.FieldType.bcc.localizedTitle())
 
-        self.viewModel = viewModel
+        /// Get image
         viewModel.getProfilePicture { [weak self] image in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -85,27 +99,6 @@ class MessageHeaderCell: UITableViewCell {
                         ccViewModels: ccViewModels,
                         bccViewModels: bccViewModels,
                         delegate: delegate)
-
-        [fromCollectionView, tosCollectionView, ccsCollectionView, bccsCollectionView].forEach { cv in
-            guard let alignedFlowLayout = cv?.collectionViewLayout as? AlignedCollectionViewFlowLayout else {
-                Log.shared.errorAndCrash("AlignedCollectionViewFlowLayout not found")
-                return
-            }
-
-            alignedFlowLayout.horizontalAlignment = .left
-            alignedFlowLayout.verticalAlignment = .top
-            alignedFlowLayout.minimumInteritemSpacing = 2
-            alignedFlowLayout.minimumLineSpacing = 2
-        }
-    }
-}
-
-// MARK: - Collection View
-
-extension MessageHeaderCell {
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 4, left: 0, bottom: 0, right: 0)
     }
 }
 
@@ -119,53 +112,45 @@ extension MessageHeaderCell: UICollectionViewDelegate {
             return collectionView.dequeueReusableCell(withReuseIdentifier: RecipientCollectionViewCell.cellId, for: indexPath)
         }
 
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return collectionView.dequeueReusableCell(withReuseIdentifier: RecipientCollectionViewCell.cellId, for: indexPath)
+        }
+
         switch collectionView {
         case fromCollectionView:
-            guard let viewModels = viewModel?.fromCollectionViewViewModel?.collectionViewCellViewModels else {
+            guard let viewModels = vm.fromCollectionViewViewModel?.collectionViewCellViewModels else {
                 Log.shared.errorAndCrash("VMs not found")
                 return cell
             }
-            let collectionViewCellViewModel = viewModels[indexPath.row]
-            cell.setup(with: collectionViewCellViewModel)
-            return cell
+            cell.setup(with: viewModels[indexPath.row])
+            fromCollectionViewHeight.constant = fromCollectionView.contentSize.height
         case tosCollectionView:
-            guard let viewModels = viewModel?.tosCollectionViewViewModel?.collectionViewCellViewModels else {
+            guard let viewModels = vm.tosCollectionViewViewModel?.collectionViewCellViewModels else {
                 Log.shared.errorAndCrash("VMs not found")
                 return cell
             }
-            let collectionViewCellViewModel = viewModels[indexPath.row]
-            cell.setup(with: collectionViewCellViewModel)
-            return cell
+            cell.setup(with: viewModels[indexPath.row])
+            toContainerHeight.constant = tosCollectionView.contentSize.height
 
         case ccsCollectionView:
-            guard let viewModels = viewModel?.ccsCollectionViewViewModel?.collectionViewCellViewModels else {
+            guard let viewModels = vm.ccsCollectionViewViewModel?.collectionViewCellViewModels else {
                 Log.shared.errorAndCrash("VMs not found")
                 return cell
             }
-            let collectionViewCellViewModel = viewModels[indexPath.row]
-            cell.setup(with: collectionViewCellViewModel)
-            return cell
+            cell.setup(with: viewModels[indexPath.row])
+            ccContainerHeight.constant = ccsCollectionView.contentSize.height
 
         case bccsCollectionView:
-            guard let viewModels = viewModel?.ccsCollectionViewViewModel?.collectionViewCellViewModels else {
+            guard let viewModels = vm.bccsCollectionViewViewModel?.collectionViewCellViewModels else {
                 Log.shared.errorAndCrash("VMs not found")
                 return cell
             }
-            let collectionViewCellViewModel = viewModels[indexPath.row]
-            cell.setup(with: collectionViewCellViewModel)
-            return cell
-
+            cell.setup(with: viewModels[indexPath.row])
+            bccContainerHeight.constant = bccsCollectionView.contentSize.height
         default:
             Log.shared.errorAndCrash("CV not found")
-
         }
-
-        guard let viewModels = viewModel?.tosCollectionViewViewModel?.collectionViewCellViewModels else {
-            Log.shared.errorAndCrash("VMs not found")
-            return cell
-        }
-        let collectionViewCellViewModel = viewModels[indexPath.row]
-        cell.setup(with: collectionViewCellViewModel)
         return cell
     }
 }
@@ -175,33 +160,15 @@ extension MessageHeaderCell: UICollectionViewDelegate {
 extension MessageHeaderCell: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
         switch collectionView {
         case fromCollectionView:
-            guard let viewModels = viewModel?.fromCollectionViewViewModel?.collectionViewCellViewModels else {
-                return 0
-            }
-            return viewModels.count
-
+            return viewModel?.fromCollectionViewViewModel?.numberOfCollectionViewCellViewModels ?? 0
         case tosCollectionView:
-            guard let viewModels = viewModel?.tosCollectionViewViewModel?.collectionViewCellViewModels else {
-                return 0
-            }
-            return viewModels.count
-
+            return viewModel?.tosCollectionViewViewModel?.numberOfCollectionViewCellViewModels ?? 0
         case ccsCollectionView:
-            guard let viewModels = viewModel?.ccsCollectionViewViewModel?.collectionViewCellViewModels else {
-                return 0
-            }
-            return viewModels.count
-
+            return viewModel?.ccsCollectionViewViewModel?.numberOfCollectionViewCellViewModels ?? 0
         case bccsCollectionView:
-            guard let viewModels = viewModel?.bccsCollectionViewViewModel?.collectionViewCellViewModels else {
-                return 0
-            }
-            return viewModels.count
-
-
+            return viewModel?.bccsCollectionViewViewModel?.numberOfCollectionViewCellViewModels ?? 0
         default:
             Log.shared.errorAndCrash("CV not found")
             return 0
@@ -217,11 +184,11 @@ extension MessageHeaderCell: UICollectionViewDelegateFlowLayout {
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
 
-        guard let vm = recipientsCVVM(collectionView: collectionView)?.collectionViewCellViewModels else {
+        guard let vms = recipientsCVVM(collectionView: collectionView)?.collectionViewCellViewModels else {
             Log.shared.errorAndCrash("VMs not found")
             return .zero
         }
-        let size = vm[indexPath.row].size
+        let size = vms[indexPath.row].size
         let margin = CGFloat(8.0)
         // The item max width is the the collection view width minus the margin.
         let maxSize = CGSize(width: collectionView.bounds.width - margin, height: size.height)
@@ -229,70 +196,6 @@ extension MessageHeaderCell: UICollectionViewDelegateFlowLayout {
             return maxSize
         }
         return size
-    }
-
-    private func recipientsCVVM(collectionView: UICollectionView) -> EmailViewModel.RecipientsCollectionViewViewModel? {
-        switch collectionView {
-        case fromCollectionView:
-            return viewModel?.fromCollectionViewViewModel
-        case tosCollectionView:
-            return viewModel?.tosCollectionViewViewModel
-        case ccsCollectionView:
-            return viewModel?.ccsCollectionViewViewModel
-        case bccsCollectionView:
-            return viewModel?.bccsCollectionViewViewModel
-
-        default:
-            Log.shared.errorAndCrash("Oops")
-        }
-        return nil
-    }
-}
-
-//// MARK: - UIConstraintBasedLayoutFittingSize
-//
-//extension MessageHeaderCell {
-
-//    override func systemLayoutSizeFitting(_ targetSize: CGSize,
-//                                          withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority,
-//                                          verticalFittingPriority: UILayoutPriority) -> CGSize {
-//        let size = super.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: horizontalFittingPriority, verticalFittingPriority: verticalFittingPriority)
-//        var bccExpectedHeight: CGFloat = 0.0
-//        var ccExpectedHeight: CGFloat = 0.0
-//        let fromExpectedHeight = fromCollectionView.collectionViewLayout.collectionViewContentSize.height
-//        let toExpectedHeight = tosCollectionView.collectionViewLayout.collectionViewContentSize.height
-//        if hasBCCRecipients {
-//            bccExpectedHeight = bccsCollectionView.collectionViewLayout.collectionViewContentSize.height
-//        }
-//        if hasCCRecipients {
-//            ccExpectedHeight = ccsCollectionView.collectionViewLayout.collectionViewContentSize.height
-//        }
-//        let dateLabelExpectedHeight = dateLabel.bounds.size.height
-//        let expectatedTotalHeight = fromExpectedHeight + toExpectedHeight + ccExpectedHeight + bccExpectedHeight + dateLabelExpectedHeight + 30
-//        return CGSize(width: size.width, height: expectatedTotalHeight)
-//    }
-//
-//    private var hasBCCRecipients: Bool {
-//        guard let cvcvms = viewModel?.bccsCollectionViewViewModel?.collectionViewCellViewModels else {
-//            return false
-//        }
-//        return cvcvms.count > 0
-//    }
-//
-//    private var hasCCRecipients: Bool {
-//        guard let cvcvms = viewModel?.ccsCollectionViewViewModel?.collectionViewCellViewModels else {
-//            return false
-//        }
-//
-//        return cvcvms.count > 0
-//    }
-//}
-
-extension MessageHeaderCell {
-    
-    public func clear() {
-        viewModel?.unsubscribeForUpdates()
-        viewModel = nil
     }
 }
 
@@ -308,5 +211,22 @@ extension MessageHeaderCell {
         } else {
             label.textColor = .lightGray
         }
+    }
+
+    private func recipientsCVVM(collectionView: UICollectionView) -> EmailViewModel.RecipientsCollectionViewViewModel? {
+        switch collectionView {
+        case fromCollectionView:
+            return viewModel?.fromCollectionViewViewModel
+        case tosCollectionView:
+            return viewModel?.tosCollectionViewViewModel
+        case ccsCollectionView:
+            return viewModel?.ccsCollectionViewViewModel
+        case bccsCollectionView:
+            return viewModel?.bccsCollectionViewViewModel
+
+        default:
+            Log.shared.errorAndCrash("unknown collectionview")
+        }
+        return nil
     }
 }

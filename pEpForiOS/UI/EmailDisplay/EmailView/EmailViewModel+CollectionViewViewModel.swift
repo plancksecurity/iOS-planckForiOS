@@ -13,6 +13,11 @@ extension EmailViewModel {
 
     struct RecipientsCollectionViewViewModel {
 
+        /// The number collection view items
+        public var numberOfCollectionViewCellViewModels: Int {
+            return collectionViewCellViewModels?.count ?? 0
+        }
+
         /// The collection view cell view models ('To' cell, recipients cell and 1 more cell).
         public var collectionViewCellViewModels: [EmailViewModel.CollectionViewCellViewModel]?
 
@@ -37,8 +42,11 @@ extension EmailViewModel {
         ///   - containerWidth: The width of the container view.
         ///   - recipientType: The recipient type
         ///   - viewModels: The cells view models.
-        init(delegate: MessageHeaderCellDelegate, shouldDisplayAllRecipients: Bool, containerWidth: CGFloat,
-             recipientType: EmailViewModel.RecipientType, viewModels: [EmailViewModel.CollectionViewCellViewModel]) {
+        init(delegate: MessageHeaderCellDelegate,
+             shouldDisplayAllRecipients: Bool,
+             containerWidth: CGFloat,
+             recipientType: EmailViewModel.RecipientType,
+             viewModels: [EmailViewModel.CollectionViewCellViewModel]) {
             self.recipientType = recipientType
             self.delegate = delegate
             self.shouldDisplayAllRecipients = shouldDisplayAllRecipients
