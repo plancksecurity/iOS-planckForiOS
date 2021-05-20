@@ -18,7 +18,7 @@ import pEpIOSToolbox
 #endif
 
 /// TrustManagementViewModel View Mode Delegate
-protocol TrustManagementViewModelDelegate: class {
+protocol TrustManagementViewModelDelegate: AnyObject {
     /// Delegate method to notify that an action ends and the view must be reloaded.
     func reload()
 
@@ -26,7 +26,7 @@ protocol TrustManagementViewModelDelegate: class {
     func dataChanged(forRowAt indexPath: IndexPath)
 }
 
-protocol TrustmanagementProtectionStateChangeDelegate: class {
+protocol TrustmanagementProtectionStateChangeDelegate: AnyObject {
     /// Called whenever the user toggles protection state (for the message)
     func protectionStateChanged(to newValue: Bool)
 }
