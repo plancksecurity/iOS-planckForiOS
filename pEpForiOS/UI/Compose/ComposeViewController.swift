@@ -421,6 +421,7 @@ extension ComposeViewController: SegueHandlerType {
                 Log.shared.error("Message not found")
                 return
             }
+            trustManagementViewModel.ratingDelegate = self
             destination.viewModel = trustManagementViewModel
         }
     }
