@@ -164,6 +164,10 @@ class ComposeViewModel {
         state.validate()
     }
 
+    public func reevaluatePepRating() {
+        state.reevaluatePepRating()
+    }
+
     public func viewModel(for indexPath: IndexPath) -> CellViewModel {
         return sections[indexPath.section].rows[indexPath.row]
     }

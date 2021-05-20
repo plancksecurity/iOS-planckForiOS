@@ -1073,6 +1073,6 @@ extension ComposeViewController {
 
 extension ComposeViewController: TrustmanagementRatingChangedDelegate {
     func ratingMayHaveChanged() {
-        // TODO
+        viewModel?.reevaluatePepRating()
     }
 }
