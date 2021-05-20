@@ -18,7 +18,7 @@ import pEpIOSToolbox
 #endif
 
 /// TrustManagementViewModel View Mode Delegate
-protocol TrustManagementViewModelDelegate: class {
+protocol TrustManagementViewModelDelegate: AnyObject {
     /// Delegate method to notify that an action ends and the view must be reloaded.
     func reload()
 
@@ -26,9 +26,16 @@ protocol TrustManagementViewModelDelegate: class {
     func dataChanged(forRowAt indexPath: IndexPath)
 }
 
-protocol TrustmanagementProtectionStateChangeDelegate: class {
+protocol TrustmanagementProtectionStateChangeDelegate: AnyObject {
     /// Called whenever the user toggles protection state (for the message)
     func protectionStateChanged(to newValue: Bool)
+}
+
+/// Informs interested parties of changes in the rating of the underlying message.
+protocol TrustmanagementRatingChangedDelegate: AnyObject {
+    /// The rating of the underlying  message may have changed, the receiver may want to
+    /// reevaluate it
+    func ratingMayHaveChanged()
 }
 
 extension TrustManagementViewModel {
@@ -219,8 +226,13 @@ extension TrustManagementViewModel {
 /// View Model to handle the TrustManagementViewModel views.
 final class TrustManagementViewModel {
     weak public var delegate : TrustManagementViewModelDelegate?
+
+    weak public var ratingDelegate: TrustmanagementRatingChangedDelegate?
+
     weak public var protectionStateChangeDelegate: TrustmanagementProtectionStateChangeDelegate?
+
     private let persistRatingChangesForMessage: Bool
+
     public var pEpProtected : Bool {
         didSet {
             protectionStateChangeDelegate?.protectionStateChanged(to: pEpProtected)
@@ -247,6 +259,7 @@ final class TrustManagementViewModel {
                 persistRatingChangesForMessage: Bool = true,
                 delegate: TrustManagementViewModelDelegate? = nil,
                 protectionStateChangeDelegate: TrustmanagementProtectionStateChangeDelegate? = nil,
+                ratingDelegate: TrustmanagementRatingChangedDelegate? = nil,
                 trustManagementUtil: TrustManagementUtilProtocol? = nil) {
         self.message = message
         self.trustManagementUtil = trustManagementUtil ?? TrustManagementUtil()
@@ -255,6 +268,7 @@ final class TrustManagementViewModel {
         self.shouldShowOptionsButton = pEpProtectionModifyable
         self.persistRatingChangesForMessage = persistRatingChangesForMessage
         self.delegate = delegate
+        self.ratingDelegate = ratingDelegate
         self.protectionStateChangeDelegate = protectionStateChangeDelegate
         setupRows()
     }
@@ -419,6 +433,7 @@ final class TrustManagementViewModel {
                                          storeMessageWhenDone: me.persistRatingChangesForMessage) {
                 DispatchQueue.main.async {
                     me.delegate?.dataChanged(forRowAt: indexPath)
+                    me.ratingDelegate?.ratingMayHaveChanged()
                 }
             }
         }
