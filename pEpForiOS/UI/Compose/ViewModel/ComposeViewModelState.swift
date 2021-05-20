@@ -160,6 +160,10 @@ extension ComposeViewModel {
             validateForSending()
         }
 
+        public func reevaluatePepRating() {
+            updatePepRating()
+        }
+
         private func setup() {
             guard let initData = initData else {
                 Log.shared.errorAndCrash("No data")
