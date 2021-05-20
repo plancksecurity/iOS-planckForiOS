@@ -14,7 +14,7 @@ import MessageModel
 import pEpIOSToolbox
 #endif
 
-protocol ComposeViewModelDelegate: class {
+protocol ComposeViewModelDelegate: AnyObject {
 
     /// Called when the user changes the content of a row.
     /// E.g. edited the subject.
@@ -62,7 +62,7 @@ protocol ComposeViewModelDelegate: class {
 }
 
 /// Contains messages about cancelation and send.
-protocol ComposeViewModelFinalActionDelegate: class {
+protocol ComposeViewModelFinalActionDelegate: AnyObject {
     /// The user requested the mail to be sent.
     func userWantsToSend(message: Message)
 
