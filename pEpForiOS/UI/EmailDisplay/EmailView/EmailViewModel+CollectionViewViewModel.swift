@@ -18,7 +18,7 @@ extension EmailViewModel {
             return collectionViewCellViewModels?.count ?? 0
         }
 
-        /// The collection view cell view models ('To' cell, recipients cell and 1 more cell).
+        /// The collection view cell view models ('To'/'Cc'/'Bcc' cell, recipient cells and '& X more¡ cell).
         public var collectionViewCellViewModels: [EmailViewModel.CollectionViewCellViewModel]?
 
         // The recipient type

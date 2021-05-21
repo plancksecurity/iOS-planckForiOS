@@ -23,6 +23,7 @@ class EmailViewController: UIViewController {
 
     public weak var delegate: EmailViewControllerDelegate?
 
+    // When is 'true', there are no recipients grouped under the '& X more' button.
     private var shouldDisplayAll: [EmailViewModel.RecipientType: Bool] = [EmailViewModel.RecipientType.to: false,
                                                                           EmailViewModel.RecipientType.cc: false,
                                                                           EmailViewModel.RecipientType.bcc: false]
@@ -99,6 +100,7 @@ class EmailViewController: UIViewController {
         if #available(iOS 13.0, *) {
             if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
                 tableView.reloadData()
+                return
             }
         }
         if ((traitCollection.verticalSizeClass != thePreviousTraitCollection.verticalSizeClass)
@@ -151,9 +153,6 @@ extension EmailViewController: UITableViewDataSource {
                 return cell
             }
             setupHeader(cell: cell, row: row)
-//            cell.setNeedsLayout()
-//            cell.layoutIfNeeded()
-
             return cell
 
         case .subject:
@@ -219,29 +218,6 @@ extension EmailViewController: UITableViewDelegate {
         }
         return UITableView.automaticDimension
     }
-
-//    func tableView(_ tableView: UITableView,
-//                            didDisplay cell: UITableViewCell,
-//                            forRowAt indexPath: IndexPath) {
-//        if isLastRow(indexPath: indexPath) {
-//            // The last cell is not yet displayed (as we are in "willDisplay ..."), thus async.
-//            DispatchQueue.main.async { [weak self] in
-//                guard let me = self else {
-//                    // Valid case. We might have been dismissed already.
-//                    return
-//                }
-//            }
-//            tableView.updateSize()
-//        }
-//    }
-//    private func isLastRow(indexPath: IndexPath) -> Bool {
-//        guard let vm = viewModel else {
-//            Log.shared.errorAndCrash("No VM")
-//            return false
-//        }
-//
-//        return indexPath.row == vm.numberOfRows - 1
-//    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let vm = viewModel else {
@@ -460,6 +436,9 @@ extension EmailViewController: MessageHeaderCellDelegate {
     func displayAllRecipients(recipientType: EmailViewModel.RecipientType) {
         shouldDisplayAll[recipientType] = true
         tableView.reloadData()
+        if let cell = tableView.visibleCells.first(where: {$0 is MessageHeaderCell}) as? MessageHeaderCell {
+            cell.reloadAllRecipients(of: recipientType)
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {

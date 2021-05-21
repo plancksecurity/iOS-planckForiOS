@@ -24,27 +24,31 @@ class MessageHeaderCell: UITableViewCell {
     private static let emptyContactImage = UIImage(named: "empty-avatar")
 
     private var viewModel: MessageHeaderCellViewModel?
-    private var minHeight: CGFloat? = 80.0
 
+    // MARK: - IBOutlets
+
+    //As the container views are in a UIStackView, the height must be given.
     @IBOutlet private weak var bccContainerHeight: NSLayoutConstraint!
     @IBOutlet private weak var ccContainerHeight: NSLayoutConstraint!
     @IBOutlet private weak var toContainerHeight: NSLayoutConstraint!
     @IBOutlet private weak var fromCollectionViewHeight: NSLayoutConstraint!
 
+    //These containers are used to hide when there is no cc/bcc recipeints.
     @IBOutlet weak var ccContainer: UIView!
     @IBOutlet weak var bccContainer: UIView!
 
+    //Localize 'To' / 'CC' / ' Bcc'
     @IBOutlet private weak var toLabel: UILabel!
     @IBOutlet private weak var ccLabel: UILabel!
     @IBOutlet private weak var bccLabel: UILabel!
+    @IBOutlet private weak var dateLabel: UILabel!
 
     @IBOutlet private weak var fromCollectionView: UICollectionView!
     @IBOutlet private weak var tosCollectionView: UICollectionView!
     @IBOutlet private weak var ccsCollectionView: UICollectionView!
     @IBOutlet private weak var bccsCollectionView: UICollectionView!
     
-    @IBOutlet weak var contactImageView: UIImageView!
-    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet private weak var contactImageView: UIImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -100,6 +104,19 @@ class MessageHeaderCell: UITableViewCell {
                         bccViewModels: bccViewModels,
                         delegate: delegate)
     }
+
+    func reloadAllRecipients(of recipientType: EmailViewModel.RecipientType) {
+        switch recipientType {
+        case .to:
+            tosCollectionView.reloadData()
+        case .cc:
+            ccsCollectionView.reloadData()
+        case .bcc:
+            bccsCollectionView.reloadData()
+        default:
+            Log.shared.errorAndCrash("Recipient type not supported")
+        }
+    }
 }
 
 // MARK: - UICollectionViewDelegate
@@ -111,41 +128,24 @@ extension MessageHeaderCell: UICollectionViewDelegate {
             Log.shared.errorAndCrash("Error setting up cell")
             return collectionView.dequeueReusableCell(withReuseIdentifier: RecipientCollectionViewCell.cellId, for: indexPath)
         }
-
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return collectionView.dequeueReusableCell(withReuseIdentifier: RecipientCollectionViewCell.cellId, for: indexPath)
+        guard let viewModels = recipientsCVVM(collectionView: collectionView)?.collectionViewCellViewModels else {
+            Log.shared.errorAndCrash("VMs not found")
+            return cell
         }
 
         switch collectionView {
         case fromCollectionView:
-            guard let viewModels = vm.fromCollectionViewViewModel?.collectionViewCellViewModels else {
-                Log.shared.errorAndCrash("VMs not found")
-                return cell
-            }
             cell.setup(with: viewModels[indexPath.row])
-            fromCollectionViewHeight.constant = fromCollectionView.contentSize.height
+            let margin: CGFloat =  2.0
+            fromCollectionViewHeight.constant = fromCollectionView.contentSize.height + margin
         case tosCollectionView:
-            guard let viewModels = vm.tosCollectionViewViewModel?.collectionViewCellViewModels else {
-                Log.shared.errorAndCrash("VMs not found")
-                return cell
-            }
             cell.setup(with: viewModels[indexPath.row])
             toContainerHeight.constant = tosCollectionView.contentSize.height
-
         case ccsCollectionView:
-            guard let viewModels = vm.ccsCollectionViewViewModel?.collectionViewCellViewModels else {
-                Log.shared.errorAndCrash("VMs not found")
-                return cell
-            }
             cell.setup(with: viewModels[indexPath.row])
             ccContainerHeight.constant = ccsCollectionView.contentSize.height
 
         case bccsCollectionView:
-            guard let viewModels = vm.bccsCollectionViewViewModel?.collectionViewCellViewModels else {
-                Log.shared.errorAndCrash("VMs not found")
-                return cell
-            }
             cell.setup(with: viewModels[indexPath.row])
             bccContainerHeight.constant = bccsCollectionView.contentSize.height
         default:
