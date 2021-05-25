@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol SettingChangeDelegate: class {
+public protocol SettingChangeDelegate: AnyObject {
     /// Informs Account Settings that something had changed.
     func didChange()
 }

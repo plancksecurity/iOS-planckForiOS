@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol LoginViewModelLoginErrorDelegate: class {
+protocol LoginViewModelLoginErrorDelegate: AnyObject {
     /**
      Called to signal an error when logging in.
      */

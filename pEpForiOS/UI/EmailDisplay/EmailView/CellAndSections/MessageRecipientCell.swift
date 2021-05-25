@@ -14,7 +14,7 @@ import pEpIOSToolboxForExtensions
 import pEpIOSToolbox
 #endif
 
-protocol MessageRecipientCellDelegate: class {
+protocol MessageRecipientCellDelegate: AnyObject {
     func displayAllRecipients(rowType: EmailViewModel.EmailRowType)
 }
 

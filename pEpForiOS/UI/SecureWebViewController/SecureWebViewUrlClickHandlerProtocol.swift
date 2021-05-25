@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol SecureWebViewUrlClickHandlerProtocol: class {
+protocol SecureWebViewUrlClickHandlerProtocol: AnyObject {
     /// Called whenever a mailto:// URL has been clicked by the user.
     /// - Parameter url: The mailto:// URL
     func didClickOn(mailToUrlLink url: URL)

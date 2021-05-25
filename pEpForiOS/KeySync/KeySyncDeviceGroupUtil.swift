@@ -10,7 +10,7 @@ import MessageModel
 
 import pEpIOSToolbox
 
-protocol KeySyncUtilProtocol: class {
+protocol KeySyncUtilProtocol: AnyObject {
     static func leaveDeviceGroup(completion: @escaping ()->Void)
     static var isInDeviceGroup: Bool { get }
     static var isKeySyncEnabled: Bool { get }

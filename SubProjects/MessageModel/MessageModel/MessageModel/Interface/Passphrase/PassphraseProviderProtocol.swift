@@ -9,7 +9,7 @@
 import Foundation
 
 /// Someone on client side that can provide us with passphrases in cases we need one.
-public protocol PassphraseProviderProtocol: class {
+public protocol PassphraseProviderProtocol: AnyObject {
 
     /// We need a passphrase to do our job. If you can, provide it as the input parameter of the
     /// completion block, pass `nil` otherwize.
