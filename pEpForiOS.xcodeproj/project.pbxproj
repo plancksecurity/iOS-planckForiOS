@@ -514,7 +514,6 @@
 		5BE35A9A249139DD00AC605C /* AccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */; };
 		5BE35AA424913B4700AC605C /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35AA324913B4700AC605C /* SettingsViewModel.swift */; };
 		5BEAECB525370C3E0082AAC6 /* String+Mailto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEAECB425370C3E0082AAC6 /* String+Mailto.swift */; };
-		5BEB20E9263084E100CB01C3 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB20E8263084E100CB01C3 /* LeftAlignedCollectionViewFlowLayout.swift */; };
 		5BEB212A2630955D00CB01C3 /* RecipientCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB21292630955D00CB01C3 /* RecipientCollectionViewCell.swift */; };
 		5BEB568B25E68C0E00304A38 /* TrustwordsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB568A25E68C0E00304A38 /* TrustwordsContainerView.swift */; };
 		5BEB568F25E6997300304A38 /* TrustwordsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB568E25E6997300304A38 /* TrustwordsButton.swift */; };
@@ -1160,7 +1159,6 @@
 		5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewController.swift; sourceTree = "<group>"; };
 		5BE35AA324913B4700AC605C /* SettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		5BEAECB425370C3E0082AAC6 /* String+Mailto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Mailto.swift"; sourceTree = "<group>"; };
-		5BEB20E8263084E100CB01C3 /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		5BEB21292630955D00CB01C3 /* RecipientCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientCollectionViewCell.swift; sourceTree = "<group>"; };
 		5BEB568A25E68C0E00304A38 /* TrustwordsContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustwordsContainerView.swift; sourceTree = "<group>"; };
 		5BEB568E25E6997300304A38 /* TrustwordsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustwordsButton.swift; sourceTree = "<group>"; };
@@ -2653,7 +2651,6 @@
 			isa = PBXGroup;
 			children = (
 				5BEB21292630955D00CB01C3 /* RecipientCollectionViewCell.swift */,
-				5BEB20E8263084E100CB01C3 /* LeftAlignedCollectionViewFlowLayout.swift */,
 			);
 			path = CollectionView;
 			sourceTree = "<group>";
@@ -3467,7 +3464,6 @@
 				3A796BAB242CC31F00083BB5 /* NSAttributedString+Html.swift in Sources */,
 				3A796BA9242CC26100083BB5 /* HtmlConversions.swift in Sources */,
 				15BBBC6C1FD05F4300B9DCC8 /* DisplayUserError.swift in Sources */,
-				5BEB20E9263084E100CB01C3 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				5B71016E243619CF00BAE405 /* TrustedServerSettingsViewController.swift in Sources */,
 				B72C7BAA2395182F0013B12E /* AccountTypeSelectorViewController.swift in Sources */,
 				43A469FA21513B10002E1036 /* PEPSwipeTableViewCell.swift in Sources */,
