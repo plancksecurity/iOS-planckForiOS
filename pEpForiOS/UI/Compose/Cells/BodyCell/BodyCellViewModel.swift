@@ -16,7 +16,7 @@ import MessageModel
 import pEpIOSToolbox
 #endif
 
-public protocol BodyCellViewModelResultDelegate: class {
+public protocol BodyCellViewModelResultDelegate: AnyObject {
 
     func bodyCellViewModelUserWantsToAddMedia(_ vm: BodyCellViewModel)
     func bodyCellViewModelUserWantsToAddDocument(_ vm: BodyCellViewModel)
@@ -28,7 +28,7 @@ public protocol BodyCellViewModelResultDelegate: class {
                            bodyAttributedString: NSAttributedString)
 }
 
-public protocol BodyCellViewModelDelegate: class {
+public protocol BodyCellViewModelDelegate: AnyObject {
     func insert(text: NSAttributedString)
 }
 

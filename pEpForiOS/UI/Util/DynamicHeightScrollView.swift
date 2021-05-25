@@ -10,7 +10,7 @@ import UIKit
 
 import pEpIOSToolbox
 
-protocol DynamicHeightScrollViewDelegate: class {
+protocol DynamicHeightScrollViewDelegate: AnyObject {
     /// Bottom constraint of the scroll view. Used to change the hegiht of the scrollView, modifying the constant
     var bottomConstraint: NSLayoutConstraint { get }
     /// Current  scrollView subViews first responder that will be center

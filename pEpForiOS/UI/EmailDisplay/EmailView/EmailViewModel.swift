@@ -12,7 +12,7 @@ import MessageModel
 import pEpIOSToolbox
 
 /// Delegate to comunicate with Email View.
-protocol EmailViewModelDelegate: class {
+protocol EmailViewModelDelegate: AnyObject {
     /// Show the item
     /// - Parameter quickLookItem: The quick look item to show. Could be the url of a document.
     func showQuickLookOfAttachment(quickLookItem: QLPreviewItem)
