@@ -58,6 +58,14 @@ extension IdentityImageTool {
 class IdentityImageTool {
     static private let cacheAccessSyncQueue = DispatchQueue(label: "security.pep.IdentityImageTool.chacheSyncQueue",
                                                             qos: .userInitiated)
+
+    private let queueForHeavyStuff: OperationQueue = {
+        let createe = OperationQueue()
+        createe.qualityOfService = .userInitiated
+        createe.name = "security.pep.MessageHeaderCellViewModel.queueForHeavyStuff"
+        return createe
+    }()
+
     static private var _imageCache = [IdentityKey:CacheObject]()
     static private var imageCache: [IdentityKey:CacheObject] {
         get {
@@ -180,4 +188,41 @@ extension IdentityImageTool {
             initials.draw(centeredIn: size, color: textColor, font: font)
         }
     }
+
+
+    /// Get the profile picture that belongs to the identity passed by parameter.
+    ///
+    /// - Parameter completion: Completion callback that is executed when the operation fininshes.
+    /// - Returns: The profile picture.
+    public func getProfilePicture(identity: Identity, completion: @escaping (UIImage?) -> ()) {
+        let operation = getProfilePictureOperation(identity: identity, completion: completion)
+        queueForHeavyStuff.addOperation(operation)
+    }
+
+    private func getProfilePictureOperation(identity: Identity, completion: @escaping (UIImage?) -> ()) -> SelfReferencingOperation {
+        let identitykey = IdentityImageTool.IdentityKey(identity: identity)
+        let profilePictureOperation = SelfReferencingOperation { [weak self] operation in
+            guard let me = self else {
+                return
+            }
+            guard
+                let operation = operation,
+                !operation.isCancelled else {
+                return
+            }
+
+            var profilePicture: UIImage?
+            if let image = me.cachedIdentityImage(for: identitykey) {
+                profilePicture = image
+            } else {
+                profilePicture = me.identityImage(for: identitykey)
+            }
+
+            DispatchQueue.main.async {
+                completion(profilePicture)
+            }
+        }
+        return profilePictureOperation
+    }
+
 }

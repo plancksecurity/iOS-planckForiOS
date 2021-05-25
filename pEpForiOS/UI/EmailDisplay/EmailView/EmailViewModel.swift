@@ -208,8 +208,10 @@ extension EmailViewModel {
             recipientButton.setup(text: title, action: action)
             if recipientType == .from {
                 recipientButton.setPEPFont(style: .headline, weight: .semibold)
-                recipientButton.sizeToFit()
+            } else {
+                recipientButton.setPEPFont(style: .footnote, weight: .regular)
             }
+            recipientButton.sizeToFit()
             return recipientButton.frame.size
         }
 

@@ -21,6 +21,7 @@ extension RecipientButton {
     public func setup(text: String, color: UIColor? = nil, action: (() -> Void)? = nil) {
         self.callbackAction = action
         isUserInteractionEnabled = action != nil
+        titleLabel?.adjustsFontForContentSizeCategory = true
         contentHorizontalAlignment = .left
         addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         setTitle(text, for: .normal)
@@ -34,7 +35,6 @@ extension RecipientButton {
         if let titleColor = color {
             setTitleColor(titleColor)
         }
-        sizeToFit()
     }
 
     private func setTitleColor(_ color: UIColor) {

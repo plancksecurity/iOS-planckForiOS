@@ -72,17 +72,7 @@ class MessageHeaderCell: UITableViewCell {
         bccContainer.isHidden = row.bccsViewModels.isEmpty
         ccContainer.isHidden = row.ccsViewModels.isEmpty
 
-        //Labels
-        if let date = row.date {
-            setupRecipientLabel(label: dateLabel, text: date)
-            dateLabel.isHidden = false
-        } else {
-            dateLabel.text = nil
-            dateLabel.isHidden = true
-        }
-        setupRecipientLabel(label: toLabel, text: RecipientCellViewModel.FieldType.to.localizedTitle())
-        setupRecipientLabel(label: ccLabel, text: RecipientCellViewModel.FieldType.cc.localizedTitle())
-        setupRecipientLabel(label: bccLabel, text: RecipientCellViewModel.FieldType.bcc.localizedTitle())
+        setupLabels(row)
 
         /// Get image
         vm.getProfilePicture { [weak self] image in
@@ -195,7 +185,7 @@ extension MessageHeaderCell: UICollectionViewDelegateFlowLayout {
 
 extension MessageHeaderCell {
 
-    private func setupRecipientLabel(label: UILabel, text: String) {
+    private func setup(label: UILabel, text: String) {
         label.text = text
         label.font = UIFont.pepFont(style: .footnote, weight: .semibold)
         if #available(iOS 13.0, *) {
@@ -235,7 +225,21 @@ extension MessageHeaderCell {
         }
     }
 
-    public func reloadAllCollectionViews() {
+    private func reloadAllCollectionViews() {
         [.from, .to, .cc, .bcc].forEach({ reloadAllRecipients(of: $0) })
+    }
+
+    private func setupLabels(_ row: EmailViewModel.HeaderRow) {
+        //Labels
+        if let date = row.date {
+            setup(label: dateLabel, text: date)
+            dateLabel.isHidden = false
+        } else {
+            dateLabel.text = nil
+            dateLabel.isHidden = true
+        }
+        setup(label: toLabel, text: RecipientCellViewModel.FieldType.to.localizedTitle())
+        setup(label: ccLabel, text: RecipientCellViewModel.FieldType.cc.localizedTitle())
+        setup(label: bccLabel, text: RecipientCellViewModel.FieldType.bcc.localizedTitle())
     }
 }

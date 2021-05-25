@@ -13,7 +13,6 @@ import pEpIOSToolbox
 
 class MessageHeaderCellViewModel {
 
-    private var profilePictureComposer: ProfilePictureComposerProtocol
     private var displayedImageIdentity: Identity
 
     /// From CollectionView VM
@@ -25,22 +24,13 @@ class MessageHeaderCellViewModel {
     /// BBC CollectionView VM
     public var bccsCollectionViewViewModel: EmailViewModel.RecipientsCollectionViewViewModel?
 
-    private let queueForHeavyStuff: OperationQueue = {
-        let createe = OperationQueue()
-        createe.qualityOfService = .userInitiated
-        createe.name = "security.pep.MessageHeaderCellViewModel.queueForHeavyStuff"
-        return createe
-    }()
-
+    private let identityImageTool = IdentityImageTool()
     /// Constructor
     ///
     /// - Parameters:
-    ///   - profilePictureComposer: The profile picture composer. Optional.
     ///   - displayedImageIdentity: The identity to obtain the image.
-    init(profilePictureComposer: ProfilePictureComposerProtocol = PepProfilePictureComposer(),
-         displayedImageIdentity: Identity) {
+    init(displayedImageIdentity: Identity) {
         self.displayedImageIdentity = displayedImageIdentity
-        self.profilePictureComposer = profilePictureComposer
     }
 
     /// Setup the MessageRecipientCellViewModel
@@ -84,7 +74,6 @@ class MessageHeaderCellViewModel {
                                                                                       containerWidth: recipientsContainerWidth,
                                                                                       recipientType: .bcc,
                                                                                       viewModels: bccViewModels)
-
     }
 
     /// Get the profile picture that belongs to the identity who sent the email.
@@ -92,38 +81,6 @@ class MessageHeaderCellViewModel {
     /// - Parameter completion: Completion callback that is executed when the operation fininshes.
     /// - Returns: The profile picture.
     public func getProfilePicture(completion: @escaping (UIImage?) -> ()) {
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                // Valid case. We might have been dismissed already.
-                // Do nothing ...
-                return
-            }
-            let operation = me.getProfilePictureOperation(completion: completion)
-            me.queueForHeavyStuff.addOperation(operation)
-        }
-    }
-
-    private func getProfilePictureOperation(completion: @escaping (UIImage?) -> ())
-    -> SelfReferencingOperation {
-        let identitykey = IdentityImageTool.IdentityKey(identity: displayedImageIdentity)
-        let profilePictureOperation = SelfReferencingOperation { [weak self] operation in
-            guard let me = self else {
-                return
-            }
-            guard
-                let operation = operation,
-                !operation.isCancelled else {
-                return
-            }
-            let profileImage = me.profilePictureComposer.profilePicture(for: identitykey)
-            DispatchQueue.main.async {
-                completion(profileImage)
-            }
-        }
-        return profilePictureOperation
-    }
-
-    public func unsubscribeForUpdates() {
-        queueForHeavyStuff.cancelAllOperations()
+        identityImageTool.getProfilePicture(identity: displayedImageIdentity, completion: completion)
     }
 }

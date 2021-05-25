@@ -30,6 +30,8 @@ class RecipientCollectionViewCell: UICollectionViewCell {
                 color = .darkText
             }
         }
-        recipientButton.setup(text: collectionViewCellViewModel.title, color: color, action: collectionViewCellViewModel.action)
+        recipientButton.setup(text: collectionViewCellViewModel.title,
+                              color: color,
+                              action: collectionViewCellViewModel.action)
     }
 }
