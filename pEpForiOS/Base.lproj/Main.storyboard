@@ -535,10 +535,10 @@
                                                             <rect key="frame" x="90" y="0.0" width="308" height="150"/>
                                                             <subviews>
                                                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KoL-cN-CXc" userLabel="From Collection View">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="308" height="20"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="308" height="52"/>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="height" constant="20" id="Pqf-hf-1Gc"/>
+                                                                        <constraint firstAttribute="height" constant="100" id="Pqf-hf-1Gc"/>
                                                                     </constraints>
                                                                     <collectionViewLayout key="collectionViewLayout" id="r4Z-Ko-KzL" customClass="PEPAlignedCollectionViewFlowLayout" customModule="pEpIOSToolbox"/>
                                                                     <cells>
@@ -549,9 +549,9 @@
                                                                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                                 <subviews>
-                                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hzm-le-K14" customClass="RecipientButton" customModule="pEpForiOS" customModuleProvider="target">
+                                                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hzm-le-K14" customClass="RecipientButton" customModule="pEpForiOS" customModuleProvider="target">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                                         <state key="normal" title="mb@pep.security">
                                                                                             <color key="titleColor" systemColor="labelColor"/>
                                                                                         </state>
@@ -576,14 +576,14 @@
                                                                     </connections>
                                                                 </collectionView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Today, 14:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SKU-fh-xu3" userLabel="Date">
-                                                                    <rect key="frame" x="0.0" y="26.666666666666668" width="308" height="13.333333333333332"/>
+                                                                    <rect key="frame" x="0.0" y="54" width="308" height="0.0"/>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                                     <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="904-63-1Yl" userLabel="To Container">
-                                                                    <rect key="frame" x="0.0" y="46.666666666666664" width="308" height="29.999999999999993"/>
+                                                                    <rect key="frame" x="0.0" y="56" width="308" height="30"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="To:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hUI-Rm-qg5">
                                                                             <rect key="frame" x="0.0" y="0.0" width="17.333333333333332" height="14.333333333333334"/>
@@ -642,7 +642,7 @@
                                                                     </constraints>
                                                                 </view>
                                                                 <view contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="V9d-in-Gfc" userLabel="CC Container">
-                                                                    <rect key="frame" x="0.0" y="83.333333333333329" width="308" height="30"/>
+                                                                    <rect key="frame" x="0.0" y="88" width="308" height="30"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Cc:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="am9-UT-atP" userLabel="CC:">
                                                                             <rect key="frame" x="0.0" y="0.0" width="19" height="14.333333333333334"/>

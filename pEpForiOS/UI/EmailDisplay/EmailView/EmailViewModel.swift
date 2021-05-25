@@ -206,6 +206,10 @@ extension EmailViewModel {
         public var size: CGSize {
             let recipientButton = RecipientButton(type: .system)
             recipientButton.setup(text: title, action: action)
+            if recipientType == .from {
+                recipientButton.setPEPFont(style: .headline, weight: .semibold)
+                recipientButton.sizeToFit()
+            }
             return recipientButton.frame.size
         }
 

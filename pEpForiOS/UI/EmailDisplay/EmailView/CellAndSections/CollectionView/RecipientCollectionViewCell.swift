@@ -23,7 +23,7 @@ class RecipientCollectionViewCell: UICollectionViewCell {
                 color = .lightGray
             }
         case .from:
-            recipientButton.setPEPFont(style: .title1, weight: .semibold)
+            recipientButton.setPEPFont(style: .headline, weight: .semibold)
             if #available(iOS 13.0, *) {
                 color = .label
             } else {

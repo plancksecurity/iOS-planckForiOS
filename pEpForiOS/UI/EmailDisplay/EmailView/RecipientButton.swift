@@ -30,7 +30,6 @@ extension RecipientButton {
                                          left: .leastNormalMagnitude,
                                          bottom: .leastNormalMagnitude,
                                          right: .leastNormalMagnitude)
-        titleLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
         titleLabel?.textAlignment = .natural
         if let titleColor = color {
             setTitleColor(titleColor)
