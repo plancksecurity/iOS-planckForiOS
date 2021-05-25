@@ -17,7 +17,7 @@ import MessageModel
 import pEpIOSToolbox
 #endif
 
-protocol MediaAttachmentPickerProviderViewModelResultDelegate: class {
+protocol MediaAttachmentPickerProviderViewModelResultDelegate: AnyObject {
 
     /// Called when the user finished selecting media content and retruns the MediaAttchement.
     ///

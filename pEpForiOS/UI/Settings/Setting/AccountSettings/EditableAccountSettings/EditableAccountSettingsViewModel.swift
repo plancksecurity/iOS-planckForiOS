@@ -11,7 +11,7 @@ import MessageModel
 import pEpIOSToolbox
 import PantomimeFramework
 
-protocol EditableAccountSettingsDelegate: class {
+protocol EditableAccountSettingsDelegate: AnyObject {
     /// Changes loading view visibility
     /// - Parameter visible: Indicates if it should be visible or not.
     func setLoadingView(visible: Bool)

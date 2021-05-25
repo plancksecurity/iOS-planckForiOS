@@ -12,11 +12,11 @@ import MessageModelForAppExtensions
 import MessageModel
 #endif
 
-protocol AccountCellViewModelResultDelegate: class {
+protocol AccountCellViewModelResultDelegate: AnyObject {
     func accountCellViewModel(_ vm: AccountCellViewModel, accountChangedTo account: Account)
 }
 
-protocol AccountCellViewModelDelegate: class {
+protocol AccountCellViewModelDelegate: AnyObject {
     func accountChanged(newValue: String)
 }
 

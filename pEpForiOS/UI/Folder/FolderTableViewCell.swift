@@ -9,7 +9,7 @@
 import UIKit
 import pEpIOSToolbox
 
-protocol FolderTableViewCellDelegate: class {
+protocol FolderTableViewCellDelegate: AnyObject {
     func didTapChevronButton(cell:  UITableViewCell)
 }
 
