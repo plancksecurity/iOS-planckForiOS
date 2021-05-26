@@ -17,6 +17,7 @@ class RecipientCollectionViewCell: UICollectionViewCell {
         var color: UIColor = .darkText
         switch collectionViewCellViewModel.recipientType {
         case .to, .cc, .bcc:
+            recipientButton.setPEPFont(style: .footnote, weight: .regular)
             if #available(iOS 13.0, *) {
                 color = .secondaryLabel
             } else {
