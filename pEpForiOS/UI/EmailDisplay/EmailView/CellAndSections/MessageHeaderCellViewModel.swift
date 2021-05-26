@@ -83,4 +83,34 @@ class MessageHeaderCellViewModel {
     public func getProfilePicture(completion: @escaping (UIImage?) -> ()) {
         identityImageTool.getProfilePicture(identity: displayedImageIdentity, completion: completion)
     }
+
+    /// - Parameter type: The recipient type
+    /// - Returns: The number of CollectionViewCell VMs for recipient type passed.
+    public func numberOfCVVM(for type: EmailViewModel.RecipientType) -> Int {
+        switch type {
+        case .from:
+            return fromCollectionViewViewModel?.numberOfCollectionViewCellViewModels ?? 0
+        case .to:
+            return tosCollectionViewViewModel?.numberOfCollectionViewCellViewModels ?? 0
+        case .cc:
+            return ccsCollectionViewViewModel?.numberOfCollectionViewCellViewModels ?? 0
+        case .bcc:
+            return bccsCollectionViewViewModel?.numberOfCollectionViewCellViewModels ?? 0
+        }
+    }
+
+    /// - Parameter type: The recipient type.
+    /// - Returns: The CollectionView VM for recipient type passed.
+    public func recipientsCVVM(for type: EmailViewModel.RecipientType) -> EmailViewModel.RecipientsCollectionViewViewModel? {
+        switch type {
+        case .from:
+            return fromCollectionViewViewModel
+        case .to:
+            return tosCollectionViewViewModel
+        case .cc:
+            return ccsCollectionViewViewModel
+        case .bcc:
+            return bccsCollectionViewViewModel
+        }
+    }
 }

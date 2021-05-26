@@ -534,7 +534,7 @@
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="ekg-9A-kwW" userLabel="Recipients Stack View">
                                                             <rect key="frame" x="90" y="0.0" width="308" height="150"/>
                                                             <subviews>
-                                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KoL-cN-CXc" userLabel="From Collection View">
+                                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KoL-cN-CXc" userLabel="From Collection View" customClass="MessageHeaderCollectionView" customModule="pEpForiOS" customModuleProvider="target">
                                                                     <rect key="frame" x="0.0" y="0.0" width="308" height="52"/>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <constraints>
@@ -570,6 +570,9 @@
                                                                             </connections>
                                                                         </collectionViewCell>
                                                                     </cells>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="typeName" value="from"/>
+                                                                    </userDefinedRuntimeAttributes>
                                                                     <connections>
                                                                         <outlet property="dataSource" destination="Zjs-ta-aiF" id="zaJ-JH-mvd"/>
                                                                         <outlet property="delegate" destination="Zjs-ta-aiF" id="ifp-AA-l5k"/>
@@ -591,7 +594,7 @@
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalCompressionResistancePriority="1000" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="0bo-X9-Ji9" userLabel="To Collection View">
+                                                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalCompressionResistancePriority="1000" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="0bo-X9-Ji9" userLabel="To Collection View" customClass="MessageHeaderCollectionView" customModule="pEpForiOS" customModuleProvider="target">
                                                                             <rect key="frame" x="21.333333333333343" y="0.0" width="286.66666666666663" height="30"/>
                                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             <collectionViewLayout key="collectionViewLayout" id="LkI-Xj-v2F" customClass="PEPAlignedCollectionViewFlowLayout" customModule="pEpIOSToolbox"/>
@@ -624,6 +627,9 @@
                                                                                     </connections>
                                                                                 </collectionViewCell>
                                                                             </cells>
+                                                                            <userDefinedRuntimeAttributes>
+                                                                                <userDefinedRuntimeAttribute type="string" keyPath="typeName" value="to"/>
+                                                                            </userDefinedRuntimeAttributes>
                                                                             <connections>
                                                                                 <outlet property="dataSource" destination="Zjs-ta-aiF" id="pUi-3k-OEj"/>
                                                                                 <outlet property="delegate" destination="Zjs-ta-aiF" id="7S2-I0-nvd"/>
@@ -650,7 +656,7 @@
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalCompressionResistancePriority="1000" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="utW-4j-PQh" userLabel="CC Collection View">
+                                                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalCompressionResistancePriority="1000" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="utW-4j-PQh" userLabel="CC Collection View" customClass="MessageHeaderCollectionView" customModule="pEpForiOS" customModuleProvider="target">
                                                                             <rect key="frame" x="23" y="0.0" width="285" height="30"/>
                                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             <collectionViewLayout key="collectionViewLayout" id="9Pe-Fu-OUy" customClass="PEPAlignedCollectionViewFlowLayout" customModule="pEpIOSToolbox"/>
@@ -683,6 +689,9 @@
                                                                                     </connections>
                                                                                 </collectionViewCell>
                                                                             </cells>
+                                                                            <userDefinedRuntimeAttributes>
+                                                                                <userDefinedRuntimeAttribute type="string" keyPath="typeName" value="cc"/>
+                                                                            </userDefinedRuntimeAttributes>
                                                                             <connections>
                                                                                 <outlet property="dataSource" destination="Zjs-ta-aiF" id="VCr-kB-uOO"/>
                                                                                 <outlet property="delegate" destination="Zjs-ta-aiF" id="mX3-ai-MnB"/>
@@ -709,7 +718,7 @@
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalCompressionResistancePriority="1000" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ojN-E5-YJy" userLabel="BCC Collection View">
+                                                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalCompressionResistancePriority="1000" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ojN-E5-YJy" userLabel="BCC Collection View" customClass="MessageHeaderCollectionView" customModule="pEpForiOS" customModuleProvider="target">
                                                                             <rect key="frame" x="32.666666666666657" y="0.0" width="275.33333333333337" height="30"/>
                                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             <collectionViewLayout key="collectionViewLayout" id="Eed-jT-pY7" customClass="PEPAlignedCollectionViewFlowLayout" customModule="pEpIOSToolbox"/>
@@ -742,6 +751,9 @@
                                                                                     </connections>
                                                                                 </collectionViewCell>
                                                                             </cells>
+                                                                            <userDefinedRuntimeAttributes>
+                                                                                <userDefinedRuntimeAttribute type="string" keyPath="typeName" value="bcc"/>
+                                                                            </userDefinedRuntimeAttributes>
                                                                             <connections>
                                                                                 <outlet property="dataSource" destination="Zjs-ta-aiF" id="hAp-rG-MMf"/>
                                                                                 <outlet property="delegate" destination="Zjs-ta-aiF" id="aTS-8C-B43"/>

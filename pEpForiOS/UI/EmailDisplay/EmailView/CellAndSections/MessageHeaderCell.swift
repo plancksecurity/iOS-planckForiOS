@@ -72,7 +72,7 @@ class MessageHeaderCell: UITableViewCell {
         bccContainer.isHidden = row.bccsViewModels.isEmpty
         ccContainer.isHidden = row.ccsViewModels.isEmpty
 
-        setupLabels(row)
+        setupLabels(with: row)
 
         /// Get image
         vm.getProfilePicture { [weak self] image in
@@ -93,24 +93,43 @@ class MessageHeaderCell: UITableViewCell {
                  delegate: delegate)
         reloadAllCollectionViews()
     }
-
-    func reloadAllRecipients(of recipientType: EmailViewModel.RecipientType) {
-        let cv = collectionView(of: recipientType)
-        cv.collectionViewLayout.invalidateLayout()
-        cv.reloadData()
-    }
 }
 
 // MARK: - UICollectionViewDelegate
 
-extension MessageHeaderCell: UICollectionViewDelegate {
+extension MessageHeaderCell: UICollectionViewDelegate { }
+
+// MARK: - UICollectionViewDataSource
+
+extension MessageHeaderCell: UICollectionViewDataSource {
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return 0
+        }
+        guard let cv = collectionView as? MessageHeaderCollectionView else {
+            Log.shared.errorAndCrash("Collection view class not supported")
+            return 0
+        }
+        return vm.numberOfCVVM(for: cv.type)
+    }
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecipientCollectionViewCell.cellId,
                                                             for: indexPath) as? RecipientCollectionViewCell else {
             Log.shared.errorAndCrash("Error setting up cell")
             return collectionView.dequeueReusableCell(withReuseIdentifier: RecipientCollectionViewCell.cellId, for: indexPath)
         }
-        guard let viewModels = recipientsCVVM(collectionView: collectionView)?.collectionViewCellViewModels else {
+        guard let cv = collectionView as? MessageHeaderCollectionView else {
+            Log.shared.errorAndCrash("Collection view class not supported")
+            return cell
+        }
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return cell
+        }
+        guard let viewModels = vm.recipientsCVVM(for: cv.type)?.collectionViewCellViewModels else {
             Log.shared.errorAndCrash("VMs not found")
             return cell
         }
@@ -137,27 +156,6 @@ extension MessageHeaderCell: UICollectionViewDelegate {
     }
 }
 
-// MARK: - UICollectionViewDataSource
-
-extension MessageHeaderCell: UICollectionViewDataSource {
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch collectionView {
-        case fromCollectionView:
-            return viewModel?.fromCollectionViewViewModel?.numberOfCollectionViewCellViewModels ?? 0
-        case tosCollectionView:
-            return viewModel?.tosCollectionViewViewModel?.numberOfCollectionViewCellViewModels ?? 0
-        case ccsCollectionView:
-            return viewModel?.ccsCollectionViewViewModel?.numberOfCollectionViewCellViewModels ?? 0
-        case bccsCollectionView:
-            return viewModel?.bccsCollectionViewViewModel?.numberOfCollectionViewCellViewModels ?? 0
-        default:
-            Log.shared.errorAndCrash("CV not found")
-            return 0
-        }
-    }
-}
-
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension MessageHeaderCell: UICollectionViewDelegateFlowLayout {
@@ -166,7 +164,16 @@ extension MessageHeaderCell: UICollectionViewDelegateFlowLayout {
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
 
-        guard let vms = recipientsCVVM(collectionView: collectionView)?.collectionViewCellViewModels else {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return .zero
+        }
+        guard let cv = collectionView as? MessageHeaderCollectionView else {
+            Log.shared.errorAndCrash("Collection view class not supported")
+            return .zero
+        }
+
+        guard let vms = vm.recipientsCVVM(for: cv.type)?.collectionViewCellViewModels else {
             Log.shared.errorAndCrash("VMs not found")
             return .zero
         }
@@ -185,6 +192,12 @@ extension MessageHeaderCell: UICollectionViewDelegateFlowLayout {
 
 extension MessageHeaderCell {
 
+    private func reloadAllRecipients(of recipientType: EmailViewModel.RecipientType) {
+        let cv = collectionView(of: recipientType)
+        cv.collectionViewLayout.invalidateLayout()
+        cv.reloadData()
+    }
+
     private func setup(label: UILabel, text: String) {
         label.text = text
         label.font = UIFont.pepFont(style: .footnote, weight: .semibold)
@@ -193,23 +206,6 @@ extension MessageHeaderCell {
         } else {
             label.textColor = .lightGray
         }
-    }
-
-    private func recipientsCVVM(collectionView: UICollectionView) -> EmailViewModel.RecipientsCollectionViewViewModel? {
-        switch collectionView {
-        case fromCollectionView:
-            return viewModel?.fromCollectionViewViewModel
-        case tosCollectionView:
-            return viewModel?.tosCollectionViewViewModel
-        case ccsCollectionView:
-            return viewModel?.ccsCollectionViewViewModel
-        case bccsCollectionView:
-            return viewModel?.bccsCollectionViewViewModel
-
-        default:
-            Log.shared.errorAndCrash("unknown collectionview")
-        }
-        return nil
     }
 
     private func collectionView(of recipientType: EmailViewModel.RecipientType) -> UICollectionView {
@@ -229,7 +225,7 @@ extension MessageHeaderCell {
         [.from, .to, .cc, .bcc].forEach({ reloadAllRecipients(of: $0) })
     }
 
-    private func setupLabels(_ row: EmailViewModel.HeaderRow) {
+    private func setupLabels(with row: EmailViewModel.HeaderRow) {
         //Labels
         if let date = row.date {
             setup(label: dateLabel, text: date)
