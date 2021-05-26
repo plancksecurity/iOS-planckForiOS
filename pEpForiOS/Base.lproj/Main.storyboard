@@ -595,7 +595,7 @@
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalCompressionResistancePriority="1000" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="0bo-X9-Ji9" userLabel="To Collection View" customClass="MessageHeaderCollectionView" customModule="pEpForiOS" customModuleProvider="target">
-                                                                            <rect key="frame" x="21.333333333333343" y="0.0" width="286.66666666666663" height="30"/>
+                                                                            <rect key="frame" x="32.666666666666657" y="0.0" width="275.33333333333337" height="30"/>
                                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             <collectionViewLayout key="collectionViewLayout" id="LkI-Xj-v2F" customClass="PEPAlignedCollectionViewFlowLayout" customModule="pEpIOSToolbox"/>
                                                                             <cells>
@@ -639,7 +639,7 @@
                                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="trailing" secondItem="0bo-X9-Ji9" secondAttribute="trailing" id="0V0-iL-ROs"/>
-                                                                        <constraint firstItem="0bo-X9-Ji9" firstAttribute="leading" secondItem="hUI-Rm-qg5" secondAttribute="trailing" constant="4" id="CdS-aI-frF"/>
+                                                                        <constraint firstItem="0bo-X9-Ji9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hUI-Rm-qg5" secondAttribute="trailing" priority="999" constant="4" id="CdS-aI-frF"/>
                                                                         <constraint firstItem="hUI-Rm-qg5" firstAttribute="top" secondItem="904-63-1Yl" secondAttribute="top" id="Hx5-SR-Fv3"/>
                                                                         <constraint firstItem="0bo-X9-Ji9" firstAttribute="top" secondItem="904-63-1Yl" secondAttribute="top" id="JwG-KV-Ney"/>
                                                                         <constraint firstAttribute="bottom" secondItem="0bo-X9-Ji9" secondAttribute="bottom" id="LdB-nK-dJz"/>
@@ -657,7 +657,7 @@
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalCompressionResistancePriority="1000" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="utW-4j-PQh" userLabel="CC Collection View" customClass="MessageHeaderCollectionView" customModule="pEpForiOS" customModuleProvider="target">
-                                                                            <rect key="frame" x="23" y="0.0" width="285" height="30"/>
+                                                                            <rect key="frame" x="32.666666666666657" y="0.0" width="275.33333333333337" height="30"/>
                                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             <collectionViewLayout key="collectionViewLayout" id="9Pe-Fu-OUy" customClass="PEPAlignedCollectionViewFlowLayout" customModule="pEpIOSToolbox"/>
                                                                             <cells>
@@ -704,7 +704,7 @@
                                                                         <constraint firstAttribute="trailing" secondItem="utW-4j-PQh" secondAttribute="trailing" id="Lba-lp-mW2"/>
                                                                         <constraint firstItem="am9-UT-atP" firstAttribute="leading" secondItem="V9d-in-Gfc" secondAttribute="leading" id="Nwv-Pu-Sfw"/>
                                                                         <constraint firstItem="am9-UT-atP" firstAttribute="top" secondItem="V9d-in-Gfc" secondAttribute="top" id="XRi-Eq-qca"/>
-                                                                        <constraint firstItem="utW-4j-PQh" firstAttribute="leading" secondItem="am9-UT-atP" secondAttribute="trailing" constant="4" id="oEL-IK-Aza"/>
+                                                                        <constraint firstItem="utW-4j-PQh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="am9-UT-atP" secondAttribute="trailing" constant="4" id="oEL-IK-Aza"/>
                                                                         <constraint firstAttribute="bottom" secondItem="utW-4j-PQh" secondAttribute="bottom" id="t2L-GG-e99"/>
                                                                         <constraint firstAttribute="height" constant="30" id="xVu-cf-X77"/>
                                                                     </constraints>
@@ -766,12 +766,16 @@
                                                                         <constraint firstItem="ZHe-Us-fIK" firstAttribute="leading" secondItem="U95-IP-PNH" secondAttribute="leading" id="5VQ-c7-eFI"/>
                                                                         <constraint firstAttribute="trailing" secondItem="ojN-E5-YJy" secondAttribute="trailing" id="M2k-yG-GjN"/>
                                                                         <constraint firstItem="ZHe-Us-fIK" firstAttribute="top" secondItem="U95-IP-PNH" secondAttribute="top" id="O0a-4Y-CT5"/>
-                                                                        <constraint firstItem="ojN-E5-YJy" firstAttribute="leading" secondItem="ZHe-Us-fIK" secondAttribute="trailing" constant="4" id="Sd4-fX-IG4"/>
+                                                                        <constraint firstItem="ojN-E5-YJy" firstAttribute="leading" secondItem="ZHe-Us-fIK" secondAttribute="trailing" priority="999" constant="4" id="Sd4-fX-IG4"/>
                                                                         <constraint firstItem="ojN-E5-YJy" firstAttribute="top" secondItem="U95-IP-PNH" secondAttribute="top" id="ewq-yx-NpW"/>
                                                                         <constraint firstAttribute="height" constant="30" id="lAQ-dw-zSy"/>
                                                                     </constraints>
                                                                 </view>
                                                             </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="0bo-X9-Ji9" firstAttribute="leading" secondItem="utW-4j-PQh" secondAttribute="leading" id="9xh-n8-aYo"/>
+                                                                <constraint firstItem="ojN-E5-YJy" firstAttribute="leading" secondItem="utW-4j-PQh" secondAttribute="leading" id="QX4-BD-YVO"/>
+                                                            </constraints>
                                                         </stackView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
