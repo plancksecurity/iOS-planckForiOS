@@ -8,12 +8,7 @@
 
 import UIKit
 import Foundation
-
-#if EXT_SHARE
-import pEpIOSToolboxForExtensions
-#else
 import pEpIOSToolbox
-#endif
 
 protocol MessageHeaderCellDelegate: AnyObject {
     func displayAllRecipients(recipientType: EmailViewModel.RecipientType)
@@ -34,8 +29,8 @@ class MessageHeaderCell: UITableViewCell {
     @IBOutlet private weak var fromCollectionViewHeight: NSLayoutConstraint!
 
     //These containers are used to hide when there is no cc/bcc recipeints.
-    @IBOutlet weak var ccContainer: UIView!
-    @IBOutlet weak var bccContainer: UIView!
+    @IBOutlet private weak var ccContainer: UIView!
+    @IBOutlet private weak var bccContainer: UIView!
 
     //Labels
     @IBOutlet private weak var toLabel: UILabel!
@@ -44,10 +39,10 @@ class MessageHeaderCell: UITableViewCell {
     @IBOutlet private weak var dateLabel: UILabel!
 
     //CollectionViews
-    @IBOutlet private weak var fromCollectionView: UICollectionView!
-    @IBOutlet private weak var tosCollectionView: UICollectionView!
-    @IBOutlet private weak var ccsCollectionView: UICollectionView!
-    @IBOutlet private weak var bccsCollectionView: UICollectionView!
+    @IBOutlet private weak var fromCollectionView: MessageHeaderCollectionView!
+    @IBOutlet private weak var tosCollectionView: MessageHeaderCollectionView!
+    @IBOutlet private weak var ccsCollectionView: MessageHeaderCollectionView!
+    @IBOutlet private weak var bccsCollectionView: MessageHeaderCollectionView!
     
     @IBOutlet private weak var contactImageView: UIImageView!
 
@@ -57,12 +52,16 @@ class MessageHeaderCell: UITableViewCell {
         contactImageView.image = MessageHeaderCell.emptyContactImage
     }
 
+    /// Setup the cell
+    /// - Parameters:
+    ///   - row: The row to config
+    ///   - shouldDisplayAll: Indicate if the recipients should be fully display or some of them grouped under the 'And X more' button.
+    ///   - delegate: The delegate to communicate to the VC.
     public func setup(row: EmailViewModel.HeaderRow,
                       shouldDisplayAll: [EmailViewModel.RecipientType: Bool],
                       delegate: MessageHeaderCellDelegate) {
 
         self.viewModel = row.viewModel
-
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
@@ -210,14 +209,10 @@ extension MessageHeaderCell {
 
     private func collectionView(of recipientType: EmailViewModel.RecipientType) -> UICollectionView {
         switch recipientType {
-        case .to:
-            return tosCollectionView
-        case .cc:
-            return ccsCollectionView
-        case .bcc:
-            return bccsCollectionView
-        case .from:
-            return fromCollectionView
+        case .to: return tosCollectionView
+        case .cc: return ccsCollectionView
+        case .bcc: return bccsCollectionView
+        case .from: return fromCollectionView
         }
     }
 
