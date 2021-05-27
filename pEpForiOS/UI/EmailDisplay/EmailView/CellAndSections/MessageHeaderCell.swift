@@ -216,7 +216,6 @@ extension MessageHeaderCell {
     }
 
     private func setupLabels(with row: EmailViewModel.HeaderRow) {
-        //Labels
         if let date = row.date {
             setup(label: dateLabel, text: date)
             dateLabel.isHidden = false
