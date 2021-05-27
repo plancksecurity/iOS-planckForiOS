@@ -11,7 +11,7 @@ import UIKit
 import pEpIOSToolbox
 
 /// Protocol to handle ManualAccountSetupView events
-protocol ManualAccountSetupViewDelegate: class {
+protocol ManualAccountSetupViewDelegate: AnyObject {
     func didPressCancelButton()
     func didPressNextButton()
     func didChangePEPSyncSwitch(isOn: Bool)

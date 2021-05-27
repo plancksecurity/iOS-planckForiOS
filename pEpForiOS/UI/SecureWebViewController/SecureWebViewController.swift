@@ -10,7 +10,7 @@ import WebKit
 
 import pEpIOSToolbox
 
-protocol SecureWebViewControllerDelegate: class {
+protocol SecureWebViewControllerDelegate: AnyObject {
     /// Called on content size changes while content is loaded.
     func didFinishLoading()
 }
