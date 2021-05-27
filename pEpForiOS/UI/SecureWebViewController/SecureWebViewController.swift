@@ -51,7 +51,7 @@ class SecureWebViewController: UIViewController {
         }
     }
 
-    private var webView: WKWebView!
+    private var webView: CustomWebView!
     private var htmlOptimizer = HtmlOptimizerUtil(minimumFontSize: 16.0)
 
     /// The key path of the `WKWebView` that gets observed under certain conditions.
@@ -88,11 +88,12 @@ class SecureWebViewController: UIViewController {
                                     .flightNumber]
         // This handler provides local content for cid: URLs
         CidHandler.setup(config: config)
-        webView = WKWebView(frame: .zero, configuration: config)
+        webView = CustomWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = self
         webView.scrollView.delegate = self
         webView.scrollView.isScrollEnabled = scrollingEnabled
         webView.scrollView.isUserInteractionEnabled = userInteractionEnabled
+        webView.uiDelegate = self
         view = webView
     }
 
@@ -358,5 +359,70 @@ extension UISplitViewController {
             // Forward for default handling.
             super.present(viewControllerToPresent, animated: flag, completion: completion)
         }
+    }
+}
+
+@available(iOS 13.0, *)
+extension SecureWebViewController: WKUIDelegate {
+
+    func webView(_ webView: WKWebView, contextMenuForElement elementInfo: WKContextMenuElementInfo, willCommitWithAnimator animator: UIContextMenuInteractionCommitAnimating) {
+        print("")
+    }
+
+    func webView(_ webView: WKWebView,
+                 contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
+                 completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
+        let configuration =
+            UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: { [weak self] elements in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return UIMenu()
+                }
+
+                guard elements.isEmpty == false else {
+                    return nil
+                }
+                // Add our custom action to the existing actions passed in.
+                var elementsToUse = [UIMenuElement]()
+                elementsToUse.append(elements[0])
+                elementsToUse.append(elements[2])
+                let shareAction = me.shareAction(url: elementInfo.linkURL)
+                let copyAction = me.copyAction(url: elementInfo.linkURL)
+                let editMenu = UIMenu(title: "", options: .displayInline, children: [shareAction, copyAction])
+                elementsToUse.append(editMenu)
+                return UIMenu(title: "p≡p", image: nil, identifier: nil, options: [], children: elementsToUse)
+            }
+            )
+        completionHandler(configuration)
+    }
+
+    func webView(_ webView: WKWebView, contextMenuWillPresentForElement elementInfo: WKContextMenuElementInfo) {
+        print("")
+    }
+
+    func shareAction(url: URL?) -> UIAction {
+        let title = NSLocalizedString("Share", comment: "Share - on context menu")
+        let image = UIImage(systemName: "square.and.arrow.up")
+        return UIAction(title: title, image: image) { action in
+            print("Share icon pressed! \(url)")
+        }
+    }
+
+    func copyAction(url: URL?) -> UIAction {
+        let title = NSLocalizedString("Copy", comment: "Copy - on context menu")
+        let image = UIImage(systemName: "doc.on.doc")
+        return UIAction(title: title, image: image) { action in
+            print("Copy icon pressed! \(url)")
+        }
+    }
+
+}
+
+
+class CustomWebView: WKWebView {
+
+    override func copy(_ sender: Any?) {
+        super.copy(sender)
+        print("")
     }
 }

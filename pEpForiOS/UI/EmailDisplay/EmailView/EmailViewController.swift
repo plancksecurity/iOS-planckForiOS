@@ -269,6 +269,7 @@ extension EmailViewController: SecureWebViewControllerDelegate {
     }
 }
 
+
 // MARK: - UIPopoverPresentationControllerDelegate
 
 extension EmailViewController: UIPopoverPresentationControllerDelegate, UIPopoverPresentationControllerProtocol {
