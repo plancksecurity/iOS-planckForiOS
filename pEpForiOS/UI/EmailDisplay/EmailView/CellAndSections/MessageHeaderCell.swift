@@ -200,11 +200,7 @@ extension MessageHeaderCell {
     private func setup(label: UILabel, text: String) {
         label.text = text
         label.font = UIFont.pepFont(style: .footnote, weight: .semibold)
-        if #available(iOS 13.0, *) {
-            label.textColor = .secondaryLabel
-        } else {
-            label.textColor = .lightGray
-        }
+        label.textColor = UIColor.pEpSecondaryColor()
     }
 
     private func collectionView(of recipientType: EmailViewModel.RecipientType) -> UICollectionView {

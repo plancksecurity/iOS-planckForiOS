@@ -8,12 +8,7 @@
 
 import UIKit
 
-#if EXT_SHARE
-import MessageModelForAppExtensions
-import pEpIOSToolboxForExtensions
-#else
 import pEpIOSToolbox
-#endif
 
 @IBDesignable
 class MessageHeaderCollectionView: UICollectionView {
@@ -25,7 +20,7 @@ class MessageHeaderCollectionView: UICollectionView {
     @IBInspectable var typeName: String? {
         willSet {
             guard let newType = EmailViewModel.RecipientType(rawValue: newValue?.lowercased() ?? "") else {
-                Log.shared.errorAndCrash("Typo in interface builder type")
+                Log.shared.errorAndCrash("Typo in interface builder 'type' field")
                 return
             }
             type = newType

@@ -67,6 +67,7 @@ class IdentityImageTool {
     }()
 
     static private var _imageCache = [IdentityKey:CacheObject]()
+
     static private var imageCache: [IdentityKey:CacheObject] {
         get {
             var result = [IdentityKey:CacheObject]()
@@ -90,15 +91,13 @@ class IdentityImageTool {
 
     // MARK: - API
 
-    func clearCache() {
+    public static func clearCache() {
         IdentityImageTool.imageCache.removeAll()
     }
 
-    static func clearCache() {
-        IdentityImageTool.imageCache.removeAll()
-    }
-
-    func cachedIdentityImage(for key: IdentityKey) -> UIImage? {
+    /// - Parameter key: The identityKey to get the cached image.
+    /// - Returns: The identity image for the givven IdentityKey
+    public func cachedIdentityImage(for key: IdentityKey) -> UIImage? {
         guard let cache = IdentityImageTool.imageCache[key] else {
             return nil
         }
@@ -113,10 +112,18 @@ class IdentityImageTool {
         return cache.image
     }
 
-    func identityImage(for identityKey: IdentityKey,
-                       imageSize: CGSize = CGSize.defaultAvatarSize,
-                       textColor: UIColor? = nil,
-                       backgroundColor: UIColor = UIColor(hexString: "#c8c7cc")) -> UIImage? {
+    /// Get the identity image
+    ///
+    /// - Parameters:
+    ///   - identityKey: The IdentityKey
+    ///   - imageSize: The image size
+    ///   - textColor: The text color
+    ///   - backgroundColor: The background color
+    /// - Returns: The identity image already configurated.
+    public func identityImage(for identityKey: IdentityKey,
+                              imageSize: CGSize = CGSize.defaultAvatarSize,
+                              textColor: UIColor? = nil,
+                              backgroundColor: UIColor = UIColor(hexString: "#c8c7cc")) -> UIImage? {
 
         /// If the text color is passed by parameter, let's use it.
         /// Otherwise, evaluate if dark mode is on: in that case use pEpBlack, else, white.
@@ -165,12 +172,20 @@ class IdentityImageTool {
         }
         return image
     }
+
+    /// Get the profile picture that belongs to the identity passed by parameter.
+    ///
+    /// - Parameter completion: Completion callback that is executed when the operation fininshes.
+    /// - Returns: The profile picture.
+    public func getProfilePicture(identity: Identity, completion: @escaping (UIImage?) -> ()) {
+        let operation = getProfilePictureOperation(identity: identity, completion: completion)
+        queueForHeavyStuff.addOperation(operation)
+    }
 }
 
 // MARK: - Private
 
 extension IdentityImageTool {
-
 
     private func drawBackground(ctx: CGContext, size: CGSize, color: UIColor) {
         let r = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
@@ -187,16 +202,6 @@ extension IdentityImageTool {
             drawBackground(ctx: ctx, size: size, color: imageBackgroundColor)
             initials.draw(centeredIn: size, color: textColor, font: font)
         }
-    }
-
-
-    /// Get the profile picture that belongs to the identity passed by parameter.
-    ///
-    /// - Parameter completion: Completion callback that is executed when the operation fininshes.
-    /// - Returns: The profile picture.
-    public func getProfilePicture(identity: Identity, completion: @escaping (UIImage?) -> ()) {
-        let operation = getProfilePictureOperation(identity: identity, completion: completion)
-        queueForHeavyStuff.addOperation(operation)
     }
 
     private func getProfilePictureOperation(identity: Identity, completion: @escaping (UIImage?) -> ()) -> SelfReferencingOperation {
@@ -225,4 +230,7 @@ extension IdentityImageTool {
         return profilePictureOperation
     }
 
+    private func clearCache() {
+        IdentityImageTool.imageCache.removeAll()
+    }
 }

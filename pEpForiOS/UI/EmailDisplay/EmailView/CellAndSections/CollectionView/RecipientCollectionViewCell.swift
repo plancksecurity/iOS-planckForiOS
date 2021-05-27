@@ -18,18 +18,10 @@ class RecipientCollectionViewCell: UICollectionViewCell {
         switch collectionViewCellViewModel.recipientType {
         case .to, .cc, .bcc:
             recipientButton.setPEPFont(style: .footnote, weight: .regular)
-            if #available(iOS 13.0, *) {
-                color = .secondaryLabel
-            } else {
-                color = .lightGray
-            }
+            color = UIColor.pEpSecondaryColor()
         case .from:
             recipientButton.setPEPFont(style: .headline, weight: .semibold)
-            if #available(iOS 13.0, *) {
-                color = .label
-            } else {
-                color = .darkText
-            }
+            color = UIColor.pEpLabelColor()
         }
         recipientButton.setup(text: collectionViewCellViewModel.title,
                               color: color,
