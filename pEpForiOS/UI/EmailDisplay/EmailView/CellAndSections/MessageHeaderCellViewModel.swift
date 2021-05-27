@@ -89,9 +89,17 @@ class MessageHeaderCellViewModel {
     public func numberOfCVVM(for type: EmailViewModel.RecipientType) -> Int {
         switch type {
         case .from:
-            return fromCollectionViewViewModel?.numberOfCollectionViewCellViewModels ?? 0
+            guard let numberOfFrom = fromCollectionViewViewModel?.numberOfCollectionViewCellViewModels, numberOfFrom == 1 else {
+                Log.shared.errorAndCrash("There should be only 1 From recipient")
+                return 0
+            }
+            return numberOfFrom
         case .to:
-            return tosCollectionViewViewModel?.numberOfCollectionViewCellViewModels ?? 0
+            guard let numberOfTos = tosCollectionViewViewModel?.numberOfCollectionViewCellViewModels, numberOfTos > 0 else {
+                Log.shared.errorAndCrash("There should be at least 1 To recipient")
+                return 0
+            }
+            return numberOfTos
         case .cc:
             return ccsCollectionViewViewModel?.numberOfCollectionViewCellViewModels ?? 0
         case .bcc:

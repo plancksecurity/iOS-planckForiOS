@@ -144,7 +144,6 @@ extension MessageHeaderCell: UICollectionViewDataSource {
         case ccsCollectionView:
             cell.setup(with: viewModels[indexPath.row])
             ccContainerHeight.constant = ccsCollectionView.contentSize.height
-
         case bccsCollectionView:
             cell.setup(with: viewModels[indexPath.row])
             bccContainerHeight.constant = bccsCollectionView.contentSize.height
