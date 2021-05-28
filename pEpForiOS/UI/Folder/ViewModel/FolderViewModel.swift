@@ -38,7 +38,7 @@ public class FolderViewModel {
     }
 
     public var shouldShowUnifiedFolders: Bool {
-        return Account.countAllForUnified() > 1
+        return Account.countUnified() > 1
     }
 
     public var folderForEmailListView: DisplayableFolderProtocol? {
