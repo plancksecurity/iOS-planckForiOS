@@ -11,7 +11,7 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
-protocol KeySyncHandshakeViewModelDelegate: class {
+protocol KeySyncHandshakeViewModelDelegate: AnyObject {
     func showPicker(withLanguages languages: [String], selectedLanguageIndex: Int?)
     func closePicker()
     func change(handshakeWordsTo: String)

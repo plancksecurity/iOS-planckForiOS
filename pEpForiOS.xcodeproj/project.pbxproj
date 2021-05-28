@@ -421,7 +421,6 @@
 		43C4156225EE5BD80071C608 /* Attachment+InlinedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C4156125EE5BD80071C608 /* Attachment+InlinedImage.swift */; };
 		43C4156525EE5CA50071C608 /* Attachment+InlinedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C4156125EE5BD80071C608 /* Attachment+InlinedImage.swift */; };
 		43C415C725EE687A0071C608 /* NSItemProvider+MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C415C625EE687A0071C608 /* NSItemProvider+MimeType.swift */; };
-		43C9112626454538005B9CDE /* AppAuthForExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C9112526454538005B9CDE /* AppAuthForExtensions.framework */; };
 		43C9112726454538005B9CDE /* AppAuthForExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43C9112526454538005B9CDE /* AppAuthForExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
@@ -1256,7 +1255,6 @@
 				1512133D24166CE0009B7C88 /* ldns_xcode.framework in Frameworks */,
 				43D2133B2237CABD00C060A1 /* libxml2.tbd in Frameworks */,
 				B710526E241684AB007148E8 /* MessageModel.framework in Frameworks */,
-				43C9112626454538005B9CDE /* AppAuthForExtensions.framework in Frameworks */,
 				B710526B24168481007148E8 /* AppAuth.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4034,7 +4032,7 @@
 				INFOPLIST_FILE = "pEp-share/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.262;
+				MARKETING_VERSION = 1.1.263;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "security.pEp.pEp-share";
@@ -4068,7 +4066,7 @@
 				INFOPLIST_FILE = "pEp-share/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.262;
+				MARKETING_VERSION = 1.1.263;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "security.pEp.pEp-share";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4246,7 +4244,7 @@
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.262;
+				MARKETING_VERSION = 1.1.263;
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "-DDEBUG_LOGGING -D DEBUG $(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = security.pEp;
@@ -4285,7 +4283,7 @@
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.262;
+				MARKETING_VERSION = 1.1.263;
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = security.pEp;
 				PRODUCT_MODULE_NAME = pEpForiOS;

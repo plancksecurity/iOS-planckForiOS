@@ -6,7 +6,7 @@
 //  Copyright © 2019 pEp Security S.A. All rights reserved.
 //
 
-public protocol KeySyncServiceHandshakeHandlerProtocol: class {
+public protocol KeySyncServiceHandshakeHandlerProtocol: AnyObject {
 
     /// Show pEp Sync Wizard
     ///

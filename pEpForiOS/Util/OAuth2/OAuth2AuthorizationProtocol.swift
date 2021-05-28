@@ -22,7 +22,7 @@ enum OAuth2AuthorizationError: Error {
  A view controller that initiates an authorization request typically implements this.
  Since this is a delegate, derive from class so it can be used weakly.
  */
-protocol OAuth2AuthorizationDelegateProtocol: class {
+protocol OAuth2AuthorizationDelegateProtocol: AnyObject {
     func authorizationRequestFinished(error: Error?, accessToken: OAuth2AccessTokenProtocol?)
 }
 

@@ -18,18 +18,16 @@ import pEpIOSToolbox
 class MigrateKeychainOperation: ConcurrentBaseOperation {
     let keychainGroupSource: String
     let keychainGroupTarget: String
-    let queue: DispatchQueue
 
     /// - parameter keychainGroupTarget: The name of the target keychain
     /// (where to migrate to), `kSharedKeychain` by default.
     init(keychainGroupSource: String, keychainGroupTarget: String = kSharedKeychain) {
         self.keychainGroupSource = keychainGroupSource
         self.keychainGroupTarget = keychainGroupTarget
-        self.queue = DispatchQueue(label: "MigrateKeychainOperationQueue")
     }
 
     override func main() {
-        queue.async { [weak self] in
+        backgroundQueue.addOperation { [weak self] in
             guard let me = self else {
                 // could happen, don't interpret that as an error
                 return

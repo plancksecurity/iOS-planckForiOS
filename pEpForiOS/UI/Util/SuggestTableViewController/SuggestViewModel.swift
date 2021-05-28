@@ -17,14 +17,14 @@ import MessageModel
 import pEpIOSToolbox
 #endif
 
-protocol SuggestViewModelResultDelegate: class {
+protocol SuggestViewModelResultDelegate: AnyObject {
     /// Will be called whenever the user selects an Identity.
     func suggestViewModelDidSelectContact(identity: Identity)
 
     func suggestViewModel(_ vm: SuggestViewModel, didToggleVisibilityTo newValue: Bool)
 }
 
-protocol SuggestViewModelDelegate: class {
+protocol SuggestViewModelDelegate: AnyObject {
     func suggestViewModelDidResetModel(showResults: Bool)
 }
 
@@ -32,7 +32,7 @@ class SuggestViewModel {
     struct Row {
         // These identities MUST be used on `session` only!
         fileprivate let from: Identity?
-        fileprivate let to: Identity?
+        fileprivate let to: Identity
         public let name: String
         public let email: String
         fileprivate let addressBookID: String?
@@ -41,9 +41,10 @@ class SuggestViewModel {
                          to: Identity? = nil,
                          recipientName: String,
                          recipientEmail: String,
-                         recipientAddressBookID: String? = nil) {
+                         recipientAddressBookID: String? = nil,
+                         session: Session = Session.main) {
             self.from = sender
-            self.to = to
+            self.to = to ?? Identity(address: recipientEmail, session: session)
             self.name = recipientName
             self.email = recipientEmail
             self.addressBookID = recipientAddressBookID
@@ -174,12 +175,16 @@ class SuggestViewModel {
 // MARK: pEp Rating Icon
 
 extension SuggestViewModel {
+    typealias Address = String
+    typealias RatingIcon = UIImage
 
     /// Get the pep rating icon.
     /// - Parameters:
     ///   - row: The row that represents the suggestion.
-    ///   - completion: The callback where the pep rating icon is returned.
-    public func pEpRatingIcon(for row: Row, completion: @escaping (UIImage?)->Void) {
+    ///   - completion: The callback returning: the pep rating icon is returned.
+    ///                                 - the pep rating icon
+    ///                                 - the adress of the identity represented by `row`.
+    public func pEpRatingIcon(for row: Row, completion: @escaping (RatingIcon?, Address?)->Void) {
         workQueue.addOperation { [weak self] in
             guard let me = self else {
                 //Valid case: view might be dismissed
@@ -187,19 +192,16 @@ extension SuggestViewModel {
             }
             guard let from = row.from else {
                 Log.shared.errorAndCrash("No From")
-                completion(Rating.undefined.pEpColor().statusIconInContactPicture())
+                completion(Rating.undefined.pEpColor().statusIconInContactPicture(), nil)
                 return
             }
-            guard let to = row.to else {
-                //Valid, might not be a "To" recipient.
-                completion(Rating.undefined.pEpColor().statusIconInContactPicture())
-                return
-            }
-            let sessionedFrom = Identity.makeSafe(from, forSession: me.session)
-            let sessionedTo = Identity.makeSafe(to, forSession: me.session)
-            me.session.performAndWait {
-                Rating.outgoingMessageRating(from: sessionedFrom, to: [sessionedTo], cc: [], bcc: []) { (rating) in
-                    completion(rating.pEpColor().statusIconInContactPicture())
+            let to = row.to
+            let safeFrom = Identity.makeSafe(from, forSession: me.session)
+            let safeTo = Identity.makeSafe(to, forSession: me.session)
+            me.session.perform {
+                let toAddress = safeTo.address
+                Rating.outgoingMessageRating(from: safeFrom, to: [safeTo], cc: [], bcc: []) { (rating) in
+                    completion(rating.pEpColor().statusIconInContactPicture(), toAddress)
                 }
             }
         }
@@ -257,7 +259,8 @@ extension SuggestViewModel {
                         let row = Row(sender: from,
                                       recipientName: name,
                                       recipientEmail: email.value as String,
-                                      recipientAddressBookID: contact.identifier)
+                                      recipientAddressBookID: contact.identifier,
+                                      session: me.session)
                         contactRowsToAdd.append(row)
                     }
                 }

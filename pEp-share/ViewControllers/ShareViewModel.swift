@@ -13,7 +13,7 @@ import MobileCoreServices
 import MessageModelForAppExtensions
 import pEpIOSToolboxForExtensions
 
-protocol ShareViewModelDelegate: class {
+protocol ShareViewModelDelegate: AnyObject {
     /// All documents to be shared have been downloaded
     /// (asynchronously), ready to show the compose view
     /// with the given model.

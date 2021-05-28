@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol TextfieldResponder: class {
+protocol TextfieldResponder: AnyObject {
     
     var fields: [UITextField] { get set }
     var responder: Int { get set }

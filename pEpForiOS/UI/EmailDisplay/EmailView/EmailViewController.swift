@@ -9,7 +9,7 @@
 import pEpIOSToolbox
 import QuickLook
 
-protocol EmailViewControllerDelegate: class {
+protocol EmailViewControllerDelegate: AnyObject {
     func openQLPreviewController(toShowDocumentWithUrl url: URL)
 }
 

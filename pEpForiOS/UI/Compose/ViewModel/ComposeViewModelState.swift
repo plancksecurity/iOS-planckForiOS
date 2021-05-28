@@ -14,7 +14,7 @@ import MessageModel
 import pEpIOSToolbox
 #endif
 
-protocol ComposeViewModelStateDelegate: class {
+protocol ComposeViewModelStateDelegate: AnyObject {
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                didChangeValidationStateTo isValid: Bool)
 
@@ -158,6 +158,10 @@ extension ComposeViewModel {
         public func validate() {
             updatePepRating()
             validateForSending()
+        }
+
+        public func reevaluatePepRating() {
+            updatePepRating()
         }
 
         private func setup() {
