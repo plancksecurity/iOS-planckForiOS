@@ -24,7 +24,6 @@ class CreditsWebViewController: PEPWebViewController {
         title = NSLocalizedString("Credits", comment: "Credits view title")
     }
 
-
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         guard let thePreviousTraitCollection = previousTraitCollection else {
@@ -51,12 +50,11 @@ class CreditsWebViewController: PEPWebViewController {
             backgroundColor = UIColor.systemBackground
             fontColor = UIColor.label
         }
-
         let fontSize = "18"
         let fontFamily = "Helvetica Neue"
         let fontWeight = "500"
         let styleP = "p {color: \(fontColor.toHex());font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}"
-        let styleBody = "body {background-color: \(backgroundColor.toHex());}"
+        let styleBody = "body {background-color: \(backgroundColor.toHex()); margin-left: 0px; margin-right: 0px;}"
         let styleA = "a {color: \(fontColor.toHex());font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}"
         let styleLink = "a:link {color:\(UIColor.pEpDarkGreenHex); text-decoration: underline; word-break: break-all; !important;}"
         let style = "<style>\(styleP)\(styleBody)\(styleA)\(styleLink)</style>"
@@ -108,7 +106,8 @@ class CreditsWebViewController: PEPWebViewController {
                      "SwipeCellKit",
                      "Lumberjack",
                      "AppAuth-iOS",
-                     "Sequoia-PGP"]
+                     "Sequoia-PGP",
+                     "AlignedCollectionViewFlowLayout"]
         let links = ["https://gitea.pep.foundation/pEp.foundation/pEpEngine",
                      "https://gnupg.org/related_software/libassuan",
                      "https://gnupg.org/related_software/libksba",
@@ -121,7 +120,8 @@ class CreditsWebViewController: PEPWebViewController {
                      "https://github.com/SwipeCellKit/SwipeCellKit",
                      "https://github.com/CocoaLumberjack/CocoaLumberjack",
                      "https://github.com/openid/AppAuth-iOS",
-                     "https://sequoia-pgp.org/"]
+                     "https://sequoia-pgp.org/",
+                     "https://github.com/mischa-hildebrand/AlignedCollectionViewFlowLayout"]
 
         var htmlThanx = ""
         for (i, name) in names.enumerated() {
