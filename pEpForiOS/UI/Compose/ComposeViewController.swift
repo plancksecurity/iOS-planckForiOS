@@ -96,17 +96,7 @@ class ComposeViewController: UIViewController {
         vm.handleDidReAppear()
 
         if vm.hasNoActiveAccounts {
-            let title = NSLocalizedString("No active account is setup", comment: "Alert view title - No active account is setup, so it's not possible to compose a message ")
-            let message = NSLocalizedString("Impossible to compose a new message", comment: "")
-            UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message, style: .default) { [weak self] in
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost myself")
-                    return
-                }
-                me.dismiss(animated: true) {
-                    me.dismiss()
-                }
-            }
+            showNoActiveAccountPopup()
         }
     }
 
@@ -150,6 +140,20 @@ class ComposeViewController: UIViewController {
         addChild(suggestVc)
         suggestView.isHidden = true
         tableView.addSubview(suggestView)
+    }
+
+    private func showNoActiveAccountPopup() {
+        let title = NSLocalizedString("No active account is setup", comment: "Alert view title - No active account is setup, so it's not possible to compose a message ")
+        let message = NSLocalizedString("Impossible to compose a new message", comment: "")
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message, style: .default) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.dismiss(animated: true) {
+                me.dismiss()
+            }
+        }
     }
 
     // MARK: - IBActions
@@ -1061,6 +1065,8 @@ extension ComposeViewController {
         return keyboardSize.height
     }
 }
+
+//MARK: - UITraitCollection
 
 extension ComposeViewController {
 

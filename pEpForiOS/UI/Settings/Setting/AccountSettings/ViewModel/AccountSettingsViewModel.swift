@@ -38,6 +38,7 @@ protocol AccountSettingsRowProtocol {
 /// View Model for Account Settings View Controller
 final class AccountSettingsViewModel {
 
+    /// Delegate to communicate to the View Controller.
     public weak var delegate: AccountSettingsViewModelDelegate?
 
     /// Items to be displayed in a Account Settings View Controller

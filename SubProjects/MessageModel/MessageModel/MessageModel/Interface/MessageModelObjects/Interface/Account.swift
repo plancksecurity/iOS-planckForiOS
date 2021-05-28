@@ -180,11 +180,13 @@ extension Account {
 
 extension Account {
 
-    public static func countAllForUnified() -> Int {
+    /// - Returns: The number of all the accounts that are unified and active.
+    public static func countUnified() -> Int {
         let isInUnifiedPredicate = CdAccount.PredicateFactory.isInUnifiedAndActive()
         return CdAccount.count(predicate: isInUnifiedPredicate)
     }
 
+    /// - Returns: The number of all the accounts.
     public static func countAll() -> Int {
         return CdAccount.count()
     }

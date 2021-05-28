@@ -58,6 +58,8 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
         switchItem.onTintColor = .pEpGreen
     }
 
+    /// Configure the cell
+    /// - Parameter row: The switch row to configure the cell
     public func configure(with row: NoActivatedAccountViewModel.SwitchRow) {
         switchItem.isOn = row.isOn
     }
