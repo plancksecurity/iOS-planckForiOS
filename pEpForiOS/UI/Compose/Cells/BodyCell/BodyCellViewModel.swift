@@ -182,13 +182,18 @@ extension BodyCellViewModel {
         guard text != "", text != "\n" else {
             return false
         }
+        let publicURL = "public.url"
+        let publicHeic = "public.heic"
+        let publicJPG = "public.jpeg"
+        let cid = "cid"
         var isImage = false
+
         UIPasteboard.general.items.first?.forEach { (key: String, value: Any) in
-            if (key == "public.url" && (value as? String) == text) || key == "public.heic" {
+            if (key == publicURL && (value as? String) == text) || key == publicHeic {
                 isImage = true
-            } else if key == "public.url" && (value as? String)?.starts(with: "cid") ?? false {
+            } else if key == publicURL && (value as? String)?.starts(with: cid) ?? false {
                 isImage = true
-            } else if key == "public.jpeg" {
+            } else if key == publicJPG {
                 isImage = true
             } else if text.extractCid() != nil && text.extractCid() != "" {
                 isImage = true
