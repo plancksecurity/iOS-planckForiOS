@@ -30,6 +30,8 @@ class BodyCell: TextViewContainingTableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         textView.font = UIFont.systemFont(ofSize: defaultFontSize)
+
+        
     }
 
     public func setup(with viewModel: BodyCellViewModel) {
@@ -124,7 +126,16 @@ extension BodyCell {
             Log.shared.errorAndCrash("No VM")
             return true
         }
-       return vm.shouldReplaceText(in: range, of: textView.attributedText, with: text)
+
+        // First check if the text to insert is an image.
+        // This prevents to insert images that are in the
+        // general clipboard but the user didn't press 'paste'
+        if isImage(text: text) {
+            insertImageFromClipboard(in: range)
+            return false
+        }
+
+        return vm.shouldReplaceText(in: range, of: textView.attributedText, with: text)
     }
 
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
@@ -143,6 +154,7 @@ extension BodyCell {
 // MARK: - Context Menu
 
 extension BodyCell {
+
     private func setupContextMenu() {
         let media = UIMenuItem(title: viewModel?.contextMenuItemTitleAddPhotoOrVideo ?? "",
                                action: #selector(userClickedSelectMedia))
@@ -163,5 +175,44 @@ extension BodyCell {
     @objc //required for usage in selector
     private func userClickedSelectDocument() {
         viewModel?.handleUserClickedSelectDocument()
+    }
+}
+
+//MARK: - Paste
+
+extension BodyCell {
+
+    /// Check if the text is actually an image.
+    ///
+    /// - Parameter text: The text to insert
+    /// - Returns: True if the text to insert is actually an image.
+    private func isImage(text: String) -> Bool {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return false
+        }
+        return vm.isImage(text: text)
+    }
+
+    private func insertImageFromClipboard(in range: NSRange) {
+        guard let vm = viewModel, let img = vm.getImageFromClipboard() else {
+            Log.shared.errorAndCrash("VM or image not found")
+            return
+        }
+
+        // Resize the image
+        let margin: CGFloat = 10.0
+        let resizedImage = img.resized(newWidth: textView.bounds.width - margin, useAlpha: true)
+
+        //Insert the image
+        let textAttachment = NSTextAttachment()
+        textAttachment.image = resizedImage
+        let attrStringWithImage = NSAttributedString(attachment: textAttachment)
+        let mutableAttributedString = NSMutableAttributedString(attributedString: textView.attributedText)
+        mutableAttributedString.replaceCharacters(in: range, with: attrStringWithImage)
+        textView.attributedText = mutableAttributedString
+
+        //Notify to upadte size.
+        viewModel?.handleTextChange(newText: textView.text, newAttributedText: textView.attributedText)
     }
 }

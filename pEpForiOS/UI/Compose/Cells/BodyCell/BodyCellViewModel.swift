@@ -170,3 +170,52 @@ extension BodyCellViewModel {
         resultDelegate?.bodyCellViewModel(self, bodyAttributedString: attrText)
     }
 }
+
+// MARK: - Image
+
+extension BodyCellViewModel {
+
+    /// Indicate if the provided text identifies an image in the body
+    /// - Parameter text: The text to check
+    /// - Returns: True, if it indicates it's an image. 
+    public func isImage(text: String) -> Bool {
+        guard text != "", text != "\n" else {
+            return false
+        }
+        var isImage = false
+        UIPasteboard.general.items.first?.forEach { (key: String, value: Any) in
+            if (key == "public.url" && (value as? String) == text) || key == "public.heic" {
+                isImage = true
+            } else if key == "public.url" && (value as? String)?.starts(with: "cid") ?? false {
+                isImage = true
+            } else if key == "public.jpeg" {
+                isImage = true
+            } else if text.extractCid() != nil && text.extractCid() != "" {
+                isImage = true
+            }
+        }
+        return isImage
+    }
+
+    /// Retrieve the image from the clipboard.
+    /// - Returns: The image if it exists, nil otherwise. 
+    public func getImageFromClipboard() -> UIImage? {
+        var image: UIImage?
+        UIPasteboard.general.items.first?.forEach { (key: String, value: Any) in
+            if key == "public.heic", let data = value as? Data {
+                image = UIImage(data:data)
+            } else if key == "public.jpeg" {
+                image = value as? UIImage
+            } else if key == "public.url",
+                      let cid = (value as? NSURL)?.absoluteString?.extractCid() {
+                let attachment = Attachment.by(cid: cid)
+                guard let data = attachment?.data else {
+                    Log.shared.errorAndCrash("Missing attachment data")
+                    return
+                }
+                image = UIImage(data: data)
+            }
+        }
+        return image
+    }
+}
