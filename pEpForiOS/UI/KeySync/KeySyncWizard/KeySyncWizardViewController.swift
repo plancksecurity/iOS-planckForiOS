@@ -88,7 +88,7 @@ final class KeySyncWizardViewController: PEPPageViewControllerBase {
 extension KeySyncWizardViewController {
 
     static private func fromStoryboard() -> KeySyncWizardViewController? {
-        let storyboard = UIStoryboard(name: Constants.keySyncWizardStoryboard, bundle: .main)
+        let storyboard = UIStoryboard(name: Constants.reusableStoryboard, bundle: .main)
         guard
             let wizardVC = storyboard.instantiateViewController(
                 withIdentifier: storyboardId) as? KeySyncWizardViewController else {

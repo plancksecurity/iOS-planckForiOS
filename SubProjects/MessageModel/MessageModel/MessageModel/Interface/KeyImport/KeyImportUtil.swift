@@ -20,7 +20,6 @@ extension KeyImportUtil {
     public enum ImportError: Error {
         /// The key could not even be loaded
         case cannotLoadKey
-
         /// The key could be loadad, but not processed
         case malformedKey
     }
@@ -49,6 +48,7 @@ extension KeyImportUtil {
 }
 
 extension KeyImportUtil: KeyImportUtilProtocol {
+
     public func importKey(url: URL,
                           errorCallback: @escaping (Error) -> (),
                           completion: @escaping ([KeyData]) -> ()) {
@@ -94,7 +94,6 @@ extension KeyImportUtil: KeyImportUtilProtocol {
                 errorCallback(ImportError.malformedKey)
                 return
             }
-
             completion(keyDatas)
         }
     }

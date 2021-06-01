@@ -458,6 +458,11 @@
 		5B09DB4725B71247005D8125 /* SettingChangeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B09DB4625B71247005D8125 /* SettingChangeDelegate.swift */; };
 		5B0B339D24AC85E800CABD0B /* UIUtils+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */; };
 		5B0B339F24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0B339E24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift */; };
+		5B166F902666AB5200F97187 /* PEPAlertViewController+KeySyncError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B166F8F2666AB5200F97187 /* PEPAlertViewController+KeySyncError.swift */; };
+		5B166F922666ACE600F97187 /* UIUtils+SetOwnKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B166F912666ACE600F97187 /* UIUtils+SetOwnKey.swift */; };
+		5B166F942666ACF000F97187 /* PEPAlertViewControllerWithTextView+SetOwnKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B166F932666ACF000F97187 /* PEPAlertViewControllerWithTextView+SetOwnKey.swift */; };
+		5B166F982666AE3200F97187 /* PEPAlertViewControllerWithTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B166F972666AE3200F97187 /* PEPAlertViewControllerWithTextView.swift */; };
+		5B166F9A2666B07900F97187 /* AlertTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B166F992666B07900F97187 /* AlertTextView.swift */; };
 		5B1C0E1823FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */; };
 		5B1C1432259A25B2006DB2A1 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C1431259A25B2006DB2A1 /* UILabel+Extension.swift */; };
 		5B2F7E63240D25CF004DDFA2 /* TutorialStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */; };
@@ -483,7 +488,6 @@
 		5B884B44257A90FE006B2022 /* EditableAccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B884B43257A90FE006B2022 /* EditableAccountSettingsViewController.swift */; };
 		5B885DB225E7B0350027DD24 /* Tutorial_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B885DB425E7B0350027DD24 /* Tutorial_iPad.storyboard */; };
 		5BA6180025F1475900973829 /* MessageImageAttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA617FF25F1475900973829 /* MessageImageAttachmentCell.swift */; };
-		5BA946232542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA946222542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift */; };
 		5BAAD350257E2658002CACAA /* EditableAccountSettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAAD34F257E2658002CACAA /* EditableAccountSettingsViewModelTest.swift */; };
 		5BB7C73524D2EB3700D5F328 /* UnifiedTrash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C73424D2EB3700D5F328 /* UnifiedTrash.swift */; };
 		5BB7C73724D2EC0800D5F328 /* UnifiedDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C73624D2EC0800D5F328 /* UnifiedDraft.swift */; };
@@ -1096,6 +1100,11 @@
 		5B09DB4625B71247005D8125 /* SettingChangeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingChangeDelegate.swift; sourceTree = "<group>"; };
 		5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+Passphrase.swift"; sourceTree = "<group>"; };
 		5B0B339E24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGPKeyImportSettingSwitchTableViewCell.swift; sourceTree = "<group>"; };
+		5B166F8F2666AB5200F97187 /* PEPAlertViewController+KeySyncError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PEPAlertViewController+KeySyncError.swift"; sourceTree = "<group>"; };
+		5B166F912666ACE600F97187 /* UIUtils+SetOwnKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIUtils+SetOwnKey.swift"; path = "pEpForiOS/UI/SetOwnKey/UIUtils+SetOwnKey.swift"; sourceTree = SOURCE_ROOT; };
+		5B166F932666ACF000F97187 /* PEPAlertViewControllerWithTextView+SetOwnKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "PEPAlertViewControllerWithTextView+SetOwnKey.swift"; path = "pEpForiOS/UI/SetOwnKey/PEPAlertViewControllerWithTextView+SetOwnKey.swift"; sourceTree = SOURCE_ROOT; };
+		5B166F972666AE3200F97187 /* PEPAlertViewControllerWithTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPAlertViewControllerWithTextView.swift; sourceTree = "<group>"; };
+		5B166F992666B07900F97187 /* AlertTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertTextView.swift; sourceTree = "<group>"; };
 		5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCellProtocols.swift; sourceTree = "<group>"; };
 		5B1C1431259A25B2006DB2A1 /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepViewController.swift; sourceTree = "<group>"; };
@@ -1127,7 +1136,6 @@
 		5B885DBE25E7B0AC0027DD24 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Tutorial_iPad.strings; sourceTree = "<group>"; };
 		5B885DC025E7B0B70027DD24 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Tutorial_iPad.strings; sourceTree = "<group>"; };
 		5BA617FF25F1475900973829 /* MessageImageAttachmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageImageAttachmentCell.swift; sourceTree = "<group>"; };
-		5BA946222542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPAlertViewController+KeySyncError.swift"; sourceTree = "<group>"; };
 		5BAAD34F257E2658002CACAA /* EditableAccountSettingsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModelTest.swift; sourceTree = "<group>"; };
 		5BB7C73424D2EB3700D5F328 /* UnifiedTrash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedTrash.swift; sourceTree = "<group>"; };
 		5BB7C73624D2EC0800D5F328 /* UnifiedDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedDraft.swift; sourceTree = "<group>"; };
@@ -1290,9 +1298,9 @@
 		15033C7223473CD20060A1A2 /* KeySync */ = {
 			isa = PBXGroup;
 			children = (
+				5B166F8C2666AB2900F97187 /* KeySyncErrorView */,
 				3781653A230EC51100B967E3 /* KeySyncWizard */,
 				3705096422CF686C00CB73D6 /* KeySyncHandshake */,
-				37033E99231AD8D7008DD6F0 /* KeySyncErrorView */,
 			);
 			path = KeySync;
 			sourceTree = "<group>";
@@ -1369,6 +1377,7 @@
 		1521B78B241BDA66000EAE57 /* UIUtils */ = {
 			isa = PBXGroup;
 			children = (
+				5B166F932666ACF000F97187 /* PEPAlertViewControllerWithTextView+SetOwnKey.swift */,
 				15F136F224B6293C00A7F810 /* UserInputProvider */,
 				150B8EB21FCEB93D00374438 /* UIUtils.swift */,
 				434C1A9025D40CEC00F622DB /* UIUtils+ShowError.swift */,
@@ -1378,6 +1387,7 @@
 				1521B796241BE026000EAE57 /* UIUtils+ActivityIndicator.swift */,
 				1521B798241BE086000EAE57 /* UIUtils+Contacts.swift */,
 				434C1AA525D40F3B00F622DB /* UIUtils+DraftsPreview.swift */,
+				5B166F912666ACE600F97187 /* UIUtils+SetOwnKey.swift */,
 			);
 			path = UIUtils;
 			sourceTree = "<group>";
@@ -1897,14 +1907,6 @@
 			name = Cells;
 			sourceTree = "<group>";
 		};
-		37033E99231AD8D7008DD6F0 /* KeySyncErrorView */ = {
-			isa = PBXGroup;
-			children = (
-				5BA946222542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift */,
-			);
-			path = KeySyncErrorView;
-			sourceTree = "<group>";
-		};
 		3705095B22CF465300CB73D6 /* KeySyncHandshake */ = {
 			isa = PBXGroup;
 			children = (
@@ -1972,6 +1974,8 @@
 		37816540230EC66F00B967E3 /* PEPAlert */ = {
 			isa = PBXGroup;
 			children = (
+				5B166F992666B07900F97187 /* AlertTextView.swift */,
+				5B166F972666AE3200F97187 /* PEPAlertViewControllerWithTextView.swift */,
 				37816541230EC72C00B967E3 /* PEPAlertViewController.swift */,
 				37816543230EC73900B967E3 /* PEPAlertViewModel.swift */,
 				37816545230EE5F700B967E3 /* PEPUIAlertAction.swift */,
@@ -2572,6 +2576,14 @@
 			children = (
 			);
 			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		5B166F8C2666AB2900F97187 /* KeySyncErrorView */ = {
+			isa = PBXGroup;
+			children = (
+				5B166F8F2666AB5200F97187 /* PEPAlertViewController+KeySyncError.swift */,
+			);
+			path = KeySyncErrorView;
 			sourceTree = "<group>";
 		};
 		5B56E35D25E7C39D00B0AB42 /* iPhone */ = {
@@ -3325,6 +3337,7 @@
 				5B7235D125E0013100033F88 /* TutorialStep0iPadViewController.swift in Sources */,
 				492EF92D20C6957D004EAE14 /* ThreadViewController.swift in Sources */,
 				5BC14AF023EB19B5005F0AF3 /* TrustManagementViewController.swift in Sources */,
+				5B166F9A2666B07900F97187 /* AlertTextView.swift in Sources */,
 				3A0CBAAD23F5909C00AE200C /* WrappedCell.swift in Sources */,
 				43257C821F50179800DDC7F0 /* BasicSaxParser.swift in Sources */,
 				150DF6D02052A13700A9DCF7 /* SecureWebViewController.swift in Sources */,
@@ -3372,6 +3385,7 @@
 				5BEB56CA25E7977500304A38 /* TutorialStep3iPadViewController.swift in Sources */,
 				15D4399A216E697700EB3933 /* AccountPickerView.swift in Sources */,
 				B756E57523ED99FA0007D535 /* AccountTypeSelectorCollectionViewCell.swift in Sources */,
+				5B166F922666ACE600F97187 /* UIUtils+SetOwnKey.swift in Sources */,
 				37A710E0233B5AA5001FEAF0 /* UIHelper+PEP.swift in Sources */,
 				5BD4466024F65DE300422594 /* EmailListViewController+Keyboard.swift in Sources */,
 				15265962216230B1006A78DF /* ContactCell.swift in Sources */,
@@ -3379,6 +3393,7 @@
 				43E657E01F3C74030014CBEC /* AXHTMLParser.m in Sources */,
 				B76CF8B320D2739B002429A8 /* MoveToFolderViewModel.swift in Sources */,
 				43425EDD1FE3DF3B004A2728 /* OAuth2Provider.swift in Sources */,
+				5B166F942666ACF000F97187 /* PEPAlertViewControllerWithTextView+SetOwnKey.swift in Sources */,
 				152A39E021905C3E00D9F8E4 /* RecipientCell.swift in Sources */,
 				152A39C721905C3E00D9F8E4 /* ComposeViewModel.swift in Sources */,
 				1574D078211356E000FEDC93 /* UrlClickHandlerProtocol.swift in Sources */,
@@ -3509,6 +3524,7 @@
 				1521B793241BDD33000EAE57 /* UIUtils+ActionSheets.swift in Sources */,
 				155050F21FE95D8A009CEAD2 /* UserNotificationTool+pEp.swift in Sources */,
 				37156E4E234DCE2B00845A28 /* UIViewController+LoadingInterface.swift in Sources */,
+				5B166F982666AE3200F97187 /* PEPAlertViewControllerWithTextView.swift in Sources */,
 				15874BC72127493E00A3A4A6 /* SettingDefaultAccountTableViewController.swift in Sources */,
 				4388A0E22008F813008CB98D /* (null) in Sources */,
 				152A39D021905C3E00D9F8E4 /* AttachmentCell.swift in Sources */,
@@ -3519,6 +3535,7 @@
 				495D69BF20DBAEE900986007 /* ThreadViewController+SwipeCell.swift in Sources */,
 				4351C2CF1F4441190053381F /* houdini_href_e.c in Sources */,
 				4351C2D01F4441190053381F /* houdini_html_e.c in Sources */,
+				5B166F902666AB5200F97187 /* PEPAlertViewController+KeySyncError.swift in Sources */,
 				15D7D992219B154000A1A2B9 /* Attachment+Extensions.swift in Sources */,
 				B7DB7FC42215C4FF003968DA /* UINavigationController+Extensions.swift in Sources */,
 				15944A3523980FEC006B133B /* EmailDisplayViewModel.swift in Sources */,
@@ -3538,7 +3555,6 @@
 				15F136F624B62A4900A7F810 /* UserInputProvider+PassphraseProviderProtocol.swift in Sources */,
 				152A39DD21905C3E00D9F8E4 /* AccountCell.swift in Sources */,
 				152295572302F7E200204FD3 /* ExtraKeysSettingViewModel.swift in Sources */,
-				5BA946232542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift in Sources */,
 				B7DB7FDC221ADDBD003968DA /* UIImageView+Extension.swift in Sources */,
 				5BB7C74724D85A3B00D5F328 /* PEPWebviewController.swift in Sources */,
 				43306EC21FE129840045DD00 /* OAuth2Type.swift in Sources */,
