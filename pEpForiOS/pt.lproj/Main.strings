@@ -1,0 +1,66 @@
+
+/* Class = "UILabel"; text = "Date"; ObjectID = "1Wv-cJ-cSu"; */
+"1Wv-cJ-cSu.text" = "Date";
+
+/* Class = "UILabel"; text = "Subject"; ObjectID = "7WS-qg-fiH"; */
+"7WS-qg-fiH.text" = "Subject";
+
+/* Class = "UILabel"; text = "From:"; ObjectID = "Asq-Vx-nQs"; */
+"Asq-Vx-nQs.text" = "From:";
+
+/* Class = "UILabel"; text = "To:"; ObjectID = "DES-F8-7zn"; */
+"DES-F8-7zn.text" = "To:";
+
+/* Class = "UIViewController"; title = "Move to Account"; ObjectID = "EmS-3d-sKb"; */
+"EmS-3d-sKb.title" = "Move to Account";
+
+/* Class = "UILabel"; text = "just some placeholder text for storyboard"; ObjectID = "GZX-Q2-Z5a"; */
+"GZX-Q2-Z5a.text" = "just some placeholder text for storyboard";
+
+/* Class = "UIButton"; normalTitle = "mb@pep.security"; ObjectID = "Hzm-le-K14"; */
+"Hzm-le-K14.normalTitle" = "mb@pep.security";
+
+/* Class = "UILabel"; text = "Sender sfasflask jfhsajfkas fjksaj"; ObjectID = "KTi-T9-Inm"; */
+"KTi-T9-Inm.text" = "Sender sfasflask jfhsajfkas fjksaj";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "OLo-8A-CCo"; */
+"OLo-8A-CCo.text" = "Title";
+
+/* Class = "UILabel"; text = "Summary"; ObjectID = "Tbi-dG-KCA"; */
+"Tbi-dG-KCA.text" = "Summary";
+
+/* Class = "UILabel"; text = "ext"; ObjectID = "WPI-9n-ggz"; */
+"WPI-9n-ggz.text" = "ext";
+
+/* Class = "UILabel"; text = "Cc/Bcc:"; ObjectID = "ZpG-yk-ifY"; */
+"ZpG-yk-ifY.text" = "Cc/Bcc:";
+
+/* Class = "UILabel"; text = "Date"; ObjectID = "a1D-BW-3Rd"; */
+"a1D-BW-3Rd.text" = "Date";
+
+/* Class = "UIButton"; normalTitle = "Sender"; ObjectID = "a3c-x4-5k4"; */
+"a3c-x4-5k4.normalTitle" = "Sender";
+
+/* Class = "UINavigationItem"; title = "Inbox"; ObjectID = "aP4-ia-HTP"; */
+"aP4-ia-HTP.title" = "Inbox";
+
+/* Class = "UILabel"; text = "Subject:"; ObjectID = "bCM-fK-pFW"; */
+"bCM-fK-pFW.text" = "Subject:";
+
+/* Class = "UIBarButtonItem"; title = "Send"; ObjectID = "d2A-SO-1Ce"; */
+"d2A-SO-1Ce.title" = "Send";
+
+/* Class = "UILabel"; text = "Subject jlkfj glkafj kal jfa slfaj alsjf aslj fsajk"; ObjectID = "ha5-Vd-x3U"; */
+"ha5-Vd-x3U.text" = "Subject jlkfj glkafj kal jfa slfaj alsjf aslj fsajk";
+
+/* Class = "UIBarButtonItem"; title = "Cancel"; ObjectID = "ijh-vj-Bee"; */
+"ijh-vj-Bee.title" = "Cancel";
+
+/* Class = "UIButton"; normalTitle = "Show External Content"; ObjectID = "kwH-Mw-szw"; */
+"kwH-Mw-szw.normalTitle" = "Show External Content";
+
+/* Class = "UILabel"; text = "Filename"; ObjectID = "oid-Cf-xYG"; */
+"oid-Cf-xYG.text" = "Filename";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "riI-qM-PeJ"; */
+"riI-qM-PeJ.text" = "Title";

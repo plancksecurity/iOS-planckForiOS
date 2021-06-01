@@ -1154,6 +1154,21 @@
 		5BCFE662252470F4001323C3 /* ComposeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		5BD4465F24F65DE300422594 /* EmailListViewController+Keyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EmailListViewController+Keyboard.swift"; sourceTree = "<group>"; };
 		5BD917E1252DD64D0092B30F /* MailtoTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailtoTest.swift; sourceTree = "<group>"; };
+		5BDCC56F26668217001C7A99 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Main.strings; sourceTree = "<group>"; };
+		5BDCC57026668217001C7A99 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/NothingSelected.strings; sourceTree = "<group>"; };
+		5BDCC57126668217001C7A99 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Settings.strings; sourceTree = "<group>"; };
+		5BDCC57226668217001C7A99 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/AccountCreation.strings; sourceTree = "<group>"; };
+		5BDCC57326668245001C7A99 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/TrustManagement.strings; sourceTree = "<group>"; };
+		5BDCC57426668245001C7A99 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		5BDCC57526668245001C7A99 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/FolderViews.strings; sourceTree = "<group>"; };
+		5BDCC57626668245001C7A99 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Reusable.strings; sourceTree = "<group>"; };
+		5BDCC57726668245001C7A99 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Tutorial_iPhone.strings; sourceTree = "<group>"; };
+		5BDCC57826668245001C7A99 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Thread.strings; sourceTree = "<group>"; };
+		5BDCC57926668245001C7A99 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Certificates.strings; sourceTree = "<group>"; };
+		5BDCC57A26668246001C7A99 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Tutorial_iPad.strings; sourceTree = "<group>"; };
+		5BDCC57B26668246001C7A99 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/MainInterface.strings; sourceTree = "<group>"; };
+		5BDCC57E26668441001C7A99 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
+		5BDCC57F26668445001C7A99 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewController.swift; sourceTree = "<group>"; };
 		5BE35AA324913B4700AC605C /* SettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		5BEAECB425370C3E0082AAC6 /* String+Mailto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Mailto.swift"; sourceTree = "<group>"; };
@@ -3027,6 +3042,7 @@
 				ca,
 				tr,
 				sk,
+				pt,
 			);
 			mainGroup = 43980E1A1CBD0BC900A7FC3C;
 			productRefGroup = 43980E241CBD0BC900A7FC3C /* Products */;
@@ -3723,6 +3739,7 @@
 				158A566024052360003C0D7E /* ca */,
 				158A566B2405236F003C0D7E /* tr */,
 				439048162424D18A00CDAE15 /* sk */,
+				5BDCC57126668217001C7A99 /* pt */,
 			);
 			name = Settings.storyboard;
 			sourceTree = "<group>";
@@ -3739,6 +3756,7 @@
 				158A566424052360003C0D7E /* ca */,
 				158A566F2405236F003C0D7E /* tr */,
 				4390481A2424D18A00CDAE15 /* sk */,
+				5BDCC57526668245001C7A99 /* pt */,
 			);
 			name = FolderViews.storyboard;
 			sourceTree = "<group>";
@@ -3764,6 +3782,7 @@
 				158A566524052360003C0D7E /* ca */,
 				158A56702405236F003C0D7E /* tr */,
 				4390481B2424D18A00CDAE15 /* sk */,
+				5BDCC57626668245001C7A99 /* pt */,
 			);
 			name = Reusable.storyboard;
 			sourceTree = "<group>";
@@ -3780,6 +3799,7 @@
 				3A2119F224125AD70030C3E4 /* es */,
 				3A2119F424125AD80030C3E4 /* tr */,
 				4390481E2424D18A00CDAE15 /* sk */,
+				5BDCC57926668245001C7A99 /* pt */,
 			);
 			name = Certificates.storyboard;
 			sourceTree = "<group>";
@@ -3788,6 +3808,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				3A503AA1253737B20070AB6A /* Base */,
+				5BDCC57B26668246001C7A99 /* pt */,
 			);
 			name = MainInterface.storyboard;
 			sourceTree = "<group>";
@@ -3819,6 +3840,7 @@
 				439817522418ECA700C8AB84 /* en */,
 				439817542418ECA800C8AB84 /* de */,
 				439048152424D18A00CDAE15 /* sk */,
+				5BDCC57026668217001C7A99 /* pt */,
 			);
 			name = NothingSelected.storyboard;
 			sourceTree = "<group>";
@@ -3835,6 +3857,7 @@
 				158A565E24052360003C0D7E /* ca */,
 				158A56692405236E003C0D7E /* tr */,
 				439048142424D18900CDAE15 /* sk */,
+				5BDCC56F26668217001C7A99 /* pt */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -3851,6 +3874,7 @@
 				439817562418ECC400C8AB84 /* de */,
 				439817582418ECC600C8AB84 /* en */,
 				439048192424D18A00CDAE15 /* sk */,
+				5BDCC57426668245001C7A99 /* pt */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -3867,6 +3891,7 @@
 				439817682418ED4400C8AB84 /* tr */,
 				4398177A2418F06A00C8AB84 /* en */,
 				439048182424D18A00CDAE15 /* sk */,
+				5BDCC57326668245001C7A99 /* pt */,
 			);
 			name = TrustManagement.storyboard;
 			sourceTree = "<group>";
@@ -3883,6 +3908,7 @@
 				439817782418EDDB00C8AB84 /* tr */,
 				439817792418F06000C8AB84 /* en */,
 				4390481C2424D18A00CDAE15 /* sk */,
+				5BDCC57726668245001C7A99 /* pt */,
 			);
 			name = Tutorial_iPhone.storyboard;
 			sourceTree = "<group>";
@@ -3898,6 +3924,7 @@
 				158A566824052360003C0D7E /* ca */,
 				158A56732405236F003C0D7E /* tr */,
 				439048202424D18B00CDAE15 /* sk */,
+				5BDCC57E26668441001C7A99 /* pt */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -3912,6 +3939,7 @@
 				43016512262DCC9700896C45 /* tr */,
 				430AC6D8262DCC9B004AFA1F /* nl */,
 				4315900F262DCC9E007B7CF2 /* sk */,
+				5BDCC57F26668445001C7A99 /* pt */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -3928,6 +3956,7 @@
 				158A566624052360003C0D7E /* ca */,
 				158A56712405236F003C0D7E /* tr */,
 				4390481D2424D18A00CDAE15 /* sk */,
+				5BDCC57826668245001C7A99 /* pt */,
 			);
 			name = Thread.storyboard;
 			sourceTree = "<group>";
@@ -3942,6 +3971,7 @@
 				5B885DBC25E7B0770027DD24 /* fr */,
 				5B885DBE25E7B0AC0027DD24 /* de */,
 				5B885DC025E7B0B70027DD24 /* sk */,
+				5BDCC57A26668246001C7A99 /* pt */,
 			);
 			name = Tutorial_iPad.storyboard;
 			sourceTree = "<group>";
@@ -3958,6 +3988,7 @@
 				158A566124052360003C0D7E /* ca */,
 				158A566C2405236F003C0D7E /* tr */,
 				439048172424D18A00CDAE15 /* sk */,
+				5BDCC57226668217001C7A99 /* pt */,
 			);
 			name = AccountCreation.storyboard;
 			sourceTree = "<group>";

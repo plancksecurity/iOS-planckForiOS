@@ -1,0 +1,45 @@
+
+/* Class = "UILabel"; text = "Please select which certificate you would like to use:"; ObjectID = "43K-i7-nBj"; */
+"43K-i7-nBj.text" = "Please select which certificate you would like to use:";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Cy2-FQ-sUK"; */
+"Cy2-FQ-sUK.text" = "Label";
+
+/* Class = "UILabel"; text = "p≡p Sync"; ObjectID = "DEp-6Y-fcV"; */
+"DEp-6Y-fcV.text" = "p≡p Sync";
+
+/* Class = "UIButton"; normalTitle = "Manual Setup"; ObjectID = "JT1-ND-6bH"; */
+"JT1-ND-6bH.normalTitle" = "Manual Setup";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "Sub-2j-OvV"; */
+"Sub-2j-OvV.normalTitle" = "Cancel";
+
+/* Class = "UIButton"; normalTitle = "Add Certificate"; ObjectID = "Tm4-05-7M1"; */
+"Tm4-05-7M1.normalTitle" = "Add Certificate";
+
+/* Class = "UIButton"; normalTitle = "Back"; ObjectID = "Veu-lx-Whc"; */
+"Veu-lx-Whc.normalTitle" = "Back";
+
+/* Class = "UILabel"; text = "Welcome to p≡p"; ObjectID = "YOK-e7-Ke7"; */
+"YOK-e7-Ke7.text" = "Welcome to p≡p";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "bMB-bi-vvg"; */
+"bMB-bi-vvg.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "bP7-By-IPD"; */
+"bP7-By-IPD.normalTitle" = "Cancel";
+
+/* Class = "UILabel"; text = "Please select the type of account you would like to set up with p≡p"; ObjectID = "fLS-EM-fbk"; */
+"fLS-EM-fbk.text" = "Please select the type of account you would like to set up with p≡p";
+
+/* Class = "UIButton"; normalTitle = "Sign In"; ObjectID = "i7a-Xk-Hbw"; */
+"i7a-Xk-Hbw.normalTitle" = "Sign In";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "jp7-tC-8UK"; */
+"jp7-tC-8UK.text" = "Label";
+
+/* Class = "UILabel"; text = "Select Certificate"; ObjectID = "jrd-fZ-xRk"; */
+"jrd-fZ-xRk.text" = "Select Certificate";
+
+/* Class = "UIButton"; normalTitle = "Sign In"; ObjectID = "wIi-CI-cLC"; */
+"wIi-CI-cLC.normalTitle" = "Sign In";
