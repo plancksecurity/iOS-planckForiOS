@@ -11,6 +11,7 @@ import pEpIOSToolbox
 
 class PEPAlertWithTextViewViewController: UIViewController {
 
+    @IBOutlet private weak var keyInputView: KeyInputView!
     @IBOutlet private weak var alertTitle: UILabel!
     @IBOutlet private weak var alertMessage: UILabel!
     @IBOutlet private weak var buttonsStackView: UIStackView!
@@ -43,6 +44,15 @@ class PEPAlertWithTextViewViewController: UIViewController {
         emailTextView.delegate = self
         let tap = UITapGestureRecognizer(target: self, action:#selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                keyInputView.backgroundColor = .secondarySystemBackground
+            } else {
+                keyInputView.backgroundColor = .systemGroupedBackground
+            }
+        } else {
+            keyInputView.backgroundColor = .white
+        }
     }
 
     /// Add an action to the alert view controller.
@@ -181,6 +191,11 @@ extension PEPAlertWithTextViewViewController {
         case .pEpDefault:
             alertButton.titleLabel?.font = UIFont.pepFont(style: .callout, weight: .semibold)
         }
+        if #available(iOS 13.0, *) {
+            alertButton.setTitleColor(.label, for: .normal)
+        } else {
+            alertButton.setTitleColor(.pEpBlack, for: .normal)
+        }
     }
 
     private func setUp(actions: [PEPUIAlertAction]) {
@@ -189,7 +204,11 @@ extension PEPAlertWithTextViewViewController {
             button.setTitle(action.title, for: .normal)
             button.setTitleColor(action.style, for: .normal)
             setUp(alertButton: button, style: viewModel.alertType)
-            button.backgroundColor = .white
+            if #available(iOS 13.0, *) {
+                button.backgroundColor = .secondarySystemBackground
+            } else {
+                button.backgroundColor = .white
+            }
             button.tag = viewModel.alertActionsCount
             button.addTarget(self, action: #selector(didPress(sender:)), for: .touchUpInside)
             viewModel.add(action: action)
@@ -201,5 +220,23 @@ extension PEPAlertWithTextViewViewController {
         fingerprintTextView.resignFirstResponder()
         emailTextView.resignFirstResponder()
         view.endEditing(true)
+    }
+}
+
+// MARK: - Trait Collection
+
+extension PEPAlertWithTextViewViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if #available(iOS 13.0, *) {
+            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                view.layoutIfNeeded()
+            }
+        }
     }
 }
