@@ -36,8 +36,8 @@ public class AlertTextView: UITextView {
     }
 
     func beginEditing() {
-        isPlaceholder.toggle()
         if text == placeholderText {
+            isPlaceholder.toggle()
             text = ""
         }
     }

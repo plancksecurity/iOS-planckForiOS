@@ -27,12 +27,13 @@ extension PEPAlertWithTextViewViewController {
                                         style: .pEpTextDark,
                                         handler: { alert in
                                             pepAlertViewController?.dismiss(animated: true, completion: {
-                                                callback(pepAlertViewController?.textView.text)
+                                                callback(pepAlertViewController?.fingerprintTextView.text)
                                             })
                                         })
         pepAlertViewController?.add(action: cancelAction)
         pepAlertViewController?.add(action: okAction)
-        pepAlertViewController?.placeholderText = "46A5-AB72-7A55-E1AA-1D19-C5A9-C399-B378-64E9"
+        pepAlertViewController?.fingerprintPlaceholderText = "46A5-AB72-7A55-E1AA-1D19-C5A9-C399-B378-64E9"
+        pepAlertViewController?.emailPlaceholderText = NSLocalizedString("Email", comment: "Email placeholder")
         DispatchQueue.main.async {
             pepAlertViewController?.modalPresentationStyle = .overFullScreen
             pepAlertViewController?.modalTransitionStyle = .crossDissolve

@@ -14,14 +14,17 @@ class PEPAlertWithTextViewViewController: UIViewController {
     @IBOutlet private weak var alertTitle: UILabel!
     @IBOutlet private weak var alertMessage: UILabel!
     @IBOutlet private weak var buttonsStackView: UIStackView!
-    @IBOutlet private(set) weak var textView: AlertTextView!
+    @IBOutlet private(set) weak var fingerprintTextView: AlertTextView!
+    @IBOutlet private(set) weak var emailTextView: AlertTextView!
+
     private var viewModel: PEPAlertViewModelProtocol
     private var titleString: String?
     private var message: String?
     private var action = [PEPUIAlertAction]()
     private static let storyboardId = "PEPAlertWithTextViewViewController"
 
-    public final var placeholderText: String?
+    public final var fingerprintPlaceholderText: String?
+    public final var emailPlaceholderText: String?
 
     required init?(coder aDecoder: NSCoder) {
         viewModel = PEPAlertViewModel()
@@ -31,10 +34,13 @@ class PEPAlertWithTextViewViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         registerForNotifications()
+
         setUp(title: titleString, message: message)
         setUp(actions: action)
-        textView.placeholderText = placeholderText ?? ""
-        textView.delegate = self
+        fingerprintTextView.placeholderText = fingerprintPlaceholderText ?? ""
+        emailTextView.placeholderText = emailPlaceholderText ?? ""
+        fingerprintTextView.delegate = self
+        emailTextView.delegate = self
         let tap = UITapGestureRecognizer(target: self, action:#selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
     }
@@ -138,6 +144,19 @@ extension PEPAlertWithTextViewViewController: UITextViewDelegate {
         }
         alertTextView.didChange()
     }
+
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let inValidCharacterSet = NSCharacterSet.whitespacesAndNewlines
+        guard let firstChar = text.unicodeScalars.first else {
+            return true
+        }
+
+        if textView == emailTextView && firstChar == "\n" {
+            textView.resignFirstResponder()
+            fingerprintTextView.becomeFirstResponder()
+        }
+        return !inValidCharacterSet.contains(firstChar)
+    }
 }
 
 // MARK: - Private
@@ -179,7 +198,8 @@ extension PEPAlertWithTextViewViewController {
     }
 
     @objc private func dismissKeyboard() {
-        textView.resignFirstResponder()
+        fingerprintTextView.resignFirstResponder()
+        emailTextView.resignFirstResponder()
         view.endEditing(true)
     }
 }
