@@ -11,12 +11,14 @@ import Foundation
 import MessageModel
 
 class SetOwnKeyViewModel {
-    public var email: String?
-    public var fingerprint: String?
+    private var email: String?
+    private var fingerprint: String?
 
     private let keyImporter: KeyImportUtilProtocol
 
-    public init(keyImporter: KeyImportUtilProtocol = KeyImportUtil()) {
+    public init(email: String, fingerprint: String, keyImporter: KeyImportUtilProtocol = KeyImportUtil()) {
+        self.email = email
+        self.fingerprint = fingerprint
         self.keyImporter = keyImporter
     }
 

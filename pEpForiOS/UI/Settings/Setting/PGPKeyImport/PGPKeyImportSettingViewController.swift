@@ -126,14 +126,9 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
             if row.isEnabled {
                 if let fontColor = row.titleFontColor {
                     cell.textLabel?.textColor = fontColor
-
                 }
             } else {
                 cell.textLabel?.textColor = .gray
-            }
-
-            if row.type == .setOwnKey && row.isEnabled {
-                cell.accessoryType = .disclosureIndicator
             }
             return cell
         }
@@ -174,13 +169,31 @@ extension PGPKeyImportSettingViewController {
 // MARK: - PGPKeyImportSettingViewModelDelegate
 
 extension PGPKeyImportSettingViewController: PGPKeyImportSettingViewModelDelegate {
-    func showSetPgpKeyImportScene() {
-        performSegue(withIdentifier: SegueIdentifier.segueImportKeyFromDocuments.rawValue,
-                     sender: nil)
+    func showSetOwnKeyAlert() {
+        UIUtils.showSetOwnKeyAlertView { (email, fingerprint) in
+            guard let email = email, let fingerprint = fingerprint else {
+                //Email or Fingerprint not found. Nothing to do.
+                return
+            }
+
+            let setOwnKeyViewModel = SetOwnKeyViewModel(email: email, fingerprint: fingerprint)
+            setOwnKeyViewModel.setOwnKey { error in
+                let title = NSLocalizedString("Set Own Key", comment: "Set Own Key - Alert view title")
+
+                DispatchQueue.main.async {
+                    if let errorText = error {
+                        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: errorText)
+                    } else {
+                        let message = NSLocalizedString("Your key has been set as own key", comment: "Set own key - success")
+                        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message)
+                    }
+                }
+            }
+        }
     }
 
-    func showSetOwnKeyScene() {
-        performSegue(withIdentifier: SegueIdentifier.segueSetOwnKey.rawValue,
+    func showSetPgpKeyImportScene() {
+        performSegue(withIdentifier: SegueIdentifier.segueImportKeyFromDocuments.rawValue,
                      sender: nil)
     }
 }

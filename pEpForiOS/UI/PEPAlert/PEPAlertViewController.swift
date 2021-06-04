@@ -16,23 +16,22 @@ import pEpIOSToolbox
 
 final class PEPAlertViewController: UIViewController {
     public var alertStyle: AlertStyle = .default
-    @IBOutlet weak var alertTitle: UILabel!
-    @IBOutlet weak var alertMessage: UILabel!
-    @IBOutlet weak var alertImageView: UIImageView!
-    @IBOutlet weak var buttonsStackView: UIStackView!
-    @IBOutlet weak var keyInputView: KeyInputView!
+    @IBOutlet private weak var keyInputView: KeyInputView!
+    @IBOutlet private weak var alertTitle: UILabel!
+    @IBOutlet private weak var alertMessage: UILabel!
+    @IBOutlet private weak var alertImageView: UIImageView!
+    @IBOutlet private weak var buttonsStackView: UIStackView!
+    @IBOutlet private weak var alertImageViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var alertTitleTopViewHeightConstraint: NSLayoutConstraint!
 
-    @IBOutlet weak private var alertImageViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak private var alertTitleTopViewHeightConstraint: NSLayoutConstraint!
-    
     private var viewModel: PEPAlertViewModelProtocol
     private var titleString: String?
     private var message: String?
     private var paintPEPInTitle = false
     private var images: [UIImage]?
     private var action = [PEPUIAlertAction]()
-    static let storyboardId = "PEPAlertViewController"
-    public var style : AlertStyle = .default
+    private static let storyboardId = "PEPAlertViewController"
+
     required init?(coder aDecoder: NSCoder) {
         viewModel = PEPAlertViewModel()
         super.init(coder: aDecoder)
@@ -77,10 +76,10 @@ final class PEPAlertViewController: UIViewController {
         pEpAlertViewController.paintPEPInTitle = paintPEPInTitle
         pEpAlertViewController.message = message
         pEpAlertViewController.images = image
-
-        pEpAlertViewController.modalPresentationStyle = .overFullScreen
-        pEpAlertViewController.modalTransitionStyle = .crossDissolve
-
+        DispatchQueue.main.async {
+            pEpAlertViewController.modalPresentationStyle = .overFullScreen
+            pEpAlertViewController.modalTransitionStyle = .crossDissolve
+        }
         return pEpAlertViewController
     }
 

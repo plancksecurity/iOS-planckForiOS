@@ -127,7 +127,7 @@ extension UIUtils {
         let presenterVc = UIApplication.currentlyVisibleViewController()
         func shouldPresent() -> Bool {
             if let presenter = presenterVc as? PEPAlertViewController {
-                if presenter.style == .warn && alertController.style == .warn {
+                if presenter.alertStyle == .warn && alertController.alertStyle == .warn {
                     return false
                 }
             }
