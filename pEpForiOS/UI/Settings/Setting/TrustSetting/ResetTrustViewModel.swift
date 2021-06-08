@@ -12,7 +12,7 @@ import MessageModel
 import pEpIOSToolbox
 
 /// delegate protocol to inform about incoming changes in the tableview
-protocol ResetTrustViewModelDelegate: AnyObject {
+protocol ResetTrustViewModelDelegate: class {
 
     /// called when new data will be introduced
     ///

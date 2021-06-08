@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol LoginViewModelOAuth2ErrorDelegate: AnyObject {
+protocol LoginViewModelOAuth2ErrorDelegate: class {
     /**
      Called to signal an OAuth2 error.
      */

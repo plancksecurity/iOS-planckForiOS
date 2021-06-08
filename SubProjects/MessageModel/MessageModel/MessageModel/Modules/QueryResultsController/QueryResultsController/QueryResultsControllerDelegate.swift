@@ -9,7 +9,7 @@
 import CoreData
 
 /// Protocol subscribers must conform to get notified about result changes.
-protocol QueryResultsControllerDelegate: AnyObject {
+protocol QueryResultsControllerDelegate: class {
 
     /// Noftifies the receiver that the query results controller is about to start processing of
     /// one or more changes (due to an insert, delete, move or update).

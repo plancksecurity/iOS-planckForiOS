@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol PEPAlertViewModelProtocol: AnyObject {
+protocol PEPAlertViewModelProtocol: class {
     var alertActionsCount: Int { get }
     var alertType: PEPAlertViewModel.AlertType { get }
     var delegate: PEPAlertViewModelDelegate? { get set }
@@ -17,7 +17,7 @@ protocol PEPAlertViewModelProtocol: AnyObject {
     func handleButtonEvent(tag: Int)
 }
 
-protocol PEPAlertViewModelDelegate: AnyObject {
+protocol PEPAlertViewModelDelegate: class {
     func dismiss()
 }
 

@@ -15,6 +15,6 @@ import MessageModelForAppExtensions
 import MessageModel
 #endif
 
-public protocol HtmlToAttributedTextSaxParserAttachmentDelegate: AnyObject {
+public protocol HtmlToAttributedTextSaxParserAttachmentDelegate: class {
     func imageAttachment(src: String?, alt: String?) -> Attachment?
 }

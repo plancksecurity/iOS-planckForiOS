@@ -16,7 +16,7 @@ import MessageModel
 import pEpIOSToolbox
 #endif
 
-public protocol MarkdownImageDelegate: AnyObject {
+public protocol MarkdownImageDelegate: class {
     /** Let the delegate rewrite the src and alt of images */
     func img(src: String, alt: String?) -> (String, String)
 }

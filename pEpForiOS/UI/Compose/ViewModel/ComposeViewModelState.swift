@@ -14,7 +14,7 @@ import MessageModel
 import pEpIOSToolbox
 #endif
 
-protocol ComposeViewModelStateDelegate: AnyObject {
+protocol ComposeViewModelStateDelegate: class {
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                didChangeValidationStateTo isValid: Bool)
 
