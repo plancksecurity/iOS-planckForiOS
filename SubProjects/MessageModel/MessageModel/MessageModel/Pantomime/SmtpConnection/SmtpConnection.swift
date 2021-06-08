@@ -14,7 +14,7 @@ import pEpIOSToolboxForExtensions
 import pEpIOSToolbox
 #endif
 
-protocol SmtpConnectionDelegate: class {
+protocol SmtpConnectionDelegate: AnyObject {
     func messageSent(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?)
     func messageNotSent(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?)
     func transactionInitiationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?)

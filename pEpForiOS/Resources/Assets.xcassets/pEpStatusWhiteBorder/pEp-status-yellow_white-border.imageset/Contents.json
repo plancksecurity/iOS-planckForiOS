@@ -1,0 +1,22 @@
+{
+  "images" : [
+    {
+      "filename" : "pEp-status-yellow_white-border-1.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "pep-status-yellow-avatar-darkmode.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

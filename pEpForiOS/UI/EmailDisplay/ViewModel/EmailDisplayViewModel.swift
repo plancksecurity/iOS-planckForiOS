@@ -11,7 +11,7 @@ import Foundation
 import pEpIOSToolbox
 import MessageModel
 
-protocol EmailDisplayViewModelDelegate: class {
+protocol EmailDisplayViewModelDelegate: AnyObject {
     func emailListViewModel(viewModel: EmailDisplayViewModel,
                             didInsertDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailDisplayViewModel,
