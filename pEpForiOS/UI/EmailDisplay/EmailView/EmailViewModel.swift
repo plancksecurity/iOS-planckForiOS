@@ -72,13 +72,13 @@ class EmailViewModel {
     }
 
     public func handleCopy(maxWidth width: CGFloat) {
-        /// Just change default behaviour if an image is being copied
+        // Just change default behaviour if an image is being copied
         guard let text = UIPasteboard.general.string,
               let cid = text.extractCid(),
               let attachment = Attachment.by(cid: cid),
               let data = attachment.data,
               let image = UIImage(data: data) else {
-            //Valid case: The user might have something else in the pasteboard. 
+            // Valid case: The user might have something else in the pasteboard.
             return
         }
         // Resize the image
