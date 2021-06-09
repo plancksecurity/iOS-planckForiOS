@@ -86,13 +86,7 @@ class EmailViewModel {
         }
         // Resize the image
         let margin: CGFloat = 10.0
-        var imageToSet: UIImage?
-        if image.size.width > maxWidth {
-            imageToSet = image.resized(newWidth: maxWidth - margin, useAlpha: true)
-        } else {
-            imageToSet = image
-        }
-        UIPasteboard.general.image = imageToSet
+        UIPasteboard.general.image = image.resizeIfExceedMaxWidth(maxWidth: maxWidth - margin)
     }
 
     private var shouldHideExternalContent: Bool = true
