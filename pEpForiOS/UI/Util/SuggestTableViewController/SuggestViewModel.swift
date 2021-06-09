@@ -246,11 +246,6 @@ extension SuggestViewModel {
                 let name = contact.givenName + " " + contact.familyName
                 var contactRowsToAdd = [Row]()
                 for email in contact.emailAddresses {
-                    let recipientEmail = email.value as String
-                    guard !recipientEmail.isEmpty else {
-                        continue
-                    }
-
                     if let idx = emailsOfIdentities.firstIndex(of: email.value as String) {
                         // An Identity fort he contact exists already. Update it and ignore the
                         // contact.
@@ -263,7 +258,7 @@ extension SuggestViewModel {
                         // No Identity exists for the contact. Show it.
                         let row = Row(sender: from,
                                       recipientName: name,
-                                      recipientEmail: recipientEmail,
+                                      recipientEmail: email.value as String,
                                       recipientAddressBookID: contact.identifier,
                                       session: me.session)
                         contactRowsToAdd.append(row)
