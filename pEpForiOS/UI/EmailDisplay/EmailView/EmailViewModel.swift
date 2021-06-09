@@ -71,6 +71,21 @@ class EmailViewModel {
         return EmailViewModel(message: message)
     }
 
+    public func handleCopy(maxWidth width: CGFloat) {
+        /// Just change default behaviour if an image is being copied
+        if let text = UIPasteboard.general.string,
+           let cid = text.extractCid(),
+           let attachment = Attachment.by(cid: cid),
+           let data = attachment.data,
+           let image = UIImage(data: data) {
+            UIPasteboard.general.items = []
+            // Resize the image
+            let margin: CGFloat = 10.0
+            let resizedImage = image.resized(newWidth: width - margin, useAlpha: true)
+            UIPasteboard.general.image = resizedImage
+        }
+    }
+
     private var shouldHideExternalContent: Bool = true
 
     // Indicates if the External Content View has to be shown.
