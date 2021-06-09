@@ -146,7 +146,7 @@ extension TutorialStepViewController {
         // Step 3
         static let commonDenominator = NSLocalizedString("In this case the Privacy Status of the message is Secure, because this is the lowest common denominator of the two communication partners.", comment: "Privacy Status - Common Denominator Explanation")
         static let privacyStatusTitle = NSLocalizedString("Privacy Status", comment: "Privacy Status Label")
-        static let privacyStatusExplanation = NSLocalizedString("The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:", comment: "Privacy Status Explanation")
+        static let privacyStatusExplanation = NSLocalizedString("The icon in the top bar reflects the Privacy Status of the message, which is the lowest common denominator of all communication partners of that message, for example:", comment: "Privacy Status Explanation")
     }
 }
 
