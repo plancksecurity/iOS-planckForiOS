@@ -71,7 +71,10 @@ class EmailViewModel {
         return EmailViewModel(message: message)
     }
 
-    public func handleCopy(maxWidth width: CGFloat) {
+    /// Handle the copy action.
+    ///
+    /// - Parameter width: The max width the copied element may have
+    public func handleCopy(maxWidth: CGFloat) {
         // Just change default behaviour if an image is being copied
         guard let text = UIPasteboard.general.string,
               let cid = text.extractCid(),
@@ -83,8 +86,13 @@ class EmailViewModel {
         }
         // Resize the image
         let margin: CGFloat = 10.0
-        let resizedImage = image.resized(newWidth: width - margin, useAlpha: true)
-        UIPasteboard.general.image = resizedImage
+        var imageToSet: UIImage?
+        if image.size.width > maxWidth {
+            imageToSet = image.resized(newWidth: maxWidth - margin, useAlpha: true)
+        } else {
+            imageToSet = image
+        }
+        UIPasteboard.general.image = imageToSet
     }
 
     private var shouldHideExternalContent: Bool = true
