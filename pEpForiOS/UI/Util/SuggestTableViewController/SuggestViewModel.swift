@@ -59,7 +59,7 @@ class SuggestViewModel {
         }
 
         static func rows(forSender sender: Identity, recipients: [Identity]) -> [Row] {
-            return recipients.map { Row(sender: sender, recipient: $0) } .filter({$0.email.isProbablyValidEmail()})
+            return recipients.map { Row(sender: sender, recipient: $0) } .filter({!$0.email.isEmpty})
         }
     }
 
@@ -247,7 +247,7 @@ extension SuggestViewModel {
                 var contactRowsToAdd = [Row]()
                 for email in contact.emailAddresses {
                     let recipientEmail = email.value as String
-                    guard recipientEmail.isProbablyValidEmail() else {
+                    guard !recipientEmail.isEmpty else {
                         continue
                     }
 
