@@ -78,7 +78,7 @@ class EmailViewModel {
               let attachment = Attachment.by(cid: cid),
               let data = attachment.data,
               let image = UIImage(data: data) else {
-            //Valid case:
+            //Valid case: The user might have something else in the pasteboard. 
             return
         }
         // Resize the image
