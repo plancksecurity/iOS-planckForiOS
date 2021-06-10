@@ -62,9 +62,22 @@ class EmailViewController: UIViewController {
                                                selector: #selector(pEpSettingsChanged),
                                                name: .pEpSettingsChanged,
                                                object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(copyToClip),
+                                               name: UIPasteboard.changedNotification,
+                                               object: nil)
+
         showExternalContentLabel.text = Localized.showExternalContentText
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 100
+    }
+
+    @objc func copyToClip() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleCopy(maxWidth: tableView.frame.size.width)
     }
 
     override func viewWillAppear(_ animated: Bool) {
