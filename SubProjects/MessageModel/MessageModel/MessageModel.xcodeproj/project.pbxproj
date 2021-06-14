@@ -2429,7 +2429,6 @@
 				430CDA842296BC7A00AAC37F /* CdMessage+KeySync.swift */,
 				15F136F024B619D600A7F810 /* PEPPassphraseProvider.swift */,
 				431995C124DACCD3004B2811 /* KeySyncHandshakeResult+PEPSyncHandshakeResult.swift */,
-				5BC6A24D267791CD00769972 /* Array+Attachments.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -2596,6 +2595,7 @@
 		5B88A19E2406C1A4003240B8 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				5BC6A24D267791CD00769972 /* Array+Attachments.swift */,
 				5B4A715A252B5B6F00436FCF /* NSError+Passphrase.swift */,
 				5B4A715B252B5B6F00436FCF /* Error+Passphrase.swift */,
 				15A064912522262A002F15D0 /* MimeTypeUtils */,
