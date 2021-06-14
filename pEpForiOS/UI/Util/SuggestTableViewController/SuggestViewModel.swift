@@ -59,7 +59,7 @@ class SuggestViewModel {
         }
 
         static func rows(forSender sender: Identity, recipients: [Identity]) -> [Row] {
-            return recipients.map { Row(sender: sender, recipient: $0) }
+            return recipients.map { Row(sender: sender, recipient: $0) } .filter({!$0.email.isEmpty})
         }
     }
 
