@@ -116,6 +116,23 @@ public class Attachment: MessageModelObjectProtocol, ManagedObjectWrapperProtoco
             cdObject.message = newValue?.cdObject
         }
     }
+
+    public var imageSize: Double {
+        var size = 0.0
+        session.performAndWait {
+            guard let mimeType = self.mimeType, let image = self.image else {
+                //Valid case: the attachment may not be an image. 
+                return
+            }
+            if mimeType == MimeTypeUtils.MimeType.jpeg.rawValue {
+                if let jpegData = image.jpegData(compressionQuality: 1.0) {
+                    size = Double(jpegData.count)
+                }
+            }
+        }
+
+        return size
+    }
 }
 
 // MARK: - Hashable

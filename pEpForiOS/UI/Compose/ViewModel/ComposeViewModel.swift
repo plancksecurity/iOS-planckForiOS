@@ -59,6 +59,9 @@ protocol ComposeViewModelDelegate: AnyObject {
                             cancelButtonAction: @escaping () -> Void,
                             positiveButtonAction: @escaping () -> Void)
     func dismiss()
+
+    func showActionSheetWith(title: String, smallTitle: String, mediumTitle: String, largeTitle: String, actualTitle: String,
+                             callback: @escaping (JPEGQuality) -> ()?)
 }
 
 /// Contains messages about cancelation and send.
@@ -75,6 +78,8 @@ protocol ComposeViewModelFinalActionDelegate: AnyObject {
 }
 
 class ComposeViewModel {
+    private let attachmentSizeUtil: AttachmentSizeUtil
+
     weak var delegate: ComposeViewModelDelegate? {
         didSet {
             delegate?.colorBatchNeedsUpdate(for: state.rating,
@@ -132,6 +137,7 @@ class ComposeViewModel {
     private let session = Session()
 
     init(state: ComposeViewModelState, offerToSaveDraftOnCancel: Bool = true) {
+        attachmentSizeUtil = AttachmentSizeUtil(state: state, session: session)
         self.state = state
         self.offerToSaveDraftOnCancel = offerToSaveDraftOnCancel
         self.state.delegate = self
@@ -212,12 +218,42 @@ class ComposeViewModel {
 
     public func handleUserClickedSendButton() {
         rollbackMainSession()
+        if attachmentSizeUtil.shouldOfferScaling {
+            showScalingAlert()
+        } else {
+            send(option: .highest)
+        }
+    }
+
+    private func showScalingAlert() {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            let util = me.attachmentSizeUtil
+            me.delegate?.showActionSheetWith(title: util.title,
+                                             smallTitle: util.smallSizeTitle,
+                                             mediumTitle: util.mediumSizeTitle,
+                                             largeTitle: util.largeSizeTitle,
+                                             actualTitle: util.actualSizeTitle,
+                                             callback: { option in
+                                                me.send(option: option)
+                                             })
+        }
+    }
+
+    private func send(option: JPEGQuality) {
         let safeState = state.makeSafe(forSession: Session.main)
+
         let sendClosure: (() -> Message?) = { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return nil
             }
+
+            // Update the state with images at the chosen compresion quality
+            me.attachmentSizeUtil.use(compressionQuality: option, state: safeState)
 
             guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
                 Log.shared.warn("No message for sending")

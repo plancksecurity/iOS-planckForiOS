@@ -638,6 +638,8 @@
 		5B64966025C82D570028B9ED /* CdAccount+FetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B64965F25C82D570028B9ED /* CdAccount+FetchedResultsController.swift */; };
 		5B87D79A23F3117D009DACAA /* String+Fingerprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D79923F3117D009DACAA /* String+Fingerprint.swift */; };
 		5B88A19D2406C1A2003240B8 /* TrustManagementUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */; };
+		5BC6A24E267791CD00769972 /* Array+Attachments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC6A24D267791CD00769972 /* Array+Attachments.swift */; };
+		5BC6A24F2677922C00769972 /* Array+Attachments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC6A24D267791CD00769972 /* Array+Attachments.swift */; };
 		5BD4466324F7DA5F00422594 /* AccountQueryResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4466224F7DA5F00422594 /* AccountQueryResults.swift */; };
 		5BD4466924F7FEA600422594 /* QueryResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4466824F7FEA600422594 /* QueryResults.swift */; };
 		5BD6B5D725C0570000EC95C8 /* OSStatus+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD6B5D625C0570000EC95C8 /* OSStatus+Error.swift */; };
@@ -1144,6 +1146,7 @@
 		5B64965F25C82D570028B9ED /* CdAccount+FetchedResultsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAccount+FetchedResultsController.swift"; sourceTree = "<group>"; };
 		5B87D79923F3117D009DACAA /* String+Fingerprint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Fingerprint.swift"; sourceTree = "<group>"; };
 		5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustManagementUtil.swift; sourceTree = "<group>"; };
+		5BC6A24D267791CD00769972 /* Array+Attachments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Attachments.swift"; sourceTree = "<group>"; };
 		5BD4466224F7DA5F00422594 /* AccountQueryResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountQueryResults.swift; sourceTree = "<group>"; };
 		5BD4466824F7FEA600422594 /* QueryResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryResults.swift; sourceTree = "<group>"; };
 		5BD6B5D625C0570000EC95C8 /* OSStatus+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OSStatus+Error.swift"; sourceTree = "<group>"; };
@@ -2426,6 +2429,7 @@
 				430CDA842296BC7A00AAC37F /* CdMessage+KeySync.swift */,
 				15F136F024B619D600A7F810 /* PEPPassphraseProvider.swift */,
 				431995C124DACCD3004B2811 /* KeySyncHandshakeResult+PEPSyncHandshakeResult.swift */,
+				5BC6A24D267791CD00769972 /* Array+Attachments.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -3029,6 +3033,7 @@
 			files = (
 				434C237625D6C00800F622DB /* ServerCredentialsInfoCache.swift in Sources */,
 				43BDDDB225DD4E4E00FC0C68 /* PantomimeFolderAttribute+Extensions.swift in Sources */,
+				5BC6A24F2677922C00769972 /* Array+Attachments.swift in Sources */,
 				434C24C325D6DB2B00F622DB /* SessionAware.swift in Sources */,
 				434C21D625D698E500F622DB /* CdMessage+PredicateFactory.swift in Sources */,
 				434C21CA25D6987100F622DB /* CdExtraKey.swift in Sources */,
@@ -3279,6 +3284,7 @@
 				158A6DF82305A1D3006A9ECE /* CdExtraKey+PredicateFactory.swift in Sources */,
 				15466133233B41FB008D2137 /* Message+PredicateFactory.swift in Sources */,
 				153DDF4125ADD43D008F645F /* FetchImapFoldersService.swift in Sources */,
+				5BC6A24E267791CD00769972 /* Array+Attachments.swift in Sources */,
 				431995C224DACCD3004B2811 /* KeySyncHandshakeResult+PEPSyncHandshakeResult.swift in Sources */,
 				1532CE7B23184130005DBC39 /* RatingReEvaluator.swift in Sources */,
 				435C0CC0222939A10025C6B5 /* PEPRating+Extension.swift in Sources */,
