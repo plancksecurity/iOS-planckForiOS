@@ -12,6 +12,6 @@ extension Array where Element == Attachment {
 
     /// - Returns: The sum of the attachment sizes
     public func size() -> Double {
-        return Double(compactMap { $0.data }.reduce(0) { $0 + $1.count })
+        return Double(compactMap { $0.data?.count }.reduce(0, +))
     }
 }

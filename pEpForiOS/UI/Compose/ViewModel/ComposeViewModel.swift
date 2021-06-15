@@ -258,14 +258,18 @@ class ComposeViewModel {
             let inlined = me.attachmentSizeUtil.getAttachments(inlined: true, compressionQuality: option)
             let nonInlined = me.attachmentSizeUtil.getAttachments(inlined: false, compressionQuality: option)
             //Update image and data values only to prevent inconsistent states
-            for (index, attachment) in inlined.enumerated() {
-                safeState.inlinedAttachments[index].image = attachment.image
-                safeState.inlinedAttachments[index].data = attachment.data
-            }
 
-            for (index, attachment) in nonInlined.enumerated() {
-                safeState.nonInlinedAttachments[index].image = attachment.image
-                safeState.nonInlinedAttachments[index].data = attachment.data
+
+            me.session.performAndWait {
+                for (index, attachment) in inlined.enumerated() {
+                    safeState.inlinedAttachments[index].image = attachment.image
+                    safeState.inlinedAttachments[index].data = attachment.data
+                }
+
+                for (index, attachment) in nonInlined.enumerated() {
+                    safeState.nonInlinedAttachments[index].image = attachment.image
+                    safeState.nonInlinedAttachments[index].data = attachment.data
+                }
             }
 
             guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
