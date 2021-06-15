@@ -137,7 +137,7 @@ class ComposeViewModel {
     private let session = Session()
 
     init(state: ComposeViewModelState, offerToSaveDraftOnCancel: Bool = true) {
-        attachmentSizeUtil = AttachmentSizeUtil(state: state, session: session)
+        attachmentSizeUtil = AttachmentSizeUtil(session: session)
         self.state = state
         self.offerToSaveDraftOnCancel = offerToSaveDraftOnCancel
         self.state.delegate = self
@@ -218,7 +218,9 @@ class ComposeViewModel {
 
     public func handleUserClickedSendButton() {
         rollbackMainSession()
-        if attachmentSizeUtil.shouldOfferScaling {
+        let safeState = state.makeSafe(forSession: session)
+        if attachmentSizeUtil.shouldOfferScaling(inlinedAttachments: safeState.inlinedAttachments,
+                                                 nonInlinedAttachments: safeState.nonInlinedAttachments) {
             showScalingAlert()
         } else {
             send(option: .highest)
@@ -253,7 +255,18 @@ class ComposeViewModel {
             }
 
             // Update the state with images at the chosen compresion quality
-            me.attachmentSizeUtil.use(compressionQuality: option, state: safeState)
+            let inlined = me.attachmentSizeUtil.getAttachments(inlined: true, compressionQuality: option)
+            let nonInlined = me.attachmentSizeUtil.getAttachments(inlined: false, compressionQuality: option)
+            //Update image and data values only to prevent inconsistent states
+            for (index, attachment) in inlined.enumerated() {
+                safeState.inlinedAttachments[index].image = attachment.image
+                safeState.inlinedAttachments[index].data = attachment.data
+            }
+
+            for (index, attachment) in nonInlined.enumerated() {
+                safeState.nonInlinedAttachments[index].image = attachment.image
+                safeState.nonInlinedAttachments[index].data = attachment.data
+            }
 
             guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
                 Log.shared.warn("No message for sending")

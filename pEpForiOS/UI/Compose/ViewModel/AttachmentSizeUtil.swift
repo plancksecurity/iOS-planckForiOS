@@ -19,7 +19,6 @@ import pEpIOSToolbox
 
 class AttachmentSizeUtil {
 
-    private var state: ComposeViewModel.ComposeViewModelState
     private var session: Session
 
     /// The choosen size, actual by default
@@ -87,70 +86,59 @@ class AttachmentSizeUtil {
     //MARK: - Constructor
 
     /// Constructor
-    /// - Parameters:
-    ///   - state: The state to manage its attachments
-    ///   - session: session to work on.
-    public init(state: ComposeViewModel.ComposeViewModelState, session: Session) {
-        self.state = state
+    /// - Parameter session: The session to work on
+    public init(session: Session) {
         self.session = session
     }
 
     //MARK: - Helpers
 
     /// Indicates whether the user should choose to scale the images
-    public var shouldOfferScaling: Bool {
-        calculateAndGroupAttachments()
+    /// You MUST pass the attachments using the same session used in the util.
+    ///
+    /// - Parameters:
+    ///   - inlinedAttachments: The inlined attachments
+    ///   - nonInlinedAttachments: The non inlined attachments
+    /// - Returns: True if it should offer scaling to the user
+    public func shouldOfferScaling(inlinedAttachments: [Attachment],
+                                   nonInlinedAttachments: [Attachment]) -> Bool {
+        calculateAndGroupAttachments(inlinedAttachments: inlinedAttachments,
+                                     nonInlinedAttachments: nonInlinedAttachments)
         var should = false
         session.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-
             should = me.inferiorLimit < me.actualAttachments.size()
         }
         return should
     }
 
-    /// Use the images with the given compression quality in the state passed by param.
-    ///
+    /// Get attachments compressed
     /// - Parameters:
-    ///   - state: The state to scale
-    ///   - compressionQuality: The quality
-    public func use(compressionQuality: JPEGQuality, state: ComposeViewModel.ComposeViewModelState) {
+    ///   - inlined: Filter the attachments, inlined or not.
+    ///   - compressionQuality: The compression quality of the attachments
+    /// - Returns: The attachments compressed and filtered.
+    public func getAttachments(inlined: Bool, compressionQuality: JPEGQuality) -> [Attachment] {
+        var attachments = [Attachment]()
         session.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            var inlineAttachments: [Attachment]
-            var noninlineAttachments: [Attachment]
             switch compressionQuality {
             case .highest:
-                inlineAttachments = me.actualAttachments.filter{ $0.isInlined }
-                noninlineAttachments = me.actualAttachments.filter{ !$0.isInlined }
+                attachments = me.actualAttachments.filter{ $0.isInlined == inlined }
             case .high:
-                inlineAttachments = me.largeAttachments.filter{ $0.isInlined }
-                noninlineAttachments = me.largeAttachments.filter{ !$0.isInlined }
+                attachments = me.largeAttachments.filter{ $0.isInlined == inlined }
             case .medium:
-                inlineAttachments = me.mediumAttachments.filter{ $0.isInlined }
-                noninlineAttachments = me.mediumAttachments.filter{ !$0.isInlined }
+                attachments = me.mediumAttachments.filter{ $0.isInlined == inlined }
             case .low:
-                inlineAttachments = me.smallAttachments.filter{ $0.isInlined }
-                noninlineAttachments = me.smallAttachments.filter{ !$0.isInlined }
-            }
-
-            //Update image and data values only to prevent inconsistent states
-            for (index, attachment) in inlineAttachments.enumerated() {
-                state.inlinedAttachments[index].image = attachment.image
-                state.inlinedAttachments[index].data = attachment.data
-            }
-
-            for (index, attachment) in noninlineAttachments.enumerated() {
-                state.nonInlinedAttachments[index].image = attachment.image
-                state.nonInlinedAttachments[index].data = attachment.data
+                attachments = me.smallAttachments.filter{ $0.isInlined == inlined }
             }
         }
+        return attachments
     }
 }
 
@@ -158,21 +146,20 @@ class AttachmentSizeUtil {
 
 extension AttachmentSizeUtil {
 
-    private func calculateAndGroupAttachments() {
+    private func calculateAndGroupAttachments(inlinedAttachments: [Attachment], nonInlinedAttachments: [Attachment]) {
         var numberOfImages = 0
         var actualAttachments = [Attachment]()
         var smallAttachments = [Attachment]()
         var mediumAttachments = [Attachment]()
         var largeAttachments = [Attachment]()
 
-        let safeState = state.makeSafe(forSession: session)
         session.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
             /// Calculate size and organize all attachments in 4 groups: actual (current size), large, medium and small size.
-            let attachmentsToCalculateSize = safeState.inlinedAttachments + safeState.nonInlinedAttachments
+            let attachmentsToCalculateSize = inlinedAttachments + nonInlinedAttachments
             attachmentsToCalculateSize.forEach {  attachment in
                 if attachment.image != nil, let mimeType = attachment.mimeType {
                     numberOfImages += 1
