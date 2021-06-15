@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 /// Delegate to notify the events in the cell.
-protocol TrustManagementResetTableViewCellDelegate: AnyObject {
+protocol TrustManagementResetTableViewCellDelegate: class {
     /// Delegate method to notify the reset button has been pressed.
     /// - Parameter cell: The cell where the reset button has been pressed
     func resetButtonPressed(on cell: UITableViewCell)

@@ -15,22 +15,16 @@ class RecipientCollectionViewCell: UICollectionViewCell {
 
     func setup(with collectionViewCellViewModel: EmailViewModel.CollectionViewCellViewModel) {
         var color: UIColor = .darkText
-        switch collectionViewCellViewModel.rowType {
+        switch collectionViewCellViewModel.recipientType {
         case .to, .cc, .bcc:
-            if #available(iOS 13.0, *) {
-                color = .secondaryLabel
-            } else {
-                color = .lightGray
-            }
+            recipientButton.setPEPFont(style: .footnote, weight: .regular)
+            color = UIColor.pEpSecondaryColor()
         case .from:
-            if #available(iOS 13.0, *) {
-                color = .label
-            } else {
-                color = .darkText
-            }
-        default:
-            Log.shared.errorAndCrash("Row type not supported")
+            recipientButton.setPEPFont(style: .headline, weight: .semibold)
+            color = UIColor.pEpLabelColor()
         }
-        recipientButton.setup(text: collectionViewCellViewModel.title, color: color, action: collectionViewCellViewModel.action)
+        recipientButton.setup(text: collectionViewCellViewModel.title,
+                              color: color,
+                              action: collectionViewCellViewModel.action)
     }
 }

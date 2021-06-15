@@ -16,7 +16,7 @@ import pEpIOSToolbox
 #endif
 
 /// Util that contains all handshake related actions.
-public protocol TrustManagementUtilProtocol: AnyObject {
+public protocol TrustManagementUtilProtocol: class {
     
     /// Method to obtain the related trustwords for an identity.
     /// - Parameters:

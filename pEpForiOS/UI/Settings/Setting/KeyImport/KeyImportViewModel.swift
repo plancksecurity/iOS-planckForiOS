@@ -11,7 +11,7 @@ import Foundation
 import pEpIOSToolbox
 import MessageModel
 
-protocol KeyImportViewModelDelegate: AnyObject {
+protocol KeyImportViewModelDelegate: class {
     /// The rows have been loadad.
     func rowsLoaded()
 
