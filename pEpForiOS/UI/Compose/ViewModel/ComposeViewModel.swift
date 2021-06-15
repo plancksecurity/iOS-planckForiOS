@@ -257,9 +257,8 @@ class ComposeViewModel {
             // Update the state with images at the chosen compresion quality
             let inlined = me.attachmentSizeUtil.getAttachments(inlined: true, compressionQuality: option)
             let nonInlined = me.attachmentSizeUtil.getAttachments(inlined: false, compressionQuality: option)
+
             //Update image and data values only to prevent inconsistent states
-
-
             me.session.performAndWait {
                 for (index, attachment) in inlined.enumerated() {
                     safeState.inlinedAttachments[index].image = attachment.image
