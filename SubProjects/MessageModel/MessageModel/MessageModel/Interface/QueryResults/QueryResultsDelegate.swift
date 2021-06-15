@@ -9,7 +9,7 @@
 import Foundation
 
 /// Subscribers must conform to this to get notified for result changes.
-public protocol QueryResultsIndexPathRowDelegate: AnyObject {
+public protocol QueryResultsIndexPathRowDelegate: class {
     /// Call when an insert have been done in the results
     /// - Parameter indexPath: indexPath of the new element inserted
     func didInsertRow(indexPath: IndexPath)
@@ -35,7 +35,7 @@ public protocol QueryResultsIndexPathRowDelegate: AnyObject {
     func didChangeResults()
 }
 
-public protocol QueryResultsIndexPathSectionDelegate: AnyObject {
+public protocol QueryResultsIndexPathSectionDelegate: class {
     /// call when a section has to be deleted from the table
     /// - Parameter position: position of the section.
     func didDeleteSection(position: Int)

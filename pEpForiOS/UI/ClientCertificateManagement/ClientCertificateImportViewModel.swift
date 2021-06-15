@@ -11,7 +11,7 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
-protocol ClientCertificateImportViewModelDelegate: AnyObject {
+protocol ClientCertificateImportViewModelDelegate: class {
     func dismiss()
     func showError(type: ImportCertificateError, dissmisAfterError: Bool)
 }

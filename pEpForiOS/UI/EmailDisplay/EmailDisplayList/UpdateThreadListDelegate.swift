@@ -14,7 +14,7 @@ import MessageModel
  Methods for helping the email list notify a thread display (list of emails)
  of new, deleted or updated emails in that thread.
  */
-protocol UpdateThreadListDelegate: AnyObject {
+protocol UpdateThreadListDelegate: class {
     /**
      A child-message that belongs to a thread got deleted.
      */

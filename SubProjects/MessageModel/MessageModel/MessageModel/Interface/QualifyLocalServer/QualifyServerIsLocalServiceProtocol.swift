@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol QualifyServerIsLocalServiceDelegate: AnyObject {
+public protocol QualifyServerIsLocalServiceDelegate: class {
     func didQualify(serverName: String, isLocal: Bool?, error: Error?)
 }
 

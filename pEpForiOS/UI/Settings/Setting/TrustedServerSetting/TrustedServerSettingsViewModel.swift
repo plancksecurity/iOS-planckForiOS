@@ -10,7 +10,7 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
-protocol TrustedServerSettingsViewModelDelegate: AnyObject {
+protocol TrustedServerSettingsViewModelDelegate: class {
     func showAlertBeforeStoringSecurely(forIndexPath indexPath: IndexPath)
 }
 

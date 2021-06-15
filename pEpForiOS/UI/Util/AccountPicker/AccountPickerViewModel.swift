@@ -12,7 +12,7 @@ import MessageModelForAppExtensions
 import MessageModel
 #endif
 
-protocol AccountPickerViewModelResultDelegate: AnyObject {
+protocol AccountPickerViewModelResultDelegate: class {
     func accountPickerViewModel(_ vm: AccountPickerViewModel, didSelect account: Account)
 }
 

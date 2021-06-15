@@ -23,9 +23,10 @@ class EmailViewController: UIViewController {
 
     public weak var delegate: EmailViewControllerDelegate?
 
-    private var shouldDisplayAll: [EmailViewModel.EmailRowType: Bool] = [EmailViewModel.EmailRowType.to: false,
-                                                                         EmailViewModel.EmailRowType.cc: false,
-                                                                         EmailViewModel.EmailRowType.bcc: false]
+    // When is 'true', there are no recipients grouped under the '& X more' button.
+    private var shouldDisplayAll: [EmailViewModel.RecipientType: Bool] = [EmailViewModel.RecipientType.to: false,
+                                                                          EmailViewModel.RecipientType.cc: false,
+                                                                          EmailViewModel.RecipientType.bcc: false]
     private var htmlViewerViewControllerExists = false
     private var busyState: ViewBusyState?
     private lazy var documentInteractionController = UIDocumentInteractionController()
@@ -80,8 +81,12 @@ class EmailViewController: UIViewController {
             documentInteractionController.dismissMenu(animated: false)
         }
         splitViewController?.preferredDisplayMode = .allVisible
-        coordinator.animate(alongsideTransition: nil) { context in
-            self.tableView.reloadData()
+        coordinator.animate(alongsideTransition: nil) { [weak self] context in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.tableView.reloadData()
         }
     }
 
@@ -89,21 +94,22 @@ class EmailViewController: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         guard let thePreviousTraitCollection = previousTraitCollection else {
             // Valid case. Optional param.
-            tableView.reloadData()
+            reloadTableView()
             return
         }
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            tableView.reloadData()
+            reloadTableView()
             return
         }
         if #available(iOS 13.0, *) {
             if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                tableView.reloadData()
+                reloadTableView()
+                return
             }
         }
         if ((traitCollection.verticalSizeClass != thePreviousTraitCollection.verticalSizeClass)
             || (traitCollection.horizontalSizeClass != thePreviousTraitCollection.horizontalSizeClass)) {
-            tableView.reloadData()
+            reloadTableView()
         }
     }
 
@@ -142,47 +148,15 @@ extension EmailViewController: UITableViewDataSource {
         let cellIdentifier = vm.cellIdentifier(for: indexPath)
         let row = vm[indexPath.row]
         switch row.type {
-        case .from:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageRecipientCell else {
+        case .header:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageHeaderCell else {
                 return UITableViewCell()
             }
-            guard let row = vm[indexPath.row] as? EmailViewModel.FromRow else {
+            guard let row = vm[indexPath.row] as? EmailViewModel.HeaderRow else {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
-            setupRecipient(cell: cell, with: [row.fromVM], rowType: row.type)
-            return cell
-        case .to:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageRecipientCell else {
-                return UITableViewCell()
-            }
-            guard let row = vm[indexPath.row] as? EmailViewModel.ToRow else {
-                Log.shared.errorAndCrash("Can't get or cast sender row")
-                return cell
-            }
-            setupRecipient(cell: cell, with: row.tosViewModels, rowType: row.type)
-            return cell
-
-        case .cc:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageRecipientCell else {
-                return UITableViewCell()
-            }
-            guard let row = vm[indexPath.row] as? EmailViewModel.CCRow else {
-                Log.shared.errorAndCrash("Can't get or cast sender row")
-                return cell
-            }
-            setupRecipient(cell: cell, with: row.ccsViewModels, rowType: row.type)
-            return cell
-
-        case .bcc:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageRecipientCell else {
-                return UITableViewCell()
-            }
-            guard let row = vm[indexPath.row] as? EmailViewModel.BCCRow else {
-                Log.shared.errorAndCrash("Can't get or cast sender row")
-                return cell
-            }
-            setupRecipient(cell: cell, with: row.bccsViewModels, rowType: row.type)
+            setupHeader(cell: cell, row: row)
             return cell
 
         case .subject:
@@ -377,28 +351,13 @@ extension EmailViewController {
         }
     }
 
-    private func setupRecipient(cell: MessageRecipientCell,
-                                with cellsViewModels: [EmailViewModel.CollectionViewCellViewModel],
-                                rowType: EmailViewModel.EmailRowType) {
-        let shouldDisplayAllRecipients = shouldDisplayAll[rowType] ?? false
-        cell.setup(viewModels: cellsViewModels,
-                   rowType: rowType,
-                   shouldDisplayAllRecipients: shouldDisplayAllRecipients,
-                   delegate: self,
-                   viewWidth: view.bounds.width)
+    private func setupHeader(cell: MessageHeaderCell, row: EmailViewModel.HeaderRow) {
+        cell.setup(row:row, shouldDisplayAll: shouldDisplayAll, delegate: self)
     }
 
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {
-        cell.subjectLabel?.font = UIFont.pepFont(style: .footnote, weight: .semibold)
+        cell.subjectLabel?.font = UIFont.pepFont(style: .headline, weight: .semibold)
         cell.subjectLabel?.text = row.title
-        if let date = row.date {
-            cell.dateLabel.font = UIFont.pepFont(style: .footnote, weight: .semibold)
-            cell.dateLabel.text = date
-            cell.dateLabel.isHidden = false
-        } else {
-            cell.dateLabel.text = nil
-            cell.dateLabel.isHidden = true
-        }
     }
 
     private func setupAttachment(cell: MessageAttachmentCell, with row: EmailViewModel.BaseAttachmentRow) {
@@ -465,11 +424,11 @@ extension EmailViewController {
     }
 }
 
-// MARK: - MessageRecipientCellDelegate
+// MARK: - MessageHeaderCellDelegate
 
-extension EmailViewController: MessageRecipientCellDelegate {
-    func displayAllRecipients(rowType: EmailViewModel.EmailRowType) {
-        shouldDisplayAll[rowType] = true
+extension EmailViewController: MessageHeaderCellDelegate {
+    func displayAllRecipients(recipientType: EmailViewModel.RecipientType) {
+        shouldDisplayAll[recipientType] = true
         tableView.reloadData()
     }
 
@@ -478,5 +437,12 @@ extension EmailViewController: MessageRecipientCellDelegate {
         // This workaround prevents a wrong layout in the collection view of the recipient fields.
         // For some unknown reason it seems to layout the cells in a container of the size of what's in the IB, ignoring the real device dimensions.
         tableView.reloadData()
+    }
+
+    private func reloadTableView() {
+        // This workaround fix a timming issue on the re-layout flow when rotating the device.
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
 }

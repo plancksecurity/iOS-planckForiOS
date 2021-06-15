@@ -9,4 +9,4 @@
 import Foundation
 
 /// Conform to this if you are a view model that represents a cell.
-protocol CellViewModel: AnyObject { }
+protocol CellViewModel: class { }
