@@ -155,6 +155,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
                         hideMediaAttachmentPickerMustBeCalled: Bool? = nil,
                         showDocumentAttachmentPickerMustBeCalled: Bool? = nil,
                         documentAttachmentPickerDonePickerCalled: Bool? = nil,
+                        showActionSheetCalled: Bool? = nil,
                         didComposeNewMailMustBeCalled: Bool? = nil,/*TestResultDelegate realted params*/
                         didModifyMessageMustBeCalled: Bool? = nil,
                         didDeleteMessageMustBeCalled: Bool? = nil) {
@@ -259,6 +260,13 @@ class ComposeViewModelTest: AccountDrivenTestBase {
             expDocumentAttachmentPickerDonePickerCalled?.isInverted = !exp
         }
 
+        var expShowActionSheetCalled: XCTestExpectation? = nil
+        if let exp = showActionSheetCalled {
+            expShowActionSheetCalled =
+                expectation(description: "expShowActionSheetCalled")
+            expShowActionSheetCalled?.isInverted = !exp
+        }
+
         testDelegate =
             TestDelegate(expContentChangedCalled: expContentChangedCalled,
                          expectedContentChangedIndexPath: expectedContentChangedIndexPath,
@@ -280,8 +288,8 @@ class ComposeViewModelTest: AccountDrivenTestBase {
                          expShowMediaAttachmentPickerCalled: expShowMediaAttachmentPickerCalled,
                          expHideMediaAttachmentPickerCalled: expHideMediaAttachmentPickerCalled,
                          expShowDocumentAttachmentPickerCalled: expShowDocumentAttachmentPickerCalled,
-                         expDocumentAttachmentPickerDonePickerCalled:
-                expDocumentAttachmentPickerDonePickerCalled)
+                         expDocumentAttachmentPickerDonePickerCalled: expDocumentAttachmentPickerDonePickerCalled,
+                         expShowActionSheetCalled: expShowActionSheetCalled)
 
         vm = ComposeViewModel(composeMode: composeMode,
                               prefilledTo: prefilledTo,
@@ -334,6 +342,8 @@ class ComposeViewModelTest: AccountDrivenTestBase {
 
         let expDocumentAttachmentPickerDonePickerCalled: XCTestExpectation?
 
+        let expShowActionSheetCalled: XCTestExpectation?
+
         init(expContentChangedCalled: XCTestExpectation?,
              expectedContentChangedIndexPath: IndexPath?,
              expFocusSwitchedCalled: XCTestExpectation?,
@@ -354,7 +364,8 @@ class ComposeViewModelTest: AccountDrivenTestBase {
              expShowMediaAttachmentPickerCalled: XCTestExpectation?,
              expHideMediaAttachmentPickerCalled: XCTestExpectation?,
              expShowDocumentAttachmentPickerCalled: XCTestExpectation?,
-             expDocumentAttachmentPickerDonePickerCalled: XCTestExpectation?) {
+             expDocumentAttachmentPickerDonePickerCalled: XCTestExpectation?,
+             expShowActionSheetCalled: XCTestExpectation?) {
             self.expContentChangedCalled = expContentChangedCalled
             self.expectedContentChangedIndexPath = expectedContentChangedIndexPath
             self.expFocusSwitchedCalled = expFocusSwitchedCalled
@@ -375,8 +386,8 @@ class ComposeViewModelTest: AccountDrivenTestBase {
             self.expShowMediaAttachmentPickerCalled = expShowMediaAttachmentPickerCalled
             self.expHideMediaAttachmentPickerCalled = expHideMediaAttachmentPickerCalled
             self.expShowDocumentAttachmentPickerCalled = expShowDocumentAttachmentPickerCalled
-            self.expDocumentAttachmentPickerDonePickerCalled =
-            expDocumentAttachmentPickerDonePickerCalled
+            self.expDocumentAttachmentPickerDonePickerCalled = expDocumentAttachmentPickerDonePickerCalled
+            self.expShowActionSheetCalled = expShowActionSheetCalled
         }
 
         func contentChanged(inRowAt indexPath: IndexPath) {
@@ -511,5 +522,15 @@ class ComposeViewModelTest: AccountDrivenTestBase {
             }
             exp.fulfill()
         }
+
+        func showActionSheetWith(title: String, smallTitle: String, mediumTitle: String, largeTitle: String, actualTitle: String,
+                                 callback: @escaping (JPEGQuality) -> ()?) {
+            guard let exp = expShowActionSheetCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
+        }
+
     }
 }

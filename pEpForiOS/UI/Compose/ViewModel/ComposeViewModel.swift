@@ -78,7 +78,7 @@ protocol ComposeViewModelFinalActionDelegate: AnyObject {
 }
 
 class ComposeViewModel {
-    private let attachmentSizeUtil: AttachmentSizeUtil
+    private var attachmentSizeUtil: ComposeViewModel.AttachmentSizeUtil?
 
     weak var delegate: ComposeViewModelDelegate? {
         didSet {
@@ -137,7 +137,6 @@ class ComposeViewModel {
     private let session = Session()
 
     init(state: ComposeViewModelState, offerToSaveDraftOnCancel: Bool = true) {
-        attachmentSizeUtil = AttachmentSizeUtil(session: session)
         self.state = state
         self.offerToSaveDraftOnCancel = offerToSaveDraftOnCancel
         self.state.delegate = self
@@ -217,10 +216,15 @@ class ComposeViewModel {
     }
 
     public func handleUserClickedSendButton() {
+        attachmentSizeUtil = ComposeViewModel.AttachmentSizeUtil(session: session)
         rollbackMainSession()
         let safeState = state.makeSafe(forSession: session)
-        if attachmentSizeUtil.shouldOfferScaling(inlinedAttachments: safeState.inlinedAttachments,
-                                                 nonInlinedAttachments: safeState.nonInlinedAttachments) {
+        guard let util = attachmentSizeUtil else {
+            Log.shared.errorAndCrash("attachmentSizeUtil not found")
+            return
+        }
+        if util.shouldOfferScaling(inlinedAttachments: safeState.inlinedAttachments,
+                                   nonInlinedAttachments: safeState.nonInlinedAttachments) {
             showScalingAlert()
         } else {
             send(option: .highest)
@@ -233,7 +237,10 @@ class ComposeViewModel {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            let util = me.attachmentSizeUtil
+            guard let util = me.attachmentSizeUtil else {
+                Log.shared.errorAndCrash("attachmentSizeUtil not found")
+                return
+            }
             me.delegate?.showActionSheetWith(title: util.title,
                                              smallTitle: util.smallSizeTitle,
                                              mediumTitle: util.mediumSizeTitle,
@@ -254,9 +261,14 @@ class ComposeViewModel {
                 return nil
             }
 
+            guard let util = me.attachmentSizeUtil else {
+                Log.shared.errorAndCrash("attachmentSizeUtil not found")
+                return nil
+            }
+
             // Update the state with images at the chosen compresion quality
-            let inlined = me.attachmentSizeUtil.getAttachments(inlined: true, compressionQuality: option)
-            let nonInlined = me.attachmentSizeUtil.getAttachments(inlined: false, compressionQuality: option)
+            let inlined = util.getAttachments(inlined: true, compressionQuality: option)
+            let nonInlined = util.getAttachments(inlined: false, compressionQuality: option)
 
             //Update image and data values only to prevent inconsistent states
             me.session.performAndWait {
@@ -302,6 +314,8 @@ class ComposeViewModel {
                 return
             }
             let msg = sendClosure()
+            // As the util has state we ensure it's not reused.
+            me.attachmentSizeUtil = nil
             me.delegate?.dismiss()
 
             if let theMsg = msg {

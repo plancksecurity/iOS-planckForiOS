@@ -512,8 +512,8 @@
 		5BC9F1E6263888C3002377B6 /* Message+Recipients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC9F1E5263888C3002377B6 /* Message+Recipients.swift */; };
 		5BCFE663252470F4001323C3 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCFE662252470F4001323C3 /* ComposeViewController.swift */; };
 		5BD4466024F65DE300422594 /* EmailListViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4465F24F65DE300422594 /* EmailListViewController+Keyboard.swift */; };
-		5BD93BEE2673AB7C000F2A8C /* AttachmentSizeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD93BED2673AB7C000F2A8C /* AttachmentSizeUtil.swift */; };
-		5BD93BEF2673AB7D000F2A8C /* AttachmentSizeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD93BED2673AB7C000F2A8C /* AttachmentSizeUtil.swift */; };
+		5BD93BEE2673AB7C000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD93BED2673AB7C000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift */; };
+		5BD93BEF2673AB7D000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD93BED2673AB7C000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift */; };
 		5BE35A9A249139DD00AC605C /* AccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */; };
 		5BE35AA424913B4700AC605C /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35AA324913B4700AC605C /* SettingsViewModel.swift */; };
 		5BEAECB525370C3E0082AAC6 /* String+Mailto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEAECB425370C3E0082AAC6 /* String+Mailto.swift */; };
@@ -1160,7 +1160,7 @@
 		5BCFE662252470F4001323C3 /* ComposeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		5BD4465F24F65DE300422594 /* EmailListViewController+Keyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EmailListViewController+Keyboard.swift"; sourceTree = "<group>"; };
 		5BD917E1252DD64D0092B30F /* MailtoTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailtoTest.swift; sourceTree = "<group>"; };
-		5BD93BED2673AB7C000F2A8C /* AttachmentSizeUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentSizeUtil.swift; sourceTree = "<group>"; };
+		5BD93BED2673AB7C000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ComposeViewModel+AttachmentSizeUtil.swift"; sourceTree = "<group>"; };
 		5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewController.swift; sourceTree = "<group>"; };
 		5BE35AA324913B4700AC605C /* SettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		5BEAECB425370C3E0082AAC6 /* String+Mailto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Mailto.swift"; sourceTree = "<group>"; };
@@ -1422,7 +1422,7 @@
 			children = (
 				152A399721905C3B00D9F8E4 /* ComposeViewModelState.swift */,
 				152A399821905C3B00D9F8E4 /* ComposeViewModel.swift */,
-				5BD93BED2673AB7C000F2A8C /* AttachmentSizeUtil.swift */,
+				5BD93BED2673AB7C000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift */,
 				5BBEA011252F062300B34979 /* ComposeViewModel+Factory.swift */,
 				152A399921905C3B00D9F8E4 /* ComposeViewModel+InitData.swift */,
 			);
@@ -3221,7 +3221,7 @@
 				434C19F425D3E61B00F622DB /* NSAttributedString+Html.swift in Sources */,
 				434C1A9C25D40DEE00F622DB /* URL+MailTo.swift in Sources */,
 				434A6C6E25D2A3DC00179335 /* RecipientTextViewModel+TextAttachment.swift in Sources */,
-				5BD93BEF2673AB7D000F2A8C /* AttachmentSizeUtil.swift in Sources */,
+				5BD93BEF2673AB7D000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift in Sources */,
 				434C1A0325D3EFF500F622DB /* BasicSaxParser.swift in Sources */,
 				43BDE05425DE81D300FC0C68 /* utf8.c in Sources */,
 				434C19C725D3E11100F622DB /* SuggestTableViewController.swift in Sources */,
@@ -3425,7 +3425,7 @@
 				5B1C0E1823FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift in Sources */,
 				152A39E721905C3E00D9F8E4 /* RecipientTextViewModel.swift in Sources */,
 				4351C2D41F4441190053381F /* iterator.c in Sources */,
-				5BD93BEE2673AB7C000F2A8C /* AttachmentSizeUtil.swift in Sources */,
+				5BD93BEE2673AB7C000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift in Sources */,
 				5BC0738D25B218DB00ECE3FC /* TextFieldWithoutSelection.swift in Sources */,
 				5B3C13BF23D8AF2E00FC0A53 /* SettingsTableViewController.swift in Sources */,
 				152A39D721905C3E00D9F8E4 /* BodyCellViewModel+TextAttachment.swift in Sources */,
