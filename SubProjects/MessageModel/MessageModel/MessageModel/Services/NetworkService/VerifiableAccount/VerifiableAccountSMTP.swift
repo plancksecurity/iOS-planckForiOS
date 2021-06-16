@@ -16,7 +16,7 @@ import pEpIOSToolboxForExtensions
 import pEpIOSToolbox
 #endif
 
-protocol VerifiableAccountSMTPDelegate: AnyObject {
+protocol VerifiableAccountSMTPDelegate: class {
     func verified(verifier: VerifiableAccountSMTP,
                   result: Result<Void, Error>)
 }

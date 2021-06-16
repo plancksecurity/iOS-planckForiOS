@@ -20,7 +20,7 @@ protocol EmailDetailViewModelDelegate: EmailDisplayViewModelDelegate {
 }
 
 /// Reports back currently shown email changes.
-protocol EmailDetailViewModelSelectionChangeDelegate: AnyObject {
+protocol EmailDetailViewModelSelectionChangeDelegate: class {
     /// Called when the currently shown message changes
     func emailDetailViewModel(emailDetailViewModel: EmailDetailViewModel,
                               didSelectItemAt indexPath: IndexPath)

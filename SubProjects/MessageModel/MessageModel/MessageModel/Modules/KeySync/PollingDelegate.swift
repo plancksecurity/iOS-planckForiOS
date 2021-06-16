@@ -10,7 +10,7 @@ import Foundation
 
 /// Is responsible to listen to polling mode changes.
 /// Fast polling is enabled by e.g. KeySync to send & receive messages as fast as possible.
-protocol PollingDelegate: AnyObject {
+protocol PollingDelegate: class {
 
     /// Called whenever fast polling is required.
     func enableFastPolling()

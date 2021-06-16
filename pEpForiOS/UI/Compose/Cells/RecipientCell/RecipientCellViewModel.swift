@@ -12,7 +12,7 @@ import MessageModelForAppExtensions
 import MessageModel
 #endif
 
-protocol RecipientCellViewModelResultDelegate: AnyObject {
+protocol RecipientCellViewModelResultDelegate: class {
     func recipientCellViewModel(_ vm: RecipientCellViewModel,
                                 didChangeRecipients newRecipients: [Identity])
 
@@ -25,7 +25,7 @@ protocol RecipientCellViewModelResultDelegate: AnyObject {
     func addContactTapped()
 }
 
-protocol RecipientCellViewModelDelegate: AnyObject {
+protocol RecipientCellViewModelDelegate: class {
     func focusChanged()
 }
 

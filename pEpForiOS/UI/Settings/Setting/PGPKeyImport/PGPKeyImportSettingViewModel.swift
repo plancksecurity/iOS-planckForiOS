@@ -11,7 +11,7 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
-protocol PGPKeyImportSettingViewModelDelegate: AnyObject {
+protocol PGPKeyImportSettingViewModelDelegate: class {
     func showSetPgpKeyImportScene()
     func showSetOwnKeyScene()
 }
