@@ -124,7 +124,11 @@ extension BodyCell {
             Log.shared.errorAndCrash("No VM")
             return true
         }
-       return vm.shouldReplaceText(in: range, of: textView.attributedText, with: text)
+        if text.isAttachment {
+            vm.handleAttachmentWasPaste(text: text)
+            return false
+        }
+        return vm.shouldReplaceText(in: range, of: textView.attributedText, with: text)
     }
 
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {

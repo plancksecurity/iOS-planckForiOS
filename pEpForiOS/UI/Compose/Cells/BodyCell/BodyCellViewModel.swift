@@ -39,6 +39,7 @@ public class BodyCellViewModel: CellViewModel {
     private var plaintext = ""
     private var attributedText: NSAttributedString?
     private var identity: Identity?
+    private var message: Message?
     private var inlinedAttachments = [Attachment]() {
         didSet {
             resultDelegate?.bodyCellViewModel(self, inlinedAttachmentsChanged: inlinedAttachments)
@@ -54,7 +55,8 @@ public class BodyCellViewModel: CellViewModel {
          initialPlaintext: String? = nil,
          initialAttributedText: NSAttributedString? = nil,
          inlinedAttachments: [Attachment]? = nil,
-         account: Identity?) {
+         account: Identity?,
+         message: Message? = nil) {
         self.resultDelegate = resultDelegate
         self.plaintext = initialPlaintext ?? ""
         self.attributedText = initialAttributedText
@@ -62,6 +64,7 @@ public class BodyCellViewModel: CellViewModel {
             self.inlinedAttachments = inlAtt
         }
         self.identity = account
+        self.message = message
     }
 
     public func inititalText() -> (text: String?, attributedText: NSAttributedString?) {
@@ -77,6 +80,35 @@ public class BodyCellViewModel: CellViewModel {
         plaintext = newText
         attributedText = attrText
         createHtmlVersionAndInformDelegate(newAttributedText: attrText)
+    }
+
+    private func insertImageAttachemnt(data: Data, image: UIImage) {
+        let mimeType = MimeTypeUtils.MimeType.jpeg.rawValue
+        let newAttachment = Attachment(data: data, mimeType: mimeType, image: image, contentDisposition: .inline)
+        newAttachment.message = message
+        inline(attachment: newAttachment)
+    }
+
+    public func handleAttachmentWasPaste(text: String) {
+        guard text.isAttachment else {
+            Log.shared.errorAndCrash("text is not an attachment")
+            return
+        }
+        // Image copied from p≡p
+        if let image = UIPasteboard.general.image, let data = image.jpegData(compressionQuality: 1) {
+            insertImageAttachemnt(data: data, image: image)
+        } else {
+            // Image copied from 3rd party apps
+            UIPasteboard.general.items.forEach { keyValue in
+                keyValue.forEach { (key, value) in
+                    if let image = value as? UIImage,
+                       let data = key == "public.png" ? image.pngData() : image.jpegData(compressionQuality: 1) {
+                        insertImageAttachemnt(data: data, image: image)
+                        return //Paste only one item
+                    }
+                }
+            }
+        }
     }
 
     public func shouldReplaceText(in range: NSRange,

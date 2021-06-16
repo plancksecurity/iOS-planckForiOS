@@ -472,11 +472,20 @@ extension ComposeViewModel {
                 let rowModel = SubjectCellViewModel(content: subject, resultDelegate: cellVmDelegate)
                 rows.append(rowModel)
             case .body:
+                guard let safeState = state?.makeSafe(forSession: Session.main) else {
+                    Log.shared.errorAndCrash("State not found")
+                    return
+                }
+                guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
+                    Log.shared.errorAndCrash("No message")
+                    return
+                }
                 rows.append(BodyCellViewModel(resultDelegate: cellVmDelegate,
                                               initialPlaintext: state?.initData?.bodyPlaintext,
                                               initialAttributedText: state?.initData?.bodyHtml,
                                               inlinedAttachments: state?.initData?.inlinedAttachments,
-                                              account: state?.from))
+                                              account: state?.from,
+                                              message: msg))
             case .attachments:
                 for att in state?.nonInlinedAttachments ?? [] {
                     rows.append(AttachmentViewModel(attachment: att))
