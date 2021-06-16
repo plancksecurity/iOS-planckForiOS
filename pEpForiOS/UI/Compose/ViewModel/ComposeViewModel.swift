@@ -254,7 +254,6 @@ class ComposeViewModel {
 
     private func send(option: JPEGQuality) {
         let safeState = state.makeSafe(forSession: Session.main)
-
         let sendClosure: (() -> Message?) = { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()

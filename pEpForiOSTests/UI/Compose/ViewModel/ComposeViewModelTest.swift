@@ -531,6 +531,5 @@ class ComposeViewModelTest: AccountDrivenTestBase {
             }
             exp.fulfill()
         }
-
     }
 }
