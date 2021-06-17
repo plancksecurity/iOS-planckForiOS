@@ -216,15 +216,14 @@ class ComposeViewModel {
     }
 
     public func handleUserClickedSendButton() {
-        attachmentSizeUtil = ComposeViewModel.AttachmentSizeUtil(session: session)
         rollbackMainSession()
         let safeState = state.makeSafe(forSession: session)
+        attachmentSizeUtil = ComposeViewModel.AttachmentSizeUtil(session: session, composeViewModelState: safeState)
         guard let util = attachmentSizeUtil else {
             Log.shared.errorAndCrash("attachmentSizeUtil not found")
             return
         }
-        if util.shouldOfferScaling(inlinedAttachments: safeState.inlinedAttachments,
-                                   nonInlinedAttachments: safeState.nonInlinedAttachments) {
+        if util.shouldOfferScaling() {
             showScalingAlert()
         } else {
             send(option: .highest)
@@ -266,8 +265,14 @@ class ComposeViewModel {
             }
 
             // Update the state with images at the chosen compresion quality
-            let inlined = util.getAttachments(inlined: true, compressionQuality: option)
-            let nonInlined = util.getAttachments(inlined: false, compressionQuality: option)
+            guard let inlined = try? util.getAttachments(inlined: true, compressionQuality: option) else {
+                Log.shared.errorAndCrash("Can't get inlined Attachments")
+                return nil
+            }
+            guard let nonInlined = try? util.getAttachments(inlined: false, compressionQuality: option) else {
+                Log.shared.errorAndCrash("Can't get non inlined Attachments")
+                return nil
+            }
 
             //Update image and data values only to prevent inconsistent states
             me.session.performAndWait {

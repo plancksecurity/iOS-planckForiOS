@@ -21,9 +21,19 @@ extension ComposeViewModel {
 
     // This util helps to offer the user to reduce the quality and therefore the weight of the images to send.
     // We compress the images, get the new sizes and present them to the user to choose.
+    //
+    // Easy to use:
+    // - Instanciate it
+    // - Check if should offer scaling to the user. (shouldOfferScaling)
+    // - If so, get the titles to show to the user. (title attributes)
+    // - Inform the choosen option and get the attachments scaled, based on the choosen option. (getAttachments...)
     class AttachmentSizeUtil {
 
         private var session: Session
+        private var composeViewModelState: ComposeViewModelState
+
+
+        private var didFinishSetup = false
 
         /// The choosen size, actual by default
         private var size = JPEGQuality.highest
@@ -90,8 +100,9 @@ extension ComposeViewModel {
 
         /// Constructor
         /// - Parameter session: The session to work on
-        public init(session: Session) {
+        public init(session: Session, composeViewModelState: ComposeViewModelState) {
             self.session = session
+            self.composeViewModelState = composeViewModelState
         }
 
         //MARK: - Helpers
@@ -99,14 +110,11 @@ extension ComposeViewModel {
         /// Indicates whether the user should choose to scale the images
         /// You MUST pass the attachments using the same session used in the util.
         ///
-        /// - Parameters:
-        ///   - inlinedAttachments: The inlined attachments
-        ///   - nonInlinedAttachments: The non inlined attachments
         /// - Returns: True if it should offer scaling to the user
-        public func shouldOfferScaling(inlinedAttachments: [Attachment],
-                                       nonInlinedAttachments: [Attachment]) -> Bool {
-            calculateAndGroupAttachments(inlinedAttachments: inlinedAttachments,
-                                         nonInlinedAttachments: nonInlinedAttachments)
+        public func shouldOfferScaling() -> Bool {
+            let safeState = composeViewModelState.makeSafe(forSession: session)
+            calculateAndGroupAttachments(inlinedAttachments: safeState.inlinedAttachments,
+                                         nonInlinedAttachments: safeState.nonInlinedAttachments)
             var should = false
             session.performAndWait { [weak self] in
                 guard let me = self else {
@@ -123,7 +131,12 @@ extension ComposeViewModel {
         ///   - inlined: Filter the attachments, inlined or not.
         ///   - compressionQuality: The compression quality of the attachments
         /// - Returns: The attachments compressed and filtered.
-        public func getAttachments(inlined: Bool, compressionQuality: JPEGQuality) -> [Attachment] {
+        /// - Throws: Error if has not yet been set up correctly.
+        public func getAttachments(inlined: Bool, compressionQuality: JPEGQuality) throws -> [Attachment] {
+            guard didFinishSetup else {
+                // This util has not yet been set up correctly.
+                throw AttachmentSizeUtilError.invalidState
+            }
             var attachments = [Attachment]()
             session.performAndWait { [weak self] in
                 guard let me = self else {
@@ -191,6 +204,7 @@ extension ComposeViewModel {
             self.largeAttachments = largeAttachments
             self.mediumAttachments = mediumAttachments
             self.smallAttachments = smallAttachments
+            self.didFinishSetup = true
         }
 
         private func title(with format: String, andSize: Double) -> String {
@@ -199,6 +213,21 @@ extension ComposeViewModel {
 
         private func scaledAttachment(data: Data, mimeType: String, contentDisposition: Attachment.ContentDispositionType) -> Attachment {
             return Attachment(data: data, mimeType: mimeType, image: UIImage(data: data), contentDisposition: contentDisposition, session: session)
+        }
+    }
+}
+
+//MARK: -  AttachmentSizeUtil Error
+
+public enum AttachmentSizeUtilError: Error {
+    case invalidState
+}
+
+extension AttachmentSizeUtilError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .invalidState:
+            return NSLocalizedString( "This util has not yet been set up correctly. Please consider check if it scaling should be offered first ", comment: "Internal Error Message - Wrong util setup")
         }
     }
 }
