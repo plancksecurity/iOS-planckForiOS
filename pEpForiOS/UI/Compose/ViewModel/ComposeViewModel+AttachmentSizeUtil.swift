@@ -22,16 +22,18 @@ extension ComposeViewModel {
     // This util helps to offer the user to reduce the quality and therefore the weight of the images to send.
     // We compress the images, get the new sizes and present them to the user to choose.
     //
-    // Easy to use:
-    // - Instanciate it
-    // - Check if should offer scaling to the user. (shouldOfferScaling)
-    // - If so, get the titles to show to the user. (title attributes)
-    // - Inform the choosen option and get the attachments scaled, based on the choosen option. (getAttachments...)
+    // Usage:
+    // 1. Instanciate it
+    // 2. Check if should offer scaling to the user. (shouldOfferScaling)
+    // 3. If so, get the titles to show to the user. (title attributes)
+    // 4. Inform the choosen option and get the attachments scaled, based on the choosen option. (getAttachments...)
+    //
+    // Do not skip steps or change the order.
+    // Do not use title attributes before checking if it should offer scaling.
     class AttachmentSizeUtil {
 
         private var session: Session
         private var composeViewModelState: ComposeViewModelState
-
 
         private var didFinishSetup = false
 
@@ -56,6 +58,11 @@ extension ComposeViewModel {
 
         /// Action sheet title
         public var title: String {
+            guard didFinishSetup else {
+                // This util has not yet been set up correctly.
+                Log.shared.errorAndCrash("did not finish setup yet")
+                return ""
+            }
             var size: Double = 0.0
             session.performAndWait { [weak self] in
                 guard let me = self else {
@@ -74,24 +81,44 @@ extension ComposeViewModel {
 
         /// The title for the small size option
         public var smallSizeTitle: String {
+            guard didFinishSetup else {
+                // This util has not yet been set up correctly.
+                Log.shared.errorAndCrash("did not finish setup yet")
+                return ""
+            }
             let format = NSLocalizedString("Small (%1$@)", comment: "Small size action title")
             return title(with: format, andSize: smallAttachmentsSize)
         }
 
         /// The title for the medium size option
         public var mediumSizeTitle: String {
+            guard didFinishSetup else {
+                // This util has not yet been set up correctly.
+                Log.shared.errorAndCrash("did not finish setup yet")
+                return ""
+            }
             let format = NSLocalizedString("Medium (%1$@)", comment: "Medium size action title")
             return title(with: format, andSize: mediumAttachmentsSize)
         }
 
         /// The title for the large size option
         public var largeSizeTitle: String {
+            guard didFinishSetup else {
+                // This util has not yet been set up correctly.
+                Log.shared.errorAndCrash("did not finish setup yet")
+                return ""
+            }
             let format = NSLocalizedString("Large (%1$@)", comment: "Large size action title")
             return title(with: format, andSize: largeAttachmentsSize)
         }
 
         /// - Returns: The title for the actual size option
         public var actualSizeTitle: String {
+            guard didFinishSetup else {
+                // This util has not yet been set up correctly.
+                Log.shared.errorAndCrash("did not finish setup yet")
+                return ""
+            }
             let format = NSLocalizedString("Actual (%1$@)", comment: "Actual size action title")
             return title(with: format, andSize: actualAttachmentsSize)
         }
@@ -157,6 +184,19 @@ extension ComposeViewModel {
             return attachments
         }
 
+        //MARK: -  AttachmentSizeUtil Error
+
+        public enum AttachmentSizeUtilError: Error {
+            case invalidState
+
+            public var errorDescription: String? {
+                switch self {
+                case .invalidState:
+                    return NSLocalizedString( "This util has not yet been set up correctly. Please consider check if it scaling should be offered first ", comment: "Internal Error Message - Wrong util setup")
+                }
+            }
+        }
+
         //MARK: -  Private
 
         private func calculateAndGroupAttachments(inlinedAttachments: [Attachment], nonInlinedAttachments: [Attachment]) {
@@ -213,21 +253,6 @@ extension ComposeViewModel {
 
         private func scaledAttachment(data: Data, mimeType: String, contentDisposition: Attachment.ContentDispositionType) -> Attachment {
             return Attachment(data: data, mimeType: mimeType, image: UIImage(data: data), contentDisposition: contentDisposition, session: session)
-        }
-    }
-}
-
-//MARK: -  AttachmentSizeUtil Error
-
-public enum AttachmentSizeUtilError: Error {
-    case invalidState
-}
-
-extension AttachmentSizeUtilError: LocalizedError {
-    public var errorDescription: String? {
-        switch self {
-        case .invalidState:
-            return NSLocalizedString( "This util has not yet been set up correctly. Please consider check if it scaling should be offered first ", comment: "Internal Error Message - Wrong util setup")
         }
     }
 }
