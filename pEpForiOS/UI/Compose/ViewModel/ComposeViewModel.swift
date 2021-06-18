@@ -476,16 +476,13 @@ extension ComposeViewModel {
                     Log.shared.errorAndCrash("State not found")
                     return
                 }
-                guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
-                    Log.shared.errorAndCrash("No message")
-                    return
-                }
+                let draftMessage = ComposeUtil.draftMessage(withDataFrom: safeState)
                 rows.append(BodyCellViewModel(resultDelegate: cellVmDelegate,
                                               initialPlaintext: state?.initData?.bodyPlaintext,
                                               initialAttributedText: state?.initData?.bodyHtml,
                                               inlinedAttachments: state?.initData?.inlinedAttachments,
                                               account: state?.from,
-                                              message: msg))
+                                              message: draftMessage))
             case .attachments:
                 for att in state?.nonInlinedAttachments ?? [] {
                     rows.append(AttachmentViewModel(attachment: att))

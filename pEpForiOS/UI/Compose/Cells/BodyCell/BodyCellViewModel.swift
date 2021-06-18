@@ -82,33 +82,22 @@ public class BodyCellViewModel: CellViewModel {
         createHtmlVersionAndInformDelegate(newAttributedText: attrText)
     }
 
-    private func insertImageAttachemnt(data: Data, image: UIImage) {
-        let mimeType = MimeTypeUtils.MimeType.jpeg.rawValue
-        let newAttachment = Attachment(data: data, mimeType: mimeType, image: image, contentDisposition: .inline)
-        newAttachment.message = message
-        inline(attachment: newAttachment)
-    }
-
-    public func handleAttachmentWasPaste(text: String) {
-        guard text.isAttachment else {
-            Log.shared.errorAndCrash("text is not an attachment")
-            return
+    /// Handle if the text should change
+    ///
+    /// - Parameters:
+    ///   - range: The range might use the text to introduce
+    ///   - text: The base text
+    ///   - replaceText: The text to replace with.
+    ///
+    /// - Returns: True if it should replace the text in range.
+    public func handleShouldChangeText(in range: NSRange,
+                                       of text: NSAttributedString,
+                                       with replaceText: String) -> Bool {
+        if replaceText.isAttachment {
+            handleAttachmentWasPaste(text: replaceText)
+            return false
         }
-        // Image copied from p≡p
-        if let image = UIPasteboard.general.image, let data = image.jpegData(compressionQuality: 1) {
-            insertImageAttachemnt(data: data, image: image)
-        } else {
-            // Image copied from 3rd party apps
-            UIPasteboard.general.items.forEach { keyValue in
-                keyValue.forEach { (key, value) in
-                    if let image = value as? UIImage,
-                       let data = key == "public.png" ? image.pngData() : image.jpegData(compressionQuality: 1) {
-                        insertImageAttachemnt(data: data, image: image)
-                        return //Paste only one item
-                    }
-                }
-            }
-        }
+        return shouldReplaceText(in: range, of: text, with: replaceText)
     }
 
     public func shouldReplaceText(in range: NSRange,
@@ -192,6 +181,35 @@ extension BodyCellViewModel {
         removees.first?.session.perform {
             removees.forEach { $0.delete() } //Delete from session
         }
+    }
+
+    private func handleAttachmentWasPaste(text: String) {
+        guard text.isAttachment else {
+            Log.shared.errorAndCrash("text is not an attachment")
+            return
+        }
+        // Image copied from p≡p
+        if let image = UIPasteboard.general.image, let data = image.jpegData(compressionQuality: 1) {
+            insertImageAttachemnt(data: data, image: image)
+        } else {
+            // Image copied from 3rd party apps
+            UIPasteboard.general.items.forEach { keyValue in
+                keyValue.forEach { (key, value) in
+                    if let image = value as? UIImage,
+                       let data = key == "public.png" ? image.pngData() : image.jpegData(compressionQuality: 1) {
+                        insertImageAttachemnt(data: data, image: image)
+                        return //Paste only one item
+                    }
+                }
+            }
+        }
+    }
+
+    private func insertImageAttachemnt(data: Data, image: UIImage) {
+        let mimeType = MimeTypeUtils.MimeType.jpeg.rawValue
+        let newAttachment = Attachment(data: data, mimeType: mimeType, image: image, contentDisposition: .inline)
+        newAttachment.message = message
+        inline(attachment: newAttachment)
     }
 }
 
