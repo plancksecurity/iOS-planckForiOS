@@ -472,11 +472,10 @@ extension ComposeViewModel {
                 let rowModel = SubjectCellViewModel(content: subject, resultDelegate: cellVmDelegate)
                 rows.append(rowModel)
             case .body:
-                guard let safeState = state?.makeSafe(forSession: Session.main) else {
-                    Log.shared.errorAndCrash("State not found")
-                    return
+                var draftMessage: Message?
+                if let state = state, let from = state.from {
+                    draftMessage = ComposeUtil.draftMessage(withDataFrom: state, session: from.session)
                 }
-                let draftMessage = ComposeUtil.draftMessage(withDataFrom: safeState)
                 rows.append(BodyCellViewModel(resultDelegate: cellVmDelegate,
                                               initialPlaintext: state?.initData?.bodyPlaintext,
                                               initialAttributedText: state?.initData?.bodyHtml,
