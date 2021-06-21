@@ -157,25 +157,6 @@ struct ComposeUtil {
 
     }
 
-    static public func draftMessage(withDataFrom state: ComposeViewModel.ComposeViewModelState,
-                                    session: Session? = Session.main) -> Message? {
-        var result: Message? = nil
-        session?.performAndWait {
-            guard let session = session, let address = state.from?.address else {
-                return
-            }
-            if let account = Account.by(address: address, in: session)?.safeForSession(session),
-               let drafts = Folder.by(account: account, folderType: .drafts)?.safeForSession(session) {
-                let message = Message.newOutgoingMessage(session: session)
-                message.parent = drafts
-                message.imapFlags.seen = imapSeenState(forMessageToSend: message)
-                message.from = state.from
-                result = message
-            }
-        }
-        return result
-    }
-
     /// Creates a message from the given ComposeView State
     ///
     /// - Parameter state: state to get data from

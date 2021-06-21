@@ -39,8 +39,10 @@ public class BodyCellViewModel: CellViewModel {
     private var plaintext = ""
     private var attributedText: NSAttributedString?
     private var identity: Identity?
-//    private var message: Message?
+    private let pickerVm : MediaAttachmentPickerProviderViewModel?
     private var mediaAttachmentPickerProviderViewModelResultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?
+
+    private var privateSession = Session()
 
     private var inlinedAttachments = [Attachment]() {
         didSet {
@@ -66,7 +68,8 @@ public class BodyCellViewModel: CellViewModel {
             self.inlinedAttachments = inlAtt
         }
         self.identity = account
-//        self.message = message
+        self.mediaAttachmentPickerProviderViewModelResultDelegate = mediaAttachmentPickerProviderViewModelResultDelegate
+        self.pickerVm = MediaAttachmentPickerProviderViewModel(resultDelegate: mediaAttachmentPickerProviderViewModelResultDelegate, session: Session.main)
     }
 
     public func inititalText() -> (text: String?, attributedText: NSAttributedString?) {
@@ -193,14 +196,14 @@ extension BodyCellViewModel {
         }
         // Image copied from p≡p
         if let image = UIPasteboard.general.image, let data = image.jpegData(compressionQuality: 1) {
-            insertImageAttachemnt(data: data, image: image)
+            insertImageAttachemnt(data: data, image: image, url: URL(string: "www.google.com")!)
         } else {
             // Image copied from 3rd party apps
             UIPasteboard.general.items.forEach { keyValue in
                 keyValue.forEach { (key, value) in
                     if let image = value as? UIImage,
                        let data = key == "public.png" ? image.pngData() : image.jpegData(compressionQuality: 1) {
-                        insertImageAttachemnt(data: data, image: image)
+                        insertImageAttachemnt(data: data, image: image, url: URL(string: "www.google.com")!)
                         return //Paste only one item
                     }
                 }
@@ -208,40 +211,36 @@ extension BodyCellViewModel {
         }
     }
 
-    private func insertImageAttachemnt(data: Data, image: UIImage) {
-        let mimeType = MimeTypeUtils.MimeType.jpeg.rawValue
-        let newAttachment = Attachment(data: data,
-                                       mimeType: mimeType,
-                                       image: image,
-                                       contentDisposition: .inline)
+    private func insertImageAttachemnt(data: Data, image: UIImage, url: URL) {
+        guard let vm = pickerVm, let resultDelegate = mediaAttachmentPickerProviderViewModelResultDelegate  else {
+            Log.shared.errorAndCrash("Missing Picker VM or Result Delegate")
+            return
+        }
+        ///-----
 
-        let privateSession = Session()
-//        let safeAttachment = newAttachment.safeForSession(privateSession)
-//        inline(attachment: safeAttachment)
-        let result = MediaAttachmentPickerProviderViewModel.MediaAttachment(type: .image, attachment: newAttachment)
-        let pickerVm = MediaAttachmentPickerProviderViewModel(resultDelegate: mediaAttachmentPickerProviderViewModelResultDelegate, session: privateSession)
-        mediaAttachmentPickerProviderViewModelResultDelegate?.mediaAttachmentPickerProviderViewModel(pickerVm, didSelect: result)
+        var attachment: Attachment!
+        privateSession.performAndWait {[weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                return
+            }
+            attachment = me.createAttachment(forAssetWithUrl: url,
+                                             image: image,
+                                             session: me.privateSession)
+            let group = DispatchGroup()
+            group.notify(queue: .main) { [weak self] in
+                guard let me = self else {
+                    // Valid case. We might have been dismissed.
+                    return
+                }
+                me.privateSession.performAndWait {
+                    attachment.data = data
+                }
 
-        //----
-//        guard let session = message?.session else {
-//            Log.shared.errorAndCrash("Session not found")
-//            return
-//        }
-//        session.performAndWait { [weak self] in
-//            guard let me = self else {
-//                Log.shared.errorAndCrash("Lost myself")
-//                return
-//            }
-//
-//            let mimeType = MimeTypeUtils.MimeType.jpeg.rawValue
-//            let newAttachment = Attachment(data: data,
-//                                           mimeType: mimeType,
-//                                           image: image,
-//                                           contentDisposition: .inline,
-//                                           session: session)
-//            newAttachment.message = me.message
-//            me.inline(attachment: newAttachment)
-//        }
+                let result = MediaAttachmentPickerProviderViewModel.MediaAttachment(type: .image, attachment: attachment)
+                resultDelegate.mediaAttachmentPickerProviderViewModel(vm, didSelect: result)
+            }
+        }
     }
 
     private func rememberCursorPosition(offset: Int = 0) {
@@ -254,5 +253,16 @@ extension BodyCellViewModel {
 extension BodyCellViewModel {
     private func createHtmlVersionAndInformDelegate(newAttributedText attrText: NSAttributedString) {
         resultDelegate?.bodyCellViewModel(self, bodyAttributedString: attrText)
+    }
+
+    private func createAttachment(forAssetWithUrl assetUrl: URL,
+                                  image: UIImage,
+                                  session: Session) -> Attachment {
+        let mimeType = MimeTypeUtils.mimeType(fromURL: assetUrl)
+        return Attachment.createFromAsset(mimeType: mimeType,
+                                          assetUrl: assetUrl,
+                                          image: image,
+                                          contentDisposition: .inline,
+                                          session: session)
     }
 }
