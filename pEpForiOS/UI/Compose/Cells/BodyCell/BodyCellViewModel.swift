@@ -207,8 +207,12 @@ extension BodyCellViewModel {
     }
 
     private func insertImageAttachemnt(data: Data, image: UIImage) {
+        guard let session = message?.session else {
+            Log.shared.errorAndCrash("Session not found")
+            return
+        }
         let mimeType = MimeTypeUtils.MimeType.jpeg.rawValue
-        let newAttachment = Attachment(data: data, mimeType: mimeType, image: image, contentDisposition: .inline)
+        let newAttachment = Attachment(data: data, mimeType: mimeType, image: image, contentDisposition: .inline, session: session)
         newAttachment.message = message
         inline(attachment: newAttachment)
     }
