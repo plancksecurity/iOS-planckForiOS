@@ -476,18 +476,20 @@ extension ComposeViewModel {
                 // Attachments require be related to a message.
                 // So we create a temporary message as the eventual attachments to be paste needs one.
                 // We use a private session to prevent to be saved later, and therefore to prevent those emails to appear for the user.
-                let session = Session()
-                var draftMessage: Message?
-                if let state = state, !MiscUtil.isUnitTest() {
-                    let safePrivateState = state.makeSafe(forSession: session)
-                    draftMessage = ComposeUtil.draftMessage(withDataFrom: safePrivateState, session: session)
-                }
+//                let session = Session()
+//                var draftMessage: Message?
+//                //, !MiscUtil.isUnitTest()
+//                if let state = state {
+//                    let safePrivateState = state.makeSafe(forSession: session)
+//                    draftMessage = ComposeUtil.draftMessage(withDataFrom: safePrivateState, session: session)
+//                }
                 rows.append(BodyCellViewModel(resultDelegate: cellVmDelegate,
                                               initialPlaintext: state?.initData?.bodyPlaintext,
                                               initialAttributedText: state?.initData?.bodyHtml,
                                               inlinedAttachments: state?.initData?.inlinedAttachments,
-                                              account: state?.from,
-                                              message: draftMessage))
+                                              account: state?.from
+//                                              message: draftMessage
+                ))
             case .attachments:
                 for att in state?.nonInlinedAttachments ?? [] {
                     rows.append(AttachmentViewModel(attachment: att))

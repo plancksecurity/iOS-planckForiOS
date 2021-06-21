@@ -39,7 +39,7 @@ public class BodyCellViewModel: CellViewModel {
     private var plaintext = ""
     private var attributedText: NSAttributedString?
     private var identity: Identity?
-    private var message: Message?
+//    private var message: Message?
     private var inlinedAttachments = [Attachment]() {
         didSet {
             resultDelegate?.bodyCellViewModel(self, inlinedAttachmentsChanged: inlinedAttachments)
@@ -55,8 +55,7 @@ public class BodyCellViewModel: CellViewModel {
          initialPlaintext: String? = nil,
          initialAttributedText: NSAttributedString? = nil,
          inlinedAttachments: [Attachment]? = nil,
-         account: Identity?,
-         message: Message? = nil) {
+         account: Identity?) {
         self.resultDelegate = resultDelegate
         self.plaintext = initialPlaintext ?? ""
         self.attributedText = initialAttributedText
@@ -64,7 +63,7 @@ public class BodyCellViewModel: CellViewModel {
             self.inlinedAttachments = inlAtt
         }
         self.identity = account
-        self.message = message
+//        self.message = message
     }
 
     public func inititalText() -> (text: String?, attributedText: NSAttributedString?) {
@@ -207,25 +206,37 @@ extension BodyCellViewModel {
     }
 
     private func insertImageAttachemnt(data: Data, image: UIImage) {
-        guard let session = message?.session else {
-            Log.shared.errorAndCrash("Session not found")
-            return
-        }
-        session.performAndWait { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
+        let mimeType = MimeTypeUtils.MimeType.jpeg.rawValue
+        let newAttachment = Attachment(data: data,
+                                       mimeType: mimeType,
+                                       image: image,
+                                       contentDisposition: .inline)
 
-            let mimeType = MimeTypeUtils.MimeType.jpeg.rawValue
-            let newAttachment = Attachment(data: data,
-                                           mimeType: mimeType,
-                                           image: image,
-                                           contentDisposition: .inline,
-                                           session: session)
-            newAttachment.message = me.message
-            me.inline(attachment: newAttachment)
-        }
+        let privateSession = Session()
+        let safeAttachment = newAttachment.safeForSession(privateSession)
+        inline(attachment: safeAttachment)
+
+
+        //----
+//        guard let session = message?.session else {
+//            Log.shared.errorAndCrash("Session not found")
+//            return
+//        }
+//        session.performAndWait { [weak self] in
+//            guard let me = self else {
+//                Log.shared.errorAndCrash("Lost myself")
+//                return
+//            }
+//
+//            let mimeType = MimeTypeUtils.MimeType.jpeg.rawValue
+//            let newAttachment = Attachment(data: data,
+//                                           mimeType: mimeType,
+//                                           image: image,
+//                                           contentDisposition: .inline,
+//                                           session: session)
+//            newAttachment.message = me.message
+//            me.inline(attachment: newAttachment)
+//        }
     }
 
     private func rememberCursorPosition(offset: Int = 0) {
