@@ -211,10 +211,21 @@ extension BodyCellViewModel {
             Log.shared.errorAndCrash("Session not found")
             return
         }
-        let mimeType = MimeTypeUtils.MimeType.jpeg.rawValue
-        let newAttachment = Attachment(data: data, mimeType: mimeType, image: image, contentDisposition: .inline, session: session)
-        newAttachment.message = message
-        inline(attachment: newAttachment)
+        session.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+
+            let mimeType = MimeTypeUtils.MimeType.jpeg.rawValue
+            let newAttachment = Attachment(data: data,
+                                           mimeType: mimeType,
+                                           image: image,
+                                           contentDisposition: .inline,
+                                           session: session)
+            newAttachment.message = me.message
+            me.inline(attachment: newAttachment)
+        }
     }
 
     private func rememberCursorPosition(offset: Int = 0) {

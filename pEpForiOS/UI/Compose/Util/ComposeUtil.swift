@@ -160,10 +160,10 @@ struct ComposeUtil {
     static public func draftMessage(withDataFrom state: ComposeViewModel.ComposeViewModelState,
                                     session: Session? = Session.main) -> Message? {
         var result: Message? = nil
-        guard let session = session, let address = state.from?.address else {
-            return nil
-        }
-        session.performAndWait {
+        session?.performAndWait {
+            guard let session = session, let address = state.from?.address else {
+                return
+            }
             if let account = Account.by(address: address, in: session)?.safeForSession(session),
                let drafts = Folder.by(account: account, folderType: .drafts)?.safeForSession(session) {
                 let message = Message.newOutgoingMessage(session: session)
