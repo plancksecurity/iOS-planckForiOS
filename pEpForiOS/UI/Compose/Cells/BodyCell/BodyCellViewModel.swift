@@ -142,10 +142,6 @@ extension BodyCellViewModel {
     public func handleCursorPositionChange(newPosition: Int) {
         lastKnownCursorPosition = newPosition
     }
-
-    private func rememberCursorPosition(offset: Int = 0) {
-        restoreCursorPosition = lastKnownCursorPosition + offset
-    }
 }
 
 // MARK: - Attachments
@@ -167,6 +163,11 @@ extension BodyCellViewModel {
             me.inlinedAttachments.append(attachment)
         }
     }
+}
+
+// MARK: - Private
+
+extension BodyCellViewModel {
 
     private func removeInlinedAttachments(_ removees: [Attachment]) {
         guard !removees.isEmpty else { return }
@@ -210,6 +211,10 @@ extension BodyCellViewModel {
         let newAttachment = Attachment(data: data, mimeType: mimeType, image: image, contentDisposition: .inline)
         newAttachment.message = message
         inline(attachment: newAttachment)
+    }
+
+    private func rememberCursorPosition(offset: Int = 0) {
+        restoreCursorPosition = lastKnownCursorPosition + offset
     }
 }
 
