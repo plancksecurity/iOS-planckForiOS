@@ -40,6 +40,8 @@ public class BodyCellViewModel: CellViewModel {
     private var attributedText: NSAttributedString?
     private var identity: Identity?
 //    private var message: Message?
+    private var mediaAttachmentPickerProviderViewModelResultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?
+
     private var inlinedAttachments = [Attachment]() {
         didSet {
             resultDelegate?.bodyCellViewModel(self, inlinedAttachmentsChanged: inlinedAttachments)
@@ -55,7 +57,8 @@ public class BodyCellViewModel: CellViewModel {
          initialPlaintext: String? = nil,
          initialAttributedText: NSAttributedString? = nil,
          inlinedAttachments: [Attachment]? = nil,
-         account: Identity?) {
+         account: Identity?,
+         mediaAttachmentPickerProviderViewModelResultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate? = nil) {
         self.resultDelegate = resultDelegate
         self.plaintext = initialPlaintext ?? ""
         self.attributedText = initialAttributedText
@@ -213,9 +216,11 @@ extension BodyCellViewModel {
                                        contentDisposition: .inline)
 
         let privateSession = Session()
-        let safeAttachment = newAttachment.safeForSession(privateSession)
-        inline(attachment: safeAttachment)
-
+//        let safeAttachment = newAttachment.safeForSession(privateSession)
+//        inline(attachment: safeAttachment)
+        let result = MediaAttachmentPickerProviderViewModel.MediaAttachment(type: .image, attachment: newAttachment)
+        let pickerVm = MediaAttachmentPickerProviderViewModel(resultDelegate: mediaAttachmentPickerProviderViewModelResultDelegate, session: privateSession)
+        mediaAttachmentPickerProviderViewModelResultDelegate?.mediaAttachmentPickerProviderViewModel(pickerVm, didSelect: result)
 
         //----
 //        guard let session = message?.session else {
