@@ -220,12 +220,8 @@ extension BodyCellViewModel {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            attachment = Attachment.createInlinedWith(image: image, fileName: fileName, session: session)
-            let group = DispatchGroup()
-            group.notify(queue: .main) {
-                session.performAndWait {
-                    attachment.data = data
-                }
+            attachment = Attachment.createInlinedWith(image: image, data: data, fileName: fileName, session: session)
+            DispatchQueue.main.async {
                 me.resultDelegate?.bodyCellViewModelDidPaste(me, attachment: attachment)
             }
         }
