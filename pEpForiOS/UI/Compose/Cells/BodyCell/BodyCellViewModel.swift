@@ -26,6 +26,8 @@ public protocol BodyCellViewModelResultDelegate: class {
 
     func bodyCellViewModel(_ vm: BodyCellViewModel,
                            bodyAttributedString: NSAttributedString)
+
+    func bodyCellViewModelDidPaste(_ vm: BodyCellViewModel, attachment: Attachment)
 }
 
 public protocol BodyCellViewModelDelegate: class {
@@ -39,10 +41,7 @@ public class BodyCellViewModel: CellViewModel {
     private var plaintext = ""
     private var attributedText: NSAttributedString?
     private var identity: Identity?
-    private let pickerVm : MediaAttachmentPickerProviderViewModel?
-    private var mediaAttachmentPickerProviderViewModelResultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?
-
-    private var privateSession = Session()
+    private var session: Session?
 
     private var inlinedAttachments = [Attachment]() {
         didSet {
@@ -60,7 +59,7 @@ public class BodyCellViewModel: CellViewModel {
          initialAttributedText: NSAttributedString? = nil,
          inlinedAttachments: [Attachment]? = nil,
          account: Identity?,
-         mediaAttachmentPickerProviderViewModelResultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate? = nil) {
+         session: Session? = Session()) {
         self.resultDelegate = resultDelegate
         self.plaintext = initialPlaintext ?? ""
         self.attributedText = initialAttributedText
@@ -68,8 +67,7 @@ public class BodyCellViewModel: CellViewModel {
             self.inlinedAttachments = inlAtt
         }
         self.identity = account
-        self.mediaAttachmentPickerProviderViewModelResultDelegate = mediaAttachmentPickerProviderViewModelResultDelegate
-        self.pickerVm = MediaAttachmentPickerProviderViewModel(resultDelegate: mediaAttachmentPickerProviderViewModelResultDelegate, session: Session.main)
+        self.session = session
     }
 
     public func inititalText() -> (text: String?, attributedText: NSAttributedString?) {
@@ -196,14 +194,14 @@ extension BodyCellViewModel {
         }
         // Image copied from p≡p
         if let image = UIPasteboard.general.image, let data = image.jpegData(compressionQuality: 1) {
-            insertImageAttachemnt(data: data, image: image, url: URL(string: "www.google.com")!)
+            insertImageAttachemnt(data: data, image: image, fileName: "public.jpg")
         } else {
             // Image copied from 3rd party apps
             UIPasteboard.general.items.forEach { keyValue in
                 keyValue.forEach { (key, value) in
                     if let image = value as? UIImage,
                        let data = key == "public.png" ? image.pngData() : image.jpegData(compressionQuality: 1) {
-                        insertImageAttachemnt(data: data, image: image, url: URL(string: "www.google.com")!)
+                        insertImageAttachemnt(data: data, image: image, fileName: key)
                         return //Paste only one item
                     }
                 }
@@ -211,34 +209,24 @@ extension BodyCellViewModel {
         }
     }
 
-    private func insertImageAttachemnt(data: Data, image: UIImage, url: URL) {
-        guard let vm = pickerVm, let resultDelegate = mediaAttachmentPickerProviderViewModelResultDelegate  else {
-            Log.shared.errorAndCrash("Missing Picker VM or Result Delegate")
+    private func insertImageAttachemnt(data: Data, image: UIImage, fileName: String? = "") {
+        guard let session = session else {
+            Log.shared.errorAndCrash("Session lost")
             return
         }
-        ///-----
-
         var attachment: Attachment!
-        privateSession.performAndWait {[weak self] in
+        session.performAndWait { [weak self] in
             guard let me = self else {
-                // Valid case. We might have been dismissed already.
+                Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            attachment = me.createAttachment(forAssetWithUrl: url,
-                                             image: image,
-                                             session: me.privateSession)
+            attachment = Attachment.createInlinedWith(image: image, fileName: fileName, session: session)
             let group = DispatchGroup()
-            group.notify(queue: .main) { [weak self] in
-                guard let me = self else {
-                    // Valid case. We might have been dismissed.
-                    return
-                }
-                me.privateSession.performAndWait {
+            group.notify(queue: .main) {
+                session.performAndWait {
                     attachment.data = data
                 }
-
-                let result = MediaAttachmentPickerProviderViewModel.MediaAttachment(type: .image, attachment: attachment)
-                resultDelegate.mediaAttachmentPickerProviderViewModel(vm, didSelect: result)
+                me.resultDelegate?.bodyCellViewModelDidPaste(me, attachment: attachment)
             }
         }
     }
@@ -253,16 +241,5 @@ extension BodyCellViewModel {
 extension BodyCellViewModel {
     private func createHtmlVersionAndInformDelegate(newAttributedText attrText: NSAttributedString) {
         resultDelegate?.bodyCellViewModel(self, bodyAttributedString: attrText)
-    }
-
-    private func createAttachment(forAssetWithUrl assetUrl: URL,
-                                  image: UIImage,
-                                  session: Session) -> Attachment {
-        let mimeType = MimeTypeUtils.mimeType(fromURL: assetUrl)
-        return Attachment.createFromAsset(mimeType: mimeType,
-                                          assetUrl: assetUrl,
-                                          image: image,
-                                          contentDisposition: .inline,
-                                          session: session)
     }
 }

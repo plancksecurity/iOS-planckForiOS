@@ -476,8 +476,7 @@ extension ComposeViewModel {
                                               initialPlaintext: state?.initData?.bodyPlaintext,
                                               initialAttributedText: state?.initData?.bodyHtml,
                                               inlinedAttachments: state?.initData?.inlinedAttachments,
-                                              account: state?.from,
-                                              mediaAttachmentPickerProviderViewModelResultDelegate: cellVmDelegate))
+                                              account: state?.from))
             case .attachments:
                 for att in state?.nonInlinedAttachments ?? [] {
                     rows.append(AttachmentViewModel(attachment: att))
@@ -939,6 +938,11 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
                            inlinedAttachmentsChanged inlinedAttachments: [Attachment]) {
         state.inlinedAttachments = inlinedAttachments
         delegate?.hideMediaAttachmentPicker()
+    }
+
+    func bodyCellViewModelDidPaste(_ vm: BodyCellViewModel,
+                                   attachment: Attachment) {
+        vm.inline(attachment: attachment)
     }
 
     func bodyCellViewModel(_ vm: BodyCellViewModel, bodyAttributedString: NSAttributedString) {
