@@ -654,5 +654,9 @@ class BodyCellViewModelTest: XCTestCase {
 
         func bodyCellViewModel(_ vm: BodyCellViewModel, bodyAttributedString: NSAttributedString) {
         }
+
+        func bodyCellViewModelDidPaste(_ vm: BodyCellViewModel, attachment: Attachment){
+        }
+
     }
 }
