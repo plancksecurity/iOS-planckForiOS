@@ -103,13 +103,8 @@ public class BodyCellViewModel: CellViewModel {
         NSLocalizedString("Add Document",  comment: "Insert document in message text context menu")
 
     public func handleUserClickedSelectMedia() {
-        enum Position: Int {
-            case before
-            case immediatelyAfter
-            case nextLine
-            case twoLinesAfter
-        }
-        rememberCursorPosition(offset: Position.twoLinesAfter.rawValue)
+        let twoLinesAfterPosition = 3
+        rememberCursorPosition(offset: twoLinesAfterPosition)
         resultDelegate?.bodyCellViewModelUserWantsToAddMedia(self)
     }
 
