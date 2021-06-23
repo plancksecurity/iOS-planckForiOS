@@ -26,8 +26,6 @@ public protocol BodyCellViewModelResultDelegate: class {
 
     func bodyCellViewModel(_ vm: BodyCellViewModel,
                            bodyAttributedString: NSAttributedString)
-
-    func bodyCellViewModelDidPaste(_ vm: BodyCellViewModel, attachment: Attachment)
 }
 
 public protocol BodyCellViewModelDelegate: class {
@@ -217,7 +215,7 @@ extension BodyCellViewModel {
             }
             let attachment = image.inlinedAttachment(fileName: fileName, imageData: data, in: me.session)
             DispatchQueue.main.async {
-                me.resultDelegate?.bodyCellViewModelDidPaste(me, attachment: attachment)
+                me.inline(attachment: attachment)
             }
         }
     }

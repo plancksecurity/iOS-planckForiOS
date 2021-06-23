@@ -945,11 +945,6 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
         delegate?.hideMediaAttachmentPicker()
     }
 
-    func bodyCellViewModelDidPaste(_ vm: BodyCellViewModel,
-                                   attachment: Attachment) {
-        vm.inline(attachment: attachment)
-    }
-
     func bodyCellViewModel(_ vm: BodyCellViewModel, bodyAttributedString: NSAttributedString) {
         state.bodyText = bodyAttributedString
 
