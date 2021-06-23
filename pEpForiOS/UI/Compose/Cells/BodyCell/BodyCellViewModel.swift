@@ -192,7 +192,7 @@ extension BodyCellViewModel {
         }
         // Image copied from p≡p
         if let image = UIPasteboard.general.image, let data = image.jpegData(compressionQuality: 1) {
-            insertImageAttachemnt(data: data, image: image, fileName: "public.jpg")
+            insertImageAttachemnt(data: data, image: image, fileName: "public.png")
         } else {
             // Image copied from 3rd party apps
             UIPasteboard.general.items.forEach { keyValue in
