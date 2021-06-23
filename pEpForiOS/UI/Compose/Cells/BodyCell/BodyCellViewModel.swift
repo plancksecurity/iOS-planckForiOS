@@ -41,7 +41,7 @@ public class BodyCellViewModel: CellViewModel {
     private var plaintext = ""
     private var attributedText: NSAttributedString?
     private var identity: Identity?
-    private var session: Session?
+    private var session: Session
 
     private var inlinedAttachments = [Attachment]() {
         didSet {
@@ -59,7 +59,7 @@ public class BodyCellViewModel: CellViewModel {
          initialAttributedText: NSAttributedString? = nil,
          inlinedAttachments: [Attachment]? = nil,
          account: Identity?,
-         session: Session? = Session()) {
+         session: Session) {
         self.resultDelegate = resultDelegate
         self.plaintext = initialPlaintext ?? ""
         self.attributedText = initialAttributedText
@@ -209,18 +209,13 @@ extension BodyCellViewModel {
         }
     }
 
-    private func insertImageAttachemnt(data: Data, image: UIImage, fileName: String? = "") {
-        guard let session = session else {
-            Log.shared.errorAndCrash("Session lost")
-            return
-        }
-        var attachment: Attachment!
+    private func insertImageAttachemnt(data: Data, image: UIImage, fileName: String) {
         session.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            attachment = Attachment.createInlinedWith(image: image, data: data, fileName: fileName, session: session)
+            let attachment = image.inlinedAttachment(fileName: fileName, imageData: data, in: me.session)
             DispatchQueue.main.async {
                 me.resultDelegate?.bodyCellViewModelDidPaste(me, attachment: attachment)
             }

@@ -605,16 +605,24 @@ class BodyCellViewModelTest: XCTestCase {
         let inlined: [Attachment]?
         // content change
         let expBodyChangedCalled: XCTestExpectation?
+
+        let expBodyImagePasteCalled: XCTestExpectation?
+
         let exectedPlain: String?
         let exectedHtml: String?
 
         init(expUserWantsToAddMediaCalled: XCTestExpectation?,
              expUserWantsToAddDocumentCalled: XCTestExpectation?,
-             expInlinedAttachmentsCalled: XCTestExpectation?, inlined: [Attachment]?,
-             expBodyChangedCalled: XCTestExpectation?, exectedPlain: String?, exectedHtml: String?) {
+             expInlinedAttachmentsCalled: XCTestExpectation?,
+             expBodyImagePasteCalled: XCTestExpectation?,
+             inlined: [Attachment]?,
+             expBodyChangedCalled: XCTestExpectation?,
+             exectedPlain: String?,
+             exectedHtml: String?) {
             self.expUserWantsToAddMediaCalled = expUserWantsToAddMediaCalled
             self.expUserWantsToAddDocumentCalled = expUserWantsToAddDocumentCalled
             self.expInlinedAttachmentsCalled = expInlinedAttachmentsCalled
+            self.expBodyImagePasteCalled = expBodyImagePasteCalled
             self.inlined = inlined
             self.expBodyChangedCalled = expBodyChangedCalled
             self.exectedPlain = exectedPlain
@@ -655,8 +663,12 @@ class BodyCellViewModelTest: XCTestCase {
         func bodyCellViewModel(_ vm: BodyCellViewModel, bodyAttributedString: NSAttributedString) {
         }
 
-        func bodyCellViewModelDidPaste(_ vm: BodyCellViewModel, attachment: Attachment){
+        func bodyCellViewModelDidPaste(_ vm: BodyCellViewModel, attachment: Attachment) {
+            guard let exp = expBodyImagePasteCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
         }
-
     }
 }

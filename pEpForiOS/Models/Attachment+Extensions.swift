@@ -43,16 +43,4 @@ extension Attachment {
                               session: session)
         }
     }
-
-    /// Create an Attachment with content disposition inline.
-    ///
-    /// - Parameters:
-    ///   - image: The image of the attachment
-    ///   - data: The attachment data
-    ///   - fileName: The filename
-    ///   - session: The session to work on
-    /// - Returns: The attachment
-    public static func createInlinedWith(image: UIImage, data: Data, fileName: String? = "public.jpg", session: Session) -> Attachment {
-        return Attachment(data: data, mimeType: MimeTypeUtils.MimeType.defaultMimeType.rawValue, fileName: fileName, image: image, contentDisposition: ContentDispositionType.inline, session: session)
-    }
 }
