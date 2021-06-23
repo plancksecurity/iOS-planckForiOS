@@ -126,7 +126,7 @@ class MoveToFolderCellViewModel {
 
     init(folder: Folder, level: Int) {
         self.folder = folder
-        self.title = folder.realName
+        self.title = Folder.localizedName(realName: folder.title)
         self.indentationLevel = level
         self.icon = folder.folderType.getIcon()
     }
