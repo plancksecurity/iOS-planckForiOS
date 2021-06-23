@@ -101,7 +101,7 @@ public class BodyCellViewModel: CellViewModel {
         return shouldReplaceText(in: range, of: text, with: replaceText)
     }
 
-    public func shouldReplaceText(in range: NSRange,
+    private func shouldReplaceText(in range: NSRange,
                                   of text: NSAttributedString,
                                   with replaceText: String) -> Bool {
         let attachments = text.textAttachments(range: range)

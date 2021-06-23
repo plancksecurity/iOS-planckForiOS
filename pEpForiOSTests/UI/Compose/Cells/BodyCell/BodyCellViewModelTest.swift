@@ -170,7 +170,7 @@ class BodyCellViewModelTest: XCTestCase {
                                 expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
                                 exectedPlain: nil,
                                 exectedHtml: nil)
-        let shouldReplace = vm.shouldReplaceText(in: testRange, of: testText, with: testReplaceText)
+        let shouldReplace = vm.handleShouldChangeText(in: testRange, of: testText, with: testReplaceText)
         XCTAssertTrue(shouldReplace, "Should alway be true")
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
@@ -192,7 +192,7 @@ class BodyCellViewModelTest: XCTestCase {
                                 expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
                                 exectedPlain: nil,
                                 exectedHtml: nil)
-        let shouldReplace = vm.shouldReplaceText(in: testRange, of: testText, with: testReplaceText)
+        let shouldReplace = vm.handleShouldChangeText(in: testRange, of: testText, with: testReplaceText)
         XCTAssertTrue(shouldReplace, "Should alway be true")
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
@@ -214,7 +214,7 @@ class BodyCellViewModelTest: XCTestCase {
                                 expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
                                 exectedPlain: nil,
                                 exectedHtml: nil)
-        let shouldReplace = vm.shouldReplaceText(in: testRange, of: testText, with: testReplaceText)
+        let shouldReplace = vm.handleShouldChangeText(in: testRange, of: testText, with: testReplaceText)
         XCTAssertTrue(shouldReplace, "Should alway be true")
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
@@ -241,7 +241,7 @@ class BodyCellViewModelTest: XCTestCase {
                                 expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
                                 exectedPlain: nil,
                                 exectedHtml: nil)
-        let shouldReplace = vm.shouldReplaceText(in: testRange, of: testText, with: replaceText)
+        let shouldReplace = vm.handleShouldChangeText(in: testRange, of: testText, with: replaceText)
         XCTAssertTrue(shouldReplace, "Should alway be true")
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
@@ -272,7 +272,7 @@ class BodyCellViewModelTest: XCTestCase {
                                 expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
                                 exectedPlain: nil,
                                 exectedHtml: nil)
-        let shouldReplace = vm.shouldReplaceText(in: attachmentRange, of: testText, with: replaceText)
+        let shouldReplace = vm.handleShouldChangeText(in: attachmentRange, of: testText, with: replaceText)
         XCTAssertTrue(shouldReplace, "Should alway be true")
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
@@ -303,7 +303,7 @@ class BodyCellViewModelTest: XCTestCase {
                                 expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
                                 exectedPlain: nil,
                                 exectedHtml: nil)
-        let shouldReplace = vm.shouldReplaceText(in: attachmentToRemoveRange,
+        let shouldReplace = vm.handleShouldChangeText(in: attachmentToRemoveRange,
                                                  of: testText,
                                                  with: replaceText)
         XCTAssertTrue(shouldReplace, "Should alway be true")
@@ -314,6 +314,41 @@ class BodyCellViewModelTest: XCTestCase {
         let attachmentsToRemoveCount = 10
         shouldReplaceText_attachment(remove: attachmentsToRemoveCount)
     }
+
+    func testShouldReplaceText_attachment_InsertOne() {
+        // Replace text is an attachment
+        var replaceText = ""
+        if let uc = UnicodeScalar(String.textAttachmentCharacter) {
+            let s = String(Character(uc))
+            replaceText = s
+        }
+
+        var textBuilder = NSAttributedString(string: "Test text")
+        let replaceRange = NSRange(location: 0, length: 0)
+        let testAttachment1 = createTestAttachment(fileName: "1", addImage: true)
+        textBuilder = insertTextattachment(for: testAttachment1, in: replaceRange, of: textBuilder)
+        let testAttachment2 = createTestAttachment(fileName: "2", addImage: true)
+        let testText = insertTextattachment(for: testAttachment2, in: replaceRange, of: textBuilder)
+        let attachmentToRemoveRange = NSRange(location: 0, length: 1)
+
+        setupAssertionDelegates(initialPlaintext: nil,
+                                initialAttributedText: nil,
+                                initialInlinedAttachments: [testAttachment1, testAttachment2],
+                                expectInsertCalled: nil,
+                                inserted: nil,
+                                expUserWantsToAddMediaCalled: nil,
+                                expUserWantsToAddDocumentCalled: nil,
+                                expInlinedAttachmentsCalled: nil,
+                                inlined: nil,
+                                expBodyChangedCalled: nil,
+                                exectedPlain: nil,
+                                exectedHtml: nil)
+        let shouldReplace = vm.handleShouldChangeText(in: attachmentToRemoveRange,
+                                                 of: testText,
+                                                 with: replaceText)
+        XCTAssertFalse(shouldReplace, "Should be False")
+    }
+
     func shouldReplaceText_attachment (remove: Int) {
         var textBuilder = NSAttributedString(string: "Test text")
         let range = NSRange(location: 0, length: 0)
@@ -340,9 +375,9 @@ class BodyCellViewModelTest: XCTestCase {
                                 expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
                                 exectedPlain: nil,
                                 exectedHtml: nil)
-        let shouldReplace = vm.shouldReplaceText(in: attachmentToRemoveRange,
-                                                 of: textBuilder,
-                                                 with: "")
+        let shouldReplace = vm.handleShouldChangeText(in: attachmentToRemoveRange,
+                                                      of: textBuilder,
+                                                      with: "")
         XCTAssertTrue(shouldReplace, "Should alway be true")
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
@@ -456,7 +491,8 @@ class BodyCellViewModelTest: XCTestCase {
                                initialPlaintext: initialPlaintext,
                                initialAttributedText: initialAttributedText,
                                inlinedAttachments: initialInlinedAttachments,
-                               account: nil)
+                               account: nil,
+                               session: Session())
         vm.delegate = testDelegate
         let aNonNullValue: CGFloat = 300.0
         vm.maxTextattachmentWidth = aNonNullValue
