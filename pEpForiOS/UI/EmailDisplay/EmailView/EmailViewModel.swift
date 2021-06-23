@@ -71,6 +71,24 @@ class EmailViewModel {
         return EmailViewModel(message: message)
     }
 
+    /// Handle the copy action.
+    ///
+    /// - Parameter width: The max width the copied element may have
+    public func handleCopy(maxWidth: CGFloat) {
+        // Just change default behaviour if an image is being copied
+        guard let text = UIPasteboard.general.string,
+              let cid = text.extractCid(),
+              let attachment = Attachment.by(cid: cid),
+              let data = attachment.data,
+              let image = UIImage(data: data) else {
+            // Valid case: The user might have something else in the pasteboard.
+            return
+        }
+        // Resize the image
+        let margin: CGFloat = 10.0
+        UIPasteboard.general.image = image.resizeIfExceedMaxWidth(maxWidth: maxWidth - margin)
+    }
+
     private var shouldHideExternalContent: Bool = true
 
     // Indicates if the External Content View has to be shown.
@@ -206,62 +224,60 @@ extension EmailViewModel {
         public var size: CGSize {
             let recipientButton = RecipientButton(type: .system)
             recipientButton.setup(text: title, action: action)
+            if recipientType == .from {
+                recipientButton.setPEPFont(style: .headline, weight: .semibold)
+            } else {
+                recipientButton.setPEPFont(style: .footnote, weight: .regular)
+            }
+            recipientButton.sizeToFit()
             return recipientButton.frame.size
         }
 
         public private(set) var title: String
         public private(set) var identity: Identity?
         public private(set) var action: (() -> Void)?
-        public private(set) var rowType: EmailViewModel.EmailRowType
+        public private(set) var recipientType: EmailViewModel.RecipientType
 
         /// Constructor
         /// - Parameters:
         ///   - identity: The identity represented by the button
         ///   - action: The action to be executed
-        init(identity: Identity?, rowType: EmailViewModel.EmailRowType, action: (() -> Void)? = nil) {
+        init(identity: Identity?, recipientType: EmailViewModel.RecipientType, action: (() -> Void)? = nil) {
             self.identity = identity
             self.title = identity?.displayString ?? ""
             self.action = action
-            self.rowType = rowType
+            self.recipientType = recipientType
         }
 
         /// Constructor
         /// - Parameter title: The title of the button
-        init(title: String, rowType: EmailViewModel.EmailRowType, action: (() -> Void)? = nil) {
-            self.rowType = rowType
+        init(title: String, recipientType: EmailViewModel.RecipientType, action: (() -> Void)? = nil) {
+            self.recipientType = recipientType
             self.title = title
             self.action = action
         }
     }
 
     enum EmailRowType: String {
-        case bcc, cc, to, from, subject, body, attachment, imageAttachment
+        case header, subject, body, attachment, imageAttachment
     }
 
-    // MARK: Recipients
-
-    struct FromRow: EmailRowProtocol {
-        var type: EmailViewModel.EmailRowType = .from
-        var cellIdentifier: String = "messageRecipientCell"
-        var fromVM: CollectionViewCellViewModel
+    enum RecipientType: String {
+        case from, to, cc, bcc
     }
 
-    struct ToRow: EmailRowProtocol {
-        var type: EmailViewModel.EmailRowType = .to
-        var cellIdentifier: String = "messageRecipientCell"
+    // MARK: Header
+
+    struct HeaderRow: EmailRowProtocol {
+        var type: EmailViewModel.EmailRowType = .header
+        var cellIdentifier: String = "messageHeaderCell"
+        var fromViewModel: CollectionViewCellViewModel
         var tosViewModels: [CollectionViewCellViewModel]
-    }
-
-    struct CCRow: EmailRowProtocol {
-        var type: EmailViewModel.EmailRowType = .cc
-        var cellIdentifier: String = "messageRecipientCell"
         var ccsViewModels: [CollectionViewCellViewModel]
-    }
-
-    struct BCCRow: EmailRowProtocol {
-        var type: EmailViewModel.EmailRowType = .bcc
-        var cellIdentifier: String = "messageRecipientCell"
         var bccsViewModels: [CollectionViewCellViewModel]
+        var date: String?
+        var image: UIImage?
+        var viewModel: MessageHeaderCellViewModel
     }
 
     // MARK: Subject
@@ -270,7 +286,6 @@ extension EmailViewModel {
         var type: EmailViewModel.EmailRowType = .subject
         var cellIdentifier: String = "senderSubjectCell"
         var title: String
-        var date: String?
     }
 
     // MARK: Body
@@ -440,12 +455,12 @@ extension EmailViewModel {
 extension EmailViewModel {
 
     private func setupRows(message: Message) {
-        func cellViewModels(from identities: [Identity], rowType: EmailViewModel.EmailRowType) -> [CollectionViewCellViewModel] {
-            return identities.map({ return getRecipientCollectionViewCellViewModel(identity: $0, rowType: rowType) })
+        func cellViewModels(from identities: [Identity], recipientType: EmailViewModel.RecipientType) -> [CollectionViewCellViewModel] {
+            return identities.map({ return getRecipientCollectionViewCellViewModel(identity: $0, recipientType: recipientType) })
         }
 
-        func getRecipientCollectionViewCellViewModel(identity: Identity, rowType: EmailViewModel.EmailRowType) -> CollectionViewCellViewModel {
-            return CollectionViewCellViewModel(identity: identity, rowType: rowType) { [weak self] in
+        func getRecipientCollectionViewCellViewModel(identity: Identity, recipientType: EmailViewModel.RecipientType) -> CollectionViewCellViewModel {
+            return CollectionViewCellViewModel(identity: identity, recipientType: recipientType) { [weak self] in
                 guard let me = self else {
                     Log.shared.errorAndCrash("Lost myself")
                     return
@@ -461,33 +476,22 @@ extension EmailViewModel {
             return
         }
 
-        // From:
-        let fromVM = getRecipientCollectionViewCellViewModel(identity: from, rowType: .from)
-        let fromRow = FromRow(fromVM: fromVM)
-        rows.append(fromRow)
-
-        // To:
-        let toRecipientsVMs = cellViewModels(from: message.uniqueTos, rowType: .to)
-        let toRow = ToRow(tosViewModels: toRecipientsVMs)
-        rows.append(toRow)
-
-        // CC:
-        let ccRecipientsVMs = cellViewModels(from: message.uniqueCcs, rowType: .cc)
-        if !ccRecipientsVMs.isEmpty {
-            let ccRow = CCRow(ccsViewModels: ccRecipientsVMs)
-            rows.append(ccRow)
-        }
-
-        // BCC:
-        let bccRecipientsVMs = cellViewModels(from: message.uniqueBccs, rowType: .bcc)
-        if !bccRecipientsVMs.isEmpty {
-            let bccRow = BCCRow(bccsViewModels: bccRecipientsVMs)
-            rows.append(bccRow)
-        }
+        let fromVM = getRecipientCollectionViewCellViewModel(identity: from, recipientType: .from)
+        let toRecipientsVMs = cellViewModels(from: message.uniqueTos, recipientType: .to)
+        let ccRecipientsVMs = cellViewModels(from: message.uniqueCcs, recipientType: .cc)
+        let bccRecipientsVMs = cellViewModels(from: message.uniqueBccs, recipientType: .bcc)
+        let headerCellViewModel = MessageHeaderCellViewModel(displayedImageIdentity: from)
+        let headerRow = HeaderRow(fromViewModel: fromVM,
+                                  tosViewModels: toRecipientsVMs,
+                                  ccsViewModels: ccRecipientsVMs,
+                                  bccsViewModels: bccRecipientsVMs,
+                                  date: message.sent?.fullString(),
+                                  viewModel: headerCellViewModel)
+        rows.append(headerRow)
 
         //Subject
         let title = message.shortMessage
-        let subjectRow = SubjectRow(title: title ?? "", date: message.sent?.fullString())
+        let subjectRow = SubjectRow(title: title ?? "")
         rows.append(subjectRow)
 
         //Body

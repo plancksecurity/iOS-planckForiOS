@@ -17,14 +17,14 @@ import MessageModel
 import pEpIOSToolbox
 #endif
 
-protocol SuggestViewModelResultDelegate: AnyObject {
+protocol SuggestViewModelResultDelegate: class {
     /// Will be called whenever the user selects an Identity.
     func suggestViewModelDidSelectContact(identity: Identity)
 
     func suggestViewModel(_ vm: SuggestViewModel, didToggleVisibilityTo newValue: Bool)
 }
 
-protocol SuggestViewModelDelegate: AnyObject {
+protocol SuggestViewModelDelegate: class {
     func suggestViewModelDidResetModel(showResults: Bool)
 }
 
@@ -59,7 +59,7 @@ class SuggestViewModel {
         }
 
         static func rows(forSender sender: Identity, recipients: [Identity]) -> [Row] {
-            return recipients.map { Row(sender: sender, recipient: $0) }
+            return recipients.map { Row(sender: sender, recipient: $0) } .filter({!$0.email.isEmpty})
         }
     }
 

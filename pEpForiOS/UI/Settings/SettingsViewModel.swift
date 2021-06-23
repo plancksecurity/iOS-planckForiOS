@@ -11,7 +11,7 @@ import MessageModel
 import pEpIOSToolbox
 
 ///Delegate protocol to communicate to the SettingsTableViewController some special actions.
-protocol SettingsViewModelDelegate: AnyObject {
+protocol SettingsViewModelDelegate: class {
     /// Shows the loading
     func showLoadingView()
     /// Hides the loading

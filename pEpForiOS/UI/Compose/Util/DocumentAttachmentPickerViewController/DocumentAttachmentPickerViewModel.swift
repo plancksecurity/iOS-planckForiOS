@@ -14,7 +14,7 @@ import MessageModel
 import pEpIOSToolbox
 #endif
 
-protocol DocumentAttachmentPickerViewModelResultDelegate: AnyObject {
+protocol DocumentAttachmentPickerViewModelResultDelegate: class {
     func documentAttachmentPickerViewModel(_ vm: DocumentAttachmentPickerViewModel,
                                            didPick attachment: Attachment)
 

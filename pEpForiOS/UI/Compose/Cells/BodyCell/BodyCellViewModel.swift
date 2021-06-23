@@ -16,7 +16,7 @@ import MessageModel
 import pEpIOSToolbox
 #endif
 
-public protocol BodyCellViewModelResultDelegate: AnyObject {
+public protocol BodyCellViewModelResultDelegate: class {
 
     func bodyCellViewModelUserWantsToAddMedia(_ vm: BodyCellViewModel)
     func bodyCellViewModelUserWantsToAddDocument(_ vm: BodyCellViewModel)
@@ -28,7 +28,7 @@ public protocol BodyCellViewModelResultDelegate: AnyObject {
                            bodyAttributedString: NSAttributedString)
 }
 
-public protocol BodyCellViewModelDelegate: AnyObject {
+public protocol BodyCellViewModelDelegate: class {
     func insert(text: NSAttributedString)
 }
 
@@ -103,8 +103,8 @@ public class BodyCellViewModel: CellViewModel {
         NSLocalizedString("Add Document",  comment: "Insert document in message text context menu")
 
     public func handleUserClickedSelectMedia() {
-        let potentialImage = 1
-        rememberCursorPosition(offset: potentialImage)
+        let twoLinesAfterPosition = 3
+        rememberCursorPosition(offset: twoLinesAfterPosition)
         resultDelegate?.bodyCellViewModelUserWantsToAddMedia(self)
     }
 

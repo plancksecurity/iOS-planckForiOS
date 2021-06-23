@@ -59,6 +59,9 @@ protocol ComposeViewModelDelegate: AnyObject {
                             cancelButtonAction: @escaping () -> Void,
                             positiveButtonAction: @escaping () -> Void)
     func dismiss()
+
+    func showActionSheetWith(title: String, smallTitle: String, mediumTitle: String, largeTitle: String, actualTitle: String,
+                             callback: @escaping (JPEGQuality) -> ()?)
 }
 
 /// Contains messages about cancelation and send.
@@ -75,6 +78,8 @@ protocol ComposeViewModelFinalActionDelegate: AnyObject {
 }
 
 class ComposeViewModel {
+    private var attachmentSizeUtil: ComposeViewModel.AttachmentSizeUtil?
+
     weak var delegate: ComposeViewModelDelegate? {
         didSet {
             delegate?.colorBatchNeedsUpdate(for: state.rating,
@@ -217,11 +222,74 @@ class ComposeViewModel {
 
     public func handleUserClickedSendButton() {
         rollbackMainSession()
+        let safeState = state.makeSafe(forSession: session)
+        attachmentSizeUtil = ComposeViewModel.AttachmentSizeUtil(session: session, composeViewModelState: safeState)
+        guard let util = attachmentSizeUtil else {
+            Log.shared.errorAndCrash("attachmentSizeUtil not found")
+            return
+        }
+        if util.shouldOfferScaling() {
+            showScalingAlert()
+        } else {
+            send(option: .highest)
+        }
+    }
+
+    private func showScalingAlert() {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard let util = me.attachmentSizeUtil else {
+                Log.shared.errorAndCrash("attachmentSizeUtil not found")
+                return
+            }
+            me.delegate?.showActionSheetWith(title: util.title,
+                                             smallTitle: util.smallSizeTitle,
+                                             mediumTitle: util.mediumSizeTitle,
+                                             largeTitle: util.largeSizeTitle,
+                                             actualTitle: util.actualSizeTitle,
+                                             callback: { option in
+                                                me.send(option: option)
+                                             })
+        }
+    }
+
+    private func send(option: JPEGQuality) {
         let safeState = state.makeSafe(forSession: Session.main)
         let sendClosure: (() -> Message?) = { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return nil
+            }
+
+            guard let util = me.attachmentSizeUtil else {
+                Log.shared.errorAndCrash("attachmentSizeUtil not found")
+                return nil
+            }
+
+            // Update the state with images at the chosen compresion quality
+            guard let inlined = try? util.getAttachments(inlined: true, compressionQuality: option) else {
+                Log.shared.errorAndCrash("Can't get inlined Attachments")
+                return nil
+            }
+            guard let nonInlined = try? util.getAttachments(inlined: false, compressionQuality: option) else {
+                Log.shared.errorAndCrash("Can't get non inlined Attachments")
+                return nil
+            }
+
+            //Update image and data values only to prevent inconsistent states
+            me.session.performAndWait {
+                for (index, attachment) in inlined.enumerated() {
+                    safeState.inlinedAttachments[index].image = attachment.image
+                    safeState.inlinedAttachments[index].data = attachment.data
+                }
+
+                for (index, attachment) in nonInlined.enumerated() {
+                    safeState.nonInlinedAttachments[index].image = attachment.image
+                    safeState.nonInlinedAttachments[index].data = attachment.data
+                }
             }
 
             guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
@@ -255,6 +323,8 @@ class ComposeViewModel {
                 return
             }
             let msg = sendClosure()
+            // As the util has state we ensure it's not reused.
+            me.attachmentSizeUtil = nil
             me.delegate?.dismiss()
 
             if let theMsg = msg {

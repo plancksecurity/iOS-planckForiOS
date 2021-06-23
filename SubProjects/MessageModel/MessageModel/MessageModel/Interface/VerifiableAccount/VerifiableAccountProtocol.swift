@@ -31,7 +31,7 @@ extension VerifiableAccountValidationError: LocalizedError {
 }
 
 /// The delegate used for the `VerifiableAccountProtocol`.
-public protocol VerifiableAccountDelegate: AnyObject {
+public protocol VerifiableAccountDelegate: class {
     /// Gets called once the verification has finished, successfully or not.
     /// The given `result` indicates success or failure.
     func didEndVerification(result: Result<Void, Error>)

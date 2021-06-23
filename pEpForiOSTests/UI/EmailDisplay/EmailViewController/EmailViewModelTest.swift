@@ -25,14 +25,14 @@ class EmailViewModelTest: XCTestCase {
     func testNumberOfRows() {
         setupVMWithMessageWithoutAttachment()
         /// As the message doesn't have attachments, it has only from, subject and body.
-        let types : [EmailViewModel.EmailRowType] = [.to, .from, .subject, .body]
+        let types : [EmailViewModel.EmailRowType] = [.header, .subject, .body]
         XCTAssert(vm.numberOfRows == types.count)
     }
 
     func testNumberOfRowsOfMessageWithAttachments() {
         let numberOfAttachments = Int.random(in: 1..<100)
         setupVMWithMessageWith(numberOfAttachments: numberOfAttachments)
-        let types : [EmailViewModel.EmailRowType] = [.to, .from, .subject, .body]
+        let types : [EmailViewModel.EmailRowType] = [.header, .subject, .body]
         XCTAssert(vm.numberOfRows == types.count + numberOfAttachments)
     }
 
@@ -40,12 +40,11 @@ class EmailViewModelTest: XCTestCase {
         setupVMWithMessageWith(numberOfAttachments: 2)
         /// We expect to see the rows in the following order:
         /// Sender, subject, body, attachments.
-        XCTAssert(vm[0].type == .from)
-        XCTAssert(vm[1].type == .to)
-        XCTAssert(vm[2].type == .subject)
-        XCTAssert(vm[3].type == .body)
+        XCTAssert(vm[0].type == .header)
+        XCTAssert(vm[1].type == .subject)
+        XCTAssert(vm[2].type == .body)
+        XCTAssert(vm[3].type == .attachment)
         XCTAssert(vm[4].type == .attachment)
-        XCTAssert(vm[5].type == .attachment)
     }
 
     // MARK: - VM
@@ -55,10 +54,9 @@ class EmailViewModelTest: XCTestCase {
         /// We expect to see the rows in the following order:
         /// Sender, subject, body, attachments.
         /// So we expect to get the corresponding cell identifier for those index path position.
-        XCTAssertEqual("messageRecipientCell", vm.cellIdentifier(for: IndexPath(row: 0, section: 0)))
-        XCTAssertEqual("messageRecipientCell", vm.cellIdentifier(for: IndexPath(row: 1, section: 0)))
-        XCTAssertEqual("senderSubjectCell", vm.cellIdentifier(for: IndexPath(row: 2, section: 0)))
-        XCTAssertEqual("senderBodyCell", vm.cellIdentifier(for: IndexPath(row: 3, section: 0)))
+        XCTAssertEqual("messageHeaderCell", vm.cellIdentifier(for: IndexPath(row: 0, section: 0)))
+        XCTAssertEqual("senderSubjectCell", vm.cellIdentifier(for: IndexPath(row: 1, section: 0)))
+        XCTAssertEqual("senderBodyCell", vm.cellIdentifier(for: IndexPath(row: 2, section: 0)))
     }
 
     // MARK: - Delegate

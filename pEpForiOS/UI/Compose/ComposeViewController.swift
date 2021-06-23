@@ -416,6 +416,42 @@ extension ComposeViewController: ComposeViewModelDelegate {
    func dismiss() {
         dismiss(animated: true, completion: nil)
     }
+
+    func showActionSheetWith(title: String, smallTitle: String, mediumTitle: String, largeTitle: String, actualTitle: String,
+                             callback: @escaping (JPEGQuality) -> ()?) {
+
+        let alertSheet = UIUtils.actionSheet(title: title)
+        alertSheet.view.tintColor = UIColor.pEpDarkGreen
+        let lowAction = UIAlertAction(title: smallTitle, style: .default) { (action) in
+            callback(.low)
+        }
+        let mediumAction = UIAlertAction(title: mediumTitle, style: .default) { (action) in
+            callback(.medium)
+        }
+        let highAction = UIAlertAction(title: largeTitle, style: .default) { (action) in
+            callback(.high)
+        }
+        let actualAction = UIAlertAction(title: actualTitle, style: .default) { (action) in
+            callback(.highest)
+        }
+        alertSheet.addAction(lowAction)
+        alertSheet.addAction(mediumAction)
+        alertSheet.addAction(highAction)
+        alertSheet.addAction(actualAction)
+
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Downscale Images ActionSheet - Cancel")
+        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { (action) in }
+        alertSheet.addAction(cancelAction)
+
+        if let popoverController = alertSheet.popoverPresentationController {
+            popoverController.sourceView = view
+            popoverController.sourceRect = CGRect(x: view.bounds.midX,
+                                                  y: view.bounds.midY,
+                                                  width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
+        present(alertSheet, animated: true)
+    }
 }
 
 // MARK: - SegueHandlerType

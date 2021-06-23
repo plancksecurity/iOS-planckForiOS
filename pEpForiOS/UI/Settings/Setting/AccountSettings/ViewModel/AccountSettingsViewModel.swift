@@ -12,7 +12,7 @@ import pEpIOSToolbox
 import PantomimeFramework
 
 ///Delegate protocol to communicate to the Account Settings View Controller
-protocol AccountSettingsViewModelDelegate: AnyObject {
+protocol AccountSettingsViewModelDelegate: class {
     /// Changes loading view visibility
     func setLoadingView(visible: Bool)
     /// Shows an alert

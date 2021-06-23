@@ -31,7 +31,7 @@ enum OAuthAuthorizerError: Error {
     case noParametersForVerification
 }
 
-protocol OAuthAuthorizerDelegate: AnyObject {
+protocol OAuthAuthorizerDelegate: class {
     /**
      Called to signal an OAuth2 error.
      */

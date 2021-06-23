@@ -10,6 +10,6 @@ import Foundation
 
 import MessageModel
 
-protocol AccountVerificationResultDelegate: AnyObject {
+protocol AccountVerificationResultDelegate: class {
     func didVerify(result: AccountVerificationResult)
 }
