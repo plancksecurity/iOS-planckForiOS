@@ -26,7 +26,7 @@ extension UIImage {
     func inlinedAttachment(fileName: String, imageData: Data, in session: Session) -> Attachment {
         let nsFileName = fileName as NSString
         let mimeType = MimeTypeUtils.mimeType(fromFileExtension: nsFileName.pathExtension)
-        return Attachment(data: jpegData(compressionQuality: 1.0),
+        return Attachment(data: imageData,
                           mimeType: mimeType,
                           fileName: fileName,
                           image: self,
