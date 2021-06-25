@@ -216,6 +216,20 @@
                ReferencedContainer = "container:pEpForiOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4E5758BE26833D140084F02D"
+               BuildableName = "PEPObjCAdapterTypesTests_iOS.xctest"
+               BlueprintName = "PEPObjCAdapterTypesTests_iOS"
+               ReferencedContainer = "container:../pEpObjCAdapter/Subprojects/PEPObjCAdapterTypes/PEPObjCAdapterTypes.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
