@@ -322,16 +322,6 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4E81CD4825C19DD4009F140D"
-               BuildableName = "PEPObjCAdapterTypesTests_iOS.xctest"
-               BlueprintName = "PEPObjCAdapterTypesTests_iOS"
-               ReferencedContainer = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "64415E161BE94FCB00F6CBB2"
                BuildableName = "pEpObjCAdapterTests.xctest"
                BlueprintName = "pEpObjCAdapterTests"
