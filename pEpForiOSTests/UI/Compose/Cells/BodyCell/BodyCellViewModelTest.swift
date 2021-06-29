@@ -438,7 +438,7 @@ class BodyCellViewModelTest: XCTestCase {
         let testPosition = 1
         vm.handleCursorPositionChange(newPosition: testPosition)
         vm.handleUserClickedSelectMedia()
-        let inlinedImage = 1
+        let inlinedImage = 3
         let expectedPosition = testPosition + inlinedImage
         XCTAssertEqual(vm.cursorPosition, expectedPosition,
                        "cursor should be placed behind inlined image")
