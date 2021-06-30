@@ -30,7 +30,6 @@ class PrepareAccountForSavingService {
                         context: NSManagedObjectContext,
                         completion: @escaping (Success)->()) {
         cdAccount.pEpSyncEnabled = pEpSyncEnable
-
         // Generate Key
         guard let cdIdentity = cdAccount.identity else {
             Log.shared.errorAndCrash(message: "Impossible to get the identity")
