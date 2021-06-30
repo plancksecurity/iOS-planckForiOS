@@ -515,6 +515,8 @@ extension CdMessage {
             mail.bcc = bccs
         }
 
+        ReceivedByUtil.setReceivedBy(fromDataOf: pantomimeMessage, to: mail, context: context)
+
         let referenceStrings = MutableOrderedSet<String>()
         if let pantomimeRefs = pantomimeMessage.allReferences() as? [String] {
             for ref in pantomimeRefs {
