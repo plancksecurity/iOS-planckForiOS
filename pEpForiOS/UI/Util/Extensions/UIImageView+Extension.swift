@@ -35,11 +35,15 @@ extension UIImageView {
         layer.masksToBounds = true
     }
 
+    /// Apply a border of the color passed by param.
+    ///
+    /// - Parameter color: The boder color
     public func applyBorder(color: UIColor) {
         layer.borderWidth = 2
         layer.borderColor = color.cgColor
     }
 
+    /// Remove border if exists
     public func removeBorder() {
         layer.borderWidth = 0
         layer.borderColor = nil
