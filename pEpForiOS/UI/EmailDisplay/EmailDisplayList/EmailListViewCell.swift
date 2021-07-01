@@ -34,6 +34,15 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
 
     private var viewModel: MessageViewModel?
 
+
+    private let seenFontWeight: UIFont.Weight = .regular
+    private let unseenFontWeight: UIFont.Weight = .bold
+
+    private let addressFontStyle: UIFont.TextStyle = .callout
+    private let subjectFontStyle: UIFont.TextStyle = .subheadline
+    private let summaryFontStyle: UIFont.TextStyle = .caption1
+    private let dateFontStyle: UIFont.TextStyle = .subheadline
+
     /**
      Original selection background color
      - Note: When a cell is selected in edit mode the background color must be the same as
@@ -95,11 +104,12 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
         // _after_ this function has ended and the cell has already been
         // layouted, leading to a smaller cell than usual.
         summaryLabel.text = " "
-        summaryLabel.font = UIFont.pepFont(style: .subheadline, weight: .regular)
-        addressLabel.font = UIFont.pepFont(style: .body, weight: viewModel.isSeen ? .regular : .black)
+        summaryLabel.font = UIFont.pepFont(style: summaryFontStyle, weight: seenFontWeight)
+        addressLabel.font = UIFont.pepFont(style: addressFontStyle, weight: viewModel.isSeen ? seenFontWeight : unseenFontWeight)
         addressLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.displayedUsername)
-        subjectLabel.font = UIFont.pepFont(style: .subheadline, weight: viewModel.isSeen ? .regular : .black)
+        subjectLabel.font = UIFont.pepFont(style: subjectFontStyle, weight: viewModel.isSeen ? seenFontWeight : unseenFontWeight)
         subjectLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.subject)
+
         if !viewModel.isSeen {
             if #available(iOS 13.0, *) {
                 contactImageView.applyBorder(color: .label)
@@ -208,15 +218,15 @@ extension EmailListViewCell {
 
     private func setupLabels(seen: Bool) {
         let fontWeight: UIFont.Weight = seen
-            ? .regular
-            : .bold
-        addressLabel.font = UIFont.pepFont(style: .body,
+            ? seenFontWeight
+            : unseenFontWeight
+        addressLabel.font = UIFont.pepFont(style: addressFontStyle,
                                            weight: fontWeight)
-        subjectLabel.font = UIFont.pepFont(style: .subheadline,
+        subjectLabel.font = UIFont.pepFont(style: subjectFontStyle,
                                            weight: fontWeight)
-        summaryLabel.font = UIFont.pepFont(style: .subheadline,
+        summaryLabel.font = UIFont.pepFont(style: summaryFontStyle,
                                            weight: fontWeight)
-        dateLabel.font = UIFont.pepFont(style: .subheadline,
+        dateLabel.font = UIFont.pepFont(style: dateFontStyle,
                                         weight: fontWeight)
     }
 
