@@ -9,6 +9,11 @@
 import UIKit
 import MessageModel
 import SwipeCellKit
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
+import pEpIOSToolbox
+#endif
 
 final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
 
@@ -91,10 +96,19 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
         // layouted, leading to a smaller cell than usual.
         summaryLabel.text = " "
         summaryLabel.font = UIFont.pepFont(style: .subheadline, weight: .regular)
-        addressLabel.font = UIFont.pepFont(style: .body, weight: viewModel.isSeen ? .regular : .bold)
+        addressLabel.font = UIFont.pepFont(style: .body, weight: viewModel.isSeen ? .regular : .black)
         addressLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.displayedUsername)
-        subjectLabel.font = UIFont.pepFont(style: .subheadline, weight: viewModel.isSeen ? .regular : .bold)
+        subjectLabel.font = UIFont.pepFont(style: .subheadline, weight: viewModel.isSeen ? .regular : .black)
         subjectLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.subject)
+        if !viewModel.isSeen {
+            if #available(iOS 13.0, *) {
+                contactImageView.applyBorder(color: .label)
+            } else {
+                contactImageView.applyBorder(color: .white)
+            }
+        } else {
+            contactImageView.removeBorder()
+        }
 
         viewModel.bodyPeekCompletion = { [weak self] bodyPeek in
             self?.summaryLabel.text = bodyPeek == "" ? " " : bodyPeek

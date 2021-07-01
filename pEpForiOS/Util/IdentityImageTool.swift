@@ -122,8 +122,15 @@ class IdentityImageTool {
     /// - Returns: The identity image already configurated.
     public func identityImage(for identityKey: IdentityKey,
                               imageSize: CGSize = CGSize.defaultAvatarSize,
-                              textColor: UIColor? = nil,
-                              backgroundColor: UIColor = UIColor(hexString: "#c8c7cc")) -> UIImage? {
+                              textColor: UIColor? = nil) -> UIImage? {
+
+
+        var backgroundColor = UIColor(hexString: "#c8c7cc")
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                backgroundColor = UIColor(hexString: "#636367")
+            }
+        }
 
         /// If the text color is passed by parameter, let's use it.
         /// Otherwise, evaluate if dark mode is on: in that case use pEpBlack, else, white.
@@ -131,9 +138,9 @@ class IdentityImageTool {
         if textColor == nil {
             if #available(iOS 13.0, *) {
                 if UITraitCollection.current.userInterfaceStyle == .dark {
-                    textColorToSet = UIColor.pEpBlack
+                    textColorToSet = .label
                 } else {
-                    textColorToSet = UIColor.white
+                    textColorToSet = UIColor.pEpBlack
                 }
             }
         }
@@ -196,7 +203,7 @@ extension IdentityImageTool {
     }
 
     private func identityImageFromName(initials: String, size: CGSize, textColor: UIColor,
-                                       font: UIFont = UIFont.systemFont(ofSize: 24),
+                                       font: UIFont = UIFont.systemFont(ofSize: 18),
                                        imageBackgroundColor: UIColor) -> UIImage? {
         return UIImage.generate(size: size) { ctx, size in
             drawBackground(ctx: ctx, size: size, color: imageBackgroundColor)
