@@ -9,6 +9,7 @@
 import UIKit
 import MessageModel
 import SwipeCellKit
+
 #if EXT_SHARE
 import pEpIOSToolboxForExtensions
 #else
@@ -109,6 +110,8 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
         addressLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.displayedUsername)
         subjectLabel.font = UIFont.pepFont(style: subjectFontStyle, weight: viewModel.isSeen ? seenFontWeight : unseenFontWeight)
         subjectLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.subject)
+        dateLabel.font = UIFont.pepFont(style: dateFontStyle, weight: viewModel.isSeen ? seenFontWeight : unseenFontWeight)
+
 
         if !viewModel.isSeen {
             if #available(iOS 13.0, *) {
@@ -129,7 +132,6 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
 
         hasAttachment = viewModel.showAttchmentIcon
         dateLabel.text = viewModel.dateText
-        dateLabel.font = UIFont.pepFont(style: .subheadline, weight: .regular)
 
         // Message threading is not supported. Let's keep it for now. It might be helpful for
         // reimplementing.
@@ -242,7 +244,11 @@ extension EmailListViewCell {
         super.setSelected(selected, animated: false)
         let viewForHighlight = UIView()
         selectedBackgroundView = viewForHighlight
-        viewForHighlight.backgroundColor = isEditing ? .clear : originalBackgroundSelectionColor
+        if #available(iOS 13.0, *) {
+            viewForHighlight.backgroundColor = isEditing ? UIColor.systemGray5 : originalBackgroundSelectionColor
+        } else {
+            viewForHighlight.backgroundColor = isEditing ? UIColor.pEpGreyBackground : originalBackgroundSelectionColor
+        }
     }
 
     /// - Returns: " " (a space) instead of an empty String, otherwise the original String
@@ -256,14 +262,11 @@ extension EmailListViewCell {
     }
 
     private func setBackgroundSelectionColor() {
+        originalBackgroundSelectionColor = UIColor.pEpGreyBackground
         if #available(iOS 13.0, *) {
             if UITraitCollection.current.userInterfaceStyle == .dark {
                 originalBackgroundSelectionColor = UIColor.systemGray5
-            } else {
-                originalBackgroundSelectionColor = UIColor.pEpGreen.withAlphaComponent(0.2)
             }
-        } else {
-            originalBackgroundSelectionColor = UIColor.pEpGreen.withAlphaComponent(0.2)
         }
     }
 

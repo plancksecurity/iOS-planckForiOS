@@ -92,12 +92,12 @@
                                                             </subviews>
                                                         </stackView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="1000" text="Subject jlkfj glkafj kal jfa slfaj alsjf aslj fsajk" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ha5-Vd-x3U">
-                                                            <rect key="frame" x="86" y="33.333333333333336" width="242" height="14.333333333333336"/>
+                                                            <rect key="frame" x="86" y="35.333333333333336" width="242" height="14.333333333333336"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="1000" text="Summary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tbi-dG-KCA">
-                                                            <rect key="frame" x="86" y="49.666666666666664" width="53.333333333333343" height="14.333333333333336"/>
+                                                            <rect key="frame" x="86" y="53.666666666666664" width="53.333333333333343" height="14.333333333333336"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
@@ -129,17 +129,17 @@
                                                         <constraint firstItem="bNf-Dy-rbx" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ha5-Vd-x3U" secondAttribute="trailing" constant="3" id="2sZ-lc-cQ9"/>
                                                         <constraint firstItem="Tbi-dG-KCA" firstAttribute="leading" secondItem="ha5-Vd-x3U" secondAttribute="leading" id="7RK-nG-z25"/>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="8Jk-1U-d4g"/>
-                                                        <constraint firstItem="Tbi-dG-KCA" firstAttribute="top" secondItem="ha5-Vd-x3U" secondAttribute="bottom" constant="2" id="EWr-iZ-sou"/>
+                                                        <constraint firstItem="Tbi-dG-KCA" firstAttribute="top" secondItem="ha5-Vd-x3U" secondAttribute="bottom" constant="4" id="EWr-iZ-sou"/>
                                                         <constraint firstItem="cG7-zS-ib7" firstAttribute="top" secondItem="wra-Ql-iZp" secondAttribute="top" constant="-1" id="L9z-eB-8Lp"/>
                                                         <constraint firstItem="wra-Ql-iZp" firstAttribute="centerY" secondItem="QAL-Vw-DX8" secondAttribute="centerY" id="NYO-5O-s1e"/>
                                                         <constraint firstItem="cG7-zS-ib7" firstAttribute="leading" secondItem="wra-Ql-iZp" secondAttribute="trailing" constant="12" id="NZd-aG-LXg"/>
-                                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Tbi-dG-KCA" secondAttribute="bottom" constant="6" id="R5A-oz-q4B"/>
+                                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Tbi-dG-KCA" secondAttribute="bottom" priority="750" constant="4" id="R5A-oz-q4B"/>
                                                         <constraint firstItem="ha5-Vd-x3U" firstAttribute="leading" secondItem="cG7-zS-ib7" secondAttribute="leading" id="Tex-w9-Y1N"/>
                                                         <constraint firstItem="wra-Ql-iZp" firstAttribute="leading" secondItem="QAL-Vw-DX8" secondAttribute="leading" constant="2" id="Zk3-pH-lWx"/>
                                                         <constraint firstItem="bNf-Dy-rbx" firstAttribute="top" secondItem="cG7-zS-ib7" secondAttribute="bottom" id="qZO-Ed-KJB"/>
                                                         <constraint firstAttribute="trailing" secondItem="cG7-zS-ib7" secondAttribute="trailing" constant="8" id="w3K-mr-2DF"/>
                                                         <constraint firstItem="bNf-Dy-rbx" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Tbi-dG-KCA" secondAttribute="trailing" constant="3" id="xQC-aZ-P1E"/>
-                                                        <constraint firstItem="ha5-Vd-x3U" firstAttribute="top" secondItem="cG7-zS-ib7" secondAttribute="bottom" constant="2" id="xsa-u5-40L"/>
+                                                        <constraint firstItem="ha5-Vd-x3U" firstAttribute="top" secondItem="cG7-zS-ib7" secondAttribute="bottom" constant="4" id="xsa-u5-40L"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
