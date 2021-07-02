@@ -242,13 +242,10 @@ extension EmailListViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: false)
+        /// Instead of the default highlighting background, use a different color for this view.
         let viewForHighlight = UIView()
         selectedBackgroundView = viewForHighlight
-        if #available(iOS 13.0, *) {
-            viewForHighlight.backgroundColor = isEditing ? UIColor.systemGray5 : originalBackgroundSelectionColor
-        } else {
-            viewForHighlight.backgroundColor = isEditing ? UIColor.pEpGreyBackground : originalBackgroundSelectionColor
-        }
+        viewForHighlight.backgroundColor = originalBackgroundSelectionColor
     }
 
     /// - Returns: " " (a space) instead of an empty String, otherwise the original String
