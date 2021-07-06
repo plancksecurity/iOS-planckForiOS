@@ -112,7 +112,7 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
             if #available(iOS 13.0, *) {
                 contactImageView.applyBorder(color: .label)
             } else {
-                contactImageView.applyBorder(color: .white)
+                contactImageView.applyBorder(color: UIColor.pEpBlack)
             }
         } else {
             contactImageView.removeBorder()

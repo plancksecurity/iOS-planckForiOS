@@ -134,14 +134,10 @@ class IdentityImageTool {
 
         /// If the text color is passed by parameter, let's use it.
         /// Otherwise, evaluate if dark mode is on: in that case use pEpBlack, else, white.
-        var textColorToSet = UIColor.white
-        if textColor == nil {
-            if #available(iOS 13.0, *) {
-                if UITraitCollection.current.userInterfaceStyle == .dark {
-                    textColorToSet = .label
-                } else {
-                    textColorToSet = UIColor.pEpBlack
-                }
+        var textColorToSet: UIColor = UIColor.pEpBlack
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                textColorToSet = .label
             }
         }
 
