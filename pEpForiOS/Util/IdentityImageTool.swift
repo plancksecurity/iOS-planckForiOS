@@ -125,10 +125,10 @@ class IdentityImageTool {
                               textColor: UIColor? = nil) -> UIImage? {
 
 
-        var backgroundColor = UIColor(hexString: "#c8c7cc")
+        var backgroundColor = UIColor.pEpGrayBackgroundReset
         if #available(iOS 13.0, *) {
             if UITraitCollection.current.userInterfaceStyle == .dark {
-                backgroundColor = UIColor(hexString: "#636367")
+                backgroundColor = UIColor.pEpGrayDarkBackgroundReset
             }
         }
 

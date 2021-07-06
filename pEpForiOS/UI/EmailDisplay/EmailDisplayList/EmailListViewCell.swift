@@ -9,12 +9,7 @@
 import UIKit
 import MessageModel
 import SwipeCellKit
-
-#if EXT_SHARE
-import pEpIOSToolboxForExtensions
-#else
 import pEpIOSToolbox
-#endif
 
 final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
 
