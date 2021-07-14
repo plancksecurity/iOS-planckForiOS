@@ -171,6 +171,15 @@ final class EmailListViewController: UIViewController {
     }
 
     private func setupRefreshControl() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+
+        guard vm.shouldShowRefreshController else {
+            //Valid case: we might be in a local folder.
+            return
+        }
         if #available(iOS 13.0, *) {
             if UITraitCollection.current.userInterfaceStyle == .light {
                 refreshController.tintColor = UIColor.pEpGreen

@@ -160,6 +160,15 @@ class EmailListViewModel: EmailDisplayViewModel {
         }
     }
 
+    /// Whether or not the refresh control should be shown
+    public var shouldShowRefreshController: Bool {
+        guard let folder = folderToShow as? Folder, folder.folderType != .outbox else {
+            //There is no messages to fetch as it's a local folder.
+            return false
+        }
+        return true
+    }
+
     /// Whether or not to show the Tutorial
     public var shouldShowTutorialWizard: Bool {
         return AppSettings.shared.shouldShowTutorialWizard
