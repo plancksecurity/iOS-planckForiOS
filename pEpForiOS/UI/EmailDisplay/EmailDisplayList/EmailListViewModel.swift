@@ -162,7 +162,9 @@ class EmailListViewModel: EmailDisplayViewModel {
 
     /// Whether or not the refresh control should be shown
     public var shouldShowRefreshController: Bool {
-        guard let folder = folderToShow as? Folder, folder.folderType != .outbox else {
+        let isUnifiedFolder = folderToShow is UnifiedFolderBase
+        let isNotLocalFolder = !((folderToShow as? Folder)?.folderType.isLocalFolder ?? false)
+        guard isUnifiedFolder || isNotLocalFolder  else {
             //There is no messages to fetch as it's a local folder.
             return false
         }
