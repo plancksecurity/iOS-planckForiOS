@@ -509,6 +509,8 @@
 		5BC8C72325ADDAF1000AAC7A /* TwoLinesButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC8C72225ADDAF1000AAC7A /* TwoLinesButton.swift */; };
 		5BC9F1E226385974002377B6 /* EmailViewModel+CollectionViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC9F1E126385974002377B6 /* EmailViewModel+CollectionViewViewModel.swift */; };
 		5BC9F1E6263888C3002377B6 /* Message+Recipients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC9F1E5263888C3002377B6 /* Message+Recipients.swift */; };
+		5BCD37DC269F3CBF0052A030 /* UIImageView+ContactImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCD37DB269F3CBF0052A030 /* UIImageView+ContactImage.swift */; };
+		5BCD37DD269F3CBF0052A030 /* UIImageView+ContactImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCD37DB269F3CBF0052A030 /* UIImageView+ContactImage.swift */; };
 		5BCFE663252470F4001323C3 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCFE662252470F4001323C3 /* ComposeViewController.swift */; };
 		5BD4466024F65DE300422594 /* EmailListViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4465F24F65DE300422594 /* EmailListViewController+Keyboard.swift */; };
 		5BE35A9A249139DD00AC605C /* AccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */; };
@@ -1153,6 +1155,7 @@
 		5BC8C72225ADDAF1000AAC7A /* TwoLinesButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoLinesButton.swift; sourceTree = "<group>"; };
 		5BC9F1E126385974002377B6 /* EmailViewModel+CollectionViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailViewModel+CollectionViewViewModel.swift"; sourceTree = "<group>"; };
 		5BC9F1E5263888C3002377B6 /* Message+Recipients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+Recipients.swift"; sourceTree = "<group>"; };
+		5BCD37DB269F3CBF0052A030 /* UIImageView+ContactImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+ContactImage.swift"; sourceTree = "<group>"; };
 		5BCFE662252470F4001323C3 /* ComposeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		5BD4465F24F65DE300422594 /* EmailListViewController+Keyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EmailListViewController+Keyboard.swift"; sourceTree = "<group>"; };
 		5BD917E1252DD64D0092B30F /* MailtoTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailtoTest.swift; sourceTree = "<group>"; };
@@ -2880,6 +2883,7 @@
 			isa = PBXGroup;
 			children = (
 				B7DB7FD9221ADDAF003968DA /* UIBarButtonItem+Extension.swift */,
+				5BCD37DB269F3CBF0052A030 /* UIImageView+ContactImage.swift */,
 				3A7F89BA252B3D2400A38460 /* UIBarButtonItem+ComposeButton.swift */,
 				B7DB7FD4221AD3BB003968DA /* UIButton+Extension.swift */,
 				5B1C1431259A25B2006DB2A1 /* UILabel+Extension.swift */,
@@ -3232,6 +3236,7 @@
 				434A6C7125D2A3DF00179335 /* RecipientTextViewModel.swift in Sources */,
 				434C19AB25D3D92D00F622DB /* AccountPickerView.swift in Sources */,
 				434C1AE125D4141800F622DB /* TrustManagementTableViewCellProtocols.swift in Sources */,
+				5BCD37DD269F3CBF0052A030 /* UIImageView+ContactImage.swift in Sources */,
 				439C659426135008001893BD /* UIView+ActivityIndicator.swift in Sources */,
 				43C415C725EE687A0071C608 /* NSItemProvider+MimeType.swift in Sources */,
 				434C1AC325D411B700F622DB /* UIUtils+Alerts.swift in Sources */,
@@ -3320,6 +3325,7 @@
 				3A928C86242259E300FEFA4C /* HtmlTagParser.swift in Sources */,
 				B72C7BAC2395198D0013B12E /* AccountTypeSelectorViewModel.swift in Sources */,
 				B792889A2302D3DE00D2C68B /* Array+Extension.swift in Sources */,
+				5BCD37DC269F3CBF0052A030 /* UIImageView+ContactImage.swift in Sources */,
 				5B7235D125E0013100033F88 /* TutorialStep0iPadViewController.swift in Sources */,
 				492EF92D20C6957D004EAE14 /* ThreadViewController.swift in Sources */,
 				5BC14AF023EB19B5005F0AF3 /* TrustManagementViewController.swift in Sources */,
