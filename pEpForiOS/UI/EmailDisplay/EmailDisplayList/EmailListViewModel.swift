@@ -160,6 +160,16 @@ class EmailListViewModel: EmailDisplayViewModel {
         }
     }
 
+    /// Whether or not the refresh control should be shown
+    public var shouldShowRefreshController: Bool {
+        if let unifiedFolder = folderToShow as? UnifiedFolderBase, let folderType = unifiedFolder.agregatedFolderType {
+            return !folderType.isLocalFolder
+        } else if let folder = folderToShow as? Folder {
+            return !folder.folderType.isLocalFolder
+        }
+        return false
+    }
+
     /// Whether or not to show the Tutorial
     public var shouldShowTutorialWizard: Bool {
         return AppSettings.shared.shouldShowTutorialWizard

@@ -542,11 +542,16 @@ extension ComposeViewModel {
                 let rowModel = SubjectCellViewModel(content: subject, resultDelegate: cellVmDelegate)
                 rows.append(rowModel)
             case .body:
-                rows.append(BodyCellViewModel(resultDelegate: cellVmDelegate,
+                guard let composeVM = cellVmDelegate else {
+                    Log.shared.errorAndCrash("Compose VM not found")
+                    return
+                }
+                rows.append(BodyCellViewModel(resultDelegate: composeVM,
                                               initialPlaintext: state?.initData?.bodyPlaintext,
                                               initialAttributedText: state?.initData?.bodyHtml,
                                               inlinedAttachments: state?.initData?.inlinedAttachments,
-                                              account: state?.from))
+                                              account: state?.from,
+                                              session: composeVM.session))
             case .attachments:
                 for att in state?.nonInlinedAttachments ?? [] {
                     rows.append(AttachmentViewModel(attachment: att))

@@ -9,6 +9,7 @@
 import UIKit
 import MessageModel
 import SwipeCellKit
+import pEpIOSToolbox
 
 final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
 
@@ -28,6 +29,15 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
     @IBOutlet weak var contactImageView: UIImageView!
 
     private var viewModel: MessageViewModel?
+
+
+    private let seenFontWeight: UIFont.Weight = .regular
+    private let unseenFontWeight: UIFont.Weight = .bold
+
+    private let addressFontStyle: UIFont.TextStyle = .callout
+    private let subjectFontStyle: UIFont.TextStyle = .subheadline
+    private let summaryFontStyle: UIFont.TextStyle = .caption1
+    private let dateFontStyle: UIFont.TextStyle = .subheadline
 
     /**
      Original selection background color
@@ -90,11 +100,23 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
         // _after_ this function has ended and the cell has already been
         // layouted, leading to a smaller cell than usual.
         summaryLabel.text = " "
-        summaryLabel.font = UIFont.pepFont(style: .subheadline, weight: .regular)
-        addressLabel.font = UIFont.pepFont(style: .body, weight: viewModel.isSeen ? .regular : .bold)
+        summaryLabel.font = UIFont.pepFont(style: summaryFontStyle, weight: seenFontWeight)
+        addressLabel.font = UIFont.pepFont(style: addressFontStyle, weight: viewModel.isSeen ? seenFontWeight : unseenFontWeight)
         addressLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.displayedUsername)
-        subjectLabel.font = UIFont.pepFont(style: .subheadline, weight: viewModel.isSeen ? .regular : .bold)
+        subjectLabel.font = UIFont.pepFont(style: subjectFontStyle, weight: viewModel.isSeen ? seenFontWeight : unseenFontWeight)
         subjectLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.subject)
+        dateLabel.font = UIFont.pepFont(style: dateFontStyle, weight: viewModel.isSeen ? seenFontWeight : unseenFontWeight)
+
+
+        if !viewModel.isSeen {
+            if #available(iOS 13.0, *) {
+                contactImageView.applyBorder(color: .label)
+            } else {
+                contactImageView.applyBorder(color: UIColor.pEpBlack)
+            }
+        } else {
+            contactImageView.removeBorder()
+        }
 
         viewModel.bodyPeekCompletion = { [weak self] bodyPeek in
             self?.summaryLabel.text = bodyPeek == "" ? " " : bodyPeek
@@ -105,7 +127,6 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
 
         hasAttachment = viewModel.showAttchmentIcon
         dateLabel.text = viewModel.dateText
-        dateLabel.font = UIFont.pepFont(style: .subheadline, weight: .regular)
 
         // Message threading is not supported. Let's keep it for now. It might be helpful for
         // reimplementing.
@@ -194,15 +215,15 @@ extension EmailListViewCell {
 
     private func setupLabels(seen: Bool) {
         let fontWeight: UIFont.Weight = seen
-            ? .regular
-            : .bold
-        addressLabel.font = UIFont.pepFont(style: .body,
+            ? seenFontWeight
+            : unseenFontWeight
+        addressLabel.font = UIFont.pepFont(style: addressFontStyle,
                                            weight: fontWeight)
-        subjectLabel.font = UIFont.pepFont(style: .subheadline,
+        subjectLabel.font = UIFont.pepFont(style: subjectFontStyle,
                                            weight: fontWeight)
-        summaryLabel.font = UIFont.pepFont(style: .subheadline,
+        summaryLabel.font = UIFont.pepFont(style: summaryFontStyle,
                                            weight: fontWeight)
-        dateLabel.font = UIFont.pepFont(style: .subheadline,
+        dateLabel.font = UIFont.pepFont(style: dateFontStyle,
                                         weight: fontWeight)
     }
 
@@ -216,9 +237,10 @@ extension EmailListViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: false)
+        /// Instead of the default highlighting background, use a different color for this view.
         let viewForHighlight = UIView()
         selectedBackgroundView = viewForHighlight
-        viewForHighlight.backgroundColor = isEditing ? .clear : originalBackgroundSelectionColor
+        viewForHighlight.backgroundColor = originalBackgroundSelectionColor
     }
 
     /// - Returns: " " (a space) instead of an empty String, otherwise the original String
@@ -232,14 +254,11 @@ extension EmailListViewCell {
     }
 
     private func setBackgroundSelectionColor() {
+        originalBackgroundSelectionColor = UIColor.pEpGreyBackground
         if #available(iOS 13.0, *) {
             if UITraitCollection.current.userInterfaceStyle == .dark {
                 originalBackgroundSelectionColor = UIColor.systemGray5
-            } else {
-                originalBackgroundSelectionColor = UIColor.pEpGreen.withAlphaComponent(0.2)
             }
-        } else {
-            originalBackgroundSelectionColor = UIColor.pEpGreen.withAlphaComponent(0.2)
         }
     }
 

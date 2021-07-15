@@ -79,6 +79,15 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         XCTAssertFalse(showToolbarButtons)
     }
 
+    func testShouldShowRefreshController() {
+        setupViewModel()
+        XCTAssertTrue(emailListVM.shouldShowRefreshController)
+
+        givenThereIsA(folderType: .outbox)
+        setupViewModel()
+        XCTAssertFalse(emailListVM.shouldShowRefreshController)
+    }
+
     func testAccountExists() {
         setupViewModel()
         emailListVM.startMonitoring()
