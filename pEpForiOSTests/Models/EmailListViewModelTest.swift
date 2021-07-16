@@ -266,6 +266,51 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         let composeVM = emailListVM.composeViewModelForNewMessage()
         XCTAssertEqual(composeVM.state.from, expectedFrom)
     }
+
+    func testMarkAsUnFlaggedInEditMode() {
+        TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: inbox)
+        let expectationDidFinishEditingModeCalled = XCTestExpectation(description: "expectationDidFinishEditingModeCalled")
+        let expectationDidUpdateDataAtCalled = XCTestExpectation(description: "expectationDidUpdateDataAtCalled")
+        let viewController = TestMasterViewController(expectationDidUpdateDataAt: expectationDidUpdateDataAtCalled, expectationDidFinishEditingModeCalled:expectationDidFinishEditingModeCalled)
+        self.emailListVM = EmailListViewModel(delegate: viewController, folderToShow: inbox)
+        emailListVM.startMonitoring()
+        emailListVM.markAsUnFlagged(indexPaths: [IndexPath(row: 0, section: 0)], isManualRowUpdate: false)
+        wait(for: [expectationDidFinishEditingModeCalled], timeout: TestUtil.waitTime)
+    }
+
+    func testMarkAsFlaggedInEditMode() {
+        TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: inbox)
+        let expectationDidFinishEditingModeCalled = XCTestExpectation(description: "expectationDidFinishEditingModeCalled")
+        let expectationDidUpdateDataAtCalled = XCTestExpectation(description: "expectationDidUpdateDataAtCalled")
+        let viewController = TestMasterViewController(expectationDidUpdateDataAt: expectationDidUpdateDataAtCalled, expectationDidFinishEditingModeCalled:expectationDidFinishEditingModeCalled)
+        self.emailListVM = EmailListViewModel(delegate: viewController, folderToShow: inbox)
+        emailListVM.startMonitoring()
+        emailListVM.markAsFlagged(indexPaths: [IndexPath(row: 0, section: 0)], isManualRowUpdate: false)
+        wait(for: [expectationDidFinishEditingModeCalled], timeout: TestUtil.waitTime)
+    }
+
+    func testMarkAsReadInEditMode() {
+        TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: inbox)
+        let expectationDidFinishEditingModeCalled = XCTestExpectation(description: "expectationDidFinishEditingModeCalled")
+        let expectationDidUpdateDataAtCalled = XCTestExpectation(description: "expectationDidUpdateDataAtCalled")
+        let viewController = TestMasterViewController(expectationDidUpdateDataAt: expectationDidUpdateDataAtCalled, expectationDidFinishEditingModeCalled:expectationDidFinishEditingModeCalled)
+        self.emailListVM = EmailListViewModel(delegate: viewController, folderToShow: inbox)
+        emailListVM.startMonitoring()
+        emailListVM.markAsFlagged(indexPaths: [IndexPath(row: 0, section: 0)], isManualRowUpdate: false)
+        wait(for: [expectationDidFinishEditingModeCalled], timeout: TestUtil.waitTime)
+    }
+
+    func testMarkAsUnReadInEditMode() {
+        TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: inbox)
+        let expectationDidFinishEditingModeCalled = XCTestExpectation(description: "expectationDidFinishEditingModeCalled")
+        let expectationDidUpdateDataAtCalled = XCTestExpectation(description: "expectationDidUpdateDataAtCalled")
+        let viewController = TestMasterViewController(expectationDidUpdateDataAt: expectationDidUpdateDataAtCalled, expectationDidFinishEditingModeCalled:expectationDidFinishEditingModeCalled)
+        self.emailListVM = EmailListViewModel(delegate: viewController, folderToShow: inbox)
+        emailListVM.startMonitoring()
+        emailListVM.markAsFlagged(indexPaths: [IndexPath(row: 0, section: 0)], isManualRowUpdate: false)
+        wait(for: [expectationDidFinishEditingModeCalled], timeout: TestUtil.waitTime)
+    }
+
 }
 
 // MARK: - HELPER
@@ -322,22 +367,25 @@ extension EmailListViewModelTest {
 }
 
 private class TestMasterViewController: EmailListViewModelDelegate {
-var expectationUpdateViewCalled: XCTestExpectation?
+    var expectationUpdateViewCalled: XCTestExpectation?
     var excpectationDidInsertDataAtCalled: XCTestExpectation?
     var expectationDidUpdateDataAtCalled: XCTestExpectation?
     var expectationDidRemoveDataAtCalled: XCTestExpectation?
     var expectationDidFinishEditingModeCalled: XCTestExpectation?
+    var expectationDidMarkAsFlagged: XCTestExpectation?
 
     init(expectationUpdateView: XCTestExpectation? = nil,
          expectationDidInsertDataAt: XCTestExpectation? = nil,
          expectationDidUpdateDataAt: XCTestExpectation? = nil,
          expectationDidRemoveDataAt: XCTestExpectation? = nil,
-         expectationDidFinishEditingModeCalled: XCTestExpectation? = nil) {
+         expectationDidFinishEditingModeCalled: XCTestExpectation? = nil,
+         expectationDidMarkAsFlagged: XCTestExpectation? = nil) {
         self.expectationUpdateViewCalled = expectationUpdateView
         self.excpectationDidInsertDataAtCalled = expectationDidInsertDataAt
         self.expectationDidUpdateDataAtCalled = expectationDidUpdateDataAt
         self.expectationDidRemoveDataAtCalled = expectationDidRemoveDataAt
         self.expectationDidFinishEditingModeCalled = expectationDidFinishEditingModeCalled
+        self.expectationDidMarkAsFlagged = expectationDidMarkAsFlagged
     }
 
     func setToolbarItemsEnabledState(to newValue: Bool) {
