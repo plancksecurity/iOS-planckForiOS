@@ -355,6 +355,10 @@ final class EmailListViewController: UIViewController {
     }
 
     @IBAction private func cancelToolbar() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
         showStandardToolbar()
         lastSelectedIndexPath = nil
         tableView.setEditing(false, animated: true)
@@ -377,7 +381,7 @@ final class EmailListViewController: UIViewController {
             return
         }
         if let selectedItems = tableView.indexPathsForSelectedRows {
-            vm.markAsFlagged(indexPaths: selectedItems)
+            vm.markAsFlagged(indexPaths: selectedItems, isEditModeEnabled: true)
         }
     }
 
@@ -393,7 +397,7 @@ final class EmailListViewController: UIViewController {
             return
         }
         if let selectedItems = tableView.indexPathsForSelectedRows {
-            vm.markAsUnFlagged(indexPaths: selectedItems)
+            vm.markAsUnFlagged(indexPaths: selectedItems, isEditModeEnabled: true)
         }
     }
 
@@ -409,7 +413,7 @@ final class EmailListViewController: UIViewController {
             return
         }
         if let selectedItems = tableView.indexPathsForSelectedRows {
-            vm.markAsRead(indexPaths: selectedItems)
+            vm.markAsRead(indexPaths: selectedItems, isEditModeEnabled: true)
         }
     }
 
@@ -425,7 +429,7 @@ final class EmailListViewController: UIViewController {
             return
         }
         if let selectedItems = tableView.indexPathsForSelectedRows {
-            vm.markAsUnread(indexPaths: selectedItems)
+            vm.markAsUnread(indexPaths: selectedItems, isEditModeEnabled: true)
         }
     }
 
@@ -1076,9 +1080,9 @@ extension EmailListViewController {
             }
             cell.isSeen = !seenState
             if seenState {
-                vm.markAsUnread(indexPaths: [indexPath])
+                vm.markAsUnread(indexPaths: [indexPath], isEditModeEnabled: false)
             } else {
-                vm.markAsRead(indexPaths: [indexPath])
+                vm.markAsRead(indexPaths: [indexPath], isEditModeEnabled: false)
             }
         }
     }
@@ -1150,10 +1154,10 @@ extension EmailListViewController {
             return
         }
         if row.isSeen {
-            vm.markAsUnread(indexPaths: [indexPath])
+            vm.markAsUnread(indexPaths: [indexPath], isEditModeEnabled: false)
             cell.isSeen = false
         } else {
-            vm.markAsRead(indexPaths: [indexPath])
+            vm.markAsRead(indexPaths: [indexPath], isEditModeEnabled: false)
             cell.isSeen = true
         }
     }
@@ -1172,10 +1176,10 @@ extension EmailListViewController {
             return
         }
         if row.isFlagged {
-            vm.markAsUnFlagged(indexPaths: [indexPath], isManualRowUpdate: true)
+            vm.markAsUnFlagged(indexPaths: [indexPath], isEditModeEnabled: false)
             cell.isFlagged = false
         } else {
-            vm.markAsFlagged(indexPaths: [indexPath], isManualRowUpdate: true)
+            vm.markAsFlagged(indexPaths: [indexPath], isEditModeEnabled: false)
             cell.isFlagged = true
         }
     }

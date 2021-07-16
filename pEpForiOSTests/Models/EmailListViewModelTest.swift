@@ -274,7 +274,7 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         let viewController = TestMasterViewController(expectationDidUpdateDataAt: expectationDidUpdateDataAtCalled, expectationDidFinishEditingModeCalled:expectationDidFinishEditingModeCalled)
         self.emailListVM = EmailListViewModel(delegate: viewController, folderToShow: inbox)
         emailListVM.startMonitoring()
-        emailListVM.markAsUnFlagged(indexPaths: [IndexPath(row: 0, section: 0)], isManualRowUpdate: false)
+        emailListVM.markAsUnFlagged(indexPaths: [IndexPath(row: 0, section: 0)], isEditModeEnabled: true)
         wait(for: [expectationDidFinishEditingModeCalled], timeout: TestUtil.waitTime)
     }
 
@@ -285,7 +285,7 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         let viewController = TestMasterViewController(expectationDidUpdateDataAt: expectationDidUpdateDataAtCalled, expectationDidFinishEditingModeCalled:expectationDidFinishEditingModeCalled)
         self.emailListVM = EmailListViewModel(delegate: viewController, folderToShow: inbox)
         emailListVM.startMonitoring()
-        emailListVM.markAsFlagged(indexPaths: [IndexPath(row: 0, section: 0)], isManualRowUpdate: false)
+        emailListVM.markAsFlagged(indexPaths: [IndexPath(row: 0, section: 0)], isEditModeEnabled: true)
         wait(for: [expectationDidFinishEditingModeCalled], timeout: TestUtil.waitTime)
     }
 
@@ -296,7 +296,7 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         let viewController = TestMasterViewController(expectationDidUpdateDataAt: expectationDidUpdateDataAtCalled, expectationDidFinishEditingModeCalled:expectationDidFinishEditingModeCalled)
         self.emailListVM = EmailListViewModel(delegate: viewController, folderToShow: inbox)
         emailListVM.startMonitoring()
-        emailListVM.markAsFlagged(indexPaths: [IndexPath(row: 0, section: 0)], isManualRowUpdate: false)
+        emailListVM.markAsFlagged(indexPaths: [IndexPath(row: 0, section: 0)], isEditModeEnabled: true)
         wait(for: [expectationDidFinishEditingModeCalled], timeout: TestUtil.waitTime)
     }
 
@@ -307,7 +307,7 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         let viewController = TestMasterViewController(expectationDidUpdateDataAt: expectationDidUpdateDataAtCalled, expectationDidFinishEditingModeCalled:expectationDidFinishEditingModeCalled)
         self.emailListVM = EmailListViewModel(delegate: viewController, folderToShow: inbox)
         emailListVM.startMonitoring()
-        emailListVM.markAsFlagged(indexPaths: [IndexPath(row: 0, section: 0)], isManualRowUpdate: false)
+        emailListVM.markAsFlagged(indexPaths: [IndexPath(row: 0, section: 0)], isEditModeEnabled: true)
         wait(for: [expectationDidFinishEditingModeCalled], timeout: TestUtil.waitTime)
     }
 

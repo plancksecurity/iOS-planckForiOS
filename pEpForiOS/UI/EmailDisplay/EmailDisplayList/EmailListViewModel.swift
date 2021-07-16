@@ -247,36 +247,36 @@ class EmailListViewModel: EmailDisplayViewModel {
 
     /// Marks the message represented by the given `indexPaths` as flagged.
     /// - Parameter indexPaths: indexPaths of messages to set flagged.
-    /// - Parameter isManualRowUpdate: Indicates if it's a single row update or a bulk one
-    public func markAsFlagged(indexPaths: [IndexPath], isManualRowUpdate: Bool = false) {
-        self.updatesEnabled = !isManualRowUpdate
+    /// - Parameter isEditModeEnabled: Indicates if edit mode is enabled
+    public func markAsFlagged(indexPaths: [IndexPath], isEditModeEnabled: Bool) {
+        self.updatesEnabled = isEditModeEnabled
         setFlaggedValue(forIndexPath: indexPaths, newValue: true)
         self.updatesEnabled = true
     }
 
     /// Marks the message represented by the given `indexPaths` as not-flagged.
     /// - Parameter indexPaths: indexPaths of messages to unsset flag flag for.
-    /// - Parameter isManualRowUpdate: Indicates if it's a single row update or a bulk one
-    public func markAsUnFlagged(indexPaths: [IndexPath], isManualRowUpdate: Bool = false) {
-        self.updatesEnabled = !isManualRowUpdate
+    /// - Parameter isEditModeEnabled: Indicates if edit mode is enabled
+    public func markAsUnFlagged(indexPaths: [IndexPath], isEditModeEnabled: Bool) {
+        self.updatesEnabled = isEditModeEnabled
         setFlaggedValue(forIndexPath: indexPaths, newValue: false)
         self.updatesEnabled = true
     }
 
     /// Marks the message represented by the given `indexPaths` as seen.
     /// - Parameter indexPaths: indexPaths of messages to set seen.
-    /// - Parameter isManualRowUpdate: Indicates if it's a single row update or a bulk one
-    public func markAsRead(indexPaths: [IndexPath], isManualRowUpdate: Bool = false) {
-        self.updatesEnabled = !isManualRowUpdate
+    /// - Parameter isEditModeEnabled: Indicates if edit mode is enabled
+    public func markAsRead(indexPaths: [IndexPath], isEditModeEnabled: Bool) {
+        self.updatesEnabled = isEditModeEnabled
         setSeenValue(forIndexPath: indexPaths, newValue: true)
         self.updatesEnabled = true
     }
 
     /// Marks the message represented by the given `indexPaths` as not-seen.
     /// - Parameter indexPaths: indexPaths of messages to unsset seen flag for.
-    /// - Parameter isManualRowUpdate: Indicates if it's a single row update or a bulk one
-    public func markAsUnread(indexPaths: [IndexPath], isManualRowUpdate: Bool = false) {
-        self.updatesEnabled = !isManualRowUpdate
+    /// - Parameter isEditModeEnabled: Indicates if edit mode is enabled
+    public func markAsUnread(indexPaths: [IndexPath], isEditModeEnabled: Bool) {
+        self.updatesEnabled = isEditModeEnabled
         setSeenValue(forIndexPath: indexPaths, newValue: false)
         self.updatesEnabled = true
     }
