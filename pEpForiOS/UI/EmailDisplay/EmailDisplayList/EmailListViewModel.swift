@@ -20,6 +20,7 @@ protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
     func showEditDraftInComposeView()
     func select(itemAt indexPath: IndexPath)
     func deselect(itemAt indexPath: IndexPath)
+    func finishEditingMode()
 }
 
 // MARK: - EmailListViewModel
@@ -245,27 +246,39 @@ class EmailListViewModel: EmailDisplayViewModel {
     }
 
     /// Marks the message represented by the given `indexPaths` as flagged.
-    /// - Parameter indexPath: indexPaths of messages to set flagged.
-    public func markAsFlagged(indexPaths: [IndexPath]) {
+    /// - Parameter indexPaths: indexPaths of messages to set flagged.
+    /// - Parameter isManualRowUpdate: Indicates if it's a single row update or a bulk one
+    public func markAsFlagged(indexPaths: [IndexPath], isManualRowUpdate: Bool = false) {
+        self.updatesEnabled = !isManualRowUpdate
         setFlaggedValue(forIndexPath: indexPaths, newValue: true)
+        self.updatesEnabled = true
     }
 
     /// Marks the message represented by the given `indexPaths` as not-flagged.
-    /// - Parameter indexPath: indexPaths of messages to unsset flag flag for.
-    public func markAsUnFlagged(indexPaths: [IndexPath]) {
+    /// - Parameter indexPaths: indexPaths of messages to unsset flag flag for.
+    /// - Parameter isManualRowUpdate: Indicates if it's a single row update or a bulk one
+    public func markAsUnFlagged(indexPaths: [IndexPath], isManualRowUpdate: Bool = false) {
+        self.updatesEnabled = !isManualRowUpdate
         setFlaggedValue(forIndexPath: indexPaths, newValue: false)
+        self.updatesEnabled = true
     }
 
     /// Marks the message represented by the given `indexPaths` as seen.
-    /// - Parameter indexPath: indexPaths of messages to set seen.
-    public func markAsRead(indexPaths: [IndexPath]) {
+    /// - Parameter indexPaths: indexPaths of messages to set seen.
+    /// - Parameter isManualRowUpdate: Indicates if it's a single row update or a bulk one
+    public func markAsRead(indexPaths: [IndexPath], isManualRowUpdate: Bool = false) {
+        self.updatesEnabled = !isManualRowUpdate
         setSeenValue(forIndexPath: indexPaths, newValue: true)
+        self.updatesEnabled = true
     }
 
     /// Marks the message represented by the given `indexPaths` as not-seen.
-    /// - Parameter indexPath: indexPaths of messages to unsset seen flag for.
-    public func markAsUnread(indexPaths: [IndexPath]) {
+    /// - Parameter indexPaths: indexPaths of messages to unsset seen flag for.
+    /// - Parameter isManualRowUpdate: Indicates if it's a single row update or a bulk one
+    public func markAsUnread(indexPaths: [IndexPath], isManualRowUpdate: Bool = false) {
+        self.updatesEnabled = !isManualRowUpdate
         setSeenValue(forIndexPath: indexPaths, newValue: false)
+        self.updatesEnabled = true
     }
 
     /// Handles destructive button click for messages represented by given `indexPaths`.
@@ -483,7 +496,6 @@ extension EmailListViewModel {
 extension EmailListViewModel {
 
     private func setFlaggedValue(forIndexPath indexPaths: [IndexPath], newValue flagged: Bool) {
-        updatesEnabled = false
         let messages = indexPaths.map { messageQueryResults[$0.row] }
         Message.setFlaggedValue(to: messages, newValue: flagged)
     }
@@ -498,6 +510,16 @@ extension EmailListViewModel {
         let messages = indexPaths.map { messageQueryResults[$0.row] }
         delete(messages: messages)
         return messages
+    }
+
+    private func finishEditingMode() {
+        guard let delegate = delegate as? EmailListViewModelDelegate else {
+            Log.shared.errorAndCrash("No delegate")
+            return
+        }
+        DispatchQueue.main.async {
+            delegate.finishEditingMode()
+        }
     }
 }
 
@@ -576,7 +598,12 @@ extension EmailListViewModel: QueryResultsIndexPathRowDelegate {
 
     func didChangeResults() {
         if updatesEnabled {
-            delegate?.allUpdatesReceived(viewModel: self)
+            guard let del = delegate as? EmailListViewModelDelegate else {
+                Log.shared.errorAndCrash("Wrong Delegate")
+                return
+            }
+            del.finishEditingMode()
+            del.allUpdatesReceived(viewModel: self)
         } else {
             updatesEnabled = true
         }
@@ -596,3 +623,4 @@ extension EmailListViewModel: EmailDetailViewModelSelectionChangeDelegate {
         del.select(itemAt: indexPath)
     }
 }
+

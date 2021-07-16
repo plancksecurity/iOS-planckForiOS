@@ -829,6 +829,11 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 
 extension EmailListViewController: EmailListViewModelDelegate {
 
+    public func finishEditingMode() {
+        deselectAllCells()
+        cancelToolbar()
+    }
+
     public func showEditDraftInComposeView() {
         dismissAndPerform { [weak self] in
             guard let me = self else {
@@ -1167,10 +1172,10 @@ extension EmailListViewController {
             return
         }
         if row.isFlagged {
-            vm.markAsUnFlagged(indexPaths: [indexPath])
+            vm.markAsUnFlagged(indexPaths: [indexPath], isManualRowUpdate: true)
             cell.isFlagged = false
         } else {
-            vm.markAsFlagged(indexPaths: [indexPath])
+            vm.markAsFlagged(indexPaths: [indexPath], isManualRowUpdate: true)
             cell.isFlagged = true
         }
     }

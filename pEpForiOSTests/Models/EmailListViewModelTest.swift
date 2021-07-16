@@ -322,19 +322,22 @@ extension EmailListViewModelTest {
 }
 
 private class TestMasterViewController: EmailListViewModelDelegate {
-    var expectationUpdateViewCalled: XCTestExpectation?
+var expectationUpdateViewCalled: XCTestExpectation?
     var excpectationDidInsertDataAtCalled: XCTestExpectation?
     var expectationDidUpdateDataAtCalled: XCTestExpectation?
     var expectationDidRemoveDataAtCalled: XCTestExpectation?
+    var expectationDidFinishEditingModeCalled: XCTestExpectation?
 
     init(expectationUpdateView: XCTestExpectation? = nil,
          expectationDidInsertDataAt: XCTestExpectation? = nil,
          expectationDidUpdateDataAt: XCTestExpectation? = nil,
-         expectationDidRemoveDataAt: XCTestExpectation? = nil) {
+         expectationDidRemoveDataAt: XCTestExpectation? = nil,
+         expectationDidFinishEditingModeCalled: XCTestExpectation? = nil) {
         self.expectationUpdateViewCalled = expectationUpdateView
         self.excpectationDidInsertDataAtCalled = expectationDidInsertDataAt
         self.expectationDidUpdateDataAtCalled = expectationDidUpdateDataAt
         self.expectationDidRemoveDataAtCalled = expectationDidRemoveDataAt
+        self.expectationDidFinishEditingModeCalled = expectationDidFinishEditingModeCalled
     }
 
     func setToolbarItemsEnabledState(to newValue: Bool) {
@@ -343,6 +346,14 @@ private class TestMasterViewController: EmailListViewModelDelegate {
 
     func select(itemAt indexPath: IndexPath) {
         XCTFail()
+    }
+
+    func finishEditingMode() {
+        if let expectationDidFinishEditingModeCalled = expectationDidFinishEditingModeCalled {
+            expectationDidFinishEditingModeCalled.fulfill()
+        } else {
+            XCTFail()
+        }
     }
 
     func emailListViewModel(viewModel: EmailDisplayViewModel,

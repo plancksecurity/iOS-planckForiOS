@@ -24,12 +24,14 @@ class EmailListViewModel_DraftsPreviewTests: AccountDrivenTestBase {
     private var deselectDidHandle: TestBoolState = .unspecified
     private var showEmailDidHandle: TestBoolState = .unspecified
     private var showEditDraftInComposeViewDidHandle: TestBoolState = .unspecified
+    private var didFinishEditingMode: TestBoolState = .unspecified
 
     override func setUp() {
         selectDidHandle = .unspecified
         deselectDidHandle = .unspecified
         showEmailDidHandle = .unspecified
         showEditDraftInComposeViewDidHandle = .unspecified
+        didFinishEditingMode = .unspecified
     }
 
     override func tearDown() {
@@ -60,6 +62,7 @@ class EmailListViewModel_DraftsPreviewTests: AccountDrivenTestBase {
 }
 
 extension EmailListViewModel_DraftsPreviewTests: EmailListViewModelDelegate {
+
     func didMarkAsUnflagged(rows: [Int]) {
         didMarkAsUnflagged = .called
     }
@@ -90,6 +93,10 @@ extension EmailListViewModel_DraftsPreviewTests: EmailListViewModelDelegate {
 
     func showEditDraftInComposeView() {
         showEditDraftInComposeViewDidHandle = .called
+    }
+
+    func finishEditingMode() {
+        didFinishEditingMode = .called
     }
 
     // These tests are for different features.
