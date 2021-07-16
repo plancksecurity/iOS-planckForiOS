@@ -237,8 +237,7 @@ class EmailListViewModel: EmailDisplayViewModel {
 
     public func isReplyAllPossible(forRowAt indexPath: IndexPath) -> Bool {
         guard
-            let replyAllPossible = replyAllPossibleChecker(forItemAt: indexPath)?.isReplyAllPossible()
-            else {
+            let replyAllPossible = replyAllPossibleChecker(forItemAt: indexPath)?.isReplyAllPossible() else {
                 Log.shared.errorAndCrash("Invalid state")
                 return false
         }
