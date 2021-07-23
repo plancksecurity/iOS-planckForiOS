@@ -80,26 +80,20 @@ In a directory of your choice, do:
 mkdir src_pEp4iOS
 cd src_pEp4iOS
 
-git clone https://pep-security.lu/gitlab/misc/libetpan.git
-pushd libetpan
-git checkout ios_1.1.200
-popd
-
+git clone http://pep-security.lu/gitlab/misc/changesets_script.git
 git clone https://pep-security.lu/gitlab/iOS/OpenSSL-for-iPhone.git
 git clone https://pep-security.lu/gitlab/iOS/SwipeCellKit.git/
 git clone https://pep-security.lu/gitlab/iOS/CocoaLumberjack
 git clone https://pep-security.lu/gitlab/iOS/AppAuth-iOS.git
 git clone https://pep-security.lu/gitlab/misc/ldns.git
 git clone https://pep-security.lu/gitlab/misc/sqlite.git
-
 git clone https://gitea.pep.foundation/pEp.foundation/libAccountSettings
-
 git clone https://gitea.pep.foundation/buff/common-dependency-build-helpers-4-apple-hardware.git
+git clone https://gitea.pep.foundation/pEp.foundation/libetpan.git
+git clone https://gitea.pep.foundation/pEp.foundation/pEpEngine
 git clone http://pep-security.lu/gitlab/iOS/pep-toolbox.git
 git clone https://gitea.pep.foundation/pep.foundation/Pantomime.git
-git clone https://gitea.pep.foundation/pEp.foundation/pEpEngine
 git clone https://gitea.pep.foundation/pep.foundation/pEpObjCAdapter.git
-git clone http://pep-security.lu/gitlab/misc/changesets_script.git
 
 git clone https://pep-security.lu/gitlab/iOS/pep4ios.git
 ```
