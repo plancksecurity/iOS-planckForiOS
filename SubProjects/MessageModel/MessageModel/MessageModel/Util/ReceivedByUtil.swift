@@ -37,7 +37,11 @@ struct ReceivedByUtil {
         var deliveredToIdentity: CdIdentity? = nil
         var receivedIdentity: CdIdentity? = nil
         for key in headersDict.keys {
-            if key == "X-Original-To" {
+            guard let keyString = key as? String else {
+                Log.shared.errorAndCrash("Issue casting")
+                continue
+            }
+            if keyString == "X-Original-To" {
                 guard let value = headersDict[key] else {
                     Log.shared.errorAndCrash("key without value?")
                     continue
@@ -48,7 +52,7 @@ struct ReceivedByUtil {
                 }
                 xOriginalToIdentity = CdIdentity.updateOrCreate(withAddress: email,
                                                                 context: context)
-            } else if key == "Delivered-To" {
+            } else if keyString == "Delivered-To" {
                 guard let value = headersDict[key] else {
                     Log.shared.errorAndCrash("key without value?")
                     continue
@@ -59,7 +63,7 @@ struct ReceivedByUtil {
                 }
                 deliveredToIdentity = CdIdentity.updateOrCreate(withAddress: email,
                                                                 context: context)
-            } else if key == "Received" {
+            } else if keyString == "Received" {
                 guard let value = headersDict[key] as? String else {
                     Log.shared.errorAndCrash("key without value?")
                     continue
