@@ -26,10 +26,8 @@ sudo port install gmake
 sudo port install autoconf
 sudo port install libtool
 sudo port install automake
-
 sudo port install wget
-
-sudo port install capnproto
+sudo port install gsed
 
 curl https://sh.rustup.rs -sSf | sh
 
