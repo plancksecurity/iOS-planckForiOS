@@ -99,6 +99,8 @@
 		15679F022292CADA0051DCC3 /* CdAccount+Trusted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15679F012292CAD90051DCC3 /* CdAccount+Trusted.swift */; };
 		15679F052292CB2C0051DCC3 /* Account+FetchingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15679F042292CB2C0051DCC3 /* Account+FetchingTest.swift */; };
 		156FF8CA22994A47002A2566 /* RealFolderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156FF8C922994A47002A2566 /* RealFolderProtocol.swift */; };
+		1574D15A268C8374003A5161 /* ReceivedByUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D159268C8374003A5161 /* ReceivedByUtil.swift */; };
+		1574D15B268C8689003A5161 /* ReceivedByUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D159268C8374003A5161 /* ReceivedByUtil.swift */; };
 		15795B9F22C0F48F00010938 /* CdFolder+ImapFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15795B9E22C0F48F00010938 /* CdFolder+ImapFolder.swift */; };
 		15795C0422C60E3400010938 /* Persistable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15795C0322C60E3400010938 /* Persistable.swift */; };
 		15795C0722C60E9B00010938 /* SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15795C0622C60E9B00010938 /* SessionAware.swift */; };
@@ -819,6 +821,7 @@
 		15679F042292CB2C0051DCC3 /* Account+FetchingTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Account+FetchingTest.swift"; sourceTree = "<group>"; };
 		156BCD6F223273FB00A80C62 /* refactor0.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = refactor0.1.xcdatamodel; sourceTree = "<group>"; };
 		156FF8C922994A47002A2566 /* RealFolderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealFolderProtocol.swift; sourceTree = "<group>"; };
+		1574D159268C8374003A5161 /* ReceivedByUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedByUtil.swift; sourceTree = "<group>"; };
 		15795B9E22C0F48F00010938 /* CdFolder+ImapFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+ImapFolder.swift"; sourceTree = "<group>"; };
 		15795C0022C50F8A00010938 /* 0.0.50.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 0.0.50.xcdatamodel; sourceTree = "<group>"; };
 		15795C0322C60E3400010938 /* Persistable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistable.swift; sourceTree = "<group>"; };
@@ -2426,6 +2429,7 @@
 				430CDA842296BC7A00AAC37F /* CdMessage+KeySync.swift */,
 				15F136F024B619D600A7F810 /* PEPPassphraseProvider.swift */,
 				431995C124DACCD3004B2811 /* KeySyncHandshakeResult+PEPSyncHandshakeResult.swift */,
+				1574D159268C8374003A5161 /* ReceivedByUtil.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -3182,6 +3186,7 @@
 				434C19E625D3E4CD00F622DB /* Account.swift in Sources */,
 				434C238225D6C05400F622DB /* OAuth2AccessTokenProtocol.swift in Sources */,
 				43BDDDBA25DD619C00FC0C68 /* FolderType+FolderName.swift in Sources */,
+				1574D15B268C8689003A5161 /* ReceivedByUtil.swift in Sources */,
 				434C229B25D69CAC00F622DB /* CdAttachment+Extension.swift in Sources */,
 				43BDDD7625DD427600FC0C68 /* CdMessage+FakeMessage.swift in Sources */,
 				43BDEC6025E3FC4200FC0C68 /* Notification+KeySyncState.swift in Sources */,
@@ -3320,6 +3325,7 @@
 				439CADD72563BD0F0043077E /* Message+IMAP.swift in Sources */,
 				8BE460921DB7B5FC008D63C6 /* Stack.swift in Sources */,
 				43EA4873221E9518006E8F83 /* EncryptAndSMTPSendMessageOperation.swift in Sources */,
+				1574D15A268C8374003A5161 /* ReceivedByUtil.swift in Sources */,
 				43F484441E8130180028BC1A /* CdImapFlags+Extension.swift in Sources */,
 				4304FB7F22B76F9800DE20C9 /* DeleteOldSyncMailsOperation.swift in Sources */,
 				156FF8CA22994A47002A2566 /* RealFolderProtocol.swift in Sources */,
