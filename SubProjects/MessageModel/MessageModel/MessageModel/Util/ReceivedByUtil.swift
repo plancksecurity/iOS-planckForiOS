@@ -47,7 +47,7 @@ struct ReceivedByUtil {
                     continue
                 }
                 guard let email = try? validatedEmailString(from: value) else {
-                    Log.shared.errorAndCrash("Somthing is unexpected with value")
+                    Log.shared.warn("Somthing is unexpected with value")
                     continue
                 }
                 xOriginalToIdentity = CdIdentity.updateOrCreate(withAddress: email,
@@ -58,7 +58,7 @@ struct ReceivedByUtil {
                     continue
                 }
                 guard let email = try? validatedEmailString(from: value) else {
-                    Log.shared.errorAndCrash("Somthing is unexpected with value")
+                    Log.shared.warn("Somthing is unexpected with value")
                     continue
                 }
                 deliveredToIdentity = CdIdentity.updateOrCreate(withAddress: email,
@@ -110,9 +110,11 @@ struct ReceivedByUtil {
 
     static private func validatedEmailString(from cwHeadersValue: Any) throws -> String {
         guard let email = cwHeadersValue as? String else {
+            Log.shared.warn("Is not the expected type")
             throw "Is not the expected type"
         }
         guard email.isProbablyValidEmail() else {
+            Log.shared.warn("Seems not to be a valid mail address: %@", email)
             throw "Seems not to be a valid mail address: \(email)"
         }
         return email
