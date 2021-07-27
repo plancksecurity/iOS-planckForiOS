@@ -257,6 +257,9 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
                                     completion(error)
         }) { identity in
             if let fps = fingerprint {
+                // In case we are trying to undo a mistrust (already mistrusted the key of an
+                // Identity), the Engine does not return an FPR, so the caller has to pass it as an
+                // argument.
                 identity.fingerPrint = fps
             }
             PEPSession().keyResetTrust(identity,
