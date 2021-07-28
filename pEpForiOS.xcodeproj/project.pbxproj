@@ -457,6 +457,8 @@
 		5B09DB4725B71247005D8125 /* SettingChangeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B09DB4625B71247005D8125 /* SettingChangeDelegate.swift */; };
 		5B0B339D24AC85E800CABD0B /* UIUtils+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */; };
 		5B0B339F24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0B339E24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift */; };
+		5B0FDAD6268249B6000420A7 /* UIImage+Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0FDAD5268249B6000420A7 /* UIImage+Attachment.swift */; };
+		5B0FDAD7268249B6000420A7 /* UIImage+Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0FDAD5268249B6000420A7 /* UIImage+Attachment.swift */; };
 		5B102FAB2652A1F400A758D2 /* MessageHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B102FAA2652A1F400A758D2 /* MessageHeaderCell.swift */; };
 		5B102FAD2652AF3400A758D2 /* MessageHeaderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B102FAC2652AF3400A758D2 /* MessageHeaderCellViewModel.swift */; };
 		5B102FB92658008200A758D2 /* MessageHeaderCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B102FB82658008200A758D2 /* MessageHeaderCellViewModelTest.swift */; };
@@ -513,6 +515,8 @@
 		5BCD37DD269F3CBF0052A030 /* UIImageView+ContactImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCD37DB269F3CBF0052A030 /* UIImageView+ContactImage.swift */; };
 		5BCFE663252470F4001323C3 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCFE662252470F4001323C3 /* ComposeViewController.swift */; };
 		5BD4466024F65DE300422594 /* EmailListViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4465F24F65DE300422594 /* EmailListViewController+Keyboard.swift */; };
+		5BD93BEE2673AB7C000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD93BED2673AB7C000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift */; };
+		5BD93BEF2673AB7D000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD93BED2673AB7C000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift */; };
 		5BE35A9A249139DD00AC605C /* AccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */; };
 		5BE35AA424913B4700AC605C /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35AA324913B4700AC605C /* SettingsViewModel.swift */; };
 		5BEAECB525370C3E0082AAC6 /* String+Mailto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEAECB425370C3E0082AAC6 /* String+Mailto.swift */; };
@@ -1097,6 +1101,7 @@
 		5B09DB4625B71247005D8125 /* SettingChangeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingChangeDelegate.swift; sourceTree = "<group>"; };
 		5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+Passphrase.swift"; sourceTree = "<group>"; };
 		5B0B339E24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGPKeyImportSettingSwitchTableViewCell.swift; sourceTree = "<group>"; };
+		5B0FDAD5268249B6000420A7 /* UIImage+Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Attachment.swift"; sourceTree = "<group>"; };
 		5B102FAA2652A1F400A758D2 /* MessageHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHeaderCell.swift; sourceTree = "<group>"; };
 		5B102FAC2652AF3400A758D2 /* MessageHeaderCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHeaderCellViewModel.swift; sourceTree = "<group>"; };
 		5B102FB82658008200A758D2 /* MessageHeaderCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHeaderCellViewModelTest.swift; sourceTree = "<group>"; };
@@ -1159,6 +1164,7 @@
 		5BCFE662252470F4001323C3 /* ComposeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		5BD4465F24F65DE300422594 /* EmailListViewController+Keyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EmailListViewController+Keyboard.swift"; sourceTree = "<group>"; };
 		5BD917E1252DD64D0092B30F /* MailtoTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailtoTest.swift; sourceTree = "<group>"; };
+		5BD93BED2673AB7C000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ComposeViewModel+AttachmentSizeUtil.swift"; sourceTree = "<group>"; };
 		5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewController.swift; sourceTree = "<group>"; };
 		5BE35AA324913B4700AC605C /* SettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		5BEAECB425370C3E0082AAC6 /* String+Mailto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Mailto.swift"; sourceTree = "<group>"; };
@@ -1419,6 +1425,7 @@
 			children = (
 				152A399721905C3B00D9F8E4 /* ComposeViewModelState.swift */,
 				152A399821905C3B00D9F8E4 /* ComposeViewModel.swift */,
+				5BD93BED2673AB7C000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift */,
 				5BBEA011252F062300B34979 /* ComposeViewModel+Factory.swift */,
 				152A399921905C3B00D9F8E4 /* ComposeViewModel+InitData.swift */,
 			);
@@ -2882,6 +2889,8 @@
 		B7DB7FC22215C484003968DA /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B7DB7FDB221ADDBD003968DA /* UIImageView+Extension.swift */,
+				5B0FDAD5268249B6000420A7 /* UIImage+Attachment.swift */,
 				B7DB7FD9221ADDAF003968DA /* UIBarButtonItem+Extension.swift */,
 				5BCD37DB269F3CBF0052A030 /* UIImageView+ContactImage.swift */,
 				3A7F89BA252B3D2400A38460 /* UIBarButtonItem+ComposeButton.swift */,
@@ -3216,6 +3225,7 @@
 				434C19F425D3E61B00F622DB /* NSAttributedString+Html.swift in Sources */,
 				434C1A9C25D40DEE00F622DB /* URL+MailTo.swift in Sources */,
 				434A6C6E25D2A3DC00179335 /* RecipientTextViewModel+TextAttachment.swift in Sources */,
+				5BD93BEF2673AB7D000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift in Sources */,
 				434C1A0325D3EFF500F622DB /* BasicSaxParser.swift in Sources */,
 				43BDE05425DE81D300FC0C68 /* utf8.c in Sources */,
 				434C19C725D3E11100F622DB /* SuggestTableViewController.swift in Sources */,
@@ -3272,6 +3282,7 @@
 				43BDE04E25DE817900FC0C68 /* cmark_ctype.c in Sources */,
 				43BDE05725DE820C00FC0C68 /* iterator.c in Sources */,
 				434C19C125D3E07000F622DB /* AppSettingsProtocol.swift in Sources */,
+				5B0FDAD7268249B6000420A7 /* UIImage+Attachment.swift in Sources */,
 				4300CF6725ECF4F4003DBEB4 /* ShareViewModel.swift in Sources */,
 				434C1AD225D412F300F622DB /* TrustManagementViewModel.swift in Sources */,
 				434C1ABD25D4112B00F622DB /* SecureWebViewUrlClickHandlerProtocol.swift in Sources */,
@@ -3421,6 +3432,7 @@
 				5B1C0E1823FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift in Sources */,
 				152A39E721905C3E00D9F8E4 /* RecipientTextViewModel.swift in Sources */,
 				4351C2D41F4441190053381F /* iterator.c in Sources */,
+				5BD93BEE2673AB7C000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift in Sources */,
 				5BC0738D25B218DB00ECE3FC /* TextFieldWithoutSelection.swift in Sources */,
 				5B3C13BF23D8AF2E00FC0A53 /* SettingsTableViewController.swift in Sources */,
 				152A39D721905C3E00D9F8E4 /* BodyCellViewModel+TextAttachment.swift in Sources */,
@@ -3570,6 +3582,7 @@
 				371D6420231D17F80036AE62 /* TutorialWizardViewController.swift in Sources */,
 				15FE1F761FE122D900CC2D97 /* CreditsViewController.swift in Sources */,
 				152A39942190587200D9F8E4 /* TextViewInTableViewScrollUtil.swift in Sources */,
+				5B0FDAD6268249B6000420A7 /* UIImage+Attachment.swift in Sources */,
 				1521B791241BDCD9000EAE57 /* UIUtils+Alerts.swift in Sources */,
 				5BF39DA8257A737A00A00A96 /* AccountSettingsHelper.swift in Sources */,
 				1579348F246D499600E2D8D2 /* PGPKeyImportSettingViewModel.swift in Sources */,

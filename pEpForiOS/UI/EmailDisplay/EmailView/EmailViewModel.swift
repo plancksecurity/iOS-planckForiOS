@@ -71,6 +71,24 @@ class EmailViewModel {
         return EmailViewModel(message: message)
     }
 
+    /// Handle the copy action.
+    ///
+    /// - Parameter width: The max width the copied element may have
+    public func handleCopy(maxWidth: CGFloat) {
+        // Just change default behaviour if an image is being copied
+        guard let text = UIPasteboard.general.string,
+              let cid = text.extractCid(),
+              let attachment = Attachment.by(cid: cid),
+              let data = attachment.data,
+              let image = UIImage(data: data) else {
+            // Valid case: The user might have something else in the pasteboard.
+            return
+        }
+        // Resize the image
+        let margin: CGFloat = 10.0
+        UIPasteboard.general.image = image.resizeIfExceedMaxWidth(maxWidth: maxWidth - margin)
+    }
+
     private var shouldHideExternalContent: Bool = true
 
     // Indicates if the External Content View has to be shown.
