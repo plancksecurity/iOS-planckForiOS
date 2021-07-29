@@ -12,7 +12,7 @@ pEp-Translate: ffdbdef89d1aa13d0dd834e00121b0a783bf277a
 pEpEngine: dc4dc6a838e5242764a5c52ef4b95a40946c2b5f tags/Release_2.1.49
 pEpObjCAdapter: d10bfa0ac2cb4ff24e802ded6bb98f0847938396
 pep-toolbox: 09c7b58a841a9b6fda9dbfae33bfe6d831686b1f
-pep4ios: ac759320b81ae3c9e5eb3a00919a9a0187b84075
+pep4ios: e8049c91027a2465d3ce42479aaba2fce4233c90 tags/v1.1.264
 pep_for_ios_intern: 5bb17eb1255e341f22a0c36dd110a659e7e94309
 sqlite: ad9c42f7cc31015d5702043eb02f127f183a660c
 libiconv: 01b38e6c9fc240ca17afb32f31804785bc910b73
