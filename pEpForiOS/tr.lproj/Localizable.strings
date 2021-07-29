@@ -812,9 +812,6 @@
 /* Client certificate import: corrupted file error alert message */
 "The file could not be imported" = "Dosya içe aktarılamadı";
 
-/* Privacy Status Explanation */
-"The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:" = "Üst çubuktaki simge, o iletinin tüm iletişim ortaklarının en düşük ortak paydası olan iletinin Gizlilik Durumunu yansıtır, örneğin:";
-
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "Mesaj gönderilemedi. Lütfen daha sonra tekrar deneyiniz.";
 
