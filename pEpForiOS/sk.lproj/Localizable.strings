@@ -840,9 +840,6 @@
 /* Client certificate import: corrupted file error alert message */
 "The file could not be imported" = "Súbor sa nepodarilo importovať";
 
-/* Privacy Status Explanation */
-"The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:" = "Ikona v hornom paneli odráža Stav súkromia správy, ktorá je najnižším najnižším spoločným menovateľom všetkých komunikačných partnerov tejto správy, napríklad:";
-
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "Správu nebolo možné odoslať. Skúste neskôr prosím.";
 

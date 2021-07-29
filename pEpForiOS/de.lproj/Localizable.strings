@@ -914,9 +914,6 @@
 /* Message when asking user for confirmation about importing keys */
 "The fingerprint of the selected key is:\n%1$@\n%2$@\n\nImport and use this key?" = "Der Fingerabdruck des gewählten Schlüssels ist:\n%1$@\n%2$@\n\nSoll dieser Schlüssel importiert und verwendet werden?";
 
-/* Privacy Status Explanation */
-"The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:" = "Das Symbol in der oberen Leiste zeigt den Datenschutzstatus der Nachricht an. Dies ist der kleinste gemeinsame Nenner aller Kommunikationspartner dieser Nachricht. Beispiel:";
-
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "Die Nachricht konnte nicht versandt werden. Bitte versuchen Sie es später noch einmal.";
 
