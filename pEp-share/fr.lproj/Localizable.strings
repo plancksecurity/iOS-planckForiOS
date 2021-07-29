@@ -34,6 +34,7 @@
    Cancel trust change to be undone
    compose email cancel
    Default cancel button text
+   Downscale Images ActionSheet - Cancel
    OK button title
    TrustManagementView: trustword language selector cancel button label
    UIUtils.showActionSheetWithContactOptions.button.title Cancel */

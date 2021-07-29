@@ -812,9 +812,6 @@
 /* Client certificate import: corrupted file error alert message */
 "The file could not be imported" = "El fitxer no s'ha pogut importar";
 
-/* Privacy Status Explanation */
-"The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:" = "La icona de la barra superior reflecteix l'estat de privadesa del missatge, que és el denominador comú més baix més baix de tots els socis de comunicació d'aquest missatge, per exemple:";
-
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "No s'ha pogut enviar el missatge. Siusplau, intenta-ho més tard.";
 

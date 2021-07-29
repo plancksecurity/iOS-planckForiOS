@@ -2889,7 +2889,6 @@
 		B7DB7FC22215C484003968DA /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				B7DB7FDB221ADDBD003968DA /* UIImageView+Extension.swift */,
 				5B0FDAD5268249B6000420A7 /* UIImage+Attachment.swift */,
 				B7DB7FD9221ADDAF003968DA /* UIBarButtonItem+Extension.swift */,
 				5BCD37DB269F3CBF0052A030 /* UIImageView+ContactImage.swift */,
