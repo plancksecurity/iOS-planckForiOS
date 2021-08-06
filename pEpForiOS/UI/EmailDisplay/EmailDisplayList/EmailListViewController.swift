@@ -355,10 +355,6 @@ final class EmailListViewController: UIViewController {
     }
 
     @IBAction private func cancelToolbar() {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return
-        }
         showStandardToolbar()
         lastSelectedIndexPath = nil
         tableView.setEditing(false, animated: true)
@@ -1155,11 +1151,10 @@ extension EmailListViewController {
         }
         if row.isSeen {
             vm.markAsUnread(indexPaths: [indexPath], isEditModeEnabled: false)
-            cell.isSeen = false
         } else {
             vm.markAsRead(indexPaths: [indexPath], isEditModeEnabled: false)
-            cell.isSeen = true
         }
+        updateRowAt(indexPath: indexPath)
     }
 
     private func flagAction(forCellAt indexPath: IndexPath) {
@@ -1171,17 +1166,29 @@ extension EmailListViewController {
             Log.shared.errorAndCrash("VM not found")
             return
         }
+        if row.isFlagged {
+            vm.markAsUnFlagged(indexPaths: [indexPath], isEditModeEnabled: false)
+        } else {
+            vm.markAsFlagged(indexPaths: [indexPath], isEditModeEnabled: false)
+        }
+        updateRowAt(indexPath: indexPath)
+    }
+
+    private func updateRowAt(indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+
+        guard let viewModel = vm.viewModel(for: indexPath.row) else {
+            Log.shared.errorAndCrash("No MessageVM for indexPath!")
+            return
+        }
         guard let cell = tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
             Log.shared.errorAndCrash("No cell for indexPath!")
             return
         }
-        if row.isFlagged {
-            vm.markAsUnFlagged(indexPaths: [indexPath], isEditModeEnabled: false)
-            cell.isFlagged = false
-        } else {
-            vm.markAsFlagged(indexPaths: [indexPath], isEditModeEnabled: false)
-            cell.isFlagged = true
-        }
+        cell.configure(for: viewModel)
     }
 
     private func deleteAction(forCellAt indexPath: IndexPath) {
