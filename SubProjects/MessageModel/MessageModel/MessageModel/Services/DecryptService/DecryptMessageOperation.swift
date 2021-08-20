@@ -9,7 +9,7 @@
 import CoreData
 
 import pEpIOSToolbox
-import PEPObjCAdapterTypes_iOS
+import PEPObjCTypes_iOS
 import PEPObjCAdapter_iOS
 
 class DecryptMessageOperation: BaseOperation {

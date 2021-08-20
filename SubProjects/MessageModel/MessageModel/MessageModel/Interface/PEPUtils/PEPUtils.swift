@@ -10,9 +10,8 @@ import Foundation
 import CoreData
 
 import PantomimeFramework
-import PEPObjCAdapterTypes_iOS
+import PEPObjCTypes_iOS
 import PEPObjCAdapter_iOS
-import PEPObjCAdapterTypes_iOS
 
 #if EXT_SHARE
 import pEpIOSToolboxForExtensions

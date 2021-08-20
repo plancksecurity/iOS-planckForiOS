@@ -140,6 +140,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4E575864268329A20084F02D"
+               BuildableName = "libPEPObjCTypes_iOS.a"
+               BlueprintName = "PEPObjCTypes_iOS"
+               ReferencedContainer = "container:../../src_pEpMime4macOS/pEpObjCAdapter/Subprojects/PEPObjCTypes/PEPObjCTypes.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "1543DC65257943CE0041EFB5"
                BuildableName = "libPEPObjCAdapter_iOS.a"
                BlueprintName = "PEPObjCAdapter_iOS"
@@ -225,9 +239,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4E5758BE26833D140084F02D"
-               BuildableName = "PEPObjCAdapterTypesTests_iOS.xctest"
-               BlueprintName = "PEPObjCAdapterTypesTests_iOS"
-               ReferencedContainer = "container:../pEpObjCAdapter/Subprojects/PEPObjCAdapterTypes/PEPObjCAdapterTypes.xcodeproj">
+               BuildableName = "PEPObjCTypesTests_iOS.xctest"
+               BlueprintName = "PEPObjCTypesTests_iOS"
+               ReferencedContainer = "container:../../src_pEpMime4macOS/pEpObjCAdapter/Subprojects/PEPObjCTypes/PEPObjCTypes.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -340,16 +354,6 @@
                BuildableName = "pEpObjCAdapterTests.xctest"
                BlueprintName = "pEpObjCAdapterTests"
                ReferencedContainer = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4E5758BE26833D140084F02D"
-               BuildableName = "PEPObjCAdapterTypesTests_iOS.xctest"
-               BlueprintName = "PEPObjCAdapterTypesTests_iOS"
-               ReferencedContainer = "container:../pEpObjCAdapter/Subprojects/PEPObjCAdapterTypes/PEPObjCAdapterTypes.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
