@@ -11,7 +11,7 @@ import MessageModel
 import pEpIOSToolbox
 
 ///Delegate protocol to communicate to the Account Settings View Controller
-protocol AccountSettingsViewModelDelegate: class {
+protocol AccountSettingsViewModelDelegate: AnyObject {
     /// Changes loading view visibility
     func setLoadingView(visible: Bool)
     /// Shows an alert
@@ -370,12 +370,6 @@ extension AccountSettingsViewModel {
                                           text: "",
                                           cellIdentifier: AccountSettingsHelper.CellsIdentifiers.oAuthCell)
                 rows.append(oAuthRow)
-
-            } else {
-                // password
-                let fakePassword = "JustAPassword"
-                let passwordRow = getDisplayRow(type : .password, value: fakePassword)
-                rows.append(passwordRow)
             }
             
             let signature = account.signature
@@ -447,6 +441,14 @@ extension AccountSettingsViewModel {
 
         let usernameRow = getDisplayRow(type : .username, value: server.credentials.loginName)
         rows.append(usernameRow)
+
+        // OAuth
+        if !isOAuth2 {
+            // password
+            let fakePassword = "JustAPassword"
+            let passwordRow = getDisplayRow(type : .password, value: fakePassword)
+            rows.append(passwordRow)
+        }
     }
 
     /// Generate and return the display row.
