@@ -311,7 +311,6 @@
 		434C1A8025D40B0400F622DB /* SplitViewHandlingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B0E8F224094BB1003A34DC /* SplitViewHandlingProtocol.swift */; };
 		434C1A8325D40B4000F622DB /* PEPSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D3CD3D20B58976009ABBC9 /* PEPSplitViewController.swift */; };
 		434C1A8625D40B6E00F622DB /* UIStoryboard+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437E9BA8237AFB7F00E9A847 /* UIStoryboard+Constants.swift */; };
-		434C1A8925D40BEA00F622DB /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150B8EB21FCEB93D00374438 /* UIUtils.swift */; };
 		434C1A9125D40CEC00F622DB /* UIUtils+ShowError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C1A9025D40CEC00F622DB /* UIUtils+ShowError.swift */; };
 		434C1A9625D40D6500F622DB /* UIUtils+ActionSheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521B792241BDD33000EAE57 /* UIUtils+ActionSheets.swift */; };
 		434C1A9925D40DB700F622DB /* Mailto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A7189252CC4A500436FCF /* Mailto.swift */; };
@@ -472,6 +471,10 @@
 		5B41C6082418F15100C268CE /* TutorialStep3iPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41C6072418F15100C268CE /* TutorialStep3iPhoneViewController.swift */; };
 		5B41F9CF25CD517700E55EDF /* MockAppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41F9CE25CD517700E55EDF /* MockAppSettings.swift */; };
 		5B4A718A252CC4A500436FCF /* Mailto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A7189252CC4A500436FCF /* Mailto.swift */; };
+		5B5BBC2B26A8240500430F73 /* UIUtils+CalendarEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5BBC2A26A8240500430F73 /* UIUtils+CalendarEvents.swift */; };
+		5B5BBC2D26A8383600430F73 /* UIBarButtonItemWithCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5BBC2C26A8383600430F73 /* UIBarButtonItemWithCallback.swift */; };
+		5B5BBC3026A856AE00430F73 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150B8EB21FCEB93D00374438 /* UIUtils.swift */; };
+		5B5BBC3126A859A500430F73 /* EKEventStoreUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCD37A1269D924C0052A030 /* EKEventStoreUtil.swift */; };
 		5B5C2A8825D28CDB00F9C18A /* UIPopoverPresentationControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5C2A8725D28CDB00F9C18A /* UIPopoverPresentationControllerProtocol.swift */; };
 		5B5C2A9225D2902C00F9C18A /* MessageAttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5C2A9125D2902C00F9C18A /* MessageAttachmentCell.swift */; };
 		5B5C2A9C25D2918800F9C18A /* AttachmentCellBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5C2A9B25D2918800F9C18A /* AttachmentCellBackgroundView.swift */; };
@@ -503,6 +506,9 @@
 		5BBE80CF24B733C0008DE0E5 /* AccountSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE80CA24B733C0008DE0E5 /* AccountSettingsTableViewCell.swift */; };
 		5BBEA012252F062300B34979 /* ComposeViewModel+Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBEA011252F062300B34979 /* ComposeViewModel+Factory.swift */; };
 		5BC0738D25B218DB00ECE3FC /* TextFieldWithoutSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC0738C25B218DB00ECE3FC /* TextFieldWithoutSelection.swift */; };
+		5BC0F93826A9953D0089760D /* UIUtils+SystemSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC0F93726A9953D0089760D /* UIUtils+SystemSettings.swift */; };
+		5BC0F94D26AAAB640089760D /* CalendarEventDescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC0F94C26AAAB640089760D /* CalendarEventDescriptionTableViewCell.swift */; };
+		5BC0F96726AEE8ED0089760D /* EdgeInsetLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC0F96626AEE8ED0089760D /* EdgeInsetLabel.swift */; };
 		5BC14ABF23E2EE78005F0AF3 /* TrustManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14ABE23E2EE78005F0AF3 /* TrustManagementViewModel.swift */; };
 		5BC14AC923E47A55005F0AF3 /* TrustManagementViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14AC823E47A55005F0AF3 /* TrustManagementViewModelTest.swift */; };
 		5BC14AF023EB19B5005F0AF3 /* TrustManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14AEF23EB19B5005F0AF3 /* TrustManagementViewController.swift */; };
@@ -511,6 +517,11 @@
 		5BC8C72325ADDAF1000AAC7A /* TwoLinesButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC8C72225ADDAF1000AAC7A /* TwoLinesButton.swift */; };
 		5BC9F1E226385974002377B6 /* EmailViewModel+CollectionViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC9F1E126385974002377B6 /* EmailViewModel+CollectionViewViewModel.swift */; };
 		5BC9F1E6263888C3002377B6 /* Message+Recipients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC9F1E5263888C3002377B6 /* Message+Recipients.swift */; };
+		5BCD37A2269D924C0052A030 /* EKEventStoreUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCD37A1269D924C0052A030 /* EKEventStoreUtil.swift */; };
+		5BCD37C0269EE9C00052A030 /* CalendarEventBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCD37BF269EE9C00052A030 /* CalendarEventBannerViewController.swift */; };
+		5BCD37C3269EFA5C0052A030 /* CalendarEventBannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCD37C2269EFA5C0052A030 /* CalendarEventBannerViewModel.swift */; };
+		5BCD37D2269F236D0052A030 /* CornerRadiusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCD37D1269F236D0052A030 /* CornerRadiusView.swift */; };
+		5BCD37D3269F236D0052A030 /* CornerRadiusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCD37D1269F236D0052A030 /* CornerRadiusView.swift */; };
 		5BCD37DC269F3CBF0052A030 /* UIImageView+ContactImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCD37DB269F3CBF0052A030 /* UIImageView+ContactImage.swift */; };
 		5BCD37DD269F3CBF0052A030 /* UIImageView+ContactImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCD37DB269F3CBF0052A030 /* UIImageView+ContactImage.swift */; };
 		5BCFE663252470F4001323C3 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCFE662252470F4001323C3 /* ComposeViewController.swift */; };
@@ -1115,6 +1126,8 @@
 		5B41C6072418F15100C268CE /* TutorialStep3iPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep3iPhoneViewController.swift; sourceTree = "<group>"; };
 		5B41F9CE25CD517700E55EDF /* MockAppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAppSettings.swift; sourceTree = "<group>"; };
 		5B4A7189252CC4A500436FCF /* Mailto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mailto.swift; sourceTree = "<group>"; };
+		5B5BBC2A26A8240500430F73 /* UIUtils+CalendarEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+CalendarEvents.swift"; sourceTree = "<group>"; };
+		5B5BBC2C26A8383600430F73 /* UIBarButtonItemWithCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItemWithCallback.swift; sourceTree = "<group>"; };
 		5B5C2A8725D28CDB00F9C18A /* UIPopoverPresentationControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPopoverPresentationControllerProtocol.swift; sourceTree = "<group>"; };
 		5B5C2A9125D2902C00F9C18A /* MessageAttachmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageAttachmentCell.swift; sourceTree = "<group>"; };
 		5B5C2A9B25D2918800F9C18A /* AttachmentCellBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentCellBackgroundView.swift; sourceTree = "<group>"; };
@@ -1152,6 +1165,9 @@
 		5BBE80CA24B733C0008DE0E5 /* AccountSettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSettingsTableViewCell.swift; path = pEpForiOS/UI/Settings/Setting/AccountSettings/Cells/AccountSettingsTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		5BBEA011252F062300B34979 /* ComposeViewModel+Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ComposeViewModel+Factory.swift"; sourceTree = "<group>"; };
 		5BC0738C25B218DB00ECE3FC /* TextFieldWithoutSelection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldWithoutSelection.swift; sourceTree = "<group>"; };
+		5BC0F93726A9953D0089760D /* UIUtils+SystemSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+SystemSettings.swift"; sourceTree = "<group>"; };
+		5BC0F94C26AAAB640089760D /* CalendarEventDescriptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventDescriptionTableViewCell.swift; sourceTree = "<group>"; };
+		5BC0F96626AEE8ED0089760D /* EdgeInsetLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeInsetLabel.swift; sourceTree = "<group>"; };
 		5BC14ABE23E2EE78005F0AF3 /* TrustManagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementViewModel.swift; sourceTree = "<group>"; };
 		5BC14AC823E47A55005F0AF3 /* TrustManagementViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementViewModelTest.swift; sourceTree = "<group>"; };
 		5BC14AEF23EB19B5005F0AF3 /* TrustManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementViewController.swift; sourceTree = "<group>"; };
@@ -1160,6 +1176,10 @@
 		5BC8C72225ADDAF1000AAC7A /* TwoLinesButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoLinesButton.swift; sourceTree = "<group>"; };
 		5BC9F1E126385974002377B6 /* EmailViewModel+CollectionViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailViewModel+CollectionViewViewModel.swift"; sourceTree = "<group>"; };
 		5BC9F1E5263888C3002377B6 /* Message+Recipients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+Recipients.swift"; sourceTree = "<group>"; };
+		5BCD37A1269D924C0052A030 /* EKEventStoreUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKEventStoreUtil.swift; sourceTree = "<group>"; };
+		5BCD37BF269EE9C00052A030 /* CalendarEventBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventBannerViewController.swift; sourceTree = "<group>"; };
+		5BCD37C2269EFA5C0052A030 /* CalendarEventBannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventBannerViewModel.swift; sourceTree = "<group>"; };
+		5BCD37D1269F236D0052A030 /* CornerRadiusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusView.swift; sourceTree = "<group>"; };
 		5BCD37DB269F3CBF0052A030 /* UIImageView+ContactImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+ContactImage.swift"; sourceTree = "<group>"; };
 		5BCFE662252470F4001323C3 /* ComposeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		5BD4465F24F65DE300422594 /* EmailListViewController+Keyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EmailListViewController+Keyboard.swift"; sourceTree = "<group>"; };
@@ -1379,6 +1399,9 @@
 			children = (
 				15F136F224B6293C00A7F810 /* UserInputProvider */,
 				150B8EB21FCEB93D00374438 /* UIUtils.swift */,
+				5BC0F93726A9953D0089760D /* UIUtils+SystemSettings.swift */,
+				5B5BBC2A26A8240500430F73 /* UIUtils+CalendarEvents.swift */,
+				5BCD37A1269D924C0052A030 /* EKEventStoreUtil.swift */,
 				434C1A9025D40CEC00F622DB /* UIUtils+ShowError.swift */,
 				1521B790241BDCD9000EAE57 /* UIUtils+Alerts.swift */,
 				5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */,
@@ -2340,8 +2363,10 @@
 		43AA82511E9B925000ABD5A8 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				5BC0738C25B218DB00ECE3FC /* TextFieldWithoutSelection.swift */,
 				5BB7C74824D85BD600D5F328 /* PEPWebviewController */,
+				5BC0738C25B218DB00ECE3FC /* TextFieldWithoutSelection.swift */,
+				5BC0F96626AEE8ED0089760D /* EdgeInsetLabel.swift */,
+				5BC0F93A26A996380089760D /* Custom UIBarButtonItem */,
 				1521B78B241BDA66000EAE57 /* UIUtils */,
 				B7DB7FC22215C484003968DA /* Extensions */,
 				15D43998216E695500EB3933 /* AccountPicker */,
@@ -2438,6 +2463,7 @@
 		43ED53611CC77F95006AB156 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				5BCD37C1269EE9DD0052A030 /* CalendarEventBanner */,
 				B706C0EF1EA8C378006B2F6C /* StoryboardFiles */,
 				158A564E2403F00A003C0D7E /* ClientCertificateManagement */,
 				15146C8F237F030A00D69495 /* BaseClasses */,
@@ -2642,6 +2668,25 @@
 				5BB7C74624D85A3A00D5F328 /* PEPWebviewController.swift */,
 			);
 			path = PEPWebviewController;
+			sourceTree = "<group>";
+		};
+		5BC0F93A26A996380089760D /* Custom UIBarButtonItem */ = {
+			isa = PBXGroup;
+			children = (
+				5B5BBC2C26A8383600430F73 /* UIBarButtonItemWithCallback.swift */,
+			);
+			path = "Custom UIBarButtonItem";
+			sourceTree = "<group>";
+		};
+		5BCD37C1269EE9DD0052A030 /* CalendarEventBanner */ = {
+			isa = PBXGroup;
+			children = (
+				5BCD37BF269EE9C00052A030 /* CalendarEventBannerViewController.swift */,
+				5BC0F94C26AAAB640089760D /* CalendarEventDescriptionTableViewCell.swift */,
+				5BCD37C2269EFA5C0052A030 /* CalendarEventBannerViewModel.swift */,
+				5BCD37D1269F236D0052A030 /* CornerRadiusView.swift */,
+			);
+			path = CalendarEventBanner;
 			sourceTree = "<group>";
 		};
 		5BE35AA5249219AD00AC605C /* Cells */ = {
@@ -3188,6 +3233,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BCD37D3269F236D0052A030 /* CornerRadiusView.swift in Sources */,
 				434C19E325D3E3F700F622DB /* ComposeUtil.swift in Sources */,
 				43BDE03F25DE7D1A00FC0C68 /* node.c in Sources */,
 				434C1A9625D40D6500F622DB /* UIUtils+ActionSheets.swift in Sources */,
@@ -3228,6 +3274,7 @@
 				434C1A0325D3EFF500F622DB /* BasicSaxParser.swift in Sources */,
 				43BDE05425DE81D300FC0C68 /* utf8.c in Sources */,
 				434C19C725D3E11100F622DB /* SuggestTableViewController.swift in Sources */,
+				5B5BBC3126A859A500430F73 /* EKEventStoreUtil.swift in Sources */,
 				439C62D82611D41F001893BD /* Appearance.swift in Sources */,
 				434C1ADB25D413AE00F622DB /* IdentityImageTool.swift in Sources */,
 				434C19EA25D3E52F00F622DB /* Account+Extension.swift in Sources */,
@@ -3238,7 +3285,6 @@
 				434A6C7925D2A3EE00179335 /* WrappedCell.swift in Sources */,
 				43BDE03C25DE7D0E00FC0C68 /* blocks.c in Sources */,
 				434A6C5625D2A3B100179335 /* AccountCellViewModel.swift in Sources */,
-				434C1A8925D40BEA00F622DB /* UIUtils.swift in Sources */,
 				434C1B0825D4290700F622DB /* URL+Extensions.swift in Sources */,
 				434C19B725D3DC8C00F622DB /* NSAttributedString+pEp.swift in Sources */,
 				434C1B4025D433D600F622DB /* HtmlTagParser.swift in Sources */,
@@ -3275,6 +3321,7 @@
 				434C19DD25D3E35E00F622DB /* SuggestViewModel.swift in Sources */,
 				434C1A3D25D400D500F622DB /* Constants.swift in Sources */,
 				4375B2EC2625855A0049A0C0 /* KeyInputView.swift in Sources */,
+				5B5BBC3026A856AE00430F73 /* UIUtils.swift in Sources */,
 				43BDE04525DE7F0800FC0C68 /* houdini_href_e.c in Sources */,
 				434A6C5925D2A3B500179335 /* AttachmentCell.swift in Sources */,
 				434C19C425D3E09C00F622DB /* String+PEPSignature.swift in Sources */,
@@ -3327,6 +3374,7 @@
 				4351C2D11F4441190053381F /* houdini_html_u.c in Sources */,
 				B70A3C401E817CFA0036876F /* FolderViewModel.swift in Sources */,
 				0038494A20D25576008000EA /* ProfilePictureComposerProtocol.swift in Sources */,
+				5BCD37C0269EE9C00052A030 /* CalendarEventBannerViewController.swift in Sources */,
 				1543B6A822ABDAAE002B59AB /* Identity+pEp.swift in Sources */,
 				1546CBF6252B53CC00A7AA7D /* CreditsWebViewController.swift in Sources */,
 				152A39D821905C3E00D9F8E4 /* BodyCellViewModel.swift in Sources */,
@@ -3344,6 +3392,7 @@
 				150DF6D02052A13700A9DCF7 /* SecureWebViewController.swift in Sources */,
 				375BA08A238BFC4100BBFE7C /* ManualAccountSetupContainerView.swift in Sources */,
 				B764D0222451A21E001C4BCA /* ErrorSubscriber.swift in Sources */,
+				5BC0F93826A9953D0089760D /* UIUtils+SystemSettings.swift in Sources */,
 				4351C2D71F4441190053381F /* node.c in Sources */,
 				434C1AA625D40F3B00F622DB /* UIUtils+DraftsPreview.swift in Sources */,
 				154660D42334E2FC008D2137 /* Message+SecurityBadge.swift in Sources */,
@@ -3360,6 +3409,7 @@
 				43498CDB200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift in Sources */,
 				B7DB7FDA221ADDAF003968DA /* UIBarButtonItem+Extension.swift in Sources */,
 				002375D320DCDC7300663961 /* FullMessageCell+SecureWebViewControllerDelegate.swift in Sources */,
+				5BC0F94D26AAAB640089760D /* CalendarEventDescriptionTableViewCell.swift in Sources */,
 				4351C2C91F4441190053381F /* buffer.c in Sources */,
 				152A39C621905C3E00D9F8E4 /* ComposeViewModelState.swift in Sources */,
 				5BB7C73B24D2EC6300D5F328 /* UnifiedInbox.swift in Sources */,
@@ -3410,6 +3460,7 @@
 				3A2119E1241251A80030C3E4 /* ClientCertificateManagementTableViewCell.swift in Sources */,
 				B716056020D3ECC900A733D6 /* MoveToFolderTableViewController.swift in Sources */,
 				5BCFE663252470F4001323C3 /* ComposeViewController.swift in Sources */,
+				5BCD37C3269EFA5C0052A030 /* CalendarEventBannerViewModel.swift in Sources */,
 				43269D202552AA04001E18C6 /* ConnectionTransport+LocalizedString.swift in Sources */,
 				1543B6B022ABF53C002B59AB /* KeySyncDeviceGroupUtil.swift in Sources */,
 				15874BCB2127493E00A3A4A6 /* AccountVerificationResultDelegate.swift in Sources */,
@@ -3476,6 +3527,7 @@
 				4351C2C81F4441190053381F /* blocks.c in Sources */,
 				5B102FAD2652AF3400A758D2 /* MessageHeaderCellViewModel.swift in Sources */,
 				5BEB569225E69BEE00304A38 /* TutorialStep2iPadViewController.swift in Sources */,
+				5BC0F96726AEE8ED0089760D /* EdgeInsetLabel.swift in Sources */,
 				3A796BAB242CC31F00083BB5 /* NSAttributedString+Html.swift in Sources */,
 				3A796BA9242CC26100083BB5 /* HtmlConversions.swift in Sources */,
 				15BBBC6C1FD05F4300B9DCC8 /* DisplayUserError.swift in Sources */,
@@ -3511,6 +3563,7 @@
 				5B5C2A9F25D293F300F9C18A /* EmailViewModel.swift in Sources */,
 				433E7438225B564400B84CD9 /* Account+Extension.swift in Sources */,
 				005A21FB20CAA5F50082D19F /* ThreadedEmailViewModel.swift in Sources */,
+				5B5BBC2B26A8240500430F73 /* UIUtils+CalendarEvents.swift in Sources */,
 				1546CBFA252B5B9F00A7AA7D /* CreditsViewModel.swift in Sources */,
 				5B818DC325E3FEC2004D04F0 /* TutorialStep1iPadViewController.swift in Sources */,
 				3A085A6E23FAF4D50013C63E /* PEPHeaderView.swift in Sources */,
@@ -3525,6 +3578,7 @@
 				37156E4E234DCE2B00845A28 /* UIViewController+LoadingInterface.swift in Sources */,
 				15874BC72127493E00A3A4A6 /* SettingDefaultAccountTableViewController.swift in Sources */,
 				4388A0E22008F813008CB98D /* (null) in Sources */,
+				5BCD37D2269F236D0052A030 /* CornerRadiusView.swift in Sources */,
 				152A39D021905C3E00D9F8E4 /* AttachmentCell.swift in Sources */,
 				0033C08120D7F3C600224E61 /* ThreadViewController+ViewModelDelegate.swift in Sources */,
 				4351C2DB1F4441190053381F /* utf8.c in Sources */,
@@ -3571,6 +3625,7 @@
 				49D3BECC20F8F7330043E05D /* LoginViewController.swift in Sources */,
 				43425EDB1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift in Sources */,
 				150B8E991FCDACBB00374438 /* AccountSettingsUserInputError.swift in Sources */,
+				5B5BBC2D26A8383600430F73 /* UIBarButtonItemWithCallback.swift in Sources */,
 				4351C2DE1F4457620053381F /* NSString+Markdown.m in Sources */,
 				43306EBE1FE125B50045DD00 /* OAuth2Authorization.swift in Sources */,
 				434C1A9125D40CEC00F622DB /* UIUtils+ShowError.swift in Sources */,
@@ -3611,6 +3666,7 @@
 				3705096822CF6AD100CB73D6 /* KeySyncHandshakeViewController.swift in Sources */,
 				152A39CF21905C3E00D9F8E4 /* ComposeUtil.swift in Sources */,
 				152A39C821905C3E00D9F8E4 /* ComposeViewModel+InitData.swift in Sources */,
+				5BCD37A2269D924C0052A030 /* EKEventStoreUtil.swift in Sources */,
 				0038494C20D2587F008000EA /* PepPictureComposer.swift in Sources */,
 				5BB7C73724D2EC0800D5F328 /* UnifiedDraft.swift in Sources */,
 				4356FFE721354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift in Sources */,

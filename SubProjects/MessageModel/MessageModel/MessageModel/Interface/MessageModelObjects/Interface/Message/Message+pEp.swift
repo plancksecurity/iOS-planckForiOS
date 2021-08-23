@@ -53,4 +53,9 @@ extension Message {
     public var viewableNotInlinedAttachments: [Attachment] {
         return viewableAttachments().filter{ !$0.isInlined && $0.fileName != nil && !$0.isCidContained }
     }
+
+    /// - returns: All the attachments that must be shown to the user
+    public func icsAttachments() -> [Attachment] {
+        return attachments.filter { $0.isICS }
+    }
 }

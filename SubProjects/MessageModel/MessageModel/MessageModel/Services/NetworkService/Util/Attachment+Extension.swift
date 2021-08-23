@@ -38,6 +38,11 @@ extension Attachment {
         return mimeType == "text/plain" && isInlined
     }
 
+    /// Indicates if it's a calendar attachment
+    var isICS: Bool {
+        return mimeType == MimeTypeUtils.MimeType.ics.rawValue
+    }
+
     /// Indicates if the attachment is Cid contained.
     public var isCidContained: Bool {
         var cidContained = false
