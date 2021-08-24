@@ -385,8 +385,8 @@ extension EditableAccountSettingsViewModel {
             throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
         }
         guard let imapPassword = rowValue(sectionType: .imap, rowType: .password) else {
-            let msg = NSLocalizedString("Choose IMAP Password.", comment: "Empty IMAP Password")
-            throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
+            let msg = NSLocalizedString("Password must not be empty.", comment: "Empty IMAP Password")
+            throw AccountSettingsUserInputError.invalidInputServerPassword(localizedMessage: msg)
         }
 
         // SMTP
@@ -407,8 +407,8 @@ extension EditableAccountSettingsViewModel {
             throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
         }
         guard let smtpPassword = rowValue(sectionType: .smtp, rowType: .password) else {
-            let msg = NSLocalizedString("Choose SMTP Password.", comment: "Empty SMTP Password")
-            throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
+            let msg = NSLocalizedString("Password must not be empty.", comment: "Empty SMTP Password")
+            throw AccountSettingsUserInputError.invalidInputServerPassword(localizedMessage: msg)
         }
 
         // Account

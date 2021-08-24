@@ -57,7 +57,7 @@ extension AccountSettingsUserInputError: LocalizedError {
         case .invalidInputServerPassword(let message):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Invalid server: %1$@", comment: "Invalid input for server"),
+                    "Invalid password: %1$@", comment: "Invalid input for server password"),
                 message)
         }
     }
