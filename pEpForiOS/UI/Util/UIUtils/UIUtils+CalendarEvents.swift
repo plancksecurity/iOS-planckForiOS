@@ -16,26 +16,27 @@ import pEpIOSToolbox
 import EventKit
 import EventKitUI
 
-//MARK: - Edit
+//MARK: - EKEventEditViewController
 
 extension UIUtils {
 
     public static func presentEditEventCalendarView(event: ICSEvent,
                                                     eventEditViewDelegate: EKEventEditViewDelegate,
+                                                    delegate: UINavigationControllerDelegate,
                                                     eventDetailPresentationCallback: @escaping EKEventStoreUtil.EventsCalendarManagerResponse,
-                                                    removeEventCallback: @escaping EKEventStoreUtil.EventsCalendarManagerResponse,
                                                     addEventCallback: @escaping EKEventStoreUtil.EventsCalendarManagerResponse) {
+        let eventStoreUtil = EKEventStoreUtil()
         let authStatus = eventStoreUtil.getAuthorizationStatus()
         switch authStatus {
         case .authorized:
             eventDetailPresentationCallback(.success(true))
-            presentEditEventCalendarDetailModal(event: event, editViewDelegate: eventEditViewDelegate, removeEventCallback: removeEventCallback, addEventCallback: addEventCallback)
+            presentEditEventCalendarDetailModal(event: event, editViewDelegate: eventEditViewDelegate, delegate: delegate, addEventCallback: addEventCallback)
         case .notDetermined:
             // Auth is not determined
             // We request access to the calendar
             eventStoreUtil.requestAccess { (accessGranted, error) in
                 if accessGranted {
-                    presentEditEventCalendarDetailModal(event: event, editViewDelegate: eventEditViewDelegate, removeEventCallback: removeEventCallback, addEventCallback: addEventCallback)
+                    presentEditEventCalendarDetailModal(event: event, editViewDelegate: eventEditViewDelegate, delegate: delegate, addEventCallback: addEventCallback)
                     eventDetailPresentationCallback(.success(true))
                 } else {
                     eventDetailPresentationCallback(.failure(.calendarAccessDeniedOrRestricted))
@@ -56,19 +57,21 @@ extension UIUtils {
 
     private static func presentEditEventCalendarDetailModal(event: ICSEvent,
                                                             editViewDelegate: EKEventEditViewDelegate,
-                                                            removeEventCallback: @escaping EKEventStoreUtil.EventsCalendarManagerResponse,
+                                                            delegate: UINavigationControllerDelegate,
                                                             addEventCallback: @escaping EKEventStoreUtil.EventsCalendarManagerResponse) {
         DispatchQueue.main.async {
+            let eventStoreUtil = EKEventStoreUtil()
             let ekEvent = eventStoreUtil.convert(event: event)
-            let ekEditEventViewController = getEkEditEventViewController(ekEvent: ekEvent, editViewDelegate: editViewDelegate, eventStore: eventStoreUtil.eventStore)
+            let ekEditEventViewController = getEkEditEventViewController(ekEvent: ekEvent, editViewDelegate: editViewDelegate, delegate: delegate, eventStore: eventStoreUtil.eventStore)
             UIApplication.currentlyVisibleViewController().present(ekEditEventViewController, animated: true, completion: nil)
         }
     }
 
-    private static func getEkEditEventViewController(ekEvent: EKEvent, editViewDelegate: EKEventEditViewDelegate, eventStore: EKEventStore) -> EKEventEditViewController {
+    private static func getEkEditEventViewController(ekEvent: EKEvent, editViewDelegate: EKEventEditViewDelegate, delegate: UINavigationControllerDelegate, eventStore: EKEventStore) -> EKEventEditViewController {
         let eventViewController = EKEventEditViewController()
         eventViewController.editViewDelegate = editViewDelegate
         eventViewController.eventStore = eventStore
+        eventViewController.delegate = delegate
         eventViewController.event = ekEvent
         eventViewController.title = ekEvent.title
         return eventViewController

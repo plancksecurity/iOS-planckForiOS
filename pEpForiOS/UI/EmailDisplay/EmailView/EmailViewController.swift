@@ -11,12 +11,7 @@ import QuickLook
 
 import EventKit
 import EventKitUI
-
-#if EXT_SHARE
-import pEpIOSToolboxForExtensions
-#else
 import pEpIOSToolbox
-#endif
 
 protocol EmailViewControllerDelegate: AnyObject {
     func openQLPreviewController(toShowDocumentWithUrl url: URL)

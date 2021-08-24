@@ -472,9 +472,6 @@
 		5B41F9CF25CD517700E55EDF /* MockAppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41F9CE25CD517700E55EDF /* MockAppSettings.swift */; };
 		5B4A718A252CC4A500436FCF /* Mailto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A7189252CC4A500436FCF /* Mailto.swift */; };
 		5B5BBC2B26A8240500430F73 /* UIUtils+CalendarEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5BBC2A26A8240500430F73 /* UIUtils+CalendarEvents.swift */; };
-		5B5BBC2D26A8383600430F73 /* UIBarButtonItemWithCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5BBC2C26A8383600430F73 /* UIBarButtonItemWithCallback.swift */; };
-		5B5BBC3026A856AE00430F73 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150B8EB21FCEB93D00374438 /* UIUtils.swift */; };
-		5B5BBC3126A859A500430F73 /* EKEventStoreUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCD37A1269D924C0052A030 /* EKEventStoreUtil.swift */; };
 		5B5C2A8825D28CDB00F9C18A /* UIPopoverPresentationControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5C2A8725D28CDB00F9C18A /* UIPopoverPresentationControllerProtocol.swift */; };
 		5B5C2A9225D2902C00F9C18A /* MessageAttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5C2A9125D2902C00F9C18A /* MessageAttachmentCell.swift */; };
 		5B5C2A9C25D2918800F9C18A /* AttachmentCellBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5C2A9B25D2918800F9C18A /* AttachmentCellBackgroundView.swift */; };
@@ -485,6 +482,7 @@
 		5B71016E243619CF00BAE405 /* TrustedServerSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B71016D243619CF00BAE405 /* TrustedServerSettingsViewController.swift */; };
 		5B7235D125E0013100033F88 /* TutorialStep0iPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7235D025E0013100033F88 /* TutorialStep0iPadViewController.swift */; };
 		5B74C00D249B7EA300802704 /* FolderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B74C00C249B7EA300802704 /* FolderTableViewCell.swift */; };
+		5B75F8F426D4FB5D0097B6D5 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150B8EB21FCEB93D00374438 /* UIUtils.swift */; };
 		5B818DC325E3FEC2004D04F0 /* TutorialStep1iPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B818DC225E3FEC2004D04F0 /* TutorialStep1iPadViewController.swift */; };
 		5B884B44257A90FE006B2022 /* EditableAccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B884B43257A90FE006B2022 /* EditableAccountSettingsViewController.swift */; };
 		5B885DB225E7B0350027DD24 /* Tutorial_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B885DB425E7B0350027DD24 /* Tutorial_iPad.storyboard */; };
@@ -1127,7 +1125,6 @@
 		5B41F9CE25CD517700E55EDF /* MockAppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAppSettings.swift; sourceTree = "<group>"; };
 		5B4A7189252CC4A500436FCF /* Mailto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mailto.swift; sourceTree = "<group>"; };
 		5B5BBC2A26A8240500430F73 /* UIUtils+CalendarEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+CalendarEvents.swift"; sourceTree = "<group>"; };
-		5B5BBC2C26A8383600430F73 /* UIBarButtonItemWithCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItemWithCallback.swift; sourceTree = "<group>"; };
 		5B5C2A8725D28CDB00F9C18A /* UIPopoverPresentationControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPopoverPresentationControllerProtocol.swift; sourceTree = "<group>"; };
 		5B5C2A9125D2902C00F9C18A /* MessageAttachmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageAttachmentCell.swift; sourceTree = "<group>"; };
 		5B5C2A9B25D2918800F9C18A /* AttachmentCellBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentCellBackgroundView.swift; sourceTree = "<group>"; };
@@ -2366,7 +2363,6 @@
 				5BB7C74824D85BD600D5F328 /* PEPWebviewController */,
 				5BC0738C25B218DB00ECE3FC /* TextFieldWithoutSelection.swift */,
 				5BC0F96626AEE8ED0089760D /* EdgeInsetLabel.swift */,
-				5BC0F93A26A996380089760D /* Custom UIBarButtonItem */,
 				1521B78B241BDA66000EAE57 /* UIUtils */,
 				B7DB7FC22215C484003968DA /* Extensions */,
 				15D43998216E695500EB3933 /* AccountPicker */,
@@ -2668,14 +2664,6 @@
 				5BB7C74624D85A3A00D5F328 /* PEPWebviewController.swift */,
 			);
 			path = PEPWebviewController;
-			sourceTree = "<group>";
-		};
-		5BC0F93A26A996380089760D /* Custom UIBarButtonItem */ = {
-			isa = PBXGroup;
-			children = (
-				5B5BBC2C26A8383600430F73 /* UIBarButtonItemWithCallback.swift */,
-			);
-			path = "Custom UIBarButtonItem";
 			sourceTree = "<group>";
 		};
 		5BCD37C1269EE9DD0052A030 /* CalendarEventBanner */ = {
@@ -3274,7 +3262,6 @@
 				434C1A0325D3EFF500F622DB /* BasicSaxParser.swift in Sources */,
 				43BDE05425DE81D300FC0C68 /* utf8.c in Sources */,
 				434C19C725D3E11100F622DB /* SuggestTableViewController.swift in Sources */,
-				5B5BBC3126A859A500430F73 /* EKEventStoreUtil.swift in Sources */,
 				439C62D82611D41F001893BD /* Appearance.swift in Sources */,
 				434C1ADB25D413AE00F622DB /* IdentityImageTool.swift in Sources */,
 				434C19EA25D3E52F00F622DB /* Account+Extension.swift in Sources */,
@@ -3321,7 +3308,7 @@
 				434C19DD25D3E35E00F622DB /* SuggestViewModel.swift in Sources */,
 				434C1A3D25D400D500F622DB /* Constants.swift in Sources */,
 				4375B2EC2625855A0049A0C0 /* KeyInputView.swift in Sources */,
-				5B5BBC3026A856AE00430F73 /* UIUtils.swift in Sources */,
+				5B75F8F426D4FB5D0097B6D5 /* UIUtils.swift in Sources */,
 				43BDE04525DE7F0800FC0C68 /* houdini_href_e.c in Sources */,
 				434A6C5925D2A3B500179335 /* AttachmentCell.swift in Sources */,
 				434C19C425D3E09C00F622DB /* String+PEPSignature.swift in Sources */,
@@ -3625,7 +3612,6 @@
 				49D3BECC20F8F7330043E05D /* LoginViewController.swift in Sources */,
 				43425EDB1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift in Sources */,
 				150B8E991FCDACBB00374438 /* AccountSettingsUserInputError.swift in Sources */,
-				5B5BBC2D26A8383600430F73 /* UIBarButtonItemWithCallback.swift in Sources */,
 				4351C2DE1F4457620053381F /* NSString+Markdown.m in Sources */,
 				43306EBE1FE125B50045DD00 /* OAuth2Authorization.swift in Sources */,
 				434C1A9125D40CEC00F622DB /* UIUtils+ShowError.swift in Sources */,

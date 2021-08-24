@@ -8,16 +8,8 @@
 
 import UIKit
 
-#if EXT_SHARE
-import MessageModelForAppExtensions
-import pEpIOSToolboxForExtensions
-#else
 import MessageModel
 import pEpIOSToolbox
-#endif
-
-import EventKit
-import EventKitUI
 
 protocol CalendarEventBannerViewModelDelegate: AnyObject {
     /// Dismiss the banner
@@ -54,8 +46,6 @@ class CalendarEventsBannerViewModel: NSObject {
             return
         }
     }
-
-    //MARK: - UI
 
     /// Indicates wheater or not the banner should be shown
     public var shouldShowEventsBanner: Bool {
@@ -100,96 +90,8 @@ class CalendarEventsBannerViewModel: NSObject {
         return NSLocalizedString("1 Event found", comment: "Calendar Event Banner title - singular")
     }
 
-    //MARK: - User Input
-
-    /// Handle the view button was tapped
-    public func handleViewButtonTapped(event: ICSEvent) {
-        presentEditEventCalendarView(event: event)
-    }
-
     /// Handle the close button was tapped
     public func handleCloseButtonTapped() {
         delegate?.dismiss()
     }
-}
-
-//MARK: - EKEventEditViewDelegate
-
-extension CalendarEventsBannerViewModel: EKEventEditViewDelegate {
-    func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
-        controller.dismiss(animated: true, completion: nil)
-    }
-}
-
-//MARK: - EKEventViewDelegate
-
-extension CalendarEventsBannerViewModel: EKEventViewDelegate {
-    func eventViewController(_ controller: EKEventViewController, didCompleteWith action: EKEventViewAction) {
-        controller.dismiss(animated: true, completion: nil)
-    }
-}
-
-//MARK: - Private
-
-extension CalendarEventsBannerViewModel {
-
-    private func showErrorAlert(error: EKEventStoreUtil.CalendarError) {
-        UIUtils.showTwoButtonAlert(withTitle:  NSLocalizedString("Error", comment: "Error title"),
-                                   message: error.errorDescription,
-                                   cancelButtonText: NSLocalizedString("Cancel", comment: "Cancel - button title"),
-                                   positiveButtonText: NSLocalizedString("Settings", comment: "Settings - button title"),
-                                   cancelButtonAction: { [weak self] in
-                                    guard let me = self else {
-                                        Log.shared.errorAndCrash("Lost myself")
-                                        return
-                                    }
-                                    me.showSettings()
-                                   }, positiveButtonAction: { })
-    }
-
-    private func showSettings() {
-        UIUtils.openSystemSettings()
-    }
-}
-
-//MARK: - Edit
-
-extension CalendarEventsBannerViewModel {
-    private func presentEditEventCalendarView(event: ICSEvent) {
-        UIUtils.presentEditEventCalendarView(event: event, eventEditViewDelegate: self) { [weak self] eventDetailPresentationResult in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            switch eventDetailPresentationResult {
-            case .success:
-                Log.shared.info("The calendar view was succesfully presented. Nothing to do")
-            case .failure(let error):
-                me.showErrorAlert(error: error)
-            }
-        } removeEventCallback:{ [weak self] removeEventResult in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            switch removeEventResult {
-            case .success:
-                Log.shared.info("An Event was succesfully removed. Nothing to do")
-            case .failure(let error):
-                me.showErrorAlert(error: error)
-            }
-        } addEventCallback: { [weak self] addEventResult in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            switch addEventResult {
-            case .success:
-                Log.shared.info("An Event was successfully added. Nothing to do")
-            case .failure(let error):
-                me.showErrorAlert(error: error)
-            }
-        }
-    }
-
 }

@@ -8,6 +8,8 @@
 
 import UIKit
 
+// This UIView facilitates to define the corner radius of through storyboard.
+// To use it just drag and drop a UIView, change the class to use this one, and setup cornerRadius in the attribute inspector.
 @IBDesignable
 class CornerRadiusView: UIView {
 

@@ -19,8 +19,6 @@ import pEpIOSToolbox
 
 class UIUtils {
 
-    static let eventStoreUtil = EKEventStoreUtil()
-
     /// Shows the navigation controller passed by parameter
     /// - Parameter navigationController: The Navigation Controller to present.
     public static func show(navigationController: UINavigationController) {

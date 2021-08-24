@@ -8,6 +8,8 @@
 
 import UIKit
 import pEpIOSToolbox
+import EventKit
+import EventKitUI
 
 class CalendarEventBannerViewController: UIViewController {
 
@@ -35,16 +37,12 @@ extension CalendarEventBannerViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let vm = viewModel else {
-            //Valid case: the VM isn't loaded yet. 
+            Log.shared.errorAndCrash("VM Not found")
             return 0
         }
         return vm.numberOfEvents
     }
-}
 
-// MARK: - UITableViewDelegate
-
-extension CalendarEventBannerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
@@ -53,7 +51,7 @@ extension CalendarEventBannerViewController: UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CalendarEventDescriptionTableViewCell.cellIdentifier, for: indexPath) as? CalendarEventDescriptionTableViewCell else {
             return UITableViewCell()
         }
-        
+
         let event = vm.events[indexPath.row]
         let cellViewModel = ICSEventCellViewModel(event: event)
         cell.config(cellViewModel: cellViewModel, delegate: self)
@@ -61,15 +59,42 @@ extension CalendarEventBannerViewController: UITableViewDelegate {
     }
 }
 
+// MARK: - UITableViewDelegate
+
+extension CalendarEventBannerViewController: UITableViewDelegate { }
+
+extension CalendarEventBannerViewController: EKEventEditViewDelegate {
+    func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+}
 // MARK: - Cell Delegate
 
 extension CalendarEventBannerViewController: CalendarEventDescriptionTableViewCellDelegate {
     func didPressViewButton(event: ICSEvent) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return
+        UIUtils.presentEditEventCalendarView(event: event, eventEditViewDelegate: self, delegate: self) { [weak self] eventDetailPresentationResult in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            switch eventDetailPresentationResult {
+            case .success:
+                Log.shared.info("The calendar view was succesfully presented. Nothing to do")
+            case .failure(let error):
+                me.showErrorAlert(error: error)
+            }
+        } addEventCallback: { [weak self] addEventResult in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            switch addEventResult {
+            case .success:
+                Log.shared.info("An Event was successfully added. Nothing to do")
+            case .failure(let error):
+                me.showErrorAlert(error: error)
+            }
         }
-        vm.handleViewButtonTapped(event: event)
     }
 }
 
@@ -93,6 +118,33 @@ extension CalendarEventBannerViewController {
     }
 }
 
+
+// MARK: - UINavigationControllerDelegate
+
+extension CalendarEventBannerViewController: UINavigationControllerDelegate {
+
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        /// EKEventEditViewController contains a table view that behaves buggy when scrolling.
+        /// The background color of the cells that are dequeued again changes  for no reason.
+        /// This workaround prevents a wrong layout.
+        if let tableViewController = viewController as? UITableViewController {
+            if #available(iOS 13.0, *) {
+                if UITraitCollection.current.userInterfaceStyle == .light {
+                    tableViewController.view.backgroundColor = UIColor.white
+                    tableViewController.tableView.backgroundColor = UIColor.white
+                } else {
+                    tableViewController.view.backgroundColor = UIColor.secondarySystemBackground
+                    tableViewController.tableView.backgroundColor = UIColor.secondarySystemBackground
+                }
+            } else {
+                tableViewController.view.backgroundColor = UIColor.white
+                tableViewController.tableView.backgroundColor = UIColor.white
+            }
+            tableViewController.tableView.backgroundView = .none	
+        }
+    }
+}
+
 //MARK: -  Private
 
 extension CalendarEventBannerViewController {
@@ -100,7 +152,7 @@ extension CalendarEventBannerViewController {
     private func setup() {
         if #available(iOS 13.0, *) {
             if UITraitCollection.current.userInterfaceStyle == .dark {
-                view.backgroundColor = UIColor.pEpBannerGray
+                view.backgroundColor = UIColor.pEpBackgroundGray2
                 titleLabel.textColor = .white
             } else {
                 view.backgroundColor = UIColor.black
@@ -138,5 +190,22 @@ extension CalendarEventBannerViewController {
         let height = tableView.contentSize.height + titleLabel.frame.size.height + titleLabel.frame.origin.y + margin
         preferredContentSize = CGSize(width: view.bounds.width, height: height)
     }
-}
 
+    private func showErrorAlert(error: EKEventStoreUtil.CalendarError) {
+        UIUtils.showTwoButtonAlert(withTitle:  NSLocalizedString("Error", comment: "Error title"),
+                                   message: error.errorDescription,
+                                   cancelButtonText: NSLocalizedString("Cancel", comment: "Cancel - button title"),
+                                   positiveButtonText: NSLocalizedString("Settings", comment: "Settings - button title"),
+                                   cancelButtonAction: { [weak self] in
+                                    guard let me = self else {
+                                        Log.shared.errorAndCrash("Lost myself")
+                                        return
+                                    }
+                                    me.showSettings()
+                                   }, positiveButtonAction: { })
+    }
+
+    private func showSettings() {
+        UIUtils.openSystemSettings()
+    }
+}
