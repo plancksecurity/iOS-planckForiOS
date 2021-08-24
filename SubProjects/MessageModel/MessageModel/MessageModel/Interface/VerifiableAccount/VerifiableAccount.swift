@@ -53,7 +53,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
     public var address: String?
     public var userName: String?
     public var authMethod: AuthMethod?
-    public var password: String?
+    public var imapPassword: String?
+    public var smtpPassword: String?
     public var keySyncEnable: Bool
     public var accessToken: OAuth2AccessTokenProtocol?
     public var clientCertificate: ClientCertificate?
@@ -75,7 +76,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
          address: String? = nil,
          userName: String? = nil,
          authMethod: AuthMethod? = nil,
-         password: String? = nil,
+         imapPassword: String? = nil,
+         smtpPassword: String? = nil,
          accessToken: OAuth2AccessTokenProtocol? = nil,
          loginNameIMAP: String? = nil,
          serverIMAP: String? = nil,
@@ -94,7 +96,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         self.address = address
         self.userName = userName
         self.authMethod = authMethod
-        self.password = password
+        self.imapPassword = imapPassword
+        self.smtpPassword = smtpPassword
         self.accessToken = accessToken
         self.loginNameIMAP = loginNameIMAP
         self.serverIMAP = serverIMAP
@@ -214,8 +217,8 @@ extension VerifiableAccount {
 
 extension VerifiableAccount {
     private var isValidPassword: Bool {
-        if let pass = password {
-            return pass.count > 0
+        if let imapPass = imapPassword, let smtpPass = smtpPassword {
+            return imapPass.count > 0 && smtpPass.count > 0
         }
         return false
     }
@@ -226,8 +229,8 @@ extension VerifiableAccount {
                 (authMethod == .saslXoauth2 || (loginNameIMAP?.count ?? 0) >= 1) &&
                 (authMethod == .saslXoauth2 || (loginNameSMTP?.count ?? 0) >= 1) &&
                 (address?.count ?? 0) > 0 &&
-                ((authMethod == .saslXoauth2 && accessToken != nil && password == nil) ||
-                    (accessToken == nil && password != nil)) &&
+                ((authMethod == .saslXoauth2 && accessToken != nil && imapPassword == nil && smtpPassword == nil) ||
+                    (accessToken == nil && imapPassword != nil && smtpPassword != nil)) &&
                 portIMAP > 0 &&
                 portSMTP > 0 &&
                 (serverIMAP?.count ?? 0) > 0 &&
@@ -364,7 +367,7 @@ extension VerifiableAccount {
                 credentials: theImapServer.credentials ?? CdServerCredentials(context: moc),
                 loginName: me.loginNameIMAP,
                 address: me.address,
-                password: me.password,
+                password: me.imapPassword,
                 clientCertificate: cdClientCertificate,
                 accessToken: me.accessToken)
             credentialsImap.servers = NSSet(array: [theImapServer])
@@ -374,7 +377,7 @@ extension VerifiableAccount {
                 credentials: theSmtpServer.credentials ?? CdServerCredentials(context: moc),
                 loginName: me.loginNameSMTP,
                 address: me.address,
-                password: me.password,
+                password: me.smtpPassword,
                 clientCertificate: cdClientCertificate,
                 accessToken: me.accessToken)
             credentialsSmtp.servers = NSSet(array: [theSmtpServer])
@@ -496,7 +499,8 @@ extension VerifiableAccount {
                                          address: nil,
                                          userName: nil,
                                          authMethod: .cramMD5,
-                                         password: nil,
+                                         imapPassword: nil,
+                                         smtpPassword: nil,
                                          accessToken: nil,
                                          loginNameIMAP: nil,
                                          serverIMAP: nil,
@@ -517,7 +521,8 @@ extension VerifiableAccount {
                                         address: nil,
                                         userName: nil,
                                         authMethod: .saslXoauth2,
-                                        password: nil,
+                                        imapPassword: nil,
+                                        smtpPassword: nil,
                                         accessToken: nil,
                                         loginNameIMAP: nil,
                                         serverIMAP: "imap.gmail.com",
@@ -537,7 +542,8 @@ extension VerifiableAccount {
                                          address: nil,
                                          userName: nil,
                                          authMethod: .cramMD5,
-                                         password: nil,
+                                         imapPassword: nil,
+                                         smtpPassword: nil,
                                          accessToken: nil,
                                          loginNameIMAP: nil,
                                          serverIMAP: "outlook.office365.com",
@@ -557,7 +563,8 @@ extension VerifiableAccount {
                                          address: nil,
                                          userName: nil,
                                          authMethod: .cramMD5,
-                                         password: nil,
+                                         imapPassword: nil,
+                                         smtpPassword: nil,
                                          accessToken: nil,
                                          loginNameIMAP: nil,
                                          serverIMAP: "imap.mail.me.com",
@@ -577,7 +584,8 @@ extension VerifiableAccount {
                                          address: nil,
                                          userName: nil,
                                          authMethod: .cramMD5,
-                                         password: nil,
+                                         imapPassword: nil,
+                                         smtpPassword: nil,
                                          accessToken: nil,
                                          loginNameIMAP: nil,
                                          serverIMAP: "outlook.office365.com",

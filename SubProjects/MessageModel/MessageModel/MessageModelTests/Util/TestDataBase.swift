@@ -146,7 +146,8 @@ class TestDataBase {
             verifiableAccount.loginNameIMAP = imapLoginName ?? idAddress
             verifiableAccount.loginNameSMTP = smtpLoginName ?? idAddress
             verifiableAccount.accessToken = nil
-            verifiableAccount.password = password
+            verifiableAccount.imapPassword = "xxxxxxxxxx"
+            verifiableAccount.smtpPassword = "xxxxxxxxxx"
 
             verifiableAccount.serverIMAP = imapServerAddress
             verifiableAccount.portIMAP = imapServerPort

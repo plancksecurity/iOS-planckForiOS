@@ -20,6 +20,8 @@ class ErrorHandler: LoginViewModelLoginErrorDelegate {
 
 class LoginViewModelTests: XCTestCase {
     class TestVerifiableAccount: VerifiableAccountProtocol {
+        var imapPassword: String?
+        var smtpPassword: String?
 
         var accountType: VerifiableAccount.AccountType = VerifiableAccount.AccountType.other
         var loginNameIMAP: String?

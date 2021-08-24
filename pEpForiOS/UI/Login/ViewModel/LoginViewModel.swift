@@ -197,7 +197,10 @@ final class LoginViewModel {
         theVerifiableAccount.loginNameIMAP = login
         theVerifiableAccount.loginNameSMTP = login
 
-        theVerifiableAccount.password = password
+        // Use the same password for imap and smtp when the user attemps to login in the first screen of the flow.
+        // If login fails, the user will be prompt to enter those passwords separately.
+        theVerifiableAccount.imapPassword = password
+        theVerifiableAccount.smtpPassword = password
         theVerifiableAccount.accessToken = accessToken
 
         theVerifiableAccount.verifiableAccountDelegate = self

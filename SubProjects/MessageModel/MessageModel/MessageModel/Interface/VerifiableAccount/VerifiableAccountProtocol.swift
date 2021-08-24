@@ -31,7 +31,7 @@ extension VerifiableAccountValidationError: LocalizedError {
 }
 
 /// The delegate used for the `VerifiableAccountProtocol`.
-public protocol VerifiableAccountDelegate: class {
+public protocol VerifiableAccountDelegate: AnyObject {
     /// Gets called once the verification has finished, successfully or not.
     /// The given `result` indicates success or failure.
     func didEndVerification(result: Result<Void, Error>)
@@ -74,8 +74,12 @@ public protocol VerifiableAccountProtocol {
     var authMethod: AuthMethod? { get set }
 
     /// The password, if needed, to log in.
-    /// Valid for both IMAP and SMTP servers.
-    var password: String? { get set }
+    /// Valid for both IMAP servers.
+    var imapPassword: String? { get set }
+
+    /// The password, if needed, to log in.
+    /// Valid for SMTP servers.
+    var smtpPassword: String? { get set }
 
     /// Enable/disale keySync to this account only. By default its true.
     /// Only works if keySync is globally enable. Else will be ignored.
