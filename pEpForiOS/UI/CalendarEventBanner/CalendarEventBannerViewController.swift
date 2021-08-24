@@ -37,7 +37,7 @@ extension CalendarEventBannerViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM Not found")
+            //Valid case. The VM might not be set because the email hasn't got an event.
             return 0
         }
         return vm.numberOfEvents
