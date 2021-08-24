@@ -74,7 +74,7 @@ public protocol VerifiableAccountProtocol {
     var authMethod: AuthMethod? { get set }
 
     /// The password, if needed, to log in.
-    /// Valid for both IMAP servers.
+    /// Valid for IMAP servers.
     var imapPassword: String? { get set }
 
     /// The password, if needed, to log in.
