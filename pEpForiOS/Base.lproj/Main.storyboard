@@ -1517,7 +1517,6 @@
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="efD-Fw-SnW" id="lDn-wo-3FD"/>
-                                    <outlet property="delegate" destination="efD-Fw-SnW" id="pso-Jv-ak2"/>
                                 </connections>
                             </tableView>
                         </subviews>

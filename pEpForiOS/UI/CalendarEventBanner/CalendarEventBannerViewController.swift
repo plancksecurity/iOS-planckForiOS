@@ -59,10 +59,6 @@ extension CalendarEventBannerViewController: UITableViewDataSource {
     }
 }
 
-// MARK: - UITableViewDelegate
-
-extension CalendarEventBannerViewController: UITableViewDelegate { }
-
 extension CalendarEventBannerViewController: EKEventEditViewDelegate {
     func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
         controller.dismiss(animated: true, completion: nil)
