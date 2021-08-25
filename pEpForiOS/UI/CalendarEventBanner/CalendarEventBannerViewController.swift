@@ -37,7 +37,7 @@ extension CalendarEventBannerViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let vm = viewModel else {
-            //Valid case. The VM might not be set because the email hasn't got an event.
+            // Valid case: The storyboard intanciates the VC before we have the chance to set a VM.
             return 0
         }
         return vm.numberOfEvents
