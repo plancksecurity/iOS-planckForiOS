@@ -597,7 +597,8 @@ extension LoginViewController {
                                    cancelButtonText: NSLocalizedString("OK", comment: "OK (dismiss) button for iCloud instructions alert"),
                                    positiveButtonText: NSLocalizedString("Info", comment: "Info button for showing iCloud page"),
                                    cancelButtonAction: {},
-                                   positiveButtonAction: openiCloudInfoInBrowser)
+                                   positiveButtonAction: openiCloudInfoInBrowser,
+                                   primaryColor: UIColor.pEpLabelColor())
     }
 }
 // MARK: - Accessibility

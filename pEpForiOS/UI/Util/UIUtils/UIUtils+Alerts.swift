@@ -54,6 +54,8 @@ extension UIUtils {
                                           positiveButtonText: String = NSLocalizedString("OK", comment: "Default positive button text"),
                                           cancelButtonAction: (() -> Void)? = nil,
                                           positiveButtonAction: @escaping () -> Void,
+                                          primaryColor: UIColor? = nil,
+                                          secondaryColor: UIColor? = nil,
                                           style: PEPAlertViewController.AlertStyle = .default) {
         guard let alertViewController = UIUtils.getAlert(withTitle: title,
                                                          message: message,
@@ -61,6 +63,8 @@ extension UIUtils {
                                                          positiveButtonText: positiveButtonText,
                                                          cancelButtonAction: cancelButtonAction,
                                                          positiveButtonAction: positiveButtonAction,
+                                                         primaryColor: primaryColor,
+                                                         secondaryColor: secondaryColor,
                                                          style: style,
                                                          numberOfButtons: .two) else {
             Log.shared.errorAndCrash("Can't instanciate alert")
@@ -109,6 +113,8 @@ extension UIUtils {
                 cancelCallback?()
             }
         alertController.addAction(cancelAction)
+        let buttonTextColorKey = "titleTextColor"
+        cancelAction.setValue(UIColor.pEpBlack, forKey: buttonTextColorKey)
         present(alertController)
     }
 }
@@ -157,6 +163,8 @@ extension UIUtils {
                                  positiveButtonText: String = NSLocalizedString("OK", comment: "Default positive button text"),
                                  cancelButtonAction: (() -> Void)? = nil,
                                  positiveButtonAction: @escaping () -> Void,
+                                 primaryColor: UIColor? = nil,
+                                 secondaryColor: UIColor? = nil,
                                  style: PEPAlertViewController.AlertStyle,
                                  numberOfButtons: NumberOfButtons) -> PEPAlertViewController? {
         guard let pepAlertViewController = PEPAlertViewController.fromStoryboard(title: title, message: message, paintPEPInTitle: true) else {
@@ -164,12 +172,12 @@ extension UIUtils {
             return nil
         }
         pepAlertViewController.alertStyle = style
-        let positiveAction = PEPUIAlertAction(title: positiveButtonText, style: pepAlertViewController.primaryColor) { _ in
+        let positiveAction = PEPUIAlertAction(title: positiveButtonText, style: primaryColor ?? pepAlertViewController.primaryColor) { _ in
             positiveButtonAction()
             pepAlertViewController.dismiss()
         }
         if numberOfButtons == .two {
-            let cancelAction = PEPUIAlertAction(title: cancelButtonText, style: pepAlertViewController.secondaryColor) { _ in
+            let cancelAction = PEPUIAlertAction(title: cancelButtonText, style: secondaryColor ?? pepAlertViewController.secondaryColor) { _ in
                 cancelButtonAction?()
                 pepAlertViewController.dismiss()
             }
