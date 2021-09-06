@@ -339,7 +339,7 @@ extension SMTPSettingsViewController {
         let serverPlaceholder = NSLocalizedString("Server", comment: "Server placeholder for manual account SMTP setup")
         setupView.thirdTextField.placeholder = serverPlaceholder
 
-        let portPlaceholder = NSLocalizedString("Port", comment: "Port placeholder for manual account IMAP setup")
+        let portPlaceholder = NSLocalizedString("Port", comment: "Port placeholder for manual account SMTP setup")
         setupView.fourthTextField.placeholder = portPlaceholder
 
         let transportSecurityPlaceholder = NSLocalizedString("Transport Security", comment: "TransportSecurity placeholder for manual account IMAP setup")
