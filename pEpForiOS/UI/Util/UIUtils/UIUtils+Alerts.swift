@@ -113,8 +113,6 @@ extension UIUtils {
                 cancelCallback?()
             }
         alertController.addAction(cancelAction)
-        let buttonTextColorKey = "titleTextColor"
-        cancelAction.setValue(UIColor.pEpBlack, forKey: buttonTextColorKey)
         present(alertController)
     }
 }
