@@ -163,7 +163,6 @@ extension IMAPSettingsViewController: ManualAccountSetupViewDelegate {
             return
         }
         verifiableAccount.imapPassword = textField.text
-        updateNextButtonStatus()
     }
 
     // Server
@@ -173,7 +172,6 @@ extension IMAPSettingsViewController: ManualAccountSetupViewDelegate {
             return
         }
         verifiableAccount.serverIMAP = textField.text
-        updateNextButtonStatus()
     }
 
     // Port
@@ -188,29 +186,17 @@ extension IMAPSettingsViewController: ManualAccountSetupViewDelegate {
             return
         }
         verifiableAccount.portIMAP = port
-        updateNextButtonStatus()
     }
 
     // Transport security
     func didChangeFifth(_ textField: UITextField) {
-        updateNextButtonStatus()
+        //Do nothing, changes are saved in model and textField in the block of alert.
     }
 }
 
 // MARK: - Private
 
 extension IMAPSettingsViewController {
-    private func updateNextButtonStatus() {
-        guard let setupView = manualAccountSetupContainerView.setupView else {
-            Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
-            return
-        }
-        guard let verifiableAccount = verifiableAccount else {
-            Log.shared.errorAndCrash("No Verifiable account")
-            return
-        }
-        setupView.nextButton.isEnabled = verifiableAccount.isValidUser
-    }
 
     private func setUpTextFieldsInputTraits() {
         guard let setupView = manualAccountSetupContainerView.setupView else {
@@ -257,9 +243,13 @@ extension IMAPSettingsViewController {
         let title = NSLocalizedString("Transport protocol", comment: "UI alert title for transport protocol")
         let message = NSLocalizedString("Choose a Security protocol for your accont", comment: "UI alert message for transport protocol")
         let alertController = UIUtils.actionSheet(title: title, message: message)
-        let block: (ConnectionTransport) -> () = { transport in
+        let block: (ConnectionTransport) -> () = { [weak self] transport in
             sender.text = transport.localizedString()
-            self.verifiableAccount?.transportIMAP = transport
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.verifiableAccount?.transportIMAP = transport
         }
 
         if let popoverPresentationController = alertController.popoverPresentationController {

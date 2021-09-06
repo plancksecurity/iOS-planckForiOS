@@ -134,10 +134,9 @@ extension ManualAccountSetupView: DynamicHeightScrollViewDelegate {
 
 extension ManualAccountSetupView {
     private func setUpTextFieldsColor() {
-        firstTextField.textColorWithText = .pEpGreen
-        secondTextField.textColorWithText = .pEpGreen
-        thirdTextField.textColorWithText = .pEpGreen
-        fourthTextField.textColorWithText = .pEpGreen
+        textFields().forEach { textField in
+            textField.textColorWithText = .pEpGreen
+        }
     }
 
     @objc private func hideSpecificDeviceButton() {
@@ -151,14 +150,12 @@ extension ManualAccountSetupView {
     }
 
     private func updateTextFeildsDelegates() {
-        firstTextField?.delegate = textFieldsDelegate
-        secondTextField?.delegate = textFieldsDelegate
-        thirdTextField?.delegate = textFieldsDelegate
-        fourthTextField?.delegate = textFieldsDelegate
-        fifthTextField?.delegate = textFieldsDelegate
+        textFields().forEach { textField in
+            textField.delegate = textFieldsDelegate
+        }
     }
 
-    private func textFields() -> [UITextField] {
+    private func textFields() -> [AnimatedPlaceholderTextfield] {
         return [firstTextField, secondTextField, thirdTextField, fourthTextField, fifthTextField]
     }
 

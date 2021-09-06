@@ -152,7 +152,6 @@ extension SMTPSettingsViewController: ManualAccountSetupViewDelegate {
             return
         }
         verifiableAccount.smtpPassword = textField.text
-        updateNextButtonStatus()
     }
 
     // Server
@@ -162,7 +161,6 @@ extension SMTPSettingsViewController: ManualAccountSetupViewDelegate {
             return
         }
         verifiableAccount.serverSMTP = textField.text
-        updateNextButtonStatus()
     }
 
     // Port
@@ -177,12 +175,11 @@ extension SMTPSettingsViewController: ManualAccountSetupViewDelegate {
             return
         }
         verifiableAccount.portSMTP = port
-        updateNextButtonStatus()
     }
 
     // Transport security
     func didChangeFifth(_ textField: UITextField) {
-        updateNextButtonStatus()
+        //Do nothing, changes are saved in model and textField in the block of alert.
     }
 }
 
@@ -249,18 +246,6 @@ extension SMTPSettingsViewController: VerifiableAccountDelegate {
 // MARK: - Private
 
 extension SMTPSettingsViewController {
-
-    private func updateNextButtonStatus() {
-        guard let setupView = manualAccountSetupContainerView.setupView else {
-            Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
-            return
-        }
-        guard let verifiableAccount = verifiableAccount else {
-            Log.shared.errorAndCrash("No Verifiable account")
-            return
-        }
-        setupView.nextButton.isEnabled = verifiableAccount.isValidUser
-    }
 
     /// Update view state from view model
     /// - Parameter animated: this property only apply to  items with animations, list AnimatedPlaceholderTextFields
