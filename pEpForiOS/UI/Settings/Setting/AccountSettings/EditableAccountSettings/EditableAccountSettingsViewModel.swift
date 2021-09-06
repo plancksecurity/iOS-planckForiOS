@@ -489,13 +489,11 @@ extension EditableAccountSettingsViewModel {
                     theVerifier.imapPassword = originalImapPassword
                 } else if originalSMTPPassword != nil {
                     theVerifier.smtpPassword = originalSMTPPassword
-                }
-                else {
+                } else {
                     Log.shared.errorAndCrash("Is not OAuth2, hasn't got a new password, nor original password")
                     return
                 }
             }
-
         }
 
         theVerifier.serverIMAP = input.imapServer
@@ -508,19 +506,15 @@ extension EditableAccountSettingsViewModel {
         if let port = UInt16(smtpPort) {
             theVerifier.portSMTP = port
         }
-
         if let transport = Server.Transport(fromString: input.imapTranportSecurity) {
             theVerifier.transportIMAP = ConnectionTransport(transport: transport)
         }
-
         if let transport = Server.Transport(fromString: input.smtpTranportSecurity) {
             theVerifier.transportSMTP = ConnectionTransport(transport: transport)
         }
-
         if let clientCertificate = account.imapServer?.credentials.clientCertificate {
             theVerifier.clientCertificate = clientCertificate
         }
-
         do {
             try theVerifier.verify()
         } catch {
