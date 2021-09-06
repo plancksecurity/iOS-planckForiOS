@@ -337,6 +337,16 @@ extension ShareViewModel {
                                                                         img,
                                                                         imgData,
                                                                         mimeType))
+                                } else if let img = item as? UIImage,
+                                          let data = img.jpeg(.high) {
+                                    let defaultImageName = "image"
+                                    let mimeType = itemProvider.supportedMimeTypeForInlineAttachment() ?? MimeTypeUtils.mimeType(fromFileExtension: "jpg")
+                                    sharedData.add(itemProvider: itemProvider,
+                                                   dataWithType: .image(attributedTitle,
+                                                                        defaultImageName,
+                                                                        img,
+                                                                        data,
+                                                                        mimeType))
                                 } else {
                                     me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: error)
                                 }
