@@ -10,7 +10,6 @@ import Foundation
 
 public enum AccountSettingsUserInputError: Error {
     case invalidInputEmailAddress(localizedMessage:String)
-    case invalidInputServerPassword(localizedMessage:String)
     case invalidInputServer(localizedMessage:String)
     case invalidInputPort(localizedMessage:String)
     case invalidInputTransport(localizedMessage:String)
@@ -53,11 +52,6 @@ extension AccountSettingsUserInputError: LocalizedError {
                 NSLocalizedString(
                     "Invalid username: %1$@",
                     comment: "Invalid input for username"),
-                message)
-        case .invalidInputServerPassword(let message):
-            return String.localizedStringWithFormat(
-                NSLocalizedString(
-                    "Invalid password: %1$@", comment: "Invalid input for server password"),
                 message)
         }
     }
