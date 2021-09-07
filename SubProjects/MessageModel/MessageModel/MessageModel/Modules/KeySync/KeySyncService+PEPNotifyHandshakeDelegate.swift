@@ -118,6 +118,13 @@ extension KeySyncService {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
+            // Prevent to show Handshake view for deactivated accounts.
+            let selfAccount: Account? = Account.all().first(where: ({$0.user.address == me.address }))
+            guard selfAccount != nil else {
+                Log.shared.info("Deactivated account. Do not show handshake")
+                return
+            }
+
             strongSelf.handshakeHandler?.showHandshake(meFingerprint: me.fingerPrint,
                                                        partnerFingerprint: partner.fingerPrint,
                                                        isNewGroup: isNewGroup) { result in
