@@ -112,16 +112,8 @@ class EditableAccountSettingsViewModel {
                 Log.shared.errorAndCrash("Supposed to do OAUTH2, but no existing token")
             }
         } else {
-            guard let imapPassword = account.imapServer?.credentials.password else {
-                Log.shared.errorAndCrash("IMAP Password missing")
-                return
-            }
-            guard let smtpPassword = account.smtpServer?.credentials.password else {
-                Log.shared.errorAndCrash("SMTP Password missing")
-                return
-            }
-            self.originalImapPassword = imapPassword
-            self.originalSMTPPassword = smtpPassword
+            self.originalImapPassword = account.imapServer?.credentials.password
+            self.originalSMTPPassword = account.smtpServer?.credentials.password
         }
         self.generateSections()
     }
@@ -292,7 +284,6 @@ extension EditableAccountSettingsViewModel {
     /// - Parameters:
     ///   - server: The server from which to take the values
     ///   - rows: The rows to populate the fields.
-    ///   - password: The server password
     private func setupServerFields(_ server: Server, _ rows: inout [AccountSettingsRowProtocol]) {
         let serverRow = getDisplayRow(type : .server, value: server.address)
         rows.append(serverRow)
@@ -308,12 +299,10 @@ extension EditableAccountSettingsViewModel {
 
         // OAuth
         if !isOAuth2 {
-            guard let pass = server.credentials.password else {
-                Log.shared.errorAndCrash("Password not found")
-                return
+            if let pass = server.credentials.password {
+                let passwordRow = getDisplayRow(type : .password, value: pass)
+                rows.append(passwordRow)
             }
-            let passwordRow = getDisplayRow(type : .password, value: pass)
-            rows.append(passwordRow)
         }
     }
 
@@ -384,10 +373,8 @@ extension EditableAccountSettingsViewModel {
             let msg = NSLocalizedString("Choose IMAP username.", comment: "Empty IMAP username")
             throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
         }
-        guard let imapPassword = rowValue(sectionType: .imap, rowType: .password) else {
-            let msg = NSLocalizedString("Password must not be empty.", comment: "Empty IMAP Password")
-            throw AccountSettingsUserInputError.invalidInputServerPassword(localizedMessage: msg)
-        }
+
+        let imapPassword = rowValue(sectionType: .imap, rowType: .password) ?? ""
 
         // SMTP
         guard let smtpServer = rowValue(sectionType: .smtp, rowType: .server) else {
@@ -406,10 +393,7 @@ extension EditableAccountSettingsViewModel {
             let msg = NSLocalizedString("Choose SMTP username.", comment: "Empty SMTP transport security method")
             throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
         }
-        guard let smtpPassword = rowValue(sectionType: .smtp, rowType: .password) else {
-            let msg = NSLocalizedString("Password must not be empty.", comment: "Empty SMTP Password")
-            throw AccountSettingsUserInputError.invalidInputServerPassword(localizedMessage: msg)
-        }
+        let smtpPassword = rowValue(sectionType: .smtp, rowType: .password) ?? ""
 
         // Account
         guard let userName = rowValue(sectionType: .account, rowType: .name) else {
