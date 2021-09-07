@@ -15,7 +15,7 @@ import pEpIOSToolbox
 #endif
 
 import PantomimeFramework
-import PEPObjCAdapterTypes_iOS
+import PEPObjCTypes_iOS
 import PEPObjCAdapter_iOS
 
 typealias ImapStoreCommand = (command: String, pantomimeDict:[AnyHashable: Any])
@@ -514,6 +514,8 @@ extension CdMessage {
             mail.cc = ccs
             mail.bcc = bccs
         }
+
+        ReceivedByUtil.setReceivedBy(fromDataOf: pantomimeMessage, to: mail, context: context)
 
         let referenceStrings = MutableOrderedSet<String>()
         if let pantomimeRefs = pantomimeMessage.allReferences() as? [String] {

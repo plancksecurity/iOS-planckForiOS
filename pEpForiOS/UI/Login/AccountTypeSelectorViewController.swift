@@ -42,6 +42,13 @@ final class AccountTypeSelectorViewController: UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         collectionView.reloadData()
+        coordinator.animate(alongsideTransition: nil) { [weak self] context in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.configureView()
+        }
     }
 
     private func configureAppearance() {
@@ -66,9 +73,14 @@ final class AccountTypeSelectorViewController: UIViewController {
         navigationController?.navigationBar.isHidden = !viewModel.isThereAnAccount()
         let imagebutton = UIButton(type: .custom)
         let image = UIImage(named: "close-icon")
+
         imagebutton.setImage(image, for: .normal)
         imagebutton.addTarget(self, action: #selector(backButton), for: .touchUpInside)
-        imagebutton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        if UIDevice.isLandscape {
+            imagebutton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 0, right: 12)
+        } else {
+            imagebutton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        }
         let finalBarButton = UIBarButtonItem(customView: imagebutton)
         navigationItem.leftBarButtonItem = finalBarButton
     }

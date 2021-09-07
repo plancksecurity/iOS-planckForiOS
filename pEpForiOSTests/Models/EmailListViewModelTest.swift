@@ -79,6 +79,15 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         XCTAssertFalse(showToolbarButtons)
     }
 
+    func testShouldShowRefreshController() {
+        setupViewModel()
+        XCTAssertTrue(emailListVM.shouldShowRefreshController)
+
+        givenThereIsA(folderType: .outbox)
+        setupViewModel()
+        XCTAssertFalse(emailListVM.shouldShowRefreshController)
+    }
+
     func testAccountExists() {
         setupViewModel()
         emailListVM.startMonitoring()
@@ -257,6 +266,51 @@ class EmailListViewModelTest: AccountDrivenTestBase {
         let composeVM = emailListVM.composeViewModelForNewMessage()
         XCTAssertEqual(composeVM.state.from, expectedFrom)
     }
+
+    func testMarkAsUnFlaggedInEditMode() {
+        TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: inbox)
+        let expectationDidFinishEditingModeCalled = XCTestExpectation(description: "expectationDidFinishEditingModeCalled")
+        let expectationDidUpdateDataAtCalled = XCTestExpectation(description: "expectationDidUpdateDataAtCalled")
+        let viewController = TestMasterViewController(expectationDidUpdateDataAt: expectationDidUpdateDataAtCalled, expectationDidFinishEditingModeCalled:expectationDidFinishEditingModeCalled)
+        self.emailListVM = EmailListViewModel(delegate: viewController, folderToShow: inbox)
+        emailListVM.startMonitoring()
+        emailListVM.markAsUnFlagged(indexPaths: [IndexPath(row: 0, section: 0)], isEditModeEnabled: true)
+        wait(for: [expectationDidFinishEditingModeCalled], timeout: TestUtil.waitTime)
+    }
+
+    func testMarkAsFlaggedInEditMode() {
+        TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: inbox)
+        let expectationDidFinishEditingModeCalled = XCTestExpectation(description: "expectationDidFinishEditingModeCalled")
+        let expectationDidUpdateDataAtCalled = XCTestExpectation(description: "expectationDidUpdateDataAtCalled")
+        let viewController = TestMasterViewController(expectationDidUpdateDataAt: expectationDidUpdateDataAtCalled, expectationDidFinishEditingModeCalled:expectationDidFinishEditingModeCalled)
+        self.emailListVM = EmailListViewModel(delegate: viewController, folderToShow: inbox)
+        emailListVM.startMonitoring()
+        emailListVM.markAsFlagged(indexPaths: [IndexPath(row: 0, section: 0)], isEditModeEnabled: true)
+        wait(for: [expectationDidFinishEditingModeCalled], timeout: TestUtil.waitTime)
+    }
+
+    func testMarkAsReadInEditMode() {
+        TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: inbox)
+        let expectationDidFinishEditingModeCalled = XCTestExpectation(description: "expectationDidFinishEditingModeCalled")
+        let expectationDidUpdateDataAtCalled = XCTestExpectation(description: "expectationDidUpdateDataAtCalled")
+        let viewController = TestMasterViewController(expectationDidUpdateDataAt: expectationDidUpdateDataAtCalled, expectationDidFinishEditingModeCalled:expectationDidFinishEditingModeCalled)
+        self.emailListVM = EmailListViewModel(delegate: viewController, folderToShow: inbox)
+        emailListVM.startMonitoring()
+        emailListVM.markAsFlagged(indexPaths: [IndexPath(row: 0, section: 0)], isEditModeEnabled: true)
+        wait(for: [expectationDidFinishEditingModeCalled], timeout: TestUtil.waitTime)
+    }
+
+    func testMarkAsUnReadInEditMode() {
+        TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: inbox)
+        let expectationDidFinishEditingModeCalled = XCTestExpectation(description: "expectationDidFinishEditingModeCalled")
+        let expectationDidUpdateDataAtCalled = XCTestExpectation(description: "expectationDidUpdateDataAtCalled")
+        let viewController = TestMasterViewController(expectationDidUpdateDataAt: expectationDidUpdateDataAtCalled, expectationDidFinishEditingModeCalled:expectationDidFinishEditingModeCalled)
+        self.emailListVM = EmailListViewModel(delegate: viewController, folderToShow: inbox)
+        emailListVM.startMonitoring()
+        emailListVM.markAsFlagged(indexPaths: [IndexPath(row: 0, section: 0)], isEditModeEnabled: true)
+        wait(for: [expectationDidFinishEditingModeCalled], timeout: TestUtil.waitTime)
+    }
+
 }
 
 // MARK: - HELPER
@@ -317,15 +371,21 @@ private class TestMasterViewController: EmailListViewModelDelegate {
     var excpectationDidInsertDataAtCalled: XCTestExpectation?
     var expectationDidUpdateDataAtCalled: XCTestExpectation?
     var expectationDidRemoveDataAtCalled: XCTestExpectation?
+    var expectationDidFinishEditingModeCalled: XCTestExpectation?
+    var expectationDidMarkAsFlagged: XCTestExpectation?
 
     init(expectationUpdateView: XCTestExpectation? = nil,
          expectationDidInsertDataAt: XCTestExpectation? = nil,
          expectationDidUpdateDataAt: XCTestExpectation? = nil,
-         expectationDidRemoveDataAt: XCTestExpectation? = nil) {
+         expectationDidRemoveDataAt: XCTestExpectation? = nil,
+         expectationDidFinishEditingModeCalled: XCTestExpectation? = nil,
+         expectationDidMarkAsFlagged: XCTestExpectation? = nil) {
         self.expectationUpdateViewCalled = expectationUpdateView
         self.excpectationDidInsertDataAtCalled = expectationDidInsertDataAt
         self.expectationDidUpdateDataAtCalled = expectationDidUpdateDataAt
         self.expectationDidRemoveDataAtCalled = expectationDidRemoveDataAt
+        self.expectationDidFinishEditingModeCalled = expectationDidFinishEditingModeCalled
+        self.expectationDidMarkAsFlagged = expectationDidMarkAsFlagged
     }
 
     func setToolbarItemsEnabledState(to newValue: Bool) {
@@ -334,6 +394,14 @@ private class TestMasterViewController: EmailListViewModelDelegate {
 
     func select(itemAt indexPath: IndexPath) {
         XCTFail()
+    }
+
+    func finishEditingMode() {
+        if let expectationDidFinishEditingModeCalled = expectationDidFinishEditingModeCalled {
+            expectationDidFinishEditingModeCalled.fulfill()
+        } else {
+            XCTFail()
+        }
     }
 
     func emailListViewModel(viewModel: EmailDisplayViewModel,

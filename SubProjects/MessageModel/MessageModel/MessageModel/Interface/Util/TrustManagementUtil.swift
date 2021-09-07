@@ -6,7 +6,7 @@
 //  Copyright © 2020 pEp Security S.A. All rights reserved.
 //
 
-import PEPObjCAdapterTypes_iOS
+import PEPObjCTypes_iOS
 import PEPObjCAdapter_iOS
 
 #if EXT_SHARE
@@ -257,6 +257,9 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
                                     completion(error)
         }) { identity in
             if let fps = fingerprint {
+                // In case we are trying to undo a mistrust (already mistrusted the key of an
+                // Identity), the Engine does not return an FPR, so the caller has to pass it as an
+                // argument.
                 identity.fingerPrint = fps
             }
             PEPSession().keyResetTrust(identity,

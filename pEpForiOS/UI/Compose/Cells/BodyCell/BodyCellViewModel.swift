@@ -39,6 +39,8 @@ public class BodyCellViewModel: CellViewModel {
     private var plaintext = ""
     private var attributedText: NSAttributedString?
     private var identity: Identity?
+    private var session: Session
+
     private var inlinedAttachments = [Attachment]() {
         didSet {
             resultDelegate?.bodyCellViewModel(self, inlinedAttachmentsChanged: inlinedAttachments)
@@ -54,7 +56,8 @@ public class BodyCellViewModel: CellViewModel {
          initialPlaintext: String? = nil,
          initialAttributedText: NSAttributedString? = nil,
          inlinedAttachments: [Attachment]? = nil,
-         account: Identity?) {
+         account: Identity?,
+         session: Session) {
         self.resultDelegate = resultDelegate
         self.plaintext = initialPlaintext ?? ""
         self.attributedText = initialAttributedText
@@ -62,6 +65,7 @@ public class BodyCellViewModel: CellViewModel {
             self.inlinedAttachments = inlAtt
         }
         self.identity = account
+        self.session = session
     }
 
     public func inititalText() -> (text: String?, attributedText: NSAttributedString?) {
@@ -79,7 +83,25 @@ public class BodyCellViewModel: CellViewModel {
         createHtmlVersionAndInformDelegate(newAttributedText: attrText)
     }
 
-    public func shouldReplaceText(in range: NSRange,
+    /// Handle if the text should change
+    ///
+    /// - Parameters:
+    ///   - range: The range might use the text to introduce
+    ///   - text: The base text
+    ///   - replaceText: The text to replace with.
+    ///
+    /// - Returns: True if it should replace the text in range.
+    public func handleShouldChangeText(in range: NSRange,
+                                       of text: NSAttributedString,
+                                       with replaceText: String) -> Bool {
+        if replaceText.isAttachment {
+            handleAttachmentWasPaste(text: replaceText)
+            return false
+        }
+        return shouldReplaceText(in: range, of: text, with: replaceText)
+    }
+
+    private func shouldReplaceText(in range: NSRange,
                                   of text: NSAttributedString,
                                   with replaceText: String) -> Bool {
         let attachments = text.textAttachments(range: range)
@@ -121,10 +143,6 @@ extension BodyCellViewModel {
     public func handleCursorPositionChange(newPosition: Int) {
         lastKnownCursorPosition = newPosition
     }
-
-    private func rememberCursorPosition(offset: Int = 0) {
-        restoreCursorPosition = lastKnownCursorPosition + offset
-    }
 }
 
 // MARK: - Attachments
@@ -146,6 +164,11 @@ extension BodyCellViewModel {
             me.inlinedAttachments.append(attachment)
         }
     }
+}
+
+// MARK: - Private
+
+extension BodyCellViewModel {
 
     private func removeInlinedAttachments(_ removees: [Attachment]) {
         guard !removees.isEmpty else { return }
@@ -160,6 +183,45 @@ extension BodyCellViewModel {
         removees.first?.session.perform {
             removees.forEach { $0.delete() } //Delete from session
         }
+    }
+
+    private func handleAttachmentWasPaste(text: String) {
+        guard text.isAttachment else {
+            Log.shared.errorAndCrash("text is not an attachment")
+            return
+        }
+        // Image copied from p≡p
+        if let image = UIPasteboard.general.image, let data = image.jpegData(compressionQuality: 1) {
+            insertImageAttachemnt(data: data, image: image, fileName: "public.png")
+        } else {
+            // Image copied from 3rd party apps
+            UIPasteboard.general.items.forEach { keyValue in
+                keyValue.forEach { (key, value) in
+                    if let image = value as? UIImage,
+                       let data = key == "public.png" ? image.pngData() : image.jpegData(compressionQuality: 1) {
+                        insertImageAttachemnt(data: data, image: image, fileName: key)
+                        return //Paste only one item
+                    }
+                }
+            }
+        }
+    }
+
+    private func insertImageAttachemnt(data: Data, image: UIImage, fileName: String) {
+        session.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            let attachment = image.inlinedAttachment(fileName: fileName, imageData: data, in: me.session)
+            DispatchQueue.main.async {
+                me.inline(attachment: attachment)
+            }
+        }
+    }
+
+    private func rememberCursorPosition(offset: Int = 0) {
+        restoreCursorPosition = lastKnownCursorPosition + offset
     }
 }
 

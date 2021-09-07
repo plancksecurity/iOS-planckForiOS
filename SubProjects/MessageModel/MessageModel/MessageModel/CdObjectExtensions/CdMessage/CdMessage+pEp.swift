@@ -8,7 +8,7 @@
 
 import CoreData
 
-import PEPObjCAdapterTypes_iOS
+import PEPObjCTypes_iOS
 import PEPObjCAdapter_iOS
 
 #if EXT_SHARE
@@ -174,13 +174,7 @@ extension CdMessage {
             }
         }
 
-        if pEpMessage.direction == .incoming {
-            guard let pEpIdentityReceiver = parent?.account?.identity?.pEpIdentity() else {
-                Log.shared.errorAndCrash("An incomming message MUST be received by someone. Invalid state!")
-                return pEpMessage
-            }
-            pEpMessage.receivedBy = pEpIdentityReceiver
-        }
+        pEpMessage.receivedBy = receivedBy?.pEpIdentity()
 
         return pEpMessage
     }

@@ -8,7 +8,7 @@
 
 import CoreData
 
-import PEPObjCAdapterTypes_iOS
+import PEPObjCTypes_iOS
 import PEPObjCAdapter_iOS
 import pEpIOSToolbox
 
@@ -24,9 +24,7 @@ extension KeySyncService: PEPSendMessageDelegate {
 
         let moc = Stack.shared.newPrivateConcurrentContext
         moc.performAndWait {
-            guard
-                let cdFromAccount = CdAccount.by(address: address, context: moc)
-            else {
+            guard let cdFromAccount = CdAccount.by(address: address, context: moc) else {
                 foundAccount = false
                 return
             }
@@ -36,8 +34,8 @@ extension KeySyncService: PEPSendMessageDelegate {
             recipients.append(contentsOf: message.cc ?? [])
 
             // For every recipient, try to look up the corresponding account.
-            let recipientsAccounts = recipients.compactMap {
-                CdAccount.by(address: $0.address, context: moc)
+            let recipientsAccounts = recipients.compactMap { CdAccount.by(address: $0.address,
+                                                                          context: moc)
             }
 
             if recipientsAccounts.count == recipients.count {

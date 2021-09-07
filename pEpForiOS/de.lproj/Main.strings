@@ -1,14 +1,8 @@
-/* Class = "UILabel"; text = "Date"; ObjectID = "1Wv-cJ-cSu"; */
-"1Wv-cJ-cSu.text" = "Datum";
-
 /* Class = "UILabel"; text = "Subject"; ObjectID = "7WS-qg-fiH"; */
 "7WS-qg-fiH.text" = "Betreff";
 
 /* Class = "UILabel"; text = "Date"; ObjectID = "a1D-BW-3Rd"; */
 "a1D-BW-3Rd.text" = "Datum";
-
-/* Class = "UIButton"; normalTitle = "Sender"; ObjectID = "a3c-x4-5k4"; */
-"a3c-x4-5k4.normalTitle" = "Absender";
 
 /* Class = "UINavigationItem"; title = "Inbox"; ObjectID = "aP4-ia-HTP"; */
 "aP4-ia-HTP.title" = "Posteingang";

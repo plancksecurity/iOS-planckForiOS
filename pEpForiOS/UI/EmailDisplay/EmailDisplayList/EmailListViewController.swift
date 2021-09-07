@@ -177,6 +177,15 @@ final class EmailListViewController: UIViewController {
     }
 
     private func setupRefreshControl() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+
+        guard vm.shouldShowRefreshController else {
+            //Valid case: we might be in a local folder.
+            return
+        }
         if #available(iOS 13.0, *) {
             if UITraitCollection.current.userInterfaceStyle == .light {
                 refreshController.tintColor = UIColor.pEpGreen
@@ -374,7 +383,7 @@ final class EmailListViewController: UIViewController {
             return
         }
         if let selectedItems = tableView.indexPathsForSelectedRows {
-            vm.markAsFlagged(indexPaths: selectedItems)
+            vm.markAsFlagged(indexPaths: selectedItems, isEditModeEnabled: true)
         }
     }
 
@@ -390,7 +399,7 @@ final class EmailListViewController: UIViewController {
             return
         }
         if let selectedItems = tableView.indexPathsForSelectedRows {
-            vm.markAsUnFlagged(indexPaths: selectedItems)
+            vm.markAsUnFlagged(indexPaths: selectedItems, isEditModeEnabled: true)
         }
     }
 
@@ -406,7 +415,7 @@ final class EmailListViewController: UIViewController {
             return
         }
         if let selectedItems = tableView.indexPathsForSelectedRows {
-            vm.markAsRead(indexPaths: selectedItems)
+            vm.markAsRead(indexPaths: selectedItems, isEditModeEnabled: true)
         }
     }
 
@@ -422,7 +431,7 @@ final class EmailListViewController: UIViewController {
             return
         }
         if let selectedItems = tableView.indexPathsForSelectedRows {
-            vm.markAsUnread(indexPaths: selectedItems)
+            vm.markAsUnread(indexPaths: selectedItems, isEditModeEnabled: true)
         }
     }
 
@@ -826,6 +835,11 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 
 extension EmailListViewController: EmailListViewModelDelegate {
 
+    public func finishEditingMode() {
+        deselectAllCells()
+        cancelToolbar()
+    }
+
     public func showEditDraftInComposeView() {
         dismissAndPerform { [weak self] in
             guard let me = self else {
@@ -1068,9 +1082,9 @@ extension EmailListViewController {
             }
             cell.isSeen = !seenState
             if seenState {
-                vm.markAsUnread(indexPaths: [indexPath])
+                vm.markAsUnread(indexPaths: [indexPath], isEditModeEnabled: false)
             } else {
-                vm.markAsRead(indexPaths: [indexPath])
+                vm.markAsRead(indexPaths: [indexPath], isEditModeEnabled: false)
             }
         }
     }
@@ -1142,12 +1156,11 @@ extension EmailListViewController {
             return
         }
         if row.isSeen {
-            vm.markAsUnread(indexPaths: [indexPath])
-            cell.isSeen = false
+            vm.markAsUnread(indexPaths: [indexPath], isEditModeEnabled: false)
         } else {
-            vm.markAsRead(indexPaths: [indexPath])
-            cell.isSeen = true
+            vm.markAsRead(indexPaths: [indexPath], isEditModeEnabled: false)
         }
+        updateRowAt(indexPath: indexPath)
     }
 
     private func flagAction(forCellAt indexPath: IndexPath) {
@@ -1159,17 +1172,29 @@ extension EmailListViewController {
             Log.shared.errorAndCrash("VM not found")
             return
         }
+        if row.isFlagged {
+            vm.markAsUnFlagged(indexPaths: [indexPath], isEditModeEnabled: false)
+        } else {
+            vm.markAsFlagged(indexPaths: [indexPath], isEditModeEnabled: false)
+        }
+        updateRowAt(indexPath: indexPath)
+    }
+
+    private func updateRowAt(indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+
+        guard let viewModel = vm.viewModel(for: indexPath.row) else {
+            Log.shared.errorAndCrash("No MessageVM for indexPath!")
+            return
+        }
         guard let cell = tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
             Log.shared.errorAndCrash("No cell for indexPath!")
             return
         }
-        if row.isFlagged {
-            vm.markAsUnFlagged(indexPaths: [indexPath])
-            cell.isFlagged = false
-        } else {
-            vm.markAsFlagged(indexPaths: [indexPath])
-            cell.isFlagged = true
-        }
+        cell.configure(for: viewModel)
     }
 
     private func deleteAction(forCellAt indexPath: IndexPath) {

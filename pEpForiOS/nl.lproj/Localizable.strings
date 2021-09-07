@@ -905,9 +905,6 @@
 /* Message when asking user for confirmation about importing keys */
 "The fingerprint of the selected key is:\n%1$@\n%2$@\n\nImport and use this key?" = "De vingerafdruk van de geselecteerde toets is:\n%1$@\n%2$@\n\nImporteer en gebruik deze sleutel?";
 
-/* Privacy Status Explanation */
-"The icon in the top bar reflects the Privacy Status of the message, which is the lowest lowest common denominator of all communication partners of that message, for example:" = "Het icoon in de bovenste balk geeft de privacy status van het bericht weer, wat de laagste gemene deler is van alle communicatiepartners van dat bericht, bijvoorbeeld:";
-
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "Het bericht kon niet worden verzonden. Probeer het later opnieuw.";
 
