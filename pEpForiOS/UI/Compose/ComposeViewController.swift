@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import PhotosUI
 import ContactsUI
 
 import SwipeCellKit
@@ -479,18 +480,27 @@ extension ComposeViewController {
 extension ComposeViewController {
 
     private func presentMediaAttachmentPickerProvider() {
-        let media = Capability.media
-        media.requestAndInformUserInErrorCase(viewController: self)  {
-            [weak self] (permissionsGranted: Bool, error: Capability.AccessError?) in
-            guard permissionsGranted else {
-                return
+        if #available(iOS 14.0, *) {
+            var configuration = PHPickerConfiguration()
+            configuration.filter = .any(of: [.livePhotos, .images, .videos])
+            configuration.preferredAssetRepresentationMode = .current
+            let picker = PHPickerViewController(configuration: configuration)
+            picker.delegate = mediaAttachmentPickerProvider
+            present(picker, animated: true)
+        } else {
+            let media = Capability.media
+            media.requestAndInformUserInErrorCase(viewController: self)  {
+                [weak self] (permissionsGranted: Bool, error: Capability.AccessError?) in
+                guard permissionsGranted else {
+                    return
+                }
+                guard let me = self,
+                let picker = me.mediaAttachmentPickerProvider?.imagePicker else {
+                    // Valid case. We might have been dismissed already.
+                    return
+                }
+                me.present(picker, animated: true)
             }
-            guard let me = self,
-            let picker = me.mediaAttachmentPickerProvider?.imagePicker else {
-                // Valid case. We might have been dismissed already.
-                return
-            }
-            me.present(picker, animated: true)
         }
     }
 }

@@ -17,7 +17,7 @@ import MessageModel
 import pEpIOSToolbox
 #endif
 
-protocol MediaAttachmentPickerProviderViewModelResultDelegate: class {
+protocol MediaAttachmentPickerProviderViewModelResultDelegate: AnyObject {
 
     /// Called when the user finished selecting media content and retruns the MediaAttchement.
     ///
@@ -64,6 +64,93 @@ class MediaAttachmentPickerProviderViewModel {
     public func handleDidCancel() {
         resultDelegate?.mediaAttachmentPickerProviderViewModelDidCancel(self)
     }
+
+    /// Handle the image selection
+    /// - Parameters:
+    ///   - url: The url of the image
+    ///   - image: The image itself
+    public func handleDidFinishPickingImage(url: URL, image: UIImage) {
+        createImageAttchmentAndInformResultDelegate(url: url, image: image)
+    }
+
+    /// Handle the video selection
+    /// - Parameter url: The url of the resource
+    public func handleDidFinishPickingVideoAt(url: URL) {
+        // We got something from picker that is not an image. Probalby video/movie.
+        createMovieAttchmentAndInformResultDelegate(url: url)
+    }
+}
+
+// MARK: - MediaAttachment
+
+extension MediaAttachmentPickerProviderViewModel {
+    struct MediaAttachment {
+        enum MediaAttachmentType {
+            case image
+            case movie
+        }
+        let type: MediaAttachmentType
+        let attachment: Attachment
+    }
+}
+
+//MARK: - Private
+
+extension MediaAttachmentPickerProviderViewModel {
+
+    //MARK: -  iOS version greater than iOS14
+
+    private func createMovieAttchmentAndInformResultDelegate(url: URL) {
+        createAttachment(forResource: url, session: session) {[weak self] (attachment)  in
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                return
+            }
+            guard let att = attachment else {
+                Log.shared.errorAndCrash("No Attachment")
+                return
+            }
+            let result = MediaAttachment(type: .movie, attachment: att)
+            DispatchQueue.main.async {
+                me.resultDelegate?.mediaAttachmentPickerProviderViewModel(me, didSelect: result)
+            }
+        }
+    }
+
+    private func createImageAttchmentAndInformResultDelegate(url: URL, image: UIImage) {
+        var attachment: Attachment!
+        session.performAndWait {[weak self] in
+            guard let me = self else {
+                // Valid case. We might have been dismissed already.
+                return
+            }
+            attachment = me.createAttachment(forAssetWithUrl: url, image: image, session: me.session)
+            if attachment.data == nil {
+                do {
+                    attachment.data = try Data(contentsOf: url)
+                } catch let err {
+                    Log.shared.error("%@", "\(err)")
+                }
+            }
+            let group = DispatchGroup()
+            let data = attachment.data
+            group.notify(queue: .main) { [weak self] in
+                guard let me = self else {
+                    // Valid case. We might have been dismissed.
+                    return
+                }
+                me.session.performAndWait {
+                    attachment.data = data
+                }
+                let result = MediaAttachment(type: .image, attachment: attachment)
+                DispatchQueue.main.async {
+                    me.resultDelegate?.mediaAttachmentPickerProviderViewModel(me, didSelect: result)
+                }
+            }
+        }
+    }
+
+    //MARK: -  iOS version lower than iOS14
 
     private func createImageAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) {
         guard
@@ -117,7 +204,7 @@ class MediaAttachmentPickerProviderViewModel {
         }
     }
 
-    private func createMovieAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) { 
+    private func createMovieAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) {
         guard let url = info[UIImagePickerController.InfoKey.mediaURL] as? URL else {
             Log.shared.errorAndCrash("No URL")
             return
@@ -183,18 +270,5 @@ class MediaAttachmentPickerProviderViewModel {
                                           image: image,
                                           contentDisposition: .inline,
                                           session: session)
-    }
-}
-
-// MARK: - MediaAttachment
-
-extension MediaAttachmentPickerProviderViewModel {
-    struct MediaAttachment {
-        enum MediaAttachmentType {
-            case image
-            case movie
-        }
-        let type: MediaAttachmentType
-        let attachment: Attachment
     }
 }

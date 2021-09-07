@@ -7,6 +7,13 @@
 //
 
 import UIKit
+import UniformTypeIdentifiers
+import PhotosUI
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
+import pEpIOSToolbox
+#endif
 
 class MediaAttachmentPickerProvider: NSObject {
     public private(set) var imagePicker = UIImagePickerController()
@@ -19,13 +26,6 @@ class MediaAttachmentPickerProvider: NSObject {
         self.viewModel = viewModel
         super.init()
         setup()
-    }
-
-    private func setup() {
-        imagePicker.delegate = self
-        if let mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary) {
-            imagePicker.mediaTypes = mediaTypes
-        }
     }
 }
 
@@ -49,3 +49,73 @@ extension MediaAttachmentPickerProvider: UINavigationControllerDelegate {
     // We need to conform to this to be able to set ourself as UIImagePickerController.delegate.
     // So far there is nothing to handle though.
 }
+
+// MARK: - PHPickerViewControllerDelegate
+
+@available(iOS 14, *)
+extension MediaAttachmentPickerProvider: PHPickerViewControllerDelegate {
+
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true)
+        guard !results.isEmpty else {
+            //There is no results to handle. Nothing to do.
+            return
+        }
+        processResults(results: results)
+    }
+}
+
+// MARK: - Private
+
+extension MediaAttachmentPickerProvider {
+
+    private func setup() {
+        imagePicker.delegate = self
+        if let mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary) {
+            imagePicker.mediaTypes = mediaTypes
+        }
+    }
+
+    @available(iOS 14, *)
+    private func processResults(results: [PHPickerResult]) {
+        results.forEach { result in
+            let provider = result.itemProvider
+            [UTType.image.identifier, UTType.movie.identifier].forEach { identifier in
+                if provider.hasItemConformingToTypeIdentifier(identifier) {
+                    provider.loadFileRepresentation(forTypeIdentifier: identifier) { [weak self] (url, error) in
+                        if let error = error {
+                            Log.shared.log(error: error)
+                            return
+                        }
+                        guard let me = self else {
+                            Log.shared.errorAndCrash("Lost myself")
+                            return
+                        }
+                        guard let url = url else {
+                            Log.shared.errorAndCrash("No error and no url? Unexpected.")
+                            return
+                        }
+                        switch identifier {
+                        case UTType.image.identifier:
+                            do {
+                                let data = try Data(contentsOf: url)
+                                guard let image = UIImage(data: data) else {
+                                    Log.shared.logError(message: "Image not found")
+                                    return
+                                }
+                                me.viewModel?.handleDidFinishPickingImage(url: url, image: image)
+                            } catch let err {
+                                Log.shared.error("%@", "\(err)")
+                            }
+                        case UTType.movie.identifier:
+                            me.viewModel?.handleDidFinishPickingVideoAt(url: url)
+                        default:
+                            Log.shared.errorAndCrash("Unhandled UTType")
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
