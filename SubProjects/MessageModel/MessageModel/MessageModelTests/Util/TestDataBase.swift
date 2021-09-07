@@ -36,7 +36,8 @@ class TestDataBase {
         var imapServerType: Server.ServerType = .imap
         var imapServerTransport: Server.Transport = .startTls
         var imapServerPort: UInt16 = 993
-        var password: String?
+        var imapPassword: String?
+        var smtpPassword: String?
 
         init(accountName: String,
              idAddress: String,
@@ -51,7 +52,8 @@ class TestDataBase {
              smtpServerType: Server.ServerType,
              smtpServerTransport: Server.Transport,
              smtpServerPort: UInt16,
-             password: String) {
+             imapPassword: String,
+             smtpPassword: String) {
             self.accountName = accountName
             self.idAddress = idAddress
             self.idUserName = idUserName
@@ -65,7 +67,8 @@ class TestDataBase {
             self.imapServerType = imapServerType
             self.imapServerTransport = imapServerTransport
             self.imapServerPort = imapServerPort
-            self.password = password
+            self.imapPassword = imapPassword
+            self.smtpPassword = smtpPassword
         }
 
         func cdAccount(context: NSManagedObjectContext = Stack.shared.mainContext) -> CdAccount {
@@ -86,7 +89,7 @@ class TestDataBase {
             smtp.transport = smtpServerTransport
 
             let keySmtp = UUID().uuidString
-            CdServerCredentials.add(password: password, forKey: keySmtp)
+            CdServerCredentials.add(password: smtpPassword, forKey: keySmtp)
             let credSmtp = CdServerCredentials(context: context)
             credSmtp.loginName = smtpLoginName ?? id.address
             credSmtp.key = keySmtp
@@ -99,7 +102,7 @@ class TestDataBase {
             imap.transport = imapServerTransport
 
             let keyImap = UUID().uuidString
-            CdServerCredentials.add(password: password, forKey: keyImap)
+            CdServerCredentials.add(password: imapPassword, forKey: keyImap)
             let credImap = CdServerCredentials(context: context)
             credImap.loginName = imapLoginName ?? id.address
             credImap.key = keyImap
@@ -209,7 +212,8 @@ class TestDataBase {
             smtpServerTransport: Server.Transport.tls,
             smtpServerPort: 465,
 
-            password: "whatever_you_want"))
+            imapPassword: "whatever_you_want",
+            smtpPassword: "whatever_you_want"))
 
         fatalError("Abstract method. Must be overridden")
     }
@@ -233,7 +237,8 @@ class TestDataBase {
             smtpServerTransport: Server.Transport.plain,
             smtpServerPort: 3025,
 
-            password: "pwd"))
+            imapPassword: "pwd",
+            smtpPassword: "pwd"))
     }
 
     /**

@@ -87,7 +87,12 @@ class LoginViewModelTests: XCTestCase {
     func testBasic() {
         let td = TestData()
         let accountSettings = td.createVerifiableAccountSettings()
-        guard let passw = accountSettings.password else {
+        guard let imapPassword = accountSettings.imapPassword else {
+            XCTFail("expecting password for account")
+            return
+        }
+
+        guard let smtpPassword = accountSettings.smtpPassword else {
             XCTFail("expecting password for account")
             return
         }
@@ -108,7 +113,7 @@ class LoginViewModelTests: XCTestCase {
         vm.loginViewModelLoginErrorDelegate = errorHandler
         vm.login(emailAddress: accountSettings.idAddress,
                  displayName: "User Name",
-                 password: passw)
+                 password: imapPassword)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)

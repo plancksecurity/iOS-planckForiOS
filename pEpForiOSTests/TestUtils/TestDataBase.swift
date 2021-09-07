@@ -34,7 +34,8 @@ class TestDataBase {
         var imapServerType: Server.ServerType = .imap
         var imapServerTransport: Server.Transport = .startTls
         var imapServerPort: UInt16 = 993
-        var password: String?
+        var imapPassword: String?
+        var smtpPassword: String?
 
         init(accountName: String,
              idAddress: String,
@@ -49,7 +50,8 @@ class TestDataBase {
              smtpServerType: Server.ServerType,
              smtpServerTransport: Server.Transport,
              smtpServerPort: UInt16,
-             password: String) {
+             imapPassword: String,
+             smtpPassword: String) {
             self.accountName = accountName
             self.idAddress = idAddress
             self.idUserName = idUserName
@@ -58,12 +60,14 @@ class TestDataBase {
             self.smtpServerType = smtpServerType
             self.smtpServerTransport = smtpServerTransport
             self.smtpServerPort = smtpServerPort
+            self.smtpPassword = smtpPassword
+
             self.imapLoginName = imapLoginName
             self.imapServerAddress = imapServerAddress
             self.imapServerType = imapServerType
             self.imapServerTransport = imapServerTransport
             self.imapServerPort = imapServerPort
-            self.password = password
+            self.imapPassword = imapPassword
         }
 
         /// Creates a partner identity, that is, a non-myself identity without an
@@ -87,7 +91,7 @@ class TestDataBase {
             let credSmtp = ServerCredentials(loginName: id.address,
                                              key: nil,
                                              clientCertificate: nil)
-            credSmtp.password = password
+            credSmtp.password = smtpPassword
             let smtp = Server.create(serverType: .smtp,
                                      port: smtpServerPort,
                                      address: smtpServerAddress,
@@ -97,7 +101,7 @@ class TestDataBase {
             let credImap = ServerCredentials(loginName: id.address,
                                              key: nil,
                                              clientCertificate: nil)
-            credImap.password = password
+            credImap.password = imapPassword
             let imap = Server.create(serverType: .imap,
                                      port: imapServerPort,
                                      address: imapServerAddress,
@@ -118,8 +122,8 @@ class TestDataBase {
             verifiableAccount.loginNameIMAP = imapLoginName
             verifiableAccount.loginNameSMTP = smtpLoginName
             verifiableAccount.accessToken = nil
-            verifiableAccount.imapPassword = password
-            verifiableAccount.smtpPassword = password
+            verifiableAccount.imapPassword = imapPassword
+            verifiableAccount.smtpPassword = smtpPassword
 
             verifiableAccount.serverIMAP = imapServerAddress
             verifiableAccount.portIMAP = imapServerPort
@@ -181,7 +185,8 @@ class TestDataBase {
             smtpServerTransport: Server.Transport.tls,
             smtpServerPort: 465,
 
-            password: "whatever_you_want"))
+            imapPassword: "whatever_you_want",
+            smtpPassword: "whatever_you_want"))
 
         fatalError("Abstract method. Must be overridden")
     }
@@ -205,7 +210,8 @@ class TestDataBase {
             smtpServerTransport: Server.Transport.plain,
             smtpServerPort: 3025,
 
-            password: "pwd"))
+            imapPassword: "pwd",
+            smtpPassword: "pwd"))
     }
 
     /**
