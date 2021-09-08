@@ -455,15 +455,6 @@ extension EditableAccountSettingsViewModel {
             theVerifier.imapPassword = nil
             theVerifier.smtpPassword = nil
         } else {
-            theVerifier.imapPassword = originalImapPassword
-            theVerifier.smtpPassword = originalSMTPPassword
-
-            if !input.imapPassword.isEmpty {
-                theVerifier.imapPassword = input.imapPassword
-            }
-            if !input.smtpPassword.isEmpty {
-                theVerifier.smtpPassword = input.smtpPassword
-            }
             if passwordChanged {
                 theVerifier.imapPassword = input.imapPassword
                 theVerifier.smtpPassword = input.smtpPassword
