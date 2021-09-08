@@ -461,7 +461,8 @@ extension EditableAccountSettingsViewModel {
             } else {
                 if originalImapPassword != nil {
                     theVerifier.imapPassword = originalImapPassword
-                } else if originalSMTPPassword != nil {
+                }
+                if originalSMTPPassword != nil {
                     theVerifier.smtpPassword = originalSMTPPassword
                 } else {
                     Log.shared.errorAndCrash("Is not OAuth2, hasn't got a new password, nor original password")
