@@ -98,7 +98,6 @@ class EditableAccountSettingsViewModel {
     ///   - delegate: The delegate to communicate to the View Controller.
     public init(account: Account, delegate: EditableAccountSettingsDelegate? = nil) {
          accountSettingsHelper = AccountSettingsHelper(account: account)
-
         self.account = account
         self.delegate = delegate
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
@@ -112,8 +111,8 @@ class EditableAccountSettingsViewModel {
                 Log.shared.errorAndCrash("Supposed to do OAUTH2, but no existing token")
             }
         } else {
-            self.originalImapPassword = account.imapServer?.credentials.password
-            self.originalSMTPPassword = account.smtpServer?.credentials.password
+            originalImapPassword = account.imapServer?.credentials.password
+            originalSMTPPassword = account.smtpServer?.credentials.password
         }
         self.generateSections()
     }
