@@ -221,25 +221,25 @@ extension VerifiableAccount {
     }
 
     private func resetPasswordsInKeychain() {
-        do {
-            guard let (_, cdAccount, _, _) = try createAccount() else {
-                // Assuming this is caused by invalid data.
-                throw VerifiableAccountValidationError.invalidUserData
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
             }
-            // Set the original passwords again before moc.rollback to save it in Key Chain.
-            let account = cdAccount.account()
-            if let originalPassword = originalImapPassword {
-                account.moc.performAndWait {
-                    account.imapServer?.credentials.password = originalPassword
+            if let address = me.address, let cdAccount = CdAccount.by(address: address, context: Session.main.moc) {
+                // Set the original passwords again to save it in Key Chain.
+                let account = cdAccount.account()
+                if let originalPassword = me.originalImapPassword {
+                    account.moc.performAndWait {
+                        account.servers?.first(where: {$0.serverType == .imap})?.credentials.password = originalPassword
+                    }
+                }
+                if let originalPassword = me.originalSmtpPassword {
+                    account.moc.performAndWait {
+                        account.servers?.first(where: {$0.serverType == .smtp})?.credentials.password = originalPassword
+                    }
                 }
             }
-            if let originalPassword = originalSmtpPassword {
-                account.moc.performAndWait {
-                    account.smtpServer?.credentials.password = originalPassword
-                }
-            }
-        } catch {
-            Log.shared.errorAndCrash("Can not create an account")
         }
     }
 }
