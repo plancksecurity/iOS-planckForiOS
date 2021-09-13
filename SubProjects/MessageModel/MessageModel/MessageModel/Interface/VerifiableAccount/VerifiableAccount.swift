@@ -220,26 +220,19 @@ extension VerifiableAccount {
         }
     }
 
+    // Set the original passwords again to save it in Key Chain.
+    // This prevents to have a failing password stored because of the account verification. 
     private func resetPasswordsInKeychain() {
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            let context = Session.main.moc
-            if let address = me.address,
+        let context = Stack.shared.newPrivateConcurrentContext
+        context.performAndWait {
+            if let address = address,
                let cdAccount = CdAccount.by(address: address, context: context) {
-                // Set the original passwords again to save it in Key Chain.
                 let account = cdAccount.account()
-                if let originalPassword = me.originalImapPassword {
-                    context.performAndWait {
-                        account.servers?.first(where: {$0.serverType == .imap})?.credentials.password = originalPassword
-                    }
+                if let originalPassword = originalImapPassword {
+                    account.imapServer?.credentials.password = originalPassword
                 }
-                if let originalPassword = me.originalSmtpPassword {
-                    context.performAndWait {
-                        account.servers?.first(where: {$0.serverType == .smtp})?.credentials.password = originalPassword
-                    }
+                if let originalPassword = originalSmtpPassword {
+                    account.smtpServer?.credentials.password = originalPassword
                 }
             }
         }
