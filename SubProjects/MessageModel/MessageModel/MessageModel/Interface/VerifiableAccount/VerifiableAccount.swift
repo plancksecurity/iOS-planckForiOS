@@ -226,17 +226,19 @@ extension VerifiableAccount {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            if let address = me.address, let cdAccount = CdAccount.by(address: address, context: Session.main.moc) {
+            let context = Session.main.moc
+            if let address = me.address,
+               let cdAccount = CdAccount.by(address: address, context: context) {
                 // Set the original passwords again to save it in Key Chain.
                 let account = cdAccount.account()
                 if let originalPassword = me.originalImapPassword {
-                    account.moc.performAndWait {
+                    context.performAndWait {
                         account.servers?.first(where: {$0.serverType == .imap})?.credentials.password = originalPassword
                     }
                 }
                 if let originalPassword = me.originalSmtpPassword {
-                    account.moc.performAndWait {
-                        account.servers?.first(where: {$0.serverType == .smtp})?.credentials.password = originalPassword
+                    context.performAndWait {
+                        account.servers?.first(where: {$0.serverType == .smtp})?.credentials = originalPassword
                     }
                 }
             }
