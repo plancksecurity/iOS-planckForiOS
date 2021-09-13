@@ -445,9 +445,10 @@ extension AccountSettingsViewModel {
         // OAuth
         if !isOAuth2 {
             // password
-            let fakePassword = "JustAPassword"
-            let passwordRow = getDisplayRow(type : .password, value: fakePassword)
-            rows.append(passwordRow)
+            if let password = server.credentials.password {
+                let passwordRow = getDisplayRow(type : .password, value: password)
+                rows.append(passwordRow)
+            }
         }
     }
 
