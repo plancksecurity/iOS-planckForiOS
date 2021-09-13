@@ -56,7 +56,7 @@ class EditableAccountSettingsViewModel {
 
     private var passwordChanged: Bool = false
     private var originalImapPassword: String?
-    private var originalSMTPPassword: String?
+    private var originalSmtpPassword: String?
 
     /// Retrieves the name of an transport security option.
     /// - Parameter index: The index of the option.
@@ -112,7 +112,7 @@ class EditableAccountSettingsViewModel {
             }
         } else {
             originalImapPassword = account.imapServer?.credentials.password
-            originalSMTPPassword = account.smtpServer?.credentials.password
+            originalSmtpPassword = account.smtpServer?.credentials.password
         }
         self.generateSections()
     }
@@ -435,7 +435,7 @@ extension EditableAccountSettingsViewModel {
 
     private func update(input: Input) {
         var theVerifier = verifiableAccount ??
-            VerifiableAccount.verifiableAccount(for: .other)
+            VerifiableAccount.verifiableAccount(for: .other, originalImapPassword: originalImapPassword, originalSmtpPassword: originalSmtpPassword)
         theVerifier.verifiableAccountDelegate = self
         verifiableAccount = theVerifier
 
@@ -462,8 +462,8 @@ extension EditableAccountSettingsViewModel {
                 if originalImapPassword != nil {
                     theVerifier.imapPassword = originalImapPassword
                 }
-                if originalSMTPPassword != nil {
-                    theVerifier.smtpPassword = originalSMTPPassword
+                if originalSmtpPassword != nil {
+                    theVerifier.smtpPassword = originalSmtpPassword
                 } else {
                     Log.shared.errorAndCrash("Is not OAuth2, hasn't got a new password, nor original password")
                     return

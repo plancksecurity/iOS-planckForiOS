@@ -42,6 +42,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
     /// Someone who tells us whether or not to create a pEp folder for storing sync messages for
     /// synced accounts.
     private let usePEPFolderProvider: UsePEPFolderProviderProtocol?
+    public var originalImapPassword: String?
+    public var originalSmtpPassword: String?
 
     // MARK: - VerifiableAccountProtocol (delegate)
 
@@ -91,7 +93,9 @@ public class VerifiableAccount: VerifiableAccountProtocol {
          manuallyTrustedImapServer: Bool = false,
          keySyncEnable: Bool = true,
          containsCompleteServerInfo: Bool = false,
-         usePEPFolderProvider: UsePEPFolderProviderProtocol? = nil) {
+         usePEPFolderProvider: UsePEPFolderProviderProtocol? = nil,
+         originalImapPassword: String? = nil,
+         originalSmtpPassword: String? = nil) {
         self.verifiableAccountDelegate = verifiableAccountDelegate
         self.address = address
         self.userName = userName
@@ -112,6 +116,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         self.keySyncEnable = keySyncEnable
         self.containsCompleteServerInfo = containsCompleteServerInfo
         self.usePEPFolderProvider = usePEPFolderProvider
+        self.originalImapPassword = originalImapPassword
+        self.originalSmtpPassword = originalSmtpPassword
     }
 
     // MARK: - VerifiableAccountProtocol (behaviour)
@@ -201,14 +207,39 @@ extension VerifiableAccount {
 
         switch theImapResult {
         case .failure(let error):
+            resetPasswordsInKeychain()
             verifiableAccountDelegate?.didEndVerification(result: .failure(error))
         case .success(()):
             switch theSmtpResult {
             case .failure(let error):
+                resetPasswordsInKeychain()
                 verifiableAccountDelegate?.didEndVerification(result: .failure(error))
             case .success(()):
-                self.verifiableAccountDelegate?.didEndVerification(result: .success(()))
+                verifiableAccountDelegate?.didEndVerification(result: .success(()))
             }
+        }
+    }
+
+    private func resetPasswordsInKeychain() {
+        do {
+            guard let (_, cdAccount, _, _) = try createAccount() else {
+                // Assuming this is caused by invalid data.
+                throw VerifiableAccountValidationError.invalidUserData
+            }
+            // Set the original passwords again before moc.rollback to save it in Key Chain.
+            let account = cdAccount.account()
+            if let originalPassword = originalImapPassword {
+                account.moc.performAndWait {
+                    account.imapServer?.credentials.password = originalPassword
+                }
+            }
+            if let originalPassword = originalSmtpPassword {
+                account.moc.performAndWait {
+                    account.smtpServer?.credentials.password = originalPassword
+                }
+            }
+        } catch {
+            Log.shared.errorAndCrash("Can not create an account")
         }
     }
 }
@@ -494,7 +525,9 @@ extension VerifiableAccount {
     /// to find out if server data is still missing or not.
     /// - Parameter type: The account type
     public static func verifiableAccount(for type: AccountType,
-                                         usePEPFolderProvider: UsePEPFolderProviderProtocol? = nil) -> VerifiableAccountProtocol {
+                                         usePEPFolderProvider: UsePEPFolderProviderProtocol? = nil,
+                                         originalImapPassword: String? = nil,
+                                         originalSmtpPassword: String? = nil) -> VerifiableAccountProtocol {
         var account =  VerifiableAccount(verifiableAccountDelegate: nil,
                                          address: nil,
                                          userName: nil,
@@ -514,7 +547,10 @@ extension VerifiableAccount {
                                          manuallyTrustedImapServer: false,
                                          keySyncEnable: true,
                                          containsCompleteServerInfo: false,
-                                         usePEPFolderProvider: usePEPFolderProvider)
+                                         usePEPFolderProvider: usePEPFolderProvider,
+                                         originalImapPassword: originalImapPassword,
+                                         originalSmtpPassword: originalSmtpPassword)
+
         switch type {
         case .gmail:
             account = VerifiableAccount(verifiableAccountDelegate: nil,
