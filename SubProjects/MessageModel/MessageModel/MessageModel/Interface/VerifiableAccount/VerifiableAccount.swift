@@ -238,7 +238,7 @@ extension VerifiableAccount {
                 }
                 if let originalPassword = me.originalSmtpPassword {
                     context.performAndWait {
-                        account.servers?.first(where: {$0.serverType == .smtp})?.credentials = originalPassword
+                        account.servers?.first(where: {$0.serverType == .smtp})?.credentials.password = originalPassword
                     }
                 }
             }
