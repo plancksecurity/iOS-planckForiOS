@@ -490,7 +490,6 @@ extension VerifiableAccount {
 extension VerifiableAccount: VerifiableAccountIMAPDelegate {
     func verified(verifier: VerifiableAccountIMAP,
                   result: Result<Void, Error>) {
-        verifier.delegate = nil
         syncQueue.async { [weak self] in
             self?.imapResult = result
             self?.checkSuccess()
@@ -503,7 +502,6 @@ extension VerifiableAccount: VerifiableAccountIMAPDelegate {
 extension VerifiableAccount: VerifiableAccountSMTPDelegate {
     func verified(verifier: VerifiableAccountSMTP,
                   result: Result<Void, Error>) {
-        verifier.delegate = nil
         syncQueue.async { [weak self] in
             self?.smtpResult = result
             self?.checkSuccess()
