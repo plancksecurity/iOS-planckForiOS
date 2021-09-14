@@ -42,6 +42,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
     /// Someone who tells us whether or not to create a pEp folder for storing sync messages for
     /// synced accounts.
     private let usePEPFolderProvider: UsePEPFolderProviderProtocol?
+    public var originalImapPassword: String?
+    public var originalSmtpPassword: String?
 
     // MARK: - VerifiableAccountProtocol (delegate)
 
@@ -53,7 +55,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
     public var address: String?
     public var userName: String?
     public var authMethod: AuthMethod?
-    public var password: String?
+    public var imapPassword: String?
+    public var smtpPassword: String?
     public var keySyncEnable: Bool
     public var accessToken: OAuth2AccessTokenProtocol?
     public var clientCertificate: ClientCertificate?
@@ -75,7 +78,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
          address: String? = nil,
          userName: String? = nil,
          authMethod: AuthMethod? = nil,
-         password: String? = nil,
+         imapPassword: String? = nil,
+         smtpPassword: String? = nil,
          accessToken: OAuth2AccessTokenProtocol? = nil,
          loginNameIMAP: String? = nil,
          serverIMAP: String? = nil,
@@ -89,12 +93,15 @@ public class VerifiableAccount: VerifiableAccountProtocol {
          manuallyTrustedImapServer: Bool = false,
          keySyncEnable: Bool = true,
          containsCompleteServerInfo: Bool = false,
-         usePEPFolderProvider: UsePEPFolderProviderProtocol? = nil) {
+         usePEPFolderProvider: UsePEPFolderProviderProtocol? = nil,
+         originalImapPassword: String? = nil,
+         originalSmtpPassword: String? = nil) {
         self.verifiableAccountDelegate = verifiableAccountDelegate
         self.address = address
         self.userName = userName
         self.authMethod = authMethod
-        self.password = password
+        self.imapPassword = imapPassword
+        self.smtpPassword = smtpPassword
         self.accessToken = accessToken
         self.loginNameIMAP = loginNameIMAP
         self.serverIMAP = serverIMAP
@@ -109,6 +116,8 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         self.keySyncEnable = keySyncEnable
         self.containsCompleteServerInfo = containsCompleteServerInfo
         self.usePEPFolderProvider = usePEPFolderProvider
+        self.originalImapPassword = originalImapPassword
+        self.originalSmtpPassword = originalSmtpPassword
     }
 
     // MARK: - VerifiableAccountProtocol (behaviour)
@@ -198,13 +207,33 @@ extension VerifiableAccount {
 
         switch theImapResult {
         case .failure(let error):
+            resetPasswordsInKeychain()
             verifiableAccountDelegate?.didEndVerification(result: .failure(error))
         case .success(()):
             switch theSmtpResult {
             case .failure(let error):
+                resetPasswordsInKeychain()
                 verifiableAccountDelegate?.didEndVerification(result: .failure(error))
             case .success(()):
-                self.verifiableAccountDelegate?.didEndVerification(result: .success(()))
+                verifiableAccountDelegate?.didEndVerification(result: .success(()))
+            }
+        }
+    }
+
+    // Set the original passwords again to save it in Key Chain.
+    // This prevents to have a failing password stored because of the account verification. 
+    private func resetPasswordsInKeychain() {
+        let context = Stack.shared.newPrivateConcurrentContext
+        context.performAndWait {
+            if let address = address,
+               let cdAccount = CdAccount.by(address: address, context: context) {
+                let account = cdAccount.account()
+                if let originalPassword = originalImapPassword {
+                    account.imapServer?.credentials.password = originalPassword
+                }
+                if let originalPassword = originalSmtpPassword {
+                    account.smtpServer?.credentials.password = originalPassword
+                }
             }
         }
     }
@@ -214,8 +243,8 @@ extension VerifiableAccount {
 
 extension VerifiableAccount {
     private var isValidPassword: Bool {
-        if let pass = password {
-            return pass.count > 0
+        if let imapPass = imapPassword, let smtpPass = smtpPassword {
+            return imapPass.count > 0 && smtpPass.count > 0
         }
         return false
     }
@@ -226,8 +255,8 @@ extension VerifiableAccount {
                 (authMethod == .saslXoauth2 || (loginNameIMAP?.count ?? 0) >= 1) &&
                 (authMethod == .saslXoauth2 || (loginNameSMTP?.count ?? 0) >= 1) &&
                 (address?.count ?? 0) > 0 &&
-                ((authMethod == .saslXoauth2 && accessToken != nil && password == nil) ||
-                    (accessToken == nil && password != nil)) &&
+                ((authMethod == .saslXoauth2 && accessToken != nil && imapPassword == nil && smtpPassword == nil) ||
+                    (accessToken == nil && imapPassword != nil && smtpPassword != nil)) &&
                 portIMAP > 0 &&
                 portSMTP > 0 &&
                 (serverIMAP?.count ?? 0) > 0 &&
@@ -364,7 +393,7 @@ extension VerifiableAccount {
                 credentials: theImapServer.credentials ?? CdServerCredentials(context: moc),
                 loginName: me.loginNameIMAP,
                 address: me.address,
-                password: me.password,
+                password: me.imapPassword,
                 clientCertificate: cdClientCertificate,
                 accessToken: me.accessToken)
             credentialsImap.servers = NSSet(array: [theImapServer])
@@ -374,7 +403,7 @@ extension VerifiableAccount {
                 credentials: theSmtpServer.credentials ?? CdServerCredentials(context: moc),
                 loginName: me.loginNameSMTP,
                 address: me.address,
-                password: me.password,
+                password: me.smtpPassword,
                 clientCertificate: cdClientCertificate,
                 accessToken: me.accessToken)
             credentialsSmtp.servers = NSSet(array: [theSmtpServer])
@@ -461,7 +490,6 @@ extension VerifiableAccount {
 extension VerifiableAccount: VerifiableAccountIMAPDelegate {
     func verified(verifier: VerifiableAccountIMAP,
                   result: Result<Void, Error>) {
-        verifier.delegate = nil
         syncQueue.async { [weak self] in
             self?.imapResult = result
             self?.checkSuccess()
@@ -474,7 +502,6 @@ extension VerifiableAccount: VerifiableAccountIMAPDelegate {
 extension VerifiableAccount: VerifiableAccountSMTPDelegate {
     func verified(verifier: VerifiableAccountSMTP,
                   result: Result<Void, Error>) {
-        verifier.delegate = nil
         syncQueue.async { [weak self] in
             self?.smtpResult = result
             self?.checkSuccess()
@@ -491,12 +518,15 @@ extension VerifiableAccount {
     /// to find out if server data is still missing or not.
     /// - Parameter type: The account type
     public static func verifiableAccount(for type: AccountType,
-                                         usePEPFolderProvider: UsePEPFolderProviderProtocol? = nil) -> VerifiableAccountProtocol {
+                                         usePEPFolderProvider: UsePEPFolderProviderProtocol? = nil,
+                                         originalImapPassword: String? = nil,
+                                         originalSmtpPassword: String? = nil) -> VerifiableAccountProtocol {
         var account =  VerifiableAccount(verifiableAccountDelegate: nil,
                                          address: nil,
                                          userName: nil,
                                          authMethod: .cramMD5,
-                                         password: nil,
+                                         imapPassword: nil,
+                                         smtpPassword: nil,
                                          accessToken: nil,
                                          loginNameIMAP: nil,
                                          serverIMAP: nil,
@@ -510,14 +540,18 @@ extension VerifiableAccount {
                                          manuallyTrustedImapServer: false,
                                          keySyncEnable: true,
                                          containsCompleteServerInfo: false,
-                                         usePEPFolderProvider: usePEPFolderProvider)
+                                         usePEPFolderProvider: usePEPFolderProvider,
+                                         originalImapPassword: originalImapPassword,
+                                         originalSmtpPassword: originalSmtpPassword)
+
         switch type {
         case .gmail:
             account = VerifiableAccount(verifiableAccountDelegate: nil,
                                         address: nil,
                                         userName: nil,
                                         authMethod: .saslXoauth2,
-                                        password: nil,
+                                        imapPassword: nil,
+                                        smtpPassword: nil,
                                         accessToken: nil,
                                         loginNameIMAP: nil,
                                         serverIMAP: "imap.gmail.com",
@@ -537,7 +571,8 @@ extension VerifiableAccount {
                                          address: nil,
                                          userName: nil,
                                          authMethod: .cramMD5,
-                                         password: nil,
+                                         imapPassword: nil,
+                                         smtpPassword: nil,
                                          accessToken: nil,
                                          loginNameIMAP: nil,
                                          serverIMAP: "outlook.office365.com",
@@ -557,7 +592,8 @@ extension VerifiableAccount {
                                          address: nil,
                                          userName: nil,
                                          authMethod: .cramMD5,
-                                         password: nil,
+                                         imapPassword: nil,
+                                         smtpPassword: nil,
                                          accessToken: nil,
                                          loginNameIMAP: nil,
                                          serverIMAP: "imap.mail.me.com",
@@ -577,7 +613,8 @@ extension VerifiableAccount {
                                          address: nil,
                                          userName: nil,
                                          authMethod: .cramMD5,
-                                         password: nil,
+                                         imapPassword: nil,
+                                         smtpPassword: nil,
                                          accessToken: nil,
                                          loginNameIMAP: nil,
                                          serverIMAP: "outlook.office365.com",

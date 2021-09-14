@@ -57,7 +57,8 @@ class VerifiableAccountTest: PersistentStoreDrivenTestBase {
         let result = checkBasicVerification() { v in
             var verifiable = v
 
-            verifiable.password = "xxxxxxxxxx"
+            verifiable.imapPassword = "xxxxxxxxxx"
+            verifiable.smtpPassword = "xxxxxxxxxx"
 
             return verifiable
         }
@@ -169,7 +170,8 @@ extension VerifiableAccountTest {
         // Note: auth method is never taken from LAS. We either have OAuth2,
         // as determined previously, or we will defer to pantomime to find out the best method.
         verifiableAccount.authMethod = nil
-        verifiableAccount.password = acc.imapServer?.credentials.password
+        verifiableAccount.imapPassword = acc.imapServer?.credentials.password
+        verifiableAccount.smtpPassword = acc.smtpServer?.credentials.password
         verifiableAccount.accessToken = nil
         verifiableAccount.serverIMAP = acc.imapServer?.address
         verifiableAccount.portIMAP = (acc.imapServer?.port)!
