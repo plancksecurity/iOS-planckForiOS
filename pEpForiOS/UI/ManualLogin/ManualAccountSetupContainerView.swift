@@ -100,6 +100,7 @@ final class ManualAccountSetupContainerView: UIView {
         return [setupView.firstTextField,
                 setupView.secondTextField,
                 setupView.thirdTextField,
-                setupView.fourthTextField]
+                setupView.fourthTextField,
+                setupView.fifthTextField]
     }
 }

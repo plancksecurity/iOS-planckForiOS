@@ -11,7 +11,7 @@ import UIKit
 import pEpIOSToolbox
 import MessageModel
 
-protocol LoginViewControllerDelegate: class  {
+protocol LoginViewControllerDelegate: AnyObject  {
     func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController)
 }
 
@@ -251,7 +251,8 @@ extension LoginViewController: UITextFieldDelegate {
         case emailAddress:
             vm.verifiableAccount.address = textField.text
         case password:
-            vm.verifiableAccount.password = textField.text
+            vm.verifiableAccount.imapPassword = textField.text
+            vm.verifiableAccount.smtpPassword = textField.text
         case user:
             vm.verifiableAccount.userName = textField.text
         default:
