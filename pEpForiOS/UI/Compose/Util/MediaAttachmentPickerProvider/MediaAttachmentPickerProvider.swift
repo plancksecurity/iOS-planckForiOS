@@ -33,7 +33,7 @@ class MediaAttachmentPickerProvider: NSObject {
     /// - Parameters:
     ///   - requesterViewController: The VC that request the picker will be used to show alert to inform the user in case no permission is granted for iOS versions less than 14. 
     ///   - callback: The callback with the picker.
-    func getPicker(from requesterViewController: UIViewController, _ callback: @escaping (UIViewController?) -> ()?) {
+    public func getPicker(from requesterViewController: UIViewController, _ callback: @escaping (UIViewController?) -> ()?) {
         if #available(iOS 14.0, *) {
             var configuration = PHPickerConfiguration()
             configuration.filter = .any(of: [.livePhotos, .images, .videos])
