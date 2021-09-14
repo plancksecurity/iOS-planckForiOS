@@ -69,12 +69,14 @@ class MediaAttachmentPickerProviderViewModel {
     /// - Parameters:
     ///   - url: The url of the image
     ///   - image: The image itself
+    @available(iOS 14, *)
     public func handleDidFinishPickingImage(url: URL, image: UIImage) {
         createImageAttchmentAndInformResultDelegate(url: url, image: image)
     }
 
     /// Handle the video selection
     /// - Parameter url: The url of the resource
+    @available(iOS 14, *)
     public func handleDidFinishPickingVideoAt(url: URL) {
         // We got something from picker that is not an image. Probalby video/movie.
         createMovieAttchmentAndInformResultDelegate(url: url)
@@ -98,8 +100,7 @@ extension MediaAttachmentPickerProviderViewModel {
 
 extension MediaAttachmentPickerProviderViewModel {
 
-    // iOS version greater than iOS14
-
+    @available(iOS 14, *)
     private func createMovieAttchmentAndInformResultDelegate(url: URL) {
         createAttachment(forResource: url, session: session) {[weak self] (attachment)  in
             guard let me = self else {
@@ -117,6 +118,7 @@ extension MediaAttachmentPickerProviderViewModel {
         }
     }
 
+    @available(iOS 14, *)
     private func createImageAttchmentAndInformResultDelegate(url: URL, image: UIImage) {
         var attachment: Attachment!
         session.performAndWait {[weak self] in
@@ -149,8 +151,6 @@ extension MediaAttachmentPickerProviderViewModel {
             }
         }
     }
-
-    // iOS version lower than iOS14
 
     private func createImageAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) {
         guard
