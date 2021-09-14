@@ -111,6 +111,24 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
         waitForExpectations(timeout: 0.5) // Async file access
     }
 
+    func testHandleDidFinishPickingVideoAt() {
+        guard let (infoDict, forAttachment, session) = infoDict(mediaType: .movie) else {
+            XCTFail()
+            return
+        }
+        assert(didSelectMediaAttachmentMustBeCalledCalled: true,
+               expectedMediaAttachment: forAttachment,
+               didCancelMustBeCalled: false,
+               session: session)
+        guard let url = infoDict[UIImagePickerController.InfoKey.mediaURL] as? URL else {
+            XCTFail("URL not found")
+            return
+        }
+
+        vm?.handleDidFinishPickingVideoAt(url: url)
+        waitForExpectations(timeout: 0.5) // Async file access
+    }
+
     // MARK: - handleDidCancel
 
     func testHandleDidCancel() {
