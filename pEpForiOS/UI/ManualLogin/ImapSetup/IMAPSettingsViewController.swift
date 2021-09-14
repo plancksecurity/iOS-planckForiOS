@@ -47,7 +47,6 @@ final class IMAPSettingsViewController: UIViewController, TextfieldResponder {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         updateView(animated: false)
     }
 
@@ -60,7 +59,7 @@ final class IMAPSettingsViewController: UIViewController, TextfieldResponder {
         firstResponder(verifiableAccount.loginNameIMAP == nil)
     }
 
-    @IBAction func didTapOnView(_ sender: Any) {
+    @IBAction private func didTapOnView(_ sender: Any) {
         view.endEditing(true)
     }
 }
@@ -83,7 +82,7 @@ extension IMAPSettingsViewController: UITextFieldDelegate {
             Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return true
         }
-        if textField == setupView.fourthTextField {
+        if textField == setupView.fifthTextField {
             view.endEditing(true)
             presentActionSheetWithTransportSecurityValues(textField)
             return false
@@ -98,9 +97,9 @@ extension IMAPSettingsViewController: UITextFieldDelegate {
             Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return true
         }
-        if textField == setupView.thirdTextField {
+        if textField == setupView.fourthTextField {
             guard var text = textField.text,
-                let range = Range(range, in: text) else {
+                  let range = Range(range, in: text) else {
                 Log.shared.errorAndCrash("Fail to get textField text or range")
                 return true
             }
@@ -147,6 +146,7 @@ extension IMAPSettingsViewController: ManualAccountSetupViewDelegate {
         performSegue(withIdentifier: .SMTPSettings, sender: self)
     }
 
+    // Username
     func didChangeFirst(_ textField: UITextField) {
         guard var verifiableAccount = verifiableAccount else {
             Log.shared.errorAndCrash("No Verifiable account")
@@ -156,7 +156,17 @@ extension IMAPSettingsViewController: ManualAccountSetupViewDelegate {
         updateView()
     }
 
+    // Password
     func didChangeSecond(_ textField: UITextField) {
+        guard var verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("No Verifiable account")
+            return
+        }
+        verifiableAccount.imapPassword = textField.text
+    }
+
+    // Server
+    func didChangeThird(_ textField: UITextField) {
         guard var verifiableAccount = verifiableAccount else {
             Log.shared.errorAndCrash("No Verifiable account")
             return
@@ -164,11 +174,12 @@ extension IMAPSettingsViewController: ManualAccountSetupViewDelegate {
         verifiableAccount.serverIMAP = textField.text
     }
 
-    func didChangeThird(_ textField: UITextField) {
+    // Port
+    func didChangeFourth(_ textField: UITextField) {
         guard let text = textField.text,
-            let port = UInt16(text) else {
-                //If not UInt16 then do nothing. Example empty string
-                return
+              let port = UInt16(text) else {
+            //If not UInt16 then do nothing. Example empty string
+            return
         }
         guard var verifiableAccount = verifiableAccount else {
             Log.shared.errorAndCrash("No Verifiable account")
@@ -177,20 +188,22 @@ extension IMAPSettingsViewController: ManualAccountSetupViewDelegate {
         verifiableAccount.portIMAP = port
     }
 
-    func didChangeFourth(_ textField: UITextField) {
-        //Do nothing, changes saved in model and textField in the bock of alert
+    // Transport security
+    func didChangeFifth(_ textField: UITextField) {
+        //Do nothing, changes are saved in model and textField in the block of alert.
     }
 }
 
 // MARK: - Private
 
 extension IMAPSettingsViewController {
+
     private func setUpTextFieldsInputTraits() {
         guard let setupView = manualAccountSetupContainerView.setupView else {
             Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return
         }
-        setupView.thirdTextField.keyboardType = .numberPad
+        setupView.fourthTextField.keyboardType = .numberPad
     }
 
     private func setUpViewLocalizableTexts() {
@@ -212,23 +225,31 @@ extension IMAPSettingsViewController {
         let userNamePlaceholder = NSLocalizedString("User Name", comment: "User Name placeholder for manual account IMAP setup")
         setupView.firstTextField.placeholder = userNamePlaceholder
 
+        let passwordPlaceholder = NSLocalizedString("Password", comment: "Password placeholder for manual account IMAP setup")
+        setupView.secondTextField.placeholder = passwordPlaceholder
+        setupView.secondTextField.isSecureTextEntry = true
+
         let serverPlaceholder = NSLocalizedString("Server", comment: "Server placeholder for manual account IMAP setup")
-        setupView.secondTextField.placeholder = serverPlaceholder
+        setupView.thirdTextField.placeholder = serverPlaceholder
 
         let portPlaceholder = NSLocalizedString("Port", comment: "Port placeholder for manual account IMAP setup")
-        setupView.thirdTextField.placeholder = portPlaceholder
+        setupView.fourthTextField.placeholder = portPlaceholder
 
-        let TransportSecurityPlaceholder = NSLocalizedString("Transport Security", comment: "TransportSecurity placeholder for manual account IMAP setup")
-        setupView.fourthTextField.placeholder = TransportSecurityPlaceholder
+        let transportSecurityPlaceholder = NSLocalizedString("Transport Security", comment: "TransportSecurity placeholder for manual account IMAP setup")
+        setupView.fifthTextField.placeholder = transportSecurityPlaceholder
     }
 
     private func presentActionSheetWithTransportSecurityValues(_ sender: UITextField) {
         let title = NSLocalizedString("Transport protocol", comment: "UI alert title for transport protocol")
         let message = NSLocalizedString("Choose a Security protocol for your accont", comment: "UI alert message for transport protocol")
         let alertController = UIUtils.actionSheet(title: title, message: message)
-        let block: (ConnectionTransport) -> () = { transport in
+        let block: (ConnectionTransport) -> () = { [weak self] transport in
             sender.text = transport.localizedString()
-            self.verifiableAccount?.transportIMAP = transport
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.verifiableAccount?.transportIMAP = transport
         }
 
         if let popoverPresentationController = alertController.popoverPresentationController {
@@ -260,15 +281,15 @@ extension IMAPSettingsViewController {
         }
         setupView.firstTextField.set(text: verifiableAccount.loginNameIMAP,
                                      animated: animated)
-        setupView.secondTextField.set(text: verifiableAccount.serverIMAP,
+        setupView.secondTextField.set(text: verifiableAccount.imapPassword,
                                       animated: animated)
-        setupView.thirdTextField.set(text: String(verifiableAccount.portIMAP),
+        setupView.thirdTextField.set(text: verifiableAccount.serverIMAP,
                                      animated: animated)
-        setupView.fourthTextField.set(text: verifiableAccount.transportIMAP.localizedString(),
+        setupView.fourthTextField.set(text: String(verifiableAccount.portIMAP),
                                       animated: animated)
-
+        setupView.fifthTextField.set(text: verifiableAccount.transportIMAP.localizedString(),
+                                     animated: animated)
         setupView.pEpSyncSwitch.isOn = verifiableAccount.keySyncEnable
-
         setupView.nextButton.isEnabled = verifiableAccount.isValidUser
         setupView.nextRightButton.isEnabled = verifiableAccount.isValidUser
     }

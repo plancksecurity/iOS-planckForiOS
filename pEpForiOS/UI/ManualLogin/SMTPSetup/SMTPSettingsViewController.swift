@@ -28,11 +28,9 @@ final class SMTPSettingsViewController: UIViewController, TextfieldResponder {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         manualAccountSetupContainerView.delegate = self
         manualAccountSetupContainerView.textFieldsDelegate = self
         manualAccountSetupContainerView.pEpSyncViewIsHidden = true
-
         fields = manualAccountSetupContainerView.manualSetupViewTextFeilds()
         setUpViewLocalizableTexts()
         setUpTextFieldsInputTraits()
@@ -41,7 +39,6 @@ final class SMTPSettingsViewController: UIViewController, TextfieldResponder {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         updateView(animated: false)
     }
 
@@ -54,7 +51,7 @@ final class SMTPSettingsViewController: UIViewController, TextfieldResponder {
         firstResponder(verifiableAccount.loginNameSMTP == nil)
     }
 
-    @IBAction func didTapOnView(_ sender: Any) {
+    @IBAction private func didTapOnView(_ sender: Any) {
         view.endEditing(true)
     }
 }
@@ -77,7 +74,7 @@ extension SMTPSettingsViewController: UITextFieldDelegate {
             //Nil case is handle in setupView getter
             return true
         }
-        if textField == setupView.fourthTextField {
+        if textField == setupView.fifthTextField {
             view.endEditing(true)
             presentActionSheetWithTransportSecurityValues(textField)
             return false
@@ -92,7 +89,7 @@ extension SMTPSettingsViewController: UITextFieldDelegate {
             //Error handle in setupView getter
             return true
         }
-        if textField == setupView.thirdTextField {
+        if textField == setupView.fourthTextField {
             guard let text = textField.text as NSString? else {
                 Log.shared.errorAndCrash("Fail to downcast from String to NSString")
                 return true
@@ -138,6 +135,7 @@ extension SMTPSettingsViewController: ManualAccountSetupViewDelegate {
         }
     }
 
+    // Username
     func didChangeFirst(_ textField: UITextField) {
         guard var verifiableAccount = verifiableAccount else {
             Log.shared.errorAndCrash("No Verifiable account")
@@ -147,19 +145,30 @@ extension SMTPSettingsViewController: ManualAccountSetupViewDelegate {
         updateView()
     }
 
+    // Password
     func didChangeSecond(_ textField: UITextField) {
-       guard var verifiableAccount = verifiableAccount else {
+        guard var verifiableAccount = verifiableAccount else {
+            Log.shared.errorAndCrash("No Verifiable account")
+            return
+        }
+        verifiableAccount.smtpPassword = textField.text
+    }
+
+    // Server
+    func didChangeThird(_ textField: UITextField) {
+        guard var verifiableAccount = verifiableAccount else {
             Log.shared.errorAndCrash("No Verifiable account")
             return
         }
         verifiableAccount.serverSMTP = textField.text
     }
 
-    func didChangeThird(_ textField: UITextField) {
+    // Port
+    func didChangeFourth(_ textField: UITextField) {
         guard let text = textField.text,
-            let port = UInt16(text) else {
-                //If not UInt16 then do nothing. Example empty string
-                return
+              let port = UInt16(text) else {
+            //If not UInt16 then do nothing. Example empty string
+            return
         }
         guard var verifiableAccount = verifiableAccount else {
             Log.shared.errorAndCrash("No Verifiable account")
@@ -168,8 +177,9 @@ extension SMTPSettingsViewController: ManualAccountSetupViewDelegate {
         verifiableAccount.portSMTP = port
     }
 
-    func didChangeFourth(_ textField: UITextField) {
-        //Do nothing, changes saved in model and textField in the bock of alert
+    // Transport security
+    func didChangeFifth(_ textField: UITextField) {
+        //Do nothing, changes are saved in model and textField in the block of alert.
     }
 }
 
@@ -236,6 +246,7 @@ extension SMTPSettingsViewController: VerifiableAccountDelegate {
 // MARK: - Private
 
 extension SMTPSettingsViewController {
+
     /// Update view state from view model
     /// - Parameter animated: this property only apply to  items with animations, list AnimatedPlaceholderTextFields
     private func updateView(animated: Bool = true) {
@@ -250,12 +261,14 @@ extension SMTPSettingsViewController {
 
         setupView.firstTextField.set(text: verifiableAccount.loginNameSMTP,
                                      animated: animated)
-        setupView.secondTextField.set(text: verifiableAccount.serverSMTP,
+        setupView.secondTextField.set(text: verifiableAccount.smtpPassword,
                                       animated: animated)
-        setupView.thirdTextField.set(text: String(verifiableAccount.portSMTP),
+        setupView.thirdTextField.set(text: verifiableAccount.serverSMTP,
                                      animated: animated)
-        setupView.fourthTextField.set(text: verifiableAccount.transportSMTP.localizedString(),
+        setupView.fourthTextField.set(text: String(verifiableAccount.portSMTP),
                                       animated: animated)
+        setupView.fifthTextField.set(text: verifiableAccount.transportSMTP.localizedString(),
+                                     animated: animated)
 
         setupView.pEpSyncSwitch.isOn = verifiableAccount.keySyncEnable
 
@@ -297,7 +310,7 @@ extension SMTPSettingsViewController {
             return
         }
 
-        setupView.thirdTextField.keyboardType = .numberPad
+        setupView.fourthTextField.keyboardType = .numberPad
     }
 
     private func setUpViewLocalizableTexts() {
@@ -319,14 +332,18 @@ extension SMTPSettingsViewController {
         let userNamePlaceholder = NSLocalizedString("User Name", comment: "User Name placeholder for manual account SMTP setup")
         setupView.firstTextField.placeholder = userNamePlaceholder
 
+        let passwordPlaceholder = NSLocalizedString("Password", comment: "Password placeholder for manual account SMTP setup")
+        setupView.secondTextField.placeholder = passwordPlaceholder
+        setupView.secondTextField.isSecureTextEntry = true
+
         let serverPlaceholder = NSLocalizedString("Server", comment: "Server placeholder for manual account SMTP setup")
-        setupView.secondTextField.placeholder = serverPlaceholder
+        setupView.thirdTextField.placeholder = serverPlaceholder
 
         let portPlaceholder = NSLocalizedString("Port", comment: "Port placeholder for manual account SMTP setup")
-        setupView.thirdTextField.placeholder = portPlaceholder
+        setupView.fourthTextField.placeholder = portPlaceholder
 
-        let TransportSecurityPlaceholder = NSLocalizedString("Transport Security", comment: "TransportSecurity placeholder for manual account SMTP setup")
-        setupView.fourthTextField.placeholder = TransportSecurityPlaceholder
+        let transportSecurityPlaceholder = NSLocalizedString("Transport Security", comment: "TransportSecurity placeholder for manual account SMTP setup")
+        setupView.fifthTextField.placeholder = transportSecurityPlaceholder
     }
 
     private func presentActionSheetWithTransportSecurityValues(_ sender: UITextField) {

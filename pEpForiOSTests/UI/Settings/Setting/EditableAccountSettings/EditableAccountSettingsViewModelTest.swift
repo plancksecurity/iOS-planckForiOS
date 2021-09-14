@@ -66,17 +66,18 @@ class EditableAccountSettingsViewModelTest: AccountDrivenTestBase {
     func testHandleRowDidChange() {
         testChangeValue(sectionType: .account, rowType: .name)
         testChangeValue(sectionType: .account, rowType: .email)
-        testChangeValue(sectionType: .account, rowType: .password)
 
         testChangeValue(sectionType: .smtp, rowType: .server)
         testChangeValue(sectionType: .smtp, rowType: .port)
         testChangeValue(sectionType: .smtp, rowType: .tranportSecurity)
         testChangeValue(sectionType: .smtp, rowType: .username)
+        testChangeValue(sectionType: .smtp, rowType: .password)
 
         testChangeValue(sectionType: .imap, rowType: .server)
         testChangeValue(sectionType: .imap, rowType: .port)
         testChangeValue(sectionType: .imap, rowType: .tranportSecurity)
         testChangeValue(sectionType: .imap, rowType: .username)
+        testChangeValue(sectionType: .imap, rowType: .password)
     }
 
     func testHandleSaveButtonPressed() {

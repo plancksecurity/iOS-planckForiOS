@@ -37,6 +37,24 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
         XCTAssertEqual(viewModel.sections.count, dummySections.count)
     }
 
+    func testRowsInFirstSections() {
+        let expectedFirstSectionTypes : [AccountSettingsViewModel.RowType] = [.name, .email, .signature, .includeInUnified, .pepSync, .reset]
+        let actualFirstSectionTypes = viewModel.sections[0].rows.map { $0.type }
+        XCTAssertEqual(actualFirstSectionTypes, expectedFirstSectionTypes)
+    }
+
+    func testRowsInSecondSections() {
+        let expectedSecondSectionTypes : [AccountSettingsViewModel.RowType] = [.server, .port, .tranportSecurity, .username, .password]
+        let actualSecondSectionTypes = viewModel.sections[1].rows.map { $0.type }
+        XCTAssertEqual(actualSecondSectionTypes, expectedSecondSectionTypes)
+    }
+
+    func testRowsInThirdSections() {
+        let expectedThridSectionTypes : [AccountSettingsViewModel.RowType] = [.server, .port, .tranportSecurity, .username, .password]
+        let actualThridSectionTypes = viewModel.sections[2].rows.map { $0.type }
+        XCTAssertEqual(actualThridSectionTypes, expectedThridSectionTypes)
+    }
+
     func testIsIncludeInUnifiedFolders() {
         //Test state True by default
         XCTAssertEqual(viewModel.includeInUnifiedFolders, true)

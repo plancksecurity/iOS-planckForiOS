@@ -16,7 +16,7 @@ import pEpIOSToolboxForExtensions
 import pEpIOSToolbox
 #endif
 
-protocol VerifiableAccountSMTPDelegate: class {
+protocol VerifiableAccountSMTPDelegate: AnyObject {
     func verified(verifier: VerifiableAccountSMTP,
                   result: Result<Void, Error>)
 }
@@ -80,6 +80,7 @@ extension VerifiableAccountSMTP: SmtpConnectionDelegate {
     }
 
     func authenticationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+        delegate?.verified(verifier: self, result: .success(()))
     }
 
     func authenticationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
@@ -118,9 +119,7 @@ extension VerifiableAccountSMTP: SmtpConnectionDelegate {
         notifyUnexpectedCallback(name: #function)
     }
 
-    func serviceInitialized(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
-        delegate?.verified(verifier: self, result: .success(()))
-    }
+    func serviceInitialized(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) { }
 
     func serviceReconnected(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         notifyUnexpectedCallback(name: #function)

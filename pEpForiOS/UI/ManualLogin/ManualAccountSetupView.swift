@@ -11,7 +11,7 @@ import UIKit
 import pEpIOSToolbox
 
 /// Protocol to handle ManualAccountSetupView events
-protocol ManualAccountSetupViewDelegate: class {
+protocol ManualAccountSetupViewDelegate: AnyObject {
     func didPressCancelButton()
     func didPressNextButton()
     func didChangePEPSyncSwitch(isOn: Bool)
@@ -20,6 +20,7 @@ protocol ManualAccountSetupViewDelegate: class {
     func didChangeSecond(_ textField: UITextField)
     func didChangeThird(_ textField: UITextField)
     func didChangeFourth(_ textField: UITextField)
+    func didChangeFifth(_ textField: UITextField)
 }
 
 extension ManualAccountSetupViewDelegate {
@@ -40,6 +41,7 @@ final class ManualAccountSetupView: UIView {
     @IBOutlet weak var secondTextField: AnimatedPlaceholderTextfield!
     @IBOutlet weak var thirdTextField: AnimatedPlaceholderTextfield!
     @IBOutlet weak var fourthTextField: AnimatedPlaceholderTextfield!
+    @IBOutlet weak var fifthTextField: AnimatedPlaceholderTextfield!
 
     @IBOutlet weak var cancelLeftButton: UIButton!
     @IBOutlet weak var nextRightButton: UIButton!
@@ -103,6 +105,9 @@ final class ManualAccountSetupView: UIView {
             delegate?.didChangeThird(sender)
         case fourthTextField:
             delegate?.didChangeFourth(sender)
+        case fifthTextField:
+            delegate?.didChangeFifth(sender)
+
         default:
             Log.shared.errorAndCrash("didChange should handle all cases in ManualAccountSetupView")
         }
@@ -129,10 +134,9 @@ extension ManualAccountSetupView: DynamicHeightScrollViewDelegate {
 
 extension ManualAccountSetupView {
     private func setUpTextFieldsColor() {
-        firstTextField.textColorWithText = .pEpGreen
-        secondTextField.textColorWithText = .pEpGreen
-        thirdTextField.textColorWithText = .pEpGreen
-        fourthTextField.textColorWithText = .pEpGreen
+        textFields().forEach { textField in
+            textField.textColorWithText = .pEpGreen
+        }
     }
 
     @objc private func hideSpecificDeviceButton() {
@@ -146,14 +150,13 @@ extension ManualAccountSetupView {
     }
 
     private func updateTextFeildsDelegates() {
-        firstTextField?.delegate = textFieldsDelegate
-        secondTextField?.delegate = textFieldsDelegate
-        thirdTextField?.delegate = textFieldsDelegate
-        fourthTextField?.delegate = textFieldsDelegate
+        textFields().forEach { textField in
+            textField.delegate = textFieldsDelegate
+        }
     }
 
-    private func textFields() -> [UITextField] {
-        return [firstTextField, secondTextField, thirdTextField, fourthTextField]
+    private func textFields() -> [AnimatedPlaceholderTextfield] {
+        return [firstTextField, secondTextField, thirdTextField, fourthTextField, fifthTextField]
     }
 
     private func isLandscape() -> Bool {
