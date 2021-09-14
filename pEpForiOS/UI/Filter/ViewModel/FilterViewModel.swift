@@ -32,11 +32,9 @@ public class FilterViewModel {
     }
 
     public func toggleEnabledState(forRowAt indexPath: IndexPath) {
-        // Set new state in UI data source ...
         var row = sections[indexPath.section][indexPath.row]
         let newState = !row.state
-        row.state = newState
-        sections[indexPath.section][indexPath.row].state = newState
+
         // ... and create a new filter taking the state change into account
         var mustBeUnread : Bool? = filter.mustBeUnread
         var mustBeFlagged : Bool? = filter.mustBeFlagged
@@ -71,6 +69,10 @@ public class FilterViewModel {
                 mustContainAttachments = newState
             }
         }
+        // Set new state in UI data source ...
+        row.state = newState
+        sections[indexPath.section][indexPath.row].state = newState
+
         filter = MessageQueryResultsFilter(mustBeFlagged: mustBeFlagged,
                                            mustBeUnread: mustBeUnread,
                                            mustContainAttachments: mustContainAttachments,
