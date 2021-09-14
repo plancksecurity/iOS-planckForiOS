@@ -480,28 +480,19 @@ extension ComposeViewController {
 extension ComposeViewController {
 
     private func presentMediaAttachmentPickerProvider() {
-        if #available(iOS 14.0, *) {
-            var configuration = PHPickerConfiguration()
-            configuration.filter = .any(of: [.livePhotos, .images, .videos])
-            configuration.preferredAssetRepresentationMode = .current
-            let picker = PHPickerViewController(configuration: configuration)
-            picker.delegate = mediaAttachmentPickerProvider
-            present(picker, animated: true)
-        } else {
-            let media = Capability.media
-            media.requestAndInformUserInErrorCase(viewController: self)  {
-                [weak self] (permissionsGranted: Bool, error: Capability.AccessError?) in
-                guard permissionsGranted else {
-                    return
-                }
-                guard let me = self,
-                let picker = me.mediaAttachmentPickerProvider?.imagePicker else {
-                    // Valid case. We might have been dismissed already.
-                    return
-                }
-                me.present(picker, animated: true)
+        mediaAttachmentPickerProvider?.getPicker(from: self, { [weak self] picker in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return nil
             }
-        }
+            guard let picker = picker else {
+                // Valid case: lack of permissions for example.
+                // Nothing to do.
+                return nil
+            }
+            me.present(picker, animated: true)
+            return nil
+        })
     }
 }
 

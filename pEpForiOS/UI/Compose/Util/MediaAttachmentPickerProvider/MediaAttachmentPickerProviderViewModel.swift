@@ -98,7 +98,7 @@ extension MediaAttachmentPickerProviderViewModel {
 
 extension MediaAttachmentPickerProviderViewModel {
 
-    //MARK: -  iOS version greater than iOS14
+    // iOS version greater than iOS14
 
     private func createMovieAttchmentAndInformResultDelegate(url: URL) {
         createAttachment(forResource: url, session: session) {[weak self] (attachment)  in
@@ -150,7 +150,7 @@ extension MediaAttachmentPickerProviderViewModel {
         }
     }
 
-    //MARK: -  iOS version lower than iOS14
+    // iOS version lower than iOS14
 
     private func createImageAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) {
         guard

@@ -27,6 +27,36 @@ class MediaAttachmentPickerProvider: NSObject {
         super.init()
         setup()
     }
+
+    /// Retrieve the picker if possible, otherwise nil.
+    /// It could be nil due lack of permissions.
+    /// - Parameters:
+    ///   - requesterViewController: The VC that request the picker will be used to show alert to inform the user in case no permission is granted for iOS versions less than 14. 
+    ///   - callback: The callback with the picker.
+    func getPicker(from requesterViewController: UIViewController, _ callback: @escaping (UIViewController?) -> ()?) {
+        if #available(iOS 14.0, *) {
+            var configuration = PHPickerConfiguration()
+            configuration.filter = .any(of: [.livePhotos, .images, .videos])
+            configuration.preferredAssetRepresentationMode = .current
+            let picker = PHPickerViewController(configuration: configuration)
+            picker.delegate = self
+            callback(picker)
+        } else {
+            let media = Capability.media
+            media.requestAndInformUserInErrorCase(viewController: requesterViewController)
+            { [weak self] (permissionsGranted: Bool, error: Capability.AccessError?) in
+                guard permissionsGranted else {
+                    callback(nil)
+                    return
+                }
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                callback(me.imagePicker)
+            }
+        }
+    }
 }
 
 // MARK: - UIImagePickerControllerDelegate
