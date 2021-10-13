@@ -179,6 +179,7 @@ extension Appearance {
             let appearance = navigationController.navigationBar.standardAppearance.copy()
             appearanceModifier(appearance)
             viewController.navigationItem.standardAppearance = appearance
+            viewController.navigationItem.scrollEdgeAppearance = appearance
         }
     }
 }
