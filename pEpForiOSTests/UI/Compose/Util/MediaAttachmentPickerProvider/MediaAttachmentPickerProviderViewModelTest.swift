@@ -74,6 +74,32 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    func testHandleDidFinishPickingImage() {
+        guard let (infoDict, forAttachment, session) = infoDict(mediaType: .image) else {
+            XCTFail()
+            return
+        }
+        assert(didSelectMediaAttachmentMustBeCalledCalled: true,
+               expectedMediaAttachment: forAttachment,
+               didCancelMustBeCalled: false,
+               session: session)
+
+        guard let url = infoDict[UIImagePickerController.InfoKey.referenceURL] as? URL else {
+            XCTFail("URL not found")
+            return
+        }
+        guard let image = infoDict[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
+            XCTFail("Image not found")
+            return
+        }
+        if #available(iOS 14, *) {
+            vm?.handleDidFinishPickingImage(url: url, image: image)
+        } else {
+            vm?.handleDidFinishPickingMedia(info: infoDict)
+        }
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
     // MARK: Video
 
     func testHandleDidFinishPickingMedia_movie() {
@@ -86,6 +112,28 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
                didCancelMustBeCalled: false,
                session: session)
         vm?.handleDidFinishPickingMedia(info: infoDict)
+        waitForExpectations(timeout: 0.5) // Async file access
+    }
+
+    func testHandleDidFinishPickingVideoAt() {
+        guard let (infoDict, forAttachment, session) = infoDict(mediaType: .movie) else {
+            XCTFail()
+            return
+        }
+        assert(didSelectMediaAttachmentMustBeCalledCalled: true,
+               expectedMediaAttachment: forAttachment,
+               didCancelMustBeCalled: false,
+               session: session)
+        guard let url = infoDict[UIImagePickerController.InfoKey.mediaURL] as? URL else {
+            XCTFail("URL not found")
+            return
+        }
+
+        if #available(iOS 14, *) {
+            vm?.handleDidFinishPickingVideoAt(url: url)
+        } else {
+            vm?.handleDidFinishPickingMedia(info: infoDict)
+        }
         waitForExpectations(timeout: 0.5) // Async file access
     }
 
