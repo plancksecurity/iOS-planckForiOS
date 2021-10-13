@@ -92,7 +92,11 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
             XCTFail("Image not found")
             return
         }
-        vm?.handleDidFinishPickingImage(url: url, image: image)
+        if #available(iOS 14, *) {
+            vm?.handleDidFinishPickingImage(url: url, image: image)
+        } else {
+            vm?.handleDidFinishPickingMedia(info: infoDict)
+        }
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
@@ -125,7 +129,11 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
             return
         }
 
-        vm?.handleDidFinishPickingVideoAt(url: url)
+        if #available(iOS 14, *) {
+            vm?.handleDidFinishPickingVideoAt(url: url)
+        } else {
+            vm?.handleDidFinishPickingMedia(info: infoDict)
+        }
         waitForExpectations(timeout: 0.5) // Async file access
     }
 
