@@ -31,7 +31,9 @@ class Appearance {
         UIToolbar.appearance().backgroundColor = .pEpGreen
         UIToolbar.appearance().barTintColor = .pEpGreen
         UIToolbar.appearance().tintColor = .white
-
+        if #available(iOS 15.0, *) {
+            Appearance.setupToolbarAppereanceFromiOS15()
+        }
         UITextView.appearance().tintColor = .pEpGreen
         UITextField.appearance().tintColor = .pEpGreen
 
@@ -56,6 +58,8 @@ class Appearance {
         }
     }
 
+    /// Configure the background view of the table view cells.
+    /// - Parameter tableViewCell: The cell to set the background view.
     public static func configureSelectedBackgroundViewForPep(tableViewCell: UITableViewCell) {
         var backgroundColor: UIColor
         if #available(iOS 13.0, *) {
@@ -67,6 +71,33 @@ class Appearance {
         tableViewCellSelectedbackgroundView.backgroundColor = backgroundColor
         tableViewCell.selectedBackgroundView = tableViewCellSelectedbackgroundView
     }
+
+    /// Customises a tutorial view controller's navigation bar appearance.
+    /// - Parameter viewController: UIViewController: The view controller to customize.
+    @available(iOS 13, *)
+    static public func customiseForTutorial(viewController: UIViewController) {
+        customiseNavigationBar(viewController: viewController) { appearance in
+            customiseForTutorial(navigationBarAppearance: appearance)
+            if #available(iOS 15, *) {
+                viewController.navigationController?.navigationBar.standardAppearance = appearance
+                viewController.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+            }
+        }
+    }
+
+    /// Customises a login view controller's navigation bar appearance.
+    /// - Parameter viewController: UIViewController: The view controller to customize.
+    @available(iOS 13, *)
+    public static func customiseForLogin(viewController: UIViewController) {
+        customiseNavigationBar(viewController: viewController) { appearance in
+            customiseForLogin(navigationBarAppearance: appearance)
+        }
+    }
+}
+
+//MARK: - Private
+
+extension Appearance {
 
     private static func setAlertControllerTintColor(_ color: UIColor = .pEpGreen) {
         let view = UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self])
@@ -111,6 +142,16 @@ class Appearance {
         navigationBarAppearance.doneButtonAppearance.normal.titleTextAttributes = titleTextAttributes
     }
 
+    /// Customises a navigation bar appearance for the tutorial view.
+    /// - Parameter navigationBarAppearance: The appearance to customize.
+    @available(iOS 13, *)
+    static private func customiseForTutorial(navigationBarAppearance: UINavigationBarAppearance) {
+        navigationBarAppearance.configureWithOpaqueBackground()
+        navigationBarAppearance.backgroundColor = UIColor.pEpGreen
+        customiseButtons(navigationBarAppearance: navigationBarAppearance)
+    }
+
+
     /// Customises a navigation bar appearance for the login view.
     /// - Parameter navigationBarAppearance: The appearance to customize.
     @available(iOS 13, *)
@@ -119,15 +160,6 @@ class Appearance {
         navigationBarAppearance.backgroundColor = UIColor.clear
         let newTintImage = UIImage(named: "white-chevron-icon-left")!.withRenderingMode(.alwaysOriginal)
         navigationBarAppearance.setBackIndicatorImage(newTintImage, transitionMaskImage: newTintImage)
-        customiseButtons(navigationBarAppearance: navigationBarAppearance)
-    }
-
-    /// Customises a navigation bar appearance for the tutorial view.
-    /// - Parameter navigationBarAppearance: The appearance to customize.
-    @available(iOS 13, *)
-    static private func customiseForTutorial(navigationBarAppearance: UINavigationBarAppearance) {
-        navigationBarAppearance.configureWithOpaqueBackground()
-        navigationBarAppearance.backgroundColor = UIColor.pEpGreen
         customiseButtons(navigationBarAppearance: navigationBarAppearance)
     }
 
@@ -144,25 +176,14 @@ class Appearance {
         }
     }
 
-    /// Customises a tutorial view controller's navigation bar appearance.
-    /// - Parameter viewController: UIViewController: The view controller to customize.
-    @available(iOS 13, *)
-    static func customiseForTutorial(viewController: UIViewController) {
-        customiseNavigationBar(viewController: viewController) { appearance in
-            customiseForTutorial(navigationBarAppearance: appearance)
-            if #available(iOS 15, *) {
-                viewController.navigationController?.navigationBar.standardAppearance = appearance
-                viewController.navigationController?.navigationBar.scrollEdgeAppearance = appearance
-            }
-        }
-    }
+    // MARK: - iOS 15
 
-    /// Customises a login view controller's navigation bar appearance.
-    /// - Parameter viewController: UIViewController: The view controller to customize.
-    @available(iOS 13, *)
-    static func customiseForLogin(viewController: UIViewController) {
-        customiseNavigationBar(viewController: viewController) { appearance in
-            customiseForLogin(navigationBarAppearance: appearance)
-        }
+    @available(iOS 15, *)
+    private static func setupToolbarAppereanceFromiOS15() {
+        let appearance = UIToolbarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .pEpGreen
+        UIToolbar.appearance().standardAppearance = appearance
+        UIToolbar.appearance().scrollEdgeAppearance = UIToolbar.appearance().standardAppearance
     }
 }
