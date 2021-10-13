@@ -150,6 +150,10 @@ class Appearance {
     static func customiseForTutorial(viewController: UIViewController) {
         customiseNavigationBar(viewController: viewController) { appearance in
             customiseForTutorial(navigationBarAppearance: appearance)
+            if #available(iOS 15, *) {
+                viewController.navigationController?.navigationBar.standardAppearance = appearance
+                viewController.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+            }
         }
     }
 
