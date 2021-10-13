@@ -109,6 +109,9 @@ extension CWIMAPMessage {
                 if let fileName = attachmentObj.filename {
                     if let cid = fileName.extractCid() {
                         part.setContentID("<\(cid)>")
+                        let placeholderFilename = NSLocalizedString("image",
+                                                                    comment: "Placeholder filename used for inlined images (as the real filename is lost due to the Engine message having only one field for content-id, filename and name)")
+                        part.setFilename(placeholderFilename)
                     } else {
                         let theFilePart = fileName.extractFileName() ?? fileName
                         part.setFilename(theFilePart)

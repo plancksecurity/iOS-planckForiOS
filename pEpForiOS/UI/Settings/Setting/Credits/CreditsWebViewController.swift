@@ -95,10 +95,6 @@ class CreditsWebViewController: PEPWebViewController {
 
     private func thanxRows() -> String {
         let names = ["pEpEngine",
-                     "Libassuan",
-                     "Libksba",
-                     "Libcurl",
-                     "Libiconv",
                      "LibEtPan",
                      "Pantomime (GNUStep)",
                      "Pantomime (github)",
@@ -109,10 +105,6 @@ class CreditsWebViewController: PEPWebViewController {
                      "Sequoia-PGP",
                      "AlignedCollectionViewFlowLayout"]
         let links = ["https://gitea.pep.foundation/pEp.foundation/pEpEngine",
-                     "https://gnupg.org/related_software/libassuan",
-                     "https://gnupg.org/related_software/libksba",
-                     "https://curl.haxx.se/libcurl/",
-                     "https://www.gnu.org/software/libiconv/",
                      "https://www.etpan.org/libetpan.html",
                      "http://wiki.gnustep.org/index.php/Pantomime",
                      "https://github.com/timburks/Pantomime",
