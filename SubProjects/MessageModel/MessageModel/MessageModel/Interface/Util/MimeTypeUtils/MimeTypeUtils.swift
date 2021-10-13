@@ -54,7 +54,9 @@ public class MimeTypeUtils {
                     MimeType.pgp.rawValue,
                     MimeType.pEpSync.rawValue,
                     MimeType.pEpSign.rawValue,
-                    MimeType.pEpDistribution.rawValue])
+                    MimeType.pEpDistribution.rawValue,
+                    MimeType.ics.rawValue,
+                    MimeType.appICS.rawValue])
     }
 
     /**

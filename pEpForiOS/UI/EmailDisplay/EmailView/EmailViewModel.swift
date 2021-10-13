@@ -55,6 +55,10 @@ class EmailViewModel {
     public weak var delegate: EmailViewModelDelegate?
     private var rows: [EmailRowProtocol]
     private var message: Message
+    private var shouldHideExternalContent: Bool = true
+    private var icsFilesAttachments: [Attachment] {
+        return message.icsAttachments()
+    }
 
     /// Constructor
     /// - Parameter message: The message to display
@@ -89,8 +93,16 @@ class EmailViewModel {
         UIPasteboard.general.image = image.resizeIfExceedMaxWidth(maxWidth: maxWidth - margin)
     }
 
-    private var shouldHideExternalContent: Bool = true
-
+    /// Get the Calendar Event Banner ViewModel.
+    /// Or nil, if there is no events.
+    /// - Returns: The Calendar Event Banner ViewModel
+    func getCalendarEventBannerViewModel(delegate: CalendarEventBannerViewModelDelegate) -> CalendarEventsBannerViewModel? {
+        guard icsFilesAttachments.count > 0 else {
+            return nil
+        }
+        return CalendarEventsBannerViewModel(attachments: icsFilesAttachments, delegate: delegate)
+    }
+    
     // Indicates if the External Content View has to be shown.
     public var shouldShowExternalContentView: Bool {
         guard let body = htmlBody else {
@@ -153,35 +165,6 @@ class EmailViewModel {
     public func handleShowExternalContentButtonPressed() {
         shouldHideExternalContent = false
         delegate?.showExternalContent()
-    }
-
-    private func show(attachment: Attachment) {
-        func shouldShowClientCertificate(url : URL) -> Bool {
-            return url.pathExtension == "pEp12" || url.pathExtension == "pfx"
-        }
-
-        let defaultFileName = Attachment.defaultFilename
-        attachment.saveToTmpDirectory(defaultFilename: attachment.fileName ?? defaultFileName) { [weak self] (url) in
-            guard let url = url else {
-                Log.shared.errorAndCrash("No Local URL")
-                return
-            }
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            DispatchQueue.main.async {
-                me.delegate?.hideLoadingView()
-                if shouldShowClientCertificate(url: url) {
-                    let clientCertificate = ClientCertificateImportViewModel(certificateUrl: url)
-                    me.delegate?.showClientCertificateImport(viewModel: clientCertificate)
-                } else if QLPreviewController.canPreview(url as QLPreviewItem) {
-                    me.delegate?.showQuickLookOfAttachment(quickLookItem: url as QLPreviewItem)
-                } else {
-                    me.delegate?.showDocumentsEditor(url: url)
-                }
-            }
-        }
     }
 
     /// Handle the user tap gesture over the mail attachment
@@ -502,8 +485,36 @@ extension EmailViewModel {
         let imageAttachmentRows: [ImageAttachmentRow] = message.viewableImageAttachments.map { ImageAttachmentRow(attachment: $0) }
         rows.append(contentsOf: imageAttachmentRows)
 
-        //Non Inlined Attachments
         let attachmentRows = message.viewableNotInlinedAttachments.map { AttachmentRow(attachment: $0) }
         rows.append(contentsOf: attachmentRows)
+    }
+
+    private func show(attachment: Attachment) {
+        func shouldShowClientCertificate(url : URL) -> Bool {
+            return url.pathExtension == "pEp12" || url.pathExtension == "pfx"
+        }
+
+        let defaultFileName = Attachment.defaultFilename
+        attachment.saveToTmpDirectory(defaultFilename: attachment.fileName ?? defaultFileName) { [weak self] (url) in
+            guard let url = url else {
+                Log.shared.errorAndCrash("No Local URL")
+                return
+            }
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            DispatchQueue.main.async {
+                me.delegate?.hideLoadingView()
+                if shouldShowClientCertificate(url: url) {
+                    let clientCertificate = ClientCertificateImportViewModel(certificateUrl: url)
+                    me.delegate?.showClientCertificateImport(viewModel: clientCertificate)
+                } else if QLPreviewController.canPreview(url as QLPreviewItem) {
+                    me.delegate?.showQuickLookOfAttachment(quickLookItem: url as QLPreviewItem)
+                } else {
+                    me.delegate?.showDocumentsEditor(url: url)
+                }
+            }
+        }
     }
 }
