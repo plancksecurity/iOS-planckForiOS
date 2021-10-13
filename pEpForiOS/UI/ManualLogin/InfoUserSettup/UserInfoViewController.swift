@@ -21,7 +21,6 @@ final class UserInfoViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         guard let setupView = manualAccountSetupContainerView.setupView else {
             Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return
@@ -47,7 +46,6 @@ final class UserInfoViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         updateView(animated: false)
     }
 
@@ -73,12 +71,11 @@ final class UserInfoViewController: UIViewController {
         }
         setupView.firstTextField.set(text: verifiableAccount.loginNameIMAP, animated: animated)
         setupView.secondTextField.set(text: verifiableAccount.address, animated: animated)
-        setupView.thirdTextField.set(text: verifiableAccount.password, animated: animated)
+        setupView.thirdTextField.isHidden = true
+        setupView.fifthTextField.isHidden = true
+
         setupView.fourthTextField.set(text: verifiableAccount.userName, animated: animated)
-
         setupView.pEpSyncSwitch.isOn = verifiableAccount.keySyncEnable
-
-        setupView.nextButton.isEnabled = verifiableAccount.isValidUser
         setupView.nextRightButton.isEnabled = verifiableAccount.isValidUser
     }
 }
@@ -88,8 +85,8 @@ final class UserInfoViewController: UIViewController {
 extension UserInfoViewController: TextfieldResponder {
 
     @IBAction func didTapOnView(_ sender: Any) {
-           view.endEditing(true)
-       }
+        view.endEditing(true)
+    }
 }
 
 // MARK: - UITextFieldDelegate
@@ -103,7 +100,7 @@ extension UserInfoViewController: UITextFieldDelegate {
             return true
         }
         if textField == setupView.fourthTextField,
-            verifiableAccount.isValidUser {
+           verifiableAccount.isValidUser {
             handleGoToNextView()
             return true
         }
@@ -120,6 +117,7 @@ extension UserInfoViewController: UITextFieldDelegate {
 // MARK: - ManualAccountSetupViewDelegate
 
 extension UserInfoViewController: ManualAccountSetupViewDelegate {
+
     func didChangePEPSyncSwitch(isOn: Bool) {
         guard var verifiableAccount = verifiableAccount else {
             Log.shared.errorAndCrash("Invalid state")
@@ -147,16 +145,12 @@ extension UserInfoViewController: ManualAccountSetupViewDelegate {
         updateView()
     }
 
-    func didChangeThird(_ textField: UITextField) {
-        guard var verifiableAccount = verifiableAccount else {
-            Log.shared.errorAndCrash("Invalid state")
-            return
-        }
-        verifiableAccount.password = textField.text
-        updateView()
-    }
 
-    func didChangeFourth(_ textField: UITextField) {
+    func didChangeThird(_ textField: UITextField) { }
+
+    func didChangeFourth(_ textField: UITextField) { }
+
+    func didChangeFifth(_ textField: UITextField) {
         guard var verifiableAccount = verifiableAccount else {
             Log.shared.errorAndCrash("Invalid state")
             return

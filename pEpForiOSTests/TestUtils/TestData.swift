@@ -31,7 +31,8 @@ class TestData: TestDataBase {
             smtpServerTransport: Server.Transport.plain,
             smtpServerPort: 3025,
 
-            password: "pwd"))
+            imapPassword: "pwd",
+            smtpPassword: "pwd"))
         /*
          
          //#########
@@ -115,21 +116,22 @@ class TestData: TestDataBase {
 
     func addVerifiablePepTestAccount(address: String) {
         append(verifiableAccountSettings: AccountSettings(
-            accountName: "Unit Test \(address)",
-            idAddress: address,
-            idUserName: "User \(address)",
-
-            imapServerAddress: "peptest.ch",
-            imapServerType: Server.ServerType.imap,
-            imapServerTransport: Server.Transport.tls,
-            imapServerPort: 993,
-
-            smtpServerAddress: "peptest.ch",
-            smtpServerType: Server.ServerType.smtp,
-            smtpServerTransport: Server.Transport.startTls,
-            smtpServerPort: 587,
-
-            password: "pEpdichauf5MailPassword"))
+                accountName: "Unit Test \(address)",
+                idAddress: address,
+                idUserName: "User \(address)",
+                
+                imapServerAddress: "peptest.ch",
+                imapServerType: Server.ServerType.imap,
+                imapServerTransport: Server.Transport.tls,
+                imapServerPort: 993,
+                
+                smtpServerAddress: "peptest.ch",
+                smtpServerType: Server.ServerType.smtp,
+                smtpServerTransport: Server.Transport.startTls,
+                smtpServerPort: 587,
+                
+                imapPassword: "pEpdichauf5MailPassword",
+                smtpPassword: "pEpdichauf5MailPassword"))
     }
 }
 

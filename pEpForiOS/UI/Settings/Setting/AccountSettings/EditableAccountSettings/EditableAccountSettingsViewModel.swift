@@ -11,7 +11,7 @@ import MessageModel
 import pEpIOSToolbox
 import PantomimeFramework
 
-protocol EditableAccountSettingsDelegate: class {
+protocol EditableAccountSettingsDelegate: AnyObject {
     /// Changes loading view visibility
     /// - Parameter visible: Indicates if it should be visible or not.
     func setLoadingView(visible: Bool)
@@ -29,15 +29,16 @@ class EditableAccountSettingsViewModel {
     // Helper to carry the user input for its validation.
     private typealias Input = (userName: String,
                                emailAddress: String,
-                               password: String?,
                                imapServer: String,
                                imapPort: String,
                                imapTranportSecurity: String,
                                imapUsername: String,
+                               imapPassword: String,
                                smtpServer: String,
                                smtpPort: String,
                                smtpTranportSecurity: String,
-                               smtpUsername: String)
+                               smtpUsername: String,
+                               smtpPassword: String)
 
     /// Indicates if the account is OAuth2
     public private(set) var isOAuth2: Bool = false
@@ -54,7 +55,8 @@ class EditableAccountSettingsViewModel {
     }
 
     private var passwordChanged: Bool = false
-    private var originalPassword: String?
+    private var originalImapPassword: String?
+    private var originalSmtpPassword: String?
 
     /// Retrieves the name of an transport security option.
     /// - Parameter index: The index of the option.
@@ -96,7 +98,6 @@ class EditableAccountSettingsViewModel {
     ///   - delegate: The delegate to communicate to the View Controller.
     public init(account: Account, delegate: EditableAccountSettingsDelegate? = nil) {
          accountSettingsHelper = AccountSettingsHelper(account: account)
-
         self.account = account
         self.delegate = delegate
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
@@ -110,7 +111,8 @@ class EditableAccountSettingsViewModel {
                 Log.shared.errorAndCrash("Supposed to do OAUTH2, but no existing token")
             }
         } else {
-            originalPassword = account.imapServer?.credentials.password
+            originalImapPassword = account.imapServer?.credentials.password
+            originalSmtpPassword = account.smtpServer?.credentials.password
         }
         self.generateSections()
     }
@@ -293,6 +295,14 @@ extension EditableAccountSettingsViewModel {
 
         let usernameRow = getDisplayRow(type : .username, value: server.credentials.loginName)
         rows.append(usernameRow)
+
+        // OAuth
+        if !isOAuth2 {
+            if let password = server.credentials.password {
+                let passwordRow = getDisplayRow(type : .password, value: password)
+                rows.append(passwordRow)
+            }
+        }
     }
 
     /// This method generates all the rows for the section type passed
@@ -313,13 +323,6 @@ extension EditableAccountSettingsViewModel {
             let emailRow = getDisplayRow(type: .email, value: account.user.address)
             rows.append(emailRow)
 
-            // OAuth
-            if !isOAuth2 {
-                // password
-                let fakePassword = "JustAPassword"
-                let passwordRow = getDisplayRow(type : .password, value: fakePassword)
-                rows.append(passwordRow)
-            }
             guard let accountSettingsHelper = accountSettingsHelper else {
                 Log.shared.errorAndCrash("AccountSettingsHelper not found")
                 return []
@@ -339,7 +342,6 @@ extension EditableAccountSettingsViewModel {
                 return rows
             }
             setupServerFields(imapServer, &rows)
-
         case .smtp:
             guard let smtpServer = account.smtpServer else {
                 Log.shared.errorAndCrash("Account without SMTP server")
@@ -371,6 +373,8 @@ extension EditableAccountSettingsViewModel {
             throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
         }
 
+        let imapPassword = rowValue(sectionType: .imap, rowType: .password) ?? ""
+
         // SMTP
         guard let smtpServer = rowValue(sectionType: .smtp, rowType: .server) else {
             let msg = NSLocalizedString("SMTP server must not be empty.", comment: "Empty SMTP server message")
@@ -385,9 +389,10 @@ extension EditableAccountSettingsViewModel {
             throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
         }
         guard let smtpUsername = rowValue(sectionType: .smtp, rowType: .username) else {
-            let msg = NSLocalizedString("Choose SMTP username.", comment: "Empty IMAP transport security method")
+            let msg = NSLocalizedString("Choose SMTP username.", comment: "Empty SMTP transport security method")
             throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
         }
+        let smtpPassword = rowValue(sectionType: .smtp, rowType: .password) ?? ""
 
         // Account
         guard let userName = rowValue(sectionType: .account, rowType: .name) else {
@@ -401,19 +406,18 @@ extension EditableAccountSettingsViewModel {
             throw AccountSettingsUserInputError.invalidInputEmailAddress(localizedMessage: msg)
         }
 
-        let newPassword = rowValue(sectionType: .account, rowType: .password)
-
         return (userName: userName,
                 emailAddress: emailAddress,
-                password: newPassword,
                 imapServer: imapServer,
                 imapPort: imapPort,
                 imapTranportSecurity: imapTransportSecurity,
                 imapUsername: imapUsername,
+                imapPassword: imapPassword,
                 smtpServer: smtpServer,
                 smtpPort: smtpPort,
                 smtpTranportSecurity: smtpTransportSecurity,
-                smtpUsername: smtpUsername
+                smtpUsername: smtpUsername,
+                smtpPassword: smtpPassword
         )
     }
 
@@ -429,9 +433,9 @@ extension EditableAccountSettingsViewModel {
         return displayRow.text
     }
 
-    private func update(input: Input, password: String? = nil) {
+    private func update(input: Input) {
         var theVerifier = verifiableAccount ??
-            VerifiableAccount.verifiableAccount(for: .other)
+            VerifiableAccount.verifiableAccount(for: .other, originalImapPassword: originalImapPassword, originalSmtpPassword: originalSmtpPassword)
         theVerifier.verifiableAccountDelegate = self
         verifiableAccount = theVerifier
 
@@ -448,19 +452,22 @@ extension EditableAccountSettingsViewModel {
             theVerifier.authMethod = .saslXoauth2
             theVerifier.accessToken = accessToken
             // OAUTH2 trumps any password
-            theVerifier.password = nil
+            theVerifier.imapPassword = nil
+            theVerifier.smtpPassword = nil
         } else {
-            theVerifier.password = originalPassword
-            if input.password != nil {
-                theVerifier.password = password
-            }
             if passwordChanged {
-                theVerifier.password = input.password
-            } else if originalPassword != nil {
-                theVerifier.password = originalPassword
+                theVerifier.imapPassword = input.imapPassword
+                theVerifier.smtpPassword = input.smtpPassword
             } else {
-                Log.shared.errorAndCrash("Is not OAuth2, hasn't got a new password, nor original password")
-                return
+                if originalImapPassword != nil {
+                    theVerifier.imapPassword = originalImapPassword
+                }
+                if originalSmtpPassword != nil {
+                    theVerifier.smtpPassword = originalSmtpPassword
+                } else {
+                    Log.shared.errorAndCrash("Is not OAuth2, hasn't got a new password, nor original password")
+                    return
+                }
             }
         }
 
@@ -474,19 +481,15 @@ extension EditableAccountSettingsViewModel {
         if let port = UInt16(smtpPort) {
             theVerifier.portSMTP = port
         }
-
         if let transport = Server.Transport(fromString: input.imapTranportSecurity) {
             theVerifier.transportIMAP = ConnectionTransport(transport: transport)
         }
-
         if let transport = Server.Transport(fromString: input.smtpTranportSecurity) {
             theVerifier.transportSMTP = ConnectionTransport(transport: transport)
         }
-
         if let clientCertificate = account.imapServer?.credentials.clientCertificate {
             theVerifier.clientCertificate = clientCertificate
         }
-
         do {
             try theVerifier.verify()
         } catch {
