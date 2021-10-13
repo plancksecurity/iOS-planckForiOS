@@ -23,6 +23,7 @@ class Appearance {
             // therefore we use the new appearance API to customise explicitly.
             let normalNavigationBar = UINavigationBar.appearance()
             normalNavigationBar.standardAppearance = navigationBarAppearanceDefault(color: UIColor.label)
+            normalNavigationBar.scrollEdgeAppearance = normalNavigationBar.standardAppearance
         } else {
             UINavigationBar.appearance().backgroundColor = .white
             UINavigationBar.appearance().titleTextAttributes = titleTextAttributes()
@@ -126,6 +127,7 @@ extension Appearance {
         appearance.doneButtonAppearance.normal.titleTextAttributes = buttonsAttributes
         let chevronLeftImg = UIImage(named: "chevron-icon-left")?
             .resizeImage(targetSize: CGSize(width: 15, height: 25))
+
         appearance.setBackIndicatorImage(chevronLeftImg, transitionMaskImage: chevronLeftImg)
         return appearance
     }
