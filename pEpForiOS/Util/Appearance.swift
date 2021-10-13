@@ -33,8 +33,13 @@ class Appearance {
         UIToolbar.appearance().barTintColor = .pEpGreen
         UIToolbar.appearance().tintColor = .white
         if #available(iOS 15.0, *) {
-            Appearance.setupToolbarAppereanceFromiOS15()
+            let appearance = UIToolbarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = .pEpGreen
+            UIToolbar.appearance().standardAppearance = appearance
+            UIToolbar.appearance().scrollEdgeAppearance = UIToolbar.appearance().standardAppearance
         }
+
         UITextView.appearance().tintColor = .pEpGreen
         UITextField.appearance().tintColor = .pEpGreen
 
@@ -153,7 +158,6 @@ extension Appearance {
         customiseButtons(navigationBarAppearance: navigationBarAppearance)
     }
 
-
     /// Customises a navigation bar appearance for the login view.
     /// - Parameter navigationBarAppearance: The appearance to customize.
     @available(iOS 13, *)
@@ -176,16 +180,5 @@ extension Appearance {
             appearanceModifier(appearance)
             viewController.navigationItem.standardAppearance = appearance
         }
-    }
-
-    // MARK: - iOS 15
-
-    @available(iOS 15, *)
-    private static func setupToolbarAppereanceFromiOS15() {
-        let appearance = UIToolbarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .pEpGreen
-        UIToolbar.appearance().standardAppearance = appearance
-        UIToolbar.appearance().scrollEdgeAppearance = UIToolbar.appearance().standardAppearance
     }
 }
