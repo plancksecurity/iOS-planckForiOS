@@ -15,6 +15,7 @@ public typealias MimeTypeString = String
 extension MimeTypeUtils {
 
     public enum MimeType: String {
+
         case defaultMimeType = "application/octet-stream"
 
         case pgpKeys = "application/pgp-keys"
@@ -34,6 +35,9 @@ extension MimeTypeUtils {
         case xml = "text/xml"
         case csv = "text/csv"
         case rtf = "text/rtf"
+
+        case ics = "text/calendar"
+        case appICS = "application/ics"
 
         // Microsoft Office
         case msword, dot, word, w6w = "application/msword"
@@ -59,6 +63,7 @@ extension MimeTypeUtils {
         case pptm = "application/vnd.ms-powerpoint.presentation.macroenabled.12"
         case ppsm = "application/vnd.ms-powerpoint.slideshow.macroenabled.12"
         case potm = "application/vnd.ms-powerpoint.template.macroenabled.12"
+
 
         case mdb, accda, accdb, accde, accdr, accdt, ade, adp, adn, mde, mdf, mdn, mdt, mdw = "application/msaccess"
         case wri = "application/mswrite"

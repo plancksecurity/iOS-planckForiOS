@@ -9,11 +9,19 @@
 import pEpIOSToolbox
 import QuickLook
 
+import EventKit
+import EventKitUI
+import pEpIOSToolbox
+
 protocol EmailViewControllerDelegate: AnyObject {
     func openQLPreviewController(toShowDocumentWithUrl url: URL)
 }
 
 class EmailViewController: UIViewController {
+
+    @IBOutlet private weak var bannerContainerView: UIView!
+    @IBOutlet private weak var stackView: UIStackView!
+    @IBOutlet private weak var bannerHeightConstraint: NSLayoutConstraint!
 
     public var viewModel: EmailViewModel? {
         didSet {
@@ -73,12 +81,11 @@ class EmailViewController: UIViewController {
         tableView.estimatedRowHeight = 100
     }
 
-    @objc func copyToClip() {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return
+    override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
+        super.preferredContentSizeDidChange(forChildContentContainer: container)
+        if let container = container as? CalendarEventBannerViewController, !bannerContainerView.isHidden {
+            bannerHeightConstraint?.constant = container.preferredContentSize.height
         }
-        vm.handleCopy(maxWidth: tableView.frame.size.width)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -87,6 +94,8 @@ class EmailViewController: UIViewController {
         tableView.hideSeperatorForEmptyCells()
         removeExternalContentView()
     }
+
+
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
@@ -124,6 +133,15 @@ class EmailViewController: UIViewController {
             || (traitCollection.horizontalSizeClass != thePreviousTraitCollection.horizontalSizeClass)) {
             reloadTableView()
         }
+    }
+
+
+    @objc func copyToClip() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleCopy(maxWidth: tableView.frame.size.width)
     }
 
     deinit {
@@ -320,6 +338,87 @@ extension EmailViewController: EmailViewModelDelegate {
     }
 }
 
+extension EmailViewController {
+    private struct Localized {
+        static let showExternalContentText = NSLocalizedString("""
+By showing external content, your privacy may be invaded.
+This may affect the privacy status of the message.
+""", comment: "external content label text")
+    }
+}
+
+//MARK: - pEp Settings Changed
+
+extension EmailViewController {
+
+    @objc func pEpSettingsChanged() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        /// The delegate will be assing in didSet
+        viewModel = vm.copy()
+        tableView.reloadData()
+    }
+}
+
+// MARK: - MessageHeaderCellDelegate
+
+extension EmailViewController: MessageHeaderCellDelegate {
+
+    func displayAllRecipients(recipientType: EmailViewModel.RecipientType) {
+        shouldDisplayAll[recipientType] = true
+        tableView.reloadData()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // This workaround prevents a wrong layout in the collection view of the recipient fields.
+        // For some unknown reason it seems to layout the cells in a container of the size of what's in the IB, ignoring the real device dimensions.
+        tableView.reloadData()
+    }
+}
+
+//MARK: - Segue
+
+extension EmailViewController: SegueHandlerType {
+
+    enum SegueIdentifier: String {
+        case segueCalendarBanner
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        let segueId = segueIdentifier(for: segue)
+        switch segueId {
+        case .segueCalendarBanner:
+            guard
+                let vc = segue.destination as? CalendarEventBannerViewController else {
+                    Log.shared.errorAndCrash("Missing VCs")
+                    return
+            }
+            guard let calendarEventBannerViewModel = vm.getCalendarEventBannerViewModel(delegate: self) else {
+                return
+            }
+            vc.viewModel = calendarEventBannerViewModel
+            bannerContainerView.isHidden = !calendarEventBannerViewModel.shouldShowEventsBanner
+        }
+    }
+}
+
+//MARK: - CalendarEventBannerViewModelDelegate
+
+extension EmailViewController: CalendarEventBannerViewModelDelegate {
+    func dismiss() {
+        bannerContainerView.isHidden = true
+        stackView.layoutIfNeeded()
+    }
+}
+
 //MARK: - Private
 
 extension EmailViewController {
@@ -411,45 +510,18 @@ extension EmailViewController {
             tableView.updateSize()
         }
     }
-}
 
-extension EmailViewController {
-    private struct Localized {
-        static let showExternalContentText = NSLocalizedString("""
-By showing external content, your privacy may be invaded.
-This may affect the privacy status of the message.
-""", comment: "external content label text")
-    }
-}
-
-//MARK: - pEp Settings Changed
-
-extension EmailViewController {
-
-    @objc func pEpSettingsChanged() {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return
+    private func setBannerVisible(isVisible: Bool) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 1, options: [], animations: { [weak self] in
+                guard let me = self else {
+                    //Valid case: might be dismissed already.
+                    return
+                }
+                me.bannerContainerView.isHidden = !isVisible
+                me.stackView.layoutIfNeeded()
+            }, completion: nil)
         }
-        /// The delegate will be assing in didSet
-        viewModel = vm.copy()
-        tableView.reloadData()
-    }
-}
-
-// MARK: - MessageHeaderCellDelegate
-
-extension EmailViewController: MessageHeaderCellDelegate {
-    func displayAllRecipients(recipientType: EmailViewModel.RecipientType) {
-        shouldDisplayAll[recipientType] = true
-        tableView.reloadData()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        // This workaround prevents a wrong layout in the collection view of the recipient fields.
-        // For some unknown reason it seems to layout the cells in a container of the size of what's in the IB, ignoring the real device dimensions.
-        tableView.reloadData()
     }
 
     private func reloadTableView() {
