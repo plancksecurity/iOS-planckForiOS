@@ -78,6 +78,8 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Enables you to add events to your calendar</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Use Camera</string>
 	<key>NSContactsUsageDescription</key>
@@ -91,8 +93,6 @@
 	<string>Enables you to save photos to the Photo Gallery</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Enables you to pick photos from the Photo Gallery</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>Enables you to add events to your calendar</string>
 	<key>OAUTH2_GMAIL_CLIENT_ID</key>
 	<string>${OAUTH2_GMAIL_CLIENT_ID}</string>
 	<key>OAUTH2_GMAIL_REDIRECT_URL_SCHEME</key>
