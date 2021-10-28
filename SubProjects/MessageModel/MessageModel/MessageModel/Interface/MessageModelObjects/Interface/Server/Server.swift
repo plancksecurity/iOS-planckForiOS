@@ -43,7 +43,7 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
             return UInt16(cdObject.port)
         }
         set {
-            cdObject.port = Int16(newValue)
+            cdObject.port = Int32(newValue)
         }
     }
 
@@ -184,7 +184,7 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         let createe = CdServer(context: moc)
 
         createe.serverType = serverType
-        createe.port = Int16(port)
+        createe.port = Int32(port)
         createe.address = address
         createe.transport = transport
         createe.authMethod = authMethod
