@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19206" systemVersion="20E241" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="refactor0.1">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20E241" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="refactor0.1">
     <entity name="CdAccount" representedClassName="CdAccount" syncable="YES" codeGenerationType="category">
         <attribute name="includeFoldersInUnifiedFolders" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="pEpSyncEnabled" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
@@ -173,7 +173,7 @@
         <attribute name="dateLastAuthenticationErrorShown" optional="YES" transient="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="imapFolderSeparator" optional="YES" attributeType="String"/>
         <attribute name="manuallyTrusted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="port" attributeType="Integer 32" usesScalarValueType="YES"/>
+        <attribute name="port" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="serverTypeRawValue" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="transportRawValue" attributeType="Integer 16" usesScalarValueType="YES"/>
         <relationship name="account" maxCount="1" deletionRule="Nullify" destinationEntity="CdAccount" inverseName="servers" inverseEntity="CdAccount"/>
@@ -199,7 +199,7 @@
         <element name="CdMessage" positionX="151" positionY="27" width="128" height="434"/>
         <element name="CdMessageKeyword" positionX="0" positionY="171" width="128" height="75"/>
         <element name="CdMessageReference" positionX="-9" positionY="162" width="128" height="90"/>
-        <element name="CdServer" positionX="-722" positionY="135" width="128" height="194"/>
+        <element name="CdServer" positionX="-722" positionY="135" width="128" height="208"/>
         <element name="CdServerCredentials" positionX="-673.68359375" positionY="178.3359375" width="128" height="103"/>
     </elements>
 </model>
