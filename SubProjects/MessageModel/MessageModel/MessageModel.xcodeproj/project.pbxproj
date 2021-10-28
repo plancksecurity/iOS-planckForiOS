@@ -859,6 +859,7 @@
 		15C7A88C2385C08100C47364 /* PorpoiseGalaxy_HubbleFraile_960.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = PorpoiseGalaxy_HubbleFraile_960.jpg; sourceTree = "<group>"; };
 		15C7A88F2387EF9500C47364 /* PantomimeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantomimeStore.swift; sourceTree = "<group>"; };
 		15CCE2C42225BCE5004A8306 /* CoreDataEntityAttributeNames.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataEntityAttributeNames.swift; sourceTree = "<group>"; };
+		15D3B365272AECEE0099B81D /* 1.1.267.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.1.267.xcdatamodel; sourceTree = "<group>"; };
 		15E01F9E24AB420B00DFADA3 /* PassphraseUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseUtil.swift; sourceTree = "<group>"; };
 		15E39FC322551D650016A1C4 /* Message+SessionAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+SessionAware.swift"; sourceTree = "<group>"; };
 		15E39FC522551DBB0016A1C4 /* Account+SessionAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+SessionAware.swift"; sourceTree = "<group>"; };
@@ -4140,6 +4141,7 @@
 		1587D135204570BA002C2157 /* MessageModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				15D3B365272AECEE0099B81D /* 1.1.267.xcdatamodel */,
 				155A0646260A061900FF2754 /* 1.1.255.xcdatamodel */,
 				5B3BFC6324DAF07200B99FA6 /* 1.1.205.xcdatamodel */,
 				B7B22617246BFB7E009D5374 /* 1.1.100.xcdatamodel */,
@@ -4154,7 +4156,7 @@
 				154F0A7E208512BF00C77D72 /* 0.0.32.xcdatamodel */,
 				1587D136204570BA002C2157 /* pEpForiOS.xcdatamodel */,
 			);
-			currentVersion = 155A0646260A061900FF2754 /* 1.1.255.xcdatamodel */;
+			currentVersion = 15D3B365272AECEE0099B81D /* 1.1.267.xcdatamodel */;
 			path = MessageModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
