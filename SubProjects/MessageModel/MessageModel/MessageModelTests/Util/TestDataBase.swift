@@ -84,7 +84,7 @@ class TestDataBase {
             //SMTP
             let smtp = CdServer(context: context)
             smtp.serverType = smtpServerType
-            smtp.port = Int16(smtpServerPort)
+            smtp.port = Int32(smtpServerPort)
             smtp.address = smtpServerAddress
             smtp.transport = smtpServerTransport
 
@@ -97,7 +97,7 @@ class TestDataBase {
             //IMAP
             let imap = CdServer(context: context)
             imap.serverType = imapServerType
-            imap.port = Int16(imapServerPort)
+            imap.port = Int32(imapServerPort)
             imap.address = imapServerAddress
             imap.transport = imapServerTransport
 

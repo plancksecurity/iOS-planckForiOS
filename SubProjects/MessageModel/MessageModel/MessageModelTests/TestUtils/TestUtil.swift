@@ -153,7 +153,7 @@ extension TestUtil {
         //SMTP
         let createe = CdServer(context: moc)
         createe.serverType = serverType
-        createe.port = Int16(serverPort)
+        createe.port = Int32(serverPort)
         createe.address = serverAddress
         createe.transport = serverTransport
         createe.automaticallyTrusted = automaticallyTrusted
