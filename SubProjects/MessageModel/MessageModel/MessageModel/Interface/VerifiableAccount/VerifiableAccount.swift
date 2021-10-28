@@ -473,7 +473,7 @@ extension VerifiableAccount {
                         manuallyTrusted: Bool,
                         transport: ConnectionTransport) -> CdServer {
         server.address = address
-        server.port = Int16(port)
+        server.port = Int32(port)
         server.authMethod = authMethod?.rawValue
         server.serverType = serverType
         server.automaticallyTrusted = automaticallyTrusted

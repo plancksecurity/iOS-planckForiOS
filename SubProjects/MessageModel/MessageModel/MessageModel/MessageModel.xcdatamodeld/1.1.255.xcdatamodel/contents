@@ -173,7 +173,7 @@
         <attribute name="dateLastAuthenticationErrorShown" optional="YES" transient="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="imapFolderSeparator" optional="YES" attributeType="String"/>
         <attribute name="manuallyTrusted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="port" attributeType="Integer 32" usesScalarValueType="YES"/>
+        <attribute name="port" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="serverTypeRawValue" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="transportRawValue" attributeType="Integer 16" usesScalarValueType="YES"/>
         <relationship name="account" maxCount="1" deletionRule="Nullify" destinationEntity="CdAccount" inverseName="servers" inverseEntity="CdAccount"/>
