@@ -45,13 +45,13 @@ class CdAccount_ProviderSpecificTest: XCTestCase {
 
         let cdImapServer = CdServer(context: moc)
         cdImapServer.address = verifier.serverIMAP
-        cdImapServer.port = Int16(verifier.portIMAP)
+        cdImapServer.port = Int32(verifier.portIMAP)
         cdImapServer.serverType = .imap
         cdImapServer.transport = .tls
 
         let cdSmtpServer = CdServer(context: moc)
         cdSmtpServer.address = verifier.serverSMTP
-        cdSmtpServer.port = Int16(verifier.portSMTP)
+        cdSmtpServer.port = Int32(verifier.portSMTP)
         cdSmtpServer.serverType = .smtp
         cdSmtpServer.transport = .tls
 
