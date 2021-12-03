@@ -19,9 +19,11 @@ protocol CalendarEventDescriptionTableViewCellDelegate: AnyObject {
 class CalendarEventDescriptionTableViewCell: UITableViewCell {
     public static let cellIdentifier = "calendarEventDescriptionCell"
 
+
     private weak var delegate: CalendarEventDescriptionTableViewCellDelegate?
 
     @IBOutlet private weak var eventDescriptionLabel: EdgeInsetLabel!
+    @IBOutlet private  weak var viewButton: UIButton!
 
     private var cellViewModel: ICSEventCellViewModel?
 
@@ -29,7 +31,9 @@ class CalendarEventDescriptionTableViewCell: UITableViewCell {
         self.delegate = delegate
         self.cellViewModel = cellViewModel
         self.eventDescriptionLabel.text = cellViewModel.datetimeDescription
-
+        if cellViewModel.alreadyExists {
+            viewButton.setTitle(NSLocalizedString("Edit", comment: "Edit button in calendar banner"), for: .normal)
+        }
         //Force to layout to get correct height
         if #available(iOS 13.0, *) {
             if UITraitCollection.current.userInterfaceStyle == .dark {

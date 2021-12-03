@@ -27,6 +27,13 @@ class CalendarEventsBannerViewModel: NSObject {
     public var events: [ICSEvent] = [ICSEvent]()
     private let parser: ICSParserProtocol?
 
+
+    public func isAlreadyInCalendar(event: ICSEvent) -> Bool {
+        let eventStoreUtil = EKEventStoreUtil()
+        let ekEvent = eventStoreUtil.convert(event: event)
+        return eventStoreUtil.eventAlreadyExists(eventToCheck: ekEvent)
+    }
+
     /// Constructor
     /// - Parameter events: The events to show.
     init(attachments: [Attachment], parser: ICSParserProtocol? = ICSParser(), delegate: CalendarEventBannerViewModelDelegate) {

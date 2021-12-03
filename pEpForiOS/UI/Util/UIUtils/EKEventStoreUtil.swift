@@ -23,7 +23,7 @@ protocol EKEventStoreUtilProtocol {
     /// - Parameters:
     ///   - event: The Event to add
     ///   - completion: The completion callabck
-    func addEvent(event: EKEvent, completion: @escaping EKEventStoreUtil.EventsCalendarManagerResponse)
+//    func addEvent(event: EKEvent, completion: @escaping EKEventStoreUtil.EventsCalendarManagerResponse)
 
     /// Remove an event from the calendar
     ///
@@ -100,19 +100,19 @@ class EKEventStoreUtil: NSObject, EKEventStoreUtilProtocol {
     /// - Parameters:
     ///   - event: The event to add.
     ///   - completion: The callback to be executed once the event is added or not.
-    public func addEvent(event: EKEvent, completion: @escaping EventsCalendarManagerResponse) {
-        if !eventAlreadyExists(eventToCheck: event) {
-            do {
-                try eventStore.save(event, span: .thisEvent)
-            } catch {
-                // Error while trying to create event in calendar
-                completion(.failure(.eventNotAddedToCalendar))
-            }
-            completion(.success(true))
-        } else {
-            completion(.failure(.eventAlreadyExistsInCalendar))
-        }
-    }
+//    public func addEvent(event: EKEvent, completion: @escaping EventsCalendarManagerResponse) {
+//        if !eventAlreadyExists(eventToCheck: event) {
+//            do {
+//                try eventStore.save(event, span: .thisEvent)
+//            } catch {
+//                // Error while trying to create event in calendar
+//                completion(.failure(.eventNotAddedToCalendar))
+//            }
+//            completion(.success(true))
+//        } else {
+//            completion(.failure(.eventAlreadyExistsInCalendar))
+//        }
+//    }
 
     /// Remove an event from the calendar, if possible.
     /// This might fail when removing or the event may not exist in the calendar-

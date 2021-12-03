@@ -53,7 +53,8 @@ extension CalendarEventBannerViewController: UITableViewDataSource {
         }
 
         let event = vm.events[indexPath.row]
-        let cellViewModel = ICSEventCellViewModel(event: event)
+        let alreadyExists = vm.isAlreadyInCalendar(event: event)
+        let cellViewModel = ICSEventCellViewModel(event: event, alreadyExists: alreadyExists)
         cell.config(cellViewModel: cellViewModel, delegate: self)
         return cell
     }
@@ -67,6 +68,11 @@ extension CalendarEventBannerViewController: EKEventEditViewDelegate {
 // MARK: - Cell Delegate
 
 extension CalendarEventBannerViewController: CalendarEventDescriptionTableViewCellDelegate {
+
+    func didPressEditButton(event: ICSEvent) {
+        //TODO: implement me!
+    }
+
     func didPressViewButton(event: ICSEvent) {
         UIUtils.presentEditEventCalendarView(event: event, eventEditViewDelegate: self, delegate: self) { [weak self] eventDetailPresentationResult in
             guard let me = self else {
