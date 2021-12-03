@@ -19,19 +19,6 @@ protocol EKEventStoreUtilProtocol {
     /// Retrieve the authorization status for events.
     func getAuthorizationStatus() -> EKAuthorizationStatus
 
-    /// Add an event to the calendar
-    /// - Parameters:
-    ///   - event: The Event to add
-    ///   - completion: The completion callabck
-//    func addEvent(event: EKEvent, completion: @escaping EKEventStoreUtil.EventsCalendarManagerResponse)
-
-    /// Remove an event from the calendar
-    ///
-    /// - Parameters:
-    ///   - event: The event to remove
-    ///   - completion: The completion callback
-    func removeEvent(event: EKEvent, completion: @escaping EKEventStoreUtil.EventsCalendarManagerResponse)
-
     /// Retrieve an EKEvent generated from ICSEvent
     /// - Parameter event: The EKEvent
     func convert(event: ICSEvent) -> EKEvent
@@ -39,6 +26,12 @@ protocol EKEventStoreUtilProtocol {
     /// Indicates if an event already exists
     /// - Parameter eventToCheck: The event to check
     func eventAlreadyExists(eventToCheck: EKEvent) -> Bool
+
+    /// Retrieves a EKEvent from an ICSEvent.
+    /// If it is already added returns the same instance, otherwise converts the ICSEvent to a new EKEvent.
+    ///
+    /// - Parameter event:The ICS event
+    func getEKEventFromICSEvent(event: ICSEvent)-> EKEvent
 }
 
 /// This util facilitates interactions with EKEventStore, for example to add or remove events.
@@ -94,62 +87,15 @@ class EKEventStoreUtil: NSObject, EKEventStoreUtilProtocol {
         return EKEventStore.authorizationStatus(for: EKEntityType.event)
     }
 
-    /// Adds the event to the calendar, if possible.
-    /// This might fail when saving the event or the event may be already added to the calendar.
-    ///
-    /// - Parameters:
-    ///   - event: The event to add.
-    ///   - completion: The callback to be executed once the event is added or not.
-//    public func addEvent(event: EKEvent, completion: @escaping EventsCalendarManagerResponse) {
-//        if !eventAlreadyExists(eventToCheck: event) {
-//            do {
-//                try eventStore.save(event, span: .thisEvent)
-//            } catch {
-//                // Error while trying to create event in calendar
-//                completion(.failure(.eventNotAddedToCalendar))
-//            }
-//            completion(.success(true))
-//        } else {
-//            completion(.failure(.eventAlreadyExistsInCalendar))
-//        }
-//    }
-
-    /// Remove an event from the calendar, if possible.
-    /// This might fail when removing or the event may not exist in the calendar-
-    ///
-    /// - Parameters:
-    ///   - event: The event to remove
-    ///   - completion: The callback to be executed once the event is removed or not.
-    public func removeEvent(event: EKEvent, completion: @escaping EventsCalendarManagerResponse) {
-        if eventAlreadyExists(eventToCheck: event) {
-
-            let predicate = eventStore.predicateForEvents(withStart: event.startDate, end: event.endDate, calendars: nil)
-            let events = eventStore.events(matching: predicate)
-
-            events.forEach { ev in
-                do {
-                    try eventStore.remove(ev, span: .thisEvent)
-                } catch {
-                    // Error while trying to delete event from calendar
-                    completion(.failure(.cantDeleteEvent))
-                }
-            }
-            completion(.success(true))
-        } else {
-            completion(.failure(.eventDoesNotExist))
-        }
-    }
-
     /// Indicates if the event already exists in the calendar.
     /// - Parameter eventToCheck: The event to check
     /// - Returns: True if it already exists in the calendar.
     public func eventAlreadyExists(eventToCheck: EKEvent) -> Bool {
         let predicate = eventStore.predicateForEvents(withStart: eventToCheck.startDate, end: eventToCheck.endDate, calendars: nil)
         let existingEvents = eventStore.events(matching: predicate)
-        let eventAlreadyExists = existingEvents.contains { (event) -> Bool in
+        return existingEvents.contains { (event) -> Bool in
             return eventToCheck.title == event.title && event.startDate == eventToCheck.startDate && event.endDate == eventToCheck.endDate
         }
-        return eventAlreadyExists
     }
 
     /// Convert ICSEvent to EKEvent
@@ -158,5 +104,21 @@ class EKEventStoreUtil: NSObject, EKEventStoreUtilProtocol {
     /// - Returns: The EK Event already configured.
     public func convert(event: ICSEvent) -> EKEvent {
         return parser.getEkEvent(from: event, store: eventStore)
+    }
+
+    /// Retrieves a EKEvent from an ICSEvent.
+    /// If it is already added returns the same instance, otherwise converts the ICSEvent to a new EKEvent.
+    ///
+    /// - Parameter event:The ICS event
+    func getEKEventFromICSEvent(event: ICSEvent)-> EKEvent {
+        guard let startDate = event.startDate, let endDate = event.endDate else {
+            return convert(event: event)
+        }
+        let predicate = eventStore.predicateForEvents(withStart: startDate, end: endDate, calendars: nil)
+        let existingEvents = eventStore.events(matching: predicate)
+        if let found = existingEvents.first(where: {$0.title == event.summary}) {
+            return found
+        }
+        return convert(event: event)
     }
 }

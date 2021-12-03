@@ -61,7 +61,7 @@ extension UIUtils {
                                                             addEventCallback: @escaping EKEventStoreUtil.EventsCalendarManagerResponse) {
         DispatchQueue.main.async {
             let eventStoreUtil = EKEventStoreUtil()
-            let ekEvent = eventStoreUtil.convert(event: event)
+            let ekEvent = eventStoreUtil.getEKEventFromICSEvent(event: event)
             let ekEditEventViewController = getEkEditEventViewController(ekEvent: ekEvent, editViewDelegate: editViewDelegate, delegate: delegate, eventStore: eventStoreUtil.eventStore)
             UIApplication.currentlyVisibleViewController().present(ekEditEventViewController, animated: true, completion: nil)
         }

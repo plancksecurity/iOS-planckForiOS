@@ -62,16 +62,18 @@ extension CalendarEventBannerViewController: UITableViewDataSource {
 
 extension CalendarEventBannerViewController: EKEventEditViewDelegate {
     func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
-        controller.dismiss(animated: true, completion: nil)
+        controller.dismiss(animated: true) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.tableView.reloadData()
+        }
     }
 }
 // MARK: - Cell Delegate
 
 extension CalendarEventBannerViewController: CalendarEventDescriptionTableViewCellDelegate {
-
-    func didPressEditButton(event: ICSEvent) {
-        //TODO: implement me!
-    }
 
     func didPressViewButton(event: ICSEvent) {
         UIUtils.presentEditEventCalendarView(event: event, eventEditViewDelegate: self, delegate: self) { [weak self] eventDetailPresentationResult in
