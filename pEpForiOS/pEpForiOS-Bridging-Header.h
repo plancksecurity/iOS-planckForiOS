@@ -11,21 +11,16 @@
 
 #pragma mark - pEp AccountSettings Headers
 
-#import "AccountSettings.h"
-#import "AccountSettingsServer.h"
-
-#pragma mark - HTML/Markdown
-
-#import "Axt.h"
-#import "cmark.h"
-#import "NSString+Markdown.h"
+#import <AccountSettings.h>
 
 #pragma mark - AppAuth
 
-#import "AppAuth/AppAuth.h"
+#import <AppAuth/AppAuth.h>
 
-#pragma mark - Apple System Log facility
+#pragma mark - HTML/Markdown
 
-#import <asl.h>
+#import "HTMLParser/Axt/Axt.h"
+#import "Markdown/include/cmark.h"
+#import "Markdown/NSString+Markdown.h"
 
 #endif /* pEpForiOS_Bridging_Header_h */
