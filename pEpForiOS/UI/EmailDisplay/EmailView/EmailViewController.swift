@@ -410,16 +410,6 @@ extension EmailViewController: SegueHandlerType {
         }
     }
 }
-//
-//extension EmailViewController: CalendarEventEditDelegate {
-//    func handleDidAddEvent(icsEvent: ICSEvent, attachment: Attachment, completion: (() -> Void)?) {
-//        guard let vm = viewModel else {
-//            Log.shared.errorAndCrash("VM not found")
-//            return
-//        }
-//        vm.remove(event: icsEvent, from: attachment)
-//    }
-//}
 
 //MARK: - CalendarEventBannerViewModelDelegate
 
