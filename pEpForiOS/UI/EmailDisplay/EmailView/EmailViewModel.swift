@@ -102,7 +102,7 @@ class EmailViewModel {
         }
         return CalendarEventsBannerViewModel(attachments: icsFilesAttachments, delegate: delegate)
     }
-    
+
     // Indicates if the External Content View has to be shown.
     public var shouldShowExternalContentView: Bool {
         guard let body = htmlBody else {
@@ -342,7 +342,7 @@ extension EmailViewModel {
         public fileprivate(set) var cellIdentifier = ""
         public private(set) var filename = ""
         public private(set) var fileExtension: String?
-        public private(set)  var icon: UIImage?
+        public private(set) var icon: UIImage?
         public private(set) var isImage = false
         public fileprivate(set) var height: CGFloat = 0.0
         public var type: EmailViewModel.EmailRowType
@@ -516,5 +516,40 @@ extension EmailViewModel {
                 }
             }
         }
+    }
+}
+
+//MARK: - CalendarEventEditDelegate
+
+extension EmailViewModel: CalendarEventEditDelegate {
+    func handleDidAddEvent(icsEvent: ICSEvent, attachment: Attachment, completion: (() -> Void)?) {
+        remove(event: icsEvent, from: attachment, completion: completion)
+    }
+
+    /// Remove event if exists.
+    ///
+    /// - Parameter event: The event to be removed
+    private func remove(event: ICSEvent, from attachment: Attachment, completion: (() -> Void)?) {
+        guard let data = attachment.data else {
+            completion?()
+            return
+        }
+        // Get the ics file content as string
+        let content = String(decoding: data, as: UTF8.self)
+        // Remove the event from the string
+        let contentWithoutEvent: String? = ICSParser().removeEvent(icsEvent: event, from: content)
+        // Convert the string without the event to data again and save
+        if let newData = contentWithoutEvent?.data(using: .utf8) {
+            attachment.session.performAndWait {
+                attachment.data = newData
+            }
+        } else {
+            attachment.session.performAndWait {
+                attachment.delete()
+            }
+        }
+        attachment.session.commit()
+        // Execute the callback
+        completion?()
     }
 }

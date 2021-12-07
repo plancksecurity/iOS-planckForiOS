@@ -58,4 +58,12 @@ extension Message {
     public func icsAttachments() -> [Attachment] {
         return attachments.filter { $0.isICS }
     }
+
+    /// Removes the attachment passed by param, if exists. Otherwise it does nothing.
+    ///
+    /// - Parameter attachment: The attachment to delete from the message
+    public func remove(attachment: Attachment) {
+        moc.delete(attachment.cdObject)
+        moc.saveAndLogErrors()
+    }
 }
