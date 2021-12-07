@@ -13,16 +13,13 @@ import EventKitUI
 
 class CalendarEventBannerViewController: UIViewController {
 
+    public weak var delegate: CalendarEventEditDelegate?
+    public var viewModel: CalendarEventsBannerViewModel?
+    private var presentedEvent: ICSEvent?
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var dayOfTheWeekLabel: UILabel!
     @IBOutlet private weak var dayNumberLabel: UILabel!
     @IBOutlet private weak var titleLabel: UILabel!
-
-    public weak var delegate: CalendarEventEditDelegate?
-
-    private var presentedEvent: ICSEvent?
-
-    public var viewModel: CalendarEventsBannerViewModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
