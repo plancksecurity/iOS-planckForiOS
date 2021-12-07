@@ -37,7 +37,7 @@ class Appearance {
             appearance.configureWithOpaqueBackground()
             appearance.backgroundColor = .pEpGreen
             UIToolbar.appearance().standardAppearance = appearance
-//            UIToolbar.appearance().scrollEdgeAppearance = UIToolbar.appearance().standardAppearance
+            UIToolbar.appearance().scrollEdgeAppearance = UIToolbar.appearance().standardAppearance
         }
 
         UITextView.appearance().tintColor = .pEpGreen
