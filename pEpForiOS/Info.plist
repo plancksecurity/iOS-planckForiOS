@@ -103,6 +103,12 @@
 	<string>${OAUTH2_YAHOO_CLIENT_SECRET}</string>
 	<key>OAUTH2_YAHOO_REDIRECT_URL</key>
 	<string>https://pep.security/oauth2/yahoo</string>
+	<key>OAUTH2_O365_CLIENT_ID</key>
+	<string>${OAUTH2_O365_CLIENT_ID}</string>
+	<key>OAUTH2_O365_CLIENT_SECRET</key>
+	<string>${OAUTH2_O365_CLIENT_SECRET}</string>
+	<key>OAUTH2_O365_REDIRECT_URL_SCHEME</key>
+	<string>msauth.security.pEp://auth</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>UniversLTStd.otf</string>
