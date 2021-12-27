@@ -15,7 +15,9 @@ extension OAuth2Type {
         switch accountType {
         case .gmail:
             self = .google
-        case .other, .clientCertificate, .o365, .icloud, .outlook:
+        case .o365:
+            self = .o365
+        case .other, .clientCertificate, .icloud, .outlook:
             return nil
         }
     }

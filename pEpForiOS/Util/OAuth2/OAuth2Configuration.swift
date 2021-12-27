@@ -26,8 +26,10 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
     }
 
     init?(
-        oauth2Type: OAuth2Type, scopes: [String], clientIDKey: String,
-        clientSecretKey: String? = nil, redirectURL: URL) {
+        oauth2Type: OAuth2Type, scopes: [String],
+        clientIDKey: String,
+        clientSecretKey: String? = nil,
+        redirectURL: URL) {
         guard let settings = Bundle.main.infoDictionary else {
             return nil
         }
@@ -46,8 +48,11 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
     }
 
     init?(
-        oauth2Type: OAuth2Type, scopes: [String], clientIDKey: String,
-        clientSecretKey: String? = nil, redirectURLSchemeKey: String) {
+        oauth2Type: OAuth2Type,
+        scopes: [String],
+        clientIDKey: String,
+        clientSecretKey: String? = nil,
+        redirectURLSchemeKey: String) {
         guard let settings = Bundle.main.infoDictionary else {
             return nil
         }
@@ -73,8 +78,11 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
     }
 
     init?(
-        oauth2Type: OAuth2Type, scopes: [String], clientIDKey: String,
-        clientSecretKey: String? = nil, redirectURLKey: String) {
+        oauth2Type: OAuth2Type,
+        scopes: [String],
+        clientIDKey: String,
+        clientSecretKey: String? = nil,
+        redirectURLKey: String) {
         guard let settings = Bundle.main.infoDictionary else {
             return nil
         }

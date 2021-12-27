@@ -30,7 +30,7 @@ extension OAuth2Type {
                 scopes: ["https://outlook.office.com"],
                 clientIDKey: "OAUTH2_O365_CLIENT_ID",
                 clientSecretKey: "OAUTH2_O365_CLIENT_SECRET",
-                redirectURLKey: "OAUTH2_O365_REDIRECT_URL")
+                redirectURLSchemeKey: "OAUTH2_O365_REDIRECT_URL_SCHEME")
         }
     }
 
@@ -47,7 +47,7 @@ extension OAuth2Type {
         case .o365:
             return OIDServiceConfiguration(
                 authorizationEndpoint: URL(string: "https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize")!,
-                tokenEndpoint: URL(string: "https://api.login.yahoo.com/oauth2/get_token")!)
+                tokenEndpoint: URL(string: "https://www.google.com")!)
         }
     }
 }
