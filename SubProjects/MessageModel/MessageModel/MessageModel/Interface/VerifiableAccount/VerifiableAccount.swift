@@ -26,7 +26,7 @@ extension VerifiableAccount {
         case outlook
 
         public var isOauth: Bool {
-            return self == .gmail || self == .o365
+            return [.gmail, .o365].contains(self)
         }
     }
 }

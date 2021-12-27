@@ -418,16 +418,18 @@ extension LoginViewController {
         var title: String
         var message: String?
 
-        if let oauthError = error as? OAuthAuthorizerError,
-            oauthError == .noConfiguration {
+        if let oauthError = error as? OAuthAuthorizerError, oauthError == .noConfiguration {
             title = NSLocalizedString("Invalid Address",
                                       comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")
             switch vm.verifiableAccount.accountType {
             case .gmail:
                 message = NSLocalizedString("Please enter a valid Gmail address.",
                                             comment: "Fail to log in, email does not match account type")
+            case .o365:
+                message = NSLocalizedString("Please enter a valid Email address.",
+                                            comment: "Fail to log in, email does not match account type")
             default:
-                Log.shared.errorAndCrash("Login should not do ouath with other email address")
+                Log.shared.errorAndCrash("Login should not do oauth with other email address")
             }
         } else {
             guard let displayError = DisplayUserError(withError: error) else {
