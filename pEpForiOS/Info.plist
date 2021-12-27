@@ -108,7 +108,7 @@
 	<key>OAUTH2_O365_CLIENT_SECRET</key>
 	<string>${OAUTH2_O365_CLIENT_SECRET}</string>
 	<key>OAUTH2_O365_REDIRECT_URL_SCHEME</key>
-	<string>msauth.security.pEp://auth</string>
+	<string>${OAUTH2_O365_REDIRECT_URL_SCHEME}</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>UniversLTStd.otf</string>
