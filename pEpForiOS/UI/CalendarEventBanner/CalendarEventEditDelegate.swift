@@ -10,7 +10,7 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
-protocol CalendarEventEditDelegate: class {
+protocol CalendarEventEditDelegate: AnyObject {
 
     /// Handle the Event has been added to the calendar.
     ///

@@ -14,6 +14,8 @@ import pEpIOSToolbox
 protocol CalendarEventBannerViewModelDelegate: AnyObject {
     /// Dismiss the banner
     func dismiss()
+    /// reload the banner
+    func reload()
 }
 
 /// View Model that handles everything related to the Events Banner.
@@ -55,10 +57,19 @@ class CalendarEventsBannerViewModel: NSObject {
         }
     }
 
-    /// - Parameter icsEvent: The ICS event to look for.
+    /// - Parameter icsEvent: The ICS event to look for its attachment.
     /// - Returns: The Attachment that contains the event passed by parameter.
     public func getAttachmentOfEvent(icsEvent: ICSEvent) -> Attachment? {
         return eventsAndAttachment[icsEvent]
+    }
+
+    public func removeIcs(event: ICSEvent) {
+        events = events.filter { $0 != event }
+        if events.count == 0 {
+            delegate?.dismiss()
+        } else {
+            delegate?.reload()
+        }
     }
 
     /// Indicates wheater or not the banner should be shown

@@ -418,6 +418,9 @@ extension EmailViewController: CalendarEventBannerViewModelDelegate {
         bannerContainerView.isHidden = true
         stackView.layoutIfNeeded()
     }
+    func reload() {
+        tableView.reloadData()
+    }
 }
 
 //MARK: - Private

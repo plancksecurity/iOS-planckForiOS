@@ -524,11 +524,14 @@ extension EmailViewModel {
 extension EmailViewModel: CalendarEventEditDelegate {
     func handleDidAddEvent(icsEvent: ICSEvent, attachment: Attachment, completion: (() -> Void)?) {
         remove(event: icsEvent, from: attachment, completion: completion)
+
     }
 
     /// Remove event if exists.
     ///
     /// - Parameter event: The event to be removed
+    /// - Parameter attachment: The attachment where to delete the file
+    /// - Parameter completion: The callback to be executed after it's delete, of if something fails.
     private func remove(event: ICSEvent, from attachment: Attachment, completion: (() -> Void)?) {
         guard let data = attachment.data else {
             completion?()
