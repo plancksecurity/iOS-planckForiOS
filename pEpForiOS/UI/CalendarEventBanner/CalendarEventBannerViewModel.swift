@@ -63,6 +63,8 @@ class CalendarEventsBannerViewModel: NSObject {
         return eventsAndAttachment[icsEvent]
     }
 
+    /// Remove the event from the banner. If there are other events, the banner will be reloaded. Otherwise will be dimissed.
+    /// - Parameter event: The event to remove.
     public func removeIcs(event: ICSEvent) {
         events = events.filter { $0 != event }
         if events.count == 0 {
