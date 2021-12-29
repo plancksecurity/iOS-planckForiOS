@@ -861,6 +861,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="2tb-cr-b2S" secondAttribute="trailing" constant="20" symbolic="YES" id="0Lj-I0-GZQ"/>
                                                 <constraint firstItem="2tb-cr-b2S" firstAttribute="leading" secondItem="Fw7-lo-YKp" secondAttribute="leading" constant="20" symbolic="YES" id="QE2-G6-Frc"/>
+                                                <constraint firstItem="jWl-U8-Gg3" firstAttribute="width" secondItem="Fw7-lo-YKp" secondAttribute="width" multiplier="0.5" priority="1000" id="UHm-fB-Tnn"/>
                                                 <constraint firstAttribute="bottom" secondItem="2tb-cr-b2S" secondAttribute="bottom" constant="1" id="YFH-cW-3ex"/>
                                                 <constraint firstItem="2tb-cr-b2S" firstAttribute="top" secondItem="Fw7-lo-YKp" secondAttribute="top" constant="1" id="t9h-HO-DAb"/>
                                             </constraints>
