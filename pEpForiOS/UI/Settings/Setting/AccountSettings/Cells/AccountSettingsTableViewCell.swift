@@ -74,7 +74,6 @@ final class AccountSettingsTableViewCell: UITableViewCell {
         let contentSize = traitCollection.preferredContentSizeCategory
         stackView.axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
         stackView.spacing = contentSize.isAccessibilityCategory ? 10.0 : 5.0
-        valueFieldWidthConstraint.isActive = stackView.axis == .horizontal
         guard let row = actionRow else {
             Log.shared.errorAndCrash("Without row the cell can not be configured")
             return
