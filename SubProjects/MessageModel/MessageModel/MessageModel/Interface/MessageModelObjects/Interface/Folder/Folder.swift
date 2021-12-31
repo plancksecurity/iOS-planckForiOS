@@ -145,18 +145,29 @@ public class Folder: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
 
     /// Number of unread mails in this folder
     public var countUnread: Int {
+        var predicates = allMessagesPredicates
+        predicates.append(CdMessage.PredicateFactory.existingMessages())
+        predicates.append(CdMessage.PredicateFactory.unread(value: true))
+        predicates.append(CdMessage.PredicateFactory.processed())
+        predicates.append(CdMessage.PredicateFactory.isNotAutoConsumable())
+        let compound = NSCompoundPredicate(type: .and, subpredicates: predicates)
+        return CdMessage.count(predicate: compound, in: session.moc)
+    }
+
+    /// Number of unread mails in this folder
+    public var countAll: Int {
+        let compound = NSCompoundPredicate(type: .and, subpredicates: allMessagesPredicates)
+        return CdMessage.count(predicate: compound, in: session.moc)
+    }
+
+    private var allMessagesPredicates: [NSPredicate] {
         guard let parent = cdFolder() else {
             Log.shared.errorAndCrash("Folder not found.")
-            return 0
+            return []
         }
         var predicates = [NSPredicate]()
         predicates.append(CdMessage.PredicateFactory.allMessages(parentFolder: parent))
-        predicates.append(CdMessage.PredicateFactory.existingMessages())
-        predicates.append(CdMessage.PredicateFactory.processed())
-        predicates.append(CdMessage.PredicateFactory.isNotAutoConsumable())
-        predicates.append(CdMessage.PredicateFactory.unread(value: true))
-        let compound = NSCompoundPredicate(type: .and, subpredicates: predicates)
-        return CdMessage.count(predicate: compound, in: session.moc)
+        return predicates
     }
 }
 

@@ -65,10 +65,13 @@ public class FolderCellViewModel {
         return folder.isSelectable
     }
 
-    public var numUnreadMails : Int {
+    public var numOfMailsToShow : Int {
         if let f = folder as? VirtualFolderProtocol {
             return f.countUnread
         } else if let f = folder as? Folder {
+            if f.folderType == .outbox {
+                return f.countAll
+            }
             return f.countUnread
         } else {
             Log.shared.errorAndCrash("Can't recognize Folder")

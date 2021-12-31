@@ -188,8 +188,8 @@ class FolderTableViewController: UITableViewController {
         }
 
         cell.unreadMailsLabel.font = UIFont.pepFont(style: .body, weight: .regular)
-        let numUnreadMails = fcvm.numUnreadMails
-        cell.unreadMailsLabel.text = numUnreadMails > 0 ? String(numUnreadMails) : ""
+        let numOfMailsToShow = fcvm.numOfMailsToShow
+        cell.unreadMailsLabel.text = numOfMailsToShow > 0 ? String(numOfMailsToShow) : ""
         cell.iconImageView.image = fcvm.image
         cell.separatorImageView.isHidden = fcvm.shouldHideSeparator()
         cell.delegate = self
