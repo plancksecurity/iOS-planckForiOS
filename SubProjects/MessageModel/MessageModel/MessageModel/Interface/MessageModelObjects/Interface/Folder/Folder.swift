@@ -147,9 +147,9 @@ public class Folder: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
     public var countUnread: Int {
         var predicates = allMessagesPredicates
         predicates.append(CdMessage.PredicateFactory.existingMessages())
-        predicates.append(CdMessage.PredicateFactory.unread(value: true))
         predicates.append(CdMessage.PredicateFactory.processed())
         predicates.append(CdMessage.PredicateFactory.isNotAutoConsumable())
+        predicates.append(CdMessage.PredicateFactory.unread(value: true))
         let compound = NSCompoundPredicate(type: .and, subpredicates: predicates)
         return CdMessage.count(predicate: compound, in: session.moc)
     }
