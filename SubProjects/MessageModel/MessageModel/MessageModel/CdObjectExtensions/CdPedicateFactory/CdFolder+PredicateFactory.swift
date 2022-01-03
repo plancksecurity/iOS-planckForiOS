@@ -11,6 +11,11 @@ import Foundation
 extension CdFolder {
     struct PredicateFactory {
 
+        //MB:-
+        static func isUnifiable() -> NSPredicate {
+            return NSPredicate(format: "%K = true", RelationshipKeyPath.cdAccount_isUnifiable)
+        }
+
         static func inAccount(cdAccount: CdAccount) -> NSPredicate {
             return NSPredicate(format: "%K = %@", CdFolder.RelationshipName.account, cdAccount)
         }

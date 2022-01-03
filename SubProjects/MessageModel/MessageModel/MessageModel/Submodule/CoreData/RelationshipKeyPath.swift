@@ -37,5 +37,6 @@ struct RelationshipKeyPath {
     /// CdAccount
     static let cdAccount_identity_address = CdAccount.RelationshipName.identity + "." +
         CdIdentity.AttributeName.address
+    static let cdAccount_isUnifiable = CdAccount.AttributeName.includeFoldersInUnifiedFolders
 
 }

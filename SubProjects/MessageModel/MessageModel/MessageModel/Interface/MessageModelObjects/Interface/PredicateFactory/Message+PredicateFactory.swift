@@ -32,8 +32,9 @@ extension Message {
             return CdMessage.PredicateFactory.isIn(folderOfType: folderOfType)
         }
 
-        static public func inUnifiedFolder() -> NSPredicate {
-            return CdMessage.PredicateFactory.inUnifiedFolder()
-        }
+        //MB:-
+//        static public func inUnifiedFolder() -> NSPredicate {
+//            return CdMessage.PredicateFactory.inUnifiedFolder()
+//        }
     }
 }
