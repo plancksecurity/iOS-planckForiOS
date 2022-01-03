@@ -154,24 +154,14 @@ public class Folder: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         return CdMessage.count(predicate: compound, in: session.moc)
     }
 
-    /// Number of all mails in this folder
+    /// Number of unread mails in this folder
     public var countAll: Int {
         let compound = NSCompoundPredicate(type: .and, subpredicates: allMessagesPredicates)
         return CdMessage.count(predicate: compound, in: session.moc)
     }
-
-    private var allMessagesPredicates: [NSPredicate] {
-        guard let parent = cdFolder() else {
-            Log.shared.errorAndCrash("Folder not found.")
-            return []
-        }
-        var predicates = [NSPredicate]()
-        predicates.append(CdMessage.PredicateFactory.allMessages(parentFolder: parent))
-        return predicates
-    }
 }
 
-// MARK: - Helper
+// MARK: - Private
 
 extension Folder {
 
@@ -245,6 +235,16 @@ extension Folder {
         let descs = defaultSortDescriptors()
         let msgs = CdMessage.all(predicate: p, orderedBy: descs, in: session.moc) as? [CdMessage] ?? []
         return msgs
+    }
+
+    private var allMessagesPredicates: [NSPredicate] {
+        guard let parent = cdFolder() else {
+            Log.shared.errorAndCrash("Folder not found.")
+            return []
+        }
+        var predicates = [NSPredicate]()
+        predicates.append(CdMessage.PredicateFactory.allMessages(parentFolder: parent))
+        return predicates
     }
 }
 
