@@ -294,7 +294,6 @@
 		434C228B25D69C3000F622DB /* CdAttachment+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155FE56B228B5164003D3E68 /* CdAttachment+Extensions.swift */; };
 		434C228F25D69C4000F622DB /* CdAttachment+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECFB782462C690004842D6 /* CdAttachment+PredicateFactory.swift */; };
 		434C229325D69C5600F622DB /* Attachment+ContentDispositionType+PEPContentDisposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CDA4C2293FBB300AAC37F /* Attachment+ContentDispositionType+PEPContentDisposition.swift */; };
-		434C229725D69C9700F622DB /* MutableOrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0E51DAE8BE7007C98B8 /* MutableOrderedSet.swift */; };
 		434C229B25D69CAC00F622DB /* CdAttachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43753CED222D3A3E002EE98B /* CdAttachment+Extension.swift */; };
 		434C229F25D69CBF00F622DB /* CdKey+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A6E05B1E57725C005BEE69 /* CdKey+Extension.swift */; };
 		434C22A325D69CD200F622DB /* CdAccount+NonOptionalConvenienceAccessors.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A0E2248D228008E40CC /* CdAccount+NonOptionalConvenienceAccessors.swift.swift */; };
@@ -370,7 +369,6 @@
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
 		434DC0E01DAE78BE007C98B8 /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0DF1DAE78BE007C98B8 /* Attachment.swift */; };
 		434DC0E21DAE7A49007C98B8 /* Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0E11DAE7A49007C98B8 /* Identity.swift */; };
-		434DC0E61DAE8BE7007C98B8 /* MutableOrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0E51DAE8BE7007C98B8 /* MutableOrderedSet.swift */; };
 		4351723A229FD4AA00D92026 /* TestUtil+LoadData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43517239229FD4AA00D92026 /* TestUtil+LoadData.swift */; };
 		43517244229FD8EF00D92026 /* IOS-1432_message_from_outlook.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43517242229FD8EF00D92026 /* IOS-1432_message_from_outlook.txt */; };
 		43517245229FD8EF00D92026 /* IOS-1432_keypair.asc in Resources */ = {isa = PBXBuildFile; fileRef = 43517243229FD8EF00D92026 /* IOS-1432_keypair.asc */; };
@@ -948,7 +946,6 @@
 		434DC0D61DAE7407007C98B8 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		434DC0DF1DAE78BE007C98B8 /* Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Attachment.swift; path = MessageModel/Interface/MessageModelObjects/Interface/Attachment/Attachment.swift; sourceTree = SOURCE_ROOT; };
 		434DC0E11DAE7A49007C98B8 /* Identity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identity.swift; sourceTree = "<group>"; };
-		434DC0E51DAE8BE7007C98B8 /* MutableOrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutableOrderedSet.swift; sourceTree = "<group>"; };
 		4350A6AC250259FE00809A18 /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjackSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43517239229FD4AA00D92026 /* TestUtil+LoadData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TestUtil+LoadData.swift"; sourceTree = "<group>"; };
 		43517242229FD8EF00D92026 /* IOS-1432_message_from_outlook.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-1432_message_from_outlook.txt"; sourceTree = "<group>"; };
@@ -2404,7 +2401,6 @@
 				3785564F229D2DCE00AACFD2 /* Internal */,
 				490FF7FD1E795B1500BC15F9 /* Int16+ImapFlagBits.swift */,
 				4352FA261DC7A1C20081161A /* KeyChain.swift */,
-				434DC0E51DAE8BE7007C98B8 /* MutableOrderedSet.swift */,
 				37BC7AFA22283E2D0047267A /* MessageModelObjectUtils.swift */,
 				433C51D41E6828AE00272E19 /* MessageID+UUID.swift */,
 				43E74C6B1E38B38C00A2F7A6 /* ImapFlagsUtility.swift */,
@@ -3144,7 +3140,6 @@
 				434C225825D69B0900F622DB /* PEPMessage+PGPMime.swift in Sources */,
 				434C226C25D69B7400F622DB /* CdMessage+Extensions.swift in Sources */,
 				439FFD5825F8B76C001591F6 /* PEPUtil+Encryption.swift in Sources */,
-				434C229725D69C9700F622DB /* MutableOrderedSet.swift in Sources */,
 				434C21B425D697F100F622DB /* CdIdentity.swift in Sources */,
 				436FD25425DA82A200D929B3 /* PEPSession+Extensions.swift in Sources */,
 				434C248425D6C9FA00F622DB /* CdMessage+Pantomime.swift in Sources */,
@@ -3466,7 +3461,6 @@
 				435F5122221FF80F006EB11F /* SmtpSendError.swift in Sources */,
 				43ACAA1926089D290013AE20 /* MigrateKeychainService.swift in Sources */,
 				43EA4874221E9518006E8F83 /* AppendMailsToFolderOperation.swift in Sources */,
-				434DC0E61DAE8BE7007C98B8 /* MutableOrderedSet.swift in Sources */,
 				B7DFEA50225365080080A2BA /* DisplayableFolderProtocol.swift in Sources */,
 				15A3B4D92358498000DB9135 /* CdMessage+Factory.swift in Sources */,
 				1522955C2302F99900204FD3 /* ExtraKey.swift in Sources */,
